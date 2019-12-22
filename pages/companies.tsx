@@ -1,12 +1,12 @@
 import {NextPage} from "next";
-import {Container} from "@material-ui/core";
 import Link from "next/link";
+import MainLayout from "../src/layouts/Main";
 
 const Companies: NextPage = () => (
-    <Container>
+    <MainLayout title={'Companies'}>
         <div>Companies</div>
         <Link href={'/'}>Index</Link>
-    </Container>
+    </MainLayout>
 )
 
 export default Companies

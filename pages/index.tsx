@@ -2,14 +2,14 @@ import * as React from "react";
 import {Button, Container} from "@material-ui/core";
 import {NextPage} from "next";
 import Link from 'next/link';
-import MainLayout from "../components/MainLayout";
+import MainLayout from "../src/layouts/Main";
 
 interface Props {
     userAgent: string,
 }
 
 const Home: NextPage<Props> = ({userAgent}) => (
-    <MainLayout>
+    <MainLayout title={'Main page'}>
         <h1>Hello world! - user agent:</h1>
         <h5>{userAgent}</h5>
         <Link href={'/companies'}>Companies</Link>
