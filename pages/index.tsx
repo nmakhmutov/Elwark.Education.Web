@@ -1,8 +1,6 @@
 import * as React from "react";
-import {Button, Container} from "@material-ui/core";
 import {NextPage} from "next";
-import Link from 'next/link';
-import MainLayout from "../layouts/Main";
+import {MainLayout} from "../components/layouts/Main";
 
 interface Props {
     userAgent: string,

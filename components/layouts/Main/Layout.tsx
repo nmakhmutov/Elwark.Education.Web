@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 export interface MainLayoutProps {
     title: string
 }
-const MainLayout: React.FC<MainLayoutProps> = (props) => {
+const Layout: React.FC<MainLayoutProps> = (props) => {
     const classes = useStyles();
     const theme = useTheme();
     const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
@@ -70,4 +70,4 @@ const MainLayout: React.FC<MainLayoutProps> = (props) => {
     )
 };
 
-export default MainLayout;
+export default Layout;

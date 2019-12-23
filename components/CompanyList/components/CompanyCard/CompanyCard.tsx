@@ -1,17 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {
-    Card,
-    CardContent,
-    CardActions,
-    Typography,
-    Grid,
-    Divider
-} from '@material-ui/core';
+import {Card, CardActions, CardContent, Divider, Grid, Typography} from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import {CompanyShortModel} from "../../../../interfaces";
+import Link from "../../../../common/Link";
 
 const useStyles = makeStyles(theme => ({
     root: {},
@@ -56,18 +50,12 @@ const CompanyCard: React.FC<CompanyCardProps> = (props) => {
         >
             <CardContent>
                 <div className={classes.imageContainer}>
-                    <img
-                        alt="Product"
-                        className={classes.image}
-                        src={company.logotype.square}
-                    />
+                    <img alt="Company logotype" className={classes.image} src={company.logotype.square}/>
                 </div>
-                <Typography
-                    align="center"
-                    gutterBottom
-                    variant="h4"
-                >
-                    {company.name}
+                <Typography align="center" gutterBottom={true} variant="h4">
+                    <Link href={'/companies/[company]'} as={`/companies/${company.id}`}>
+                        {company.name}
+                    </Link>
                 </Typography>
                 <Typography
                     align="center"
