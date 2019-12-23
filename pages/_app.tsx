@@ -1,7 +1,7 @@
 import App from "next/app";
 import {CssBaseline, ThemeProvider} from "@material-ui/core";
 import * as React from "react";
-import theme from "../src/theme";
+import theme from "../theme";
 
 export default class MyApp extends App {
     componentDidMount() {

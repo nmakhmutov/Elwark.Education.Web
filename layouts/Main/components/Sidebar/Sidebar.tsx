@@ -2,16 +2,10 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import React from "react";
 import {Drawer} from "@material-ui/core";
 import clsx from "clsx";
-import Divider from "@material-ui/core/Divider";
 import {SidebarNav} from "./components";
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import MapIcon from '@material-ui/icons/Map';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 const useStyles = makeStyles(theme => ({
     drawer: {
@@ -36,6 +30,24 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const pages = [
+    {
+        title: 'Home',
+        href: '/',
+        icon: <DashboardIcon />
+    },
+    {
+        title: 'Map',
+        href: '/map',
+        icon: <MapIcon />
+    },
+    {
+        title: 'Companies',
+        href: '/companies',
+        icon: <PeopleIcon />
+    }
+];
+
 export interface SidebarProps {
     open: boolean,
     variant?: 'permanent' | 'persistent' | 'temporary',
@@ -46,23 +58,6 @@ export interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = (props) => {
     const classes = useStyles();
     const {open, variant, onClose, className, ...rest} = props;
-    const pages = [
-        {
-            title: 'Home',
-            href: '/',
-            icon: <DashboardIcon />
-        },
-        {
-            title: 'Map',
-            href: '/map',
-            icon: <MapIcon />
-        },
-        {
-            title: 'Companies',
-            href: '/companies',
-            icon: <PeopleIcon />
-        }
-    ];
 
     return (
         <Drawer
@@ -86,6 +81,6 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
             </div>
         </Drawer>
     );
-}
+};
 
 export default Sidebar;

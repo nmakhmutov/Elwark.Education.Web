@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import MainLayout from "../src/layouts/Main";
+import MainLayout from "../layouts/Main";
 
 const Map: NextPage = () =>{
     return(

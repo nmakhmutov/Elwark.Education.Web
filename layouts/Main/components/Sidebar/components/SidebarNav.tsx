@@ -5,7 +5,7 @@ import List from "@material-ui/core/List";
 import clsx from "clsx";
 import ListItem from "@material-ui/core/ListItem";
 import Button from "@material-ui/core/Button";
-import Link from "../../../../../Link";
+import Link from "../../../../../common/Link";
 
 const useStyles = makeStyles(theme => ({
     root: {},
