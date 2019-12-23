@@ -1,29 +1,29 @@
-import React, {useState} from 'react';
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {IconButton, Grid, Typography} from '@material-ui/core';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import {Grid, IconButton, Typography} from '@material-ui/core';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import React, {useState} from 'react';
+import {CompanyShortModel} from '../../interfaces';
 import {CompanyToolbar} from './components';
-import {CompanyShortModel} from "../../interfaces";
-import CompanyCard from "./components/CompanyCard/CompanyCard";
+import CompanyCard from './components/CompanyCard/CompanyCard';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {
-        padding: theme.spacing(3)
+        padding: theme.spacing(3),
     },
     content: {
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
     },
     pagination: {
         marginTop: theme.spacing(3),
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end'
-    }
+        justifyContent: 'flex-end',
+    },
 }));
 
 export interface CompanyListProps {
-    companies: CompanyShortModel[]
+    companies: CompanyShortModel[];
 }
 
 const CompanyList: React.FC<CompanyListProps> = (props) => {
@@ -36,7 +36,7 @@ const CompanyList: React.FC<CompanyListProps> = (props) => {
             <CompanyToolbar/>
             <div className={classes.content}>
                 <Grid container={true} spacing={3}>
-                    {companies.map(company => (
+                    {companies.map((company) => (
                         <Grid item={true} key={company.id} lg={4} md={6} xs={12}>
                             <CompanyCard company={company}/>
                         </Grid>

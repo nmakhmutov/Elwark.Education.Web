@@ -1,30 +1,30 @@
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {colors} from "@material-ui/core";
-import React from "react";
-import List from "@material-ui/core/List";
-import clsx from "clsx";
-import ListItem from "@material-ui/core/ListItem";
-import Button from "@material-ui/core/Button";
-import Link from "../../../../../../common/Link";
+import {colors} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import clsx from 'clsx';
+import React from 'react';
+import Link from '../../../../../../common/Link';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {},
     item: {
         display: 'flex',
         paddingTop: 0,
-        paddingBottom: 0
+        paddingBottom: 0,
     },
     button: {
-        color: colors.blueGrey[800],
-        padding: '10px 8px',
-        justifyContent: 'flex-start',
-        textTransform: 'none',
-        letterSpacing: 0,
-        width: '100%',
-        fontWeight: theme.typography.fontWeightMedium,
+        'color': colors.blueGrey[800],
+        'padding': '10px 8px',
+        'justifyContent': 'flex-start',
+        'textTransform': 'none',
+        'letterSpacing': 0,
+        'width': '100%',
+        'fontWeight': theme.typography.fontWeightMedium,
         '&:hover': {
-            textDecoration: 'none'
-        }
+            textDecoration: 'none',
+        },
     },
     icon: {
         color: colors.blueGrey[800],
@@ -32,26 +32,26 @@ const useStyles = makeStyles(theme => ({
         height: 24,
         display: 'flex',
         alignItems: 'center',
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1),
     },
     active: {
-        color: theme.palette.primary.main,
-        fontWeight: theme.typography.fontWeightMedium,
+        'color': theme.palette.primary.main,
+        'fontWeight': theme.typography.fontWeightMedium,
         '& $icon': {
-            color: theme.palette.primary.main
-        }
-    }
+            color: theme.palette.primary.main,
+        },
+    },
 }));
 
 export interface SidebarPage {
-    title: string,
-    href: string,
-    icon: JSX.Element
+    title: string;
+    href: string;
+    icon: JSX.Element;
 }
 
 export interface SidebarNavProps {
-    className?: string,
-    pages: SidebarPage[],
+    className?: string;
+    pages: SidebarPage[];
 }
 
 const SidebarNav: React.FC<SidebarNavProps> = (props) => {
@@ -64,7 +64,7 @@ const SidebarNav: React.FC<SidebarNavProps> = (props) => {
             {...rest}
             className={clsx(classes.root, className)}>
             {
-                pages.map(page => (
+                pages.map((page) => (
                     <ListItem
                         className={classes.item}
                         disableGutters

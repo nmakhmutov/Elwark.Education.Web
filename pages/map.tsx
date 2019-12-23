@@ -1,11 +1,11 @@
-import {NextPage} from "next";
-import React from "react";
-import {MainLayout} from "../components/layouts/Main";
+import {NextPage} from 'next';
+import React from 'react';
+import {MainLayout} from '../components/layouts/Main';
 
-const Map: NextPage = () =>{
+const Map: NextPage = () => {
     return(
         <MainLayout title={'Cafe map'}/>
-    )
-}
+    );
+};
 
 export default Map;

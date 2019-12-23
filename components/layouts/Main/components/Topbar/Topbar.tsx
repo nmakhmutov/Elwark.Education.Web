@@ -1,31 +1,31 @@
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import React, {MouseEventHandler, useState} from "react";
-import Link from 'next/link';
-import AppBar from "@material-ui/core/AppBar";
-import clsx from "clsx";
-import {Toolbar} from "@material-ui/core";
-import Hidden from "@material-ui/core/Hidden";
-import Badge from "@material-ui/core/Badge";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
+import {Toolbar} from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
+import Badge from '@material-ui/core/Badge';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import InputIcon from '@material-ui/icons/Input';
+import MenuIcon from '@material-ui/icons/Menu';
+import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
+import clsx from 'clsx';
+import Link from 'next/link';
+import React, {MouseEventHandler, useState} from 'react';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {
-        boxShadow: 'none'
+        boxShadow: 'none',
     },
     flexGrow: {
-        flexGrow: 1
+        flexGrow: 1,
     },
     signOutButton: {
-        marginLeft: theme.spacing(1)
-    }
+        marginLeft: theme.spacing(1),
+    },
 }));
 
 export interface TopbarProps {
-    className?: string,
-    onSidebarOpen: MouseEventHandler
+    className?: string;
+    onSidebarOpen: MouseEventHandler;
 }
 
 const Topbar: React.FC<TopbarProps> = (props) => {
@@ -71,7 +71,7 @@ const Topbar: React.FC<TopbarProps> = (props) => {
                 </Hidden>
             </Toolbar>
         </AppBar>
-    )
+    );
 };
 
 export default Topbar;

@@ -1,9 +1,9 @@
-import * as React from "react";
-import {NextPage} from "next";
-import {MainLayout} from "../components/layouts/Main";
+import {NextPage} from 'next';
+import * as React from 'react';
+import {MainLayout} from '../components/layouts/Main';
 
 interface Props {
-    userAgent: string,
+    userAgent: string;
 }
 
 const Home: NextPage<Props> = ({userAgent}) => (

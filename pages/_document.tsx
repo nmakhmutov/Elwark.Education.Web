@@ -1,10 +1,10 @@
-import * as React from 'react';
-import Document, {Head, Main, NextScript} from 'next/document';
 import {ServerStyleSheets} from '@material-ui/core/styles';
+import Document, {Head, Main, NextScript} from 'next/document';
+import * as React from 'react';
 import theme from '../theme';
 
 export default class MyDocument extends Document {
-    render() {
+    public render() {
         return (
             <html>
             <Head>
@@ -24,7 +24,7 @@ export default class MyDocument extends Document {
     }
 }
 
-MyDocument.getInitialProps = async ctx => {
+MyDocument.getInitialProps = async (ctx) => {
     // Resolution order
     //
     // On the server:
@@ -53,7 +53,7 @@ MyDocument.getInitialProps = async ctx => {
 
     ctx.renderPage = () =>
         originalRenderPage({
-            enhanceApp: App => props => sheets.collect(<App {...props} />),
+            enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
         });
 
     const initialProps = await Document.getInitialProps(ctx);

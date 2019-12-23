@@ -1,6 +1,6 @@
-import {NextPage} from "next";
-import {MainLayout} from "../../components/layouts/Main";
-import {useRouter} from "next/router";
+import {NextPage} from 'next';
+import {useRouter} from 'next/router';
+import {MainLayout} from '../../components/layouts/Main';
 
 interface CompanyProps {
 
@@ -14,7 +14,7 @@ const Company: NextPage<CompanyProps> = (props) => {
         <MainLayout title={`Company: ${id}`}>
             <div>{id}</div>
         </MainLayout>
-    )
+    );
 };
 
 export default Company;

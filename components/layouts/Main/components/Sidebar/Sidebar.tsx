@@ -1,58 +1,58 @@
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import React from "react";
-import {Drawer} from "@material-ui/core";
-import clsx from "clsx";
-import {SidebarNav} from "./components";
+import {Drawer} from '@material-ui/core';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
 import MapIcon from '@material-ui/icons/Map';
+import PeopleIcon from '@material-ui/icons/People';
+import clsx from 'clsx';
+import React from 'react';
+import {SidebarNav} from './components';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     drawer: {
         width: 240,
         [theme.breakpoints.up('lg')]: {
             marginTop: 64,
-            height: 'calc(100% - 64px)'
-        }
+            height: 'calc(100% - 64px)',
+        },
     },
     root: {
         backgroundColor: theme.palette.common.white,
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
     },
     divider: {
-        margin: theme.spacing(2, 0)
+        margin: theme.spacing(2, 0),
     },
     nav: {
-        marginBottom: theme.spacing(2)
-    }
+        marginBottom: theme.spacing(2),
+    },
 }));
 
 const pages = [
     {
         title: 'Home',
         href: '/',
-        icon: <DashboardIcon />
+        icon: <DashboardIcon />,
     },
     {
         title: 'Map',
         href: '/map',
-        icon: <MapIcon />
+        icon: <MapIcon />,
     },
     {
         title: 'Companies',
         href: '/companies',
-        icon: <PeopleIcon />
-    }
+        icon: <PeopleIcon />,
+    },
 ];
 
 export interface SidebarProps {
-    open: boolean,
-    variant?: 'permanent' | 'persistent' | 'temporary',
-    onClose: () => void,
-    className?: string
+    open: boolean;
+    variant?: 'permanent' | 'persistent' | 'temporary';
+    onClose: () => void;
+    className?: string;
 }
 
 const Sidebar: React.FC<SidebarProps> = (props) => {

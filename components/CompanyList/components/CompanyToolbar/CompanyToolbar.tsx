@@ -1,33 +1,33 @@
-import React from 'react';
-import clsx from 'clsx';
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Button} from '@material-ui/core';
-import SearchInput from "../../../SearchInput";
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import clsx from 'clsx';
+import React from 'react';
+import SearchInput from '../../../SearchInput';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {},
     row: {
         height: '42px',
         display: 'flex',
         alignItems: 'center',
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(1),
     },
     spacer: {
-        flexGrow: 1
+        flexGrow: 1,
     },
     importButton: {
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1),
     },
     exportButton: {
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1),
     },
     searchInput: {
-        marginRight: theme.spacing(1)
-    }
+        marginRight: theme.spacing(1),
+    },
 }));
 
 export interface CompanyToolbarProps {
-    className?: string
+    className?: string;
 }
 
 const CompanyToolbar: React.FC<CompanyToolbarProps> = (props) => {

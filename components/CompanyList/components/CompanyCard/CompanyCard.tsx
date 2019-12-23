@@ -1,13 +1,13 @@
-import React from 'react';
-import clsx from 'clsx';
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import {Card, CardActions, CardContent, Divider, Grid, Typography} from '@material-ui/core';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import {CompanyShortModel} from "../../../../interfaces";
-import Link from "../../../../common/Link";
+import clsx from 'clsx';
+import React from 'react';
+import Link from '../../../../common/Link';
+import {CompanyShortModel} from '../../../../interfaces';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {},
     imageContainer: {
         height: 64,
@@ -18,24 +18,24 @@ const useStyles = makeStyles(theme => ({
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     image: {
-        width: '100%'
+        width: '100%',
     },
     statsItem: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     statsIcon: {
-        color: theme.palette.grey["700"],
-        marginRight: theme.spacing(1)
-    }
+        color: theme.palette.grey['700'],
+        marginRight: theme.spacing(1),
+    },
 }));
 
 export interface CompanyCardProps {
-    className?: string,
-    company: CompanyShortModel
+    className?: string;
+    company: CompanyShortModel;
 }
 
 const CompanyCard: React.FC<CompanyCardProps> = (props) => {
@@ -52,45 +52,27 @@ const CompanyCard: React.FC<CompanyCardProps> = (props) => {
                 <div className={classes.imageContainer}>
                     <img alt="Company logotype" className={classes.image} src={company.logotype.square}/>
                 </div>
-                <Typography align="center" gutterBottom={true} variant="h4">
+                <Typography align={'center'} gutterBottom={true} variant={'h4'}>
                     <Link href={'/companies/[company]'} as={`/companies/${company.id}`}>
                         {company.name}
                     </Link>
                 </Typography>
-                <Typography
-                    align="center"
-                    variant="body1"
-                >
+                <Typography align={'center'} variant={'body1'}>
                     {company.name}
                 </Typography>
             </CardContent>
             <Divider/>
             <CardActions>
-                <Grid
-                    container
-                    justify="space-between"
-                >
-                    <Grid
-                        className={classes.statsItem}
-                        item
-                    >
+                <Grid container justify="space-between">
+                    <Grid className={classes.statsItem} item={true}>
                         <AccessTimeIcon className={classes.statsIcon}/>
-                        <Typography
-                            display="inline"
-                            variant="body2"
-                        >
+                        <Typography display="inline" variant="body2">
                             Updated 2hr ago
                         </Typography>
                     </Grid>
-                    <Grid
-                        className={classes.statsItem}
-                        item
-                    >
+                    <Grid className={classes.statsItem} item>
                         <GetAppIcon className={classes.statsIcon}/>
-                        <Typography
-                            display="inline"
-                            variant="body2"
-                        >
+                        <Typography display="inline" variant="body2">
                             {company.id} Downloads
                         </Typography>
                     </Grid>

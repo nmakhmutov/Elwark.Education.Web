@@ -1,8 +1,8 @@
-import * as React from 'react';
-import clsx from 'clsx';
-import {useRouter} from 'next/router';
-import NextLink, {LinkProps as NextLinkProps} from 'next/link';
 import MuiLink, {LinkProps as MuiLinkProps} from '@material-ui/core/Link';
+import clsx from 'clsx';
+import NextLink, {LinkProps as NextLinkProps} from 'next/link';
+import {useRouter} from 'next/router';
+import * as React from 'react';
 
 type NextComposedProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & NextLinkProps;
 
@@ -51,7 +51,7 @@ const Link: React.FC<LinkProps> = (props) => {
     }
 
     return <MuiLink component={NextComposed} className={className} ref={innerRef} {...other} />;
-}
+};
 
 export default React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
     <Link {...props} innerRef={ref}/>
