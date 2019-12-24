@@ -60,17 +60,11 @@ const SidebarNav: React.FC<SidebarNavProps> = (props) => {
             className={clsx(classes.root, className)}>
             {
                 pages.map((page) => (
-                    <ListItem
-                        className={classes.item}
-                        disableGutters
-                        key={page.title}
-                    >
-                        <Button
-                            activeClassName={classes.active}
-                            className={classes.button}
-                            component={Link}
-                            href={page.href}
-                        >
+                    <ListItem className={classes.item} disableGutters={true} key={page.title}>
+                        <Button activeClassName={classes.active}
+                                className={classes.button}
+                                component={Link}
+                                href={page.href}>
                             <div className={classes.icon}>{page.icon}</div>
                             {page.title}
                         </Button>

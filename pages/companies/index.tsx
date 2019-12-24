@@ -26,6 +26,7 @@ const Index: NextPage<CompaniesProps> = (props) => {
     const pagingHandler = async (page: number) => {
         setCurrentPage(page);
         setCompanies(await loadCompanies(page));
+
         window.scrollTo({
             top: 0,
             left: 0,

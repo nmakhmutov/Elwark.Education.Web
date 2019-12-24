@@ -53,7 +53,7 @@ const CompanyCard: React.FC<CompanyCardProps> = (props) => {
                     <img alt="Company logotype" className={classes.image} src={company.logotype.square}/>
                 </div>
                 <Typography align={'center'} gutterBottom={true} variant={'h4'}>
-                    <Link href={'/companies/[company]'} as={`/companies/${company.id}`}>
+                    <Link href={'/companies/[company]/[page]'} as={`/companies/${company.id}/overview`}>
                         {company.name}
                     </Link>
                 </Typography>
