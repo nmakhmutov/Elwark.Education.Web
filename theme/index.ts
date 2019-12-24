@@ -7,7 +7,7 @@ const theme = createMuiTheme({
     palette,
     typography,
     zIndex: {
-        appBar: 1200,
+        appBar: 1000,
         drawer: 1100,
     },
 });
