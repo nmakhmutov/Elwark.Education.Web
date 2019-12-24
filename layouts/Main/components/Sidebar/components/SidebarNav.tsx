@@ -5,7 +5,8 @@ import ListItem from '@material-ui/core/ListItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import React from 'react';
-import Link from '../../../../../../common/Link';
+import Link from '../../../../../common/Link';
+import {SidebarPage} from '../../../../../pages';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -42,12 +43,6 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 }));
-
-export interface SidebarPage {
-    title: string;
-    href: string;
-    icon: JSX.Element;
-}
 
 export interface SidebarNavProps {
     className?: string;

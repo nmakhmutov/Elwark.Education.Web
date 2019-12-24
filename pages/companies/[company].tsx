@@ -1,6 +1,6 @@
 import {NextPage} from 'next';
 import {useRouter} from 'next/router';
-import {MainLayout} from '../../components/layouts/Main';
+import {MainLayout} from '../../layouts/Main';
 
 // tslint:disable-next-line:no-empty-interface
 interface CompanyProps {

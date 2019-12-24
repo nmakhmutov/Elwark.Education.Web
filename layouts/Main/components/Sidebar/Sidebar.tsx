@@ -1,10 +1,8 @@
 import {Drawer} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import MapIcon from '@material-ui/icons/Map';
-import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import React from 'react';
+import pages from '../../../../pages';
 import {SidebarNav} from './components';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,24 +28,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const pages = [
-    {
-        title: 'Home',
-        href: '/',
-        icon: <DashboardIcon />,
-    },
-    {
-        title: 'Map',
-        href: '/map',
-        icon: <MapIcon />,
-    },
-    {
-        title: 'Companies',
-        href: '/companies',
-        icon: <PeopleIcon />,
-    },
-];
-
 export interface SidebarProps {
     open: boolean;
     variant?: 'permanent' | 'persistent' | 'temporary';
@@ -61,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
 
     return (
         <Drawer
-            anchor="left"
+            anchor={'left'}
             classes={{paper: classes.drawer}}
             onClose={onClose}
             open={open}
@@ -77,7 +57,6 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                     className={classes.nav}
                     pages={pages}
                 />
-                {/*<UpgradePlan />*/}
             </div>
         </Drawer>
     );

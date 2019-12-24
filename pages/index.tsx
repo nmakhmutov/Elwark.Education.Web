@@ -1,6 +1,6 @@
 import {NextPage} from 'next';
 import * as React from 'react';
-import {MainLayout} from '../components/layouts/Main';
+import {MainLayout} from '../layouts/Main';
 
 interface Props {
     userAgent: string;

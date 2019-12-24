@@ -38,35 +38,22 @@ const Topbar: React.FC<TopbarProps> = (props) => {
         <AppBar {...rest} className={clsx(classes.root, className)}>
             <Toolbar>
                 <Link href="/">
-                    <img
-                        alt="Logo"
-                        src="http://localhost:3000/static/images/icons/elwark/primary/48x48.png"
-                    />
+                    <img alt="Logo" src="http://localhost:3000/static/images/icons/elwark/primary/48x48.png"/>
                 </Link>
-                <div className={classes.flexGrow} />
+                <div className={classes.flexGrow}/>
                 <Hidden mdDown>
                     <IconButton color="inherit">
-                        <Badge
-                            badgeContent={notifications.length}
-                            color="primary"
-                            variant="dot"
-                        >
-                            <NotificationsIcon />
+                        <Badge badgeContent={notifications.length} color="primary" variant="dot">
+                            <NotificationsIcon/>
                         </Badge>
                     </IconButton>
-                    <IconButton
-                        className={classes.signOutButton}
-                        color="inherit"
-                    >
-                        <InputIcon />
+                    <IconButton className={classes.signOutButton} color="inherit">
+                        <InputIcon/>
                     </IconButton>
                 </Hidden>
                 <Hidden lgUp>
-                    <IconButton
-                        color="inherit"
-                        onClick={onSidebarOpen}
-                    >
-                        <MenuIcon />
+                    <IconButton color="inherit" onClick={onSidebarOpen}>
+                        <MenuIcon/>
                     </IconButton>
                 </Hidden>
             </Toolbar>

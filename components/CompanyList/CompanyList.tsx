@@ -2,7 +2,7 @@ import {Grid, IconButton, Typography} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import React, {useState} from 'react';
+import React from 'react';
 import {CompanyShortModel} from '../../interfaces';
 import {CompanyToolbar} from './components';
 import CompanyCard from './components/CompanyCard/CompanyCard';
@@ -24,12 +24,18 @@ const useStyles = makeStyles((theme) => ({
 
 export interface CompanyListProps {
     companies: CompanyShortModel[];
+
+    onPrevClick: () => void;
+    onPrevDisabled: boolean;
+
+    onNextClick: () => void;
+    onNextDisabled: boolean;
 }
 
 const CompanyList: React.FC<CompanyListProps> = (props) => {
     const classes = useStyles();
 
-    const {companies} = props;
+    const {companies, onNextClick, onNextDisabled, onPrevClick, onPrevDisabled} = props;
 
     return (
         <div className={classes.root}>
@@ -44,11 +50,10 @@ const CompanyList: React.FC<CompanyListProps> = (props) => {
                 </Grid>
             </div>
             <div className={classes.pagination}>
-                <Typography variant="caption">1-6 of 20</Typography>
-                <IconButton>
+                <IconButton onClick={onPrevClick} disabled={onPrevDisabled}>
                     <ChevronLeftIcon/>
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={onNextClick} disabled={onNextDisabled}>
                     <ChevronRightIcon/>
                 </IconButton>
             </div>
