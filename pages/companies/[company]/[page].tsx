@@ -3,10 +3,13 @@ import Divider from '@material-ui/core/Divider';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {NextPage} from 'next';
 import {useRouter} from 'next/router';
-import React from 'react';
+import React, {ChangeEvent} from 'react';
+import Bff from '../../../api/bff';
+import {CompanyModel} from '../../../interfaces';
 import {MainLayout} from '../../../layouts/Main';
 import Cafes from './components/Cafes';
 import Catalog from './components/Catalog';
+import Header from './components/Header';
 import Overview from './components/Overview';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,13 +29,16 @@ const useStyles = makeStyles((theme) => ({
 
 // tslint:disable-next-line:no-empty-interface
 interface CompanyProps {
-
+    id: number;
+    tab: string;
+    company: CompanyModel;
 }
 
 const Company: NextPage<CompanyProps> = (props) => {
     const classes = useStyles();
     const router = useRouter();
-    const {company: id, page: tab} = router.query;
+    const {id, tab, company} = props;
+    // const {company: id, page: tab} = router.query;
 
     const tabs = [
         {value: 'overview', label: 'Overview'},
@@ -40,21 +46,20 @@ const Company: NextPage<CompanyProps> = (props) => {
         {value: 'catalog', label: 'Catalog'},
     ];
 
+    const onTabClick = (event: ChangeEvent<{}>, value: string) => {
+        return router.push('/companies/[company]/[page]', `/companies/${id}/${value}`);
+    };
+
     return (
         <MainLayout title={`Cafes: ${id} ${tab}`}>
+            <Header name={company.name}
+                    avatar={company.logotype.square}
+                    cover={'http://localhost:3000/image/random/fhd'}
+                    bio={company.description}/>
             <div className={classes.inner}>
-                <Tabs
-                    onChange={(event, value) => router.push('/companies/[company]/[page]', `/companies/${id}/${value}`)}
-                    scrollButtons="auto"
-                    value={tab}
-                    variant="scrollable"
-                >
+                <Tabs onChange={onTabClick} scrollButtons={'auto'} value={tab} variant={'scrollable'}>
                     {tabs.map((x) => (
-                        <Tab
-                            key={x.value}
-                            label={x.label}
-                            value={x.value}
-                        />
+                        <Tab key={x.value} label={x.label} value={x.value}/>
                     ))}
                 </Tabs>
                 <Divider className={classes.divider}/>
@@ -68,8 +73,12 @@ const Company: NextPage<CompanyProps> = (props) => {
     );
 };
 
-Company.getInitialProps = () => {
-    return {} as CompanyProps;
+Company.getInitialProps = async ({query}) => {
+    const id = +query.company;
+    const tab = query.page;
+    const company = await Bff.Company.Get(id);
+
+    return {id, tab, company} as CompanyProps;
 };
 
 export default Company;

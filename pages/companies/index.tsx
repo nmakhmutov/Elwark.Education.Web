@@ -60,7 +60,7 @@ Index.getInitialProps = async ({query}) => {
 const loadCompanies = async (page: number) => {
     const offset = (page - 1) * limit;
 
-    return await Bff.GetCompanies(limit, offset);
+    return await Bff.Company.List(limit, offset);
 };
 
 export default Index;

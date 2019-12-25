@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 export interface MainLayoutProps {
     title: string;
 }
+
 const Layout: React.FC<MainLayoutProps> = (props) => {
     const classes = useStyles();
     const theme = useTheme();
@@ -49,12 +50,10 @@ const Layout: React.FC<MainLayoutProps> = (props) => {
             <Head>
                 <title>{props.title}</title>
             </Head>
-            <div
-                className={clsx({
-                    [classes.root]: true,
-                    [classes.shiftContent]: isDesktop,
-                })}
-            >
+            <div className={clsx({
+                [classes.root]: true,
+                [classes.shiftContent]: isDesktop,
+            })}>
                 <Topbar onSidebarOpen={handleSidebarOpen}/>
                 <Sidebar
                     onClose={handleSidebarClose}
