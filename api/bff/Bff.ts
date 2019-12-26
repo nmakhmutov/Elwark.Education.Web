@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import {CompanyModel, CompanyShortModel} from '../../interfaces';
+import {CompanyModel, CompanyShortModel, CompanyStats} from '../../interfaces';
 
 const host = process.env.BFF_HOST || 'http://localhost:5199';
 
@@ -18,6 +18,13 @@ export default class Bff {
             const company = await res.json();
 
             return company as CompanyModel;
+        }
+
+        public static async Stats(id: number) {
+            const res = await fetch(`${host}/companies/${id}/stats`);
+            const stats = await res.json();
+
+            return stats as CompanyStats;
         }
     };
 }

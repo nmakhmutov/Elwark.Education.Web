@@ -10,7 +10,7 @@ const Map: NextPage = () => {
 
 Map.getInitialProps = async () => {
     await new Promise((resolve) => {
-        setTimeout(resolve, 30000);
+        setTimeout(resolve, 2000);
     });
     return {};
 };

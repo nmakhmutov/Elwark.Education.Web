@@ -38,7 +38,6 @@ const Company: NextPage<CompanyProps> = (props) => {
     const classes = useStyles();
     const router = useRouter();
     const {id, tab, company} = props;
-    // const {company: id, page: tab} = router.query;
 
     const tabs = [
         {value: 'overview', label: 'Overview'},
@@ -51,7 +50,7 @@ const Company: NextPage<CompanyProps> = (props) => {
     };
 
     return (
-        <MainLayout title={`Cafes: ${id} ${tab}`}>
+        <MainLayout title={company.name}>
             <Header name={company.name}
                     avatar={company.logotype.square}
                     cover={'http://localhost:3000/image/random/fhd'}
@@ -64,7 +63,9 @@ const Company: NextPage<CompanyProps> = (props) => {
                 </Tabs>
                 <Divider className={classes.divider}/>
                 <div className={classes.content}>
-                    {tab === 'overview' && <Overview/>}
+                    {tab === 'overview' && <Overview companyId={company.id}
+                                                     contacts={company.contacts}
+                                                     sites={company.sites}/>}
                     {tab === 'cafes' && <Cafes/>}
                     {tab === 'catalog' && <Catalog/>}
                 </div>

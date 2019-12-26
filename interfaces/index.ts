@@ -6,6 +6,7 @@ export interface CompanyModel {
     sites: Record<string, string>;
     contacts: Record<string, string>;
 }
+
 export interface CompanyShortModel {
     id: number;
     name: string;
@@ -15,4 +16,9 @@ export interface CompanyShortModel {
 export interface CompanyLogotype {
     square: string;
     rectangle: string;
+}
+
+export interface CompanyStats {
+    rating: number;
+    cafeCount: number;
 }
