@@ -7,7 +7,7 @@ import React from 'react';
 import Storage from '../../../../api/storage';
 import {Link} from '../../../../components';
 import Navigation from '../../../../components/Navigation';
-import pages from './navigationConfig';
+import Pages from '../../../../navigationConfig';
 
 const useStyles = makeStyles((theme) => ({
     drawer: {
@@ -94,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                     </div>
                     <Divider className={classes.divider}/>
                     <nav className={classes.navigation}>
-                        {pages.map((list) => (
+                        {Pages.map((list) => (
                             <Navigation
                                 component="div"
                                 key={list.title}

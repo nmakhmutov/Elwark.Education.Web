@@ -3,6 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import {NextRouter, useRouter} from 'next/router';
 import React from 'react';
+import {Page} from '../../navigationConfig';
 
 import {NavigationListItem} from './components';
 
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface NavigationListProps {
     depth?: number;
-    pages: object[];
+    pages: Page[];
     router: NextRouter;
 }
 
@@ -72,7 +73,7 @@ const reduceChildRoutes = (props: any) => {
 export interface NavigationProps {
     className?: string;
     component?: any;
-    pages: object[];
+    pages: Page[];
     title?: string;
 }
 

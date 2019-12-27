@@ -6,7 +6,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import React from 'react';
 import Link from '../../../../../components/Link/Link';
-import {SidebarPage} from '../../../../../pages';
+import {Page, SideBarPage} from '../../../../../navigationConfig';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 export interface SidebarNavProps {
     className?: string;
-    pages: SidebarPage[];
+    pages: Page[];
 }
 
 const SidebarNav: React.FC<SidebarNavProps> = (props) => {
