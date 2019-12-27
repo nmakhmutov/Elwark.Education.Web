@@ -24,7 +24,7 @@ const NextComposed = React.forwardRef<HTMLAnchorElement, NextComposedProps>((pro
     );
 });
 
-interface LinkPropsBase {
+export interface LinkPropsBase {
     activeClassName?: string;
     innerRef?: React.Ref<HTMLAnchorElement>;
     naked?: boolean;
