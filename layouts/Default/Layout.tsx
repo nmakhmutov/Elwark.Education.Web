@@ -1,13 +1,12 @@
 import {useMediaQuery} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import useTheme from '@material-ui/core/styles/useTheme';
 import clsx from 'clsx';
 import Head from 'next/head';
 import React, {useState} from 'react';
-import Sidebar from './components/Sidebar';
-import Topbar from './components/Topbar';
+import theme from '../../theme';
+import {Sidebar, TopBar} from './components';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         paddingTop: 56,
         height: '100%',
@@ -29,21 +28,20 @@ export interface MainLayoutProps {
 
 const Layout: React.FC<MainLayoutProps> = (props) => {
     const classes = useStyles();
-    const theme = useTheme();
     const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
         defaultMatches: true,
     });
-    const [openSidebar, setOpenSidebar] = useState(false);
+    const [openNavBarMobile, setOpenNavBarMobile] = useState(!isDesktop);
 
-    const handleSidebarOpen = () => {
-        setOpenSidebar(true);
+    const handleNavBarMobileOpen = () => {
+        setOpenNavBarMobile(true);
     };
 
-    const handleSidebarClose = () => {
-        setOpenSidebar(false);
+    const handleNavBarMobileClose = () => {
+        setOpenNavBarMobile(false);
     };
 
-    const shouldOpenSidebar = isDesktop ? true : openSidebar;
+    const shouldOpenSidebar = isDesktop ? true : openNavBarMobile;
 
     return (
         <>
@@ -54,9 +52,9 @@ const Layout: React.FC<MainLayoutProps> = (props) => {
                 [classes.root]: true,
                 [classes.shiftContent]: isDesktop,
             })}>
-                <Topbar onSidebarOpen={handleSidebarOpen}/>
+                <TopBar onOpenNavBarMobile={handleNavBarMobileOpen}/>
                 <Sidebar
-                    onClose={handleSidebarClose}
+                    onClose={handleNavBarMobileClose}
                     open={shouldOpenSidebar}
                     variant={isDesktop ? 'persistent' : 'temporary'}
                 />

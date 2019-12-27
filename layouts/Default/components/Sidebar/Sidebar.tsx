@@ -1,9 +1,13 @@
-import {Drawer} from '@material-ui/core';
+import {Avatar, Drawer} from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
-import pages from '../../../../pages';
-import {SidebarNav} from './components';
+import Storage from '../../../../api/storage';
+import {Link} from '../../../../components';
+import Navigation from '../../../../components/Navigation';
+import pages from './navigationConfig';
 
 const useStyles = makeStyles((theme) => ({
     drawer: {
@@ -25,6 +29,26 @@ const useStyles = makeStyles((theme) => ({
     },
     nav: {
         marginBottom: theme.spacing(2),
+    },
+
+    content: {
+        padding: theme.spacing(2),
+    },
+    profile: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minHeight: 'fit-content',
+    },
+    avatar: {
+        width: 60,
+        height: 60,
+    },
+    name: {
+        marginTop: theme.spacing(1),
+    },
+    navigation: {
+        marginTop: theme.spacing(2),
     },
 }));
 
@@ -51,12 +75,35 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                 {...rest}
                 className={clsx(classes.root, className)}
             >
-                {/*<Profile />*/}
-                {/*<Divider className={classes.divider}/>*/}
-                <SidebarNav
-                    className={classes.nav}
-                    pages={pages}
-                />
+                <div className={classes.content}>
+                    <div className={classes.profile}>
+                        <Avatar
+                            alt="Person"
+                            className={classes.avatar}
+                            component={Link}
+                            src={Storage.Static.Icons.User.Default}
+                            href="/profile/1/timeline"
+                        />
+                        <Typography
+                            className={classes.name}
+                            variant="h4"
+                        >
+                            Elwark Ink.
+                        </Typography>
+                        <Typography variant="body2">Cafe navigator</Typography>
+                    </div>
+                    <Divider className={classes.divider}/>
+                    <nav className={classes.navigation}>
+                        {pages.map((list) => (
+                            <Navigation
+                                component="div"
+                                key={list.title}
+                                pages={list.pages}
+                                title={list.title}
+                            />
+                        ))}
+                    </nav>
+                </div>
             </div>
         </Drawer>
     );
