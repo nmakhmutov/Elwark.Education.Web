@@ -10,6 +10,7 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React, {MouseEventHandler, useState} from 'react';
+import Storage from '../../../../api/storage/Storage';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,7 +39,7 @@ const Topbar: React.FC<TopbarProps> = (props) => {
         <AppBar {...rest} className={clsx(classes.root, className)}>
             <Toolbar>
                 <Link href="/">
-                    <img alt="Logo" src="http://localhost:3000/static/images/icons/elwark/primary/48x48.png"/>
+                    <img alt="Logo" src={Storage.Static.Icons.Elwark.White.Size48x48}/>
                 </Link>
                 <div className={classes.flexGrow}/>
                 <Hidden mdDown>

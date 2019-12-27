@@ -46,11 +46,10 @@ const Link: React.FC<LinkProps> = (props) => {
         [activeClassName]: router.pathname === props.href && activeClassName,
     });
 
-    if (naked) {
-        return <NextComposed className={className} ref={innerRef} {...other} />;
-    }
+    return naked
+        ? <NextComposed className={className} ref={innerRef} {...other} />
+        : <MuiLink component={NextComposed} className={className} ref={innerRef} {...other} />;
 
-    return <MuiLink component={NextComposed} className={className} ref={innerRef} {...other} />;
 };
 
 export default React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (

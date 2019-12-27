@@ -3,10 +3,10 @@ import Divider from '@material-ui/core/Divider';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {NextPage} from 'next';
 import {useRouter} from 'next/router';
-import React, {ChangeEvent} from 'react';
-import Bff from '../../../api/bff';
-import {CompanyModel} from '../../../interfaces';
-import {MainLayout} from '../../../layouts/Main';
+import React, {ChangeEvent, useEffect, useState} from 'react';
+import {Bff, Storage} from '../../../api';
+import {CompanyModel, CompanyStats, ImageResolution} from '../../../interfaces';
+import {DefaultLayout} from '../../../layouts';
 import Cafes from './components/Cafes';
 import Catalog from './components/Catalog';
 import Header from './components/Header';
@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// tslint:disable-next-line:no-empty-interface
 interface CompanyProps {
     id: number;
     tab: string;
@@ -38,6 +37,7 @@ const Company: NextPage<CompanyProps> = (props) => {
     const classes = useStyles();
     const router = useRouter();
     const {id, tab, company} = props;
+    const [overview, setOverview] = useState<CompanyStats[]>();
 
     const tabs = [
         {value: 'overview', label: 'Overview'},
@@ -45,15 +45,27 @@ const Company: NextPage<CompanyProps> = (props) => {
         {value: 'catalog', label: 'Catalog'},
     ];
 
+    useEffect(() => {
+        switch (tab) {
+            case 'overview':
+                Bff.Company.Stats(id).then((x) => setOverview(x));
+                break;
+            case 'cafes':
+                break;
+            case 'catalog':
+                break;
+        }
+    }, [tab]);
+
     const onTabClick = (event: ChangeEvent<{}>, value: string) => {
         return router.push('/companies/[company]/[page]', `/companies/${id}/${value}`);
     };
 
     return (
-        <MainLayout title={company.name}>
+        <DefaultLayout title={company.name}>
             <Header name={company.name}
                     avatar={company.logotype.square}
-                    cover={'http://localhost:3000/image/random/fhd'}
+                    cover={Storage.Images.RandomByImageResolution(ImageResolution.FHD)}
                     bio={company.description}/>
             <div className={classes.inner}>
                 <Tabs onChange={onTabClick} scrollButtons={'auto'} value={tab} variant={'scrollable'}>
@@ -63,14 +75,16 @@ const Company: NextPage<CompanyProps> = (props) => {
                 </Tabs>
                 <Divider className={classes.divider}/>
                 <div className={classes.content}>
-                    {tab === 'overview' && <Overview companyId={company.id}
-                                                     contacts={company.contacts}
-                                                     sites={company.sites}/>}
+                    {tab === 'overview' && overview && <Overview
+                        companyId={company.id}
+                        stats={overview}
+                        contacts={company.contacts}
+                        sites={company.sites}/>}
                     {tab === 'cafes' && <Cafes/>}
                     {tab === 'catalog' && <Catalog/>}
                 </div>
             </div>
-        </MainLayout>
+        </DefaultLayout>
     );
 };
 

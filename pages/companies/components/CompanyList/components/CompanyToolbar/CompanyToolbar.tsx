@@ -2,7 +2,7 @@ import {Button} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import React from 'react';
-import SearchInput from '../../../SearchInput';
+import SearchInput from '../../../../../../components/SearchInput';
 
 const useStyles = makeStyles((theme) => ({
     root: {},

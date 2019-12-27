@@ -2,9 +2,9 @@ import {NextPage} from 'next';
 import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
 import Bff from '../../api/bff';
-import CompanyList from '../../components/CompanyList';
 import {CompanyShortModel} from '../../interfaces';
-import {MainLayout} from '../../layouts/Main';
+import {DefaultLayout} from '../../layouts';
+import CompanyList from './components/CompanyList';
 
 interface CompaniesProps {
     page: number;
@@ -35,7 +35,7 @@ const Index: NextPage<CompaniesProps> = (props) => {
     };
 
     return (
-        <MainLayout title={'Companies'}>
+        <DefaultLayout title={'Companies'}>
             <CompanyList
                 companies={companies}
                 onNextClick={async () => await pagingHandler(currentPage + 1)}
@@ -43,7 +43,7 @@ const Index: NextPage<CompaniesProps> = (props) => {
                 onPrevClick={async () => await pagingHandler(currentPage - 1)}
                 onPrevDisabled={currentPage <= 1}
             />
-        </MainLayout>
+        </DefaultLayout>
     );
 };
 

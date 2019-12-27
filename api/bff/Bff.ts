@@ -24,7 +24,7 @@ export default class Bff {
             const res = await fetch(`${host}/companies/${id}/stats`);
             const stats = await res.json();
 
-            return stats as CompanyStats;
+            return stats as CompanyStats[];
         }
     };
 }

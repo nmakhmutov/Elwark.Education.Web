@@ -5,13 +5,13 @@ import {Contacts, Sites} from './components';
 
 export interface OverviewProps {
     companyId: number;
+    stats: CompanyStats[];
     sites: Record<string, string>;
     contacts: Record<string, string>;
 }
 
 const Overview: React.FC<OverviewProps> = (props) => {
-    const {companyId, contacts, sites, ...rest} = props;
-    const [stats, setStats] = useState<CompanyStats>();
+    const {companyId, stats, contacts, sites, ...rest} = props;
 
     return (
         <Grid
@@ -26,7 +26,7 @@ const Overview: React.FC<OverviewProps> = (props) => {
                 <Sites list={Object.entries(sites)}/>
             </Grid>
             <Grid item={true} lg={4} md={6} xl={3} xs={12}>
-                {stats?.cafeCount}
+                {stats[0].cafeCount}
             </Grid>
             <Grid item={true} lg={4} md={6} xl={3} xs={12}>
                 !

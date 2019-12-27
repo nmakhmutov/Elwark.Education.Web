@@ -1,16 +1,16 @@
 import {NextPage} from 'next';
 import React from 'react';
-import {MainLayout} from '../layouts/Main';
+import {DefaultLayout} from '../../layouts';
 
 const Map: NextPage = () => {
     return (
-        <MainLayout title={'Cafe map'}/>
+        <DefaultLayout title={'Cafe map'}/>
     );
 };
 
 Map.getInitialProps = async () => {
     await new Promise((resolve) => {
-        setTimeout(resolve, 2000);
+        setTimeout(resolve, 10);
     });
     return {};
 };

@@ -1,14 +1,15 @@
 import {createMuiTheme} from '@material-ui/core/styles';
+import overrides from './overrides';
 import palette from './palette';
 import typography from './typography';
 
-// @ts-ignore
 const theme = createMuiTheme({
     palette,
     typography,
+    overrides,
     zIndex: {
-        appBar: 1000,
-        drawer: 1100,
+        appBar: 100,
+        drawer: 110,
     },
 });
 

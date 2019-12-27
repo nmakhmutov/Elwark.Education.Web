@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import React from 'react';
-import {CompanyShortModel} from '../../interfaces';
+import {CompanyShortModel} from '../../../../interfaces';
 import {CompanyToolbar} from './components';
 import CompanyCard from './components/CompanyCard/CompanyCard';
 

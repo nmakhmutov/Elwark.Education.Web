@@ -1,16 +1,16 @@
 import {NextPage} from 'next';
 import * as React from 'react';
-import {MainLayout} from '../layouts/Main';
+import {DefaultLayout} from '../../layouts';
+import Header from './components/Header';
 
 interface Props {
     userAgent: string;
 }
 
 const Home: NextPage<Props> = ({userAgent}) => (
-    <MainLayout title={'Main page'}>
-        <h1>Hello world! - user agent:</h1>
-        <h5>{userAgent}</h5>
-    </MainLayout>
+    <DefaultLayout title={'Elwark cafe'}>
+        <Header/>
+    </DefaultLayout>
 );
 
 Home.getInitialProps = async ({req, query}) => {
