@@ -1,4 +1,4 @@
-import {ImageOrientation, ImageResolution} from '../../interfaces';
+import {ImageOrientation, ImageResolution} from './types';
 
 const host = process.env.STORAGE_HOST || 'http://localhost:3000';
 
@@ -50,6 +50,10 @@ export default class Storage {
                     public static Size310x310 = `${host}/static/icons/elwark/white/310x310.png`;
                     public static Favicon = `${host}/static/icons/elwark/white/favicon.ico`;
                 };
+            };
+
+            public static User = class {
+                public static Default = `${host}/static/icons/user/default.png`;
             };
         };
     };
