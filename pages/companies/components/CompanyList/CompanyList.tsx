@@ -4,8 +4,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import React from 'react';
 import {CompanyShortModel} from '../../../../interfaces';
-import {CompanyToolbar} from './components';
-import CompanyCard from './components/CompanyCard/CompanyCard';
+import {CompanyCard, CompanyToolbar} from './components';
 
 const useStyles = makeStyles((theme) => ({
     root: {

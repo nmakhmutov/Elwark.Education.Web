@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import React from 'react';
 import Storage from '../../../../api/storage';
 import {Link} from '../../../../components';
-import Navigation from '../../../../components/Navigation';
+import {Navigation} from '../../../../components';
 import Pages from '../../../../navigationConfig';
 
 const useStyles = makeStyles((theme) => ({

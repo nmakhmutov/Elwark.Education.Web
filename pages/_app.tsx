@@ -1,6 +1,5 @@
 import {CssBaseline, ThemeProvider} from '@material-ui/core';
 import App from 'next/app';
-import Head from 'next/head';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import * as React from 'react';
@@ -24,9 +23,6 @@ export default class MyApp extends App {
 
         return (
             <>
-                <Head>
-                    <link rel="stylesheet" type="text/css" href="/nprogress.css"/>
-                </Head>
                 <ThemeProvider theme={theme}>
                     {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                     <CssBaseline/>

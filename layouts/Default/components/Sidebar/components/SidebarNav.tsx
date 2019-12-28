@@ -5,8 +5,8 @@ import ListItem from '@material-ui/core/ListItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import React from 'react';
-import Link from '../../../../../components/Link/Link';
-import {Page, SideBarPage} from '../../../../../navigationConfig';
+import {Link} from '../../../../../components';
+import {Page} from '../../../../../navigationConfig';
 
 const useStyles = makeStyles((theme) => ({
     root: {},

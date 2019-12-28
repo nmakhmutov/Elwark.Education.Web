@@ -5,8 +5,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import {useRouter} from 'next/router';
 import React from 'react';
-import Storage from '../../../../api/storage';
-import {ImageResolution} from '../../../../interfaces';
+import Storage, {ImageResolution} from '../../../../api/storage';
 
 const useStyles = makeStyles((theme) => ({
     root: {

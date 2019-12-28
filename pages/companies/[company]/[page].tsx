@@ -3,14 +3,11 @@ import Divider from '@material-ui/core/Divider';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {NextPage} from 'next';
 import {useRouter} from 'next/router';
-import React, {ChangeEvent, useEffect, useState} from 'react';
-import {Bff, Storage} from '../../../api';
-import {CompanyModel, CompanyStats, ImageResolution} from '../../../interfaces';
+import React, {ChangeEvent} from 'react';
+import {Bff, ImageResolution, Storage} from '../../../api';
+import {CompanyModel, CompanyStats} from '../../../api/bff/types';
 import {DefaultLayout} from '../../../layouts';
-import Cafes from './components/Cafes';
-import Catalog from './components/Catalog';
-import Header from './components/Header';
-import Overview from './components/Overview';
+import {Cafes, Catalog, Header, Overview} from './components';
 
 const useStyles = makeStyles((theme) => ({
     inner: {
@@ -31,13 +28,13 @@ interface CompanyProps {
     id: number;
     tab: string;
     company: CompanyModel;
+    stats?: CompanyStats;
 }
 
 const Company: NextPage<CompanyProps> = (props) => {
     const classes = useStyles();
     const router = useRouter();
-    const {id, tab, company} = props;
-    const [overview, setOverview] = useState<CompanyStats[]>();
+    const {id, tab, company: {name, sites, contacts, description, logotype}, stats} = props;
 
     const tabs = [
         {value: 'overview', label: 'Overview'},
@@ -45,28 +42,16 @@ const Company: NextPage<CompanyProps> = (props) => {
         {value: 'catalog', label: 'Catalog'},
     ];
 
-    useEffect(() => {
-        switch (tab) {
-            case 'overview':
-                Bff.Company.Stats(id).then((x) => setOverview(x));
-                break;
-            case 'cafes':
-                break;
-            case 'catalog':
-                break;
-        }
-    }, [tab]);
-
     const onTabClick = (event: ChangeEvent<{}>, value: string) => {
         return router.push('/companies/[company]/[page]', `/companies/${id}/${value}`);
     };
 
     return (
-        <DefaultLayout title={company.name}>
-            <Header name={company.name}
-                    avatar={company.logotype.square}
+        <DefaultLayout title={name}>
+            <Header name={name}
+                    avatar={logotype.square}
                     cover={Storage.Images.RandomByImageResolution(ImageResolution.FHD)}
-                    bio={company.description}/>
+                    bio={description}/>
             <div className={classes.inner}>
                 <Tabs onChange={onTabClick} scrollButtons={'auto'} value={tab} variant={'scrollable'}>
                     {tabs.map((x) => (
@@ -75,11 +60,7 @@ const Company: NextPage<CompanyProps> = (props) => {
                 </Tabs>
                 <Divider className={classes.divider}/>
                 <div className={classes.content}>
-                    {tab === 'overview' && overview && <Overview
-                        companyId={company.id}
-                        stats={overview}
-                        contacts={company.contacts}
-                        sites={company.sites}/>}
+                    {tab === 'overview' && <Overview stats={stats!} contacts={contacts} sites={sites}/>}
                     {tab === 'cafes' && <Cafes/>}
                     {tab === 'catalog' && <Catalog/>}
                 </div>
@@ -92,8 +73,14 @@ Company.getInitialProps = async ({query}) => {
     const id = +query.company;
     const tab = query.page;
     const company = await Bff.Company.Get(id);
+    let stats;
 
-    return {id, tab, company} as CompanyProps;
+    switch (tab) {
+        case 'overview':
+            stats = await Bff.Company.Statistics(id);
+    }
+
+    return {id, tab, company, stats} as CompanyProps;
 };
 
 export default Company;

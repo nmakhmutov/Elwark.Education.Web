@@ -1,35 +1,42 @@
 import {Grid} from '@material-ui/core';
-import React, {useState} from 'react';
-import {CompanyStats} from '../../../../../interfaces';
-import {Contacts, Sites} from './components';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import clsx from 'clsx';
+import React from 'react';
+import {CompanyStats} from '../../../../../api/bff/types';
+import {Cities, Contacts, Rating, Sites} from './components';
+
+const useStyles = makeStyles((theme) => ({
+    root: {},
+    marginTop: {
+        marginTop: theme.spacing(3),
+    },
+}));
 
 export interface OverviewProps {
-    companyId: number;
-    stats: CompanyStats[];
+    className?: string;
+    stats: CompanyStats;
     sites: Record<string, string>;
     contacts: Record<string, string>;
 }
 
 const Overview: React.FC<OverviewProps> = (props) => {
-    const {companyId, stats, contacts, sites, ...rest} = props;
+    const {stats, contacts, sites, className, ...rest} = props;
+    const classes = useStyles();
 
     return (
         <Grid
             {...rest}
-            container
+            className={clsx(classes.root, className)}
+            container={true}
             spacing={3}
         >
-            <Grid item={true} lg={4} md={6} xl={3} xs={12}>
-                <Contacts list={Object.entries(contacts)}/>
+            <Grid item={true} lg={8} xl={9} xs={12}>
+                <Rating rating={stats.total.rating}/>
+                <Cities className={classes.marginTop} cafes={stats.cafes}/>
             </Grid>
-            <Grid item={true} lg={4} md={6} xl={3} xs={12}>
+            <Grid item={true} lg={4} xl={3} xs={12}>
                 <Sites list={Object.entries(sites)}/>
-            </Grid>
-            <Grid item={true} lg={4} md={6} xl={3} xs={12}>
-                {stats[0].cafeCount}
-            </Grid>
-            <Grid item={true} lg={4} md={6} xl={3} xs={12}>
-                !
+                <Contacts list={Object.entries(contacts)} className={classes.marginTop}/>
             </Grid>
         </Grid>
     );

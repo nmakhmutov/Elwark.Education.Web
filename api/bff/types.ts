@@ -21,8 +21,7 @@ export interface CompanyLogotype {
 export interface CompanyStats {
     id: number;
     total: Total;
-    cafe: Cafe[];
-    country: Country[];
+    cafes: Cafe[];
 }
 
 export interface Rating {
@@ -40,15 +39,15 @@ export interface Country {
     name: string;
 }
 
-export interface Position {
-    latitude: number;
-    longitude: number;
-}
-
 export interface City {
     id: string;
     name: string;
     position: Position;
+}
+
+export interface Position {
+    latitude: number;
+    longitude: number;
 }
 
 export interface Cafe {

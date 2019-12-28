@@ -1,8 +1,8 @@
 import {NextPage} from 'next';
 import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
-import Bff from '../../api/bff';
-import {CompanyShortModel} from '../../interfaces';
+import {Bff} from '../../api';
+import {CompanyShortModel} from '../../api/bff/types';
 import {DefaultLayout} from '../../layouts';
 import CompanyList from './components/CompanyList';
 
