@@ -1,5 +1,5 @@
 module.exports = {
     devIndicators: {
-        autoPrerender: false,
+        autoPrerender: true,
     },
 }

@@ -9,7 +9,7 @@ import {Sidebar, TopBar} from './components';
 const useStyles = makeStyles(() => ({
     root: {
         paddingTop: 56,
-        height: '100%',
+        height: '100vh',
         [theme.breakpoints.up('sm')]: {
             paddingTop: 64,
         },
