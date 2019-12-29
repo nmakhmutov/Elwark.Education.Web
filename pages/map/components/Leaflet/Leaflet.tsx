@@ -9,10 +9,12 @@ import {
     useMediaQuery,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import React, {useState} from 'react';
-import {Map, TileLayer, withLeaflet, ZoomControl} from 'react-leaflet';
+import React, {useEffect, useState} from 'react';
+import {Map, TileLayer, ZoomControl} from 'react-leaflet';
+import {Bff} from '../../../../api';
+import {City} from '../../../../api/bff/types';
 import defaultTheme from '../../../../theme';
-import {LeafletControl} from './LeafletControl';
+import LeafletControl from './LeafletControl';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,17 +50,35 @@ const Leaflet = () => {
         return {lat: Number(lat), lng: Number(lng), zoom: Number(zoom)};
     };
 
+    const classes = useStyles();
     const isDesktop = useMediaQuery(defaultTheme.breakpoints.up('lg'), {
         defaultMatches: true,
     });
-    const classes = useStyles();
-    const FilterPanel = withLeaflet(LeafletControl);
-    const [center, setCenter] = useState(parseStringCenter(localStorage.getItem('map-city')));
 
+    const [center, setCenter] = useState(parseStringCenter(localStorage.getItem('map-city')));
     const updateCenter = (event: React.ChangeEvent<{ value: unknown }>) => {
         const data = parseStringCenter(event.target.value as string);
         setCenter(data);
     };
+
+    const [cities, setCities] = useState<City[]>([]);
+    useEffect(() => {
+        let mounted = true;
+
+        const fetchCities = () => {
+            Bff.Cities.List().then((response) => {
+                if (mounted) {
+                    setCities(response);
+                }
+            });
+        };
+
+        fetchCities();
+
+        return () => {
+            mounted = false;
+        };
+    }, []);
 
     return (
         <div className={classes.root}>
@@ -66,7 +86,7 @@ const Leaflet = () => {
                 <TileLayer attribution={attribution}
                            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"/>
                 <ZoomControl position={'bottomright'}/>
-                <FilterPanel position={'topleft'}>
+                <LeafletControl position={'topleft'}>
                     <ExpansionPanel square={true} defaultExpanded={isDesktop} className={classes.filterPanel}>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                             <Typography className={classes.heading}>Filter</Typography>
@@ -79,14 +99,15 @@ const Leaflet = () => {
                                     value={`${center.lat},${center.lng},${center.zoom}`}
                                     onChange={updateCenter}>
                                     <option value={defaultCoordinates}/>
-                                    <option value={'55.7517311,37.617877,13'}>Moscow</option>
-                                    <option value={'51.507423,-0.1278582,13'}>London</option>
-                                    <option value={'48.8594695,2.3492151,13'}>Paris</option>
+                                    {cities.map((value) =>
+                                        <option value={`${value.position.latitude},${value.position.longitude},13`}>
+                                            {value.name}
+                                        </option>)}
                                 </Select>
                             </div>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
-                </FilterPanel>
+                </LeafletControl>
                 {/*  <Marker*/}
                 {/*      draggable={true}*/}
                 {/*      onDragend={this.updatePosition}*/}

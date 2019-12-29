@@ -1,12 +1,12 @@
 import {Control, DomEvent, DomUtil} from 'leaflet';
 import ReactDOM from 'react-dom';
-import {Map, MapControl, MapControlProps} from 'react-leaflet';
+import {Map, MapControl, MapControlProps, withLeaflet} from 'react-leaflet';
 
 interface LeafletControlProps extends MapControlProps {
     className?: string;
 }
 
-export class LeafletControl extends MapControl<LeafletControlProps> {
+class LeafletControl extends MapControl<LeafletControlProps> {
     constructor(props: LeafletControlProps) {
         super(props);
     }
@@ -41,3 +41,5 @@ export class LeafletControl extends MapControl<LeafletControlProps> {
         );
     }
 }
+
+export default withLeaflet(LeafletControl);
