@@ -24,6 +24,7 @@ const useStyles = makeStyles(() => ({
 
 export interface MainLayoutProps {
     title: string;
+    links?: string[];
 }
 
 const Layout: React.FC<MainLayoutProps> = (props) => {
@@ -42,11 +43,14 @@ const Layout: React.FC<MainLayoutProps> = (props) => {
     };
 
     const shouldOpenSidebar = isDesktop ? true : openNavBarMobile;
+    const {children, title, links} = props;
 
     return (
         <>
             <Head>
-                <title>{props.title}</title>
+                <title>{title}</title>
+                {links && links.map(((value, index) =>
+                    <link key={index} href={value} rel="stylesheet"/>))}
             </Head>
             <div className={clsx({
                 [classes.root]: true,
@@ -59,7 +63,7 @@ const Layout: React.FC<MainLayoutProps> = (props) => {
                     variant={isDesktop ? 'persistent' : 'temporary'}
                 />
                 <main className={classes.content}>
-                    {props.children}
+                    {children}
                     {/*<Footer/>*/}
                 </main>
             </div>
