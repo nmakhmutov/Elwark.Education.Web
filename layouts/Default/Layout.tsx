@@ -1,24 +1,34 @@
-import {useMediaQuery} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import clsx from 'clsx';
 import Head from 'next/head';
 import React, {useState} from 'react';
-import theme from '../../theme';
 import {Sidebar, TopBar} from './components';
 
 const useStyles = makeStyles(() => ({
     root: {
-        paddingTop: 56,
-        height: '100vh',
-        [theme.breakpoints.up('sm')]: {
-            paddingTop: 64,
-        },
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
     },
-    shiftContent: {
-        paddingLeft: 240,
+    topBar: {
+        zIndex: 2,
+        position: 'relative',
+    },
+    container: {
+        display: 'flex',
+        flex: '1 1 auto',
+        overflow: 'hidden',
+    },
+    navBar: {
+        zIndex: 3,
+        width: 256,
+        minWidth: 256,
+        flex: '0 0 auto',
     },
     content: {
-        height: '100%',
+        overflowY: 'auto',
+        flex: '1 1 auto',
     },
 }));
 
@@ -28,10 +38,7 @@ export interface MainLayoutProps {
 
 const Layout: React.FC<MainLayoutProps> = (props) => {
     const classes = useStyles();
-    const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
-        defaultMatches: true,
-    });
-    const [openNavBarMobile, setOpenNavBarMobile] = useState(!isDesktop);
+    const [openNavBarMobile, setOpenNavBarMobile] = useState(false);
 
     const handleNavBarMobileOpen = () => {
         setOpenNavBarMobile(true);
@@ -41,27 +48,26 @@ const Layout: React.FC<MainLayoutProps> = (props) => {
         setOpenNavBarMobile(false);
     };
 
-    const shouldOpenSidebar = isDesktop ? true : openNavBarMobile;
-
     return (
         <>
             <Head>
                 <title>{props.title}</title>
             </Head>
-            <div className={clsx({
-                [classes.root]: true,
-                [classes.shiftContent]: isDesktop,
-            })}>
-                <TopBar onOpenNavBarMobile={handleNavBarMobileOpen}/>
-                <Sidebar
-                    onClose={handleNavBarMobileClose}
-                    open={shouldOpenSidebar}
-                    variant={isDesktop ? 'persistent' : 'temporary'}
+            <div className={classes.root}>
+                <TopBar
+                    className={classes.topBar}
+                    onOpenNavBarMobile={handleNavBarMobileOpen}
                 />
-                <main className={classes.content}>
-                    {props.children}
-                    {/*<Footer/>*/}
-                </main>
+                <div className={classes.container}>
+                    <Sidebar
+                        className={classes.navBar}
+                        onMobileClose={handleNavBarMobileClose}
+                        openMobile={openNavBarMobile}
+                    />
+                    <main className={classes.content}>
+                        {props.children}
+                    </main>
+                </div>
             </div>
         </>
     );
