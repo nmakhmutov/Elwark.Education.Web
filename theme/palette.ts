@@ -1,22 +1,5 @@
-import {colors, SimplePaletteColorOptions} from '@material-ui/core';
+import {colors} from '@material-ui/core';
 import {PaletteOptions} from '@material-ui/core/styles/createPalette';
-
-declare module '@material-ui/core/styles/createPalette' {
-
-    interface Palette {
-        success: SimplePaletteColorOptions;
-        info: SimplePaletteColorOptions;
-        warning: SimplePaletteColorOptions;
-        icon: string;
-    }
-
-    interface PaletteOptions {
-        success?: SimplePaletteColorOptions;
-        info?: SimplePaletteColorOptions;
-        warning?: SimplePaletteColorOptions;
-        icon?: string;
-    }
-}
 
 const white = '#FFFFFF';
 const black = '#000000';

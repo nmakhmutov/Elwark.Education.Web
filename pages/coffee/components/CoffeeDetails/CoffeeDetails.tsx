@@ -1,5 +1,7 @@
 import {makeStyles} from '@material-ui/core';
 import clsx from 'clsx';
+import React from 'react';
+import CoffeeToolbar from './components/CoffeeToolbar/CoffeeToolbar';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,7 +25,7 @@ const CoffeeDetails: React.FC<CoffeeDetailsProps> = (props) => {
             {...rest}
             className={clsx(classes.root, className)}
         >
-            efmekvmwtvmw[rbmrwbmrb[irwmowrm eow
+            <CoffeeToolbar/>
         </div>
     );
 };

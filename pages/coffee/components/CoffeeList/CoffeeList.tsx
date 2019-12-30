@@ -49,6 +49,18 @@ const CoffeeList: React.FC<CoffeeListProps> = (props) => {
                     active={selected === 2}
                     avatar={Storage.Images.RandomByImageResolution(ImageResolution.VGA)}
                     name={'Espresso'}/>
+
+                <CoffeeListItem
+                    id={3}
+                    active={selected === 3}
+                    avatar={Storage.Images.RandomByImageResolution(ImageResolution.VGA)}
+                    name={'Latte'}/>
+
+                <CoffeeListItem
+                    id={4}
+                    active={selected === 4}
+                    avatar={Storage.Images.RandomByImageResolution(ImageResolution.VGA)}
+                    name={'Cappuccino'}/>
                 {/*{conversations.map((conversation, i) => (*/}
                 {/*    <ConversationListItem*/}
                 {/*        active={conversation.id === selectedConversation}*/}
