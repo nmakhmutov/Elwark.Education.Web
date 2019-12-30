@@ -1,4 +1,4 @@
-import {makeStyles} from '@material-ui/core';
+import {Divider, makeStyles} from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
 import CoffeeToolbar from './components/CoffeeToolbar/CoffeeToolbar';
@@ -26,6 +26,7 @@ const CoffeeDetails: React.FC<CoffeeDetailsProps> = (props) => {
             className={clsx(classes.root, className)}
         >
             <CoffeeToolbar/>
+            <Divider />
         </div>
     );
 };

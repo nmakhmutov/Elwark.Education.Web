@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import React, {useState} from 'react';
-import {Cafe} from '../../../../../../../api/bff/types';
+import {CafeModel} from '../../../../../../../api/bff/types';
 import {RatingText, VotersText} from '../../../../../../../components';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 export interface CitiesProps {
     className?: string;
-    cafes: Cafe[];
+    cafes: CafeModel[];
 }
 
 const Cities: React.FC<CitiesProps> = (props) => {

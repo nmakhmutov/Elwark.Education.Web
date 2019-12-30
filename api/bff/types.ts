@@ -20,26 +20,26 @@ export interface CompanyLogotype {
 
 export interface CompanyStats {
     id: number;
-    total: Total;
-    cafes: Cafe[];
+    total: TotalModel;
+    cafes: CafeModel[];
 }
 
-export interface Rating {
+export interface RatingModel {
     value: number;
     voters: number;
 }
 
-export interface Total {
+export interface TotalModel {
     cafeCount: number;
-    rating: Rating;
+    rating: RatingModel;
 }
 
-export interface Country {
+export interface CountryModel {
     code: string;
     name: string;
 }
 
-export interface City {
+export interface CityModel {
     id: string;
     name: string;
     position: Position;
@@ -50,9 +50,16 @@ export interface Position {
     longitude: number;
 }
 
-export interface Cafe {
-    country: Country;
-    city: City;
+export interface CafeModel {
+    country: CountryModel;
+    city: CityModel;
     cafeCount: number;
-    rating: Rating;
+    rating: RatingModel;
+}
+
+export interface CoffeeCategoryModel {
+    id: number;
+    name: string;
+    image?: string;
+    description?: string;
 }

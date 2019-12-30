@@ -2,6 +2,8 @@ import {makeStyles} from '@material-ui/core';
 import clsx from 'clsx';
 import {NextPage} from 'next';
 import React from 'react';
+import {ImageResolution, Storage} from '../../api';
+import {CoffeeCategoryModel} from '../../api/bff/types';
 import {DefaultLayout} from '../../layouts';
 import {CoffeeDetails, CoffeeList, CoffeePlaceholder} from './components';
 
@@ -46,11 +48,12 @@ const useStyles = makeStyles((theme) => ({
 
 export interface CoffeeProps {
     id?: number;
+    list: CoffeeCategoryModel[];
 }
 
 const Coffee: NextPage<CoffeeProps> = (props) => {
     const classes = useStyles();
-    const {id} = props;
+    const {id, list} = props;
 
     return (
         <DefaultLayout title={'Coffee'}>
@@ -58,7 +61,7 @@ const Coffee: NextPage<CoffeeProps> = (props) => {
                 [classes.root]: true,
                 [classes.open]: id !== undefined,
             })}>
-                <CoffeeList selected={id} className={classes.list}/>
+                <CoffeeList selected={id} list={list} className={classes.list}/>
                 {id ? (<CoffeeDetails className={classes.details}/>)
                     : (<CoffeePlaceholder className={classes.placeholder}/>)}
             </div>
@@ -67,9 +70,18 @@ const Coffee: NextPage<CoffeeProps> = (props) => {
 };
 
 Coffee.getInitialProps = async ({query}) => {
-    const id = Number(query.id);
+    const id = query.id ? Number(query.id) : undefined;
 
-    return {id} as CoffeeProps;
+    return {
+        id,
+        list: [
+            {id: 1, name: 'Ristretto', image: Storage.Images.RandomByImageResolution(ImageResolution.VGA)},
+            {id: 2, name: 'Espresso', image: Storage.Images.RandomByImageResolution(ImageResolution.SVGA)},
+            {id: 3, name: 'Latte', image: Storage.Images.RandomByImageResolution(ImageResolution.SVGA)},
+            {id: 4, name: 'Cappuccino', image: Storage.Images.RandomByImageResolution(ImageResolution.XGA)},
+            {id: 5, name: 'Flat white', description: 'fvee verbovwnret en ow4ntgiwotng [wtn  w tgwrtgrtgvrt'},
+        ],
+    } as CoffeeProps;
 };
 
 export default Coffee;

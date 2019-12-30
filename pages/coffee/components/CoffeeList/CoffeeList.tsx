@@ -2,7 +2,7 @@ import {Divider, IconButton, Input, List, makeStyles, Toolbar, Tooltip} from '@m
 import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import React from 'react';
-import {ImageResolution, Storage} from '../../../../api';
+import {CoffeeCategoryModel} from '../../../../api/bff/types';
 import {CoffeeListItem} from './components';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,11 +17,12 @@ const useStyles = makeStyles((theme) => ({
 export interface CoffeeListProps {
     className?: string;
     selected?: number;
+    list: CoffeeCategoryModel[];
 }
 
 const CoffeeList: React.FC<CoffeeListProps> = (props) => {
     const classes = useStyles();
-    const {selected, className, ...rest} = props;
+    const {list, selected, className, ...rest} = props;
 
     return (
         <div
@@ -37,38 +38,12 @@ const CoffeeList: React.FC<CoffeeListProps> = (props) => {
                 </Tooltip>
             </Toolbar>
             <Divider/>
-            <List disablePadding>
-                <CoffeeListItem
-                    id={1}
-                    active={selected === 1}
-                    avatar={Storage.Images.RandomByImageResolution(ImageResolution.VGA)}
-                    name={'Ristretto'}/>
-
-                <CoffeeListItem
-                    id={2}
-                    active={selected === 2}
-                    avatar={Storage.Images.RandomByImageResolution(ImageResolution.VGA)}
-                    name={'Espresso'}/>
-
-                <CoffeeListItem
-                    id={3}
-                    active={selected === 3}
-                    avatar={Storage.Images.RandomByImageResolution(ImageResolution.VGA)}
-                    name={'Latte'}/>
-
-                <CoffeeListItem
-                    id={4}
-                    active={selected === 4}
-                    avatar={Storage.Images.RandomByImageResolution(ImageResolution.VGA)}
-                    name={'Cappuccino'}/>
-                {/*{conversations.map((conversation, i) => (*/}
-                {/*    <ConversationListItem*/}
-                {/*        active={conversation.id === selectedConversation}*/}
-                {/*        conversation={conversation}*/}
-                {/*        divider={i < conversations.length - 1}*/}
-                {/*        key={conversation.id}*/}
-                {/*    />*/}
-                {/*))}*/}
+            <List disablePadding={true}>
+                {list.map((value, index) => (
+                    <CoffeeListItem
+                        active={selected === value.id}
+                        category={value}/>
+                ))}
             </List>
         </div>
     );

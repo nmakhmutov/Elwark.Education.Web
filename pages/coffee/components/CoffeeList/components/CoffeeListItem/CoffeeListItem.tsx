@@ -1,6 +1,7 @@
 import {Avatar, colors, ListItem, ListItemAvatar, ListItemText, makeStyles} from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
+import {CoffeeCategoryModel} from '../../../../../../api/bff/types';
 import {Link} from '../../../../../../components';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,15 +29,12 @@ const useStyles = makeStyles((theme) => ({
 
 export interface CoffeeListItemProps {
     className?: string;
-    id: number;
+    category: CoffeeCategoryModel;
     active: boolean;
-    avatar: string;
-    name: string;
-    description?: string;
 }
 
 const CoffeeListItem: React.FC<CoffeeListItemProps> = (props) => {
-    const {id, active, avatar, name, description, className, ...rest} = props;
+    const {active, category, className, ...rest} = props;
     const classes = useStyles();
 
     return (
@@ -50,22 +48,22 @@ const CoffeeListItem: React.FC<CoffeeListItemProps> = (props) => {
                 className,
             )}
             component={Link}
-            href={`/coffee?id=${id}`}
+            href={`/coffee?id=${category.id}`}
+            as={`/coffee/${category.id}`}
         >
             <ListItemAvatar>
-                <Avatar
-                    alt="Coffee type"
-                    className={classes.avatar}
-                    src={avatar}
-                />
+                {category.image
+                    ? (<Avatar alt="Coffee type" className={classes.avatar} src={category.image}/>)
+                    : (<Avatar alt="Coffee type" className={classes.avatar}>{category.name[0].toUpperCase()}</Avatar>)
+                }
             </ListItemAvatar>
             <ListItemText
-                primary={name}
+                primary={category.name}
                 primaryTypographyProps={{
                     noWrap: true,
                     variant: 'h6',
                 }}
-                secondary={description}
+                secondary={category.description}
                 secondaryTypographyProps={{
                     noWrap: true,
                     variant: 'body1',
