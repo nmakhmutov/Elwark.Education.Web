@@ -1,5 +1,6 @@
 import CompanyIcon from '@material-ui/icons/BusinessSharp';
 import HomeIcon from '@material-ui/icons/HomeOutlined';
+import LocalCafeIcon from '@material-ui/icons/LocalCafe';
 import MapIcon from '@material-ui/icons/Map';
 import React from 'react';
 
@@ -29,6 +30,11 @@ const Pages: SideBarPage[] = [
                 title: 'Map',
                 href: '/map',
                 icon: MapIcon,
+            },
+            {
+                title: 'Coffee',
+                href: '/coffee',
+                icon: LocalCafeIcon,
             },
             {
                 title: 'Companies',

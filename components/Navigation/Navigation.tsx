@@ -89,11 +89,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
             className={clsx(classes.root, className)}
         >
             {title && <Typography variant="overline">{title}</Typography>}
-            <NavigationList
-                depth={0}
-                pages={pages}
-                router={router}
-            />
+            <NavigationList depth={0} pages={pages} router={router}/>
         </Component>
     );
 };

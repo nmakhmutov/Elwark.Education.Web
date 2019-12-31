@@ -61,7 +61,8 @@ export default class Storage {
     public static Images = class {
         public static RandomByImageResolution(name: ImageResolution,
                                               orientation: ImageOrientation = ImageOrientation.Landscape) {
-            return `${host}/images/random/${name}?orientation=${orientation}`;
+            const rnd = Math.random();
+            return `${host}/images/random/${name}?orientation=${orientation}&hash=${rnd}`;
         }
     };
 }
