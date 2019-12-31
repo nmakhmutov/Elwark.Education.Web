@@ -70,12 +70,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
             <Divider className={classes.divider}/>
             <nav className={classes.navigation}>
                 {Pages.map((list) => (
-                    <Navigation
-                        component="div"
-                        key={list.title}
-                        pages={list.pages}
-                        title={list.title}
-                    />
+                    <Navigation component="div" key={list.title} pages={list.pages} title={list.title}/>
                 ))}
             </nav>
         </div>

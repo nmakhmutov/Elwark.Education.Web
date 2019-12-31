@@ -49,7 +49,6 @@ const CoffeeListItem: React.FC<CoffeeListItemProps> = (props) => {
             )}
             component={Link}
             href={`/coffee?id=${category.id}`}
-            as={`/coffee/${category.id}`}
         >
             <ListItemAvatar>
                 {category.image
