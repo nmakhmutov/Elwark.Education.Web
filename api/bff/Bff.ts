@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import {City, CompanyModel, CompanyShortModel, CompanyStats} from './types';
+import {CompanyModel, CompanyShortModel, CompanyStats, CountryCityModel} from './types';
 
 const host = process.env.BFF_HOST || 'http://localhost:5199';
 
@@ -33,7 +33,7 @@ export default class Bff {
             const res = await fetch(`${host}/cities`);
             const cities = await res.json();
 
-            return cities as City[];
+            return cities as CountryCityModel[];
         }
     };
 }

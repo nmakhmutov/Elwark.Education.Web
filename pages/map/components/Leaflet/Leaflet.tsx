@@ -2,6 +2,7 @@ import {
     ExpansionPanel,
     ExpansionPanelDetails,
     ExpansionPanelSummary,
+    FormControl,
     InputLabel,
     makeStyles,
     Select,
@@ -12,7 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, {useEffect, useState} from 'react';
 import {Map, TileLayer, ZoomControl} from 'react-leaflet';
 import {Bff} from '../../../../api';
-import {City} from '../../../../api/bff/types';
+import {CountryCityModel} from '../../../../api/bff/types';
 import defaultTheme from '../../../../theme';
 import LeafletControl from './LeafletControl';
 
@@ -31,12 +32,16 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
     },
+    formControl: {
+        width: '100%',
+    },
 }));
 
 const defaultCoordinates = '0,0,2';
 const attribution =
     '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors ' +
     '&copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>';
+const storageKey = 'map-city';
 
 const Leaflet = () => {
     const parseStringCenter = (value: string | null) => {
@@ -44,7 +49,7 @@ const Leaflet = () => {
             value = defaultCoordinates;
         }
 
-        localStorage.setItem('map-city', value);
+        localStorage.setItem(storageKey, value);
 
         const [lat, lng, zoom] = value.split(',');
         return {lat: Number(lat), lng: Number(lng), zoom: Number(zoom)};
@@ -55,13 +60,13 @@ const Leaflet = () => {
         defaultMatches: true,
     });
 
-    const [center, setCenter] = useState(parseStringCenter(localStorage.getItem('map-city')));
+    const [center, setCenter] = useState(parseStringCenter(localStorage.getItem(storageKey)));
     const updateCenter = (event: React.ChangeEvent<{ value: unknown }>) => {
         const data = parseStringCenter(event.target.value as string);
         setCenter(data);
     };
 
-    const [cities, setCities] = useState<City[]>([]);
+    const [cities, setCities] = useState<CountryCityModel[]>([]);
     useEffect(() => {
         let mounted = true;
 
@@ -92,7 +97,7 @@ const Leaflet = () => {
                             <Typography className={classes.heading}>Filter</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <div>
+                            <FormControl className={classes.formControl}>
                                 <InputLabel htmlFor="age-native-simple">City</InputLabel>
                                 <Select
                                     native={true}
@@ -100,11 +105,12 @@ const Leaflet = () => {
                                     onChange={updateCenter}>
                                     <option value={defaultCoordinates}/>
                                     {cities.map((value) =>
-                                        <option value={`${value.position.latitude},${value.position.longitude},13`}>
-                                            {value.name}
+                                        <option key={value.cityId}
+                                                value={`${value.position.latitude},${value.position.longitude},13`}>
+                                            {value.countryName} - {value.cityName}
                                         </option>)}
                                 </Select>
-                            </div>
+                            </FormControl>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 </LeafletControl>

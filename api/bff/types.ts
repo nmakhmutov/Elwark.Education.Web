@@ -63,3 +63,12 @@ export interface CoffeeCategoryModel {
     image?: string;
     description?: string;
 }
+
+export interface CountryCityModel {
+    countryCode: string;
+    countryName: string;
+    cityId: string;
+    cityName: string;
+    position: Position;
+    image?: string;
+}

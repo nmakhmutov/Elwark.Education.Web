@@ -34,6 +34,7 @@ const useStyles = makeStyles(() => ({
 
 export interface MainLayoutProps {
     title: string;
+    links?: string[];
 }
 
 const Layout: React.FC<MainLayoutProps> = (props) => {
@@ -48,10 +49,14 @@ const Layout: React.FC<MainLayoutProps> = (props) => {
         setOpenNavBarMobile(false);
     };
 
+    const {children, title, links} = props;
+
     return (
         <>
             <Head>
-                <title>{props.title}</title>
+                <title>{title}</title>
+                {links && links.map(((value, index) =>
+                    <link key={index} href={value} rel="stylesheet"/>))}
             </Head>
             <div className={classes.root}>
                 <TopBar
@@ -65,7 +70,7 @@ const Layout: React.FC<MainLayoutProps> = (props) => {
                         openMobile={openNavBarMobile}
                     />
                     <main className={classes.content}>
-                        {props.children}
+                        {children}
                     </main>
                 </div>
             </div>
