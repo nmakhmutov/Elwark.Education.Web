@@ -10,9 +10,8 @@ import {
     useMediaQuery,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Map, TileLayer, ZoomControl} from 'react-leaflet';
-import {Bff} from '../../../../api';
 import {CountryCityModel} from '../../../../api/bff/types';
 import defaultTheme from '../../../../theme';
 import LeafletControl from './LeafletControl';
@@ -43,7 +42,14 @@ const attribution =
     '&copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>';
 const storageKey = 'map-city';
 
-const Leaflet = () => {
+export interface LeafletProps {
+    cities: CountryCityModel[];
+}
+
+const Leaflet: React.FC<LeafletProps> = (props) => {
+    const classes = useStyles();
+    const {cities} = props;
+
     const parseStringCenter = (value: string | null) => {
         if (!value) {
             value = defaultCoordinates;
@@ -55,7 +61,6 @@ const Leaflet = () => {
         return {lat: Number(lat), lng: Number(lng), zoom: Number(zoom)};
     };
 
-    const classes = useStyles();
     const isDesktop = useMediaQuery(defaultTheme.breakpoints.up('lg'), {
         defaultMatches: true,
     });
@@ -65,25 +70,6 @@ const Leaflet = () => {
         const data = parseStringCenter(event.target.value as string);
         setCenter(data);
     };
-
-    const [cities, setCities] = useState<CountryCityModel[]>([]);
-    useEffect(() => {
-        let mounted = true;
-
-        const fetchCities = () => {
-            Bff.Cities.List().then((response) => {
-                if (mounted) {
-                    setCities(response);
-                }
-            });
-        };
-
-        fetchCities();
-
-        return () => {
-            mounted = false;
-        };
-    }, []);
 
     return (
         <div className={classes.root}>
