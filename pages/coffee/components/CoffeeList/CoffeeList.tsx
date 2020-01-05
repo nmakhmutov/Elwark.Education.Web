@@ -40,7 +40,7 @@ const CoffeeList: React.FC<CoffeeListProps> = (props) => {
             <Divider/>
             <List disablePadding={true}>
                 {list.map((value, index) => (
-                    <CoffeeListItem
+                    <CoffeeListItem key={index}
                         active={selected === value.id}
                         category={value}/>
                 ))}

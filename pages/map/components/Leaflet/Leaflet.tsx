@@ -10,8 +10,10 @@ import {
     useMediaQuery,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import React, {useState} from 'react';
-import {Map, TileLayer, ZoomControl} from 'react-leaflet';
+import L from 'leaflet';
+import React, {useEffect, useState} from 'react';
+import {GeoJSON, Map, TileLayer, ZoomControl} from 'react-leaflet';
+import {Bff} from '../../../../api';
 import {CountryCityModel} from '../../../../api/bff/types';
 import defaultTheme from '../../../../theme';
 import LeafletControl from './LeafletControl';
@@ -36,44 +38,77 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const defaultCoordinates = '0,0,2';
+const defaultCoordinates = '0,0,3';
 const attribution =
     '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors ' +
     '&copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>';
-const storageKey = 'map-city';
+const storageKey = 'e1980037f03a43968f9591d745164ac1';
 
 export interface LeafletProps {
     cities: CountryCityModel[];
+}
+
+interface City {
+    lat: number;
+    lng: number;
+    zoom: number;
+    cityId?: string;
 }
 
 const Leaflet: React.FC<LeafletProps> = (props) => {
     const classes = useStyles();
     const {cities} = props;
 
+    const isDesktop = useMediaQuery(defaultTheme.breakpoints.up('lg'), {
+        defaultMatches: true,
+    });
+
     const parseStringCenter = (value: string | null) => {
         if (!value) {
             value = defaultCoordinates;
         }
 
+        const [lat = 0, lng = 0, zoom = 3, cityId] = value.split(',');
+        return {
+            lat: Number(lat),
+            lng: Number(lng),
+            zoom: Number(zoom),
+            cityId,
+        };
+    };
+
+    const [city, setCity] = useState<City>(parseStringCenter(localStorage.getItem(storageKey)));
+    const [markers, setMarkers] = useState<GeoJSON.FeatureCollection>();
+
+    const updateCity = (event: React.ChangeEvent<{ value: unknown }>) => {
+        const value = event.target.value as string;
+        const data = parseStringCenter(value);
+
+        setCity(data);
         localStorage.setItem(storageKey, value);
-
-        const [lat, lng, zoom] = value.split(',');
-        return {lat: Number(lat), lng: Number(lng), zoom: Number(zoom)};
     };
 
-    const isDesktop = useMediaQuery(defaultTheme.breakpoints.up('lg'), {
-        defaultMatches: true,
-    });
+    useEffect(() => {
+        const fetchCities = (id: string) => {
+            Bff.Cities.Cafes(id)
+                .then((response) => setMarkers(response));
+        };
 
-    const [center, setCenter] = useState(parseStringCenter(localStorage.getItem(storageKey)));
-    const updateCenter = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const data = parseStringCenter(event.target.value as string);
-        setCenter(data);
-    };
+        setMarkers(undefined);
+        if (city.cityId !== undefined) {
+            fetchCities(city.cityId);
+        }
+
+        return () => setMarkers(undefined);
+    }, [city]);
 
     return (
         <div className={classes.root}>
-            <Map center={[center.lat, center.lng]} zoom={center.zoom} className={classes.map} zoomControl={false}>
+            <Map center={[city.lat, city.lng]}
+                 zoom={city.zoom}
+                 minZoom={3}
+                 className={classes.map}
+                 zoomControl={false}>
                 <TileLayer attribution={attribution}
                            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"/>
                 <ZoomControl position={'bottomright'}/>
@@ -87,12 +122,12 @@ const Leaflet: React.FC<LeafletProps> = (props) => {
                                 <InputLabel htmlFor="age-native-simple">City</InputLabel>
                                 <Select
                                     native={true}
-                                    value={`${center.lat},${center.lng},${center.zoom}`}
-                                    onChange={updateCenter}>
+                                    value={`${city.lat},${city.lng},${city.zoom},${city.cityId}`}
+                                    onChange={updateCity}>
                                     <option value={defaultCoordinates}/>
                                     {cities.map((value) =>
                                         <option key={value.cityId}
-                                                value={`${value.position.latitude},${value.position.longitude},13`}>
+                                                value={`${value.position.latitude},${value.position.longitude},13,${value.cityId}`}>
                                             {value.countryName} - {value.cityName}
                                         </option>)}
                                 </Select>
@@ -100,19 +135,25 @@ const Leaflet: React.FC<LeafletProps> = (props) => {
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 </LeafletControl>
-                {/*  <Marker*/}
-                {/*      draggable={true}*/}
-                {/*      onDragend={this.updatePosition}*/}
-                {/*      position={markerPosition}*/}
-                {/*      animate={true}*/}
-                {/*      ref={this.refmarker}>*/}
-                {/*      <Popup minWidth={90}>*/}
-                {/*<span onClick={this.toggleDraggable}>*/}
-                {/*  {this.state.draggable ? 'DRAG MARKER' : 'MARKER FIXED'}*/}
-                {/*</span>*/}
-                {/*      </Popup>*/}
-                {/*  </Marker>*/}
-                {/*  <SearchBar updateMarker={this.updateMarker}/>*/}
+
+                {markers &&
+                <GeoJSON data={markers}
+                         pointToLayer={(geoJsonPoint, latlng) => {
+                             return L.marker(latlng, {
+                                 icon: L.icon({
+                                     iconSize: [48, 48],
+                                     iconUrl: 'https://img.icons8.com/nolan/64/marker.png',
+                                 }),
+                             });
+                         }}
+                         onEachFeature={(feature, layer) => {
+                             if (feature.properties && feature.properties.name) {
+                                 layer.bindPopup(`
+                                 <h3>${feature.properties.name}</h3>
+                                 `);
+                             }
+                         }}/>
+                }
             </Map>
         </div>
     );
