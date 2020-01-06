@@ -2,7 +2,7 @@ import {Divider, IconButton, Input, List, makeStyles, Toolbar, Tooltip} from '@m
 import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import React from 'react';
-import {CoffeeCategoryModel} from '../../../../api/bff/types';
+import {CoffeeCategoryModel} from 'api/bff/types';
 import {CoffeeListItem} from './components';
 
 const useStyles = makeStyles((theme) => ({

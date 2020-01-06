@@ -1,7 +1,7 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
+import {SearchInput} from 'components';
 import React from 'react';
-import {SearchInput} from '../../../../../../components';
 
 const useStyles = makeStyles((theme) => ({
     root: {},

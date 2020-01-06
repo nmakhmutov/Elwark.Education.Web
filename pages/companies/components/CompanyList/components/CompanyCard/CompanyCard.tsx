@@ -4,8 +4,8 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import clsx from 'clsx';
 import React from 'react';
-import {CompanyShortModel} from '../../../../../../api/bff/types';
-import {Link} from '../../../../../../components';
+import {CompanyShortModel} from 'api/bff/types';
+import {Link} from 'components';
 
 const useStyles = makeStyles((theme) => ({
     root: {},

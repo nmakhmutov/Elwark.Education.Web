@@ -1,8 +1,8 @@
 import {Grid} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import {CompanyStats} from 'api/bff/types';
 import clsx from 'clsx';
 import React from 'react';
-import {CompanyStats} from '../../../../../api/bff/types';
 import {Cities, Contacts, Rating, Sites} from './components';
 
 const useStyles = makeStyles((theme) => ({

@@ -12,10 +12,10 @@ import {
     TablePagination,
     TableRow,
 } from '@material-ui/core';
+import {CafeModel} from 'api/bff/types';
 import clsx from 'clsx';
+import {RatingText, VotersText} from 'components';
 import React, {useState} from 'react';
-import {CafeModel} from '../../../../../../../api/bff/types';
-import {RatingText, VotersText} from '../../../../../../../components';
 
 const useStyles = makeStyles((theme) => ({
     root: {},

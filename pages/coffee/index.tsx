@@ -1,10 +1,10 @@
 import {makeStyles} from '@material-ui/core';
+import {ImageResolution, Storage} from 'api';
+import {CoffeeCategoryModel} from 'api/bff/types';
 import clsx from 'clsx';
+import {DefaultLayout} from 'layouts';
 import {NextPage} from 'next';
 import React from 'react';
-import {ImageResolution, Storage} from '../../api';
-import {CoffeeCategoryModel} from '../../api/bff/types';
-import {DefaultLayout} from '../../layouts';
 import {CoffeeDetails, CoffeeList, CoffeePlaceholder} from './components';
 
 const useStyles = makeStyles((theme) => ({

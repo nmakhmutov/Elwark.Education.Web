@@ -1,9 +1,9 @@
+import {Bff} from 'api';
+import {CountryCityModel} from 'api/bff/types';
+import {DefaultLayout} from 'layouts';
 import {NextPage} from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
-import {Bff} from '../../api';
-import {CountryCityModel} from '../../api/bff/types';
-import {DefaultLayout} from '../../layouts';
 
 const Leaflet = dynamic(() => import('./components/Leaflet'), {
     ssr: false,

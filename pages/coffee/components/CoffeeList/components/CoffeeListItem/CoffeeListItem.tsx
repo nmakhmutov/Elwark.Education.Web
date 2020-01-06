@@ -1,8 +1,8 @@
 import {Avatar, colors, ListItem, ListItemAvatar, ListItemText, makeStyles} from '@material-ui/core';
+import {CoffeeCategoryModel} from 'api/bff/types';
 import clsx from 'clsx';
+import {Link} from 'components';
 import React from 'react';
-import {CoffeeCategoryModel} from '../../../../../../api/bff/types';
-import {Link} from '../../../../../../components';
 
 const useStyles = makeStyles((theme) => ({
     active: {
