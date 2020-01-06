@@ -2,10 +2,10 @@ import {Typography} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import {ImageResolution, Storage} from 'api';
 import clsx from 'clsx';
 import {useRouter} from 'next/router';
 import React from 'react';
-import Storage, {ImageResolution} from '../../../../api/storage';
 
 const useStyles = makeStyles((theme) => ({
     root: {

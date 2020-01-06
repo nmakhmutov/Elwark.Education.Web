@@ -10,12 +10,12 @@ import {
     useMediaQuery,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {Bff} from 'api';
+import {CountryCityModel} from 'api/bff/types';
 import L from 'leaflet';
 import React, {useEffect, useState} from 'react';
 import {GeoJSON, Map, TileLayer, ZoomControl} from 'react-leaflet';
-import {Bff} from '../../../../api';
-import {CountryCityModel} from '../../../../api/bff/types';
-import defaultTheme from '../../../../theme';
+import defaultTheme from 'theme';
 import LeafletControl from './LeafletControl';
 
 const useStyles = makeStyles((theme) => ({

@@ -1,7 +1,7 @@
 import {Card, Grid, makeStyles, Typography} from '@material-ui/core';
 import clsx from 'clsx';
+import {RatingText, VotersText} from 'components';
 import React from 'react';
-import {RatingText, VotersText} from '../../../../../../../components';
 
 const useStyles = makeStyles((theme) => ({
     root: {},

@@ -1,12 +1,12 @@
 import {colors, Tab, Tabs} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import {Bff, ImageResolution, Storage} from 'api';
+import {CompanyModel, CompanyStats} from 'api/bff/types';
+import {DefaultLayout} from 'layouts';
 import {NextPage} from 'next';
 import {useRouter} from 'next/router';
 import React, {ChangeEvent} from 'react';
-import {Bff, ImageResolution, Storage} from '../../../api';
-import {CompanyModel, CompanyStats} from '../../../api/bff/types';
-import {DefaultLayout} from '../../../layouts';
 import {Cafes, Catalog, Header, Overview} from './components';
 
 const useStyles = makeStyles((theme) => ({

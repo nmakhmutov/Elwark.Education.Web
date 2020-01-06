@@ -15,10 +15,10 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import {Storage} from 'api';
 import clsx from 'clsx';
+import {Link} from 'components';
 import React, {MouseEventHandler, useRef, useState} from 'react';
-import Storage from '../../../../api/storage';
-import {Link} from '../../../../components';
 
 const useStyles = makeStyles((theme) => ({
     root: {

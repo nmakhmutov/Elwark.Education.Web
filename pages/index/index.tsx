@@ -1,6 +1,6 @@
+import {DefaultLayout} from 'layouts';
 import {NextPage} from 'next';
 import * as React from 'react';
-import {DefaultLayout} from '../../layouts';
 import Header from './components/Header';
 
 interface Props {

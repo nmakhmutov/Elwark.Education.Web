@@ -19,8 +19,8 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsOffIcon from '@material-ui/icons/NotificationsOffOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
+import {Link} from 'components';
 import React, {useRef, useState} from 'react';
-import {Link} from '../../../../../../components';
 
 const useStyles = makeStyles((theme) => ({
     root: {

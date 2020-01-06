@@ -3,8 +3,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
+import {Link} from 'components';
 import React, {useState} from 'react';
-import Link from '../../../Link';
 
 const useStyles = makeStyles((theme) => ({
     item: {

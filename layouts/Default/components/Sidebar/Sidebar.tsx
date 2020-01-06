@@ -2,12 +2,12 @@ import {Avatar, Drawer, Hidden, Paper} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
+import Storage from 'api/storage';
 import clsx from 'clsx';
+import {Link, Navigation} from 'components';
+import Pages from 'navigationConfig';
 import {useRouter} from 'next/router';
 import React from 'react';
-import Storage from '../../../../api/storage';
-import {Link, Navigation} from '../../../../components';
-import Pages from '../../../../navigationConfig';
 
 const useStyles = makeStyles((theme) => ({
     root: {

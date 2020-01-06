@@ -1,9 +1,9 @@
+import {Bff} from 'api';
+import {CompanyShortModel} from 'api/bff/types';
+import {DefaultLayout} from 'layouts';
 import {NextPage} from 'next';
 import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
-import {Bff} from '../../api';
-import {CompanyShortModel} from '../../api/bff/types';
-import {DefaultLayout} from '../../layouts';
 import CompanyList from './components/CompanyList';
 
 interface CompaniesProps {
@@ -26,12 +26,6 @@ const Index: NextPage<CompaniesProps> = (props) => {
     const pagingHandler = async (page: number) => {
         setCurrentPage(page);
         setCompanies(await loadCompanies(page));
-
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'smooth',
-        });
     };
 
     return (
