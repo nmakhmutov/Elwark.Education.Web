@@ -23,18 +23,21 @@ const Index: NextPage<CompaniesProps> = (props) => {
         void router.push({pathname: router.pathname, query: {page: currentPage}});
     }, [currentPage]);
 
-    const pagingHandler = async (page: number) => {
+    const pagingHandler = async (container: HTMLDivElement, page: number) => {
+        container.style.opacity = '0.5';
         setCurrentPage(page);
         setCompanies(await loadCompanies(page));
+        container.scrollIntoView({behavior: 'smooth'});
+        container.style.opacity = null;
     };
 
     return (
         <DefaultLayout title={'Companies'}>
             <CompanyList
                 companies={companies}
-                onNextClick={async () => await pagingHandler(currentPage + 1)}
+                onNextClick={async (container) => await pagingHandler(container.current!, currentPage + 1)}
                 onNextDisabled={companies.length !== limit}
-                onPrevClick={async () => await pagingHandler(currentPage - 1)}
+                onPrevClick={async (container) => await pagingHandler(container.current!, currentPage - 1)}
                 onPrevDisabled={currentPage <= 1}
             />
         </DefaultLayout>

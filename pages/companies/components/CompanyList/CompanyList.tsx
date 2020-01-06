@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {CompanyShortModel} from 'api/bff/types';
-import React, {useRef} from 'react';
+import React, {MutableRefObject, useRef} from 'react';
 import {CompanyCard, CompanyToolbar} from './components';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
 export interface CompanyListProps {
     companies: CompanyShortModel[];
 
-    onPrevClick: () => Promise<void>;
+    onPrevClick: (container: React.MutableRefObject<HTMLDivElement | null>) => Promise<void>;
     onPrevDisabled: boolean;
 
-    onNextClick: () => Promise<void>;
+    onNextClick: (container: MutableRefObject<HTMLDivElement | null>) => Promise<void>;
     onNextDisabled: boolean;
 }
 
@@ -36,11 +36,6 @@ const CompanyList: React.FC<CompanyListProps> = (props) => {
 
     const {companies, onNextClick, onNextDisabled, onPrevClick, onPrevDisabled} = props;
     const contentRef = useRef<null | HTMLDivElement>(null);
-    const scrollToTop = () => {
-        if (contentRef && contentRef.current) {
-            contentRef.current.scrollIntoView({behavior: 'smooth'});
-        }
-    };
 
     return (
         <div className={classes.root}>
@@ -55,10 +50,10 @@ const CompanyList: React.FC<CompanyListProps> = (props) => {
                 </Grid>
             </div>
             <div className={classes.pagination}>
-                <IconButton onClick={() => onPrevClick().then(() => scrollToTop())} disabled={onPrevDisabled}>
+                <IconButton onClick={() => onPrevClick(contentRef)} disabled={onPrevDisabled}>
                     <ChevronLeftIcon/>
                 </IconButton>
-                <IconButton onClick={(e) => onNextClick().then(() => scrollToTop())} disabled={onNextDisabled}>
+                <IconButton onClick={() => onNextClick(contentRef)} disabled={onNextDisabled}>
                     <ChevronRightIcon/>
                 </IconButton>
             </div>
