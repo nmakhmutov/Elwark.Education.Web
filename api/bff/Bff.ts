@@ -1,6 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import {GeoJSON} from 'leaflet';
-import {CompanyModel, CompanyShortModel, CompanyStats, CountryCityModel} from './types';
+import {CoffeeHouseMapPoint, CompanyModel, CompanyShortModel, CompanyStats, CountryCityModel} from './types';
 
 const host = process.env.BFF_HOST || 'http://localhost:5199';
 
@@ -41,7 +40,7 @@ export default class Bff {
             const res = await fetch(`${host}/cities/${id}/cafes`);
             const cafes = await res.json();
 
-            return cafes as GeoJSON.FeatureCollection;
+            return cafes as CoffeeHouseMapPoint[];
         }
     };
 }

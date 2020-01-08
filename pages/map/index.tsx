@@ -11,6 +11,7 @@ const Leaflet = dynamic(() => import('./components/Leaflet'), {
 const mapStyles = [
     'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css',
     'https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css',
+    '/static/leaflet-cluster.css',
 ];
 
 export interface MapProps {

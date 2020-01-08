@@ -11,11 +11,13 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {Bff} from 'api';
-import {CountryCityModel} from 'api/bff/types';
+import {CoffeeHouseMapPoint, CountryCityModel} from 'api/bff/types';
 import L from 'leaflet';
 import React, {useEffect, useState} from 'react';
-import {GeoJSON, Map, TileLayer, ZoomControl} from 'react-leaflet';
+import {Map, Marker, Popup, TileLayer, ZoomControl} from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 import defaultTheme from 'theme';
+import {PopupCard} from './components';
 import LeafletControl from './LeafletControl';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,6 +38,16 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         width: '100%',
     },
+    popup: {},
+    card: {
+        maxWidth: 345,
+        margin: '-14px -20px',
+        boxShadow: 'none',
+    },
+    media: {
+        height: 0,
+        paddingTop: '56.25%', // 16:9
+    },
 }));
 
 const defaultCoordinates = '0,0,3';
@@ -44,7 +56,7 @@ const attribution =
     '&copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>';
 const storageKey = 'e1980037f03a43968f9591d745164ac1';
 
-export interface LeafletProps {
+interface LeafletProps {
     cities: CountryCityModel[];
 }
 
@@ -78,7 +90,7 @@ const Leaflet: React.FC<LeafletProps> = (props) => {
     };
 
     const [city, setCity] = useState<City>(parseStringCenter(localStorage.getItem(storageKey)));
-    const [markers, setMarkers] = useState<GeoJSON.FeatureCollection>();
+    const [markers, setMarkers] = useState<CoffeeHouseMapPoint[]>([]);
 
     const updateCity = (event: React.ChangeEvent<{ value: unknown }>) => {
         const value = event.target.value as string;
@@ -94,12 +106,12 @@ const Leaflet: React.FC<LeafletProps> = (props) => {
                 .then((response) => setMarkers(response));
         };
 
-        setMarkers(undefined);
+        setMarkers([]);
         if (city.cityId !== undefined) {
             fetchCities(city.cityId);
         }
 
-        return () => setMarkers(undefined);
+        return () => setMarkers([]);
     }, [city]);
 
     return (
@@ -107,6 +119,7 @@ const Leaflet: React.FC<LeafletProps> = (props) => {
             <Map center={[city.lat, city.lng]}
                  zoom={city.zoom}
                  minZoom={3}
+                 maxZoom={20}
                  className={classes.map}
                  zoomControl={false}>
                 <TileLayer attribution={attribution}
@@ -127,7 +140,7 @@ const Leaflet: React.FC<LeafletProps> = (props) => {
                                     <option value={defaultCoordinates}/>
                                     {cities.map((value) =>
                                         <option key={value.cityId}
-                                                value={`${value.position.latitude},${value.position.longitude},13,${value.cityId}`}>
+                                                value={`${value.position.latitude},${value.position.longitude},12,${value.cityId}`}>
                                             {value.countryName} - {value.cityName}
                                         </option>)}
                                 </Select>
@@ -136,24 +149,22 @@ const Leaflet: React.FC<LeafletProps> = (props) => {
                     </ExpansionPanel>
                 </LeafletControl>
 
-                {markers &&
-                <GeoJSON data={markers}
-                         pointToLayer={(geoJsonPoint, latlng) => {
-                             return L.marker(latlng, {
-                                 icon: L.icon({
-                                     iconSize: [48, 48],
-                                     iconUrl: 'https://img.icons8.com/nolan/64/marker.png',
-                                 }),
-                             });
-                         }}
-                         onEachFeature={(feature, layer) => {
-                             if (feature.properties && feature.properties.name) {
-                                 layer.bindPopup(`
-                                 <h3>${feature.properties.name}</h3>
-                                 `);
-                             }
-                         }}/>
-                }
+                <MarkerClusterGroup>
+                    {markers.map((point) => {
+                        return (
+                            <Marker key={point.cafeId}
+                                    position={[point.position.latitude, point.position.longitude]}
+                                    icon={L.icon({
+                                        iconSize: [48, 48],
+                                        iconUrl: 'https://img.icons8.com/nolan/64/marker.png',
+                                    })}>
+                                <Popup className={classes.popup} closeButton={false}>
+                                    <PopupCard point={point}/>
+                                </Popup>
+                            </Marker>
+                        );
+                    })}
+                </MarkerClusterGroup>
             </Map>
         </div>
     );

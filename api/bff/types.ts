@@ -72,3 +72,15 @@ export interface CountryCityModel {
     position: Position;
     image?: string;
 }
+
+export interface CoffeeHouseMapPoint {
+    cafeId: number;
+    cityId: string;
+    companyId: number;
+    name: string;
+    logo: string;
+    image?: string;
+    address: string;
+    position: Position;
+    rating: RatingModel;
+}
