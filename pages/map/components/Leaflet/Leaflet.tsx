@@ -17,8 +17,7 @@ import React, {useEffect, useState} from 'react';
 import {Map, Marker, Popup, TileLayer, ZoomControl} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import defaultTheme from 'theme';
-import {PopupCard} from './components';
-import LeafletControl from './LeafletControl';
+import {LeafletControl, PopupCard} from './components';
 
 const useStyles = makeStyles((theme) => ({
     root: {
