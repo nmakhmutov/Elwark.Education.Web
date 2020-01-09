@@ -19,6 +19,7 @@ import {Storage} from 'api';
 import clsx from 'clsx';
 import {Link} from 'components';
 import React, {MouseEventHandler, useRef, useState} from 'react';
+import {Links} from 'utils';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -123,7 +124,7 @@ const TopBar: React.FC<TopBarProps> = (props) => {
             color="primary"
         >
             <Toolbar>
-                <Link href="/">
+                <Link href={Links.Home}>
                     <img
                         alt="Logo"
                         src={Storage.Static.Icons.Elwark.White.Size48x48}

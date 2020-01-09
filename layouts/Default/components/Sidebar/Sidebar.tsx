@@ -5,9 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import Storage from 'api/storage';
 import clsx from 'clsx';
 import {Link, Navigation} from 'components';
-import Pages from 'navigationConfig';
 import {useRouter} from 'next/router';
 import React from 'react';
+import {SideBarLinks} from 'utils';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -69,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
             </div>
             <Divider className={classes.divider}/>
             <nav className={classes.navigation}>
-                {Pages.map((list) => (
+                {SideBarLinks.map((list) => (
                     <Navigation component="div" key={list.title} pages={list.pages} title={list.title}/>
                 ))}
             </nav>
@@ -104,48 +104,6 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                 </Paper>
             </Hidden>
         </>
-        // <Drawer
-        //     anchor={'left'}
-        //     classes={{paper: classes.drawer}}
-        //     onClose={onClose}
-        //     open={open}
-        //     variant={variant}
-        // >
-        //     <div
-        //         {...rest}
-        //         className={clsx(classes.root, className)}
-        //     >
-        //         <div className={classes.content}>
-        //             <div className={classes.profile}>
-        //                 <Avatar
-        //                     alt="Person"
-        //                     className={classes.avatar}
-        //                     component={Link}
-        //                     src={Storage.Static.Icons.User.Default}
-        //                     href="/profile/1/timeline"
-        //                 />
-        //                 <Typography
-        //                     className={classes.name}
-        //                     variant="h4"
-        //                 >
-        //                     Elwark Ink.
-        //                 </Typography>
-        //                 <Typography variant="body2">Cafe navigator</Typography>
-        //             </div>
-        //             <Divider className={classes.divider}/>
-        //             <nav className={classes.navigation}>
-        //                 {Pages.map((list) => (
-        //                     <Navigation
-        //                         component="div"
-        //                         key={list.title}
-        //                         pages={list.pages}
-        //                         title={list.title}
-        //                     />
-        //                 ))}
-        //             </nav>
-        //         </div>
-        //     </div>
-        // </Drawer>
     );
 };
 

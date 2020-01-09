@@ -37,7 +37,7 @@ const CoffeePlaceholder: React.FC<PlaceholderProps> = (props) => {
                 <img
                     alt="Select coffee"
                     className={classes.image}
-                    src={Storage.Images.RandomByImageResolution(ImageResolution.FHD)}
+                    src={Storage.Images.Random(ImageResolution.FHD)}
                 />
                 <Typography className={classes.title} variant="h4">
                     Select coffee to display

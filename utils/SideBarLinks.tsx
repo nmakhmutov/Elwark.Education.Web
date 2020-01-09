@@ -3,6 +3,7 @@ import HomeIcon from '@material-ui/icons/HomeOutlined';
 import LocalCafeIcon from '@material-ui/icons/LocalCafe';
 import MapIcon from '@material-ui/icons/Map';
 import React from 'react';
+import Links from './Links';
 
 export interface Page {
     title: string;
@@ -17,32 +18,32 @@ export interface SideBarPage {
     pages: Page[];
 }
 
-const Pages: SideBarPage[] = [
+const SideBarLinks: SideBarPage[] = [
     {
         title: 'Pages',
         pages: [
             {
                 title: 'Home',
-                href: '/',
+                href: Links.Home,
                 icon: HomeIcon,
             },
             {
                 title: 'Map',
-                href: '/map',
+                href: Links.Map,
                 icon: MapIcon,
             },
             {
                 title: 'Coffee',
-                href: '/coffee',
+                href: Links.Coffee,
                 icon: LocalCafeIcon,
             },
             {
                 title: 'Companies',
-                href: '/companies',
+                href: Links.Companies,
                 icon: CompanyIcon,
             },
         ],
     },
 ];
 
-export default Pages;
+export default SideBarLinks;

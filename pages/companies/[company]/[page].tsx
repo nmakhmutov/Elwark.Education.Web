@@ -7,6 +7,7 @@ import {DefaultLayout} from 'layouts';
 import {NextPage} from 'next';
 import {useRouter} from 'next/router';
 import React, {ChangeEvent} from 'react';
+import {Links} from 'utils';
 import {Cafes, Catalog, Header, Overview} from './components';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,14 +44,14 @@ const Company: NextPage<CompanyProps> = (props) => {
     ];
 
     const onTabClick = (event: ChangeEvent<{}>, value: string) => {
-        return router.push('/companies/[company]/[page]', `/companies/${id}/${value}`);
+        return router.push(Links.Company.href, Links.Company.as(id, value));
     };
 
     return (
         <DefaultLayout title={name}>
             <Header name={name}
                     avatar={logotype.square}
-                    cover={Storage.Images.RandomByImageResolution(ImageResolution.FHD)}
+                    cover={Storage.Images.Random(ImageResolution.FHD)}
                     bio={description}/>
             <div className={classes.inner}>
                 <Tabs onChange={onTabClick} scrollButtons={'auto'} value={tab} variant={'scrollable'}>

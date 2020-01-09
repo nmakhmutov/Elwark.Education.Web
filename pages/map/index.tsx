@@ -1,11 +1,9 @@
-import {Bff} from 'api';
-import {CountryCityModel} from 'api/bff/types';
 import {DefaultLayout} from 'layouts';
 import {NextPage} from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const Leaflet = dynamic(() => import('./components/Leaflet'), {
+const CafeMap = dynamic(() => import('./components/CafeMap'), {
     ssr: false,
 });
 const mapStyles = [
@@ -14,21 +12,12 @@ const mapStyles = [
     '/static/leaflet-cluster.css',
 ];
 
-export interface MapProps {
-    cities: CountryCityModel[];
-}
-
-const Map: NextPage<MapProps> = (props) => {
+const Map: NextPage = () => {
     return (
         <DefaultLayout title={'Cafe map'} links={mapStyles}>
-            <Leaflet cities={props.cities}/>
+            <CafeMap/>
         </DefaultLayout>
     );
-};
-
-Map.getInitialProps = async () => {
-    const cities = await Bff.Cities.List();
-    return {cities} as MapProps;
 };
 
 export default Map;

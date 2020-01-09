@@ -2,10 +2,11 @@ import {Card, CardActions, CardContent, Divider, Grid, Typography} from '@materi
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import clsx from 'clsx';
-import React from 'react';
 import {CompanyShortModel} from 'api/bff/types';
+import clsx from 'clsx';
 import {Link} from 'components';
+import React from 'react';
+import {Links} from 'utils';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -53,7 +54,7 @@ const CompanyCard: React.FC<CompanyCardProps> = (props) => {
                     <img alt="Company logotype" className={classes.image} src={company.logotype.square}/>
                 </div>
                 <Typography align={'center'} gutterBottom={true} variant={'h4'}>
-                    <Link href={'/companies/[company]/[page]'} as={`/companies/${company.id}/overview`}>
+                    <Link href={Links.Company.href} as={Links.Company.as(company.id, 'overview')}>
                         {company.name}
                     </Link>
                 </Typography>

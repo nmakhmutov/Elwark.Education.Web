@@ -47,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
         height: 0,
         paddingTop: '56.25%', // 16:9
     },
+    backdrop: {
+        zIndex: 1002,
+        color: '#fff',
+    },
 }));
 
 const defaultCoordinates = '0,0,3';
@@ -55,10 +59,6 @@ const attribution =
     '&copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>';
 const storageKey = 'e1980037f03a43968f9591d745164ac1';
 
-interface LeafletProps {
-    cities: CountryCityModel[];
-}
-
 interface City {
     lat: number;
     lng: number;
@@ -66,9 +66,23 @@ interface City {
     cityId?: string;
 }
 
-const Leaflet: React.FC<LeafletProps> = (props) => {
+const CafeMap: React.FC = () => {
     const classes = useStyles();
-    const {cities} = props;
+    const [cities, setCities] = useState<CountryCityModel[]>([]);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        Bff.Cities.List().then((x) => {
+            if (isMounted) {
+                setCities(x);
+            }
+        });
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     const isDesktop = useMediaQuery(defaultTheme.breakpoints.up('lg'), {
         defaultMatches: true,
@@ -105,7 +119,6 @@ const Leaflet: React.FC<LeafletProps> = (props) => {
                 .then((response) => setMarkers(response));
         };
 
-        setMarkers([]);
         if (city.cityId !== undefined) {
             fetchCities(city.cityId);
         }
@@ -118,7 +131,7 @@ const Leaflet: React.FC<LeafletProps> = (props) => {
             <Map center={[city.lat, city.lng]}
                  zoom={city.zoom}
                  minZoom={3}
-                 maxZoom={20}
+                 maxZoom={22}
                  className={classes.map}
                  zoomControl={false}>
                 <TileLayer attribution={attribution}
@@ -169,4 +182,4 @@ const Leaflet: React.FC<LeafletProps> = (props) => {
     );
 };
 
-export default Leaflet;
+export default CafeMap;

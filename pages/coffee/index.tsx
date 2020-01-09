@@ -75,11 +75,12 @@ Coffee.getInitialProps = async ({query}) => {
     return {
         id,
         list: [
-            {id: 1, name: 'Ristretto', image: Storage.Images.RandomByImageResolution(ImageResolution.VGA)},
-            {id: 2, name: 'Espresso', image: Storage.Images.RandomByImageResolution(ImageResolution.SVGA)},
-            {id: 3, name: 'Latte', image: Storage.Images.RandomByImageResolution(ImageResolution.SVGA)},
-            {id: 4, name: 'Cappuccino', image: Storage.Images.RandomByImageResolution(ImageResolution.XGA)},
+            {id: 1, name: 'Ristretto', image: Storage.Images.Random(ImageResolution.VGA)},
+            {id: 2, name: 'Espresso', image: Storage.Images.Random(ImageResolution.SVGA)},
+            {id: 3, name: 'Latte', image: Storage.Images.Random(ImageResolution.HD)},
+            {id: 4, name: 'Cappuccino', image: Storage.Images.Random(ImageResolution.XGA)},
             {id: 5, name: 'Flat white', description: 'fvee verbovwnret en ow4ntgiwotng [wtn  w tgwrtgrtgvrt'},
+            {id: 6, name: 'Afogado', image: Storage.Images.Random(ImageResolution.WXGAplus)},
         ],
     } as CoffeeProps;
 };

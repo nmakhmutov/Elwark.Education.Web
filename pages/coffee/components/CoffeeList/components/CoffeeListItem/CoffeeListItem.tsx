@@ -3,6 +3,7 @@ import {CoffeeCategoryModel} from 'api/bff/types';
 import clsx from 'clsx';
 import {Link} from 'components';
 import React from 'react';
+import {Links} from 'utils';
 
 const useStyles = makeStyles((theme) => ({
     active: {
@@ -48,7 +49,7 @@ const CoffeeListItem: React.FC<CoffeeListItemProps> = (props) => {
                 className,
             )}
             component={Link}
-            href={`/coffee?id=${category.id}`}
+            href={Links.CoffeeItem(category.id)}
         >
             <ListItemAvatar>
                 {category.image

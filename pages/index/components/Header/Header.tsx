@@ -10,7 +10,7 @@ import React from 'react';
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: theme.palette.common.white,
-        backgroundImage: `url(${Storage.Images.RandomByImageResolution(ImageResolution.FHD)})`,
+        backgroundImage: `url(${Storage.Images.Random(ImageResolution.FHD)})`,
     },
     header: {
         width: theme.breakpoints.values.md,
