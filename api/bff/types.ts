@@ -30,7 +30,9 @@ export interface RatingModel {
 }
 
 export interface TotalModel {
-    cafeCount: number;
+    countries: number;
+    cities: number;
+    cafes: number;
     rating: RatingModel;
 }
 

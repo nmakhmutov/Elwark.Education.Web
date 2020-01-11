@@ -43,7 +43,7 @@ export interface CitiesProps {
     cafes: CafeModel[];
 }
 
-const Cities: React.FC<CitiesProps> = (props) => {
+const CitiesTable: React.FC<CitiesProps> = (props) => {
     const {className, cafes, ...rest} = props;
 
     const classes = useStyles();
@@ -107,4 +107,4 @@ const Cities: React.FC<CitiesProps> = (props) => {
     );
 };
 
-export default Cities;
+export default CitiesTable;

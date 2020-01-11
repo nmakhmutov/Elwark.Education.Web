@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import {CompanyStats} from 'api/bff/types';
 import clsx from 'clsx';
 import React from 'react';
-import {Cities, Contacts, Rating, Sites} from './components';
+import {CitiesTable, Contacts, Rating, Sites, Summary} from './components';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -32,7 +32,11 @@ const Overview: React.FC<OverviewProps> = (props) => {
         >
             <Grid item={true} lg={8} xl={9} xs={12}>
                 <Rating rating={stats.total.rating}/>
-                <Cities className={classes.marginTop} cafes={stats.cafes}/>
+                <Summary className={classes.marginTop}
+                         cafes={stats.total.cafes}
+                         cities={stats.total.cities}
+                         countries={stats.total.countries}/>
+                <CitiesTable className={classes.marginTop} cafes={stats.cafes}/>
             </Grid>
             <Grid item={true} lg={4} xl={3} xs={12}>
                 <Sites list={Object.entries(sites)}/>
