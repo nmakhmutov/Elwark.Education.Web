@@ -24,12 +24,7 @@ const Overview: React.FC<OverviewProps> = (props) => {
     const classes = useStyles();
 
     return (
-        <Grid
-            {...rest}
-            className={clsx(classes.root, className)}
-            container={true}
-            spacing={3}
-        >
+        <Grid {...rest} className={clsx(classes.root, className)} container={true} spacing={3}>
             <Grid item={true} lg={8} xl={9} xs={12}>
                 <Rating rating={stats.total.rating}/>
                 <Summary className={classes.marginTop}
