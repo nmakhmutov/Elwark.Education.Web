@@ -3,10 +3,16 @@ export default class Links {
     public static Map = '/map';
     public static Drinks = '/drinks';
     public static Companies = '/companies';
-    public static Company = (id: number, page: 'overview' | 'cafes' | 'catalog' | string) => ({
-        href: `/companies/[company]/${page}`,
-        as: `/companies/${id}/${page}`,
+    public static Company = (id: number, tab: CompanyTabs) => ({
+        href: `/companies/[company]/${tab}`,
+        as: `/companies/${id}/${tab}`,
     })
     public static CompaniesPaging = (page: number) => `/companies?page=${page}`;
     public static DrinkItem = (id: number) => `/drinks?id=${id}`;
+}
+
+export enum CompanyTabs {
+    'Overview' = 'overview',
+    'Cafes' = 'cafes',
+    'Catalog' = 'catalog',
 }

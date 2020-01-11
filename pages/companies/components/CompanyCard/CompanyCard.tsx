@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import {Link} from 'components';
 import React from 'react';
 import {Links} from 'utils';
+import {CompanyTabs} from 'utils/Links';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -42,7 +43,7 @@ export interface CompanyCardProps {
 const CompanyCard: React.FC<CompanyCardProps> = (props) => {
     const {className, company, ...rest} = props;
     const classes = useStyles();
-    const companyOverview = Links.Company(company.id, 'overview');
+    const companyOverview = Links.Company(company.id, CompanyTabs.Overview);
     return (
         <Card
             {...rest}

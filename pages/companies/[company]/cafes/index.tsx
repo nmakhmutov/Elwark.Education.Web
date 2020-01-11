@@ -3,6 +3,7 @@ import {CompanyModel} from 'api/bff/types';
 import {CompanyLayout} from 'layouts';
 import {NextPage} from 'next';
 import React from 'react';
+import {CompanyTabs} from 'utils/Links';
 
 interface CafeProps {
     company: CompanyModel;
@@ -11,7 +12,7 @@ interface CafeProps {
 const Cafes: NextPage<CafeProps> = (props) => {
     const {company} = props;
     return (
-        <CompanyLayout title={`Cafes of ${company.name}`} tab={'cafes'} company={company}>
+        <CompanyLayout title={`Cafes of ${company.name}`} tab={CompanyTabs.Cafes} company={company}>
             Cafes
         </CompanyLayout>
     );

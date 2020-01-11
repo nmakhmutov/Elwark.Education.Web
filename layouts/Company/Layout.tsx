@@ -7,6 +7,7 @@ import {DefaultLayout} from 'layouts';
 import {useRouter} from 'next/router';
 import React, {ChangeEvent} from 'react';
 import {Links} from 'utils';
+import {CompanyTabs} from 'utils/Links';
 import {Header} from './components';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export interface LayoutProps {
     className?: string;
     title: string;
-    tab: string;
+    tab: CompanyTabs;
     company: CompanyModel;
 }
 
@@ -36,14 +37,10 @@ const Layout: React.FC<LayoutProps> = (props) => {
     const classes = useStyles();
     const router = useRouter();
 
-    const tabs = [
-        {value: 'overview', label: 'Overview'},
-        {value: 'cafes', label: 'Cafes'},
-        {value: 'catalog', label: 'Catalog'},
-    ];
+    const tabs = Object.values(CompanyTabs).map((x) => x);
 
     const onTabClick = (event: ChangeEvent<{}>, value: string) => {
-        const link = Links.Company(id, value);
+        const link = Links.Company(id, value as CompanyTabs);
         return router.push(link.href, link.as);
     };
 
@@ -56,7 +53,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
             <div className={classes.inner}>
                 <Tabs onChange={onTabClick} scrollButtons={'auto'} value={tab} variant={'scrollable'}>
                     {tabs.map((x) => (
-                        <Tab key={x.value} label={x.label} value={x.value}/>
+                        <Tab key={x} label={x} value={x}/>
                     ))}
                 </Tabs>
                 <Divider className={classes.divider}/>

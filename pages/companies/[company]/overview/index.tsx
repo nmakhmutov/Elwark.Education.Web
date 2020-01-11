@@ -5,6 +5,7 @@ import {CompanyModel, CompanyStats} from 'api/bff/types';
 import {CompanyLayout} from 'layouts';
 import {NextPage} from 'next';
 import React from 'react';
+import {CompanyTabs} from 'utils/Links';
 import {CitiesTable, Contacts, Rating, Sites, Summary} from './components';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +25,7 @@ const Overview: NextPage<OverviewProps> = (props) => {
     const classes = useStyles();
 
     return (
-        <CompanyLayout title={`Cafe company ${company.name} overview`} tab={'overview'} company={company}>
+        <CompanyLayout title={`Cafe company ${company.name} overview`} tab={CompanyTabs.Overview} company={company}>
             <Grid className={classes.root} container={true} spacing={3}>
                 <Grid item={true} lg={8} xl={9} xs={12}>
                     <Rating rating={stats.total.rating}/>
