@@ -7,5 +7,6 @@ export default class Links {
         href: '/companies/[company]/[page]',
         as: (id: number, page: 'overview' | 'cafes' | 'catalog' | string) => `/companies/${id}/${page}`,
     };
+    public static CompaniesPaging = (page: number) => `/companies?page=${page}`;
     public static CoffeeItem = (id: number) => `/coffee?id=${id}`;
 }

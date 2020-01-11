@@ -1,10 +1,30 @@
+import {Grid, IconButton} from '@material-ui/core';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Bff} from 'api';
 import {CompanyShortModel} from 'api/bff/types';
+import {Link} from 'components';
 import {DefaultLayout} from 'layouts';
 import {NextPage} from 'next';
-import {useRouter} from 'next/router';
-import React, {useEffect, useState} from 'react';
-import CompanyList from './components/CompanyList';
+import React, {useEffect, useRef} from 'react';
+import {Links} from 'utils';
+import {CompanyCard, CompanyToolbar} from './components';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        padding: theme.spacing(3),
+    },
+    content: {
+        marginTop: theme.spacing(2),
+    },
+    pagination: {
+        marginTop: theme.spacing(3),
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
+}));
 
 interface CompaniesProps {
     page: number;
@@ -14,50 +34,53 @@ interface CompaniesProps {
 const limit = 30;
 
 const Index: NextPage<CompaniesProps> = (props) => {
-    const [companies, setCompanies] = useState(props.companies);
-    const [currentPage, setCurrentPage] = useState(props.page);
-
-    const router = useRouter();
+    const classes = useStyles();
+    const {page, companies} = props;
+    const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        void router.push({pathname: router.pathname, query: {page: currentPage}});
-    }, [currentPage]);
-
-    const pagingHandler = async (container: HTMLDivElement, page: number) => {
-        container.style.opacity = '0.5';
-        setCurrentPage(page);
-        setCompanies(await loadCompanies(page));
-        container.scrollIntoView({behavior: 'smooth'});
-        container.style.opacity = null;
-    };
+        setTimeout(() => ref.current?.scrollIntoView({behavior: 'smooth'}), 10);
+    }, [page]);
 
     return (
         <DefaultLayout title={'Companies'}>
-            <CompanyList
-                companies={companies}
-                onNextClick={async (container) => await pagingHandler(container.current!, currentPage + 1)}
-                onNextDisabled={companies.length !== limit}
-                onPrevClick={async (container) => await pagingHandler(container.current!, currentPage - 1)}
-                onPrevDisabled={currentPage <= 1}
-            />
+            <div className={classes.root} ref={ref}>
+                <CompanyToolbar/>
+                <div className={classes.content}>
+                    <Grid container={true} spacing={3}>
+                        {companies.map((company) => (
+                            <Grid item={true} key={company.id} lg={4} md={6} xs={12}>
+                                <CompanyCard company={company}/>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </div>
+                <div className={classes.pagination}>
+                    <IconButton disabled={page <= 1}
+                                component={Link}
+                                href={Links.CompaniesPaging(page - 1)}>
+                        <ChevronLeftIcon/>
+                    </IconButton>
+                    <IconButton disabled={companies.length !== limit}
+                                component={Link}
+                                href={Links.CompaniesPaging(page + 1)}>
+                        <ChevronRightIcon/>
+                    </IconButton>
+                </div>
+            </div>
         </DefaultLayout>
     );
 };
 
-Index.getInitialProps = async ({query}) => {
+Index.getInitialProps = async ({query, req}) => {
     const page = +(query.page as string) || 1;
-    const companies = await loadCompanies(page);
+    const offset = (page - 1) * limit;
+    const companies = await Bff.Company.List(limit, offset);
 
     return {
         page,
         companies,
     } as CompaniesProps;
-};
-
-const loadCompanies = async (page: number) => {
-    const offset = (page - 1) * limit;
-
-    return await Bff.Company.List(limit, offset);
 };
 
 export default Index;
