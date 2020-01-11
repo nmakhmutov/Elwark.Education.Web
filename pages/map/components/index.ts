@@ -1,1 +1,1 @@
-export {default as Leaflet} from './Leaflet';
+export {default as CafeMap} from './CafeMap';

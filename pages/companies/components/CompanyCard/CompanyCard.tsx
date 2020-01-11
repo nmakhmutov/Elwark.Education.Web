@@ -41,9 +41,8 @@ export interface CompanyCardProps {
 
 const CompanyCard: React.FC<CompanyCardProps> = (props) => {
     const {className, company, ...rest} = props;
-
     const classes = useStyles();
-
+    const companyOverview = Links.Company(company.id, 'overview');
     return (
         <Card
             {...rest}
@@ -54,7 +53,7 @@ const CompanyCard: React.FC<CompanyCardProps> = (props) => {
                     <img alt="Company logotype" className={classes.image} src={company.logotype.square}/>
                 </div>
                 <Typography align={'center'} gutterBottom={true} variant={'h4'}>
-                    <Link href={Links.Company.href} as={Links.Company.as(company.id, 'overview')}>
+                    <Link href={companyOverview.href} as={companyOverview.as}>
                         {company.name}
                     </Link>
                 </Typography>

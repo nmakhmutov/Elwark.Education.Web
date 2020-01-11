@@ -1,14 +1,13 @@
 import {colors, Tab, Tabs} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {Bff, ImageResolution, Storage} from 'api';
-import {CompanyModel, CompanyStats} from 'api/bff/types';
+import {ImageResolution, Storage} from 'api';
+import {CompanyModel} from 'api/bff/types';
 import {DefaultLayout} from 'layouts';
-import {NextPage} from 'next';
 import {useRouter} from 'next/router';
 import React, {ChangeEvent} from 'react';
 import {Links} from 'utils';
-import {Cafes, Catalog, Header, Overview} from './components';
+import {Header} from './components';
 
 const useStyles = makeStyles((theme) => ({
     inner: {
@@ -25,17 +24,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-interface CompanyProps {
-    id: number;
+export interface LayoutProps {
+    className?: string;
+    title: string;
     tab: string;
     company: CompanyModel;
-    stats?: CompanyStats;
 }
 
-const Company: NextPage<CompanyProps> = (props) => {
+const Layout: React.FC<LayoutProps> = (props) => {
+    const {title, tab, company: {id, name, description, logotype}, children} = props;
     const classes = useStyles();
     const router = useRouter();
-    const {id, tab, company: {name, sites, contacts, description, logotype}, stats} = props;
 
     const tabs = [
         {value: 'overview', label: 'Overview'},
@@ -44,11 +43,12 @@ const Company: NextPage<CompanyProps> = (props) => {
     ];
 
     const onTabClick = (event: ChangeEvent<{}>, value: string) => {
-        return router.push(Links.Company.href, Links.Company.as(id, value));
+        const link = Links.Company(id, value);
+        return router.push(link.href, link.as);
     };
 
     return (
-        <DefaultLayout title={name}>
+        <DefaultLayout title={title}>
             <Header name={name}
                     avatar={logotype.square}
                     cover={Storage.Images.Random(ImageResolution.FHD)}
@@ -61,27 +61,11 @@ const Company: NextPage<CompanyProps> = (props) => {
                 </Tabs>
                 <Divider className={classes.divider}/>
                 <div className={classes.content}>
-                    {tab === 'overview' && <Overview stats={stats!} contacts={contacts} sites={sites}/>}
-                    {tab === 'cafes' && <Cafes/>}
-                    {tab === 'catalog' && <Catalog/>}
+                    {children}
                 </div>
             </div>
         </DefaultLayout>
     );
 };
 
-Company.getInitialProps = async ({query}) => {
-    const id = +query.company;
-    const tab = query.page;
-    const company = await Bff.Company.Get(id);
-    let stats;
-
-    switch (tab) {
-        case 'overview':
-            stats = await Bff.Company.Statistics(id);
-    }
-
-    return {id, tab, company, stats} as CompanyProps;
-};
-
-export default Company;
+export default Layout;
