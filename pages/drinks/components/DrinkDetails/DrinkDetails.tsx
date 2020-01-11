@@ -1,7 +1,7 @@
 import {Divider, makeStyles} from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
-import CoffeeToolbar from './components/CoffeeToolbar/CoffeeToolbar';
+import {DrinkToolbar} from './components';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,7 +15,7 @@ export interface CoffeeDetailsProps {
     className?: string;
 }
 
-const CoffeeDetails: React.FC<CoffeeDetailsProps> = (props) => {
+const DrinkDetails: React.FC<CoffeeDetailsProps> = (props) => {
     const {className, ...rest} = props;
 
     const classes = useStyles();
@@ -25,10 +25,10 @@ const CoffeeDetails: React.FC<CoffeeDetailsProps> = (props) => {
             {...rest}
             className={clsx(classes.root, className)}
         >
-            <CoffeeToolbar/>
-            <Divider />
+            <DrinkToolbar/>
+            <Divider/>
         </div>
     );
 };
 
-export default CoffeeDetails;
+export default DrinkDetails;

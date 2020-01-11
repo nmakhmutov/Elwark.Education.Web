@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import {DefaultLayout} from 'layouts';
 import {NextPage} from 'next';
 import React from 'react';
-import {CoffeeDetails, CoffeeList, CoffeePlaceholder} from './components';
+import {DrinkDetails, DrinkList, DrinkPlaceholder} from './components';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,7 +51,7 @@ export interface CoffeeProps {
     list: CoffeeCategoryModel[];
 }
 
-const Coffee: NextPage<CoffeeProps> = (props) => {
+const Drinks: NextPage<CoffeeProps> = (props) => {
     const classes = useStyles();
     const {id, list} = props;
 
@@ -61,15 +61,15 @@ const Coffee: NextPage<CoffeeProps> = (props) => {
                 [classes.root]: true,
                 [classes.open]: id !== undefined,
             })}>
-                <CoffeeList selected={id} list={list} className={classes.list}/>
-                {id ? (<CoffeeDetails className={classes.details}/>)
-                    : (<CoffeePlaceholder className={classes.placeholder}/>)}
+                <DrinkList selected={id} list={list} className={classes.list}/>
+                {id ? (<DrinkDetails className={classes.details}/>)
+                    : (<DrinkPlaceholder className={classes.placeholder}/>)}
             </div>
         </DefaultLayout>
     );
 };
 
-Coffee.getInitialProps = async ({query}) => {
+Drinks.getInitialProps = async ({query}) => {
     const id = query.id ? Number(query.id) : undefined;
 
     return {
@@ -85,4 +85,4 @@ Coffee.getInitialProps = async ({query}) => {
     } as CoffeeProps;
 };
 
-export default Coffee;
+export default Drinks;

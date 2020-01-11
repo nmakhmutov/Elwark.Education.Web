@@ -1,7 +1,7 @@
 import {makeStyles, Typography} from '@material-ui/core';
+import {ImageResolution, Storage} from 'api';
 import clsx from 'clsx';
 import React from 'react';
-import {ImageResolution, Storage} from 'api';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,7 +24,7 @@ export interface PlaceholderProps {
     className?: string;
 }
 
-const CoffeePlaceholder: React.FC<PlaceholderProps> = (props) => {
+const DrinkPlaceholder: React.FC<PlaceholderProps> = (props) => {
     const classes = useStyles();
     const {className, ...rest} = props;
 
@@ -51,4 +51,4 @@ const CoffeePlaceholder: React.FC<PlaceholderProps> = (props) => {
     );
 };
 
-export default CoffeePlaceholder;
+export default DrinkPlaceholder;

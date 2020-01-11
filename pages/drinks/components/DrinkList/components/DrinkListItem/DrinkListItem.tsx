@@ -34,7 +34,7 @@ export interface CoffeeListItemProps {
     active: boolean;
 }
 
-const CoffeeListItem: React.FC<CoffeeListItemProps> = (props) => {
+const DrinkListItem: React.FC<CoffeeListItemProps> = (props) => {
     const {active, category, className, ...rest} = props;
     const classes = useStyles();
 
@@ -49,7 +49,7 @@ const CoffeeListItem: React.FC<CoffeeListItemProps> = (props) => {
                 className,
             )}
             component={Link}
-            href={Links.CoffeeItem(category.id)}
+            href={Links.DrinkItem(category.id)}
         >
             <ListItemAvatar>
                 {category.image
@@ -75,4 +75,4 @@ const CoffeeListItem: React.FC<CoffeeListItemProps> = (props) => {
     );
 };
 
-export default CoffeeListItem;
+export default DrinkListItem;

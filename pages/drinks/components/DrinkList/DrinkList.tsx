@@ -1,9 +1,9 @@
 import {Divider, IconButton, Input, List, makeStyles, Toolbar, Tooltip} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import {CoffeeCategoryModel} from 'api/bff/types';
 import clsx from 'clsx';
 import React from 'react';
-import {CoffeeCategoryModel} from 'api/bff/types';
-import {CoffeeListItem} from './components';
+import {DrinkListItem} from './components';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,7 +20,7 @@ export interface CoffeeListProps {
     list: CoffeeCategoryModel[];
 }
 
-const CoffeeList: React.FC<CoffeeListProps> = (props) => {
+const DrinkList: React.FC<CoffeeListProps> = (props) => {
     const classes = useStyles();
     const {list, selected, className, ...rest} = props;
 
@@ -40,7 +40,7 @@ const CoffeeList: React.FC<CoffeeListProps> = (props) => {
             <Divider/>
             <List disablePadding={true}>
                 {list.map((value, index) => (
-                    <CoffeeListItem key={index}
+                    <DrinkListItem key={index}
                         active={selected === value.id}
                         category={value}/>
                 ))}
@@ -49,4 +49,4 @@ const CoffeeList: React.FC<CoffeeListProps> = (props) => {
     );
 };
 
-export default CoffeeList;
+export default DrinkList;

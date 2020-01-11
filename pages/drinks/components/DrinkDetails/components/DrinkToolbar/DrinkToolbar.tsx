@@ -68,7 +68,7 @@ export interface CoffeeToolbarProps {
     className?: string;
 }
 
-const CoffeeToolbar: React.FC<CoffeeToolbarProps> = (props) => {
+const DrinkToolbar: React.FC<CoffeeToolbarProps> = (props) => {
     const {className, ...rest} = props;
 
     const classes = useStyles();
@@ -93,7 +93,7 @@ const CoffeeToolbar: React.FC<CoffeeToolbarProps> = (props) => {
                     className={classes.backButton}
                     component={Link}
                     edge="start"
-                    href={Links.Coffee}
+                    href={Links.Drinks}
                 >
                     <KeyboardBackspaceIcon/>
                 </IconButton>
@@ -155,4 +155,4 @@ const CoffeeToolbar: React.FC<CoffeeToolbarProps> = (props) => {
     );
 };
 
-export default CoffeeToolbar;
+export default DrinkToolbar;
