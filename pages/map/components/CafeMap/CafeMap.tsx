@@ -1,4 +1,5 @@
 import {
+    CircularProgress,
     ExpansionPanel,
     ExpansionPanelDetails,
     ExpansionPanelSummary,
@@ -11,13 +12,21 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {Bff} from 'api';
-import {CoffeeHouseMapPoint, CountryCityModel} from 'api/bff/types';
 import L from 'leaflet';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer} from 'react';
 import {Map, Marker, Popup, TileLayer, ZoomControl} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import defaultTheme from 'theme';
 import {LeafletControl, PopupCard} from './components';
+import {
+    cafeMapReducer,
+    changeCity,
+    filterRequest,
+    filterSuccess,
+    initialState,
+    markersRequest,
+    markersSuccess,
+} from './reducer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,83 +62,61 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const defaultCoordinates = '0,0,3';
 const attribution =
     '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors ' +
     '&copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>';
-const storageKey = 'e1980037f03a43968f9591d745164ac1';
-
-interface City {
-    lat: number;
-    lng: number;
-    zoom: number;
-    cityId?: string;
-}
 
 const CafeMap: React.FC = () => {
     const classes = useStyles();
-    const [cities, setCities] = useState<CountryCityModel[]>([]);
+    const isDesktop = useMediaQuery(defaultTheme.breakpoints.up('lg'), {defaultMatches: true});
+    const [state, dispatch] = useReducer(cafeMapReducer, initialState);
 
     useEffect(() => {
         let isMounted = true;
 
-        Bff.Cities.List().then((x) => {
-            if (isMounted) {
-                setCities(x);
-            }
-        });
+        dispatch(filterRequest());
+        Bff.Cities.List()
+            .then((response) => {
+                if (isMounted) {
+                    dispatch(filterSuccess(response));
+                }
+            });
 
         return () => {
             isMounted = false;
         };
     }, []);
 
-    const isDesktop = useMediaQuery(defaultTheme.breakpoints.up('lg'), {
-        defaultMatches: true,
-    });
+    useEffect(() => {
+        const fetchCities = (id: string) => {
+            dispatch(markersRequest());
+            Bff.Cities.Cafes(id)
+                .then((response) => dispatch(markersSuccess(response)));
+        };
 
-    const parseStringCenter = (value: string | null) => {
-        if (!value) {
-            value = defaultCoordinates;
+        if (state.cityId) {
+            fetchCities(state.cityId);
         }
 
-        const [lat = 0, lng = 0, zoom = 3, cityId] = value.split(',');
-        return {
-            lat: Number(lat),
-            lng: Number(lng),
-            zoom: Number(zoom),
-            cityId,
-        };
-    };
-
-    const [city, setCity] = useState<City>(parseStringCenter(localStorage.getItem(storageKey)));
-    const [markers, setMarkers] = useState<CoffeeHouseMapPoint[]>([]);
+        return () => dispatch(markersSuccess([]));
+    }, [state.cityId]);
 
     const updateCity = (event: React.ChangeEvent<{ value: unknown }>) => {
         const value = event.target.value as string;
-        const data = parseStringCenter(value);
 
-        setCity(data);
-        localStorage.setItem(storageKey, value);
-    };
-
-    useEffect(() => {
-        const fetchCities = (id: string) => {
-            Bff.Cities.Cafes(id)
-                .then((response) => setMarkers(response));
-        };
-
-        if (city.cityId !== undefined) {
-            fetchCities(city.cityId);
+        if (!value) {
+            return dispatch(changeCity('', 0, 0, 3));
         }
 
-        return () => setMarkers([]);
-    }, [city]);
+        const city = state.filter.data.find((x) => x.cityId === value)!;
+
+        return dispatch(changeCity(city.cityId, city.position.latitude, city.position.longitude, 12));
+    };
 
     return (
         <div className={classes.root}>
-            <Map center={[city.lat, city.lng]}
-                 zoom={city.zoom}
+            <Map center={[state.lat, state.lng]}
+                 zoom={state.zoom}
                  minZoom={3}
                  maxZoom={22}
                  className={classes.map}
@@ -139,30 +126,33 @@ const CafeMap: React.FC = () => {
                 <ZoomControl position={'bottomright'}/>
                 <LeafletControl position={'topleft'}>
                     <ExpansionPanel square={true} defaultExpanded={isDesktop} className={classes.filterPanel}>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                        <ExpansionPanelSummary
+                            expandIcon={
+                                state.filter.loading || state.markers.loading
+                                    ? <CircularProgress variant={'indeterminate'} style={{width: 24, height: 24}}/>
+                                    : <ExpandMoreIcon/>
+                            }>
                             <Typography className={classes.heading}>Filter</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
+                            {state.filter.data.length > 0 &&
                             <FormControl className={classes.formControl}>
                                 <InputLabel htmlFor="age-native-simple">City</InputLabel>
-                                <Select
-                                    native={true}
-                                    value={`${city.lat},${city.lng},${city.zoom},${city.cityId}`}
-                                    onChange={updateCity}>
-                                    <option value={defaultCoordinates}/>
-                                    {cities.map((value) =>
-                                        <option key={value.cityId}
-                                                value={`${value.position.latitude},${value.position.longitude},12,${value.cityId}`}>
+                                <Select native={true} value={state.cityId} onChange={updateCity}>
+                                    <option value=""/>
+                                    {state.filter.data.map((value) =>
+                                        <option key={value.cityId} value={value.cityId}>
                                             {value.countryName} - {value.cityName}
                                         </option>)}
                                 </Select>
                             </FormControl>
+                            }
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 </LeafletControl>
 
                 <MarkerClusterGroup>
-                    {markers.map((point) => {
+                    {state.markers.data.map((point) => {
                         return (
                             <Marker key={point.cafeId}
                                     position={[point.position.latitude, point.position.longitude]}
