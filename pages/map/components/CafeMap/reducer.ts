@@ -51,14 +51,31 @@ export interface State {
         error?: any,
     };
 }
-
 const storageKey = 'e1980037f03a43968f9591d745164ac1';
+const savePosition = (cityId: string, lat: number, lng: number, zoom: number) => {
+    const value = `${lat},${lng},${zoom},${cityId}`;
+    localStorage.setItem(storageKey, value);
+};
+
+const getPosition = () => {
+    const value = localStorage.getItem(storageKey) || '';
+    const [lat = 0, lng = 0, zoom = 3, cityId = ''] = value.split(',');
+
+    return {
+        cityId,
+        lat: Number(lat),
+        lng: Number(lng),
+        zoom: Number(zoom),
+    };
+};
+
+const local = getPosition();
 
 export const initialState: State = {
-    cityId: localStorage.getItem(storageKey) || '',
-    lat: 0,
-    lng: 0,
-    zoom: 3,
+    cityId: local.cityId,
+    lat: local.lat,
+    lng: local.lng,
+    zoom: local.zoom,
     markers: {
         loading: false,
         data: [],
@@ -91,7 +108,8 @@ export const cafeMapReducer = (state: State, action: Action): State => {
 
         case Types.changeCity:
             const {cityId, lat, lng, zoom} = action.result;
-            localStorage.setItem(storageKey, cityId);
+            savePosition(cityId, lat, lng, zoom);
+
             return {...state, cityId, lat, lng, zoom};
 
         default:

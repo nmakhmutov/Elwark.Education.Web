@@ -10,8 +10,10 @@ import {
     Typography,
 } from '@material-ui/core';
 import {CoffeeHouseMapPoint} from 'api/bff/types';
-import {RatingText, VotersText} from 'components';
+import {Link, RatingText, VotersText} from 'components';
 import React from 'react';
+import {Links} from 'utils';
+import {CompanyTabs} from 'utils/Links';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -23,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
         height: 0,
         paddingTop: '56.25%', // 16:9
     },
+    button: {
+        '&:hover': {
+            textDecoration: 'none',
+        },
+    },
 }));
 
 interface PopupCardProps {
@@ -32,6 +39,9 @@ interface PopupCardProps {
 const PopupCard: React.FC<PopupCardProps> = (props) => {
     const {point} = props;
     const classes = useStyles();
+    const companyLink = Links.Company(point.companyId, CompanyTabs.Overview);
+    const cafeLink = Links.CafeOverview(point.cafeId);
+
     return (
         <Card className={classes.card}>
             <CardHeader
@@ -56,8 +66,21 @@ const PopupCard: React.FC<PopupCardProps> = (props) => {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <Button size="small" color="primary">
-                    Learn More
+                <Button className={classes.button}
+                        size={'small'}
+                        color={'primary'}
+                        component={Link}
+                        href={cafeLink.href}
+                        as={cafeLink.as}>
+                    Cafe
+                </Button>
+                <Button className={classes.button}
+                        size={'small'}
+                        color={'primary'}
+                        component={Link}
+                        href={companyLink.href}
+                        as={companyLink.as}>
+                    Company
                 </Button>
             </CardActions>
         </Card>
