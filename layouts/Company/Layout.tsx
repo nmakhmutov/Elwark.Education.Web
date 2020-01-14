@@ -1,7 +1,6 @@
 import {colors, Tab, Tabs} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {ImageResolution, Storage} from 'api';
 import {CompanyModel} from 'api/bff/types';
 import {DefaultLayout} from 'layouts';
 import {useRouter} from 'next/router';
@@ -48,7 +47,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
         <DefaultLayout title={title}>
             <Header name={name}
                     avatar={logotype.square}
-                    cover={Storage.Images.Random(ImageResolution.FHD)}
+                    cover={logotype.background}
                     bio={description}/>
             <div className={classes.inner}>
                 <Tabs onChange={onTabClick} scrollButtons={'auto'} value={tab} variant={'scrollable'}>

@@ -49,7 +49,7 @@ const Index: NextPage<CompaniesProps> = (props) => {
                 <div className={classes.content}>
                     <Grid container={true} spacing={3}>
                         {companies.map((company) => (
-                            <Grid item={true} key={company.id} lg={4} md={6} xs={12}>
+                            <Grid item={true} key={company.id} lg={2} md={4} sm={6} xs={12}>
                                 <CompanyCard company={company}/>
                             </Grid>
                         ))}

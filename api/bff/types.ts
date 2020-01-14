@@ -16,6 +16,8 @@ export interface CompanyShortModel {
 export interface CompanyLogotype {
     square: string;
     rectangle: string;
+    background: string;
+    color: string;
 }
 
 export interface CompanyStats {
