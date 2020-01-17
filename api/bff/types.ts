@@ -88,3 +88,13 @@ export interface CoffeeHouseMapPoint {
     position: Position;
     rating: RatingModel;
 }
+
+export interface CompanyCafeItem {
+    cafeId: number;
+    country: CountryModel;
+    city: CityModel;
+    name: string;
+    image: string;
+    address: string;
+    rating: RatingModel;
+}

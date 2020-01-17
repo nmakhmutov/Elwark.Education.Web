@@ -43,10 +43,7 @@ const CompanyCard: React.FC<CompanyCardProps> = (props) => {
     const companyOverview = Links.Company(id, CompanyTabs.Overview);
 
     return (
-        <Card
-            {...rest}
-            className={clsx(classes.root, className)}
-        >
+        <Card {...rest} className={clsx(classes.root, className)}>
             <CardMedia
                 className={classes.media}
                 image={logotype.background}

@@ -59,6 +59,10 @@ export default class Storage {
     };
 
     public static Images = class {
+        public static Empty = 'http://dustyroom.com/wp-content/uploads/2017/01/empty-featured2-1.png'
+
+        public static CountryFlag = (countryCode: string) => `https://cdn.rawgit.com/hjnilsson/country-flags/master/svg/${countryCode}.svg`
+
         public static Random(name: ImageResolution, forse: boolean = false,
                              orientation: ImageOrientation = ImageOrientation.Landscape) {
             if (forse) {

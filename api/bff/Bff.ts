@@ -1,5 +1,12 @@
 import fetch from 'isomorphic-unfetch';
-import {CoffeeHouseMapPoint, CompanyModel, CompanyShortModel, CompanyStats, CountryCityModel} from './types';
+import {
+    CoffeeHouseMapPoint,
+    CompanyCafeItem,
+    CompanyModel,
+    CompanyShortModel,
+    CompanyStats,
+    CountryCityModel
+} from './types';
 
 const host = process.env.BFF_HOST || 'http://localhost:5199';
 
@@ -25,6 +32,14 @@ export default class Bff {
             const stats = await res.json();
 
             return stats as CompanyStats;
+        }
+
+        public static async Cafes(id: number, limit: number, offset: number) {
+            const res = await fetch(`${host}/companies/${id}/cafes?offset=${offset}&limit=${limit}`);
+            const cafes = await res.json();
+
+            return cafes as CompanyCafeItem[];
+
         }
     };
 
