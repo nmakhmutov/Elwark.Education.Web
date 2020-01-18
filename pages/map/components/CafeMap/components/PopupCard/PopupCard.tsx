@@ -1,14 +1,4 @@
-import {
-    Avatar,
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    CardHeader,
-    CardMedia,
-    makeStyles,
-    Typography,
-} from '@material-ui/core';
+import {Avatar, Card, CardContent, CardHeader, CardMedia, makeStyles, Typography,} from '@material-ui/core';
 import {CoffeeHouseMapPoint} from 'api/bff/types';
 import {Link, RatingText, VotersText} from 'components';
 import React from 'react';
@@ -39,14 +29,14 @@ interface PopupCardProps {
 const PopupCard: React.FC<PopupCardProps> = (props) => {
     const {point} = props;
     const classes = useStyles();
-    const companyLink = Links.Company(point.companyId, CompanyTabs.Overview);
+    const companyLink = Links.Company(point.company.id, CompanyTabs.Overview);
     const cafeLink = Links.CafeOverview(point.cafeId);
 
     return (
         <Card className={classes.card}>
             <CardHeader
-                avatar={<Avatar src={point.logo} alt={point.name}/>}
-                title={point.name}
+                avatar={<Avatar src={point.company.logotype.rectangle} alt={point.name}/>}
+                title={<Link href={companyLink.href} as={companyLink.as}>{point.company.name}</Link>}
                 titleTypographyProps={{variant: 'body1'}}
                 subheader={point.address}
             />
@@ -58,6 +48,15 @@ const PopupCard: React.FC<PopupCardProps> = (props) => {
             />
             }
             <CardContent>
+                <Typography
+                    align={'center'}
+                    component={Link}
+                    display={'block'}
+                    href={cafeLink.href}
+                    as={cafeLink.as}
+                    variant={'h5'}>
+                    {point.name}
+                </Typography>
                 <Typography variant={'h3'} align={'center'}>
                     <RatingText value={point.rating.value}/>
                 </Typography>
@@ -65,24 +64,6 @@ const PopupCard: React.FC<PopupCardProps> = (props) => {
                     <VotersText value={point.rating.voters}/>
                 </Typography>
             </CardContent>
-            <CardActions disableSpacing>
-                <Button className={classes.button}
-                        size={'small'}
-                        color={'primary'}
-                        component={Link}
-                        href={cafeLink.href}
-                        as={cafeLink.as}>
-                    Cafe
-                </Button>
-                <Button className={classes.button}
-                        size={'small'}
-                        color={'primary'}
-                        component={Link}
-                        href={companyLink.href}
-                        as={companyLink.as}>
-                    Company
-                </Button>
-            </CardActions>
         </Card>
     );
 };

@@ -80,13 +80,12 @@ export interface CountryCityModel {
 export interface CoffeeHouseMapPoint {
     cafeId: number;
     cityId: string;
-    companyId: number;
     name: string;
-    logo: string;
     image?: string;
     address: string;
     position: Position;
     rating: RatingModel;
+    company: CompanyShortModel;
 }
 
 export interface CompanyCafeItem {
