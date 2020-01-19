@@ -24,10 +24,7 @@ const NavigationList: React.FC<NavigationListProps> = (props) => {
 
     return (
         <List>
-            {pages.reduce(
-                (items, page) => reduceChildRoutes({items, page, ...rest}),
-                [],
-            )}
+            {pages.reduce((items, page) => reduceChildRoutes({items, page, ...rest}), [])}
         </List>
     );
 };
@@ -46,11 +43,7 @@ const reduceChildRoutes = (props: any) => {
                 open={open}
                 title={page.title}
             >
-                <NavigationList
-                    depth={depth + 1}
-                    pages={page.children}
-                    router={router}
-                />
+                <NavigationList depth={depth + 1} pages={page.children} router={router}/>
             </NavigationListItem>,
         );
     } else {
@@ -84,10 +77,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
     const router = useRouter();
 
     return (
-        <Component
-            {...rest}
-            className={clsx(classes.root, className)}
-        >
+        <Component {...rest} className={clsx(classes.root, className)}>
             {title && <Typography variant="overline">{title}</Typography>}
             <NavigationList depth={0} pages={pages} router={router}/>
         </Component>

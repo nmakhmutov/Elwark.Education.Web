@@ -134,7 +134,6 @@ const NavigationListItem: React.FC<NavigationListItemProps> = (props) => {
             </ListItem>
         );
     } else {
-
         return (
             <ListItem
                 {...rest}

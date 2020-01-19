@@ -58,4 +58,13 @@ export default class Bff {
             return cafes as CoffeeHouseMapPoint[];
         }
     };
+
+    public static Categories = class {
+        public static async List() {
+            const res = await fetch(`${host}/categories`);
+            const categories = await res.json();
+
+            return categories;
+        }
+    };
 }

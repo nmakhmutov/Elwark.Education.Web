@@ -62,10 +62,15 @@ export interface CafeModel {
 }
 
 export interface CoffeeCategoryModel {
-    id: number;
+    item: CoffeeCategoryItem;
+    children: CoffeeCategoryModel[];
+}
+
+export interface CoffeeCategoryItem {
+    categoryId: number;
     name: string;
+    language: string;
     image?: string;
-    description?: string;
 }
 
 export interface CountryCityModel {
