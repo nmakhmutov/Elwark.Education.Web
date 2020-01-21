@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import Storage from 'api/storage';
 import clsx from 'clsx';
 import {Link, Navigation} from 'components';
-import {useRouter} from 'next/router';
 import React from 'react';
 import {SideBarLinks} from 'utils';
 
@@ -47,30 +46,26 @@ export interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = (props) => {
     const {openMobile, onMobileClose, className, ...rest} = props;
     const classes = useStyles();
-    const router = useRouter();
 
     const navbarContent = (
         <div className={classes.content}>
             <div className={classes.profile}>
                 <Avatar
-                    alt="Person"
+                    alt={'Person'}
                     className={classes.avatar}
                     component={Link}
                     src={Storage.Static.Icons.User.Default}
                     href="/profile/1/timeline"
                 />
-                <Typography
-                    className={classes.name}
-                    variant="h4"
-                >
+                <Typography className={classes.name} variant={'h4'}>
                     Elwark Ink.
                 </Typography>
-                <Typography variant="body2">Cafe navigator</Typography>
+                <Typography variant={'body2'}>Cafe navigator</Typography>
             </div>
             <Divider className={classes.divider}/>
             <nav className={classes.navigation}>
                 {SideBarLinks.map((list) => (
-                    <Navigation component="div" key={list.title} pages={list.pages} title={list.title}/>
+                    <Navigation component={'div'} key={list.title} pages={list.pages} title={list.title}/>
                 ))}
             </nav>
         </div>
@@ -83,12 +78,9 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                     anchor="left"
                     onClose={onMobileClose}
                     open={openMobile}
-                    variant="temporary"
+                    variant={'temporary'}
                 >
-                    <div
-                        {...rest}
-                        className={clsx(classes.root, className)}
-                    >
+                    <div {...rest} className={clsx(classes.root, className)}>
                         {navbarContent}
                     </div>
                 </Drawer>
@@ -98,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                     {...rest}
                     className={clsx(classes.root, className)}
                     elevation={1}
-                    square
+                    square={true}
                 >
                     {navbarContent}
                 </Paper>

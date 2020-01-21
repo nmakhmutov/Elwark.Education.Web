@@ -6,13 +6,13 @@ export default class Links {
     public static Company = (id: number, tab: CompanyTabs) => ({
         href: `/companies/[company]/${tab}`,
         as: `/companies/${id}/${tab}`,
-    });
+    })
     public static CompaniesPaging = (page: number) => `/companies?page=${page}`;
     public static DrinkItem = (id: number) => `/drinks?id=${id}`;
     public static CafeOverview = (id: number) => ({
         href: '/cafe/[cafe]/overview',
         as: `/cafe/${id}/overview`,
-    });
+    })
 }
 
 export enum CompanyTabs {

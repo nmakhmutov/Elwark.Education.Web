@@ -78,7 +78,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
 
     return (
         <Component {...rest} className={clsx(classes.root, className)}>
-            {title && <Typography variant="overline">{title}</Typography>}
+            {title && <Typography variant={'overline'}>{title}</Typography>}
             <NavigationList depth={0} pages={pages} router={router}/>
         </Component>
     );

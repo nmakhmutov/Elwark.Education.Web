@@ -1,5 +1,5 @@
 import {makeStyles} from '@material-ui/core';
-import {ImageResolution, Storage} from 'api';
+import {Bff} from 'api';
 import {CoffeeCategoryModel} from 'api/bff/types';
 import clsx from 'clsx';
 import {DefaultLayout} from 'layouts';
@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     list: {
+        'overflow-y': 'scroll',
         'width': 300,
         'flexBasis': 300,
         'flexShrink': 0,
@@ -61,7 +62,7 @@ const Drinks: NextPage<CoffeeProps> = (props) => {
                 [classes.root]: true,
                 [classes.open]: id !== undefined,
             })}>
-                <DrinkList selected={id} list={list} className={classes.list}/>
+                <DrinkList list={list} className={classes.list}/>
                 {id ? (<DrinkDetails className={classes.details}/>)
                     : (<DrinkPlaceholder className={classes.placeholder}/>)}
             </div>
@@ -71,18 +72,9 @@ const Drinks: NextPage<CoffeeProps> = (props) => {
 
 Drinks.getInitialProps = async ({query}) => {
     const id = query.id ? Number(query.id) : undefined;
+    const list = await Bff.Categories.List();
 
-    return {
-        id,
-        list: [
-            {id: 1, name: 'Ristretto', image: Storage.Images.Random(ImageResolution.VGA)},
-            {id: 2, name: 'Espresso', image: Storage.Images.Random(ImageResolution.SVGA)},
-            {id: 3, name: 'Latte', image: Storage.Images.Random(ImageResolution.HD)},
-            {id: 4, name: 'Cappuccino', image: Storage.Images.Random(ImageResolution.XGA)},
-            {id: 5, name: 'Flat white', description: 'fvee verbovwnret en ow4ntgiwotng [wtn  w tgwrtgrtgvrt'},
-            {id: 6, name: 'Afogado', image: Storage.Images.Random(ImageResolution.WXGAplus)},
-        ],
-    } as CoffeeProps;
+    return {id, list} as CoffeeProps;
 };
 
 export default Drinks;
