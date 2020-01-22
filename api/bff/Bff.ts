@@ -2,6 +2,7 @@ import fetch from 'isomorphic-unfetch';
 import {
     CoffeeHouseMapPoint,
     CompanyCafeItem,
+    CompanyCatalogItem,
     CompanyModel,
     CompanyShortModel,
     CompanyStats,
@@ -39,7 +40,13 @@ export default class Bff {
             const cafes = await res.json();
 
             return cafes as CompanyCafeItem[];
+        }
 
+        public static async Catalog(id: number) {
+            const res = await fetch(`${host}/companies/${id}/catalog`);
+            const catalog = await res.json();
+
+            return catalog as CompanyCatalogItem[];
         }
     };
 

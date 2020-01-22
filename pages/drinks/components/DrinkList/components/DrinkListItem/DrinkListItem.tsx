@@ -65,6 +65,15 @@ export interface CoffeeListItemProps {
     href?: string;
 }
 
+const DrinkImage: React.FC<{ image?: string, title: string, className: string }> = (props) => {
+    const {image, title, className} = props;
+    if (image) {
+        return (<Avatar alt={'Coffee type'} className={className} src={image}/>);
+    }
+
+    return (<Avatar alt={'Coffee type'} className={className}>{title[0].toUpperCase()}</Avatar>);
+};
+
 const DrinkListItem: React.FC<CoffeeListItemProps> = (props) => {
     const classes = useStyles();
     const {className, open: openProp, depth, image, title, href, children} = props;
@@ -87,27 +96,13 @@ const DrinkListItem: React.FC<CoffeeListItemProps> = (props) => {
     if (children) {
         return (
             <ListItem className={clsx(classes.item, className)} disableGutters={true}>
-                <Button
-                    className={classes.button}
-                    onClick={handleToggle}
-                    style={style}
-                >
-                    {image
-                        ? (<Avatar alt="Coffee type" className={classes.icon} src={image}/>)
-                        : (<Avatar alt="Coffee type" className={classes.icon}>{title[0].toUpperCase()}</Avatar>)
-                    }
+                <Button className={classes.button} onClick={handleToggle} style={style}>
+                    <DrinkImage title={title} className={classes.icon} image={image}/>
                     {title}
-                    {open ? (
-                        <ExpandLessIcon
-                            className={classes.expandIcon}
-                            color="inherit"
-                        />
-                    ) : (
-                        <ExpandMoreIcon
-                            className={classes.expandIcon}
-                            color="inherit"
-                        />
-                    )}
+                    {open
+                        ? (<ExpandLessIcon className={classes.expandIcon} color={'inherit'}/>)
+                        : (<ExpandMoreIcon className={classes.expandIcon} color={'inherit'}/>)
+                    }
                 </Button>
                 <Collapse in={open}>{children}</Collapse>
             </ListItem>
@@ -125,10 +120,7 @@ const DrinkListItem: React.FC<CoffeeListItemProps> = (props) => {
                 style={style}
                 href={href}
             >
-                {image
-                    ? (<Avatar alt="Coffee type" className={classes.icon} src={image}/>)
-                    : (<Avatar alt="Coffee type" className={classes.icon}>{title[0].toUpperCase()}</Avatar>)
-                }
+                <DrinkImage title={title} className={classes.icon} image={image}/>
                 {title}
             </Button>
         </ListItem>

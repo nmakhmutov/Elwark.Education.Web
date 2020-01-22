@@ -102,3 +102,10 @@ export interface CompanyCafeItem {
     address: string;
     rating: RatingModel;
 }
+
+export interface CompanyCatalogItem {
+    catalogItemId: number;
+    categoryId: number;
+    image?: string;
+    name: string;
+}
