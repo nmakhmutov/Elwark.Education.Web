@@ -1,4 +1,5 @@
 import {Avatar, Card, CardContent, CardMedia, Divider, Typography} from '@material-ui/core';
+import {CardProps} from '@material-ui/core/Card/Card';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {Storage} from 'api';
 import {CompanyCafeItem} from 'api/bff/types';
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export interface CafeCardProps {
+export interface CafeCardProps extends CardProps {
     className?: string;
     cafe: CompanyCafeItem;
 }

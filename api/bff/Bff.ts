@@ -6,7 +6,7 @@ import {
     CompanyModel,
     CompanyShortModel,
     CompanyStats,
-    CountryCityModel
+    CountryCityModel, EnumerableResponse,
 } from './types';
 
 const host = process.env.BFF_HOST || 'http://localhost:5199';
@@ -18,7 +18,7 @@ export default class Bff {
             const res = await fetch(`${host}/companies?offset=${offset}&limit=${limit}`);
             const companies = await res.json();
 
-            return companies as CompanyShortModel[];
+            return companies as EnumerableResponse<CompanyShortModel>;
         }
 
         public static async Get(id: number) {

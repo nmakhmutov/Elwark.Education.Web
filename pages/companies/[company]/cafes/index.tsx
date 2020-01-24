@@ -20,7 +20,7 @@ const Cafes: NextPage<CafeProps> = (props) => {
             <Grid container={true} spacing={2}>
                 {cafes.map((cafe) =>
                     (<Grid key={cafe.cafeId} item={true} xs={12} md={4} lg={3}>
-                        <CafeCard cafe={cafe}/>
+                        <CafeCard cafe={cafe} />
                     </Grid>),
                 )}
             </Grid>

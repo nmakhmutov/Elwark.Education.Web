@@ -1,3 +1,11 @@
+export interface EnumerableResponse<T> {
+    total: number;
+    offset: number;
+    limit: number;
+    hasNext: boolean;
+    items: T[];
+}
+
 export interface CompanyModel {
     id: number;
     name: string;

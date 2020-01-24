@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Bff} from 'api';
-import {CompanyShortModel} from 'api/bff/types';
+import {CompanyShortModel, EnumerableResponse} from 'api/bff/types';
 import {Link} from 'components';
 import {DefaultLayout} from 'layouts';
 import {NextPage} from 'next';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface CompaniesProps {
     page: number;
-    companies: CompanyShortModel[];
+    companies: EnumerableResponse<CompanyShortModel>;
 }
 
 const limit = 30;
@@ -48,7 +48,7 @@ const Index: NextPage<CompaniesProps> = (props) => {
                 <CompanyToolbar/>
                 <div className={classes.content}>
                     <Grid container={true} spacing={3}>
-                        {companies.map((company) => (
+                        {companies.items.map((company) => (
                             <Grid item={true} key={company.id} lg={2} md={4} sm={6} xs={12}>
                                 <CompanyCard company={company}/>
                             </Grid>
@@ -61,7 +61,7 @@ const Index: NextPage<CompaniesProps> = (props) => {
                                 href={Links.CompaniesPaging(page - 1)}>
                         <ChevronLeftIcon/>
                     </IconButton>
-                    <IconButton disabled={companies.length !== limit}
+                    <IconButton disabled={!companies.hasNext}
                                 component={Link}
                                 href={Links.CompaniesPaging(page + 1)}>
                         <ChevronRightIcon/>
@@ -77,10 +77,7 @@ Index.getInitialProps = async ({query, req}) => {
     const offset = (page - 1) * limit;
     const companies = await Bff.Company.List(limit, offset);
 
-    return {
-        page,
-        companies,
-    } as CompaniesProps;
+    return {page, companies} as CompaniesProps;
 };
 
 export default Index;
