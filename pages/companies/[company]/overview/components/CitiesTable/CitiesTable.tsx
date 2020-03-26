@@ -44,7 +44,7 @@ export interface CitiesProps {
 }
 
 const CitiesTable: React.FC<CitiesProps> = (props) => {
-    const {className, cafes, ...rest} = props;
+    const {className, cafes} = props;
 
     const classes = useStyles();
     const [page, setPage] = useState(0);
@@ -54,7 +54,7 @@ const CitiesTable: React.FC<CitiesProps> = (props) => {
         .slice(page * rows, page * rows + rows);
 
     return (
-        <Card {...rest} className={clsx(classes.root, className)}>
+        <Card className={clsx(classes.root, className)}>
             <CardHeader title="Rating by cities"/>
             <Divider/>
             <CardContent className={classes.content}>

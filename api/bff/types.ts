@@ -10,6 +10,7 @@ export interface CompanyModel {
     id: number;
     name: string;
     description: string;
+    about?: string;
     logotype: CompanyLogotype;
     sites: Record<string, string>;
     contacts: Record<string, string>;
@@ -18,6 +19,7 @@ export interface CompanyModel {
 export interface CompanyShortModel {
     id: number;
     name: string;
+    description: string;
     logotype: CompanyLogotype;
 }
 

@@ -1,4 +1,4 @@
-import {Avatar, Card, CardContent, CardMedia, Typography} from '@material-ui/core';
+import {Avatar, Button, Card, CardContent, CardMedia, Divider, Grid, Typography} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {CompanyShortModel} from 'api/bff/types';
 import clsx from 'clsx';
@@ -30,6 +30,12 @@ const useStyles = makeStyles((theme) => ({
     divider: {
         margin: theme.spacing(2, 0),
     },
+    button: {
+        'textDecoration': 'none',
+        '&:hover': {
+            textDecoration: 'none',
+        },
+    },
 }));
 
 export interface CompanyCardProps {
@@ -38,12 +44,14 @@ export interface CompanyCardProps {
 }
 
 const CompanyCard: React.FC<CompanyCardProps> = (props) => {
-    const {className, company: {id, logotype, name}, ...rest} = props;
+    const {className, company: {id, logotype, name, description}} = props;
     const classes = useStyles();
     const companyOverview = Links.Company(id, CompanyTabs.Overview);
+    const companyCatalog = Links.Company(id, CompanyTabs.Catalog);
+    const companyCafes = Links.Company(id, CompanyTabs.Cafes);
 
     return (
-        <Card {...rest} className={clsx(classes.root, className)}>
+        <Card className={clsx(classes.root, className)}>
             <CardMedia
                 className={classes.media}
                 image={logotype.background}
@@ -51,7 +59,6 @@ const CompanyCard: React.FC<CompanyCardProps> = (props) => {
             <CardContent className={classes.content}>
                 <div className={classes.avatarContainer}>
                     <Avatar
-                        alt="Subscriber"
                         className={classes.avatar}
                         component={Link}
                         href={companyOverview.href}
@@ -60,7 +67,7 @@ const CompanyCard: React.FC<CompanyCardProps> = (props) => {
                     />
                 </div>
                 <Typography
-                    align="center"
+                    align={'center'}
                     component={Link}
                     display="block"
                     href={companyOverview.href}
@@ -68,19 +75,42 @@ const CompanyCard: React.FC<CompanyCardProps> = (props) => {
                     variant="h6">
                     {name}
                 </Typography>
-                {/*<Typography*/}
-                {/*    align="center"*/}
-                {/*    variant="body2"*/}
-                {/*>*/}
-                {/*    connections in common*/}
-                {/*</Typography>*/}
-                {/*<Divider className={classes.divider}/>*/}
-                {/*<Grid*/}
-                {/*    container*/}
-                {/*    spacing={1}*/}
-                {/*>*/}
-                {/*    hello*/}
-                {/*</Grid>*/}
+                <Typography align="center" variant="body2" noWrap={true}>
+                    {description}
+                </Typography>
+                <Divider className={classes.divider}/>
+                <Grid
+                    alignItems="center"
+                    container={true}
+                    justify="space-between"
+                >
+                    <Grid item>
+                        <Button
+                            className={classes.button}
+                            component={Link}
+                            size={'small'}
+                            color={'secondary'}
+                            variant={'outlined'}
+                            href={companyCafes.href}
+                            as={companyCafes.as}
+                        >
+                            Cafes
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            className={classes.button}
+                            component={Link}
+                            size={'small'}
+                            variant={'outlined'}
+                            color={'secondary'}
+                            href={companyCatalog.href}
+                            as={companyCatalog.as}
+                        >
+                            Catalog
+                        </Button>
+                    </Grid>
+                </Grid>
             </CardContent>
         </Card>
     );

@@ -4,6 +4,7 @@ import {Bff} from 'api';
 import {CompanyModel, CompanyStats} from 'api/bff/types';
 import {CompanyLayout} from 'layouts';
 import {NextPage} from 'next';
+import About from 'pages/companies/[company]/overview/components/About';
 import React from 'react';
 import {CompanyTabs} from 'utils/Links';
 import {CitiesTable, Contacts, Rating, Sites, Summary} from './components';
@@ -39,6 +40,11 @@ const Overview: NextPage<OverviewProps> = (props) => {
                     <Sites list={Object.entries(company.sites)}/>
                     <Contacts list={Object.entries(company.contacts)} className={classes.marginTop}/>
                 </Grid>
+                {company.about &&
+                <Grid item={true} xs={12}>
+                    <About about={company.about}/>
+                </Grid>
+                }
             </Grid>
         </CompanyLayout>
     );
