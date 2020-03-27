@@ -1,4 +1,4 @@
-import {Avatar, Button, Card, CardContent, CardMedia, Divider, Grid, Typography} from '@material-ui/core';
+import {Avatar, Card, CardContent, CardMedia, Divider, Grid, Typography} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {CompanyShortModel} from 'api/bff/types';
 import clsx from 'clsx';
@@ -72,43 +72,35 @@ const CompanyCard: React.FC<CompanyCardProps> = (props) => {
                     display="block"
                     href={companyOverview.href}
                     as={companyOverview.as}
-                    variant="h6">
+                    variant="h5">
                     {name}
                 </Typography>
                 <Typography align="center" variant="body2" noWrap={true}>
                     {description}
                 </Typography>
                 <Divider className={classes.divider}/>
-                <Grid
-                    alignItems="center"
-                    container={true}
-                    justify="space-between"
-                >
-                    <Grid item>
-                        <Button
-                            className={classes.button}
+                <Grid container={true} justify="space-between">
+                    <Grid item={true}>
+                        <Typography
+                            align={'center'}
                             component={Link}
-                            size={'small'}
-                            color={'secondary'}
-                            variant={'outlined'}
+                            display="block"
                             href={companyCafes.href}
                             as={companyCafes.as}
-                        >
+                            variant="h6">
                             Cafes
-                        </Button>
+                        </Typography>
                     </Grid>
-                    <Grid item>
-                        <Button
-                            className={classes.button}
+                    <Grid item={true}>
+                        <Typography
+                            align={'center'}
                             component={Link}
-                            size={'small'}
-                            variant={'outlined'}
-                            color={'secondary'}
+                            display="block"
                             href={companyCatalog.href}
                             as={companyCatalog.as}
-                        >
+                            variant="h6">
                             Catalog
-                        </Button>
+                        </Typography>
                     </Grid>
                 </Grid>
             </CardContent>

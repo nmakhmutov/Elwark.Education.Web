@@ -124,6 +124,14 @@ const TopBar: React.FC<TopBarProps> = (props) => {
             color="primary"
         >
             <Toolbar>
+                <Hidden lgUp>
+                    <IconButton
+                        color="inherit"
+                        onClick={onOpenNavBarMobile}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                </Hidden>
                 <Link href={Links.Home}>
                     <img
                         alt="Logo"
@@ -131,49 +139,49 @@ const TopBar: React.FC<TopBarProps> = (props) => {
                     />
                 </Link>
                 <div className={classes.flexGrow} />
-                <Hidden smDown>
-                    <div
-                        className={classes.search}
-                        ref={searchRef}
-                    >
-                        <SearchIcon className={classes.searchIcon} />
-                        <Input
-                            className={classes.searchInput}
-                            disableUnderline
-                            onChange={handleSearchChange}
-                            placeholder="Search"
-                            value={searchValue}
-                        />
-                    </div>
-                    <Popper
-                        anchorEl={searchRef.current}
-                        className={classes.searchPopper}
-                        open={openSearchPopover}
-                        transition
-                    >
-                        <ClickAwayListener onClickAway={handleSearchPopverClose}>
-                            <Paper
-                                className={classes.searchPopperContent}
-                                elevation={3}
-                            >
-                                <List>
-                                    {popularSearches.map((search) => (
-                                        <ListItem
-                                            button
-                                            key={search}
-                                            onClick={handleSearchPopverClose}
-                                        >
-                                            <ListItemIcon>
-                                                <SearchIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary={search} />
-                                        </ListItem>
-                                    ))}
-                                </List>
-                            </Paper>
-                        </ClickAwayListener>
-                    </Popper>
-                </Hidden>
+                {/*<Hidden smDown>*/}
+                {/*    <div*/}
+                {/*        className={classes.search}*/}
+                {/*        ref={searchRef}*/}
+                {/*    >*/}
+                {/*        <SearchIcon className={classes.searchIcon} />*/}
+                {/*        <Input*/}
+                {/*            className={classes.searchInput}*/}
+                {/*            disableUnderline*/}
+                {/*            onChange={handleSearchChange}*/}
+                {/*            placeholder="Search"*/}
+                {/*            value={searchValue}*/}
+                {/*        />*/}
+                {/*    </div>*/}
+                {/*    <Popper*/}
+                {/*        anchorEl={searchRef.current}*/}
+                {/*        className={classes.searchPopper}*/}
+                {/*        open={openSearchPopover}*/}
+                {/*        transition={true}*/}
+                {/*    >*/}
+                {/*        <ClickAwayListener onClickAway={handleSearchPopverClose}>*/}
+                {/*            <Paper*/}
+                {/*                className={classes.searchPopperContent}*/}
+                {/*                elevation={3}*/}
+                {/*            >*/}
+                {/*                <List>*/}
+                {/*                    {popularSearches.map((search) => (*/}
+                {/*                        <ListItem*/}
+                {/*                            button*/}
+                {/*                            key={search}*/}
+                {/*                            onClick={handleSearchPopverClose}*/}
+                {/*                        >*/}
+                {/*                            <ListItemIcon>*/}
+                {/*                                <SearchIcon />*/}
+                {/*                            </ListItemIcon>*/}
+                {/*                            <ListItemText primary={search} />*/}
+                {/*                        </ListItem>*/}
+                {/*                    ))}*/}
+                {/*                </List>*/}
+                {/*            </Paper>*/}
+                {/*        </ClickAwayListener>*/}
+                {/*    </Popper>*/}
+                {/*</Hidden>*/}
                 <Hidden mdDown>
                     <Button
                         className={classes.logoutButton}
@@ -182,14 +190,6 @@ const TopBar: React.FC<TopBarProps> = (props) => {
                         <InputIcon className={classes.logoutIcon} />
                         Sign out
                     </Button>
-                </Hidden>
-                <Hidden lgUp>
-                    <IconButton
-                        color="inherit"
-                        onClick={onOpenNavBarMobile}
-                    >
-                        <MenuIcon />
-                    </IconButton>
                 </Hidden>
             </Toolbar>
         </AppBar>
