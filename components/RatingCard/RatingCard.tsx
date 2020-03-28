@@ -40,12 +40,12 @@ const RatingCard: React.FC<RatingCardProps> = (props) => {
     return (
         <Card {...rest} className={clsx(classes.root, className)}>
             <div>
-                <Typography component="h3" gutterBottom variant="overline">
+                <Typography component="h3" gutterBottom={true} variant={'overline'}>
                     {title}
                 </Typography>
                 <div className={classes.details}>
                     <Typography variant="h3">
-                        <RatingText value={rating}/>
+                        <RatingText rating={rating} variant={'h4'}/>
                     </Typography>
                 </div>
             </div>

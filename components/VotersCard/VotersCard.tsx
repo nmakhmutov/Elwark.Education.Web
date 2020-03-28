@@ -44,7 +44,7 @@ const VotersCard: React.FC<VotersCardProps> = (props) => {
                 </Typography>
                 <div className={classes.details}>
                     <Typography variant="h3">
-                        <VotersText value={voters}/>
+                        <VotersText voters={voters} variant={'h4'}/>
                     </Typography>
                 </div>
             </div>

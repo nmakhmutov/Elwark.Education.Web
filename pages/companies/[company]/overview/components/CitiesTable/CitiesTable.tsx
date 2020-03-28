@@ -77,9 +77,9 @@ const CitiesTable: React.FC<CitiesProps> = (props) => {
                                         <TableCell>{cafe.city.name}</TableCell>
                                         <TableCell align={'center'}>{cafe.cafeCount}</TableCell>
                                         <TableCell align={'center'}>
-                                            <VotersText value={cafe.rating.voters}/></TableCell>
+                                            <VotersText voters={cafe.rating.voters}/></TableCell>
                                         <TableCell align={'center'}>
-                                            <RatingText value={cafe.rating.value}/>
+                                            <RatingText rating={cafe.rating.value}/>
                                         </TableCell>
                                     </TableRow>
                                 ))}

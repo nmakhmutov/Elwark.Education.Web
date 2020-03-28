@@ -1,20 +1,19 @@
+import {TypographyProps} from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import NumberFormat from 'react-number-format';
 
-export interface RatingProps {
-    className?: string;
-    value: number;
+export interface VotersProps extends TypographyProps {
+    voters: number;
 }
 
-const VotersText: React.FC<RatingProps> = (props) => {
-    const {value, className, ...rest} = props;
+const VotersText: React.FC<VotersProps> = (props) => {
+    const {voters, className, ...rest} = props;
 
     return (
-        <NumberFormat {...rest}
-                      className={className}
-                      value={value}
-                      thousandSeparator={' '}
-                      displayType={'text'}/>
+        <Typography {...rest}>
+            <NumberFormat value={voters} thousandSeparator={' '} displayType={'text'}/>
+        </Typography>
     );
 };
 

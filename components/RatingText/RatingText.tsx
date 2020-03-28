@@ -1,24 +1,22 @@
+import {TypographyProps} from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import NumberFormat from 'react-number-format';
 import {ratingColor} from 'utils';
 
-export interface RatingProps {
-    className?: string;
-    value: number;
+export interface RatingProps extends TypographyProps {
+    rating: number;
 }
 
 const RatingText: React.FC<RatingProps> = (props) => {
-    const {value, className, ...rest} = props;
+    const {rating, className, ...rest} = props;
 
-    const color = ratingColor(value);
+    const color = ratingColor(rating);
 
     return (
-        <NumberFormat {...rest}
-                      className={className}
-                      style={{color}}
-                      value={value}
-                      thousandSeparator={' '}
-                      displayType={'text'}/>
+        <Typography className={className} {...rest}>
+            <NumberFormat style={{color}} value={rating} thousandSeparator={' '} displayType={'text'}/>
+        </Typography>
     );
 };
 

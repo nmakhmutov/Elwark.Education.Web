@@ -58,10 +58,10 @@ const PopupCard: React.FC<PopupCardProps> = (props) => {
                     {point.name}
                 </Typography>
                 <Typography variant={'h3'} align={'center'}>
-                    <RatingText value={point.rating.value}/>
+                    <RatingText rating={point.rating.value}/>
                 </Typography>
                 <Typography variant={'body2'} align={'center'} component={'div'}>
-                    <VotersText value={point.rating.voters}/>
+                    <VotersText voters={point.rating.voters}/>
                 </Typography>
             </CardContent>
         </Card>
