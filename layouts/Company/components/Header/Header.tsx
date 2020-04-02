@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) => {
         root: {},
         cover: {
             'position': 'relative',
-            'height': 360,
+            'height': 240,
             'backgroundSize': 'cover',
             'backgroundRepeat': 'no-repeat',
-            'backgroundPosition': 'center',
+            'backgroundPosition': 'center center',
             '&:before': {
                 position: 'absolute',
                 content: '" "',
@@ -26,8 +26,7 @@ const useStyles = makeStyles((theme) => {
                 left: 0,
                 height: '100%',
                 width: '100%',
-                backgroundImage:
-                    'linear-gradient(-180deg, rgba(0,0,0,0.00) 58%, rgba(0,0,0,0.32) 100%)',
+                backgroundImage: 'linear-gradient(-180deg, rgba(0,0,0,0.00) 58%, rgba(0,0,0,0.32) 100%)',
             },
         },
         container: {
