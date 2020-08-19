@@ -1,8 +1,6 @@
 import {makeStyles} from '@material-ui/core';
-import {Bff} from 'api';
-import {CoffeeCategoryModel} from 'api/bff/types';
 import clsx from 'clsx';
-import {DefaultLayout} from 'layouts';
+import DefaultLayout from 'components/layout/Default/Layout';
 import {NextPage} from 'next';
 import React from 'react';
 import {DrinkDetails, DrinkList, DrinkPlaceholder} from './components';
@@ -49,12 +47,11 @@ const useStyles = makeStyles((theme) => ({
 
 export interface CoffeeProps {
     id?: number;
-    list: CoffeeCategoryModel[];
 }
 
 const Drinks: NextPage<CoffeeProps> = (props) => {
     const classes = useStyles();
-    const {id, list} = props;
+    const {id} = props;
 
     return (
         <DefaultLayout title={'Coffee'}>
@@ -62,19 +59,12 @@ const Drinks: NextPage<CoffeeProps> = (props) => {
                 [classes.root]: true,
                 [classes.open]: id !== undefined,
             })}>
-                <DrinkList list={list} className={classes.list}/>
+                <DrinkList list={[]} className={classes.list}/>
                 {id ? (<DrinkDetails className={classes.details}/>)
                     : (<DrinkPlaceholder className={classes.placeholder}/>)}
             </div>
         </DefaultLayout>
     );
-};
-
-Drinks.getInitialProps = async ({query}) => {
-    const id = query.id ? Number(query.id) : undefined;
-    const list = await Bff.Categories.List();
-
-    return {id, list} as CoffeeProps;
 };
 
 export default Drinks;

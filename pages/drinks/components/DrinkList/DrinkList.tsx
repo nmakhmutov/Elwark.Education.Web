@@ -1,10 +1,8 @@
 import {Divider, IconButton, Input, List, makeStyles, Toolbar, Tooltip} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import {CoffeeCategoryModel} from 'api/bff/types';
 import clsx from 'clsx';
 import {NextRouter, useRouter} from 'next/router';
 import React from 'react';
-import {Links} from 'utils';
 import {DrinkListItem} from './components';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +17,17 @@ const useStyles = makeStyles((theme) => ({
 export interface CoffeeListProps {
     className?: string;
     list: CoffeeCategoryModel[];
+}
+
+export interface CoffeeCategoryModel {
+    item: CoffeeCategoryItem;
+    children: CoffeeCategoryModel[];
+}
+export interface CoffeeCategoryItem {
+    categoryId: number;
+    name: string;
+    language: string;
+    image?: string;
 }
 
 const Drinks: React.FC<{ list: CoffeeCategoryModel[], depth: number, router: NextRouter }> = (props) => {
@@ -55,7 +64,7 @@ const reduceChildRoutes = (props: {
             <DrinkListItem
                 open={false}
                 depth={depth}
-                href={Links.DrinkItem(category.item.categoryId)}
+                href={'/'}
                 image={category.item.image}
                 key={category.item.categoryId}
                 title={category.item.name}
