@@ -1,9 +1,6 @@
-import CompanyIcon from '@material-ui/icons/BusinessSharp';
-import HomeIcon from '@material-ui/icons/HomeOutlined';
-import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
-import MapIcon from '@material-ui/icons/Map';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import React from 'react';
-import Links from '../../../lib/utils/Links';
+import Links from 'lib/utils/Links';
 
 export interface Page {
     title: string;
@@ -20,27 +17,12 @@ export interface SideBarPage {
 
 const SideBarLinks: SideBarPage[] = [
     {
-        title: 'Pages',
+        title: 'Subjects',
         pages: [
             {
-                title: 'Home',
-                href: Links.Home,
-                icon: HomeIcon,
-            },
-            {
-                title: 'Map',
-                href: Links.Map,
-                icon: MapIcon,
-            },
-            {
-                title: 'Drinks',
-                href: Links.Drinks,
-                icon: LocalDrinkIcon,
-            },
-            {
-                title: 'Companies',
-                href: Links.Companies,
-                icon: CompanyIcon,
+                title: 'History',
+                href: Links.History,
+                icon: AccountBalanceIcon,
             },
         ],
     },

@@ -1,9 +1,15 @@
 import {colors, Toolbar} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
+import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
+import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import clsx from 'clsx';
@@ -11,6 +17,7 @@ import {Link} from 'components';
 import {Notification} from 'components/NotificationsPopover/components/NotificationList';
 import NotificationsPopover from 'components/NotificationsPopover/NotificationsPopover';
 import {StorageApi} from 'lib/api/storage';
+import {Links} from 'lib/utils';
 import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,43 +27,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: {
         flexGrow: 1
     },
-    search: {
-        backgroundColor: 'rgba(255,255,255, 0.1)',
-        borderRadius: 4,
-        flexBasis: 300,
-        height: 36,
-        padding: theme.spacing(0, 2),
-        display: 'flex',
-        alignItems: 'center'
+    lifeButton: {
+        marginLeft: theme.spacing(1)
     },
-    searchIcon: {
-        marginRight: theme.spacing(2),
-        color: 'inherit'
-    },
-    searchInput: {
-        flexGrow: 1,
-        color: 'inherit',
-        '& input::placeholder': {
-            opacity: 1,
-            color: 'inherit'
-        }
-    },
-    searchPopper: {
-        zIndex: theme.zIndex.appBar + 100
-    },
-    searchPopperContent: {
-        marginTop: theme.spacing(1)
-    },
-    trialButton: {
-        marginLeft: theme.spacing(2),
-        color: theme.palette.common.white,
-        backgroundColor: colors.green[600],
-        '&:hover': {
-            backgroundColor: colors.green[900]
-        }
-    },
-    trialIcon: {
-        marginRight: theme.spacing(1)
+    lifeBadge: {
+        backgroundColor: colors.red[600]
     },
     notificationsButton: {
         marginLeft: theme.spacing(1)
@@ -64,11 +39,23 @@ const useStyles = makeStyles((theme) => ({
     notificationsBadge: {
         backgroundColor: colors.orange[600]
     },
-    logoutButton: {
-        marginLeft: theme.spacing(1)
+    logo: {
+        '&:hover': {
+            textDecoration: 'none'
+        }
     },
-    logoutIcon: {
+    logoText: {
+        textTransform: 'none',
+        color: theme.palette.common.white,
+    },
+    userAvatar: {
+        width: theme.spacing(4),
+        height: theme.spacing(4),
         marginRight: theme.spacing(1)
+    },
+    userName: {
+        textTransform: 'none',
+        color: theme.palette.common.white
     }
 }));
 
@@ -88,11 +75,12 @@ const TopBar: React.FC<Props> = (props) => {
 
         const fetchNotifications = () => {
             if (mounted) {
-                setNotifications([{
-                    id: 1,
-                    title: 'New order has been received',
-                    created_at: new Date()
-                },
+                setNotifications([
+                    {
+                        id: 1,
+                        title: 'New order has been received',
+                        created_at: new Date()
+                    },
                     {
                         id: 2,
                         title: 'New customer is registered',
@@ -107,7 +95,8 @@ const TopBar: React.FC<Props> = (props) => {
                         id: 4,
                         title: 'New feature has been added',
                         created_at: new Date()
-                    }]);
+                    }
+                ]);
             }
         };
 
@@ -120,6 +109,7 @@ const TopBar: React.FC<Props> = (props) => {
 
     const notificationsRef = useRef(null);
     const [openNotifications, setOpenNotifications] = useState(false);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const handleNotificationsOpen = () => {
         setOpenNotifications(true);
@@ -127,6 +117,16 @@ const TopBar: React.FC<Props> = (props) => {
 
     const handleNotificationsClose = () => {
         setOpenNotifications(false);
+    };
+
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const open = Boolean(anchorEl);
+
+    const handleClose = () => {
+        setAnchorEl(null);
     };
 
     return (
@@ -137,22 +137,34 @@ const TopBar: React.FC<Props> = (props) => {
         >
             <Toolbar>
                 <Hidden mdDown={true}>
-                    <Link href="/">
+                    <Button
+                        color="inherit"
+                        className={classes.logo}
+                        component={Link}
+                        href={Links.Profile}
+                    >
                         <img
                             alt="Logo"
                             src={StorageApi.Static.Icons.Elwark.White.Size48x48}
                         />
-                    </Link>
+                        <Typography variant={'h3'} className={classes.logoText} component={'h2'}>Education</Typography>
+                    </Button>
                 </Hidden>
                 <Hidden lgUp={true}>
-                    <IconButton
-                        color="inherit"
-                        onClick={onOpenNavBarMobile}
-                    >
+                    <IconButton color="inherit" onClick={onOpenNavBarMobile}>
                         <MenuIcon/>
                     </IconButton>
                 </Hidden>
                 <div className={classes.flexGrow}/>
+                <IconButton className={classes.lifeButton} color="inherit">
+                    <Badge
+                        badgeContent={5}
+                        classes={{badge: classes.lifeBadge}}
+                        variant={'standard'}
+                    >
+                        <FavoriteIcon/>
+                    </Badge>
+                </IconButton>
                 <IconButton
                     className={classes.notificationsButton}
                     color="inherit"
@@ -167,6 +179,45 @@ const TopBar: React.FC<Props> = (props) => {
                         <NotificationsIcon/>
                     </Badge>
                 </IconButton>
+                <div>
+                    <Button
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenu}
+                        color="inherit"
+                    >
+                        <Avatar
+                            variant={'circle'}
+                            className={classes.userAvatar}
+                            src={StorageApi.Static.Icons.User.Default}/>
+                        <Typography
+                            variant={'h6'}
+                            component={'h6'}
+                            className={classes.userName}>
+                            Name
+                        </Typography>
+                    </Button>
+                    <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={open}
+                        onClose={handleClose}
+                    >
+                        <MenuItem component={Link} href={Links.Profile}>Profile</MenuItem>
+                        <MenuItem component={Link} href={Links.Account} target={'_blank'}>My account</MenuItem>
+                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    </Menu>
+                </div>
             </Toolbar>
             <NotificationsPopover
                 anchorEl={notificationsRef.current}
