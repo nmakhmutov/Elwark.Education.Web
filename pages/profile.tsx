@@ -1,5 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import DefaultLayout from 'components/layout/Default/Layout';
+import DefaultLayout from 'components/Layout';
+import {fetchUser, useFetchUser} from 'lib/utils/user';
 import {NextPage} from 'next';
 import React from 'react';
 
@@ -15,9 +16,13 @@ type Props = {
 
 const Profile: NextPage<Props> = (props) => {
     const classes = useStyles();
+    const {user} = useFetchUser();
 
     return (
         <DefaultLayout title={'Profile ' + props.user}>
+            <pre>
+                {JSON.stringify(user, null, 4)}
+            </pre>
         </DefaultLayout>
     );
 };

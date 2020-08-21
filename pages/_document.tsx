@@ -1,6 +1,6 @@
 import {ServerStyleSheets} from '@material-ui/core/styles';
 import theme from 'components/theme';
-import {StorageApi} from 'lib/api/storage';
+import {StorageApi} from 'lib/clients/storage';
 import Document, {Head, Main, NextScript} from 'next/document';
 import * as React from 'react';
 

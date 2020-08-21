@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import {NextRouter, useRouter} from 'next/router';
 import React from 'react';
-import {Page} from '../layout/Default/SideBarLinks';
+import {Page} from '../Sidebar/SideBarLinks';
 
 import {NavigationListItem} from './components';
 

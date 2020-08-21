@@ -1,6 +1,7 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import Sidebar from 'components/layout/Default/Sidebar';
-import TopBar from 'components/layout/Default/TopBar';
+import Sidebar from 'components/Sidebar/Sidebar';
+import TopBar from 'components/TopBar/TopBar';
+import {useFetchUser, UserProvider} from 'lib/utils/user';
 import Head from 'next/head';
 import React, {useState} from 'react';
 
@@ -41,6 +42,7 @@ export interface MainLayoutProps {
 const DefaultLayout: React.FC<MainLayoutProps> = (props) => {
     const classes = useStyles();
     const [openNavBarMobile, setOpenNavBarMobile] = useState(false);
+    const {user, loading} = useFetchUser();
 
     const handleNavBarMobileOpen = () => {
         setOpenNavBarMobile(true);
@@ -52,28 +54,34 @@ const DefaultLayout: React.FC<MainLayoutProps> = (props) => {
 
     const {children, title, links} = props;
 
+    if (loading || !user) {
+        return (<h1>Loading</h1>);
+    }
+
     return (
-        <div className={classes.root}>
-            <Head>
-                <title>{title}</title>
-                {links && links.map(((value, index) =>
-                    <link key={index} href={value} rel="stylesheet"/>))}
-            </Head>
-            <TopBar
-                className={classes.topBar}
-                onOpenNavBarMobile={handleNavBarMobileOpen}
-            />
-            <div className={classes.container}>
-                <Sidebar
-                    className={classes.navBar}
-                    onMobileClose={handleNavBarMobileClose}
-                    openMobile={openNavBarMobile}
+        <UserProvider value={{user, loading}}>
+            <div className={classes.root}>
+                <Head>
+                    <title>{title}</title>
+                    {links && links.map(((value, index) =>
+                        <link key={index} href={value} rel="stylesheet"/>))}
+                </Head>
+                <TopBar
+                    className={classes.topBar}
+                    onOpenNavBarMobile={handleNavBarMobileOpen}
                 />
-                <main className={classes.content}>
-                    {children}
-                </main>
+                <div className={classes.container}>
+                    <Sidebar
+                        className={classes.navBar}
+                        onMobileClose={handleNavBarMobileClose}
+                        openMobile={openNavBarMobile}
+                    />
+                    <main className={classes.content}>
+                        {children}
+                    </main>
+                </div>
             </div>
-        </div>
+        </UserProvider>
     );
 };
 

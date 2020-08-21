@@ -1,4 +1,5 @@
-import Layout from 'components/layout/Landing/Layout';
+import {Links} from 'lib/utils';
+import {useFetchUser} from 'lib/utils/user';
 import {NextPage} from 'next';
 import * as React from 'react';
 
@@ -6,15 +7,18 @@ interface Props {
     userAgent: string;
 }
 
-const Home: NextPage<Props> = ({userAgent}) => (
-    <Layout>
-        Main page {userAgent}
-    </Layout>
-);
+const Home: NextPage<Props> = () => {
+    const {user, loading} = useFetchUser();
+    if (!loading && user) {
+        window.location.href = Links.Subjects;
+        return null;
+    }
 
-Home.getInitialProps = async ({req, query}) => {
-    const userAgent = req ? req.headers['user-agent'] : navigator.userAgent;
-    return {userAgent} as Props;
+    return (
+        <div>
+            Main page
+        </div>
+    );
 };
 
 export default Home;

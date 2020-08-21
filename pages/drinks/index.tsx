@@ -1,6 +1,6 @@
 import {makeStyles} from '@material-ui/core';
 import clsx from 'clsx';
-import DefaultLayout from 'components/layout/Default/Layout';
+import DefaultLayout from 'components/Default/Layout';
 import {NextPage} from 'next';
 import React from 'react';
 import {DrinkDetails, DrinkList, DrinkPlaceholder} from './components';

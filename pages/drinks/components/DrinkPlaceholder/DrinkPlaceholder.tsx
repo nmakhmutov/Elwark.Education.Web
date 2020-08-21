@@ -1,6 +1,6 @@
 import {makeStyles, Typography} from '@material-ui/core';
 import clsx from 'clsx';
-import {ImageResolution, StorageApi} from 'lib/api/storage';
+import {ImageResolution, StorageApi} from 'lib/clients/storage';
 import React from 'react';
 
 const useStyles = makeStyles((theme) => ({

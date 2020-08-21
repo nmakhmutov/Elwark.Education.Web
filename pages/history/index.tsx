@@ -1,5 +1,5 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import DefaultLayout from 'components/layout/Default/Layout';
+import DefaultLayout from 'components/Layout';
 import {NextPage} from 'next';
 import React from 'react';
 

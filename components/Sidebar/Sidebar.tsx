@@ -4,8 +4,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import {Link, Navigation} from 'components';
+import {Links} from 'lib/utils';
+import {useFetchUser} from 'lib/utils/user';
 import React from 'react';
-import {StorageApi} from 'lib/api/storage';
 import SideBarLinks from './SideBarLinks';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,6 +47,7 @@ export interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = (props) => {
     const {openMobile, onMobileClose, className, ...rest} = props;
     const classes = useStyles();
+    const {user} = useFetchUser(true);
 
     const navbarContent = (
         <div className={classes.content}>
@@ -54,11 +56,11 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                     alt={'Person'}
                     className={classes.avatar}
                     component={Link}
-                    src={StorageApi.Static.Icons.User.Default}
-                    href="/profile/1/timeline"
+                    src={user!.picture}
+                    href={Links.Profile}
                 />
                 <Typography className={classes.name} variant={'h4'}>
-                    Elwark Ink.
+                    {user?.name}
                 </Typography>
                 <Typography variant={'body2'}>Cafe navigator</Typography>
             </div>

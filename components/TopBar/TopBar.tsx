@@ -16,8 +16,9 @@ import clsx from 'clsx';
 import {Link} from 'components';
 import {Notification} from 'components/NotificationsPopover/components/NotificationList';
 import NotificationsPopover from 'components/NotificationsPopover/NotificationsPopover';
-import {StorageApi} from 'lib/api/storage';
+import {StorageApi} from 'lib/clients/storage';
 import {Links} from 'lib/utils';
+import {useFetchUser} from 'lib/utils/user';
 import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -66,6 +67,7 @@ type Props = {
 
 const TopBar: React.FC<Props> = (props) => {
     const {onOpenNavBarMobile, className, ...rest} = props;
+    const {user} = useFetchUser();
 
     const classes = useStyles();
     const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -141,7 +143,7 @@ const TopBar: React.FC<Props> = (props) => {
                         color="inherit"
                         className={classes.logo}
                         component={Link}
-                        href={Links.Profile}
+                        href={Links.Subjects}
                     >
                         <img
                             alt="Logo"
@@ -190,12 +192,12 @@ const TopBar: React.FC<Props> = (props) => {
                         <Avatar
                             variant={'circle'}
                             className={classes.userAvatar}
-                            src={StorageApi.Static.Icons.User.Default}/>
+                            src={user?.picture}/>
                         <Typography
                             variant={'h6'}
                             component={'h6'}
                             className={classes.userName}>
-                            Name
+                            {user?.name}
                         </Typography>
                     </Button>
                     <Menu
@@ -215,7 +217,7 @@ const TopBar: React.FC<Props> = (props) => {
                     >
                         <MenuItem component={Link} href={Links.Profile}>Profile</MenuItem>
                         <MenuItem component={Link} href={Links.Account} target={'_blank'}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        <MenuItem component={Link} href={Links.Logout}>Logout</MenuItem>
                     </Menu>
                 </div>
             </Toolbar>
