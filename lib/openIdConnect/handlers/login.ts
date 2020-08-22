@@ -4,7 +4,7 @@ import isRelative from '../utils/url-helpers';
 
 import { setCookies } from '../utils/cookies';
 import { createState } from '../utils/state';
-import { IOidcClientFactory } from '../utils/oidc-client';
+import { OidcClientFactory } from '../utils/oidc-client';
 
 export interface AuthorizationParameters {
     acr_values?: string;
@@ -25,7 +25,7 @@ export interface LoginOptions {
     redirectTo?: string;
 }
 
-export default function loginHandler(settings: OpenIdConnectSettings, clientProvider: IOidcClientFactory) {
+export default function loginHandler(settings: OpenIdConnectSettings, clientProvider: OidcClientFactory) {
     return async (req: NextApiRequest, res: NextApiResponse, options?: LoginOptions): Promise<void> => {
         if (!req) {
             throw new Error('Request is not available');
@@ -48,6 +48,7 @@ export default function loginHandler(settings: OpenIdConnectSettings, clientProv
         const opt = options || {};
         const getLoginState =
             opt.getState ||
+            // tslint:disable-next-line:no-shadowed-variable
             function getLoginState(): Record<string, any> {
                 return {};
             };
@@ -62,6 +63,7 @@ export default function loginHandler(settings: OpenIdConnectSettings, clientProv
 
         const client = await clientProvider();
 
+        // @ts-ignore
         const authorizationUrl = client.authorizationUrl({
             redirect_uri: settings.redirectUri,
             scope: settings.scope,

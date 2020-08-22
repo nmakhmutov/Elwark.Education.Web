@@ -1,12 +1,12 @@
-import { IncomingMessage, ServerResponse } from 'http';
+import {IncomingMessage, ServerResponse} from 'http';
 
-import { ISession } from '../session';
-import { ISessionStore } from '../store';
+import {SessionInterface} from '../session';
+import {SessionStoreInterface} from '../store';
 
-export default class MemoryStore implements ISessionStore {
-    private session: ISession | null;
+export default class MemoryStore implements SessionStoreInterface {
+    private session: SessionInterface | null;
 
-    constructor(session?: ISession) {
+    constructor(session?: SessionInterface) {
         if (session === undefined) {
             this.session = null;
         } else {
@@ -14,11 +14,11 @@ export default class MemoryStore implements ISessionStore {
         }
     }
 
-    async read(): Promise<ISession | null> {
+    async read(): Promise<SessionInterface | null> {
         return this.session;
     }
 
-    async save(_req: IncomingMessage, _res: ServerResponse, session: ISession): Promise<ISession> {
+    async save(_req: IncomingMessage, _res: ServerResponse, session: SessionInterface): Promise<SessionInterface> {
         this.session = session;
         return session;
     }

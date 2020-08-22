@@ -1,22 +1,22 @@
-import { IncomingMessage, ServerResponse } from 'http';
+import {IncomingMessage, ServerResponse} from 'http';
 
-import { SessionStoreInterface } from '../session/store';
-import AccessTokenError from './access-token-error';
+import {SessionStoreInterface} from '../session/store';
+import {intersect, match} from '../utils/array';
+import {OidcClientFactory} from '../utils/oidc-client';
 import getSessionFromTokenSet from '../utils/session';
-import { intersect, match } from '../utils/array';
-import { IOidcClientFactory } from '../utils/oidc-client';
-import { TokenCache, AccessTokenRequest, AccessTokenResponse } from './token-cache';
+import AccessTokenError from './access-token-error';
+import {AccessTokenRequest, AccessTokenResponse, TokenCache} from './token-cache';
 
 export default class SessionTokenCache implements TokenCache {
     private store: SessionStoreInterface;
 
-    private readonly clientProvider: IOidcClientFactory;
+    private readonly clientProvider: OidcClientFactory;
 
     private readonly req: IncomingMessage;
 
     private readonly res: ServerResponse;
 
-    constructor(store: SessionStoreInterface, clientProvider: IOidcClientFactory, req: IncomingMessage, res: ServerResponse) {
+    constructor(store: SessionStoreInterface, clientProvider: OidcClientFactory, req: IncomingMessage, res: ServerResponse) {
         this.store = store;
         this.clientProvider = clientProvider;
         this.req = req;

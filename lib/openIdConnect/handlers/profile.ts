@@ -1,14 +1,14 @@
-import { NextApiResponse, NextApiRequest } from 'next';
+import {NextApiRequest, NextApiResponse} from 'next';
+import {SessionStoreInterface} from '../session/store';
+import {OidcClientFactory} from '../utils/oidc-client';
 
 import tokenCacheHandler from './token-cache';
-import { ISessionStore } from '../session/store';
-import { IOidcClientFactory } from '../utils/oidc-client';
 
 export type ProfileOptions = {
     refetch?: boolean;
 };
 
-export default function profileHandler(sessionStore: ISessionStore, clientProvider: IOidcClientFactory) {
+export default function profileHandler(sessionStore: SessionStoreInterface, clientProvider: OidcClientFactory) {
     return async (req: NextApiRequest, res: NextApiResponse, options?: ProfileOptions): Promise<void> => {
         if (!req) {
             throw new Error('Request is not available');
@@ -29,7 +29,7 @@ export default function profileHandler(sessionStore: ISessionStore, clientProvid
 
         if (options && options.refetch) {
             const tokenCache = tokenCacheHandler(clientProvider, sessionStore)(req, res);
-            const { accessToken } = await tokenCache.getAccessToken();
+            const {accessToken} = await tokenCache.getAccessToken();
             if (!accessToken) {
                 throw new Error('No access token available to refetch the profile');
             }

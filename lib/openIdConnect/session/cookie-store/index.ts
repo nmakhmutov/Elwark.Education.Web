@@ -1,19 +1,19 @@
 import Iron from '@hapi/iron';
 import { IncomingMessage, ServerResponse } from 'http';
 
-import { ISessionStore } from '../store';
-import Session, { ISession } from '../session';
+import { SessionStoreInterface } from '../store';
+import Session, { SessionInterface } from '../session';
 import CookieSessionStoreSettings from './settings';
 import { setCookie, parseCookies } from '../../utils/cookies';
 
-export default class CookieSessionStore implements ISessionStore {
+export default class CookieSessionStore implements SessionStoreInterface {
     private readonly settings: CookieSessionStoreSettings;
 
     constructor(settings: CookieSessionStoreSettings) {
         this.settings = settings;
     }
 
-    async read(req: IncomingMessage): Promise<ISession | null> {
+    async read(req: IncomingMessage): Promise<SessionInterface | null> {
         if (!req) {
             throw new Error('Request is not available');
         }
@@ -31,10 +31,10 @@ export default class CookieSessionStore implements ISessionStore {
             return null;
         }
 
-        return unsealed as ISession;
+        return unsealed as SessionInterface;
     }
 
-    async save(req: IncomingMessage, res: ServerResponse, session: ISession): Promise<ISession | null> {
+    async save(req: IncomingMessage, res: ServerResponse, session: SessionInterface): Promise<SessionInterface | null> {
         if (!res) {
             throw new Error('Response is not available');
         }

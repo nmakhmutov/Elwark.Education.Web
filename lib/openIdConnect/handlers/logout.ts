@@ -2,15 +2,15 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import OpenIdConnectSettings from '../settings';
 import { setCookies } from '../utils/cookies';
-import { IOidcClientFactory } from '../utils/oidc-client';
+import { OidcClientFactory } from '../utils/oidc-client';
 import CookieSessionStoreSettings from '../session/cookie-store/settings';
-import { ISessionStore } from '../session/store';
+import { SessionStoreInterface } from '../session/store';
 
 export default function logoutHandler(
     settings: OpenIdConnectSettings,
     sessionSettings: CookieSessionStoreSettings,
-    clientProvider: IOidcClientFactory,
-    store: ISessionStore
+    clientProvider: OidcClientFactory,
+    store: SessionStoreInterface
 ) {
     return async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
         if (!req) {

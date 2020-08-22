@@ -1,10 +1,10 @@
-import { NextApiRequest } from 'next';
+import {NextApiRequest} from 'next';
 
-import { ISession } from '../session/session';
-import { ISessionStore } from '../session/store';
+import {SessionInterface} from '../session/session';
+import {SessionStoreInterface} from '../session/store';
 
-export default function sessionHandler(sessionStore: ISessionStore) {
-    return (req: NextApiRequest): Promise<ISession | null | undefined> => {
+export default function sessionHandler(sessionStore: SessionStoreInterface) {
+    return (req: NextApiRequest): Promise<SessionInterface | null | undefined> => {
         if (!req) {
             throw new Error('Request is not available');
         }

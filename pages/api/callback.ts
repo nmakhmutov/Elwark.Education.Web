@@ -5,7 +5,7 @@ import {NextApiRequest, NextApiResponse} from 'next';
 export default async function callback(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     try {
         await oidc.handleCallback(req, res, {
-            redirectTo: Links.Subjects,
+            redirectTo: Links.Home,
         });
     } catch (error) {
         res.status(error.status || 400).end(error.message);

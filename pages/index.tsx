@@ -1,4 +1,5 @@
-import {Links} from 'lib/utils';
+import DefaultLayout from 'components/Layout';
+import Subjects from 'components/Subjects';
 import {useFetchUser} from 'lib/utils/user';
 import {NextPage} from 'next';
 import * as React from 'react';
@@ -8,16 +9,24 @@ interface Props {
 }
 
 const Home: NextPage<Props> = () => {
-    const {user, loading} = useFetchUser();
+    const {user, loading} = useFetchUser(false);
+
     if (!loading && user) {
-        window.location.href = Links.Subjects;
-        return null;
+        return (
+            <DefaultLayout title={'Subjects'}>
+                <Subjects/>
+            </DefaultLayout>
+        );
+    }
+
+    if (!loading && !user) {
+        return (
+            <div>Landing</div>
+        );
     }
 
     return (
-        <div>
-            Main page
-        </div>
+        <div>Loading</div>
     );
 };
 

@@ -17,7 +17,7 @@ import {Link} from 'components';
 import {Notification} from 'components/NotificationsPopover/components/NotificationList';
 import NotificationsPopover from 'components/NotificationsPopover/NotificationsPopover';
 import {StorageApi} from 'lib/clients/storage';
-import {Links} from 'lib/utils';
+import Links from 'lib/utils/Links';
 import {useFetchUser} from 'lib/utils/user';
 import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
 
@@ -143,7 +143,7 @@ const TopBar: React.FC<Props> = (props) => {
                         color="inherit"
                         className={classes.logo}
                         component={Link}
-                        href={Links.Subjects}
+                        href={Links.Home}
                     >
                         <img
                             alt="Logo"

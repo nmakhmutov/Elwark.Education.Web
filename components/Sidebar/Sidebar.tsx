@@ -4,7 +4,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import {Link, Navigation} from 'components';
-import {Links} from 'lib/utils';
+import Links from 'lib/utils/Links';
 import {useFetchUser} from 'lib/utils/user';
 import React from 'react';
 import SideBarLinks from './SideBarLinks';

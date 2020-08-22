@@ -1,12 +1,12 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import {NextApiRequest, NextApiResponse} from 'next';
 
-import { ISessionStore } from '../session/store';
-import { ITokenCache } from '../tokens/token-cache';
-import { IOidcClientFactory } from '../utils/oidc-client';
+import {SessionStoreInterface} from '../session/store';
 import SessionTokenCache from '../tokens/session-token-cache';
+import {TokenCache} from '../tokens/token-cache';
+import {OidcClientFactory} from '../utils/oidc-client';
 
-export default function tokenCacheHandler(clientProvider: IOidcClientFactory, sessionStore: ISessionStore) {
-    return (req: NextApiRequest, res: NextApiResponse): ITokenCache => {
+export default function tokenCacheHandler(clientProvider: OidcClientFactory, sessionStore: SessionStoreInterface) {
+    return (req: NextApiRequest, res: NextApiResponse): TokenCache => {
         if (!req) {
             throw new Error('Request is not available');
         }
