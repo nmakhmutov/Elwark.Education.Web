@@ -21,7 +21,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import {Link} from 'components';
 import React, {useRef, useState} from 'react';
-import {Links} from 'utils';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,7 +92,7 @@ const DrinkToolbar: React.FC<CoffeeToolbarProps> = (props) => {
                     className={classes.backButton}
                     component={Link}
                     edge="start"
-                    href={Links.Drinks}
+                    href={'/'}
                 >
                     <KeyboardBackspaceIcon/>
                 </IconButton>

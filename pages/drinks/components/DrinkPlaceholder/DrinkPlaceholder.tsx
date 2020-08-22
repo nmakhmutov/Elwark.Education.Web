@@ -1,6 +1,6 @@
 import {makeStyles, Typography} from '@material-ui/core';
-import {ImageResolution, Storage} from 'api';
 import clsx from 'clsx';
+import {ImageResolution, StorageApi} from 'lib/clients/storage';
 import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +37,7 @@ const DrinkPlaceholder: React.FC<PlaceholderProps> = (props) => {
                 <img
                     alt="Select coffee"
                     className={classes.image}
-                    src={Storage.Images.Random(ImageResolution.FHD)}
+                    src={StorageApi.Images.Random(ImageResolution.FHD)}
                 />
                 <Typography className={classes.title} variant="h4">
                     Select coffee to display

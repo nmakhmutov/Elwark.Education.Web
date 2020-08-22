@@ -1,9 +1,10 @@
-import {CssBaseline, ThemeProvider} from '@material-ui/core';
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import App from 'next/app';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import * as React from 'react';
-import theme from 'theme';
+import theme from 'components/theme';
+import Head from 'next/head';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
@@ -19,12 +20,15 @@ export default class MyApp extends App {
     }
 
     public render() {
-        const {Component, pageProps} = this.props;
+        const { Component, pageProps } = this.props;
 
         return (
             <ThemeProvider theme={theme}>
+                <Head>
+                    <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
+                </Head>
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                <CssBaseline/>
+                <CssBaseline />
                 <Component {...pageProps} />
             </ThemeProvider>
         );
