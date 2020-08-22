@@ -1,4 +1,5 @@
 import DefaultLayout from 'components/Layout';
+import Presentation from 'components/Presentation/Presentation';
 import Subjects from 'components/Subjects';
 import {useFetchUser} from 'lib/utils/user';
 import {NextPage} from 'next';
@@ -21,7 +22,7 @@ const Home: NextPage<Props> = () => {
 
     if (!loading && !user) {
         return (
-            <div>Landing</div>
+            <Presentation/>
         );
     }
 
