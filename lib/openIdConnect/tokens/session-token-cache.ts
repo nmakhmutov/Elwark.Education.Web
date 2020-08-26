@@ -68,7 +68,10 @@ export default class SessionTokenCache implements TokenCache {
             );
         }
 
-        if (session.refreshToken && session.accessTokenExpiresAt * 1000 - 60000 < Date.now()) {
+        if (
+            (session.refreshToken && session.accessTokenExpiresAt * 1000 - 60000 < Date.now()) ||
+            (session.refreshToken && accessTokenRequest && accessTokenRequest.refresh)
+        ) {
             const client = await this.clientProvider();
             const tokenSet = await client.refresh(session.refreshToken);
 

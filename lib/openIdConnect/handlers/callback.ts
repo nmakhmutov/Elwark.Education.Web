@@ -1,11 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import {NextApiRequest, NextApiResponse} from 'next';
 
 import OpenIdConnectSettings from '../settings';
-import { decodeState } from '../utils/state';
-import { SessionInterface } from '../session/session';
-import { parseCookies } from '../utils/cookies';
-import { SessionStoreInterface } from '../session/store';
-import { OidcClientFactory } from '../utils/oidc-client';
+import {decodeState} from '../utils/state';
+import {SessionInterface} from '../session/session';
+import {parseCookies} from '../utils/cookies';
+import {SessionStoreInterface} from '../session/store';
+import {OidcClientFactory} from '../utils/oidc-client';
 import getSessionFromTokenSet from '../utils/session';
 
 export type CallbackOptions = {
@@ -42,9 +42,7 @@ export default function callbackHandler(
         const client = await clientProvider();
 
         const params = client.callbackParams(req);
-        const tokenSet = await client.callback(settings.redirectUri, params, {
-            state
-        });
+        const tokenSet = await client.callback(settings.redirectUri, params, {state});
         const decodedState = decodeState(state);
 
         let session = getSessionFromTokenSet(tokenSet);

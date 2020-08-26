@@ -1,9 +1,9 @@
-import {Typography} from '@material-ui/core';
+import {Theme, Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import clsx from 'clsx';
 import React from 'react';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     root: {
         textAlign: 'center',
         padding: theme.spacing(3)

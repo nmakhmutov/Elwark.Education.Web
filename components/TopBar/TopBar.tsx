@@ -158,29 +158,6 @@ const TopBar: React.FC<Props> = (props) => {
                     </IconButton>
                 </Hidden>
                 <div className={classes.flexGrow}/>
-                <IconButton className={classes.lifeButton} color="inherit">
-                    <Badge
-                        badgeContent={5}
-                        classes={{badge: classes.lifeBadge}}
-                        variant={'standard'}
-                    >
-                        <FavoriteIcon/>
-                    </Badge>
-                </IconButton>
-                <IconButton
-                    className={classes.notificationsButton}
-                    color="inherit"
-                    onClick={handleNotificationsOpen}
-                    ref={notificationsRef}
-                >
-                    <Badge
-                        badgeContent={notifications.length}
-                        classes={{badge: classes.notificationsBadge}}
-                        variant={'dot'}
-                    >
-                        <NotificationsIcon/>
-                    </Badge>
-                </IconButton>
                 <div>
                     <Button
                         aria-label="account of current user"
@@ -189,10 +166,7 @@ const TopBar: React.FC<Props> = (props) => {
                         onClick={handleMenu}
                         color="inherit"
                     >
-                        <Avatar
-                            variant={'circle'}
-                            className={classes.userAvatar}
-                            src={user?.picture}/>
+                        <Avatar variant={'circle'} className={classes.userAvatar} src={user?.picture}/>
                         <Typography
                             variant={'h6'}
                             component={'h6'}
@@ -220,6 +194,24 @@ const TopBar: React.FC<Props> = (props) => {
                         <MenuItem component={Link} href={Links.Logout}>Logout</MenuItem>
                     </Menu>
                 </div>
+                <IconButton
+                    className={classes.notificationsButton}
+                    color="inherit"
+                    onClick={handleNotificationsOpen}
+                    ref={notificationsRef}
+                >
+                    <Badge
+                        badgeContent={notifications.length}
+                        classes={{badge: classes.notificationsBadge}}
+                        variant={'dot'}>
+                        <NotificationsIcon/>
+                    </Badge>
+                </IconButton>
+                <IconButton className={classes.lifeButton} color="inherit">
+                    <Badge badgeContent={'5'} classes={{badge: classes.lifeBadge}}>
+                        <FavoriteIcon/>
+                    </Badge>
+                </IconButton>
             </Toolbar>
             <NotificationsPopover
                 anchorEl={notificationsRef.current}

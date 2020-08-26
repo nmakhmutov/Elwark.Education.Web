@@ -1,4 +1,4 @@
-import {List, ListItem, ListItemText} from '@material-ui/core';
+import {List, ListItem, ListItemText, Theme} from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import {makeStyles} from '@material-ui/styles';
 import clsx from 'clsx';
@@ -6,7 +6,7 @@ import {Link} from 'components';
 import moment from 'moment';
 import React from 'react';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     root: {},
     listItem: {
         '&:hover': {

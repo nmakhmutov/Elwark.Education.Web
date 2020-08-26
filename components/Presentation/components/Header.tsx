@@ -1,10 +1,10 @@
-import {Button, Grid, Typography} from '@material-ui/core';
+import {Button, Grid, Theme, Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import clsx from 'clsx';
 import {StorageApi} from 'lib/clients/storage';
 import React from 'react';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
     root: {
         backgroundColor: theme.palette.common.white
     },

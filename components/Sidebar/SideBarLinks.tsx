@@ -1,6 +1,7 @@
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import React from 'react';
 import Links from 'lib/utils/Links';
+import Atom from 'components/icons/Atom';
 
 export interface Page {
     title: string;
@@ -23,6 +24,11 @@ const SideBarLinks: SideBarPage[] = [
                 title: 'History',
                 href: Links.History,
                 icon: AccountBalanceIcon,
+            },
+            {
+                title: 'Physics',
+                href: Links.Physics,
+                icon: Atom,
             },
         ],
     },

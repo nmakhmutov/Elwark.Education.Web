@@ -62,13 +62,15 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                 <Typography className={classes.name} variant={'h4'}>
                     {user?.name}
                 </Typography>
-                <Typography variant={'body2'}>Cafe navigator</Typography>
+                <Typography variant={'body2'}>Regular user</Typography>
             </div>
             <Divider className={classes.divider}/>
             <nav className={classes.navigation}>
-                {SideBarLinks.map((list) => (
-                    <Navigation component={'div'} key={list.title} pages={list.pages} title={list.title}/>
-                ))}
+                {
+                    SideBarLinks.map((list) =>
+                        <Navigation component={'div'} key={list.title} pages={list.pages} title={list.title}/>
+                    )
+                }
             </nav>
         </div>
     );
@@ -76,12 +78,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
     return (
         <>
             <Hidden lgUp>
-                <Drawer
-                    anchor="left"
-                    onClose={onMobileClose}
-                    open={openMobile}
-                    variant={'temporary'}
-                >
+                <Drawer anchor="left" onClose={onMobileClose} open={openMobile} variant={'temporary'}>
                     <div {...rest} className={clsx(classes.root, className)}>
                         {navbarContent}
                     </div>
