@@ -5,10 +5,13 @@ export default class Links {
     public static Home = '/';
     public static Profile = '/profile';
     public static History = '/history';
-    public static Physics = '/physics';
-
-    public static Company = (id: number, tab: string) => ({
-        href: `/companies/[company]/${tab}`,
-        as: `/companies/${id}/${tab}`,
+    public static HistoryTopic = (id: string) => ({
+        href: `/history/[id]`,
+        as: `/history/${id}`,
     });
+    public static HistoryArticle = (id: string) => ({
+        href: `/history/article/[id]`,
+        as: `/history/article/${id}`,
+    });
+    public static Physics = '/physics';
 }
