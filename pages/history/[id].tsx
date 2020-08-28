@@ -39,6 +39,7 @@ const TopicPage: NextPage<Props> = (props) => {
                     <Grid item={true} xs={12} sm={8} md={9}>
                         {topic.articles.map(article =>
                             <HistoryArticleCard
+                                key={article.articleId}
                                 article={{
                                     topicId: article.topicId,
                                     articleId: article.articleId,

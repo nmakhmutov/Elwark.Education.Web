@@ -4,11 +4,12 @@ import clsx from 'clsx';
 import React from 'react';
 import {Link} from 'components';
 import Links from 'lib/utils/Links';
-import {TopicItem} from "lib/api/history";
+import {TopicItem} from 'lib/api/history';
+import TopicProgress from 'components/Progress/TopicProgress';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-        maxWidth:250,
+        maxWidth: 250,
         margin: '0 auto'
     },
     media: {
@@ -31,6 +32,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     divider: {
         margin: theme.spacing(2, 0)
+    },
+    w100: {
+        width: '100%'
     }
 }));
 
@@ -47,10 +51,7 @@ const HistoryTopicCard: React.FC<Props> = (props) => {
 
     return (
         <Card className={clsx(classes.root, className)}>
-            <CardMedia
-                className={classes.media}
-                image={topic.image}
-            />
+            <CardMedia className={classes.media} image={topic.image}/>
             <CardContent className={classes.content}>
                 <div className={classes.avatarContainer}>
                     <Avatar className={classes.avatar}>Avatar</Avatar>
@@ -65,15 +66,14 @@ const HistoryTopicCard: React.FC<Props> = (props) => {
                 >
                     {topic.title}
                 </Typography>
-                <Typography
-                    align="center"
-                    variant="body2"
-                >
-                    connections in common
+                <Typography align="center" variant="body2">
+                    {topic.range ? topic.range : '\u00A0'}
                 </Typography>
                 <Divider className={classes.divider}/>
                 <Grid container spacing={1}>
-                    Progress
+                    <div className={classes.w100}>
+                        <TopicProgress passed={topic.progress.passed} total={topic.progress.count}/>
+                    </div>
                 </Grid>
             </CardContent>
         </Card>

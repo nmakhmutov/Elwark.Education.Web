@@ -27,6 +27,7 @@ const HistoryPage: NextPage<Props> = (props) => {
     const get = () => {
         if (i >= 8)
             i = 0;
+
         i++;
 
         if (i === 3 || i === 4 || i === 5)
