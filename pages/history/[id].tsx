@@ -9,7 +9,7 @@ import HistoryArticleCard from 'components/Card/HistoryArticleCard';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        padding: theme.spacing(3)
+        // padding: theme.spacing(3)
     },
     image: {
         backgroundPosition: 'center center',
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
             height: 200
         },
         [theme.breakpoints.up('sm')]: {
-            height: '60vh'
+            height: '70vh'
         }
     },
     cover: {
@@ -39,8 +39,11 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     description: {
-        paddingBottom: theme.spacing(3),
-        maxWidth: 980
+        padding: theme.spacing(3),
+        maxWidth: 980,
+        [theme.breakpoints.up('sm')]: {
+            padding: theme.spacing(3, 2, 3, 0),
+        }
     },
     card: {
         marginBottom: theme.spacing(3)
@@ -59,7 +62,7 @@ const TopicPage: NextPage<Props> = (props) => {
         <DefaultLayout title={'Topic'}>
             <div className={classes.root}>
                 <Grid container={true} spacing={3}>
-                    <Grid item={true} xs={12} sm={5} md={4} xl={3}>
+                    <Grid item={true} xs={12} sm={6} md={5} xl={3}>
                         <div className={classes.image} style={{backgroundImage: `url(${topic.image})`}}>
                             <div className={classes.cover}>
                                 <div className={classes.titleContainer}>
@@ -74,7 +77,7 @@ const TopicPage: NextPage<Props> = (props) => {
                         </div>
                     </Grid>
 
-                    <Grid item={true} xs={12} sm={7} md={8} xl={9}>
+                    <Grid item={true} xs={12} sm={6} md={7} xl={9}>
                         <Typography variant={'body1'} className={classes.description}>
                             {topic.description}
                         </Typography>
@@ -88,11 +91,19 @@ const TopicPage: NextPage<Props> = (props) => {
     );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({req, res, params: {id}}) => {
+type Params = {
+    req: NextApiRequest,
+    res: NextApiResponse,
+    params: {
+        id: string
+    }
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({req, res, params}: Params) => {
     let accessToken = '';
 
     try {
-        const tokenCache = await oidc.tokenCache(req as NextApiRequest, res as NextApiResponse);
+        const tokenCache = await oidc.tokenCache(req, res);
         const result = await tokenCache.getAccessToken({refresh: true})
         accessToken = result.accessToken!;
     } catch (e) {
@@ -100,7 +111,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({req, res, p
         res.end();
         return;
     }
-    const topic = await HistoryApi.getTopic(id, accessToken);
+    const topic = await HistoryApi.getTopic(params.id, accessToken);
 
     return {props: {topic: topic.data}};
 }

@@ -8,7 +8,7 @@ export default async function callback(req: NextApiRequest, res: NextApiResponse
         await oidc.handleCallback(req, res, {
             redirectTo: Links.Home,
             onUserLoaded: async (request, response, session, _) => {
-                await UserApi.register(session.accessToken!)
+                await UserApi.register(session.idToken!)
                 return session;
             }
         });

@@ -22,6 +22,18 @@ export interface HistoryTopicModel {
     articles: HistoryArticleItem[]
 }
 
+export interface HistoryArticleModel {
+    topicId: string,
+    articleId: string,
+    title: string,
+    image?: string,
+    type: 'Regular' | 'Premium',
+    text: string,
+    subtitle?: string,
+    footnotes?: string,
+    footer?: string
+}
+
 export interface HistoryArticleItem {
     topicId: string,
     articleId: string,
@@ -41,6 +53,13 @@ const HistoryApi = {
     },
     getTopic: async (topicId: string, token: string) => {
         return await axios.get<HistoryTopicModel>(`${SERVER_HISTORY_URL}/${topicId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    },
+    getArticle: async (articleId: string, token: string) => {
+        return await axios.get<HistoryArticleModel>(`${SERVER_HISTORY_URL}/articles/${articleId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
