@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 import {Link} from 'components';
 import Links from 'lib/utils/Links';
-import {TopicItem} from 'lib/api/history';
+import {HistoryTopicItem} from 'lib/api/history';
 import TopicProgress from 'components/Progress/TopicProgress';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     avatarContainer: {
         marginTop: -32,
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
     },
     avatar: {
         height: 64,
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type Props = {
     className?: string
-    topic: TopicItem
+    topic: HistoryTopicItem
 }
 
 const HistoryTopicCard: React.FC<Props> = (props) => {
@@ -54,7 +54,7 @@ const HistoryTopicCard: React.FC<Props> = (props) => {
             <CardMedia className={classes.media} image={topic.image}/>
             <CardContent className={classes.content}>
                 <div className={classes.avatarContainer}>
-                    <Avatar className={classes.avatar}>Avatar</Avatar>
+                    <Avatar className={classes.avatar}>A</Avatar>
                 </div>
                 <Typography
                     align="center"
@@ -62,7 +62,8 @@ const HistoryTopicCard: React.FC<Props> = (props) => {
                     display="block"
                     href={topicLink.href}
                     as={topicLink.as}
-                    variant="h6"
+                    color={'textPrimary'}
+                    variant={'h5'}
                 >
                     {topic.title}
                 </Typography>

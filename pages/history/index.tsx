@@ -3,7 +3,7 @@ import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React from 'react';
 import oidc from 'lib/oidc';
-import HistoryApi, {TopicItem} from 'lib/api/history';
+import HistoryApi, {HistoryTopicItem} from 'lib/api/history';
 import {Grid} from '@material-ui/core';
 import HistoryTopicCard from 'components/Card/HistoryTopicCard';
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type Props = {
-    topics: TopicItem[]
+    topics: HistoryTopicItem[]
 }
 
 const HistoryPage: NextPage<Props> = (props) => {

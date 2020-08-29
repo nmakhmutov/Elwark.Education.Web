@@ -1,44 +1,45 @@
 import {makeStyles} from '@material-ui/styles';
-import {Avatar, Card, CardHeader, Theme} from '@material-ui/core';
+import {CardMedia, Theme, Typography, withStyles} from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
-import {Link} from "components";
-import Links from "lib/utils/Links";
+import Links from 'lib/utils/Links';
+import {Link} from 'components';
+import {HistoryArticleItem} from 'lib/api/history';
+import {amber} from '@material-ui/core/colors';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) => ({
-    root: {},
-    header: {
-        paddingBottom: 0
-    },
-    subheader: {
-        flexWrap: 'wrap',
+    root: {
         display: 'flex',
-        alignItems: 'center'
+        height: 150,
     },
     content: {
-        padding: 0,
-        '&:last-child': {
-            paddingBottom: 0
+        display: 'flex',
+        flexDirection: 'column',
+        '& > *': {
+            paddingBottom: theme.spacing(1)
+        },
+        '& > *:last-child': {
+            padding: 0
         }
     },
-    message: {
-        padding: theme.spacing(2, 3)
+    image: {
+        width: 150,
+        marginRight: theme.spacing(3)
     },
-    details: {
-        padding: theme.spacing(1, 3)
+    center: {
+        justifyContent: 'center',
+    },
+    end: {
+        justifyContent: 'flex-end',
     }
 }));
 
-interface HistoryArticle {
-    topicId: string,
-    articleId: string,
-    title: string,
-    image?: string
-}
+const PremiumTypography = withStyles({root: {color: amber.A700}})(Typography);
 
 type Props = {
     className?: string,
-    article: HistoryArticle
+    article: HistoryArticleItem
 }
 
 const HistoryArticleCard: React.FC<Props> = (props) => {
@@ -48,59 +49,26 @@ const HistoryArticleCard: React.FC<Props> = (props) => {
     const link = Links.HistoryArticle(article.articleId);
 
     return (
-        <Card className={clsx(classes.root, className)}>
-            <CardHeader avatar={
-                <Avatar alt="Reviewer" src={article.image}>
-                    {article.title}
-                </Avatar>
+        <div className={clsx(classes.root, className)}>
+            {article.image
+                ? <CardMedia className={classes.image} image={article.image} title={article.title}/>
+                : <div className={classes.image}/>
             }
-                        className={classes.header}
-                        disableTypography
-                        title={
-                            <Link
-                                color="textPrimary"
-                                href={link.href}
-                                as={link.as}
-                                variant="h5"
-                            >
-                                {article.title}
-                            </Link>
-                        }
-            />
-            {/*<CardContent className={classes.content}>*/}
-            {/*    <div className={classes.message}>*/}
-            {/*        <Typography variant="subtitle2">{review.message}</Typography>*/}
-            {/*    </div>*/}
-            {/*    <Divider/>*/}
-            {/*    <div className={classes.details}>*/}
-            {/*        <Grid*/}
-            {/*            alignItems="center"*/}
-            {/*            container*/}
-            {/*            justify="space-between"*/}
-            {/*            spacing={3}*/}
-            {/*        >*/}
-            {/*            <Grid item>*/}
-            {/*                <Typography variant="h5">*/}
-            {/*                    {review.currency}*/}
-            {/*                    {review.project.price}*/}
-            {/*                </Typography>*/}
-            {/*                <Typography variant="body2">Project price</Typography>*/}
-            {/*            </Grid>*/}
-            {/*            <Grid item>*/}
-            {/*                <Typography variant="h5">*/}
-            {/*                    {review.currency}*/}
-            {/*                    {review.pricePerHour}*/}
-            {/*                </Typography>*/}
-            {/*                <Typography variant="body2">Per project</Typography>*/}
-            {/*            </Grid>*/}
-            {/*            <Grid item>*/}
-            {/*                <Typography variant="h5">{review.hours}</Typography>*/}
-            {/*                <Typography variant="body2">Hours</Typography>*/}
-            {/*            </Grid>*/}
-            {/*        </Grid>*/}
-            {/*    </div>*/}
-            {/*</CardContent>*/}
-        </Card>
+            <div className={clsx(classes.content, article.image ? classes.end : classes.center)}>
+                {article.type === 'Premium' &&
+                <PremiumTypography variant={'subtitle1'}>
+                    {article.type}
+                </PremiumTypography>
+                }
+                <Typography component={Link} display={'block'} href={link.href} as={link.as} color={'textPrimary'}
+                            variant={'h4'}>
+                    {article.title}
+                </Typography>
+                <Typography variant={'caption'}>
+                    {article.passedAt ? 'Article passed ' + moment(article.passedAt).fromNow() : 'Article not passed'}
+                </Typography>
+            </div>
+        </div>
     );
 };
 

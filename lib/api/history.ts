@@ -3,7 +3,7 @@ import {SERVER_BASE_URL} from 'lib/utils/constants';
 
 const SERVER_HISTORY_URL = `${SERVER_BASE_URL}/history`;
 
-export interface TopicItem {
+export interface HistoryTopicItem {
     topicId: string,
     title: string,
     image: string,
@@ -14,32 +14,33 @@ export interface TopicItem {
     }
 }
 
-export interface TopicModel {
+export interface HistoryTopicModel {
     title: string,
     description: string,
     image: string,
     date: string,
-    articles: ArticleItem[]
+    articles: HistoryArticleItem[]
 }
 
-export interface ArticleItem {
+export interface HistoryArticleItem {
     topicId: string,
     articleId: string,
     title: string,
     image?: string,
-    type: 'Regular' | 'Premium'
+    type: 'Regular' | 'Premium',
+    passedAt: Date
 }
 
 const HistoryApi = {
     getAll: async (token: string) => {
-        return await axios.get<TopicItem[]>(SERVER_HISTORY_URL, {
+        return await axios.get<HistoryTopicItem[]>(SERVER_HISTORY_URL, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
     },
     getTopic: async (topicId: string, token: string) => {
-        return await axios.get<TopicModel>(`${SERVER_HISTORY_URL}/${topicId}`, {
+        return await axios.get<HistoryTopicModel>(`${SERVER_HISTORY_URL}/${topicId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
