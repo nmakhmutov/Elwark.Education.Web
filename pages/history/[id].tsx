@@ -7,6 +7,8 @@ import {Grid, Typography} from '@material-ui/core';
 import HistoryArticleCard from 'components/Card/HistoryArticleCard';
 import TokenApi from 'lib/api/token';
 import {PricingModal} from 'components/PricingModal';
+import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
+import Links from 'lib/utils/Links';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         marginBottom: theme.spacing(3)
+    },
+    breadcrumbs: {
+        marginTop: theme.spacing(3)
     }
 }));
 
@@ -87,6 +92,10 @@ const TopicPage: NextPage<Props> = (props) => {
                     </Grid>
 
                     <Grid item={true} xs={12} sm={6} md={7} xl={9}>
+                        <Breadcrumbs className={classes.breadcrumbs} paths={[
+                            {title: 'History', link: {href: Links.History}},
+                            {title: topic.title}
+                        ]}/>
                         <Typography variant={'body1'} className={classes.description}>
                             {topic.description}
                         </Typography>
