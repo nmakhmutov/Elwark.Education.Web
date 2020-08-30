@@ -54,17 +54,12 @@ const DefaultLayout: React.FC<MainLayoutProps> = (props) => {
 
     const {children, title, links} = props;
 
-    if (loading || !user) {
-        return (<h1>Loading</h1>);
-    }
-
     return (
         <UserProvider value={{user, loading}}>
             <div className={classes.root}>
                 <Head>
                     <title>{title}</title>
-                    {links && links.map(((value, index) =>
-                        <link key={index} href={value} rel="stylesheet"/>))}
+                    {links?.map(((href, index) => <link key={index} href={href} rel="stylesheet"/>))}
                 </Head>
                 <TopBar
                     className={classes.topBar}
@@ -84,5 +79,9 @@ const DefaultLayout: React.FC<MainLayoutProps> = (props) => {
         </UserProvider>
     );
 };
+
+DefaultLayout.defaultProps = {
+    links: []
+}
 
 export default DefaultLayout;

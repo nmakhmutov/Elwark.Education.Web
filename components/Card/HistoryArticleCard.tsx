@@ -1,5 +1,5 @@
 import {makeStyles} from '@material-ui/styles';
-import {CardMedia, Theme, Typography, withStyles} from '@material-ui/core';
+import {CardMedia, Link as UiLink, Theme, Typography, withStyles} from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
 import Links from 'lib/utils/Links';
@@ -39,37 +39,64 @@ const PremiumTypography = withStyles({root: {color: amber.A700}})(Typography);
 
 type Props = {
     className?: string,
+    onPremiumPopup?: () => void
     article: HistoryArticleItem
 }
 
 const HistoryArticleCard: React.FC<Props> = (props) => {
-    const {className, article} = props;
+        const {className, article, onPremiumPopup} = props;
 
-    const classes = useStyles();
-    const link = Links.HistoryArticle(article.articleId);
+        const classes = useStyles();
+        const link = Links.HistoryArticle(article.articleId);
 
-    return (
-        <div className={clsx(classes.root, className)}>
-            {article.image
-                ? <CardMedia className={classes.image} image={article.image} title={article.title}/>
-                : <div className={classes.image}/>
+        const title = () => {
+            if (article.type === 'Premium' && onPremiumPopup) {
+                const onClick = (event: MouseEvent) => {
+                    event.preventDefault();
+                    onPremiumPopup();
+                };
+
+                return (
+                    <Typography
+                        component={UiLink}
+                        display={'block'}
+                        color={'textPrimary'}
+                        variant={'h4'}
+                        href={'#'}
+                        onClick={onClick}>
+                        {article.title}
+                    </Typography>
+                )
             }
-            <div className={clsx(classes.content, article.image ? classes.end : classes.center)}>
-                {article.type === 'Premium' &&
-                <PremiumTypography variant={'subtitle1'}>
-                    {article.type}
-                </PremiumTypography>
-                }
+
+            return (
                 <Typography component={Link} display={'block'} href={link.href} as={link.as} color={'textPrimary'}
                             variant={'h4'}>
                     {article.title}
                 </Typography>
-                <Typography variant={'caption'}>
-                    {article.passedAt ? 'Article passed ' + moment(article.passedAt).fromNow() : 'Article not passed'}
-                </Typography>
+            )
+        }
+
+        return (
+            <div className={clsx(classes.root, className)}>
+                {article.image
+                    ? <CardMedia className={classes.image} image={article.image} title={article.title}/>
+                    : <div className={classes.image}/>
+                }
+                <div className={clsx(classes.content, article.image ? classes.end : classes.center)}>
+                    {article.type === 'Premium' &&
+                    <PremiumTypography variant={'subtitle1'}>
+                        {article.type}
+                    </PremiumTypography>
+                    }
+                    {title()}
+                    <Typography variant={'caption'}>
+                        {article.passedAt ? 'Test passed ' + moment(article.passedAt).fromNow() : 'Test not passed'}
+                    </Typography>
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    }
+;
 
 export default HistoryArticleCard

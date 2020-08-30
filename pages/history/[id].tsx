@@ -1,11 +1,12 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import DefaultLayout from 'components/Layout';
-import {GetServerSideProps, NextApiRequest, NextApiResponse, NextPage} from 'next';
-import React from 'react';
+import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
+import React, {useState} from 'react';
 import HistoryApi, {HistoryTopicModel} from 'lib/api/history';
-import oidc from 'lib/oidc';
 import {Grid, Typography} from '@material-ui/core';
 import HistoryArticleCard from 'components/Card/HistoryArticleCard';
+import TokenApi from 'lib/api/token';
+import {PricingModal} from 'components/PricingModal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,6 +59,14 @@ const TopicPage: NextPage<Props> = (props) => {
     const classes = useStyles();
     const {topic} = props;
 
+    const [pricingModalOpen, setPricingModalOpen] = useState(false);
+    const handlePricingClose = () => {
+        setPricingModalOpen(false);
+    };
+    const handlePricingOpen = () => {
+        setPricingModalOpen(true);
+    };
+
     return (
         <DefaultLayout title={'Topic'}>
             <div className={classes.root}>
@@ -82,38 +91,32 @@ const TopicPage: NextPage<Props> = (props) => {
                             {topic.description}
                         </Typography>
                         {topic.articles.map(article =>
-                            <HistoryArticleCard key={article.articleId} className={classes.card} article={article}/>
+                            <HistoryArticleCard
+                                key={article.articleId}
+                                className={classes.card}
+                                onPremiumPopup={handlePricingOpen}
+                                article={article}/>
                         )}
                     </Grid>
                 </Grid>
             </div>
+            <PricingModal
+                onClose={handlePricingClose}
+                open={pricingModalOpen}
+            />
         </DefaultLayout>
     );
 };
 
 type Params = {
-    req: NextApiRequest,
-    res: NextApiResponse,
-    params: {
-        id: string
-    }
+    id: string
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({req, res, params}: Params) => {
-    let accessToken = '';
+export const getServerSideProps: GetServerSideProps<Props, Params> = async ({req, res, params}: GetServerSidePropsContext<Params>) => {
+    const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
+    const {data} = await HistoryApi.getTopic(params!.id, token);
 
-    try {
-        const tokenCache = await oidc.tokenCache(req, res);
-        const result = await tokenCache.getAccessToken({refresh: true})
-        accessToken = result.accessToken!;
-    } catch (e) {
-        res.writeHead(302, {Location: '/api/login'});
-        res.end();
-        return;
-    }
-    const topic = await HistoryApi.getTopic(params.id, accessToken);
-
-    return {props: {topic: topic.data}};
+    return {props: {topic: data}};
 }
 
 export default TopicPage;

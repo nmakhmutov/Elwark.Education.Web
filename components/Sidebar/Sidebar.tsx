@@ -56,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                     alt={'Person'}
                     className={classes.avatar}
                     component={Link}
-                    src={user!.picture}
+                    src={user?.picture}
                     href={Links.Profile}
                 />
                 <Typography className={classes.name} variant={'h4'}>

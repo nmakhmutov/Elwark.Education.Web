@@ -1,18 +1,17 @@
 import DefaultLayout from 'components/Layout';
 import Presentation from 'components/Presentation/Presentation';
 import Subjects from 'components/Subjects';
-import {useFetchUser} from 'lib/utils/user';
-import {NextPage} from 'next';
+import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextPage} from 'next';
 import * as React from 'react';
+import oidc from 'lib/oidc';
 
 interface Props {
-    userAgent: string;
+    isLoggedIn: boolean;
 }
 
-const Home: NextPage<Props> = () => {
-    const {user, loading} = useFetchUser(false);
-
-    if (!loading && user) {
+const Home: NextPage<Props> = (props) => {
+    const {isLoggedIn} = props;
+    if (isLoggedIn) {
         return (
             <DefaultLayout title={'Subjects'}>
                 <Subjects/>
@@ -20,15 +19,17 @@ const Home: NextPage<Props> = () => {
         );
     }
 
-    if (!loading && !user) {
-        return (
-            <Presentation/>
-        );
-    }
-
     return (
-        <div>Loading</div>
+        <Presentation/>
     );
 };
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({req}: GetServerSidePropsContext) => {
+    const session = await oidc.getSession(req as NextApiRequest);
+
+    return !session || !session.user
+        ? {props: {isLoggedIn: false}}
+        : {props: {isLoggedIn: true}};
+}
 
 export default Home;

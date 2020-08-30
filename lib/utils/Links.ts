@@ -4,6 +4,7 @@ export default class Links {
 
     public static Home = '/';
     public static Profile = '/profile';
+    public static Premium = '/premium';
     public static History = '/history';
     public static HistoryTopic = (id: string) => ({
         href: `/history/[id]`,

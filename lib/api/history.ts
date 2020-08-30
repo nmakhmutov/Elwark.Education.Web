@@ -31,7 +31,6 @@ export interface HistoryArticleModel {
     text: string,
     subtitle?: string,
     footnotes?: string,
-    footer?: string
 }
 
 export interface HistoryArticleItem {

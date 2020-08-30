@@ -1,7 +1,7 @@
 import {Button, CardActions, CardHeader, colors, Divider, Popover} from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import {Link} from 'components';
-import {EmptyList, NotificationList, Notification} from 'components/NotificationsPopover/components';
+import {EmptyList, NotificationList, Notification} from './components';
 import React from 'react';
 
 const useStyles = makeStyles(() => ({

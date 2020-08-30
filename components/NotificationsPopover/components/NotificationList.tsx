@@ -36,11 +36,7 @@ const NotificationList: React.FC<Props> = (props) => {
     const classes = useStyles();
 
     return (
-        <List
-            {...rest}
-            className={clsx(classes.root, className)}
-            disablePadding
-        >
+        <List className={clsx(classes.root, className)} disablePadding={true} {...rest}>
             {
                 notifications.map((notification, i) => (
                     <ListItem

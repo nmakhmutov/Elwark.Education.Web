@@ -1,11 +1,11 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import DefaultLayout from 'components/Layout';
-import {GetServerSideProps, NextApiRequest, NextApiResponse, NextPage} from 'next';
+import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React from 'react';
-import oidc from 'lib/oidc';
 import HistoryApi, {HistoryTopicItem} from 'lib/api/history';
 import {Grid} from '@material-ui/core';
 import HistoryTopicCard from 'components/Card/HistoryTopicCard';
+import TokenApi from 'lib/api/token';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,22 +54,11 @@ const HistoryPage: NextPage<Props> = (props) => {
     );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}) => {
-    let accessToken = '';
+export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: GetServerSidePropsContext) => {
+    const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
+    const {data} = await HistoryApi.getAll(token);
 
-    try {
-        const tokenCache = await oidc.tokenCache(req as NextApiRequest, res as NextApiResponse);
-        const result = await tokenCache.getAccessToken({refresh: true})
-        accessToken = result.accessToken!;
-    } catch (e) {
-        res.writeHead(302, {Location: '/api/login'});
-        res.end();
-        return;
-    }
-
-    const topics = await HistoryApi.getAll(accessToken);
-
-    return {props: {topics: topics.data}};
+    return {props: {topics: data}};
 }
 
 export default HistoryPage;

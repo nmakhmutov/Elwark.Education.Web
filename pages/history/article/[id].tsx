@@ -1,8 +1,7 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import DefaultLayout from 'components/Layout';
-import {GetServerSideProps, NextApiRequest, NextApiResponse, NextPage} from 'next';
+import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React from 'react';
-import oidc from 'lib/oidc';
 import HistoryApi, {HistoryArticleModel} from 'lib/api/history';
 import ReactMarkdown from 'react-markdown';
 import {Button, Grid, Paper, Typography} from '@material-ui/core';
@@ -11,8 +10,12 @@ import Links from 'lib/utils/Links';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {Link} from 'components';
 import clsx from 'clsx';
+import TokenApi from 'lib/api/token';
 
 const useStyles = makeStyles((theme) => ({
+    root:{
+        maxWidth: 1920
+    },
     content: {
         padding: theme.spacing(8),
         borderRadius: 0,
@@ -43,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up('sm')]: {
             height: '25vh',
         }
+    },
+    height: {
+        minHeight: '100%'
     },
     padding: {
         padding: theme.spacing(4),
@@ -88,9 +94,9 @@ const ArticlePage: NextPage<Props> = (props) => {
 
     return (
         <DefaultLayout title={'Topic'}>
-            <Grid container={true}>
-                <Grid item={true} xs={12} md={7} lg={8} xl={4}>
-                    <Paper className={classes.content}>
+            <Grid container={true} className={clsx(classes.root,classes.height)}>
+                <Grid item={true} xs={12} md={7} lg={8} xl={6} className={classes.height}>
+                    <Paper className={clsx(classes.content, classes.height)}>
                         <div className={classes.titleRow}>
                             <Typography
                                 variant={'h1'}
@@ -120,45 +126,23 @@ const ArticlePage: NextPage<Props> = (props) => {
                         <ReactMarkdown source={article.text} className={classes.markdown}/>
                     </Paper>
                 </Grid>
-                <Grid item={true} xs={12} md={5} lg={4} xl={2}>
+                <Grid item={true} xs={12} md={5} lg={4} xl={3} className={classes.height}>
                     {article.image &&
                     <div className={classes.image} style={{backgroundImage: `url(${article.image})`}}/>}
                     <ReactMarkdown source={article.footnotes} className={clsx(classes.markdown, classes.padding)}/>
                 </Grid>
             </Grid>
-            {article.footer &&
-            <Grid container={true}>
-                <Grid item={true}>
-                    <ReactMarkdown source={article.footer} className={clsx(classes.markdown, classes.padding)}/>
-                </Grid>
-            </Grid>
-            }
         </DefaultLayout>
     );
 };
 
 type Params = {
-    req: NextApiRequest,
-    res: NextApiResponse,
-    params: {
-        id: string
-    }
+    id: string
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({req, res, params}: Params) => {
-    const {id} = params;
-    let accessToken = '';
-    try {
-        const tokenCache = await oidc.tokenCache(req, res);
-        const result = await tokenCache.getAccessToken({refresh: true})
-        accessToken = result.accessToken!;
-    } catch (e) {
-        res.writeHead(302, {Location: '/api/login'});
-        res.end();
-        return;
-    }
-
-    const {data} = await HistoryApi.getArticle(id, accessToken);
+export const getServerSideProps: GetServerSideProps<Props, Params> = async ({req, res, params}: GetServerSidePropsContext<Params>) => {
+    const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
+    const {data} = await HistoryApi.getArticle(params!.id, token);
     return {props: {article: data}};
 }
 
