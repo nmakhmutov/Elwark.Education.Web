@@ -1,18 +1,49 @@
-import {Box, Typography} from '@material-ui/core';
+import {CircularProgress, Typography} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
-import LinearProgress, {LinearProgressProps} from '@material-ui/core/LinearProgress';
-import {blue, orange, yellow} from '@material-ui/core/colors';
+import {LinearProgressProps} from '@material-ui/core/LinearProgress';
+import {green, orange, purple, yellow} from '@material-ui/core/colors';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
-    blue: {
-        backgroundColor: blue['400']
+    root: {
+        display: 'flex',
+        alignItems: 'center'
     },
-    orange: {
-        backgroundColor: orange['300']
+    progress: {
+        display: 'inline-flex',
+        position: 'relative',
+    },
+    wrapper: {
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        position: 'absolute',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    caption: {
+        paddingLeft: theme.spacing(1)
+    },
+    bold: {
+        fontWeight: 'bold'
+    },
+    green: {
+        color: green.A700
     },
     yellow: {
-        backgroundColor: yellow['500']
+        color: yellow['700']
+    },
+    orange: {
+        color: orange.A700
+    },
+    purple: {
+        color: purple['700']
+    },
+    primary: {
+        color: theme.palette.primary.main
     }
 }));
 
@@ -26,31 +57,42 @@ const TopicProgress: React.FC<LinearProgressProps & Props> = (props) => {
     const {className, passed, total} = props;
 
     const classes = useStyles();
-    const progress = props.passed * 100 / props.total;
+    const progress = passed * 100 / total;
     const getProgressColor = (value: number) => {
         if (value > 80)
-            return classes.yellow;
+            return classes.primary;
 
         if (value > 60)
+            return classes.purple;
+
+        if (value > 40)
             return classes.orange;
 
-        return classes.blue;
+        if (value > 20)
+            return classes.yellow;
+
+        return classes.green;
     }
 
     return (
-        <Box display={'flex'} alignItems={'center'} className={className}>
-            <Box width="100%" mr={1}>
-                <LinearProgress
-                    variant={'determinate'}
-                    classes={{barColorPrimary: getProgressColor(progress)}}
-                    value={progress} {...props} />
-            </Box>
-            <Box minWidth={45}>
-                <Typography variant="body2" color="textSecondary">
+        <div className={clsx(classes.root, className)}>
+            <div className={classes.progress}>
+                <CircularProgress variant={'static'} value={progress} className={getProgressColor(progress)}/>
+                <div className={classes.wrapper}>
+                    <Typography variant={'caption'} component={'div'} color={'textSecondary'}>
+                        {`${Math.round(progress)}%`}
+                    </Typography>
+                </div>
+            </div>
+            <div className={classes.caption}>
+                <Typography variant={'subtitle2'} color={'textSecondary'} className={classes.bold}>
+                    Progress
+                </Typography>
+                <Typography variant={'body2'} color={'textSecondary'}>
                     {passed} / {total}
                 </Typography>
-            </Box>
-        </Box>
+            </div>
+        </div>
     );
 };
 

@@ -1,5 +1,5 @@
 import {makeStyles} from '@material-ui/styles';
-import {Avatar, Card, CardContent, CardMedia, Divider, Grid, Theme, Typography} from '@material-ui/core';
+import {Card, CardContent, CardMedia, Theme, Typography} from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
 import {Link} from 'components';
@@ -15,27 +15,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     media: {
         height: 125
     },
-    content: {
-        paddingTop: 0
+    content: {},
+    title: {
+        display: 'block',
+        marginBottom: theme.spacing(1)
     },
-    avatarContainer: {
-        marginTop: -32,
-        display: 'flex',
-        justifyContent: 'flex-start'
+    date: {
+        marginBottom: theme.spacing(2)
     },
-    avatar: {
-        height: 64,
-        width: 64,
-        borderWidth: 4,
-        borderStyle: 'solid',
-        borderColor: theme.palette.common.white
-    },
-    divider: {
-        margin: theme.spacing(2, 0)
-    },
-    w100: {
-        width: '100%'
-    }
 }));
 
 type Props = {
@@ -53,13 +40,9 @@ const HistoryTopicCard: React.FC<Props> = (props) => {
         <Card className={clsx(classes.root, className)}>
             <CardMedia className={classes.media} image={topic.image}/>
             <CardContent className={classes.content}>
-                <div className={classes.avatarContainer}>
-                    <Avatar className={classes.avatar}>A</Avatar>
-                </div>
                 <Typography
-                    align="center"
+                    className={classes.title}
                     component={Link}
-                    display="block"
                     href={topicLink.href}
                     as={topicLink.as}
                     color={'textPrimary'}
@@ -67,15 +50,10 @@ const HistoryTopicCard: React.FC<Props> = (props) => {
                 >
                     {topic.title}
                 </Typography>
-                <Typography align="center" variant="body2">
+                <Typography className={classes.date} variant="body2">
                     {topic.range ? topic.range : '\u00A0'}
                 </Typography>
-                <Divider className={classes.divider}/>
-                <Grid container spacing={1}>
-                    <div className={classes.w100}>
-                        <TopicProgress passed={topic.progress.passed} total={topic.progress.count}/>
-                    </div>
-                </Grid>
+                <TopicProgress passed={topic.progress.passed} total={topic.progress.count}/>
             </CardContent>
         </Card>
     );
