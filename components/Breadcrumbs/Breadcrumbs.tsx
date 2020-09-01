@@ -23,16 +23,16 @@ const Breadcrumbs: React.FC<Props> = (props) => {
             className={clsx(classes.root, className)}
             separator={<NavigateNextIcon fontSize="small"/>}
             aria-label="breadcrumb">
-            {paths.map((path) => {
+            {paths.map((path, index) => {
                 if (path.link)
                     return (
-                        <Link color="inherit" href={path.link.href} as={path.link.as}>
+                        <Link key={index} color="inherit" href={path.link.href} as={path.link.as}>
                             {path.title}
                         </Link>
                     );
 
                 return (
-                    <Typography color="textPrimary">
+                    <Typography key={index} color="textPrimary">
                         {path.title}
                     </Typography>
                 )
