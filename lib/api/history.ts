@@ -48,6 +48,7 @@ export interface HistoryArticleItem {
     topicId: string,
     articleId: string,
     title: string,
+    subtitle?: string,
     image?: string,
     type: 'Regular' | 'Premium',
     passedAt: Date

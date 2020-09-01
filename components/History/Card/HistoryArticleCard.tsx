@@ -90,6 +90,9 @@ const HistoryArticleCard: React.FC<Props> = (props) => {
                     </PremiumTypography>
                     }
                     {title()}
+                    <Typography variant={'subtitle2'}>
+                        {article.subtitle}
+                    </Typography>
                     <Typography variant={'caption'}>
                         {article.passedAt ? 'Test passed ' + moment(article.passedAt).fromNow() : 'Test not passed'}
                     </Typography>
