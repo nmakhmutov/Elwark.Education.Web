@@ -16,7 +16,7 @@ export default class Links {
         href: `/history/article/[id]`,
         as: `/history/article/${id}`,
     });
-    public static HistoryPeriod = (period: HistoryPeriod | string) => `/history/${period}`;
+    public static HistoryPeriod = (period: HistoryPeriod | string) => `/history/${period.toLowerCase()}`;
 
     public static Physics = '/physics';
 }

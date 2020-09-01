@@ -159,7 +159,7 @@ const HistoryPage: NextPage<Props> = (props) => {
                                         title={item.title}
                                         description={item.description}
                                         image={item.image}
-                                        href={Links.HistoryPeriod(item.id.toLowerCase())}/>
+                                        href={Links.HistoryPeriod(item.id)}/>
                                 )
 
                             case 'Article':

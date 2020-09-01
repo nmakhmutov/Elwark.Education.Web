@@ -19,12 +19,23 @@ export interface HistoryTopicModel {
     description: string,
     image: string,
     date: string,
+    period: {
+        type: string,
+        title: string
+    },
     articles: HistoryArticleItem[]
 }
 
 export interface HistoryArticleModel {
-    topicId: string,
-    articleId: string,
+    id: string,
+    topic:{
+        id: string,
+        title: string
+    },
+    period:{
+        type: string,
+        title: string
+    }
     title: string,
     image?: string,
     type: 'Regular' | 'Premium',

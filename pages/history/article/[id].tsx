@@ -4,16 +4,15 @@ import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiRe
 import React from 'react';
 import HistoryApi, {HistoryArticleModel} from 'lib/api/history';
 import ReactMarkdown from 'react-markdown';
-import {Button, Grid, Paper, Typography} from '@material-ui/core';
+import {Grid, Paper, Typography} from '@material-ui/core';
 import {purple} from '@material-ui/core/colors';
 import Links from 'lib/utils/Links';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import {Link} from 'components';
 import clsx from 'clsx';
 import TokenApi from 'lib/api/token';
+import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 
 const useStyles = makeStyles((theme) => ({
-    root:{
+    root: {
         maxWidth: 1920
     },
     content: {
@@ -21,19 +20,14 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 0,
         boxShadow: theme.shadows[20],
     },
-    titleRow: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingBottom: theme.spacing(3),
-    },
-    titleBack: {
-        display: 'flex',
-        marginRight: theme.spacing(2),
-        color: theme.palette.common.black
+    title: {
+        marginBottom: theme.spacing(3)
     },
     subtitle: {
-        paddingBottom: theme.spacing(3)
+        marginBottom: theme.spacing(3)
+    },
+    breadcrumbs: {
+        marginBottom: theme.spacing(3)
     },
     image: {
         width: '100%',
@@ -90,26 +84,21 @@ type Props = {
 const ArticlePage: NextPage<Props> = (props) => {
     const classes = useStyles();
     const {article} = props;
-    const topicLink = Links.HistoryTopic(article.topicId);
+    const topicLink = Links.HistoryTopic(article.topic.id);
 
     return (
         <DefaultLayout title={'Topic'}>
-            <Grid container={true} className={clsx(classes.root,classes.height)}>
+            <Grid container={true} className={clsx(classes.root, classes.height)}>
                 <Grid item={true} xs={12} md={7} lg={8} xl={6} className={classes.height}>
                     <Paper className={clsx(classes.content, classes.height)}>
-                        <div className={classes.titleRow}>
-                            <Typography
-                                variant={'h1'}
-                                className={classes.titleBack}
-                                component={Link}
-                                href={topicLink.href}
-                                as={topicLink.as}>
-                                <ArrowBackIcon fontSize={'large'}/>
-                            </Typography>
-                            <Typography variant={'h1'}>
-                                {article.title}
-                            </Typography>
-                        </div>
+                        <Breadcrumbs className={classes.breadcrumbs} paths={[
+                            {title: 'History', link: {href: Links.History}},
+                            {title: article.period.title, link: {href: Links.HistoryPeriod(article.period.type)}},
+                            {title: article.topic.title, link: {href: topicLink.href, as: topicLink.as}},
+                        ]}/>
+                        <Typography variant={'h1'} className={classes.title}>
+                            {article.title}
+                        </Typography>
                         {article.subtitle &&
                         <Typography
                             variant={'h4'}
@@ -118,11 +107,6 @@ const ArticlePage: NextPage<Props> = (props) => {
                             {article.subtitle}
                         </Typography>
                         }
-                        <div>
-                            <Button variant={'contained'} color={'primary'}>
-                                Test
-                            </Button>
-                        </div>
                         <ReactMarkdown source={article.text} className={classes.markdown}/>
                     </Paper>
                 </Grid>

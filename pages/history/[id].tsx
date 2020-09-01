@@ -41,19 +41,22 @@ const useStyles = makeStyles((theme) => ({
             marginBottom: theme.spacing(3)
         }
     },
+    breadcrumbs: {
+        margin: theme.spacing(0, 3, 3, 3),
+        [theme.breakpoints.up('sm')]: {
+            margin: theme.spacing(3,0)
+        }
+    },
     description: {
-        padding: theme.spacing(3),
+        margin: theme.spacing(0, 3, 3, 3),
         maxWidth: 980,
         [theme.breakpoints.up('sm')]: {
-            padding: theme.spacing(3, 2, 3, 0),
+            margin: theme.spacing(3,0)
         }
     },
     card: {
         marginBottom: theme.spacing(3)
     },
-    breadcrumbs: {
-        marginTop: theme.spacing(3)
-    }
 }));
 
 type Props = {
@@ -76,7 +79,7 @@ const TopicPage: NextPage<Props> = (props) => {
         <DefaultLayout title={'Topic'}>
             <div className={classes.root}>
                 <Grid container={true} spacing={3}>
-                    <Grid item={true} xs={12} sm={6} md={5} xl={3}>
+                    <Grid item={true} xs={12} sm={5} md={4} xl={3}>
                         <div className={classes.image} style={{backgroundImage: `url(${topic.image})`}}>
                             <div className={classes.cover}>
                                 <div className={classes.titleContainer}>
@@ -91,10 +94,10 @@ const TopicPage: NextPage<Props> = (props) => {
                         </div>
                     </Grid>
 
-                    <Grid item={true} xs={12} sm={6} md={7} xl={9}>
+                    <Grid item={true} xs={12} sm={7} md={8} xl={9}>
                         <Breadcrumbs className={classes.breadcrumbs} paths={[
                             {title: 'History', link: {href: Links.History}},
-                            {title: topic.title}
+                            {title: topic.period.title, link: {href: Links.HistoryPeriod(topic.period.type)}},
                         ]}/>
                         <Typography variant={'body1'} className={classes.description}>
                             {topic.description}
