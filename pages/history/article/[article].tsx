@@ -4,12 +4,13 @@ import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiRe
 import React from 'react';
 import HistoryApi, {HistoryArticleModel} from 'lib/api/history';
 import ReactMarkdown from 'react-markdown';
-import {Grid, Paper, Typography} from '@material-ui/core';
+import {Button, Grid, Paper, Typography} from '@material-ui/core';
 import {purple} from '@material-ui/core/colors';
 import Links from 'lib/utils/Links';
 import clsx from 'clsx';
 import TokenApi from 'lib/api/token';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: theme.shadows[20],
     },
     title: {
+        marginBottom: theme.spacing(3)
+    },
+    test: {
         marginBottom: theme.spacing(3)
     },
     subtitle: {
@@ -99,6 +103,11 @@ const ArticlePage: NextPage<Props> = (props) => {
                         <Typography variant={'h1'} className={classes.title}>
                             {article.title}
                         </Typography>
+                        <div className={classes.test}>
+                            <Button variant={'contained'} color={'primary'} startIcon={<BorderColorIcon/>}>
+                                Pass a test
+                            </Button>
+                        </div>
                         {article.subtitle &&
                         <Typography
                             variant={'h4'}
@@ -121,12 +130,13 @@ const ArticlePage: NextPage<Props> = (props) => {
 };
 
 type Params = {
-    id: string
+    article: string
 }
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async ({req, res, params}: GetServerSidePropsContext<Params>) => {
     const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
-    const {data} = await HistoryApi.getArticle(params!.id, token);
+    const {data} = await HistoryApi.getArticle(params!.article, token);
+
     return {props: {article: data}};
 }
 

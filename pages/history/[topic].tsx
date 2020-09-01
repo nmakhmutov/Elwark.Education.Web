@@ -121,12 +121,12 @@ const TopicPage: NextPage<Props> = (props) => {
 };
 
 type Params = {
-    id: string
+    topic: string
 }
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async ({req, res, params}: GetServerSidePropsContext<Params>) => {
     const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
-    const {data} = await HistoryApi.getTopic(params!.id, token);
+    const {data} = await HistoryApi.getTopic(params!.topic, token);
 
     return {props: {topic: data}};
 }
