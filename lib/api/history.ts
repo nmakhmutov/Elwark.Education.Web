@@ -50,6 +50,14 @@ export interface HistoryCardModel {
     image: string
 }
 
+export enum HistoryPeriod {
+    'Prehistory' = 'prehistory',
+    'Ancient' = 'ancient',
+    'MiddleAges' = 'middleages',
+    'Modern' = 'modern',
+    'Contemporary' = 'contemporary'
+}
+
 const HistoryApi = {
     get: async (token: string) => {
         return await axios.get<HistoryCardModel[]>(SERVER_HISTORY_URL, {
@@ -58,7 +66,7 @@ const HistoryApi = {
             }
         })
     },
-    getTopics: async (period: string, token: string) => {
+    getTopics: async (period: HistoryPeriod, token: string) => {
         return await axios.get<HistoryTopicItem[]>(`${SERVER_HISTORY_URL}/topics?period=${period}`, {
             headers: {
                 Authorization: `Bearer ${token}`

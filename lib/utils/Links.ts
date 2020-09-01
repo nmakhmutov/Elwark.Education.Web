@@ -1,3 +1,5 @@
+import {HistoryPeriod} from 'lib/api/history';
+
 export default class Links {
     public static Account = 'http://localhost:5003';
     public static Logout = '/api/logout';
@@ -14,7 +16,7 @@ export default class Links {
         href: `/history/article/[id]`,
         as: `/history/article/${id}`,
     });
-    public static HistoryPeriod = (period: string) => `/history/${period}`;
+    public static HistoryPeriod = (period: HistoryPeriod | string) => `/history/${period}`;
 
     public static Physics = '/physics';
 }

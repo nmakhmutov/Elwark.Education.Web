@@ -2,9 +2,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React from 'react';
-import HistoryApi, {HistoryTopicItem} from 'lib/api/history';
+import HistoryApi, {HistoryPeriod, HistoryTopicItem} from 'lib/api/history';
 import TokenApi from 'lib/api/token';
-import HistoryTopicGrid from 'components/History/Grid/HistoryTopicGrid';
+import {HistoryPeriodTabs, HistoryTopicGrid} from 'components/History';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,6 +24,7 @@ const AncientPage: NextPage<Props> = (props) => {
 
     return (
         <DefaultLayout title={'Middle ages history page'}>
+            <HistoryPeriodTabs selected={HistoryPeriod.MiddleAges}/>
             <HistoryTopicGrid topics={topics} className={classes.root}/>
         </DefaultLayout>
     );
@@ -31,7 +32,7 @@ const AncientPage: NextPage<Props> = (props) => {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: GetServerSidePropsContext) => {
     const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
-    const {data} = await HistoryApi.getTopics('middleages', token);
+    const {data} = await HistoryApi.getTopics(HistoryPeriod.MiddleAges, token);
 
     return {props: {topics: data}};
 }
