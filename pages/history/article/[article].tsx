@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import TokenApi from 'lib/api/token';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
+import Link from 'components/Link';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,6 +52,11 @@ const useStyles = makeStyles((theme) => ({
     padding: {
         padding: theme.spacing(4),
     },
+    link: {
+        '&:hover': {
+            textDecoration: 'none'
+        }
+    },
     markdown: {
         '& h1': theme.typography.h2,
         '& h2': theme.typography.h3,
@@ -89,6 +95,7 @@ const ArticlePage: NextPage<Props> = (props) => {
     const classes = useStyles();
     const {article} = props;
     const topicLink = Links.HistoryTopic(article.topic.id);
+    const testLink = Links.HistoryTest(article.id);
 
     return (
         <DefaultLayout title={'Topic'}>
@@ -104,7 +111,14 @@ const ArticlePage: NextPage<Props> = (props) => {
                             {article.title}
                         </Typography>
                         <div className={classes.test}>
-                            <Button variant={'contained'} color={'primary'} startIcon={<BorderColorIcon/>}>
+                            {/*// @ts-ignore*/}
+                            <Button variant={'contained'}
+                                    className={classes.link}
+                                    component={Link}
+                                    href={testLink.href}
+                                    as={testLink.as}
+                                    color={'primary'}
+                                    startIcon={<BorderColorIcon/>}>
                                 Pass a test
                             </Button>
                         </div>

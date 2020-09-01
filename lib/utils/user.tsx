@@ -1,4 +1,3 @@
-import fetch from 'isomorphic-unfetch';
 import React from 'react';
 
 // Use a global to save the user, so we don't have to fetch it again after page navigations
