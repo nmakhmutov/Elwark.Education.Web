@@ -23,7 +23,7 @@ const AncientPage: NextPage<Props> = (props) => {
     const {topics} = props;
 
     return (
-        <DefaultLayout title={'Pre history page'}>
+        <DefaultLayout title={'Modern history page'}>
             <HistoryTopicGrid topics={topics} className={classes.root}/>
         </DefaultLayout>
     );
@@ -31,7 +31,7 @@ const AncientPage: NextPage<Props> = (props) => {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: GetServerSidePropsContext) => {
     const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
-    const {data} = await HistoryApi.getTopics('ancient', token);
+    const {data} = await HistoryApi.getTopics('modern', token);
 
     return {props: {topics: data}};
 }
