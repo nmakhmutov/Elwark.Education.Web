@@ -150,7 +150,7 @@ const HistoryPage: NextPage<Props> = (props) => {
     return (
         <DefaultLayout title={'History page'}>
             <div className={classes.root}>
-                {topics.map((item, index) => {
+                {topics.map((item) => {
                         switch (item.type) {
                             case 'Period':
                                 return (
@@ -168,7 +168,6 @@ const HistoryPage: NextPage<Props> = (props) => {
                                 return (
                                     <HistoryArticleGridItem
                                         key={item.id}
-                                        elementIndex={index}
                                         title={item.title}
                                         description={item.description}
                                         image={item.image}
