@@ -42,16 +42,31 @@ export interface HistoryArticleItem {
     passedAt: Date
 }
 
+export interface HistoryCardModel {
+    type: 'Period' | 'Article',
+    id: string,
+    title: string,
+    description: string,
+    image: string
+}
+
 const HistoryApi = {
-    getAll: async (token: string) => {
-        return await axios.get<HistoryTopicItem[]>(SERVER_HISTORY_URL, {
+    get: async (token: string) => {
+        return await axios.get<HistoryCardModel[]>(SERVER_HISTORY_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    },
+    getTopics: async (period: string, token: string) => {
+        return await axios.get<HistoryTopicItem[]>(`${SERVER_HISTORY_URL}/topics?period=${period}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
     },
     getTopic: async (topicId: string, token: string) => {
-        return await axios.get<HistoryTopicModel>(`${SERVER_HISTORY_URL}/${topicId}`, {
+        return await axios.get<HistoryTopicModel>(`${SERVER_HISTORY_URL}/topics/${topicId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

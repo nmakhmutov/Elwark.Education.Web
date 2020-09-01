@@ -4,11 +4,11 @@ import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiRe
 import React, {useState} from 'react';
 import HistoryApi, {HistoryTopicModel} from 'lib/api/history';
 import {Grid, Typography} from '@material-ui/core';
-import HistoryArticleCard from 'components/Card/HistoryArticleCard';
 import TokenApi from 'lib/api/token';
 import {PricingModal} from 'components/PricingModal';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import Links from 'lib/utils/Links';
+import {HistoryArticleCard} from 'components/History';
 
 const useStyles = makeStyles((theme) => ({
     root: {
