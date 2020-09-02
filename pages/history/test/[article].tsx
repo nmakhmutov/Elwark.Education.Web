@@ -3,7 +3,15 @@ import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, GetServerSidePropsContext, NextPage} from 'next';
 import React from 'react';
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+        width: '100%'
+    }
+}));
 
 type Props = {
     articleId: string
@@ -14,7 +22,9 @@ const TestPage: NextPage<Props> = (props) => {
 
     return (
         <DefaultLayout title={'Topic'}>
-            Test
+            <div className={classes.root}>
+                Test
+            </div>
         </DefaultLayout>
     );
 };

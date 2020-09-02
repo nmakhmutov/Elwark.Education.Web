@@ -74,28 +74,32 @@ const HistoryApi = {
     get: async (token: string) => {
         return await axios.get<HistoryCardModel[]>(SERVER_HISTORY_URL, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                Language: 'en'
             }
         })
     },
     getTopics: async (period: HistoryPeriod, token: string) => {
         return await axios.get<HistoryTopicItem[]>(`${SERVER_HISTORY_URL}/topics?period=${period}`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                Language: 'en'
             }
         })
     },
     getTopic: async (topicId: string, token: string) => {
         return await axios.get<HistoryTopicModel>(`${SERVER_HISTORY_URL}/topics/${topicId}`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                Language: 'en'
             }
         })
     },
     getArticle: async (articleId: string, token: string) => {
         return await axios.get<HistoryArticleModel>(`${SERVER_HISTORY_URL}/articles/${articleId}`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                Language: 'en'
             }
         })
     }

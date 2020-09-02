@@ -9,15 +9,15 @@ export default class Links {
     public static Premium = '/premium';
     public static History = '/history';
     public static HistoryTopic = (id: string) => ({
-        href: `/history/[id]`,
+        href: `/history/[topic]`,
         as: `/history/${id}`,
     });
     public static HistoryArticle = (id: string) => ({
-        href: `/history/article/[id]`,
+        href: `/history/article/[article]`,
         as: `/history/article/${id}`,
     });
     public static HistoryTest = (articleId: string) => ({
-        href: `/history/test/[id]`,
+        href: `/history/test/[article]`,
         as: `/history/test/${articleId}`,
     });
     public static HistoryPeriod = (period: HistoryPeriod | string) =>
