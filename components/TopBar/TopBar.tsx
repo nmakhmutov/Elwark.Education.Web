@@ -1,12 +1,9 @@
 import {colors, Toolbar} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -17,8 +14,9 @@ import {Link} from 'components';
 import {Notification, NotificationsPopover} from 'components/NotificationsPopover';
 import {StorageApi} from 'lib/clients/storage';
 import Links from 'lib/utils/Links';
-import {useFetchUser} from 'lib/utils/user';
 import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {useRouter} from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
     },
     notificationsBadge: {
         backgroundColor: colors.orange[600]
+    },
+    exitButton: {
+        marginLeft: theme.spacing(1)
     },
     logo: {
         '&:hover': {
@@ -64,10 +65,7 @@ type Props = {
     onOpenNavBarMobile: MouseEventHandler;
 }
 
-const TopBar: React.FC<Props> = (props) => {
-    const {onOpenNavBarMobile, className, ...rest} = props;
-    const {user} = useFetchUser();
-
+const TopBar: React.FC<Props> = ({className, onOpenNavBarMobile}) => {
     const classes = useStyles();
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
@@ -110,7 +108,6 @@ const TopBar: React.FC<Props> = (props) => {
 
     const notificationsRef = useRef(null);
     const [openNotifications, setOpenNotifications] = useState(false);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const handleNotificationsOpen = () => {
         setOpenNotifications(true);
@@ -120,34 +117,15 @@ const TopBar: React.FC<Props> = (props) => {
         setOpenNotifications(false);
     };
 
-    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const open = Boolean(anchorEl);
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const router = useRouter();
+    const logout = () => router.push(Links.Logout);
 
     return (
-        <AppBar
-            {...rest}
-            className={clsx(classes.root, className)}
-            color="primary"
-        >
+        <AppBar className={clsx(classes.root, className)} color="primary">
             <Toolbar>
                 <Hidden mdDown={true}>
-                    <Button
-                        color="inherit"
-                        className={classes.logo}
-                        component={Link}
-                        href={Links.Home}
-                    >
-                        <img
-                            alt="Logo"
-                            src={StorageApi.Static.Icons.Elwark.White.Size48x48}
-                        />
+                    <Button color="inherit" className={classes.logo} component={Link} href={Links.Home}>
+                        <img alt="Logo" src={StorageApi.Static.Icons.Elwark.White.Size48x48}/>
                         <Typography variant={'h3'} className={classes.logoText} component={'h2'}>Education</Typography>
                     </Button>
                 </Hidden>
@@ -157,42 +135,6 @@ const TopBar: React.FC<Props> = (props) => {
                     </IconButton>
                 </Hidden>
                 <div className={classes.flexGrow}/>
-                <div>
-                    <Button
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        onClick={handleMenu}
-                        color="inherit"
-                    >
-                        <Avatar variant={'circle'} className={classes.userAvatar} src={user?.picture}/>
-                        <Typography
-                            variant={'h6'}
-                            component={'h6'}
-                            className={classes.userName}>
-                            {user?.name}
-                        </Typography>
-                    </Button>
-                    <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={open}
-                        onClose={handleClose}
-                    >
-                        <MenuItem component={Link} href={Links.Profile}>Profile</MenuItem>
-                        <MenuItem component={Link} href={Links.Account} target={'_blank'}>My account</MenuItem>
-                        <MenuItem component={Link} href={Links.Logout}>Logout</MenuItem>
-                    </Menu>
-                </div>
                 <IconButton
                     className={classes.notificationsButton}
                     color="inherit"
@@ -210,6 +152,9 @@ const TopBar: React.FC<Props> = (props) => {
                     <Badge badgeContent={'5'} classes={{badge: classes.lifeBadge}}>
                         <FavoriteIcon/>
                     </Badge>
+                </IconButton>
+                <IconButton className={classes.exitButton} color="inherit" onClick={logout}>
+                    <ExitToAppIcon/>
                 </IconButton>
             </Toolbar>
             <NotificationsPopover

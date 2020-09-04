@@ -66,6 +66,7 @@ export interface NavigationListItemProps {
     className?: string;
     depth: number;
     href?: string;
+    target?: string;
     icon?: React.ComponentType<any>;
     label?: React.ComponentType<any>;
     open: boolean;
@@ -76,6 +77,7 @@ const NavigationListItem: React.FC<NavigationListItemProps> = (props) => {
     const {
         title,
         href,
+        target,
         depth,
         children,
         icon: Icon,
@@ -148,6 +150,7 @@ const NavigationListItem: React.FC<NavigationListItemProps> = (props) => {
                     component={Link}
                     style={style}
                     href={href}
+                    target={target}
                 >
                     {Icon && <Icon className={classes.icon}/>}
                     {title}

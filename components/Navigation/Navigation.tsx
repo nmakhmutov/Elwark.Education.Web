@@ -52,6 +52,7 @@ const reduceChildRoutes = (props: any) => {
                 open={false}
                 depth={depth}
                 href={page.href}
+                target={page.target}
                 icon={page.icon}
                 key={page.title}
                 label={page.label}
