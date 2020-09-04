@@ -65,6 +65,11 @@ const useStyles = makeStyles((theme) => ({
         '& h5': theme.typography.h6,
         '& h6': theme.typography.h6,
         '& p': theme.typography.body1,
+        '& img': {
+            display: 'block',
+            margin: theme.spacing(3, 'auto'),
+            maxWidth: '100%'
+        },
         '& > ul, & > ol': {
             marginLeft: theme.spacing(2)
         },
