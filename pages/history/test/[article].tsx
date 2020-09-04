@@ -3,7 +3,8 @@ import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, GetServerSidePropsContext, NextPage} from 'next';
 import React, {useState} from 'react';
 import {Typography} from '@material-ui/core';
-import RadioAnswer from 'components/Test/RadioAnswer';
+import CheckboxAnswer from "components/Test/CheckboxAnswer";
+import RadioAnswer from "components/Test/RadioAnswer";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,8 +40,12 @@ const TestPage: NextPage<Props> = (props) => {
     const {questions} = props;
     const [current, setCurrent] = useState(1);
 
-    const handleSubmit = (value: string) => {
+    const handleSingleAnswer = (value: string) => {
+        console.log(value)
+    }
 
+    const handleManyAnswers = (values: string[]) => {
+        console.log(values)
     };
 
     return (
@@ -54,7 +59,14 @@ const TestPage: NextPage<Props> = (props) => {
                     occur?
                 </Typography>
                 <div className={classes.container}>
-                    <RadioAnswer handleAnswer={handleSubmit} answers={[
+                    <CheckboxAnswer handleAnswer={handleManyAnswers} answers={[
+                        'Which pilot famously fought in the Battle of Britain with two artificial legs?',
+                        '1986',
+                        '1987',
+                        '1976',
+                        '1977'
+                    ]}/>
+                    <RadioAnswer handleAnswer={handleSingleAnswer} answers={[
                         'Which pilot famously fought in the Battle of Britain with two artificial legs?',
                         '1986',
                         '1987',
