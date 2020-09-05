@@ -37,9 +37,6 @@ const useStyles = makeStyles((theme) => ({
     notificationsBadge: {
         backgroundColor: colors.orange[600]
     },
-    exitButton: {
-        marginLeft: theme.spacing(1)
-    },
     logo: {
         '&:hover': {
             textDecoration: 'none'
@@ -117,9 +114,6 @@ const TopBar: React.FC<Props> = ({className, onOpenNavBarMobile}) => {
         setOpenNotifications(false);
     };
 
-    const router = useRouter();
-    const logout = () => router.push(Links.Logout);
-
     return (
         <AppBar className={clsx(classes.root, className)} color="primary">
             <Toolbar>
@@ -152,9 +146,6 @@ const TopBar: React.FC<Props> = ({className, onOpenNavBarMobile}) => {
                     <Badge badgeContent={'5'} classes={{badge: classes.lifeBadge}}>
                         <FavoriteIcon/>
                     </Badge>
-                </IconButton>
-                <IconButton className={classes.exitButton} color="inherit" onClick={logout}>
-                    <ExitToAppIcon/>
                 </IconButton>
             </Toolbar>
             <NotificationsPopover

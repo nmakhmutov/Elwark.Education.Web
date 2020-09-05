@@ -8,6 +8,7 @@ import Links from 'lib/utils/Links';
 import {useFetchUser} from 'lib/utils/user';
 import React from 'react';
 import SideBarLinks from './SideBarLinks';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,7 +16,13 @@ const useStyles = makeStyles((theme) => ({
         overflowY: 'auto',
     },
     content: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100%',
         padding: theme.spacing(2),
+    },
+    flexGrow: {
+        flexGrow: 1
     },
     profile: {
         display: 'flex',
@@ -36,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     navigation: {
         marginTop: theme.spacing(2),
     },
+    logout: {
+        marginBottom: 0
+    }
 }));
 
 export interface SidebarProps {
@@ -66,12 +76,15 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
             </div>
             <Divider className={classes.divider}/>
             <nav className={classes.navigation}>
-                {
-                    SideBarLinks.map((list) =>
-                        <Navigation component={'div'} key={list.title} pages={list.pages} title={list.title}/>
-                    )
-                }
+                {SideBarLinks.map((list) =>
+                    <Navigation component={'div'} key={list.title} pages={list.pages} title={list.title}/>
+                )}
             </nav>
+            <div className={classes.flexGrow}/>
+            <Divider className={classes.divider}/>
+            <Navigation component={'div'} className={classes.logout} pages={[
+                {title: 'Logout', href: Links.Logout, icon: ExitToAppIcon}
+            ]}/>
         </div>
     );
 
