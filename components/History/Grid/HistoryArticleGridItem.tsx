@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         flexDirection: 'column',
         width: '100%',
         height: '100%',
+        minHeight: '250px',
         padding: theme.spacing(2),
     },
     top: {
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         boxShadow: theme.shadows['2']
     },
     image: {
+        height: '100%',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
@@ -44,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 type Props = {
+    className?: string,
     image?: string,
     title: string,
     description?: string,
@@ -52,12 +55,12 @@ type Props = {
 }
 
 const HistoryArticleGridItem: React.FC<Props> = (props) => {
-    const {image, title, href, as, description} = props;
+    const {className, image, title, href, as, description} = props;
     const classes = useStyles();
 
     if (image)
         return (
-            <div className={classes.image} style={{backgroundImage: `url(${image})`}}>
+            <div className={clsx(classes.image, className)} style={{backgroundImage: `url(${image})`}}>
                 <div className={clsx(classes.root, classes.gradient, classes.end)}>
                     <Typography variant={'h2'} className={classes.title} component={Link} href={href} as={as}>
                         {title}
@@ -70,7 +73,7 @@ const HistoryArticleGridItem: React.FC<Props> = (props) => {
         );
 
     return (
-        <div className={clsx(classes.root, classes.white, description ? classes.top : classes.center)}>
+        <div className={clsx(classes.root, classes.white, description ? classes.top : classes.center, className)}>
             <Typography variant={'h2'} component={Link} href={href} as={as}>
                 {title}
             </Typography>

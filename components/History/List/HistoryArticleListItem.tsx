@@ -43,7 +43,7 @@ type Props = {
     article: HistoryArticleItem
 }
 
-const HistoryArticleCard: React.FC<Props> = (props) => {
+const HistoryArticleListItem: React.FC<Props> = (props) => {
         const {className, article, onPremiumPopup} = props;
 
         const classes = useStyles();
@@ -102,4 +102,4 @@ const HistoryArticleCard: React.FC<Props> = (props) => {
     }
 ;
 
-export default HistoryArticleCard
+export default HistoryArticleListItem

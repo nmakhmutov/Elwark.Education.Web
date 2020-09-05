@@ -8,7 +8,7 @@ import TokenApi from 'lib/api/token';
 import {PricingModal} from 'components/PricingModal';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import Links from 'lib/utils/Links';
-import {HistoryArticleCard} from 'components/History';
+import {HistoryArticleListItem} from "components/History";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -103,7 +103,7 @@ const TopicPage: NextPage<Props> = (props) => {
                             {topic.description}
                         </Typography>
                         {topic.articles.map(article =>
-                            <HistoryArticleCard
+                            <HistoryArticleListItem
                                 key={article.articleId}
                                 className={classes.card}
                                 onPremiumPopup={handlePricingOpen}

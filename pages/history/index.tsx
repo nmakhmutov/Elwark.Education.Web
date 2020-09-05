@@ -5,176 +5,109 @@ import React from 'react';
 import HistoryApi, {HistoryCardModel} from 'lib/api/history';
 import TokenApi from 'lib/api/token';
 import Links from 'lib/utils/Links';
-import {HistoryArticleGridItem, HistoryPeriodGridItem} from 'components/History';
+import {HistoryArticleGridItem, HistoryPeriodCard} from 'components/History';
+import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        maxWidth: theme.breakpoints.width('xl'),
-        minHeight: '100%',
-        margin: '0 auto',
+    periods: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(1, 1fr)',
+        gridAutoFlow: 'dense',
+        gap: theme.spacing(2) + 'px',
+        [theme.breakpoints.only('xs')]: {
+            marginBottom: theme.spacing(2)
+        },
+        [theme.breakpoints.up('sm')]: {
+            margin: theme.spacing(2),
+            gridTemplateColumns: 'repeat(6, 1fr)',
+            '& > div': {
+                gridColumn: 'span 2'
+            },
+            '& > div:nth-child(4)': {
+                gridColumn: '2 / 4'
+            }
+        },
+        [theme.breakpoints.up(theme.breakpoints.width('md') + 130)]: {
+            gridTemplateColumns: 'repeat(5, 1fr)',
+            '& > div': {
+                gridColumn: 'span 1'
+            },
+            '& > div:nth-child(4)': {
+                gridColumn: 'span 1'
+            }
+        }
+    },
+    articles: {
         display: 'flex',
         flexDirection: 'column',
-
-        [theme.breakpoints.down('xs')]: {
-            '& > div': {
-                height: '250px'
-            },
-        },
+        margin: '0 auto',
 
         [theme.breakpoints.up('sm')]: {
             display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
             gridAutoFlow: 'dense',
-            gridTemplateColumns: 'repeat(5, minmax(auto, 1fr))',
-            gridTemplateRows: 'repeat(6, minmax(180px, 1fr))',
-            '& > div:nth-child(1)': {
-                gridColumn: 1,
-                gridRow: 1,
-            },
-            '& > div:nth-child(2)': {
-                gridColumn: 1,
-                gridRow: 2,
-            },
-            '& > div:nth-child(3)': {
-                gridColumn: 1,
-                gridRow: 3,
-            },
-            '& > div:nth-child(4)': {
-                gridColumn: 1,
-                gridRow: 4,
-            },
-            '& > div:nth-child(5)': {
-                gridColumn: 1,
-                gridRow: 5,
-            },
-            '& > div:nth-child(6)': {
-                gridColumn: '2 / 6',
-                gridRow: '1 / 3'
-            },
-            '& > div:nth-child(7)': {
-                gridColumn: '2 / 4',
-                gridRow: '3'
-            },
-            '& > div:nth-child(8)': {
-                gridColumn: '4 / 6',
-                gridRow: '3'
-            },
-            '& > div:nth-child(9)': {
-                gridColumn: '2 / 6',
-                gridRow: '4'
-            },
-            '& > div:nth-child(10)': {
-                gridColumn: '2 / 4',
-                gridRow: '5'
-            },
-            '& > div:nth-child(11)': {
-                gridColumn: '4 / 6',
-                gridRow: '5'
-            },
-            '& > div:nth-child(12)': {
-                gridColumn: '1 / 3',
-                gridRow: '6'
-            },
-            '& > div:nth-child(13)': {
-                gridColumn: '3 / 6',
-                gridRow: '6'
-            },
         },
 
         [theme.breakpoints.up('md')]: {
-            gridTemplateColumns: 'repeat(4, minmax(auto, 1fr))',
-            gridTemplateRows: 'repeat(5, minmax(180px, 1fr))',
-            '& > div:nth-child(1)': {
-                gridColumn: 1,
-                gridRow: 1,
-            },
-            '& > div:nth-child(2)': {
-                gridColumn: 1,
-                gridRow: 2,
-            },
-            '& > div:nth-child(3)': {
-                gridColumn: 1,
-                gridRow: 3,
-            },
-            '& > div:nth-child(4)': {
-                gridColumn: 1,
-                gridRow: 4,
-            },
-            '& > div:nth-child(5)': {
-                gridColumn: 1,
-                gridRow: 5,
-            },
-            '& > div:nth-child(6)': {
-                gridColumn: '2 / 4',
-                gridRow: '1 / 3'
-            },
-            '& > div:nth-child(7)': {
-                gridColumn: '4',
-                gridRow: '1 / 3'
-            },
-            '& > div:nth-child(8)': {
-                gridColumn: '2',
-                gridRow: '3'
-            },
-            '& > div:nth-child(9)': {
-                gridColumn: '3 / 5',
-                gridRow: '3'
-            },
-            '& > div:nth-child(10)': {
-                gridColumn: '2',
-                gridRow: '4 / 6'
-            },
-            '& > div:nth-child(11)': {
-                gridColumn: '3 / 4',
-                gridRow: '4'
-            },
-            '& > div:nth-child(12)': {
-                gridColumn: '4 / 5',
-                gridRow: '4'
-            },
-            '& > div:nth-child(13)': {
-                gridColumn: '3 / 5',
-                gridRow: '5'
-            },
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
         }
-    }
+    },
+    article: {
+        height: '100%',
+        marginBottom: theme.spacing(2),
+
+        [theme.breakpoints.up('sm')]: {
+            '&:nth-child(1)': {
+                gridColumn: 'span 2',
+                gridRow: 'span 2'
+            },
+        },
+        [theme.breakpoints.up('md')]: {
+            gridColumn: 'span 2',
+
+            '&:nth-child(1)': {
+                gridColumn: 'span 4',
+                gridRow: 'span 2'
+            },
+        },
+    },
 }));
 
 type Props = {
-    topics: HistoryCardModel[]
+    periods: HistoryCardModel[],
+    articles: HistoryCardModel[]
 }
 
 const HistoryPage: NextPage<Props> = (props) => {
     const classes = useStyles();
-    const {topics} = props;
+    const {periods, articles} = props;
 
     return (
         <DefaultLayout title={'History page'}>
-            <div className={classes.root}>
-                {topics.map((item) => {
-                        switch (item.type) {
-                            case 'Period':
-                                return (
-                                    <HistoryPeriodGridItem
-                                        key={item.id}
-                                        title={item.title}
-                                        description={item.description}
-                                        image={item.image}
-                                        href={Links.HistoryPeriod(item.id)}/>
-                                )
+            <div className={classes.periods}>
+                {periods.map(item =>
+                    <HistoryPeriodCard
+                        key={item.id}
+                        title={item.title}
+                        description={item.description}
+                        image={item.image}
+                        href={Links.HistoryPeriod(item.id)}/>
+                )}
+            </div>
 
-                            case 'Article':
-                                const link = Links.HistoryArticle(item.id);
+            <div className={classes.articles}>
+                {articles.map(item => {
+                        const link = Links.HistoryArticle(item.id)
 
-                                return (
-                                    <HistoryArticleGridItem
-                                        key={item.id}
-                                        title={item.title}
-                                        description={item.description}
-                                        image={item.image}
-                                        href={link.href}
-                                        as={link.as}/>
-                                );
-                        }
+                        return (
+                            <div className={classes.article} key={item.id}>
+                                <HistoryArticleGridItem
+                                    title={item.title}
+                                    description={item.description}
+                                    image={item.image}
+                                    href={link.href}
+                                    as={link.as}/>
+                            </div>)
                     }
                 )}
             </div>
@@ -186,7 +119,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: 
     const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
     const {data} = await HistoryApi.get(token);
 
-    return {props: {topics: data}};
+    return {
+        props: {
+            articles: data.filter(x => x.type === 'Article'),
+            periods: data.filter(x => x.type === 'Period')
+        }
+    };
 }
 
 export default HistoryPage;
