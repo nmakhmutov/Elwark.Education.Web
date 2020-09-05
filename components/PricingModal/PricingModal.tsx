@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         padding: theme.spacing(3)
     },
     content: {
-        marginTop: theme.spacing(5),
         padding: theme.spacing(2),
         maxWidth: 720,
         margin: '0 auto'
@@ -53,7 +52,10 @@ const PricingModal: React.FC<Props> = (props) => {
             <div className={clsx(classes.root, className)}>
                 <div className={classes.header}>
                     <Typography align={'center'} gutterBottom={true} variant={'h3'}>
-                        Start with premium subscription today. Boost up your education!
+                        Boost up your education!
+                    </Typography>
+                    <Typography align="center" variant="subtitle2">
+                        Start with premium subscription today.
                     </Typography>
                 </div>
                 <div className={classes.content}>

@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 type Props = {
-    className?: string,
     image?: string,
     title: string,
     description?: string,
@@ -53,7 +52,7 @@ type Props = {
 }
 
 const HistoryArticleGridItem: React.FC<Props> = (props) => {
-    const {className, image, title, href, as, description} = props;
+    const {image, title, href, as, description} = props;
     const classes = useStyles();
 
     if (image)

@@ -24,4 +24,5 @@ export default class Links {
         `/history/${period.toLowerCase()}`;
 
     public static Physics = '/physics';
+    public static Astronomy = '/astronomy';
 }

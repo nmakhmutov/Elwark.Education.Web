@@ -5,6 +5,7 @@ const white = '#FFFFFF';
 const black = '#000000';
 
 const palette: PaletteOptions = {
+    type: 'light',
     primary: {
         contrastText: white,
         dark: colors.indigo[900],
@@ -44,7 +45,6 @@ const palette: PaletteOptions = {
     text: {
         primary: colors.blueGrey[900],
         secondary: colors.blueGrey[600],
-        // link: colors.blue[600],
     },
     background: {
         default: '#F4F6F8',

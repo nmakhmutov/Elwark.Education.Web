@@ -1,9 +1,10 @@
 import React from 'react';
+import createLoginUrl from 'lib/utils/login-url';
 
 // Use a global to save the user, so we don't have to fetch it again after page navigations
 let userState: undefined;
 
-const User = React.createContext({user: null, loading: false});
+const UserContext = React.createContext({user: null, loading: false});
 
 export const fetchUser = async () => {
     if (userState !== undefined) {
@@ -26,7 +27,11 @@ export const UserProvider = ({value, children}) => {
         }
     }, []);
 
-    return <User.Provider value={value}>{children}</User.Provider>;
+    return (
+        <UserContext.Provider value={value}>
+            {children}
+        </UserContext.Provider>
+    );
 };
 
 export type OidcUser = {
@@ -57,7 +62,7 @@ export const useFetchUser = (required = true) => {
             .then(user => {
                 if (isMounted) {
                     if (required && !user) {
-                        window.location.href = '/api/login';
+                        window.location.href = createLoginUrl();
                         return;
                     }
 
