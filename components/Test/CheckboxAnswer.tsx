@@ -28,14 +28,20 @@ const CheckboxAnswer: React.FC<Props> = ({answers, className, handleAnswer}) => 
     const [disabled, setDisabled] = React.useState(true);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.persist()
-        setState(prevState => prevState.map(item => {
-            if (item.id === event.target?.value)
-                item.checked = event.target.checked;
-            return item;
-        }));
+        event.persist();
 
-        setDisabled(state.filter(x => x.checked).length === 0);
+        setState(prevState => {
+            const result = prevState.map(item => {
+                if (item.id === event.target?.value)
+                    item.checked = event.target.checked;
+
+                return item;
+            });
+
+            setDisabled(result.filter(x => x.checked).length === 0);
+
+            return result;
+        });
     };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

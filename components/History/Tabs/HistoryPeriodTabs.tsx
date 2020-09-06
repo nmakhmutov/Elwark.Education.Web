@@ -3,7 +3,6 @@ import React from 'react';
 import {HistoryPeriod} from 'lib/api/history';
 import {useRouter} from 'next/router';
 import Links from 'lib/utils/Links';
-import Link from "components/Link";
 
 type Props = {
     className?: string,

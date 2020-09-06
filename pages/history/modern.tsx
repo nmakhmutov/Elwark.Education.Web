@@ -23,7 +23,7 @@ const AncientPage: NextPage<Props> = (props) => {
     const {topics} = props;
 
     return (
-        <DefaultLayout title={'Modern history page'}>
+        <DefaultLayout title={'Modern history'}>
             <HistoryPeriodTabs selected={HistoryPeriod.Modern}/>
             <HistoryTopicGrid topics={topics} className={classes.root}/>
         </DefaultLayout>

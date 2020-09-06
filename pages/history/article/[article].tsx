@@ -103,7 +103,7 @@ const ArticlePage: NextPage<Props> = (props) => {
     const testLink = Links.HistoryTest(article.id);
 
     return (
-        <DefaultLayout title={'Topic'}>
+        <DefaultLayout title={article.title}>
             <Grid container={true} className={clsx(classes.root, classes.height)}>
                 <Grid item={true} xs={12} md={7} lg={8} xl={6} className={classes.height}>
                     <Paper className={clsx(classes.content, classes.height)}>

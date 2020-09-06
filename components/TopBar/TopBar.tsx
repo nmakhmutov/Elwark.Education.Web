@@ -15,7 +15,7 @@ import {Notification, NotificationsPopover} from 'components/NotificationsPopove
 import {StorageApi} from 'lib/clients/storage';
 import Links from 'lib/utils/Links';
 import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
-import {ProfileContext} from "lib/profile";
+import {ProfileContext} from 'lib/profile';
 
 const useStyles = makeStyles((theme) => ({
     root: {

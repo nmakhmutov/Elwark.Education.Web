@@ -3,8 +3,8 @@ import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, GetServerSidePropsContext, NextPage} from 'next';
 import React, {useState} from 'react';
 import {Typography} from '@material-ui/core';
-import CheckboxAnswer from "components/Test/CheckboxAnswer";
-import RadioAnswer from "components/Test/RadioAnswer";
+import CheckboxAnswer from 'components/Test/CheckboxAnswer';
+import RadioAnswer from 'components/Test/RadioAnswer';
 
 const useStyles = makeStyles((theme) => ({
     root: {

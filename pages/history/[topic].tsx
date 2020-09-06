@@ -76,7 +76,7 @@ const TopicPage: NextPage<Props> = (props) => {
     };
 
     return (
-        <DefaultLayout title={'Topic'}>
+        <DefaultLayout title={topic.title}>
             <div className={classes.root}>
                 <Grid container={true} spacing={3}>
                     <Grid item={true} xs={12} sm={5} md={4} xl={3}>
