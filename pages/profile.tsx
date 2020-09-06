@@ -3,7 +3,7 @@ import DefaultLayout from 'components/Layout';
 import {useFetchUser} from 'lib/user';
 import {NextPage} from 'next';
 import React from 'react';
-import {ProfileContext, useFetchProfile} from 'lib/profile';
+import {useFetchProfile} from 'lib/profile';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,12 +18,13 @@ type Props = {
 const Profile: NextPage<Props> = (props) => {
     const classes = useStyles();
     const {user} = useFetchUser();
+    const {profile} = useFetchProfile();
 
     return (
-        <DefaultLayout title={'Profile ' + props.user}>
+        <DefaultLayout title={'Profile ' + user?.name}>
             <pre>
                 {JSON.stringify(user, null, 4)}
-                {JSON.stringify(null, null, 4)}
+                {JSON.stringify(profile, null, 4)}
             </pre>
         </DefaultLayout>
     );

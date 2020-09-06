@@ -11,6 +11,7 @@ import SideBarLinks from './SideBarLinks';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {ProfileContext} from 'lib/profile';
 import moment from 'moment';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         width: 60,
         height: 60,
+    },
+    fakeAvatar:{
+        width: 60,
+        height: 60,
+        margin: '0 auto'
     },
     name: {
         margin: theme.spacing(1, 0),
@@ -64,26 +70,34 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
 
     const navbarContent = (
         <div className={classes.content}>
-            <div className={classes.profile}>
-                <Avatar
-                    alt={'Person'}
-                    className={classes.avatar}
-                    component={Link}
-                    src={user?.picture}
-                    href={Links.Profile}
-                />
-                <Typography className={classes.name} variant={'h4'}>
-                    {user?.name}
-                </Typography>
-                <Typography variant={'body1'}>
-                    {profile?.subscription.type} user
-                </Typography>
-                {profile?.subscription.expiredAt &&
-                <Typography variant={'body2'}>
-                    Expired {moment(profile.subscription.expiredAt).fromNow()}
-                </Typography>
-                }
-            </div>
+            {user && profile
+                ? <div className={classes.profile}>
+                    <Avatar
+                        alt={'Person'}
+                        className={classes.avatar}
+                        component={Link}
+                        src={user.picture}
+                        href={Links.Profile}
+                    />
+                    <Typography className={classes.name} variant={'h4'}>
+                        {user.name}
+                    </Typography>
+                    <Typography variant={'body1'}>
+                        {profile.subscription.type} user
+                    </Typography>
+                    {profile.subscription.expiredAt &&
+                    <Typography variant={'body2'}>
+                        Expired {moment(profile.subscription.expiredAt).fromNow()}
+                    </Typography>
+                    }
+                </div>
+                : <div>
+                    <Skeleton variant={'circle'} className={classes.fakeAvatar}/>
+                    <Skeleton variant="text"/>
+                    <Skeleton variant="text"/>
+                    <Skeleton variant="text"/>
+                </div>
+            }
             <Divider className={classes.divider}/>
             <nav className={classes.navigation}>
                 {SideBarLinks.map((list) =>
