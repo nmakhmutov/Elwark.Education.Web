@@ -5,10 +5,12 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import {Link, Navigation} from 'components';
 import Links from 'lib/utils/Links';
-import {useFetchUser} from 'lib/utils/user';
+import {useFetchUser} from 'lib/user';
 import React from 'react';
 import SideBarLinks from './SideBarLinks';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {ProfileContext} from 'lib/profile';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         height: 60,
     },
     name: {
-        marginTop: theme.spacing(1),
+        margin: theme.spacing(1, 0),
     },
     divider: {
         marginTop: theme.spacing(2),
@@ -58,6 +60,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
     const {openMobile, onMobileClose, className, ...rest} = props;
     const classes = useStyles();
     const {user} = useFetchUser(true);
+    const {profile} = React.useContext(ProfileContext);
 
     const navbarContent = (
         <div className={classes.content}>
@@ -72,7 +75,14 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                 <Typography className={classes.name} variant={'h4'}>
                     {user?.name}
                 </Typography>
-                <Typography variant={'body2'}>Regular user</Typography>
+                <Typography variant={'body1'}>
+                    {profile?.subscription.type} user
+                </Typography>
+                {profile?.subscription.expiredAt &&
+                <Typography variant={'body2'}>
+                    Expired {moment(profile.subscription.expiredAt).fromNow()}
+                </Typography>
+                }
             </div>
             <Divider className={classes.divider}/>
             <nav className={classes.navigation}>

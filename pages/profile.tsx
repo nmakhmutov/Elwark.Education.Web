@@ -1,10 +1,9 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import DefaultLayout from 'components/Layout';
-import {useFetchUser} from 'lib/utils/user';
-import {GetServerSideProps, NextApiRequest, NextApiResponse, NextPage} from 'next';
+import {useFetchUser} from 'lib/user';
+import {NextPage} from 'next';
 import React from 'react';
-import oidc from 'lib/oidc';
-import UserApi from 'lib/api/user';
+import {ProfileContext, useFetchProfile} from 'lib/profile';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,18 +23,18 @@ const Profile: NextPage<Props> = (props) => {
         <DefaultLayout title={'Profile ' + props.user}>
             <pre>
                 {JSON.stringify(user, null, 4)}
-                {JSON.stringify(props.user, null, 4)}
+                {JSON.stringify(null, null, 4)}
             </pre>
         </DefaultLayout>
     );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}) => {
-    const tokenCache = await oidc.tokenCache(req as NextApiRequest, res as NextApiResponse);
-    const {accessToken} = await tokenCache.getAccessToken({refresh: true})
-
-    const user = await UserApi.get(accessToken!);
-    return {props: {user: user.data}};
-}
+// export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}) => {
+// const tokenCache = await oidc.tokenCache(req as NextApiRequest, res as NextApiResponse);
+// const {accessToken} = await tokenCache.getAccessToken({refresh: true})
+//
+// const user = await UserApi.get(accessToken!);
+// return {props: {user: user.data}};
+// }
 
 export default Profile;

@@ -6,7 +6,7 @@ import Links from 'lib/utils/Links';
 import {useRouter} from 'next/router';
 import React from 'react';
 import SubjectCard from 'components/Subjects/Card';
-import PublicIcon from '@material-ui/icons/Public';
+import FlareIcon from '@material-ui/icons/Flare';
 
 const useStyles = makeStyles(theme => ({
     root: {},
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Subjects: React.FC = (props) => {
+const Subjects: React.FC = () => {
     const classes = useStyles();
     const router = useRouter();
 
@@ -74,7 +74,7 @@ const Subjects: React.FC = (props) => {
                             topics={20}
                             articles={30}
                             questions={40}
-                            icon={<PublicIcon/>}
+                            icon={<FlareIcon/>}
                             background={'/static/images/backgrounds/astronomy.jpg'}
                             gradient={'linear-gradient(140deg, rgba(53,58,95,1) 0%, rgba(158,186,243,1) 100%)'}/>
                     </Grid>

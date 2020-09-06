@@ -15,8 +15,7 @@ import {Notification, NotificationsPopover} from 'components/NotificationsPopove
 import {StorageApi} from 'lib/clients/storage';
 import Links from 'lib/utils/Links';
 import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import {useRouter} from 'next/router';
+import {ProfileContext} from "lib/profile";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,8 +27,11 @@ const useStyles = makeStyles((theme) => ({
     lifeButton: {
         marginLeft: theme.spacing(1)
     },
-    lifeBadge: {
+    regularLifeBadge: {
         backgroundColor: colors.red[600]
+    },
+    premiumLifeBadge: {
+        backgroundColor: colors.blue[600]
     },
     notificationsButton: {
         marginLeft: theme.spacing(1)
@@ -65,6 +67,8 @@ type Props = {
 const TopBar: React.FC<Props> = ({className, onOpenNavBarMobile}) => {
     const classes = useStyles();
     const [notifications, setNotifications] = useState<Notification[]>([]);
+    const {profile} = React.useContext(ProfileContext);
+    const isRegular = profile?.subscription.type === 'regular';
 
     useEffect(() => {
         let mounted = true;
@@ -143,7 +147,9 @@ const TopBar: React.FC<Props> = ({className, onOpenNavBarMobile}) => {
                     </Badge>
                 </IconButton>
                 <IconButton className={classes.lifeButton} color="inherit">
-                    <Badge badgeContent={'5'} classes={{badge: classes.lifeBadge}}>
+                    <Badge
+                        badgeContent={isRegular ? profile?.life.points : '∞'}
+                        classes={{badge: isRegular ? classes.regularLifeBadge : classes.premiumLifeBadge}}>
                         <FavoriteIcon/>
                     </Badge>
                 </IconButton>

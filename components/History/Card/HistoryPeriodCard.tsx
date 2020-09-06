@@ -1,8 +1,8 @@
 import React from 'react';
-import {Card, CardActionArea, Theme, Typography} from '@material-ui/core';
-import Link from 'components/Link/Link';
+import {Card, Theme, Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import clsx from 'clsx';
+import {Link} from 'components';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     title: {
         color: theme.palette.common.white,
-        padding: theme.spacing( 2)
+        padding: theme.spacing(2)
     },
     image: {
         backgroundPosition: 'center center !important',
@@ -40,20 +40,19 @@ type Props = {
     href: string
 }
 
-const HistoryPeriodGridItem: React.FC<Props> = (props) => {
-    const {className, image, title, href, description} = props;
+const HistoryPeriodGridItem: React.FC<Props> = ({className, image, title, href, description}) => {
     const classes = useStyles();
 
     return (
         <Card className={clsx(classes.image, className)} style={{backgroundImage: `url(${image})`}}>
-            <CardActionArea className={classes.root} component={Link} href={href}>
-                <Typography variant={'h2'} className={classes.title}>
+            <div className={classes.root}>
+                <Typography variant={'h2'} className={classes.title} component={Link} href={href}>
                     {title}
                 </Typography>
                 <Typography variant={'subtitle1'}>
                     {description}
                 </Typography>
-            </CardActionArea>
+            </div>
         </Card>
     );
 }

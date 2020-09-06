@@ -6,7 +6,6 @@ import HistoryApi, {HistoryCardModel} from 'lib/api/history';
 import TokenApi from 'lib/api/token';
 import Links from 'lib/utils/Links';
 import {HistoryArticleGridItem, HistoryPeriodCard} from 'components/History';
-import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     periods: {
@@ -54,8 +53,10 @@ const useStyles = makeStyles((theme) => ({
     },
     article: {
         height: '100%',
-        marginBottom: theme.spacing(2),
 
+        [theme.breakpoints.only('xs')]: {
+            marginBottom: theme.spacing(2),
+        },
         [theme.breakpoints.up('sm')]: {
             '&:nth-child(1)': {
                 gridColumn: 'span 2',

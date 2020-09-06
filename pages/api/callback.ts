@@ -4,7 +4,6 @@ import UserApi from 'lib/api/user';
 
 export default async function callback(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     try {
-        console.log('callback')
         await oidc.handleCallback(req, res, {
             onUserLoaded: async (request, response, session, _) => {
                 await UserApi.register(session.idToken!)
