@@ -1,5 +1,5 @@
 import {makeStyles} from '@material-ui/styles';
-import {CardMedia, Link as UiLink, Theme, Typography, withStyles} from '@material-ui/core';
+import {Link as UiLink, Theme, Typography, withStyles} from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
 import Links from 'lib/utils/Links';
@@ -11,27 +11,43 @@ import moment from 'moment';
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         display: 'flex',
-        height: 150,
+        position: 'relative',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
     },
-    content: {
+    card: {
+        position: 'relative',
         display: 'flex',
-        flexDirection: 'column',
-        '& > *': {
-            paddingBottom: theme.spacing(1)
-        },
-        '& > *:last-child': {
-            padding: 0
+
+        [theme.breakpoints.only('xs')]: {
+            flexDirection: 'column'
         }
     },
-    image: {
-        width: 150,
-        marginRight: theme.spacing(3)
-    },
-    center: {
-        justifyContent: 'center',
-    },
-    end: {
+    content: {
+        marginLeft: theme.spacing(2),
+        display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'flex-end',
+    },
+    image: {
+        flex: '0 0 150px',
+        width: '60%',
+        margin: '0 auto',
+        marginBottom: theme.spacing(2),
+        [theme.breakpoints.up('sm')]: {
+            height: 150,
+            width: 150,
+            margin: 0
+        },
+        '& > img': {
+            maxWidth: '100%'
+        }
+    },
+    title: {
+        marginBottom: theme.spacing(2)
+    },
+    subtitle: {
+        marginBottom: theme.spacing(1)
     }
 }));
 
@@ -44,53 +60,59 @@ type Props = {
 }
 
 const HistoryArticleListItem: React.FC<Props> = (props) => {
-        const {className, article, onPremiumPopup} = props;
+    const {className, article, onPremiumPopup} = props;
 
-        const classes = useStyles();
-        const link = Links.HistoryArticle(article.articleId);
+    const classes = useStyles();
+    const link = Links.HistoryArticle(article.articleId);
 
-        const title = () => {
-            if (article.type === 'premium' && onPremiumPopup) {
-                const onClick = (event: MouseEvent) => {
-                    event.preventDefault();
-                    onPremiumPopup();
-                };
-
-                return (
-                    <Typography
-                        component={UiLink}
-                        display={'block'}
-                        color={'textPrimary'}
-                        variant={'h4'}
-                        href={'#'}
-                        onClick={onClick}>
-                        {article.title}
-                    </Typography>
-                )
-            }
+    const title = () => {
+        if (article.type === 'premium' && onPremiumPopup) {
+            const onClick = (event: MouseEvent) => {
+                event.preventDefault();
+                onPremiumPopup();
+            };
 
             return (
-                <Typography component={Link} display={'block'} href={link.href} as={link.as} color={'textPrimary'}
-                            variant={'h4'}>
+                <Typography
+                    component={UiLink}
+                    className={classes.title}
+                    display={'block'}
+                    color={'textPrimary'}
+                    variant={'h4'}
+                    href={'#'}
+                    onClick={onClick}>
                     {article.title}
                 </Typography>
             )
         }
 
         return (
-            <div className={clsx(classes.root, className)}>
-                {article.image
-                    ? <CardMedia className={classes.image} image={article.image} title={article.title}/>
-                    : <div className={classes.image}/>
-                }
-                <div className={clsx(classes.content, article.image ? classes.end : classes.center)}>
+            <Typography
+                component={Link}
+                className={classes.title}
+                display={'block'}
+                href={link.href}
+                as={link.as}
+                color={'textPrimary'}
+                variant={'h4'}>
+                {article.title}
+            </Typography>
+        )
+    }
+
+    return (
+        <div className={clsx(classes.root, className)}>
+            <div className={classes.card}>
+                <div className={classes.image}>
+                    <img src={article.image} alt={article.title}/>
+                </div>
+                <div className={classes.content}>
                     {article.type === 'premium' &&
                     <PremiumTypography variant={'subtitle1'}>
-                        {article.type}
-                    </PremiumTypography>
-                    }
+                        Premium
+                    </PremiumTypography>}
                     {title()}
-                    <Typography variant={'subtitle2'}>
+                    <Typography variant={'subtitle2'} className={classes.subtitle}>
                         {article.subtitle}
                     </Typography>
                     <Typography variant={'caption'}>
@@ -98,8 +120,8 @@ const HistoryArticleListItem: React.FC<Props> = (props) => {
                     </Typography>
                 </div>
             </div>
-        );
-    }
-;
+        </div>
+    );
+};
 
 export default HistoryArticleListItem
