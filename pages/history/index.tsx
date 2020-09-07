@@ -2,7 +2,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React from 'react';
-import HistoryApi, {HistoryCardModel} from 'lib/api/history';
+import HistoryApi, {HistoryArticleItem, HistoryPeriodModel} from 'lib/api/history';
 import TokenApi from 'lib/api/token';
 import Links from 'lib/utils/Links';
 import {HistoryArticleGridItem, HistoryPeriodCard} from 'components/History';
@@ -13,9 +13,11 @@ const useStyles = makeStyles((theme) => ({
         gridTemplateColumns: 'repeat(1, 1fr)',
         gridAutoFlow: 'dense',
         gap: theme.spacing(2) + 'px',
+
         [theme.breakpoints.only('xs')]: {
             marginBottom: theme.spacing(2)
         },
+
         [theme.breakpoints.up('sm')]: {
             margin: theme.spacing(2),
             gridTemplateColumns: 'repeat(6, 1fr)',
@@ -26,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
                 gridColumn: '2 / 4'
             }
         },
+
         [theme.breakpoints.up(theme.breakpoints.width('md') + 130)]: {
             gridTemplateColumns: 'repeat(5, 1fr)',
             '& > div': {
@@ -43,13 +46,11 @@ const useStyles = makeStyles((theme) => ({
 
         [theme.breakpoints.up('sm')]: {
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            margin: theme.spacing(2),
+            gap: theme.spacing(2) + 'px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
             gridAutoFlow: 'dense',
         },
-
-        [theme.breakpoints.up('md')]: {
-            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-        }
     },
     article: {
         height: '100%',
@@ -57,26 +58,37 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.only('xs')]: {
             marginBottom: theme.spacing(2),
         },
-        [theme.breakpoints.up('sm')]: {
+
+        [theme.breakpoints.up('md')]: {
             '&:nth-child(1)': {
+                gridColumn: 'span 3',
+                gridRow: 'span 2'
+            },
+
+            '&:nth-child(4)': {
                 gridColumn: 'span 2',
                 gridRow: 'span 2'
             },
-        },
-        [theme.breakpoints.up('md')]: {
-            gridColumn: 'span 2',
 
-            '&:nth-child(1)': {
-                gridColumn: 'span 4',
+            '&:nth-child(6)': {
+                gridColumn: 'span 2',
                 gridRow: 'span 2'
+            },
+
+            '&:nth-of-type(3n)': {
+                gridColumn: 'span 2'
+            },
+
+            '&:nth-of-type(5n)': {
+                gridColumn: 'span 2'
             },
         },
     },
 }));
 
 type Props = {
-    periods: HistoryCardModel[],
-    articles: HistoryCardModel[]
+    periods: HistoryPeriodModel[],
+    articles: HistoryArticleItem[]
 }
 
 const HistoryPage: NextPage<Props> = (props) => {
@@ -88,23 +100,23 @@ const HistoryPage: NextPage<Props> = (props) => {
             <div className={classes.periods}>
                 {periods.map(item =>
                     <HistoryPeriodCard
-                        key={item.id}
+                        key={item.type}
                         title={item.title}
                         description={item.description}
                         image={item.image}
-                        href={Links.HistoryPeriod(item.id)}/>
+                        href={Links.HistoryPeriod(item.type)}/>
                 )}
             </div>
 
             <div className={classes.articles}>
                 {articles.map(item => {
-                        const link = Links.HistoryArticle(item.id)
+                        const link = Links.HistoryArticle(item.articleId)
 
                         return (
-                            <div className={classes.article} key={item.id}>
+                            <div className={classes.article} key={item.articleId}>
                                 <HistoryArticleGridItem
                                     title={item.title}
-                                    description={item.description}
+                                    description={item.subtitle}
                                     image={item.image}
                                     href={link.href}
                                     as={link.as}/>
@@ -118,12 +130,13 @@ const HistoryPage: NextPage<Props> = (props) => {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: GetServerSidePropsContext) => {
     const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
-    const {data} = await HistoryApi.get(token);
+    const periods = await HistoryApi.getPeriods(token);
+    const articles = await HistoryApi.getRandomArticle(token);
 
     return {
         props: {
-            articles: data.filter(x => x.type === 'Article'),
-            periods: data.filter(x => x.type === 'Period')
+            articles: articles.data,
+            periods: periods.data
         }
     };
 }

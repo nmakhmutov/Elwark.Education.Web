@@ -28,17 +28,17 @@ export interface HistoryTopicModel {
 
 export interface HistoryArticleModel {
     id: string,
-    topic:{
+    topic: {
         id: string,
         title: string
     },
-    period:{
+    period: {
         type: string,
         title: string
     }
     title: string,
     image?: string,
-    type: 'Regular' | 'Premium',
+    type: 'regular' | 'premium',
     text: string,
     subtitle?: string,
     footnotes?: string,
@@ -50,29 +50,28 @@ export interface HistoryArticleItem {
     title: string,
     subtitle?: string,
     image?: string,
-    type: 'Regular' | 'Premium',
+    type: 'regular' | 'premium',
     passedAt: Date
 }
 
-export interface HistoryCardModel {
-    type: 'Period' | 'Article',
-    id: string,
+export interface HistoryPeriodModel {
+    type: HistoryPeriod,
     title: string,
     description: string,
-    image: string
+    image: string,
 }
 
 export enum HistoryPeriod {
-    'Prehistory' = 'prehistory',
-    'Ancient' = 'ancient',
-    'MiddleAges' = 'middleages',
-    'Modern' = 'modern',
-    'Contemporary' = 'contemporary'
+    'prehistory' = 'prehistory',
+    'ancient' = 'ancient',
+    'middleAges' = 'middleAges',
+    'earlyModern' = 'earlyModern',
+    'modern' = 'modern'
 }
 
 const HistoryApi = {
-    get: async (token: string) => {
-        return await axios.get<HistoryCardModel[]>(SERVER_HISTORY_URL, {
+    getPeriods: async (token: string) => {
+        return await axios.get<HistoryPeriodModel[]>(`${SERVER_HISTORY_URL}/periods`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Language: 'en'
@@ -97,6 +96,14 @@ const HistoryApi = {
     },
     getArticle: async (articleId: string, token: string) => {
         return await axios.get<HistoryArticleModel>(`${SERVER_HISTORY_URL}/articles/${articleId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Language: 'en'
+            }
+        })
+    },
+    getRandomArticle: async (token: string) => {
+        return await axios.get<HistoryArticleItem[]>(`${SERVER_HISTORY_URL}/articles/random`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Language: 'en'

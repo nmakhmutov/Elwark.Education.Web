@@ -2,7 +2,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React from 'react';
-import HistoryApi, {HistoryPeriod, HistoryTopicItem} from 'lib/api/history';
+import HistoryApi, {HistoryPeriod, HistoryPeriodModel, HistoryTopicItem} from 'lib/api/history';
 import TokenApi from 'lib/api/token';
 import {HistoryPeriodTabs, HistoryTopicGrid} from 'components/History';
 
@@ -15,16 +15,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type Props = {
+    periods: HistoryPeriodModel[],
     topics: HistoryTopicItem[]
 }
 
-const AncientPage: NextPage<Props> = (props) => {
+const AncientPage: NextPage<Props> = ({periods, topics}) => {
     const classes = useStyles();
-    const {topics} = props;
+    const title = periods.filter(x => x.type === HistoryPeriod.ancient)[0].title;
 
     return (
-        <DefaultLayout title={'Ancient history'}>
-            <HistoryPeriodTabs selected={HistoryPeriod.Ancient}/>
+        <DefaultLayout title={title}>
+            <HistoryPeriodTabs selected={HistoryPeriod.ancient} periods={periods}/>
             <HistoryTopicGrid topics={topics} className={classes.root}/>
         </DefaultLayout>
     );
@@ -32,9 +33,10 @@ const AncientPage: NextPage<Props> = (props) => {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: GetServerSidePropsContext) => {
     const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
-    const {data} = await HistoryApi.getTopics(HistoryPeriod.Ancient, token);
+    const topics = await HistoryApi.getTopics(HistoryPeriod.ancient, token);
+    const periods = await HistoryApi.getPeriods(token);
 
-    return {props: {topics: data}};
+    return {props: {topics: topics.data, periods: periods.data}};
 }
 
 export default AncientPage;

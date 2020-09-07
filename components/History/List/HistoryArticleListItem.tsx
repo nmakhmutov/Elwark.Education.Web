@@ -50,7 +50,7 @@ const HistoryArticleListItem: React.FC<Props> = (props) => {
         const link = Links.HistoryArticle(article.articleId);
 
         const title = () => {
-            if (article.type === 'Premium' && onPremiumPopup) {
+            if (article.type === 'premium' && onPremiumPopup) {
                 const onClick = (event: MouseEvent) => {
                     event.preventDefault();
                     onPremiumPopup();
@@ -84,7 +84,7 @@ const HistoryArticleListItem: React.FC<Props> = (props) => {
                     : <div className={classes.image}/>
                 }
                 <div className={clsx(classes.content, article.image ? classes.end : classes.center)}>
-                    {article.type === 'Premium' &&
+                    {article.type === 'premium' &&
                     <PremiumTypography variant={'subtitle1'}>
                         {article.type}
                     </PremiumTypography>

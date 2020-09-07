@@ -36,7 +36,7 @@ type Props = {
     className?: string,
     image: string,
     title: string,
-    description: string,
+    description?: string,
     href: string
 }
 

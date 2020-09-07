@@ -1,15 +1,15 @@
 import {AppBar, Tab, Tabs} from '@material-ui/core';
 import React from 'react';
-import {HistoryPeriod} from 'lib/api/history';
+import {HistoryPeriod, HistoryPeriodModel} from 'lib/api/history';
 import {useRouter} from 'next/router';
 import Links from 'lib/utils/Links';
 
 type Props = {
     className?: string,
+    periods: HistoryPeriodModel[],
     selected: HistoryPeriod
 }
-const HistoryPeriodTabs: React.FC<Props> = (props) => {
-    const {className, selected} = props;
+const HistoryPeriodTabs: React.FC<Props> = ({className, selected, periods}) => {
     const [width, setWidth] = React.useState(0);
 
     React.useEffect(() => {
@@ -37,11 +37,7 @@ const HistoryPeriodTabs: React.FC<Props> = (props) => {
                 variant={width > 780 ? 'fullWidth' : 'scrollable'}
                 scrollButtons={'on'}
             >
-                <Tab label="Prehistory" value={HistoryPeriod.Prehistory}/>
-                <Tab label="Ancient" value={HistoryPeriod.Ancient}/>
-                <Tab label="Middle ages" value={HistoryPeriod.MiddleAges}/>
-                <Tab label="Modern" value={HistoryPeriod.Modern}/>
-                <Tab label="Contemporary" value={HistoryPeriod.Contemporary}/>
+                {periods.map(x => <Tab label={x.title} value={x.type}/>)}
             </Tabs>
         </AppBar>
     )

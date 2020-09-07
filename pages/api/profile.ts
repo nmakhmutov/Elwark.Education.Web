@@ -1,20 +1,15 @@
 import oidc from 'lib/oidc';
 import {NextApiRequest, NextApiResponse} from 'next';
-import {SERVER_BASE_URL} from 'lib/utils/constants';
+import UserApi from 'lib/api/user';
 
 export default async function profile(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     try {
         const tokenCache = oidc.tokenCache(req, res);
-        const {accessToken} = await tokenCache.getAccessToken();
+        const {accessToken} = await tokenCache.getAccessToken({refresh: true});
 
-        const url = `${SERVER_BASE_URL}/users`;
-        const response = await fetch(url, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        });
+        const {data} = await UserApi.get(accessToken!);
 
-        res.status(200).json(await response.json());
+        res.status(200).json(data);
     } catch (error) {
         res.status(error.status || 500).json({
             code: error.code,
