@@ -42,47 +42,30 @@ const useStyles = makeStyles((theme) => ({
     articles: {
         display: 'flex',
         flexDirection: 'column',
-        margin: '0 auto',
+        flexWrap: 'wrap',
+        gap: theme.spacing(2) + 'px',
 
         [theme.breakpoints.up('sm')]: {
             display: 'grid',
             margin: theme.spacing(2),
-            gap: theme.spacing(2) + 'px',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gridAutoFlow: 'dense',
-        },
-    },
-    article: {
-        height: '100%',
-
-        [theme.breakpoints.only('xs')]: {
-            marginBottom: theme.spacing(2),
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gridAutoFlow: 'dense'
         },
 
         [theme.breakpoints.up('md')]: {
-            '&:nth-child(1)': {
-                gridColumn: 'span 3',
-                gridRow: 'span 2'
-            },
-
-            '&:nth-child(4)': {
-                gridColumn: 'span 2',
-                gridRow: 'span 2'
-            },
-
-            '&:nth-child(6)': {
-                gridColumn: 'span 2',
-                gridRow: 'span 2'
-            },
-
-            '&:nth-of-type(3n)': {
-                gridColumn: 'span 2'
-            },
-
-            '&:nth-of-type(5n)': {
-                gridColumn: 'span 2'
-            },
+            gridTemplateColumns: 'repeat(4, 1fr)',
         },
+
+        [theme.breakpoints.up('xl')]: {
+            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+        }
+    },
+    big: {
+        gridColumn: 'span 2',
+        gridRow: 'span 2'
+    },
+    rectangle: {
+        gridColumn: 'span 2',
     },
 }));
 
@@ -109,11 +92,19 @@ const HistoryPage: NextPage<Props> = (props) => {
             </div>
 
             <div className={classes.articles}>
-                {articles.map(item => {
+                {articles.map((item, i) => {
                         const link = Links.HistoryArticle(item.articleId)
 
+                        const className = (index: number) => {
+                            if (index === 0)
+                                return classes.big;
+
+                            if (index >= 5 && index <= 8)
+                                return classes.rectangle;
+                        }
+
                         return (
-                            <div className={classes.article} key={item.articleId}>
+                            <div className={className(i)} key={item.articleId}>
                                 <HistoryArticleGridItem
                                     title={item.title}
                                     description={item.subtitle}

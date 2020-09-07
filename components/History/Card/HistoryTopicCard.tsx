@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         margin: '0 auto'
     },
     media: {
-        height: 125
+        height: 145
     },
     content: {},
     title: {
