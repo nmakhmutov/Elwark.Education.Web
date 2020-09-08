@@ -82,7 +82,7 @@ const HistoryArticleGridItem: React.FC<Props> = (props) => {
                 <Typography variant={'h2'} component={Link} href={href} as={as}>
                     {title}
                 </Typography>
-                <Typography variant={'subtitle1'} className={classes.description}>
+                <Typography variant={'body1'} className={classes.description}>
                     {description}
                 </Typography>
             </div>

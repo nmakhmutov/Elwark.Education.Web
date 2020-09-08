@@ -61,6 +61,18 @@ export interface HistoryPeriodModel {
     image: string,
 }
 
+export interface HistoryTestModel {
+    expiredAt: Date,
+    questions:HistoryTestQuestionModel[]
+}
+
+export interface HistoryTestQuestionModel {
+    title: string,
+    isAnswered: boolean,
+    type: 'noOptions' | 'singleOption' | 'manyOptions'
+    options: string[]
+}
+
 export enum HistoryPeriod {
     'prehistory' = 'prehistory',
     'ancient' = 'ancient',
@@ -104,6 +116,14 @@ const HistoryApi = {
     },
     getRandomArticle: async (token: string) => {
         return await axios.get<HistoryArticleItem[]>(`${SERVER_HISTORY_URL}/articles/random`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Language: 'en'
+            }
+        })
+    },
+    getTest: async (articleId: string, token: string) => {
+        return await axios.get<HistoryTestModel>(`${SERVER_HISTORY_URL}/test/${articleId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Language: 'en'

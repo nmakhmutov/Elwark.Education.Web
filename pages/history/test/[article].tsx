@@ -1,10 +1,14 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import DefaultLayout from 'components/Layout';
-import {GetServerSideProps, GetServerSidePropsContext, NextPage} from 'next';
-import React, {useState} from 'react';
-import {Typography} from '@material-ui/core';
+import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
+import React, {useEffect, useState} from 'react';
+import {Button, Typography} from '@material-ui/core';
+import TokenApi from 'lib/api/token';
+import HistoryApi, {HistoryTestModel} from 'lib/api/history';
 import CheckboxAnswer from 'components/Test/CheckboxAnswer';
 import RadioAnswer from 'components/Test/RadioAnswer';
+import InputAnswer from 'components/Test/InputAnswer';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,53 +31,84 @@ const useStyles = makeStyles((theme) => ({
     question: {
         textAlign: 'center',
         marginBottom: theme.spacing(3)
-    }
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    button: {
+        textAlign: 'center',
+        display: 'block',
+        margin: theme.spacing(3, 0),
+    },
 }));
 
 type Props = {
     articleId: string,
-    questions: string[]
+    test: HistoryTestModel
 }
 
-const TestPage: NextPage<Props> = (props) => {
+const TestPage: NextPage<Props> = ({test}) => {
     const classes = useStyles();
-    const {questions} = props;
-    const [current, setCurrent] = useState(1);
+    const [activeStep, setActiveStep] = useState(0);
+    const [current, setCurrent] = useState(test.questions[activeStep]);
+    const [answers, setAnswers] = useState<string[]>([]);
+    const [countdown, setCountdown] = useState<string>('');
+    const toDate = moment.utc(test.expiredAt);
+     // console.log(then);
 
-    const handleSingleAnswer = (value: string) => {
-        console.log(value)
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const milliseconds = Math.max(0, toDate.diff(moment().utc()))
+            const duration = moment.duration(milliseconds)
+            setCountdown(moment.utc(duration.as('milliseconds')).format('HH:mm:ss'))
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const step = activeStep + 1;
+
+        test.questions.push(current);
+
+        setActiveStep(step);
+        setCurrent(test.questions[step]);
+        setAnswers([]);
     }
-
-    const handleManyAnswers = (values: string[]) => {
-        console.log(values)
-    };
 
     return (
         <DefaultLayout title={'Questions'}>
             <div className={classes.root}>
                 <Typography variant={'h6'} className={classes.progress}>
-                    Question {current} / {questions?.length}
+                    Question {activeStep + 1} / {test.questions?.length}
                 </Typography>
                 <Typography variant={'h3'} className={classes.question}>
-                    As recently dramatised in a critically acclaimed miniseries, what year did the Chernobyl disaster
-                    occur?
+                    {current.title}
                 </Typography>
                 <div className={classes.container}>
-                    <CheckboxAnswer handleAnswer={handleManyAnswers} answers={[
-                        'Which pilot famously fought in the Battle of Britain with two artificial legs?',
-                        '1986',
-                        '1987',
-                        '1976',
-                        '1977'
-                    ]}/>
-                    <RadioAnswer handleAnswer={handleSingleAnswer} answers={[
-                        'Which pilot famously fought in the Battle of Britain with two artificial legs?',
-                        '1986',
-                        '1987',
-                        '1976',
-                        '1977'
-                    ]}/>
+                    <form className={classes.form} onSubmit={handleSubmit}>
+                        {current.type === 'noOptions' &&
+                        <InputAnswer setAnswer={value => setAnswers(value ? [value] : [])}/>}
+                        {current.type === 'singleOption' &&
+                        <RadioAnswer setAnswer={value => setAnswers([value])} answers={current.options}/>}
+                        {current.type === 'manyOptions' &&
+                        <CheckboxAnswer setAnswers={setAnswers} answers={current.options}/>}
+                        <Button
+                            type={'submit'}
+                            variant={'contained'}
+                            color={'primary'}
+                            className={classes.button}
+                            disabled={answers.length === 0}>
+                            Answer
+                        </Button>
+                    </form>
                 </div>
+                <Typography variant={'subtitle2'}>
+                    {countdown}
+                </Typography>
             </div>
         </DefaultLayout>
     );
@@ -84,10 +119,10 @@ type Params = {
 }
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async ({req, res, params}: GetServerSidePropsContext<Params>) => {
-    // const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
-    // const {data} = await HistoryApi.getArticle(params!.article, token);
+    const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
+    const {data} = await HistoryApi.getTest(params!.article, token);
 
-    return {props: {articleId: params!.article, questions: []}};
+    return {props: {articleId: params!.article, test: data}};
 }
 
 export default TestPage;
