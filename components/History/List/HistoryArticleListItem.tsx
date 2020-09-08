@@ -104,7 +104,7 @@ const HistoryArticleListItem: React.FC<Props> = (props) => {
         <div className={clsx(classes.root, className)}>
             <div className={classes.card}>
                 <div className={classes.image}>
-                    <img src={article.image} alt={article.title}/>
+                    {article.image && <img src={article.image} alt={article.title}/>}
                 </div>
                 <div className={classes.content}>
                     {article.type === 'premium' &&
