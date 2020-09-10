@@ -7,7 +7,7 @@ import {Link} from 'components';
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         width: '100%',
-        height: '240px',
+        height: 170,
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
