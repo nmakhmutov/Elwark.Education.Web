@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {SERVER_BASE_URL} from 'lib/utils/constants';
+import {SERVER_BASE_URL} from 'lib/constants';
 
 const SERVER_USERS_URL = `${SERVER_BASE_URL}/users`;
 const UserApi = {

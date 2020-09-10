@@ -1,5 +1,5 @@
 import oidc from 'lib/oidc';
-import createLoginUrl from 'lib/utils/login-url';
+import createLoginUrl from 'lib/createLoginUrl';
 import {NextApiRequest, NextApiResponse} from 'next';
 
 const TokenApi = {

@@ -1,6 +1,6 @@
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import React from 'react';
-import Links from 'lib/utils/Links';
+import WebLinks from 'lib/WebLinks';
 import Atom from 'components/icons/Atom';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import PersonIcon from '@material-ui/icons/Person';
@@ -25,13 +25,13 @@ const SideBarLinks: SideBarPage[] = [
         pages: [
             {
                 title: 'My Account',
-                href: Links.Account,
+                href: WebLinks.Account,
                 target: '_blank',
                 icon: PersonIcon
             },
             {
                 title: 'Profile',
-                href: Links.Profile,
+                href: WebLinks.Profile,
                 icon: DonutLargeIcon,
             }
         ]
@@ -41,12 +41,12 @@ const SideBarLinks: SideBarPage[] = [
         pages: [
             {
                 title: 'History',
-                href: Links.History,
+                href: WebLinks.History,
                 icon: AccountBalanceIcon,
             },
             {
                 title: 'Physics',
-                href: Links.Physics,
+                href: WebLinks.Physics,
                 icon: Atom,
             },
         ],

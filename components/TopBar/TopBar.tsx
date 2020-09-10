@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import {Link} from 'components';
 import {Notification, NotificationsPopover} from 'components/NotificationsPopover';
 import {StorageApi} from 'lib/clients/storage';
-import Links from 'lib/utils/Links';
+import WebLinks from 'lib/WebLinks';
 import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
 import {ProfileContext} from 'lib/profile';
 
@@ -122,7 +122,7 @@ const TopBar: React.FC<Props> = ({className, onOpenNavBarMobile}) => {
         <AppBar className={clsx(classes.root, className)} color="primary">
             <Toolbar>
                 <Hidden mdDown={true}>
-                    <Button color="inherit" className={classes.logo} component={Link} href={Links.Home}>
+                    <Button color="inherit" className={classes.logo} component={Link} href={WebLinks.Home}>
                         <img alt="Logo" src={StorageApi.Static.Icons.Elwark.White.Size48x48}/>
                         <Typography variant={'h3'} className={classes.logoText} component={'h2'}>Education</Typography>
                     </Button>

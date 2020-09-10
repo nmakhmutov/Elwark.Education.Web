@@ -1,6 +1,6 @@
 import {NextApiRequest, NextApiResponse} from 'next';
 import oidc from 'lib/oidc';
-import createLoginUrl from 'lib/utils/login-url';
+import createLoginUrl from 'lib/createLoginUrl';
 
 export default async function session(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     try {

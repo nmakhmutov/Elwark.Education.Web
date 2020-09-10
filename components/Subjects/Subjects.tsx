@@ -2,7 +2,7 @@ import {Grid, Typography} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import Atom from 'components/icons/Atom';
-import Links from 'lib/utils/Links';
+import WebLinks from 'lib/WebLinks';
 import {useRouter} from 'next/router';
 import React from 'react';
 import SubjectCard from 'components/Subjects/Card';
@@ -31,7 +31,6 @@ const useStyles = makeStyles(theme => ({
 
 const Subjects: React.FC = () => {
     const classes = useStyles();
-    const router = useRouter();
 
     return (
         <div className={classes.root}>
@@ -47,7 +46,7 @@ const Subjects: React.FC = () => {
                 <Grid container spacing={6} justify={'center'}>
                     <Grid item xs={12} sm={6} md={4}>
                         <SubjectCard
-                            link={Links.History}
+                            link={WebLinks.History}
                             title={'History'}
                             topics={20}
                             articles={30}
@@ -58,7 +57,7 @@ const Subjects: React.FC = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
                         <SubjectCard
-                            link={Links.Physics}
+                            link={WebLinks.Physics}
                             title={'Physics'}
                             topics={20}
                             articles={30}
@@ -69,7 +68,7 @@ const Subjects: React.FC = () => {
                     </Grid>
                     <Grid item md={4} xs={12}>
                         <SubjectCard
-                            link={Links.Astronomy}
+                            link={WebLinks.Astronomy}
                             title={'Astronomy'}
                             topics={20}
                             articles={30}

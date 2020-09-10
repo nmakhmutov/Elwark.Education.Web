@@ -7,8 +7,8 @@ import {Grid, Typography} from '@material-ui/core';
 import TokenApi from 'lib/api/token';
 import {PricingModal} from 'components/PricingModal';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
-import Links from 'lib/utils/Links';
-import {HistoryArticleListItem} from "components/History";
+import WebLinks from 'lib/WebLinks';
+import {HistoryArticleListItem} from 'components/History';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,19 +44,19 @@ const useStyles = makeStyles((theme) => ({
     breadcrumbs: {
         margin: theme.spacing(0, 3, 3, 3),
         [theme.breakpoints.up('sm')]: {
-            margin: theme.spacing(3,0)
+            margin: theme.spacing(3, 0)
         }
     },
     description: {
         margin: theme.spacing(0, 3, 3, 3),
         maxWidth: 980,
         [theme.breakpoints.up('sm')]: {
-            margin: theme.spacing(3,0)
+            margin: theme.spacing(3, 0)
         }
     },
     card: {
         marginBottom: theme.spacing(3)
-    },
+    }
 }));
 
 type Props = {
@@ -96,8 +96,8 @@ const TopicPage: NextPage<Props> = (props) => {
 
                     <Grid item={true} xs={12} sm={7} md={8} xl={9}>
                         <Breadcrumbs className={classes.breadcrumbs} paths={[
-                            {title: 'History', link: {href: Links.History}},
-                            {title: topic.period.title, link: {href: Links.HistoryPeriod(topic.period.type)}},
+                            {title: 'History', link: {href: WebLinks.History}},
+                            {title: topic.period.title, link: {href: WebLinks.HistoryPeriod(topic.period.type)}}
                         ]}/>
                         <Typography variant={'body1'} className={classes.description}>
                             {topic.description}
@@ -129,6 +129,6 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({req
     const {data} = await HistoryApi.getTopic(params!.topic, token);
 
     return {props: {topic: data}};
-}
+};
 
 export default TopicPage;

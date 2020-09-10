@@ -35,13 +35,13 @@ const useStyles = makeStyles((theme) => ({
     form: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     button: {
         textAlign: 'center',
         display: 'block',
-        margin: theme.spacing(3, 0),
-    },
+        margin: theme.spacing(3, 0)
+    }
 }));
 
 type Props = {
@@ -56,13 +56,12 @@ const TestPage: NextPage<Props> = ({test}) => {
     const [answers, setAnswers] = useState<string[]>([]);
     const [countdown, setCountdown] = useState<string>('');
     const toDate = moment.utc(test.expiredAt);
-    // console.log(then);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const milliseconds = Math.max(0, toDate.diff(moment().utc()))
-            const duration = moment.duration(milliseconds)
-            setCountdown(moment.utc(duration.as('milliseconds')).format('HH:mm:ss'))
+            const milliseconds = Math.max(0, toDate.diff(moment().utc()));
+            const duration = moment.duration(milliseconds);
+            setCountdown(moment.utc(duration.as('milliseconds')).format('HH:mm:ss'));
         }, 1000);
         return () => clearInterval(interval);
     }, []);
@@ -77,7 +76,7 @@ const TestPage: NextPage<Props> = ({test}) => {
         setActiveStep(step);
         setCurrent(test.questions[step]);
         setAnswers([]);
-    }
+    };
 
     return (
         <DefaultLayout title={'Questions'}>
@@ -123,6 +122,6 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({req
     const {data} = await HistoryApi.getTest(params!.test, token);
 
     return {props: {articleId: params!.test, test: data}};
-}
+};
 
 export default TestPage;

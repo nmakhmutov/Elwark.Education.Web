@@ -6,12 +6,13 @@ import HistoryApi, {HistoryArticleModel} from 'lib/api/history';
 import ReactMarkdown from 'react-markdown';
 import {Button, Grid, Paper, Typography} from '@material-ui/core';
 import {purple} from '@material-ui/core/colors';
-import Links from 'lib/utils/Links';
+import WebLinks from 'lib/WebLinks';
 import clsx from 'clsx';
 import TokenApi from 'lib/api/token';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
-import {useRouter} from "next/router";
+import {useRouter} from 'next/router';
+import useApi from 'lib/useApi';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     content: {
         padding: theme.spacing(8),
         borderRadius: 0,
-        boxShadow: theme.shadows[20],
+        boxShadow: theme.shadows[20]
     },
     title: {
         marginBottom: theme.spacing(3)
@@ -44,14 +45,14 @@ const useStyles = makeStyles((theme) => ({
             height: 200
         },
         [theme.breakpoints.up('sm')]: {
-            height: '25vh',
+            height: '25vh'
         }
     },
     height: {
         minHeight: '100%'
     },
     padding: {
-        padding: theme.spacing(4),
+        padding: theme.spacing(4)
     },
     link: {
         '&:hover': {
@@ -100,25 +101,20 @@ type Props = {
 const ArticlePage: NextPage<Props> = (props) => {
     const classes = useStyles();
     const {article} = props;
-    const topicLink = Links.HistoryTopic(article.topic.id);
+    const topicLink = WebLinks.HistoryTopic(article.topic.id);
     const router = useRouter();
     const [testLoading, setTestLoading] = useState(false);
 
     const createTest = async () => {
-        setTestLoading(true)
-        const response = await fetch('/api/call', {
-            method: 'POST',
-            body: JSON.stringify({articleId: article.id}),
-            headers: {
-                'Content-type': 'application/json',
-                endpoint: 'history/tests'
-            }
+        setTestLoading(true);
+        useApi<{ testId: string }>('POST', HistoryApi.endpoints.createTest, {articleId: article.id})
+        .then(value => {
+            const {testId} = value.data;
+            const testLink = WebLinks.HistoryTest(testId);
+            return router.push(testLink.href, testLink.as);
         })
-
-        const {testId} = await response.json();
-        const testLink = Links.HistoryTest(testId);
-        await router.push(testLink.href, testLink.as);
-    }
+        .catch(reason => setTestLoading(false));
+    };
 
     return (
         <DefaultLayout title={article.title}>
@@ -126,9 +122,9 @@ const ArticlePage: NextPage<Props> = (props) => {
                 <Grid item={true} xs={12} md={7} lg={8} xl={6} className={classes.height}>
                     <Paper className={clsx(classes.content, classes.height)}>
                         <Breadcrumbs className={classes.breadcrumbs} paths={[
-                            {title: 'History', link: {href: Links.History}},
-                            {title: article.period.title, link: {href: Links.HistoryPeriod(article.period.type)}},
-                            {title: article.topic.title, link: {href: topicLink.href, as: topicLink.as}},
+                            {title: 'History', link: {href: WebLinks.History}},
+                            {title: article.period.title, link: {href: WebLinks.HistoryPeriod(article.period.type)}},
+                            {title: article.topic.title, link: {href: topicLink.href, as: topicLink.as}}
                         ]}/>
                         <Typography variant={'h1'} className={classes.title}>
                             {article.title}
@@ -170,6 +166,6 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({req
     const {data} = await HistoryApi.getArticle(params!.article, token);
 
     return {props: {article: data}};
-}
+};
 
 export default ArticlePage;

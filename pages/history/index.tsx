@@ -4,7 +4,7 @@ import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiRe
 import React from 'react';
 import HistoryApi, {HistoryArticleItem, HistoryPeriodModel} from 'lib/api/history';
 import TokenApi from 'lib/api/token';
-import Links from 'lib/utils/Links';
+import WebLinks from 'lib/WebLinks';
 import {HistoryArticleGridItem, HistoryPeriodCard} from 'components/History';
 
 const useStyles = makeStyles((theme) => ({
@@ -87,13 +87,13 @@ const HistoryPage: NextPage<Props> = (props) => {
                         title={item.title}
                         description={item.description}
                         image={item.image}
-                        href={Links.HistoryPeriod(item.type)}/>
+                        href={WebLinks.HistoryPeriod(item.type)}/>
                 )}
             </div>
 
             <div className={classes.articles}>
                 {articles.map((item, i) => {
-                        const link = Links.HistoryArticle(item.articleId)
+                        const link = WebLinks.HistoryArticle(item.articleId)
 
                         const className = (index: number) => {
                             if (index === 0)

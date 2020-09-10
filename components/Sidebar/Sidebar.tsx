@@ -4,7 +4,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import {Link, Navigation} from 'components';
-import Links from 'lib/utils/Links';
+import WebLinks from 'lib/WebLinks';
 import {useFetchUser} from 'lib/user';
 import React from 'react';
 import SideBarLinks from './SideBarLinks';
@@ -77,7 +77,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
                         className={classes.avatar}
                         component={Link}
                         src={user.picture}
-                        href={Links.Profile}
+                        href={WebLinks.Profile}
                     />
                     <Typography className={classes.name} variant={'h4'}>
                         {user.name}
@@ -107,7 +107,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
             <div className={classes.flexGrow}/>
             <Divider className={classes.divider}/>
             <Navigation component={'div'} className={classes.logout} pages={[
-                {title: 'Logout', href: Links.Logout, icon: ExitToAppIcon}
+                {title: 'Logout', href: WebLinks.Logout, icon: ExitToAppIcon}
             ]}/>
         </div>
     );

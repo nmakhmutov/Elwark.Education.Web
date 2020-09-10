@@ -1,9 +1,8 @@
 import axios from 'axios';
-import {SERVER_BASE_URL} from 'lib/utils/constants';
+import {SERVER_BASE_URL} from 'lib/constants';
 
-const SERVER_HISTORY_URL = `${SERVER_BASE_URL}/history`;
-
-export interface HistoryTopicItem {
+export interface HistoryTopicItem
+{
     topicId: string,
     title: string,
     image: string,
@@ -14,7 +13,8 @@ export interface HistoryTopicItem {
     }
 }
 
-export interface HistoryTopicModel {
+export interface HistoryTopicModel
+{
     title: string,
     description: string,
     image: string,
@@ -26,7 +26,8 @@ export interface HistoryTopicModel {
     articles: HistoryArticleItem[]
 }
 
-export interface HistoryArticleModel {
+export interface HistoryArticleModel
+{
     id: string,
     topic: {
         id: string,
@@ -44,7 +45,8 @@ export interface HistoryArticleModel {
     footnotes?: string,
 }
 
-export interface HistoryArticleItem {
+export interface HistoryArticleItem
+{
     topicId: string,
     articleId: string,
     title: string,
@@ -54,26 +56,30 @@ export interface HistoryArticleItem {
     passedAt: Date
 }
 
-export interface HistoryPeriodModel {
+export interface HistoryPeriodModel
+{
     type: HistoryPeriod,
     title: string,
     description: string,
     image: string,
 }
 
-export interface HistoryTestModel {
+export interface HistoryTestModel
+{
     expiredAt: Date,
     questions: HistoryTestQuestionModel[]
 }
 
-export interface HistoryTestQuestionModel {
+export interface HistoryTestQuestionModel
+{
     title: string,
     isAnswered: boolean,
     type: 'noOptions' | 'singleOption' | 'manyOptions'
     options: string[]
 }
 
-export enum HistoryPeriod {
+export enum HistoryPeriod
+{
     'prehistory' = 'prehistory',
     'ancient' = 'ancient',
     'middleAges' = 'middleAges',
@@ -82,54 +88,63 @@ export enum HistoryPeriod {
 }
 
 const HistoryApi = {
+    endpoints: {
+        getPeriods: 'history/periods',
+        getTopics: (period: HistoryPeriod) => `history/topics?period=${period}`,
+        getTopic: (topicId: string) => `history/topics/${topicId}`,
+        getArticle: (articleId: string) => `history/articles/${articleId}`,
+        getRandomArticle: 'history/articles/random',
+        createTest: 'history/tests',
+        getTest: (testId: string) => `history/tests/${testId}`
+    },
     getPeriods: async (token: string) => {
-        return await axios.get<HistoryPeriodModel[]>(`${SERVER_HISTORY_URL}/periods`, {
+        return await axios.get<HistoryPeriodModel[]>(`${SERVER_BASE_URL}/${HistoryApi.endpoints.getPeriods}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Language: 'en'
             }
-        })
+        });
     },
     getTopics: async (period: HistoryPeriod, token: string) => {
-        return await axios.get<HistoryTopicItem[]>(`${SERVER_HISTORY_URL}/topics?period=${period}`, {
+        return await axios.get<HistoryTopicItem[]>(`${SERVER_BASE_URL}/${HistoryApi.endpoints.getTopics(period)}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Language: 'en'
             }
-        })
+        });
     },
     getTopic: async (topicId: string, token: string) => {
-        return await axios.get<HistoryTopicModel>(`${SERVER_HISTORY_URL}/topics/${topicId}`, {
+        return await axios.get<HistoryTopicModel>(`${SERVER_BASE_URL}/${HistoryApi.endpoints.getTopic(topicId)}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Language: 'en'
             }
-        })
+        });
     },
     getArticle: async (articleId: string, token: string) => {
-        return await axios.get<HistoryArticleModel>(`${SERVER_HISTORY_URL}/articles/${articleId}`, {
+        return await axios.get<HistoryArticleModel>(`${SERVER_BASE_URL}/${HistoryApi.endpoints.getArticle(articleId)}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Language: 'en'
             }
-        })
+        });
     },
     getRandomArticle: async (token: string) => {
-        return await axios.get<HistoryArticleItem[]>(`${SERVER_HISTORY_URL}/articles/random`, {
+        return await axios.get<HistoryArticleItem[]>(`${SERVER_BASE_URL}/${HistoryApi.endpoints.getRandomArticle}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Language: 'en'
             }
-        })
+        });
     },
     getTest: async (testId: string, token: string) => {
-        return await axios.get<HistoryTestModel>(`${SERVER_HISTORY_URL}/tests/${testId}`, {
+        return await axios.get<HistoryTestModel>(`${SERVER_BASE_URL}/${HistoryApi.endpoints.getTest(testId)}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Language: 'en'
             }
-        })
+        });
     }
-}
+};
 
 export default HistoryApi;

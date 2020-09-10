@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import {makeStyles} from '@material-ui/styles';
 import {Button, colors, Dialog, Theme, Typography} from '@material-ui/core';
 import {Link} from 'components';
-import Links from 'lib/utils/Links';
+import WebLinks from 'lib/WebLinks';
 import PricingCards from './PricingCards';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -62,7 +62,7 @@ const PricingModal: React.FC<Props> = (props) => {
                     <PricingCards/>
                 </div>
                 <div className={classes.actions}>
-                    <Button className={classes.startButton} variant={'contained'} component={Link} href={Links.Premium}>
+                    <Button className={classes.startButton} variant={'contained'} component={Link} href={WebLinks.Premium}>
                         Start with premium
                     </Button>
                 </div>

@@ -2,7 +2,7 @@ import {AppBar, Tab, Tabs} from '@material-ui/core';
 import React from 'react';
 import {HistoryPeriod, HistoryPeriodModel} from 'lib/api/history';
 import {useRouter} from 'next/router';
-import Links from 'lib/utils/Links';
+import WebLinks from 'lib/WebLinks';
 
 type Props = {
     className?: string,
@@ -25,7 +25,7 @@ const HistoryPeriodTabs: React.FC<Props> = ({className, selected, periods}) => {
     const router = useRouter();
     const handleChange = (event: React.ChangeEvent<{}>, newValue: HistoryPeriod) => {
         if (newValue !== selected)
-            return router.push(Links.HistoryPeriod(newValue))
+            return router.push(WebLinks.HistoryPeriod(newValue))
     }
 
     return (

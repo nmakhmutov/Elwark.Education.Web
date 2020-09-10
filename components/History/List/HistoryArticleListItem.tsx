@@ -2,7 +2,7 @@ import {makeStyles} from '@material-ui/styles';
 import {Link as UiLink, Theme, Typography, withStyles} from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
-import Links from 'lib/utils/Links';
+import WebLinks from 'lib/WebLinks';
 import {Link} from 'components';
 import {HistoryArticleItem} from 'lib/api/history';
 import {amber} from '@material-ui/core/colors';
@@ -63,7 +63,7 @@ const HistoryArticleListItem: React.FC<Props> = (props) => {
     const {className, article, onPremiumPopup} = props;
 
     const classes = useStyles();
-    const link = Links.HistoryArticle(article.articleId);
+    const link = WebLinks.HistoryArticle(article.articleId);
 
     const title = () => {
         if (article.type === 'premium' && onPremiumPopup) {

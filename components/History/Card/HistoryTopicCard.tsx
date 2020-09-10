@@ -3,7 +3,7 @@ import {Card, CardContent, CardMedia, Theme, Typography} from '@material-ui/core
 import clsx from 'clsx';
 import React from 'react';
 import {Link} from 'components';
-import Links from 'lib/utils/Links';
+import WebLinks from 'lib/WebLinks';
 import {HistoryTopicItem} from 'lib/api/history';
 import TopicProgress from 'components/Progress/TopicProgress';
 
@@ -48,7 +48,7 @@ const HistoryTopicCard: React.FC<Props> = (props) => {
     const {className, topic} = props;
 
     const classes = useStyles();
-    const topicLink = Links.HistoryTopic(topic.topicId);
+    const topicLink = WebLinks.HistoryTopic(topic.topicId);
 
     return (
         <Card className={clsx(classes.root, className)}>

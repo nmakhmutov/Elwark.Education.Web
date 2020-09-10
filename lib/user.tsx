@@ -1,5 +1,5 @@
 import React from 'react';
-import createLoginUrl from 'lib/utils/login-url';
+import createLoginUrl from 'lib/createLoginUrl';
 
 // Use a global to save the user, so we don't have to fetch it again after page navigations
 let userState: undefined;
