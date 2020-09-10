@@ -9,11 +9,25 @@ import TopicProgress from 'components/Progress/TopicProgress';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-        maxWidth: 250,
-        margin: '0 auto'
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        height: '100%',
+        margin: '0 auto',
+
+        [theme.breakpoints.up('sm')]: {
+            flexDirection: 'column',
+            maxWidth: 250,
+        }
     },
     media: {
-        height: 145
+        height: '100%',
+        minWidth: 145,
+
+        [theme.breakpoints.up('sm')]: {
+            minHeight: 145,
+            width: '100%',
+        }
     },
     content: {},
     title: {
