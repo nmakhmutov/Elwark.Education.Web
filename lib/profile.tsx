@@ -1,8 +1,10 @@
 import React from 'react';
 import createLoginUrl from 'lib/createLoginUrl';
+import useApi from 'lib/useApi';
+import UserApi from 'lib/api/user';
 
 // Use a global to save the user, so we don't have to fetch it again after page navigations
-let profileState: undefined;
+let profileState: Profile | undefined;
 
 export const ProfileContext = React.createContext<{ profile?: Profile, loading: boolean }>({
     profile: undefined,
@@ -10,12 +12,21 @@ export const ProfileContext = React.createContext<{ profile?: Profile, loading: 
 });
 
 export const fetchUser = async () => {
-    if (profileState !== undefined) {
+    if (profileState !== undefined)
+    {
         return profileState;
     }
 
-    const res = await fetch('/api/profile');
-    profileState = res.ok ? await res.json() : undefined;
+    try
+    {
+        const {data} = await useApi<Profile>('GET', UserApi.endpoints.get);
+        profileState = data;
+    }
+    catch (error)
+    {
+        profileState = undefined;
+    }
+
     return profileState;
 };
 
@@ -25,7 +36,8 @@ export const ProfileProvider = ({value, children}) => {
 
     // If the user was fetched in SSR add it to userState so we don't fetch it again
     React.useEffect(() => {
-        if (!profileState && profile) {
+        if (!profileState && profile)
+        {
             profileState = profile;
         }
     }, []);
@@ -53,27 +65,30 @@ export type Profile = {
 export const useFetchProfile = () => {
     const [data, setProfile] = React.useState<{ profile?: Profile, loading: boolean }>({
         profile: profileState || undefined,
-        loading: profileState === undefined,
+        loading: profileState === undefined
     });
 
     React.useEffect(() => {
-        if (profileState !== undefined) {
+        if (profileState !== undefined)
+        {
             return;
         }
 
         let isMounted = true;
 
         fetchUser()
-            .then(profile => {
-                if (isMounted) {
-                    if (!profile) {
-                        window.location.href = createLoginUrl();
-                        return;
-                    }
-
-                    setProfile({profile, loading: false});
+        .then(profile => {
+            if (isMounted)
+            {
+                if (!profile)
+                {
+                    window.location.href = createLoginUrl();
+                    return;
                 }
-            });
+
+                setProfile({profile, loading: false});
+            }
+        });
 
         return () => {
             isMounted = false;

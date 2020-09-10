@@ -13,7 +13,7 @@ export default async function call(req: NextApiRequest, res: NextApiResponse): P
             method: req.method as Method,
             url: `${SERVER_BASE_URL}/${req.headers.endpoint}`,
             headers: {
-                'Content-type': req.headers['content-type'],
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${accessToken}`,
                 Language: 'en'
             },
@@ -21,11 +21,10 @@ export default async function call(req: NextApiRequest, res: NextApiResponse): P
         });
 
         res.status(status).json(data);
-
     }
     catch (error)
     {
-        const status = error.response.status || error.status || 500;
+        const status = error.status || error.response.status || 500;
         res.status(status).json({
             code: status,
             message: error.message,

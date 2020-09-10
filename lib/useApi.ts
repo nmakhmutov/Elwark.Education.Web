@@ -5,7 +5,6 @@ const useApi = <T>(method: Method, endpoint: string, data?: any) => {
         method,
         url: '/api/call',
         headers: {
-            'Content-type': 'application/json',
             endpoint
         },
         data
