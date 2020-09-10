@@ -24,7 +24,8 @@ const HistoryPeriodTabs: React.FC<Props> = ({className, selected, periods}) => {
 
     const router = useRouter();
     const handleChange = (event: React.ChangeEvent<{}>, newValue: HistoryPeriod) => {
-        return router.push(Links.HistoryPeriod(newValue))
+        if (newValue !== selected)
+            return router.push(Links.HistoryPeriod(newValue))
     }
 
     return (
@@ -37,9 +38,10 @@ const HistoryPeriodTabs: React.FC<Props> = ({className, selected, periods}) => {
                 variant={width > 780 ? 'fullWidth' : 'scrollable'}
                 scrollButtons={'on'}
             >
-                {periods.map(x => <Tab label={x.title} value={x.type}/>)}
+                {periods.map(x => <Tab key={x.type} label={x.title} value={x.type}/>)}
             </Tabs>
         </AppBar>
+
     )
 }
 
