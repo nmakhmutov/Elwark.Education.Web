@@ -1,7 +1,7 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
-import React from 'react';
+import React, {useState} from 'react';
 import HistoryApi, {HistoryArticleModel} from 'lib/api/history';
 import ReactMarkdown from 'react-markdown';
 import {Button, Grid, Paper, Typography} from '@material-ui/core';
@@ -11,7 +11,8 @@ import clsx from 'clsx';
 import TokenApi from 'lib/api/token';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
-import Link from 'components/Link';
+import {useRouter} from "next/router";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -100,7 +101,24 @@ const ArticlePage: NextPage<Props> = (props) => {
     const classes = useStyles();
     const {article} = props;
     const topicLink = Links.HistoryTopic(article.topic.id);
-    const testLink = Links.HistoryTest(article.id);
+    const router = useRouter();
+    const [testLoading, setTestLoading] = useState(false);
+
+    const createTest = async () => {
+        setTestLoading(true)
+        const response = await fetch('/api/call', {
+            method: 'POST',
+            body: JSON.stringify({articleId: article.id}),
+            headers: {
+                'Content-type': 'application/json',
+                endpoint: 'history/tests'
+            }
+        })
+
+        const {testId} = await response.json();
+        const testLink = Links.HistoryTest(testId);
+        await router.push(testLink.href, testLink.as);
+    }
 
     return (
         <DefaultLayout title={article.title}>
@@ -116,22 +134,17 @@ const ArticlePage: NextPage<Props> = (props) => {
                             {article.title}
                         </Typography>
                         <div className={classes.test}>
-                            {/*// @ts-ignore*/}
                             <Button variant={'contained'}
                                     className={classes.link}
-                                    component={Link}
-                                    href={testLink.href}
-                                    as={testLink.as}
+                                    onClick={createTest}
                                     color={'primary'}
+                                    disabled={testLoading}
                                     startIcon={<BorderColorIcon/>}>
                                 Pass a test
                             </Button>
                         </div>
                         {article.subtitle &&
-                        <Typography
-                            variant={'h4'}
-                            color={'textSecondary'}
-                            className={classes.subtitle}>
+                        <Typography variant={'h4'} color={'textSecondary'} className={classes.subtitle}>
                             {article.subtitle}
                         </Typography>
                         }

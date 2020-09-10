@@ -63,7 +63,7 @@ export interface HistoryPeriodModel {
 
 export interface HistoryTestModel {
     expiredAt: Date,
-    questions:HistoryTestQuestionModel[]
+    questions: HistoryTestQuestionModel[]
 }
 
 export interface HistoryTestQuestionModel {
@@ -122,8 +122,8 @@ const HistoryApi = {
             }
         })
     },
-    getTest: async (articleId: string, token: string) => {
-        return await axios.get<HistoryTestModel>(`${SERVER_HISTORY_URL}/test/${articleId}`, {
+    getTest: async (testId: string, token: string) => {
+        return await axios.get<HistoryTestModel>(`${SERVER_HISTORY_URL}/tests/${testId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Language: 'en'

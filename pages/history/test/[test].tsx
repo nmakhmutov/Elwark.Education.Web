@@ -56,7 +56,7 @@ const TestPage: NextPage<Props> = ({test}) => {
     const [answers, setAnswers] = useState<string[]>([]);
     const [countdown, setCountdown] = useState<string>('');
     const toDate = moment.utc(test.expiredAt);
-     // console.log(then);
+    // console.log(then);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -115,14 +115,14 @@ const TestPage: NextPage<Props> = ({test}) => {
 };
 
 type Params = {
-    article: string
+    test: string
 }
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async ({req, res, params}: GetServerSidePropsContext<Params>) => {
     const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
-    const {data} = await HistoryApi.getTest(params!.article, token);
+    const {data} = await HistoryApi.getTest(params!.test, token);
 
-    return {props: {articleId: params!.article, test: data}};
+    return {props: {articleId: params!.test, test: data}};
 }
 
 export default TestPage;

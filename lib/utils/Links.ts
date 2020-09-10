@@ -16,9 +16,9 @@ export default class Links {
         href: `/history/article/[article]`,
         as: `/history/article/${id}`,
     });
-    public static HistoryTest = (articleId: string) => ({
-        href: `/history/test/[article]`,
-        as: `/history/test/${articleId}`,
+    public static HistoryTest = (testId: string) => ({
+        href: `/history/test/[test]`,
+        as: `/history/test/${testId}`,
     });
     public static HistoryPeriod = (period: HistoryPeriod | string) =>
         `/history/${period.toLowerCase()}`;
