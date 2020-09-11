@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import TopicProgress from 'components/Progress/TopicProgress';
 import WebLinks from 'lib/WebLinks';
 import {Link} from 'components';
-import HistoryCard from 'components/History/HistoryCard';
+import ElwarkCard from 'components/Card/ElwarkCard';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {},
@@ -51,7 +51,7 @@ const HistoryTopicGrid: React.FC<Props> = (props) => {
                         const link = WebLinks.HistoryTopic(topic.topicId);
                         return (
                             <Grid key={topic.topicId} item={true} xs={12} sm={6} md={get()}>
-                                <HistoryCard
+                                <ElwarkCard
                                     className={classes.card}
                                     direction={'column'}
                                     title={

@@ -8,7 +8,7 @@ import TokenApi from 'lib/api/token';
 import {PricingModal} from 'components/PricingModal';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import WebLinks from 'lib/WebLinks';
-import HistoryCard from 'components/History/HistoryCard';
+import ElwarkCard from 'components/Card/ElwarkCard';
 import {amber} from '@material-ui/core/colors';
 import moment from 'moment';
 import {Link} from 'components';
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         }
     },
     cover: {
-        background: 'rgba(0,0,0,0.3)',
+        background: 'rgba(0,0,0,0.4)',
         width: '100%',
         height: '100%'
     },
@@ -123,7 +123,8 @@ const TopicPage: NextPage<Props> = (props) => {
                                 const link = WebLinks.HistoryArticle(article.articleId);
 
                                 return (
-                                    <HistoryCard
+                                    <ElwarkCard
+                                        key={article.articleId}
                                         className={classes.card}
                                         direction={width < theme.breakpoints.width('sm') ? 'column' : 'row'}
                                         image={article.image}

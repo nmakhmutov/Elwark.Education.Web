@@ -5,10 +5,13 @@ import React from 'react';
 import HistoryApi, {HistoryArticleItem, HistoryPeriodModel} from 'lib/api/history';
 import TokenApi from 'lib/api/token';
 import WebLinks from 'lib/WebLinks';
-import HistoryArticleGridItem from 'components/History/HistoryArticleGridItem';
-import HistoryPeriodCard from 'components/History/HistoryPeriodCard';
+import ElwarkImageCard from 'components/Card/ElwarkImageCard';
+import {Theme, Typography} from '@material-ui/core';
+import {Link} from 'components';
+import ElwarkCard from 'components/Card/ElwarkCard';
+import clsx from 'clsx';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     periods: {
         display: 'grid',
         gridTemplateColumns: 'repeat(1, 1fr)',
@@ -40,6 +43,25 @@ const useStyles = makeStyles((theme) => ({
             }
         }
     },
+    period: {
+        height: 170
+    },
+    content: {
+        height: '100%',
+        minHeight: 200,
+        display: 'flex',
+        flexDirection: 'column',
+        padding: theme.spacing(2),
+        color: theme.palette.common.white
+    },
+    center: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    bottom: {
+        alignItems: 'center',
+        justifyContent: 'flex-end'
+    },
     articles: {
         display: 'flex',
         flexDirection: 'column',
@@ -67,6 +89,9 @@ const useStyles = makeStyles((theme) => ({
     },
     rectangle: {
         gridColumn: 'span 2'
+    },
+    title: {
+        color: theme.palette.common.white
     }
 }));
 
@@ -75,20 +100,24 @@ type Props = {
     articles: HistoryArticleItem[]
 }
 
-const HistoryPage: NextPage<Props> = (props) => {
+const HistoryPage: NextPage<Props> = ({periods, articles}) => {
     const classes = useStyles();
-    const {periods, articles} = props;
 
     return (
         <DefaultLayout title={'History page'}>
             <div className={classes.periods}>
                 {periods.map(item =>
-                    <HistoryPeriodCard
-                        key={item.type}
-                        title={item.title}
-                        description={item.description}
-                        image={item.image}
-                        href={WebLinks.HistoryPeriod(item.type)}/>
+                    <ElwarkImageCard key={item.type} className={classes.period} image={item.image}>
+                        <div className={clsx(classes.content, classes.center)}>
+                            <Typography variant={'h2'} className={classes.title} component={Link}
+                                        href={WebLinks.HistoryPeriod(item.type)}>
+                                {item.title}
+                            </Typography>
+                            <Typography variant={'subtitle1'} color={'inherit'}>
+                                {item.description}
+                            </Typography>
+                        </div>
+                    </ElwarkImageCard>
                 )}
             </div>
 
@@ -104,15 +133,68 @@ const HistoryPage: NextPage<Props> = (props) => {
                                 return classes.rectangle;
                         };
 
-                        return (
-                            <div className={className(i)} key={item.articleId}>
-                                <HistoryArticleGridItem
-                                    title={item.title}
-                                    description={item.subtitle}
+                        if (i === 0 && item.image)
+                            return (
+                                <ElwarkImageCard key={item.articleId} className={className(i)} image={item.image}>
+                                    <div className={clsx(classes.content, classes.bottom)}>
+                                        <Typography variant={'h2'} className={classes.title} component={Link}
+                                                    href={link.href} as={link.as}>
+                                            {item.title}
+                                        </Typography>
+                                        <Typography variant={'subtitle1'} color={'inherit'}>
+                                            {item.subtitle}
+                                        </Typography>
+                                    </div>
+                                </ElwarkImageCard>
+                            );
+
+                        if (item.image && item.subtitle)
+                            return (
+                                <ElwarkCard
+                                    key={item.articleId}
+                                    className={className(i)}
                                     image={item.image}
-                                    href={link.href}
-                                    as={link.as}/>
-                            </div>);
+                                    title={
+                                        <Typography
+                                            component={Link}
+                                            href={link.href}
+                                            as={link.as}
+                                            variant={'h4'}>
+                                            {item.title}
+                                        </Typography>
+                                    }
+                                    subtitle={item.subtitle}
+                                    direction={'column'}/>
+                            );
+
+                        if (item.image && !item.subtitle)
+                            return (
+                                <ElwarkImageCard key={item.articleId} className={className(i)} image={item.image}>
+                                    <div className={clsx(classes.content, classes.center)}>
+                                        <Typography variant={'h2'} className={classes.title} component={Link}
+                                                    href={link.href} as={link.as}>
+                                            {item.title}
+                                        </Typography>
+                                    </div>
+                                </ElwarkImageCard>
+                            );
+
+                        return (
+                            <ElwarkCard
+                                key={item.articleId}
+                                className={className(i)}
+                                title={
+                                    <Typography
+                                        component={Link}
+                                        href={link.href}
+                                        as={link.as}
+                                        variant={'h4'}>
+                                        {item.title}
+                                    </Typography>
+                                }
+                                description={item.subtitle}
+                                direction={'column'}/>
+                        );
                     }
                 )}
             </div>
@@ -127,8 +209,32 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: 
 
     return {
         props: {
-            articles: articles.data,
-            periods: periods.data
+            periods: periods.data,
+            articles: articles.data
+            .sort((a, b) => {
+                let right = 0;
+                let left = 0;
+
+                if (a.image)
+                    right += 3;
+
+                if (a.title)
+                    right += 2;
+
+                if (a.subtitle)
+                    right++;
+
+                if (b.image)
+                    left += 3;
+
+                if (b.title)
+                    left += 2;
+
+                if (b.subtitle)
+                    left++;
+
+                return left - right;
+            })
         }
     };
 };

@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'row',
             '& > $media': {
                 minWidth: 150,
+                maxWidth: 250,
                 minHeight: 150,
                 flexBasis: '25%'
             }
@@ -55,7 +56,7 @@ type Props = {
     actions?: React.ReactNode
 }
 
-const HistoryCard: React.FC<Props> = ({title, direction, image, subtitle, description, actions, className}) => {
+const ElwarkCard: React.FC<Props> = ({title, direction, image, subtitle, description, actions, className}) => {
     const classes = useStyles();
 
     return (
@@ -65,7 +66,7 @@ const HistoryCard: React.FC<Props> = ({title, direction, image, subtitle, descri
                 <div className={classes.content}>
                     <CardHeader title={title} subheader={subtitle}/>
                     {description && <CardContent>
-                        <Typography variant={'body1'} color={'textSecondary'} component={'p'}>
+                        <Typography variant={'body1'} color={'textPrimary'} component={'p'}>
                             {description}
                         </Typography>
                     </CardContent>}
@@ -78,4 +79,4 @@ const HistoryCard: React.FC<Props> = ({title, direction, image, subtitle, descri
     );
 };
 
-export default HistoryCard;
+export default ElwarkCard;

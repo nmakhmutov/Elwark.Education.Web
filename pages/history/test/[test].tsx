@@ -5,10 +5,10 @@ import React, {useEffect, useState} from 'react';
 import {Button, Typography} from '@material-ui/core';
 import TokenApi from 'lib/api/token';
 import HistoryApi, {HistoryTestModel} from 'lib/api/history';
-import CheckboxAnswer from 'components/Test/CheckboxAnswer';
-import RadioAnswer from 'components/Test/RadioAnswer';
-import InputAnswer from 'components/Test/InputAnswer';
 import moment from 'moment';
+import InputAnswer from 'components/Input/InputAnswer';
+import RadioAnswer from 'components/Input/RadioAnswer';
+import CheckboxAnswer from 'components/Input/CheckboxAnswer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
