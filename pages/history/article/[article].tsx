@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 1920
     },
     content: {
-        padding: theme.spacing(8),
+        padding: theme.spacing(3),
         borderRadius: 0,
         boxShadow: theme.shadows[20]
     },

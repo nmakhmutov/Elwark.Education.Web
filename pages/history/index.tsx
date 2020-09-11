@@ -5,7 +5,8 @@ import React from 'react';
 import HistoryApi, {HistoryArticleItem, HistoryPeriodModel} from 'lib/api/history';
 import TokenApi from 'lib/api/token';
 import WebLinks from 'lib/WebLinks';
-import {HistoryArticleGridItem, HistoryPeriodCard} from 'components/History';
+import HistoryArticleGridItem from 'components/History/HistoryArticleGridItem';
+import HistoryPeriodCard from 'components/History/HistoryPeriodCard';
 
 const useStyles = makeStyles((theme) => ({
     periods: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         gap: theme.spacing(2) + 'px',
 
         [theme.breakpoints.only('xs')]: {
-            marginBottom: theme.spacing(2)
+            margin: theme.spacing(2, 0)
         },
 
         [theme.breakpoints.up('sm')]: {
@@ -53,11 +54,11 @@ const useStyles = makeStyles((theme) => ({
         },
 
         [theme.breakpoints.up('md')]: {
-            gridTemplateColumns: 'repeat(4, 1fr)',
+            gridTemplateColumns: 'repeat(4, 1fr)'
         },
 
         [theme.breakpoints.up('xl')]: {
-            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))'
         }
     },
     big: {
@@ -65,8 +66,8 @@ const useStyles = makeStyles((theme) => ({
         gridRow: 'span 2'
     },
     rectangle: {
-        gridColumn: 'span 2',
-    },
+        gridColumn: 'span 2'
+    }
 }));
 
 type Props = {
@@ -93,7 +94,7 @@ const HistoryPage: NextPage<Props> = (props) => {
 
             <div className={classes.articles}>
                 {articles.map((item, i) => {
-                        const link = WebLinks.HistoryArticle(item.articleId)
+                        const link = WebLinks.HistoryArticle(item.articleId);
 
                         const className = (index: number) => {
                             if (index === 0)
@@ -101,7 +102,7 @@ const HistoryPage: NextPage<Props> = (props) => {
 
                             if (index >= 5 && index <= 8)
                                 return classes.rectangle;
-                        }
+                        };
 
                         return (
                             <div className={className(i)} key={item.articleId}>
@@ -111,7 +112,7 @@ const HistoryPage: NextPage<Props> = (props) => {
                                     image={item.image}
                                     href={link.href}
                                     as={link.as}/>
-                            </div>)
+                            </div>);
                     }
                 )}
             </div>
@@ -130,6 +131,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: 
             periods: periods.data
         }
     };
-}
+};
 
 export default HistoryPage;

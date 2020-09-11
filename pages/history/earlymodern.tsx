@@ -4,7 +4,8 @@ import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiRe
 import React from 'react';
 import HistoryApi, {HistoryPeriod, HistoryPeriodModel, HistoryTopicItem} from 'lib/api/history';
 import TokenApi from 'lib/api/token';
-import {HistoryPeriodTabs, HistoryTopicGrid} from 'components/History';
+import HistoryPeriodTabs from 'components/History/HistoryPeriodTabs';
+import HistoryTopicGrid from 'components/History/HistoryTopicGrid';
 
 const useStyles = makeStyles((theme) => ({
     root: {

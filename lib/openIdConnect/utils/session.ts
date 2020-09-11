@@ -1,23 +1,8 @@
-import { TokenSet } from 'openid-client';
-import { SessionInterface } from '../session/session';
+import {TokenSet} from 'openid-client';
+import {SessionInterface} from '../session/session';
 
 export default function getSessionFromTokenSet(tokenSet: TokenSet): SessionInterface {
-    const claims = tokenSet.claims();
-    if (claims.aud) {
-        delete claims.aud;
-    }
-
-    if (claims.exp) {
-        delete claims.exp;
-    }
-
-    if (claims.iat) {
-        delete claims.iat;
-    }
-
-    if (claims.iss) {
-        delete claims.iss;
-    }
+    const claims = {...tokenSet.claims(), aud: null, exp: null, iat: null, iss: null};
 
     // Create the session.
     return {

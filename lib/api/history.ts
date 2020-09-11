@@ -53,7 +53,7 @@ export interface HistoryArticleItem
     subtitle?: string,
     image?: string,
     type: 'regular' | 'premium',
-    passedAt: Date
+    passedAt?: Date
 }
 
 export interface HistoryPeriodModel

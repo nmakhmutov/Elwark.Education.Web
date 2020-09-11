@@ -3,14 +3,18 @@ import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React, {useState} from 'react';
 import HistoryApi, {HistoryTopicModel} from 'lib/api/history';
-import {Grid, Typography} from '@material-ui/core';
+import {Grid, Link as UiLink, Theme, Typography, withStyles} from '@material-ui/core';
 import TokenApi from 'lib/api/token';
 import {PricingModal} from 'components/PricingModal';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import WebLinks from 'lib/WebLinks';
-import {HistoryArticleListItem} from 'components/History';
+import HistoryCard from 'components/History/HistoryCard';
+import {amber} from '@material-ui/core/colors';
+import moment from 'moment';
+import {Link} from 'components';
+import theme from 'components/theme';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     root: {
         // padding: theme.spacing(3)
     },
@@ -19,10 +23,13 @@ const useStyles = makeStyles((theme) => ({
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         position: 'relative',
-        [theme.breakpoints.down('sm')]: {
-            height: 200
-        },
+        height: 200,
+
         [theme.breakpoints.up('sm')]: {
+            height: 300
+        },
+
+        [theme.breakpoints.up('md')]: {
             height: '70vh'
         }
     },
@@ -42,26 +49,22 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     breadcrumbs: {
-        margin: theme.spacing(0, 3, 3, 3),
-        [theme.breakpoints.up('sm')]: {
-            margin: theme.spacing(3, 0)
-        }
+        margin: theme.spacing(3)
     },
     description: {
-        margin: theme.spacing(0, 3, 3, 3),
-        maxWidth: 980,
-        [theme.breakpoints.up('sm')]: {
-            margin: theme.spacing(3, 0)
-        }
+        margin: theme.spacing(3),
+        maxWidth: 980
     },
     card: {
-        marginBottom: theme.spacing(3)
+        margin: theme.spacing(3)
     }
 }));
 
 type Props = {
     topic: HistoryTopicModel
 }
+
+const PremiumTypography = withStyles({root: {color: amber.A700}})(Typography);
 
 const TopicPage: NextPage<Props> = (props) => {
     const classes = useStyles();
@@ -71,15 +74,29 @@ const TopicPage: NextPage<Props> = (props) => {
     const handlePricingClose = () => {
         setPricingModalOpen(false);
     };
-    const handlePricingOpen = () => {
+
+    const handlePricingOpen = (event: MouseEvent) => {
+        event.preventDefault();
         setPricingModalOpen(true);
     };
+
+    const [width, setWidth] = React.useState(0);
+
+    React.useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth);
+
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <DefaultLayout title={topic.title}>
             <div className={classes.root}>
-                <Grid container={true} spacing={3}>
-                    <Grid item={true} xs={12} sm={5} md={4} xl={3}>
+                <Grid container={true}>
+                    <Grid item={true} xs={12} md={4} xl={3}>
                         <div className={classes.image} style={{backgroundImage: `url(${topic.image})`}}>
                             <div className={classes.cover}>
                                 <div className={classes.titleContainer}>
@@ -94,7 +111,7 @@ const TopicPage: NextPage<Props> = (props) => {
                         </div>
                     </Grid>
 
-                    <Grid item={true} xs={12} sm={7} md={8} xl={9}>
+                    <Grid item={true} xs={12} md={8} xl={9}>
                         <Breadcrumbs className={classes.breadcrumbs} paths={[
                             {title: 'History', link: {href: WebLinks.History}},
                             {title: topic.period.title, link: {href: WebLinks.HistoryPeriod(topic.period.type)}}
@@ -102,20 +119,52 @@ const TopicPage: NextPage<Props> = (props) => {
                         <Typography variant={'body1'} className={classes.description}>
                             {topic.description}
                         </Typography>
-                        {topic.articles.map(article =>
-                            <HistoryArticleListItem
-                                key={article.articleId}
-                                className={classes.card}
-                                onPremiumPopup={handlePricingOpen}
-                                article={article}/>
+                        {topic.articles.map(article => {
+                                const link = WebLinks.HistoryArticle(article.articleId);
+
+                                return (
+                                    <HistoryCard
+                                        className={classes.card}
+                                        direction={width < theme.breakpoints.width('sm') ? 'column' : 'row'}
+                                        image={article.image}
+                                        description={article.subtitle}
+                                        title={
+                                            article.type === 'premium'
+                                                ? <Typography
+                                                    component={UiLink}
+                                                    variant={'h4'}
+                                                    href={'#'}
+                                                    onClick={handlePricingOpen}>
+                                                    {article.title}
+                                                </Typography>
+                                                : <Typography
+                                                    component={Link}
+                                                    href={link.href}
+                                                    as={link.as}
+                                                    variant={'h4'}>
+                                                    {article.title}
+                                                </Typography>
+                                        }
+                                        subtitle={
+                                            article.type === 'premium'
+                                                ? <PremiumTypography>Premium</PremiumTypography>
+                                                : undefined
+                                        }
+                                        actions={
+                                            <Typography variant={'body2'}>
+                                                {article.passedAt
+                                                    ? 'Test passed ' + moment(article.passedAt).fromNow()
+                                                    : 'Test not passed'}
+                                            </Typography>
+                                        }
+                                    />
+                                );
+                            }
                         )}
                     </Grid>
                 </Grid>
             </div>
-            <PricingModal
-                onClose={handlePricingClose}
-                open={pricingModalOpen}
-            />
+            <PricingModal onClose={handlePricingClose} open={pricingModalOpen}/>
         </DefaultLayout>
     );
 };

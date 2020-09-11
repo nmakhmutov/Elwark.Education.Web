@@ -40,7 +40,7 @@ type Props = {
     href: string
 }
 
-const HistoryPeriodGridItem: React.FC<Props> = ({className, image, title, href, description}) => {
+const HistoryPeriodCard: React.FC<Props> = ({className, image, title, href, description}) => {
     const classes = useStyles();
 
     return (
@@ -57,4 +57,4 @@ const HistoryPeriodGridItem: React.FC<Props> = ({className, image, title, href, 
     );
 }
 
-export default HistoryPeriodGridItem;
+export default HistoryPeriodCard;
