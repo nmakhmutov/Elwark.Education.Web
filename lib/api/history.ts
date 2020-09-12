@@ -26,6 +26,8 @@ export interface HistoryTopicModel
     articles: HistoryArticleItem[]
 }
 
+export type ArticleType = 'regular' | 'premium';
+
 export interface HistoryArticleModel
 {
     id: string,
@@ -39,7 +41,7 @@ export interface HistoryArticleModel
     }
     title: string,
     image?: string,
-    type: 'regular' | 'premium',
+    type: ArticleType,
     text: string,
     subtitle?: string,
     footnotes?: string,
@@ -52,7 +54,7 @@ export interface HistoryArticleItem
     title: string,
     subtitle?: string,
     image?: string,
-    type: 'regular' | 'premium',
+    type: ArticleType,
     passedAt?: Date
 }
 
@@ -66,12 +68,14 @@ export interface HistoryPeriodModel
 
 export interface HistoryTestModel
 {
+    id: string,
     expiredAt: Date,
     questions: HistoryTestQuestionModel[]
 }
 
 export interface HistoryTestQuestionModel
 {
+    id: string,
     title: string,
     isAnswered: boolean,
     type: 'noOptions' | 'singleOption' | 'manyOptions'

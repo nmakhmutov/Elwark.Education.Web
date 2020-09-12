@@ -49,7 +49,6 @@ const Link: React.FC<LinkProps> = (props) => {
     return naked
         ? <NextComposed className={className} ref={innerRef} {...other} />
         : <MuiLink component={NextComposed} className={className} ref={innerRef} {...other} />;
-
 };
 
 export default React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (

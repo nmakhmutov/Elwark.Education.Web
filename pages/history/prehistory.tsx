@@ -9,9 +9,7 @@ import HistoryTopicGrid from 'components/History/HistoryTopicGrid';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        padding: theme.spacing(3),
-        margin: '0 auto',
-        maxWidth: 850
+        padding: theme.spacing(3)
     }
 }));
 
@@ -38,6 +36,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: 
     const periods = await HistoryApi.getPeriods(token);
 
     return {props: {topics: topics.data, periods: periods.data}};
-}
+};
 
 export default PrehistoryPage;

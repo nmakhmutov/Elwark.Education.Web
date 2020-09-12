@@ -9,6 +9,7 @@ import moment from 'moment';
 import InputAnswer from 'components/Input/InputAnswer';
 import RadioAnswer from 'components/Input/RadioAnswer';
 import CheckboxAnswer from 'components/Input/CheckboxAnswer';
+import useApi from 'lib/useApi';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -66,13 +67,14 @@ const TestPage: NextPage<Props> = ({test}) => {
         return () => clearInterval(interval);
     }, []);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const step = activeStep + 1;
 
+        const result = await useApi('POST', `history/tests/${test.id}/questions/${current.id}`, answers);
         test.questions.push(current);
-
+        console.log(result);
         setActiveStep(step);
         setCurrent(test.questions[step]);
         setAnswers([]);

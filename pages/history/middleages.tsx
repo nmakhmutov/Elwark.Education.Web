@@ -9,9 +9,7 @@ import HistoryTopicGrid from 'components/History/HistoryTopicGrid';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        padding: theme.spacing(3),
-        margin: '0 auto',
-        maxWidth: 850
+        padding: theme.spacing(3)
     }
 }));
 
@@ -20,7 +18,7 @@ type Props = {
     topics: HistoryTopicItem[]
 }
 
-const AncientPage: NextPage<Props> = ({periods, topics}) => {
+const MiddleAgesPage: NextPage<Props> = ({periods, topics}) => {
     const classes = useStyles();
     const title = periods.filter(x => x.type === HistoryPeriod.middleAges)[0].title;
 
@@ -40,4 +38,4 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: 
     return {props: {topics: topics.data, periods: periods.data}};
 }
 
-export default AncientPage;
+export default MiddleAgesPage;

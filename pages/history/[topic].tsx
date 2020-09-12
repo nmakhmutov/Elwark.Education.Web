@@ -12,7 +12,6 @@ import ElwarkCard from 'components/Card/ElwarkCard';
 import {amber} from '@material-ui/core/colors';
 import moment from 'moment';
 import {Link} from 'components';
-import theme from 'components/theme';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -126,13 +125,13 @@ const TopicPage: NextPage<Props> = (props) => {
                                     <ElwarkCard
                                         key={article.articleId}
                                         className={classes.card}
-                                        direction={width < theme.breakpoints.width('sm') ? 'column' : 'row'}
+                                        direction={width < 600 ? 'column' : 'row'}
                                         image={article.image}
                                         description={article.subtitle}
                                         title={
                                             article.type === 'premium'
                                                 ? <Typography
-                                                    component={UiLink}
+                                                    component={Link}
                                                     variant={'h4'}
                                                     href={'#'}
                                                     onClick={handlePricingOpen}>
