@@ -113,7 +113,7 @@ const HistoryPage: NextPage<Props> = ({periods, articles}) => {
                                         href={WebLinks.HistoryPeriod(item.type)}>
                                 {item.title}
                             </Typography>
-                            <Typography variant={'subtitle1'} color={'inherit'}>
+                            <Typography variant={'subtitle1'} color={'inherit'} align={'center'}>
                                 {item.description}
                             </Typography>
                         </div>

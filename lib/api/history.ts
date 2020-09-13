@@ -7,7 +7,7 @@ export interface HistoryTopicItem
     title: string,
     image: string,
     range: string,
-    progress: {
+    progress?: {
         count: number,
         passed: number
     }
@@ -45,6 +45,7 @@ export interface HistoryArticleModel
     text: string,
     subtitle?: string,
     footnotes?: string,
+    isTestAvailable: boolean
 }
 
 export interface HistoryArticleItem
@@ -55,7 +56,10 @@ export interface HistoryArticleItem
     subtitle?: string,
     image?: string,
     type: ArticleType,
-    passedAt?: Date
+    test: {
+        isAvailable: true,
+        passedAt?: Date
+    }
 }
 
 export interface HistoryPeriodModel

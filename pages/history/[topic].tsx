@@ -3,7 +3,7 @@ import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React, {useState} from 'react';
 import HistoryApi, {HistoryTopicModel} from 'lib/api/history';
-import {Grid, Link as UiLink, Theme, Typography, withStyles} from '@material-ui/core';
+import {Grid, Theme, Typography, withStyles} from '@material-ui/core';
 import TokenApi from 'lib/api/token';
 import {PricingModal} from 'components/PricingModal';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
@@ -151,11 +151,13 @@ const TopicPage: NextPage<Props> = (props) => {
                                                 : undefined
                                         }
                                         actions={
-                                            <Typography variant={'body2'}>
-                                                {article.passedAt
-                                                    ? 'Test passed ' + moment(article.passedAt).fromNow()
-                                                    : 'Test not passed'}
-                                            </Typography>
+                                            article.test.isAvailable
+                                                ? (<Typography variant={'body2'}>
+                                                    {article.test.passedAt
+                                                        ? 'Test passed ' + moment(article.test.passedAt).fromNow()
+                                                        : 'Test not passed'}
+                                                </Typography>)
+                                                : undefined
                                         }
                                     />
                                 );

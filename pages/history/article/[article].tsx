@@ -14,7 +14,6 @@ import BorderColorIcon from '@material-ui/icons/BorderColor';
 import {useRouter} from 'next/router';
 import useApi from 'lib/useApi';
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 1920
@@ -129,6 +128,7 @@ const ArticlePage: NextPage<Props> = (props) => {
                         <Typography variant={'h1'} className={classes.title}>
                             {article.title}
                         </Typography>
+                        {article.isTestAvailable &&
                         <div className={classes.test}>
                             <Button variant={'contained'}
                                     className={classes.link}
@@ -139,6 +139,7 @@ const ArticlePage: NextPage<Props> = (props) => {
                                 Pass a test
                             </Button>
                         </div>
+                        }
                         {article.subtitle &&
                         <Typography variant={'h4'} color={'textSecondary'} className={classes.subtitle}>
                             {article.subtitle}

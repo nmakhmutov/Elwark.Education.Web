@@ -40,7 +40,10 @@ const HistoryTopicGrid: React.FC<Props> = (props) => {
                             }
                             image={topic.image}
                             subtitle={topic.range}
-                            actions={<TopicProgress passed={topic.progress.passed} total={topic.progress.count}/>}/>
+                            actions={
+                                topic.progress &&
+                                <TopicProgress passed={topic.progress.passed} total={topic.progress.count}/>
+                            }/>
                     );
                 }
             )}
