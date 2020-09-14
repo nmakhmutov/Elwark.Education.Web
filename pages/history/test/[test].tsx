@@ -2,9 +2,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import DefaultLayout from 'components/Layout';
 import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React, {useEffect, useState} from 'react';
-import {Button, Typography} from '@material-ui/core';
+import {Button, CircularProgress, Typography} from '@material-ui/core';
 import TokenApi from 'lib/api/token';
-import HistoryApi, {HistoryTestModel} from 'lib/api/history';
+import HistoryApi, {HistoryTestModel, TestCheckedAnswerModel} from 'lib/api/history';
 import moment from 'moment';
 import InputAnswer from 'components/Input/InputAnswer';
 import RadioAnswer from 'components/Input/RadioAnswer';
@@ -54,8 +54,10 @@ const TestPage: NextPage<Props> = ({test}) => {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
     const [current, setCurrent] = useState(test.questions[activeStep]);
-    const [answers, setAnswers] = useState<string[]>([]);
+    const [answers, setAnswers] = useState<{ [key: number]: string }>({});
+    const [answered, setAnswered] = useState(false);
     const [countdown, setCountdown] = useState<string>('');
+    const [isLoading, setLoading] = useState(false);
     const toDate = moment.utc(test.expiredAt);
 
     useEffect(() => {
@@ -69,15 +71,22 @@ const TestPage: NextPage<Props> = ({test}) => {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setLoading(true);
+        const {data} = await useApi<TestCheckedAnswerModel>('POST', HistoryApi.endpoints.checkTestAnswer(test.id, current.id), answers);
+        setLoading(false);
 
+        if (!data.isCorrect)
+            test.questions.push(current);
+
+        setAnswered(true);
+    };
+
+    const nextQuestion = () => {
+        setAnswered(false);
         const step = activeStep + 1;
-
-        const result = await useApi('POST', `history/tests/${test.id}/questions/${current.id}`, answers);
-        test.questions.push(current);
-        console.log(result);
         setActiveStep(step);
         setCurrent(test.questions[step]);
-        setAnswers([]);
+        setAnswers({});
     };
 
     return (
@@ -92,19 +101,36 @@ const TestPage: NextPage<Props> = ({test}) => {
                 <div className={classes.container}>
                     <form className={classes.form} onSubmit={handleSubmit}>
                         {current.type === 'noOptions' &&
-                        <InputAnswer setAnswer={value => setAnswers(value ? [value] : [])}/>}
+                        <InputAnswer setAnswer={value => setAnswers(value ? {[0]: value} : {})}/>}
                         {current.type === 'singleOption' &&
-                        <RadioAnswer setAnswer={value => setAnswers([value])} answers={current.options}/>}
+                        <RadioAnswer setAnswer={value => setAnswers({[0]: value})} answers={current.options}/>}
                         {current.type === 'manyOptions' &&
-                        <CheckboxAnswer setAnswers={setAnswers} answers={current.options}/>}
-                        <Button
-                            type={'submit'}
-                            variant={'contained'}
-                            color={'primary'}
-                            className={classes.button}
-                            disabled={answers.length === 0}>
-                            Answer
-                        </Button>
+                        <CheckboxAnswer setAnswers={value => {
+                            const tmp: { [key: number]: string } = {};
+                            value.forEach((x, i) => tmp[i] = x);
+                            setAnswers(tmp);
+                        }} answers={current.options}/>}
+                        {answered
+                            ? <Button
+                                type={'button'}
+                                variant={'contained'}
+                                color={'primary'}
+                                onClick={nextQuestion}
+                                className={classes.button}>
+                                Next
+                            </Button>
+                            : isLoading
+                                ? <CircularProgress size={24}/>
+                                :
+                                <Button
+                                    type={'submit'}
+                                    variant={'contained'}
+                                    color={'primary'}
+                                    className={classes.button}
+                                    disabled={Object.entries(answers).length === 0}>
+                                    Answer
+                                </Button>
+                        }
                     </form>
                 </div>
                 <Typography variant={'subtitle2'}>

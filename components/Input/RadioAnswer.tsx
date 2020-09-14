@@ -3,7 +3,7 @@ import {FormControlLabel, Radio, RadioGroup} from '@material-ui/core';
 
 type Props = {
     className?: string,
-    answers: string[],
+    answers: { [key: number]: string },
     setAnswer: (value: string) => void
 }
 
@@ -18,9 +18,10 @@ const RadioAnswer: React.FC<Props> = ({className, answers, setAnswer}) => {
 
     return (
         <RadioGroup className={className} name="quiz" value={value} onChange={handleRadioChange}>
-            {answers.map((x, i) => <FormControlLabel key={i} value={x} control={<Radio/>} label={x}/>)}
+            {Object.entries(answers).map(([key, answer]) =>
+                <FormControlLabel key={key} value={answer} control={<Radio/>} label={answer}/>)}
         </RadioGroup>
-    )
-}
+    );
+};
 
 export default RadioAnswer;

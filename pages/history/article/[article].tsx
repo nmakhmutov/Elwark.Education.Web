@@ -4,7 +4,7 @@ import {GetServerSideProps, GetServerSidePropsContext, NextApiRequest, NextApiRe
 import React, {useState} from 'react';
 import HistoryApi, {HistoryArticleModel} from 'lib/api/history';
 import ReactMarkdown from 'react-markdown';
-import {Button, Grid, Paper, Typography} from '@material-ui/core';
+import {Button, CircularProgress, Grid, Paper, Typography} from '@material-ui/core';
 import {purple} from '@material-ui/core/colors';
 import WebLinks from 'lib/WebLinks';
 import clsx from 'clsx';
@@ -130,13 +130,16 @@ const ArticlePage: NextPage<Props> = (props) => {
                         </Typography>
                         {article.isTestAvailable &&
                         <div className={classes.test}>
-                            <Button variant={'contained'}
-                                    className={classes.link}
-                                    onClick={createTest}
-                                    color={'primary'}
-                                    disabled={testLoading}
-                                    startIcon={<BorderColorIcon/>}>
-                                Pass a test
+                            <Button
+                                variant={'contained'}
+                                className={classes.link}
+                                onClick={createTest}
+                                color={'primary'}
+                                disabled={testLoading}
+                                startIcon={<BorderColorIcon/>}>
+                                {testLoading
+                                    ? <CircularProgress size={24}/>
+                                    : 'Pass a test'}
                             </Button>
                         </div>
                         }

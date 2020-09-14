@@ -83,7 +83,7 @@ export interface HistoryTestQuestionModel
     title: string,
     isAnswered: boolean,
     type: 'noOptions' | 'singleOption' | 'manyOptions'
-    options: string[]
+    options: { [key: number]: string }
 }
 
 export enum HistoryPeriod
@@ -95,6 +95,13 @@ export enum HistoryPeriod
     'modern' = 'modern'
 }
 
+export interface TestCheckedAnswerModel
+{
+    isCorrect: boolean,
+    answers: { [key: number]: string }
+}
+
+
 const HistoryApi = {
     endpoints: {
         getPeriods: 'history/periods',
@@ -103,7 +110,8 @@ const HistoryApi = {
         getArticle: (articleId: string) => `history/articles/${articleId}`,
         getRandomArticle: 'history/articles/random',
         createTest: 'history/tests',
-        getTest: (testId: string) => `history/tests/${testId}`
+        getTest: (testId: string) => `history/tests/${testId}`,
+        checkTestAnswer: (testId: string, questionId: string) => `history/tests/${testId}/questions/${questionId}`
     },
     getPeriods: async (token: string) => {
         return await axios.get<HistoryPeriodModel[]>(`${SERVER_BASE_URL}/${HistoryApi.endpoints.getPeriods}`, {

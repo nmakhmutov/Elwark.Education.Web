@@ -3,12 +3,14 @@ import {Checkbox, FormControlLabel, FormGroup} from '@material-ui/core';
 
 type Props = {
     className?: string,
-    answers: string[],
+    answers: { [key: number]: string },
     setAnswers: (values: string[]) => void
 }
 
 const CheckboxAnswer: React.FC<Props> = ({answers, className, setAnswers}) => {
-    const [state, setState] = React.useState(answers.map((x, i) => ({id: i.toString(), value: x, checked: false})));
+    const [state, setState] = React.useState(Object.entries(answers)
+        .map(([key, answer]) => ({id: key.toString(), value: answer, checked: false}))
+    );
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.persist();
@@ -36,7 +38,7 @@ const CheckboxAnswer: React.FC<Props> = ({answers, className, setAnswers}) => {
                     }
                 />)}
         </FormGroup>
-    )
-}
+    );
+};
 
 export default CheckboxAnswer;
