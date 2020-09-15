@@ -74,7 +74,7 @@ export interface HistoryTestModel
 {
     id: string,
     expiredAt: Date,
-    questions: HistoryTestQuestionModel[]
+    questions: HistoryTestQuestionModel[],
 }
 
 export interface HistoryTestQuestionModel
@@ -95,10 +95,16 @@ export enum HistoryPeriod
     'modern' = 'modern'
 }
 
+export interface AnswerResult
+{
+    totalScore: number
+}
+
 export interface TestCheckedAnswerModel
 {
     isCorrect: boolean,
-    answers: { [key: number]: string }
+    answers: { [key: number]: string },
+    result?: AnswerResult
 }
 
 
@@ -109,7 +115,8 @@ const HistoryApi = {
         getTopic: (topicId: string) => `history/topics/${topicId}`,
         getArticle: (articleId: string) => `history/articles/${articleId}`,
         getRandomArticle: 'history/articles/random',
-        createTest: 'history/tests',
+        createTopicTest: (topicId: string) => `history/topics/${topicId}/test`,
+        createArticleTest: (articleId: string) => `history/articles/${articleId}/test`,
         getTest: (testId: string) => `history/tests/${testId}`,
         checkTestAnswer: (testId: string, questionId: string) => `history/tests/${testId}/questions/${questionId}`
     },

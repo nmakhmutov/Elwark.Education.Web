@@ -1,42 +1,49 @@
 import React from 'react';
-import {Checkbox, FormControlLabel, FormGroup} from '@material-ui/core';
+import {Checkbox, FormControlLabel, FormGroup, Typography, withStyles} from '@material-ui/core';
+import {green, red} from '@material-ui/core/colors';
 
 type Props = {
     className?: string,
-    answers: { [key: number]: string },
-    setAnswers: (values: string[]) => void
+    userAnswer: string[],
+    correctAnswer: string[],
+    answers: { [key: number]: string }
 }
 
-const CheckboxAnswer: React.FC<Props> = ({answers, className, setAnswers}) => {
-    const [state, setState] = React.useState(Object.entries(answers)
-        .map(([key, answer]) => ({id: key.toString(), value: answer, checked: false}))
-    );
+const CorrectAnswerLabel = withStyles({
+    root: {
+        color: green['700']
+    }
+})(Typography);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.persist();
+const IncorrectAnswerLabel = withStyles({
+    root: {
+        color: red['700']
+    }
+})(Typography);
 
-        setState(prevState => {
-            const result = prevState.map(item => {
-                if (item.id === event.target?.value)
-                    item.checked = event.target.checked;
+const CheckboxAnswer: React.FC<Props> = ({className, answers, userAnswer, correctAnswer}) => {
+    const label = (answer: string, isCorrectAnswer: boolean, isUserAnswer: boolean) => {
+        if (isCorrectAnswer)
+            return <CorrectAnswerLabel>{answer}</CorrectAnswerLabel>;
 
-                return item;
-            });
+        if (!isCorrectAnswer && isUserAnswer)
+            return <IncorrectAnswerLabel>{answer}</IncorrectAnswerLabel>;
 
-            setAnswers(result.filter(x => x.checked).map(x => x.value));
-            return result;
-        });
+        return <Typography color={'textSecondary'}>{answer}</Typography>;
     };
 
     return (
         <FormGroup className={className}>
-            {state.map(x =>
-                <FormControlLabel
-                    key={x.id}
-                    label={x.value}
-                    control={<Checkbox checked={x.checked} onChange={handleChange} value={x.id}/>
-                    }
-                />)}
+            {Object.entries(answers).map(([key, answer]) => {
+                const isUserAnswer = userAnswer.includes(answer);
+                const isCorrectAnswer = correctAnswer.includes(answer);
+
+                return <FormControlLabel
+                    key={key}
+                    label={label(answer, isCorrectAnswer, isUserAnswer)}
+                    control={<Checkbox checked={isUserAnswer} disabled={true}/>}
+                />;
+            })}
         </FormGroup>
     );
 };

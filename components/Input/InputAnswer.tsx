@@ -1,19 +1,32 @@
 import React from 'react';
-import {TextField} from '@material-ui/core';
+import {TextField, Typography, withStyles} from '@material-ui/core';
+import {green} from '@material-ui/core/colors';
 
 type Props = {
     className?: string,
-    setAnswer: (value: string) => void
+    userAnswer: string,
+    correctAnswer: string,
 }
 
-const InputAnswer: React.FC<Props> = ({className, setAnswer}) => {
+const CorrectAnswer = withStyles({
+    root: {
+        color: green['700'],
+        marginTop: 16
+    }
+})(Typography);
+
+const InputAnswer: React.FC<Props> = ({className, userAnswer, correctAnswer}) => {
     return (
-        <TextField
-            className={className}
-            variant={'standard'}
-            autoFocus={true}
-            onKeyUp={event => setAnswer((event.target as HTMLInputElement).value)}/>
-    )
-}
+        <>
+            <TextField
+                className={className}
+                variant={'standard'}
+                value={userAnswer}
+                error={userAnswer !== correctAnswer}
+                disabled={true}/>
+            <CorrectAnswer>{correctAnswer}</CorrectAnswer>
+        </>
+    );
+};
 
 export default InputAnswer;
