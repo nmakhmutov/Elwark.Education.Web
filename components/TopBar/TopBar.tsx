@@ -123,7 +123,7 @@ const TopBar: React.FC<Props> = ({className, onOpenNavBarMobile}) => {
             <Toolbar>
                 <Hidden mdDown={true}>
                     <Button color="inherit" className={classes.logo} component={Link} href={WebLinks.Home}>
-                        <img alt="Logo" src={StorageApi.Static.Icons.Elwark.White.Size48x48}/>
+                        <img alt="Logo" src={StorageApi.Static.Icons.Elwark.White.Size32x32}/>
                         <Typography variant={'h3'} className={classes.logoText} component={'h2'}>Education</Typography>
                     </Button>
                 </Hidden>
