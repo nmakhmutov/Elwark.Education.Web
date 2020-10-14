@@ -20,11 +20,11 @@ type Props = {
 
 const EarlyModernPage: NextPage<Props> = ({topics, periods}) => {
     const classes = useStyles();
-    const title = periods.filter(x => x.type === HistoryPeriod.earlyModern)[0].title;
+    const title = periods.filter(x => x.type === 'earlyModern')[0].title;
 
     return (
         <DefaultLayout title={title}>
-            <HistoryPeriodTabs selected={HistoryPeriod.earlyModern} periods={periods}/>
+            <HistoryPeriodTabs selected={'earlyModern'} periods={periods}/>
             <HistoryTopicGrid topics={topics} className={classes.root}/>
         </DefaultLayout>
     );
@@ -32,7 +32,7 @@ const EarlyModernPage: NextPage<Props> = ({topics, periods}) => {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({req, res}: GetServerSidePropsContext) => {
     const token = await TokenApi.get(req as NextApiRequest, res as NextApiResponse);
-    const topics = await HistoryApi.getTopics(HistoryPeriod.earlyModern, token);
+    const topics = await HistoryApi.getTopics('earlyModern', token);
     const periods = await HistoryApi.getPeriods(token);
 
     return {props: {topics: topics.data, periods: periods.data}};

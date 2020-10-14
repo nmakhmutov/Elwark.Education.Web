@@ -77,36 +77,34 @@ export interface HistoryTestModel
     questions: HistoryTestQuestionModel[],
 }
 
+export type QuestionType = 'noOptions' | 'singleOption' | 'manyOptions' | 'orderedOptions';
+
 export interface HistoryTestQuestionModel
 {
     id: string,
     title: string,
     isAnswered: boolean,
-    type: 'noOptions' | 'singleOption' | 'manyOptions'
-    options: { [key: number]: string }
+    type: QuestionType,
+    options: string[]
 }
 
-export enum HistoryPeriod
-{
-    'prehistory' = 'prehistory',
-    'ancient' = 'ancient',
-    'middleAges' = 'middleAges',
-    'earlyModern' = 'earlyModern',
-    'modern' = 'modern'
-}
+export type HistoryPeriod = 'prehistory' | 'ancient' | 'middleAges' | 'earlyModern' | 'modern';
 
 export interface AnswerResult
 {
-    totalScore: number
+    totalScore: number,
+    answersScore: number,
+    speedBonus: number,
+    unmistakableBonus: number
 }
 
 export interface TestCheckedAnswerModel
 {
     isCorrect: boolean,
-    answers: { [key: number]: string },
-    result?: AnswerResult
+    isComplete: boolean,
+    answer?: string,
+    answers?: string[]
 }
-
 
 const HistoryApi = {
     endpoints: {
@@ -118,7 +116,8 @@ const HistoryApi = {
         createTopicTest: (topicId: string) => `history/topics/${topicId}/test`,
         createArticleTest: (articleId: string) => `history/articles/${articleId}/test`,
         getTest: (testId: string) => `history/tests/${testId}`,
-        checkTestAnswer: (testId: string, questionId: string) => `history/tests/${testId}/questions/${questionId}`
+        checkTestAnswer: (testId: string, questionId: string) => `history/tests/${testId}/questions/${questionId}`,
+        getTestResult: (testId: string) => `history/tests/${testId}/result`
     },
     getPeriods: async (token: string) => {
         return await axios.get<HistoryPeriodModel[]>(`${SERVER_BASE_URL}/${HistoryApi.endpoints.getPeriods}`, {
