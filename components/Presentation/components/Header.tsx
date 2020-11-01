@@ -76,7 +76,7 @@ const Header: React.FC<Props> = (props) => {
                 <div className={classes.media}/>
                 {/*<img*/}
                 {/*    className={classes.media}*/}
-                {/*    src="/static/landing.jpg"*/}
+                {/*    src="/landing.jpg"*/}
                 {/*/>*/}
             </div>
             <div className={classes.stats}>

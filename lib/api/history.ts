@@ -103,7 +103,8 @@ export interface TestCheckedAnswerModel
     isCorrect: boolean,
     isComplete: boolean,
     answer?: string,
-    answers?: string[]
+    answers?: string[],
+    result?: AnswerResult
 }
 
 const HistoryApi = {
@@ -116,8 +117,7 @@ const HistoryApi = {
         createTopicTest: (topicId: string) => `history/topics/${topicId}/test`,
         createArticleTest: (articleId: string) => `history/articles/${articleId}/test`,
         getTest: (testId: string) => `history/tests/${testId}`,
-        checkTestAnswer: (testId: string, questionId: string) => `history/tests/${testId}/questions/${questionId}`,
-        getTestResult: (testId: string) => `history/tests/${testId}/result`
+        checkTestAnswer: (testId: string, questionId: string) => `history/tests/${testId}/questions/${questionId}`
     },
     getPeriods: async (token: string) => {
         return await axios.get<HistoryPeriodModel[]>(`${SERVER_BASE_URL}/${HistoryApi.endpoints.getPeriods}`, {

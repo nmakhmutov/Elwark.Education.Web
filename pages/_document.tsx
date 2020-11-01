@@ -30,7 +30,7 @@ export default class MyDocument extends Document {
                     <link rel="icon" type="image/png" sizes="16x16" href={primary.Size16x16}/>
                     <meta name="msapplication-TileImage" content={primary.Size144x144}/>
                     <meta name="msapplication-TileColor" content={theme.palette.common.white}/>
-                    <link rel="stylesheet" type="text/css" href="/static/styles.css"/>
+                    <link rel="stylesheet" type="text/css" href="/styles.css"/>
                 </Head>
                 <body>
                 <Main/>

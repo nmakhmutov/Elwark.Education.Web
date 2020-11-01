@@ -52,7 +52,7 @@ const Subjects: React.FC = () => {
                             articles={30}
                             questions={40}
                             icon={<AccountBalanceIcon/>}
-                            background={'/static/images/backgrounds/history.png'}
+                            background={'/images/backgrounds/history.png'}
                             gradient={'linear-gradient(140deg, rgba(226,110,67,1) 0%, rgba(248,206,14,1) 100%)'}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
@@ -63,7 +63,7 @@ const Subjects: React.FC = () => {
                             articles={30}
                             questions={40}
                             icon={<Atom style={{fontSize: '2rem'}}/>}
-                            background={'/static/images/backgrounds/physics.jpg'}
+                            background={'/images/backgrounds/physics.jpg'}
                             gradient={'linear-gradient(140deg, rgba(28,46,76,1) 0%, rgba(108,208,255,1) 100%)'}/>
                     </Grid>
                     <Grid item md={4} xs={12}>
@@ -74,7 +74,7 @@ const Subjects: React.FC = () => {
                             articles={30}
                             questions={40}
                             icon={<FlareIcon/>}
-                            background={'/static/images/backgrounds/astronomy.jpg'}
+                            background={'/images/backgrounds/astronomy.jpg'}
                             gradient={'linear-gradient(140deg, rgba(53,58,95,1) 0%, rgba(158,186,243,1) 100%)'}/>
                     </Grid>
                 </Grid>
