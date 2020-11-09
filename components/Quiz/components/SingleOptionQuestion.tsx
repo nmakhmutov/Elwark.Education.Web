@@ -27,13 +27,22 @@ const SingleOptionQuestion: React.FC<Props> = (props) => {
         setAnswer(answer);
     };
 
-    return (
-        <div>
+    if (correct)
+    {
+        return (
             <RadioGroup className={className} name="quiz" value={value} onChange={handleRadioChange}>
-                {options.map((answer, index) =>
-                    <FormControlLabel key={index} value={answer} control={<Radio/>} label={answer}/>)}
+                {options.map((answer, index) => {
+                    return <FormControlLabel key={index} value={answer} control={<Radio/>} label={answer}/>;
+                })}
             </RadioGroup>
-        </div>
+        );
+    }
+
+    return (
+        <RadioGroup className={className} name="quiz" value={value} onChange={handleRadioChange}>
+            {options.map((answer, index) =>
+                <FormControlLabel key={index} value={answer} control={<Radio/>} label={answer}/>)}
+        </RadioGroup>
     );
 };
 
