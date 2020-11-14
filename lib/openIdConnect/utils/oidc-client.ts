@@ -12,7 +12,7 @@ interface ClientSettings {
 export default function getClient(settings: OpenIdConnectSettings): OidcClientFactory {
     let client: any = null;
     const clientSettings: OidcClientSettings = settings.oidcClient || {
-        httpTimeout: 2500
+        httpTimeout: 5000
     };
 
     return async (): Promise<Client> => {

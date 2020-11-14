@@ -5,7 +5,8 @@ import Atom from 'components/icons/Atom';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import PersonIcon from '@material-ui/icons/Person';
 
-export interface Page {
+export interface Page
+{
     title: string;
     href: string;
     target?: string;
@@ -14,7 +15,8 @@ export interface Page {
     children?: Page[];
 }
 
-export interface SideBarPage {
+export interface SideBarPage
+{
     title: string;
     pages: Page[];
 }
@@ -32,7 +34,7 @@ const SideBarLinks: SideBarPage[] = [
             {
                 title: 'Profile',
                 href: WebLinks.Profile,
-                icon: DonutLargeIcon,
+                icon: DonutLargeIcon
             }
         ]
     },
@@ -43,14 +45,24 @@ const SideBarLinks: SideBarPage[] = [
                 title: 'History',
                 href: WebLinks.History,
                 icon: AccountBalanceIcon,
+                children: [
+                    {
+                        title: 'Prehistory',
+                        href: WebLinks.HistoryPeriod('prehistory')
+                    },
+                    {
+                        title: 'Ancient',
+                        href: WebLinks.HistoryPeriod('ancient')
+                    }
+                ]
             },
             {
                 title: 'Physics',
                 href: WebLinks.Physics,
-                icon: Atom,
-            },
-        ],
-    },
+                icon: Atom
+            }
+        ]
+    }
 ];
 
 export default SideBarLinks;

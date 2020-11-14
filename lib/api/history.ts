@@ -110,7 +110,7 @@ export interface TestCheckedAnswerModel
 const HistoryApi = {
     endpoints: {
         getPeriods: 'history/periods',
-        getTopics: (period: HistoryPeriod) => `history/topics?period=${period}`,
+        getTopics: (period: HistoryPeriod) => `history/periods/${period}/topics`,
         getTopic: (topicId: string) => `history/topics/${topicId}`,
         getArticle: (articleId: string) => `history/articles/${articleId}`,
         getRandomArticle: 'history/articles/random',
