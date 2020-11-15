@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Elwark.Education.Web.Services.History.Models;
-using Elwark.Education.Web.Services.History.Requests;
+using Elwark.Education.Web.Services.History.Model;
+using Elwark.Education.Web.Services.History.Request;
 
 namespace Elwark.Education.Web.Services.History
 {

@@ -1,4 +1,4 @@
-namespace Elwark.Education.Web.Services.History.Models
+namespace Elwark.Education.Web.Services.History.Model
 {
     public enum PeriodType
     {

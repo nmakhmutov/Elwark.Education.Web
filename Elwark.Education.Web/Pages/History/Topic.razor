@@ -1,5 +1,5 @@
 @page "/history/topic/{id}"
-@using Elwark.Education.Web.Services.History.Models
+@using Elwark.Education.Web.Services.History.Model
 @inject IHistoryService HistoryService
 @attribute [Authorize]
 
@@ -21,13 +21,34 @@ else
             </div>
         </div>
         <div class="articles-container">
-            <Breadcrumbs Items="@_breadcrumbsItems.ToArray()"/>
+            <Breadcrumbs Items="@_breadcrumbsItems" Class="ma-6"/>
             <MudText Typo="Typo.body1" Class="ma-6" Style="max-width: 980px">
                 @_topic.Description
             </MudText>
-            @foreach (var article in _topic.Articles)
+            @foreach (var (_, articleId, title, subtitle, image, type, (_, passedAt)) in _topic.Articles)
             {
-                <MudText Typo="Typo.h3">@article.Title</MudText>            }
+                <div class="article-card mud-paper ma-6 pa-3">
+                    <div class="article-image">
+                        <MudAvatar Square="true" Style="width: 90px; height: 90px" Image="@(image)"/>
+                    </div>
+                    <div class="article-texts">
+                        @if (type == ArticleType.Premium)
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Warning">@type</MudText>                            
+                        }
+                        <MudLink Typo="Typo.h5" Href="@($"/history/article/{articleId}")">
+                            @title
+                        </MudLink>
+                        @if (passedAt.HasValue)
+                        {
+                            <MudText Typo="Typo.body2">Last passed at @passedAt.Value.ToShortDateString()</MudText>                            
+                        }
+                    </div>
+                    <div class="article-description">
+                        <MudText Typo="Typo.body1">@subtitle</MudText>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 }
@@ -35,10 +56,7 @@ else
 @code {
     private HistoryTopicModel? _topic;
 
-    private readonly List<BreadcrumbsItem> _breadcrumbsItems = new()
-    {
-        new BreadcrumbsItem("History", "/history")
-    };
+    private BreadcrumbsItem[] _breadcrumbsItems = Array.Empty<BreadcrumbsItem>();
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
@@ -46,8 +64,12 @@ else
     protected override async Task OnParametersSetAsync()
     {
         _topic = await HistoryService.GetTopicAsync(Id);
-        if (_topic is not  null)
-            _breadcrumbsItems.Add(new BreadcrumbsItem(_topic.Period.Title, $"/history/{_topic.Period.Type}"));
+        if (_topic is not null)
+            _breadcrumbsItems = new BreadcrumbsItem[]
+            {
+                new("History", "/history"),
+                new(_topic.Period.Title, $"/history/{_topic.Period.Type}")
+            };
     }
 
 }

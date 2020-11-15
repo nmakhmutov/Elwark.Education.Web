@@ -1,4 +1,4 @@
-<nav class="breadcrumbs ma-6">
+<nav class="breadcrumbs @Class">
     <ol class="breadcrumbs-list">
         @for (var i = 0; i < Items.Length; i++)
         {
@@ -21,4 +21,7 @@
     [Parameter]
     public BreadcrumbsItem[] Items { get; init; } = Array.Empty<BreadcrumbsItem>();
 
+    
+    [Parameter]
+    public string? Class { get; set; }
 }
