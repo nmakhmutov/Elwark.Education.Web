@@ -1,0 +1,44 @@
+@page "/history"
+@using Elwark.Education.Web.Services.History.Models
+@inject IHistoryService HistoryService
+@attribute [Authorize]
+
+<Title Value="Hisotry"></Title>
+
+@if (items is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Subtitle</th>
+                <th>Type</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var (_, _, title, subtitle, image, articleType, _) in items)
+            {
+                <tr>
+                    <td>@title</td>
+                    <td>@subtitle</td>
+                    <td>@articleType</td>
+                    <td>@image</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyCollection<HistoryArticleItem>? items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await HistoryService.GetRandomArticlesAsync();
+    }
+}

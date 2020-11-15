@@ -1,0 +1,24 @@
+<nav class="breadcrumbs ma-6">
+    <ol class="breadcrumbs-list">
+        @for (var i = 0; i < Items.Length; i++)
+        {
+            var item = Items[i];
+            <li>
+                <MudLink Href="@(item.Link)">@item.Name</MudLink>
+            </li>
+            @if (i != Items.Length - 1)
+            {
+                <li class="breadcrumbs-separator">
+                    <MudIcon Icon="@(Icons.Material.ChevronRight)" Size="Size.Small"/>
+                </li>
+            }
+        }
+    </ol>
+</nav>
+
+@code {
+
+    [Parameter]
+    public BreadcrumbsItem[] Items { get; init; } = Array.Empty<BreadcrumbsItem>();
+
+}

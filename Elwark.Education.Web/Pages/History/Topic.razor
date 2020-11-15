@@ -1,0 +1,53 @@
+@page "/history/topic/{id}"
+@using Elwark.Education.Web.Services.History.Models
+@inject IHistoryService HistoryService
+@attribute [Authorize]
+
+@if (_topic is null)
+{
+    <PageLoader/>}
+else
+{
+    <Title Value="@_topic.Title"/>
+    <div class="container">
+        <div class="image-container">
+            <div class="image" style="background-image: url(@_topic.Image)">
+                <div class="cover">
+                    <div class="title-container">
+                        <MudText Typo="Typo.h4" Class="mb-3">@_topic.Title</MudText>
+                        <MudText Typo="Typo.subtitle1">@_topic.Date</MudText>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="articles-container">
+            <Breadcrumbs Items="@_breadcrumbsItems.ToArray()"/>
+            <MudText Typo="Typo.body1" Class="ma-6" Style="max-width: 980px">
+                @_topic.Description
+            </MudText>
+            @foreach (var article in _topic.Articles)
+            {
+                <MudText Typo="Typo.h3">@article.Title</MudText>            }
+        </div>
+    </div>
+}
+
+@code {
+    private HistoryTopicModel? _topic;
+
+    private readonly List<BreadcrumbsItem> _breadcrumbsItems = new()
+    {
+        new BreadcrumbsItem("History", "/history")
+    };
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _topic = await HistoryService.GetTopicAsync(Id);
+        if (_topic is not  null)
+            _breadcrumbsItems.Add(new BreadcrumbsItem(_topic.Period.Title, $"/history/{_topic.Period.Type}"));
+    }
+
+}
