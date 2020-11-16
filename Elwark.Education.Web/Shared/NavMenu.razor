@@ -1,0 +1,50 @@
+﻿@using Microsoft.Extensions.Options
+@using Elwark.Education.Web.Services.History
+@using Elwark.Education.Web.Services.History.Model
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject UrlsOptions Options;
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<MudNavMenu Class="mudblazor-navmenu">
+    <AuthorizeView>
+        <Authorized>
+            <MudAvatar Image="@(context.User.Claims.First(x => x.Type == "picture").Value)" Size="Size.Large" Style="margin: 10px auto"/>
+            <MudText Typo="Typo.h6" Align="Align.Center">@context.User.Identity?.Name</MudText>
+            <MudDivider Style="margin: 20px 0"/>
+        </Authorized>
+        <Authorizing>
+            <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px" Style="margin: 10px auto"/>
+            <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
+            <MudDivider Style="margin: 20px 0"/>
+        </Authorizing>
+        <NotAuthorized>
+            <a href="authentication/login">Log in</a>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <MudNavLink Icon="@Icons.Material.Person" Href="@(Options.Account.ToString())">My Account</MudNavLink>
+    <MudNavLink Icon="@Icons.Material.DonutLarge" Href="profile">Profile</MudNavLink>
+
+    <MudDivider Style="margin: 20px 0"/>
+
+    <MudNavGroup Title="History" Icon="@Icons.Material.School" Expanded="false" ExpandIcon="@Icons.Material.ExpandMore">
+        @foreach (var period in Enum.GetNames<PeriodType>())
+        {
+            <MudNavLink Href=@($"history/{period.ToLower()}")>@period</MudNavLink>            
+        }
+    </MudNavGroup>
+
+    <div class="mudblazor-navmenu-spacer"></div>
+    <MudButton Variant="Variant.Text" StartIcon="@(Icons.Material.Login)" OnClick="@BeginSignOut">Log out</MudButton>
+</MudNavMenu>
+
+@code {
+
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+
+}
