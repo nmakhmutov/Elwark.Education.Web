@@ -1,9 +1,60 @@
 @page "/history/article/{id}"
-<h3>Article @Id</h3>
+@using Elwark.Education.Web.Services.History.Model
+@inject IHistoryService HistoryService
+@attribute [Authorize]
+
+@if (_article is null)
+{
+    <PageLoader/>}
+else
+{
+    <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
+        <MudGrid Spacing="0">
+            <MudItem xs="12" md="7" lg="8" xl="6" Style="min-height: 100vh">
+                <MudPaper Square="true" Class="pa-6" Style="min-height: 100vh">
+                    <Breadcrumbs Items="_breadcrumbs" Class="mb-6"/>
+                    <MudText Typo="Typo.h2" Class="mb-6">@_article.Title</MudText>
+                    @if (_article.IsAvailableTest)
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                            Test
+                        </MudButton>                    }
+                    <MudText Typo="Typo.subtitle1" Class="mb-6">@_article.Subtitle</MudText>
+                    <div class="content">
+                        @((MarkupString) Markdig.Markdown.ToHtml(_article.Text))
+                    </div>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" md="5" lg="4" xl="3">
+                @if (_article.Image is not null)
+                {
+                    <div class="image" style="background-image: url(@_article.Image)"></div>
+                }
+                <div class="content pa-6">
+                    @((MarkupString) Markdig.Markdown.ToHtml(_article.Footnotes))
+                </div>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>}
 
 @code {
+    private HistoryArticleModel? _article;
 
     [Parameter]
     public string Id { get; set; } = default!;
+
+    private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _article = await HistoryService.GetArticleAsync(Id);
+        if (_article is not null)
+            _breadcrumbs = new BreadcrumbsItem[]
+            {
+                new("History", "/history"),
+                new(_article.Period.Title, $"/history/{_article.Period.Type}"),
+                new(_article.Topic.Title, $"/history/topic/{_article.Topic.Id}")
+            };
+    }
 
 }

@@ -12,5 +12,6 @@ namespace Elwark.Education.Web.Services.History
         Task<HistoryPeriodModel?> GetPeriodAsync(PeriodType type);
         Task<IReadOnlyCollection<HistoryTopicItem>> GetTopicsAsync(GetTopicsRequest request);
         Task<HistoryTopicModel?> GetTopicAsync(string topicId);
+        Task<HistoryArticleModel?> GetArticleAsync(string articleId);
     }
 }

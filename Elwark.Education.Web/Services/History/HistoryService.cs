@@ -45,6 +45,11 @@ namespace Elwark.Education.Web.Services.History
             return await _client.GetFromJsonAsync<HistoryTopicModel>($"history/topics/{topicId}", Json.Options);
         }
 
+        public async Task<HistoryArticleModel?> GetArticleAsync(string articleId)
+        {
+            return await _client.GetFromJsonAsync<HistoryArticleModel>($"history/articles/{articleId}", Json.Options);
+        }
+
         public async Task<IReadOnlyCollection<HistoryArticleItem>> GetRandomArticlesAsync()
         {
             var response = await _client.GetFromJsonAsync<IReadOnlyCollection<HistoryArticleItem>>(

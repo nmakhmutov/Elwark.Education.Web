@@ -29,7 +29,10 @@ else
             {
                 <div class="article-card mud-paper ma-6 pa-3">
                     <div class="article-image">
-                        <MudAvatar Square="true" Style="width: 90px; height: 90px" Image="@(image)"/>
+                        @if (image is not null)
+                        {
+                            <MudAvatar Square="true" Style="width: 90px; height: 90px" Image="@(image)"/>
+                        }
                     </div>
                     <div class="article-texts">
                         @if (type == ArticleType.Premium)
