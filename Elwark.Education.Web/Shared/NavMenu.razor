@@ -11,32 +11,43 @@
         <Authorized>
             <MudAvatar Image="@(context.User.Claims.First(x => x.Type == "picture").Value)" Size="Size.Large" Style="margin: 10px auto"/>
             <MudText Typo="Typo.h6" Align="Align.Center">@context.User.Identity?.Name</MudText>
-            <MudDivider Style="margin: 20px 0"/>
+
+            <MudDivider Class="my-5"/>
+
+            <MudNavLink Icon="@Icons.Material.Person" Href="@(Options.Account.ToString())">My Account</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.DonutLarge" Href="profile">Profile</MudNavLink>
+
+            <MudDivider Class="my-5"/>
         </Authorized>
+
         <Authorizing>
             <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px" Style="margin: 10px auto"/>
             <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
-            <MudDivider Style="margin: 20px 0"/>
+            <MudDivider Class="my-5"/>
+            
+            <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
+            <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
+            <MudDivider Class="my-5"/>
         </Authorizing>
+
         <NotAuthorized>
             <a href="authentication/login">Log in</a>
         </NotAuthorized>
+
     </AuthorizeView>
-
-    <MudNavLink Icon="@Icons.Material.Person" Href="@(Options.Account.ToString())">My Account</MudNavLink>
-    <MudNavLink Icon="@Icons.Material.DonutLarge" Href="profile">Profile</MudNavLink>
-
-    <MudDivider Style="margin: 20px 0"/>
 
     <MudNavGroup Title="History" Icon="@Icons.Material.School" Expanded="false" ExpandIcon="@Icons.Material.ExpandMore">
         @foreach (var period in Enum.GetNames<PeriodType>())
         {
-            <MudNavLink Href=@($"history/{period.ToLower()}")>@period</MudNavLink>            
-        }
+            <MudNavLink Href=@($"history/{period.ToLower()}")>@period</MudNavLink>        }
     </MudNavGroup>
 
-    <div class="mudblazor-navmenu-spacer"></div>
-    <MudButton Variant="Variant.Text" StartIcon="@(Icons.Material.Login)" OnClick="@BeginSignOut">Log out</MudButton>
+    <AuthorizeView>
+        <Authorized>
+            <div class="mudblazor-navmenu-spacer"></div>
+            <MudButton Variant="Variant.Text" StartIcon="@(Icons.Material.Login)" OnClick="@BeginSignOut">Log out</MudButton>
+        </Authorized>
+    </AuthorizeView>
 </MudNavMenu>
 
 @code {

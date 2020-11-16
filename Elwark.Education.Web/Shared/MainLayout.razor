@@ -8,16 +8,15 @@
 <MudLayout>
     <MudAppBar Elevation="25">
         <MudIconButton Icon="@Icons.Material.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+        <img src="http://localhost:3000/static/icons/elwark/white/32x32.png" alt="logo"/>
+        <MudAppBarSpacer/>
         <MudText Typo="Typo.h5" Class="mudblazor-appbar-brand-text">Education</MudText>
         <MudAppBarSpacer/>
         <MudTooltip Text="Toggle light/dark theme">
             <MudIconButton Icon="@Icons.Material.Brightness4" Color="Color.Inherit" OnClick="@((e) => DarkMode())"/>
         </MudTooltip>
     </MudAppBar>
-    <MudDrawer Open="@_drawerOpen" Elevation="25" Class="mudblazor-appbar-band">
-        @* <MudDrawerHeader LinkToIndex="true"> *@
-        @*      *@
-        @* </MudDrawerHeader> *@
+    <MudDrawer Open="@_drawerOpen" Clipped="true" Elevation="25" Class="mudblazor-appbar-band">
         <NavMenu/>
     </MudDrawer>
     <MudMainContent Class="main-content">
