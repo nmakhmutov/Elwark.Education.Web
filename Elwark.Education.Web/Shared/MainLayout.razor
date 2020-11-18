@@ -1,19 +1,17 @@
 ﻿@using MudBlazor.Theme.Defaults
 @inherits LayoutComponentBase
 
-<MudThemeProvider Theme="currentTheme"/>
+<MudThemeProvider Theme="_currentTheme"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
 <MudLayout>
     <MudAppBar Elevation="25">
-        <MudIconButton Icon="@Icons.Material.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+        <MudIconButton Icon="@Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
         <img src="http://localhost:3000/static/icons/elwark/white/32x32.png" alt="logo"/>
         <MudAppBarSpacer/>
-        <MudText Typo="Typo.h5" Class="mudblazor-appbar-brand-text">Education</MudText>
-        <MudAppBarSpacer/>
-        <MudTooltip Text="Toggle light/dark theme">
-            <MudIconButton Icon="@Icons.Material.Brightness4" Color="Color.Inherit" OnClick="@((e) => DarkMode())"/>
+        <MudTooltip Text="Toggle theme">
+            <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@(_ => SwitchTheme())"/>
         </MudTooltip>
     </MudAppBar>
     <MudDrawer Open="@_drawerOpen" Clipped="true" Elevation="25" Class="mudblazor-appbar-band">
@@ -27,7 +25,9 @@
 @code {
 
     bool _drawerOpen = false;
-
+    MudTheme _currentTheme = new();
+    string _themeIcon = Filled.Brightness7;
+    
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
@@ -35,15 +35,24 @@
 
     protected override void OnInitialized()
     {
-        currentTheme = defaultTheme;
+        _currentTheme = _defaultTheme;
     }
 
-    void DarkMode() =>
-        currentTheme = currentTheme == defaultTheme ? darkTheme : defaultTheme;
+    void SwitchTheme()
+    {
+        if (_currentTheme == _defaultTheme)
+        {
+            _currentTheme = _darkTheme;
+            _themeIcon = Filled.Brightness3;
+        }
+        else
+        {
+            _currentTheme = _defaultTheme;
+            _themeIcon = Filled.Brightness7;
+        }
+    }
 
-    MudTheme currentTheme = new();
-
-    MudTheme defaultTheme = new()
+    private readonly MudTheme _defaultTheme = new()
     {
         Palette = new Palette
         {
@@ -54,7 +63,7 @@
         }
     };
 
-    MudTheme darkTheme = new()
+    private readonly MudTheme _darkTheme = new()
     {
         Palette = new Palette
         {
