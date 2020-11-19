@@ -5,7 +5,7 @@ namespace Elwark.Education.Web.Services.History.Model
         string ArticleId,
         string Title,
         string? Subtitle,
-        string Image,
+        string? Image,
         ArticleType Type,
         ArticleTest Test
     );

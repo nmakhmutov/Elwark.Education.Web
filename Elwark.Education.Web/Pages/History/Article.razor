@@ -10,8 +10,7 @@
     <PageLoader/>}
 else if (_isTestCreating)
 {
-    <PageLoader Title="Test creating..."/>    
-}
+    <PageLoader Title="Test creating..."/>}
 else
 {
     <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
@@ -22,11 +21,19 @@ else
                     <MudText Typo="Typo.h2" Class="mb-6">@_article.Title</MudText>
                     @if (_article.IsAvailableTest)
                     {
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@CreateTestAsync" Disabled="_isTestCreating">
+                        <MudButton
+                            Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            Class="mb-6"
+                            OnClick="@CreateTestAsync"
+                            Disabled="_isTestCreating">
                             Test
-                        </MudButton>                        
-                    }
-                    <MudText Typo="Typo.subtitle1" Class="mb-6">@_article.Subtitle</MudText>
+                        </MudButton>                    }
+                    @if (_article.Subtitle is not null)
+                    {
+                        <MudText Typo="Typo.subtitle1" Class="mb-6">
+                            @_article.Subtitle
+                        </MudText>                    }
                     <div class="content">
                         @((MarkupString) Markdig.Markdown.ToHtml(_article.Text))
                     </div>
