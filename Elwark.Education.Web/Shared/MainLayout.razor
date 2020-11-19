@@ -5,10 +5,12 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<MudLayout>
+<MudLayout Style="min-height: 100vh">
     <MudAppBar Elevation="25">
         <MudIconButton Icon="@Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
-        <img src="http://localhost:3000/static/icons/elwark/white/32x32.png" alt="logo"/>
+        <MudLink Href="/">
+            <img src="http://localhost:3000/static/icons/elwark/white/32x32.png" alt="logo"/>
+        </MudLink>
         <MudAppBarSpacer/>
         <MudTooltip Text="Toggle theme">
             <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@(_ => SwitchTheme())"/>
@@ -27,7 +29,7 @@
     bool _drawerOpen = false;
     MudTheme _currentTheme = new();
     string _themeIcon = Filled.Brightness7;
-    
+
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
