@@ -46,21 +46,23 @@ else
                         case QuestionType.SingleOption:
                             <div class="d-flex flex-column align-center mt-6">
                                 <MudRadioGroup @bind-SelectedOption="@_answer.Value">
-                                    @foreach (var item in _question.Options)
-                                    {
-                                        var color = _answer.IsAnswerCorrect switch
-                                        {
-                                            true when item == _answer.CorrectValue => Color.Success,
-                                            false when item == _answer.CorrectValue => Color.Success,
-                                            false when item == _answer.Value => Color.Error,
-                                            _ => Color.Default
-                                            };
+                                    <Virtualize Items="@_question.Options" Context="item">
+                                        @{
+                                            var color = _answer.IsAnswerCorrect switch
+                                            {
+                                                true when item == _answer.CorrectValue => Color.Success,
+                                                false when item == _answer.CorrectValue => Color.Success,
+                                                false when item == _answer.Value => Color.Error,
+                                                _ => Color.Default
+                                                };
+                                        }
 
                                         <MudRadio Disabled="@_answer.IsDisabled" Color="Color.Primary" Option="@item">
                                             <MudText Typo="Typo.body1" Color="@color">
                                                 @item
                                             </MudText>
-                                        </MudRadio>                                    }
+                                        </MudRadio>
+                                    </Virtualize>
                                 </MudRadioGroup>
                                 <MudText Typo="Typo.subtitle2" Color="@Color.Error" Align="Align.Center">
                                     <ValidationMessage For="@(() => _answer.Value)"/>
@@ -85,7 +87,7 @@ else
                     @switch (_answer.State)
                     {
                         case AnswerState.Answer:
-                            <MudButton 
+                            <MudButton
                                 ButtonType="ButtonType.Submit"
                                 Variant="Variant.Filled"
                                 Class="mx-auto mb-6"
@@ -114,11 +116,10 @@ else
                 </MudCardActions>
             </MudCard>
         </MudContainer>
-    </EditForm>    
+    </EditForm>
     <MudText Typo="Typo.subtitle2" Align="Align.Center" Class="my-6">
         @_timeLeft.ToString(@"hh\:mm\:ss")
-    </MudText>
-}
+    </MudText>}
 
 @code {
 
@@ -139,7 +140,7 @@ else
         {
             _timeLeft = _test is not null ? _test.ExpiredAt - DateTime.UtcNow : TimeSpan.FromSeconds(1);
             StateHasChanged();
-            
+
             if (_timeLeft == TimeSpan.Zero)
             {
                 timer.Stop();

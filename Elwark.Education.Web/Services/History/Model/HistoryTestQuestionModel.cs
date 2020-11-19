@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Elwark.Education.Web.Services.History.Model
 {
     public sealed record HistoryTestQuestionModel(
@@ -7,6 +5,6 @@ namespace Elwark.Education.Web.Services.History.Model
         QuestionType Type,
         string Title,
         bool IsAnswered,
-        IEnumerable<string> Options
+        string[] Options
     );
 }

@@ -6,7 +6,8 @@
 
 @if (_topic is null)
 {
-    <PageLoader/>}
+    <PageLoader/>
+}
 else
 {
     <Title Value="@_topic.Title"/>
@@ -26,35 +27,32 @@ else
             <MudText Typo="Typo.body1" Class="ma-6" Style="max-width: 980px">
                 @_topic.Description
             </MudText>
-            @foreach (var (_, articleId, title, subtitle, image, type, (_, passedAt)) in _topic.Articles)
-            {
+            <Virtualize Items="@_topic.Articles" Context="item">
                 <div class="article-card mud-paper ma-6 pa-3">
                     <div class="article-image">
-                        @if (image is not null)
+                        @if (item.Image is not null)
                         {
-                            <MudAvatar Square="true" Style="width: 90px; height: 90px" Image="@(image)"/>
+                            <MudAvatar Image="@(item.Image)" Square="true" Style="width: 90px; height: 90px"/>                            
                         }
                     </div>
                     <div class="article-texts">
-                        @if (type == ArticleType.Premium)
+                        @if (item.Type == ArticleType.Premium)
                         {
-                            <MudText Typo="Typo.body2" Color="Color.Warning">@type</MudText>                            
-                        }
-                        <MudLink Typo="Typo.h5" Href="@($"/history/article/{articleId}")">
-                            @title
+                            <MudText Typo="Typo.body2" Color="Color.Warning">@item.Type</MudText>                        }
+                        <MudLink Typo="Typo.h5" Href="@($"/history/article/{item.ArticleId}")">
+                            @item.Title
                         </MudLink>
-                        @if (passedAt.HasValue)
+                        @if (item.Test.PassedAt.HasValue)
                         {
                             <MudText Typo="Typo.body2">
-                                <em>Last passed at @passedAt.Value.ToShortDateString()</em>
-                            </MudText>                            
-                        }
+                                <em>Last passed at @item.Test.PassedAt.Value.ToShortDateString()</em>
+                            </MudText>                        }
                     </div>
                     <div class="article-description">
-                        <MudText Typo="Typo.body1">@subtitle</MudText>
+                        <MudText Typo="Typo.body1">@item.Subtitle</MudText>
                     </div>
                 </div>
-            }
+            </Virtualize>
         </div>
     </div>
 }

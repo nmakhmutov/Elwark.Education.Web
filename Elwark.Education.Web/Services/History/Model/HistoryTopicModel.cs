@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Elwark.Education.Web.Services.History.Model
 {
     public sealed record HistoryTopicModel(
@@ -8,6 +6,6 @@ namespace Elwark.Education.Web.Services.History.Model
         string? Image,
         string Date,
         HistoryPeriodTitle Period,
-        IEnumerable<HistoryArticleItem> Articles
+        HistoryArticleItem[] Articles
     );
 }

@@ -6,28 +6,32 @@
 
 @if (_period is null || _topics.Count == 0)
 {
-    <PageLoader/>
-}
+    <PageLoader/>}
 else
 {
     <Title Value="@_period.Title"></Title>
     <HistoryPeriod Period="@_period" Class="mx-auto my-3"/>
     <div class="layout mx-5">
-        @foreach (var (topicId, title, image, range, progress) in _topics)
-        {
+        <Virtualize Items="_topics" Context="item">
             <MudCard>
-                <MudCardMedia Image="@(image)" Height="200"></MudCardMedia>
+                <MudCardMedia Image="@(item.Image)" Height="200"></MudCardMedia>
                 <MudCardContent>
-                    <MudLink Typo="Typo.subtitle1" Href="@($"/history/topic/{topicId}")">@title</MudLink>
-                    <MudText Typo="Typo.body2">@range</MudText>
+                    <MudLink Typo="Typo.subtitle1" Href="@($"/history/topic/{item.TopicId}")">
+                        @item.Title
+                    </MudLink>
+                    <MudText Typo="Typo.body2">
+                        @item.Range
+                    </MudText>
                 </MudCardContent>
-                @if (progress is not null)
+                @if (item.Progress is not null)
                 {
                     <MudDivider/>
                     <MudCardActions>
-                        <LearningProgress Progress="@progress"/>
-                    </MudCardActions>                }
-            </MudCard>        }
+                        <LearningProgress Progress="@item.Progress"/>
+                    </MudCardActions>                    
+                }
+            </MudCard>
+        </Virtualize>
     </div>
     @if (_showMore)
     {
