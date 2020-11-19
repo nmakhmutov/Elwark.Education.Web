@@ -1,5 +1,6 @@
 @page "/history/topic/{id}"
 @using Elwark.Education.Web.Services.History.Model
+@using Elwark.Education.Web.Services
 @inject IHistoryService HistoryService
 @attribute [Authorize]
 
@@ -44,7 +45,9 @@ else
                         </MudLink>
                         @if (passedAt.HasValue)
                         {
-                            <MudText Typo="Typo.body2">Last passed at @passedAt.Value.ToShortDateString()</MudText>                            
+                            <MudText Typo="Typo.body2">
+                                <em>Last passed at @passedAt.Value.ToShortDateString()</em>
+                            </MudText>                            
                         }
                     </div>
                     <div class="article-description">

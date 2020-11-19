@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 using Elwark.Education.Web.Services.History.Model;
 using Elwark.Education.Web.Services.History.Request;
+using Newtonsoft.Json;
 
 namespace Elwark.Education.Web.Services.History
 {
@@ -19,43 +21,100 @@ namespace Elwark.Education.Web.Services.History
 
         public async Task<IReadOnlyCollection<HistoryPeriodModel>> GetPeriodsAsync()
         {
-            var response = await _client.GetFromJsonAsync<IReadOnlyCollection<HistoryPeriodModel>>(
-                "history/periods", Json.Options);
+            var response = await _client.GetAsync("history/periods");
 
-            return response ?? Array.Empty<HistoryPeriodModel>();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<IReadOnlyCollection<HistoryPeriodModel>>(
+                    await response.Content.ReadAsStringAsync()
+                );
+
+            return Array.Empty<HistoryPeriodModel>();
         }
 
         public async Task<HistoryPeriodModel?> GetPeriodAsync(PeriodType type)
         {
-            return await _client.GetFromJsonAsync<HistoryPeriodModel>($"history/periods/{type}", Json.Options);
+            var response = await _client.GetAsync($"history/periods/{type}");
+
+            return response.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<HistoryPeriodModel>(await response.Content.ReadAsStringAsync())
+                : null;
         }
 
         public async Task<IReadOnlyCollection<HistoryTopicItem>> GetTopicsAsync(GetTopicsRequest request)
         {
             var (periodType, page, count) = request;
 
-            return await _client.GetFromJsonAsync<IReadOnlyCollection<HistoryTopicItem>>(
-                       $"history/periods/{periodType}/topics?page={page}&count={count}", Json.Options
-                   )
-                   ?? Array.Empty<HistoryTopicItem>();
+            var response = await _client.GetAsync($"history/periods/{periodType}/topics?page={page}&count={count}");
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<IReadOnlyCollection<HistoryTopicItem>>(
+                    await response.Content.ReadAsStringAsync()
+                );
+
+            return Array.Empty<HistoryTopicItem>();
         }
 
         public async Task<HistoryTopicModel?> GetTopicAsync(string topicId)
         {
-            return await _client.GetFromJsonAsync<HistoryTopicModel>($"history/topics/{topicId}", Json.Options);
+            var response = await _client.GetAsync($"history/topics/{topicId}");
+
+            return response.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<HistoryTopicModel>(await response.Content.ReadAsStringAsync())
+                : null;
         }
 
         public async Task<HistoryArticleModel?> GetArticleAsync(string articleId)
         {
-            return await _client.GetFromJsonAsync<HistoryArticleModel>($"history/articles/{articleId}", Json.Options);
+            var response = await _client.GetAsync($"history/articles/{articleId}");
+
+            return response.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<HistoryArticleModel>(await response.Content.ReadAsStringAsync())
+                : null;
+        }
+
+        public async Task<TestCreatedResult?> CreateTestForArticleAsync(string articleId)
+        {
+            var response = await _client.PostAsync($"history/articles/{articleId}/test",
+                new StringContent(string.Empty, Encoding.UTF8, "application/json")
+            );
+
+            return response.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<TestCreatedResult>(await response.Content.ReadAsStringAsync())
+                : null;
+        }
+
+        public async Task<HistoryTestModel?> GetTestAsync(string testId)
+        {
+            var response = await _client.GetAsync($"history/tests/{testId}");
+
+            return response.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<HistoryTestModel>(await response.Content.ReadAsStringAsync())
+                : null;
+        }
+
+        public async Task<TestAnswerResult> CheckTestAnswer(string testId, string questionId, TestAnswer answer)
+        {
+            var result = await _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer));
+
+            return answer switch
+            {
+                ManyAnswer => await result.Content.ReadFromJsonAsync<TestManyAnswersResult>() as TestAnswerResult,
+                SingleAnswer => await result.Content.ReadFromJsonAsync<TestSingleAnswerResult>() as TestAnswerResult,
+                _ => null
+            } ?? throw new ArgumentOutOfRangeException(nameof(answer));
         }
 
         public async Task<IReadOnlyCollection<HistoryArticleItem>> GetRandomArticlesAsync()
         {
-            var response = await _client.GetFromJsonAsync<IReadOnlyCollection<HistoryArticleItem>>(
-                "history/articles/random", Json.Options);
+            var response = await _client.GetAsync("history/articles/random");
 
-            return response ?? Array.Empty<HistoryArticleItem>();
+            return response.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<IReadOnlyCollection<HistoryArticleItem>>(
+                    await response.Content.ReadAsStringAsync()
+                )
+                : Array.Empty<HistoryArticleItem>();
         }
+
+        private static StringContent ToJson<T>(T data) =>
+            new(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
     }
 }

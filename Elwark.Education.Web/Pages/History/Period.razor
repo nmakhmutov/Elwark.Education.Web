@@ -16,7 +16,7 @@ else
         @foreach (var (topicId, title, image, range, progress) in _topics)
         {
             <MudCard>
-                <MudCardMedia Image="@(image.ToString())" Height="200"></MudCardMedia>
+                <MudCardMedia Image="@(image)" Height="200"></MudCardMedia>
                 <MudCardContent>
                     <MudLink Typo="Typo.subtitle1" Href="@($"/history/topic/{topicId}")">@title</MudLink>
                     <MudText Typo="Typo.body2">@range</MudText>

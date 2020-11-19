@@ -1,0 +1,198 @@
+@page "/history/test/{id}"
+@using Elwark.Education.Web.Services.History.Model
+@using Elwark.Education.Web.Services
+
+@inject IHistoryService HistoryService
+
+@attribute [Authorize]
+
+@if (_test is null)
+{
+    <PageLoader/>    
+}
+else if (_test.Result is not null && _answer.State == AnswerState.Answer)
+{
+    <MudText Typo="Typo.h5">Congratulation</MudText>    
+}
+else
+{
+    <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="my-6">
+        Questions @_currentQuestionNumber / @_questions.Count
+    </MudText>
+    <EditForm Model="@_answer" OnValidSubmit="@OnValidSubmit">
+        <FluentValidationValidator/>
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6" Align="Align.Center">@_question.Title</MudText>
+                    @switch (_question.Type)
+                    {
+                        case QuestionType.NoOptions:
+                            <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+                                <MudTextField
+                                    @bind-Value="_answer.Value"
+                                     Label="Your answer"
+                                     For="@(() => _answer.Value)"
+                                     Disabled="@_answer.IsDisabled"/>
+                                @if (_answer.IsAnswerCorrect.HasValue)
+                                {
+                                    <MudText
+                                        Typo="Typo.subtitle2"
+                                        Color="@(_answer.IsAnswerCorrect.Value ? Color.Success : Color.Error)">
+                                        @_answer.CorrectValue
+                                    </MudText>                                }
+                            </MudContainer>
+                            break;
+
+                        case QuestionType.SingleOption:
+                            <div class="d-flex flex-column align-center mt-6">
+                                <MudRadioGroup @bind-SelectedOption="@_answer.Value">
+                                    @foreach (var item in _question.Options)
+                                    {
+                                        var color = _answer.IsAnswerCorrect switch
+                                        {
+                                            true when item == _answer.CorrectValue => Color.Success,
+                                            false when item == _answer.CorrectValue => Color.Success,
+                                            false when item == _answer.Value => Color.Error,
+                                            _ => Color.Default
+                                            };
+
+                                        <MudRadio Disabled="@_answer.IsDisabled" Color="Color.Primary" Option="@item">
+                                            <MudText Typo="Typo.body1" Color="@color">
+                                                @item
+                                            </MudText>
+                                        </MudRadio>                                        
+                                    }
+                                </MudRadioGroup>
+                                <MudText Typo="Typo.subtitle2" Color="@Color.Error" Align="Align.Center">
+                                    <ValidationMessage For="@(() => _answer.Value)"/>
+                                </MudText>
+                            </div>
+                            break;
+
+                        case QuestionType.ManyOptions:
+                            <MudText Typo="Typo.subtitle2" Color="@Color.Error" Align="Align.Center">
+                                <ValidationMessage For="@(() => _answer.Value)"/>
+                            </MudText>
+                            break;
+
+                        case QuestionType.OrderedOptions:
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                </MudCardContent>
+                <MudCardActions>
+                    @switch (_answer.State)
+                    {
+                        case AnswerState.Answer:
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="mx-auto" Color="Color.Primary">
+                                Answer
+                            </MudButton>
+                            break;
+
+                        case AnswerState.Answering:
+                            <div class="mx-auto">
+                                <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary"/>
+                            </div>
+                            break;
+
+                        case AnswerState.Next:
+                            <MudButton
+                                ButtonType="ButtonType.Button"
+                                Variant="Variant.Filled"
+                                Class="mx-auto"
+                                Color="Color.Primary"
+                                OnClick="@NextQuestion">
+                                Next
+                            </MudButton>
+                            break;
+                    }
+                </MudCardActions>
+            </MudCard>
+        </MudContainer>
+    </EditForm>}
+
+@code {
+
+    [Parameter]
+    public string Id { get; init; } = default!;
+
+    private HistoryTestModel? _test;
+    private int _currentQuestionNumber;
+    private List<HistoryTestQuestionModel> _questions = new();
+    private HistoryTestQuestionModel _question = default!;
+    private AnswerModel _answer = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _test = await HistoryService.GetTestAsync(Id);
+        if (_test is null)
+            return;
+
+        _questions = _test.Questions
+            .OrderByDescending(x => x.IsAnswered)
+            .ToList();
+
+        _currentQuestionNumber = _questions.Count(x => x.IsAnswered) + 1;
+        _question = _currentQuestionNumber == 1
+            ? _questions.First()
+            : _questions.First(x => !x.IsAnswered);
+
+        _answer = new AnswerModel {QuestionType = _question.Type};
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        _answer.State = AnswerState.Answering;
+
+        var answer = _question switch {
+        {Type: QuestionType.NoOptions} => 
+            await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new SingleAnswer(_answer.Value)), 
+            
+        {Type: QuestionType.SingleOption} => 
+            await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new SingleAnswer(_answer.Value)),
+            
+        {Type: QuestionType.ManyOptions} =>
+            await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new ManyAnswer(_answer.Values)),
+            
+        {Type: QuestionType.OrderedOptions} =>
+            await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new ManyAnswer(_answer.Values)),
+            
+            _ => throw new ArgumentOutOfRangeException(nameof(_answer))
+            };
+
+        _test = _test with {
+            IsComplete = answer.IsComplete,
+            Result = answer.Result
+            };
+
+        if (!answer.IsCorrect)
+            _questions.Add(_questions.First(x => x.Id == _question.Id));
+
+        _answer = _answer with {
+            State = AnswerState.Next,
+            IsAnswerCorrect = answer.IsCorrect
+            };
+
+        switch (answer)
+        {
+            case TestManyAnswersResult result:
+                _answer.CorrectValues = result.Answers.ToArray();
+                break;
+
+            case TestSingleAnswerResult result:
+                _answer.CorrectValue = result.Answer;
+                break;
+        }
+    }
+
+    private void NextQuestion()
+    {
+        _question = _questions[_currentQuestionNumber];
+        _answer = new AnswerModel {QuestionType = _question.Type};
+        _currentQuestionNumber++;
+    }
+
+}

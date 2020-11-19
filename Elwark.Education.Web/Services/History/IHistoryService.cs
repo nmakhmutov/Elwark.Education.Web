@@ -13,5 +13,8 @@ namespace Elwark.Education.Web.Services.History
         Task<IReadOnlyCollection<HistoryTopicItem>> GetTopicsAsync(GetTopicsRequest request);
         Task<HistoryTopicModel?> GetTopicAsync(string topicId);
         Task<HistoryArticleModel?> GetArticleAsync(string articleId);
+        Task<TestCreatedResult?> CreateTestForArticleAsync(string articleId);
+        Task<HistoryTestModel?> GetTestAsync(string testId);
+        Task<TestAnswerResult> CheckTestAnswer(string testId, string questionId, TestAnswer answer);
     }
 }

@@ -1,11 +1,17 @@
 @page "/history/article/{id}"
 @using Elwark.Education.Web.Services.History.Model
 @inject IHistoryService HistoryService
+@inject NavigationManager NavigationManager
+
 @attribute [Authorize]
 
 @if (_article is null)
 {
     <PageLoader/>}
+else if (_isTestCreating)
+{
+    <PageLoader Title="Test creating..."/>    
+}
 else
 {
     <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
@@ -16,9 +22,10 @@ else
                     <MudText Typo="Typo.h2" Class="mb-6">@_article.Title</MudText>
                     @if (_article.IsAvailableTest)
                     {
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@CreateTestAsync" Disabled="_isTestCreating">
                             Test
-                        </MudButton>                    }
+                        </MudButton>                        
+                    }
                     <MudText Typo="Typo.subtitle1" Class="mb-6">@_article.Subtitle</MudText>
                     <div class="content">
                         @((MarkupString) Markdig.Markdown.ToHtml(_article.Text))
@@ -39,6 +46,7 @@ else
 
 @code {
     private HistoryArticleModel? _article;
+    private bool _isTestCreating = false;
 
     [Parameter]
     public string Id { get; set; } = default!;
@@ -55,6 +63,15 @@ else
                 new(_article.Period.Title, $"/history/{_article.Period.Type}"),
                 new(_article.Topic.Title, $"/history/topic/{_article.Topic.Id}")
             };
+    }
+
+    private async Task CreateTestAsync()
+    {
+        _isTestCreating = true;
+        var result = await HistoryService.CreateTestForArticleAsync(Id);
+        if (result is not null)
+            NavigationManager.NavigateTo($"/history/test/{result.TestId}");
+        _isTestCreating = false;
     }
 
 }
