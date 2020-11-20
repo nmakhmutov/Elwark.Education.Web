@@ -66,9 +66,9 @@ else
         if (_article is not null)
             _breadcrumbs = new BreadcrumbsItem[]
             {
-                new("History", "/history"),
-                new(_article.Period.Title, $"/history/{_article.Period.Type}"),
-                new(_article.Topic.Title, $"/history/topic/{_article.Topic.Id}")
+                new("History", HistoryLinks.Index),
+                new(_article.Period.Title, HistoryLinks.Period(_article.Period.Type)),
+                new(_article.Topic.Title, HistoryLinks.Topic(_article.Topic.Id))
             };
     }
 
@@ -77,7 +77,8 @@ else
         _isTestCreating = true;
         var result = await HistoryService.CreateTestForArticleAsync(Id);
         if (result is not null)
-            NavigationManager.NavigateTo($"/history/test/{result.TestId}");
+            NavigationManager.NavigateTo(HistoryLinks.Test(result.TestId));
+        
         _isTestCreating = false;
     }
 

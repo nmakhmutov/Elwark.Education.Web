@@ -2,6 +2,8 @@
 @using Elwark.Education.Web.Services.History
 @using Elwark.Education.Web.Services.History.Model
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Elwark.Education.Web.Pages.History
+@using Index = Elwark.Education.Web.Pages.History.Index
 @inject UrlsOptions Options;
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
@@ -24,7 +26,7 @@
             <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px" Style="margin: 10px auto"/>
             <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
             <MudDivider Class="my-5"/>
-            
+
             <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
             <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
             <MudDivider Class="my-5"/>
@@ -36,21 +38,46 @@
 
     </AuthorizeView>
 
-    <MudNavGroup Title="History" Icon="@Icons.Material.School" Expanded="false" ExpandIcon="@Icons.Material.ExpandMore">
-        @foreach (var period in Enum.GetNames<PeriodType>())
-        {
-            <MudNavLink Href=@($"history/{period.ToLower()}")>@period</MudNavLink>        }
+    <MudNavGroup
+        Title="History"
+        Expanded="@(_subject == Subject.History)"
+        Icon="@TwoTone.AccountBalanceTwoTone"
+        ExpandIcon="@Filled.ExpandMore">
+        <Virtualize Items="HistoryPages" Context="period">
+            <MudNavLink Href="@period.Key">
+                @period.Value
+            </MudNavLink>
+        </Virtualize>
     </MudNavGroup>
 
     <AuthorizeView>
         <Authorized>
             <div class="mudblazor-navmenu-spacer"></div>
-            <MudButton Variant="Variant.Text" StartIcon="@(Icons.Material.Login)" OnClick="@BeginSignOut">Log out</MudButton>
+            <MudButton Variant="Variant.Text" StartIcon="@(Filled.Login)" OnClick="@BeginSignOut">
+                Log out
+            </MudButton>
         </Authorized>
     </AuthorizeView>
 </MudNavMenu>
 
 @code {
+    private Subject _subject;
+
+    private static readonly Dictionary<string, string> HistoryPages = new()
+    {
+        [HistoryLinks.Period(PeriodType.Prehistory)] = "Prehistory",
+        [HistoryLinks.Period(PeriodType.Ancient)] = "Ancient",
+        [HistoryLinks.Period(PeriodType.MiddleAges)] = "Middle ages",
+        [HistoryLinks.Period(PeriodType.EarlyModern)] = "Early modern",
+        [HistoryLinks.Period(PeriodType.Modern)] = "Modern"
+    };
+
+    protected override void OnInitialized()
+    {
+        var path = $"/{Navigation.ToBaseRelativePath(Navigation.Uri)}";
+        if (path.StartsWith(HistoryLinks.Index))
+            _subject = Subject.History;
+    }
 
     private async Task BeginSignOut(MouseEventArgs args)
     {

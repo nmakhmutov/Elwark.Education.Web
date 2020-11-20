@@ -39,7 +39,7 @@ else
                         @if (item.Type == ArticleType.Premium)
                         {
                             <MudText Typo="Typo.body2" Color="Color.Warning">@item.Type</MudText>                        }
-                        <MudLink Typo="Typo.h5" Href="@($"/history/article/{item.ArticleId}")">
+                        <MudLink Typo="Typo.h5" Href="@(HistoryLinks.Article(item.ArticleId))">
                             @item.Title
                         </MudLink>
                         @if (item.Test.PassedAt.HasValue)
@@ -71,8 +71,8 @@ else
         if (_topic is not null)
             _breadcrumbsItems = new BreadcrumbsItem[]
             {
-                new("History", "/history"),
-                new(_topic.Period.Title, $"/history/{_topic.Period.Type}")
+                new("History", HistoryLinks.Index),
+                new(_topic.Period.Title, HistoryLinks.Period(_topic.Period.Type))
             };
     }
 
