@@ -16,7 +16,23 @@
             <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@(_ => SwitchTheme())"/>
         </MudTooltip>
     </MudAppBar>
-    <MudDrawer Open="@_drawerOpen" Clipped="true" Elevation="25" Class="mudblazor-appbar-band">
+    <MudDrawer Open="@_drawerOpen" Clipped="true" Elevation="25">
+        <AuthorizeView>
+            <Authorized>
+                <MudDrawerHeader Class="appbar-band">
+                    <MudAvatar Image="@(context.User.Claims.First(x => x.Type == "picture").Value)" Size="Size.Large"/>
+                    <MudText Typo="Typo.subtitle1" Class="mt-2">
+                        @context.User.Identity?.Name
+                    </MudText>
+                </MudDrawerHeader>
+            </Authorized>
+
+            <Authorizing>
+                <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px" Style="margin: 10px auto"/>
+                <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
+            </Authorizing>
+
+        </AuthorizeView>
         <NavMenu/>
     </MudDrawer>
     <MudMainContent Class="main-content">
@@ -26,7 +42,7 @@
 
 @code {
 
-    bool _drawerOpen = false;
+    bool _drawerOpen = true;
     MudTheme _currentTheme = new();
     string _themeIcon = Filled.Brightness7;
 

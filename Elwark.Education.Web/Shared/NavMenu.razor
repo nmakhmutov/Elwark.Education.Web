@@ -8,36 +8,18 @@
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
-<MudNavMenu Class="mudblazor-navmenu">
+<MudNavMenu Class="navmenu">
     <AuthorizeView>
         <Authorized>
-            <MudAvatar Image="@(context.User.Claims.First(x => x.Type == "picture").Value)" Size="Size.Large" Style="margin: 10px auto"/>
-            <MudText Typo="Typo.h6" Align="Align.Center">@context.User.Identity?.Name</MudText>
-
-            <MudDivider Class="my-5"/>
-
-            <MudNavLink Icon="@Icons.Material.Person" Href="@(Options.Account.ToString())">My Account</MudNavLink>
-            <MudNavLink Icon="@Icons.Material.DonutLarge" Href="profile">Profile</MudNavLink>
-
-            <MudDivider Class="my-5"/>
+            <MudNavLink Icon="@Filled.Person" Href="@(Options.Account.ToString())">
+                Elwark Account
+            </MudNavLink>
+            <MudNavLink Icon="@Filled.DonutLarge" Href="profile">
+                Profile
+            </MudNavLink>
         </Authorized>
-
-        <Authorizing>
-            <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px" Style="margin: 10px auto"/>
-            <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
-            <MudDivider Class="my-5"/>
-
-            <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
-            <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
-            <MudDivider Class="my-5"/>
-        </Authorizing>
-
-        <NotAuthorized>
-            <a href="authentication/login">Log in</a>
-        </NotAuthorized>
-
     </AuthorizeView>
-
+    
     <MudNavGroup
         Title="History"
         Expanded="@(_subject == Subject.History)"
@@ -52,7 +34,7 @@
 
     <AuthorizeView>
         <Authorized>
-            <div class="mudblazor-navmenu-spacer"></div>
+            <MudAppBarSpacer/>
             <MudButton Variant="Variant.Text" StartIcon="@(Filled.Login)" OnClick="@BeginSignOut">
                 Log out
             </MudButton>
