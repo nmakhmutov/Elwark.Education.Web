@@ -1,15 +1,19 @@
 @using Elwark.Education.Web.Services.History.Model
-<div class="@Class" style="max-width: 780px;display: flex; flex-direction: row; justify-content: center; align-items: center;">
-    <MudAvatar Image="@Period.Image" Style="width: 90px; height: 90px; margin-right: 4px"/>
-    <MudText Typo="Typo.h2" Align="Align.Center">@Period.Title</MudText>
+
+<div class="background" style="background-image: url(@Period.Image)">
+    <div class="card">
+        <MudText Typo="Typo.h1" Align="Align.Center" Class="mb-6">
+            @Period.Title
+        </MudText>
+        <MudText Typo="Typo.body1" Align="Align.Center">
+            @Period.Description
+        </MudText>
+    </div>
 </div>
 
 @code {
 
     [Parameter]
     public HistoryPeriodModel Period { get; init; } = default!;
-
-    [Parameter]
-    public string? Class { get; init; }
 
 }
