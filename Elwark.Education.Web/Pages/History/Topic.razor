@@ -23,7 +23,7 @@ else
             </div>
         </div>
         <div class="articles-container">
-            <Breadcrumbs Items="@_breadcrumbsItems" Class="ma-6"/>
+            <Breadcrumbs Items="@_breadcrumbs" Class="ma-6"/>
             <MudText Typo="Typo.body1" Class="ma-6" Style="max-width: 980px">
                 @_topic.Description
             </MudText>
@@ -60,7 +60,7 @@ else
 @code {
     private HistoryTopicModel? _topic;
 
-    private BreadcrumbsItem[] _breadcrumbsItems = Array.Empty<BreadcrumbsItem>();
+    private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
@@ -69,7 +69,7 @@ else
     {
         _topic = await HistoryService.GetTopicAsync(Id);
         if (_topic is not null)
-            _breadcrumbsItems = new BreadcrumbsItem[]
+            _breadcrumbs = new BreadcrumbsItem[]
             {
                 new("History", HistoryLinks.Index),
                 new(_topic.Period.Title, HistoryLinks.Period(_topic.Period.Type))

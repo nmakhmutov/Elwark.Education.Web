@@ -10,8 +10,15 @@
 else
 {
     <Title Value="@_period.Title"></Title>
-    <HistoryPeriod Period="@_period"/>
-    <div class="layout mx-5">
+    <div class="ma-6">
+        <Breadcrumbs Items="@Breadcrumbs" Class="mb-3"/>
+        <div class="d-flex align-center">
+            <MudAvatar Class="mr-3" Image="@(_period.Image)" Size="Size.Large" Square="true"/>
+            <MudText Typo="Typo.h3">@_period.Title</MudText>
+        </div>
+        <MudText Typo="Typo.subtitle1">@_period.Description</MudText>
+    </div>
+    <div class="layout mx-6">
         <Virtualize Items="_topics" Context="item">
             <MudCard>
                 <MudCardMedia Image="@(item.Image)" Height="200"></MudCardMedia>
@@ -28,8 +35,7 @@ else
                     <MudDivider/>
                     <MudCardActions>
                         <LearningProgress Progress="@item.Progress"/>
-                    </MudCardActions>                    
-                }
+                    </MudCardActions>                }
             </MudCard>
         </Virtualize>
     </div>
@@ -41,6 +47,8 @@ else
 }
 
 @code {
+
+    private static readonly BreadcrumbsItem[] Breadcrumbs = {new("History", HistoryLinks.Index)};
 
     private HistoryPeriodModel? _period;
     private readonly List<HistoryTopicItem> _topics = new();
