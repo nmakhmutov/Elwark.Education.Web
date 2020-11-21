@@ -5,40 +5,75 @@
 
 <Title Value="Hisotry"></Title>
 
-@if (items is null)
+@if (_articles.Length == 0 || _periods.Length == 0)
 {
-    <p><em>Loading...</em></p>
-}
+    <PageLoader/>}
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Subtitle</th>
-                <th>Type</th>
-                <th>Image</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var (_, _, title, subtitle, image, articleType, _) in items)
+    <div class="ma-5">
+        <MudText Typo="Typo.h2" Align="Align.Center">
+            Periods
+        </MudText>
+        <div class="period-grid">
+            @foreach (var period in _periods)
             {
-                <tr>
-                    <td>@title</td>
-                    <td>@subtitle</td>
-                    <td>@articleType</td>
-                    <td>@image</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                <MudCard>
+                    <MudCardMedia Image="@(period.Image)" Height="200"/>
+                    <MudCardContent>
+                        <MudLink Typo="Typo.h5" Href="@(HistoryLinks.Period(period.Type))">
+                            @period.Title
+                        </MudLink>
+                        <MudText Typo="Typo.body2">
+                            @TrimDescription(period.Description)
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>            }
+        </div>
+
+        <MudText Typo="Typo.h2" Align="Align.Center" Class="mt-6">
+            Articles
+        </MudText>
+        <div class="articles-grid">
+            @foreach (var article in _articles)
+            {
+                <MudCard>
+                    @if (article.Image is not null)
+                    {
+                        <MudCardMedia Image="@(article.Image)" Height="200"/>                    }
+                    <MudCardContent>
+                        <MudLink Typo="Typo.h5" Href="@(HistoryLinks.Article(article.ArticleId))">
+                            @article.Title
+                        </MudLink>
+                        <MudText Typo="Typo.body2">
+                            @TrimDescription(article.Subtitle)
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>            }
+        </div>
+    </div>
 }
 
 @code {
-    private IReadOnlyCollection<HistoryArticleItem>? items;
+    private HistoryPeriodModel[] _periods = Array.Empty<HistoryPeriodModel>();
+    private HistoryArticleItem[] _articles = Array.Empty<HistoryArticleItem>();
 
     protected override async Task OnInitializedAsync()
     {
-        items = await HistoryService.GetRandomArticlesAsync();
+        _periods = await HistoryService.GetPeriodsAsync();
+        _articles = (await HistoryService.GetRandomArticlesAsync())
+            .OrderBy(x => x.Image is null)
+            .ToArray();
     }
+
+    private static string TrimDescription(string? value)
+    {
+        if (value is null)
+            return string.Empty;
+
+        if (value.Length > 140)
+            return value.Substring(0, 140) + "...";
+
+        return value;
+    }
+
 }

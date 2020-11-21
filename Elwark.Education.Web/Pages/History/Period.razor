@@ -68,7 +68,7 @@ else
     {
         _request = _request with {Page = (short) (_request.Page + 1)};
         var result = await HistoryService.GetTopicsAsync(_request);
-        if (result.Count != _request.Count)
+        if (result.Length != _request.Count)
         {
             _showMore = false;
         }

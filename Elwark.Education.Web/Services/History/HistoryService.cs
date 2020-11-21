@@ -19,16 +19,13 @@ namespace Elwark.Education.Web.Services.History
             _client = client;
         }
 
-        public async Task<IReadOnlyCollection<HistoryPeriodModel>> GetPeriodsAsync()
+        public async Task<HistoryPeriodModel[]> GetPeriodsAsync()
         {
             var response = await _client.GetAsync("history/periods");
 
-            if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<IReadOnlyCollection<HistoryPeriodModel>>(
-                    await response.Content.ReadAsStringAsync()
-                );
-
-            return Array.Empty<HistoryPeriodModel>();
+            return response.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<HistoryPeriodModel[]>(await response.Content.ReadAsStringAsync())
+                : Array.Empty<HistoryPeriodModel>();
         }
 
         public async Task<HistoryPeriodModel?> GetPeriodAsync(PeriodType type)
@@ -40,17 +37,14 @@ namespace Elwark.Education.Web.Services.History
                 : null;
         }
 
-        public async Task<IReadOnlyCollection<HistoryTopicItem>> GetTopicsAsync(GetTopicsRequest request)
+        public async Task<HistoryTopicItem[]> GetTopicsAsync(GetTopicsRequest request)
         {
             var (periodType, page, count) = request;
 
             var response = await _client.GetAsync($"history/periods/{periodType}/topics?page={page}&count={count}");
-            if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<IReadOnlyCollection<HistoryTopicItem>>(
-                    await response.Content.ReadAsStringAsync()
-                );
-
-            return Array.Empty<HistoryTopicItem>();
+            return response.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<HistoryTopicItem[]>(await response.Content.ReadAsStringAsync())
+                : Array.Empty<HistoryTopicItem>();
         }
 
         public async Task<HistoryTopicModel?> GetTopicAsync(string topicId)
@@ -103,14 +97,12 @@ namespace Elwark.Education.Web.Services.History
             } ?? throw new ArgumentOutOfRangeException(nameof(answer));
         }
 
-        public async Task<IReadOnlyCollection<HistoryArticleItem>> GetRandomArticlesAsync()
+        public async Task<HistoryArticleItem[]> GetRandomArticlesAsync()
         {
             var response = await _client.GetAsync("history/articles/random");
 
             return response.IsSuccessStatusCode
-                ? JsonConvert.DeserializeObject<IReadOnlyCollection<HistoryArticleItem>>(
-                    await response.Content.ReadAsStringAsync()
-                )
+                ? JsonConvert.DeserializeObject<HistoryArticleItem[]>(await response.Content.ReadAsStringAsync())
                 : Array.Empty<HistoryArticleItem>();
         }
 

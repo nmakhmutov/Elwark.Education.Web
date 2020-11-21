@@ -7,10 +7,10 @@ namespace Elwark.Education.Web.Services.History
 {
     public interface IHistoryService
     {
-        Task<IReadOnlyCollection<HistoryArticleItem>> GetRandomArticlesAsync();
-        Task<IReadOnlyCollection<HistoryPeriodModel>> GetPeriodsAsync();
+        Task<HistoryArticleItem[]> GetRandomArticlesAsync();
+        Task<HistoryPeriodModel[]> GetPeriodsAsync();
         Task<HistoryPeriodModel?> GetPeriodAsync(PeriodType type);
-        Task<IReadOnlyCollection<HistoryTopicItem>> GetTopicsAsync(GetTopicsRequest request);
+        Task<HistoryTopicItem[]> GetTopicsAsync(GetTopicsRequest request);
         Task<HistoryTopicModel?> GetTopicAsync(string topicId);
         Task<HistoryArticleModel?> GetArticleAsync(string articleId);
         Task<TestCreatedResult?> CreateTestForArticleAsync(string articleId);
