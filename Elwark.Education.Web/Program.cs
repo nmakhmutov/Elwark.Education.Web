@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Elwark.Education.Web.Services.History;
 using Elwark.Education.Web.Services.User;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

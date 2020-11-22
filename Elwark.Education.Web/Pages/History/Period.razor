@@ -65,9 +65,16 @@ else
         _period = null;
         if (Enum.TryParse<PeriodType>(Type, true, out var type))
         {
-            _period = await HistoryService.GetPeriodAsync(type);
             _request = new GetTopicsRequest(type, 1, 20);
-            _topics.AddRange(await HistoryService.GetTopicsAsync(_request));
+            try
+            {
+                _period = await HistoryService.GetPeriodAsync(type);
+                _topics.AddRange(await HistoryService.GetTopicsAsync(_request));
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                ex.Redirect();
+            }
             _showMore = true;
         }
     }

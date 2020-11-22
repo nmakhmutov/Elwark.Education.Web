@@ -67,7 +67,16 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        _topic = await HistoryService.GetTopicAsync(Id);
+        try
+        {
+            _topic = await HistoryService.GetTopicAsync(Id);
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+            return;
+        }
+        
         if (_topic is not null)
             _breadcrumbs = new BreadcrumbsItem[]
             {

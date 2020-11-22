@@ -9,12 +9,10 @@ namespace Elwark.Education.Web
             IAccessTokenProvider provider,
             NavigationManager navigation,
             UrlsOptions options
-        )
-            : base(provider, navigation) =>
+        ) : base(provider, navigation) =>
             ConfigureHandler(
                 new[] {options.Gateway.ToString()},
                 new[] {"elwark.education.web"}
             );
     }
-    
 }

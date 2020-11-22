@@ -151,7 +151,16 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        _test = await HistoryService.GetTestAsync(Id);
+        try
+        {
+            _test = await HistoryService.GetTestAsync(Id);
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+            return;
+        }
+
         if (_test is null)
             return;
 
@@ -170,22 +179,31 @@ else
     private async Task OnValidSubmit(EditContext context)
     {
         _answer.State = AnswerState.Answering;
-
-        var answer = _question switch {
-        {Type: QuestionType.NoOptions} => 
-            await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new SingleAnswer(_answer.Value)), 
+        TestAnswerResult answer;
+        
+        try
+        {
+            answer = _question switch {
+            {Type: QuestionType.NoOptions} => 
+                await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new SingleAnswer(_answer.Value)), 
             
-        {Type: QuestionType.SingleOption} => 
-            await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new SingleAnswer(_answer.Value)),
+            {Type: QuestionType.SingleOption} => 
+                await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new SingleAnswer(_answer.Value)),
             
-        {Type: QuestionType.ManyOptions} =>
-            await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new ManyAnswer(_answer.Values)),
+            {Type: QuestionType.ManyOptions} =>
+                await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new ManyAnswer(_answer.Values)),
             
-        {Type: QuestionType.OrderedOptions} =>
-            await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new ManyAnswer(_answer.Values)),
+            {Type: QuestionType.OrderedOptions} =>
+                await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, new ManyAnswer(_answer.Values)),
             
-            _ => throw new ArgumentOutOfRangeException(nameof(_answer))
-            };
+                _ => throw new ArgumentOutOfRangeException(nameof(_answer))
+                };
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+            return;
+        }
 
         _test = _test with {
             IsComplete = answer.IsComplete,
