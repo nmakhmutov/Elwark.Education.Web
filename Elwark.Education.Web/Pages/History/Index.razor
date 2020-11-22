@@ -62,6 +62,7 @@ else
         _periods = await HistoryService.GetPeriodsAsync();
         _articles = (await HistoryService.GetRandomArticlesAsync())
             .OrderBy(x => x.Image is null)
+            .ThenBy(x => x.Subtitle is null)
             .ToArray();
     }
 

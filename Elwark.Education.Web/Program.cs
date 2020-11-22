@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Elwark.Education.Web.Services.History;
+using Elwark.Education.Web.Services.User;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,21 +28,24 @@ namespace Elwark.Education.Web
                     new Uri(builder.Configuration["Urls:Gateway"]),
                     new Uri(builder.Configuration["Urls:Account"])
                 ))
-                .AddHttpClient<IHistoryService, HistoryService>(client =>
-                    client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
+                .AddScoped<ElwarkAuthorizationMessageHandler>();
+            
+            builder.Services
+                .AddHttpClient<IHistoryService, HistoryService>(
+                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
                 )
-                .AddHttpMessageHandler(provider =>
-                    provider.GetRequiredService<AuthorizationMessageHandler>()
-                        .ConfigureHandler(
-                            new[] {builder.Configuration["Urls:Gateway"]},
-                            new[] {"elwark.education.web"}
-                        )
-                );
+                .AddHttpMessageHandler<ElwarkAuthorizationMessageHandler>();
+
+            builder.Services
+                .AddHttpClient<IUserService, UserService>(
+                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
+                ).AddHttpMessageHandler<ElwarkAuthorizationMessageHandler>();
 
             builder.Services
                 .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
 
-            await builder.Build().RunAsync();
+            await builder.Build()
+                .RunAsync();
         }
     }
 

@@ -1,7 +1,16 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-<RemoteAuthenticatorView Action="@Action" />
+@using Elwark.Education.Web.Services.User
+
+@inject IUserService UserService
+
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnSuccessCallback"/>
 
 @code{
-    [Parameter] public string? Action { get; set; }
+
+    [Parameter]
+    public string? Action { get; set; }
+
+    private Task OnSuccessCallback() => UserService.CreateAsync();
+
 }
