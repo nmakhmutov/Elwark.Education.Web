@@ -47,17 +47,17 @@
 
     private static readonly Dictionary<string, string> HistoryPages = new()
     {
-        [HistoryLinks.Period(PeriodType.Prehistory)] = "Prehistory",
-        [HistoryLinks.Period(PeriodType.Ancient)] = "Ancient",
-        [HistoryLinks.Period(PeriodType.MiddleAges)] = "Middle ages",
-        [HistoryLinks.Period(PeriodType.EarlyModern)] = "Early modern",
-        [HistoryLinks.Period(PeriodType.Modern)] = "Modern"
+        [Links.History.Period(PeriodType.Prehistory)] = "Prehistory",
+        [Links.History.Period(PeriodType.Ancient)] = "Ancient",
+        [Links.History.Period(PeriodType.MiddleAges)] = "Middle ages",
+        [Links.History.Period(PeriodType.EarlyModern)] = "Early modern",
+        [Links.History.Period(PeriodType.Modern)] = "Modern"
     };
 
     protected override void OnInitialized()
     {
         var path = $"/{Navigation.ToBaseRelativePath(Navigation.Uri)}";
-        if (path.StartsWith(HistoryLinks.Index))
+        if (path.StartsWith(Links.History.Index))
             _subject = Subject.History;
     }
 

@@ -2,6 +2,8 @@
 @using Elwark.Education.Web.Services.History.Model
 @using Elwark.Education.Web.Services
 @inject IHistoryService HistoryService
+@inject IDialogService Dialog
+
 @attribute [Authorize]
 
 @if (_topic is null)
@@ -38,10 +40,18 @@ else
                     <div class="article-texts">
                         @if (item.Type == ArticleType.Premium)
                         {
-                            <MudText Typo="Typo.body2" Color="Color.Warning">@item.Type</MudText>                        }
-                        <MudLink Typo="Typo.h5" Href="@(HistoryLinks.Article(item.ArticleId))">
-                            @item.Title
-                        </MudLink>
+                            <MudText Typo="Typo.body2" Color="Color.Warning">@item.Type</MudText>
+                            <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5" href="#"
+                               @onclick="@(() => Dialog.Show<SubscriptionModal>())" @onclick:preventDefault="true">
+                                @item.Title
+                            </a>
+                        }
+                        else
+                        {
+                            <MudLink Typo="Typo.h5" Href="@(Links.History.Article(item.ArticleId))">
+                                @item.Title
+                            </MudLink>   
+                        }
                         @if (item.Test.PassedAt.HasValue)
                         {
                             <MudText Typo="Typo.body2">
@@ -76,12 +86,12 @@ else
             ex.Redirect();
             return;
         }
-        
+
         if (_topic is not null)
             _breadcrumbs = new BreadcrumbsItem[]
             {
-                new("History", HistoryLinks.Index),
-                new(_topic.Period.Title, HistoryLinks.Period(_topic.Period.Type))
+                new("History", Links.History.Index),
+                new(_topic.Period.Title, Links.History.Period(_topic.Period.Type))
             };
     }
 

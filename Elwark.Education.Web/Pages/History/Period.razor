@@ -6,13 +6,14 @@
 
 @if (_period is null || _topics.Count == 0)
 {
-    <PageLoader/>}
+    <PageLoader/>    
+}
 else
 {
     <Title Value="@_period.Title"></Title>
     <div class="ma-6">
         <Breadcrumbs Items="@Breadcrumbs" Class="mb-3"/>
-        <div class="d-flex align-center">
+        <div class="d-flex align-center mb-3">
             <MudAvatar Class="mr-3" Image="@(_period.Image)" Style="width: 100px; height: 100px" Square="true"/>
             <MudText Typo="Typo.h3">@_period.Title</MudText>
         </div>
@@ -23,7 +24,7 @@ else
             <MudCard>
                 <MudCardMedia Image="@(item.Image)" Height="200"></MudCardMedia>
                 <MudCardContent>
-                    <MudLink Typo="Typo.subtitle1" Href="@(HistoryLinks.Topic(item.TopicId))">
+                    <MudLink Typo="Typo.subtitle1" Href="@(Links.History.Topic(item.TopicId))">
                         @item.Title
                     </MudLink>
                     <MudText Typo="Typo.body2">
@@ -48,7 +49,7 @@ else
 
 @code {
 
-    private static readonly BreadcrumbsItem[] Breadcrumbs = {new("History", HistoryLinks.Index)};
+    private static readonly BreadcrumbsItem[] Breadcrumbs = {new("History", Links.History.Index)};
 
     private HistoryPeriodModel? _period;
     private readonly List<HistoryTopicItem> _topics = new();
