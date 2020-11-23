@@ -1,0 +1,27 @@
+<MudDialog DisableSidePadding="true" ClassContent="modal-content" ClassActions="modal-actions">
+    <DialogContent>
+        <div class="ma-6">
+            <MudText Typo="Typo.h4" Align="Align.Center">
+                Boost up your education!
+            </MudText>
+            <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                Start with premium subscription today.
+            </MudText>
+        </div>
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            <SubscriptionGrid/>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Success" Variant="Variant.Filled" Class="mx-auto">
+            Start with premium
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+}

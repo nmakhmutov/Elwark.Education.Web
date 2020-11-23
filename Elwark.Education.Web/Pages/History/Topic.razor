@@ -8,8 +8,7 @@
 
 @if (_topic is null)
 {
-    <PageLoader/>
-}
+    <PageLoader/>}
 else
 {
     <Title Value="@_topic.Title"/>
@@ -31,18 +30,18 @@ else
             </MudText>
             <Virtualize Items="@_topic.Articles" Context="item">
                 <div class="article-card mud-paper ma-6 pa-3">
-                    <div class="article-image">
-                        @if (item.Image is not null)
-                        {
-                            <MudAvatar Image="@(item.Image)" Square="true" Style="width: 90px; height: 90px"/>                            
-                        }
-                    </div>
+                    @if (item.Image is not null)
+                    {
+                        <div class="article-image">
+                            <MudAvatar Image="@(item.Image)" Square="true" Style="width: 90px; height: 90px"/>
+                        </div>
+                    }
                     <div class="article-texts">
                         @if (item.Type == ArticleType.Premium)
                         {
                             <MudText Typo="Typo.body2" Color="Color.Warning">@item.Type</MudText>
                             <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5" href="#"
-                               @onclick="@(() => Dialog.Show<SubscriptionModal>())" @onclick:preventDefault="true">
+                               @onclick="@OpenSubscriptionDialog" @onclick:preventDefault="true">
                                 @item.Title
                             </a>
                         }
@@ -50,13 +49,14 @@ else
                         {
                             <MudLink Typo="Typo.h5" Href="@(Links.History.Article(item.ArticleId))">
                                 @item.Title
-                            </MudLink>   
+                            </MudLink>                            
                         }
                         @if (item.Test.PassedAt.HasValue)
                         {
                             <MudText Typo="Typo.body2">
                                 <em>Last passed at @item.Test.PassedAt.Value.ToShortDateString()</em>
-                            </MudText>                        }
+                            </MudText>                            
+                        }
                     </div>
                     <div class="article-description">
                         <MudText Typo="Typo.body1">@item.Subtitle</MudText>
@@ -93,6 +93,11 @@ else
                 new("History", Links.History.Index),
                 new(_topic.Period.Title, Links.History.Period(_topic.Period.Type))
             };
+    }
+
+    private void OpenSubscriptionDialog()
+    {
+        Dialog.Show<SubscriptionModal>(null, new DialogOptions {MaxWidth = MaxWidth.Large});
     }
 
 }
