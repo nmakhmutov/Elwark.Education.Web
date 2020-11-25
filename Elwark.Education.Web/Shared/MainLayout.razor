@@ -12,6 +12,7 @@
             <img src="http://localhost:3000/static/icons/elwark/white/32x32.png" alt="logo"/>
         </MudLink>
         <MudAppBarSpacer/>
+        <LanguageSelector/>
         <MudTooltip Text="Toggle theme">
             <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@(_ => SwitchTheme())"/>
         </MudTooltip>
@@ -26,12 +27,12 @@
                     </MudText>
                 </MudDrawerHeader>
             </Authorized>
-        
+
             <Authorizing>
                 <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px" Style="margin: 10px auto"/>
                 <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
             </Authorizing>
-        
+
         </AuthorizeView>
         <NavMenu/>
     </MudDrawer>

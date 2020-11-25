@@ -6,6 +6,11 @@ namespace Elwark.Education.Web.Pages
     {
         public const string Index = "/";
 
+        public static class Profile
+        {
+            public const string Index = "/profile";
+        }
+        
         public static class History
         {
             public const string Index = "/history";

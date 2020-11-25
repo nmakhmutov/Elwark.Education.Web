@@ -2,6 +2,7 @@
 @using Elwark.Education.Web.Services.History.Model
 @using Elwark.Education.Web.Services.History.Request
 @inject IHistoryService HistoryService
+@inject IStringLocalizer<App> L
 @attribute [Authorize]
 
 @if (_period is null || _topics.Count == 0)
@@ -12,7 +13,7 @@ else
 {
     <Title Value="@_period.Title"></Title>
     <div class="ma-6">
-        <Breadcrumbs Items="@Breadcrumbs" Class="mb-3"/>
+        <Breadcrumbs Items="@_breadcrumbs" Class="mb-3"/>
         <div class="d-flex align-center mb-3">
             <MudAvatar Class="mr-3" Image="@(_period.Image)" Style="width: 100px; height: 100px" Square="true"/>
             <MudText Typo="Typo.h3">@_period.Title</MudText>
@@ -43,14 +44,14 @@ else
     @if (_showMore)
     {
         <MudButton OnClick="@LoadMoreAsync" Color="Color.Primary" Size="Size.Large" Variant="Variant.Filled" Style="margin: 10px auto;display: block">
-            Load more
-        </MudButton>    }
+            @L["LoadMore"]
+        </MudButton>        
+    }
 }
 
 @code {
 
-    private static readonly BreadcrumbsItem[] Breadcrumbs = {new("History", Links.History.Index)};
-
+    private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
     private HistoryPeriodModel? _period;
     private readonly List<HistoryTopicItem> _topics = new();
     private bool _showMore;
@@ -59,6 +60,11 @@ else
     public string? Type { get; set; }
 
     private GetTopicsRequest _request = new(PeriodType.Prehistory, 1, 20);
+
+    protected override void OnInitialized() => _breadcrumbs = new[]
+    {
+        new BreadcrumbsItem(L["History"].Value, Links.History.Index)
+    };
 
     protected override async Task OnParametersSetAsync()
     {

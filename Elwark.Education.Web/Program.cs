@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Elwark.Education.Web.Services.History;
 using Elwark.Education.Web.Services.User;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -20,29 +21,37 @@ namespace Elwark.Education.Web
             builder.Services
                 .AddMudBlazorDialog()
                 .AddMudBlazorSnackbar()
-                .AddMudBlazorResizeListener();
+                .AddMudBlazorResizeListener()
+                .AddBlazoredLocalStorage();
 
             builder.Services
                 .AddScoped(_ => new UrlsOptions(
                     new Uri(builder.Configuration["Urls:Gateway"]),
                     new Uri(builder.Configuration["Urls:Account"])
                 ))
-                .AddScoped<ElwarkAuthorizationMessageHandler>();
+                .AddScoped<ElwarkAuthorizationMessageHandler>()
+                .AddScoped<LocalizationMessageHandler>();
             
             builder.Services
                 .AddHttpClient<IHistoryService, HistoryService>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
                 )
-                .AddHttpMessageHandler<ElwarkAuthorizationMessageHandler>();
+                .AddHttpMessageHandler<ElwarkAuthorizationMessageHandler>()
+                .AddHttpMessageHandler<LocalizationMessageHandler>();
 
             builder.Services
                 .AddHttpClient<IUserService, UserService>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
-                ).AddHttpMessageHandler<ElwarkAuthorizationMessageHandler>();
+                )
+                .AddHttpMessageHandler<ElwarkAuthorizationMessageHandler>()
+                .AddHttpMessageHandler<LocalizationMessageHandler>();
 
             builder.Services
                 .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
 
+            builder.Services
+                .AddLocalization(options => options.ResourcesPath = "Resources");
+            
             await builder.Build()
                 .RunAsync();
         }

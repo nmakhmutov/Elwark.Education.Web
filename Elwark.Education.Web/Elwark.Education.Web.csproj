@@ -15,11 +15,27 @@
         <PackageReference Include="Markdig" Version="0.22.0" />
         <PackageReference Include="Blazored.FluentValidation" Version="1.3.2" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="5.0.0" />
+        <PackageReference Include="Blazored.LocalStorage" Version="3.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
+      <EmbeddedResource Update="Resources\Pages.History.Test.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Pages.History.Test.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages.History.Test.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Pages.History.Test.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Pages.History.Test.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Pages.History.Test.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
     </ItemGroup>
 
 </Project>

@@ -3,12 +3,14 @@
 @using Elwark.Education.Web.Services
 @inject IHistoryService HistoryService
 @inject IDialogService Dialog
+@inject IStringLocalizer<App> L
 
 @attribute [Authorize]
 
 @if (_topic is null)
 {
-    <PageLoader/>}
+    <PageLoader/>    
+}
 else
 {
     <Title Value="@_topic.Title"/>
@@ -23,7 +25,7 @@ else
                 </div>
             </div>
         </div>
-        <div class="articles-container">
+        <div class="articles-container w-100">
             <Breadcrumbs Items="@_breadcrumbs" Class="ma-6"/>
             <MudText Typo="Typo.body1" Class="ma-6" Style="max-width: 980px">
                 @_topic.Description
@@ -39,7 +41,9 @@ else
                     <div class="article-texts">
                         @if (item.Type == ArticleType.Premium)
                         {
-                            <MudText Typo="Typo.body2" Color="Color.Warning">@item.Type</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Warning">
+                                @item.Type
+                            </MudText>
                             <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5" href="#"
                                @onclick="@OpenSubscriptionDialog" @onclick:preventDefault="true">
                                 @item.Title
@@ -59,7 +63,9 @@ else
                         }
                     </div>
                     <div class="article-description">
-                        <MudText Typo="Typo.body1">@item.Subtitle</MudText>
+                        <MudText Typo="Typo.body1">
+                            @item.Subtitle
+                        </MudText>
                     </div>
                 </div>
             </Virtualize>
@@ -90,7 +96,7 @@ else
         if (_topic is not null)
             _breadcrumbs = new BreadcrumbsItem[]
             {
-                new("History", Links.History.Index),
+                new(L["History"].Value, Links.History.Index),
                 new(_topic.Period.Title, Links.History.Period(_topic.Period.Type))
             };
     }

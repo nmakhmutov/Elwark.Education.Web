@@ -6,26 +6,27 @@
 @inject UrlsOptions Options;
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
+@inject IStringLocalizer<App> L
 
 <MudNavMenu Class="navmenu">
     <AuthorizeView>
         <Authorized>
             <MudNavLink Icon="@Filled.Person" Href="@(Options.Account.ToString())">
-                Elwark Account
+                @L["ElwarkAccount"]
             </MudNavLink>
-            <MudNavLink Icon="@Filled.DonutLarge" Href="profile">
-                Profile
+            <MudNavLink Icon="@Filled.DonutLarge" Href="@Links.Profile.Index">
+                @L["Profile"]
             </MudNavLink>
             <MudDivider DividerType="DividerType.Middle" Class="ma-3"/>
         </Authorized>
     </AuthorizeView>
-    
+
     <MudNavGroup
-        Title="History"
+        Title="@L["History"]"
         Expanded="@(_subject == Subject.History)"
         Icon="@TwoTone.AccountBalanceTwoTone"
         ExpandIcon="@Filled.ExpandMore">
-        <Virtualize Items="HistoryPages" Context="period">
+        <Virtualize Items="_historyPages" Context="period">
             <MudNavLink Href="@period.Key">
                 @period.Value
             </MudNavLink>
@@ -36,7 +37,7 @@
         <Authorized>
             <MudAppBarSpacer/>
             <MudButton Variant="Variant.Text" StartIcon="@(Filled.Login)" OnClick="@BeginSignOut">
-                Log out
+                @L["LogOut"]
             </MudButton>
         </Authorized>
     </AuthorizeView>
@@ -45,20 +46,16 @@
 @code {
     private Subject _subject;
 
-    private static readonly Dictionary<string, string> HistoryPages = new()
-    {
-        [Links.History.Period(PeriodType.Prehistory)] = "Prehistory",
-        [Links.History.Period(PeriodType.Ancient)] = "Ancient",
-        [Links.History.Period(PeriodType.MiddleAges)] = "Middle ages",
-        [Links.History.Period(PeriodType.EarlyModern)] = "Early modern",
-        [Links.History.Period(PeriodType.Modern)] = "Modern"
-    };
+    private Dictionary<string, string> _historyPages = new();
 
     protected override void OnInitialized()
     {
         var path = $"/{Navigation.ToBaseRelativePath(Navigation.Uri)}";
         if (path.StartsWith(Links.History.Index))
             _subject = Subject.History;
+
+        _historyPages = Enum.GetValues<PeriodType>()
+            .ToDictionary(Links.History.Period, x => L[x.ToString()].Value);
     }
 
     private async Task BeginSignOut(MouseEventArgs args)

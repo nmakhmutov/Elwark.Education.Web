@@ -1,9 +1,10 @@
 @page "/history"
 @using Elwark.Education.Web.Services.History.Model
 @inject IHistoryService HistoryService
+@inject IStringLocalizer<App> L
 @attribute [Authorize]
 
-<Title Value="Hisotry"></Title>
+<Title Value="@L["History"]"></Title>
 
 @if (_articles.Length == 0 || _periods.Length == 0)
 {
@@ -11,9 +12,6 @@
 else
 {
     <div class="ma-5">
-        <MudText Typo="Typo.h2" Align="Align.Center">
-            Periods
-        </MudText>
         <div class="period-grid">
             @foreach (var period in _periods)
             {
@@ -30,8 +28,8 @@ else
                 </MudCard>            }
         </div>
 
-        <MudText Typo="Typo.h2" Align="Align.Center" Class="mt-6">
-            Articles
+        <MudText Typo="Typo.h2" Class="mt-6">
+            @L["Articles"]
         </MudText>
         <div class="articles-grid">
             @foreach (var article in _articles)

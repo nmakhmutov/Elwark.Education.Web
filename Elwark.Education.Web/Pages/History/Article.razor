@@ -2,17 +2,21 @@
 @using Elwark.Education.Web.Services.History.Model
 @inject IHistoryService HistoryService
 @inject NavigationManager NavigationManager
+@inject IStringLocalizer<App> L
 
 @attribute [Authorize]
 
 @if (_article is null)
 {
-    <PageLoader/>}
+    <PageLoader/>    
+}
 else if (_isTestCreating)
 {
-    <PageLoader Title="Test creating..."/>}
+    <PageLoader Title="@(L["TestCreating"] + "...")"/>    
+}
 else
 {
+    <Title Value="@_article.Title"></Title>
     <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
         <MudGrid Spacing="0">
             <MudItem xs="12" md="7" lg="8" xl="6" Style="min-height: 100%">
@@ -27,7 +31,7 @@ else
                             Class="mb-6"
                             OnClick="@CreateTestAsync"
                             Disabled="_isTestCreating">
-                            Test
+                            @L["Test"]
                         </MudButton>                    }
                     @if (_article.Subtitle is not null)
                     {
@@ -71,11 +75,11 @@ else
             ex.Redirect();
             return;
         }
-        
+
         if (_article is not null)
             _breadcrumbs = new BreadcrumbsItem[]
             {
-                new("History", Links.History.Index),
+                new(L["History"].Value, Links.History.Index),
                 new(_article.Period.Title, Links.History.Period(_article.Period.Type)),
                 new(_article.Topic.Title, Links.History.Topic(_article.Topic.Id))
             };
@@ -87,7 +91,7 @@ else
         var result = await HistoryService.CreateTestForArticleAsync(Id);
         if (result is not null)
             NavigationManager.NavigateTo(Links.History.Test(result.TestId));
-        
+
         _isTestCreating = false;
     }
 

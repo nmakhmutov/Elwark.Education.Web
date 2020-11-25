@@ -43,12 +43,17 @@
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
+    <a href="" class="reload mud-typography mud-link mud-primary-text mud-link-underline-hover">Reload</a>
     <a class="dismiss">x</a>
 </div>
 <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
 <script src="_content/Microsoft.AspNetCore.Components.Web.Extensions/headManager.js"></script>
-<script src="_framework/blazor.webassembly.js"></script>
+<script src="_framework/blazor.webassembly.js" autostart="false"></script>
+<script>
+    Blazor.start({
+        applicationCulture: localStorage['language']
+    });
+</script>
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 </body>
 
