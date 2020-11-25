@@ -1,0 +1,48 @@
+@inject IStringLocalizer<App> L
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-12">
+    <MudGrid Spacing="6" Justify="Justify.Center">
+        <Virtualize Items="_subjects" Context="subject">
+            @{ var sbj = subject.Subject.ToString().ToLower();}
+            <MudItem xs="12" sm="6" md="4">
+                <div class="card @sbj-card">
+                    <a href="@subject.Href" class="content">
+                        <div class="avatar-container @sbj-avatar rounded">
+                            <MudIcon Icon="@subject.Avatar" Size="Size.Medium"/>
+                        </div>
+                        <div class="pa-6">
+                            <MudText Typo="Typo.body2" Class="my-2">@L["Subject"]</MudText>
+                            <MudText Typo="Typo.h5" Class="my-2">@subject.Title</MudText>
+                            <MudDivider/>
+                            <MudText Typo="Typo.subtitle2" Class="my-2">
+                                <strong>@subject.Topics+</strong> @L["Topics"]
+                            </MudText>
+                            <MudText Typo="Typo.subtitle2" Class="my-2">
+                                <strong>@subject.Articles+</strong> @L["Articles"]
+                            </MudText>
+                            <MudText Typo="Typo.subtitle2" Class="my-2">
+                                <strong>@subject.Questions+</strong> @L["Questions"]
+                            </MudText>
+                        </div>
+                    </a>
+                </div>
+            </MudItem>
+        </Virtualize>
+    </MudGrid>
+</MudContainer>
+
+@code {
+
+    private SubjectItem[] _subjects = Array.Empty<SubjectItem>();
+
+    protected override void OnInitialized()
+    {
+        _subjects = new[]
+        {
+            new SubjectItem(Subject.History, L[Subject.History.ToString()].Value, Links.History.Index, TwoTone.AccountBalanceTwoTone, 10, 20, 30),
+            new SubjectItem(Subject.Physics, L[Subject.Physics.ToString()].Value, Links.Physics.Index, Icons.Custom.Radioactive, 10, 20, 30),
+            new SubjectItem(Subject.Astronomy, L[Subject.Astronomy.ToString()].Value, Links.Astronomy.Index, Filled.Flare, 10, 20, 30)
+        };
+    }
+
+}

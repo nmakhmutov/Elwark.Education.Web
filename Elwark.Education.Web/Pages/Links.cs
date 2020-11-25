@@ -23,5 +23,15 @@ namespace Elwark.Education.Web.Pages
 
             public static string Test(string testId) => $"{Index}/test/{testId}";
         }
+        
+        public static class Physics
+        {
+            public const string Index = "/physics";
+        }
+        
+        public static class Astronomy
+        {
+            public const string Index = "/astronomy";
+        }
     }
 }

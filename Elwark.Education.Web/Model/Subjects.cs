@@ -2,7 +2,9 @@ namespace Elwark.Education.Web.Model
 {
     public enum Subject
     {
-        None,
-        History
+        Unknown = 0,
+        History,
+        Physics,
+        Astronomy
     }
 }
