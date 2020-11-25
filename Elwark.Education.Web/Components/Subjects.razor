@@ -3,7 +3,7 @@
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-12">
     <MudGrid Spacing="6" Justify="Justify.Center">
         <Virtualize Items="_subjects" Context="subject">
-            @{ var sbj = subject.Subject.ToString().ToLower();}
+            @{ var sbj = subject.Subject.ToString().ToLower(); }
             <MudItem xs="12" sm="6" md="4">
                 <div class="card @sbj-card">
                     <a href="@subject.Href" class="content">
@@ -14,15 +14,12 @@
                             <MudText Typo="Typo.body2" Class="my-2">@L["Subject"]</MudText>
                             <MudText Typo="Typo.h5" Class="my-2">@subject.Title</MudText>
                             <MudDivider/>
-                            <MudText Typo="Typo.subtitle2" Class="my-2">
-                                <strong>@subject.Topics+</strong> @L["Topics"]
-                            </MudText>
-                            <MudText Typo="Typo.subtitle2" Class="my-2">
-                                <strong>@subject.Articles+</strong> @L["Articles"]
-                            </MudText>
-                            <MudText Typo="Typo.subtitle2" Class="my-2">
-                                <strong>@subject.Questions+</strong> @L["Questions"]
-                            </MudText>
+                            @foreach (var item in subject.Statistics)
+                            {
+                                <MudText Typo="Typo.subtitle2" Class="my-2">
+                                    <strong>@item.Value+</strong> @item.Key
+                                </MudText>    
+                            }
                         </div>
                     </a>
                 </div>
@@ -39,9 +36,39 @@
     {
         _subjects = new[]
         {
-            new SubjectItem(Subject.History, L[Subject.History.ToString()].Value, Links.History.Index, TwoTone.AccountBalanceTwoTone, 10, 20, 30),
-            new SubjectItem(Subject.Physics, L[Subject.Physics.ToString()].Value, Links.Physics.Index, Icons.Custom.Radioactive, 10, 20, 30),
-            new SubjectItem(Subject.Astronomy, L[Subject.Astronomy.ToString()].Value, Links.Astronomy.Index, Filled.Flare, 10, 20, 30)
+            new SubjectItem(
+                Subject.History,
+                L[Subject.History.ToString()].Value,
+                Links.History.Index,
+                TwoTone.AccountBalanceTwoTone,
+                new Dictionary<string, int>
+                {
+                    [L["Topics"].Value] = 10,
+                    [L["Articles"].Value] = 20,
+                    [L["Questions"].Value] = 30
+                }),
+            new SubjectItem(
+                Subject.Physics,
+                L[Subject.Physics.ToString()].Value,
+                Links.Physics.Index,
+                Icons.Custom.Radioactive,
+                new Dictionary<string, int>
+                {
+                    [L["Topics"].Value] = 10,
+                    [L["Articles"].Value] = 20,
+                    [L["Questions"].Value] = 30
+                }),
+            new SubjectItem(
+                Subject.Astronomy,
+                L[Subject.Astronomy.ToString()].Value,
+                Links.Astronomy.Index,
+                Filled.Flare,
+                new Dictionary<string, int>
+                {
+                    [L["Topics"].Value] = 10,
+                    [L["Articles"].Value] = 20,
+                    [L["Questions"].Value] = 30
+                })
         };
     }
 

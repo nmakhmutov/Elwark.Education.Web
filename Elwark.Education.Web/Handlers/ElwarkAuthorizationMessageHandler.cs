@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
-namespace Elwark.Education.Web
+namespace Elwark.Education.Web.Handlers
 {
     public class ElwarkAuthorizationMessageHandler : AuthorizationMessageHandler
     {

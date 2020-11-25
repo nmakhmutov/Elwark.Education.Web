@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Elwark.Education.Web.Model
 {
     public sealed record SubjectItem(
@@ -5,8 +7,6 @@ namespace Elwark.Education.Web.Model
         string Title,
         string Href,
         string Avatar,
-        int Topics,
-        int Articles,
-        int Questions
+        IDictionary<string, int> Statistics
     );
 }

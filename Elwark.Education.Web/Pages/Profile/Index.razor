@@ -1,8 +1,32 @@
 @page "/profile"
 @attribute [Authorize]
 
-<h3>Profile</h3>
+<div class="profile-header">
+    <AuthorizeView>
+        <Authorized>
+            @{
+                var name = context.User.GetName();
+            }
+            <Title Value="@name"></Title>
+            <div class="profile-avatar-container">
+                <MudAvatar Style="width: 100px; height: 100px" Image="@(context.User.GetImage())"/>
+            </div>
+            <div class="profile-header-bottom-bar">
+                <MudText Typo="Typo.h4">
+                    @name
+                </MudText>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+</div>
+
+<MudPaper Square="true" Elevation="0" Class="px-6">
+    <div class="statistics-bar">
+        some text
+    </div>
+</MudPaper>
+
 
 @code {
-    
+
 }
