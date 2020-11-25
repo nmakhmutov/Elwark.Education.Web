@@ -5,27 +5,28 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<MudLayout Style="min-height: 100vh">
+<MudLayout>
     <MudAppBar Elevation="25">
         <MudIconButton Icon="@Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
-        <MudLink Href="@Links.Index">
-            <img src="http://localhost:3000/static/icons/elwark/white/32x32.png" alt="logo"/>
-        </MudLink>
         <MudAppBarSpacer/>
         <LanguageSelector/>
         <MudTooltip Text="Toggle theme">
             <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@(_ => SwitchTheme())"/>
         </MudTooltip>
     </MudAppBar>
-    <MudDrawer Open="@_drawerOpen" Clipped="true" Elevation="25">
+    <MudDrawer Open="@_drawerOpen" Clipped="false" Elevation="25">
+        <MudDrawerHeader LinkToIndex="true" Class="flex-row align-center mud-appbar py-0">
+            <img src="http://localhost:3000/static/icons/elwark/white/32x32.png" alt="logo"/>
+            <MudText Typo="Typo.h4">Education</MudText>
+        </MudDrawerHeader>
         <AuthorizeView>
             <Authorized>
-                <MudDrawerHeader Class="appbar-band">
-                    <MudAvatar Image="@(context.User.Claims.First(x => x.Type == "picture").Value)" Size="Size.Large"/>
+                <div class="appbar-band">
+                    <MudAvatar Image="@(context.User.GetImage())" Size="Size.Large"/>
                     <MudText Typo="Typo.subtitle1" Class="mt-2">
-                        @context.User.Identity?.Name
+                        @context.User.GetName()
                     </MudText>
-                </MudDrawerHeader>
+                </div>
             </Authorized>
 
             <Authorizing>
