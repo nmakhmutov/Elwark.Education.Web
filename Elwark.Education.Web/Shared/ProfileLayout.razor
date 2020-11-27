@@ -1,0 +1,99 @@
+@using Elwark.Education.Web.Services.User
+@using Elwark.Education.Web.Services.User.Model
+@inherits LayoutComponentBase
+@layout MainLayout
+@inject IUserService UserService
+@inject IStringLocalizer<ProfileLayout> L
+
+<div class="profile-header">
+    <div class="profile-header-cover">
+        <AuthorizeView>
+            <Authorized>
+                @{
+                    var name = context.User.GetName();
+                }
+                <Title Value="@name"></Title>
+                <div class="profile-avatar-container">
+                    <MudAvatar Style="width: 100px; height: 100px" Image="@(context.User.GetImage())"/>
+                </div>
+                <div class="profile-header-bottom-bar">
+                    <MudText Typo="Typo.h4" GutterBottom="true">
+                        @name
+                    </MudText>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
+
+<MudPaper Square="true" Elevation="0" Class="px-6 mb-6">
+    <div class="profile-menu">
+        @if (_statistics is not null)
+        {
+            <div class="profile-menu-item">
+                <MudText Typo="Typo.subtitle2">
+                    @_statistics.Total.PassedTests
+                </MudText>
+                <MudText Typo="Typo.body2">
+                    @L["Tests"]
+                </MudText>
+            </div>
+            <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
+            <div class="profile-menu-item">
+                <MudText Typo="Typo.subtitle2">
+                    @_statistics.Total.Score.Total
+                </MudText>
+                <MudText Typo="Typo.body2">
+                    @L["Score"]
+                </MudText>
+            </div>
+            <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
+            <div class="profile-menu-item">
+                <MudText Typo="Typo.subtitle2">
+                    @(_statistics.Total.ElapsedTime.Days > 1
+                        ? _statistics.Total.ElapsedTime.ToString(@"dd\.hh\:mm\:ss")
+                        : _statistics.Total.ElapsedTime.ToString(@"hh\:mm\:ss")
+                        )
+                </MudText>
+                <MudText Typo="Typo.body2">
+                    @L["ElapsedTime"]
+                </MudText>
+            </div>
+            <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
+            <div class="profile-menu-item">
+                <div class="d-flex">
+                    <MudTooltip Text="@L["Correct"]">
+                        <MudText Typo="Typo.subtitle2">
+                            @_statistics.Total.Answers.Correct
+                        </MudText>
+                    </MudTooltip>
+                    <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
+                    <MudTooltip Text="@L["Incorrect"]">
+                        <MudText Typo="Typo.subtitle2">
+                            @_statistics.Total.Answers.Incorrect
+                        </MudText>
+                    </MudTooltip>
+                </div>
+                <MudText Typo="Typo.body2" Align="Align.Center">
+                    @L["Answers"]
+                </MudText>
+            </div>
+        }
+    </div>
+</MudPaper>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <CascadingValue Value="_statistics">
+        @Body
+    </CascadingValue>
+</MudContainer>
+
+@code {
+    TestStatistics? _statistics;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _statistics = await UserService.GetStatisticsAsync();
+    }
+
+}

@@ -1,3 +1,5 @@
+using Elwark.Education.Web.Services.Model;
+
 namespace Elwark.Education.Web.Services.History.Model
 {
     public sealed record HistoryTestQuestionModel(

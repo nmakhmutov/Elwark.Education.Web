@@ -5,8 +5,9 @@ namespace Elwark.Education.Web.Services.User
 {
     public interface IUserService
     {
-        Task<UserModel?> GetAsync();
-        
-        Task<UserModel> CreateAsync();
+        Task<SubscriptionItem[]> GetSubscriptionsAsync();
+
+        Task CreateAsync();
+        Task<TestStatistics> GetStatisticsAsync();
     }
 }

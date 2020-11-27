@@ -1,32 +1,56 @@
 @page "/profile"
+@layout ProfileLayout
+@using Elwark.Education.Web.Services.User
+@using Elwark.Education.Web.Services.User.Model
+@inject IUserService UserService
+@inject IStringLocalizer<App> L
+
 @attribute [Authorize]
 
-<div class="profile-header">
-    <AuthorizeView>
-        <Authorized>
-            @{
-                var name = context.User.GetName();
+<MudGrid Spacing="1">
+    <MudItem xs="12" sm="8" md="9">
+        @if (Statistics is not null)
+        {
+            foreach (var statistic in Statistics.Statistics)
+            {
+                <div>@statistic.Subject</div>
             }
-            <Title Value="@name"></Title>
-            <div class="profile-avatar-container">
-                <MudAvatar Style="width: 100px; height: 100px" Image="@(context.User.GetImage())"/>
-            </div>
-            <div class="profile-header-bottom-bar">
-                <MudText Typo="Typo.h4">
-                    @name
-                </MudText>
-            </div>
-        </Authorized>
-    </AuthorizeView>
-</div>
-
-<MudPaper Square="true" Elevation="0" Class="px-6">
-    <div class="statistics-bar">
-        some text
-    </div>
-</MudPaper>
-
+        }
+    </MudItem>
+    <MudItem xs="12" sm="4" md="3">
+        <MudCard>
+            <MudCardContent>
+                <MudList Clickable="false">
+                    <MudListSubheader>
+                        Subscriptions
+                    </MudListSubheader>
+                    @foreach (var subscription in _subscriptions)
+                    {
+                        <MudListItem Icon="@(subscription.Subject.GetIcon())">
+                            <MudText Typo="Typo.subtitle1"> @subscription.Subject</MudText>
+                            <MudText Typo="Typo.subtitle2">@subscription.Type</MudText>
+                            @if (subscription.ExpiredAt.HasValue)
+                            {
+                                <MudText Typo="Typo.body2">
+                                    Expired at @subscription.ExpiredAt.Value.ToShortDateString()
+                                </MudText>                            }
+                        </MudListItem>                    }
+                </MudList>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
 
 @code {
+
+    [CascadingParameter]
+    public TestStatistics? Statistics { get; set; }
+
+    private SubscriptionItem[] _subscriptions = Array.Empty<SubscriptionItem>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _subscriptions = await UserService.GetSubscriptionsAsync();
+    }
 
 }

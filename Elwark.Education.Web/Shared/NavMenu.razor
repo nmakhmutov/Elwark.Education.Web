@@ -11,11 +11,11 @@
 <MudNavMenu Class="navmenu">
     <AuthorizeView>
         <Authorized>
-            <MudNavLink Icon="@Filled.Person" Href="@(Options.Account.ToString())">
-                @L["ElwarkAccount"]
-            </MudNavLink>
             <MudNavLink Icon="@Filled.DonutLarge" Href="@Links.Profile.Index">
                 @L["Profile"]
+            </MudNavLink>
+            <MudNavLink Icon="@Filled.Person" Href="@(Options.Account.ToString())">
+                @L["ElwarkAccount"]
             </MudNavLink>
             <MudDivider DividerType="DividerType.Middle" Class="ma-3"/>
         </Authorized>
@@ -24,13 +24,13 @@
     <MudNavGroup
         Title="@L["History"]"
         Expanded="@(_subject == Subject.History)"
-        Icon="@TwoTone.AccountBalanceTwoTone"
+        Icon="@Subject.History.GetIcon()"
         ExpandIcon="@Filled.ExpandMore">
-        <Virtualize Items="_historyPages" Context="period">
-            <MudNavLink Href="@period.Key">
-                @period.Value
-            </MudNavLink>
-        </Virtualize>
+        @foreach (var (link, title) in _historyPages)
+        {
+            <MudNavLink Href="@link">
+                @title
+            </MudNavLink>        }
     </MudNavGroup>
 
     <AuthorizeView>

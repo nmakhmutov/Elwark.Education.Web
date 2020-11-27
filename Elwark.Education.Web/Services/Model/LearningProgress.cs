@@ -1,6 +1,6 @@
 using MudBlazor;
 
-namespace Elwark.Education.Web.Services
+namespace Elwark.Education.Web.Services.Model
 {
     public sealed record LearningProgress(int Count, int Passed)
     {

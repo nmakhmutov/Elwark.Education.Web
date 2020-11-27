@@ -1,3 +1,5 @@
+@using Markdig.Helpers
+@using Elwark.Education.Web.Services.User.Model
 @inject IStringLocalizer<App> L
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-12">
@@ -8,7 +10,7 @@
                 <div class="card @sbj-card">
                     <a href="@subject.Href" class="content">
                         <div class="avatar-container @sbj-avatar rounded">
-                            <MudIcon Icon="@subject.Avatar" Size="Size.Medium"/>
+                            <MudIcon Icon="@subject.Subject.GetIcon()" Size="Size.Medium"/>
                         </div>
                         <div class="pa-6">
                             <MudText Typo="Typo.body2" Class="my-2">@L["Subject"]</MudText>
@@ -18,8 +20,7 @@
                             {
                                 <MudText Typo="Typo.subtitle2" Class="my-2">
                                     <strong>@item.Value+</strong> @item.Key
-                                </MudText>    
-                            }
+                                </MudText>                            }
                         </div>
                     </a>
                 </div>
@@ -34,42 +35,41 @@
 
     protected override void OnInitialized()
     {
-        _subjects = new[]
+        _subjects = new SubjectItem[]
         {
-            new SubjectItem(
+            new(
                 Subject.History,
                 L[Subject.History.ToString()].Value,
                 Links.History.Index,
-                TwoTone.AccountBalanceTwoTone,
                 new Dictionary<string, int>
                 {
                     [L["Topics"].Value] = 10,
                     [L["Articles"].Value] = 20,
                     [L["Questions"].Value] = 30
                 }),
-            new SubjectItem(
+            new(
                 Subject.Physics,
                 L[Subject.Physics.ToString()].Value,
                 Links.Physics.Index,
-                Icons.Custom.Radioactive,
                 new Dictionary<string, int>
                 {
                     [L["Topics"].Value] = 10,
                     [L["Articles"].Value] = 20,
                     [L["Questions"].Value] = 30
                 }),
-            new SubjectItem(
+            new(
                 Subject.Astronomy,
                 L[Subject.Astronomy.ToString()].Value,
                 Links.Astronomy.Index,
-                Filled.Flare,
                 new Dictionary<string, int>
                 {
                     [L["Topics"].Value] = 10,
                     [L["Articles"].Value] = 20,
                     [L["Questions"].Value] = 30
                 })
-        };
+        }
+            .OrderBy(x => x.Title)
+            .ToArray();
     }
 
 }

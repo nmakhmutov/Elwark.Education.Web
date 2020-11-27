@@ -14,22 +14,27 @@ namespace Elwark.Education.Web.Services.User
         public UserService(HttpClient client) =>
             _client = client;
 
-        public async Task<UserModel?> GetAsync()
+        public async Task<SubscriptionItem[]> GetSubscriptionsAsync()
         {
-            var response = await _client.GetAsync("users");
+            var response = await _client.GetAsync("users/me/subscriptions");
             
             return response.IsSuccessStatusCode
-                ? JsonConvert.DeserializeObject<UserModel>(await response.Content.ReadAsStringAsync())
-                : null;
+                ? JsonConvert.DeserializeObject<SubscriptionItem[]>(await response.Content.ReadAsStringAsync())
+                : Array.Empty<SubscriptionItem>();
         }
 
-        public async Task<UserModel> CreateAsync()
+        public async Task<TestStatistics> GetStatisticsAsync()
+        {
+            var response = await _client.GetAsync("users/me/statistics");
+            response.EnsureSuccessStatusCode();
+
+            return JsonConvert.DeserializeObject<TestStatistics>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task CreateAsync()
         {
             var response = await _client.PostAsync("users", new StringContent(string.Empty, Encoding.UTF8, "application/json"));
-            if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<UserModel>(await response.Content.ReadAsStringAsync());
-            
-            throw new Exception("User not created");
+            response.EnsureSuccessStatusCode();
         }
     }
 }

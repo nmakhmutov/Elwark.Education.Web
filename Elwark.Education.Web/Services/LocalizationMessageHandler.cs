@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Elwark.Education.Web.Handlers
+namespace Elwark.Education.Web.Services
 {
     public class LocalizationMessageHandler : DelegatingHandler
     {

@@ -1,6 +1,7 @@
-namespace Elwark.Education.Web.Services
+namespace Elwark.Education.Web.Services.Model
 {
-    public enum QuestionType{
+    public enum QuestionType
+    {
         NoOptions = 0,
         SingleOption = 1,
         ManyOptions = 2,

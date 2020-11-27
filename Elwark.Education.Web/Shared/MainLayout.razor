@@ -1,5 +1,6 @@
 ﻿@using MudBlazor.Theme.Defaults
 @inherits LayoutComponentBase
+@inject ILocalStorage LocalStorage
 
 <MudThemeProvider Theme="_currentTheme"/>
 <MudDialogProvider/>
@@ -43,22 +44,23 @@
 </MudLayout>
 
 @code {
-
-    bool _drawerOpen = false;
+    bool _drawerOpen;
     MudTheme _currentTheme = new();
     string _themeIcon = Filled.Brightness7;
 
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         _currentTheme = _defaultTheme;
+        _drawerOpen = await LocalStorage.GetMainDrawerState();
     }
 
-    void SwitchTheme()
+    private async Task DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+        await LocalStorage.SetMainDrawerState(_drawerOpen);
+    }
+    
+    private void SwitchTheme()
     {
         if (_currentTheme == _defaultTheme)
         {

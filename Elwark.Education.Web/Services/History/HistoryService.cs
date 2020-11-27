@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Elwark.Education.Web.Services.History.Model;
 using Elwark.Education.Web.Services.History.Request;
+using Elwark.Education.Web.Services.Model;
 using Newtonsoft.Json;
 
 namespace Elwark.Education.Web.Services.History

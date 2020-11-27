@@ -1,7 +1,5 @@
-@using System.Globalization
 @using Blazored.LocalStorage
-@using Newtonsoft.Json
-@inject ILocalStorageService LocalStorage
+@inject ILocalStorage LocalStorage
 @inject NavigationManager NavigationManager
 
 <MudMenu StartIcon="@Filled.Translate" EndIcon="@Filled.KeyboardArrowDown" Color="Color.Inherit" Label="@Get()">
@@ -28,7 +26,7 @@
 
     private async Task Set(string language)
     {
-        await LocalStorage.SetItemAsync("language", language);
+        await LocalStorage.SetLanguageAsync(language);
         NavigationManager.NavigateTo(NavigationManager.Uri, true);
     }
 

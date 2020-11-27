@@ -6,7 +6,6 @@ namespace Elwark.Education.Web.Model
         Subject Subject,
         string Title,
         string Href,
-        string Avatar,
         IDictionary<string, int> Statistics
     );
 }

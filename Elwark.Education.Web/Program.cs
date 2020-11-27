@@ -1,8 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using Elwark.Education.Web.Handlers;
+using Elwark.Education.Web.Services;
 using Elwark.Education.Web.Services.History;
+using Elwark.Education.Web.Services.LocalStorage;
 using Elwark.Education.Web.Services.User;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,7 @@ namespace Elwark.Education.Web
                     new Uri(builder.Configuration["Urls:Gateway"]),
                     new Uri(builder.Configuration["Urls:Account"])
                 ))
+                .AddScoped<ILocalStorage, LocalStorage>()
                 .AddScoped<ElwarkAuthorizationMessageHandler>()
                 .AddScoped<LocalizationMessageHandler>();
             

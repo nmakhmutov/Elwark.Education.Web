@@ -1,4 +1,4 @@
-namespace Elwark.Education.Web.Services
+namespace Elwark.Education.Web.Services.Model
 {
     public enum ArticleType
     {

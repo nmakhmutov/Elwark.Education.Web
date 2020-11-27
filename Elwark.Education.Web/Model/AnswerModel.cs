@@ -1,5 +1,5 @@
 using System;
-using Elwark.Education.Web.Services;
+using Elwark.Education.Web.Services.Model;
 using FluentValidation;
 
 namespace Elwark.Education.Web.Model

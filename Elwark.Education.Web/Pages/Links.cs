@@ -7,12 +7,12 @@ namespace Elwark.Education.Web.Pages
         public const string Index = "/";
 
         public static class Profile
-        {
+        {   
             public const string Index = "/profile";
         }
         
         public static class History
-        {
+        {   
             public const string Index = "/history";
 
             public static string Period(PeriodType period) => $"{Index}/{period.ToString().ToLower()}";
@@ -25,7 +25,7 @@ namespace Elwark.Education.Web.Pages
         }
         
         public static class Physics
-        {
+        {   
             public const string Index = "/physics";
         }
         
