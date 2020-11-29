@@ -27,11 +27,16 @@
 }
 
 .profile-menu {
-    padding: 8px 0 8px 124px;
+    padding: 48px 0 8px 0;
     min-height: 45px;
-    display: flex;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
+    gap: 8px;
     align-items: center;
+}
+
+.profile-menu > ::deep:nth-child(even) {
+    display: none;
 }
 
 .profile-menu-item {
@@ -43,6 +48,18 @@
 @media (min-width: 600px) {
     .profile-header {
         background-image: url("https://picsum.photos/960/200");
+    }
+
+    .profile-menu {
+        padding: 8px 0 8px 124px;
+        min-height: 45px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .profile-menu > ::deep:nth-child(even) {
+        display: inherit;
     }
 }
 
