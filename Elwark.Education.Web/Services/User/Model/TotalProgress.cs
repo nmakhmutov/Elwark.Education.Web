@@ -16,7 +16,7 @@ namespace Elwark.Education.Web.Services.User.Model
         Content? Topic
     );
 
-    public sealed record Answers(long Correct, long Incorrect);
+    public sealed record Answers(long Total, int Correct, int Incorrect);
 
     public sealed record Content(long Tests, TimeElapsedRange TimeElapsed, Score Score, Answers Answers);
 
