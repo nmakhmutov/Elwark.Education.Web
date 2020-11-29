@@ -4,9 +4,9 @@ using Elwark.Education.Web.Model;
 
 namespace Elwark.Education.Web.Services.User.Model
 {
-    public sealed record TestStatistics(Total Total, IEnumerable<Statistic> Statistics);
+    public sealed record TotalProgress(Total Total, IEnumerable<Progress> Subjects);
     
-    public sealed record Statistic(
+    public sealed record Progress(
         Subject Subject,
         long PassedTests,
         TimeSpan ElapsedTime,

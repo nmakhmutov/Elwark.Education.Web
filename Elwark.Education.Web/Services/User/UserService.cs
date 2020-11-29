@@ -23,12 +23,20 @@ namespace Elwark.Education.Web.Services.User
                 : Array.Empty<SubscriptionItem>();
         }
 
-        public async Task<TestStatistics> GetStatisticsAsync()
+        public async Task<TotalProgress> GetTotalProgressAsync()
         {
-            var response = await _client.GetAsync("users/me/statistics");
+            var response = await _client.GetAsync("users/me/progress");
             response.EnsureSuccessStatusCode();
 
-            return JsonConvert.DeserializeObject<TestStatistics>(await response.Content.ReadAsStringAsync());
+            return JsonConvert.DeserializeObject<TotalProgress>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<Profile> GetProfileAsync()
+        {
+            var response = await _client.GetAsync("users/me");
+            response.EnsureSuccessStatusCode();
+
+            return JsonConvert.DeserializeObject<Profile>(await response.Content.ReadAsStringAsync());
         }
 
         public async Task CreateAsync()

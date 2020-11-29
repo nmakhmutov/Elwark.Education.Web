@@ -3,54 +3,52 @@
 @using Elwark.Education.Web.Services.User
 @using Elwark.Education.Web.Services.User.Model
 @inject IUserService UserService
-@inject IStringLocalizer<App> L
-
+@inject IStringLocalizer<ProfileLayout> L
 @attribute [Authorize]
 
-<MudGrid Spacing="1">
-    <MudItem xs="12" sm="8" md="9">
-        @if (Statistics is not null)
-        {
-            foreach (var statistic in Statistics.Statistics)
+@if (_profile is null)
+{
+    <PageLoader/>}
+else
+{
+    if (_profile.CurrentTests.Length > 0)
+    {
+        <MudText Typo="Typo.h4" Class="mb-3">
+            @L["CurrentTests"]
+        </MudText>
+        <div class="current-tests">
+            @foreach (var test in _profile.CurrentTests)
             {
-                <div>@statistic.Subject</div>
-            }
-        }
-    </MudItem>
-    <MudItem xs="12" sm="4" md="3">
-        <MudCard>
-            <MudCardContent>
-                <MudList Clickable="false">
-                    <MudListSubheader>
-                        Subscriptions
-                    </MudListSubheader>
-                    @foreach (var subscription in _subscriptions)
-                    {
-                        <MudListItem Icon="@(subscription.Subject.GetIcon())">
-                            <MudText Typo="Typo.subtitle1"> @subscription.Subject</MudText>
-                            <MudText Typo="Typo.subtitle2">@subscription.Type</MudText>
-                            @if (subscription.ExpiredAt.HasValue)
-                            {
-                                <MudText Typo="Typo.body2">
-                                    Expired at @subscription.ExpiredAt.Value.ToShortDateString()
-                                </MudText>                            }
-                        </MudListItem>                    }
-                </MudList>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-</MudGrid>
+                var link = test.Subject switch {
+                    Subject.History => Links.History.Test(test.Id),
+                    Subject.Physics => "#",
+                    Subject.Astronomy => "#",
+                    _ => "#"
+                    };
+                <MudPaper Elevation="1" Class="pa-6">
+                    <MudLink Typo="Typo.h6" Href="@link">
+                        @test.Title
+                    </MudLink>
+                    <MudText Typo="Typo.body2">
+                        @L["ExpireAt"] @(test.ExpiredAt.Date == DateTime.Now.Date
+                                           ? test.ExpiredAt.ToLongTimeString()
+                                           : test.ExpiredAt)
+                    </MudText>
+                </MudPaper>            }
+        </div>
+    }
+}
 
 @code {
 
     [CascadingParameter]
-    public TestStatistics? Statistics { get; set; }
+    public TotalProgress? TotalProgress { get; set; }
 
-    private SubscriptionItem[] _subscriptions = Array.Empty<SubscriptionItem>();
+    private Profile? _profile;
 
     protected override async Task OnInitializedAsync()
     {
-        _subscriptions = await UserService.GetSubscriptionsAsync();
+        _profile = await UserService.GetProfileAsync();
     }
 
 }

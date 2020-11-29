@@ -8,6 +8,9 @@ namespace Elwark.Education.Web.Services.User
         Task<SubscriptionItem[]> GetSubscriptionsAsync();
 
         Task CreateAsync();
-        Task<TestStatistics> GetStatisticsAsync();
+        
+        Task<TotalProgress> GetTotalProgressAsync();
+        
+        Task<Profile> GetProfileAsync();
     }
 }
