@@ -9,12 +9,10 @@
 
 @if (_test is null)
 {
-    <PageLoader/>    
-}
-else if (_test.Result is not null && _answer.State == AnswerState.Answer)
+    <PageLoader/>}
+else if (_test.Score is not null && _answer.State == AnswerState.Answer)
 {
-    <MudText Typo="Typo.h5">Congratulation</MudText>    
-}
+    <MudText Typo="Typo.h5">Congratulation</MudText>}
 else
 {
     <Title Value="@($"{L["Questions"]} {_currentQuestionNumber} / {_questions.Count}")"></Title>
@@ -42,8 +40,7 @@ else
                                         Typo="Typo.subtitle2"
                                         Color="@(_answer.IsAnswerCorrect.Value ? Color.Success : Color.Error)">
                                         @_answer.CorrectValue
-                                    </MudText>                                    
-                                }
+                                    </MudText>                                }
                             </MudContainer>
                             break;
 
@@ -123,8 +120,7 @@ else
     </EditForm>
     <MudText Typo="Typo.subtitle2" Align="Align.Center" Class="my-6">
         @_timeLeft.ToString(@"hh\:mm\:ss")
-    </MudText>    
-}
+    </MudText>}
 
 @code {
 
@@ -185,7 +181,7 @@ else
     {
         _answer.State = AnswerState.Answering;
         TestAnswerResult answer;
-        
+
         try
         {
             answer = _question switch {
@@ -212,7 +208,7 @@ else
 
         _test = _test with {
             IsComplete = answer.IsComplete,
-            Result = answer.Result
+            Score = answer.Score
             };
 
         if (!answer.IsCorrect)

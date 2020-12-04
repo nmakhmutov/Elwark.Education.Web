@@ -1,19 +1,17 @@
 using System.Collections.Generic;
+using Elwark.Education.Web.Model;
 
 namespace Elwark.Education.Web.Services.History.Model
 {
-    public abstract record TestAnswerResult(bool IsComplete, bool IsCorrect, TestResult? Result);
+    public abstract record TestAnswerResult(bool IsComplete, bool IsCorrect, Score? Score);
 
-    public sealed record TestSingleAnswerResult(bool IsComplete, bool IsCorrect, string Answer, TestResult? Result)
-        : TestAnswerResult(IsComplete, IsCorrect, Result);
+    public sealed record TestSingleAnswerResult(bool IsComplete, bool IsCorrect, string Answer, Score? Score)
+        : TestAnswerResult(IsComplete, IsCorrect, Score);
 
     public sealed record TestManyAnswersResult(
-            bool IsComplete,
-            bool IsCorrect,
-            IEnumerable<string> Answers,
-            TestResult? Result
-        )
-        : TestAnswerResult(IsComplete, IsCorrect, Result);
-    
-    public sealed record TestResult(long TotalScore, int Question, int Speed, int Unmistakable);
+        bool IsComplete,
+        bool IsCorrect,
+        IEnumerable<string> Answers,
+        Score? Score
+    ) : TestAnswerResult(IsComplete, IsCorrect, Score);
 }
