@@ -9,7 +9,7 @@ namespace Elwark.Education.Web.Services.User
 
         Task CreateAsync();
         
-        Task<TotalProgress> GetTotalProgressAsync();
+        Task<UserStatistics> GetTotalProgressAsync();
         
         Task<Profile> GetProfileAsync();
     }

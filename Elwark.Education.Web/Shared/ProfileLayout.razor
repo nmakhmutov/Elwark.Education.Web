@@ -28,14 +28,15 @@
 
 <MudPaper Square="true" Elevation="0" Class="px-6 mb-6">
     <div class="profile-menu">
-        @if (_progress is null)
+        @if (_statistics is null)
         {
             @for (var i = 0; i < 3; i++)
             {
                 <div class="profile-menu-item">
                     <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Width="30px" Height="30px"/>
                 </div>
-                <MudDivider Vertical="true" FlexItem="true" Class="mx-3"/>            }
+                <MudDivider Vertical="true" FlexItem="true" Class="mx-3"/>                
+            }
             <div class="profile-menu-item">
                 <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Width="30px" Height="30px"/>
             </div>
@@ -44,7 +45,7 @@
         {
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">
-                    @_progress.Total.PassedTests
+                    @_statistics.Total.PassedTests
                 </MudText>
                 <MudText Typo="Typo.body2">
                     @L["Tests"]
@@ -53,7 +54,7 @@
             <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">
-                    @_progress.Total.Score.Total
+                    @_statistics.Total.Score.Total
                 </MudText>
                 <MudText Typo="Typo.body2">
                     @L["Score"]
@@ -62,9 +63,9 @@
             <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">
-                    @(_progress.Total.ElapsedTime.Days > 1
-                        ? _progress.Total.ElapsedTime.ToString(@"dd\.hh\:mm\:ss")
-                        : _progress.Total.ElapsedTime.ToString(@"hh\:mm\:ss")
+                    @(_statistics.Total.ElapsedTime.Days > 1
+                        ? _statistics.Total.ElapsedTime.ToString(@"dd\.hh\:mm\:ss")
+                        : _statistics.Total.ElapsedTime.ToString(@"hh\:mm\:ss")
                         )
                 </MudText>
                 <MudText Typo="Typo.body2">
@@ -74,7 +75,7 @@
             <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">
-                    @_progress.Total.Answers.Total
+                    @_statistics.Total.Answers.Total
                 </MudText>
                 <MudText Typo="Typo.body2">
                     @L["Answers"]
@@ -85,17 +86,17 @@
 </MudPaper>
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-    <CascadingValue Value="_progress">
+    <CascadingValue Value="_statistics">
         @Body
     </CascadingValue>
 </MudContainer>
 
 @code {
-    TotalProgress? _progress;
+    UserStatistics? _statistics;
 
     protected override async Task OnInitializedAsync()
     {
-        _progress = await UserService.GetTotalProgressAsync();
+        _statistics = await UserService.GetTotalProgressAsync();
     }
 
 }

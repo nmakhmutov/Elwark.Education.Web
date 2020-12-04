@@ -4,9 +4,10 @@
 @using Elwark.Education.Web.Services.User.Model
 @inject IUserService UserService
 @inject IStringLocalizer<ProfileLayout> L
+@inject IStringLocalizer<App> Al
 @attribute [Authorize]
 
-@if (_profile is null)
+@if (_profile is null || UserStatistics is null)
 {
     <PageLoader/>}
 else
@@ -16,7 +17,7 @@ else
         <MudText Typo="Typo.h4" Class="mb-3">
             @L["CurrentTests"]
         </MudText>
-        <div class="current-tests">
+        <div class="current-tests mb-6">
             @foreach (var test in _profile.CurrentTests)
             {
                 var link = test.Subject switch {
@@ -37,18 +38,92 @@ else
                 </MudPaper>            }
         </div>
     }
-}
+    
+    <MudGrid Spacing="1">
+        <MudItem xs="12" sm="4" md="3" lg="2">
+            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
+                @L["Tests"]
+            </MudText>
+            <MudChart
+                ChartType="ChartType.Donut"
+                InputLabels="@_progressLabels"
+                InputData="@_progressTests"
+                LegendPosition="LegendPosition.Bottom"/>
+        </MudItem>
+        <MudItem xs="12" sm="4" md="3" lg="2">
+            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
+                @L["Score"]
+            </MudText>
+            <MudChart
+                ChartType="ChartType.Donut"
+                InputLabels="@_progressLabels"
+                InputData="@_progressScore"
+                LegendPosition="LegendPosition.Bottom"/>
+        </MudItem>
+        <MudItem xs="12" sm="4" md="3" lg="2">
+            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
+                @L["ElapsedTime"]
+            </MudText>
+            <MudChart
+                ChartType="ChartType.Donut"
+                InputLabels="@_progressLabels"
+                InputData="@_progressTimeElapsed"
+                LegendPosition="LegendPosition.Bottom"/>
+        </MudItem>
+        <MudItem xs="12" sm="4" md="3" lg="2">
+            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
+                @L["Answers"]
+            </MudText>
+            <MudChart
+                ChartType="ChartType.Donut"
+                InputLabels="@_progressLabels"
+                InputData="@_progressAnswers"
+                LegendPosition="LegendPosition.Bottom"/>
+        </MudItem>
+    </MudGrid>}
 
 @code {
 
     [CascadingParameter]
-    public TotalProgress? TotalProgress { get; set; }
+    public UserStatistics? UserStatistics { get; set; }
 
     private Profile? _profile;
+
+    string[] _progressLabels = Array.Empty<string>();
+    double[] _progressTests = Array.Empty<double>();
+    double[] _progressScore = Array.Empty<double>();
+    double[] _progressTimeElapsed = Array.Empty<double>();
+    double[] _progressAnswers = Array.Empty<double>();
 
     protected override async Task OnInitializedAsync()
     {
         _profile = await UserService.GetProfileAsync();
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (UserStatistics is null) 
+            return;
+        
+        var labels = new List<string>();
+        var tests = new List<double>();
+        var scores = new List<double>();
+        var timeElapsed = new List<double>();
+        var answers = new List<double>();
+
+        foreach (var progress in UserStatistics.Subjects)
+        {
+            labels.Add(Al[progress.Subject.ToString()].Value);
+            tests.Add(progress.PassedTests);
+            scores.Add(progress.Score.Total);
+            timeElapsed.Add(progress.ElapsedTime.TotalSeconds);
+            answers.Add(progress.Answers.Total);
+        }
+        _progressLabels = labels.ToArray();
+        _progressTests = tests.ToArray();
+        _progressScore = scores.ToArray();
+        _progressTimeElapsed = timeElapsed.ToArray();
+        _progressAnswers = answers.ToArray();
     }
 
 }
