@@ -1,5 +1,4 @@
-﻿@using MudBlazor.Theme.Defaults
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 @inject ILocalStorage LocalStorage
 
 <MudThemeProvider Theme="_currentTheme"/>
@@ -16,10 +15,10 @@
         </MudTooltip>
     </MudAppBar>
     <MudDrawer Open="@_drawerOpen" Clipped="false" Elevation="25">
-        <MudDrawerHeader LinkToIndex="true" Class="flex-row align-center mud-appbar py-0">
+        <a href="@Links.Index" class="drawer-header">
             <img src="http://localhost:3000/static/icons/elwark/white/32x32.png" alt="logo"/>
             <MudText Typo="Typo.h4">Education</MudText>
-        </MudDrawerHeader>
+        </a>
         <AuthorizeView>
             <Authorized>
                 <div class="appbar-band">
@@ -59,7 +58,7 @@
         _drawerOpen = !_drawerOpen;
         await LocalStorage.SetMainDrawerState(_drawerOpen);
     }
-    
+
     private void SwitchTheme()
     {
         if (_currentTheme == _defaultTheme)
