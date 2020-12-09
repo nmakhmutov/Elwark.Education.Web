@@ -5,12 +5,10 @@ namespace Elwark.Education.Web.Services.User
 {
     public interface IUserService
     {
-        Task<SubscriptionItem[]> GetSubscriptionsAsync();
-
         Task CreateAsync();
         
-        Task<UserStatistics> GetTotalProgressAsync();
+        Task<ApiResponse<SubscriptionItem[]>> GetSubscriptionsAsync();
         
-        Task<Profile> GetProfileAsync();
+        Task<ApiResponse<Profile>> GetProfileAsync();
     }
 }

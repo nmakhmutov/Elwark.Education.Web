@@ -6,57 +6,60 @@
 
 @attribute [Authorize]
 
-@if (_article is null)
+@switch (_article.Status)
 {
-    <PageLoader/>    
-}
-else if (_isTestCreating)
-{
-    <PageLoader Title="@(L["TestCreating"] + "...")"/>    
-}
-else
-{
-    <Title Value="@_article.Title"></Title>
-    <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
-        <MudGrid Spacing="0">
-            <MudItem xs="12" md="7" lg="8" xl="6" Style="min-height: 100%">
-                <MudPaper Square="true" Class="pa-6" Style="min-height: calc(100vh - 64px)">
-                    <Breadcrumbs Items="_breadcrumbs" Class="mb-6"/>
-                    <MudText Typo="Typo.h2" Class="mb-6">@_article.Title</MudText>
-                    @if (_article.IsAvailableTest)
+    case ResponseStatus.Loading:
+        <PageLoader/>
+        break;
+
+    case ResponseStatus.Fail:
+        <ErrorCard Error="_article.Error"/>
+        break;
+
+    case ResponseStatus.Success:
+        <Title Value="@_article.Data.Title"></Title>
+        <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
+            <MudGrid Spacing="0">
+                <MudItem xs="12" md="7" lg="8" xl="6" Style="min-height: 100%">
+                    <MudPaper Square="true" Class="pa-6" Style="min-height: calc(100vh - 64px)">
+                        <Breadcrumbs Items="_breadcrumbs" Class="mb-6"/>
+                        <MudText Typo="Typo.h2" Class="mb-6">@_article.Data.Title</MudText>
+                        @if (_article.Data.IsAvailableTest)
+                        {
+                            <MudButton
+                                Variant="Variant.Filled"
+                                Color="Color.Primary"
+                                Class="mb-6"
+                                OnClick="@CreateTestAsync"
+                                Disabled="_isTestCreating">
+                                @L["Test"]
+                            </MudButton>                        }
+                        @if (_article.Data.Subtitle is not null)
+                        {
+                            <MudText Typo="Typo.subtitle1" Class="mb-6">
+                                @_article.Data.Subtitle
+                            </MudText>                        }
+                        <div class="content">
+                            @((MarkupString) Markdig.Markdown.ToHtml(_article.Data.Text))
+                        </div>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12" md="5" lg="4" xl="3">
+                    @if (_article.Data.Image is not null)
                     {
-                        <MudButton
-                            Variant="Variant.Filled"
-                            Color="Color.Primary"
-                            Class="mb-6"
-                            OnClick="@CreateTestAsync"
-                            Disabled="_isTestCreating">
-                            @L["Test"]
-                        </MudButton>                    }
-                    @if (_article.Subtitle is not null)
-                    {
-                        <MudText Typo="Typo.subtitle1" Class="mb-6">
-                            @_article.Subtitle
-                        </MudText>                    }
-                    <div class="content">
-                        @((MarkupString) Markdig.Markdown.ToHtml(_article.Text))
+                        <div class="image" style="background-image: url(@_article.Data.Image)"></div>
+                    }
+                    <div class="content pa-6">
+                        @((MarkupString) Markdig.Markdown.ToHtml(_article.Data.Footnotes))
                     </div>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="12" md="5" lg="4" xl="3">
-                @if (_article.Image is not null)
-                {
-                    <div class="image" style="background-image: url(@_article.Image)"></div>
-                }
-                <div class="content pa-6">
-                    @((MarkupString) Markdig.Markdown.ToHtml(_article.Footnotes))
-                </div>
-            </MudItem>
-        </MudGrid>
-    </MudContainer>}
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+        break;
+}
 
 @code {
-    private HistoryArticleModel? _article;
+    private ApiResponse<HistoryArticleModel> _article = ApiResponse<HistoryArticleModel>.Loading();
     private bool _isTestCreating = false;
 
     [Parameter]
@@ -76,21 +79,20 @@ else
             return;
         }
 
-        if (_article is not null)
-            _breadcrumbs = new BreadcrumbsItem[]
-            {
-                new(L["History"].Value, Links.History.Index),
-                new(_article.Period.Title, Links.History.Period(_article.Period.Type)),
-                new(_article.Topic.Title, Links.History.Topic(_article.Topic.Id))
-            };
+        _breadcrumbs = new BreadcrumbsItem[]
+        {
+            new(L["History"].Value, Links.History.Index),
+            new(_article.Data.Period.Title, Links.History.Period(_article.Data.Period.Type)),
+            new(_article.Data.Topic.Title, Links.History.Topic(_article.Data.Topic.Id))
+        };
     }
 
     private async Task CreateTestAsync()
     {
         _isTestCreating = true;
         var result = await HistoryService.CreateTestForArticleAsync(Id);
-        if (result is not null)
-            NavigationManager.NavigateTo(Links.History.Test(result.TestId));
+        if (result.Status == ResponseStatus.Success)
+            NavigationManager.NavigateTo(Links.History.Test(result.Data.TestId));
 
         _isTestCreating = false;
     }

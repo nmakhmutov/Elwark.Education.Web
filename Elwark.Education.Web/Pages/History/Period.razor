@@ -3,23 +3,34 @@
 @using Elwark.Education.Web.Services.History.Request
 @inject IHistoryService HistoryService
 @inject IStringLocalizer<App> L
+
 @attribute [Authorize]
 
-@if (_period is null || _topics.Count == 0)
+@switch (_period.Status)
 {
-    <PageLoader/>    
+    case ResponseStatus.Fail:
+        <ErrorCard Error="_period.Error"/>
+        break;
+        
+    case ResponseStatus.Success:
+        <Title Value="@_period.Data.Title"></Title>
+        <div class="ma-6">
+            <Breadcrumbs Items="@_breadcrumbs" Class="mb-3"/>
+            <div class="d-flex align-center mb-3">
+                <MudAvatar Class="mr-3" Image="@(_period.Data.Image)" Style="width: 100px; height: 100px" Square="true"/>
+                <MudText Typo="Typo.h3">@_period.Data.Title</MudText>
+            </div>
+            <MudText Typo="Typo.subtitle1">@_period.Data.Description</MudText>
+        </div>
+        break;
+}
+
+@if (_topics.Count == 0)
+{
+    <PageLoader/>
 }
 else
 {
-    <Title Value="@_period.Title"></Title>
-    <div class="ma-6">
-        <Breadcrumbs Items="@_breadcrumbs" Class="mb-3"/>
-        <div class="d-flex align-center mb-3">
-            <MudAvatar Class="mr-3" Image="@(_period.Image)" Style="width: 100px; height: 100px" Square="true"/>
-            <MudText Typo="Typo.h3">@_period.Title</MudText>
-        </div>
-        <MudText Typo="Typo.subtitle1">@_period.Description</MudText>
-    </div>
     <div class="layout mx-6">
         <Virtualize Items="_topics" Context="item">
             <MudCard>
@@ -37,7 +48,8 @@ else
                     <MudDivider/>
                     <MudCardActions>
                         <LearningProgress Progress="@item.Progress"/>
-                    </MudCardActions>                }
+                    </MudCardActions>                    
+                }
             </MudCard>
         </Virtualize>
     </div>
@@ -50,9 +62,9 @@ else
 }
 
 @code {
-
     private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
-    private HistoryPeriodModel? _period;
+    
+    private ApiResponse<HistoryPeriodModel> _period = ApiResponse<HistoryPeriodModel>.Loading();
     private readonly List<HistoryTopicItem> _topics = new();
     private bool _showMore;
 
@@ -69,20 +81,28 @@ else
     protected override async Task OnParametersSetAsync()
     {
         _topics.Clear();
-        _period = null;
+        _period = ApiResponse<HistoryPeriodModel>.Loading();
         if (Enum.TryParse<PeriodType>(Type, true, out var type))
         {
             _request = new GetTopicsRequest(type, 1, 20);
             try
             {
                 _period = await HistoryService.GetPeriodAsync(type);
-                _topics.AddRange(await HistoryService.GetTopicsAsync(_request));
+                var topics = await HistoryService.GetTopicsAsync(_request);
+                
+                if (topics.Status == ResponseStatus.Success)
+                    _topics.AddRange(topics.Data);    
             }
             catch (AccessTokenNotAvailableException ex)
             {
                 ex.Redirect();
             }
+            
             _showMore = true;
+        }
+        else
+        {
+            _period = ApiResponse<HistoryPeriodModel>.Fail(new Error("NotFound", "Not Found", ""));
         }
     }
 
@@ -90,11 +110,13 @@ else
     {
         _request = _request with {Page = (short) (_request.Page + 1)};
         var result = await HistoryService.GetTopicsAsync(_request);
-        if (result.Length != _request.Count)
+        if (result.Status == ResponseStatus.Success)
         {
-            _showMore = false;
+            if (result.Data.Length != _request.Count)
+                _showMore = false;
+            
+            _topics.AddRange(result.Data);   
         }
-        _topics.AddRange(result);
     }
 
 }

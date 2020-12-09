@@ -3,7 +3,6 @@ using Elwark.Education.Web.Services.Model;
 namespace Elwark.Education.Web.Services.History.Model
 {
     public sealed record HistoryArticleItem(
-        string TopicId,
         string ArticleId,
         string Title,
         string? Subtitle,

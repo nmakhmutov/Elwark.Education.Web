@@ -6,64 +6,67 @@
 
 <Title Value="@L["History"]"></Title>
 
-@if (_articles.Length == 0 || _periods.Length == 0)
+@switch (_history.Status)
 {
-    <PageLoader/>}
-else
-{
-    <div class="ma-5">
-        <div class="period-grid">
-            @foreach (var period in _periods)
-            {
-                <MudCard>
-                    <MudCardMedia Image="@(period.Image)" Height="200"/>
-                    <MudCardContent>
-                        <MudLink Typo="Typo.h5" Href="@(Links.History.Period(period.Type))">
-                            @period.Title
-                        </MudLink>
-                        <MudText Typo="Typo.body2">
-                            @TrimDescription(period.Description)
-                        </MudText>
-                    </MudCardContent>
-                </MudCard>            }
+    case ResponseStatus.Loading:
+        <PageLoader/>
+        break;
+
+    case ResponseStatus.Fail:
+        <ErrorCard Error="_history.Error"/>
+        break;
+        
+    case ResponseStatus.Success:
+        <div class="ma-5">
+            <div class="period-grid">
+                @foreach (var period in _history.Data.Periods)
+                {
+                    <MudCard>
+                        <MudCardMedia Image="@(period.Image)" Height="200"/>
+                        <MudCardContent>
+                            <MudLink Typo="Typo.h5" Href="@(Links.History.Period(period.Type))">
+                                @period.Title
+                            </MudLink>
+                            <MudText Typo="Typo.body2">
+                                @TrimDescription(period.Description)
+                            </MudText>
+                        </MudCardContent>
+                    </MudCard>                }
+            </div>
+
+            <MudText Typo="Typo.h2" Class="mt-6">
+                @L["Articles"]
+            </MudText>
+            <div class="articles-grid">
+                @foreach (var article in _history.Data.Articles)
+                {
+                    <MudCard>
+                        @if (article.Image is not null)
+                        {
+                            <MudCardMedia Image="@(article.Image)" Height="200"/>                        }
+                        <MudCardContent>
+                            <MudLink Typo="Typo.h5" Href="@(Links.History.Article(article.ArticleId))">
+                                @article.Title
+                            </MudLink>
+                            <MudText Typo="Typo.body2">
+                                @TrimDescription(article.Subtitle)
+                            </MudText>
+                        </MudCardContent>
+                    </MudCard>                }
+            </div>
         </div>
 
-        <MudText Typo="Typo.h2" Class="mt-6">
-            @L["Articles"]
-        </MudText>
-        <div class="articles-grid">
-            @foreach (var article in _articles)
-            {
-                <MudCard>
-                    @if (article.Image is not null)
-                    {
-                        <MudCardMedia Image="@(article.Image)" Height="200"/>                    }
-                    <MudCardContent>
-                        <MudLink Typo="Typo.h5" Href="@(Links.History.Article(article.ArticleId))">
-                            @article.Title
-                        </MudLink>
-                        <MudText Typo="Typo.body2">
-                            @TrimDescription(article.Subtitle)
-                        </MudText>
-                    </MudCardContent>
-                </MudCard>            }
-        </div>
-    </div>
+        break;
 }
 
 @code {
-    private HistoryPeriodModel[] _periods = Array.Empty<HistoryPeriodModel>();
-    private HistoryArticleItem[] _articles = Array.Empty<HistoryArticleItem>();
+    private ApiResponse<HistoryAggregate> _history = ApiResponse<HistoryAggregate>.Loading();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            _periods = await HistoryService.GetPeriodsAsync();
-            _articles = (await HistoryService.GetRandomArticlesAsync())
-                .OrderBy(x => x.Image is null)
-                .ThenBy(x => x.Subtitle is null)
-                .ToArray();
+            _history = await HistoryService.GetAsync();
         }
         catch (AccessTokenNotAvailableException ex)
         {

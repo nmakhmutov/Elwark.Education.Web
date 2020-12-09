@@ -7,87 +7,125 @@
 @inject IStringLocalizer<App> Al
 @attribute [Authorize]
 
-@if (_profile is null || UserStatistics is null)
+@switch (Profile.Status)
 {
-    <PageLoader/>}
-else
-{
-    if (_profile.CurrentTests.Length > 0)
+    case ResponseStatus.Loading:
+        <PageLoader/>
+        break;
+
+    case ResponseStatus.Fail:
+        <ErrorCard Error="@Profile.Error"/>
+        break;
+
+    case ResponseStatus.Success:
     {
-        <MudText Typo="Typo.h4" Class="mb-3">
-            @L["CurrentTests"]
-        </MudText>
-        <div class="current-tests mb-6">
-            @foreach (var test in _profile.CurrentTests)
+        if (Profile.Data.CurrentTests.Length > 0)
+        {
+            <MudText Typo="Typo.h5" Class="mb-2">
+                @L["CurrentTests"]
+            </MudText>
+            <div class="current-tests mb-12">
+                @foreach (var test in Profile.Data.CurrentTests)
+                {
+                    var link = test.Subject switch {
+                        Subject.History => Links.History.Test(test.Id),
+                        Subject.Physics => "#",
+                        Subject.Astronomy => "#",
+                        _ => "#"
+                        };
+                    <MudPaper Elevation="1" Class="pa-6">
+                        <MudLink Typo="Typo.h6" Href="@link">
+                            @test.Title
+                        </MudLink>
+                        <MudText Typo="Typo.body2">
+                            @L["ExpireAt"]
+                            @(test.ExpiredAt.Date == DateTime.Now.Date
+                                ? test.ExpiredAt.ToLongTimeString()
+                                : test.ExpiredAt)
+                        </MudText>
+                    </MudPaper>                }
+            </div>
+        }
+
+        <div class="restrictions mb-6">
+            @foreach (var restriction in Profile.Data.Restrictions)
             {
-                var link = test.Subject switch {
-                    Subject.History => Links.History.Test(test.Id),
-                    Subject.Physics => "#",
-                    Subject.Astronomy => "#",
-                    _ => "#"
-                    };
-                <MudPaper Elevation="1" Class="pa-6">
-                    <MudLink Typo="Typo.h6" Href="@link">
-                        @test.Title
-                    </MudLink>
+                <div>
+                    <div class="d-flex flex-row align-center mb-3">
+                        <SubjectIcon Subject="@restriction.Subject"/>
+                        <div Class="ml-3">
+                            <MudText Typo="Typo.h5">
+                                @Al[restriction.Subject.ToString()]
+                            </MudText>
+                            <MudText Typo="Typo.subtitle2" Color="Color.Warning">
+                                Premium
+                            </MudText>
+                        </div>
+                    </div>
                     <MudText Typo="Typo.body2">
-                        @L["ExpireAt"] @(test.ExpiredAt.Date == DateTime.Now.Date
-                                           ? test.ExpiredAt.ToLongTimeString()
-                                           : test.ExpiredAt)
+                        Tests: @(restriction.TestCreation.Quantity < 0 ? "∞" : restriction.TestCreation.Quantity)
+                        @if (restriction.TestCreation.RestoreAt.HasValue)
+                        {
+                            <span>@restriction.TestCreation.RestoreAt</span>
+                        }
                     </MudText>
-                </MudPaper>            }
+                    <MudText Typo="Typo.body2">
+                        Answers: @(restriction.Answer.Quantity < 0 ? "∞" : restriction.TestCreation.Quantity)
+                    </MudText>
+                </div>
+            }
         </div>
+
+        @* <MudGrid Spacing="1"> *@
+        @*     <MudItem xs="12" sm="4" md="3" lg="2"> *@
+        @*         <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3"> *@
+        @*             @L["Tests"] *@
+        @*         </MudText> *@
+        @*         <MudChart *@
+        @*             ChartType="ChartType.Donut" *@
+        @*             InputLabels="@_progressLabels" *@
+        @*             InputData="@_progressTests" *@
+        @*             LegendPosition="LegendPosition.Bottom"/> *@
+        @*     </MudItem> *@
+        @*     <MudItem xs="12" sm="4" md="3" lg="2"> *@
+        @*         <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3"> *@
+        @*             @L["Score"] *@
+        @*         </MudText> *@
+        @*         <MudChart *@
+        @*             ChartType="ChartType.Donut" *@
+        @*             InputLabels="@_progressLabels" *@
+        @*             InputData="@_progressScore" *@
+        @*             LegendPosition="LegendPosition.Bottom"/> *@
+        @*     </MudItem> *@
+        @*     <MudItem xs="12" sm="4" md="3" lg="2"> *@
+        @*         <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3"> *@
+        @*             @L["ElapsedTime"] *@
+        @*         </MudText> *@
+        @*         <MudChart *@
+        @*             ChartType="ChartType.Donut" *@
+        @*             InputLabels="@_progressLabels" *@
+        @*             InputData="@_progressTimeElapsed" *@
+        @*             LegendPosition="LegendPosition.Bottom"/> *@
+        @*     </MudItem> *@
+        @*     <MudItem xs="12" sm="4" md="3" lg="2"> *@
+        @*         <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3"> *@
+        @*             @L["Answers"] *@
+        @*         </MudText> *@
+        @*         <MudChart *@
+        @*             ChartType="ChartType.Donut" *@
+        @*             InputLabels="@_progressLabels" *@
+        @*             InputData="@_progressAnswers" *@
+        @*             LegendPosition="LegendPosition.Bottom"/> *@
+        @*     </MudItem> *@
+        @* </MudGrid>         *@
     }
-    
-    <MudGrid Spacing="1">
-        <MudItem xs="12" sm="4" md="3" lg="2">
-            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
-                @L["Tests"]
-            </MudText>
-            <MudChart
-                ChartType="ChartType.Donut"
-                InputLabels="@_progressLabels"
-                InputData="@_progressTests"
-                LegendPosition="LegendPosition.Bottom"/>
-        </MudItem>
-        <MudItem xs="12" sm="4" md="3" lg="2">
-            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
-                @L["Score"]
-            </MudText>
-            <MudChart
-                ChartType="ChartType.Donut"
-                InputLabels="@_progressLabels"
-                InputData="@_progressScore"
-                LegendPosition="LegendPosition.Bottom"/>
-        </MudItem>
-        <MudItem xs="12" sm="4" md="3" lg="2">
-            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
-                @L["ElapsedTime"]
-            </MudText>
-            <MudChart
-                ChartType="ChartType.Donut"
-                InputLabels="@_progressLabels"
-                InputData="@_progressTimeElapsed"
-                LegendPosition="LegendPosition.Bottom"/>
-        </MudItem>
-        <MudItem xs="12" sm="4" md="3" lg="2">
-            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
-                @L["Answers"]
-            </MudText>
-            <MudChart
-                ChartType="ChartType.Donut"
-                InputLabels="@_progressLabels"
-                InputData="@_progressAnswers"
-                LegendPosition="LegendPosition.Bottom"/>
-        </MudItem>
-    </MudGrid>}
+        break;
+}
 
 @code {
 
     [CascadingParameter]
-    public UserStatistics? UserStatistics { get; set; }
-
-    private Profile? _profile;
+    public ApiResponse<Profile> Profile { get; set; } = ApiResponse<Profile>.Loading();
 
     string[] _progressLabels = Array.Empty<string>();
     double[] _progressTests = Array.Empty<double>();
@@ -95,23 +133,18 @@ else
     double[] _progressTimeElapsed = Array.Empty<double>();
     double[] _progressAnswers = Array.Empty<double>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        _profile = await UserService.GetProfileAsync();
-    }
-
     protected override void OnParametersSet()
     {
-        if (UserStatistics is null) 
+        if (Profile.Status != ResponseStatus.Success)
             return;
-        
+
         var labels = new List<string>();
         var tests = new List<double>();
         var scores = new List<double>();
         var timeElapsed = new List<double>();
         var answers = new List<double>();
 
-        foreach (var progress in UserStatistics.Subjects)
+        foreach (var progress in Profile.Data.Statistics.Subjects)
         {
             labels.Add(Al[progress.Subject.ToString()].Value);
             tests.Add(progress.Tests);
