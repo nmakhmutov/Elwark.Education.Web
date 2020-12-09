@@ -19,106 +19,130 @@
 
     case ResponseStatus.Success:
     {
-        if (Profile.Data.CurrentTests.Length > 0)
-        {
-            <MudText Typo="Typo.h5" Class="mb-2">
-                @L["CurrentTests"]
-            </MudText>
-            <div class="current-tests mb-12">
-                @foreach (var test in Profile.Data.CurrentTests)
+        <MudGrid>
+            <MudItem xs="12" md="8" lg="9" xl="10">
+                @if (Profile.Data.CurrentTests.Length > 0)
                 {
-                    var link = test.Subject switch {
-                        Subject.History => Links.History.Test(test.Id),
-                        Subject.Physics => "#",
-                        Subject.Astronomy => "#",
-                        _ => "#"
-                        };
-                    <MudPaper Elevation="1" Class="pa-6">
-                        <MudLink Typo="Typo.h6" Href="@link">
-                            @test.Title
-                        </MudLink>
-                        <MudText Typo="Typo.body2">
-                            @L["ExpireAt"]
-                            @(test.ExpiredAt.Date == DateTime.Now.Date
-                                ? test.ExpiredAt.ToLongTimeString()
-                                : test.ExpiredAt)
-                        </MudText>
-                    </MudPaper>                }
-            </div>
-        }
-
-        <div class="restrictions mb-6">
-            @foreach (var restriction in Profile.Data.Restrictions)
-            {
-                <div>
-                    <div class="d-flex flex-row align-center mb-3">
-                        <SubjectIcon Subject="@restriction.Subject"/>
-                        <div Class="ml-3">
-                            <MudText Typo="Typo.h5">
-                                @Al[restriction.Subject.ToString()]
-                            </MudText>
-                            <MudText Typo="Typo.subtitle2" Color="Color.Warning">
-                                Premium
-                            </MudText>
-                        </div>
-                    </div>
-                    <MudText Typo="Typo.body2">
-                        Tests: @(restriction.TestCreation.Quantity < 0 ? "∞" : restriction.TestCreation.Quantity)
-                        @if (restriction.TestCreation.RestoreAt.HasValue)
+                    <MudText Typo="Typo.h5" Class="mb-2">
+                        @L["CurrentTests"]
+                    </MudText>
+                    <div class="current-tests mb-12">
+                        @foreach (var test in Profile.Data.CurrentTests)
                         {
-                            <span>@restriction.TestCreation.RestoreAt</span>
-                        }
-                    </MudText>
-                    <MudText Typo="Typo.body2">
-                        Answers: @(restriction.Answer.Quantity < 0 ? "∞" : restriction.TestCreation.Quantity)
-                    </MudText>
-                </div>
-            }
-        </div>
+                            var link = test.Subject switch {
+                                Subject.History => Links.History.Test(test.Id),
+                                Subject.Physics => "#",
+                                Subject.Astronomy => "#",
+                                _ => "#"
+                                };
+                            <MudPaper Elevation="1" Class="pa-6">
+                                <MudLink Typo="Typo.h6" Href="@link">
+                                    @test.Title
+                                </MudLink>
+                                <MudText Typo="Typo.body2">
+                                    @L["ExpireAt"]
+                                    @ToDateFormat(test.ExpiredAt)
+                                </MudText>
+                            </MudPaper>                        }
+                    </div>
+                }
 
-        @* <MudGrid Spacing="1"> *@
-        @*     <MudItem xs="12" sm="4" md="3" lg="2"> *@
-        @*         <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3"> *@
-        @*             @L["Tests"] *@
-        @*         </MudText> *@
-        @*         <MudChart *@
-        @*             ChartType="ChartType.Donut" *@
-        @*             InputLabels="@_progressLabels" *@
-        @*             InputData="@_progressTests" *@
-        @*             LegendPosition="LegendPosition.Bottom"/> *@
-        @*     </MudItem> *@
-        @*     <MudItem xs="12" sm="4" md="3" lg="2"> *@
-        @*         <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3"> *@
-        @*             @L["Score"] *@
-        @*         </MudText> *@
-        @*         <MudChart *@
-        @*             ChartType="ChartType.Donut" *@
-        @*             InputLabels="@_progressLabels" *@
-        @*             InputData="@_progressScore" *@
-        @*             LegendPosition="LegendPosition.Bottom"/> *@
-        @*     </MudItem> *@
-        @*     <MudItem xs="12" sm="4" md="3" lg="2"> *@
-        @*         <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3"> *@
-        @*             @L["ElapsedTime"] *@
-        @*         </MudText> *@
-        @*         <MudChart *@
-        @*             ChartType="ChartType.Donut" *@
-        @*             InputLabels="@_progressLabels" *@
-        @*             InputData="@_progressTimeElapsed" *@
-        @*             LegendPosition="LegendPosition.Bottom"/> *@
-        @*     </MudItem> *@
-        @*     <MudItem xs="12" sm="4" md="3" lg="2"> *@
-        @*         <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3"> *@
-        @*             @L["Answers"] *@
-        @*         </MudText> *@
-        @*         <MudChart *@
-        @*             ChartType="ChartType.Donut" *@
-        @*             InputLabels="@_progressLabels" *@
-        @*             InputData="@_progressAnswers" *@
-        @*             LegendPosition="LegendPosition.Bottom"/> *@
-        @*     </MudItem> *@
-        @* </MudGrid>         *@
-    }
+                <div class="restrictions mb-6">
+                    @foreach (var restriction in Profile.Data.Restrictions)
+                    {
+                        <MudPaper Class="pa-6">
+                            <div class="d-flex flex-row align-center mb-3">
+                                <SubjectIcon Subject="@restriction.Subject"/>
+                                <div Class="ml-3">
+                                    <MudText Typo="Typo.h6">
+                                        @Al[restriction.Subject.ToString()]
+                                    </MudText>
+                                    <MudText Typo="Typo.subtitle2" Color="Color.Warning">
+                                        Premium
+                                    </MudText>
+                                </div>
+                            </div>
+                            <div class="restriction-values">
+                                <div class="d-flex flex-column align-center">
+                                    <MudText Typo="Typo.h4">
+                                        @(restriction.TestCreation.Quantity < 0 ? "∞" : restriction.TestCreation.Quantity)
+                                    </MudText>
+                                    <MudText Typo="Typo.body1">
+                                        Tests
+                                    </MudText>
+                                    @if (restriction.TestCreation.RestoreAt.HasValue)
+                                    {
+                                        <MudText Typo="Typo.caption">
+                                            @ToDateFormat(restriction.TestCreation.RestoreAt.Value)
+                                        </MudText>                                    }
+                                </div>
+
+                                <div class="d-flex flex-column align-center">
+                                    <MudText Typo="Typo.h4">
+                                        @(restriction.Answer.Quantity < 0 ? "∞" : restriction.Answer.Quantity)
+                                    </MudText>
+                                    <MudText Typo="Typo.body1">
+                                        Answers
+                                    </MudText>
+                                    @if (restriction.Answer.RestoreAt.HasValue)
+                                    {
+                                        <MudText Typo="Typo.caption">
+                                            @ToDateFormat(restriction.Answer.RestoreAt.Value)
+                                        </MudText>                                    }
+                                </div>
+                            </div>
+                        </MudPaper>                    }
+                </div>
+                
+                <MudGrid Spacing="1">
+                    <MudItem xs="12" sm="4" md="3" lg="2">
+                        <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
+                            @L["Tests"]
+                        </MudText>
+                        <MudChart
+                            ChartType="ChartType.Donut"
+                            InputLabels="@_progressLabels"
+                            InputData="@_progressTests"
+                            LegendPosition="LegendPosition.Bottom"/>
+                    </MudItem>
+                    <MudItem xs="12" sm="4" md="3" lg="2">
+                        <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
+                            @L["Score"]
+                        </MudText>
+                        <MudChart
+                            ChartType="ChartType.Donut"
+                            InputLabels="@_progressLabels"
+                            InputData="@_progressScore"
+                            LegendPosition="LegendPosition.Bottom"/>
+                    </MudItem>
+                    <MudItem xs="12" sm="4" md="3" lg="2">
+                        <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
+                            @L["ElapsedTime"]
+                        </MudText>
+                        <MudChart
+                            ChartType="ChartType.Donut"
+                            InputLabels="@_progressLabels"
+                            InputData="@_progressTimeElapsed"
+                            LegendPosition="LegendPosition.Bottom"/>
+                    </MudItem>
+                    <MudItem xs="12" sm="4" md="3" lg="2">
+                        <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
+                            @L["Answers"]
+                        </MudText>
+                        <MudChart
+                            ChartType="ChartType.Donut"
+                            InputLabels="@_progressLabels"
+                            InputData="@_progressAnswers"
+                            LegendPosition="LegendPosition.Bottom"/>
+                    </MudItem>
+                </MudGrid>
+                
+            </MudItem>
+            
+            <MudItem xs="12" md="4" lg="3" xl="2">
+                <MudDatePicker PickerVariant="PickerVariant.Static"/>
+            </MudItem>
+        </MudGrid>    }
         break;
 }
 
@@ -158,5 +182,10 @@
         _progressTimeElapsed = timeElapsed.ToArray();
         _progressAnswers = answers.ToArray();
     }
+
+    private static string ToDateFormat(DateTime date) =>
+        date.Date == DateTime.UtcNow.Date
+            ? date.ToLongTimeString()
+            : date.ToShortDateString();
 
 }
