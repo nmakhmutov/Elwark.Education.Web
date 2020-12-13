@@ -1,4 +1,4 @@
-using Elwark.Education.Web.Services.Model;
+using Elwark.Education.Web.Model;
 
 namespace Elwark.Education.Web.Services.History.Model
 {
@@ -6,7 +6,7 @@ namespace Elwark.Education.Web.Services.History.Model
         string TopicId,
         string Title,
         string Image,
-        string? Range,
+        HistoricalSegment? Segment,
         LearningProgress? Progress
     );
 }

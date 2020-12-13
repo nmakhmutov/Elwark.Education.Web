@@ -4,7 +4,7 @@ namespace Elwark.Education.Web.Services.History.Model
         string Title,
         string Description,
         string? Image,
-        string Date,
+        HistoricalSegment? Segment,
         HistoryPeriodTitle Period,
         HistoryArticleItem[] Articles
     );
