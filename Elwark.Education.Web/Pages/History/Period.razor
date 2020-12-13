@@ -6,72 +6,64 @@
 
 @attribute [Authorize]
 
-@switch (_period.Status)
+@switch (_aggregate.Status)
 {
-    case ResponseStatus.Fail:
-        <ErrorCard Error="_period.Error"/>
+    case ResponseStatus.Loading:
+        <PageLoader/>
         break;
-        
+
+    case ResponseStatus.Fail:
+        <ErrorCard Error="@_aggregate.Error"/>
+        break;
+
     case ResponseStatus.Success:
-        <Title Value="@_period.Data.Title"></Title>
+        <Title Value="@(_aggregate.Data.Period.Title)"></Title>
         <div class="ma-6">
             <Breadcrumbs Items="@_breadcrumbs" Class="mb-3"/>
             <div class="d-flex align-center mb-3">
-                <MudAvatar Class="mr-3" Image="@(_period.Data.Image)" Style="width: 100px; height: 100px" Square="true"/>
-                <MudText Typo="Typo.h3">@_period.Data.Title</MudText>
+                <MudAvatar Class="mr-3" Image="@(_aggregate.Data.Period.Image)" Square="true" Style="width: 100px; height: 100px"/>
+                <MudText Typo="Typo.h3">@_aggregate.Data.Period.Title</MudText>
             </div>
-            <MudText Typo="Typo.subtitle1">@_period.Data.Description</MudText>
+            <MudText Typo="Typo.subtitle1">
+                @_aggregate.Data.Period.Description
+            </MudText>
         </div>
+        <div class="layout mx-6">
+            <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@(async () => await LoadMoreAsync())">
+                @foreach (var item in _aggregate.Data.Topics.Items)
+                {
+                    <TopicCard
+                        Href="@Links.History.Topic(item.TopicId)"
+                        Image="@item.Image"
+                        Title="@item.Title"
+                        Subtitle="@item.Segment.ToString(L)"
+                        Progress="@item.Progress"/>
+                }
+            </InfinityScroll>
+        </div>
+        <div id="observerTarget"></div>
+        @if (!string.IsNullOrEmpty(_aggregate.Data.Topics.Token))
+        {
+            <MudButton OnClick="@LoadMoreAsync" Color="Color.Primary" Size="Size.Large" Variant="Variant.Filled"
+                       Style="margin: 10px auto;display: block">
+                @L["LoadMore"]
+            </MudButton>
+        }
         break;
 }
 
-@if (_topics.Count == 0)
-{
-    <PageLoader/>
-}
-else
-{
-    <div class="layout mx-6">
-        <Virtualize Items="_topics" Context="item">
-            <MudCard>
-                <MudCardMedia Image="@(item.Image)" Height="200"></MudCardMedia>
-                <MudCardContent>
-                    <MudLink Typo="Typo.subtitle1" Href="@(Links.History.Topic(item.TopicId))">
-                        @item.Title
-                    </MudLink>
-                    <MudText Typo="Typo.body2">
-                        @item.Range
-                    </MudText>
-                </MudCardContent>
-                @if (item.Progress is not null)
-                {
-                    <MudDivider/>
-                    <MudCardActions>
-                        <LearningProgress Progress="@item.Progress"/>
-                    </MudCardActions>                    
-                }
-            </MudCard>
-        </Virtualize>
-    </div>
-    @if (_showMore)
-    {
-        <MudButton OnClick="@LoadMoreAsync" Color="Color.Primary" Size="Size.Large" Variant="Variant.Filled" Style="margin: 10px auto;display: block">
-            @L["LoadMore"]
-        </MudButton>        
-    }
-}
-
 @code {
+
+    private record Aggregate(HistoryPeriodModel Period, PageableResponse<HistoryTopicItem> Topics);
+
+    private ApiResponse<Aggregate> _aggregate = ApiResponse<Aggregate>.Loading();
+
     private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
-    
-    private ApiResponse<HistoryPeriodModel> _period = ApiResponse<HistoryPeriodModel>.Loading();
-    private readonly List<HistoryTopicItem> _topics = new();
-    private bool _showMore;
 
     [Parameter]
     public string? Type { get; set; }
 
-    private GetTopicsRequest _request = new(PeriodType.Prehistory, 1, 20);
+    private GetTopicsRequest _request = new(PeriodType.Prehistory, null, 20);
 
     protected override void OnInitialized() => _breadcrumbs = new[]
     {
@@ -80,43 +72,63 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        _topics.Clear();
-        _period = ApiResponse<HistoryPeriodModel>.Loading();
+        _aggregate = ApiResponse<Aggregate>.Loading();
         if (Enum.TryParse<PeriodType>(Type, true, out var type))
         {
-            _request = new GetTopicsRequest(type, 1, 20);
+            _request = new GetTopicsRequest(type, null, 20);
             try
             {
-                _period = await HistoryService.GetPeriodAsync(type);
+                var period = await HistoryService.GetPeriodAsync(type);
                 var topics = await HistoryService.GetTopicsAsync(_request);
-                
-                if (topics.Status == ResponseStatus.Success)
-                    _topics.AddRange(topics.Data);    
+
+                if (period.Status == ResponseStatus.Fail)
+                {
+                    _aggregate = ApiResponse<Aggregate>.Fail(period.Error);
+                    return;
+                }
+
+                if (topics.Status == ResponseStatus.Fail)
+                {
+                    _aggregate = ApiResponse<Aggregate>.Fail(topics.Error);
+                    return;
+                }
+
+                _aggregate = ApiResponse<Aggregate>.Success(new Aggregate(period.Data, topics.Data));
+                _request = _request with {Token = topics.Data.Token};
             }
             catch (AccessTokenNotAvailableException ex)
             {
                 ex.Redirect();
             }
-            
-            _showMore = true;
         }
         else
         {
-            _period = ApiResponse<HistoryPeriodModel>.Fail(new Error("NotFound", "Not Found", ""));
+            _aggregate = ApiResponse<Aggregate>.Fail(new Error("NotFound", "Not Found", ""));
         }
     }
 
     private async Task LoadMoreAsync()
     {
-        _request = _request with {Page = (short) (_request.Page + 1)};
+        if (string.IsNullOrEmpty(_aggregate.Data.Topics.Token))
+            return;
+
+        _request = _request with {Token = _aggregate.Data.Topics.Token};
         var result = await HistoryService.GetTopicsAsync(_request);
-        if (result.Status == ResponseStatus.Success)
+        if (result.Status == ResponseStatus.Fail)
         {
-            if (result.Data.Length != _request.Count)
-                _showMore = false;
-            
-            _topics.AddRange(result.Data);   
+            _aggregate = ApiResponse<Aggregate>.Fail(result.Error);
+            return;
         }
+
+        _aggregate = ApiResponse<Aggregate>.Success(
+            new Aggregate(
+                _aggregate.Data.Period,
+                new PageableResponse<HistoryTopicItem>(
+                    _aggregate.Data.Topics.Items.Union(result.Data.Items).ToArray(),
+                    result.Data.Token
+                    )
+                )
+            );
     }
 
 }
