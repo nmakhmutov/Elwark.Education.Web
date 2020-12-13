@@ -1,0 +1,29 @@
+.progress {
+    height: 1.5em;
+    width: 100%;
+    background-color: var(--mud-palette-background);
+    position: relative;
+    border-bottom-left-radius: var(--mud-default-borderradius);
+    border-bottom-right-radius: var(--mud-default-borderradius);
+}
+
+.progress:before {
+    content: attr(data-label);
+    font-size: .875rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1.43;
+    letter-spacing: .01071em;
+    color: var(--mud-palette-drawer-text);
+    position: absolute;
+    text-align: center;
+    top: 1px;
+    left: 0;
+    right: 0;
+}
+
+.progress .value {
+    display: inline-block;
+    height: 100%;
+    border-bottom-left-radius: var(--mud-default-borderradius);
+}

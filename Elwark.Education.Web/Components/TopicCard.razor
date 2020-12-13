@@ -1,0 +1,39 @@
+<MudCard>
+    <MudCardMedia Image="@Image" Height="200"/>
+    <MudCardContent>
+        <MudLink Typo="Typo.subtitle1" Href="@Href">
+            @Title
+        </MudLink>
+        @if (Subtitle is not null)
+        {
+            <MudText Typo="Typo.body2">
+                @Subtitle
+            </MudText>            
+        }
+    </MudCardContent>
+    @if (Progress is not null)
+    {
+        <div class="progress" data-label="@(Progress.Passed + " / " + Progress.Count)">
+            <span class="value" style="width:@(Progress.Current + "%"); background-color: @Progress.Color; border-bottom-right-radius: @(Progress.Current == 100 ? "var(--mud-default-borderradius)" : 0);)"></span>
+        </div>
+    }
+</MudCard>
+
+@code {
+
+    [Parameter]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Href { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string? Subtitle { get; set; }
+
+    [Parameter]
+    public LearningProgress? Progress { get; set; }
+
+}
