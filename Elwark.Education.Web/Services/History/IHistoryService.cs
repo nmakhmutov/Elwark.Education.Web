@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
+using Elwark.Education.Web.Model;
 using Elwark.Education.Web.Services.History.Model;
 using Elwark.Education.Web.Services.History.Request;
-using Elwark.Education.Web.Services.Model;
 
 namespace Elwark.Education.Web.Services.History
 {
@@ -11,9 +11,9 @@ namespace Elwark.Education.Web.Services.History
         
         Task<ApiResponse<HistoryPeriodModel[]>> GetPeriodsAsync();
         
-        Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(PeriodType type);
+        Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(PeriodType period);
         
-        Task<ApiResponse<HistoryTopicItem[]>> GetTopicsAsync(GetTopicsRequest request);
+        Task<ApiResponse<PageableResponse<HistoryTopicItem>>> GetTopicsAsync(GetTopicsRequest request);
         
         Task<ApiResponse<HistoryTopicModel>> GetTopicAsync(string topicId);
         

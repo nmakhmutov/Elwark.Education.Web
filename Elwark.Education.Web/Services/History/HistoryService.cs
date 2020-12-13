@@ -1,8 +1,8 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using Elwark.Education.Web.Model;
 using Elwark.Education.Web.Services.History.Model;
 using Elwark.Education.Web.Services.History.Request;
-using Elwark.Education.Web.Services.Model;
 
 namespace Elwark.Education.Web.Services.History
 {
@@ -29,20 +29,20 @@ namespace Elwark.Education.Web.Services.History
             return await ToApiResponse<HistoryPeriodModel[]>(response);
         }
 
-        public async Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(PeriodType type)
+        public async Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(PeriodType period)
         {
-            var response = await _client.GetAsync($"history/periods/{type}");
+            var response = await _client.GetAsync($"history/periods/{period}");
 
             return await ToApiResponse<HistoryPeriodModel>(response);
         }
 
-        public async Task<ApiResponse<HistoryTopicItem[]>> GetTopicsAsync(GetTopicsRequest request)
+        public async Task<ApiResponse<PageableResponse<HistoryTopicItem>>> GetTopicsAsync(GetTopicsRequest request)
         {
-            var (periodType, page, count) = request;
+            var (period, token, count) = request;
 
-            var response = await _client.GetAsync($"history/periods/{periodType}/topics?page={page}&count={count}");
+            var response = await _client.GetAsync($"history/periods/{period}/topics?token={token}&count={count}");
 
-            return await ToApiResponse<HistoryTopicItem[]>(response);
+            return await ToApiResponse<PageableResponse<HistoryTopicItem>>(response);
         }
 
         public async Task<ApiResponse<HistoryTopicModel>> GetTopicAsync(string topicId)
