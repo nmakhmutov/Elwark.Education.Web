@@ -1,5 +1,6 @@
 @page "/history/topic/{id}"
 @using Elwark.Education.Web.Services.History.Model
+@using Elwark.Education.Web.Infrastructure.Extensions
 @inject IHistoryService HistoryService
 @inject IDialogService Dialog
 @inject IStringLocalizer<App> L
@@ -23,7 +24,7 @@
                     <div class="cover">
                         <div class="title-container">
                             <MudText Typo="Typo.h4" Class="mb-3">@_topic.Data.Title</MudText>
-                            <MudText Typo="Typo.subtitle1">@_topic.Data.Date</MudText>
+                            <MudText Typo="Typo.subtitle1">@_topic.Data.Segment.ToString(L)</MudText>
                         </div>
                     </div>
                 </div>
@@ -62,7 +63,7 @@
                                 <MudText Typo="Typo.body2">
                                     @if (item.Test.PassedAt.HasValue)
                                     {
-                                        <em>Last passed at @item.Test.PassedAt.Value.ToShortDateString()</em>
+                                        <em>Test passed at @item.Test.PassedAt.Value.ToShortDateString()</em>
                                     }
                                     else
                                     {

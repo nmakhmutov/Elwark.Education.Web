@@ -1,7 +1,7 @@
 using Elwark.Education.Web.Model;
 using MudBlazor;
 
-namespace Elwark.Education.Web.Extensions
+namespace Elwark.Education.Web.Infrastructure.Extensions
 {
     public static class SubjectExtensions
     {

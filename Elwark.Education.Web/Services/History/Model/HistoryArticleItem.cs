@@ -1,4 +1,4 @@
-using Elwark.Education.Web.Services.Model;
+using Elwark.Education.Web.Model;
 
 namespace Elwark.Education.Web.Services.History.Model
 {

@@ -2,7 +2,7 @@ using System.Globalization;
 using Elwark.Education.Web.Services.History.Model;
 using Microsoft.Extensions.Localization;
 
-namespace Elwark.Education.Web.Extensions
+namespace Elwark.Education.Web.Infrastructure.Extensions
 {
     internal static class HistoricalSegmentExtensions
     {

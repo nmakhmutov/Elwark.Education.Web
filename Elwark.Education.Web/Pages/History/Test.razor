@@ -136,7 +136,7 @@
     [Parameter]
     public string Id { get; init; } = default!;
 
-    private ApiResponse<HistoryTestModel> _test;
+    private ApiResponse<HistoryTestModel> _test = ApiResponse<HistoryTestModel>.Loading();
     private int _currentQuestionNumber;
     private List<HistoryTestQuestionModel> _questions = new();
     private HistoryTestQuestionModel _question = default!;

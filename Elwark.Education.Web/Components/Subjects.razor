@@ -5,12 +5,12 @@
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-12">
     <MudGrid Spacing="6" Justify="Justify.Center">
         <Virtualize Items="_subjects" Context="subject">
-            @{ var sbj = subject.Subject.ToString().ToLower(); }
+            @{ var sbj = subject.Subject.ToString().ToLowerInvariant(); }
             <MudItem xs="12" sm="6" md="4">
                 <div class="card @sbj-card">
                     <a href="@subject.Href" class="content">
                         <div class="icon-container">
-                            <SubjectIcon Subject="@subject.Subject"/>
+                            <SubjectIcon Subject="@subject.Subject" Size="@Size.Medium"/>
                         </div>
                         <div class="pa-6">
                             <MudText Typo="Typo.body2" Class="my-2">@L["Subject"]</MudText>

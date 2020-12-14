@@ -1,12 +1,13 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using Elwark.Education.Web.Infrastructure;
 using Elwark.Education.Web.Model;
 using Elwark.Education.Web.Services.History.Model;
 using Elwark.Education.Web.Services.History.Request;
 
 namespace Elwark.Education.Web.Services.History
 {
-    public sealed class HistoryService : GatewayClient, IHistoryService
+    internal sealed class HistoryService : GatewayClient, IHistoryService
     {
         private readonly HttpClient _client;
 
@@ -94,6 +95,15 @@ namespace Elwark.Education.Web.Services.History
             var response = await _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer));
 
             return await ToApiResponse<TextAnswerResult>(response);
+        }
+
+        public async Task<ApiResponse<PageableResponse<TestConclusion>>> GetTestConclusionsAsync(PageableRequest request)
+        {
+            var (token, count) = request;
+
+            var response = await _client.GetAsync($"history/me/test-conclusions?token={token}&count={count}");
+
+            return await ToApiResponse<PageableResponse<TestConclusion>>(response);
         }
     }
 }

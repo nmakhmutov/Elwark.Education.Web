@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using Elwark.Education.Web.Services;
+using Elwark.Education.Web.Infrastructure;
 using Elwark.Education.Web.Services.History;
 using Elwark.Education.Web.Services.LocalStorage;
 using Elwark.Education.Web.Services.User;

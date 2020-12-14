@@ -1,4 +1,4 @@
-namespace Elwark.Education.Web.Services.Model
+namespace Elwark.Education.Web.Model
 {
     public sealed record TestCreatedResult(string TestId);
 }

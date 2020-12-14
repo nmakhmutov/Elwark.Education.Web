@@ -28,5 +28,7 @@ namespace Elwark.Education.Web.Services.History
         Task<ApiResponse<SingleAnswerResult>> CheckTestAnswer(string testId, string questionId, SingleAnswer answer);
 
         Task<ApiResponse<TextAnswerResult>> CheckTestAnswer(string testId, string questionId, TextAnswer answer);
+
+        Task<ApiResponse<PageableResponse<TestConclusion>>> GetTestConclusionsAsync(PageableRequest request);
     }
 }

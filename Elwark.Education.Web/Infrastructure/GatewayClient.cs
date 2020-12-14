@@ -3,26 +3,24 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Elwark.Education.Web.Model;
+using Elwark.Education.Web.Services;
 using Newtonsoft.Json;
 
-namespace Elwark.Education.Web.Services
+namespace Elwark.Education.Web.Infrastructure
 {
-    public abstract class GatewayClient
+    internal abstract class GatewayClient
     {
-        private static readonly JsonSerializer JsonSerializer = new();
         protected static readonly StringContent EmptyContent = new(string.Empty, Encoding.UTF8, "application/json");
 
         protected static async Task<ApiResponse<T>> ToApiResponse<T>(HttpResponseMessage message)
         {
             await using var stream = await message.Content.ReadAsStreamAsync();
-
             using var sr = new StreamReader(stream);
             using var jsonTextReader = new JsonTextReader(sr);
             if (message.IsSuccessStatusCode)
-                return ApiResponse<T>.Success(JsonSerializer.Deserialize<T>(jsonTextReader)!);
+                return ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!);
 
-            var error = JsonSerializer.Deserialize<Error>(jsonTextReader)
+            var error = Json.Serializer.Deserialize<Error>(jsonTextReader)
                         ?? new Error("Unknown", "Unknown", string.Empty);
 
             return ApiResponse<T>.Fail(error);
@@ -32,9 +30,9 @@ namespace Elwark.Education.Web.Services
         {
             var sb = new StringBuilder(256);
             var sw = new StringWriter(sb, CultureInfo.InvariantCulture);
-            using var jsonWriter = new JsonTextWriter(sw) {Formatting = JsonSerializer.Formatting};
+            using var jsonWriter = new JsonTextWriter(sw) {Formatting = Json.Serializer.Formatting};
 
-            JsonSerializer.Serialize(jsonWriter, value);
+            Json.Serializer.Serialize(jsonWriter, value);
 
             return new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
         }

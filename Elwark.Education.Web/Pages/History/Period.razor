@@ -1,6 +1,8 @@
 @page "/history/{type}"
 @using Elwark.Education.Web.Services.History.Model
 @using Elwark.Education.Web.Services.History.Request
+@using Elwark.Education.Web.Infrastructure.Extensions
+@using Elwark.Education.Web.Infrastructure
 @inject IHistoryService HistoryService
 @inject IStringLocalizer<App> L
 
@@ -28,7 +30,7 @@
                 @_aggregate.Data.Period.Description
             </MudText>
         </div>
-        <div class="layout mx-6">
+        <div class="layout ma-6">
             <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@(async () => await LoadMoreAsync())">
                 @foreach (var item in _aggregate.Data.Topics.Items)
                 {
@@ -103,7 +105,7 @@
         }
         else
         {
-            _aggregate = ApiResponse<Aggregate>.Fail(new Error("NotFound", "Not Found", ""));
+            _aggregate = ApiResponse<Aggregate>.Fail(Error.NotFound);
         }
     }
 

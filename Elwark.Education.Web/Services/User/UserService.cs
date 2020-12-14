@@ -1,10 +1,11 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using Elwark.Education.Web.Infrastructure;
 using Elwark.Education.Web.Services.User.Model;
 
 namespace Elwark.Education.Web.Services.User
 {
-    public sealed class UserService : GatewayClient, IUserService
+    internal sealed class UserService : GatewayClient, IUserService
     {
         private readonly HttpClient _client;
 

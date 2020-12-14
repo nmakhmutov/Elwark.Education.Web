@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Elwark.Education.Web.Extensions
+namespace Elwark.Education.Web.Infrastructure.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {
