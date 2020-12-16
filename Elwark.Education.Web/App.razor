@@ -1,3 +1,4 @@
+@using Elwark.Education.Web.Infrastructure
 @inject IStringLocalizer<App> L
 
 <CascadingAuthenticationState>
@@ -21,13 +22,7 @@
         </Found>
         <NotFound>
             <LayoutView Layout="@typeof(MainLayout)">
-                <div class="d-flex align-center justify-center flex-column h-100">
-                    <MudText Typo="Typo.h1">404</MudText>
-                    <MudText Typo="Typo.h5" Class="mb-6">NOT FOUND</MudText>
-                    <MudButton Link="@Links.Index" Color="Color.Primary" Variant="Variant.Filled">
-                        Go to homepage
-                    </MudButton>
-                </div>
+                <ErrorPage Error="Error.NotFound"/>
             </LayoutView>
         </NotFound>
     </Router>

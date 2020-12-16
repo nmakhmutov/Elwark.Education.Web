@@ -3,6 +3,7 @@
 @inject IHistoryService HistoryService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
+@inject ISnackbar Snackbar
 
 @attribute [Authorize]
 
@@ -13,7 +14,7 @@
         break;
 
     case ResponseStatus.Fail:
-        <ErrorCard Error="_article.Error"/>
+        <ErrorPage Error="_article.Error"/>
         break;
 
     case ResponseStatus.Success:
@@ -26,16 +27,17 @@
                         <MudText Typo="Typo.h2" Class="mb-6">
                             @_article.Data.Title
                         </MudText>
-                        @if (_article.Data.IsAvailableTest)
+                        @if (_article.Data.IsTestAvailable)
                         {
                             <MudButton
                                 Variant="Variant.Filled"
                                 Color="Color.Primary"
                                 Class="mb-6"
                                 OnClick="@CreateTestAsync"
-                                Disabled="_isTestCreating">
+                                Disabled="@(_test != null)">
                                 @L["Test"]
-                            </MudButton>                        }
+                            </MudButton>
+                        }
                         @if (_article.Data.Subtitle is not null)
                         {
                             <MudText Typo="Typo.subtitle1" Class="mb-6">
@@ -62,12 +64,13 @@
 
 @code {
     private ApiResponse<HistoryArticleModel> _article = ApiResponse<HistoryArticleModel>.Loading();
-    private bool _isTestCreating = false;
+    private ApiResponse<TestCreatedResult>? _test;
 
     [Parameter]
     public string Id { get; set; } = default!;
 
     private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
+
 
     protected override async Task OnParametersSetAsync()
     {
@@ -81,22 +84,24 @@
             return;
         }
 
-        _breadcrumbs = new BreadcrumbsItem[]
-        {
-            new(L["History"].Value, Links.History.Index),
-            new(_article.Data.Period.Title, Links.History.Period(_article.Data.Period.Type)),
-            new(_article.Data.Topic.Title, Links.History.Topic(_article.Data.Topic.Id))
-        };
+        if (_article.Status == ResponseStatus.Success)
+            _breadcrumbs = new BreadcrumbsItem[]
+            {
+                new(L["History"].Value, Links.History.Index),
+                new(_article.Data.Period.Title, Links.History.Period(_article.Data.Period.Type)),
+                new(_article.Data.Topic.Title, Links.History.Topic(_article.Data.Topic.Id))
+            };
     }
 
     private async Task CreateTestAsync()
     {
-        _isTestCreating = true;
-        var result = await HistoryService.CreateTestForArticleAsync(Id);
-        if (result.Status == ResponseStatus.Success)
-            NavigationManager.NavigateTo(Links.History.Test(result.Data.TestId));
-
-        _isTestCreating = false;
+        _test = ApiResponse<TestCreatedResult>.Loading();
+        _test = await HistoryService.CreateTestForArticleAsync(Id);
+        
+        if (_test.Status == ResponseStatus.Success)
+            NavigationManager.NavigateTo(Links.History.Test(_test.Data.TestId));
+        else
+            Snackbar.Add(_test.Error.Title, Severity.Error);
     }
 
 }

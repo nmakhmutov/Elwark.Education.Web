@@ -1,7 +1,9 @@
 namespace Elwark.Education.Web.Infrastructure
 {
-    public sealed record Error(string Type, string Title, string Detail)
+    public sealed record Error(string Title, string Type, int Status = 400)
     {
-        public static Error NotFound = new Error("NotFound", "Not Found", string.Empty);
-    };
+        public static readonly Error NotFound = new("NotFound", "NotFound", 404);
+
+        public static readonly Error Unknown = new("Internal", "Unknown", 500);
+    }
 }

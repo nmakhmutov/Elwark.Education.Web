@@ -1,3 +1,5 @@
+@inject IStringLocalizer<App> Al
+
 <MudCard>
     <MudCardMedia Image="@Image" Height="200"/>
     <MudCardContent>
@@ -8,13 +10,35 @@
         {
             <MudText Typo="Typo.body2">
                 @Subtitle
-            </MudText>            
-        }
+            </MudText>        }
     </MudCardContent>
     @if (Progress is not null)
     {
-        <div class="progress" data-label="@(Progress.Passed + " / " + Progress.Count)">
-            <span class="value" style="width:@(Progress.Current + "%"); background-color: @Progress.Color; border-bottom-right-radius: @(Progress.Current == 100 ? "var(--mud-default-borderradius)" : 0);)"></span>
+        <MudCardActions>
+            @if (Progress.ExamPassedAt.HasValue)
+            {
+                <div class="d-flex flex-row align-center" style="color: @Progress.Color">
+                    <MudIcon Icon="@Outlined.CheckCircleOutlineOutlined"/>
+                    <MudText Typo="Typo.body1" Class="ml-1">
+                        @Al["ExamPassed"]
+                    </MudText>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex flex-row align-center">
+                    <MudIcon Icon="@Outlined.RemoveCircleOutlineOutlined"/>
+                    <MudText Typo="Typo.body2" Class="ml-2">
+                        @Al["ExamNotPassed"]
+                    </MudText>
+                </div>
+            }
+        </MudCardActions>
+        <div class="progress" data-label="@(Progress.PassedArticles + " / " + Progress.TotalArticles)">
+            <span class="value" style="
+            width:@(Progress.Percentage + "%"); 
+            background-color: @Progress.Color; 
+            border-bottom-right-radius: @(Progress.Percentage > 99.9 ? "var(--mud-default-borderradius)" : "0") "></span>
         </div>
     }
 </MudCard>
@@ -34,6 +58,6 @@
     public string? Subtitle { get; set; }
 
     [Parameter]
-    public LearningProgress? Progress { get; set; }
+    public TopicProgress? Progress { get; set; }
 
 }

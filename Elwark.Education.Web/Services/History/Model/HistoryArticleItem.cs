@@ -8,6 +8,7 @@ namespace Elwark.Education.Web.Services.History.Model
         string? Subtitle,
         string? Image,
         ArticleType Type,
-        ArticleTest Test
+        bool IsTestAvailable,
+        ArticleProgress? Progress
     );
 }

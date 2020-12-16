@@ -1,0 +1,30 @@
+@using Elwark.Education.Web.Services.User.Model
+@using Elwark.Education.Web.Infrastructure.Extensions
+@inject IStringLocalizer<App> Al
+
+<MudPaper Elevation="1" Class="pa-6">
+    <MudText Typo="Typo.subtitle1">
+        @Al[Test.Subject.ToString()]
+    </MudText>
+    <MudLink Typo="Typo.h6" Href="@Link">
+        @Test.Title
+    </MudLink>
+    <MudText Typo="Typo.body2">
+        @Al["ExpireAt"]
+        @Test.ExpiredAt.ToSimpleFormat()
+    </MudText>
+</MudPaper>
+
+@code {
+
+    [Parameter]
+    public CurrentTest Test { get; set; } = default!;
+
+    private string Link => Test.Subject switch {
+        Subject.History => Links.History.Test(Test.Id),
+        Subject.Physics => "#",
+        Subject.Astronomy => "#",
+        _ => "#"
+        };
+
+}

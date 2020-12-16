@@ -12,6 +12,6 @@ namespace Elwark.Education.Web.Services.History.Model
         string? Subtitle,
         string Text,
         string? Footnotes,
-        bool IsAvailableTest
+        bool IsTestAvailable
     );
 }

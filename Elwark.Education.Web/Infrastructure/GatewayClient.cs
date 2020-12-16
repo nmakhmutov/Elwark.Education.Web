@@ -21,7 +21,7 @@ namespace Elwark.Education.Web.Infrastructure
                 return ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!);
 
             var error = Json.Serializer.Deserialize<Error>(jsonTextReader)
-                        ?? new Error("Unknown", "Unknown", string.Empty);
+                        ?? Error.Unknown;
 
             return ApiResponse<T>.Fail(error);
         }

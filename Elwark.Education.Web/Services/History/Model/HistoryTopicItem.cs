@@ -7,6 +7,6 @@ namespace Elwark.Education.Web.Services.History.Model
         string Title,
         string Image,
         HistoricalSegment? Segment,
-        LearningProgress? Progress
+        TopicProgress? Progress
     );
 }

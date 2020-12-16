@@ -1,12 +1,20 @@
+using System;
 using MudBlazor;
 
 namespace Elwark.Education.Web.Model
 {
-    public sealed record LearningProgress(int Count, int Passed)
+    public sealed record TopicProgress(int TotalArticles, int PassedArticles, DateTime? ExamPassedAt)
     {
-        public int Current => Passed * 100 / Count;
+        public double Percentage
+        {
+            get
+            {
+                var percentage = (double) PassedArticles / TotalArticles * 100; 
+                return percentage > 100 ? 100 : percentage;
+            }
+        }
 
-        public string Color => Current switch
+        public string Color => Percentage switch
         {
             0 or < 10 => Colors.Indigo.Darken4,
             10 or < 20 => Colors.Indigo.Darken3,
