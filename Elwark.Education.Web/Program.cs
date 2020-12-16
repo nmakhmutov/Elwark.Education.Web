@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using MudBlazor.Services;
+using Polly;
+using Polly.Extensions.Http;
 
 namespace Elwark.Education.Web
 {
@@ -33,29 +35,33 @@ namespace Elwark.Education.Web
                 ))
                 .AddScoped<ILocalStorage, LocalStorage>()
                 .AddScoped<ElwarkAuthorizationMessageHandler>()
-                .AddScoped<LocalizationMessageHandler>();
+                .AddScoped<LocalizationMessageHandler>()
+                .AddScoped<ErrorManager>()
+                .AddLocalization(options => options.ResourcesPath = "Resources");
+
+            builder.Services
+                .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
+
+            var policy = HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
             
             builder.Services
                 .AddHttpClient<IHistoryService, HistoryService>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
                 )
                 .AddHttpMessageHandler<ElwarkAuthorizationMessageHandler>()
-                .AddHttpMessageHandler<LocalizationMessageHandler>();
+                .AddHttpMessageHandler<LocalizationMessageHandler>()
+                .AddPolicyHandler(policy);
 
             builder.Services
                 .AddHttpClient<IUserService, UserService>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
                 )
                 .AddHttpMessageHandler<ElwarkAuthorizationMessageHandler>()
-                .AddHttpMessageHandler<LocalizationMessageHandler>();
+                .AddHttpMessageHandler<LocalizationMessageHandler>()
+                .AddPolicyHandler(policy);
 
-            builder.Services
-                .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
-
-            builder.Services
-                .AddScoped<ErrorManager>()
-                .AddLocalization(options => options.ResourcesPath = "Resources");
-            
             await builder.Build()
                 .RunAsync();
         }
