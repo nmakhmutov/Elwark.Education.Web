@@ -53,6 +53,7 @@ namespace Elwark.Education.Web
                 .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
 
             builder.Services
+                .AddScoped<ErrorManager>()
                 .AddLocalization(options => options.ResourcesPath = "Resources");
             
             await builder.Build()

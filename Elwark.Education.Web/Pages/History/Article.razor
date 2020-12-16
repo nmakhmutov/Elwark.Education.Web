@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
 @inject ISnackbar Snackbar
+@inject ErrorManager ErrorManager
 
 @attribute [Authorize]
 
@@ -101,7 +102,7 @@
         if (_test.Status == ResponseStatus.Success)
             NavigationManager.NavigateTo(Links.History.Test(_test.Data.TestId));
         else
-            Snackbar.Add(_test.Error.Title, Severity.Error);
+            Snackbar.Add(ErrorManager.Localize(_test.Error).Title, Severity.Error);
     }
 
 }

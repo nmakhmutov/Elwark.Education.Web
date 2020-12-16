@@ -1,31 +1,38 @@
 @using Elwark.Education.Web.Infrastructure
-@inject NavigationManager NavigationManager;
+@inject NavigationManager NavigationManager
+@inject ErrorManager ErrorManager
 
 <div class="d-flex justify-content-center flex-column error">
-    <MudText Typo="Typo.h2" Align="Align.Center">
-        @Error.Title
+    <MudText Typo="Typo.h4" Align="Align.Center">
+        @_localizedError.Status: @_localizedError.Type
     </MudText>
-    <MudText Typo="Typo.h5" Class="mb-6">
-        @Error.Type
+    <MudText Typo="Typo.subtitle1" Class="mb-6">
+        @_localizedError.Title
     </MudText>
     <div class="d-flex justify-center">
         <MudButton Link="@Links.Index" Color="Color.Primary" Variant="Variant.Outlined">
-            Go to homepage
+            @ErrorManager.Localize("GoToHomepage")
         </MudButton>
         @if (Error.Status > 499)
         {
-            <MudButton OnClick="@(() => NavigationManager.NavigateTo(NavigationManager.Uri, true))" 
+            <MudButton OnClick="@(() => NavigationManager.NavigateTo(NavigationManager.Uri, true))"
                        Color="Color.Primary" Variant="Variant.Filled" Class="ml-6">
-                Reload page
-            </MudButton>    
-        }
+                @ErrorManager.Localize("ReloadPage")
+            </MudButton>        }
     </div>
 </div>
 
 
 @code {
 
+    private Error _localizedError = Error.Unknown;
+
     [Parameter]
     public Error Error { get; init; } = default!;
+
+    protected override void OnParametersSet()
+    {
+        _localizedError = ErrorManager.Localize(Error);
+    }
 
 }
