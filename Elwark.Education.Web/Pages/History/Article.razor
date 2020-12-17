@@ -1,5 +1,8 @@
 @page "/history/article/{id}"
-@using Elwark.Education.Web.Services.History.Model
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways
+@using Elwark.Education.Web.Gateways.Models.History
+@using Elwark.Education.Web.Gateways.Models.Test
 @inject IHistoryService HistoryService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
@@ -100,7 +103,7 @@
         _test = await HistoryService.CreateTestForArticleAsync(Id);
         
         if (_test.Status == ResponseStatus.Success)
-            NavigationManager.NavigateTo(Links.History.Test(_test.Data.TestId));
+            NavigationManager.NavigateTo(Links.History.Test(_test.Data.Id));
         else
             Snackbar.Add(ErrorManager.Localize(_test.Error).Title, Severity.Error);
     }

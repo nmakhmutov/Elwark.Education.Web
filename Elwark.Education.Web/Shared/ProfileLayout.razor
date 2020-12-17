@@ -1,6 +1,7 @@
-@using Elwark.Education.Web.Services.User
-@using Elwark.Education.Web.Services.User.Model
 @using Elwark.Education.Web.Infrastructure.Extensions
+@using Elwark.Education.Web.Gateways.User
+@using Elwark.Education.Web.Gateways
+@using Elwark.Education.Web.Gateways.Models.User
 @inherits LayoutComponentBase
 @layout MainLayout
 @inject IUserService UserService
@@ -46,7 +47,7 @@
         {
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">
-                    @_profile.Data.Statistics.Total.Tests
+                    @_profile.Data.Statistics.Summary.PassedTests
                 </MudText>
                 <MudText Typo="Typo.body2">
                     @L["Tests"]
@@ -55,7 +56,7 @@
             <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">
-                    @_profile.Data.Statistics.Total.Score.Total
+                    @_profile.Data.Statistics.Summary.Score.Total
                 </MudText>
                 <MudText Typo="Typo.body2">
                     @L["Score"]
@@ -64,9 +65,9 @@
             <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">
-                    @(_profile.Data.Statistics.Total.ElapsedTime.Days > 1
-                        ? _profile.Data.Statistics.Total.ElapsedTime.ToString(@"dd\.hh\:mm\:ss")
-                        : _profile.Data.Statistics.Total.ElapsedTime.ToString(@"hh\:mm\:ss")
+                    @(_profile.Data.Statistics.Summary.ElapsedTime.Days > 1
+                        ? _profile.Data.Statistics.Summary.ElapsedTime.ToString(@"dd\.hh\:mm\:ss")
+                        : _profile.Data.Statistics.Summary.ElapsedTime.ToString(@"hh\:mm\:ss")
                         )
                 </MudText>
                 <MudText Typo="Typo.body2">
@@ -76,7 +77,7 @@
             <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">
-                    @_profile.Data.Statistics.Total.AnswerRatio.Answered
+                    @_profile.Data.Statistics.Summary.AnswerRatio.Answered
                 </MudText>
                 <MudText Typo="Typo.body2">
                     @L["Answers"]

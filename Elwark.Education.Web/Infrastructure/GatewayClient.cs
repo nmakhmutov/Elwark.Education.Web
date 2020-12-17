@@ -1,9 +1,10 @@
+using System;
 using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Elwark.Education.Web.Services;
+using Elwark.Education.Web.Gateways;
 using Newtonsoft.Json;
 
 namespace Elwark.Education.Web.Infrastructure
@@ -12,6 +13,23 @@ namespace Elwark.Education.Web.Infrastructure
     {
         protected static readonly StringContent EmptyContent = new(string.Empty, Encoding.UTF8, "application/json");
 
+        protected static async Task<ApiResponse<T>> ExecuteAsync<T>(Func<Task<HttpResponseMessage>> handler)
+        {
+            try
+            {
+                var result = await handler();
+                return await ToApiResponse<T>(result);
+            }
+            catch (HttpRequestException)
+            {
+                return ApiResponse<T>.Fail(Error.Unavailable);
+            }
+            catch(Exception)
+            {
+                return ApiResponse<T>.Fail(Error.Unknown);
+            }
+        }
+        
         protected static async Task<ApiResponse<T>> ToApiResponse<T>(HttpResponseMessage message)
         {
             await using var stream = await message.Content.ReadAsStreamAsync();

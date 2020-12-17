@@ -1,5 +1,5 @@
+using Elwark.Education.Web.Gateways.Models.History;
 using Elwark.Education.Web.Model;
-using Elwark.Education.Web.Services.History.Model;
 
 namespace Elwark.Education.Web.Pages
 {
@@ -22,7 +22,7 @@ namespace Elwark.Education.Web.Pages
         {
             public const string Index = "/history";
 
-            public static string Period(PeriodType period) => 
+            public static string Period(HistoryPeriodType period) => 
                 $"{Index}/{period.ToString().ToLowerInvariant()}";
 
             public static string Topic(string topicId) => 

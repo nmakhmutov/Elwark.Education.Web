@@ -1,4 +1,5 @@
 using System;
+using Elwark.Education.Web.Gateways.Models;
 using FluentValidation;
 
 namespace Elwark.Education.Web.Model

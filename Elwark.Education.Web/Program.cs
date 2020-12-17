@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using Elwark.Education.Web.Gateways.History;
+using Elwark.Education.Web.Gateways.User;
 using Elwark.Education.Web.Infrastructure;
-using Elwark.Education.Web.Services.History;
-using Elwark.Education.Web.Services.LocalStorage;
-using Elwark.Education.Web.Services.User;
+using Elwark.Education.Web.Infrastructure.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

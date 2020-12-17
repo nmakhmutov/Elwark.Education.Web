@@ -1,5 +1,8 @@
 @page "/history/topic/{id}"
-@using Elwark.Education.Web.Services.History.Model
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways
+@using Elwark.Education.Web.Gateways.Models
+@using Elwark.Education.Web.Gateways.Models.History
 @using Elwark.Education.Web.Infrastructure.Extensions
 @inject IHistoryService HistoryService
 @inject IDialogService Dialog
@@ -43,7 +46,7 @@
                             </div>
                         }
                         <div class="article-texts">
-                            @if (item.Type == ArticleType.Premium)
+                            @if (item.Type == ContentType.Premium)
                             {
                                 <MudText Typo="Typo.body2" Color="Color.Warning">
                                     @item.Type

@@ -1,9 +1,8 @@
 ﻿@using Microsoft.Extensions.Options
-@using Elwark.Education.Web.Services.History
-@using Elwark.Education.Web.Services.History.Model
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Elwark.Education.Web.Pages.History
 @using Elwark.Education.Web.Infrastructure.Extensions
+@using Elwark.Education.Web.Gateways.Models.History
 @inject UrlsOptions Options;
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
@@ -56,7 +55,7 @@
         if (path.StartsWith(Links.History.Index))
             _subject = Subject.History;
 
-        _historyPages = Enum.GetValues<PeriodType>()
+        _historyPages = Enum.GetValues<HistoryPeriodType>()
             .ToDictionary(Links.History.Period, x => L[x.ToString()].Value);
     }
 

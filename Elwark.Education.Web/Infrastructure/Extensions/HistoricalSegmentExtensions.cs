@@ -1,5 +1,5 @@
 using System.Globalization;
-using Elwark.Education.Web.Services.History.Model;
+using Elwark.Education.Web.Gateways.Models.History;
 using Microsoft.Extensions.Localization;
 
 namespace Elwark.Education.Web.Infrastructure.Extensions

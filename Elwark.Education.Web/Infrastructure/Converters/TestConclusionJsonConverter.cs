@@ -1,5 +1,5 @@
 using System;
-using Elwark.Education.Web.Services.History.Model;
+using Elwark.Education.Web.Gateways.Models.TestConclusion;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
