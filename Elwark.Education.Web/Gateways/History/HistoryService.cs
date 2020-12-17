@@ -19,94 +19,47 @@ namespace Elwark.Education.Web.Gateways.History
             _client = client;
         }
 
-        public async Task<ApiResponse<HistoryAggregate>> GetAsync()
-        {
-            var response = await _client.GetAsync("history");
+        public Task<ApiResponse<HistoryAggregate>> GetAsync() =>
+            ExecuteAsync<HistoryAggregate>(() => _client.GetAsync("history"));
 
-            return await ToApiResponse<HistoryAggregate>(response);
-        }
+        public Task<ApiResponse<HistoryPeriodModel[]>> GetPeriodsAsync() =>
+            ExecuteAsync<HistoryPeriodModel[]>(() => _client.GetAsync("history/periods"));
 
-        public async Task<ApiResponse<HistoryPeriodModel[]>> GetPeriodsAsync()
-        {
-            var response = await _client.GetAsync("history/periods");
+        public Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(HistoryPeriodType period) =>
+            ExecuteAsync<HistoryPeriodModel>(() => _client.GetAsync($"history/periods/{period}"));
 
-            return await ToApiResponse<HistoryPeriodModel[]>(response);
-        }
+        public Task<ApiResponse<PageableResponse<HistoryTopicItem>>> GetTopicsAsync(GetTopicsRequest request) =>
+            ExecuteAsync<PageableResponse<HistoryTopicItem>>(() =>
+                _client.GetAsync($"history/periods/{request.Type}/topics?token={request.Token}&count={request.Count}"));
 
-        public async Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(HistoryPeriodType period)
-        {
-            var response = await _client.GetAsync($"history/periods/{period}");
+        public Task<ApiResponse<HistoryTopicModel>> GetTopicAsync(string topicId) =>
+            ExecuteAsync<HistoryTopicModel>(() => _client.GetAsync($"history/topics/{topicId}"));
 
-            return await ToApiResponse<HistoryPeriodModel>(response);
-        }
+        public Task<ApiResponse<HistoryArticleModel>> GetArticleAsync(string articleId) =>
+            ExecuteAsync<HistoryArticleModel>(() => _client.GetAsync($"history/articles/{articleId}"));
 
-        public async Task<ApiResponse<PageableResponse<HistoryTopicItem>>> GetTopicsAsync(GetTopicsRequest request)
-        {
-            var (period, token, count) = request;
+        public Task<ApiResponse<TestCreatedResult>> CreateTestForArticleAsync(string articleId) =>
+            ExecuteAsync<TestCreatedResult>(() =>
+                _client.PostAsync($"history/articles/{articleId}/test", EmptyContent));
 
-            var response = await _client.GetAsync($"history/periods/{period}/topics?token={token}&count={count}");
+        public Task<ApiResponse<HistoryTestModel>> GetTestAsync(string testId) =>
+            ExecuteAsync<HistoryTestModel>(() => _client.GetAsync($"history/tests/{testId}"));
 
-            return await ToApiResponse<PageableResponse<HistoryTopicItem>>(response);
-        }
+        public Task<ApiResponse<ManyAnswersResult>> CheckAnswer(string testId, string questionId, ManyAnswer answer) =>
+            ExecuteAsync<ManyAnswersResult>(() =>
+                _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
-        public async Task<ApiResponse<HistoryTopicModel>> GetTopicAsync(string topicId)
-        {
-            var response = await _client.GetAsync($"history/topics/{topicId}");
-            
-            return await ToApiResponse<HistoryTopicModel>(response);
-        }
+        public Task<ApiResponse<SingleAnswerResult>>
+            CheckAnswer(string testId, string questionId, SingleAnswer answer) =>
+            ExecuteAsync<SingleAnswerResult>(() =>
+                _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
-        public async Task<ApiResponse<HistoryArticleModel>> GetArticleAsync(string articleId)
-        {
-            var response = await _client.GetAsync($"history/articles/{articleId}");
+        public Task<ApiResponse<TextAnswerResult>> CheckAnswer(string testId, string questionId, TextAnswer answer) =>
+            ExecuteAsync<TextAnswerResult>(() =>
+                _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
-            return await ToApiResponse<HistoryArticleModel>(response);
-        }
-
-        public async Task<ApiResponse<TestCreatedResult>> CreateTestForArticleAsync(string articleId)
-        {
-            var response = await _client.PostAsync($"history/articles/{articleId}/test", EmptyContent);
-
-            return await ToApiResponse<TestCreatedResult>(response);
-        }
-
-        public async Task<ApiResponse<HistoryTestModel>> GetTestAsync(string testId)
-        {
-            var response = await _client.GetAsync($"history/tests/{testId}");
-
-            return await ToApiResponse<HistoryTestModel>(response);
-        }
-
-        public async Task<ApiResponse<ManyAnswersResult>> CheckTestAnswer(string testId, string questionId,
-            ManyAnswer answer)
-        {
-            var response = await _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer));
-
-            return await ToApiResponse<ManyAnswersResult>(response);
-        }
-        
-        public async Task<ApiResponse<SingleAnswerResult>> CheckTestAnswer(string testId, string questionId,
-            SingleAnswer answer)
-        {
-            var response = await _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer));
-
-            return await ToApiResponse<SingleAnswerResult>(response);
-        }
-        
-        public async Task<ApiResponse<TextAnswerResult>> CheckTestAnswer(string testId, string questionId, TextAnswer answer)
-        {
-            var response = await _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer));
-
-            return await ToApiResponse<TextAnswerResult>(response);
-        }
-
-        public async Task<ApiResponse<PageableResponse<TestConclusion>>> GetTestConclusionsAsync(PageableRequest request)
-        {
-            var (token, count) = request;
-
-            var response = await _client.GetAsync($"history/me/test-conclusions?token={token}&count={count}");
-
-            return await ToApiResponse<PageableResponse<TestConclusion>>(response);
-        }
+        public Task<ApiResponse<PageableResponse<TestConclusion>>> GetTestConclusionsAsync(PageableRequest request) =>
+            ExecuteAsync<PageableResponse<TestConclusion>>(() =>
+                _client.GetAsync($"history/me/test-conclusions?token={request.Token}&count={request.Count}"));
     }
 }

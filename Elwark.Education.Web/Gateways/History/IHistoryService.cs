@@ -25,11 +25,11 @@ namespace Elwark.Education.Web.Gateways.History
         
         Task<ApiResponse<HistoryTestModel>> GetTestAsync(string testId);
         
-        Task<ApiResponse<ManyAnswersResult>> CheckTestAnswer(string testId, string questionId, ManyAnswer answer);
+        Task<ApiResponse<ManyAnswersResult>> CheckAnswer(string testId, string questionId, ManyAnswer answer);
 
-        Task<ApiResponse<SingleAnswerResult>> CheckTestAnswer(string testId, string questionId, SingleAnswer answer);
+        Task<ApiResponse<SingleAnswerResult>> CheckAnswer(string testId, string questionId, SingleAnswer answer);
 
-        Task<ApiResponse<TextAnswerResult>> CheckTestAnswer(string testId, string questionId, TextAnswer answer);
+        Task<ApiResponse<TextAnswerResult>> CheckAnswer(string testId, string questionId, TextAnswer answer);
 
         Task<ApiResponse<PageableResponse<TestConclusion>>> GetTestConclusionsAsync(PageableRequest request);
     }

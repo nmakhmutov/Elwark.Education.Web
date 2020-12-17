@@ -17,8 +17,17 @@ namespace Elwark.Education.Web.Infrastructure
         {
             try
             {
-                var result = await handler();
-                return await ToApiResponse<T>(result);
+                using var message = await handler();
+                await using var stream = await message.Content.ReadAsStreamAsync();
+                using var sr = new StreamReader(stream);
+                using var jsonTextReader = new JsonTextReader(sr);
+                if (message.IsSuccessStatusCode)
+                    return ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!);
+
+                var error = Json.Serializer.Deserialize<Error>(jsonTextReader)
+                            ?? Error.Unknown;
+
+                return ApiResponse<T>.Fail(error);
             }
             catch (HttpRequestException)
             {
@@ -28,20 +37,6 @@ namespace Elwark.Education.Web.Infrastructure
             {
                 return ApiResponse<T>.Fail(Error.Unknown);
             }
-        }
-        
-        protected static async Task<ApiResponse<T>> ToApiResponse<T>(HttpResponseMessage message)
-        {
-            await using var stream = await message.Content.ReadAsStreamAsync();
-            using var sr = new StreamReader(stream);
-            using var jsonTextReader = new JsonTextReader(sr);
-            if (message.IsSuccessStatusCode)
-                return ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!);
-
-            var error = Json.Serializer.Deserialize<Error>(jsonTextReader)
-                        ?? Error.Unknown;
-
-            return ApiResponse<T>.Fail(error);
         }
 
         protected static StringContent ToJson<T>(T value)
