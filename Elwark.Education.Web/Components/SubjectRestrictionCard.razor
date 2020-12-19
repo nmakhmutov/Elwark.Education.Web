@@ -1,6 +1,6 @@
 @using Elwark.Education.Web.Infrastructure.Extensions
 @using Elwark.Education.Web.Gateways.Models.User
-@inject IStringLocalizer<App> Al
+@inject IStringLocalizer<App> L
 
 <MudCard>
     <MudCardHeader>
@@ -9,13 +9,13 @@
         </CardHeaderAvatar>
         <CardHeaderContent>
             <MudText Typo="Typo.body1">
-                @Al[Restriction.Subject.ToString()]
+                @L[Restriction.Subject.ToString()]
             </MudText>
             <MudText Typo="Typo.body2" Color="Color.Warning">
                 Premium
             </MudText>
             <MudText Typo="Typo.body2">
-                @Al["ExpireAt"] @DateTime.Now.ToShortDateString()
+                @L["ExpireAt"] @DateTime.Now.ToShortDateString()
             </MudText>
         </CardHeaderContent>
     </MudCardHeader>
@@ -32,7 +32,8 @@
                 {
                     <MudText Typo="Typo.caption">
                         Defaul value will be restored at @Restriction.TestCreation.RestoreAt.Value.ToSimpleFormat()
-                    </MudText>                }
+                    </MudText>                    
+                }
             </div>
 
             <MudText Typo="Typo.h4" Align="Align.Center">
@@ -51,8 +52,8 @@
         </div>
     </MudCardContent>
     <MudCardActions>
-        <MudButton Variant="Variant.Text" Link="@Links.Profile.Tests(Restriction.Subject)" Color="Color.Primary">
-            @Al["Tests"]
+        <MudButton Variant="Variant.Text" Link="@Links.Profile.Overview(Restriction.Subject)" Color="Color.Primary">
+            @L["Overview"]
         </MudButton>
     </MudCardActions>
 </MudCard>

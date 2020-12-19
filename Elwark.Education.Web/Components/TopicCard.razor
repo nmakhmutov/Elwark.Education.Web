@@ -1,5 +1,5 @@
 @using Elwark.Education.Web.Gateways.Models
-@inject IStringLocalizer<App> Al
+@inject IStringLocalizer<App> L
 
 <MudCard>
     <MudCardMedia Image="@Image" Height="200"/>
@@ -21,7 +21,7 @@
                 <div class="d-flex flex-row align-center" style="color: @Progress.Color">
                     <MudIcon Icon="@Outlined.CheckCircleOutlineOutlined"/>
                     <MudText Typo="Typo.body1" Class="ml-1">
-                        @Al["ExamPassed"]
+                        @L["ExamPassed"]
                     </MudText>
                 </div>
             }
@@ -30,7 +30,7 @@
                 <div class="d-flex flex-row align-center">
                     <MudIcon Icon="@Outlined.RemoveCircleOutlineOutlined"/>
                     <MudText Typo="Typo.body2" Class="ml-2">
-                        @Al["ExamNotPassed"]
+                        @L["ExamNotPassed"]
                     </MudText>
                 </div>
             }
