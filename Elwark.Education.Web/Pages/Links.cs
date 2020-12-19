@@ -11,6 +11,9 @@ namespace Elwark.Education.Web.Pages
         {
             public const string Index = "/profile";
 
+            public static string Overview(Subject subject) =>
+                $"{Index}/{subject.ToString().ToLowerInvariant()}";
+            
             public static string Tests(Subject subject) => 
                 $"{Index}/{subject.ToString().ToLowerInvariant()}/tests";
 
