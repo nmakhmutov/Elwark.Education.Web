@@ -6,7 +6,7 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
 {
     internal static class HistoricalSegmentExtensions
     {
-        public static string ToString(this HistoricalSegment? segment, IStringLocalizer<App> localizer)
+        public static string ToString(this HistoryDateRange? segment, IStringLocalizer<App> localizer)
         {
             if (segment is null)
                 return localizer["Unknown"].Value;
