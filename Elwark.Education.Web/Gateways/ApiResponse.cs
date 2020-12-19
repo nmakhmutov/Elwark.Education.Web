@@ -1,5 +1,4 @@
 using System;
-using Elwark.Education.Web.Infrastructure;
 
 namespace Elwark.Education.Web.Gateways
 {

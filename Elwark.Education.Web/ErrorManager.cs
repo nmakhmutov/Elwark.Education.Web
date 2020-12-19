@@ -1,4 +1,4 @@
-using Elwark.Education.Web.Infrastructure;
+using Elwark.Education.Web.Gateways;
 using Microsoft.Extensions.Localization;
 
 namespace Elwark.Education.Web

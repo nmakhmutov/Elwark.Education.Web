@@ -1,11 +1,9 @@
-@using Elwark.Education.Web.Infrastructure.Extensions
 @using Elwark.Education.Web.Gateways.User
-@using Elwark.Education.Web.Gateways
 @using Elwark.Education.Web.Gateways.Models.User
 @inherits LayoutComponentBase
 @layout MainLayout
-@inject IUserService UserService
-@inject IStringLocalizer<ProfileLayout> L
+@inject IUserClient UserClient
+@inject IStringLocalizer<App> L
 
 <div class="profile-header">
     <div class="profile-header-cover">
@@ -65,10 +63,7 @@
             <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">
-                    @(_profile.Data.Statistics.Summary.ElapsedTime.Days > 1
-                        ? _profile.Data.Statistics.Summary.ElapsedTime.ToString(@"dd\.hh\:mm\:ss")
-                        : _profile.Data.Statistics.Summary.ElapsedTime.ToString(@"hh\:mm\:ss")
-                        )
+                    @_profile.Data.Statistics.Summary.ElapsedTime.ToSimpleFormat()
                 </MudText>
                 <MudText Typo="Typo.body2">
                     @L["ElapsedTime"]
@@ -77,10 +72,10 @@
             <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">
-                    @_profile.Data.Statistics.Summary.AnswerRatio.Answered
+                    @_profile.Data.Statistics.Summary.AnswerRatio.Questions
                 </MudText>
                 <MudText Typo="Typo.body2">
-                    @L["Answers"]
+                    @L["Questions"]
                 </MudText>
             </div>
         }
@@ -98,7 +93,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _profile = await UserService.GetProfileAsync();
+        _profile = await UserClient.GetProfileAsync();
     }
 
 }

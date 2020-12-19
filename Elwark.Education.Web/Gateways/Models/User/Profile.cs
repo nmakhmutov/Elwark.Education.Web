@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Elwark.Education.Web.Gateways.Models.Statistics;
 using Elwark.Education.Web.Model;
 

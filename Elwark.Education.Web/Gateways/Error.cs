@@ -1,4 +1,4 @@
-namespace Elwark.Education.Web.Infrastructure
+namespace Elwark.Education.Web.Gateways
 {
     public sealed record Error(string Title, string Type, int Status = 400)
     {

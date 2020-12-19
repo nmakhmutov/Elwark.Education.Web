@@ -3,7 +3,7 @@ using Elwark.Education.Web.Gateways.Models.User;
 
 namespace Elwark.Education.Web.Gateways.User
 {
-    public interface IUserService
+    public interface IUserClient
     {
         Task CreateAsync();
         

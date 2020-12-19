@@ -7,7 +7,7 @@ using Elwark.Education.Web.Gateways.Models.TestConclusion;
 
 namespace Elwark.Education.Web.Gateways.History
 {
-    public interface IHistoryService
+    public interface IHistoryClient
     {
         Task<ApiResponse<HistoryAggregate>> GetAsync();
         
@@ -15,9 +15,9 @@ namespace Elwark.Education.Web.Gateways.History
         
         Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(HistoryPeriodType period);
         
-        Task<ApiResponse<PageableResponse<HistoryTopicItem>>> GetTopicsAsync(GetTopicsRequest request);
+        Task<ApiResponse<PageableResponse<HistoryTopicSummary>>> GetTopicsAsync(GetTopicsRequest request);
         
-        Task<ApiResponse<HistoryTopicModel>> GetTopicAsync(string topicId);
+        Task<ApiResponse<HistoryTopicDetail>> GetTopicAsync(string topicId);
         
         Task<ApiResponse<HistoryArticleModel>> GetArticleAsync(string articleId);
         
@@ -32,5 +32,7 @@ namespace Elwark.Education.Web.Gateways.History
         Task<ApiResponse<TextAnswerResult>> CheckAnswer(string testId, string questionId, TextAnswer answer);
 
         Task<ApiResponse<PageableResponse<TestConclusion>>> GetTestConclusionsAsync(PageableRequest request);
+        
+        public Task<ApiResponse<SubjectAggregate>> GetMyOverviewAsync();
     }
 }

@@ -1,15 +1,14 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Elwark.Education.Web.Gateways.Models.User;
-using Elwark.Education.Web.Infrastructure;
 
 namespace Elwark.Education.Web.Gateways.User
 {
-    internal sealed class UserService : GatewayClient, IUserService
+    internal sealed class UserClient : GatewayClient, IUserClient
     {
         private readonly HttpClient _client;
 
-        public UserService(HttpClient client) =>
+        public UserClient(HttpClient client) =>
             _client = client;
 
         public Task<ApiResponse<SubscriptionItem[]>> GetSubscriptionsAsync() =>

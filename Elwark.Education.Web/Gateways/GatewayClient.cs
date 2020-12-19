@@ -4,10 +4,10 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Elwark.Education.Web.Gateways;
+using Elwark.Education.Web.Infrastructure;
 using Newtonsoft.Json;
 
-namespace Elwark.Education.Web.Infrastructure
+namespace Elwark.Education.Web.Gateways
 {
     internal abstract class GatewayClient
     {
