@@ -1,12 +1,10 @@
 @page "/profile/history/tests"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways
 @using Elwark.Education.Web.Gateways.Models.TestConclusion
 @layout ProfileLayout
 
-@inject IHistoryService HistoryService
-@inject IStringLocalizer<ProfileLayout> L
-@inject IStringLocalizer<App> Al
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
 
 @attribute [Authorize]
 
@@ -26,7 +24,7 @@
                 <MudIcon Icon="@Filled.ArrowBack" Size="Size.Medium"/>
             </MudLink>
             <MudText Typo="Typo.h5">
-                @Al["History"]
+                @L["History"]
             </MudText>
         </div>
         @foreach (var item in _tests.Data.Items)
@@ -47,6 +45,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _tests = await HistoryService.GetTestConclusionsAsync(new PageableRequest(null, 20));
+        _tests = await HistoryClient.GetTestConclusionsAsync(new PageableRequest(null, 20));
     }
 }

@@ -1,7 +1,7 @@
 ﻿@page "/authentication/{action}"
 @using Elwark.Education.Web.Gateways.User
 
-@inject IUserService UserService
+@inject IUserClient UserClient
 
 <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnSuccessCallback"/>
 
@@ -10,6 +10,6 @@
     [Parameter]
     public string? Action { get; set; }
 
-    private Task OnSuccessCallback() => UserService.CreateAsync();
+    private Task OnSuccessCallback() => UserClient.CreateAsync();
 
 }

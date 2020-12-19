@@ -1,11 +1,8 @@
 @page "/history/{type}"
-@using Elwark.Education.Web.Infrastructure
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.History.Request
-@using Elwark.Education.Web.Gateways
 @using Elwark.Education.Web.Gateways.Models.History
-@using Elwark.Education.Web.Infrastructure.Extensions
-@inject IHistoryService HistoryService
+@inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
 
 @attribute [Authorize]
@@ -37,7 +34,7 @@
                 @foreach (var item in _aggregate.Data.Topics.Items)
                 {
                     <TopicCard
-                        Href="@Links.History.Topic(item.TopicId)"
+                        Href="@Links.History.Topic(item.Id)"
                         Image="@item.Image"
                         Title="@item.Title"
                         Subtitle="@item.Segment.ToString(L)"
@@ -58,7 +55,7 @@
 
 @code {
 
-    private record Aggregate(HistoryPeriodModel Period, PageableResponse<HistoryTopicItem> Topics);
+    private record Aggregate(HistoryPeriodModel Period, PageableResponse<HistoryTopicSummary> Topics);
 
     private ApiResponse<Aggregate> _aggregate = ApiResponse<Aggregate>.Loading();
 
@@ -82,8 +79,8 @@
             _request = new GetTopicsRequest(type, null, 20);
             try
             {
-                var period = await HistoryService.GetPeriodAsync(type);
-                var topics = await HistoryService.GetTopicsAsync(_request);
+                var period = await HistoryClient.GetPeriodAsync(type);
+                var topics = await HistoryClient.GetTopicsAsync(_request);
 
                 if (period.Status == ResponseStatus.Fail)
                 {
@@ -117,7 +114,7 @@
             return;
 
         _request = _request with {Token = _aggregate.Data.Topics.Token};
-        var result = await HistoryService.GetTopicsAsync(_request);
+        var result = await HistoryClient.GetTopicsAsync(_request);
         if (result.Status == ResponseStatus.Fail)
         {
             _aggregate = ApiResponse<Aggregate>.Fail(result.Error);
@@ -127,7 +124,7 @@
         _aggregate = ApiResponse<Aggregate>.Success(
             new Aggregate(
                 _aggregate.Data.Period,
-                new PageableResponse<HistoryTopicItem>(
+                new PageableResponse<HistoryTopicSummary>(
                     _aggregate.Data.Topics.Items.Union(result.Data.Items).ToArray(),
                     result.Data.Token
                     )

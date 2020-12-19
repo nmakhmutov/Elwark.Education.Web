@@ -1,11 +1,9 @@
 @page "/profile"
 @using Elwark.Education.Web.Gateways.User
-@using Elwark.Education.Web.Gateways
 @using Elwark.Education.Web.Gateways.Models.User
 @layout ProfileLayout
-@inject IUserService UserService
-@inject IStringLocalizer<ProfileLayout> L
-@inject IStringLocalizer<App> Al
+@inject IUserClient UserClient
+@inject IStringLocalizer<App> L
 @attribute [Authorize]
 
 @switch (Profile.Status)
@@ -35,10 +33,10 @@
                 }
 
                 <MudText Typo="Typo.h5" Class="mb-2">
-                    @Al["Subjects"]
+                    @L["Subjects"]
                 </MudText>
                 <div class="restrictions mb-6">
-                    @foreach (var restriction in Profile.Data.Restrictions.OrderBy(x => Al[x.Subject.ToString()].Value))
+                    @foreach (var restriction in Profile.Data.Restrictions.OrderBy(x => L[x.Subject.ToString()].Value))
                     {
                         <SubjectRestrictionCard Restriction="@restriction"/>                    }
                 </div>
@@ -46,7 +44,7 @@
 
             <MudItem xs="12" lg="4">
                 <MudText Typo="Typo.h5" Class="mb-2">
-                    @Al["Statistics"]
+                    @L["Statistics"]
                 </MudText>
                 <div class="statistics mb-6">
                     <MudPaper Class="pa-6">
@@ -63,7 +61,7 @@
                         else
                         {
                             <MudText Typo="Typo.caption">
-                                @Al["NoDataYet"]
+                                @L["NoDataYet"]
                             </MudText>                        }
                     </MudPaper>
                     <MudPaper Class="pa-6">
@@ -80,7 +78,7 @@
                         else
                         {
                             <MudText Typo="Typo.caption">
-                                @Al["NoDataYet"]
+                                @L["NoDataYet"]
                             </MudText>                        }
                     </MudPaper>
                     <MudPaper Class="pa-6">
@@ -97,7 +95,7 @@
                         else
                         {
                             <MudText Typo="Typo.caption">
-                                @Al["NoDataYet"]
+                                @L["NoDataYet"]
                             </MudText>                        }
                     </MudPaper>
                     <MudPaper Class="pa-6">
@@ -114,7 +112,7 @@
                         else
                         {
                             <MudText Typo="Typo.caption">
-                                @Al["NoDataYet"]
+                                @L["NoDataYet"]
                             </MudText>                        }
                     </MudPaper>
                 </div>
@@ -148,7 +146,7 @@
         for (var i = 0; i < Profile.Data.Statistics.Subjects.Length; i++)
         {
             var (subject, tests, elapsedTime, score, answers) = Profile.Data.Statistics.Subjects[i];
-            _progressLabels[i] = Al[subject.ToString()].Value;
+            _progressLabels[i] = L[subject.ToString()].Value;
             _progressTests[i] = tests;
             _progressScore[i] = score.Total;
             _progressTimeElapsed[i] = elapsedTime.TotalSeconds;

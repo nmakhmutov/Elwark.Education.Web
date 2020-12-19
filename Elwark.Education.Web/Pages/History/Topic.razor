@@ -1,10 +1,7 @@
 @page "/history/topic/{id}"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways
-@using Elwark.Education.Web.Gateways.Models
 @using Elwark.Education.Web.Gateways.Models.History
-@using Elwark.Education.Web.Infrastructure.Extensions
-@inject IHistoryService HistoryService
+@inject IHistoryClient HistoryClient
 @inject IDialogService Dialog
 @inject IStringLocalizer<App> L
 
@@ -87,7 +84,7 @@
 }
 
 @code {
-    private ApiResponse<HistoryTopicModel> _topic = ApiResponse<HistoryTopicModel>.Loading();
+    private ApiResponse<HistoryTopicDetail> _topic = ApiResponse<HistoryTopicDetail>.Loading();
 
     private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
 
@@ -98,7 +95,7 @@
     {
         try
         {
-            _topic = await HistoryService.GetTopicAsync(Id);
+            _topic = await HistoryClient.GetTopicAsync(Id);
         }
         catch (AccessTokenNotAvailableException ex)
         {

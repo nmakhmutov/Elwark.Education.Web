@@ -1,11 +1,9 @@
 @page "/history/test/{id}"
 @using System.Timers
-@using Elwark.Education.Web.Gateways
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways.Models
 @using Elwark.Education.Web.Gateways.Models.History
 @inject IStringLocalizer<Test> L
-@inject IHistoryService HistoryService
+@inject IHistoryClient HistoryClient
 
 @attribute [Authorize]
 
@@ -169,7 +167,7 @@
     {
         try
         {
-            _test = await HistoryService.GetTestAsync(Id);
+            _test = await HistoryClient.GetTestAsync(Id);
         }
         catch (AccessTokenNotAvailableException ex)
         {

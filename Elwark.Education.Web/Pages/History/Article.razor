@@ -1,9 +1,8 @@
 @page "/history/article/{id}"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways
 @using Elwark.Education.Web.Gateways.Models.History
 @using Elwark.Education.Web.Gateways.Models.Test
-@inject IHistoryService HistoryService
+@inject IHistoryClient HistoryClient
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
 @inject ISnackbar Snackbar
@@ -80,7 +79,7 @@
     {
         try
         {
-            _article = await HistoryService.GetArticleAsync(Id);
+            _article = await HistoryClient.GetArticleAsync(Id);
         }
         catch (AccessTokenNotAvailableException ex)
         {
@@ -100,7 +99,7 @@
     private async Task CreateTestAsync()
     {
         _test = ApiResponse<TestCreatedResult>.Loading();
-        _test = await HistoryService.CreateTestForArticleAsync(Id);
+        _test = await HistoryClient.CreateTestForArticleAsync(Id);
         
         if (_test.Status == ResponseStatus.Success)
             NavigationManager.NavigateTo(Links.History.Test(_test.Data.Id));
