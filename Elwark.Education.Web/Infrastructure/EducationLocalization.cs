@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Elwark.Education.Web.Infrastructure
 {
-    public class LocalizationMessageHandler : DelegatingHandler
+    public class EducationLocalization : DelegatingHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
         {

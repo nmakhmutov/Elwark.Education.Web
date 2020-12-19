@@ -33,11 +33,11 @@ namespace Elwark.Education.Web
                     new Uri(builder.Configuration["Urls:Gateway"]),
                     new Uri(builder.Configuration["Urls:Account"])
                 ))
+                .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddScoped<ILocalStorage, LocalStorage>()
-                .AddScoped<ElwarkAuthorizationMessageHandler>()
-                .AddScoped<LocalizationMessageHandler>()
-                .AddScoped<ErrorManager>()
-                .AddLocalization(options => options.ResourcesPath = "Resources");
+                .AddScoped<EducationAuthorization>()
+                .AddScoped<EducationLocalization>()
+                .AddScoped<ErrorManager>();
 
             builder.Services
                 .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
@@ -47,19 +47,19 @@ namespace Elwark.Education.Web
                 .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
             
             builder.Services
-                .AddHttpClient<IHistoryService, HistoryService>(
+                .AddHttpClient<IHistoryClient, HistoryClient>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
                 )
-                .AddHttpMessageHandler<ElwarkAuthorizationMessageHandler>()
-                .AddHttpMessageHandler<LocalizationMessageHandler>()
+                .AddHttpMessageHandler<EducationAuthorization>()
+                .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
 
             builder.Services
-                .AddHttpClient<IUserService, UserService>(
+                .AddHttpClient<IUserClient, UserClient>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
                 )
-                .AddHttpMessageHandler<ElwarkAuthorizationMessageHandler>()
-                .AddHttpMessageHandler<LocalizationMessageHandler>()
+                .AddHttpMessageHandler<EducationAuthorization>()
+                .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
 
             await builder.Build()
