@@ -1,10 +1,10 @@
 namespace Elwark.Education.Web.Gateways.Models.History
 {
-    public sealed record HistoryTopicModel(
+    public sealed record HistoryTopicDetail(
         string Title,
         string Description,
         string Image,
-        HistoricalSegment? Segment,
+        HistoryDateRange? Segment,
         HistoryPeriodTitle Period,
         HistoryArticleItem[] Articles
     );
