@@ -1,0 +1,22 @@
+.header-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr;
+    align-items: center;
+}
+
+@media (min-width: 600px) {
+    .header-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .header-text {
+        grid-column: span 2;
+    }
+}
+
+.detail-grid {
+    display: grid;
+    grid-gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}

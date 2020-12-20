@@ -1,0 +1,52 @@
+<MudPaper Class="pa-6">
+    <div class="header-grid">
+        <MudIcon Icon="@Icon" Size="Size.Large" Color="Color.Primary" Style="justify-self: center"/>
+        <div class="header-text">
+            <MudText Typo="Typo.subtitle1" Style="font-size: 1.1rem; font-weight: 400">
+                @Title
+            </MudText>
+            <MudDivider DividerType="DividerType.FullWidth" Class="my-2"/>
+            <MudText Typo="Typo.h4" Color="Color.Primary">
+                @Value
+            </MudText>
+            <MudDivider DividerType="DividerType.FullWidth" Class="my-2"/>
+            <MudText Typo="Typo.body2">
+                Last updated @DateTime.UtcNow.ToSimpleFormat()
+            </MudText>
+        </div>
+    </div>
+
+    @if (Details.Count > 0)
+    {
+        <MudDivider DividerType="DividerType.FullWidth" Class="mt-8 mb-2"/>
+        <div class="detail-grid">
+            @foreach (var item in Details)
+            {
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @item.Value
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @item.Key
+                    </MudText>
+                </div>
+            }
+        </div>
+    }
+</MudPaper>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public object Value { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Icon { get; set; } = Filled.Adjust;
+
+    [Parameter]
+    public Dictionary<string, object> Details { get; set; } = new();
+
+}

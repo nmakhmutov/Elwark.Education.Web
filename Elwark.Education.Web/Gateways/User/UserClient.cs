@@ -11,8 +11,8 @@ namespace Elwark.Education.Web.Gateways.User
         public UserClient(HttpClient client) =>
             _client = client;
 
-        public Task<ApiResponse<SubscriptionItem[]>> GetSubscriptionsAsync() =>
-            ExecuteAsync<SubscriptionItem[]>(() => _client.GetAsync("users/me/subscriptions"));
+        public Task<ApiResponse<SubscriptionSummary[]>> GetSubscriptionsAsync() =>
+            ExecuteAsync<SubscriptionSummary[]>(() => _client.GetAsync("users/me/subscriptions"));
 
         public Task<ApiResponse<Profile>> GetProfileAsync() =>
             ExecuteAsync<Profile>(() => _client.GetAsync("users/me"));

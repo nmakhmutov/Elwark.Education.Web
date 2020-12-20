@@ -36,9 +36,10 @@
                     @L["Subjects"]
                 </MudText>
                 <div class="restrictions mb-6">
-                    @foreach (var restriction in Profile.Data.Restrictions.OrderBy(x => L[x.Subject.ToString()].Value))
+                    @foreach (var subscription in Profile.Data.Subscriptions.OrderBy(x => L[x.Subject.ToString()].Value))
                     {
-                        <SubjectRestrictionCard Restriction="@restriction"/>                    }
+                        <SubscriptionCard Subscription="@subscription"/>                        
+                    }
                 </div>
             </MudItem>
 

@@ -1,18 +1,17 @@
-@using Elwark.Education.Web.Infrastructure.Extensions
 @using Elwark.Education.Web.Gateways.Models.User
 @inject IStringLocalizer<App> L
 
 <MudCard>
     <MudCardHeader>
         <CardHeaderAvatar>
-            <SubjectIcon Subject="@Restriction.Subject" Size="@Size.Medium"/>
+            <SubjectIcon Subject="@Subscription.Subject" Size="@Size.Medium"/>
         </CardHeaderAvatar>
         <CardHeaderContent>
             <MudText Typo="Typo.body1">
-                @L[Restriction.Subject.ToString()]
+                @L[Subscription.Subject.ToString()]
             </MudText>
             <MudText Typo="Typo.body2" Color="Color.Warning">
-                Premium
+                @Subscription.Type
             </MudText>
             <MudText Typo="Typo.body2">
                 @L["ExpireAt"] @DateTime.Now.ToShortDateString()
@@ -22,37 +21,37 @@
     <MudCardContent>
         <div class="values">
             <MudText Typo="Typo.h4" Align="Align.Center">
-                @(Restriction.TestCreation.Quantity < 0 ? "∞" : Restriction.TestCreation.Quantity)
+                @(Subscription.TestCreation.Quantity < 0 ? "∞" : Subscription.TestCreation.Quantity)
             </MudText>
             <div class="d-flex flex-column justify-center">
                 <MudText Typo="Typo.body1">
                     Tests you can create now.
                 </MudText>
-                @if (Restriction.TestCreation.RestoreAt.HasValue)
+                @if (Subscription.TestCreation.RestoreAt.HasValue)
                 {
                     <MudText Typo="Typo.caption">
-                        Defaul value will be restored at @Restriction.TestCreation.RestoreAt.Value.ToSimpleFormat()
+                        Defaul value will be restored at @Subscription.TestCreation.RestoreAt.Value.ToSimpleFormat()
                     </MudText>                    
                 }
             </div>
 
             <MudText Typo="Typo.h4" Align="Align.Center">
-                @(Restriction.Answer.Quantity < 0 ? "∞" : Restriction.Answer.Quantity)
+                @(Subscription.Answer.Quantity < 0 ? "∞" : Subscription.Answer.Quantity)
             </MudText>
             <div class="d-flex flex-column justify-center">
                 <MudText Typo="Typo.body1">
                     Mistakes you can make in tests
                 </MudText>
-                @if (Restriction.Answer.RestoreAt.HasValue)
+                @if (Subscription.Answer.RestoreAt.HasValue)
                 {
                     <MudText Typo="Typo.caption">
-                        Defaul value will be restored at @Restriction.Answer.RestoreAt.Value.ToSimpleFormat()
+                        Defaul value will be restored at @Subscription.Answer.RestoreAt.Value.ToSimpleFormat()
                     </MudText>                }
             </div>
         </div>
     </MudCardContent>
     <MudCardActions>
-        <MudButton Variant="Variant.Text" Link="@Links.Profile.Overview(Restriction.Subject)" Color="Color.Primary">
+        <MudButton Variant="Variant.Text" Link="@Links.Profile.Overview(Subscription.Subject)" Color="Color.Primary">
             @L["Overview"]
         </MudButton>
     </MudCardActions>
@@ -61,6 +60,6 @@
 @code {
 
     [Parameter]
-    public Restriction Restriction { get; set; } = default!;
+    public Subscription Subscription { get; set; } = default!;
 
 }

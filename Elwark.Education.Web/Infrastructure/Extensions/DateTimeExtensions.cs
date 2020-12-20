@@ -10,8 +10,8 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
                 : date.ToShortDateString();
 
         public static string ToSimpleFormat(this TimeSpan span) =>
-            span.Days > 1
-                ? span.ToString(@"dd\.hh\:mm\:ss")
+            span.TotalDays > 1
+                ? span.ToString(@"dd\.hh\:mm")
                 : span.ToString(@"hh\:mm\:ss");
     }
 }
