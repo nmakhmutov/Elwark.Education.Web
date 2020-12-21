@@ -2,6 +2,7 @@
 @using System.Timers
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.History
+@using Elwark.Education.Web.Gateways.Models.Test
 @inject IStringLocalizer<Test> L
 @inject IHistoryClient HistoryClient
 
@@ -17,7 +18,7 @@
         <ErrorPage Error="_test.Error"/>
         break;
 
-    case ResponseStatus.Success when _test.Data.Score is not null && _answer.State == AnswerState.Answer:
+    case ResponseStatus.Success when _test.Data.Score is not null:
         <MudText Typo="Typo.h5">Congratulation</MudText>
         break;
 
@@ -26,106 +27,13 @@
         <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="my-6">
             @L["Questions"] @_currentQuestionNumber / @_questions.Count
         </MudText>
-        <EditForm Model="@_answer" OnValidSubmit="@OnValidSubmit">
-            <FluentValidationValidator/>
-            <MudContainer MaxWidth="MaxWidth.Medium">
-                <MudCard>
-                    <MudCardContent>
-                        <MudText Typo="Typo.h6" Align="Align.Center">@_question.Title</MudText>
-                        @switch (_question.Type)
-                        {
-                            case QuestionType.NoOptions:
-                                <MudContainer MaxWidth="MaxWidth.ExtraSmall">
-                                    <MudTextField
-                                        @bind-Value="_answer.Value"
-                                         Label="@L["YourAnswer"]"
-                                         For="@(() => _answer.Value)"
-                                         Disabled="@_answer.IsDisabled"/>
-                                    @if (_answer.IsAnswerCorrect.HasValue)
-                                    {
-                                        <MudText
-                                            Typo="Typo.subtitle2"
-                                            Color="@(_answer.IsAnswerCorrect.Value ? Color.Success : Color.Error)">
-                                            @_answer.CorrectValue
-                                        </MudText>                                        
-                                    }
-                                </MudContainer>
-                                break;
 
-                            case QuestionType.SingleOption:
-                                <div class="d-flex flex-column align-center mt-6">
-                                    <MudRadioGroup @bind-SelectedOption="@_answer.Value">
-                                        <Virtualize Items="@_question.Options" Context="item">
-                                            @{
-                                                var color = _answer.IsAnswerCorrect switch
-                                                {
-                                                    true when item.Value == _answer.CorrectValue => Color.Success,
-                                                    false when item.Value == _answer.CorrectValue => Color.Success,
-                                                    false when item.Value == _answer.Value => Color.Error,
-                                                    _ => Color.Default
-                                                    };
-                                            }
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            <MudPaper Class="pa-6">
+                <TestForm Question="@_question" AnswerResult="@_answerResult" OnAnswer="@OnAnswer" OnNext="@NextQuestion"/>
+            </MudPaper>
+        </MudContainer>
 
-                                            <MudRadio Disabled="@_answer.IsDisabled" Color="Color.Primary" Option="@item.Value">
-                                                <MudText Typo="Typo.body1" Color="@color">
-                                                    @item
-                                                </MudText>
-                                            </MudRadio>
-                                        </Virtualize>
-                                    </MudRadioGroup>
-                                    <MudText Typo="Typo.subtitle2" Color="@Color.Error" Align="Align.Center">
-                                        <ValidationMessage For="@(() => _answer.Value)"/>
-                                    </MudText>
-                                </div>
-                                break;
-
-                            case QuestionType.ManyOptions:
-                                <MudText Typo="Typo.subtitle2" Color="@Color.Error" Align="Align.Center">
-                                    <ValidationMessage For="@(() => _answer.Value)"/>
-                                </MudText>
-                                break;
-
-                            case QuestionType.OrderedOptions:
-                                break;
-
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-                    </MudCardContent>
-                    <MudCardActions>
-                        @switch (_answer.State)
-                        {
-                            case AnswerState.Answer:
-                                <MudButton
-                                    ButtonType="ButtonType.Submit"
-                                    Variant="Variant.Filled"
-                                    Class="mx-auto mb-6"
-                                    Color="Color.Primary">
-                                    @L["Answer"]
-                                </MudButton>
-                                break;
-
-                            case AnswerState.Answering:
-                                <div class="mx-auto mb-6">
-                                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary"/>
-                                </div>
-                                break;
-
-                            case AnswerState.Next:
-                                <MudButton
-                                    ButtonType="ButtonType.Button"
-                                    Variant="Variant.Filled"
-                                    Class="mx-auto mb-6"
-                                    Color="Color.Primary"
-                                    OnClick="@NextQuestion">
-                                    @L["Next"]
-                                </MudButton>
-                                break;
-                        }
-                    </MudCardActions>
-                </MudCard>
-            </MudContainer>
-        </EditForm>
         <MudText Typo="Typo.subtitle2" Align="Align.Center" Class="my-6">
             @_timeLeft.ToString(@"hh\:mm\:ss")
         </MudText>
@@ -139,9 +47,9 @@
 
     private ApiResponse<HistoryTestModel> _test = ApiResponse<HistoryTestModel>.Loading();
     private int _currentQuestionNumber;
-    private List<HistoryTestQuestionModel> _questions = new();
-    private HistoryTestQuestionModel _question = default!;
-    private AnswerModel _answer = new();
+    private TestAnswerResult? _answerResult;
+    private List<TestQuestionModel> _questions = new();
+    private TestQuestionModel _question = default!;
     private TimeSpan _timeLeft = TimeSpan.Zero;
 
     protected override void OnInitialized()
@@ -150,9 +58,9 @@
         timer.Elapsed += (_, _) =>
         {
             _timeLeft = _test.Status == ResponseStatus.Success
-                ? _test.Data.ExpiredAt - DateTime.UtcNow 
+                ? _test.Data.ExpiredAt - DateTime.UtcNow
                 : TimeSpan.FromSeconds(1);
-            
+
             StateHasChanged();
 
             if (_timeLeft == TimeSpan.Zero)
@@ -186,67 +94,82 @@
         _question = _currentQuestionNumber == 1
             ? _questions.First()
             : _questions.First(x => !x.IsAnswered);
-
-        _answer = new AnswerModel {QuestionType = _question.Type};
     }
 
-    private async Task OnValidSubmit(EditContext context)
+    private async Task OnAnswer(TestAnswer answer)
     {
-        // _answer.State = AnswerState.Answering;
-        // TestAnswerResult answer;
-        //
-        // try
-        // {
-        //     answer = _question switch {
-        //     {Type: QuestionType.NoOptions} => 
-        //         await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, (TestAnswer) new SingleAnswer(_answer.Value)), 
-        //     
-        //     {Type: QuestionType.SingleOption} => 
-        //         await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, (TestAnswer) new SingleAnswer(_answer.Value)),
-        //     
-        //     {Type: QuestionType.ManyOptions} =>
-        //         await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, (TestAnswer) new ManyAnswer(_answer.Values)),
-        //     
-        //     {Type: QuestionType.OrderedOptions} =>
-        //         await HistoryService.CheckTestAnswer(_test!.Id, _question.Id, (TestAnswer) new ManyAnswer(_answer.Values)),
-        //     
-        //         _ => throw new ArgumentOutOfRangeException(nameof(_answer))
-        //         };
-        // }
-        // catch (AccessTokenNotAvailableException ex)
-        // {
-        //     ex.Redirect();
-        //     return;
-        // }
-        //
-        // _test = _test.Data with {
-        //     Score = answer.Score
-        //     };
-        //
-        // if (!answer.IsCorrect)
-        //     _questions.Add(_questions.First(x => x.Id == _question.Id));
-        //
-        // _answer = _answer with {
-        //     State = AnswerState.Next,
-        //     IsAnswerCorrect = answer.IsCorrect
-        //     };
-        //
-        // switch (answer)
-        // {
-        //     case TestManyAnswersResult result:
-        //         _answer.CorrectValues = result.Answers.ToArray();
-        //         break;
-        //
-        //     case TestSingleAnswerResult result:
-        //         _answer.CorrectValue = result.Answer;
-        //         break;
-        // }
+        try
+        {
+            switch (answer)
+            {
+                case ManyAnswer x:
+                {
+                    var result = await HistoryClient.CheckAnswer(_test.Data.Id, _question.Id, x);
+                    if (result.Status == ResponseStatus.Fail)
+                    {
+                        _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
+                        return;
+                    }
+                    _answerResult = result.Data;
+                    break;
+                }
+
+                case SingleAnswer x:
+                {
+                    var result = await HistoryClient.CheckAnswer(_test.Data.Id, _question.Id, x);
+                    if (result.Status == ResponseStatus.Fail)
+                    {
+                        _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
+                        return;
+                    }
+                    _answerResult = result.Data;
+                    break;
+                }
+
+                case TextAnswer x:
+                {
+                    var result = await HistoryClient.CheckAnswer(_test.Data.Id, _question.Id, x);
+                    if (result.Status == ResponseStatus.Fail)
+                    {
+                        _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
+                        return;
+                    }
+                    _answerResult = result.Data;
+                    break;
+                }
+            }
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+
+        if (_answerResult is null)
+        {
+            _test = ApiResponse<HistoryTestModel>.Fail(Error.Unknown);
+            return;
+        }
+
+        if (_answerResult.Score is not null)
+        {
+            _test = ApiResponse<HistoryTestModel>.Success(
+                new HistoryTestModel(
+                    _test.Data.Id,
+                    _test.Data.CreatedAt,
+                    _test.Data.ExpiredAt,
+                    _answerResult.Score,
+                    _test.Data.Questions
+                    )
+                );
+        }
+
+        if (!_answerResult.IsCorrect)
+            _questions.Add(_questions.First(x => x.Id == _question.Id));
     }
 
     private void NextQuestion()
     {
         _question = _questions[_currentQuestionNumber];
-        _answer = new AnswerModel {QuestionType = _question.Type};
         _currentQuestionNumber++;
     }
 

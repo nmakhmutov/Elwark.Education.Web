@@ -37,7 +37,7 @@
             <HeaderContent>
                 <MudTh>@L["Title"]</MudTh>
                 <MudTh>Complete</MudTh>
-                <MudTh>@L["ElapsedTime"]</MudTh>
+                <MudTh>@L["TimeSpent"]</MudTh>
                 <MudTh>@L["Score"]</MudTh>
                 <MudTh>@L["Created"]</MudTh>
                 <MudTh></MudTh>
@@ -48,7 +48,8 @@
                     {
                         <MudText Typo="Typo.subtitle1">
                             @L["Deleted"]
-                        </MudText>                    }
+                        </MudText>                        
+                    }
                     else
                     {
                         var link = context switch {
@@ -59,13 +60,14 @@
 
                         <MudLink Href="@link" Typo="Typo.subtitle1">
                             @context.Title
-                        </MudLink>                    }
+                        </MudLink>                        
+                    }
                 </MudTd>
                 <MudTd DataLabel="Complete">
                     <MudCheckBox Checked="@context.IsComplete" Color="Color.Primary" Disabled="true"/>
                 </MudTd>
-                <MudTd DataLabel="@L["ElapsedTime"]">
-                    @context.ElapsedTime.ToSimpleFormat()
+                <MudTd DataLabel="@L["TimeSpent"]">
+                    @context.TimeSpent.ToSimpleFormat()
                 </MudTd>
                 <MudTd DataLabel="@L["Score"]">
                     @context.Score.Total

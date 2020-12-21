@@ -4,10 +4,10 @@ namespace Elwark.Education.Web.Gateways.Models.Statistics
 {
     public sealed record StatisticsDetail(
         long PassedTests,
-        TimeSpan ElapsedTime,
+        TimeSpan TimeSpent,
         Score Score,
         AnswerRatio AnswerRatio,
         Ranking<long> ScoreRanking,
-        Ranking<TimeSpan> ElapsedTimeRanking
-    ) : StatisticsSummary(PassedTests, ElapsedTime, Score, AnswerRatio);
+        Ranking<TimeSpan> TimeSpentRanking
+    ) : StatisticsSummary(PassedTests, TimeSpent, Score, AnswerRatio);
 }

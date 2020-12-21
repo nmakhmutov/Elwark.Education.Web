@@ -2,22 +2,22 @@
 @inject IStringLocalizer<App> L
 
 <div class="common-grid">
-    <MiniStatCard Icon="@Filled.School" Title="@Statistics.PassedTests.ToString()" SubTitle="Passed tests"/>
+    <MiniStatCard Icon="@Filled.School" Title="@Statistics.PassedTests.ToString()" SubTitle="@L["PassedTests"]"/>
 
-    <MiniStatCard Icon="@Filled.Timer" Title="@Statistics.ElapsedTime.ToSimpleFormat()" SubTitle="@L["ElapsedTime"]"/>
+    <MiniStatCard Icon="@Filled.Timer" Title="@Statistics.TimeSpent.ToSimpleFormat()" SubTitle="@L["TimeSpent"]"/>
 
     <DetailStatCard
         Icon="@Filled.PendingActions"
         Value="@Statistics.Score.Total"
         Title="@L["Score"]"
-        Details="@(new Dictionary<string, object> {["By questions"] = Statistics.Score.Questions, ["Unmistakable bonus"] = Statistics.Score.Unmistakable, ["Speed bonus"] = Statistics.Score.Speed})"/>
+        Details="@(new Dictionary<string, object> {["By questions"] = Statistics.Score.Questions, ["Unmistakable bonus"] = Statistics.Score.NoMistakes, ["Speed bonus"] = Statistics.Score.Speed})"/>
 
     <DetailStatCard
         Icon="@Filled.HelpOutline"
         Value="@Statistics.AnswerRatio.Questions"
         Title="@L["Questions"]"
         Details="@(new Dictionary<string, object> {["Correct"] = Statistics.AnswerRatio.Correct, ["Incorrect"] = Statistics.AnswerRatio.Incorrect, ["Answered"] = Statistics.AnswerRatio.Answered, ["Not answered"] = Statistics.AnswerRatio.NotAnswered})"/>
-    
+
 </div>
 
 <div class="ranking-grid">
@@ -30,10 +30,10 @@
 
     <div class="mud-paper mud-elevation-1 pa-6">
         <MudText Typo="Typo.h5" Class="mb-2">
-            Elapsed time ranking
+            Time spent ranking
         </MudText>
         <RankingGrid
-            Ranking="@Statistics.ElapsedTimeRanking"
+            Ranking="@Statistics.TimeSpentRanking"
             LinkBuilder="@LinkBuilder"
             ValueConverter="@((TimeSpan item) => item.ToSimpleFormat())"/>
     </div>

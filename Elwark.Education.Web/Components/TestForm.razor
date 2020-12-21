@@ -1,0 +1,153 @@
+@using Elwark.Education.Web.Gateways.Models.Test
+@inject IStringLocalizer<App> L
+
+<EditForm Model="@_answer" OnValidSubmit="@OnValidSubmit">
+    <FluentValidationValidator/>
+    <div class="form-grid">
+        <MudText Typo="Typo.h6" Align="Align.Center">@Question.Title</MudText>
+        @if (Question.Image is not null)
+        {
+            <img src="@Question.Image" alt="@Question.Title"/>
+        }
+
+        @switch (Question.Type)
+        {
+            case QuestionType.TextAnswer:
+                <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+                    <MudTextField
+                        @bind-Value="_answer.TextAnswer"
+                         Label="@L["YourAnswer"]"
+                         For="@(() => _answer.TextAnswer)"
+                         Disabled="@(AnswerResult != null)"/>
+                    @if (AnswerResult is TextAnswerResult answer)
+                    {
+                        <MudText
+                            Typo="Typo.subtitle2"
+                            Color="@(answer.IsCorrect ? Color.Success : Color.Error)">
+                            @answer.Text
+                        </MudText>                        
+                    }
+                </MudContainer>
+                break;
+
+            case QuestionType.SingleAnswer:
+                <div class="d-flex flex-column align-center mt-6">
+                    <MudRadioGroup SelectedOptionChanged="@(s => _answer.SingleAnswer = int.Parse(s))"
+                                   SelectedOption="@_answer.SingleAnswer.ToString()">
+                        <Virtualize Items="@Question.Options" Context="item">
+                            @{
+                                var color = AnswerResult switch
+                                {
+                                    SingleAnswerResult {IsCorrect: true } x when item.Number == x.Number => Color.Success,
+                                
+                                    SingleAnswerResult {IsCorrect: false} x when item.Number == x.Number => Color.Success,
+                                
+                                    SingleAnswerResult {IsCorrect: false} x when item.Number == x.Number => Color.Error,
+                                
+                                    _ => Color.Default
+                                    };
+                            }
+
+                            <MudRadio Disabled="@(AnswerResult != null)" Color="Color.Primary" Option="@item.Number.ToString()">
+                                <MudText Typo="Typo.body1" Color="@color">
+                                    @item.Value
+                                </MudText>
+                            </MudRadio>
+                        </Virtualize>
+                    </MudRadioGroup>
+                    <MudText Typo="Typo.subtitle2" Color="@Color.Error" Align="Align.Center">
+                        <ValidationMessage For="@(() => _answer.SingleAnswer)"/>
+                    </MudText>
+                </div>
+                break;
+
+            case QuestionType.ManyAnswers:
+                <MudText Typo="Typo.subtitle2" Color="@Color.Error" Align="Align.Center">
+                    @* <ValidationMessage For="@(() => _answer.TextValue)"/> *@
+                </MudText>
+                break;
+
+            case QuestionType.SortedAnswers:
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(Question.Type), Question.Title, "Unsupported question type");
+        }
+
+        @switch (_answerState)
+        {
+            case AnswerState.Answer:
+                <MudButton
+                    ButtonType="ButtonType.Submit"
+                    Variant="Variant.Filled"
+                    Class="mx-auto mb-6"
+                    Color="Color.Primary">
+                    @L["Answer"]
+                </MudButton>
+                break;
+
+            case AnswerState.Answering:
+                <div class="mx-auto mb-6">
+                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary"/>
+                </div>
+                break;
+
+            case AnswerState.Next:
+                <MudButton
+                    ButtonType="ButtonType.Button"
+                    Variant="Variant.Filled"
+                    Class="mx-auto mb-6"
+                    Color="Color.Primary"
+                    OnClick="@OnNextClick">
+                    @L["Next"]
+                </MudButton>
+                break;
+        }
+    </div>
+</EditForm>
+
+@code {
+
+    private AnswerModel _answer = new();
+    private AnswerState _answerState = AnswerState.Answer;
+
+    [Parameter]
+    public TestQuestionModel Question { get; set; } = default!;
+
+    [Parameter]
+    public TestAnswerResult? AnswerResult { get; set; }
+
+    [Parameter]
+    public EventCallback<TestAnswer> OnAnswer { get; set; }
+
+    [Parameter]
+    public EventCallback OnNext { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _answer = new AnswerModel {QuestionType = Question.Type};
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        _answerState = AnswerState.Answering;
+        TestAnswer answer = _answer.QuestionType switch {
+            QuestionType.TextAnswer => new TextAnswer(_answer.TextAnswer),
+            QuestionType.SingleAnswer => new SingleAnswer(_answer.SingleAnswer),
+            QuestionType.ManyAnswers => new ManyAnswer(_answer.ManyAnswer),
+            QuestionType.SortedAnswers => new ManyAnswer(_answer.ManyAnswer),
+            _ => throw new ArgumentOutOfRangeException()
+            };
+
+        await OnAnswer.InvokeAsync(answer);
+        _answerState = AnswerState.Next;
+    }
+
+    private async Task OnNextClick()
+    {
+        await OnNext.InvokeAsync();
+        _answer = new AnswerModel {QuestionType = Question.Type};
+        _answerState = AnswerState.Answer;
+    }
+
+}

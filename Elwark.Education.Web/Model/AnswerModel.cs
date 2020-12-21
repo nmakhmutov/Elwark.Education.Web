@@ -8,32 +8,28 @@ namespace Elwark.Education.Web.Model
     {
         public QuestionType QuestionType { get; init; }
 
-        public AnswerState State { get; set; }
+        public string TextAnswer { get; set; } = string.Empty;
 
-        public bool? IsAnswerCorrect { get; set; }
+        public int SingleAnswer { get; set; }
 
-        public string Value { get; set; } = string.Empty;
-
-        public string CorrectValue { get; set; } = string.Empty;
-
-        public string[] Values { get; set; } = Array.Empty<string>();
-
-        public string[] CorrectValues { get; set; } = Array.Empty<string>();
-
-        public bool IsDisabled => State == AnswerState.Answering;
+        public int[] ManyAnswer { get; set; } = Array.Empty<int>();
     }
-    
+
     public sealed class ModelValidator : AbstractValidator<AnswerModel>
     {
         public ModelValidator()
         {
-            RuleFor(x => x.Value)
+            RuleFor(x => x.TextAnswer)
                 .NotEmpty()
-                .When(x => x.QuestionType == QuestionType.NoOptions || x.QuestionType == QuestionType.SingleOption);
+                .When(x => x.QuestionType == QuestionType.TextAnswer);
 
-            RuleFor(x => x.Values)
+            RuleFor(x => x.SingleAnswer)
                 .NotEmpty()
-                .When(x => x.QuestionType == QuestionType.ManyOptions || x.QuestionType == QuestionType.OrderedOptions);
+                .When(x => x.QuestionType == QuestionType.SingleAnswer);
+
+            RuleFor(x => x.ManyAnswer)
+                .NotEmpty()
+                .When(x => x.QuestionType == QuestionType.ManyAnswers || x.QuestionType == QuestionType.SortedAnswers);
         }
     }
 }

@@ -84,7 +84,7 @@
                     </MudPaper>
                     <MudPaper Class="pa-6">
                         <MudText Typo="Typo.h6" Class="mb-3">
-                            @L["ElapsedTime"]
+                            @L["TimeSpent"]
                         </MudText>
                         @if (_progressScore.Length > 0)
                         {
@@ -146,11 +146,11 @@
 
         for (var i = 0; i < Profile.Data.Statistics.Subjects.Length; i++)
         {
-            var (subject, tests, elapsedTime, score, answers) = Profile.Data.Statistics.Subjects[i];
+            var (subject, tests, timeSpent, score, answers) = Profile.Data.Statistics.Subjects[i];
             _progressLabels[i] = L[subject.ToString()].Value;
             _progressTests[i] = tests;
             _progressScore[i] = score.Total;
-            _progressTimeElapsed[i] = elapsedTime.TotalSeconds;
+            _progressTimeElapsed[i] = timeSpent.TotalSeconds;
             _progressAnswers[i] = answers.Answered;
         }
     }

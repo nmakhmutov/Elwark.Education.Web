@@ -7,7 +7,7 @@ namespace Elwark.Education.Web.Gateways.Models.TestConclusion
         string? Title,
         bool IsComplete,
         Score Score,
-        TimeSpan ElapsedTime,
+        TimeSpan TimeSpent,
         DateTime CreatedAt
     );
 
@@ -16,18 +16,18 @@ namespace Elwark.Education.Web.Gateways.Models.TestConclusion
         string? Title,
         bool IsComplete,
         Score Score,
-        TimeSpan ElapsedTime,
+        TimeSpan TimeSpent,
         DateTime CreatedAt,
         string ArticleId
-    ) : TestConclusion(TestId, Title, IsComplete, Score, ElapsedTime, CreatedAt);
+    ) : TestConclusion(TestId, Title, IsComplete, Score, TimeSpent, CreatedAt);
 
     public sealed record TopicTestConclusion(
         string TestId,
         string? Title,
         bool IsComplete,
         Score Score,
-        TimeSpan ElapsedTime,
+        TimeSpan TimeSpent,
         DateTime CreatedAt,
         string TopicId
-    ) : TestConclusion(TestId, Title, IsComplete, Score, ElapsedTime, CreatedAt);
+    ) : TestConclusion(TestId, Title, IsComplete, Score, TimeSpent, CreatedAt);
 }

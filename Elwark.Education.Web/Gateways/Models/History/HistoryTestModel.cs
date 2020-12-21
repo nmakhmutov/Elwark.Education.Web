@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Elwark.Education.Web.Gateways.Models.Test;
 
 namespace Elwark.Education.Web.Gateways.Models.History
 {
@@ -8,6 +9,6 @@ namespace Elwark.Education.Web.Gateways.Models.History
         DateTime CreatedAt,
         DateTime ExpiredAt,
         Score? Score,
-        IEnumerable<HistoryTestQuestionModel> Questions
+        IEnumerable<TestQuestionModel> Questions
     );
 }
