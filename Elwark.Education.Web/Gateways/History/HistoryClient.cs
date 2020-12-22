@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Elwark.Education.Web.Gateways.History.Request;
 using Elwark.Education.Web.Gateways.Models;
 using Elwark.Education.Web.Gateways.Models.History;
+using Elwark.Education.Web.Gateways.Models.Statistics;
 using Elwark.Education.Web.Gateways.Models.Test;
 using Elwark.Education.Web.Gateways.Models.TestConclusion;
 
@@ -56,11 +57,11 @@ namespace Elwark.Education.Web.Gateways.History
             ExecuteAsync<TextAnswerResult>(() =>
                 _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
-        public Task<ApiResponse<PageableResponse<TestConclusion>>> GetTestConclusionsAsync(PageableRequest request) =>
+        public Task<ApiResponse<PageableResponse<TestConclusion>>> GetMyTestConclusionsAsync(PageableRequest request) =>
             ExecuteAsync<PageableResponse<TestConclusion>>(() =>
                 _client.GetAsync($"history/me/test-conclusions?token={request.Token}&count={request.Count}"));
         
-        public Task<ApiResponse<SubjectAggregate>> GetMyOverviewAsync() =>
-            ExecuteAsync<SubjectAggregate>(() => _client.GetAsync("history/me"));
+        public Task<ApiResponse<ContentStatistics>> GetMyStatisticsAsync() =>
+            ExecuteAsync<ContentStatistics>(() => _client.GetAsync("history/me/statistics"));
     }
 }
