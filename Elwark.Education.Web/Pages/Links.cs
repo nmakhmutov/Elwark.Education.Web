@@ -7,11 +7,19 @@ namespace Elwark.Education.Web.Pages
     {
         public const string Index = "/";
 
+        public static string SubjectIndex(Subject subject) => subject switch
+        {
+            Subject.History => History.Index,
+            Subject.Physics => Physics.Index,
+            Subject.Astronomy => Astronomy.Index,
+            _ => string.Empty
+        };
+        
         public static class Profile
         {
             public const string Index = "/profile";
 
-            public static string Overview(Subject subject) =>
+            public static string Statistics(Subject subject) =>
                 $"{Index}/{subject.ToString().ToLowerInvariant()}";
             
             public static string Tests(Subject subject) => 

@@ -1,61 +1,64 @@
 @using Elwark.Education.Web.Gateways.Models.User
 @inject IStringLocalizer<App> L
 
-<MudCard>
-    <MudCardHeader>
-        <CardHeaderAvatar>
-            <SubjectIcon Subject="@Subscription.Subject" Size="@Size.Medium"/>
-        </CardHeaderAvatar>
-        <CardHeaderContent>
-            <MudText Typo="Typo.body1">
-                @L[Subscription.Subject.ToString()]
-            </MudText>
-            <MudText Typo="Typo.body2" Color="Color.Warning">
+<div class="subscription">
+    <div class="d-flex flex-row align-center">
+        <SubjectIcon Subject="@Subscription.Subject" Size="@Size.Medium"/>
+        <MudLink Typo="Typo.body1" Class="ml-2" Href="@Links.SubjectIndex(Subscription.Subject)">
+            @L[Subscription.Subject.ToString()]
+        </MudLink>
+    </div>
+    <div>
+        @if (Subscription.Type == SubscriptionType.Premium)
+        {
+            <MudChip Color="Color.Warning" Size="Size.Small" Label="true" Class="ma-0">
                 @Subscription.Type
-            </MudText>
+            </MudChip>
             <MudText Typo="Typo.body2">
-                @L["ExpireAt"] @DateTime.Now.ToShortDateString()
-            </MudText>
-        </CardHeaderContent>
-    </MudCardHeader>
-    <MudCardContent>
-        <div class="values">
-            <MudText Typo="Typo.h4" Align="Align.Center">
-                @(Subscription.TestCreation.Quantity < 0 ? "∞" : Subscription.TestCreation.Quantity)
-            </MudText>
-            <div class="d-flex flex-column justify-center">
-                <MudText Typo="Typo.body1">
-                    Tests you can create now.
-                </MudText>
-                @if (Subscription.TestCreation.RestoreAt.HasValue)
-                {
-                    <MudText Typo="Typo.caption">
-                        Defaul value will be restored at @Subscription.TestCreation.RestoreAt.Value.ToSimpleFormat()
-                    </MudText>                    
-                }
-            </div>
-
-            <MudText Typo="Typo.h4" Align="Align.Center">
-                @(Subscription.Answer.Quantity < 0 ? "∞" : Subscription.Answer.Quantity)
-            </MudText>
-            <div class="d-flex flex-column justify-center">
-                <MudText Typo="Typo.body1">
-                    Mistakes you can make in tests
-                </MudText>
-                @if (Subscription.Answer.RestoreAt.HasValue)
-                {
-                    <MudText Typo="Typo.caption">
-                        Defaul value will be restored at @Subscription.Answer.RestoreAt.Value.ToSimpleFormat()
-                    </MudText>                }
-            </div>
-        </div>
-    </MudCardContent>
-    <MudCardActions>
-        <MudButton Variant="Variant.Text" Link="@Links.Profile.Overview(Subscription.Subject)" Color="Color.Primary">
-            @L["Overview"]
-        </MudButton>
-    </MudCardActions>
-</MudCard>
+                @L["SubscriptionEndsAt"] @Subscription.ExpiredAt?.ToSimpleFormat()
+            </MudText>        }
+        else
+        {
+            <MudChip Color="Color.Default" Size="Size.Small" Label="true" Class="ma-0">
+                @Subscription.Type
+            </MudChip>
+            <MudText @onclick="@(() => Console.WriteLine("DDD"))">Switch to premium</MudText>        }
+    </div>
+    <div class="restriction">
+        <MudText Typo="Typo.h6">
+            @(Subscription.TestCreation.Quantity < 0 ? "∞" : Subscription.TestCreation.Quantity)
+        </MudText>
+        <MudText Typo="Typo.body1">
+            Tests you can create now
+        </MudText>
+        @if (Subscription.TestCreation.RestoreAt.HasValue)
+        {
+            <MudText Typo="Typo.caption">
+                <em>Default value will be restored at @Subscription.TestCreation.RestoreAt.Value.ToSimpleFormat()</em>
+            </MudText>        }
+    </div>
+    <div class="restriction">
+        <MudText Typo="Typo.h6">
+            @(Subscription.Answer.Quantity < 0 ? "∞" : Subscription.Answer.Quantity)
+        </MudText>
+        <MudText Typo="Typo.body1">
+            Mistakes you can make in tests
+        </MudText>
+        @if (Subscription.Answer.RestoreAt.HasValue)
+        {
+            <MudText Typo="Typo.caption">
+                <em>Default value will be restored at @Subscription.Answer.RestoreAt.Value.ToSimpleFormat()</em>
+            </MudText>        }
+    </div>
+    <div class="buttons">
+        <MudTooltip Text="@L["Statistics"]">
+            <MudIconButton Link="@(Links.Profile.Statistics(Subscription.Subject))" Icon="@Filled.BarChart"/>
+        </MudTooltip>
+        <MudTooltip Text="@L["Tests"]">
+            <MudIconButton Link="@(Links.Profile.Tests(Subscription.Subject))" Icon="@Filled.Class"/>
+        </MudTooltip>
+    </div>
+</div>
 
 @code {
 

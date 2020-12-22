@@ -18,107 +18,111 @@
 
     case ResponseStatus.Success:
     {
-        <MudGrid>
-            <MudItem xs="12" lg="8">
-                @if (Profile.Data.CurrentTests.Length > 0)
+        @if (Profile.Data.CurrentTests.Length > 0)
+        {
+            <MudText Typo="Typo.h5" Class="mb-2">
+                @L["CurrentTests"]
+            </MudText>
+            <div class="current-tests mb-6">
+                @foreach (var test in Profile.Data.CurrentTests)
                 {
-                    <MudText Typo="Typo.h5" Class="mb-2">
-                        @L["CurrentTests"]
-                    </MudText>
-                    <div class="current-tests mb-6">
-                        @foreach (var test in Profile.Data.CurrentTests)
-                        {
-                            <CurrentTestCard Test="@test"/>                        }
-                    </div>
+                    <CurrentTestCard Test="@test"/>                    
                 }
+            </div>
+        }
 
-                <MudText Typo="Typo.h5" Class="mb-2">
-                    @L["Subjects"]
-                </MudText>
-                <div class="restrictions mb-6">
-                    @foreach (var subscription in Profile.Data.Subscriptions.OrderBy(x => L[x.Subject.ToString()].Value))
+        <MudText Typo="Typo.h5" Class="mb-2">
+            @L["Subjects"]
+        </MudText>
+        <MudPaper Class="mb-6 px-4">
+            @{
+                var subscriptions = Profile.Data.Subscriptions.OrderBy(x => L[x.Subject.ToString()].Value).ToArray();
+                <SubscriptionCard Subscription="@subscriptions[0]"/>
+            }
+
+            @for (var i = 1; i < subscriptions.Length; i++)
+            {
+                <MudDivider DividerType="DividerType.FullWidth"/>
+                <SubscriptionCard Subscription="@subscriptions[i]"/>                
+            }
+        </MudPaper>
+
+        <div class="statistics-container">
+            <MudText Typo="Typo.h5" Class="mb-2">
+                @L["Statistics"]
+            </MudText>
+            <div class="statistics mb-6">
+                <MudPaper Class="pa-6">
+                    <MudText Typo="Typo.h6" Class="mb-3">
+                        @L["Tests"]
+                    </MudText>
+                    @if (_progressTests.Length > 0)
                     {
-                        <SubscriptionCard Subscription="@subscription"/>                        
-                    }
-                </div>
-            </MudItem>
-
-            <MudItem xs="12" lg="4">
-                <MudText Typo="Typo.h5" Class="mb-2">
-                    @L["Statistics"]
-                </MudText>
-                <div class="statistics mb-6">
-                    <MudPaper Class="pa-6">
-                        <MudText Typo="Typo.h6" Class="mb-3">
-                            @L["Tests"]
-                        </MudText>
-                        @if (_progressTests.Length > 0)
-                        {
-                            <MudChart
-                                ChartType="ChartType.Donut"
-                                InputLabels="@_progressLabels"
-                                InputData="@_progressTests"
-                                LegendPosition="LegendPosition.Bottom"/>                        }
-                        else
-                        {
-                            <MudText Typo="Typo.caption">
-                                @L["NoDataYet"]
-                            </MudText>                        }
-                    </MudPaper>
-                    <MudPaper Class="pa-6">
-                        <MudText Typo="Typo.h6" Class="mb-3">
-                            @L["Score"]
-                        </MudText>
-                        @if (_progressScore.Length > 0)
-                        {
-                            <MudChart
-                                ChartType="ChartType.Donut"
-                                InputLabels="@_progressLabels"
-                                InputData="@_progressScore"
-                                LegendPosition="LegendPosition.Bottom"/>                        }
-                        else
-                        {
-                            <MudText Typo="Typo.caption">
-                                @L["NoDataYet"]
-                            </MudText>                        }
-                    </MudPaper>
-                    <MudPaper Class="pa-6">
-                        <MudText Typo="Typo.h6" Class="mb-3">
-                            @L["TimeSpent"]
-                        </MudText>
-                        @if (_progressScore.Length > 0)
-                        {
-                            <MudChart
-                                ChartType="ChartType.Donut"
-                                InputLabels="@_progressLabels"
-                                InputData="@_progressTimeElapsed"
-                                LegendPosition="LegendPosition.Bottom"/>                        }
-                        else
-                        {
-                            <MudText Typo="Typo.caption">
-                                @L["NoDataYet"]
-                            </MudText>                        }
-                    </MudPaper>
-                    <MudPaper Class="pa-6">
-                        <MudText Typo="Typo.h6" Class="mb-3">
-                            @L["Answers"]
-                        </MudText>
-                        @if (_progressScore.Length > 0)
-                        {
-                            <MudChart
-                                ChartType="ChartType.Donut"
-                                InputLabels="@_progressLabels"
-                                InputData="@_progressAnswers"
-                                LegendPosition="LegendPosition.Bottom"/>                        }
-                        else
-                        {
-                            <MudText Typo="Typo.caption">
-                                @L["NoDataYet"]
-                            </MudText>                        }
-                    </MudPaper>
-                </div>
-            </MudItem>
-        </MudGrid>    }
+                        <MudChart
+                            ChartType="ChartType.Donut"
+                            InputLabels="@_progressLabels"
+                            InputData="@_progressTests"
+                            LegendPosition="LegendPosition.Bottom"/>                    }
+                    else
+                    {
+                        <MudText Typo="Typo.caption">
+                            @L["NoDataYet"]
+                        </MudText>                    }
+                </MudPaper>
+                <MudPaper Class="pa-6">
+                    <MudText Typo="Typo.h6" Class="mb-3">
+                        @L["Score"]
+                    </MudText>
+                    @if (_progressScore.Length > 0)
+                    {
+                        <MudChart
+                            ChartType="ChartType.Donut"
+                            InputLabels="@_progressLabels"
+                            InputData="@_progressScore"
+                            LegendPosition="LegendPosition.Bottom"/>                    }
+                    else
+                    {
+                        <MudText Typo="Typo.caption">
+                            @L["NoDataYet"]
+                        </MudText>                    }
+                </MudPaper>
+                <MudPaper Class="pa-6">
+                    <MudText Typo="Typo.h6" Class="mb-3">
+                        @L["TimeSpent"]
+                    </MudText>
+                    @if (_progressScore.Length > 0)
+                    {
+                        <MudChart
+                            ChartType="ChartType.Donut"
+                            InputLabels="@_progressLabels"
+                            InputData="@_progressTimeElapsed"
+                            LegendPosition="LegendPosition.Bottom"/>                    }
+                    else
+                    {
+                        <MudText Typo="Typo.caption">
+                            @L["NoDataYet"]
+                        </MudText>                    }
+                </MudPaper>
+                <MudPaper Class="pa-6">
+                    <MudText Typo="Typo.h6" Class="mb-3">
+                        @L["Answers"]
+                    </MudText>
+                    @if (_progressScore.Length > 0)
+                    {
+                        <MudChart
+                            ChartType="ChartType.Donut"
+                            InputLabels="@_progressLabels"
+                            InputData="@_progressAnswers"
+                            LegendPosition="LegendPosition.Bottom"/>                    }
+                    else
+                    {
+                        <MudText Typo="Typo.caption">
+                            @L["NoDataYet"]
+                        </MudText>                    }
+                </MudPaper>
+            </div>
+        </div>
+    }
         break;
 }
 

@@ -1,0 +1,26 @@
+@inject IStringLocalizer<App> L
+
+<div class="d-flex flex-column align-center justify-center">
+    <MudText Typo="Typo.h2">
+        @L[Subject.ToString()]
+    </MudText>
+    <Breadcrumbs Items="@_breadcrumbs" Class="mt-3" Separator="|"/>
+</div>
+
+@code {
+    private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
+
+    [Parameter]
+    public Subject Subject { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _breadcrumbs = new BreadcrumbsItem[]
+        {
+            new (L["Profile"].Value, Links.Profile.Index),
+            new (L["Statistics"].Value, Links.Profile.Statistics(Subject)),
+            new (L["Tests"].Value, Links.Profile.Tests(Subject))
+        };
+    }
+
+}

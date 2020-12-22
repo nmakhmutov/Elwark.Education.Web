@@ -1,6 +1,35 @@
-.values {
+.subscription {
+    padding: 16px 0;
     display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: 16px;
+    grid-column-gap: 12px;
+    grid-row-gap: 16px;
+    grid-template-columns: 1fr;
+}
+
+.restriction {
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons {
+    display: flex;
     align-items: center;
+    justify-content: flex-end;
+    grid-column: 1/-1;
+}
+
+@media (min-width: 600px) {
+    .subscription {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .restriction {
+        align-items: center;
+    }
+}
+
+@media (min-width: 1280px) {
+    .buttons {
+        grid-column: none;
+    }
 }

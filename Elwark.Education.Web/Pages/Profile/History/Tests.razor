@@ -19,14 +19,7 @@
         break;
 
     case ResponseStatus.Success:
-        <div class="d-flex flex-row align-center">
-            <MudLink Href="@Links.Profile.Index" Class="d-flex mr-3" Color="Color.Default">
-                <MudIcon Icon="@Filled.ArrowBack" Size="Size.Medium"/>
-            </MudLink>
-            <MudText Typo="Typo.h5">
-                @L["History"]
-            </MudText>
-        </div>
+        <SubjectHeader Subject="@Subject.History"/>
         @foreach (var item in _tests.Data.Items)
         {
             <h1>@item.Title</h1>
@@ -45,6 +38,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _tests = await HistoryClient.GetTestConclusionsAsync(new PageableRequest(null, 20));
+        _tests = await HistoryClient.GetMyTestConclusionsAsync(new PageableRequest(null, 20));
     }
 }
