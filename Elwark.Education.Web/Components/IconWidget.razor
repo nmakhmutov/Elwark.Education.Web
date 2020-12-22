@@ -1,10 +1,10 @@
 <MudPaper class="d-flex flex-row justify-space-between align-center pa-6">
     <div>
-        <MudText Typo="Typo.h5">
-            @Title
+        <MudText Typo="Typo.h6">
+            @Value
         </MudText>
         <MudText Typo="Typo.body2">
-            @SubTitle
+            @Title
         </MudText>
     </div>
     <MudIcon Icon="@Icon" Size="Size.Large" Color="Color.Primary"/>
@@ -16,7 +16,7 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
-    public string SubTitle { get; set; } = string.Empty;
+    public object Value { get; set; } = string.Empty;
 
     [Parameter]
     public string Icon { get; set; } = Filled.Adjust;
