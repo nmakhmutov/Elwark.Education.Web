@@ -4,10 +4,13 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
 {
     public static class DateTimeExtensions
     {
-        public static string ToSimpleFormat(this DateTime date) =>
-            date.Date == DateTime.UtcNow.Date
-                ? date.ToLongTimeString()
-                : date.ToShortDateString();
+        public static string ToSimpleFormat(this DateTime date)
+        {
+            var local = TimeZoneInfo.ConvertTimeFromUtc(date, TimeZoneInfo.Local);
+            return local.Date == DateTime.Today
+                ? local.ToLongTimeString()
+                : local.ToShortDateString();
+        }
 
         public static string ToSimpleFormat(this TimeSpan span) =>
             span.TotalDays > 1
