@@ -9,7 +9,14 @@
             @if (i != Items.Length - 1)
             {
                 <li class="breadcrumbs-separator">
-                    <MudIcon Icon="@(Filled.ChevronRight)" Size="Size.Small"/>
+                    @if (Separator.Length == 1)
+                    {
+                        <MudText>@Separator</MudText>                        
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@Separator" Size="Size.Small"/>                        
+                    }
                 </li>
             }
         }
@@ -24,4 +31,8 @@
     
     [Parameter]
     public string? Class { get; set; }
+
+    [Parameter]
+    public string Separator { get; set; } = Filled.ChevronRight;
+
 }
