@@ -2,18 +2,32 @@
 @using Elwark.Education.Web.Gateways.Models.User
 @inject IStringLocalizer<App> L
 
-<MudPaper Elevation="1" Class="pa-6">
-    <MudText Typo="Typo.subtitle1">
-        @L[Test.Subject.ToString()]
-    </MudText>
-    <MudLink Typo="Typo.h6" Href="@Link">
-        @Test.Title
-    </MudLink>
-    <MudText Typo="Typo.body2">
-        @L["ExpireAt"]
-        @Test.ExpiredAt.ToSimpleFormat()
-    </MudText>
-</MudPaper>
+<MudCard>
+    <MudCardHeader>
+        <CardHeaderAvatar>
+            <SubjectIcon Subject="@Test.Subject" Size="Size.Small"/>
+        </CardHeaderAvatar>
+        <CardHeaderContent>
+            <MudText Typo="Typo.body1">
+                @L[Test.Subject.ToString()]
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudLink Typo="Typo.h6" Href="@Link">
+            @Test.Title
+        </MudLink>
+        <MudText Typo="Typo.body2">
+            @L["ExpireAt"]
+            @Test.ExpiredAt.ToSimpleFormat()
+        </MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Link="@Link" Color="Color.Primary" Variant="Variant.Text">
+            @L["Continue"]
+        </MudButton>
+    </MudCardActions>
+</MudCard>
 
 @code {
 
