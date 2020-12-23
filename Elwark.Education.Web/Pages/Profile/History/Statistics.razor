@@ -19,7 +19,7 @@
         <SubjectHeader Subject="@Subject.History"/>
 
         <MudText Typo="Typo.h5" Class="mb-2 mt-6">
-            Statistics by topics
+            @L["Statistics:ByTopics"]
         </MudText>
         <div class="statistics-grid">
             <div class="topics-icon-widget-grid">
@@ -34,14 +34,14 @@
                     Value="@_statistics.Data.Topics.TimeSpent.ToSimpleFormat()"/>
 
                 <IconWidget
-                    Icon="@Filled.Accessibility"
-                    Title="@L["CurrentTopics"]"
-                    Value="@_statistics.Data.Topics.TopicsProgress.Current"/>
+                    Icon="@Filled.Explore"
+                    Title="@L["Topics:InProgress"]"
+                    Value="@_statistics.Data.Topics.Progress.InProgress"/>
 
                 <IconWidget
-                    Icon="@Filled.Accessibility"
-                    Title="@L["PassedTopics"]"
-                    Value="@_statistics.Data.Topics.TopicsProgress.Passed"/>
+                    Icon="@Filled.ExploreOff"
+                    Title="@L["Topics:Completed"]"
+                    Value="@_statistics.Data.Topics.Progress.Completed"/>
             </div>
 
             <DetailWidget
@@ -56,7 +56,7 @@
                                 @_statistics.Data.Topics.Score.Questions
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["By questions"]
+                                @L["Score:ByQuestions"]
                             </MudText>
                         </div>
                         <div>
@@ -64,7 +64,7 @@
                                 @_statistics.Data.Topics.Score.NoMistakes
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["No mistakes bonus"]
+                                @L["Score:NoMistakesBonus"]
                             </MudText>
                         </div>
                         <div>
@@ -72,7 +72,7 @@
                                 @_statistics.Data.Topics.Score.Speed
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["Speed bonus"]
+                                @L["Score:BySpeedBonus"]
                             </MudText>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                                 @_statistics.Data.Topics.AnswerRatio.Correct
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["Correct"]
+                                @L["Questions:Correct"]
                             </MudText>
                         </div>
                         <div>
@@ -99,7 +99,7 @@
                                 @_statistics.Data.Topics.AnswerRatio.Incorrect
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["Incorrect"]
+                                @L["Questions:Incorrect"]
                             </MudText>
                         </div>
                         <div>
@@ -107,7 +107,7 @@
                                 @_statistics.Data.Topics.AnswerRatio.Answered
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["Answered"]
+                                @L["Questions:Answered"]
                             </MudText>
                         </div>
                         <div>
@@ -115,7 +115,7 @@
                                 @_statistics.Data.Topics.AnswerRatio.NotAnswered
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["Not answered"]
+                                @L["Questions:NotAnswered"]
                             </MudText>
                         </div>
                     </div>
@@ -123,24 +123,24 @@
             </DetailWidget>
 
             <RankingWidget
-                Title="Score ranking"
+                Title="@L["Ranking:ByScore"]"
                 Items="@_statistics.Data.Topics.ScoreRanking"
                 LinkBuilder="@((string id) => Links.History.Topic(id))"/>
 
             <RankingWidget
-                Title="Time spent ranking"
+                Title="@L["Ranking:ByTimeSpent"]"
                 Items="@_statistics.Data.Topics.TimeSpentRanking"
                 LinkBuilder="@((string id) => Links.History.Topic(id))"
                 ValueConverter="@((TimeSpan item) => item.ToSimpleFormat())"/>
 
             <RankingWidget
-                Title="Test passed times ranking"
+                Title="@L["Ranking:ByTestPassedTimes"]"
                 Items="@_statistics.Data.Topics.TestPassedTimesRanking"
                 LinkBuilder="@((string id) => Links.History.Topic(id))"/>
         </div>
 
         <MudText Typo="Typo.h5" Class="mb-2 mt-12">
-            Statistics by articles
+            @L["Statistics:ByArticles"]
         </MudText>
         <div class="statistics-grid mb-6">
             <div class="articles-icon-widget-grid">
@@ -167,7 +167,7 @@
                                 @_statistics.Data.Articles.Score.Questions
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["By questions"]
+                                @L["Score:ByQuestions"]
                             </MudText>
                         </div>
                         <div>
@@ -175,7 +175,7 @@
                                 @_statistics.Data.Articles.Score.NoMistakes
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["No mistakes bonus"]
+                                @L["Score:NoMistakesBonus"]
                             </MudText>
                         </div>
                         <div>
@@ -183,7 +183,7 @@
                                 @_statistics.Data.Articles.Score.Speed
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["Speed bonus"]
+                                @L["Score:BySpeedBonus"]
                             </MudText>
                         </div>
                     </div>
@@ -202,7 +202,7 @@
                                 @_statistics.Data.Articles.AnswerRatio.Correct
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["Correct"]
+                                @L["Questions:Correct"]
                             </MudText>
                         </div>
                         <div>
@@ -210,7 +210,7 @@
                                 @_statistics.Data.Articles.AnswerRatio.Incorrect
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["Incorrect"]
+                                @L["Questions:Incorrect"]
                             </MudText>
                         </div>
                         <div>
@@ -218,7 +218,7 @@
                                 @_statistics.Data.Articles.AnswerRatio.Answered
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["Answered"]
+                                @L["Questions:Answered"]
                             </MudText>
                         </div>
                         <div>
@@ -226,7 +226,7 @@
                                 @_statistics.Data.Articles.AnswerRatio.NotAnswered
                             </MudText>
                             <MudText Typo="Typo.body1" Align="Align.Center">
-                                @L["Not answered"]
+                                @L["Questions:NotAnswered"]
                             </MudText>
                         </div>
                     </div>
@@ -234,18 +234,18 @@
             </DetailWidget>
 
             <RankingWidget
-                Title="Score ranking"
+                Title="@L["Ranking:ByScore"]"
                 Items="@_statistics.Data.Articles.ScoreRanking"
                 LinkBuilder="@((string id) => Links.History.Article(id))"/>
 
             <RankingWidget
-                Title="Time spent ranking"
+                Title="@L["Ranking:ByTimeSpent"]"
                 Items="@_statistics.Data.Articles.TimeSpentRanking"
                 LinkBuilder="@((string id) => Links.History.Article(id))"
                 ValueConverter="@((TimeSpan item) => item.ToSimpleFormat())"/>
 
             <RankingWidget
-                Title="Test passed times ranking"
+                Title="@L["Ranking:ByTestPassedTimes"]"
                 Items="@_statistics.Data.Articles.TestPassedTimesRanking"
                 LinkBuilder="@((string id) => Links.History.Article(id))"/>
         </div>
