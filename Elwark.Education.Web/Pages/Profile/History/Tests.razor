@@ -20,21 +20,90 @@
 
     case ResponseStatus.Success:
         <SubjectHeader Subject="@Subject.History"/>
+        <MudText Typo="Typo.h5" Class="mb-2 mt-6">
+            @L["PassedTests"]
+        </MudText>
         <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@(async () => await LoadMoreAsync())">
             @foreach (var item in _tests.Data.Items)
             {
-                <h1>@item.Title</h1>
-                @(item switch{
-                    ArticleTestConclusion x => Links.History.Article(x.ArticleId),
-                    TopicTestConclusion x => Links.History.Topic(x.TopicId),
-                    _ => throw new ArgumentOutOfRangeException(nameof(item))
-                    })
-            }
+                <MudPaper Class="mb-3 pa-6">
+                    <div>
+                        @if (item.Title is null)
+                        {
+                            <MudText Typo="Typo.h6">
+                                @L["Deleted"]
+                            </MudText>                        }
+                        else
+                        {
+                            var link = item switch{
+                                ArticleTestConclusion x => Links.History.Article(x.ArticleId),
+                                TopicTestConclusion x => Links.History.Topic(x.TopicId),
+                                _ => throw new ArgumentOutOfRangeException(nameof(item))
+                                };
+                            <MudLink Href="@link" Typo="Typo.h6">
+                                @item.Title
+                            </MudLink>                        }
+                        <MudText Typo="Typo.body1">
+                            @item.CreatedAt.ToSimpleFormat()
+                        </MudText>
+                    </div>
+                    <div class="grid my-3">
+                        <div>
+                            <MudText Typo="Typo.subtitle1">
+                                @(item.IsComplete ? L["Completed"] : L["NotCompleted"])
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @item.TimeSpent.ToSimpleFormat()
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["TimeSpent"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @item.Score.Total
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Score"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @item.Score.Questions
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Score:ByQuestions"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @item.Score.NoMistakes
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Score:NoMistakesBonus"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @item.Score.Speed
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Score:BySpeedBonus"]
+                            </MudText>
+                        </div>
+                        <div class="d-flex justify-end">
+                            <MudButton Color="Color.Primary" Link="@(Links.Profile.TestDetail(Subject.History, item.TestId))">
+                                @L["Detail"]
+                            </MudButton>
+                        </div>
+                    </div>
+                </MudPaper>            }
             <div id="observerTarget" class="d-flex justify-center my-6">
                 @if (_request.Token is not null)
                 {
-                    <MudProgressCircular Indeterminate="true"/>                    
-                }
+                    <MudProgressCircular Indeterminate="true"/>                }
             </div>
         </InfinityScroll>
         break;
@@ -47,7 +116,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _tests = await HistoryClient.GetMyTestConclusionsAsync(_request);
+        try
+        {
+            _tests = await HistoryClient.GetMyTestConclusionsAsync(_request);
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+            return;
+        }
+
         if (_tests.Status == ResponseStatus.Success)
             _request = _request with {Token = _tests.Data.Token};
     }
@@ -63,7 +141,7 @@
             _tests = ApiResponse<PageableResponse<TestConclusion>>.Fail(response.Error);
             return;
         }
-        
+
         _tests = ApiResponse<PageableResponse<TestConclusion>>.Success(
             new PageableResponse<TestConclusion>(
                 _tests.Data.Items.Union(response.Data.Items).ToArray(),

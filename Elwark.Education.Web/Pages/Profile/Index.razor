@@ -26,8 +26,7 @@
             <div class="current-tests mb-6">
                 @foreach (var test in Profile.Data.CurrentTests)
                 {
-                    <CurrentTestCard Test="@test"/>                    
-                }
+                    <CurrentTestCard Test="@test"/>                }
             </div>
         }
 
@@ -35,16 +34,13 @@
             @L["Subjects"]
         </MudText>
         <MudPaper Class="mb-6 px-4">
-            @{
-                var subscriptions = Profile.Data.Subscriptions.OrderBy(x => L[x.Subject.ToString()].Value).ToArray();
-                <SubscriptionCard Subscription="@subscriptions[0]"/>
-            }
-
+            @{ var subscriptions = Profile.Data.Subscriptions.OrderBy(x => L[x.Subject.ToString()].Value).ToArray(); }
+            
+            <SubscriptionCard Subscription="@subscriptions[0]"/>
             @for (var i = 1; i < subscriptions.Length; i++)
             {
                 <MudDivider DividerType="DividerType.FullWidth"/>
-                <SubscriptionCard Subscription="@subscriptions[i]"/>                
-            }
+                <SubscriptionCard Subscription="@subscriptions[i]"/>            }
         </MudPaper>
 
         <div class="statistics-container">

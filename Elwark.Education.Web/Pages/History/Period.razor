@@ -109,7 +109,17 @@
         if (_request.Token is null)
             return;
 
-        var result = await HistoryClient.GetTopicsAsync(_request);
+        ApiResponse<PageableResponse<HistoryTopicSummary>> result;
+        try
+        {
+            result = await HistoryClient.GetTopicsAsync(_request);
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+            return;
+        }
+        
         if (result.Status == ResponseStatus.Fail)
         {
             _aggregate = ApiResponse<Aggregate>.Fail(result.Error);

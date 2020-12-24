@@ -1,5 +1,6 @@
 @using Elwark.Education.Web.Gateways.User
 @using Elwark.Education.Web.Gateways.Models.User
+@using System.Security.Authentication
 @inherits LayoutComponentBase
 @layout MainLayout
 @inject IUserClient UserClient
@@ -93,7 +94,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _profile = await UserClient.GetProfileAsync();
+        try
+        {
+            _profile = await UserClient.GetProfileAsync();
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
     }
 
 }

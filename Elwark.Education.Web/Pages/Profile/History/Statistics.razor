@@ -285,7 +285,16 @@
 @code {
     private ApiResponse<ContentStatistics> _statistics = ApiResponse<ContentStatistics>.Loading();
 
-    protected override async Task OnInitializedAsync() =>
-        _statistics = await HistoryClient.GetMyStatisticsAsync();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _statistics = await HistoryClient.GetMyStatisticsAsync();
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+    }
 
 }
