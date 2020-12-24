@@ -38,18 +38,14 @@
                         Image="@item.Image"
                         Title="@item.Title"
                         Subtitle="@item.Segment.ToString(L)"
-                        Progress="@item.Progress"/>
-                }
+                        Progress="@item.Progress"/>                }
             </InfinityScroll>
         </div>
-        <div id="observerTarget"></div>
-        @if (!string.IsNullOrEmpty(_aggregate.Data.Topics.Token))
-        {
-            <MudButton OnClick="@LoadMoreAsync" Color="Color.Primary" Size="Size.Large" Variant="Variant.Filled"
-                       Style="margin: 10px auto;display: block">
-                @L["LoadMore"]
-            </MudButton>
-        }
+        <div id="observerTarget" class="d-flex justify-center my-6">
+            @if (_request.Token is not null)
+            {
+                <MudProgressCircular Indeterminate="true"/>            }
+        </div>
         break;
 }
 
@@ -61,10 +57,10 @@
 
     private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
 
+    private GetTopicsRequest _request = new(HistoryPeriodType.Prehistory, null, 20);
+
     [Parameter]
     public string? Type { get; set; }
-
-    private GetTopicsRequest _request = new(HistoryPeriodType.Prehistory, null, 20);
 
     protected override void OnInitialized() => _breadcrumbs = new[]
     {
@@ -110,10 +106,9 @@
 
     private async Task LoadMoreAsync()
     {
-        if (string.IsNullOrEmpty(_aggregate.Data.Topics.Token))
+        if (_request.Token is null)
             return;
 
-        _request = _request with {Token = _aggregate.Data.Topics.Token};
         var result = await HistoryClient.GetTopicsAsync(_request);
         if (result.Status == ResponseStatus.Fail)
         {
@@ -130,6 +125,7 @@
                     )
                 )
             );
+        _request = _request with {Token = result.Data.Token};
     }
 
 }

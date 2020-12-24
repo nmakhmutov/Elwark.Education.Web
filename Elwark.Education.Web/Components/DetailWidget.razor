@@ -9,10 +9,11 @@
             <MudText Typo="Typo.h4" Color="Color.Primary">
                 @Value
             </MudText>
-            <MudDivider DividerType="DividerType.FullWidth" Class="my-2"/>
-            <MudText Typo="Typo.body2">
-                @SubTitle
-            </MudText>
+            @if (Caption is not null)
+            {
+                <MudDivider DividerType="DividerType.FullWidth" Class="my-2"/>
+                @Caption
+            }
         </div>
     </div>
 
@@ -29,13 +30,13 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
-    public string SubTitle { get; set; } = string.Empty;
-
-    [Parameter]
     public object Value { get; set; } = string.Empty;
 
     [Parameter]
     public string Icon { get; set; } = Filled.Adjust;
+    
+    [Parameter]
+    public RenderFragment? Caption { get; set; }
 
     [Parameter]
     public RenderFragment? Details { get; set; }

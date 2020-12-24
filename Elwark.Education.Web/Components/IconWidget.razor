@@ -1,16 +1,24 @@
-<MudPaper class="d-flex flex-row justify-space-between align-center pa-6">
-    <div>
-        <MudText Typo="Typo.h6">
-            @Value
-        </MudText>
-        <MudText Typo="Typo.body2">
-            @Title
-        </MudText>
+<MudPaper Class="@("d-flex flex-column pa-6 " + JustifyClass)">
+    <div class="d-flex flex-row justify-space-between align-center">
+        <div>
+            <MudText Typo="Typo.h6">
+                @Value
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @Title
+            </MudText>
+        </div>
+        <MudIcon Icon="@Icon" Size="Size.Large" Color="Color.Primary"/>
     </div>
-    <MudIcon Icon="@Icon" Size="Size.Large" Color="Color.Primary"/>
+    @if (Caption is not null)
+    {
+        @Caption
+    }
 </MudPaper>
 
 @code {
+
+    private string JustifyClass => Caption is null ? "justify-center" : "justify-space-between";
 
     [Parameter]
     public string Title { get; set; } = string.Empty;
@@ -20,5 +28,8 @@
 
     [Parameter]
     public string Icon { get; set; } = Filled.Adjust;
+
+    [Parameter]
+    public RenderFragment? Caption { get; set; }
 
 }

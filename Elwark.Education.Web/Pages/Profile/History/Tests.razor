@@ -20,24 +20,58 @@
 
     case ResponseStatus.Success:
         <SubjectHeader Subject="@Subject.History"/>
-        @foreach (var item in _tests.Data.Items)
-        {
-            <h1>@item.Title</h1>
-            @(item switch{
-                ArticleTestConclusion x => Links.History.Article(x.ArticleId),
-                TopicTestConclusion x => Links.History.Topic(x.TopicId),
-                _ => throw new ArgumentOutOfRangeException(nameof(item))
-                })
-        }
+        <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@(async () => await LoadMoreAsync())">
+            @foreach (var item in _tests.Data.Items)
+            {
+                <h1>@item.Title</h1>
+                @(item switch{
+                    ArticleTestConclusion x => Links.History.Article(x.ArticleId),
+                    TopicTestConclusion x => Links.History.Topic(x.TopicId),
+                    _ => throw new ArgumentOutOfRangeException(nameof(item))
+                    })
+            }
+            <div id="observerTarget" class="d-flex justify-center my-6">
+                @if (_request.Token is not null)
+                {
+                    <MudProgressCircular Indeterminate="true"/>                    
+                }
+            </div>
+        </InfinityScroll>
         break;
 }
 
 @code
 {
-    ApiResponse<PageableResponse<TestConclusion>> _tests = ApiResponse<PageableResponse<TestConclusion>>.Loading();
+    private ApiResponse<PageableResponse<TestConclusion>> _tests = ApiResponse<PageableResponse<TestConclusion>>.Loading();
+    private PageableRequest _request = new(null, 20);
 
     protected override async Task OnInitializedAsync()
     {
-        _tests = await HistoryClient.GetMyTestConclusionsAsync(new PageableRequest(null, 20));
+        _tests = await HistoryClient.GetMyTestConclusionsAsync(_request);
+        if (_tests.Status == ResponseStatus.Success)
+            _request = _request with {Token = _tests.Data.Token};
     }
+
+    private async Task LoadMoreAsync()
+    {
+        if (_request.Token is null)
+            return;
+
+        var response = await HistoryClient.GetMyTestConclusionsAsync(_request);
+        if (response.Status == ResponseStatus.Fail)
+        {
+            _tests = ApiResponse<PageableResponse<TestConclusion>>.Fail(response.Error);
+            return;
+        }
+        
+        _tests = ApiResponse<PageableResponse<TestConclusion>>.Success(
+            new PageableResponse<TestConclusion>(
+                _tests.Data.Items.Union(response.Data.Items).ToArray(),
+                response.Data.Token
+                )
+            );
+        _request = _request with{Token = response.Data.Token};
+    }
+
+
 }
