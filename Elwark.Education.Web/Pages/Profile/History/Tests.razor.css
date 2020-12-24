@@ -1,6 +1,18 @@
 .grid {
     display: grid;
     gap: 12px;
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.statistics-grid {
+    display: grid;
+    gap: 12px;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    align-items: center;
+    align-items: flex-start;
+    justify-items: center;
 }
