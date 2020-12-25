@@ -2,5 +2,5 @@ using System;
 
 namespace Elwark.Education.Web.Gateways.Models
 {
-    public sealed record ArticleProgress(DateTime TestPassedAt, uint PassedTimes);
+    public sealed record ArticleProgress(DateTime TestCompletedAt, uint PassedTimes);
 }

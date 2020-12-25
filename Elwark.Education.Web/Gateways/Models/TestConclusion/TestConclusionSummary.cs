@@ -2,7 +2,7 @@ using System;
 
 namespace Elwark.Education.Web.Gateways.Models.TestConclusion
 {
-    public abstract record TestConclusion(
+    public abstract record TestConclusionSummary(
         string TestId,
         string? Title,
         bool IsComplete,
@@ -11,7 +11,7 @@ namespace Elwark.Education.Web.Gateways.Models.TestConclusion
         DateTime CreatedAt
     );
 
-    public sealed record ArticleTestConclusion(
+    public sealed record ArticleTestConclusionSummary(
         string TestId,
         string? Title,
         bool IsComplete,
@@ -19,9 +19,9 @@ namespace Elwark.Education.Web.Gateways.Models.TestConclusion
         TimeSpan TimeSpent,
         DateTime CreatedAt,
         string ArticleId
-    ) : TestConclusion(TestId, Title, IsComplete, Score, TimeSpent, CreatedAt);
+    ) : TestConclusionSummary(TestId, Title, IsComplete, Score, TimeSpent, CreatedAt);
 
-    public sealed record TopicTestConclusion(
+    public sealed record TopicTestConclusionSummary(
         string TestId,
         string? Title,
         bool IsComplete,
@@ -29,5 +29,5 @@ namespace Elwark.Education.Web.Gateways.Models.TestConclusion
         TimeSpan TimeSpent,
         DateTime CreatedAt,
         string TopicId
-    ) : TestConclusion(TestId, Title, IsComplete, Score, TimeSpent, CreatedAt);
+    ) : TestConclusionSummary(TestId, Title, IsComplete, Score, TimeSpent, CreatedAt);
 }

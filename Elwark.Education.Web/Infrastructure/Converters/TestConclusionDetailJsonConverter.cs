@@ -5,15 +5,15 @@ using Newtonsoft.Json.Linq;
 
 namespace Elwark.Education.Web.Infrastructure.Converters
 {
-    internal class TestConclusionJsonConverter : JsonConverter<TestConclusion?>
+    internal class TestConclusionDetailJsonConverter : JsonConverter<TestConclusionDetail?>
     {
-        private const string Article = nameof(ArticleTestConclusion.ArticleId);
-        private const string Topic = nameof(TopicTestConclusion.TopicId);
+        private const string Article = nameof(ArticleTestConclusionDetail.ArticleId);
+        private const string Topic = nameof(TopicTestConclusionDetail.TopicId);
 
-        public override void WriteJson(JsonWriter writer, TestConclusion? value, JsonSerializer serializer) =>
+        public override void WriteJson(JsonWriter writer, TestConclusionDetail? value, JsonSerializer serializer) =>
             serializer.Serialize(writer, value);
 
-        public override TestConclusion? ReadJson(JsonReader reader, Type objectType, TestConclusion? existingValue,
+        public override TestConclusionDetail? ReadJson(JsonReader reader, Type objectType, TestConclusionDetail? existingValue,
             bool hasExistingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
@@ -26,10 +26,10 @@ namespace Elwark.Education.Web.Infrastructure.Converters
             foreach (var property in jObject.Properties())
             {
                 if (Article.Equals(property.Name, StringComparison.InvariantCultureIgnoreCase))
-                    return jObject.ToObject<ArticleTestConclusion>();
+                    return jObject.ToObject<ArticleTestConclusionDetail>();
 
                 if (Topic.Equals(property.Name, StringComparison.InvariantCultureIgnoreCase))
-                    return jObject.ToObject<TopicTestConclusion>();
+                    return jObject.ToObject<TopicTestConclusionDetail>();
             }
             
             return null;

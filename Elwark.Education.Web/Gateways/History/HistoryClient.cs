@@ -57,11 +57,14 @@ namespace Elwark.Education.Web.Gateways.History
             ExecuteAsync<TextAnswerResult>(() =>
                 _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
-        public Task<ApiResponse<PageableResponse<TestConclusion>>> GetMyTestConclusionsAsync(PageableRequest request) =>
-            ExecuteAsync<PageableResponse<TestConclusion>>(() =>
-                _client.GetAsync($"history/me/test-conclusions?token={request.Token}&count={request.Count}"));
-        
         public Task<ApiResponse<ContentStatistics>> GetMyStatisticsAsync() =>
             ExecuteAsync<ContentStatistics>(() => _client.GetAsync("history/me/statistics"));
+        
+        public Task<ApiResponse<PageableResponse<TestConclusionSummary>>> GetMyTestConclusionsAsync(PageableRequest request) =>
+            ExecuteAsync<PageableResponse<TestConclusionSummary>>(() =>
+                _client.GetAsync($"history/me/test-conclusions?token={request.Token}&count={request.Count}"));
+
+        public Task<ApiResponse<TestConclusionDetail>> GetMyTestConclusionAsync(string testId) =>
+            ExecuteAsync<TestConclusionDetail>(() => _client.GetAsync($"history/me/test-conclusions/{testId}"));
     }
 }

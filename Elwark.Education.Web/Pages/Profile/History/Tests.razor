@@ -33,29 +33,33 @@
                             {
                                 <MudText Typo="Typo.h6">
                                     @L["Deleted"]
-                                </MudText>                            }
+                                </MudText>                                
+                            }
                             else
                             {
                                 var link = item switch{
-                                    ArticleTestConclusion x => Links.History.Article(x.ArticleId),
-                                    TopicTestConclusion x => Links.History.Topic(x.TopicId),
+                                    ArticleTestConclusionSummary x => Links.History.Article(x.ArticleId),
+                                    TopicTestConclusionSummary x => Links.History.Topic(x.TopicId),
                                     _ => throw new ArgumentOutOfRangeException(nameof(item))
                                     };
 
                                 <MudLink Href="@link" Typo="Typo.h6">
                                     @item.Title
-                                </MudLink>                            }
+                                </MudLink>                                
+                            }
                             <div class="d-flex align-center">
                                 @if (item.IsComplete)
                                 {
                                     <MudChip Label="true" Color="Color.Success" Size="Size.Small">
                                         @L["Completed"]
-                                    </MudChip>                                }
+                                    </MudChip>                                
+                                }
                                 else
                                 {
                                     <MudChip Label="true" Color="Color.Warning" Size="Size.Small">
                                         @L["NotCompleted"]
-                                    </MudChip>                                }
+                                    </MudChip>                                
+                                }
                                 <MudText Typo="Typo.body1">
                                     @item.CreatedAt.ToSimpleFormat()
                                 </MudText>
@@ -122,7 +126,7 @@
 
 @code
 {
-    private ApiResponse<PageableResponse<TestConclusion>> _tests = ApiResponse<PageableResponse<TestConclusion>>.Loading();
+    private ApiResponse<PageableResponse<TestConclusionSummary>> _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Loading();
     private PageableRequest _request = new(null, 20);
 
     protected override async Task OnInitializedAsync()
@@ -149,12 +153,12 @@
         var response = await HistoryClient.GetMyTestConclusionsAsync(_request);
         if (response.Status == ResponseStatus.Fail)
         {
-            _tests = ApiResponse<PageableResponse<TestConclusion>>.Fail(response.Error);
+            _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(response.Error);
             return;
         }
 
-        _tests = ApiResponse<PageableResponse<TestConclusion>>.Success(
-            new PageableResponse<TestConclusion>(
+        _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Success(
+            new PageableResponse<TestConclusionSummary>(
                 _tests.Data.Items.Union(response.Data.Items).ToArray(),
                 response.Data.Token
                 )

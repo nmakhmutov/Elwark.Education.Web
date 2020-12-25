@@ -1,10 +1,150 @@
 @page "/profile/history/tests/{id}"
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.Models.TestConclusion
 @layout ProfileLayout
-<SubjectHeader Subject="@Subject.History"/>
+
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
+
+@attribute [Authorize]
+
+@switch (_conclusion.Status)
+{
+    case ResponseStatus.Loading:
+        <PageLoader/>
+        break;
+
+    case ResponseStatus.Fail:
+        <ErrorPage Error="_conclusion.Error"/>
+        break;
+
+    case ResponseStatus.Success:
+        <SubjectHeader Subject="@Subject.History"/>
+        <MudPaper Class="my-6 pa-6">
+            @if (_conclusion.Data.Title is null)
+            {
+                <MudText Typo="Typo.h6">
+                    @L["Deleted"]
+                </MudText>            }
+            else
+            {
+                var link = _conclusion.Data switch{
+                    ArticleTestConclusionDetail x => Links.History.Article(x.ArticleId),
+                    TopicTestConclusionDetail x => Links.History.Topic(x.TopicId),
+                    _ => throw new ArgumentOutOfRangeException(nameof(_conclusion.Data))
+                    };
+
+                <MudLink Href="@link" Typo="Typo.h6">
+                    @_conclusion.Data.Title
+                </MudLink>            }
+
+            <div class="d-flex align-center">
+                @if (_conclusion.Data.IsComplete)
+                {
+                    <MudChip Label="true" Color="Color.Success" Size="Size.Small">
+                        @L["Completed"]
+                    </MudChip>                }
+                else
+                {
+                    <MudChip Label="true" Color="Color.Warning" Size="Size.Small">
+                        @L["NotCompleted"]
+                    </MudChip>                }
+                <MudText Typo="Typo.body1">
+                    @_conclusion.Data.CreatedAt.ToSimpleFormat()
+                </MudText>
+            </div>
+            <div class="statistics-grid my-3">
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @_conclusion.Data.TimeSpent.ToSimpleFormat()
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["TimeSpent"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @_conclusion.Data.Score.Total
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Score"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @_conclusion.Data.Score.Questions
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Score:ByQuestions"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @_conclusion.Data.Score.NoMistakes
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Score:NoMistakesBonus"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @_conclusion.Data.Score.Speed
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Score:BySpeedBonus"]
+                    </MudText>
+                </div>
+            </div>
+            <div class="mt-6">
+                @foreach (var answer in _conclusion.Data.Answers)
+                {
+                    <div class="mb-3">
+                        <MudText Typo="Typo.subtitle1">
+                            @if (answer.Title is null)
+                            {
+                                <em>@L["Deleted"]</em>
+                            }
+                            else
+                            {
+                                @answer.Title
+                            }
+                        </MudText>
+                        <MudText Typo="Typo.body1">
+                            @if (answer.Correct > 0)
+                            {
+                                <strong>@L["Correct"]:&nbsp;</strong>
+                                <span>@answer.Correct&nbsp;</span>
+                            }
+                            @if (answer.Incorrect > 0)
+                            {
+                                <strong>@L["Incorrect"]:&nbsp;</strong>
+                                <span>@answer.Incorrect&nbsp;</span>
+                            }
+                        </MudText>
+                    </div>
+                }
+            </div>
+        </MudPaper>
+        break;
+}
 
 @code {
 
+    private ApiResponse<TestConclusionDetail> _conclusion = ApiResponse<TestConclusionDetail>.Loading();
+
     [Parameter]
     public string Id { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _conclusion = await HistoryClient.GetMyTestConclusionAsync(Id);
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+    }
 
 }

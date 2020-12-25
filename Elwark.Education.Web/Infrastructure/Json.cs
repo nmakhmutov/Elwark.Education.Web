@@ -16,7 +16,8 @@ namespace Elwark.Education.Web.Infrastructure
             {
                 new IsoDateTimeConverter(),
                 new StringEnumConverter(new CamelCaseNamingStrategy()),
-                new TestConclusionJsonConverter()
+                new TestConclusionSummaryJsonConverter(),
+                new TestConclusionDetailJsonConverter()
             }
         };
     }
