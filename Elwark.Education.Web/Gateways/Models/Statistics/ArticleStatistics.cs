@@ -8,8 +8,8 @@ namespace Elwark.Education.Web.Gateways.Models.Statistics
         Score Score,
         AnswerRatio AnswerRatio,
         WeeklyDifference WeeklyDifference,
-        RankingItem<long>[] ScoreRanking,
+        RankingItem<ulong>[] ScoreRanking,
         RankingItem<TimeSpan>[] TimeSpentRanking,
-        RankingItem<int>[] TestPassedTimesRanking
+        RankingItem<uint>[] TestPassedTimesRanking
     ) : StatisticsSummary(PassedTests, TimeSpent, Score, AnswerRatio);
 }
