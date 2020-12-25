@@ -24,15 +24,14 @@
         <div class="statistics-grid">
             <div class="topics-icon-widget-grid">
                 <IconWidget
-                    Icon="@Filled.School"
-                    Title="@L["PassedTests"]"
-                    Value="@_statistics.Data.Topics.PassedTests">
-                    <Caption>
-                        <DifferenceCaption
-                            Current="@_statistics.Data.Topics.WeeklyDifference.PassedTests.Current"
-                            Difference="@_statistics.Data.Topics.WeeklyDifference.PassedTests.Difference"/>
-                    </Caption>
-                </IconWidget>
+                    Icon="@Filled.Explore"
+                    Title="@L["Topics:InProgress"]"
+                    Value="@_statistics.Data.Topics.TopicsState.InProgress"/>
+
+                <IconWidget
+                    Icon="@Filled.ExploreOff"
+                    Title="@L["Topics:Completed"]"
+                    Value="@_statistics.Data.Topics.TopicsState.Completed"/>
 
                 <IconWidget
                     Icon="@Filled.Timer"
@@ -45,18 +44,36 @@
                             ValueConverter="@(span => span.ToSimpleFormat())"/>
                     </Caption>
                 </IconWidget>
-
-                <IconWidget
-                    Icon="@Filled.Explore"
-                    Title="@L["Topics:InProgress"]"
-                    Value="@_statistics.Data.Topics.TopicsState.InProgress"/>
-
-                <IconWidget
-                    Icon="@Filled.ExploreOff"
-                    Title="@L["Topics:Completed"]"
-                    Value="@_statistics.Data.Topics.TopicsState.Completed"/>
             </div>
 
+            <DetailWidget Icon="@Filled.School" Value="@_statistics.Data.Topics.PassedTests.Total" Title="@L["PassedTests"]">
+                <Caption>
+                    <DifferenceCaption
+                        Current="@_statistics.Data.Topics.WeeklyDifference.PassedTests.Current"
+                        Difference="@_statistics.Data.Topics.WeeklyDifference.PassedTests.Difference"/>
+                </Caption>
+                <Details>
+                    <div class="detail-grid">
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @_statistics.Data.Topics.PassedTests.Completed
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["PassedTests:Completed"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @_statistics.Data.Topics.PassedTests.NotCompleted
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["PassedTests:NotCompleted"]
+                            </MudText>
+                        </div>
+                    </div>
+                </Details>
+            </DetailWidget>
+            
             <DetailWidget Icon="@Filled.PendingActions" Value="@_statistics.Data.Topics.Score.Total" Title="@L["Score"]">
                 <Caption>
                     <DifferenceCaption
@@ -160,17 +177,6 @@
         <div class="statistics-grid mb-6">
             <div class="articles-icon-widget-grid">
                 <IconWidget
-                    Icon="@Filled.School"
-                    Title="@L["PassedTests"]"
-                    Value="@_statistics.Data.Articles.PassedTests">
-                    <Caption>
-                        <DifferenceCaption
-                            Current="@_statistics.Data.Articles.WeeklyDifference.PassedTests.Current"
-                            Difference="@_statistics.Data.Articles.WeeklyDifference.PassedTests.Difference"/>
-                    </Caption>
-                </IconWidget>
-
-                <IconWidget
                     Icon="@Filled.Timer"
                     Title="@L["TimeSpent"]"
                     Value="@_statistics.Data.Articles.TimeSpent.ToSimpleFormat()">
@@ -182,6 +188,34 @@
                     </Caption>
                 </IconWidget>
             </div>
+
+            <DetailWidget Icon="@Filled.School" Value="@_statistics.Data.Articles.PassedTests.Total" Title="@L["PassedTests"]">
+                <Caption>
+                    <DifferenceCaption
+                        Current="@_statistics.Data.Articles.WeeklyDifference.PassedTests.Current"
+                        Difference="@_statistics.Data.Articles.WeeklyDifference.PassedTests.Difference"/>
+                </Caption>
+                <Details>
+                    <div class="detail-grid">
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @_statistics.Data.Articles.PassedTests.Completed
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["PassedTests:Completed"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @_statistics.Data.Articles.PassedTests.NotCompleted
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["PassedTests:NotCompleted"]
+                            </MudText>
+                        </div>
+                    </div>
+                </Details>
+            </DetailWidget>
 
             <DetailWidget Icon="@Filled.PendingActions" Value="@_statistics.Data.Articles.Score.Total" Title="@L["Score"]">
                 <Caption>

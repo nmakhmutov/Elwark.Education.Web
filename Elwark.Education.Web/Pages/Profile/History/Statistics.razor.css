@@ -10,9 +10,14 @@
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
+.topics-icon-widget-grid > ::deep div:last-child {
+    grid-column: 1/-1;
+}
+
 .articles-icon-widget-grid {
     display: grid;
     gap: 12px;
+    grid-auto-rows: max-content;
 }
 
 .detail-grid {
@@ -35,6 +40,6 @@
 
 @media (min-width: 1280px) {
     .statistics-grid {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     }
 }

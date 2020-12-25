@@ -5,7 +5,7 @@ namespace Elwark.Education.Web.Gateways.Models.Statistics
 {
     public sealed record SubjectStatisticsSummary(
         Subject Subject,
-        long PassedTests,
+        PassedTests PassedTests,
         TimeSpan TimeSpent,
         Score Score,
         AnswerRatio AnswerRatio
