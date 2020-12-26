@@ -1,4 +1,3 @@
-@using Markdig.Helpers
 @inject IStringLocalizer<App> L
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-12">
@@ -19,7 +18,7 @@
                             {
                                 <MudText Typo="Typo.subtitle2" Class="my-2">
                                     <strong>@item.Value+</strong> @item.Key
-                                </MudText>                                
+                                </MudText>
                             }
                         </div>
                     </a>
@@ -33,8 +32,7 @@
 
     private SubjectItem[] _subjects = Array.Empty<SubjectItem>();
 
-    protected override void OnInitialized()
-    {
+    protected override void OnInitialized() =>
         _subjects = new SubjectItem[]
         {
             new(
@@ -70,6 +68,5 @@
         }
             .OrderBy(x => x.Title)
             .ToArray();
-    }
 
 }

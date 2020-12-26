@@ -3,6 +3,7 @@
 @ChildContent
 
 @code {
+
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
@@ -24,8 +25,7 @@
     }
 
     [JSInvokable]
-    public async Task OnIntersection()
-    {
+    public async Task OnIntersection() => 
         await ObservableTargetReached.InvokeAsync(true);
-    }
+
 }

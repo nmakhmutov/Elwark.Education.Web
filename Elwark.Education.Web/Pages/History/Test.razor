@@ -1,8 +1,8 @@
 @page "/history/test/{id}"
-@using System.Timers
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.History
 @using Elwark.Education.Web.Gateways.Models.Test
+@using System.Timers
 @inject IStringLocalizer<Test> L
 @inject IHistoryClient HistoryClient
 
@@ -18,7 +18,7 @@
         <ErrorPage Error="_test.Error"/>
         break;
 
-    case ResponseStatus.Success when _test.Data.Score is not null:
+    case ResponseStatus.Success when _test.Data.IsComplete:
         <MudText Typo="Typo.h5">Congratulation</MudText>
         break;
 
@@ -150,14 +150,14 @@
             return;
         }
 
-        if (_answerResult.Score is not null)
+        if (_answerResult.IsComplete)
         {
             _test = ApiResponse<HistoryTestModel>.Success(
                 new HistoryTestModel(
                     _test.Data.Id,
                     _test.Data.CreatedAt,
                     _test.Data.ExpiredAt,
-                    _answerResult.Score,
+                    _answerResult.IsComplete,
                     _test.Data.Questions
                     )
                 );

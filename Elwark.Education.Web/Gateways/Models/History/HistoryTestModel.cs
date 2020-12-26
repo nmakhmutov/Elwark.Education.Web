@@ -8,7 +8,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string Id,
         DateTime CreatedAt,
         DateTime ExpiredAt,
-        Score? Score,
+        bool IsComplete,
         IEnumerable<TestQuestionModel> Questions
     );
 }

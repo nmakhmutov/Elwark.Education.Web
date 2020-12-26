@@ -1,0 +1,74 @@
+@page "/profile/{page}/tests/{id}"
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.Models.TestConclusion
+@layout ProfileLayout
+
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
+
+@attribute [Authorize]
+
+@switch (_conclusion.Status)
+{
+    case ResponseStatus.Loading:
+        <PageLoader/>
+        break;
+
+    case ResponseStatus.Fail:
+        <ErrorPage Error="_conclusion.Error"/>
+        break;
+
+    case ResponseStatus.Success:
+        <ProfileSubjectHeader Subject="@Subject.History"/>
+
+        <TestConclusionDetailCard
+            Class="my-6"
+            Conclusion="@_conclusion.Data"
+            ContentLink="@ContentLink(_conclusion.Data)"/>
+        break;
+}
+
+@code {
+    private Subject _subject;
+    private ApiResponse<TestConclusionDetail> _conclusion = ApiResponse<TestConclusionDetail>.Loading();
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Page { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Enum.TryParse(Page, true, out _subject) && _subject != Subject.Unknown)
+        {
+            try
+            {
+                _conclusion = await (_subject switch {
+                    Subject.History => HistoryClient.GetMyTestConclusionAsync(Id),
+                    _ => throw new ArgumentOutOfRangeException()
+                    });
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                ex.Redirect();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                _conclusion = ApiResponse<TestConclusionDetail>.Fail(Error.NotFound);
+            }
+        }
+        else
+        {
+            _conclusion = ApiResponse<TestConclusionDetail>.Fail(Error.NotFound);
+        }
+    }
+
+    private string ContentLink(TestConclusionDetail detail) =>
+        detail switch {
+            ArticleTestConclusionDetail x => Links.Subjects.Article(_subject, x.ArticleId),
+            TopicTestConclusionDetail x => Links.Subjects.Topic(_subject, x.TopicId),
+            _ => string.Empty
+            };
+
+}

@@ -1,0 +1,110 @@
+@page "/profile/{page}/tests"
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.Models.TestConclusion
+@layout ProfileLayout
+
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
+
+@attribute [Authorize]
+
+@switch (_tests.Status)
+{
+    case ResponseStatus.Loading:
+        <PageLoader/>
+        break;
+
+    case ResponseStatus.Fail:
+        <ErrorPage Error="_tests.Error"/>
+        break;
+
+    case ResponseStatus.Success:
+        <ProfileSubjectHeader Subject="@Subject.History"/>
+
+        <MudText Typo="Typo.h5" Class="mb-2 mt-6">
+            @L["PassedTests"]
+        </MudText>
+        <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@(async () => await LoadMoreAsync())">
+            <div class="grid">
+                @foreach (var item in _tests.Data.Items)
+                {
+                    <TestConclusionSummaryCard
+                        Class="my-3"
+                        Conclusion="@item"
+                        DetailLink="@Links.Profile.TestDetail(_subject, item.TestId)"/>
+                }
+            </div>
+            <div id="observerTarget" class="d-flex justify-center my-6">
+                @if (_request.Token is not null)
+                {
+                    <MudProgressCircular Indeterminate="true"/>
+                }
+            </div>
+        </InfinityScroll>
+        break;
+}
+
+@code
+{
+    private ApiResponse<PageableResponse<TestConclusionSummary>> _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Loading();
+    private PageableRequest _request = new(null, 20);
+    private Subject _subject;
+
+    [Parameter]
+    public string Page { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Enum.TryParse(Page, true, out _subject))
+        {
+            try
+            {
+                _tests = await LoadAsync();
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                ex.Redirect();
+                return;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(Error.NotFound);
+            }
+
+            if (_tests.Status == ResponseStatus.Success)
+                _request = _request with {Token = _tests.Data.Token};
+        }
+        else
+        {
+            _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(Error.NotFound);
+        }
+    }
+
+    private async Task LoadMoreAsync()
+    {
+        if (_request.Token is null)
+            return;
+
+        var response = await LoadAsync();
+        if (response.Status == ResponseStatus.Fail)
+        {
+            _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(response.Error);
+            return;
+        }
+
+        _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Success(
+            new PageableResponse<TestConclusionSummary>(
+                _tests.Data.Items.Union(response.Data.Items).ToArray(),
+                response.Data.Token
+                )
+            );
+        _request = _request with{Token = response.Data.Token};
+    }
+
+    private Task<ApiResponse<PageableResponse<TestConclusionSummary>>> LoadAsync() =>
+        _subject switch{
+            Subject.History => HistoryClient.GetMyTestConclusionsAsync(_request),
+            _ => throw new ArgumentOutOfRangeException()
+            };
+
+}

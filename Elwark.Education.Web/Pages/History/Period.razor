@@ -38,13 +38,15 @@
                         Image="@item.Image"
                         Title="@item.Title"
                         Subtitle="@item.Segment.ToString(L)"
-                        Progress="@item.Progress"/>                }
+                        Progress="@item.Progress"/>
+                }
             </InfinityScroll>
         </div>
         <div id="observerTarget" class="d-flex justify-center my-6">
             @if (_request.Token is not null)
             {
-                <MudProgressCircular Indeterminate="true"/>            }
+                <MudProgressCircular Indeterminate="true"/>
+            }
         </div>
         break;
 }
@@ -119,7 +121,7 @@
             ex.Redirect();
             return;
         }
-        
+
         if (result.Status == ResponseStatus.Fail)
         {
             _aggregate = ApiResponse<Aggregate>.Fail(result.Error);

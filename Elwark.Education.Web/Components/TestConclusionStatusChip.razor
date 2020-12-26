@@ -1,0 +1,28 @@
+@using Elwark.Education.Web.Gateways.Models.TestConclusion
+@inject IStringLocalizer<App> L
+
+@switch (Status)
+{
+    case ConclusionStatus.Complete:
+        <MudChip Label="true" Color="Color.Success" Size="Size.Small">
+            @L["PassedTests:Completed"]
+        </MudChip>
+        break;
+    case ConclusionStatus.TimeExceeded:
+        <MudChip Label="true" Color="Color.Error" Size="Size.Small">
+            @L["PassedTests:TimeExceeded"]
+        </MudChip>
+        break;
+    case ConclusionStatus.RepliesExceeded:
+        <MudChip Label="true" Color="Color.Warning" Size="Size.Small">
+            @L["PassedTests:RepliesExceeded"]
+        </MudChip>
+        break;
+}
+
+@code {
+
+    [Parameter]
+    public ConclusionStatus Status { get; set; }
+
+}

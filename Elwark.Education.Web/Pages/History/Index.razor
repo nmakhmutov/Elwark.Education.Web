@@ -16,7 +16,7 @@
     case ResponseStatus.Fail:
         <ErrorPage Error="_history.Error"/>
         break;
-        
+
     case ResponseStatus.Success:
         <div class="ma-5">
             <div class="period-grid">
@@ -32,7 +32,8 @@
                                 @TrimDescription(period.Description)
                             </MudText>
                         </MudCardContent>
-                    </MudCard>                }
+                    </MudCard>
+                }
             </div>
 
             <MudText Typo="Typo.h2" Class="mt-6">
@@ -44,7 +45,8 @@
                     <MudCard>
                         @if (article.Image is not null)
                         {
-                            <MudCardMedia Image="@(article.Image)" Height="200"/>                        }
+                            <MudCardMedia Image="@(article.Image)" Height="200"/>
+                        }
                         <MudCardContent>
                             <MudLink Typo="Typo.h5" Href="@(Links.History.Article(article.ArticleId))">
                                 @article.Title
@@ -53,7 +55,8 @@
                                 @TrimDescription(article.Subtitle)
                             </MudText>
                         </MudCardContent>
-                    </MudCard>                }
+                    </MudCard>
+                }
             </div>
         </div>
 

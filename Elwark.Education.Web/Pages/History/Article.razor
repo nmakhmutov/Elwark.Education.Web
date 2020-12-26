@@ -2,6 +2,7 @@
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.History
 @using Elwark.Education.Web.Gateways.Models.Test
+@using Markdown = Markdig.Markdown
 @inject IHistoryClient HistoryClient
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
@@ -45,9 +46,10 @@
                         {
                             <MudText Typo="Typo.subtitle1" Class="mb-6">
                                 @_article.Data.Subtitle
-                            </MudText>                        }
+                            </MudText>
+                        }
                         <div class="content">
-                            @((MarkupString) Markdig.Markdown.ToHtml(_article.Data.Text))
+                            @((MarkupString) Markdown.ToHtml(_article.Data.Text))
                         </div>
                     </MudPaper>
                 </MudItem>
@@ -57,7 +59,7 @@
                         <div class="image" style="background-image: url(@_article.Data.Image)"></div>
                     }
                     <div class="content pa-6">
-                        @((MarkupString) Markdig.Markdown.ToHtml(_article.Data.Footnotes))
+                        @((MarkupString) Markdown.ToHtml(_article.Data.Footnotes))
                     </div>
                 </MudItem>
             </MudGrid>
@@ -100,7 +102,7 @@
     {
         _test = ApiResponse<TestCreatedResult>.Loading();
         _test = await HistoryClient.CreateTestForArticleAsync(Id);
-        
+
         if (_test.Status == ResponseStatus.Success)
             NavigationManager.NavigateTo(Links.History.Test(_test.Data.Id));
         else

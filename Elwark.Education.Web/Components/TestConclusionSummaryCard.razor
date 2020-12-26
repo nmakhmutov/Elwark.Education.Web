@@ -1,0 +1,80 @@
+@using Elwark.Education.Web.Gateways.Models.TestConclusion
+@inject IStringLocalizer<App> L
+
+<MudPaper Class="@($"pa-6 {Class}")">
+    <div class="d-sm-flex flex-row justify-space-between">
+        <MudLink Href="@DetailLink" Typo="Typo.h6">
+            @if (Conclusion.Title is null)
+            {
+                <em>
+                    @L["Deleted"]
+                </em>
+            }
+            else
+            {
+                @Conclusion.Title
+            }
+        </MudLink>
+        <TestConclusionStatusChip Status="@Conclusion.Status"/>
+    </div>
+    <div>
+        <MudText Typo="Typo.body1">
+            @Conclusion.CreatedAt.ToSimpleFormat()
+        </MudText>
+    </div>
+    <div class="statistics-grid my-3">
+        <div>
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                @Conclusion.TimeSpent.ToSimpleFormat()
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Center">
+                @L["TimeSpent"]
+            </MudText>
+        </div>
+        <div>
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                @Conclusion.UserScore.Total
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Center">
+                @L["Score"]
+            </MudText>
+        </div>
+        <div>
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                @Conclusion.UserScore.Questions
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Center">
+                @L["Score:ByQuestions"]
+            </MudText>
+        </div>
+        <div>
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                @Conclusion.UserScore.NoMistakes
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Center">
+                @L["Score:NoMistakesBonus"]
+            </MudText>
+        </div>
+        <div>
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                @Conclusion.UserScore.Speed
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Center">
+                @L["Score:BySpeedBonus"]
+            </MudText>
+        </div>
+    </div>
+</MudPaper>
+
+@code {
+
+    [Parameter]
+    public TestConclusionSummary Conclusion { get; set; } = default!;
+
+    [Parameter]
+    public string DetailLink { get; set; } = string.Empty;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

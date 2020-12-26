@@ -13,14 +13,11 @@
     [Parameter]
     public Subject Subject { get; set; }
 
-    protected override void OnInitialized()
+    protected override void OnInitialized() => _breadcrumbs = new BreadcrumbsItem[]
     {
-        _breadcrumbs = new BreadcrumbsItem[]
-        {
-            new (L["Profile"].Value, Links.Profile.Index),
-            new (L["Statistics"].Value, Links.Profile.Statistics(Subject)),
-            new (L["Tests"].Value, Links.Profile.Tests(Subject))
-        };
-    }
+        new(L["Profile"].Value, Links.Profile.Index),
+        new(L["Statistics"].Value, Links.Profile.Statistics(Subject)),
+        new(L["Tests"].Value, Links.Profile.Tests(Subject))
+    };
 
 }

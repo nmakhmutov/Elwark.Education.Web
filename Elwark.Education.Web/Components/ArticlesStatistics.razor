@@ -1,0 +1,163 @@
+@using Elwark.Education.Web.Gateways.Models.Statistics
+@inject IStringLocalizer<App> L
+
+<div class="statistics-grid @Class">
+    <div class="icon-widget-grid">
+        <IconWidget
+            Icon="@Filled.Timer"
+            Title="@L["TimeSpent"]"
+            Value="@Statistics.TimeSpent.ToSimpleFormat()">
+            <Caption>
+                <DifferenceCaption
+                    Current="@Statistics.WeeklyDifference.TimeSpent.Current"
+                    Difference="@Statistics.WeeklyDifference.TimeSpent.Difference"
+                    ValueConverter="@(span => span.ToSimpleFormat())"/>
+            </Caption>
+        </IconWidget>
+    </div>
+
+    <DetailWidget Icon="@Filled.School" Value="@Statistics.PassedTests.Total" Title="@L["PassedTests"]">
+        <Caption>
+            <DifferenceCaption
+                Current="@Statistics.WeeklyDifference.PassedTests.Current"
+                Difference="@Statistics.WeeklyDifference.PassedTests.Difference"/>
+        </Caption>
+        <Details>
+            <div class="detail-grid">
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @Statistics.PassedTests.Completed
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["PassedTests:Completed"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @Statistics.PassedTests.TimeExceeded
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["PassedTests:TimeExceeded"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @Statistics.PassedTests.RepliesExceeded
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["PassedTests:RepliesExceeded"]
+                    </MudText>
+                </div>
+            </div>
+        </Details>
+    </DetailWidget>
+
+    <DetailWidget Icon="@Filled.PendingActions" Value="@Statistics.Score.Total" Title="@L["Score"]">
+        <Caption>
+            <DifferenceCaption
+                Current="@Statistics.WeeklyDifference.Score.Current"
+                Difference="@Statistics.WeeklyDifference.Score.Difference"/>
+        </Caption>
+        <Details>
+            <div class="detail-grid">
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @Statistics.Score.Questions
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Score:ByQuestions"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @Statistics.Score.NoMistakes
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Score:NoMistakesBonus"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @Statistics.Score.Speed
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Score:BySpeedBonus"]
+                    </MudText>
+                </div>
+            </div>
+        </Details>
+    </DetailWidget>
+
+    <DetailWidget Icon="@Filled.HelpOutline" Value="@Statistics.AnswerRatio.Questions" Title="@L["Questions"]">
+        <Caption>
+            <DifferenceCaption
+                Current="@Statistics.WeeklyDifference.Questions.Current"
+                Difference="@Statistics.WeeklyDifference.Questions.Difference"/>
+        </Caption>
+        <Details>
+            <div class="detail-grid">
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @Statistics.AnswerRatio.Correct
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Questions:Correct"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @Statistics.AnswerRatio.Incorrect
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Questions:Incorrect"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @Statistics.AnswerRatio.Answered
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Questions:Answered"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @Statistics.AnswerRatio.NotAnswered
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        @L["Questions:NotAnswered"]
+                    </MudText>
+                </div>
+            </div>
+        </Details>
+    </DetailWidget>
+
+    <RankingWidget
+        Title="@L["Ranking:ByScore"]"
+        Items="@Statistics.ScoreRanking"
+        LinkBuilder="@((string id) => LinkBuilder(id))"/>
+
+    <RankingWidget
+        Title="@L["Ranking:ByTimeSpent"]"
+        Items="@Statistics.TimeSpentRanking"
+        LinkBuilder="@((string id) => LinkBuilder(id))"
+        ValueConverter="@((TimeSpan item) => item.ToSimpleFormat())"/>
+
+    <RankingWidget
+        Title="@L["Ranking:ByTestPassedTimes"]"
+        Items="@Statistics.TestPassedTimesRanking"
+        LinkBuilder="@((string id) => LinkBuilder(id))"/>
+</div>
+
+@code {
+
+    [Parameter]
+    public ArticleStatistics Statistics { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public Func<string, string> LinkBuilder { get; set; } = _ => string.Empty;
+
+}

@@ -4,7 +4,7 @@
 <div class="subscription">
     <div class="d-flex flex-row align-center">
         <SubjectIcon Subject="@Subscription.Subject" Size="@Size.Medium"/>
-        <MudLink Typo="Typo.body1" Class="ml-2" Href="@Links.SubjectIndex(Subscription.Subject)">
+        <MudLink Typo="Typo.body1" Class="ml-2" Href="@Links.Subjects.Index(Subscription.Subject)">
             @L[Subscription.Subject.ToString()]
         </MudLink>
     </div>
@@ -16,13 +16,15 @@
             </MudChip>
             <MudText Typo="Typo.body2">
                 @L["SubscriptionEndsAt"] @Subscription.ExpiredAt?.ToSimpleFormat()
-            </MudText>        }
+            </MudText>
+        }
         else
         {
             <MudChip Color="Color.Default" Size="Size.Small" Label="true" Class="ma-0">
                 @Subscription.Type
             </MudChip>
-            <MudText @onclick="@(() => Console.WriteLine("DDD"))">Switch to premium</MudText>        }
+            <MudText @onclick="@(() => Console.WriteLine("DDD"))">Switch to premium</MudText>
+        }
     </div>
     <div class="restriction">
         <MudText Typo="Typo.h6">
@@ -35,7 +37,8 @@
         {
             <MudText Typo="Typo.caption">
                 <em>Default value will be restored at @Subscription.TestCreation.RestoreAt.Value.ToSimpleFormat()</em>
-            </MudText>        }
+            </MudText>
+        }
     </div>
     <div class="restriction">
         <MudText Typo="Typo.h6">
@@ -48,7 +51,8 @@
         {
             <MudText Typo="Typo.caption">
                 <em>Default value will be restored at @Subscription.Answer.RestoreAt.Value.ToSimpleFormat()</em>
-            </MudText>        }
+            </MudText>
+        }
     </div>
     <div class="buttons">
         <MudTooltip Text="@L["Statistics"]">

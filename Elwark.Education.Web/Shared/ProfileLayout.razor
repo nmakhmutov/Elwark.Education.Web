@@ -1,6 +1,5 @@
 @using Elwark.Education.Web.Gateways.User
 @using Elwark.Education.Web.Gateways.Models.User
-@using System.Security.Authentication
 @inherits LayoutComponentBase
 @layout MainLayout
 @inject IUserClient UserClient
@@ -36,13 +35,13 @@
                 <div class="profile-menu-item">
                     <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Width="30px" Height="30px"/>
                 </div>
-                <MudDivider Vertical="true" FlexItem="true" Class="mx-3"/>                
+                <MudDivider Vertical="true" FlexItem="true" Class="mx-3"/>
             }
             <div class="profile-menu-item">
                 <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Width="30px" Height="30px"/>
             </div>
         }
-        else if(_profile.Status == ResponseStatus.Success)
+        else if (_profile.Status == ResponseStatus.Success)
         {
             <div class="profile-menu-item">
                 <MudText Typo="Typo.subtitle2">

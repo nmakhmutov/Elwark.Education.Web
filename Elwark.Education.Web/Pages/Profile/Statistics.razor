@@ -1,0 +1,78 @@
+@page "/profile/{page}"
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.Models.Statistics
+@layout ProfileLayout
+
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
+
+@switch (_statistics.Status)
+{
+    case ResponseStatus.Loading:
+        <PageLoader/>
+        break;
+
+    case ResponseStatus.Fail:
+        <ErrorPage Error="_statistics.Error"/>
+        break;
+
+    case ResponseStatus.Success:
+        <ProfileSubjectHeader Subject="@_subject"/>
+
+        <MudText Typo="Typo.h5" Class="mb-2 mt-6">
+            @L["Statistics:ByTopics"]
+        </MudText>
+        <TopicsStatistics
+            Statistics="@_statistics.Data.Topics"
+            LinkBuilder="@(id => Links.Subjects.Topic(_subject, id))"/>
+
+        <MudText Typo="Typo.h5" Class="mb-2 mt-12">
+            @L["Statistics:ByArticles"]
+        </MudText>
+        <ArticlesStatistics
+            Class="mb-6"
+            Statistics="@_statistics.Data.Articles"
+            LinkBuilder="@(id => Links.Subjects.Article(_subject, id))"/>
+        break;
+}
+
+@code {
+
+    [Parameter]
+    public string Page { get; set; } = string.Empty;
+
+    private Subject _subject;
+    private ApiResponse<ContentStatistics> _statistics = ApiResponse<ContentStatistics>.Loading();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Enum.TryParse(Page, true, out _subject) && _subject != Subject.Unknown)
+        {
+            try
+            {
+                switch (_subject)
+                {
+                    case Subject.History:
+                        _statistics = await HistoryClient.GetMyStatisticsAsync();
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                ex.Redirect();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                _statistics = ApiResponse<ContentStatistics>.Fail(Error.NotFound);
+            }
+        }
+        else
+        {
+            _statistics = ApiResponse<ContentStatistics>.Fail(Error.NotFound);
+        }
+    }
+
+}

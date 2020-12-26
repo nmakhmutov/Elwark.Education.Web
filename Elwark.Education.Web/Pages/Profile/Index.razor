@@ -26,7 +26,8 @@
             <div class="current-tests mb-6">
                 @foreach (var test in Profile.Data.CurrentTests)
                 {
-                    <CurrentTestCard Test="@test"/>                }
+                    <CurrentTestCard Test="@test"/>
+                }
             </div>
         }
 
@@ -35,12 +36,13 @@
         </MudText>
         <MudPaper Class="mb-6 px-4">
             @{ var subscriptions = Profile.Data.Subscriptions.OrderBy(x => L[x.Subject.ToString()].Value).ToArray(); }
-            
+
             <SubscriptionCard Subscription="@subscriptions[0]"/>
             @for (var i = 1; i < subscriptions.Length; i++)
             {
                 <MudDivider DividerType="DividerType.FullWidth"/>
-                <SubscriptionCard Subscription="@subscriptions[i]"/>            }
+                <SubscriptionCard Subscription="@subscriptions[i]"/>
+            }
         </MudPaper>
 
         <div class="statistics-container">
@@ -58,12 +60,14 @@
                             ChartType="ChartType.Donut"
                             InputLabels="@_progressLabels"
                             InputData="@_progressTests"
-                            LegendPosition="LegendPosition.Bottom"/>                    }
+                            LegendPosition="LegendPosition.Bottom"/>
+                    }
                     else
                     {
                         <MudText Typo="Typo.caption">
                             @L["NoDataYet"]
-                        </MudText>                    }
+                        </MudText>
+                    }
                 </MudPaper>
                 <MudPaper Class="pa-6">
                     <MudText Typo="Typo.h6" Class="mb-3">
@@ -75,12 +79,14 @@
                             ChartType="ChartType.Donut"
                             InputLabels="@_progressLabels"
                             InputData="@_progressScore"
-                            LegendPosition="LegendPosition.Bottom"/>                    }
+                            LegendPosition="LegendPosition.Bottom"/>
+                    }
                     else
                     {
                         <MudText Typo="Typo.caption">
                             @L["NoDataYet"]
-                        </MudText>                    }
+                        </MudText>
+                    }
                 </MudPaper>
                 <MudPaper Class="pa-6">
                     <MudText Typo="Typo.h6" Class="mb-3">
@@ -92,12 +98,14 @@
                             ChartType="ChartType.Donut"
                             InputLabels="@_progressLabels"
                             InputData="@_progressTimeElapsed"
-                            LegendPosition="LegendPosition.Bottom"/>                    }
+                            LegendPosition="LegendPosition.Bottom"/>
+                    }
                     else
                     {
                         <MudText Typo="Typo.caption">
                             @L["NoDataYet"]
-                        </MudText>                    }
+                        </MudText>
+                    }
                 </MudPaper>
                 <MudPaper Class="pa-6">
                     <MudText Typo="Typo.h6" Class="mb-3">
@@ -109,12 +117,14 @@
                             ChartType="ChartType.Donut"
                             InputLabels="@_progressLabels"
                             InputData="@_progressAnswers"
-                            LegendPosition="LegendPosition.Bottom"/>                    }
+                            LegendPosition="LegendPosition.Bottom"/>
+                    }
                     else
                     {
                         <MudText Typo="Typo.caption">
                             @L["NoDataYet"]
-                        </MudText>                    }
+                        </MudText>
+                    }
                 </MudPaper>
             </div>
         </div>

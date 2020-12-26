@@ -25,7 +25,7 @@
                             Typo="Typo.subtitle2"
                             Color="@(answer.IsCorrect ? Color.Success : Color.Error)">
                             @answer.Text
-                        </MudText>                        
+                        </MudText>
                     }
                 </MudContainer>
                 break;
@@ -123,10 +123,8 @@
     [Parameter]
     public EventCallback OnNext { get; set; }
 
-    protected override void OnInitialized()
-    {
+    protected override void OnInitialized() => 
         _answer = new AnswerModel {QuestionType = Question.Type};
-    }
 
     private async Task OnValidSubmit(EditContext context)
     {

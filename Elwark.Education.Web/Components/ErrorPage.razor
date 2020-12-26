@@ -1,5 +1,3 @@
-@using Elwark.Education.Web.Infrastructure
-@using Elwark.Education.Web.Gateways
 @inject NavigationManager NavigationManager
 @inject ErrorManager ErrorManager
 
@@ -11,7 +9,7 @@
         @_localizedError.Title
     </MudText>
     <div class="d-flex justify-center">
-        <MudButton Link="@Links.Index" Color="Color.Primary" Variant="Variant.Outlined">
+        <MudButton Link="@Links.Root" Color="Color.Primary" Variant="Variant.Outlined">
             @ErrorManager.Localize("GoToHomepage")
         </MudButton>
         @if (Error.Status > 499)
@@ -19,7 +17,8 @@
             <MudButton OnClick="@(() => NavigationManager.NavigateTo(NavigationManager.Uri, true))"
                        Color="Color.Primary" Variant="Variant.Filled" Class="ml-6">
                 @ErrorManager.Localize("ReloadPage")
-            </MudButton>        }
+            </MudButton>
+        }
     </div>
 </div>
 
@@ -31,9 +30,7 @@
     [Parameter]
     public Error Error { get; init; } = default!;
 
-    protected override void OnParametersSet()
-    {
+    protected override void OnParametersSet() => 
         _localizedError = ErrorManager.Localize(Error);
-    }
 
 }

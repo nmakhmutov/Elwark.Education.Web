@@ -5,29 +5,35 @@ namespace Elwark.Education.Web.Gateways.Models.TestConclusion
     public abstract record TestConclusionSummary(
         string TestId,
         string? Title,
-        bool IsComplete,
-        Score Score,
+        ConclusionStatus Status,
+        Score MaxScore,
+        TimeSpan TestDuration,
+        Score UserScore,
         TimeSpan TimeSpent,
         DateTime CreatedAt
     );
 
     public sealed record ArticleTestConclusionSummary(
         string TestId,
+        string ArticleId,
         string? Title,
-        bool IsComplete,
-        Score Score,
+        ConclusionStatus Status,
+        Score MaxScore,
+        TimeSpan TestDuration,
+        Score UserScore,
         TimeSpan TimeSpent,
-        DateTime CreatedAt,
-        string ArticleId
-    ) : TestConclusionSummary(TestId, Title, IsComplete, Score, TimeSpent, CreatedAt);
+        DateTime CreatedAt
+    ) : TestConclusionSummary(TestId, Title, Status, MaxScore, TestDuration, UserScore, TimeSpent, CreatedAt);
 
     public sealed record TopicTestConclusionSummary(
         string TestId,
+        string TopicId,
         string? Title,
-        bool IsComplete,
-        Score Score,
+        ConclusionStatus Status,
+        Score MaxScore,
+        TimeSpan TestDuration,
+        Score UserScore,
         TimeSpan TimeSpent,
-        DateTime CreatedAt,
-        string TopicId
-    ) : TestConclusionSummary(TestId, Title, IsComplete, Score, TimeSpent, CreatedAt);
+        DateTime CreatedAt
+    ) : TestConclusionSummary(TestId, Title, Status, MaxScore, TestDuration, UserScore, TimeSpent, CreatedAt);
 }
