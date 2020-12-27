@@ -1,0 +1,43 @@
+@using System.Timers
+<MudText Typo="Typo" Align="Align" Class="@Class">
+    @_timeLeft.ToSimpleFormat()
+</MudText>
+
+@code {
+    private TimeSpan _timeLeft = TimeSpan.FromSeconds(1);
+
+    [Parameter]
+    public DateTime Date { get; set; }
+
+    [Parameter]
+    public EventCallback OnComplete { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.subtitle2;
+
+    [Parameter]
+    public Align Align { get; set; } = Align.Center;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var timer = new Timer {Enabled = true, Interval = 1000};
+        timer.Elapsed += (_, _) =>
+        {
+            _timeLeft = Date - DateTime.UtcNow;
+
+            StateHasChanged();
+
+            if (_timeLeft != TimeSpan.Zero) 
+                return;
+            
+            timer.Stop();
+            timer.Dispose();
+            if (OnComplete.HasDelegate)
+                OnComplete.InvokeAsync();
+        };
+    }
+
+}
