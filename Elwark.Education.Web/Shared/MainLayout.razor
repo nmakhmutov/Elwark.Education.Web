@@ -12,7 +12,7 @@
         <MudAppBarSpacer/>
         <LanguageSelector/>
         <MudTooltip Text="Toggle theme">
-            <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@(_ => SwitchTheme())"/>
+            <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@SwitchTheme"/>
         </MudTooltip>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" Clipped="false" Elevation="25">
@@ -48,17 +48,11 @@
     MudTheme _currentTheme = new();
     string _themeIcon = Filled.Brightness7;
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override void OnInitialized() => 
         _currentTheme = _defaultTheme;
-        _drawerOpen = await LocalStorage.GetMainDrawerState();
-    }
 
-    private async Task DrawerToggle()
-    {
+    private void DrawerToggle() => 
         _drawerOpen = !_drawerOpen;
-        await LocalStorage.SetMainDrawerState(_drawerOpen);
-    }
 
     private void SwitchTheme()
     {
