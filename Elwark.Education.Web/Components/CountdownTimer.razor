@@ -1,10 +1,12 @@
 @using System.Timers
+@implements IDisposable
 <MudText Typo="Typo" Align="Align" Class="@Class">
     @_timeLeft.ToSimpleFormat()
 </MudText>
 
 @code {
     private TimeSpan _timeLeft = TimeSpan.FromSeconds(1);
+    private Timer _timer = new() {Enabled = true, Interval = 1000};
 
     [Parameter]
     public DateTime Date { get; set; }
@@ -23,21 +25,27 @@
 
     protected override void OnInitialized()
     {
-        var timer = new Timer {Enabled = true, Interval = 1000};
-        timer.Elapsed += (_, _) =>
+        _timer.Elapsed += (_, _) =>
         {
             _timeLeft = Date - DateTime.UtcNow;
 
             StateHasChanged();
 
-            if (_timeLeft != TimeSpan.Zero) 
+            if (_timeLeft != TimeSpan.Zero)
                 return;
+
+            _timer.Stop();
+            _timer.Dispose();
             
-            timer.Stop();
-            timer.Dispose();
             if (OnComplete.HasDelegate)
                 OnComplete.InvokeAsync();
         };
+    }
+
+    public void Dispose()
+    {
+        _timer.Stop();
+        _timer.Dispose();
     }
 
 }
