@@ -1,6 +1,7 @@
-using System;
+using System.Collections.Generic;
 using Elwark.Education.Web.Gateways.Models;
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace Elwark.Education.Web.Model
 {
@@ -12,23 +13,26 @@ namespace Elwark.Education.Web.Model
 
         public int SingleAnswer { get; set; }
 
-        public int[] ManyAnswer { get; set; } = Array.Empty<int>();
+        public List<int> ManyAnswer { get; set; } = new();
     }
 
     public sealed class ModelValidator : AbstractValidator<AnswerModel>
     {
-        public ModelValidator()
+        public ModelValidator(IStringLocalizer<App> localizer)
         {
             RuleFor(x => x.TextAnswer)
                 .NotEmpty()
+                .WithMessage(localizer["Test:AnswerCannotBeEmpty"])
                 .When(x => x.QuestionType == QuestionType.TextAnswer);
 
             RuleFor(x => x.SingleAnswer)
                 .NotEmpty()
+                .WithMessage(localizer["Test:AnswerCannotBeEmpty"])
                 .When(x => x.QuestionType == QuestionType.SingleAnswer);
 
             RuleFor(x => x.ManyAnswer)
                 .NotEmpty()
+                .WithMessage(localizer["Test:AnswerCannotBeEmpty"])
                 .When(x => x.QuestionType == QuestionType.ManyAnswers || x.QuestionType == QuestionType.SortedAnswers);
         }
     }

@@ -1,4 +1,5 @@
 @using Elwark.Education.Web.Gateways.Models.Test
+@using MudBlazor.Extensions
 @inject IStringLocalizer<App> L
 
 <EditForm Model="@_answer" OnValidSubmit="@OnValidSubmit">
@@ -7,7 +8,7 @@
         <MudText Typo="Typo.h6" Align="Align.Center">@Question.Title</MudText>
         @if (Question.Image is not null)
         {
-            <img src="@Question.Image" alt="@Question.Title"/>
+            <img class="question-image" src="@Question.Image" alt="@Question.Title"/>
         }
 
         @switch (Question.Type)
@@ -16,14 +17,12 @@
                 <MudContainer MaxWidth="MaxWidth.ExtraSmall">
                     <MudTextField
                         @bind-Value="_answer.TextAnswer"
-                         Label="@L["YourAnswer"]"
+                         Label="@L["Test:YourAnswer"]"
                          For="@(() => _answer.TextAnswer)"
                          Disabled="@(AnswerResult != null)"/>
                     @if (AnswerResult is TextAnswerResult answer)
                     {
-                        <MudText
-                            Typo="Typo.subtitle2"
-                            Color="@(answer.IsCorrect ? Color.Success : Color.Error)">
+                        <MudText Typo="Typo.subtitle2" Color="@(answer.IsCorrect ? Color.Success : Color.Error)">
                             @answer.Text
                         </MudText>
                     }
@@ -31,78 +30,147 @@
                 break;
 
             case QuestionType.SingleAnswer:
-                <div class="d-flex flex-column align-center mt-6">
-                    <MudRadioGroup SelectedOptionChanged="@(s => _answer.SingleAnswer = int.Parse(s))"
-                                   SelectedOption="@_answer.SingleAnswer.ToString()">
-                        <Virtualize Items="@Question.Options" Context="item">
-                            @{
-                                var color = AnswerResult switch
-                                {
-                                    SingleAnswerResult {IsCorrect: true } x when item.Number == x.Number => Color.Success,
+                <div class="d-flex flex-column">
+                    <MudRadioGroup
+                        SelectedOption="@_answer.SingleAnswer.ToString()"
+                        SelectedOptionChanged="@(s => _answer.SingleAnswer = int.Parse(s))">
+                        @foreach (var option in Question.Options)
+                        {
+                            var (icon, color) = AnswerResult switch {
+                                SingleAnswerResult x when option.Number == x.Number => 
+                                    (Icon: Filled.Check , Color: Color.Success),
                                 
-                                    SingleAnswerResult {IsCorrect: false} x when item.Number == x.Number => Color.Success,
-                                
-                                    SingleAnswerResult {IsCorrect: false} x when item.Number == x.Number => Color.Error,
-                                
-                                    _ => Color.Default
-                                    };
-                            }
+                                SingleAnswerResult {IsCorrect: false} when option.Number == _answer.SingleAnswer => 
+                                    (Icon: Filled.Clear , Color: Color.Error),
+                                    
+                                _ => (Icon: null, Color: Color.Default)
+                                };
 
-                            <MudRadio Disabled="@(AnswerResult != null)" Color="Color.Primary" Option="@item.Number.ToString()">
-                                <MudText Typo="Typo.body1" Color="@color">
-                                    @item.Value
-                                </MudText>
-                            </MudRadio>
-                        </Virtualize>
+                            <div class="d-flex flex-row align-center">
+                                @if (icon is null)
+                                {
+                                    <span style="width: 24px">&nbsp;</span>
+                                }
+                                else
+                                {
+                                    <MudIcon Icon="@icon" Color="@color"/>
+                                }
+                                <MudRadio Disabled="@(AnswerResult != null)" Color="Color.Primary" Option="@option.Number.ToString()">
+                                    @switch (option.Type)
+                                    {
+                                        case AnswerOptionType.Text:
+                                            <MudText Typo="Typo.body1">
+                                                @option.Value
+                                            </MudText>
+                                            break;
+
+                                        case AnswerOptionType.Image:
+                                            <img class="answer-image" src="@option.Value" alt="@Question.Title"/>
+                                            break;
+                                    }
+                                </MudRadio>
+                            </div>
+                        }
                     </MudRadioGroup>
-                    <MudText Typo="Typo.subtitle2" Color="@Color.Error" Align="Align.Center">
-                        <ValidationMessage For="@(() => _answer.SingleAnswer)"/>
-                    </MudText>
                 </div>
                 break;
 
             case QuestionType.ManyAnswers:
-                <MudText Typo="Typo.subtitle2" Color="@Color.Error" Align="Align.Center">
-                    @* <ValidationMessage For="@(() => _answer.TextValue)"/> *@
-                </MudText>
+                <div class="d-flex flex-column">
+                    @foreach (var option in Question.Options)
+                    {
+                        var (icon, color) = AnswerResult switch {
+                            ManyAnswersResult x when x.Numbers.Contains(option.Number) => 
+                                (Icon: Filled.Check , Color: Color.Success),
+                                                
+                            ManyAnswersResult {IsCorrect: false} when _answer.ManyAnswer.Contains(option.Number) => 
+                                (Icon: Filled.Clear , Color: Color.Error),
+                                                    
+                            _ => (Icon: null, Color: Color.Default)
+                            };
+
+                        <div class="d-flex flex-row align-center">
+                            @if (icon is null)
+                            {
+                                <span style="width: 24px">&nbsp;</span>
+                            }
+                            else
+                            {
+                                <MudIcon Icon="@icon" Color="@color"/>
+                            }
+                            <MudCheckBox
+                                Checked="@(_answer.ManyAnswer.Contains(option.Number))"
+                                CheckedChanged="@((bool b) => { if (b) {_answer.ManyAnswer.Add(option.Number); } else _answer.ManyAnswer.Remove(option.Number);})"
+                                Disabled="@(AnswerResult != null)"
+                                Color="Color.Primary">
+                                @switch (option.Type)
+                                {
+                                    case AnswerOptionType.Text:
+                                        <MudText Typo="Typo.body1">
+                                            @option.Value
+                                        </MudText>
+                                        break;
+
+                                    case AnswerOptionType.Image:
+                                        <img class="answer-image" src="@option.Value" alt="@Question.Title"/>
+                                        break;
+                                }
+                            </MudCheckBox>
+                        </div>
+                    }
+                </div>
                 break;
 
             case QuestionType.SortedAnswers:
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(Question.Type), Question.Title, "Unsupported question type");
+                throw new ArgumentOutOfRangeException(nameof(Question.Type), Question.Title, null);
         }
 
-        @switch (_answerState)
+        @if (AnswerResult is null)
         {
-            case AnswerState.Answer:
-                <MudButton
-                    ButtonType="ButtonType.Submit"
-                    Variant="Variant.Filled"
-                    Class="mx-auto mb-6"
-                    Color="Color.Primary">
-                    @L["Answer"]
-                </MudButton>
-                break;
-
-            case AnswerState.Answering:
-                <div class="mx-auto mb-6">
-                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary"/>
-                </div>
-                break;
-
-            case AnswerState.Next:
-                <MudButton
-                    ButtonType="ButtonType.Button"
-                    Variant="Variant.Filled"
-                    Class="mx-auto mb-6"
-                    Color="Color.Primary"
-                    OnClick="@OnNextClick">
-                    @L["Next"]
-                </MudButton>
-                break;
+            <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@Color.Error">
+                <ValidationMessage For="@(() => _answer.SingleAnswer)"/>
+                <ValidationMessage For="@(() => _answer.ManyAnswer)"/>
+            </MudText>
         }
+        else
+        {
+            if (AnswerResult.IsCorrect)
+            {
+                <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@Color.Success">
+                    @L["Test:CorrectAnswer"]
+                </MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@Color.Error">
+                    @L["Test:IncorrectAnswer"]
+                </MudText>
+            }
+        }
+
+        <div class="mx-auto">
+            @switch (_answerState)
+            {
+                case AnswerState.Answer:
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">
+                        @L["Test:Answer"]
+                    </MudButton>
+                    break;
+
+                case AnswerState.Answering:
+                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary"/>
+                    break;
+
+                case AnswerState.Next:
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnNextClick">
+                        @L["Test:Next"]
+                    </MudButton>
+                    break;
+            }
+        </div>
     </div>
 </EditForm>
 
@@ -123,8 +191,13 @@
     [Parameter]
     public EventCallback OnNext { get; set; }
 
-    protected override void OnInitialized() => 
-        _answer = new AnswerModel {QuestionType = Question.Type};
+    protected override void OnParametersSet()
+    {
+        if (Question.Type != _answer.QuestionType)
+            _answer = _answer with{QuestionType = Question.Type};
+
+        Console.WriteLine("OnParametersSet: " + _answer);
+    }
 
     private async Task OnValidSubmit(EditContext context)
     {
@@ -139,6 +212,7 @@
 
         await OnAnswer.InvokeAsync(answer);
         _answerState = AnswerState.Next;
+        Console.WriteLine("OnSubmit: " + _answer);
     }
 
     private async Task OnNextClick()
@@ -146,6 +220,7 @@
         await OnNext.InvokeAsync();
         _answer = new AnswerModel {QuestionType = Question.Type};
         _answerState = AnswerState.Answer;
+        Console.WriteLine("OnNext: " + _answer);
     }
 
 }
