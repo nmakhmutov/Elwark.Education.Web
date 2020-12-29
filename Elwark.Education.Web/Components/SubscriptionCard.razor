@@ -9,48 +9,59 @@
         </MudLink>
     </div>
     <div>
-        @if (Subscription.Type == SubscriptionType.Premium)
+        @switch(Subscription.Type)
         {
-            <MudChip Color="Color.Warning" Size="Size.Small" Label="true" Class="ma-0">
-                @Subscription.Type
-            </MudChip>
-            <MudText Typo="Typo.body2">
-                @L["SubscriptionEndsAt"] @Subscription.ExpiredAt?.ToSimpleFormat()
-            </MudText>
-        }
-        else
-        {
-            <MudChip Color="Color.Default" Size="Size.Small" Label="true" Class="ma-0">
-                @Subscription.Type
-            </MudChip>
-            <MudText @onclick="@(() => Console.WriteLine("DDD"))">Switch to premium</MudText>
+            case SubscriptionType.Free:
+                <MudChip Color="Color.Default" Size="Size.Small" Label="true" Class="ma-0">
+                    @Subscription.Type
+                </MudChip>
+                <MudText @onclick="@(() => Console.WriteLine("DDD"))">Switch to premium</MudText>
+                break;
+                
+            case SubscriptionType.Basic:
+                <MudChip Color="Color.Secondary" Size="Size.Small" Label="true" Class="ma-0">
+                    @Subscription.Type
+                </MudChip>
+                <MudText Typo="Typo.body2">
+                    @L["SubscriptionEndsAt"] @Subscription.ExpiredAt?.ToSimpleFormat()
+                </MudText>
+                break;
+                
+            case SubscriptionType.Advanced:
+                <MudChip Color="Color.Warning" Size="Size.Small" Label="true" Class="ma-0">
+                    @Subscription.Type
+                </MudChip>
+                <MudText Typo="Typo.body2">
+                    @L["SubscriptionEndsAt"] @Subscription.ExpiredAt?.ToSimpleFormat()
+                </MudText>
+                break;
         }
     </div>
     <div class="restriction">
         <MudText Typo="Typo.h6">
-            @(Subscription.TestCreation.Quantity < 0 ? "∞" : Subscription.TestCreation.Quantity)
+            @(Subscription.TestCreating.Quantity < 0 ? "∞" : Subscription.TestCreating.Quantity)
         </MudText>
         <MudText Typo="Typo.body1">
             Tests you can create now
         </MudText>
-        @if (Subscription.TestCreation.RestoreAt.HasValue)
+        @if (Subscription.TestCreating.RestoreAt.HasValue)
         {
             <MudText Typo="Typo.caption">
-                <em>Default value will be restored at @Subscription.TestCreation.RestoreAt.Value.ToSimpleFormat()</em>
+                <em>Default value will be restored at @Subscription.TestCreating.RestoreAt.Value.ToSimpleFormat()</em>
             </MudText>
         }
     </div>
     <div class="restriction">
         <MudText Typo="Typo.h6">
-            @(Subscription.Answer.Quantity < 0 ? "∞" : Subscription.Answer.Quantity)
+            @(Subscription.TestAnswering.Quantity < 0 ? "∞" : Subscription.TestAnswering.Quantity)
         </MudText>
         <MudText Typo="Typo.body1">
             Mistakes you can make in tests
         </MudText>
-        @if (Subscription.Answer.RestoreAt.HasValue)
+        @if (Subscription.TestAnswering.RestoreAt.HasValue)
         {
             <MudText Typo="Typo.caption">
-                <em>Default value will be restored at @Subscription.Answer.RestoreAt.Value.ToSimpleFormat()</em>
+                <em>Default value will be restored at @Subscription.TestAnswering.RestoreAt.Value.ToSimpleFormat()</em>
             </MudText>
         }
     </div>

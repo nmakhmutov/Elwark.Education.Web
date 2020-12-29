@@ -12,8 +12,8 @@ namespace Elwark.Education.Web.Gateways.Models.User
         Subject Subject,
         SubscriptionType Type,
         DateTime? ExpiredAt,
-        Restriction TestCreation,
-        Restriction Answer
+        Restriction TestCreating,
+        Restriction TestAnswering
     );
 
     public sealed record UserStatistics(StatisticsSummary Summary, SubjectStatisticsSummary[] Subjects);
