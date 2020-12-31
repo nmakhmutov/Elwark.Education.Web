@@ -31,129 +31,66 @@
 @for (var i = 0; i < Topic.Articles.Length; i++)
 {
     var article = Topic.Articles[i];
-    <div class="article-card">
-        @if (i % 2 == 0)
-        {
-            <div class="article-background article-background--left">
-                <div class="article-background--color"></div>
-                <div></div>
-            </div>
-            <div class="article-content">
-                <div class="article-image-container justify-end">
-                    <div class="article-image">
-                        @if (article.Image is not null)
-                        {
-                            <img src="@article.Image" style="width: inherit; height: inherit">
-                        }
-                    </div>
-                </div>
-                <div class="article-text-container">
-                    @if (article.Permission.Type == ContentType.Premium)
+    <div class="article @(i % 2 == 0 ? "flex-md-row" : "flex-md-row-reverse")">
+        <div class="article-image-container">
+            <div class="article-background @(i % 2 == 0 ? "left" : "right")"></div>
+            <div class="image-container @(i % 2 == 0 ? "left" : "right")">
+                <div class="article-image">
+                    @if (article.Image is not null)
                     {
-                        <MudText Typo="Typo.body2" Color="Color.Warning">
-                            @article.Permission.Type
+                        <img src="@article.Image" alt="@article.Title" style="width: 100%; height: 100%;">
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="article-content-container @(i % 2 == 0 ? null : "reverse")">
+            <div class="article-text-container">
+                @if (article.Permission.Type == ContentType.Premium)
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Warning">
+                        @article.Permission.Type
+                    </MudText>
+                }
+                
+                <MudText Typo="Typo.h3">
+                    @article.Title
+                </MudText>
+                
+                <div>
+                    @if (article.Test.IsAvailable)
+                    {
+                        <MudText Typo="Typo.body2">
+                            @if (article.Test.Progress is null)
+                            {
+                                <em>Test not passed</em>
+                            }
+                            else
+                            {
+                                <em>Test passed @article.Test.Progress.PassedTimes times. Last at @article.Test.Progress.TestCompletedAt.ToSimpleFormat()</em>
+                            }
                         </MudText>
                     }
-                    <MudText Typo="Typo.h3">
-                        @article.Title
+                    <MudText Typo="Typo.subtitle1">
+                        @article.Subtitle
                     </MudText>
-                    <div>
-                        @if (article.Test.IsAvailable)
-                        {
-                            <MudText Typo="Typo.body2">
-                                @if (article.Test.Progress is null)
-                                {
-                                    <em>Test not passed</em>
-                                }
-                                else
-                                {
-                                    <em>Test passed @article.Test.Progress.PassedTimes times. Last at @article.Test.Progress.TestCompletedAt.ToSimpleFormat()</em>
-                                }
-                            </MudText>
-                        }
-                        <MudText Typo="Typo.subtitle1">
-                            @article.Subtitle
-                        </MudText>
-                    </div>
-
-                    <div>
-                        @if (article.Permission.IsAllowed)
-                        {
-                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" Link="@(Links.History.Article(article.Id))">
-                                Learn more
-                            </MudButton>
-                        }
-                        else
-                        {
-                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" OnClick="@OpenSubscriptionDialog">
-                                Learn more
-                            </MudButton>
-                        }
-                    </div>
                 </div>
-            </div>
-        }
-        else
-        {
-            <div class="article-background article-background--right">
-                <div></div>
-                <div class="article-background--color"></div>
-            </div>
-            <div class="article-content">
-                <div class="article-text-container justify-self-end">
-                    @if (article.Permission.Type == ContentType.Premium)
+
+                <div>
+                    @if (article.Permission.IsAllowed)
                     {
-                        <MudText Typo="Typo.body2" Color="Color.Warning">
-                            @article.Permission.Type
-                        </MudText>
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" Link="@(Links.History.Article(article.Id))">
+                            Learn more
+                        </MudButton>
                     }
-                    <MudText Typo="Typo.h3">
-                        @article.Title
-                    </MudText>
-                    <div>
-                        @if (article.Test.IsAvailable)
-                        {
-                            <MudText Typo="Typo.body2">
-                                @if (article.Test.Progress is null)
-                                {
-                                    <em>Test not passed</em>
-                                }
-                                else
-                                {
-                                    <em>Test passed @article.Test.Progress.PassedTimes times. Last at @article.Test.Progress.TestCompletedAt.ToSimpleFormat()</em>
-                                }
-                            </MudText>
-                        }
-                        <MudText Typo="Typo.subtitle1">
-                            @article.Subtitle
-                        </MudText>
-                    </div>
-
-                    <div>
-                        @if (article.Permission.IsAllowed)
-                        {
-                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" Link="@(Links.History.Article(article.Id))">
-                                Learn more
-                            </MudButton>
-                        }
-                        else
-                        {
-                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" OnClick="@OpenSubscriptionDialog">
-                                Learn more
-                            </MudButton>
-                        }
-                    </div>
-                </div>
-                <div class="article-image-container">
-                    <div class="article-image">
-                        @if (article.Image is not null)
-                        {
-                            <img src="@article.Image" style="width: inherit; height: inherit">
-                        }
-                    </div>
+                    else
+                    {
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" OnClick="@OpenSubscriptionDialog">
+                            Learn more
+                        </MudButton>
+                    }
                 </div>
             </div>
-        }
+        </div>
     </div>
 }
 

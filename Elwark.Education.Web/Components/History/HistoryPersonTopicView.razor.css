@@ -38,48 +38,47 @@
     text-decoration: underline;
 }
 
-.article-card {
-    position: relative;
+.article {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 48px;
 }
 
-.article-background {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    display: grid;
-    height: inherit;
-    width: 100%;
-    padding-bottom: 36px;
-}
-
-.article-background--left {
-    grid-template-columns: 1fr 2fr
-}
-
-.article-background--right {
-    grid-template-columns: 2fr 1fr
-}
-
-.article-background--color {
-    background-color: #606FC7;
-}
-
-.article-content {
-    position: relative;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-}
-
 .article-image-container {
+    flex: 1 0 50%;
+    position: relative;
+}
+
+.article-content-container {
+    flex: 1 0 50%;
+    margin-top: 24px;
     display: flex;
-    flex-direction: row;
-    padding-top: 84px;
+    align-items: center;
+}
+
+.image-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .article-image {
-    height: 25vw
+    max-width: 70vw;
+    max-height: 70vw;
+    margin-top: 24px;
+    margin-bottom: -24px;
+}
+
+.article-background {
+    height: 100%;
+    width: 30%;
+    background-color: #606FC7;
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
 }
 
 .article-text-container {
@@ -87,11 +86,18 @@
     flex-direction: column;
     justify-content: center;
     gap: 24px;
-    max-width: 35vw;
+    padding: 24px;
 }
 
-.justify-self-end {
-    justify-self: flex-end;
+@media (min-width: 600px) {
+    .article-image {
+        max-width: 50vw;
+        margin-top: 60px;
+    }
+
+    .image-container {
+        align-items: flex-end;
+    }
 }
 
 @media (min-width: 960px) {
@@ -107,10 +113,48 @@
         background-position: top right;
         background-size: contain;
     }
+
+    .article-image {
+        max-width: 40vw;
+        margin-top: 48px;
+    }
+
+    .image-container.right {
+        justify-content: flex-start;
+    }
+
+    .image-container.left {
+        justify-content: flex-end;
+    }
+
+    .article-background {
+        width: 80%;
+    }
+
+    .article-background.right {
+        right: 0;
+    }
+
+    .article-background.left {
+        left: 0;
+    }
+
+    .article-text-container {
+        max-width: 35vw;
+    }
+
+    .article-content-container.reverse {
+        justify-content: flex-end;
+    }
 }
 
 @media (min-width: 1280px) {
     .header-grid {
         grid-template-columns: 2fr 3fr;
+    }
+
+    .article-image {
+        max-width: 25vw;
+        margin-top: 48px;
     }
 }
