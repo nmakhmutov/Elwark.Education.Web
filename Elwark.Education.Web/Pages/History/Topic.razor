@@ -2,7 +2,6 @@
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.History
 @inject IHistoryClient HistoryClient
-@inject IDialogService Dialog
 @inject IStringLocalizer<App> L
 
 @attribute [Authorize]
@@ -18,70 +17,16 @@
 
     case ResponseStatus.Success:
         <Title Value="@_topic.Data.Title"/>
-        <div class="container">
-            <div class="image-container">
-                <div class="image" style="background-image: url(@_topic.Data.Image)">
-                    <div class="cover">
-                        <div class="title-container">
-                            <MudText Typo="Typo.h4" Class="mb-3">@_topic.Data.Title</MudText>
-                            <MudText Typo="Typo.subtitle1">@_topic.Data.Segment.ToString(L)</MudText>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="articles-container">
-                <Breadcrumbs Items="@_breadcrumbs" Class="ma-6"/>
-                <MudText Typo="Typo.body1" Class="ma-6" Style="max-width: 980px">
-                    @_topic.Data.Description
-                </MudText>
-                <Virtualize Items="@_topic.Data.Articles" Context="item">
-                    <div class="article-card mud-paper ma-6 pa-3">
-                        @if (item.Image is not null)
-                        {
-                            <div class="article-image">
-                                <MudAvatar Image="@(item.Image)" Square="true" Style="width: 90px; height: 90px"/>
-                            </div>
-                        }
-                        <div class="article-texts">
-                            @if (item.Type == ContentType.Premium)
-                            {
-                                <MudText Typo="Typo.body2" Color="Color.Warning">
-                                    @item.Type
-                                </MudText>
-                                <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
-                                   href="#" @onclick="@OpenSubscriptionDialog" @onclick:preventDefault="true">
-                                    @item.Title
-                                </a>
-                            }
-                            else
-                            {
-                                <MudLink Typo="Typo.h5" Href="@(Links.History.Article(item.ArticleId))">
-                                    @item.Title
-                                </MudLink>
-                            }
-                            @if (item.IsTestAvailable)
-                            {
-                                <MudText Typo="Typo.body2">
-                                    @if (item.Progress is null)
-                                    {
-                                        <em>Test not passed</em>
-                                    }
-                                    else
-                                    {
-                                        <em>Test passed @item.Progress.PassedTimes times. Last at @item.Progress.TestCompletedAt.ToSimpleFormat()</em>
-                                    }
-                                </MudText>
-                            }
-                        </div>
-                        <div class="article-description">
-                            <MudText Typo="Typo.body1">
-                                @item.Subtitle
-                            </MudText>
-                        </div>
-                    </div>
-                </Virtualize>
-            </div>
-        </div>
+        @switch (_topic.Data)
+        {
+            case HistoryEventTopicDetail x:
+                <HistoryEventTopicView Topic="@x" Breadcrumbs="@_breadcrumbs"/>
+                break;
+                
+            case HistoryPersonTopicDetail x:
+                <HistoryPersonTopicView Topic="@x" Breadcrumbs="@_breadcrumbs"/>
+                break;
+        }
         break;
 }
 
@@ -112,7 +57,5 @@
                 new(_topic.Data.Period.Title, Links.History.Period(_topic.Data.Period.Type))
             };
     }
-
-    private void OpenSubscriptionDialog() => Dialog.Show<SubscriptionModal>(null, new DialogOptions {MaxWidth = MaxWidth.Large});
 
 }

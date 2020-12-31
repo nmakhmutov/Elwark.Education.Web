@@ -1,0 +1,81 @@
+@using Elwark.Education.Web.Gateways.Models.History
+@inject IDialogService Dialog
+
+<div class="container">
+    <div class="image-container">
+        <div class="image" style="background-image: url(@Topic.Image)">
+            <div class="cover">
+                <div class="title-container">
+                    <MudText Typo="Typo.h4" Class="mb-3">
+                        @Topic.Title
+                    </MudText>
+                    <HistoricalDateRangeText Range="@Topic.Dates"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="articles-container">
+        <Breadcrumbs Items="@Breadcrumbs" Class="ma-6"/>
+        <MudText Typo="Typo.body1" Class="ma-6" Style="max-width: 980px">
+            @Topic.Description
+        </MudText>
+        <Virtualize Items="@Topic.Articles" Context="item">
+            <div class="article-card mud-paper ma-6 pa-3">
+                @if (item.Image is not null)
+                {
+                    <div class="article-image">
+                        <MudAvatar Image="@(item.Image)" Square="true" Style="width: 90px; height: 90px"/>
+                    </div>
+                }
+                <div class="article-texts">
+                    @if (item.Permission.Type == ContentType.Premium)
+                    {
+                        <MudText Typo="Typo.body2" Color="Color.Warning">
+                            @item.Permission.Type
+                        </MudText>
+                        <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
+                           href="#" @onclick="@OpenSubscriptionDialog" @onclick:preventDefault="true">
+                            @item.Title
+                        </a>
+                    }
+                    else
+                    {
+                        <MudLink Typo="Typo.h5" Href="@(Links.History.Article(item.Id))">
+                            @item.Title
+                        </MudLink>
+                    }
+                    @if (item.Test.IsAvailable)
+                    {
+                        <MudText Typo="Typo.body2">
+                            @if (item.Test.Progress is null)
+                            {
+                                <em>Test not passed</em>
+                            }
+                            else
+                            {
+                                <em>Test passed @item.Test.Progress.PassedTimes times. Last at @item.Test.Progress.TestCompletedAt.ToSimpleFormat()</em>
+                            }
+                        </MudText>
+                    }
+                </div>
+                <div class="article-description">
+                    <MudText Typo="Typo.body1">
+                        @item.Subtitle
+                    </MudText>
+                </div>
+            </div>
+        </Virtualize>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public HistoryEventTopicDetail Topic { get; set; } = default!;
+
+    [Parameter]
+    public BreadcrumbsItem[] Breadcrumbs { get; set; } = Array.Empty<BreadcrumbsItem>();
+
+    private void OpenSubscriptionDialog() => Dialog.Show<SubscriptionModal>(null, new DialogOptions {MaxWidth = MaxWidth.Large});
+
+}

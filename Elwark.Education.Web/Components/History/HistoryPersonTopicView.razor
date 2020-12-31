@@ -1,0 +1,169 @@
+@using Elwark.Education.Web.Gateways.Models.History
+@using Markdown = Markdig.Markdown
+@inject IDialogService Dialog
+
+<div class="header-grid mb-6">
+    <div class="header-title">
+        <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>
+        <MudText Typo="Typo.h2" Class="mb-6">
+            @Topic.Title
+        </MudText>
+        <MudText Typo="Typo.subtitle1" Class="mb-6">
+            @Topic.Description
+        </MudText>
+        <div class="characteristics mb-6">
+            @foreach (var (title, value) in Topic.Characteristics)
+            {
+                <div class="tag">
+                    <MudText Typo="Typo.subtitle1" Color="Color.Inherit">
+                        @title
+                    </MudText>
+                    <div class="characteristic-value">
+                        @((MarkupString) Markdown.ToHtml(value))
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="header-image" style="background-image: url(@Topic.Image);"></div>
+</div>
+
+@for (var i = 0; i < Topic.Articles.Length; i++)
+{
+    var article = Topic.Articles[i];
+    <div class="article-card">
+        @if (i % 2 == 0)
+        {
+            <div class="article-background article-background--left">
+                <div class="article-background--color"></div>
+                <div></div>
+            </div>
+            <div class="article-content">
+                <div class="article-image-container justify-end">
+                    <div class="article-image">
+                        @if (article.Image is not null)
+                        {
+                            <img src="@article.Image" style="width: inherit; height: inherit">
+                        }
+                    </div>
+                </div>
+                <div class="article-text-container">
+                    @if (article.Permission.Type == ContentType.Premium)
+                    {
+                        <MudText Typo="Typo.body2" Color="Color.Warning">
+                            @article.Permission.Type
+                        </MudText>
+                    }
+                    <MudText Typo="Typo.h3">
+                        @article.Title
+                    </MudText>
+                    <div>
+                        @if (article.Test.IsAvailable)
+                        {
+                            <MudText Typo="Typo.body2">
+                                @if (article.Test.Progress is null)
+                                {
+                                    <em>Test not passed</em>
+                                }
+                                else
+                                {
+                                    <em>Test passed @article.Test.Progress.PassedTimes times. Last at @article.Test.Progress.TestCompletedAt.ToSimpleFormat()</em>
+                                }
+                            </MudText>
+                        }
+                        <MudText Typo="Typo.subtitle1">
+                            @article.Subtitle
+                        </MudText>
+                    </div>
+
+                    <div>
+                        @if (article.Permission.IsAllowed)
+                        {
+                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" Link="@(Links.History.Article(article.Id))">
+                                Learn more
+                            </MudButton>
+                        }
+                        else
+                        {
+                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" OnClick="@OpenSubscriptionDialog">
+                                Learn more
+                            </MudButton>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="article-background article-background--right">
+                <div></div>
+                <div class="article-background--color"></div>
+            </div>
+            <div class="article-content">
+                <div class="article-text-container justify-self-end">
+                    @if (article.Permission.Type == ContentType.Premium)
+                    {
+                        <MudText Typo="Typo.body2" Color="Color.Warning">
+                            @article.Permission.Type
+                        </MudText>
+                    }
+                    <MudText Typo="Typo.h3">
+                        @article.Title
+                    </MudText>
+                    <div>
+                        @if (article.Test.IsAvailable)
+                        {
+                            <MudText Typo="Typo.body2">
+                                @if (article.Test.Progress is null)
+                                {
+                                    <em>Test not passed</em>
+                                }
+                                else
+                                {
+                                    <em>Test passed @article.Test.Progress.PassedTimes times. Last at @article.Test.Progress.TestCompletedAt.ToSimpleFormat()</em>
+                                }
+                            </MudText>
+                        }
+                        <MudText Typo="Typo.subtitle1">
+                            @article.Subtitle
+                        </MudText>
+                    </div>
+
+                    <div>
+                        @if (article.Permission.IsAllowed)
+                        {
+                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" Link="@(Links.History.Article(article.Id))">
+                                Learn more
+                            </MudButton>
+                        }
+                        else
+                        {
+                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" OnClick="@OpenSubscriptionDialog">
+                                Learn more
+                            </MudButton>
+                        }
+                    </div>
+                </div>
+                <div class="article-image-container">
+                    <div class="article-image">
+                        @if (article.Image is not null)
+                        {
+                            <img src="@article.Image" style="width: inherit; height: inherit">
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public HistoryPersonTopicDetail Topic { get; set; } = default!;
+
+    [Parameter]
+    public BreadcrumbsItem[] Breadcrumbs { get; set; } = Array.Empty<BreadcrumbsItem>();
+
+    private void OpenSubscriptionDialog() => Dialog.Show<SubscriptionModal>(null, new DialogOptions {MaxWidth = MaxWidth.Large});
+}

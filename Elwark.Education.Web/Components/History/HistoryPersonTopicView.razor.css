@@ -1,0 +1,116 @@
+.header-grid {
+    display: grid;
+}
+
+.header-image {
+    min-height: 70vh;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.header-title {
+    margin: 24px;
+}
+
+.characteristics {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.characteristic-value {
+    font-size: 1.1rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    line-height: 1.2;
+}
+
+.characteristic-value ::deep a {
+    font-size: 1rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: .00938em;
+    color: var(--mud-palette-primary);
+}
+
+.characteristic-value ::deep a:hover {
+    text-decoration: underline;
+}
+
+.article-card {
+    position: relative;
+    margin-bottom: 48px;
+}
+
+.article-background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: grid;
+    height: inherit;
+    width: 100%;
+    padding-bottom: 36px;
+}
+
+.article-background--left {
+    grid-template-columns: 1fr 2fr
+}
+
+.article-background--right {
+    grid-template-columns: 2fr 1fr
+}
+
+.article-background--color {
+    background-color: #606FC7;
+}
+
+.article-content {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.article-image-container {
+    display: flex;
+    flex-direction: row;
+    padding-top: 84px;
+}
+
+.article-image {
+    height: 25vw
+}
+
+.article-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    max-width: 35vw;
+}
+
+.justify-self-end {
+    justify-self: flex-end;
+}
+
+@media (min-width: 960px) {
+    .header-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .header-title {
+        margin: 72px 48px 0 48px;
+    }
+
+    .header-image {
+        background-position: top right;
+        background-size: contain;
+    }
+}
+
+@media (min-width: 1280px) {
+    .header-grid {
+        grid-template-columns: 2fr 3fr;
+    }
+}

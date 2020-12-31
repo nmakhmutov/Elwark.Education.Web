@@ -1,0 +1,55 @@
+@using Elwark.Education.Web.Gateways.Models.History
+@inject IStringLocalizer<App> L
+
+<MudText Typo="@Typo" Class="@Class">
+    @if (Range is null)
+    {
+        @L["HistoricalDate:Unknown"]
+    }
+    else if (_start == _end)
+    {
+        @ToString(_start)
+    }
+    else
+    {
+        @($"{ToString(_start)} - {ToString(_end)}")
+    }
+</MudText>
+
+@code {
+
+    private HistoricalDate? _start;
+    private HistoricalDate? _end;
+
+    [Parameter]
+    public HistoricalDateRange? Range { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.subtitle1;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Range is null)
+            return;
+
+        _start = HistoricalDate.FromString(Range.Start);
+        _end = HistoricalDate.FromString(Range.End);
+    }
+
+    private string ToString(HistoricalDate? date)
+    {
+        if (date is null)
+            return L["HistoricalDate:Unknown"].Value;
+
+        var day = date.Day;
+        var month = date.Month.HasValue
+            ? CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(date.Month.Value)
+            : null;
+
+        return $"{day} {month} {date.Year} {L["HistoricalDate:" + date.Era].Value}";
+    }
+
+}
