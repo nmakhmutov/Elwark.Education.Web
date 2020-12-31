@@ -5,7 +5,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string Description,
         string Image,
         HistoryPeriodTitle Period,
-        TopicTest Test,
+        TopicTest? Test,
         HistoryArticleItem[] Articles
     );
 
@@ -14,7 +14,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string Description,
         string Image,
         HistoryPeriodTitle Period,
-        TopicTest Test,
+        TopicTest? Test,
         Tag[] Characteristics,
         HistoryArticleItem[] Articles
     ) : HistoryTopicDetail(Title, Description, Image, Period, Test, Articles);
@@ -24,7 +24,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string Description,
         string Image,
         HistoryPeriodTitle Period,
-        TopicTest Test,
+        TopicTest? Test,
         HistoricalDateRange? Dates,
         HistoryArticleItem[] Articles
     ) : HistoryTopicDetail(Title, Description, Image, Period, Test, Articles);

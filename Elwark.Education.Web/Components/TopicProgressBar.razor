@@ -1,0 +1,10 @@
+<div class="progress" data-label="@(Progress.PassedArticles + " / " + Progress.TotalArticles)">
+    <span class="value" style="width:@Progress.Percentage%; background-color: @Progress.Color;"></span>
+</div>
+
+@code {
+
+    [Parameter]
+    public TopicProgress Progress { get; set; }
+
+}

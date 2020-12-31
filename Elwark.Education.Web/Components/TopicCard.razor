@@ -13,9 +13,7 @@
     @if (Progress is not null)
     {
         <div class="pa-2">
-            <div class="progress" data-label="@(Progress.PassedArticles + " / " + Progress.TotalArticles)">
-                <span class="value" style="width:@Progress.Percentage%; background-color: @Progress.Color;"></span>
-            </div>
+            <TopicProgressBar Progress="@Progress"/>
             <div class="d-flex flex-row justify-space-between mt-1">
                 <div class="d-flex flex-row align-center">
                     @if (Progress.ExamCompletedAt.HasValue)
