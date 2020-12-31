@@ -1,17 +1,14 @@
 @inject IStringLocalizer<App> L
 
 <MudCard Class="d-flex flex-column justify-space-between">
-    <MudCardMedia Image="@Image" Height="200"/>
+    <div class="image" style="background-image: url(@Image)"></div>
     <MudCardContent>
         <MudLink Typo="Typo.subtitle1" Href="@Href">
             @Title
         </MudLink>
-        @if (Subtitle is not null)
-        {
-            <MudText Typo="Typo.body2">
-                @Subtitle
-            </MudText>
-        }
+        <MudText Typo="Typo.body2">
+            @Subtitle
+        </MudText>
     </MudCardContent>
     @if (Progress is not null)
     {
@@ -56,7 +53,7 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
-    public string? Subtitle { get; set; }
+    public string Subtitle { get; set; } = string.Empty;
 
     [Parameter]
     public TopicProgress? Progress { get; set; }
