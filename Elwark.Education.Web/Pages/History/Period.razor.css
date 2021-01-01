@@ -3,3 +3,28 @@
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 12px;
 }
+
+.header {
+    grid-column: 1/-1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.image-container {
+    width: 100%;
+}
+
+.image{
+    width: 100%;
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+@media (min-width: 960px) {
+    .header {
+        grid-column: 1/4;
+        grid-row: 1/3;
+    }
+}
