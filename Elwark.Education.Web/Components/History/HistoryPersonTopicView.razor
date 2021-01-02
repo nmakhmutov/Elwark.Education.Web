@@ -22,8 +22,8 @@
                         {
                             <MudIcon Icon="@Outlined.CheckCircleOutlineOutlined" Style="@("color:" + Topic.Test.Progress.Color)"/>
                             <MudText Typo="Typo.body2" Class="ml-1">
-                                @L.GetString("Exam:PassedTimes", Topic.Test.Progress.QuantityCompletedTimes).
-                                @L.GetString("Exam:LastPassedAt", Topic.Test.Progress.ExamCompletedAt.Value.ToSimpleFormat())
+                                @L.GetString("Exam:QuantityCompletedTimes", Topic.Test.Progress.QuantityCompletedTimes).
+                                @L.GetString("Exam:LastCompletedAt", Topic.Test.Progress.ExamCompletedAt.Value.ToSimpleFormat())
                             </MudText>
                         }
                         else
@@ -101,8 +101,8 @@
                         else
                         {
                             <em>
-                                @L.GetString("Test:PassedTimes", article.Test.Progress.QuantityCompletedTimes).
-                                @L.GetString("Test:LastPassedAt", article.Test.Progress.TestCompletedAt.ToSimpleFormat())
+                                @L.GetString("Test:QuantityCompletedTimes", article.Test.Progress.QuantityCompletedTimes).
+                                @L.GetString("Test:LastCompletedAt", article.Test.Progress.TestCompletedAt.ToSimpleFormat())
                             </em>
                         }
                     </MudText>
