@@ -44,7 +44,7 @@
                             @item.Title
                         </MudLink>
                     }
-                    @if (item.Test.IsAvailable)
+                    @if (item.Test is not null)
                     {
                         <MudText Typo="Typo.body2">
                             @if (item.Test.Progress is null)
@@ -53,7 +53,7 @@
                             }
                             else
                             {
-                                <em>Test passed @item.Test.Progress.PassedTimes times. Last at @item.Test.Progress.TestCompletedAt.ToSimpleFormat()</em>
+                                <em>Test passed @item.Test.Progress.QuantityCompletedTimes times. Last at @item.Test.Progress.TestCompletedAt.ToSimpleFormat()</em>
                             }
                         </MudText>
                     }

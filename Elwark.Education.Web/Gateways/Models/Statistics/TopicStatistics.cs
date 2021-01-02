@@ -3,7 +3,7 @@ using System;
 namespace Elwark.Education.Web.Gateways.Models.Statistics
 {
     public sealed record TopicStatistics(
-        PassedTests PassedTests,
+        CompletedTests CompletedTests,
         TimeSpan TimeSpent,
         Score Score,
         AnswerRatio AnswerRatio,
@@ -11,6 +11,6 @@ namespace Elwark.Education.Web.Gateways.Models.Statistics
         WeeklyDifference WeeklyDifference,
         RankingItem<ulong>[] ScoreRanking,
         RankingItem<TimeSpan>[] TimeSpentRanking,
-        RankingItem<uint>[] TestPassedTimesRanking
-    ) : StatisticsSummary(PassedTests, TimeSpent, Score, AnswerRatio);
+        RankingItem<uint>[] CompletedTimesRanking
+    ) : StatisticsSummary(CompletedTests, TimeSpent, Score, AnswerRatio);
 }

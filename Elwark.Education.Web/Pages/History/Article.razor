@@ -2,7 +2,6 @@
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.History
 @using Elwark.Education.Web.Gateways.Models.Test
-@using Markdown = Markdig.Markdown
 @inject IHistoryClient HistoryClient
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
@@ -31,7 +30,7 @@
                         <MudText Typo="Typo.h2" Class="mb-6">
                             @_article.Data.Title
                         </MudText>
-                        @if (_article.Data.IsTestAvailable)
+                        @if (_article.Data.Test is not null)
                         {
                             <MudButton
                                 Variant="Variant.Filled"
@@ -48,9 +47,7 @@
                                 @_article.Data.Subtitle
                             </MudText>
                         }
-                        <div class="content">
-                            @((MarkupString) Markdown.ToHtml(_article.Data.Text))
-                        </div>
+                        <MarkdownText Text="@_article.Data.Text"/>
                     </MudPaper>
                 </MudItem>
                 <MudItem xs="12" md="5" lg="4" xl="3">
@@ -58,9 +55,7 @@
                     {
                         <div class="image" style="background-image: url(@_article.Data.Image)"></div>
                     }
-                    <div class="content pa-6">
-                        @((MarkupString) Markdown.ToHtml(_article.Data.Footnotes))
-                    </div>
+                    <MarkdownText Text="@_article.Data.Footnotes" Class="d-block pa-6"/>
                 </MudItem>
             </MudGrid>
         </MudContainer>
@@ -68,7 +63,7 @@
 }
 
 @code {
-    private ApiResponse<HistoryArticleModel> _article = ApiResponse<HistoryArticleModel>.Loading();
+    private ApiResponse<HistoryArticleDetail> _article = ApiResponse<HistoryArticleDetail>.Loading();
     private ApiResponse<TestCreatedResult>? _test;
 
     [Parameter]

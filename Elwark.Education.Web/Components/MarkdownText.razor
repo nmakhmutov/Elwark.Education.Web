@@ -1,0 +1,13 @@
+@using Markdown = Markdig.Markdown
+<span class="markdown @Class">
+    @((MarkupString) Markdown.ToHtml(Text))
+</span>
+
+@code {
+
+    [Parameter]
+    public string Text { get; set; } = string.Empty;
+
+    [Parameter]
+    public string? Class { get; set; }
+}

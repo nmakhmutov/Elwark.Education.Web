@@ -26,7 +26,7 @@
         </IconWidget>
     </div>
 
-    <DetailWidget Icon="@Filled.School" Value="@Statistics.PassedTests.Total" Title="@L["PassedTests"]">
+    <DetailWidget Icon="@Filled.School" Value="@Statistics.CompletedTests.Total" Title="@L["PassedTests"]">
         <Caption>
             <DifferenceCaption
                 Current="@Statistics.WeeklyDifference.PassedTests.Current"
@@ -36,7 +36,7 @@
             <div class="detail-grid">
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.PassedTests.Completed
+                        @Statistics.CompletedTests.Completed
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["PassedTests:Completed"]
@@ -44,7 +44,7 @@
                 </div>
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.PassedTests.TimeExceeded
+                        @Statistics.CompletedTests.TimeExceeded
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["PassedTests:TimeExceeded"]
@@ -52,7 +52,7 @@
                 </div>
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.PassedTests.RepliesExceeded
+                        @Statistics.CompletedTests.RepliesExceeded
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["PassedTests:RepliesExceeded"]
@@ -154,8 +154,8 @@
         ValueConverter="@((TimeSpan item) => item.ToSimpleFormat())"/>
 
     <RankingWidget
-        Title="@L["Ranking:ByTestPassedTimes"]"
-        Items="@Statistics.TestPassedTimesRanking"
+        Title="@L["Ranking:ByCompletedTimesRanking"]"
+        Items="@Statistics.CompletedTimesRanking"
         LinkBuilder="@((string id) => LinkBuilder(id))"/>
 </div>
 

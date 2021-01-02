@@ -20,14 +20,14 @@
                     {
                         <MudIcon Icon="@Outlined.CheckCircleOutlineOutlined" Style="@("color:" + Progress.Color)"/>
                         <MudText Typo="Typo.body2" Class="ml-1">
-                            @L["ExamPassed"]
+                            @L.GetString("Exam:PassedTimes", Progress.QuantityCompletedTimes)
                         </MudText>
                     }
                     else
                     {
                         <MudIcon Icon="@Outlined.RemoveCircleOutlineOutlined"/>
                         <MudText Typo="Typo.body2" Class="ml-1">
-                            @L["ExamNotPassed"]
+                            @L["Exam:NotPassed"]
                         </MudText>
                     }
                 </div>

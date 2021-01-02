@@ -34,8 +34,8 @@ namespace Elwark.Education.Web.Gateways.History
         public Task<ApiResponse<HistoryTopicDetail>> GetTopicAsync(string topicId) =>
             ExecuteAsync<HistoryTopicDetail>(() => _client.GetAsync($"history/topics/{topicId}"));
 
-        public Task<ApiResponse<HistoryArticleModel>> GetArticleAsync(string articleId) =>
-            ExecuteAsync<HistoryArticleModel>(() => _client.GetAsync($"history/articles/{articleId}"));
+        public Task<ApiResponse<HistoryArticleDetail>> GetArticleAsync(string articleId) =>
+            ExecuteAsync<HistoryArticleDetail>(() => _client.GetAsync($"history/articles/{articleId}"));
 
         public Task<ApiResponse<TestCreatedResult>> CreateTestForArticleAsync(string articleId) =>
             ExecuteAsync<TestCreatedResult>(() =>

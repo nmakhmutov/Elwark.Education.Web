@@ -12,50 +12,52 @@
         <MudText Typo="Typo.subtitle1" Class="mb-6">
             @Topic.Description
         </MudText>
-        <div class="characteristics mb-6">
-            @foreach (var (title, value) in Topic.Characteristics)
-            {
-                <div class="tag">
-                    <MudText Typo="Typo.subtitle1" Color="Color.Inherit">
-                        @title
-                    </MudText>
-                    <div class="characteristic-value">
-                        @((MarkupString) Markdown.ToHtml(value))
+        @if (Topic.Test is not null)
+        {
+            <div class="test-container">
+                <TopicProgressBar Progress="@Topic.Test.Progress"/>
+                <div class="d-flex flex-row justify-space-between mt-1">
+                    <div class="d-flex flex-row align-center">
+                        @if (Topic.Test.Progress.ExamCompletedAt is not null)
+                        {
+                            <MudIcon Icon="@Outlined.CheckCircleOutlineOutlined" Style="@("color:" + Topic.Test.Progress.Color)"/>
+                            <MudText Typo="Typo.body2" Class="ml-1">
+                                @L.GetString("Exam:PassedTimes", Topic.Test.Progress.QuantityCompletedTimes).
+                                @L.GetString("Exam:LastPassedAt", Topic.Test.Progress.ExamCompletedAt.Value.ToSimpleFormat())
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudIcon Icon="@Outlined.RemoveCircleOutlineOutlined"/>
+                            <MudText Typo="Typo.body2" Class="ml-1">
+                                @L["Exam:NotPassed"]
+                            </MudText>
+                        }
                     </div>
+                    <MudText Typo="Typo.body2">
+                        @Topic.Test.Progress?.Percentage%
+                    </MudText>
                 </div>
-            }
-        </div>
+            </div>
+        }
     </div>
     <div class="header-image" style="background-image: url(@Topic.Image);"></div>
 </div>
 
-@if (Topic.Test is not null)
-{
-    <div class="pa-2">
-        <TopicProgressBar Progress="@Topic.Test.Progress"/>
-        <div class="d-flex flex-row justify-space-between mt-1">
-            <div class="d-flex flex-row align-center">
-                @if (Topic.Test.Progress.ExamCompletedAt.HasValue)
-                {
-                    <MudIcon Icon="@Outlined.CheckCircleOutlineOutlined" Style="@("color:" + Topic.Test.Progress.Color)"/>
-                    <MudText Typo="Typo.body2" Class="ml-1">
-                        @L["ExamPassed"]
-                    </MudText>
-                }
-                else
-                {
-                    <MudIcon Icon="@Outlined.RemoveCircleOutlineOutlined"/>
-                    <MudText Typo="Typo.body2" Class="ml-1">
-                        @L["ExamNotPassed"]
-                    </MudText>
-                }
-            </div>
-            <MudText Typo="Typo.body2">
-                @Topic.Test.Progress.Percentage%
+<div class="characteristics-grid ma-6">
+
+    @foreach (var (title, value) in Topic.Characteristics)
+    {
+        <div>
+            <MudText Typo="Typo.subtitle1" Color="Color.Inherit">
+                @title
             </MudText>
+            <div class="characteristic-value">
+                @((MarkupString) Markdown.ToHtml(value))
+            </div>
         </div>
-    </div>
-}
+    }
+</div>
 
 @for (var i = 0; i < Topic.Articles.Length; i++)
 {
@@ -80,29 +82,31 @@
                         @article.Permission.Type
                     </MudText>
                 }
-                
+
                 <MudText Typo="Typo.h3">
                     @article.Title
                 </MudText>
+
+                <MudText Typo="Typo.subtitle1">
+                    @article.Subtitle
+                </MudText>
                 
-                <div>
-                    @if (article.Test.IsAvailable)
-                    {
-                        <MudText Typo="Typo.body2">
-                            @if (article.Test.Progress is null)
-                            {
-                                <em>Test not passed</em>
-                            }
-                            else
-                            {
-                                <em>Test passed @article.Test.Progress.PassedTimes times. Last at @article.Test.Progress.TestCompletedAt.ToSimpleFormat()</em>
-                            }
-                        </MudText>
-                    }
-                    <MudText Typo="Typo.subtitle1">
-                        @article.Subtitle
+                @if (article.Test is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @if (article.Test.Progress is null)
+                        {
+                            <em>@L["Test:NotPassed"]</em>
+                        }
+                        else
+                        {
+                            <em>
+                                @L.GetString("Test:PassedTimes", article.Test.Progress.QuantityCompletedTimes).
+                                @L.GetString("Test:LastPassedAt", article.Test.Progress.TestCompletedAt.ToSimpleFormat())
+                            </em>
+                        }
                     </MudText>
-                </div>
+                }
 
                 <div>
                     @if (article.Permission.IsAllowed)

@@ -6,7 +6,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string Image,
         HistoryPeriodTitle Period,
         TopicTest? Test,
-        HistoryArticleItem[] Articles
+        HistoryArticleSummary[] Articles
     );
 
     public sealed record HistoryPersonTopicDetail(
@@ -16,7 +16,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
         HistoryPeriodTitle Period,
         TopicTest? Test,
         Tag[] Characteristics,
-        HistoryArticleItem[] Articles
+        HistoryArticleSummary[] Articles
     ) : HistoryTopicDetail(Title, Description, Image, Period, Test, Articles);
     
     public sealed record HistoryEventTopicDetail(
@@ -26,6 +26,6 @@ namespace Elwark.Education.Web.Gateways.Models.History
         HistoryPeriodTitle Period,
         TopicTest? Test,
         HistoricalDateRange? Dates,
-        HistoryArticleItem[] Articles
+        HistoryArticleSummary[] Articles
     ) : HistoryTopicDetail(Title, Description, Image, Period, Test, Articles);
 }

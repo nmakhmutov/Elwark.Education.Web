@@ -20,7 +20,7 @@ namespace Elwark.Education.Web.Gateways.History
         
         Task<ApiResponse<HistoryTopicDetail>> GetTopicAsync(string topicId);
         
-        Task<ApiResponse<HistoryArticleModel>> GetArticleAsync(string articleId);
+        Task<ApiResponse<HistoryArticleDetail>> GetArticleAsync(string articleId);
         
         Task<ApiResponse<TestCreatedResult>> CreateTestForArticleAsync(string articleId);
         

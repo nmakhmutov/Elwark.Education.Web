@@ -1,4 +1,4 @@
 namespace Elwark.Education.Web.Gateways.Models
 {
-    public sealed record ArticleTest(bool IsAvailable, ArticleProgress? Progress);
+    public sealed record ArticleTest(bool IsAllowed, ArticleProgress? Progress);
 }
