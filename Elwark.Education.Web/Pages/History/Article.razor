@@ -30,17 +30,6 @@
                         <MudText Typo="Typo.h2" Class="mb-6">
                             @_article.Data.Title
                         </MudText>
-                        @if (_article.Data.Test is not null)
-                        {
-                            <MudButton
-                                Variant="Variant.Filled"
-                                Color="Color.Primary"
-                                Class="mb-6"
-                                OnClick="@CreateTestAsync"
-                                Disabled="@(_test != null)">
-                                @L["Test"]
-                            </MudButton>
-                        }
                         @if (_article.Data.Subtitle is not null)
                         {
                             <MudText Typo="Typo.subtitle1" Class="mb-6">
@@ -51,6 +40,34 @@
                     </MudPaper>
                 </MudItem>
                 <MudItem xs="12" md="5" lg="4" xl="3">
+                    @if (_article.Data.Test is not null)
+                    {
+                        <div class="ma-3">
+                            @if (_article.Data.Test.IsAllowed)
+                            {
+                                <MudButton
+                                    Variant="Variant.Filled"
+                                    Color="Color.Primary"
+                                    Class="mb-3"
+                                    OnClick="@CreateTestAsync"
+                                    Disabled="@(_test != null)">
+                                    @L["Test"]
+                                </MudButton>
+                            }
+                            <MudText Typo="Typo.body2">
+                                @if (_article.Data.Test.Progress is not null)
+                                {
+                                    @L.GetString("Test:Passed",
+                                        _article.Data.Test.Progress.QuantityCompletedTimes,
+                                        _article.Data.Test.Progress.TestCompletedAt.ToSimpleFormat())
+                                }
+                                else
+                                {
+                                    @L["Test:NotPassed"]
+                                }
+                            </MudText>
+                        </div>
+                    }
                     @if (_article.Data.Image is not null)
                     {
                         <div class="image" style="background-image: url(@_article.Data.Image)"></div>

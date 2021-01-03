@@ -52,9 +52,7 @@
             <MudText Typo="Typo.subtitle1" Color="Color.Inherit">
                 @title
             </MudText>
-            <div class="characteristic-value">
-                @((MarkupString) Markdown.ToHtml(value))
-            </div>
+            <MarkdownText Text="@value"/>
         </div>
     }
 </div>
@@ -90,21 +88,22 @@
                 <MudText Typo="Typo.subtitle1">
                     @article.Subtitle
                 </MudText>
-                
+
                 @if (article.Test is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @if (article.Test.Progress is null)
-                        {
-                            <em>@L["Test:NotPassed"]</em>
-                        }
-                        else
-                        {
-                            <em>
-                                @L.GetString("Test:QuantityCompletedTimes", article.Test.Progress.QuantityCompletedTimes).
-                                @L.GetString("Test:LastCompletedAt", article.Test.Progress.TestCompletedAt.ToSimpleFormat())
-                            </em>
-                        }
+                        <em>
+                            @if (article.Test.Progress is null)
+                            {
+                                @L["Test:NotPassed"]
+                            }
+                            else
+                            {
+                                @L.GetString("Test:Passed",
+                                    article.Test.Progress.QuantityCompletedTimes,
+                                    article.Test.Progress.TestCompletedAt.ToSimpleFormat())
+                            }
+                        </em>
                     </MudText>
                 }
 
