@@ -1,72 +1,120 @@
 @using Elwark.Education.Web.Gateways.Models.History
 @inject IDialogService Dialog
+@inject IStringLocalizer<App> L
 
-<div class="container">
-    <div class="image-container">
-        <div class="image" style="background-image: url(@Topic.Image)">
-            <div class="cover">
-                <div class="title-container">
-                    <MudText Typo="Typo.h4" Class="mb-3">
-                        @Topic.Title
-                    </MudText>
-                    <HistoricalDateRangeText Range="@Topic.Dates"/>
-                </div>
-            </div>
-        </div>
+<div class="header">
+    <div class="image">
+        <img src="@Topic.Image" alt="@Topic.Title"/>
     </div>
-    <div class="articles-container">
-        <Breadcrumbs Items="@Breadcrumbs" Class="ma-6"/>
-        <MudText Typo="Typo.body1" Class="ma-6" Style="max-width: 980px">
+</div>
+
+<div class="title-grid">
+    <div class="title">
+        <MudText Typo="Typo.h2" Class="mb-3">
+            @Topic.Title
+        </MudText>
+        <Breadcrumbs Items="@Breadcrumbs"/>
+    </div>
+    <div class="description">
+        <HistoricalDateRangeText Range="@Topic.Dates" Class="mb-6"/>
+        <MudText Typo="Typo.body1">
             @Topic.Description
         </MudText>
-        <Virtualize Items="@Topic.Articles" Context="item">
-            <div class="article-card mud-paper ma-6 pa-3">
-                @if (item.Image is not null)
-                {
-                    <div class="article-image">
-                        <MudAvatar Image="@(item.Image)" Square="true" Style="width: 90px; height: 90px"/>
-                    </div>
-                }
-                <div class="article-texts">
-                    @if (item.Permission.Type == ContentType.Premium)
+    </div>
+    @if (Topic.Test is not null)
+    {
+        <div class="test-container">
+            <TopicProgressBar Progress="@Topic.Test.Progress"/>
+            <div class="d-flex flex-row justify-space-between mt-1">
+                <div class="d-flex flex-row align-center">
+                    @if (Topic.Test.Progress.ExamCompletedAt is not null)
                     {
-                        <MudText Typo="Typo.body2" Color="Color.Warning">
-                            @item.Permission.Type
+                        <MudIcon Icon="@Outlined.CheckCircleOutlineOutlined" Style="@("color:" + Topic.Test.Progress.Color)"/>
+                        <MudText Typo="Typo.body2" Class="ml-1">
+                            @L.GetString("Exam:QuantityCompletedTimes", Topic.Test.Progress.QuantityCompletedTimes).
+                            @L.GetString("Exam:LastCompletedAt", Topic.Test.Progress.ExamCompletedAt.Value.ToSimpleFormat())
                         </MudText>
-                        <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
-                           href="#" @onclick="@OpenSubscriptionDialog" @onclick:preventDefault="true">
-                            @item.Title
-                        </a>
                     }
                     else
                     {
-                        <MudLink Typo="Typo.h5" Href="@(Links.History.Article(item.Id))">
-                            @item.Title
-                        </MudLink>
-                    }
-                    @if (item.Test is not null)
-                    {
-                        <MudText Typo="Typo.body2">
-                            @if (item.Test.Progress is null)
-                            {
-                                <em>Test not passed</em>
-                            }
-                            else
-                            {
-                                <em>Test passed @item.Test.Progress.QuantityCompletedTimes times. Last at @item.Test.Progress.TestCompletedAt.ToSimpleFormat()</em>
-                            }
+                        <MudIcon Icon="@Outlined.RemoveCircleOutlineOutlined"/>
+                        <MudText Typo="Typo.body2" Class="ml-1">
+                            @L["Exam:NotPassed"]
                         </MudText>
                     }
                 </div>
-                <div class="article-description">
-                    <MudText Typo="Typo.body1">
-                        @item.Subtitle
+                <MudText Typo="Typo.body2">
+                    @Topic.Test.Progress?.Percentage%
+                </MudText>
+            </div>
+        </div>
+    }
+</div>
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    @for (var i = 0; i < Topic.Articles.Length; i++)
+    {
+        var article = Topic.Articles[i];
+        <div class="d-flex flex-column @(i % 2 == 0 ? "flex-sm-row" : "flex-sm-row-reverse") align-sm-center mb-6">
+            @if (article.Image is not null)
+            {
+                <div class="article-image">
+                    <img src="@article.Image" alt="@article.Title"/>
+                </div>
+            }
+            <div class="article-content @(article.Image is null ? null : i % 2 == 0 ? "left" : "right") pa-6">
+                @if (article.Permission.Type == ContentType.Premium)
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Warning">
+                        @article.Permission.Type
+                    </MudText>
+                }
+                <div class="article-title">
+                    <MudText Typo="Typo.h3">
+                        @article.Title
                     </MudText>
                 </div>
+                @if (article.Subtitle is not null)
+                {
+                    <MudText Typo="Typo.body1">
+                        @article.Subtitle
+                    </MudText>
+                }
+                @if (article.Test is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        <em>
+                            @if (article.Test.Progress is null)
+                            {
+                                @L["Test:NotPassed"]
+                            }
+                            else
+                            {
+                                @L.GetString("Test:Passed",
+                                    article.Test.Progress.QuantityCompletedTimes,
+                                    article.Test.Progress.TestCompletedAt.ToSimpleFormat())
+                            }
+                        </em>
+                    </MudText>
+                }
+                <div>
+                    @if (article.Permission.IsAllowed)
+                    {
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" Link="@(Links.History.Article(article.Id))">
+                            Learn more
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" OnClick="@OpenSubscriptionDialog">
+                            Learn more
+                        </MudButton>
+                    }
+                </div>
             </div>
-        </Virtualize>
-    </div>
-</div>
+        </div>
+    }
+</MudContainer>
 
 @code {
 
