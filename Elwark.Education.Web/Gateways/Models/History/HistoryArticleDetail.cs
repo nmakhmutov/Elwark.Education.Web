@@ -8,7 +8,6 @@ namespace Elwark.Education.Web.Gateways.Models.History
         ArticleTest? Test,
         string? Image,
         string Title,
-        string? Subtitle,
         string Text,
         string? Footnotes
     );

@@ -55,12 +55,10 @@
     @for (var i = 0; i < Topic.Articles.Length; i++)
     {
         var article = Topic.Articles[i];
-        <div class="d-flex flex-column @(i % 2 == 0 ? "flex-sm-row" : "flex-sm-row-reverse") align-sm-center mb-6">
+        <div class="d-flex flex-column @(i % 2 == 0 ? "flex-sm-row" : "flex-sm-row-reverse") align-sm-center mb-12">
             @if (article.Image is not null)
             {
-                <div class="article-image">
-                    <img src="@article.Image" alt="@article.Title"/>
-                </div>
+                <div class="article-image" style="background-image: url(@article.Image)"></div>
             }
             <div class="article-content @(article.Image is null ? null : i % 2 == 0 ? "left" : "right") pa-6">
                 @if (article.Permission.Type == ContentType.Premium)
@@ -70,16 +68,13 @@
                     </MudText>
                 }
                 <div class="article-title">
-                    <MudText Typo="Typo.h3">
+                    <MudText Typo="Typo.h4">
                         @article.Title
                     </MudText>
                 </div>
-                @if (article.Subtitle is not null)
-                {
-                    <MudText Typo="Typo.body1">
-                        @article.Subtitle
-                    </MudText>
-                }
+                <MudText Typo="Typo.body1">
+                    @article.Overview
+                </MudText>
                 @if (article.Test is not null)
                 {
                     <MudText Typo="Typo.body2">

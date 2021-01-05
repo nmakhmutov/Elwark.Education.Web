@@ -31,12 +31,12 @@
 }
 
 .article-image {
-    width: inherit;
-    flex: 1 0 60%;
-}
-
-.article-image img {
+    flex: 1 0 40%;
     width: 100%;
+    min-height: 30vh;
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
 }
 
 .article-content {
@@ -49,12 +49,17 @@
 }
 
 @media (min-width: 600px) {
+    .article-image{
+        min-height: 50vh;
+        background-position: center center;
+    }
+    
     .article-content.left {
-        margin-left: -20%;
+        margin-left: -10%;
     }
 
     .article-content.right {
-        margin-right: -20%;
+        margin-right: -10%;
     }
 }
 

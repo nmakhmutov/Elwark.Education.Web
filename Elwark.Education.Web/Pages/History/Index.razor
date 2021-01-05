@@ -52,7 +52,7 @@
                                 @article.Title
                             </MudLink>
                             <MudText Typo="Typo.body2">
-                                @TrimDescription(article.Subtitle)
+                                @TrimDescription(article.Overview)
                             </MudText>
                         </MudCardContent>
                     </MudCard>
@@ -83,8 +83,8 @@
         if (value is null)
             return string.Empty;
 
-        if (value.Length > 140)
-            return value.Substring(0, 140) + "...";
+        if (value.Length > 160)
+            return value.Substring(0, 157) + "...";
 
         return value;
     }
