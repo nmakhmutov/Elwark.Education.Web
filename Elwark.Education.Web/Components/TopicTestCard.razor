@@ -1,0 +1,36 @@
+@inject IStringLocalizer<App> L
+
+<div class="container @Class">
+    <TopicProgressBar Progress="@Test.Progress"/>
+    <div class="d-flex flex-row justify-space-between mt-1">
+        <div class="d-flex flex-row align-center">
+            @if (Test.Progress.ExamCompletedAt is not null)
+            {
+                <MudIcon Icon="@Outlined.CheckCircleOutlineOutlined" Style="@("color:" + Test.Progress.Color)"/>
+                <MudText Typo="Typo.body2" Class="ml-1">
+                    @L.GetString("Exam:QuantityCompletedTimes", Test.Progress.QuantityCompletedTimes)
+                </MudText>
+            }
+            else
+            {
+                <MudIcon Icon="@Outlined.RemoveCircleOutlineOutlined"/>
+                <MudText Typo="Typo.body2" Class="ml-1">
+                    @L["Exam:NotPassed"]
+                </MudText>
+            }
+        </div>
+        <MudText Typo="Typo.body2">
+            @Test.Progress.Percentage%
+        </MudText>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public TopicTest Test { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

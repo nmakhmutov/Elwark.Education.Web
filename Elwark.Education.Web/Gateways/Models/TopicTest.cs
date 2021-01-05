@@ -1,4 +1,4 @@
 namespace Elwark.Education.Web.Gateways.Models
 {
-    public sealed record TopicTest(bool IsAllowed, TopicProgress Progress);
+    public sealed record TopicTest(TestStatus Status, TopicProgress Progress);
 }
