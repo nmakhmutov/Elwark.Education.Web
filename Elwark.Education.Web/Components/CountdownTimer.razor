@@ -5,7 +5,7 @@
 </MudText>
 
 @code {
-    private TimeSpan _timeLeft = TimeSpan.FromSeconds(1);
+    private TimeSpan _timeLeft = TimeSpan.FromSeconds(0);
     private Timer _timer = new() {Enabled = true, Interval = 1000};
 
     [Parameter]
@@ -31,7 +31,7 @@
 
             StateHasChanged();
 
-            if (_timeLeft != TimeSpan.Zero)
+            if (_timeLeft >= TimeSpan.Zero)
                 return;
 
             _timer.Stop();

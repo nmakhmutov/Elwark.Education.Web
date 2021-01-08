@@ -6,6 +6,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
 {
     public sealed record HistoryTestModel(
         string Id,
+        string Title,
         DateTime CreatedAt,
         DateTime ExpiredAt,
         bool IsComplete,

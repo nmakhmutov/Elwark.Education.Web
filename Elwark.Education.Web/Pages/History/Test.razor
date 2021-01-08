@@ -23,19 +23,22 @@
         break;
 
     case ResponseStatus.Success:
-        var title = $"{L["Questions"]} {_questionIndex + 1} / {_questions.Count}";
-        <Title Value="@title"></Title>
-        <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="my-6">
-            @title
+        <Title Value="@_test.Data.Title"></Title>
+        <MudText Typo="Typo.h2" Align="Align.Center" Class="my-6">
+            @_test.Data.Title
         </MudText>
 
         <MudContainer MaxWidth="MaxWidth.Medium">
             <MudPaper Class="pa-6">
+                <div class="d-flex flex-row justify-space-between">
+                    <MudText Typo="Typo.subtitle1">
+                        @L["Questions"] @(_questionIndex + 1) / @_questions.Count
+                    </MudText>
+                    <CountdownTimer Date="@_test.Data.ExpiredAt"/>
+                </div>
                 <TestForm Question="@_questions[_questionIndex]" AnswerResult="@_answerResult" OnAnswer="@OnAnswer" OnNext="@NextQuestion"/>
             </MudPaper>
         </MudContainer>
-
-        <CountdownTimer Class="my-6" Date="@_test.Data.ExpiredAt"/>
         break;
 }
 
@@ -66,7 +69,7 @@
             NavigationManager.NavigateTo(Links.Profile.TestDetail(Subject.History, Id));
             return;
         }
-        
+
         if (_test.Status != ResponseStatus.Success)
             return;
 
@@ -133,15 +136,8 @@
 
         if (_answerResult.IsComplete)
         {
-            _test = ApiResponse<HistoryTestModel>.Success(
-                new HistoryTestModel(
-                    _test.Data.Id,
-                    _test.Data.CreatedAt,
-                    _test.Data.ExpiredAt,
-                    _answerResult.IsComplete,
-                    _test.Data.Questions
-                    )
-                );
+            var model = _test.Data with{IsComplete = _answerResult.IsComplete};
+            _test = ApiResponse<HistoryTestModel>.Success(model);
         }
 
         if (!_answerResult.IsCorrect)

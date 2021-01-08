@@ -2,10 +2,12 @@
 @using MudBlazor.Extensions
 @inject IStringLocalizer<App> L
 
-<EditForm Model="@_answer" OnValidSubmit="@OnValidSubmit">
+<EditForm Model="@_answer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator/>
     <div class="form-grid">
-        <MudText Typo="Typo.h6" Align="Align.Center">@Question.Title</MudText>
+        <MudText Typo="Typo.h6" Align="Align.Center">
+            @Question.Title
+        </MudText>
         @if (Question.Image is not null)
         {
             <img class="question-image" src="@Question.Image" alt="@Question.Title"/>
@@ -15,16 +17,19 @@
         {
             case QuestionType.TextAnswer:
                 <MudContainer MaxWidth="MaxWidth.ExtraSmall">
-                    <MudTextField
-                        @bind-Value="_answer.TextAnswer"
-                         Label="@L["Test:YourAnswer"]"
-                         For="@(() => _answer.TextAnswer)"
-                         Disabled="@(AnswerResult != null)"/>
-                    @if (AnswerResult is TextAnswerResult answer)
+                    @switch (AnswerResult)
                     {
-                        <MudText Typo="Typo.subtitle2" Color="@(answer.IsCorrect ? Color.Success : Color.Error)">
-                            @answer.Text
-                        </MudText>
+                        case null:
+                            <MudTextField Label="@L["Test:YourAnswer"]" @bind-Value="@_answer.TextAnswer"
+                                          For="@(() => _answer.TextAnswer)"/>
+                            break;
+
+                        case TextAnswerResult answer:
+                            <MudTextField Label="@L["Test:YourAnswer"]" Value="@_answer.TextAnswer" Disabled="true"/>
+                            <MudText Typo="Typo.subtitle2" Color="@(answer.IsCorrect ? Color.Success : Color.Error)">
+                                @answer.Text
+                            </MudText>
+                            break;
                     }
                 </MudContainer>
                 break;
@@ -65,7 +70,9 @@
                                             break;
 
                                         case AnswerOptionType.Image:
-                                            <img class="answer-image" src="@option.Value" alt="@Question.Title"/>
+                                            <div class="answer-image-container">
+                                    <img class="answer-image" src="@option.Value" alt="@Question.Title"/>
+                                    </div>
                                             break;
                                     }
                                 </MudRadio>
@@ -112,7 +119,9 @@
                                         break;
 
                                     case AnswerOptionType.Image:
-                                        <img class="answer-image" src="@option.Value" alt="@Question.Title"/>
+                                    <div class="answer-image-container">
+                                <img class="answer-image" src="@option.Value" alt="@Question.Title"/>
+                                </div>
                                         break;
                                 }
                             </MudCheckBox>
@@ -127,6 +136,27 @@
             default:
                 throw new ArgumentOutOfRangeException(nameof(Question.Type), Question.Title, null);
         }
+
+        <div class="mx-auto">
+            @switch (_answerState)
+            {
+                case AnswerState.Answer:
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">
+                        @L["Test:Answer"]
+                    </MudButton>
+                    break;
+
+                case AnswerState.Answering:
+                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary"/> 
+                    break;
+
+                case AnswerState.Next:
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnNextClick">
+                        @L["Test:Next"]
+                    </MudButton>
+                    break;
+            }
+        </div>
 
         @if (AnswerResult is null)
         {
@@ -150,27 +180,6 @@
                 </MudText>
             }
         }
-
-        <div class="mx-auto">
-            @switch (_answerState)
-            {
-                case AnswerState.Answer:
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">
-                        @L["Test:Answer"]
-                    </MudButton>
-                    break;
-
-                case AnswerState.Answering:
-                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary"/>
-                    break;
-
-                case AnswerState.Next:
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnNextClick">
-                        @L["Test:Next"]
-                    </MudButton>
-                    break;
-            }
-        </div>
     </div>
 </EditForm>
 
@@ -207,13 +216,15 @@
             QuestionType.SingleAnswer => new SingleAnswer(_answer.SingleAnswer),
             QuestionType.ManyAnswers => new ManyAnswer(_answer.ManyAnswer),
             QuestionType.SortedAnswers => new ManyAnswer(_answer.ManyAnswer),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException(nameof(_answer.QuestionType))
             };
 
         await OnAnswer.InvokeAsync(answer);
         _answerState = AnswerState.Next;
         Console.WriteLine("OnSubmit: " + _answer);
     }
+
+    protected override void OnAfterRender(bool firstRender) => Console.WriteLine("OnAfterRender: " + firstRender);
 
     private async Task OnNextClick()
     {
