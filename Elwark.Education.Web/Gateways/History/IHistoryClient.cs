@@ -10,7 +10,7 @@ namespace Elwark.Education.Web.Gateways.History
 {
     public interface IHistoryClient
     {
-        Task<ApiResponse<HistoryAggregate>> GetAsync();
+        Task<ApiResponse<HistoryOverview>> GetAsync();
         
         Task<ApiResponse<HistoryPeriodModel[]>> GetPeriodsAsync();
         

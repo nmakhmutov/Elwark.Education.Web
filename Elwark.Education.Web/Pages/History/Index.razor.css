@@ -1,55 +1,191 @@
 .period-grid {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 24px;
-    max-width: 1920px;
-    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(250px, 280px);
 }
 
-.articles-grid {
+.period-box {
+    align-items: center;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    gap: 24px;
+    flex-grow: 1;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+
+.period-box:hover .period-thumbnail img {
+    filter: brightness(0.7);
+}
+
+.period-thumbnail {
+    box-sizing: border-box;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.period-thumbnail img {
+    display: flex;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    backface-visibility: hidden;
+    filter: brightness(0.6);
+    object-fit: cover;
+}
+
+.period-header {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    padding: 40px 32px;
+    position: absolute;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--mud-palette-white);
+}
+
+.period-header ::deep a {
+    text-align: center;
+    color: var(--mud-palette-white);
+}
+
+.rating-container {
+    margin: 24px;
+    background-color: transparent;
+}
+
+.rating-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.article-rating-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.article-rating-image {
+    height: 100%;
+}
+
+.article-rating-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 30vh;
+    object-fit: cover;
+}
+
+.article-rating-content {
+    margin: 12px 12px 0;
 }
 
 @media (min-width: 600px) {
     .period-grid {
-        display: grid;
-        justify-content: center;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, minmax(150px, 1fr));
     }
 
-    .articles-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        grid-auto-flow: dense;
+    .period-grid > div {
+        grid-column: span 2;
+    }
+
+    .period-grid > div:last-child {
+        grid-column: 2/-2;
+    }
+
+    .rating-grid {
+        grid-template-columns: repeat(12, 1fr);
+    }
+
+    .rating-grid > div:first-child {
+        grid-column: span 12;
+    }
+
+    .rating-grid > div {
+        grid-column: span 6;
     }
 }
 
 @media (min-width: 960px) {
     .period-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(6, minmax(160px, 1fr));
     }
 
-    .articles-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    .period-grid > div:nth-child(4) {
+        grid-column: 1/4;
+    }
+
+    .period-grid > div:last-child {
+        grid-column: 4/-1;
+    }
+
+    .rating-grid > div:nth-child(1),
+    .rating-grid > div:nth-child(2) {
+        grid-column: span 6;
+    }
+
+    .rating-grid > div:nth-child(3),
+    .rating-grid > div:nth-child(4),
+    .rating-grid > div:nth-child(5) {
+        grid-column: span 4;
+    }
+
+    .rating-grid > div {
+        grid-column: span 3;
     }
 }
 
 @media (min-width: 1280px) {
     .period-grid {
         grid-template-columns: repeat(5, 1fr);
+        grid-auto-rows: minmax(300px, 1fr);
     }
 
-    .articles-grid {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    .period-grid > div:nth-child(4),
+    .period-grid > div:last-child,
+    .period-grid > div {
+        grid-column: span 1;
+    }
+
+    .rating-container {
+        max-width: 1280px;
+        margin: 24px auto;
     }
 }
 
 @media (min-width: 1920px) {
-    .articles-grid {
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    .period-grid {
+        grid-auto-rows: 350px;
+    }
+
+    .rating-container {
+        max-width: 1920px;
+    }
+
+    .rating-grid > div:nth-child(1),
+    .rating-grid > div:nth-child(2),
+    .rating-grid > div:nth-child(3) {
+        grid-column: span 4;
+    }
+
+
+    .rating-grid > div:nth-child(4),
+    .rating-grid > div:nth-child(5),
+    .rating-grid > div:nth-child(6),
+    .rating-grid > div:nth-child(7) {
+        grid-column: span 3;
+    }
+
+    .rating-grid > div {
+        grid-column: span 2;
     }
 }

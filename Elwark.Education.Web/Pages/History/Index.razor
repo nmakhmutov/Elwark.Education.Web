@@ -18,53 +18,129 @@
         break;
 
     case ResponseStatus.Success:
-        <div class="ma-5">
-            <div class="period-grid">
-                @foreach (var period in _history.Data.Periods)
-                {
-                    <MudCard>
-                        <MudCardMedia Image="@(period.Image)" Height="200"/>
-                        <MudCardContent>
-                            <MudLink Typo="Typo.h5" Href="@(Links.History.Period(period.Type))">
-                                @period.Title
-                            </MudLink>
-                            <MudText Typo="Typo.body2">
-                                @TrimDescription(period.Description)
-                            </MudText>
-                        </MudCardContent>
-                    </MudCard>
-                }
-            </div>
+        <div class="period-grid">
+            @foreach (var period in _history.Data.Periods)
+            {
+                <div class="period-box">
+                    <div class="period-thumbnail">
+                        <img src="@period.Image" alt="@period.Title"/>
+                    </div>
+                    <div class="period-header">
+                        <MudLink Typo="Typo.h4" Color="Color.Inherit" Href="@(Links.History.Period(period.Type))">
+                            @period.Title
+                        </MudLink>
+                    </div>
+                </div>
+            }
+        </div>
 
-            <MudText Typo="Typo.h2" Class="mt-6">
+        <div class="rating-container">
+            <MudText Typo="Typo.h2" Align="Align.Center">
                 @L["Articles"]
             </MudText>
-            <div class="articles-grid">
-                @foreach (var article in _history.Data.Articles)
-                {
-                    <MudCard>
-                        @if (article.Image is not null)
+            <MudTabs Elevation="1" Color="Color.Transparent">
+                <MudTabPanel Text="Trending" Icon="@Filled.TrendingUp">
+                    <div class="rating-grid mt-3">
+                        @foreach (var article in _history.Data.Articles.Trends)
                         {
-                            <MudCardMedia Image="@(article.Image)" Height="200"/>
+                            <div class="article-rating-card">
+                                @if (article.Image is not null)
+                                {
+                                    <div class="article-rating-image">
+                                        <img src="@article.Image" alt="@article.Title">
+                                    </div>
+                                }
+                                <div class="article-rating-content">
+                                    <MudLink Typo="Typo.h4" Href="@(Links.History.Article(article.Id))">
+                                        @article.Title
+                                    </MudLink>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @article.Overview
+                                    </MudText>
+                                </div>
+                            </div>
                         }
-                        <MudCardContent>
-                            <MudLink Typo="Typo.h5" Href="@(Links.History.Article(article.Id))">
-                                @article.Title
-                            </MudLink>
-                            <MudText Typo="Typo.body2">
-                                @TrimDescription(article.Overview)
-                            </MudText>
-                        </MudCardContent>
-                    </MudCard>
-                }
-            </div>
+                    </div>
+                </MudTabPanel>
+                <MudTabPanel Text="New" Icon="@Filled.NewReleases">
+                    <div class="rating-grid mt-3">
+                        @foreach (var article in _history.Data.Articles.Recents)
+                        {
+                            <div class="article-rating-card">
+                                @if (article.Image is not null)
+                                {
+                                    <div class="article-rating-image">
+                                        <img src="@article.Image" alt="@article.Title">
+                                    </div>
+                                }
+                                <div class="article-rating-content">
+                                    <MudLink Typo="Typo.h4" Href="@(Links.History.Article(article.Id))">
+                                        @article.Title
+                                    </MudLink>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @article.Overview
+                                    </MudText>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </MudTabPanel>
+            </MudTabs>
+        </div>
+
+        <div class="rating-container">
+            <MudText Typo="Typo.h2" Align="Align.Center">
+                @L["Topics"]
+            </MudText>
+            <MudTabs Elevation="1" Color="Color.Transparent">
+                <MudTabPanel Text="Trending" Icon="@Filled.TrendingUp">
+                    <div class="rating-grid mt-3">
+                        @foreach (var topic in _history.Data.Topics.Trends)
+                        {
+                            <div class="article-rating-card">
+                                <div class="article-rating-image">
+                                    <img src="@topic.Image" alt="@topic.Title">
+                                </div>
+                                <div class="article-rating-content">
+                                    <MudLink Typo="Typo.h4" Href="@(Links.History.Topic(topic.Id))">
+                                        @topic.Title
+                                    </MudLink>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @topic.Overview
+                                    </MudText>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </MudTabPanel>
+                <MudTabPanel Text="New" Icon="@Filled.NewReleases">
+                    <div class="rating-grid mt-3">
+                        @foreach (var topic in _history.Data.Topics.Trends)
+                        {
+                            <div class="article-rating-card">
+                                <div class="article-rating-image">
+                                    <img src="@topic.Image" alt="@topic.Title">
+                                </div>
+                                <div class="article-rating-content">
+                                    <MudLink Typo="Typo.h4" Href="@(Links.History.Topic(topic.Id))">
+                                        @topic.Title
+                                    </MudLink>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @topic.Overview
+                                    </MudText>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </MudTabPanel>
+            </MudTabs>
         </div>
 
         break;
 }
 
 @code {
-    private ApiResponse<HistoryAggregate> _history = ApiResponse<HistoryAggregate>.Loading();
+    private ApiResponse<HistoryOverview> _history = ApiResponse<HistoryOverview>.Loading();
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,17 +152,6 @@
         {
             ex.Redirect();
         }
-    }
-
-    private static string TrimDescription(string? value)
-    {
-        if (value is null)
-            return string.Empty;
-
-        if (value.Length > 160)
-            return value.Substring(0, 157) + "...";
-
-        return value;
     }
 
 }

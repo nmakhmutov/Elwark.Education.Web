@@ -16,17 +16,18 @@
         </IconWidget>
     </div>
 
-    <DetailWidget Icon="@Filled.School" Value="@Statistics.CompletedTests.Total" Title="@L["CompletedTests"]">
+    <DetailWidget Icon="@Filled.School" Value="@Statistics.CompletedTests.Total.ToReadable()" Title="@L["CompletedTests"]">
         <Caption>
             <DifferenceCaption
                 Current="@Statistics.WeeklyDifference.CompletedTests.Current"
-                Difference="@Statistics.WeeklyDifference.CompletedTests.Difference"/>
+                Difference="@Statistics.WeeklyDifference.CompletedTests.Difference"
+                ValueConverter="@(arg => arg.ToReadable())"/>
         </Caption>
         <Details>
             <div class="detail-grid">
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.CompletedTests.Completed
+                        @Statistics.CompletedTests.Completed.ToReadable()
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["CompletedTests:Completed"]
@@ -34,7 +35,7 @@
                 </div>
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.CompletedTests.TimeExceeded
+                        @Statistics.CompletedTests.TimeExceeded.ToReadable()
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["CompletedTests:TimeExceeded"]
@@ -42,7 +43,7 @@
                 </div>
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.CompletedTests.RepliesExceeded
+                        @Statistics.CompletedTests.RepliesExceeded.ToReadable()
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["CompletedTests:RepliesExceeded"]
@@ -52,17 +53,18 @@
         </Details>
     </DetailWidget>
 
-    <DetailWidget Icon="@Filled.PendingActions" Value="@Statistics.Score.Total" Title="@L["Score"]">
+    <DetailWidget Icon="@Filled.PendingActions" Value="@Statistics.Score.Total.ToReadable()" Title="@L["Score"]">
         <Caption>
             <DifferenceCaption
                 Current="@Statistics.WeeklyDifference.Score.Current"
-                Difference="@Statistics.WeeklyDifference.Score.Difference"/>
+                Difference="@Statistics.WeeklyDifference.Score.Difference"
+                ValueConverter="@(arg => arg.ToReadable())"/>
         </Caption>
         <Details>
             <div class="detail-grid">
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.Score.Questions
+                        @Statistics.Score.Questions.ToReadable()
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["Score:ByQuestions"]
@@ -70,7 +72,7 @@
                 </div>
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.Score.NoMistakes
+                        @Statistics.Score.NoMistakes.ToReadable()
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["Score:NoMistakesBonus"]
@@ -78,7 +80,7 @@
                 </div>
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.Score.Speed
+                        @Statistics.Score.Speed.ToReadable()
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["Score:BySpeedBonus"]
@@ -88,17 +90,18 @@
         </Details>
     </DetailWidget>
 
-    <DetailWidget Icon="@Filled.HelpOutline" Value="@Statistics.AnswerRatio.Questions" Title="@L["Questions"]">
+    <DetailWidget Icon="@Filled.HelpOutline" Value="@Statistics.AnswerRatio.Questions.ToReadable()" Title="@L["Questions"]">
         <Caption>
             <DifferenceCaption
                 Current="@Statistics.WeeklyDifference.Questions.Current"
-                Difference="@Statistics.WeeklyDifference.Questions.Difference"/>
+                Difference="@Statistics.WeeklyDifference.Questions.Difference"
+                ValueConverter="@(arg => arg.ToReadable())"/>
         </Caption>
         <Details>
             <div class="detail-grid">
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.AnswerRatio.Correct
+                        @Statistics.AnswerRatio.Correct.ToReadable()
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["Questions:Correct"]
@@ -106,7 +109,7 @@
                 </div>
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.AnswerRatio.Incorrect
+                        @Statistics.AnswerRatio.Incorrect.ToReadable()
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["Questions:Incorrect"]
@@ -114,7 +117,7 @@
                 </div>
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.AnswerRatio.Answered
+                        @Statistics.AnswerRatio.Answered.ToReadable()
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["Questions:Answered"]
@@ -122,7 +125,7 @@
                 </div>
                 <div>
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        @Statistics.AnswerRatio.NotAnswered
+                        @Statistics.AnswerRatio.NotAnswered.ToReadable()
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Center">
                         @L["Questions:NotAnswered"]
@@ -135,7 +138,8 @@
     <RankingWidget
         Title="@L["Ranking:ByScore"]"
         Items="@Statistics.ScoreRanking"
-        LinkBuilder="@((string id) => LinkBuilder(id))"/>
+        LinkBuilder="@((string id) => LinkBuilder(id))"
+        ValueConverter="@(arg => arg.ToReadable())"/>
 
     <RankingWidget
         Title="@L["Ranking:ByTimeSpent"]"
@@ -146,7 +150,8 @@
     <RankingWidget
         Title="@L["Ranking:ByCompletedTimesRanking"]"
         Items="@Statistics.CompletedTimesRanking"
-        LinkBuilder="@((string id) => LinkBuilder(id))"/>
+        LinkBuilder="@((string id) => LinkBuilder(id))"
+        ValueConverter="@(arg => arg.ToReadable())"/>
 </div>
 
 @code {

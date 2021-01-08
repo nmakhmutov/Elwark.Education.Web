@@ -18,8 +18,8 @@ namespace Elwark.Education.Web.Gateways.History
             _client = client;
         }
 
-        public Task<ApiResponse<HistoryAggregate>> GetAsync() =>
-            ExecuteAsync<HistoryAggregate>(() => _client.GetAsync("history"));
+        public Task<ApiResponse<HistoryOverview>> GetAsync() =>
+            ExecuteAsync<HistoryOverview>(() => _client.GetAsync("history"));
 
         public Task<ApiResponse<HistoryPeriodModel[]>> GetPeriodsAsync() =>
             ExecuteAsync<HistoryPeriodModel[]>(() => _client.GetAsync("history/periods"));
