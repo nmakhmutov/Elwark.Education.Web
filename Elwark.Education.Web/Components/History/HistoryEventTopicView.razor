@@ -2,29 +2,27 @@
 @inject IDialogService Dialog
 @inject IStringLocalizer<App> L
 
-<div class="header">
-    <div class="image">
-        <img src="@Topic.Image" alt="@Topic.Title"/>
+<div class="title-grid">
+    <div class="title-left">
+        <MudText Typo="Typo.h2" Class="mb-6">
+            @Topic.Title
+        </MudText>
+        <HistoricalDateRangeText Range="@Topic.Dates"/>
+    </div>
+    <div class="title-right">
+        <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>
+        <MudText Typo="Typo.subtitle1" Class="mb-6">
+            @Topic.Description
+        </MudText>
+        @if (Topic.Test is not null)
+        {
+            <TopicTestCard Test="@Topic.Test"/>
+        }
     </div>
 </div>
 
-<div class="title-grid">
-    <div class="title">
-        <MudText Typo="Typo.h2" Class="mb-3">
-            @Topic.Title
-        </MudText>
-        <Breadcrumbs Items="@Breadcrumbs"/>
-    </div>
-    <div class="description">
-        <HistoricalDateRangeText Range="@Topic.Dates" Class="mb-6"/>
-        <MudText Typo="Typo.body1">
-            @Topic.Description
-        </MudText>
-    </div>
-    @if (Topic.Test is not null)
-    {
-        <TopicTestCard Class="ma-6" Test="@Topic.Test"/>
-    }
+<div class="image">
+    <img src="@Topic.Image" alt="@Topic.Title"/>
 </div>
 
 <MudContainer MaxWidth="MaxWidth.Large">
@@ -48,7 +46,7 @@
                         @article.Title
                     </MudText>
                 </div>
-                <MudText Typo="Typo.body1">
+                <MudText Typo="Typo.subtitle1">
                     @article.Overview
                 </MudText>
                 @if (article.Test is not null)
