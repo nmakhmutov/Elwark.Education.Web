@@ -16,37 +16,77 @@
     display: block;
 }
 
-.article-image {
-    flex: 1 0 40%;
-    width: 100%;
-    min-height: 30vh;
-    background-repeat: no-repeat;
-    background-position: top center;
-    background-size: cover;
+.two-column {
+    grid-column: span 2;
 }
 
-.article-content {
-    flex: 1 0 50%;
+.article-container {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    color: var(--mud-palette-text-primary);
+    margin: 24px;
+}
+
+.article-grid {
+    display: grid;
     background-color: var(--mud-palette-surface);
     box-shadow: var(--mud-elevation-1);
-    transition: box-shadow 300ms cubic-bezier(.4, 0, .2, 1) 0ms;
+}
+
+.article-title {
+    order: 2;
+    padding: 12px;
+}
+
+.article-title ::deep .caption {
+    color: var(--mud-palette-grey-default);
+}
+
+.article-title ::deep .title {
+    font-size: 1rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1.75;
+    letter-spacing: .00938em;
+    margin-bottom: 4px;
+}
+
+.article-description {
+    order: 3;
+    padding: 12px;
+}
+
+.article-image {
+    order: 1;
+}
+
+.article-image img {
+    width: 100%;
+    height: 100%;
 }
 
 @media (min-width: 600px) {
+    .article-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .article-title {
+        grid-column: 1/-1;
+        margin-bottom: 24px;
+        order: 1;
+    }
+
+    .article-title ::deep .title {
+        font-size: 1.5rem;
+    }
+
+    .article-description {
+        order: 2;
+    }
+
     .article-image {
-        background-position: center center;
-    }
-
-    .article-content.left {
-        margin-left: -10%;
-    }
-
-    .article-content.right {
-        margin-right: -10%;
+        order: 3;
+        padding-left: 12px;
     }
 }
 
@@ -55,6 +95,41 @@
         margin-top: 6.6vmax;
         margin-bottom: 6.6vmax;
         grid-template-columns: 5fr 7fr;
+    }
+
+    .article-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .article-title {
+        grid-column: span 1;
+    }
+
+    .article-title ::deep .title {
+        font-size: 2rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .article-container {
+        max-width: 1280px;
+        margin: 24px auto;
+    }
+
+    .article-title {
+        padding: 24px;
+    }
+
+    .article-description {
+        padding: 24px;
+    }
+
+    .article-image {
+        padding-left: 24px;
+    }
+
+    .article-title ::deep .title {
+        font-size: 2.3rem;
     }
 }
 

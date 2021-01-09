@@ -57,9 +57,21 @@
                     </MudText>
                 }
 
-                <MudText Typo="Typo.h4">
-                    @article.Title
-                </MudText>
+                @if (article.Permission.IsAllowed)
+                {
+                    <MudLink Typo="Typo.h4" Href="@(Links.History.Article(article.Id))">
+                        @article.Title
+                    </MudLink>
+                }
+                else
+                {
+                    <a href="#"
+                       class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h4"
+                       @onclick:preventDefault="true"
+                       @onclick="@OpenSubscriptionDialog">
+                        @article.Title
+                    </a>
+                }
 
                 <MudText Typo="Typo.subtitle1">
                     @article.Overview
@@ -82,21 +94,6 @@
                         </em>
                     </MudText>
                 }
-
-                <div>
-                    @if (article.Permission.IsAllowed)
-                    {
-                        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" Link="@(Links.History.Article(article.Id))">
-                            Learn more
-                        </MudButton>
-                    }
-                    else
-                    {
-                        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" OnClick="@OpenSubscriptionDialog">
-                            Learn more
-                        </MudButton>
-                    }
-                </div>
             </div>
         </div>
     </div>
