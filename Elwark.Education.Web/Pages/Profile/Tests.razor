@@ -57,19 +57,7 @@
     {
         if (Enum.TryParse(Page, true, out _subject))
         {
-            try
-            {
-                _tests = await LoadAsync();
-            }
-            catch (AccessTokenNotAvailableException ex)
-            {
-                ex.Redirect();
-                return;
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(Error.NotFound);
-            }
+            _tests = await LoadAsync();
 
             if (_tests.Status == ResponseStatus.Success)
                 _request = _request with {Token = _tests.Data.Token};
@@ -104,7 +92,7 @@
     private Task<ApiResponse<PageableResponse<TestConclusionSummary>>> LoadAsync() =>
         _subject switch{
             Subject.History => HistoryClient.GetMyTestConclusionsAsync(_request),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => Task.FromResult(ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(Error.NotFound))
             };
 
 }

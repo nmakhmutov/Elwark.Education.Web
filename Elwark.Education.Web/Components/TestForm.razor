@@ -5,12 +5,12 @@
 <EditForm Model="@_answer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator/>
     <div class="form-grid">
-        <MudText Typo="Typo.h6" Align="Align.Center">
+        <MudText Typo="Typo.h6" Align="Align.Center" class="mb-3">
             @Question.Title
         </MudText>
         @if (Question.Image is not null)
         {
-            <img class="question-image" src="@Question.Image" alt="@Question.Title"/>
+            <img class="question-image mb-3" src="@Question.Image" alt="@Question.Title"/>
         }
 
         @switch (Question.Type)
@@ -26,7 +26,7 @@
 
                         case TextAnswerResult answer:
                             <MudTextField Label="@L["Test:YourAnswer"]" Value="@_answer.TextAnswer" Disabled="true"/>
-                            <MudText Typo="Typo.subtitle2" Color="@(answer.IsCorrect ? Color.Success : Color.Error)">
+                            <MudText Typo="Typo.subtitle2" Color="@(answer.IsAnswerCorrect ? Color.Success : Color.Error)">
                                 @answer.Text
                             </MudText>
                             break;
@@ -35,7 +35,7 @@
                 break;
 
             case QuestionType.SingleAnswer:
-                <div class="d-flex flex-column">
+                <div class="options-grid">
                     <MudRadioGroup
                         SelectedOption="@_answer.SingleAnswer.ToString()"
                         SelectedOptionChanged="@(s => _answer.SingleAnswer = int.Parse(s))">
@@ -45,7 +45,7 @@
                                 SingleAnswerResult x when option.Number == x.Number => 
                                     (Icon: Filled.Check , Color: Color.Success),
                                 
-                                SingleAnswerResult {IsCorrect: false} when option.Number == _answer.SingleAnswer => 
+                                SingleAnswerResult {IsAnswerCorrect: false} when option.Number == _answer.SingleAnswer => 
                                     (Icon: Filled.Clear , Color: Color.Error),
                                     
                                 _ => (Icon: null, Color: Color.Default)
@@ -71,8 +71,8 @@
 
                                         case AnswerOptionType.Image:
                                             <div class="answer-image-container">
-                                    <img class="answer-image" src="@option.Value" alt="@Question.Title"/>
-                                    </div>
+                                                <img class="answer-image" src="@option.Value" alt="@Question.Title"/>
+                                            </div>
                                             break;
                                     }
                                 </MudRadio>
@@ -83,14 +83,14 @@
                 break;
 
             case QuestionType.ManyAnswers:
-                <div class="d-flex flex-column">
+                <div class="options-grid">
                     @foreach (var option in Question.Options)
                     {
                         var (icon, color) = AnswerResult switch {
                             ManyAnswersResult x when x.Numbers.Contains(option.Number) => 
                                 (Icon: Filled.Check , Color: Color.Success),
                                                 
-                            ManyAnswersResult {IsCorrect: false} when _answer.ManyAnswer.Contains(option.Number) => 
+                            ManyAnswersResult {IsAnswerCorrect: false} when _answer.ManyAnswer.Contains(option.Number) => 
                                 (Icon: Filled.Clear , Color: Color.Error),
                                                     
                             _ => (Icon: null, Color: Color.Default)
@@ -119,9 +119,9 @@
                                         break;
 
                                     case AnswerOptionType.Image:
-                                    <div class="answer-image-container">
-                                <img class="answer-image" src="@option.Value" alt="@Question.Title"/>
-                                </div>
+                                        <div class="answer-image-container">
+                                            <img class="answer-image" src="@option.Value" alt="@Question.Title"/>
+                                        </div>
                                         break;
                                 }
                             </MudCheckBox>
@@ -147,12 +147,12 @@
                     break;
 
                 case AnswerState.Answering:
-                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary"/> 
+                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary"/>
                     break;
 
                 case AnswerState.Next:
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnNextClick">
-                        @L["Test:Next"]
+                        @(AnswerResult?.IsTestComplete == true ? L["Test:Result"] : L["Test:Next"])
                     </MudButton>
                     break;
             }
@@ -167,7 +167,7 @@
         }
         else
         {
-            if (AnswerResult.IsCorrect)
+            if (AnswerResult.IsAnswerCorrect)
             {
                 <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@Color.Success">
                     @L["Test:CorrectAnswer"]
@@ -204,8 +204,6 @@
     {
         if (Question.Type != _answer.QuestionType)
             _answer = _answer with{QuestionType = Question.Type};
-
-        Console.WriteLine("OnParametersSet: " + _answer);
     }
 
     private async Task OnValidSubmit(EditContext context)
@@ -221,17 +219,13 @@
 
         await OnAnswer.InvokeAsync(answer);
         _answerState = AnswerState.Next;
-        Console.WriteLine("OnSubmit: " + _answer);
     }
-
-    protected override void OnAfterRender(bool firstRender) => Console.WriteLine("OnAfterRender: " + firstRender);
 
     private async Task OnNextClick()
     {
         await OnNext.InvokeAsync();
         _answer = new AnswerModel {QuestionType = Question.Type};
         _answerState = AnswerState.Answer;
-        Console.WriteLine("OnNext: " + _answer);
     }
 
 }

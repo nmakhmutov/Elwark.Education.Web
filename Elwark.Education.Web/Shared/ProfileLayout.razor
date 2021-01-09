@@ -93,14 +93,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            _profile = await UserClient.GetProfileAsync();
-        }
-        catch (AccessTokenNotAvailableException ex)
-        {
-            ex.Redirect();
-        }
+        _profile = await UserClient.GetProfileAsync();
     }
 
 }

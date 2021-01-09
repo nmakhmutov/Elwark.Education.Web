@@ -74,30 +74,23 @@
         if (Enum.TryParse<HistoryPeriodType>(Type, true, out var type))
         {
             _request = new GetTopicsRequest(type, null, 20);
-            try
+            var period = await HistoryClient.GetPeriodAsync(type);
+            var topics = await HistoryClient.GetTopicsAsync(_request);
+
+            if (period.Status == ResponseStatus.Fail)
             {
-                var period = await HistoryClient.GetPeriodAsync(type);
-                var topics = await HistoryClient.GetTopicsAsync(_request);
-
-                if (period.Status == ResponseStatus.Fail)
-                {
-                    _aggregate = ApiResponse<Aggregate>.Fail(period.Error);
-                    return;
-                }
-
-                if (topics.Status == ResponseStatus.Fail)
-                {
-                    _aggregate = ApiResponse<Aggregate>.Fail(topics.Error);
-                    return;
-                }
-
-                _aggregate = ApiResponse<Aggregate>.Success(new Aggregate(period.Data, topics.Data));
-                _request = _request with {Token = topics.Data.Token};
+                _aggregate = ApiResponse<Aggregate>.Fail(period.Error);
+                return;
             }
-            catch (AccessTokenNotAvailableException ex)
+
+            if (topics.Status == ResponseStatus.Fail)
             {
-                ex.Redirect();
+                _aggregate = ApiResponse<Aggregate>.Fail(topics.Error);
+                return;
             }
+
+            _aggregate = ApiResponse<Aggregate>.Success(new Aggregate(period.Data, topics.Data));
+            _request = _request with {Token = topics.Data.Token};
         }
         else
         {
@@ -110,16 +103,7 @@
         if (_request.Token is null)
             return;
 
-        ApiResponse<PageableResponse<HistoryTopicSummary>> result;
-        try
-        {
-            result = await HistoryClient.GetTopicsAsync(_request);
-        }
-        catch (AccessTokenNotAvailableException ex)
-        {
-            ex.Redirect();
-            return;
-        }
+        var result = await HistoryClient.GetTopicsAsync(_request);
 
         if (result.Status == ResponseStatus.Fail)
         {

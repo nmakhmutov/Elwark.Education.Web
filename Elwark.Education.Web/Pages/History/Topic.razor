@@ -22,7 +22,7 @@
             case HistoryEventTopicDetail x:
                 <HistoryEventTopicView Topic="@x" Breadcrumbs="@_breadcrumbs"/>
                 break;
-                
+
             case HistoryPersonTopicDetail x:
                 <HistoryPersonTopicView Topic="@x" Breadcrumbs="@_breadcrumbs"/>
                 break;
@@ -40,15 +40,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        try
-        {
-            _topic = await HistoryClient.GetTopicAsync(Id);
-        }
-        catch (AccessTokenNotAvailableException ex)
-        {
-            ex.Redirect();
-            return;
-        }
+        _topic = await HistoryClient.GetTopicAsync(Id);
 
         if (_topic.Status == ResponseStatus.Success)
             _breadcrumbs = new BreadcrumbsItem[]

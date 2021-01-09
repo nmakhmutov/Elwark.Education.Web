@@ -16,6 +16,23 @@
     height: auto;
 }
 
-.answer-image-container{
+.answer-image-container {
     max-width: 300px;
+}
+
+.options-grid {
+    display: grid;
+    gap: 12px;
+}
+
+@media (min-width: 600px) {
+    .options-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+}
+
+@media (min-width: 960px) {
+    .options-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
 }

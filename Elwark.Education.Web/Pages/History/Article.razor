@@ -85,15 +85,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        try
-        {
-            _article = await HistoryClient.GetArticleAsync(Id);
-        }
-        catch (AccessTokenNotAvailableException ex)
-        {
-            ex.Redirect();
-            return;
-        }
+        _article = await HistoryClient.GetArticleAsync(Id);
 
         if (_article.Status == ResponseStatus.Success)
             _breadcrumbs = new BreadcrumbsItem[]

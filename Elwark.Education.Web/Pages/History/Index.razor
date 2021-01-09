@@ -144,14 +144,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            _history = await HistoryClient.GetAsync();
-        }
-        catch (AccessTokenNotAvailableException ex)
-        {
-            ex.Redirect();
-        }
+        _history = await HistoryClient.GetAsync();
     }
 
 }

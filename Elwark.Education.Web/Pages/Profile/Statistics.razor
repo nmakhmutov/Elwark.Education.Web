@@ -46,28 +46,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (Enum.TryParse(Page, true, out _subject) && _subject != Subject.Unknown)
+        if (Enum.TryParse(Page, true, out _subject))
         {
-            try
-            {
-                switch (_subject)
-                {
-                    case Subject.History:
-                        _statistics = await HistoryClient.GetMyStatisticsAsync();
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-            catch (AccessTokenNotAvailableException ex)
-            {
-                ex.Redirect();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                _statistics = ApiResponse<ContentStatistics>.Fail(Error.NotFound);
-            }
+            _statistics = _subject switch{
+                Subject.History => await HistoryClient.GetMyStatisticsAsync(),
+                _ => ApiResponse<ContentStatistics>.Fail(Error.NotFound)
+                };
         }
         else
         {

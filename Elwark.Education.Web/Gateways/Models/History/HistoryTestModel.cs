@@ -9,7 +9,6 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string Title,
         DateTime CreatedAt,
         DateTime ExpiredAt,
-        bool IsComplete,
         IEnumerable<TestQuestionModel> Questions
     );
 }

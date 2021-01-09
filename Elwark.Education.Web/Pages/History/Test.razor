@@ -18,10 +18,6 @@
         <ErrorPage Error="_test.Error"/>
         break;
 
-    case ResponseStatus.Success when _test.Data.IsComplete:
-        <MudText Typo="Typo.h5">Congratulation</MudText>
-        break;
-
     case ResponseStatus.Success:
         <Title Value="@_test.Data.Title"></Title>
         <MudText Typo="Typo.h2" Align="Align.Center" Class="my-6">
@@ -29,12 +25,12 @@
         </MudText>
 
         <MudContainer MaxWidth="MaxWidth.Medium">
-            <MudPaper Class="pa-6">
-                <div class="d-flex flex-row justify-space-between">
+            <MudPaper Class="pa-6 my-6">
+                <div class="d-flex flex-row justify-space-between align-center mb-3">
                     <MudText Typo="Typo.subtitle1">
                         @L["Questions"] @(_questionIndex + 1) / @_questions.Count
                     </MudText>
-                    <CountdownTimer Date="@_test.Data.ExpiredAt"/>
+                    <CountdownTimer Date="@_test.Data.ExpiredAt" Color="@_countdownColor" OnComplete="@OnExpired"/>
                 </div>
                 <TestForm Question="@_questions[_questionIndex]" AnswerResult="@_answerResult" OnAnswer="@OnAnswer" OnNext="@NextQuestion"/>
             </MudPaper>
@@ -47,6 +43,8 @@
     [Parameter]
     public string Id { get; init; } = default!;
 
+    private bool _isTestComplete;
+    private Color _countdownColor = Color.Default;
     private ApiResponse<HistoryTestModel> _test = ApiResponse<HistoryTestModel>.Loading();
     private List<TestQuestionModel> _questions = new();
     private int _questionIndex;
@@ -54,17 +52,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            _test = await HistoryClient.GetTestAsync(Id);
-        }
-        catch (AccessTokenNotAvailableException ex)
-        {
-            ex.Redirect();
-            return;
-        }
+        _test = await HistoryClient.GetTestAsync(Id);
 
-        if (_test.Status == ResponseStatus.Fail && _test.Error.Status == 404)
+        if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
         {
             NavigationManager.NavigateTo(Links.Profile.TestDetail(Subject.History, Id));
             return;
@@ -82,50 +72,43 @@
 
     private async Task OnAnswer(TestAnswer answer)
     {
-        try
+        switch (answer)
         {
-            switch (answer)
+            case ManyAnswer x:
             {
-                case ManyAnswer x:
+                var result = await HistoryClient.CheckAnswer(_test.Data.Id, _questions[_questionIndex].Id, x);
+                if (result.Status == ResponseStatus.Fail)
                 {
-                    var result = await HistoryClient.CheckAnswer(_test.Data.Id, _questions[_questionIndex].Id, x);
-                    if (result.Status == ResponseStatus.Fail)
-                    {
-                        _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
-                        return;
-                    }
-                    _answerResult = result.Data;
-                    break;
+                    _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
+                    return;
                 }
-
-                case SingleAnswer x:
-                {
-                    var result = await HistoryClient.CheckAnswer(_test.Data.Id, _questions[_questionIndex].Id, x);
-                    if (result.Status == ResponseStatus.Fail)
-                    {
-                        _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
-                        return;
-                    }
-                    _answerResult = result.Data;
-                    break;
-                }
-
-                case TextAnswer x:
-                {
-                    var result = await HistoryClient.CheckAnswer(_test.Data.Id, _questions[_questionIndex].Id, x);
-                    if (result.Status == ResponseStatus.Fail)
-                    {
-                        _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
-                        return;
-                    }
-                    _answerResult = result.Data;
-                    break;
-                }
+                _answerResult = result.Data;
+                break;
             }
-        }
-        catch (AccessTokenNotAvailableException ex)
-        {
-            ex.Redirect();
+
+            case SingleAnswer x:
+            {
+                var result = await HistoryClient.CheckAnswer(_test.Data.Id, _questions[_questionIndex].Id, x);
+                if (result.Status == ResponseStatus.Fail)
+                {
+                    _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
+                    return;
+                }
+                _answerResult = result.Data;
+                break;
+            }
+
+            case TextAnswer x:
+            {
+                var result = await HistoryClient.CheckAnswer(_test.Data.Id, _questions[_questionIndex].Id, x);
+                if (result.Status == ResponseStatus.Fail)
+                {
+                    _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
+                    return;
+                }
+                _answerResult = result.Data;
+                break;
+            }
         }
 
         if (_answerResult is null)
@@ -134,13 +117,9 @@
             return;
         }
 
-        if (_answerResult.IsComplete)
-        {
-            var model = _test.Data with{IsComplete = _answerResult.IsComplete};
-            _test = ApiResponse<HistoryTestModel>.Success(model);
-        }
+        _isTestComplete = _answerResult.IsTestComplete;
 
-        if (!_answerResult.IsCorrect)
+        if (!_answerResult.IsAnswerCorrect)
         {
             var wrong = _questions.First(x => x.Id == _questions[_questionIndex].Id);
             _questions.Add(wrong with{Options = wrong.Options.OrderBy(_ => Guid.NewGuid()).ToArray()});
@@ -149,8 +128,23 @@
 
     private void NextQuestion()
     {
+        if (_isTestComplete)
+        {
+            NavigationManager.NavigateTo(Links.Profile.TestDetail(Subject.History, Id));
+            return;
+        }
+
         _questionIndex++;
         _answerResult = null;
+    }
+
+    private async Task OnExpired()
+    {
+        _countdownColor = Color.Error;
+        _test = await HistoryClient.GetTestAsync(Id);
+
+        if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
+            NavigationManager.NavigateTo(Links.Profile.TestDetail(Subject.History, Id));
     }
 
 }

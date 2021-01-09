@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Elwark.Education.Web.Infrastructure;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 
 namespace Elwark.Education.Web.Gateways
@@ -28,6 +29,11 @@ namespace Elwark.Education.Web.Gateways
                             ?? Error.Unknown;
 
                 return ApiResponse<T>.Fail(error);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                ex.Redirect();
+                return ApiResponse<T>.Fail(Error.Unauthorized);
             }
             catch (HttpRequestException)
             {
