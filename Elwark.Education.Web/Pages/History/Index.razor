@@ -22,118 +22,79 @@
             @foreach (var period in _history.Data.Periods)
             {
                 <div class="period-box">
-                    <div class="period-thumbnail">
-                        <img src="@period.Image" alt="@period.Title"/>
-                    </div>
-                    <div class="period-header">
-                        <MudLink Typo="Typo.h4" Color="Color.Inherit" Href="@(Links.History.Period(period.Type))">
-                            @period.Title
-                        </MudLink>
-                    </div>
+                    <a href="@(Links.History.Period(period.Type))">
+                        <div class="period-thumbnail">
+                            <img src="@period.Image" alt="@period.Title"/>
+                        </div>
+                        <div class="period-header">
+                            <MudLink Typo="Typo.h4" Color="Color.Inherit" Href="@(Links.History.Period(period.Type))">
+                                @period.Title
+                            </MudLink>
+                        </div>
+                    </a>
                 </div>
             }
         </div>
 
-        <div class="rating-container">
-            <MudText Typo="Typo.h2" Align="Align.Center">
-                @L["Articles"]
-            </MudText>
-            <MudTabs Elevation="1" Color="Color.Transparent">
-                <MudTabPanel Text="Trending" Icon="@Filled.TrendingUp">
-                    <div class="rating-grid mt-3">
-                        @foreach (var article in _history.Data.Articles.Trends)
-                        {
-                            <div class="article-rating-card">
+        <div class="articles-grid">
+            <div class="trending-container">
+                <div class="container-header">
+                    <MudText Typo="Typo.h6">
+                        Trending articles
+                    </MudText>
+                </div>
+                <div class="trending-grid mt-3">
+                    @foreach (var article in _history.Data.Articles.Trends)
+                    {
+                        <div class="trending-article-card">
+                            @if (article.Image is not null)
+                            {
+                                <div class="trending-article-image">
+                                    <img src="@article.Image" alt="@article.Title">
+                                </div>
+                            }
+                            <div class="trending-article-content">
+                                <MudLink Typo="Typo.h4" Href="@(Links.History.Article(article.Id))">
+                                    @article.Title
+                                </MudLink>
+                                <MudText Typo="Typo.subtitle1">
+                                    @article.Overview
+                                </MudText>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="recent-container">
+                <div class="container-header justify-lg-center">
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        Recent articles
+                    </MudText>
+                </div>
+                <div class="recent-grid mt-3">
+                    @foreach (var article in _history.Data.Articles.Recent)
+                    {
+                        <div class="recent-article-card">
+                            <div class="recent-article-card-header">
                                 @if (article.Image is not null)
                                 {
-                                    <div class="article-rating-image">
-                                        <img src="@article.Image" alt="@article.Title">
+                                    <div class="recent-article-card-image">
+                                        <img src="@article.Image" style="width: 100%" alt="@article.Title">
                                     </div>
                                 }
-                                <div class="article-rating-content">
-                                    <MudLink Typo="Typo.h4" Href="@(Links.History.Article(article.Id))">
+                                <div>
+                                    <MudLink Typo="Typo.h5" Href="@(Links.History.Article(article.Id))">
                                         @article.Title
                                     </MudLink>
-                                    <MudText Typo="Typo.subtitle1">
-                                        @article.Overview
-                                    </MudText>
                                 </div>
                             </div>
-                        }
-                    </div>
-                </MudTabPanel>
-                <MudTabPanel Text="New" Icon="@Filled.NewReleases">
-                    <div class="rating-grid mt-3">
-                        @foreach (var article in _history.Data.Articles.Recents)
-                        {
-                            <div class="article-rating-card">
-                                @if (article.Image is not null)
-                                {
-                                    <div class="article-rating-image">
-                                        <img src="@article.Image" alt="@article.Title">
-                                    </div>
-                                }
-                                <div class="article-rating-content">
-                                    <MudLink Typo="Typo.h4" Href="@(Links.History.Article(article.Id))">
-                                        @article.Title
-                                    </MudLink>
-                                    <MudText Typo="Typo.subtitle1">
-                                        @article.Overview
-                                    </MudText>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </MudTabPanel>
-            </MudTabs>
-        </div>
-
-        <div class="rating-container">
-            <MudText Typo="Typo.h2" Align="Align.Center">
-                @L["Topics"]
-            </MudText>
-            <MudTabs Elevation="1" Color="Color.Transparent">
-                <MudTabPanel Text="Trending" Icon="@Filled.TrendingUp">
-                    <div class="rating-grid mt-3">
-                        @foreach (var topic in _history.Data.Topics.Trends)
-                        {
-                            <div class="article-rating-card">
-                                <div class="article-rating-image">
-                                    <img src="@topic.Image" alt="@topic.Title">
-                                </div>
-                                <div class="article-rating-content">
-                                    <MudLink Typo="Typo.h4" Href="@(Links.History.Topic(topic.Id))">
-                                        @topic.Title
-                                    </MudLink>
-                                    <MudText Typo="Typo.subtitle1">
-                                        @topic.Overview
-                                    </MudText>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </MudTabPanel>
-                <MudTabPanel Text="New" Icon="@Filled.NewReleases">
-                    <div class="rating-grid mt-3">
-                        @foreach (var topic in _history.Data.Topics.Trends)
-                        {
-                            <div class="article-rating-card">
-                                <div class="article-rating-image">
-                                    <img src="@topic.Image" alt="@topic.Title">
-                                </div>
-                                <div class="article-rating-content">
-                                    <MudLink Typo="Typo.h4" Href="@(Links.History.Topic(topic.Id))">
-                                        @topic.Title
-                                    </MudLink>
-                                    <MudText Typo="Typo.subtitle1">
-                                        @topic.Overview
-                                    </MudText>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </MudTabPanel>
-            </MudTabs>
+                            <MudText Typo="Typo.subtitle1">
+                                @article.Overview
+                            </MudText>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
 
         break;
