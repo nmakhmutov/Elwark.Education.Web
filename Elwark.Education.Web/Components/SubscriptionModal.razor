@@ -14,7 +14,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton Color="Color.Success" Variant="Variant.Filled" Class="mx-auto">
-            Start with premium
+            Start with premium @Subject
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -23,5 +23,8 @@
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter]
+    public Subject Subject { get; set; } = Subject.Unknown;
 
 }

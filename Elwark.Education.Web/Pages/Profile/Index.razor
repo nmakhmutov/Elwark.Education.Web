@@ -3,6 +3,7 @@
 @using Elwark.Education.Web.Gateways.Models.User
 @layout ProfileLayout
 @inject IUserClient UserClient
+@inject IDialogService Dialog
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
 
@@ -31,19 +32,17 @@
             </div>
         }
 
-        <MudText Typo="Typo.h5" Class="mb-2">
-            @L["Subjects"]
-        </MudText>
-        <MudPaper Class="mb-6 px-4">
-            @{ var subscriptions = Profile.Data.Subscriptions.OrderBy(x => L[x.Subject.ToString()].Value).ToArray(); }
-
-            <SubscriptionCard Subscription="@subscriptions[0]"/>
-            @for (var i = 1; i < subscriptions.Length; i++)
-            {
-                <MudDivider DividerType="DividerType.FullWidth"/>
-                <SubscriptionCard Subscription="@subscriptions[i]"/>
-            }
-        </MudPaper>
+        <div class="subject-container">
+            <MudText Typo="Typo.h5" Class="mb-2">
+                @L["Subjects"]
+            </MudText>
+            <div class="subject-grid mb-6">
+                @foreach (var subscription in Profile.Data.Subscriptions.OrderBy(x => L[x.Subject.ToString()].Value))
+                {
+                    <SubscriptionCard Subscription="subscription" OnBuyClick="@OnBuyClick" OnProlongClick="@OnProlongClick"/>
+                }
+            </div>
+        </div>
 
         <div class="statistics-container">
             <MudText Typo="Typo.h5" Class="mb-2">
@@ -163,6 +162,22 @@
             _progressTimeElapsed[i] = timeSpent.TotalSeconds;
             _progressAnswers[i] = answers.Answered;
         }
+    }
+
+    private void OnBuyClick(Subject subject)
+    {
+        var options = new DialogOptions {MaxWidth = MaxWidth.Large};
+        var parameters = new DialogParameters
+        {
+            ["Subject"] = subject
+        };
+
+        Dialog.Show<SubscriptionModal>(null, parameters, options);
+    }
+
+    private void OnProlongClick(Subject subject)
+    {
+        Console.WriteLine($"On prolong click: {subject}");
     }
 
 }

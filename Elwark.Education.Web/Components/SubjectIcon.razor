@@ -1,4 +1,5 @@
-<div class="icon @Subject.ToString().ToLowerInvariant()-avatar @Size.ToString().ToLower() rounded">
+@using MudBlazor.Utilities
+<div class="@Classes">
     <MudIcon Icon="@Subject.GetIcon()" Size="@Size"/>
 </div>
 
@@ -9,5 +10,12 @@
 
     [Parameter]
     public Size Size { get; set; }
+
+    private string Classes => CssBuilder.Empty()
+        .AddClass("icon")
+        .AddClass("rounded")
+        .AddClass(Size.ToString().ToLowerInvariant())
+        .AddClass(Subject.ToString().ToLowerInvariant())
+        .Build();
 
 }

@@ -7,7 +7,7 @@ namespace Elwark.Education.Web.Gateways
         public bool OneOf(params Error[] errors) =>
             errors.Any(error => Equals(this, error));
 
-        public static readonly Error NotFound = new("NotFound", "Internal", 404);
+        public static readonly Error NotFound = new("NotFound", "NotFound", 404);
 
         public static readonly Error TestExpired = new("TestExpired", "Rpc", 412);
 
