@@ -32,27 +32,29 @@
 
         <div class="article-grid">
             <div class="article-title">
-                @if (article.Permission.Type == ContentType.Premium)
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Warning">
-                        @article.Permission.Type
-                    </MudText>
-                }
-                @if (article.Permission.IsAllowed)
-                {
-                    <MudLink Typo="Typo.h2" Href="@(Links.History.Article(article.Id))" Class="title">
-                        @article.Title
-                    </MudLink>
-                }
-                else
-                {
-                    <a href="#" 
-                       class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h2 title"
-                       @onclick:preventDefault="true"
-                       @onclick="@OpenSubscriptionDialog">
-                        @article.Title
-                    </a>
-                }
+                <div>
+                    @if (article.Permission.Type == ContentType.Premium)
+                    {
+                        <MudText Typo="Typo.body2" Color="Color.Warning">
+                            @article.Permission.Type
+                        </MudText>
+                    }
+                    @if (article.Permission.IsAllowed)
+                    {
+                        <MudLink Typo="Typo.h2" Href="@(Links.History.Article(article.Id))" Class="title">
+                            @article.Title
+                        </MudLink>
+                    }
+                    else
+                    {
+                        <a href="#"
+                           class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h2 title"
+                           @onclick:preventDefault="true"
+                           @onclick="@OpenSubscriptionDialog">
+                            @article.Title
+                        </a>
+                    }
+                </div>
                 @if (article.Test is not null)
                 {
                     <MudText Typo="Typo.body2" Class="caption">

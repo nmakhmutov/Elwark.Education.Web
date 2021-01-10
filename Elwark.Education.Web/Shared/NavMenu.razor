@@ -18,7 +18,7 @@
     </AuthorizeView>
 
     <MudNavGroup
-        Title="@L["History"]"
+        Title="@L["Subject:History"]"
         Expanded="@(_subject == Subject.History)"
         Icon="@Subject.History.GetIcon()"
         ExpandIcon="@Filled.ExpandMore">
@@ -52,7 +52,7 @@
             _subject = Subject.History;
 
         _historyPages = Enum.GetValues<HistoryPeriodType>()
-            .ToDictionary(Links.History.Period, x => L[x.ToString()].Value);
+            .ToDictionary(Links.History.Period, x => L[$"History:{x}"].Value);
     }
 
     private async Task BeginSignOut(MouseEventArgs args)

@@ -166,7 +166,13 @@
 
     private void OnBuyClick(Subject subject)
     {
-        var options = new DialogOptions {MaxWidth = MaxWidth.Large};
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            NoHeader = true,
+            CloseButton = false,
+            FullWidth = true
+        };
         var parameters = new DialogParameters
         {
             ["Subject"] = subject

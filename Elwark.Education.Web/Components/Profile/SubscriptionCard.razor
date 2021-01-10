@@ -8,10 +8,10 @@
             <SubjectIcon Subject="@Subscription.Subject" Size="@Size.Medium"/>
         </CardHeaderAvatar>
         <CardHeaderContent>
-            <MudLink Typo="Typo.body1" Href="@Links.Subjects.Index(Subscription.Subject)">
-                @L[Subscription.Subject.ToString()]
+            <MudLink Typo="Typo.subtitle1" Href="@Links.Subjects.Index(Subscription.Subject)">
+                @L[$"Subject:{Subscription.Subject}"]
             </MudLink>
-            <MudText Typo="Typo.body2" Color="@Color">
+            <MudText Typo="Typo.body2" Color="@Subscription.Type.GetColor()">
                 @L[$"Subscription:{Subscription.Type}"]
             </MudText>
         </CardHeaderContent>
@@ -22,28 +22,29 @@
     <MudCardMedia Image="@("images/subjects/" + Subscription.Subject.ToString().ToLower() + ".jpg")" Height="200"/>
     <MudCardContent Class="flex-grow-1">
         <div class="content-grid">
-            <div class="d-flex flex-row justify-space-between align-center">
-                <MudText Typo="Typo.body1">
-                    @L["Subscription"]
-                </MudText>
-                <MudChip Color="@Color" Size="Size.Small" Label="true" Class="ma-0">
-                    @L[$"Subscription:{Subscription.Type}"]
-                </MudChip>
-            </div>
-            <div class="d-flex flex-row justify-space-between align-center">
+            <div class="d-flex flex-row justify-space-between align-start">
                 @if (Subscription.ExpiredAt.HasValue)
                 {
-                    <MudText Typo="Typo.body2">
-                        @L["Subscription:EndsAt", Subscription.ExpiredAt.Value.ToSimpleFormat()]
-                    </MudText>
+                    <div>
+                        <MudTooltip Text="@L["Subscription"]">
+                            <MudChip Color="@Subscription.Type.GetColor()" Size="Size.Small" Label="true" Class="ma-0">
+                                @L[$"Subscription:{Subscription.Type}"]
+                            </MudChip>
+                        </MudTooltip>
+                        <MudText Typo="Typo.body2" Class="mt-1">
+                            <em>
+                                @L["Subscription:ExpiresOn", Subscription.ExpiredAt.Value.ToSimpleFormat()]
+                            </em>
+                        </MudText>
+                    </div>
                     <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@OnProlong">
                         @L["Subscription:Prolong"]
                     </MudButton>
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
-                        @L["Subscription:Upgrade"]
+                    <MudText Typo="Typo.body1">
+                        @L["Subscription"]
                     </MudText>
                     <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@OnBuy">
                         @L["Subscription:Buy"]
@@ -115,12 +116,5 @@
 
     private Task OnProlong() =>
         OnProlongClick.InvokeAsync(Subscription.Subject);
-
-    private Color Color => Subscription.Type switch{
-        SubscriptionType.Free => Color.Default,
-        SubscriptionType.Basic => Color.Tertiary,
-        SubscriptionType.Advanced => Color.Warning,
-        _ => Color.Default
-        };
 
 }
