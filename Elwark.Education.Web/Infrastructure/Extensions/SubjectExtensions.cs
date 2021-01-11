@@ -5,12 +5,12 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
 {
     public static class SubjectExtensions
     {
-        public static string GetIcon(this Subject subject) =>
-            subject switch
+        public static string GetIcon(this SubjectType subjectType) =>
+            subjectType switch
             {
-                Subject.History => TwoTone.AccountBalanceTwoTone,
-                Subject.Physics => Icons.Custom.Radioactive,
-                Subject.Astronomy => Filled.Flare,
+                SubjectType.History => TwoTone.AccountBalanceTwoTone,
+                SubjectType.Physics => Icons.Custom.Radioactive,
+                SubjectType.Astronomy => Filled.Flare,
                 _ => Filled.Adjust
             };
     }

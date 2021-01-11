@@ -1,6 +1,6 @@
 namespace Elwark.Education.Web.Model
 {
-    public enum Subject
+    public enum SubjectType
     {
         Unknown = 0,
         History,

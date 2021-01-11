@@ -4,7 +4,7 @@ using Elwark.Education.Web.Model;
 namespace Elwark.Education.Web.Gateways.Models.Statistics
 {
     public sealed record SubjectStatisticsSummary(
-        Subject Subject,
+        SubjectType SubjectType,
         CompletedTests CompletedTests,
         TimeSpan TimeSpent,
         Score Score,

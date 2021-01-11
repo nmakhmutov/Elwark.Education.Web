@@ -7,8 +7,6 @@ namespace Elwark.Education.Web.Gateways.User
     {
         Task CreateAsync();
         
-        Task<ApiResponse<SubscriptionSummary[]>> GetSubscriptionsAsync();
-        
         Task<ApiResponse<Profile>> GetProfileAsync();
     }
 }
