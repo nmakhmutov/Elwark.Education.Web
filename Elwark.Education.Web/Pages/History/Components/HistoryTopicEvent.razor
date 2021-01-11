@@ -1,5 +1,7 @@
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+
 @using Elwark.Education.Web.Gateways.Models.History
-@inject IDialogService Dialog
 @inject IStringLocalizer<App> L
 
 <div class="title-grid">
@@ -7,7 +9,7 @@
         <MudText Typo="Typo.h2" Class="mb-6">
             @Topic.Title
         </MudText>
-        <HistoricalDateRangeText Range="@Topic.Dates"/>
+        <HistoryDate Range="@Topic.Dates"/>
     </div>
     <div class="title-right">
         <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>
@@ -50,7 +52,7 @@
                         <a href="#"
                            class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h2 title"
                            @onclick:preventDefault="true"
-                           @onclick="@OpenSubscriptionDialog">
+                           @onclick="@OnPremiumClick">
                             @article.Title
                         </a>
                     }
@@ -87,61 +89,6 @@
             }
 
         </div>
-
-
-@*     <div class="d-flex flex-column @(i % 2 == 0 ? "flex-sm-row" : "flex-sm-row-reverse") align-sm-center mb-12"> *@
-    @*         @if (article.Image is not null) *@
-    @*         { *@
-    @*             <div class="article-image" style="background-image: url(@article.Image)"></div> *@
-    @*         } *@
-    @*         <div class="article-content @(article.Image is null ? null : i % 2 == 0 ? "left" : "right") pa-6"> *@
-    @*             @if (article.Permission.Type == ContentType.Premium) *@
-    @*             { *@
-    @*                 <MudText Typo="Typo.body2" Color="Color.Warning"> *@
-    @*                     @article.Permission.Type *@
-    @*                 </MudText> *@
-    @*             } *@
-    @*             <div class="article-title"> *@
-    @*                 <MudText Typo="Typo.h4"> *@
-    @*                     @article.Title *@
-    @*                 </MudText> *@
-    @*             </div> *@
-    @*             <MudText Typo="Typo.subtitle1"> *@
-    @*                 @article.Overview *@
-    @*             </MudText> *@
-    @*             @if (article.Test is not null) *@
-    @*             { *@
-    @*                 <MudText Typo="Typo.body2"> *@
-    @*                     <em> *@
-    @*                         @if (article.Test.Progress is null) *@
-    @*                         { *@
-    @*                             @L["Test:NotPassed"] *@
-    @*                         } *@
-    @*                         else *@
-    @*                         { *@
-    @*                             @L.GetString("Test:Passed", *@
-    @*                                 article.Test.Progress.QuantityCompletedTimes, *@
-    @*                                 article.Test.Progress.TestCompletedAt.ToSimpleFormat()) *@
-    @*                         } *@
-    @*                     </em> *@
-    @*                 </MudText> *@
-    @*             } *@
-    @*             <div> *@
-    @*                 @if (article.Permission.IsAllowed) *@
-    @*                 { *@
-    @*                     <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" Link="@(Links.History.Article(article.Id))"> *@
-    @*                         Learn more *@
-    @*                     </MudButton> *@
-    @*                 } *@
-    @*                 else *@
-    @*                 { *@
-    @*                     <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" OnClick="@OpenSubscriptionDialog"> *@
-    @*                         Learn more *@
-    @*                     </MudButton> *@
-    @*                 } *@
-    @*             </div> *@
-    @*         </div> *@
-    @*     </div> *@
     }
 </div>
 
@@ -153,6 +100,7 @@
     [Parameter]
     public BreadcrumbsItem[] Breadcrumbs { get; set; } = Array.Empty<BreadcrumbsItem>();
 
-    private void OpenSubscriptionDialog() => Dialog.Show<SubscriptionModal>(null, new DialogOptions {MaxWidth = MaxWidth.Large});
+    [Parameter]
+    public EventCallback OnPremiumClick { get; set; }
 
 }

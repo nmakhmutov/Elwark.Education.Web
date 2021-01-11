@@ -1,24 +1,27 @@
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+
 @using Elwark.Education.Web.Gateways.Models.Statistics
 @inject IStringLocalizer<App> L
 
 <div class="statistics-grid @Class">
     <div class="icon-widget-grid">
-        <IconWidget
+        <ProfileStatisticsIconWidget
             Icon="@Filled.Timer"
             Title="@L["TimeSpent"]"
             Value="@Statistics.TimeSpent.ToSimpleFormat()">
             <Caption>
-                <DifferenceCaption
+                <ProfileStatisticsDifferenceCaption
                     Current="@Statistics.WeeklyDifference.TimeSpent.Current"
                     Difference="@Statistics.WeeklyDifference.TimeSpent.Difference"
                     ValueConverter="@(span => span.ToSimpleFormat())"/>
             </Caption>
-        </IconWidget>
+        </ProfileStatisticsIconWidget>
     </div>
 
-    <DetailWidget Icon="@Filled.School" Value="@Statistics.CompletedTests.Total.ToReadable()" Title="@L["CompletedTests"]">
+    <ProfileStatisticsDetailWidget Icon="@Filled.School" Value="@Statistics.CompletedTests.Total.ToReadable()" Title="@L["CompletedTests"]">
         <Caption>
-            <DifferenceCaption
+            <ProfileStatisticsDifferenceCaption
                 Current="@Statistics.WeeklyDifference.CompletedTests.Current"
                 Difference="@Statistics.WeeklyDifference.CompletedTests.Difference"
                 ValueConverter="@(arg => arg.ToReadable())"/>
@@ -51,11 +54,11 @@
                 </div>
             </div>
         </Details>
-    </DetailWidget>
+    </ProfileStatisticsDetailWidget>
 
-    <DetailWidget Icon="@Filled.PendingActions" Value="@Statistics.Score.Total.ToReadable()" Title="@L["Score"]">
+    <ProfileStatisticsDetailWidget Icon="@Filled.PendingActions" Value="@Statistics.Score.Total.ToReadable()" Title="@L["Score"]">
         <Caption>
-            <DifferenceCaption
+            <ProfileStatisticsDifferenceCaption
                 Current="@Statistics.WeeklyDifference.Score.Current"
                 Difference="@Statistics.WeeklyDifference.Score.Difference"
                 ValueConverter="@(arg => arg.ToReadable())"/>
@@ -88,11 +91,11 @@
                 </div>
             </div>
         </Details>
-    </DetailWidget>
+    </ProfileStatisticsDetailWidget>
 
-    <DetailWidget Icon="@Filled.HelpOutline" Value="@Statistics.AnswerRatio.Questions.ToReadable()" Title="@L["Questions"]">
+    <ProfileStatisticsDetailWidget Icon="@Filled.HelpOutline" Value="@Statistics.AnswerRatio.Questions.ToReadable()" Title="@L["Questions"]">
         <Caption>
-            <DifferenceCaption
+            <ProfileStatisticsDifferenceCaption
                 Current="@Statistics.WeeklyDifference.Questions.Current"
                 Difference="@Statistics.WeeklyDifference.Questions.Difference"
                 ValueConverter="@(arg => arg.ToReadable())"/>
@@ -133,21 +136,21 @@
                 </div>
             </div>
         </Details>
-    </DetailWidget>
+    </ProfileStatisticsDetailWidget>
 
-    <RankingWidget
+    <ProfileStatisticsRankingWidget
         Title="@L["Ranking:ByScore"]"
         Items="@Statistics.ScoreRanking"
         LinkBuilder="@((string id) => LinkBuilder(id))"
         ValueConverter="@(arg => arg.ToReadable())"/>
 
-    <RankingWidget
+    <ProfileStatisticsRankingWidget
         Title="@L["Ranking:ByTimeSpent"]"
         Items="@Statistics.TimeSpentRanking"
         LinkBuilder="@((string id) => LinkBuilder(id))"
         ValueConverter="@((TimeSpan item) => item.ToSimpleFormat())"/>
 
-    <RankingWidget
+    <ProfileStatisticsRankingWidget
         Title="@L["Ranking:ByCompletedTimesRanking"]"
         Items="@Statistics.CompletedTimesRanking"
         LinkBuilder="@((string id) => LinkBuilder(id))"

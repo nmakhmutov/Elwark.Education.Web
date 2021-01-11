@@ -11,14 +11,14 @@ namespace Elwark.Education.Web.Pages
         {
             public const string Index = "/profile";
 
-            public static string Statistics(Subject subject) =>
-                $"{Index}/{subject.ToString().ToLowerInvariant()}";
+            public static string Statistics(SubjectType subjectType) =>
+                $"{Index}/{subjectType.ToString().ToLowerInvariant()}";
 
-            public static string Tests(Subject subject) =>
-                $"{Index}/{subject.ToString().ToLowerInvariant()}/tests";
+            public static string Tests(SubjectType subjectType) =>
+                $"{Index}/{subjectType.ToString().ToLowerInvariant()}/tests";
 
-            public static string TestDetail(Subject subject, string testId) =>
-                $"{Tests(subject)}/{testId}";
+            public static string TestDetail(SubjectType subjectType, string testId) =>
+                $"{Tests(subjectType)}/{testId}";
         }
 
         public static class History
@@ -62,30 +62,30 @@ namespace Elwark.Education.Web.Pages
 
         public static class Subjects
         {
-            public static string Index(Subject subject) =>
-                subject switch
+            public static string Index(SubjectType subjectType) =>
+                subjectType switch
                 {
-                    Subject.History => History.Index,
-                    Subject.Physics => Physics.Index,
-                    Subject.Astronomy => Astronomy.Index,
+                    SubjectType.History => History.Index,
+                    SubjectType.Physics => Physics.Index,
+                    SubjectType.Astronomy => Astronomy.Index,
                     _ => string.Empty
                 };
 
-            public static string Topic(Subject subject, string topicId) =>
-                subject switch
+            public static string Topic(SubjectType subjectType, string topicId) =>
+                subjectType switch
                 {
-                    Subject.History => History.Topic(topicId),
-                    Subject.Physics => Physics.Topic(topicId),
-                    Subject.Astronomy => Astronomy.Topic(topicId),
+                    SubjectType.History => History.Topic(topicId),
+                    SubjectType.Physics => Physics.Topic(topicId),
+                    SubjectType.Astronomy => Astronomy.Topic(topicId),
                     _ => string.Empty
                 };
 
-            public static string Article(Subject subject, string articleId) =>
-                subject switch
+            public static string Article(SubjectType subjectType, string articleId) =>
+                subjectType switch
                 {
-                    Subject.History => History.Article(articleId),
-                    Subject.Physics => Physics.Article(articleId),
-                    Subject.Astronomy => Astronomy.Article(articleId),
+                    SubjectType.History => History.Article(articleId),
+                    SubjectType.Physics => Physics.Article(articleId),
+                    SubjectType.Astronomy => Astronomy.Article(articleId),
                     _ => string.Empty
                 };
         }

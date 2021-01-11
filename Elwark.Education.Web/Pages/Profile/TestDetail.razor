@@ -19,9 +19,9 @@
         break;
 
     case ResponseStatus.Success:
-        <ProfileSubjectHeader Subject="@Subject.History"/>
+        <ProfileSubjectHeader SubjectType="@SubjectType.History"/>
 
-        <TestConclusionDetailCard
+        <ProfileTestDetail
             Class="my-6"
             Conclusion="@_conclusion.Data"
             ContentLink="@ContentLink(_conclusion.Data)"/>
@@ -29,7 +29,7 @@
 }
 
 @code {
-    private Subject _subject;
+    private SubjectType _subjectType;
     private ApiResponse<TestConclusionDetail> _conclusion = ApiResponse<TestConclusionDetail>.Loading();
 
     [Parameter]
@@ -40,10 +40,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (Enum.TryParse(Page, true, out _subject))
+        if (Enum.TryParse(Page, true, out _subjectType))
         {
-            _conclusion = _subject switch {
-                Subject.History => await HistoryClient.GetMyTestConclusionAsync(Id),
+            _conclusion = _subjectType switch {
+                SubjectType.History => await HistoryClient.GetMyTestConclusionAsync(Id),
                 _ => ApiResponse<TestConclusionDetail>.Fail(Error.NotFound)
                 };
         }
@@ -55,8 +55,8 @@
 
     private string ContentLink(TestConclusionDetail detail) =>
         detail switch {
-            ArticleTestConclusionDetail x => Links.Subjects.Article(_subject, x.ArticleId),
-            TopicTestConclusionDetail x => Links.Subjects.Topic(_subject, x.TopicId),
+            ArticleTestConclusionDetail x => Links.Subjects.Article(_subjectType, x.ArticleId),
+            TopicTestConclusionDetail x => Links.Subjects.Topic(_subjectType, x.TopicId),
             _ => string.Empty
             };
 

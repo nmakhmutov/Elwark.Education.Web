@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="d-flex flex-row justify-center my-3">
                                     <MudButton Color="Color.Primary" Variant="Variant.Filled">
-                                        Choose
+                                        Buy now
                                     </MudButton>
                                 </div>
                             </div>
@@ -126,7 +126,7 @@
                                 </div>
                                 <div class="d-flex flex-row justify-center my-3">
                                     <MudButton Color="Color.Primary" Variant="Variant.Filled">
-                                        Choose
+                                        Buy now
                                     </MudButton>
                                 </div>
                             </div>
@@ -144,12 +144,12 @@
     MudDialogInstance MudDialog { get; set; } = default!;
 
     [Parameter]
-    public Subject Subject { get; set; } = Subject.Unknown;
+    public SubjectType SubjectType { get; set; } = SubjectType.Unknown;
 
     private Dictionary<(string, SubscriptionType), decimal> Prices() => new()
     {
-        [($"{Subject}", SubscriptionType.Basic)] = 4,
-        [($"{Subject}", SubscriptionType.Advanced)] = 9,
+        [($"{SubjectType}", SubscriptionType.Basic)] = 4,
+        [($"{SubjectType}", SubscriptionType.Advanced)] = 9,
         [("All subjects pack", SubscriptionType.Basic)] = 11,
         [("All subjects pack", SubscriptionType.Advanced)] = 26
     };

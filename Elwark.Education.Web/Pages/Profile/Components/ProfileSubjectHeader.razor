@@ -1,0 +1,59 @@
+@using Elwark.Education.Web.Pages.Profile.Components
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+
+@inject IStringLocalizer<App> L
+
+<div class="title-wrap">
+    <div class="title-text">
+        <MudLink Typo="Typo.h4" Href="@Links.Subjects.Index(SubjectType)">
+            @L[$"Subject:{SubjectType}"]
+        </MudLink>
+        <div class="title-line"></div>
+    </div>
+</div>
+
+<div class="menu">
+    @foreach (var item in _items)
+    {
+        @if (item.isActive)
+        {
+            <div class="menu-item menu-item-active">
+                <MudIcon Icon="@item.Icon" Color="Color.Inherit" Size="Size.Large"/>
+                <MudText Typo="Typo.h6" Color="Color.Inherit">
+                    @item.Title
+                </MudText>
+            </div>
+        }
+        else
+        {
+            <a href="@item.Link" class="menu-item menu-item-link">
+                <MudIcon Icon="@item.Icon" Color="Color.Inherit" Size="Size.Large"/>
+                <MudText Typo="Typo.h6" Color="Color.Inherit">
+                    @item.Title
+                </MudText>
+            </a>
+        }
+    }
+</div>
+
+@code {
+
+    private IEnumerable<(string Title, string Link, string Icon, bool isActive)> _items =
+        Array.Empty<(string Title, string Link, string Icon, bool isActive)>();
+
+    [Parameter]
+    public SubjectType SubjectType { get; set; }
+
+    [Parameter]
+    public ProfileSubMenu Selected { get; set; } = ProfileSubMenu.None;
+
+    protected override void OnInitialized() =>
+        _items = new (string Title, string Link, string Icon, bool isActive)[]
+        {
+            new(L["Profile"].Value, Links.Profile.Index, Filled.DonutLarge, false),
+            new(L["Statistics"].Value, Links.Profile.Statistics(SubjectType), Filled.BarChart, Selected == ProfileSubMenu.Statistics),
+            new(L["Tests"].Value, Links.Profile.Tests(SubjectType), Filled.Class, Selected == ProfileSubMenu.Tests)
+        };
+
+}

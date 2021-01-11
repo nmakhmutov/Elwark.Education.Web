@@ -1,6 +1,7 @@
 @page "/profile/{page}/tests"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.TestConclusion
+@using Elwark.Education.Web.Pages.Profile.Components
 @layout ProfileLayout
 
 @inject IHistoryClient HistoryClient
@@ -19,7 +20,7 @@
         break;
 
     case ResponseStatus.Success:
-        <ProfileSubjectHeader Subject="@Subject.History"/>
+        <ProfileSubjectHeader SubjectType="@SubjectType.History" Selected="@(ProfileSubMenu.Tests)"/>
 
         <MudText Typo="Typo.h5" Class="mb-2 mt-6">
             @L["CompletedTests"]
@@ -28,10 +29,10 @@
             <div class="grid">
                 @foreach (var item in _tests.Data.Items)
                 {
-                    <TestConclusionSummaryCard
+                    <ProfileTestSummary
                         Class="my-3"
                         Conclusion="@item"
-                        DetailLink="@Links.Profile.TestDetail(_subject, item.TestId)"/>
+                        DetailLink="@Links.Profile.TestDetail(_subjectType, item.TestId)"/>
                 }
             </div>
             <div id="observerTarget" class="d-flex justify-center my-6">
@@ -48,14 +49,14 @@
 {
     private ApiResponse<PageableResponse<TestConclusionSummary>> _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Loading();
     private PageableRequest _request = new(null, 20);
-    private Subject _subject;
+    private SubjectType _subjectType;
 
     [Parameter]
     public string Page { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        if (Enum.TryParse(Page, true, out _subject))
+        if (Enum.TryParse(Page, true, out _subjectType))
         {
             _tests = await LoadAsync();
 
@@ -90,8 +91,8 @@
     }
 
     private Task<ApiResponse<PageableResponse<TestConclusionSummary>>> LoadAsync() =>
-        _subject switch{
-            Subject.History => HistoryClient.GetMyTestConclusionsAsync(_request),
+        _subjectType switch{
+            SubjectType.History => HistoryClient.GetMyTestConclusionsAsync(_request),
             _ => Task.FromResult(ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(Error.NotFound))
             };
 

@@ -1,12 +1,12 @@
 @using MudBlazor.Utilities
 <div class="@Classes">
-    <MudIcon Icon="@Subject.GetIcon()" Size="@Size"/>
+    <MudIcon Icon="@SubjectType.GetIcon()" Size="@Size"/>
 </div>
 
 @code {
 
     [Parameter]
-    public Subject Subject { get; set; }
+    public SubjectType SubjectType { get; set; }
 
     [Parameter]
     public Size Size { get; set; }
@@ -15,7 +15,7 @@
         .AddClass("icon")
         .AddClass("rounded")
         .AddClass(Size.ToString().ToLowerInvariant())
-        .AddClass(Subject.ToString().ToLowerInvariant())
+        .AddClass(SubjectType.ToString().ToLowerInvariant())
         .Build();
 
 }

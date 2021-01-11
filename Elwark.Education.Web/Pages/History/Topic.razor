@@ -2,6 +2,7 @@
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.History
 @inject IHistoryClient HistoryClient
+@inject IDialogService Dialog
 @inject IStringLocalizer<App> L
 
 @attribute [Authorize]
@@ -20,11 +21,11 @@
         @switch (_topic.Data)
         {
             case HistoryEventTopicDetail x:
-                <HistoryEventTopicView Topic="@x" Breadcrumbs="@_breadcrumbs"/>
+                <HistoryTopicEvent Topic="@x" Breadcrumbs="@_breadcrumbs" OnPremiumClick="@OnPremiumClick"/>
                 break;
 
             case HistoryPersonTopicDetail x:
-                <HistoryPersonTopicView Topic="@x" Breadcrumbs="@_breadcrumbs"/>
+                <HistoryTopicPerson Topic="@x" Breadcrumbs="@_breadcrumbs" OnPremiumClick="@OnPremiumClick"/>
                 break;
         }
         break;
@@ -48,6 +49,23 @@
                 new(L["Subject:History"].Value, Links.History.Index),
                 new(_topic.Data.Period.Title, Links.History.Period(_topic.Data.Period.Type))
             };
+    }
+    
+    private void OnPremiumClick()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            NoHeader = true,
+            CloseButton = false,
+            FullWidth = true
+        };
+        var parameters = new DialogParameters
+        {
+            [nameof(SubscriptionModal.SubjectType)] = SubjectType.History
+        };
+
+        Dialog.Show<SubscriptionModal>(null, parameters, options);
     }
 
 }

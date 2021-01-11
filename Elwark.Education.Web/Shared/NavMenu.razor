@@ -19,8 +19,8 @@
 
     <MudNavGroup
         Title="@L["Subject:History"]"
-        Expanded="@(_subject == Subject.History)"
-        Icon="@Subject.History.GetIcon()"
+        Expanded="@(_subjectType == SubjectType.History)"
+        Icon="@SubjectType.History.GetIcon()"
         ExpandIcon="@Filled.ExpandMore">
         @foreach (var (link, title) in _historyPages)
         {
@@ -41,7 +41,7 @@
 </MudNavMenu>
 
 @code {
-    private Subject _subject;
+    private SubjectType _subjectType;
 
     private Dictionary<string, string> _historyPages = new();
 
@@ -49,7 +49,7 @@
     {
         var path = $"/{Navigation.ToBaseRelativePath(Navigation.Uri)}";
         if (path.StartsWith(Links.History.Index))
-            _subject = Subject.History;
+            _subjectType = SubjectType.History;
 
         _historyPages = Enum.GetValues<HistoryPeriodType>()
             .ToDictionary(Links.History.Period, x => L[$"History:{x}"].Value);

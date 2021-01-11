@@ -56,7 +56,7 @@
 
         if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
         {
-            NavigationManager.NavigateTo(Links.Profile.TestDetail(Subject.History, Id));
+            NavigationManager.NavigateTo(Links.Profile.TestDetail(SubjectType.History, Id));
             return;
         }
 
@@ -130,7 +130,7 @@
     {
         if (_isTestComplete)
         {
-            NavigationManager.NavigateTo(Links.Profile.TestDetail(Subject.History, Id));
+            NavigationManager.NavigateTo(Links.Profile.TestDetail(SubjectType.History, Id));
             return;
         }
 
@@ -144,7 +144,7 @@
         _test = await HistoryClient.GetTestAsync(Id);
 
         if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
-            NavigationManager.NavigateTo(Links.Profile.TestDetail(Subject.History, Id));
+            NavigationManager.NavigateTo(Links.Profile.TestDetail(SubjectType.History, Id));
     }
 
 }

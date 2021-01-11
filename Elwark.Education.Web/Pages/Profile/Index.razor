@@ -27,7 +27,7 @@
             <div class="current-tests mb-6">
                 @foreach (var test in Profile.Data.CurrentTests)
                 {
-                    <CurrentTestCard Test="@test"/>
+                    <ProfileCurrentTestCard Test="@test"/>
                 }
             </div>
         }
@@ -37,9 +37,12 @@
                 @L["Subjects"]
             </MudText>
             <div class="subject-grid mb-6">
-                @foreach (var subscription in Profile.Data.Subscriptions.OrderBy(x => L[x.Subject.ToString()].Value))
+                @foreach (var subscription in Profile.Data.Subjects.OrderBy(x => L[x.SubjectType.ToString()].Value))
                 {
-                    <SubscriptionCard Subscription="subscription" OnBuyClick="@OnBuyClick" OnProlongClick="@OnProlongClick"/>
+                    <ProfileSubscriptionCard 
+                        Subject="@subscription" 
+                        OnBuyClick="@OnBuyClick" 
+                        OnManageClick="@OnManageClick"/>
                 }
             </div>
         </div>
@@ -164,7 +167,7 @@
         }
     }
 
-    private void OnBuyClick(Subject subject)
+    private void OnBuyClick(SubjectType subjectType)
     {
         var options = new DialogOptions
         {
@@ -175,15 +178,15 @@
         };
         var parameters = new DialogParameters
         {
-            ["Subject"] = subject
+            [nameof(SubscriptionModal.SubjectType)] = subjectType
         };
 
         Dialog.Show<SubscriptionModal>(null, parameters, options);
     }
 
-    private void OnProlongClick(Subject subject)
+    private void OnManageClick(SubjectType subjectType)
     {
-        Console.WriteLine($"On prolong click: {subject}");
+        Console.WriteLine($@"On prolong click: {subjectType}");
     }
 
 }

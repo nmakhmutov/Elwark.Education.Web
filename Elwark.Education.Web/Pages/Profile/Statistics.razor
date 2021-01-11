@@ -1,6 +1,7 @@
 @page "/profile/{page}"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.Statistics
+@using Elwark.Education.Web.Pages.Profile.Components
 @layout ProfileLayout
 
 @inject IHistoryClient HistoryClient
@@ -17,22 +18,22 @@
         break;
 
     case ResponseStatus.Success:
-        <ProfileSubjectHeader Subject="@_subject"/>
+        <ProfileSubjectHeader SubjectType="@_subjectType" Selected="@(ProfileSubMenu.Statistics)"/>
 
         <MudText Typo="Typo.h5" Class="mb-2 mt-6">
             @L["Statistics:ByTopics"]
         </MudText>
-        <TopicsStatistics
+        <ProfileTopicStatistics
             Statistics="@_statistics.Data.Topics"
-            LinkBuilder="@(id => Links.Subjects.Topic(_subject, id))"/>
+            LinkBuilder="@(id => Links.Subjects.Topic(_subjectType, id))"/>
 
         <MudText Typo="Typo.h5" Class="mb-2 mt-12">
             @L["Statistics:ByArticles"]
         </MudText>
-        <ArticlesStatistics
+        <ProfileArticleStatistics
             Class="mb-6"
             Statistics="@_statistics.Data.Articles"
-            LinkBuilder="@(id => Links.Subjects.Article(_subject, id))"/>
+            LinkBuilder="@(id => Links.Subjects.Article(_subjectType, id))"/>
         break;
 }
 
@@ -41,15 +42,15 @@
     [Parameter]
     public string Page { get; set; } = string.Empty;
 
-    private Subject _subject;
+    private SubjectType _subjectType;
     private ApiResponse<ContentStatistics> _statistics = ApiResponse<ContentStatistics>.Loading();
 
     protected override async Task OnInitializedAsync()
     {
-        if (Enum.TryParse(Page, true, out _subject))
+        if (Enum.TryParse(Page, true, out _subjectType))
         {
-            _statistics = _subject switch{
-                Subject.History => await HistoryClient.GetMyStatisticsAsync(),
+            _statistics = _subjectType switch{
+                SubjectType.History => await HistoryClient.GetMyStatisticsAsync(),
                 _ => ApiResponse<ContentStatistics>.Fail(Error.NotFound)
                 };
         }

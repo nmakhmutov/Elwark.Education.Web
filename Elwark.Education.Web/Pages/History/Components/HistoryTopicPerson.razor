@@ -1,5 +1,7 @@
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+
 @using Elwark.Education.Web.Gateways.Models.History
-@using Markdown = Markdig.Markdown
 @inject IDialogService Dialog
 @inject IStringLocalizer<App> L
 
@@ -68,7 +70,7 @@
                     <a href="#"
                        class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h4"
                        @onclick:preventDefault="true"
-                       @onclick="@OpenSubscriptionDialog">
+                       @onclick="@OnPremiumClick">
                         @article.Title
                     </a>
                 }
@@ -107,5 +109,6 @@
     [Parameter]
     public BreadcrumbsItem[] Breadcrumbs { get; set; } = Array.Empty<BreadcrumbsItem>();
 
-    private void OpenSubscriptionDialog() => Dialog.Show<SubscriptionModal>(null, new DialogOptions {MaxWidth = MaxWidth.Large});
+    [Parameter]
+    public EventCallback OnPremiumClick { get; set; }
 }

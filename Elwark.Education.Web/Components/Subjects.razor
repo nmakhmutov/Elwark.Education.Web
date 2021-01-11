@@ -3,12 +3,12 @@
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-12">
     <MudGrid Spacing="6" Justify="Justify.Center">
         <Virtualize Items="_subjects" Context="subject">
-            @{ var sbj = subject.Subject.ToString().ToLowerInvariant(); }
+            @{ var sbj = subject.SubjectType.ToString().ToLowerInvariant(); }
             <MudItem xs="12" sm="6" md="4">
                 <div class="card @sbj-card">
                     <a href="@subject.Href" class="content">
                         <div class="icon-container">
-                            <SubjectIcon Subject="@subject.Subject" Size="@Size.Medium"/>
+                            <SubjectIcon SubjectType="@subject.SubjectType" Size="@Size.Medium"/>
                         </div>
                         <div class="pa-6">
                             <MudText Typo="Typo.body2" Class="my-2">@L["Subject"]</MudText>
@@ -36,8 +36,8 @@
         _subjects = new SubjectItem[]
         {
             new(
-                Subject.History,
-                L[$"Subject:{Subject.History}"].Value,
+                SubjectType.History,
+                L[$"Subject:{SubjectType.History}"].Value,
                 Links.History.Index,
                 new Dictionary<string, int>
                 {
@@ -46,8 +46,8 @@
                     [L["Questions"].Value] = 30
                 }),
             new(
-                Subject.Physics,
-                L[$"Subject:{Subject.Physics}"].Value,
+                SubjectType.Physics,
+                L[$"Subject:{SubjectType.Physics}"].Value,
                 Links.Physics.Index,
                 new Dictionary<string, int>
                 {
@@ -56,8 +56,8 @@
                     [L["Questions"].Value] = 30
                 }),
             new(
-                Subject.Astronomy,
-                L[$"Subject:{Subject.Astronomy}"].Value,
+                SubjectType.Astronomy,
+                L[$"Subject:{SubjectType.Astronomy}"].Value,
                 Links.Astronomy.Index,
                 new Dictionary<string, int>
                 {

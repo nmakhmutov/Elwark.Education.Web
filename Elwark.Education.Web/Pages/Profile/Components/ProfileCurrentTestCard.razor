@@ -1,14 +1,17 @@
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+
 @using Elwark.Education.Web.Gateways.Models.User
 @inject IStringLocalizer<App> L
 
 <MudCard>
     <MudCardHeader>
         <CardHeaderAvatar>
-            <SubjectIcon Subject="@Test.Subject" Size="Size.Small"/>
+            <SubjectIcon SubjectType="@Test.SubjectType" Size="Size.Small"/>
         </CardHeaderAvatar>
         <CardHeaderContent>
             <MudText Typo="Typo.body1">
-                @L[Test.Subject.ToString()]
+                @L[Test.SubjectType.ToString()]
             </MudText>
         </CardHeaderContent>
     </MudCardHeader>
@@ -33,10 +36,10 @@
     [Parameter]
     public CurrentTest Test { get; set; } = default!;
 
-    private string Link => Test.Subject switch {
-        Subject.History => Links.History.Test(Test.Id),
-        Subject.Physics => "#",
-        Subject.Astronomy => "#",
+    private string Link => Test.SubjectType switch {
+        SubjectType.History => Links.History.Test(Test.Id),
+        SubjectType.Physics => "#",
+        SubjectType.Astronomy => "#",
         _ => "#"
         };
 
