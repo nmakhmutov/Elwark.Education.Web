@@ -9,6 +9,7 @@
 <MudLayout>
     <MudAppBar Elevation="25">
         <MudIconButton Icon="@Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle"/>
+        <MudText Typo="Typo.h5">Education</MudText>
         <MudAppBarSpacer/>
         <LanguageSelector/>
         <MudTooltip Text="Toggle theme">
@@ -18,7 +19,6 @@
     <MudDrawer @bind-Open="@_drawerOpen" Clipped="false" Elevation="25">
         <a href="@Links.Root" class="drawer-header">
             <img src="http://localhost:3000/static/icons/elwark/white/32x32.png" alt="logo"/>
-            <MudText Typo="Typo.h4">Education</MudText>
         </a>
         <AuthorizeView>
             <Authorized>
