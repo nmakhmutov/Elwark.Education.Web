@@ -7,24 +7,23 @@
 @inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
 
-@switch (_statistics.Status)
-{
-    case ResponseStatus.Loading:
-        <PageLoader/>
-        break;
+@attribute [Authorize]
 
-    case ResponseStatus.Fail:
-        <ErrorPage Error="_statistics.Error"/>
-        break;
-
-    case ResponseStatus.Success:
-        <ProfileSubjectHeader SubjectType="@_subjectType" Selected="@(ProfileSubMenu.Statistics)"/>
-
+<ProfileSubjectHeader SubjectType="@_subjectType" Selected="@(ProfileSubMenu.Statistics)"/>
+<ApiResponseViewer InitLoader="@Loader">
+    <Loading>
+        <MudText Typo="Typo.h5" Class="mb-2 mt-6">
+            @L["Statistics:ByTopics"]
+        </MudText>
+        <CardsSkeleton/>
+    </Loading>
+    <Result Context="statistics">
+        <Title Value="@L["Statistics"]"></Title>
         <MudText Typo="Typo.h5" Class="mb-2 mt-6">
             @L["Statistics:ByTopics"]
         </MudText>
         <ProfileTopicStatistics
-            Statistics="@_statistics.Data.Topics"
+            Statistics="@statistics.Topics"
             LinkBuilder="@(id => Links.Subjects.Topic(_subjectType, id))"/>
 
         <MudText Typo="Typo.h5" Class="mb-2 mt-12">
@@ -32,10 +31,10 @@
         </MudText>
         <ProfileArticleStatistics
             Class="mb-6"
-            Statistics="@_statistics.Data.Articles"
+            Statistics="@statistics.Articles"
             LinkBuilder="@(id => Links.Subjects.Article(_subjectType, id))"/>
-        break;
-}
+    </Result>
+</ApiResponseViewer>
 
 @code {
 
@@ -43,21 +42,14 @@
     public string Page { get; set; } = string.Empty;
 
     private SubjectType _subjectType;
-    private ApiResponse<ContentStatistics> _statistics = ApiResponse<ContentStatistics>.Loading();
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (Enum.TryParse(Page, true, out _subjectType))
-        {
-            _statistics = _subjectType switch{
-                SubjectType.History => await HistoryClient.GetMyStatisticsAsync(),
-                _ => ApiResponse<ContentStatistics>.Fail(Error.NotFound)
-                };
-        }
-        else
-        {
-            _statistics = ApiResponse<ContentStatistics>.Fail(Error.NotFound);
-        }
-    }
+    protected override void OnParametersSet() =>
+        Enum.TryParse(Page, true, out _subjectType);
+
+    private Task<ApiResponse<ContentStatistics>> Loader() =>
+        _subjectType switch{
+            SubjectType.History => HistoryClient.GetMyStatisticsAsync(),
+            _ => Task.FromResult(ApiResponse<ContentStatistics>.Fail(Error.NotFound))
+            };
 
 }

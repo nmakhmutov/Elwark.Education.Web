@@ -8,50 +8,34 @@
 
 @attribute [Authorize]
 
-@switch (_conclusion.Status)
-{
-    case ResponseStatus.Loading:
-        <PageLoader/>
-        break;
-
-    case ResponseStatus.Fail:
-        <ErrorPage Error="_conclusion.Error"/>
-        break;
-
-    case ResponseStatus.Success:
-        <ProfileSubjectHeader SubjectType="@SubjectType.History"/>
-
-        <ProfileTestDetail
-            Class="my-6"
-            Conclusion="@_conclusion.Data"
-            ContentLink="@ContentLink(_conclusion.Data)"/>
-        break;
-}
+<ProfileSubjectHeader SubjectType="@SubjectType.History"/>
+<ApiResponseViewer InitLoader="@Loader">
+    <Loading>
+        <CardsSkeleton Count="1"/>
+    </Loading>
+    <Result Context="data">
+        <ProfileTestDetail Class="my-6" Conclusion="@data" ContentLink="@ContentLink(data)"/>
+    </Result>
+</ApiResponseViewer>
 
 @code {
-    private SubjectType _subjectType;
-    private ApiResponse<TestConclusionDetail> _conclusion = ApiResponse<TestConclusionDetail>.Loading();
-
-    [Parameter]
-    public string Id { get; set; } = string.Empty;
 
     [Parameter]
     public string Page { get; set; } = string.Empty;
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (Enum.TryParse(Page, true, out _subjectType))
-        {
-            _conclusion = _subjectType switch {
-                SubjectType.History => await HistoryClient.GetMyTestConclusionAsync(Id),
-                _ => ApiResponse<TestConclusionDetail>.Fail(Error.NotFound)
-                };
-        }
-        else
-        {
-            _conclusion = ApiResponse<TestConclusionDetail>.Fail(Error.NotFound);
-        }
-    }
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    private SubjectType _subjectType;
+
+    protected override void OnParametersSet() =>
+        Enum.TryParse(Page, true, out _subjectType);
+
+    private Task<ApiResponse<TestConclusionDetail>> Loader() =>
+        _subjectType switch{
+            SubjectType.History => HistoryClient.GetMyTestConclusionAsync(Id),
+            _ => Task.FromResult(ApiResponse<TestConclusionDetail>.Fail(Error.NotFound))
+            };
 
     private string ContentLink(TestConclusionDetail detail) =>
         detail switch {

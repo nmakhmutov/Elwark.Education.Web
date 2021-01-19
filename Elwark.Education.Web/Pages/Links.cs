@@ -89,5 +89,10 @@ namespace Elwark.Education.Web.Pages
                     _ => string.Empty
                 };
         }
+        
+        public static class Shop
+        {
+            public const string Index = "/shop";
+        }
     }
 }

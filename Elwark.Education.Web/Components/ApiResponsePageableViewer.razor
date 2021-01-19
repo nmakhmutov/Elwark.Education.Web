@@ -1,0 +1,63 @@
+@typeparam T
+@inject IStringLocalizer<App> L
+
+@switch (_response.Status)
+{
+    case ResponseStatus.Loading:
+        <Title Value="@L["Loading"]"></Title>
+        @Loading
+        break;
+
+    case ResponseStatus.Fail:
+        <ErrorPage Error="_response.Error"/>
+        break;
+
+    case ResponseStatus.Success:
+        var target = $"target-{Guid.NewGuid()}";
+        <InfinityScroll ObserverTargetId="@target" ObservableTargetReached="@(async () => await LoadMoreAsync())">
+            @Result(_response.Data.Items)
+            <div id="@target" class="d-flex justify-center my-6">
+                @if (_response.Data.Token is not null)
+                {
+                    <MudProgressCircular Indeterminate="true"/>
+                }
+            </div>
+        </InfinityScroll>
+        break;
+}
+
+@code {
+    private ApiResponse<PageableResponse<T>> _response = ApiResponse<PageableResponse<T>>.Loading();
+
+    [Parameter]
+    public Func<Task<ApiResponse<PageableResponse<T>>>> InitLoader { get; set; } = default!;
+
+    [Parameter]
+    public Func<string, Task<ApiResponse<PageableResponse<T>>>> AppendLoader { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment Loading { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<T[]> Result { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _response = await InitLoader();
+    }
+
+    private async Task LoadMoreAsync()
+    {
+        if (_response.Data.Token is null)
+            return;
+
+        var result = await AppendLoader(_response.Data.Token);
+        if (result.Status == ResponseStatus.Fail)
+            _response = result;
+
+        _response = ApiResponse<PageableResponse<T>>.Success(
+            new PageableResponse<T>(_response.Data.Items.Union(result.Data.Items).ToArray(), result.Data.Token)
+            );
+    }
+
+}

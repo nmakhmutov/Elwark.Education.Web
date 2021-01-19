@@ -9,91 +9,47 @@
 
 @attribute [Authorize]
 
-@switch (_tests.Status)
-{
-    case ResponseStatus.Loading:
-        <PageLoader/>
-        break;
-
-    case ResponseStatus.Fail:
-        <ErrorPage Error="_tests.Error"/>
-        break;
-
-    case ResponseStatus.Success:
-        <ProfileSubjectHeader SubjectType="@SubjectType.History" Selected="@(ProfileSubMenu.Tests)"/>
-
+<ProfileSubjectHeader SubjectType="@SubjectType.History" Selected="@(ProfileSubMenu.Tests)"/>
+<ApiResponsePageableViewer
+    InitLoader="@(() => LoaderAsync(new PageableRequest(null, 20)))" 
+    AppendLoader="@(token => LoaderAsync(new PageableRequest(token, 20)))">
+    <Loading>
         <MudText Typo="Typo.h5" Class="mb-2 mt-6">
             @L["CompletedTests"]
         </MudText>
-        <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@(async () => await LoadMoreAsync())">
-            <div class="grid">
-                @foreach (var item in _tests.Data.Items)
-                {
-                    <ProfileTestSummary
-                        Class="my-3"
-                        Conclusion="@item"
-                        DetailLink="@Links.Profile.TestDetail(_subjectType, item.TestId)"/>
-                }
-            </div>
-            <div id="observerTarget" class="d-flex justify-center my-6">
-                @if (_request.Token is not null)
-                {
-                    <MudProgressCircular Indeterminate="true"/>
-                }
-            </div>
-        </InfinityScroll>
-        break;
-}
+        <CardsSkeleton/>
+    </Loading>
+    <Result Context="items">
+        <Title Value="@L["CompletedTests"]"></Title>
+        <MudText Typo="Typo.h5" Class="mb-2 mt-6">
+            @L["CompletedTests"]
+        </MudText>
+        <div class="grid">
+            @foreach (var item in items)
+            {
+                <ProfileTestSummary
+                    Class="my-3"
+                    Conclusion="@item"
+                    DetailLink="@Links.Profile.TestDetail(_subjectType, item.TestId)"/>
+            }
+        </div>
+    </Result>
+</ApiResponsePageableViewer>
 
 @code
 {
-    private ApiResponse<PageableResponse<TestConclusionSummary>> _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Loading();
-    private PageableRequest _request = new(null, 20);
     private SubjectType _subjectType;
 
     [Parameter]
     public string Page { get; set; } = string.Empty;
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (Enum.TryParse(Page, true, out _subjectType))
-        {
-            _tests = await LoadAsync();
+    protected override void OnInitialized() =>
+        Enum.TryParse(Page, true, out _subjectType);
 
-            if (_tests.Status == ResponseStatus.Success)
-                _request = _request with {Token = _tests.Data.Token};
-        }
-        else
-        {
-            _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(Error.NotFound);
-        }
-    }
-
-    private async Task LoadMoreAsync()
-    {
-        if (_request.Token is null)
-            return;
-
-        var response = await LoadAsync();
-        if (response.Status == ResponseStatus.Fail)
-        {
-            _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(response.Error);
-            return;
-        }
-
-        _tests = ApiResponse<PageableResponse<TestConclusionSummary>>.Success(
-            new PageableResponse<TestConclusionSummary>(
-                _tests.Data.Items.Union(response.Data.Items).ToArray(),
-                response.Data.Token
-                )
-            );
-        _request = _request with{Token = response.Data.Token};
-    }
-
-    private Task<ApiResponse<PageableResponse<TestConclusionSummary>>> LoadAsync() =>
+    private Task<ApiResponse<PageableResponse<TestConclusionSummary>>> LoaderAsync(PageableRequest request) =>
         _subjectType switch{
-            SubjectType.History => HistoryClient.GetMyTestConclusionsAsync(_request),
+            SubjectType.History => HistoryClient.GetMyTestConclusionsAsync(request),
             _ => Task.FromResult(ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(Error.NotFound))
             };
-
+    
 }

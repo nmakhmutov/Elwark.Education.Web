@@ -9,16 +9,12 @@
     <div class="profile-header-cover">
         <AuthorizeView>
             <Authorized>
-                @{
-                    var name = context.User.GetName();
-                }
-                <Title Value="@name"></Title>
                 <div class="profile-avatar-container">
                     <MudAvatar Style="width: 100px; height: 100px" Image="@(context.User.GetImage())"/>
                 </div>
                 <div class="profile-header-bottom-bar">
                     <MudText Typo="Typo.h4" GutterBottom="true">
-                        @name
+                        @context.User.GetName()
                     </MudText>
                 </div>
             </Authorized>
@@ -82,7 +78,7 @@
     </div>
 </MudPaper>
 
-<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="min-height: 100%">
     <CascadingValue Value="_profile">
         @Body
     </CascadingValue>
