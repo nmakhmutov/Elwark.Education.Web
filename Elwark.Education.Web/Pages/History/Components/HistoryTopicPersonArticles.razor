@@ -2,46 +2,15 @@
 @namespace Elwark.Education.Web.Components
 
 @using Elwark.Education.Web.Gateways.Models.History
-@inject IDialogService Dialog
 @inject IStringLocalizer<App> L
 
-<div class="header-grid mb-6">
-    <div class="header-title">
-        <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>
-        <MudText Typo="Typo.h2" Class="mb-6">
-            @Topic.Title
-        </MudText>
-        <MudText Typo="Typo.subtitle1" Class="mb-6">
-            @Topic.Description
-        </MudText>
-        @if (Topic.Test is not null)
-        {
-            <TopicTestCard Class="ma-6" Test="@Topic.Test"/>
-        }
-    </div>
-    <div class="header-image" style="background-image: url(@Topic.Image);"></div>
-</div>
-
-<div class="characteristics-grid ma-6">
-
-    @foreach (var (title, value) in Topic.Characteristics)
-    {
-        <div>
-            <MudText Typo="Typo.subtitle1" Color="Color.Inherit">
-                @title
-            </MudText>
-            <MarkdownText Text="@value"/>
-        </div>
-    }
-</div>
-
-@for (var i = 0; i < Topic.Articles.Length; i++)
+@for (var i = 0; i < Articles.Length; i++)
 {
-    var article = Topic.Articles[i];
+    var article = Articles[i];
     <div class="article @(i % 2 == 0 ? "flex-md-row" : "flex-md-row-reverse")">
-        <div class="article-image-container">
-            <div class="article-background @(i % 2 == 0 ? "left" : "right")"></div>
-            <div class="image-container @(i % 2 == 0 ? "left" : "right")">
+        <div class="image-container">
+            <div class="image-background @(i % 2 == 0 ? "left" : "right")"></div>
+            <div class="image-content @(i % 2 == 0 ? "left" : "right")">
                 <div class="article-image">
                     @if (article.Image is not null)
                     {
@@ -50,8 +19,8 @@
                 </div>
             </div>
         </div>
-        <div class="article-content-container @(i % 2 == 0 ? null : "reverse")">
-            <div class="article-text-container">
+        <div class="article-content @(i % 2 == 0 ? null : "reverse")">
+            <div class="text-container">
                 @if (article.Permission.Type == ContentType.Premium)
                 {
                     <MudText Typo="Typo.body2" Color="Color.Warning">
@@ -104,11 +73,9 @@
 @code {
 
     [Parameter]
-    public HistoryPersonTopicDetail Topic { get; set; } = default!;
-
-    [Parameter]
-    public BreadcrumbsItem[] Breadcrumbs { get; set; } = Array.Empty<BreadcrumbsItem>();
+    public HistoryArticleSummary[] Articles { get; set; } = default!;
 
     [Parameter]
     public EventCallback OnPremiumClick { get; set; }
+
 }

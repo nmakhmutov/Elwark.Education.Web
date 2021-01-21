@@ -1,63 +1,22 @@
-.header-grid {
-    display: grid;
-    gap: 24px;
-}
-
-.header-image {
-    min-height: 80vh;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
-
-.header-title {
-    margin: 24px;
-}
-
-.characteristics-grid {
-    display: grid;
-    gap: 24px;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-}
-
-.characteristic-value {
-    font-size: 1.1rem;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    line-height: 1.2;
-}
-
-.characteristic-value ::deep a {
-    font-size: 1rem;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-weight: 400;
-    line-height: 1.5;
-    letter-spacing: .00938em;
-    color: var(--mud-palette-primary);
-}
-
-.characteristic-value ::deep a:hover {
-    text-decoration: underline;
-}
-
 .article {
     display: flex;
     flex-direction: column;
     margin-bottom: 48px;
 }
 
-.article-image-container {
+.image-container {
     flex: 1 0 50%;
     position: relative;
 }
 
-.article-content-container {
+.article-content {
     flex: 1 0 50%;
     margin-top: 24px;
     display: flex;
     align-items: center;
 }
 
-.image-container {
+.image-content {
     position: relative;
     z-index: 1;
     display: flex;
@@ -73,7 +32,7 @@
     margin-bottom: -24px;
 }
 
-.article-background {
+.image-background {
     height: 100%;
     width: 30%;
     background-color: var(--mud-palette-secondary);
@@ -82,7 +41,7 @@
     z-index: 1;
 }
 
-.article-text-container {
+.text-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -96,7 +55,7 @@
         margin-top: 60px;
     }
 
-    .image-container {
+    .image-content {
         align-items: flex-end;
     }
 
@@ -106,49 +65,36 @@
 }
 
 @media (min-width: 960px) {
-    .header-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .header-title {
-        margin: 72px 0 0 24px;
-    }
-
-    .header-image {
-        background-position: top right;
-        background-size: contain;
-    }
-
     .article-image {
         max-width: 40vw;
         margin-top: 48px;
     }
 
-    .image-container.right {
+    .image-content.right {
         justify-content: flex-start;
     }
 
-    .image-container.left {
+    .image-content.left {
         justify-content: flex-end;
     }
 
-    .article-background {
+    .image-background {
         width: 80%;
     }
 
-    .article-background.right {
+    .image-background.right {
         right: 0;
     }
 
-    .article-background.left {
+    .image-background.left {
         left: 0;
     }
 
-    .article-text-container {
+    .text-container {
         max-width: 35vw;
     }
 
-    .article-content-container.reverse {
+    .article-content.reverse {
         justify-content: flex-end;
     }
 }

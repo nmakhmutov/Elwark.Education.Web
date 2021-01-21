@@ -9,7 +9,11 @@
         <MudText Typo="Typo.h2" Class="mb-6">
             @Topic.Title
         </MudText>
-        <HistoryDate Range="@Topic.Dates"/>
+        @if (Topic.Started is not null || Topic.Ended is not null)
+        {
+            <HistoryDate Date="@Topic.Started"/>   
+            <HistoryDate Date="@Topic.Ended"/>
+        }
     </div>
     <div class="title-right">
         <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>

@@ -25,7 +25,8 @@
                 break;
 
             case HistoryPersonTopicDetail x:
-                <HistoryTopicPerson Topic="@x" Breadcrumbs="@_breadcrumbs" OnPremiumClick="@OnPremiumClick"/>
+                <HistoryTopicPersonHeader Topic="@x" Breadcrumbs="@_breadcrumbs" Class="mb-12"/>
+                <HistoryTopicPersonArticles Articles="@x.Articles" OnPremiumClick="@OnPremiumClick"/>
                 break;
         }
         break;
@@ -50,7 +51,7 @@
                 new(_topic.Data.Period.Title, Links.History.Period(_topic.Data.Period.Type))
             };
     }
-    
+
     private void OnPremiumClick()
     {
         var options = new DialogOptions

@@ -1,0 +1,73 @@
+@using Elwark.Education.Web.Gateways.Models.History
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+@inject IStringLocalizer<App> L
+
+<div class="container @Class">
+    <div class="image-container">
+        <img src="@Topic.Image" class="header-image" alt="@Topic.Title"/>
+        <div class="born">
+            @if (Topic.Born is not null)
+            {
+                <MudText Typo="Typo.body2" Color="Color.Surface">
+                    @L["History:Born"]
+                </MudText>
+                <HistoryDate Date="@Topic.Born" Typo="Typo.h4" Color="Color.Secondary" Class="mb-2"/>
+                <MudText Typo="Typo.body1">
+                    @Topic.Born.Place
+                </MudText>
+            }
+        </div>
+        <div class="died">
+            @if (Topic.Died is not null)
+            {
+                <MudText Typo="Typo.body2" Color="Color.Surface">
+                    @L["History:Died"]
+                </MudText>
+                <HistoryDate Date="@Topic.Died" Typo="Typo.h4" Color="Color.Secondary" Class="mb-2"/>
+                <MudText Typo="Typo.body1">
+                    @Topic.Died.Place
+                </MudText>
+            }
+        </div>
+    </div>
+    <div class="text-container">
+        <MudText Typo="Typo.h2" Class="mb-6">
+            @Topic.Title
+        </MudText>
+        <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>
+        <div class="description">
+            <MudText Typo="Typo.subtitle1" Class="mb-6">
+                @Topic.Description
+            </MudText>
+            @if (Topic.Test is not null)
+            {
+                <TopicTestCard Class="ma-6" Test="@Topic.Test"/>
+            }
+        </div>
+        <div class="characteristics">
+            @foreach (var (title, value) in Topic.Characteristics)
+            {
+                <MudPaper Class="d-flex flex-column justify-space-between pa-3">
+                    <MarkdownText Text="@value"/>
+                    <MudText Typo="Typo.subtitle1">
+                        <strong>@title</strong>
+                    </MudText>
+                </MudPaper>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public HistoryPersonTopicDetail Topic { get; set; } = default!;
+
+    [Parameter]
+    public BreadcrumbsItem[] Breadcrumbs { get; set; } = Array.Empty<BreadcrumbsItem>();
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

@@ -7,13 +7,13 @@ namespace Elwark.Education.Web.Infrastructure.Converters
 {
     internal class HistoryTopicDetailJsonConverter : JsonConverter<HistoryTopicDetail?>
     {
-        private const string Tags = nameof(HistoryPersonTopicDetail.Characteristics);
+        private const string Type = "type";
 
         public override void WriteJson(JsonWriter writer, HistoryTopicDetail? value, JsonSerializer serializer) =>
             serializer.Serialize(writer, value);
 
-        public override HistoryTopicDetail? ReadJson(JsonReader reader, Type objectType, HistoryTopicDetail? existingValue,
-            bool hasExistingValue, JsonSerializer serializer)
+        public override HistoryTopicDetail? ReadJson(JsonReader reader, Type objectType,
+            HistoryTopicDetail? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
                 return null;
@@ -22,10 +22,12 @@ namespace Elwark.Education.Web.Infrastructure.Converters
             if (jObject.Type == JTokenType.Null)
                 return null;
 
-            if (jObject.TryGetValue(Tags, StringComparison.InvariantCultureIgnoreCase, out _))
-                return jObject.ToObject<HistoryPersonTopicDetail>();
-            
-            return jObject.ToObject<HistoryEventTopicDetail>();
+            return jObject.Value<string>(Type) switch
+            {
+                "Person" => jObject.ToObject<HistoryPersonTopicDetail>(),
+                "Event" => jObject.ToObject<HistoryEventTopicDetail>(),
+                _ => throw new ArgumentOutOfRangeException(nameof(HistoryTopicDetail), "Unknown topic detail type")
+            };
         }
     }
 }
