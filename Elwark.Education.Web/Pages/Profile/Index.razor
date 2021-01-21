@@ -10,7 +10,7 @@
 @switch (Profile.Status)
 {
     case ResponseStatus.Loading:
-        <PageLoader/>
+        <CardsSkeleton/>
         break;
 
     case ResponseStatus.Fail:
@@ -39,95 +39,11 @@
             <div class="subject-grid mb-6">
                 @foreach (var subscription in Profile.Data.Subjects.OrderBy(x => L[x.SubjectType.ToString()].Value))
                 {
-                    <ProfileSubscriptionCard 
+                    <ProfileSubscriptionCard
                         Subject="@subscription"
                         OnBuyClick="@OnBuyClick"
                         OnManageClick="@OnManageClick"/>
                 }
-            </div>
-        </div>
-
-        <div class="statistics-container">
-            <MudText Typo="Typo.h5" Class="mb-2">
-                @L["Statistics"]
-            </MudText>
-            <div class="statistics mb-6">
-                <MudPaper Class="pa-6">
-                    <MudText Typo="Typo.h6" Class="mb-3">
-                        @L["Tests"]
-                    </MudText>
-                    @if (_progressTests.Length > 0)
-                    {
-                        <MudChart
-                            ChartType="ChartType.Donut"
-                            InputLabels="@_progressLabels"
-                            InputData="@_progressTests"
-                            LegendPosition="LegendPosition.Bottom"/>
-                    }
-                    else
-                    {
-                        <MudText Typo="Typo.caption">
-                            @L["NoDataYet"]
-                        </MudText>
-                    }
-                </MudPaper>
-                <MudPaper Class="pa-6">
-                    <MudText Typo="Typo.h6" Class="mb-3">
-                        @L["Score"]
-                    </MudText>
-                    @if (_progressScore.Length > 0)
-                    {
-                        <MudChart
-                            ChartType="ChartType.Donut"
-                            InputLabels="@_progressLabels"
-                            InputData="@_progressScore"
-                            LegendPosition="LegendPosition.Bottom"/>
-                    }
-                    else
-                    {
-                        <MudText Typo="Typo.caption">
-                            @L["NoDataYet"]
-                        </MudText>
-                    }
-                </MudPaper>
-                <MudPaper Class="pa-6">
-                    <MudText Typo="Typo.h6" Class="mb-3">
-                        @L["TimeSpent"]
-                    </MudText>
-                    @if (_progressScore.Length > 0)
-                    {
-                        <MudChart
-                            ChartType="ChartType.Donut"
-                            InputLabels="@_progressLabels"
-                            InputData="@_progressTimeElapsed"
-                            LegendPosition="LegendPosition.Bottom"/>
-                    }
-                    else
-                    {
-                        <MudText Typo="Typo.caption">
-                            @L["NoDataYet"]
-                        </MudText>
-                    }
-                </MudPaper>
-                <MudPaper Class="pa-6">
-                    <MudText Typo="Typo.h6" Class="mb-3">
-                        @L["Answers"]
-                    </MudText>
-                    @if (_progressScore.Length > 0)
-                    {
-                        <MudChart
-                            ChartType="ChartType.Donut"
-                            InputLabels="@_progressLabels"
-                            InputData="@_progressAnswers"
-                            LegendPosition="LegendPosition.Bottom"/>
-                    }
-                    else
-                    {
-                        <MudText Typo="Typo.caption">
-                            @L["NoDataYet"]
-                        </MudText>
-                    }
-                </MudPaper>
             </div>
         </div>
     }
@@ -138,34 +54,6 @@
 
     [CascadingParameter]
     public ApiResponse<Profile> Profile { get; set; } = ApiResponse<Profile>.Loading();
-
-    string[] _progressLabels = Array.Empty<string>();
-    double[] _progressTests = Array.Empty<double>();
-    double[] _progressScore = Array.Empty<double>();
-    double[] _progressTimeElapsed = Array.Empty<double>();
-    double[] _progressAnswers = Array.Empty<double>();
-
-    protected override void OnParametersSet()
-    {
-        if (Profile.Status != ResponseStatus.Success)
-            return;
-
-        _progressLabels = new string[Profile.Data.Statistics.Subjects.Length];
-        _progressTests = new double[Profile.Data.Statistics.Subjects.Length];
-        _progressScore = new double[Profile.Data.Statistics.Subjects.Length];
-        _progressTimeElapsed = new double[Profile.Data.Statistics.Subjects.Length];
-        _progressAnswers = new double[Profile.Data.Statistics.Subjects.Length];
-
-        for (var i = 0; i < Profile.Data.Statistics.Subjects.Length; i++)
-        {
-            var (subject, tests, timeSpent, score, answers) = Profile.Data.Statistics.Subjects[i];
-            _progressLabels[i] = L[subject.ToString()].Value;
-            _progressTests[i] = tests.Total;
-            _progressScore[i] = score.Total;
-            _progressTimeElapsed[i] = timeSpent.TotalSeconds;
-            _progressAnswers[i] = answers.Answered;
-        }
-    }
 
     private void OnBuyClick(SubjectType subjectType)
     {

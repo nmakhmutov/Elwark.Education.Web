@@ -1,71 +1,60 @@
-.profile-header {
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url("https://source.unsplash.com/600x200/daily?nature,water,space,mountain,forest");
+.header {
+    margin-bottom: 48px;
+    box-shadow: var(--mud-elevation-1);
 }
 
-.profile-header-cover {
-    width: 100%;
-    height: 150px;
+.image {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    position: relative;
-    padding: 24px 24px 0;
-    background: linear-gradient(15deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.4) 40%, rgba(255, 255, 255, 0) 100%);
-    color: var(--mud-palette-white);
+    height: 250px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url("https://source.unsplash.com/600x250/daily?nature,water,space,mountain,forest");
 }
 
-.profile-avatar-container {
-    position: absolute;
-    bottom: -36px;
+/*.image-cover {*/
+/*    width: 100%;*/
+/*    background: linear-gradient(15deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.4) 40%, rgba(255, 255, 255, 0) 100%);*/
+/*    color: var(--mud-palette-white);*/
+/*}*/
+
+.content {
+    background-color: var(--mud-palette-surface);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-items: center;
 }
 
-.profile-header-bottom-bar {
-    margin-left: 124px;
+.content > div {
+    margin: 12px 24px;
 }
 
-.profile-menu {
-    padding: 48px 0 8px 0;
-    min-height: 45px;
-    display: grid;
-    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    gap: 8px;
+.content-item {
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
-.profile-menu > ::deep:nth-child(even) {
-    display: none;
-}
-
-.profile-menu-item {
+.avatar-container {
     display: flex;
-    flex-direction: column;
-    text-align: center;
+    flex-direction: row;
+    align-items: center;
+    justify-self: flex-start;
 }
 
 @media (min-width: 600px) {
-    .profile-header {
-        background-image: url("https://source.unsplash.com/960x200/daily?nature,water,space,mountain,forest");
-    }
-
-    .profile-menu {
-        padding: 8px 0 8px 124px;
-        min-height: 45px;
-        display: flex;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .profile-menu > ::deep:nth-child(even) {
-        display: inherit;
+    .image {
+        background-image: url("https://source.unsplash.com/960x250/daily?nature,water,space,mountain,forest");
     }
 }
 
 @media (min-width: 960px) {
-    .profile-header {
-        background-image: url("https://source.unsplash.com/1280x300/daily?nature,water,space,mountain,forest");
+    .image {
+        background-image: url("https://source.unsplash.com/1280x250/daily?nature,water,space,mountain,forest");
     }
 
     .profile-header-cover {
@@ -74,31 +63,21 @@
 }
 
 @media (min-width: 1280px) {
-    .profile-header {
-        background-image: url("https://source.unsplash.com/1920x300/daily?nature,water,space,mountain,forest");
-    }
-
-    .profile-header-cover {
-        height: 250px;
+    .image {
+        background-image: url("https://source.unsplash.com/1920x250/daily?nature,water,space,mountain,forest");
     }
 }
 
 @media (min-width: 1920px) {
-    .profile-header {
-        background-image: url("https://source.unsplash.com/2560x350/daily?nature,water,space,mountain,forest");
-    }
-
-    .profile-header-cover {
+    .image {
         height: 300px;
+        background-image: url("https://source.unsplash.com/2560x300/daily?nature,water,space,mountain,forest");
     }
 }
 
 @media (min-width: 2560px) {
-    .profile-header {
-        background-image: url("https://source.unsplash.com/3840x350/daily?nature,water,space,mountain,forest");
-    }
-
-    .profile-header-cover {
+    .image {
         height: 350px;
+        background-image: url("https://source.unsplash.com/3840x350/daily?nature,water,space,mountain,forest");
     }
 }

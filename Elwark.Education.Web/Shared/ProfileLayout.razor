@@ -5,69 +5,58 @@
 @inject IUserClient UserClient
 @inject IStringLocalizer<App> L
 
-<div class="profile-header">
-    <div class="profile-header-cover">
-        <AuthorizeView>
-            <Authorized>
-                <div class="profile-avatar-container">
-                    <MudAvatar Style="width: 100px; height: 100px" Image="@(context.User.GetImage())"/>
-                </div>
-                <div class="profile-header-bottom-bar">
-                    <MudText Typo="Typo.h4" GutterBottom="true">
+<div class="header">
+    <div class="image">
+    </div>
+    <div class="content">
+        <div class="avatar-container">
+            <AuthorizeView>
+                <Authorized>
+                    <MudAvatar Size="Size.Large" Class="mr-6" Image="@(context.User.GetImage())"/>
+                    <MudText Typo="Typo.h5" GutterBottom="true" Class="mb-0">
                         @context.User.GetName()
                     </MudText>
-                </div>
-            </Authorized>
-        </AuthorizeView>
-    </div>
-</div>
-
-<MudPaper Square="true" Elevation="0" Class="px-6 mb-6">
-    <div class="profile-menu">
+                </Authorized>
+            </AuthorizeView>
+        </div>
         @if (_profile.Status == ResponseStatus.Loading)
         {
-            @for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
-                <div class="profile-menu-item">
-                    <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Width="30px" Height="30px"/>
+                <div class="content-item">
+                    <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Width="20px" Height="20px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Animation="Animation.Wave" Width="60px" Height="12px" Class="mt-2"/>
                 </div>
-                <MudDivider Vertical="true" FlexItem="true" Class="mx-3"/>
             }
-            <div class="profile-menu-item">
-                <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Width="30px" Height="30px"/>
-            </div>
         }
         else if (_profile.Status == ResponseStatus.Success)
         {
-            <div class="profile-menu-item">
-                <MudText Typo="Typo.subtitle2">
+            <div class="content-item">
+                <MudText Typo="Typo.h6">
                     @_profile.Data.Statistics.Summary.CompletedTests.Total.ToReadable()
                 </MudText>
                 <MudText Typo="Typo.body2">
                     @L["CompletedTests"]
                 </MudText>
             </div>
-            <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
-            <div class="profile-menu-item">
-                <MudText Typo="Typo.subtitle2">
+            <div class="content-item">
+                <MudText Typo="Typo.h6">
                     @_profile.Data.Statistics.Summary.Score.Total.ToReadable()
                 </MudText>
                 <MudText Typo="Typo.body2">
                     @L["Score"]
                 </MudText>
             </div>
-            <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
-            <div class="profile-menu-item">
-                <MudText Typo="Typo.subtitle2">
+            <div class="content-item">
+                <MudText Typo="Typo.h6">
                     @_profile.Data.Statistics.Summary.TimeSpent.ToSimpleFormat()
                 </MudText>
                 <MudText Typo="Typo.body2">
                     @L["TimeSpent"]
                 </MudText>
             </div>
-            <MudDivider Vertical="true" FlexItem="true" Class="mx-6"/>
-            <div class="profile-menu-item">
-                <MudText Typo="Typo.subtitle2">
+            <div class="content-item">
+                <MudText Typo="Typo.h6">
                     @_profile.Data.Statistics.Summary.AnswerRatio.Questions.ToReadable()
                 </MudText>
                 <MudText Typo="Typo.body2">
@@ -76,7 +65,7 @@
             </div>
         }
     </div>
-</MudPaper>
+</div>
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="min-height: 100%">
     <CascadingValue Value="_profile">
