@@ -1,0 +1,49 @@
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+
+@using Elwark.Education.Web.Gateways.Models.History
+@inject IStringLocalizer<App> L
+
+<div class="title">
+    <div>
+        <MudText Typo="Typo.h2" Class="mb-6">
+            @Topic.Title
+        </MudText>
+        @if (Topic.Started == Topic.Ended && Topic.Started is not null)
+        {
+            <HistoryDate Date="@Topic.Started"/>
+        }
+        else if (Topic.Started != Topic.Ended && Topic.Started is not null)
+        {
+            <div class="d-flex flex-row flex-wrap">
+                <HistoryDate Date="@Topic.Started"/>
+                <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
+                <HistoryDate Date="@Topic.Ended"/>
+            </div>
+        }
+    </div>
+    <div>
+        <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>
+        <MudText Typo="Typo.subtitle1" Class="mb-6">
+            @Topic.Description
+        </MudText>
+        @if (Topic.Test is not null)
+        {
+            <TopicTestCard Test="@Topic.Test"/>
+        }
+    </div>
+</div>
+
+<div class="image">
+    <img src="@Topic.Image" alt="@Topic.Title"/>
+</div>
+
+@code {
+
+    [Parameter]
+    public HistoryEventTopicDetail Topic { get; set; } = default!;
+
+    [Parameter]
+    public BreadcrumbsItem[] Breadcrumbs { get; set; } = Array.Empty<BreadcrumbsItem>();
+
+}

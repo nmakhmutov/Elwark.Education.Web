@@ -21,7 +21,8 @@
         @switch (_topic.Data)
         {
             case HistoryEventTopicDetail x:
-                <HistoryTopicEvent Topic="@x" Breadcrumbs="@_breadcrumbs" OnPremiumClick="@OnPremiumClick"/>
+                <HistoryTopicEventHeader Topic="@x" Breadcrumbs="@_breadcrumbs"/>
+                <HistoryTopicEventArticles Articles="@x.Articles" OnPremiumClick="@OnPremiumClick"/>
                 break;
 
             case HistoryPersonTopicDetail x:
