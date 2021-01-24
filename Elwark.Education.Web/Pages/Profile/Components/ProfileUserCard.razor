@@ -1,0 +1,59 @@
+@using Elwark.Education.Web.Gateways.Models.Statistics
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+@inject IStringLocalizer<App> L
+
+<MudPaper>
+    <div class="background"></div>
+    <div class="profile mb-6">
+        <AuthorizeView>
+            <Authorized>
+                <MudAvatar Image="@(context.User.GetImage())" Style="width: 120px; height: 120px"/>
+                <MudText Typo="Typo.h6" GutterBottom="true">
+                    @context.User.GetName()
+                </MudText>
+            </Authorized>
+        </AuthorizeView>
+    </div>
+    <div class="statistics">
+        <div class="item">
+            <MudText Typo="Typo.body2">
+                @L["CompletedTests"]
+            </MudText>
+            <MudText Typo="Typo.h5">
+                @Statistics.CompletedTests.Total.ToReadable()
+            </MudText>
+        </div>
+        <div class="item">
+            <MudText Typo="Typo.body2">
+                @L["TimeSpent"]
+            </MudText>
+            <MudText Typo="Typo.h5">
+                @Statistics.TimeSpent.ToSimpleFormat()
+            </MudText>
+        </div>
+        <div class="item">
+            <MudText Typo="Typo.body2">
+                @L["Score"]
+            </MudText>
+            <MudText Typo="Typo.h5">
+                @Statistics.Score.Total.ToReadable()
+            </MudText>
+        </div>
+        <div class="item">
+            <MudText Typo="Typo.body2">
+                @L["Questions"]
+            </MudText>
+            <MudText Typo="Typo.h5">
+                @Statistics.AnswerRatio.Questions.ToReadable()
+            </MudText>
+        </div>
+    </div>
+</MudPaper>
+
+@code {
+
+    [Parameter]
+    public StatisticsSummary Statistics { get; set; } = default!;
+
+}

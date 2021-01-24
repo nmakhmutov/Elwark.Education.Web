@@ -1,43 +1,54 @@
+@layout MainLayout
 @page "/profile"
 @using Elwark.Education.Web.Gateways.User
-@using Elwark.Education.Web.Gateways.Models.User
-@layout ProfileLayout
 @inject IUserClient UserClient
 @inject IDialogService Dialog
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
 
-@switch (Profile.Status)
-{
-    case ResponseStatus.Loading:
-        <CardsSkeleton/>
-        break;
-
-    case ResponseStatus.Fail:
-        <ErrorPage Error="@Profile.Error"/>
-        break;
-
-    case ResponseStatus.Success:
-    {
-        @if (Profile.Data.CurrentTests.Length > 0)
-        {
-            <MudText Typo="Typo.h5" Class="mb-2">
-                @L["CurrentTests"]
-            </MudText>
-            <div class="current-tests mb-6">
-                @foreach (var test in Profile.Data.CurrentTests)
+<div class="ma-6">
+    <ApiResponseViewer InitLoader="@(() => UserClient.GetProfileAsync())">
+        <Loading>
+            <CardsSkeleton/>
+        </Loading>
+        <Result Context="profile">
+            <div class="subjects">
+                <ProfileUserCard Statistics="@profile.Statistics.Summary"/>
+                @if (profile.CurrentTests.Length > 0)
                 {
-                    <ProfileCurrentTestCard Test="@test"/>
+                    <MudPaper Class="pa-3">
+                        <MudText Typo="Typo.h5" Class="mb-3">
+                            @L["CurrentTests"]
+                        </MudText>
+                        @foreach (var test in profile.CurrentTests)
+                        {
+                            <div class="mb-6">
+                                <div class="d-flex flex-row align-center">
+                                    <SubjectIcon SubjectType="@test.SubjectType" Size="Size.Medium"/>
+                                    <div class="ml-3">
+                                        <MudLink Typo="Typo.h6" Href="@Links.Subjects.Test(test.SubjectType, test.Id)">
+                                            @test.Title
+                                        </MudLink>
+                                        <MudText Typo="Typo.body2">
+                                            @L[$"Subject:{test.SubjectType}"]
+                                        </MudText>
+                                    </div>
+                                </div>
+                                <MudDivider DividerType="DividerType.FullWidth" Class="my-2"/>
+                                <div class="d-flex flex-row align-center">
+                                    <MudIcon Icon="@Filled.Timer" Size="Size.Small"/>
+                                    <MudText Typo="Typo.body2" Class="ml-1">
+                                        @L["Deadline"]
+                                    </MudText>
+                                    <MudText Typo="Typo.body2" Class="ml-3">
+                                        @test.ExpiredAt.ToSimpleFormat()
+                                    </MudText>
+                                </div>
+                            </div>
+                        }
+                    </MudPaper>
                 }
-            </div>
-        }
-
-        <div class="subject-container">
-            <MudText Typo="Typo.h5" Class="mb-2">
-                @L["Subjects"]
-            </MudText>
-            <div class="subject-grid mb-6">
-                @foreach (var subscription in Profile.Data.Subjects.OrderBy(x => L[x.SubjectType.ToString()].Value))
+                @foreach (var subscription in profile.Subjects.OrderBy(x => L[x.SubjectType.ToString()].Value))
                 {
                     <ProfileSubscriptionCard
                         Subject="@subscription"
@@ -45,15 +56,11 @@
                         OnManageClick="@OnManageClick"/>
                 }
             </div>
-        </div>
-    }
-        break;
-}
+        </Result>
+    </ApiResponseViewer>
+</div>
 
 @code {
-
-    [CascadingParameter]
-    public ApiResponse<Profile> Profile { get; set; } = ApiResponse<Profile>.Loading();
 
     private void OnBuyClick(SubjectType subjectType)
     {
