@@ -1,21 +1,46 @@
 ﻿@using Elwark.Education.Web.Gateways.Models.History
-@inject UrlsOptions Options;
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 @inject IStringLocalizer<App> L
 
 <MudNavMenu Class="navmenu">
     <AuthorizeView>
+
+        <NotAuthorized>
+            <div class="appbar-band">
+                <div class="d-flex flex-row justify-center my-7">
+                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@OnLogin">
+                        @L["SignIn"]
+                    </MudButton>
+                </div>
+            </div>
+        </NotAuthorized>
+
+        <Authorizing>
+            <div class="appbar-band">
+                <div class="my-1">
+                    <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Class="mt-1"/>
+                </div>
+            </div>
+        </Authorizing>
+
         <Authorized>
+            <div class="appbar-band">
+                <MudAvatar Image="@(context.User.GetImage())" Size="Size.Large"/>
+                <MudText Typo="Typo.subtitle1" Class="mt-1">
+                    @context.User.GetName()
+                </MudText>
+            </div>
+
             <MudNavLink Icon="@Filled.DonutLarge" Href="@Links.Profile.Index">
                 @L["Profile"]
             </MudNavLink>
-            <MudNavLink Icon="@Filled.Person" Href="@(Options.Account.ToString())">
-                @L["ElwarkAccount"]
-            </MudNavLink>
-            <MudDivider DividerType="DividerType.Middle" Class="ma-3"/>
         </Authorized>
+
     </AuthorizeView>
+
+    <MudDivider DividerType="DividerType.Middle" Class="my-3"/>
 
     <MudNavGroup
         Title="@L["Subject:History"]"
@@ -42,7 +67,6 @@
 
 @code {
     private SubjectType _subjectType;
-
     private Dictionary<string, string> _historyPages = new();
 
     protected override void OnInitialized()
@@ -59,6 +83,11 @@
     {
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo("authentication/logout");
+    }
+
+    private void OnLogin()
+    {
+        Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
     }
 
 }

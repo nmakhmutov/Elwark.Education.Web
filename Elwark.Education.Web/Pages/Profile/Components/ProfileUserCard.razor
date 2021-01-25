@@ -1,6 +1,7 @@
 @using Elwark.Education.Web.Gateways.Models.Statistics
 @* ReSharper disable once CheckNamespace *@
 @namespace Elwark.Education.Web.Components
+@inject UrlsOptions Options;
 @inject IStringLocalizer<App> L
 
 <MudPaper>
@@ -12,6 +13,14 @@
                 <MudText Typo="Typo.h6" GutterBottom="true">
                     @context.User.GetName()
                 </MudText>
+                <MudButton
+                    StartIcon="@Filled.Person"
+                    Color="Color.Primary"
+                    Variant="Variant.Text"
+                    Link="@Options.Account.ToString()"
+                    Target="_blank">
+                    @L["ElwarkAccount"]
+                </MudButton>
             </Authorized>
         </AuthorizeView>
     </div>

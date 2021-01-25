@@ -31,14 +31,20 @@
 
     private string ToString(HistoricalDate date)
     {
-        var day = date.Day;
+        if (date.Month is not null && date.Day is not null)
+        {
+            return date.Year < 0
+                ? $"{new DateTime(-date.Year, date.Month.Value, date.Day.Value).ToShortDateString()} {L["HistoricalDate:Bc"]}"
+                : $"{new DateTime(date.Year, date.Month.Value, date.Day.Value).ToShortDateString()}";
+        }
+
         var month = date.Month.HasValue
             ? CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(date.Month.Value)
             : null;
 
         return date.Year < 0
-            ? $"{day} {month} {-date.Year} {L["HistoricalDate:Bc"]}"
-            : $"{day} {month} {date.Year}";
+            ? $"{date.Day} {month} {-date.Year} {L["HistoricalDate:Bc"]}"
+            : $"{date.Day} {month} {date.Year}";
     }
 
 }

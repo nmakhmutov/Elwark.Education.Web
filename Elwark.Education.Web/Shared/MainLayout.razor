@@ -18,24 +18,8 @@
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" Clipped="false" Elevation="25">
         <a href="@Links.Root" class="drawer-header">
-            <img src="Elwark.png" alt="logo"/>
+            <img src="Elwark.png" alt="logo" style="width: 150px"/>
         </a>
-        <AuthorizeView>
-            <Authorized>
-                <div class="appbar-band">
-                    <MudAvatar Image="@(context.User.GetImage())" Size="Size.Large"/>
-                    <MudText Typo="Typo.subtitle1" Class="mt-1">
-                        @context.User.GetName()
-                    </MudText>
-                </div>
-            </Authorized>
-
-            <Authorizing>
-                <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px" Style="margin: 10px auto"/>
-                <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
-            </Authorizing>
-
-        </AuthorizeView>
         <NavMenu/>
     </MudDrawer>
     <MudMainContent Class="main-content">
