@@ -7,15 +7,18 @@
 
 .image-container {
     display: grid;
-    gap: 24px;
     grid-template-columns: 1fr 1fr;
-    justify-items: center;
 }
 
 .image-container img {
     max-width: 100%;
     max-height: 70vh;
     grid-column: 1/-1;
+}
+
+.born,
+.died {
+    padding: 12px;
 }
 
 .text-container {
@@ -32,6 +35,11 @@
 }
 
 @media (min-width: 600px) {
+    .born,
+    .died {
+        padding: 24px;
+    }
+
     .characteristics {
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     }
@@ -39,8 +47,8 @@
 
 @media (min-width: 960px) {
     .container {
-        
-        
+
+
         grid-template-columns: 1fr 1fr;
         align-items: flex-start;
     }
@@ -52,7 +60,7 @@
     .text-container {
         margin: 24px 24px 0 0;
     }
-    
+
     .characteristics {
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }

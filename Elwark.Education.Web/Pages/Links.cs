@@ -1,4 +1,3 @@
-using System;
 using Elwark.Education.Web.Gateways.Models.History;
 using Elwark.Education.Web.Model;
 

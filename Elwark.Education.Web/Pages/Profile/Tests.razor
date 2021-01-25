@@ -2,54 +2,61 @@
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.TestConclusion
 @using Elwark.Education.Web.Pages.Profile.Components
-@layout ProfileLayout
 
 @inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
 
 @attribute [Authorize]
 
-<ProfileSubjectHeader SubjectType="@SubjectType.History" Selected="@(ProfileSubMenu.Tests)"/>
-<ApiResponsePageableViewer
-    InitLoader="@(() => LoaderAsync(new PageableRequest(null, 20)))" 
-    AppendLoader="@(token => LoaderAsync(new PageableRequest(token, 20)))">
-    <Loading>
-        <MudText Typo="Typo.h5" Class="mb-2 mt-6">
-            @L["CompletedTests"]
-        </MudText>
-        <CardsSkeleton/>
-    </Loading>
-    <Result Context="items">
-        <Title Value="@L["CompletedTests"]"></Title>
-        <MudText Typo="Typo.h5" Class="mb-2 mt-6">
-            @L["CompletedTests"]
-        </MudText>
-        <div class="grid">
-            @foreach (var item in items)
-            {
-                <ProfileTestSummary
-                    Class="my-3"
-                    Conclusion="@item"
-                    DetailLink="@Links.Profile.TestDetail(_subjectType, item.TestId)"/>
-            }
-        </div>
-    </Result>
-</ApiResponsePageableViewer>
+<ProfileSubjectHeader SubjectType="@_type" Selected="@(ProfileSubMenu.Tests)"/>
+<div class="ma-6">
+    <ApiResponsePageableViewer
+        InitLoader="@(() => LoaderAsync(new PageableRequest(null, 20)))"
+        AppendLoader="@(token => LoaderAsync(new PageableRequest(token, 20)))">
+        <Loading>
+            <CardsSkeleton/>
+        </Loading>
+        <Result Context="items">
+            <Title Value="@L["CompletedTests"]"></Title>
+            <div class="grid">
+                @{
+                    var date = DateTime.MinValue;
+                }
+                @foreach (var item in items)
+                {
+                    if (date.Date != item.CreatedAt.Date)
+                    {
+                        date = item.CreatedAt;
+                        <div class="date-divider">
+                            <div class="divider-text">
+                                <MudText Typo="Typo.h4">
+                                    @item.CreatedAt.ToShortDateString()
+                                </MudText>
+                                <div class="divider-line"></div>
+                            </div>
+                        </div>
+                    }
+                    <ProfileTestSummary Conclusion="@item" DetailLink="@Links.Profile.TestDetail(_type, item.TestId)"/>
+                }
+            </div>
+        </Result>
+    </ApiResponsePageableViewer>
+</div>
 
 @code
 {
-    private SubjectType _subjectType;
+    private SubjectType _type;
 
     [Parameter]
     public string Page { get; set; } = string.Empty;
 
     protected override void OnInitialized() =>
-        Enum.TryParse(Page, true, out _subjectType);
+        Enum.TryParse(Page, true, out _type);
 
     private Task<ApiResponse<PageableResponse<TestConclusionSummary>>> LoaderAsync(PageableRequest request) =>
-        _subjectType switch{
+        _type switch{
             SubjectType.History => HistoryClient.GetMyTestConclusionsAsync(request),
             _ => Task.FromResult(ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(Error.NotFound))
             };
-    
+
 }

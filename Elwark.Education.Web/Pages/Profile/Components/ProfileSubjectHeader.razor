@@ -1,46 +1,46 @@
 @using Elwark.Education.Web.Pages.Profile.Components
 @* ReSharper disable once CheckNamespace *@
 @namespace Elwark.Education.Web.Components
-
 @inject IStringLocalizer<App> L
 
-<div class="title-wrap">
-    <div class="title-text">
-        <MudLink Typo="Typo.h4" Href="@Links.Subjects.Index(SubjectType)">
-            @L[$"Subject:{SubjectType}"]
-        </MudLink>
-        <div class="title-line"></div>
-    </div>
-</div>
-
-<div class="menu mb-3">
-    @foreach (var item in _items)
-    {
-        @if (item.isActive)
-        {
-            <div class="menu-item menu-item-active">
-                <MudIcon Icon="@item.Icon" Color="Color.Inherit" Size="Size.Large"/>
-                <MudText Typo="Typo.subtitle2" Color="Color.Inherit">
-                    @item.Title
-                </MudText>
+<div class="background">
+    <div class="cover">
+        <div class="container">
+            <div class="header">
+                <h1 class="title">
+                    @L[$"Subject:{SubjectType}"]
+                </h1>
             </div>
-        }
-        else
-        {
-            <a href="@item.Link" class="menu-item menu-item-link">
-                <MudIcon Icon="@item.Icon" Color="Color.Inherit" Size="Size.Large"/>
-                <MudText Typo="Typo.subtitle2" Color="Color.Inherit">
-                    @item.Title
-                </MudText>
-            </a>
-        }
-    }
+            <div class="menu">
+                @foreach (var item in _items)
+                {
+                    @if (item.IsActive)
+                    {
+                        <div class="menu-item item-active">
+                            <MudIcon Icon="@item.Icon" Class="item-icon"/>
+                            <MudText Typo="Typo.subtitle1" Class="item-text">
+                                @item.Title
+                            </MudText>
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="@item.Link" class="menu-item item-link">
+                            <MudIcon Icon="@item.Icon" Class="item-icon"/>
+                            <MudText Typo="Typo.subtitle1" Class="item-text">
+                                @item.Title
+                            </MudText>
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
 
-    private IEnumerable<(string Title, string Link, string Icon, bool isActive)> _items =
-        Array.Empty<(string Title, string Link, string Icon, bool isActive)>();
+    private IEnumerable<Data> _items = Array.Empty<Data>();
 
     [Parameter]
     public SubjectType SubjectType { get; set; }
@@ -49,11 +49,31 @@
     public ProfileSubMenu Selected { get; set; } = ProfileSubMenu.None;
 
     protected override void OnInitialized() =>
-        _items = new (string Title, string Link, string Icon, bool isActive)[]
+        _items = new Data[]
         {
+            new(L["HomePage"].Value, Links.Subjects.Index(SubjectType), Filled.Home, false),
             new(L["Profile"].Value, Links.Profile.Index, Filled.DonutLarge, false),
             new(L["Statistics"].Value, Links.Profile.Statistics(SubjectType), Filled.BarChart, Selected == ProfileSubMenu.Statistics),
             new(L["Tests"].Value, Links.Profile.Tests(SubjectType), Filled.Class, Selected == ProfileSubMenu.Tests)
         };
+
+    private class Data
+    {
+        public Data(string title, string link, string icon, bool isActive)
+        {
+            Title = title;
+            Link = link;
+            Icon = icon;
+            IsActive = isActive;
+        }
+
+        public string Title { get; }
+
+        public string Link { get; }
+
+        public string Icon { get; }
+
+        public bool IsActive { get; }
+    }
 
 }

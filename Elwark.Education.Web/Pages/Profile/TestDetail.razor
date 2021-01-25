@@ -1,22 +1,23 @@
 @page "/profile/{page}/tests/{id}"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.TestConclusion
-@layout ProfileLayout
 
 @inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
 
 @attribute [Authorize]
 
-<ProfileSubjectHeader SubjectType="@SubjectType.History"/>
-<ApiResponseViewer InitLoader="@Loader">
-    <Loading>
-        <CardsSkeleton Count="1"/>
-    </Loading>
-    <Result Context="data">
-        <ProfileTestDetail Class="my-6" Conclusion="@data" ContentLink="@ContentLink(data)"/>
-    </Result>
-</ApiResponseViewer>
+<ProfileSubjectHeader SubjectType="@_type"/>
+<div class="ma-6">
+    <ApiResponseViewer InitLoader="@Loader">
+        <Loading>
+            <CardsSkeleton Count="1"/>
+        </Loading>
+        <Result Context="data">
+            <ProfileTestDetail Class="my-6" Conclusion="@data" ContentLink="@ContentLink(data)"/>
+        </Result>
+    </ApiResponseViewer>
+</div>
 
 @code {
 
@@ -26,21 +27,21 @@
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
-    private SubjectType _subjectType;
+    private SubjectType _type;
 
     protected override void OnParametersSet() =>
-        Enum.TryParse(Page, true, out _subjectType);
+        Enum.TryParse(Page, true, out _type);
 
     private Task<ApiResponse<TestConclusionDetail>> Loader() =>
-        _subjectType switch{
+        _type switch{
             SubjectType.History => HistoryClient.GetMyTestConclusionAsync(Id),
             _ => Task.FromResult(ApiResponse<TestConclusionDetail>.Fail(Error.NotFound))
             };
 
     private string ContentLink(TestConclusionDetail detail) =>
         detail switch {
-            ArticleTestConclusionDetail x => Links.Subjects.Article(_subjectType, x.ArticleId),
-            TopicTestConclusionDetail x => Links.Subjects.Topic(_subjectType, x.TopicId),
+            ArticleTestConclusionDetail x => Links.Subjects.Article(_type, x.ArticleId),
+            TopicTestConclusionDetail x => Links.Subjects.Topic(_type, x.TopicId),
             _ => string.Empty
             };
 

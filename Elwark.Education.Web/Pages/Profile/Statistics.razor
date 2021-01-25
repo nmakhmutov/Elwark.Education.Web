@@ -2,52 +2,55 @@
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.Statistics
 @using Elwark.Education.Web.Pages.Profile.Components
-@layout ProfileLayout
 
 @inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
 
 @attribute [Authorize]
 
-<ProfileSubjectHeader SubjectType="@_subjectType" Selected="@(ProfileSubMenu.Statistics)"/>
-<ApiResponseViewer InitLoader="@Loader">
-    <Loading>
-        <MudText Typo="Typo.h5" Class="mb-2 mt-6">
-            @L["Statistics:ByTopics"]
-        </MudText>
-        <CardsSkeleton/>
-    </Loading>
-    <Result Context="statistics">
-        <Title Value="@L["Statistics"]"></Title>
-        <MudText Typo="Typo.h5" Class="mb-2 mt-6">
-            @L["Statistics:ByTopics"]
-        </MudText>
-        <ProfileTopicStatistics
-            Statistics="@statistics.Topics"
-            LinkBuilder="@(id => Links.Subjects.Topic(_subjectType, id))"/>
-
-        <MudText Typo="Typo.h5" Class="mb-2 mt-12">
-            @L["Statistics:ByArticles"]
-        </MudText>
-        <ProfileArticleStatistics
-            Class="mb-6"
-            Statistics="@statistics.Articles"
-            LinkBuilder="@(id => Links.Subjects.Article(_subjectType, id))"/>
-    </Result>
-</ApiResponseViewer>
+<ProfileSubjectHeader SubjectType="@_type" Selected="@(ProfileSubMenu.Statistics)"/>
+<div class="ma-6">
+    <ApiResponseViewer InitLoader="@Loader">
+        <Loading>
+            <CardsSkeleton/>
+        </Loading>
+        <Result Context="statistics">
+            <Title Value="@L["Statistics"]"></Title>
+            <div class="grid">
+                <div>
+                    <MudText Typo="Typo.h5" Class="mb-2">
+                        @L["Statistics:ByTopics"]
+                    </MudText>
+                    <ProfileTopicStatistics
+                        Statistics="@statistics.Topics"
+                        LinkBuilder="@(id => Links.Subjects.Topic(_type, id))"/>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h5" Class="mb-2">
+                        @L["Statistics:ByArticles"]
+                    </MudText>
+                    <ProfileArticleStatistics
+                        Class="mb-6"
+                        Statistics="@statistics.Articles"
+                        LinkBuilder="@(id => Links.Subjects.Article(_type, id))"/>
+                </div>
+            </div>
+        </Result>
+    </ApiResponseViewer>
+</div>
 
 @code {
 
     [Parameter]
     public string Page { get; set; } = string.Empty;
 
-    private SubjectType _subjectType;
+    private SubjectType _type;
 
     protected override void OnParametersSet() =>
-        Enum.TryParse(Page, true, out _subjectType);
+        Enum.TryParse(Page, true, out _type);
 
     private Task<ApiResponse<ContentStatistics>> Loader() =>
-        _subjectType switch{
+        _type switch{
             SubjectType.History => HistoryClient.GetMyStatisticsAsync(),
             _ => Task.FromResult(ApiResponse<ContentStatistics>.Fail(Error.NotFound))
             };

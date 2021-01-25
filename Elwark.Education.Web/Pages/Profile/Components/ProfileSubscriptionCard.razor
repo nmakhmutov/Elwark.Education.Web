@@ -42,7 +42,7 @@
             </MudMenu>
         </CardHeaderActions>
     </MudCardHeader>
-    <MudCardMedia Image="@("images/subjects/" + Subject.SubjectType.ToString().ToLower() + ".jpg")" Height="200"/>
+    <MudCardMedia Image="@Subject.SubjectType.GetBackground()" Height="200"/>
     <MudCardContent Class="flex-grow-1">
         <div class="content-grid">
             @if (Subject.Subscription.Purchase is null)

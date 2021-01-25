@@ -29,7 +29,7 @@
     [Parameter]
     public RenderFragment<T> Result { get; set; } = default!;
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         _response = await InitLoader();
     }

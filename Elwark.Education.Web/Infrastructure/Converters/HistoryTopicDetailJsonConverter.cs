@@ -26,7 +26,7 @@ namespace Elwark.Education.Web.Infrastructure.Converters
             {
                 "Person" => jObject.ToObject<HistoryPersonTopicDetail>(),
                 "Event" => jObject.ToObject<HistoryEventTopicDetail>(),
-                _ => throw new ArgumentOutOfRangeException(nameof(HistoryTopicDetail), "Unknown topic detail type")
+                _ => throw new ArgumentOutOfRangeException(nameof(HistoryTopicDetail), @"Unknown topic detail type")
             };
         }
     }
