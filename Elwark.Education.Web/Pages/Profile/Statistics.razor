@@ -1,4 +1,4 @@
-@page "/profile/{page}"
+@page "/profile/{page}/statistics"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.Statistics
 @using Elwark.Education.Web.Pages.Profile.Components
@@ -18,7 +18,7 @@
             <Title Value="@L["Statistics"]"></Title>
             <div class="grid">
                 <div>
-                    <MudText Typo="Typo.h5" Class="mb-2">
+                    <MudText Typo="Typo.h4" Class="mb-3">
                         @L["Statistics:ByTopics"]
                     </MudText>
                     <ProfileTopicStatistics
@@ -26,7 +26,7 @@
                         LinkBuilder="@(id => Links.Subjects.Topic(_type, id))"/>
                 </div>
                 <div>
-                    <MudText Typo="Typo.h5" Class="mb-2">
+                    <MudText Typo="Typo.h4" Class="mb-3">
                         @L["Statistics:ByArticles"]
                     </MudText>
                     <ProfileArticleStatistics

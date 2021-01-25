@@ -11,8 +11,11 @@ namespace Elwark.Education.Web.Pages
         {
             public const string Index = "/profile";
 
-            public static string Statistics(SubjectType type) =>
+            public static string Overview(SubjectType type) =>
                 $"{Index}/{type.ToString().ToLowerInvariant()}";
+            
+            public static string Statistics(SubjectType type) =>
+                $"{Index}/{type.ToString().ToLowerInvariant()}/statistics";
 
             public static string Tests(SubjectType type) =>
                 $"{Index}/{type.ToString().ToLowerInvariant()}/tests";

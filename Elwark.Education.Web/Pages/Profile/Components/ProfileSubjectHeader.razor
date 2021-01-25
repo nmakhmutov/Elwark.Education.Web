@@ -7,9 +7,9 @@
     <div class="cover">
         <div class="container">
             <div class="header">
-                <h1 class="title">
+                <a href="@Links.Subjects.Index(SubjectType)" class="title">
                     @L[$"Subject:{SubjectType}"]
-                </h1>
+                </a>
             </div>
             <div class="menu">
                 @foreach (var item in _items)
@@ -51,8 +51,8 @@
     protected override void OnInitialized() =>
         _items = new Data[]
         {
-            new(L["HomePage"].Value, Links.Subjects.Index(SubjectType), Filled.Home, false),
             new(L["Profile"].Value, Links.Profile.Index, Filled.DonutLarge, false),
+            new(L["Overview"].Value, Links.Profile.Overview(SubjectType), Filled.CardMembership, Selected == ProfileSubMenu.Overview),
             new(L["Statistics"].Value, Links.Profile.Statistics(SubjectType), Filled.BarChart, Selected == ProfileSubMenu.Statistics),
             new(L["Tests"].Value, Links.Profile.Tests(SubjectType), Filled.Class, Selected == ProfileSubMenu.Tests)
         };
