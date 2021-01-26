@@ -91,7 +91,7 @@
             _breadcrumbs = new BreadcrumbsItem[]
             {
                 new(L["Subject:History"].Value, Links.History.Index),
-                new(_article.Data.Period.Title, Links.History.Period(_article.Data.Period.Type)),
+                new(L[$"History:{_article.Data.Period}"].Value, Links.History.Period(_article.Data.Period)),
                 new(_article.Data.Topic.Title, Links.History.Topic(_article.Data.Topic.Id))
             };
     }

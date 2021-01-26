@@ -7,8 +7,17 @@ window.Observer = {
         if (element == null)
             throw new Error("The observable target was not found");
 
+        let prevY = 0;
         this.observer = new IntersectionObserver(
-            e => component.invokeMethodAsync('OnIntersection'),
+            entries => {
+                const firstEntry = entries[0];
+                const y = firstEntry.boundingClientRect.y;
+
+                if (prevY > y) 
+                    component.invokeMethodAsync('OnIntersection')
+
+                prevY = y;
+            },
             {root: null, rootMargin: '0px', threshold: 0.5}
         );
 

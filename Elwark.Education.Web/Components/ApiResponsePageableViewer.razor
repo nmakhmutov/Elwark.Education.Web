@@ -9,12 +9,13 @@
         break;
 
     case ResponseStatus.Fail:
+        <Title Value="@_response.Error.Title"></Title>
         <ErrorPage Error="_response.Error"/>
         break;
 
     case ResponseStatus.Success:
         var target = $"target-{Guid.NewGuid()}";
-        <InfinityScroll ObserverTargetId="@target" ObservableTargetReached="@(async () => await LoadMoreAsync())">
+        <InfinityScroll ObserverTargetId="@target" ObservableTargetReached="@LoadMoreAsync">
             @Result(_response.Data.Items)
             <div id="@target" class="d-flex justify-center my-6">
                 @if (_response.Data.Token is not null)
@@ -41,10 +42,8 @@
     [Parameter]
     public RenderFragment<IEnumerable<T>> Result { get; set; } = default!;
 
-    protected override async Task OnParametersSetAsync()
-    {
+    protected override async Task OnParametersSetAsync() => 
         _response = await InitLoader();
-    }
 
     private async Task LoadMoreAsync()
     {

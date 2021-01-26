@@ -3,7 +3,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
     public sealed record HistoryArticleDetail(
         string Id,
         TopicTitle Topic,
-        HistoryPeriodTitle Period,
+        HistoryPeriodType Period,
         ContentType Type,
         ArticleTest? Test,
         string? Image,
