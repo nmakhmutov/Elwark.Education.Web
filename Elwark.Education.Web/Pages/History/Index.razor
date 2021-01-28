@@ -1,30 +1,25 @@
 @page "/history"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways.Models.History
 @inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
 
 <Title Value="@L["Subject:History"]"></Title>
 
-@switch (_history.Status)
-{
-    case ResponseStatus.Loading:
-        <PageLoader/>
-        break;
-
-    case ResponseStatus.Fail:
-        <ErrorPage Error="_history.Error"/>
-        break;
-
-    case ResponseStatus.Success:
+<ApiResponseViewer InitLoader="@(() => HistoryClient.GetAsync())">
+    <Loading>
+        <div class="ma-6">
+            <CardsSkeleton/>
+        </div>
+    </Loading>
+    <Result Context="overview">
         <div class="period-grid">
-            @foreach (var period in _history.Data.Periods)
+            @foreach (var period in overview.Periods)
             {
                 <div class="period-box">
                     <a href="@(Links.History.Period(period.Type))">
                         <div class="period-thumbnail">
-                            <img src="@period.Image" alt="@period.Title"/>
+                            <img src="@period.Image" loading="lazy" alt="@period.Title"/>
                         </div>
                         <div class="period-header">
                             <MudLink Typo="Typo.h4" Color="Color.Inherit" Href="@(Links.History.Period(period.Type))">
@@ -44,13 +39,13 @@
                     </MudText>
                 </div>
                 <div class="trending-grid mt-3">
-                    @foreach (var article in _history.Data.Articles.Trends)
+                    @foreach (var article in overview.Articles.Trends)
                     {
                         <div class="trending-article-card">
                             @if (article.Image is not null)
                             {
                                 <div class="trending-article-image">
-                                    <img src="@article.Image" alt="@article.Title">
+                                    <img src="@article.Image" loading="lazy" alt="@article.Title">
                                 </div>
                             }
                             <div class="trending-article-content">
@@ -72,14 +67,14 @@
                     </MudText>
                 </div>
                 <div class="recent-grid mt-3">
-                    @foreach (var article in _history.Data.Articles.Recent)
+                    @foreach (var article in overview.Articles.Recent)
                     {
                         <div class="recent-article-card">
                             <div class="recent-article-card-header">
                                 @if (article.Image is not null)
                                 {
                                     <div class="recent-article-card-image">
-                                        <img src="@article.Image" style="width: 100%" alt="@article.Title">
+                                        <img src="@article.Image" loading="lazy" style="width: 100%" alt="@article.Title">
                                     </div>
                                 }
                                 <div>
@@ -96,16 +91,5 @@
                 </div>
             </div>
         </div>
-
-        break;
-}
-
-@code {
-    private ApiResponse<HistoryOverview> _history = ApiResponse<HistoryOverview>.Loading();
-
-    protected override async Task OnInitializedAsync()
-    {
-        _history = await HistoryClient.GetAsync();
-    }
-
-}
+    </Result>
+</ApiResponseViewer>

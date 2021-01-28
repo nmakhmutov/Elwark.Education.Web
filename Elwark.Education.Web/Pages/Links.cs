@@ -41,21 +41,6 @@ namespace Elwark.Education.Web.Pages
                 $"{Index}/test/{testId}";
         }
 
-        public static class Physics
-        {
-            public const string Index = "/physics";
-
-            public static string Topic(string topicId) =>
-                $"{Index}/topic/{topicId}";
-
-            public static string Article(string articleId) =>
-                $"{Index}/article/{articleId}";
-            
-            public static string Test(string testId) =>
-                $"{Index}/test/{testId}";
-            
-        }
-
         public static class Astronomy
         {
             public const string Index = "/astronomy";
@@ -76,7 +61,6 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Index,
-                    SubjectType.Physics => Physics.Index,
                     SubjectType.Astronomy => Astronomy.Index,
                     _ => string.Empty
                 };
@@ -85,7 +69,6 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Topic(topicId),
-                    SubjectType.Physics => Physics.Topic(topicId),
                     SubjectType.Astronomy => Astronomy.Topic(topicId),
                     _ => string.Empty
                 };
@@ -94,7 +77,6 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Article(articleId),
-                    SubjectType.Physics => Physics.Article(articleId),
                     SubjectType.Astronomy => Astronomy.Article(articleId),
                     _ => string.Empty
                 };
@@ -103,7 +85,6 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Test(testId),
-                    SubjectType.Physics => Physics.Test(testId),
                     SubjectType.Astronomy => Astronomy.Test(testId),
                     _ => string.Empty
                 };

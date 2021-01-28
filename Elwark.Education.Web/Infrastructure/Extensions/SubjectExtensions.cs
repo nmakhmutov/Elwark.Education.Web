@@ -9,7 +9,7 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
             type switch
             {
                 SubjectType.History => TwoTone.AccountBalanceTwoTone,
-                SubjectType.Physics => Icons.Custom.Radioactive,
+                // SubjectType.Physics => Icons.Custom.Radioactive,
                 SubjectType.Astronomy => Filled.Flare,
                 _ => Filled.Adjust
             };
@@ -18,7 +18,7 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
             type switch
             {
                 SubjectType.History => "/images/subjects/history.jpg",
-                SubjectType.Physics => "/images/subjects/physics.jpg",
+                // SubjectType.Physics => "/images/subjects/physics.jpg",
                 SubjectType.Astronomy => "/images/subjects/astronomy.jpg",
                 _ => string.Empty
             };
