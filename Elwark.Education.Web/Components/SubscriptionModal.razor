@@ -1,4 +1,5 @@
-@using Elwark.Education.Web.Gateways.Models.User
+@using Elwark.Education.Web.Gateways.Shop
+@inject IShopClient Shop
 @inject IStringLocalizer<App> L
 
 <MudDialog DisableSidePadding="true" ClassContent="modal-content" ClassActions="modal-actions" Style="padding: 0">
@@ -12,128 +13,34 @@
                     Start with premium subscription today.
                 </MudText>
             </div>
-            <MudTabs Elevation="1" Rounded="false" Centered="true" Color="Color.Secondary">
-                <MudTabPanel Text="Monthly Payment">
-                    <div class="pricing-grid">
-                        @foreach (var item in Prices())
-                        {
-                            <div class="pricing-card">
-                                <div class="d-flex flex-column align-center">
-                                    <MudChip Color="@item.Key.Item2.GetColor()" Size="Size.Small" Label="true">
-                                        @L[$"Subscription:{item.Key.Item2}"]
-                                    </MudChip>
-                                    <MudText Typo="Typo.h5">
-                                        @item.Key.Item1
-                                    </MudText>
-                                </div>
-                                <MudText Typo="Typo.body2">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    Nulla et enim tincidunt risus hendrerit sollicitudin. Vestibulum pretium efficitur.
-                                </MudText>
-                                <div class="d-flex flex-row justify-center align-end my-3">
-                                    <MudText Typo="Typo.h3" Align="Align.Center" Style="line-height: 0.9">
-                                        $@item.Value
-                                    </MudText>
-                                    <MudText Typo="Typo.body2" Color="Color.Surface">
-                                        /per month
-                                    </MudText>
-                                </div>
-                                <div class="d-flex flex-column">
-                                    <div class="d-flex flex-row align-center">
-                                        <MudIcon Icon="@Filled.Check" Size="Size.Small" Color="Color.Success"/>
-                                        <MudText Typo="Typo.subtitle1" Class="ml-3">
-                                            Unlimit test creation
-                                        </MudText>
-                                    </div>
-                                    <div class="d-flex flex-row">
-                                        <MudIcon Icon="@Filled.Check" Size="Size.Small" Color="Color.Success"/>
-                                        <MudText Typo="Typo.subtitle1" Class="ml-3">
-                                            Unlimit answer attempts
-                                        </MudText>
-                                    </div>
-                                    <div class="d-flex flex-row">
-                                        <MudIcon Icon="@Filled.Check" Size="Size.Small" Color="Color.Success"/>
-                                        <MudText Typo="Typo.subtitle1" Class="ml-3">
-                                            Premium article content
-                                        </MudText>
-                                    </div>
-                                    <div class="d-flex flex-row">
-                                        <MudIcon Icon="@Filled.Close" Size="Size.Small" Color="Color.Error"/>
-                                        <MudText Typo="Typo.subtitle1" Class="ml-3">
-                                            Premium functionality
-                                        </MudText>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-row justify-center my-3">
-                                    <MudButton Color="Color.Primary" Variant="Variant.Filled">
-                                        Buy now
-                                    </MudButton>
-                                </div>
-                            </div>
-                        }
+            <ApiResponseViewer InitLoader="@(() => Shop.GetSubscriptions(SubjectType))">
+                <Loading>
+                    <div class="ma-6">
+                        <CardsSkeleton Count="3"/>
                     </div>
-                </MudTabPanel>
-                <MudTabPanel Text="Annual Payment">
-                    <div class="pricing-grid">
-                        @foreach (var item in Prices())
+                </Loading>
+                <Result Context="subscriptions">
+                    <MudTabs Elevation="1" Rounded="false" Centered="true" Color="Color.Secondary">
+                        @foreach (var group in subscriptions.GroupBy(x => x.Days))
                         {
-                            <div class="pricing-card">
-                                <div class="d-flex flex-column align-center">
-                                    <MudChip Color="@item.Key.Item2.GetColor()" Size="Size.Small" Label="true">
-                                        @L[$"Subscription:{item.Key.Item2}"]
-                                    </MudChip>
-                                    <MudText Typo="Typo.h5">
-                                        @item.Key.Item1
-                                    </MudText>
+                            <MudTabPanel Text="@(group.Key + " days")">
+                                <div class="pricing-grid">
+                                    @foreach (var item in group.OrderBy(x => x.Prices[0].Total))
+                                    {
+                                        <SubscriptionCard
+                                            Days="@item.Days"
+                                            Id="@item.Id"
+                                            Overview="@item.Overview"
+                                            Price="@item.Prices[0]"
+                                            Title="@item.Title"
+                                            Type="@item.Type"/>
+                                    }
                                 </div>
-                                <MudText Typo="Typo.body2">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    Nulla et enim tincidunt risus hendrerit sollicitudin. Vestibulum pretium efficitur.
-                                </MudText>
-                                <div class="d-flex flex-row justify-center align-end my-3">
-                                    <MudText Typo="Typo.h3" Align="Align.Center" Style="line-height: 0.9">
-                                        $@(item.Value * 10)
-                                    </MudText>
-                                    <MudText Typo="Typo.body2" Color="Color.Surface">
-                                        /per year
-                                    </MudText>
-                                </div>
-                                <div class="d-flex flex-column">
-                                    <div class="d-flex flex-row align-center">
-                                        <MudIcon Icon="@Filled.Check" Size="Size.Small" Color="Color.Success"/>
-                                        <MudText Typo="Typo.subtitle1" Class="ml-3">
-                                            Unlimit test creation
-                                        </MudText>
-                                    </div>
-                                    <div class="d-flex flex-row">
-                                        <MudIcon Icon="@Filled.Check" Size="Size.Small" Color="Color.Success"/>
-                                        <MudText Typo="Typo.subtitle1" Class="ml-3">
-                                            Unlimit answer attempts
-                                        </MudText>
-                                    </div>
-                                    <div class="d-flex flex-row">
-                                        <MudIcon Icon="@Filled.Check" Size="Size.Small" Color="Color.Success"/>
-                                        <MudText Typo="Typo.subtitle1" Class="ml-3">
-                                            Premium article content
-                                        </MudText>
-                                    </div>
-                                    <div class="d-flex flex-row">
-                                        <MudIcon Icon="@Filled.Close" Size="Size.Small" Color="Color.Error"/>
-                                        <MudText Typo="Typo.subtitle1" Class="ml-3">
-                                            Premium functionality
-                                        </MudText>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-row justify-center my-3">
-                                    <MudButton Color="Color.Primary" Variant="Variant.Filled">
-                                        Buy now
-                                    </MudButton>
-                                </div>
-                            </div>
+                            </MudTabPanel>
                         }
-                    </div>
-                </MudTabPanel>
-            </MudTabs>
+                    </MudTabs>
+                </Result>
+            </ApiResponseViewer>
             <div class="d-flex flex-row justify-center my-3">
                 <MudButton Variant="Variant.Filled" Color="Color.Success" Link="@Links.Shop.Index">
                     @L["SeeAll"]
@@ -150,13 +57,5 @@
 
     [Parameter]
     public SubjectType SubjectType { get; set; } = SubjectType.Unknown;
-
-    private Dictionary<(string, SubscriptionType), decimal> Prices() => new()
-    {
-        [($"{SubjectType}", SubscriptionType.Basic)] = 4,
-        [($"{SubjectType}", SubscriptionType.Advanced)] = 9,
-        [("All subjects pack", SubscriptionType.Basic)] = 11,
-        [("All subjects pack", SubscriptionType.Advanced)] = 26
-    };
 
 }

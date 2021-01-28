@@ -10,12 +10,10 @@
         <div class="lifetime">
             @if (Topic.Born is not null)
             {
-                <div class="d-flex flex-column align-md-center">
-                    <MudText Typo="Typo.body2" Color="Color.Surface">
-                        @L["History:Born"]
-                    </MudText>
-                    <HistoryDate Date="@Topic.Born" Typo="Typo.h4" Color="Color.Secondary" Class="mb-2"/>
-                </div>
+                <MudText Typo="Typo.body2" Color="Color.Surface">
+                    @L["History:Born"]
+                </MudText>
+                <HistoryDate Date="@Topic.Born" Typo="Typo.h5" Color="Color.Secondary" Class="mb-2"/>
                 <MudText Typo="Typo.body1">
                     @Topic.Born.Place
                 </MudText>
@@ -24,12 +22,10 @@
         <div class="lifetime">
             @if (Topic.Died is not null)
             {
-                <div class="d-flex flex-column align-md-center">
-                    <MudText Typo="Typo.body2" Color="Color.Surface">
-                        @L["History:Died"]
-                    </MudText>
-                    <HistoryDate Date="@Topic.Died" Typo="Typo.h4" Color="Color.Secondary" Class="mb-2"/>
-                </div>
+                <MudText Typo="Typo.body2" Color="Color.Surface">
+                    @L["History:Died"]
+                </MudText>
+                <HistoryDate Date="@Topic.Died" Typo="Typo.h5" Color="Color.Secondary" Class="mb-2"/>
                 <MudText Typo="Typo.body1">
                     @Topic.Died.Place
                 </MudText>
@@ -53,12 +49,12 @@
         <div class="characteristics">
             @foreach (var (title, value) in Topic.Characteristics)
             {
-                <MudPaper Class="d-flex flex-column justify-space-between pa-3">
-                    <MarkdownText Text="@value"/>
-                    <MudText Typo="Typo.subtitle1">
-                        <strong>@title</strong>
+                <div class="characteristic">
+                    <MudText Class="title" Typo="Typo.subtitle1">
+                        @title
                     </MudText>
-                </MudPaper>
+                    <MarkdownText Text="@value"/>
+                </div>
             }
         </div>
     </div>

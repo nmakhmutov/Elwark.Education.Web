@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Elwark.Education.Web.Gateways.History;
+using Elwark.Education.Web.Gateways.Shop;
 using Elwark.Education.Web.Gateways.User;
 using Elwark.Education.Web.Infrastructure;
 using Elwark.Education.Web.Infrastructure.LocalStorage;
@@ -45,7 +46,7 @@ namespace Elwark.Education.Web
             var policy = HttpPolicyExtensions
                 .HandleTransientHttpError()
                 .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
-            
+
             builder.Services
                 .AddHttpClient<IHistoryClient, HistoryClient>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
@@ -56,6 +57,14 @@ namespace Elwark.Education.Web
 
             builder.Services
                 .AddHttpClient<IUserClient, UserClient>(
+                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
+                )
+                .AddHttpMessageHandler<EducationAuthorization>()
+                .AddHttpMessageHandler<EducationLocalization>()
+                .AddPolicyHandler(policy);
+
+            builder.Services
+                .AddHttpClient<IShopClient, ShopClient>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
                 )
                 .AddHttpMessageHandler<EducationAuthorization>()

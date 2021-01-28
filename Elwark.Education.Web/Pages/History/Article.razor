@@ -10,34 +10,35 @@
 
 @attribute [Authorize]
 
-@switch (_article.Status)
-{
-    case ResponseStatus.Loading:
+<ApiResponseViewer InitLoader="@(() => HistoryClient.GetArticleAsync(Id))">
+    <Loading>
         <PageLoader/>
-        break;
-
-    case ResponseStatus.Fail:
-        <ErrorPage Error="_article.Error"/>
-        break;
-
-    case ResponseStatus.Success:
-        <Title Value="@_article.Data.Title"></Title>
+    </Loading>
+    <Result Context="article">
+        @{ var breadcrumbs = new BreadcrumbsItem[]
+           {
+               new(L["Subject:History"].Value, Links.History.Index),
+               new(L[$"History:{article.Period}"].Value, Links.History.Period(article.Period)),
+               new(article.Topic.Title, Links.History.Topic(article.Topic.Id))
+           };
+        }
+        <Title Value="@article.Title"></Title>
         <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
             <MudGrid Spacing="0">
                 <MudItem xs="12" md="7" lg="8" xl="6" Style="min-height: 100%">
                     <MudPaper Square="true" Class="pa-6" Style="min-height: calc(100vh - 64px)">
-                        <Breadcrumbs Items="_breadcrumbs" Class="mb-6"/>
+                        <Breadcrumbs Items="breadcrumbs" Class="mb-6"/>
                         <MudText Typo="Typo.h2" Class="mb-6">
-                            @_article.Data.Title
+                            @article.Title
                         </MudText>
-                        <MarkdownText Text="@_article.Data.Text"/>
+                        <MarkdownText Text="@article.Text"/>
                     </MudPaper>
                 </MudItem>
                 <MudItem xs="12" md="5" lg="4" xl="3">
-                    @if (_article.Data.Test is not null)
+                    @if (article.Test is not null)
                     {
                         <div class="ma-3">
-                            @if (_article.Data.Test.Status == TestStatus.Allowed)
+                            @if (article.Test.Status == TestStatus.Allowed)
                             {
                                 <MudButton
                                     Variant="Variant.Filled"
@@ -49,11 +50,11 @@
                                 </MudButton>
                             }
                             <MudText Typo="Typo.body2">
-                                @if (_article.Data.Test.Progress is not null)
+                                @if (article.Test.Progress is not null)
                                 {
                                     @L.GetString("Test:Passed",
-                                        _article.Data.Test.Progress.QuantityCompletedTimes,
-                                        _article.Data.Test.Progress.TestCompletedAt.ToSimpleFormat())
+                                        article.Test.Progress.QuantityCompletedTimes,
+                                        article.Test.Progress.TestCompletedAt.ToSimpleFormat())
                                 }
                                 else
                                 {
@@ -62,39 +63,39 @@
                             </MudText>
                         </div>
                     }
-                    @if (_article.Data.Image is not null)
+                    @if (article.Image is not null)
                     {
-                        <div class="image" style="background-image: url(@_article.Data.Image)"></div>
+                        <div class="image" style="background-image: url(@article.Image)"></div>
                     }
-                    <MarkdownText Text="@_article.Data.Footnotes" Class="d-block pa-6"/>
+                    <MarkdownText Text="@article.Footnotes" Class="d-block pa-6"/>
                 </MudItem>
             </MudGrid>
         </MudContainer>
-        break;
-}
+    </Result>
+</ApiResponseViewer>
 
 @code {
-    private ApiResponse<HistoryArticleDetail> _article = ApiResponse<HistoryArticleDetail>.Loading();
+    // private ApiResponse<HistoryArticleDetail> _article = ApiResponse<HistoryArticleDetail>.Loading();
     private ApiResponse<TestCreatedResult>? _test;
 
     [Parameter]
     public string Id { get; set; } = default!;
 
-    private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
+    // private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
 
 
-    protected override async Task OnParametersSetAsync()
-    {
-        _article = await HistoryClient.GetArticleAsync(Id);
-
-        if (_article.Status == ResponseStatus.Success)
-            _breadcrumbs = new BreadcrumbsItem[]
-            {
-                new(L["Subject:History"].Value, Links.History.Index),
-                new(L[$"History:{_article.Data.Period}"].Value, Links.History.Period(_article.Data.Period)),
-                new(_article.Data.Topic.Title, Links.History.Topic(_article.Data.Topic.Id))
-            };
-    }
+    // protected override async Task OnParametersSetAsync()
+    // {
+    //     _article = await HistoryClient.GetArticleAsync(Id);
+    //
+    //     if (_article.Status == ResponseStatus.Success)
+    //         _breadcrumbs = new BreadcrumbsItem[]
+    //         {
+    //             new(L["Subject:History"].Value, Links.History.Index),
+    //             new(L[$"History:{article.Period}"].Value, Links.History.Period(article.Period)),
+    //             new(article.Topic.Title, Links.History.Topic(article.Topic.Id))
+    //         };
+    // }
 
     private async Task CreateTestAsync()
     {
