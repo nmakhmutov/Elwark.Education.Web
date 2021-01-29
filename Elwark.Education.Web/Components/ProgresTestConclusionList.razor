@@ -1,0 +1,66 @@
+@inject IStringLocalizer<App> L
+
+<MudCard Class="@Class">
+    <MudCardContent>
+        <MudText Typo="Typo.h5">
+            @L["Test:LastTests"]
+        </MudText>
+        @foreach (var conclusion in Conclusions)
+        {
+            <MudDivider Class="mt-6 mb-6"/>
+            <div class="grid">
+                <div class="header">
+                    <ConclusionStatusChip Status="@conclusion.Status"/>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @conclusion.TotalScore
+                    </MudText>
+                    <MudText Typo="Typo.body2" Align="Align.Center">
+                        @L["Score"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @conclusion.TimeSpent.ToSimpleFormat()
+                    </MudText>
+                    <MudText Typo="Typo.body2" Align="Align.Center">
+                        @L["TimeSpent"]
+                    </MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.body1">
+                        @conclusion.CompletedAt.ToSimpleFormat()
+                    </MudText>
+                </div>
+                <div class="details">
+                    <MudLink Href="@DetailLinkBuilder(conclusion.TestId)">
+                        @L["Detail"]
+                    </MudLink>
+                </div>
+            </div>
+        }
+        <MudDivider Class="mt-6"/>
+    </MudCardContent>
+    <MudCardActions Class="justify-end">
+        <MudButton Variant="Variant.Text" EndIcon="@Filled.ChevronRight" Link="@SeeAllLink">
+            @L["SeeAll"]
+        </MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+
+    [Parameter]
+    public ProgressTestConclusion[] Conclusions { get; set; } = Array.Empty<ProgressTestConclusion>();
+
+    [Parameter]
+    public string SeeAllLink { get; set; } = string.Empty;
+
+    [Parameter]
+    public Func<string, string> DetailLinkBuilder { get; set; } = _ => string.Empty;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

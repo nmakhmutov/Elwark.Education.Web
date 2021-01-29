@@ -1,6 +1,5 @@
 @page "/history/article/{id}"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways.Models.History
 @using Elwark.Education.Web.Gateways.Models.Test
 @inject IHistoryClient HistoryClient
 @inject NavigationManager NavigationManager
@@ -20,82 +19,125 @@
                new(L["Subject:History"].Value, Links.History.Index),
                new(L[$"History:{article.Period}"].Value, Links.History.Period(article.Period)),
                new(article.Topic.Title, Links.History.Topic(article.Topic.Id))
-           };
-        }
-        <Title Value="@article.Title"></Title>
-        <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
-            <MudGrid Spacing="0">
-                <MudItem xs="12" md="7" lg="8" xl="6" Style="min-height: 100%">
-                    <MudPaper Square="true" Class="pa-6" Style="min-height: calc(100vh - 64px)">
-                        <Breadcrumbs Items="breadcrumbs" Class="mb-6"/>
-                        <MudText Typo="Typo.h2" Class="mb-6">
-                            @article.Title
-                        </MudText>
-                        <MarkdownText Text="@article.Text"/>
-                    </MudPaper>
-                </MudItem>
-                <MudItem xs="12" md="5" lg="4" xl="3">
-                    @if (article.Test is not null)
-                    {
-                        <div class="ma-3">
-                            @if (article.Test.Status == TestStatus.Allowed)
+           }; }
+        <Title Value="@article.Title"/>
+        <div class="grid">
+            <div class="header">
+                <div class="title-container">
+                    <Breadcrumbs Items="breadcrumbs" Class="mb-3"/>
+                    <MudText Typo="Typo.h3">
+                        @article.Title
+                    </MudText>
+                </div>
+            </div>
+            <div class="content">
+                <MudPaper Class="pa-3">
+                    <MarkdownText Text="@article.Text"/>
+                </MudPaper>
+            </div>
+            <div class="aside">
+                @if (article.Image is not null)
+                {
+                    <div class="image mb-6">
+                        <img src="@article.Image" alt="@article.Title"/>
+                    </div>
+                }
+                @if (article.Test is not null)
+                {
+                    <MudPaper Class="mb-6 pa-3">
+                        @if (article.Test.Status == TestStatus.Allowed)
+                        {
+                            <MudButton
+                                Variant="Variant.Filled"
+                                Color="Color.Primary"
+                                Class="mb-3"
+                                OnClick="@CreateTestAsync"
+                                Disabled="@(_test != null)">
+                                @L["Test"]
+                            </MudButton>
+                        }
+                        <MudText Typo="Typo.body2">
+                            @if (article.Test.Progress is not null)
                             {
-                                <MudButton
-                                    Variant="Variant.Filled"
-                                    Color="Color.Primary"
-                                    Class="mb-3"
-                                    OnClick="@CreateTestAsync"
-                                    Disabled="@(_test != null)">
-                                    @L["Test"]
-                                </MudButton>
+                                @L.GetString("Test:Passed",
+                                    article.Test.Progress.QuantityCompletedTimes,
+                                    article.Test.Progress.TestCompletedAt.ToSimpleFormat())
                             }
-                            <MudText Typo="Typo.body2">
-                                @if (article.Test.Progress is not null)
-                                {
-                                    @L.GetString("Test:Passed",
-                                        article.Test.Progress.QuantityCompletedTimes,
-                                        article.Test.Progress.TestCompletedAt.ToSimpleFormat())
-                                }
-                                else
-                                {
-                                    @L["Test:NotPassed"]
-                                }
-                            </MudText>
-                        </div>
-                    }
-                    @if (article.Image is not null)
+                            else
+                            {
+                                @L["Test:NotPassed"]
+                            }
+                        </MudText>
+                    </MudPaper>
+
+                    @if (article.Test.Conclusions.Length > 0)
                     {
-                        <div class="image" style="background-image: url(@article.Image)"></div>
+                        <ProgresTestConclusionList
+                            Class="mb-6"
+                            Conclusions="@article.Test.Conclusions"
+                            DetailLinkBuilder="@(id => Links.Profile.TestDetail(SubjectType.History, id))"
+                            SeeAllLink="@Links.Profile.Tests(SubjectType.History)"/>
                     }
-                    <MarkdownText Text="@article.Footnotes" Class="d-block pa-6"/>
-                </MudItem>
-            </MudGrid>
-        </MudContainer>
+                }
+                <MarkdownText Text="@article.Footnotes"/>
+            </div>
+        </div>
+        @* <MudContainer MaxWidth="MaxWidth.False" Class="pa-0"> *@
+        @*     <MudGrid Spacing="0"> *@
+        @*         <MudItem xs="12" md="7" lg="8" xl="6" Style="min-height: 100%"> *@
+        @*             <MudPaper Square="true" Class="pa-6" Style="min-height: calc(100vh - 64px)"> *@
+        @*                 <Breadcrumbs Items="breadcrumbs" Class="mb-6"/> *@
+        @*                 <MudText Typo="Typo.h2" Class="mb-6"> *@
+        @*                     @article.Title *@
+        @*                 </MudText> *@
+        @*                 <MarkdownText Text="@article.Text"/> *@
+        @*             </MudPaper> *@
+        @*         </MudItem> *@
+        @*         <MudItem xs="12" md="5" lg="4" xl="3"> *@
+        @*             @if (article.Test is not null) *@
+        @*             { *@
+        @*                 <div class="ma-3"> *@
+        @*                     @if (article.Test.Status == TestStatus.Allowed) *@
+        @*                     { *@
+        @*                         <MudButton *@
+        @*                             Variant="Variant.Filled" *@
+        @*                             Color="Color.Primary" *@
+        @*                             Class="mb-3" *@
+        @*                             OnClick="@CreateTestAsync" *@
+        @*                             Disabled="@(_test != null)"> *@
+        @*                             @L["Test"] *@
+        @*                         </MudButton> *@
+        @*                     } *@
+        @*                     <MudText Typo="Typo.body2"> *@
+        @*                         @if (article.Test.Progress is not null) *@
+        @*                         { *@
+        @*                             @L.GetString("Test:Passed", *@
+        @*                                 article.Test.Progress.QuantityCompletedTimes, *@
+        @*                                 article.Test.Progress.TestCompletedAt.ToSimpleFormat()) *@
+        @*                         } *@
+        @*                         else *@
+        @*                         { *@
+        @*                             @L["Test:NotPassed"] *@
+        @*                         } *@
+        @*                     </MudText> *@
+        @*                 </div> *@
+        @*             } *@
+        @*             @if (article.Image is not null) *@
+        @*             { *@
+        @*                 <div class="image" style="background-image: url(@article.Image)"></div> *@
+        @*             } *@
+        @*             <MarkdownText Text="@article.Footnotes" Class="d-block pa-6"/> *@
+        @*         </MudItem> *@
+        @*     </MudGrid> *@
+        @* </MudContainer> *@
     </Result>
 </ApiResponseViewer>
 
 @code {
-    // private ApiResponse<HistoryArticleDetail> _article = ApiResponse<HistoryArticleDetail>.Loading();
     private ApiResponse<TestCreatedResult>? _test;
 
     [Parameter]
     public string Id { get; set; } = default!;
-
-    // private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
-
-
-    // protected override async Task OnParametersSetAsync()
-    // {
-    //     _article = await HistoryClient.GetArticleAsync(Id);
-    //
-    //     if (_article.Status == ResponseStatus.Success)
-    //         _breadcrumbs = new BreadcrumbsItem[]
-    //         {
-    //             new(L["Subject:History"].Value, Links.History.Index),
-    //             new(L[$"History:{article.Period}"].Value, Links.History.Period(article.Period)),
-    //             new(article.Topic.Title, Links.History.Topic(article.Topic.Id))
-    //         };
-    // }
 
     private async Task CreateTestAsync()
     {
