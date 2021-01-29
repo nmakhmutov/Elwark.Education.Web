@@ -22,16 +22,20 @@
            }; }
         <Title Value="@article.Title"/>
         <div class="grid">
-            <div class="header">
-                <div class="title-container">
-                    <Breadcrumbs Items="breadcrumbs" Class="mb-3"/>
-                    <MudText Typo="Typo.h3">
-                        @article.Title
-                    </MudText>
-                </div>
-            </div>
+            @* <div class="header"> *@
+            @*     <div class="title-container"> *@
+            @* *@
+            @*     </div> *@
+            @* </div> *@
             <div class="content">
                 <MudPaper Class="pa-3">
+                    <div class="title-container">
+                        <MudText Typo="Typo.h2" Class="mb-3">
+                            @article.Title
+                        </MudText>
+                        <Breadcrumbs Items="breadcrumbs" Class="mb-6"/>
+                    </div>
+                    <MudDivider Class="mb-6" DividerType="DividerType.FullWidth"/>
                     <MarkdownText Text="@article.Text"/>
                 </MudPaper>
             </div>
