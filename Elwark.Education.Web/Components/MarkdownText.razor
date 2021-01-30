@@ -1,8 +1,8 @@
+@using Markdig
 @using Markdown = Markdig.Markdown
-
-<span class="@Class markdown">
-    @((MarkupString) Markdown.ToHtml(Text))
-</span>
+<div class="@Class markdown">
+    @((MarkupString) Markdown.ToHtml(Text, _pipeline))
+</div>
 
 @code {
 
@@ -11,4 +11,12 @@
 
     [Parameter]
     public string? Class { get; set; }
+
+    private MarkdownPipeline? _pipeline;
+
+    protected override void OnInitialized() =>
+        _pipeline = new MarkdownPipelineBuilder()
+            .UseAdvancedExtensions()
+            .Build();
+
 }

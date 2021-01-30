@@ -33,20 +33,27 @@
             </div>
             @if (article.Test is not null)
             {
-                <MudText Typo="Typo.body2" Class="caption">
-                    <em>
-                        @if (article.Test.Progress is null)
-                        {
-                            @L["Test:NotPassed"]
-                        }
-                        else
-                        {
-                            @L.GetString("Test:Passed",
-                                article.Test.Progress.QuantityCompletedTimes,
-                                article.Test.Progress.TestCompletedAt.ToSimpleFormat())
-                        }
-                    </em>
-                </MudText>
+                <div class="caption">
+                    @if (article.Test.Progress is null)
+                    {
+                        <MudText Typo="Typo.body2">
+                            <em>@L["Test:NotPassed"]</em>
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.body2">
+                            <em>
+                                @L["Test:QuantityCompletedTimes", article.Test.Progress.QuantityCompletedTimes]
+                            </em>
+                        </MudText>
+                        <MudText Typo="Typo.body2">
+                            <em>
+                                @L["Test:LastCompletedAt", article.Test.Progress.TestCompletedAt.ToSimpleFormat()]
+                            </em>
+                        </MudText>
+                    }
+                </div>
             }
         </div>
         

@@ -1,4 +1,5 @@
 using Elwark.Education.Web.Gateways;
+using Elwark.Education.Web.Gateways.Models;
 using Microsoft.Extensions.Localization;
 
 namespace Elwark.Education.Web
@@ -19,5 +20,7 @@ namespace Elwark.Education.Web
         }
 
         public string Localize(string key) => _localizer[key].Value;
+
+        public string Localize(TestStatus status) => _localizer[$"UserRestriction:{status}"].Value;
     }
 }

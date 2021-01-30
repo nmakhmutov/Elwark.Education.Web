@@ -1,11 +1,13 @@
 @page "/history/article/{id}"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.Test
+@using Elwark.Education.Web.Gateways.Models.User
 @inject IHistoryClient HistoryClient
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
 @inject ISnackbar Snackbar
 @inject ErrorManager ErrorManager
+@inject IDialogService Dialog
 
 @attribute [Authorize]
 
@@ -22,11 +24,6 @@
            }; }
         <Title Value="@article.Title"/>
         <div class="grid">
-            @* <div class="header"> *@
-            @*     <div class="title-container"> *@
-            @* *@
-            @*     </div> *@
-            @* </div> *@
             <div class="content">
                 <MudPaper Class="pa-3">
                     <div class="title-container">
@@ -49,23 +46,54 @@
                 @if (article.Test is not null)
                 {
                     <MudPaper Class="mb-6 pa-3">
-                        @if (article.Test.Status == TestStatus.Allowed)
+                        <MudText Typo="Typo.h6" Class="mb-3">
+                            @L["Test:CheckYourKnowledge"]
+                        </MudText>
+                        @switch (article.Test.Status)
                         {
-                            <MudButton
-                                Variant="Variant.Filled"
-                                Color="Color.Primary"
-                                Class="mb-3"
-                                OnClick="@CreateTestAsync"
-                                Disabled="@(_test != null)">
-                                @L["Test"]
-                            </MudButton>
+                            case TestStatus.Allowed when _test?.Status == ResponseStatus.Loading:
+                                <MudButton Variant="Variant.Filled" Class="mb-3 mx-auto d-block" Disabled="true">
+                                    <div class="d-flex flex-row align-center">
+                                        <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                                        @L["Loading"]
+                                    </div>
+                                </MudButton>
+                                break;
+
+                            case TestStatus.Allowed:
+                                <MudButton
+                                    Variant="Variant.Filled"
+                                    Color="Color.Primary"
+                                    Class="mb-3 mx-auto d-block"
+                                    OnClick="@CreateTestAsync">
+                                    @L["Test:PassATest"]
+                                </MudButton>
+                                break;
+
+                            case TestStatus.CreatedMaximumTests:
+                            case TestStatus.ReachedMaximumAnswerAttempts:
+                                <MudButton
+                                    Variant="Variant.Filled"
+                                    Color="Color.Primary"
+                                    Class="mb-3 mx-auto d-block"
+                                    OnClick="@OnBuyClick">
+                                    @L["Subscription:ChoosePricingPlan"]
+                                </MudButton>
+                                <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
+                                    @ErrorManager.Localize(article.Test.Status)
+                                </MudText>
+                                break;
+
+                            default:
+                                <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
+                                    @ErrorManager.Localize(article.Test.Status)
+                                </MudText>
+                                break;
                         }
-                        <MudText Typo="Typo.body2">
+                        <MudText Typo="Typo.body2" Align="Align.Center">
                             @if (article.Test.Progress is not null)
                             {
-                                @L.GetString("Test:Passed",
-                                    article.Test.Progress.QuantityCompletedTimes,
-                                    article.Test.Progress.TestCompletedAt.ToSimpleFormat())
+                                @L["Test:QuantityCompletedTimes", article.Test.Progress.QuantityCompletedTimes]
                             }
                             else
                             {
@@ -86,54 +114,6 @@
                 <MarkdownText Text="@article.Footnotes"/>
             </div>
         </div>
-        @* <MudContainer MaxWidth="MaxWidth.False" Class="pa-0"> *@
-        @*     <MudGrid Spacing="0"> *@
-        @*         <MudItem xs="12" md="7" lg="8" xl="6" Style="min-height: 100%"> *@
-        @*             <MudPaper Square="true" Class="pa-6" Style="min-height: calc(100vh - 64px)"> *@
-        @*                 <Breadcrumbs Items="breadcrumbs" Class="mb-6"/> *@
-        @*                 <MudText Typo="Typo.h2" Class="mb-6"> *@
-        @*                     @article.Title *@
-        @*                 </MudText> *@
-        @*                 <MarkdownText Text="@article.Text"/> *@
-        @*             </MudPaper> *@
-        @*         </MudItem> *@
-        @*         <MudItem xs="12" md="5" lg="4" xl="3"> *@
-        @*             @if (article.Test is not null) *@
-        @*             { *@
-        @*                 <div class="ma-3"> *@
-        @*                     @if (article.Test.Status == TestStatus.Allowed) *@
-        @*                     { *@
-        @*                         <MudButton *@
-        @*                             Variant="Variant.Filled" *@
-        @*                             Color="Color.Primary" *@
-        @*                             Class="mb-3" *@
-        @*                             OnClick="@CreateTestAsync" *@
-        @*                             Disabled="@(_test != null)"> *@
-        @*                             @L["Test"] *@
-        @*                         </MudButton> *@
-        @*                     } *@
-        @*                     <MudText Typo="Typo.body2"> *@
-        @*                         @if (article.Test.Progress is not null) *@
-        @*                         { *@
-        @*                             @L.GetString("Test:Passed", *@
-        @*                                 article.Test.Progress.QuantityCompletedTimes, *@
-        @*                                 article.Test.Progress.TestCompletedAt.ToSimpleFormat()) *@
-        @*                         } *@
-        @*                         else *@
-        @*                         { *@
-        @*                             @L["Test:NotPassed"] *@
-        @*                         } *@
-        @*                     </MudText> *@
-        @*                 </div> *@
-        @*             } *@
-        @*             @if (article.Image is not null) *@
-        @*             { *@
-        @*                 <div class="image" style="background-image: url(@article.Image)"></div> *@
-        @*             } *@
-        @*             <MarkdownText Text="@article.Footnotes" Class="d-block pa-6"/> *@
-        @*         </MudItem> *@
-        @*     </MudGrid> *@
-        @* </MudContainer> *@
     </Result>
 </ApiResponseViewer>
 
@@ -152,6 +132,23 @@
             NavigationManager.NavigateTo(Links.History.Test(_test.Data.Id));
         else
             Snackbar.Add(ErrorManager.Localize(_test.Error).Title, Severity.Error);
+    }
+
+    private void OnBuyClick()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            NoHeader = true,
+            CloseButton = false,
+            FullWidth = true
+        };
+        var parameters = new DialogParameters
+        {
+            [nameof(SubscriptionModal.SubjectType)] = SubjectType.History
+        };
+
+        Dialog.Show<SubscriptionModal>(null, parameters, options);
     }
 
 }
