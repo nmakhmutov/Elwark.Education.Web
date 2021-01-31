@@ -1,0 +1,29 @@
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+
+@inject IStringLocalizer<App> L
+
+<div class="ma-6 @Class">
+    <MudText Typo="Typo.h5" Class="mb-3">
+        @L["RelatedTopics"]
+    </MudText>
+    <div class="grid">
+        @foreach (var topic in Topics)
+        {
+            <TopicCard
+                Href="@Links.History.Topic(topic.Id)"
+                Image="@topic.Image"
+                Title="@topic.Title"
+                Subtitle="@topic.Overview"/>
+        }
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public TopicSummary[] Topics { get; set; } = Array.Empty<TopicSummary>();
+
+    [Parameter]
+    public string? Class { get; set; }
+}

@@ -37,15 +37,9 @@
             @Topic.Title
         </MudText>
         <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>
-        <div class="description">
-            <MudText Typo="Typo.subtitle1" Class="mb-6">
-                @Topic.Description
-            </MudText>
-            @if (Topic.Test is not null)
-            {
-                <TopicTestCard Class="ma-6" Test="@Topic.Test"/>
-            }
-        </div>
+        <MudText Typo="Typo.subtitle1" Class="mb-6 mw-sm">
+            @Topic.Description
+        </MudText>
         <div class="characteristics">
             @foreach (var (title, value) in Topic.Characteristics)
             {
@@ -57,6 +51,10 @@
                 </div>
             }
         </div>
+        @if (Topic.Test is not null)
+        {
+            <TopicTestCard Class="ma-6 mw-sm" Test="@Topic.Test"/>
+        }
     </div>
 </div>
 
