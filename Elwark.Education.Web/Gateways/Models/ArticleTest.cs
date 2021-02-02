@@ -4,7 +4,7 @@ using Elwark.Education.Web.Gateways.Models.TestConclusion;
 namespace Elwark.Education.Web.Gateways.Models
 {
     public sealed record ArticleTest(
-        TestStatus Status,
+        PermissionStatus Status,
         ArticleProgress? Progress,
         ProgressTestConclusion[] Conclusions
     ) : ArticleTestSummary(Status, Progress);

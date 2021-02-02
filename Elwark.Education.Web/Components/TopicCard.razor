@@ -2,7 +2,7 @@
 
 <MudCard Class="d-flex flex-column justify-space-between">
     <div class="image" style="background-image: url(@Image)"></div>
-    <MudCardContent>
+    <MudCardContent Class="d-flex flex-column justify-space-between">
         <MudLink Typo="Typo.subtitle1" Href="@Href">
             @Title
         </MudLink>
@@ -10,33 +10,32 @@
             @Subtitle
         </MudText>
     </MudCardContent>
-    @if (Progress is not null)
-    {
-        <div class="pa-2">
-            <TopicProgressBar Progress="@Progress"/>
-            <div class="d-flex flex-row justify-space-between mt-1">
-                <div class="d-flex flex-row align-center">
-                    @if (Progress.ExamCompletedAt.HasValue)
-                    {
-                        <MudIcon Icon="@Outlined.CheckCircleOutlineOutlined" Style="@("color:" + Progress.Color)"/>
-                        <MudText Typo="Typo.body2" Class="ml-1">
-                            @L.GetString("Exam:QuantityCompletedTimes", Progress.QuantityCompletedTimes)
-                        </MudText>
-                    }
-                    else
-                    {
-                        <MudIcon Icon="@Outlined.RemoveCircleOutlineOutlined"/>
-                        <MudText Typo="Typo.body2" Class="ml-1">
-                            @L["Exam:NotPassed"]
-                        </MudText>
-                    }
-                </div>
-                <MudText Typo="Typo.body2">
+    <div>
+        @if (Progress is not null)
+        {
+            <div class="progress px-4">
+                <MudProgressLinear Maximum="100" Minimum="0" Color="Color.Primary" Value="@(100 - Progress.Percentage)"/>
+                <MudText Typo="Typo.subtitle2" Align="Align.Center">
                     @Progress.Percentage%
                 </MudText>
             </div>
-        </div>
-    }
+        }
+        <MudCardActions Class="justify-space-between">
+            <div>
+                <MudButton 
+                    Variant="Variant.Text"
+                    Color="Color.Primary"
+                    Link="@Href"
+                    EndIcon="@Filled.ArrowRightAlt">
+                    @L["LearnMore"]
+                </MudButton>
+            </div>
+            <div>
+                <MudIconButton Icon="@Filled.Favorite" Color="Color.Default"/>
+                <MudIconButton Icon="@Filled.Bookmark" Color="Color.Default"/>
+            </div>
+        </MudCardActions>
+    </div>
 </MudCard>
 
 @code {

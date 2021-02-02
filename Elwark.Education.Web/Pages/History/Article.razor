@@ -67,7 +67,7 @@
                         </MudText>
                         @switch (article.Test.Status)
                         {
-                            case TestStatus.Allowed when _test?.Status == ResponseStatus.Loading:
+                            case PermissionStatus.Allowed when _test?.Status == ResponseStatus.Loading:
                                 <MudButton Variant="Variant.Filled" Class="mb-3 mx-auto d-block" Disabled="true">
                                     <div class="d-flex flex-row align-center">
                                         <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
@@ -76,7 +76,7 @@
                                 </MudButton>
                                 break;
 
-                            case TestStatus.Allowed:
+                            case PermissionStatus.Allowed:
                                 <MudButton
                                     Variant="Variant.Filled"
                                     Color="Color.Primary"
@@ -86,8 +86,8 @@
                                 </MudButton>
                                 break;
 
-                            case TestStatus.CreatedMaximumTests:
-                            case TestStatus.ReachedMaximumAnswerAttempts:
+                            case PermissionStatus.CreatedMaximumTests:
+                            case PermissionStatus.ReachedMaximumAnswerAttempts:
                                 <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
                                     @ErrorManager.Localize(article.Test.Status)
                                 </MudText>

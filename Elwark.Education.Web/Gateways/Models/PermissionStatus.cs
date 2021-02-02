@@ -1,11 +1,10 @@
 namespace Elwark.Education.Web.Gateways.Models
 {
-    public enum TestStatus
+    public enum PermissionStatus
     {
         Allowed = 0,
         CreatedMaximumCurrentTests = 1,
         CreatedMaximumTests = 2,
-        ReachedMaximumAnswerAttempts = 3,
-        ArticlesNotCompleted = 4
+        ReachedMaximumAnswerAttempts = 3
     }
 }
