@@ -10,7 +10,7 @@
 
 <ProfileSubjectHeader SubjectType="@_type" Selected="@(ProfileSubMenu.Statistics)"/>
 <div class="ma-6">
-    <ApiResponseViewer InitLoader="@Loader">
+    <ApiResponseViewer Response="@_response">
         <Loading>
             <CardsSkeleton/>
         </Loading>
@@ -45,9 +45,17 @@
     public string Page { get; set; } = string.Empty;
 
     private SubjectType _type;
+    private ApiResponse<ContentStatistics> _response = ApiResponse<ContentStatistics>.Loading();
 
-    protected override void OnParametersSet() =>
+    protected override async Task OnParametersSetAsync()
+    {
         Enum.TryParse(Page, true, out _type);
+        _response = _type switch
+        {
+            SubjectType.History =>await HistoryClient.GetMyStatisticsAsync(),
+            _ => ApiResponse<ContentStatistics>.Fail(Error.NotFound)
+            };
+    }
 
     private Task<ApiResponse<ContentStatistics>> Loader() =>
         _type switch{

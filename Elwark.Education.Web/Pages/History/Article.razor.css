@@ -26,34 +26,39 @@
 
 @media (min-width: 960px) {
     .grid {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas:
+            "content content image"
+            "content content test"
+            "adjacent adjacent .";
     }
 
-    .header {
-        grid-column: 1/-1;
+    .image {
+        grid-area: image;
     }
 
     .content {
-        grid-column: span 4;
+        grid-area: content;
     }
 
-    .aside {
-        grid-column: span 2;
+    .adjacent {
+        grid-area: adjacent;
+    }
+
+    .test {
+        grid-area: test;
     }
 }
 
 @media (min-width: 1280px) {
     .grid {
-        grid-template-columns: repeat(4, 1fr);
         max-width: 1440px;
         margin: 0 auto;
-    }
-
-    .content {
-        grid-column: 1/-2;
-    }
-
-    .aside {
-        grid-column: span 1;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-areas:
+            "content content content image"
+            "content content content test"
+            "adjacent adjacent adjacent .";
     }
 }

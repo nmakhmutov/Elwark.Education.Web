@@ -1,16 +1,18 @@
 @page "/profile"
 @using Elwark.Education.Web.Gateways.User
+@using Elwark.Education.Web.Gateways.Models.User
 @inject IUserClient UserClient
 @inject IDialogService Dialog
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
 
 <div class="ma-6">
-    <ApiResponseViewer InitLoader="@(() => UserClient.GetProfileAsync())">
+    <ApiResponseViewer Response="@_response">
         <Loading>
             <CardsSkeleton/>
         </Loading>
         <Result Context="profile">
+            <Title Value="@L["Profile"]"/>
             <div class="subjects">
                 <ProfileUserCard Statistics="@profile.Statistics.Summary"/>
                 @if (profile.CurrentTests.Length > 0)
@@ -40,6 +42,13 @@
 
 @code {
 
+    private ApiResponse<Profile> _response = ApiResponse<Profile>.Loading();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _response = await UserClient.GetProfileAsync();
+    }
+
     private void OnBuyClick(SubjectType subjectType)
     {
         var options = new DialogOptions
@@ -61,5 +70,6 @@
     {
         Console.WriteLine($@"On prolong click: {subjectType}");
     }
+
 
 }

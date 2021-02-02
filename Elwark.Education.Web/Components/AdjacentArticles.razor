@@ -1,0 +1,124 @@
+@inject IStringLocalizer<App> L
+
+<div class="grid">
+    @if (Adjacent.Past is not null)
+    {
+        <MudCard>
+            <MudCardContent>
+                @if (Adjacent.Past.Permission.Type == ContentType.Premium)
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Warning">
+                        @Adjacent.Past.Permission.Type
+                    </MudText>
+                }
+                @if (Adjacent.Past.Permission.IsAllowed)
+                {
+                    <MudLink Typo="Typo.h5" Href="@Links.History.Article(Adjacent.Past.Id)">
+                        @Adjacent.Past.Title
+                    </MudLink>
+                }
+                else
+                {
+                    <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
+                       href="#"
+                       @onclick:preventDefault="true"
+                       @onclick="@OnPremiumClick">
+                        @Adjacent.Past.Title
+                    </a>
+                }
+                <MudText Typo="Typo.body2">
+                    @Adjacent.Past.Overview
+                </MudText>
+            </MudCardContent>
+            <MudCardActions>
+                @if (Adjacent.Past.Permission.IsAllowed)
+                {
+                    <MudButton
+                        Variant="Variant.Text"
+                        Color="Color.Primary"
+                        Link="@Links.History.Article(Adjacent.Past.Id)"
+                        StartIcon="@Filled.ChevronLeft">
+                        @L["Article:Past"]
+                    </MudButton>
+                }
+                else
+                {
+                    <MudButton
+                        Variant="Variant.Text"
+                        Color="Color.Primary"
+                        OnClick="@OnPremiumClick"
+                        StartIcon="@Filled.ChevronLeft">
+                        @L["Article:Past"]
+                    </MudButton>
+                }
+
+            </MudCardActions>
+        </MudCard>
+    }
+    @if (Adjacent.Next is not null)
+    {
+        <MudCard>
+            <MudCardContent>
+                @if (Adjacent.Next.Permission.Type == ContentType.Premium)
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Warning">
+                        @Adjacent.Next.Permission.Type
+                    </MudText>
+                }
+                @if (Adjacent.Next.Permission.IsAllowed)
+                {
+                    <MudLink Typo="Typo.h5" Href="@Links.History.Article(Adjacent.Next.Id)">
+                        @Adjacent.Next.Title
+                    </MudLink>
+                }
+                else
+                {
+                    <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
+                       href="#"
+                       @onclick:preventDefault="true"
+                       @onclick="@OnPremiumClick">
+                        @Adjacent.Next.Title
+                    </a>
+                }
+                <MudText Typo="Typo.body2">
+                    @Adjacent.Next.Overview
+                </MudText>
+            </MudCardContent>
+            <MudCardActions Class="justify-end">
+                @if (Adjacent.Next.Permission.IsAllowed)
+                {
+                    <MudButton
+                        Variant="Variant.Text"
+                        Color="Color.Primary"
+                        Link="@Links.History.Article(Adjacent.Next.Id)"
+                        EndIcon="@Filled.ChevronRight">
+                        @L["Article:Next"]
+                    </MudButton>
+                }
+                else
+                {
+                    <MudButton
+                        Variant="Variant.Text"
+                        Color="Color.Primary"
+                        OnClick="@OnPremiumClick"
+                        EndIcon="@Filled.ChevronRight">
+                        @L["Article:Next"]
+                    </MudButton>
+                }
+            </MudCardActions>
+        </MudCard>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public Elwark.Education.Web.Gateways.Models.AdjacentArticles Adjacent { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public EventCallback OnPremiumClick { get; set; }
+
+}

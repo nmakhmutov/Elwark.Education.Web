@@ -9,6 +9,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string? Image,
         string Title,
         string Text,
-        string? Footnotes
+        string? Footnotes,
+        AdjacentArticles Adjacent
     );
 }

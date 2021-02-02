@@ -1,7 +1,7 @@
 @typeparam T
 @inject IStringLocalizer<App> L
 
-@switch (_response.Status)
+@switch (Response.Status)
 {
     case ResponseStatus.Loading:
         <Title Value="@L["Loading"]"></Title>
@@ -9,30 +9,23 @@
         break;
 
     case ResponseStatus.Fail:
-        <Title Value="@_response.Error.Title"></Title>
-        <ErrorPage Error="_response.Error"/>
+        <Title Value="@Response.Error.Title"></Title>
+        <ErrorPage Error="Response.Error"/>
         break;
 
     case ResponseStatus.Success:
-        @Result(_response.Data)
+        @Result(Response.Data)
         break;
 }
 
 @code {
-    private ApiResponse<T> _response = ApiResponse<T>.Loading();
-
+    
     [Parameter]
-    public Func<Task<ApiResponse<T>>> InitLoader { get; set; } = default!;
+    public ApiResponse<T> Response { get; set; } = ApiResponse<T>.Loading();
 
     [Parameter]
     public RenderFragment Loading { get; set; } = default!;
 
     [Parameter]
     public RenderFragment<T> Result { get; set; } = default!;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _response = await InitLoader();
-    }
-
 }

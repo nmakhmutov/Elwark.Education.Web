@@ -1,7 +1,7 @@
 @page "/history/article/{id}"
 @using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.Models.History
 @using Elwark.Education.Web.Gateways.Models.Test
-@using Elwark.Education.Web.Gateways.Models.User
 @inject IHistoryClient HistoryClient
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
@@ -11,9 +11,17 @@
 
 @attribute [Authorize]
 
-<ApiResponseViewer InitLoader="@(() => HistoryClient.GetArticleAsync(Id))">
+<ApiResponseViewer Response="@_response">
     <Loading>
-        <PageLoader/>
+        <div class="grid">
+            <div class="content">
+                <CardsSkeleton Count="1"/>
+            </div>
+            <div class="image">
+                <CardsSkeleton Count="2"/>
+            </div>
+        </div>
+
     </Loading>
     <Result Context="article">
         @{ var breadcrumbs = new BreadcrumbsItem[]
@@ -22,8 +30,15 @@
                new(L[$"History:{article.Period}"].Value, Links.History.Period(article.Period)),
                new(article.Topic.Title, Links.History.Topic(article.Topic.Id))
            }; }
+
         <Title Value="@article.Title"/>
         <div class="grid">
+            @if (article.Image is not null)
+            {
+                <div class="image">
+                    <img src="@article.Image" alt="@article.Title"/>
+                </div>
+            }
             <div class="content">
                 <MudPaper Class="pa-3">
                     <div class="title-container">
@@ -35,17 +50,18 @@
                     <MudDivider Class="mb-6" DividerType="DividerType.FullWidth"/>
                     <MarkdownText Text="@article.Text"/>
                 </MudPaper>
-            </div>
-            <div class="aside">
-                @if (article.Image is not null)
+                @if (article.Footnotes is not null)
                 {
-                    <div class="image mb-6">
-                        <img src="@article.Image" alt="@article.Title"/>
-                    </div>
+                    <MarkdownText Text="@article.Footnotes" Class="mt-6"/>
                 }
+            </div>
+            <div class="adjacent">
+                <AdjacentArticles Adjacent="@article.Adjacent" OnPremiumClick="@OnBuyClick"/>
+            </div>
+            <div class="test">
                 @if (article.Test is not null)
                 {
-                    <MudPaper Class="mb-6 pa-3">
+                    <MudPaper Class="pa-3">
                         <MudText Typo="Typo.h6" Class="mb-3">
                             @L["Test:CheckYourKnowledge"]
                         </MudText>
@@ -72,6 +88,9 @@
 
                             case TestStatus.CreatedMaximumTests:
                             case TestStatus.ReachedMaximumAnswerAttempts:
+                                <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
+                                    @ErrorManager.Localize(article.Test.Status)
+                                </MudText>
                                 <MudButton
                                     Variant="Variant.Filled"
                                     Color="Color.Primary"
@@ -79,9 +98,6 @@
                                     OnClick="@OnBuyClick">
                                     @L["Subscription:ChoosePricingPlan"]
                                 </MudButton>
-                                <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
-                                    @ErrorManager.Localize(article.Test.Status)
-                                </MudText>
                                 break;
 
                             default:
@@ -105,23 +121,29 @@
                     @if (article.Test.Conclusions.Length > 0)
                     {
                         <ProgresTestConclusionList
-                            Class="mb-6"
+                            Class="mt-6"
                             Conclusions="@article.Test.Conclusions"
                             DetailLinkBuilder="@(id => Links.Profile.TestDetail(SubjectType.History, id))"
                             SeeAllLink="@Links.Profile.Tests(SubjectType.History)"/>
                     }
                 }
-                <MarkdownText Text="@article.Footnotes"/>
             </div>
         </div>
     </Result>
 </ApiResponseViewer>
 
 @code {
+    private ApiResponse<HistoryArticleDetail> _response = ApiResponse<HistoryArticleDetail>.Loading();
     private ApiResponse<TestCreatedResult>? _test;
 
     [Parameter]
     public string Id { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _response = ApiResponse<HistoryArticleDetail>.Loading();
+        _response = await HistoryClient.GetArticleAsync(Id);
+    }
 
     private async Task CreateTestAsync()
     {
