@@ -1,113 +1,96 @@
 @inject IStringLocalizer<App> L
 
-<div class="grid">
-    @if (Adjacent.Past is not null)
-    {
-        <MudCard>
-            <MudCardContent>
-                @if (Adjacent.Past.Permission.Type == ContentType.Premium)
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Warning">
-                        @Adjacent.Past.Permission.Type
-                    </MudText>
-                }
+<div class="grid @Class">
+    <div>
+        @if (Adjacent.Past is not null)
+        {
+            <div class="d-flex flex-row mb-3">
                 @if (Adjacent.Past.Permission.IsAllowed)
                 {
-                    <MudLink Typo="Typo.h5" Href="@Links.History.Article(Adjacent.Past.Id)">
-                        @Adjacent.Past.Title
-                    </MudLink>
-                }
-                else
-                {
-                    <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
-                       href="#"
-                       @onclick:preventDefault="true"
-                       @onclick="@OnPremiumClick">
-                        @Adjacent.Past.Title
+                    <a href="@Links.History.Article(Adjacent.Past.Id)" class="d-flex flex-row align-center link">
+                        <div>
+                            <MudIcon Icon="@Filled.ChevronLeft" Class="icon"></MudIcon>
+                        </div>
+                        <div class="ml-3">
+                            <MudText Typo="Typo.body2" Color="Color.Primary">
+                                @L["Article:Next"]
+                            </MudText>
+                            <MudText Typo="Typo.h5" Class="title">
+                                @Adjacent.Past.Title
+                            </MudText>
+                        </div>
                     </a>
                 }
-                <MudText Typo="Typo.body2">
-                    @Adjacent.Past.Overview
-                </MudText>
-            </MudCardContent>
-            <MudCardActions>
-                @if (Adjacent.Past.Permission.IsAllowed)
-                {
-                    <MudButton
-                        Variant="Variant.Text"
-                        Color="Color.Primary"
-                        Link="@Links.History.Article(Adjacent.Past.Id)"
-                        StartIcon="@Filled.ChevronLeft">
-                        @L["Article:Past"]
-                    </MudButton>
-                }
                 else
                 {
-                    <MudButton
-                        Variant="Variant.Text"
-                        Color="Color.Primary"
-                        OnClick="@OnPremiumClick"
-                        StartIcon="@Filled.ChevronLeft">
-                        @L["Article:Past"]
-                    </MudButton>
-                }
-
-            </MudCardActions>
-        </MudCard>
-    }
-    @if (Adjacent.Next is not null)
-    {
-        <MudCard>
-            <MudCardContent>
-                @if (Adjacent.Next.Permission.Type == ContentType.Premium)
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Warning">
-                        @Adjacent.Next.Permission.Type
-                    </MudText>
-                }
-                @if (Adjacent.Next.Permission.IsAllowed)
-                {
-                    <MudLink Typo="Typo.h5" Href="@Links.History.Article(Adjacent.Next.Id)">
-                        @Adjacent.Next.Title
-                    </MudLink>
-                }
-                else
-                {
-                    <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
-                       href="#"
-                       @onclick:preventDefault="true"
-                       @onclick="@OnPremiumClick">
-                        @Adjacent.Next.Title
+                    <a @onclick:preventDefault="true" @onclick="@OnPremiumClick" class="d-flex flex-row align-center link">
+                        <div>
+                            <MudIcon Icon="@Filled.ChevronLeft" Class="icon"></MudIcon>
+                        </div>
+                        <div class="ml-3">
+                            <MudText Typo="Typo.body2" Color="Color.Primary">
+                                @L["Article:Next"]
+                            </MudText>
+                            <MudText Typo="Typo.h5" Class="title">
+                                @Adjacent.Past.Title
+                            </MudText>
+                        </div>
                     </a>
                 }
-                <MudText Typo="Typo.body2">
-                    @Adjacent.Next.Overview
-                </MudText>
-            </MudCardContent>
-            <MudCardActions Class="justify-end">
+            </div>
+            <MudText Typo="Typo.body2">
+                @Adjacent.Past.Overview
+            </MudText>
+        }
+    </div>
+    <div>
+        @if (Adjacent.Next is not null)
+        {
+            <div class="d-flex flex-row justify-end mb-3">
                 @if (Adjacent.Next.Permission.IsAllowed)
                 {
-                    <MudButton
-                        Variant="Variant.Text"
-                        Color="Color.Primary"
-                        Link="@Links.History.Article(Adjacent.Next.Id)"
-                        EndIcon="@Filled.ChevronRight">
-                        @L["Article:Next"]
-                    </MudButton>
+                    <a href="@Links.History.Article(Adjacent.Next.Id)" class="d-flex flex-row align-center link">
+                        <div class="mr-3">
+                            <MudText Typo="Typo.body2" Color="Color.Primary" Align="Align.Right">
+                                @L["Article:Next"]
+                            </MudText>
+                            <MudText Typo="Typo.h5" Class="title">
+                                @Adjacent.Next.Title
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudIcon Icon="@Filled.ChevronRight" Class="icon"></MudIcon>
+                        </div>
+                    </a>
                 }
                 else
                 {
-                    <MudButton
-                        Variant="Variant.Text"
-                        Color="Color.Primary"
-                        OnClick="@OnPremiumClick"
-                        EndIcon="@Filled.ChevronRight">
-                        @L["Article:Next"]
-                    </MudButton>
+                    <a @onclick:preventDefault="true" @onclick="@OnPremiumClick" class="d-flex flex-row align-center link">
+                        <div class="mr-3">
+                            <MudText Typo="Typo.body2" Color="Color.Primary" Align="Align.Right">
+                                @L["Article:Next"]
+                            </MudText>
+                            <MudText Typo="Typo.h5" Class="title">
+                                @Adjacent.Next.Title
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudIcon Icon="@Filled.ChevronRight" Class="icon"></MudIcon>
+                        </div>
+                    </a>
                 }
-            </MudCardActions>
-        </MudCard>
-    }
+            </div>
+            @if (Adjacent.Next.Permission.Type == ContentType.Premium)
+            {
+                <MudText Typo="Typo.body2" Color="Color.Warning">
+                    @Adjacent.Next.Permission.Type
+                </MudText>
+            }
+            <MudText Typo="Typo.body2">
+                @Adjacent.Next.Overview
+            </MudText>
+        }
+    </div>
 </div>
 
 @code {

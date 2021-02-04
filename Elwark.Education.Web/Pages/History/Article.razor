@@ -33,98 +33,99 @@
 
         <Title Value="@article.Title"/>
         <div class="grid">
-            @if (article.Image is not null)
-            {
-                <div class="image">
-                    <img src="@article.Image" alt="@article.Title"/>
-                </div>
-            }
+            <div class="title">
+                <MudText Typo="Typo.h2" Class="mb-3" Align="Align.Center">
+                    @article.Title
+                </MudText>
+                <Breadcrumbs Items="breadcrumbs" Class="mb-6"/>
+            </div>
             <div class="content">
-                <MudPaper Class="pa-3">
-                    <div class="title-container">
-                        <MudText Typo="Typo.h2" Class="mb-3">
-                            @article.Title
-                        </MudText>
-                        <Breadcrumbs Items="breadcrumbs" Class="mb-6"/>
+                @if (article.Image is not null)
+                {
+                    <div class="image">
+                        <img src="@article.Image" alt="@article.Title"/>
                     </div>
-                    <MudDivider Class="mb-6" DividerType="DividerType.FullWidth"/>
+                }
+                <MudPaper Class="pa-3">
                     <MarkdownText Text="@article.Text"/>
                 </MudPaper>
+                <AdjacentArticles Adjacent="@article.Adjacent" Class="my-6" OnPremiumClick="@OnBuyClick"/>
+            </div>
+            <div class="aside">
                 @if (article.Footnotes is not null)
                 {
-                    <MarkdownText Text="@article.Footnotes" Class="mt-6"/>
+                    <div class="footnotes">
+                        <MarkdownText Text="@article.Footnotes"/>
+                    </div>
                 }
-            </div>
-            <div class="adjacent">
-                <AdjacentArticles Adjacent="@article.Adjacent" OnPremiumClick="@OnBuyClick"/>
-            </div>
-            <div class="test">
                 @if (article.Test is not null)
                 {
-                    <MudPaper Class="pa-3">
-                        <MudText Typo="Typo.h6" Class="mb-3">
-                            @L["Test:CheckYourKnowledge"]
-                        </MudText>
-                        @switch (article.Test.Status)
-                        {
-                            case PermissionStatus.Allowed when _test?.Status == ResponseStatus.Loading:
-                                <MudButton Variant="Variant.Filled" Class="mb-3 mx-auto d-block" Disabled="true">
-                                    <div class="d-flex flex-row align-center">
-                                        <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
-                                        @L["Loading"]
-                                    </div>
-                                </MudButton>
-                                break;
-
-                            case PermissionStatus.Allowed:
-                                <MudButton
-                                    Variant="Variant.Filled"
-                                    Color="Color.Primary"
-                                    Class="mb-3 mx-auto d-block"
-                                    OnClick="@CreateTestAsync">
-                                    @L["Test:PassATest"]
-                                </MudButton>
-                                break;
-
-                            case PermissionStatus.CreatedMaximumTests:
-                            case PermissionStatus.ReachedMaximumAnswerAttempts:
-                                <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
-                                    @ErrorManager.Localize(article.Test.Status)
-                                </MudText>
-                                <MudButton
-                                    Variant="Variant.Filled"
-                                    Color="Color.Primary"
-                                    Class="mb-3 mx-auto d-block"
-                                    OnClick="@OnBuyClick">
-                                    @L["Subscription:ChoosePricingPlan"]
-                                </MudButton>
-                                break;
-
-                            default:
-                                <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
-                                    @ErrorManager.Localize(article.Test.Status)
-                                </MudText>
-                                break;
-                        }
-                        <MudText Typo="Typo.body2" Align="Align.Center">
-                            @if (article.Test.Progress is not null)
+                    <div class="test">
+                        <MudPaper Class="pa-3">
+                            <MudText Typo="Typo.h6" Class="mb-3">
+                                @L["Test:CheckYourKnowledge"]
+                            </MudText>
+                            @switch (article.Test.Status)
                             {
-                                @L["Test:QuantityCompletedTimes", article.Test.Progress.QuantityCompletedTimes]
-                            }
-                            else
-                            {
-                                @L["Test:NotPassed"]
-                            }
-                        </MudText>
-                    </MudPaper>
+                                case PermissionStatus.Allowed when _test?.Status == ResponseStatus.Loading:
+                                    <MudButton Variant="Variant.Filled" Class="mb-3 mx-auto d-block" Disabled="true">
+                                        <div class="d-flex flex-row align-center">
+                                            <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                                            @L["Loading"]
+                                        </div>
+                                    </MudButton>
+                                    break;
 
+                                case PermissionStatus.Allowed:
+                                    <MudButton
+                                        Variant="Variant.Filled"
+                                        Color="Color.Primary"
+                                        Class="mb-3 mx-auto d-block"
+                                        OnClick="@CreateTestAsync">
+                                        @L["Test:PassATest"]
+                                    </MudButton>
+                                    break;
+
+                                case PermissionStatus.CreatedMaximumTests:
+                                case PermissionStatus.ReachedMaximumAnswerAttempts:
+                                    <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
+                                        @ErrorManager.Localize(article.Test.Status)
+                                    </MudText>
+                                    <MudButton
+                                        Variant="Variant.Filled"
+                                        Color="Color.Primary"
+                                        Class="mb-3 mx-auto d-block"
+                                        OnClick="@OnBuyClick">
+                                        @L["Subscription:ChoosePricingPlan"]
+                                    </MudButton>
+                                    break;
+
+                                default:
+                                    <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
+                                        @ErrorManager.Localize(article.Test.Status)
+                                    </MudText>
+                                    break;
+                            }
+                            <MudText Typo="Typo.body2" Align="Align.Center">
+                                @if (article.Test.Progress is not null)
+                                {
+                                    @L["Test:QuantityCompletedTimes", article.Test.Progress.QuantityCompletedTimes]
+                                }
+                                else
+                                {
+                                    @L["Test:NotPassed"]
+                                }
+                            </MudText>
+                        </MudPaper>
+                    </div>
                     @if (article.Test.Conclusions.Length > 0)
                     {
-                        <ProgresTestConclusionList
-                            Class="mt-6"
-                            Conclusions="@article.Test.Conclusions"
-                            DetailLinkBuilder="@(id => Links.Profile.TestDetail(SubjectType.History, id))"
-                            SeeAllLink="@Links.Profile.Tests(SubjectType.History)"/>
+                        <div class="conclusions">
+                            <ProgresTestConclusionList
+                                Conclusions="@article.Test.Conclusions"
+                                DetailLinkBuilder="@(id => Links.Profile.TestDetail(SubjectType.History, id))"
+                                SeeAllLink="@Links.Profile.Tests(SubjectType.History)"/>
+                        </div>
                     }
                 }
             </div>
