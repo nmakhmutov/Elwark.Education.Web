@@ -6,15 +6,18 @@
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
 
-<div class="ma-6">
-    <ApiResponseViewer Response="@_response">
-        <Loading>
+
+<ApiResponseViewer Response="@_response">
+    <Loading>
+        <div class="ma-6">
             <CardsSkeleton/>
-        </Loading>
-        <Result Context="profile">
-            <Title Value="@L["Profile"]"/>
+        </div>
+    </Loading>
+    <Result Context="profile">
+        <Title Value="@L["Profile"]"/>
+        <ProfileUserCard Statistics="@profile.Statistics.Summary"/>
+        <div class="ma-6">
             <div class="subjects">
-                <ProfileUserCard Statistics="@profile.Statistics.Summary"/>
                 @if (profile.CurrentTests.Length > 0)
                 {
                     <MudPaper>
@@ -36,9 +39,9 @@
                         OnManageClick="@OnManageClick"/>
                 }
             </div>
-        </Result>
-    </ApiResponseViewer>
-</div>
+        </div>
+    </Result>
+</ApiResponseViewer>
 
 @code {
 

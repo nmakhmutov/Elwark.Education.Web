@@ -33,7 +33,7 @@
                 </MudText>
             </div>
 
-            <MudNavLink Icon="@Filled.DonutLarge" Href="@Links.Profile.Index">
+            <MudNavLink Icon="@Icons.Filled.DonutLarge" Href="@Links.Profile.Index">
                 @L["Profile"]
             </MudNavLink>
         </Authorized>
@@ -42,23 +42,14 @@
 
     <MudDivider DividerType="DividerType.Middle" Class="my-3"/>
 
-    <MudNavGroup
-        Title="@L["Subject:History"]"
-        Expanded="@(_subjectType == SubjectType.History)"
-        Icon="@SubjectType.History.GetIcon()"
-        ExpandIcon="@Filled.ExpandMore">
-        @foreach (var (link, title) in _historyPages)
-        {
-            <MudNavLink Href="@link">
-                @title
-            </MudNavLink>
-        }
-    </MudNavGroup>
+    <MudNavLink Href="@Links.History.Index" Icon="@SubjectType.History.GetIcon()">
+        @L["Subject:History"]
+    </MudNavLink>
 
     <AuthorizeView>
         <Authorized>
             <MudAppBarSpacer/>
-            <MudButton Variant="Variant.Text" StartIcon="@(Filled.Login)" OnClick="@BeginSignOut">
+            <MudButton Variant="Variant.Text" StartIcon="@(Icons.Filled.Login)" OnClick="@BeginSignOut">
                 @L["LogOut"]
             </MudButton>
         </Authorized>
@@ -66,18 +57,6 @@
 </MudNavMenu>
 
 @code {
-    private SubjectType _subjectType;
-    private Dictionary<string, string> _historyPages = new();
-
-    protected override void OnInitialized()
-    {
-        var path = $"/{Navigation.ToBaseRelativePath(Navigation.Uri)}";
-        if (path.StartsWith(Links.History.Index))
-            _subjectType = SubjectType.History;
-
-        _historyPages = Enum.GetValues<HistoryPeriodType>()
-            .ToDictionary(Links.History.Period, x => L[$"History:{x}"].Value);
-    }
 
     private async Task BeginSignOut(MouseEventArgs args)
     {
@@ -85,9 +64,7 @@
         Navigation.NavigateTo("authentication/logout");
     }
 
-    private void OnLogin()
-    {
+    private void OnLogin() => 
         Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
-    }
 
 }

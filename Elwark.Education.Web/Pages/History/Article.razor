@@ -24,7 +24,7 @@
 
     </Loading>
     <Result Context="article">
-        @{ var breadcrumbs = new BreadcrumbsItem[]
+        @{ var breadcrumbs = new List<BreadcrumbItem>
            {
                new(L["Subject:History"].Value, Links.History.Index),
                new(L[$"History:{article.Period}"].Value, Links.History.Period(article.Period)),
@@ -33,31 +33,30 @@
 
         <Title Value="@article.Title"/>
         <div class="grid">
-            <div class="title">
+            <div class="header">
                 <MudText Typo="Typo.h2" Class="mb-3" Align="Align.Center">
                     @article.Title
                 </MudText>
                 <Breadcrumbs Items="breadcrumbs" Class="mb-6"/>
-            </div>
-            <div class="content">
                 @if (article.Image is not null)
                 {
-                    <div class="image">
+                    <div class="image mb-6">
                         <img src="@article.Image" alt="@article.Title"/>
                     </div>
                 }
+            </div>
+            <div class="content">
                 <MudPaper Class="pa-3">
                     <MarkdownText Text="@article.Text"/>
+                    @if (article.Footnotes is not null)
+                    {
+                        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+                        <MarkdownText Text="@article.Footnotes"/>
+                    }
                 </MudPaper>
                 <AdjacentArticles Adjacent="@article.Adjacent" Class="my-6" OnPremiumClick="@OnBuyClick"/>
             </div>
             <div class="aside">
-                @if (article.Footnotes is not null)
-                {
-                    <div class="footnotes">
-                        <MarkdownText Text="@article.Footnotes"/>
-                    </div>
-                }
                 @if (article.Test is not null)
                 {
                     <div class="test">
@@ -107,9 +106,9 @@
                                     break;
                             }
                             <MudText Typo="Typo.body2" Align="Align.Center">
-                                @if (article.Test.Progress is not null)
+                                @if (article.Test is not null)
                                 {
-                                    @L["Test:QuantityCompletedTimes", article.Test.Progress.QuantityCompletedTimes]
+                                    @L["Test:QuantityCompletedTimes", article.Test.QuantityCompletedTimes]
                                 }
                                 else
                                 {

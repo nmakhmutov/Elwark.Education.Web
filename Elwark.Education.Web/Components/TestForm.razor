@@ -36,17 +36,15 @@
 
             case QuestionType.SingleAnswer:
                 <div class="options-grid">
-                    <MudRadioGroup
-                        SelectedOption="@_answer.SingleAnswer.ToString()"
-                        SelectedOptionChanged="@(s => _answer.SingleAnswer = int.Parse(s))">
+                    <MudRadioGroup @bind-SelectedOption="@_answer.SingleAnswer">
                         @foreach (var option in Question.Options)
                         {
                             var (icon, color) = AnswerResult switch {
                                 SingleAnswerResult x when option.Number == x.Number => 
-                                    (Icon: Filled.Check , Color: Color.Success),
+                                    (Icon: Icons.Filled.Check , Color: Color.Success),
                                 
                                 SingleAnswerResult {IsAnswerCorrect: false} when option.Number == _answer.SingleAnswer => 
-                                    (Icon: Filled.Clear , Color: Color.Error),
+                                    (Icon: Icons.Filled.Clear , Color: Color.Error),
                                     
                                 _ => (Icon: null, Color: Color.Default)
                                 };
@@ -60,7 +58,7 @@
                                 {
                                     <MudIcon Icon="@icon" Color="@color"/>
                                 }
-                                <MudRadio Disabled="@(AnswerResult != null)" Color="Color.Primary" Option="@option.Number.ToString()">
+                                <MudRadio Disabled="@(AnswerResult != null)" Color="Color.Primary" Option="@option.Number">
                                     @switch (option.Type)
                                     {
                                         case AnswerOptionType.Text:
@@ -88,10 +86,10 @@
                     {
                         var (icon, color) = AnswerResult switch {
                             ManyAnswersResult x when x.Numbers.Contains(option.Number) => 
-                                (Icon: Filled.Check , Color: Color.Success),
+                                (Icon: Icons.Filled.Check , Color: Color.Success),
                                                 
                             ManyAnswersResult {IsAnswerCorrect: false} when _answer.ManyAnswer.Contains(option.Number) => 
-                                (Icon: Filled.Clear , Color: Color.Error),
+                                (Icon: Icons.Filled.Clear , Color: Color.Error),
                                                     
                             _ => (Icon: null, Color: Color.Default)
                             };
@@ -147,7 +145,12 @@
                     break;
 
                 case AnswerState.Answering:
-                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary"/>
+                    <MudButton Variant="Variant.Filled" Disabled="true">
+                        <div class="d-flex flex-row align-center">
+                            <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                            @L["Loading"]
+                        </div>
+                    </MudButton>
                     break;
 
                 case AnswerState.Next:
@@ -216,7 +219,7 @@
             QuestionType.SortedAnswers => new ManyAnswer(_answer.ManyAnswer),
             _ => throw new ArgumentOutOfRangeException(nameof(_answer.QuestionType))
             };
-
+        
         await OnAnswer.InvokeAsync(answer);
         _answerState = AnswerState.Next;
     }

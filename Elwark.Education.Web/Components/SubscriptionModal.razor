@@ -22,9 +22,9 @@
                 </Loading>
                 <Result Context="subscriptions">
                     <MudTabs Elevation="1" Rounded="false" Centered="true" Color="Color.Secondary">
-                        @foreach (var group in subscriptions.GroupBy(x => x.Days))
+                        @foreach (var group in subscriptions.GroupBy(x => x.Type).OrderBy(x => x.Key))
                         {
-                            <MudTabPanel Text="@(group.Key + " days")">
+                            <MudTabPanel Text="@L[$"Subscription:{group.Key}"]">
                                 <div class="pricing-grid">
                                     @foreach (var item in group.OrderBy(x => x.Prices[0].Total))
                                     {
@@ -42,11 +42,11 @@
                     </MudTabs>
                 </Result>
             </ApiResponseViewer>
-            <div class="d-flex flex-row justify-center my-3">
-                <MudButton Variant="Variant.Filled" Color="Color.Success" Link="@Links.Shop.Index">
-                    @L["SeeAll"]
-                </MudButton>
-            </div>
+            @* <div class="d-flex flex-row justify-center my-3"> *@
+            @*     <MudButton Variant="Variant.Filled" Color="Color.Success" Link="@Links.Shop.Index"> *@
+            @*         @L["SeeAll"] *@
+            @*     </MudButton> *@
+            @* </div> *@
         </div>
     </DialogContent>
 </MudDialog>

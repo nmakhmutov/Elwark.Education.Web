@@ -3,12 +3,7 @@ using MudBlazor;
 
 namespace Elwark.Education.Web.Gateways.Models
 {
-    public sealed record TopicProgress(
-        uint TotalArticles,
-        uint CompletedArticles,
-        uint QuantityCompletedTimes,
-        DateTime? ExamCompletedAt
-    )
+    public sealed record TopicProgress(uint TotalArticles, uint CompletedArticles, uint QuantityCompletedTimes)
     {
         public uint Percentage
         {

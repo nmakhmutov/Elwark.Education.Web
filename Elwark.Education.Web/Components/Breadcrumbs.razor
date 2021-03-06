@@ -1,12 +1,12 @@
 <nav class="breadcrumbs @Class">
     <ol class="breadcrumbs-list">
-        @for (var i = 0; i < Items.Length; i++)
+        @for (var i = 0; i < Items.Count; i++)
         {
             var item = Items[i];
             <li>
-                <MudLink Href="@(item.Link)">@item.Name</MudLink>
+                <MudLink Href="@item.Href">@item.Text</MudLink>
             </li>
-            @if (i != Items.Length - 1)
+            @if (i != Items.Count - 1)
             {
                 <li class="breadcrumbs-separator">
                     <MudIcon Icon="@Separator" Size="Size.Small"/>
@@ -19,13 +19,12 @@
 @code {
 
     [Parameter]
-    public BreadcrumbsItem[] Items { get; init; } = Array.Empty<BreadcrumbsItem>();
-
-
+    public List<BreadcrumbItem> Items { get; init; } = new();
+    
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter]
-    public string Separator { get; set; } = Filled.ChevronRight;
+    public string Separator { get; set; } = Icons.Filled.ChevronRight;
 
 }

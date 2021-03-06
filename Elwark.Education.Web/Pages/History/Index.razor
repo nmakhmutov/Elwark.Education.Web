@@ -5,8 +5,6 @@
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
 
-<Title Value="@L["Subject:History"]"></Title>
-
 <ApiResponseViewer Response="@_response">
     <Loading>
         <div class="ma-6">
@@ -14,6 +12,7 @@
         </div>
     </Loading>
     <Result Context="overview">
+        <Title Value="@L["Subject:History"]"/>
         <div class="period-grid">
             @foreach (var period in overview.Periods)
             {
@@ -86,6 +85,61 @@
                             </div>
                             <MudText Typo="Typo.subtitle1">
                                 @article.Overview
+                            </MudText>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="articles-grid">
+            <div class="trending-container">
+                <div class="container-header">
+                    <MudText Typo="Typo.h6">
+                        Trending topics
+                    </MudText>
+                </div>
+                <div class="trending-grid mt-3">
+                    @foreach (var topic in overview.Topics.Trends)
+                    {
+                        <div class="trending-article-card">
+                            <div class="trending-article-image">
+                                <img src="@topic.Image" loading="lazy" alt="@topic.Title">
+                            </div>
+                            <div class="trending-article-content">
+                                <MudLink Typo="Typo.h5" Href="@(Links.History.Topic(topic.Id))">
+                                    @topic.Title
+                                </MudLink>
+                                <MudText Typo="Typo.subtitle1">
+                                    @topic.Overview
+                                </MudText>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="recent-container">
+                <div class="container-header justify-lg-center">
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        Recent topics
+                    </MudText>
+                </div>
+                <div class="recent-grid mt-3">
+                    @foreach (var topic in overview.Topics.Recent)
+                    {
+                        <div class="recent-article-card">
+                            <div class="recent-article-card-header">
+                                <div class="recent-article-card-image">
+                                    <img src="@topic.Image" loading="lazy" style="width: 100%" alt="@topic.Title">
+                                </div>
+                                <div>
+                                    <MudLink Typo="Typo.h5" Href="@(Links.History.Topic(topic.Id))">
+                                        @topic.Title
+                                    </MudLink>
+                                </div>
+                            </div>
+                            <MudText Typo="Typo.subtitle1">
+                                @topic.Overview
                             </MudText>
                         </div>
                     }

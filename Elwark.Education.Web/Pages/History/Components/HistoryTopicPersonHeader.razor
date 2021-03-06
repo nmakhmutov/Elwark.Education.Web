@@ -53,7 +53,7 @@
         </div>
         @if (Topic.Test is not null)
         {
-            <TopicTestCard Class="ma-6 mw-sm" Test="@Topic.Test"/>
+            <TopicTestCard Class="mt-6 mw-sm" Test="@Topic.Test"/>
         }
     </div>
 </div>
@@ -64,7 +64,7 @@
     public HistoryPersonTopicDetail Topic { get; set; } = default!;
 
     [Parameter]
-    public BreadcrumbsItem[] Breadcrumbs { get; set; } = Array.Empty<BreadcrumbsItem>();
+    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
 
     [Parameter]
     public string? Class { get; set; }

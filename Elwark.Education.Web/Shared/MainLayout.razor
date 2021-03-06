@@ -1,6 +1,7 @@
 ﻿@using Elwark.Education.Web.Infrastructure.LocalStorage
 @inherits LayoutComponentBase
 @inject ILocalStorage LocalStorage
+@inject IStringLocalizer<App> L
 
 <MudThemeProvider Theme="_currentTheme"/>
 <MudDialogProvider/>
@@ -8,34 +9,39 @@
 
 <MudLayout>
     <MudAppBar Elevation="25">
-        <MudIconButton Icon="@Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle"/>
-        <MudText Typo="Typo.h5">Education</MudText>
+        <MudIconButton Icon="@Icons.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle"/>
+        <MudLink Href="@Links.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+            Education <sup class="beta">beta</sup>
+        </MudLink>
         <MudAppBarSpacer/>
         <LanguageSelector/>
         <MudTooltip Text="Toggle theme">
             <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@SwitchTheme"/>
         </MudTooltip>
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen" Clipped="false" Elevation="25">
-        <a href="@Links.Root" class="drawer-header">
-            <img src="Elwark.png" alt="logo" style="width: 150px"/>
-        </a>
+    <MudDrawer @bind-Open="@_drawerOpen" Elevation="25">
         <NavMenu/>
     </MudDrawer>
     <MudMainContent Class="main-content">
-        @Body
+        <div>
+            @Body
+        </div>
+        <MainFooter/>
+        <MudScrollToTop TopOffset="400" Style="z-index: 1000">
+            <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp"/>
+        </MudScrollToTop>
     </MudMainContent>
 </MudLayout>
 
 @code {
     bool _drawerOpen;
     MudTheme _currentTheme = new();
-    string _themeIcon = Filled.Brightness7;
+    string _themeIcon = Icons.Filled.Brightness7;
 
-    protected override void OnInitialized() => 
+    protected override void OnInitialized() =>
         _currentTheme = _defaultTheme;
 
-    private void DrawerToggle() => 
+    private void DrawerToggle() =>
         _drawerOpen = !_drawerOpen;
 
     private void SwitchTheme()
@@ -43,12 +49,12 @@
         if (_currentTheme == _defaultTheme)
         {
             _currentTheme = _darkTheme;
-            _themeIcon = Filled.Brightness3;
+            _themeIcon = Icons.Filled.Brightness3;
         }
         else
         {
             _currentTheme = _defaultTheme;
-            _themeIcon = Filled.Brightness7;
+            _themeIcon = Icons.Filled.Brightness7;
         }
     }
 
@@ -62,7 +68,8 @@
             Black = "#272c34",
             Background = "#f4f6f8",
             BackgroundGrey = "#e3e5e7",
-            AppbarBackground = "#3949ab"
+            AppbarBackground = Colors.Shades.White, //"#3949ab"
+            AppbarText = Colors.Grey.Darken3 //"#27272f"
         }
     };
 
@@ -70,7 +77,7 @@
     {
         Palette = new Palette
         {
-            Primary = "#3f51b5",
+            Primary = "#8a85ff",
             Secondary = "#606fc7",
             Tertiary = "#8560c7",
             Black = "#27272f",

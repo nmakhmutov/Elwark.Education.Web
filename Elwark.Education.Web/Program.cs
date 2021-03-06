@@ -9,7 +9,6 @@ using Elwark.Education.Web.Infrastructure.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MudBlazor;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
@@ -24,9 +23,7 @@ namespace Elwark.Education.Web
             builder.RootComponents.Add<App>("#app");
 
             builder.Services
-                .AddMudBlazorDialog()
-                .AddMudBlazorSnackbar()
-                .AddMudBlazorResizeListener()
+                .AddMudServices()
                 .AddBlazoredLocalStorage();
 
             builder.Services
@@ -49,8 +46,7 @@ namespace Elwark.Education.Web
 
             builder.Services
                 .AddHttpClient<IHistoryClient, HistoryClient>(
-                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
-                )
+                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]))
                 .AddHttpMessageHandler<EducationAuthorization>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
@@ -62,7 +58,7 @@ namespace Elwark.Education.Web
                 .AddHttpMessageHandler<EducationAuthorization>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
-
+            
             builder.Services
                 .AddHttpClient<IShopClient, ShopClient>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])

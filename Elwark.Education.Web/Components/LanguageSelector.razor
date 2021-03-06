@@ -2,7 +2,12 @@
 @inject ILocalStorage LocalStorage
 @inject NavigationManager NavigationManager
 
-<MudMenu StartIcon="@Filled.Translate" EndIcon="@Filled.KeyboardArrowDown" Color="Color.Inherit" Label="@Get()">
+<MudMenu
+    StartIcon="@Icons.Filled.Translate" 
+    EndIcon="@Icons.Filled.KeyboardArrowDown" 
+    Color="Color.Inherit"
+    FullWidth="true"
+    Label="@Get()">
     @foreach (var (culture, name) in _cultures)
     {
         <MudMenuItem OnClick="@(() => Set(culture))">

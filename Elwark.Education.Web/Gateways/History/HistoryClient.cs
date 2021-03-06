@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Elwark.Education.Web.Gateways.History.Request;
@@ -59,8 +60,9 @@ namespace Elwark.Education.Web.Gateways.History
 
         public Task<ApiResponse<ContentStatistics>> GetMyStatisticsAsync() =>
             ExecuteAsync<ContentStatistics>(() => _client.GetAsync("history/me/statistics"));
-        
-        public Task<ApiResponse<PageableResponse<TestConclusionSummary>>> GetMyTestConclusionsAsync(PageableRequest request) =>
+
+        public Task<ApiResponse<PageableResponse<TestConclusionSummary>>> GetMyTestConclusionsAsync(
+            PageableRequest request) =>
             ExecuteAsync<PageableResponse<TestConclusionSummary>>(() =>
                 _client.GetAsync($"history/me/test-conclusions?token={request.Token}&count={request.Count}"));
 

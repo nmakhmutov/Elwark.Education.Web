@@ -44,17 +44,18 @@
 @code {
     private ApiResponse<HistoryTopicDetail> _topic = ApiResponse<HistoryTopicDetail>.Loading();
 
-    private BreadcrumbsItem[] _breadcrumbs = Array.Empty<BreadcrumbsItem>();
+    private List<BreadcrumbItem> _breadcrumbs = new();
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
     protected override async Task OnParametersSetAsync()
     {
+        _topic = ApiResponse<HistoryTopicDetail>.Loading();
         _topic = await HistoryClient.GetTopicAsync(Id);
 
         if (_topic.Status == ResponseStatus.Success)
-            _breadcrumbs = new BreadcrumbsItem[]
+            _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Subject:History"].Value, Links.History.Index),
                 new(L[$"History:{_topic.Data.Period}"].Value, Links.History.Period(_topic.Data.Period))

@@ -4,16 +4,16 @@
     <TopicProgressBar Progress="@Test.Progress"/>
     <div class="d-flex flex-row justify-space-between mt-1">
         <div class="d-flex flex-row align-center">
-            @if (Test.Progress.ExamCompletedAt is not null)
+            @if (Test.Progress.QuantityCompletedTimes > 0)
             {
-                <MudIcon Icon="@Outlined.CheckCircleOutlineOutlined" Style="@("color:" + Test.Progress.Color)"/>
+                <MudIcon Icon="@Icons.Outlined.CheckCircleOutline" Style="@("color:" + Test.Progress.Color)"/>
                 <MudText Typo="Typo.body2" Class="ml-1">
                     @L.GetString("Exam:QuantityCompletedTimes", Test.Progress.QuantityCompletedTimes)
                 </MudText>
             }
             else
             {
-                <MudIcon Icon="@Outlined.RemoveCircleOutlineOutlined"/>
+                <MudIcon Icon="@Icons.Outlined.RemoveCircleOutline"/>
                 <MudText Typo="Typo.body2" Class="ml-1">
                     @L["Exam:NotPassed"]
                 </MudText>

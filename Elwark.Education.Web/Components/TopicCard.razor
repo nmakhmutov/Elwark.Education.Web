@@ -1,7 +1,7 @@
 @inject IStringLocalizer<App> L
 
 <div class="mud-paper mud-elevation-1 grid">
-    <div class="image" style="background-image: url(@Image)"></div>
+    <div class="image" style="background-image: url('@Image')"></div>
     <div class="pa-3">
         <MudLink Typo="Typo.subtitle1" Href="@Href">
             @Title
@@ -13,22 +13,17 @@
     <div class="progress px-3">
         @if (Progress is not null)
         {
-            <MudProgressLinear Maximum="100" Minimum="0" Color="Color.Primary" Value="@(100 - Progress.Percentage)"/>
+            <MudProgressLinear Minimum="0" Maximum="100" Color="Color.Primary" Value="@Progress.Percentage"/>
             <MudText Typo="Typo.subtitle2" Align="Align.Center">
                 @Progress.Percentage%
             </MudText>
         }
     </div>
-    <div class="d-flex flex-row justify-space-between align-center pa-3">
-        <div>
-            <MudIconButton Icon="@Filled.Bookmark" Color="Color.Default"/>
-            <MudIconButton Icon="@Filled.Favorite" Color="Color.Default"/>
-        </div>
+    <div class="d-flex flex-row justify-center pa-3">
         <MudButton
             Variant="Variant.Text"
             Color="Color.Primary"
-            Link="@Href"
-            EndIcon="@Filled.ArrowRightAlt">
+            Link="@Href">
             @L["LearnMore"]
         </MudButton>
     </div>

@@ -7,7 +7,7 @@
 <div class="statistics-grid @Class">
     <div class="icon-widget-grid">
         <ProfileStatisticsIconWidget
-            Icon="@Filled.Timer"
+            Icon="@Icons.Filled.Timer"
             Title="@L["TimeSpent"]"
             Value="@Statistics.TimeSpent.ToSimpleFormat()">
             <Caption>
@@ -19,7 +19,10 @@
         </ProfileStatisticsIconWidget>
     </div>
 
-    <ProfileStatisticsDetailWidget Icon="@Filled.School" Value="@Statistics.CompletedTests.Total.ToReadable()" Title="@L["CompletedTests"]">
+    <ProfileStatisticsDetailWidget
+        Icon="@Icons.Filled.School"
+        Value="@Statistics.CompletedTests.Total.ToReadable()"
+        Title="@L["CompletedTests"]">
         <Caption>
             <ProfileStatisticsDifferenceCaption
                 Current="@Statistics.WeeklyDifference.CompletedTests.Current"
@@ -56,7 +59,10 @@
         </Details>
     </ProfileStatisticsDetailWidget>
 
-    <ProfileStatisticsDetailWidget Icon="@Filled.PendingActions" Value="@Statistics.Score.Total.ToReadable()" Title="@L["Score"]">
+    <ProfileStatisticsDetailWidget
+        Icon="@Icons.Filled.PendingActions"
+        Value="@Statistics.Score.Total.ToReadable()"
+        Title="@L["Score"]">
         <Caption>
             <ProfileStatisticsDifferenceCaption
                 Current="@Statistics.WeeklyDifference.Score.Current"
@@ -93,7 +99,10 @@
         </Details>
     </ProfileStatisticsDetailWidget>
 
-    <ProfileStatisticsDetailWidget Icon="@Filled.HelpOutline" Value="@Statistics.AnswerRatio.Questions.ToReadable()" Title="@L["Questions"]">
+    <ProfileStatisticsDetailWidget
+        Icon="@Icons.Filled.HelpOutline"
+        Value="@Statistics.AnswerRatio.Questions.ToReadable()"
+        Title="@L["Questions"]">
         <Caption>
             <ProfileStatisticsDifferenceCaption
                 Current="@Statistics.WeeklyDifference.Questions.Current"

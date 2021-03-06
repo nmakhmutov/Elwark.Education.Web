@@ -8,10 +8,10 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
         public static string GetIcon(this SubjectType type) =>
             type switch
             {
-                SubjectType.History => TwoTone.AccountBalanceTwoTone,
+                SubjectType.History => Icons.Outlined.AccountBalance,
                 // SubjectType.Physics => Icons.Custom.Radioactive,
-                SubjectType.Astronomy => Filled.Flare,
-                _ => Filled.Adjust
+                SubjectType.Astronomy => Icons.Filled.Flare,
+                _ => Icons.Filled.Adjust
             };
 
         public static string GetBackground(this SubjectType type) =>

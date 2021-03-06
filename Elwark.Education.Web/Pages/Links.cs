@@ -13,7 +13,7 @@ namespace Elwark.Education.Web.Pages
 
             public static string Overview(SubjectType type) =>
                 $"{Index}/{type.ToString().ToLowerInvariant()}";
-            
+
             public static string Statistics(SubjectType type) =>
                 $"{Index}/{type.ToString().ToLowerInvariant()}/statistics";
 
@@ -41,27 +41,13 @@ namespace Elwark.Education.Web.Pages
                 $"{Index}/test/{testId}";
         }
 
-        public static class Astronomy
-        {
-            public const string Index = "/astronomy";
-
-            public static string Topic(string topicId) =>
-                $"{Index}/topic/{topicId}";
-
-            public static string Article(string articleId) =>
-                $"{Index}/article/{articleId}";
-            
-            public static string Test(string testId) =>
-                $"{Index}/test/{testId}";
-        }
-
         public static class Subjects
         {
             public static string Index(SubjectType type) =>
                 type switch
                 {
                     SubjectType.History => History.Index,
-                    SubjectType.Astronomy => Astronomy.Index,
+                    SubjectType.Astronomy => "",
                     _ => string.Empty
                 };
 
@@ -69,7 +55,7 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Topic(topicId),
-                    SubjectType.Astronomy => Astronomy.Topic(topicId),
+                    SubjectType.Astronomy => "",
                     _ => string.Empty
                 };
 
@@ -77,7 +63,7 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Article(articleId),
-                    SubjectType.Astronomy => Astronomy.Article(articleId),
+                    SubjectType.Astronomy => "",
                     _ => string.Empty
                 };
 
@@ -85,11 +71,11 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Test(testId),
-                    SubjectType.Astronomy => Astronomy.Test(testId),
+                    SubjectType.Astronomy => "",
                     _ => string.Empty
                 };
         }
-        
+
         public static class Shop
         {
             public const string Index = "/shop";

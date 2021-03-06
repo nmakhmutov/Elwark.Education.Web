@@ -5,9 +5,9 @@ namespace Elwark.Education.Web.Gateways.Models
 {
     public sealed record ArticleTest(
         PermissionStatus Status,
-        ArticleProgress? Progress,
+        uint QuantityCompletedTimes,
         ProgressTestConclusion[] Conclusions
-    ) : ArticleTestSummary(Status, Progress);
+    );
     
     public sealed record ProgressTestConclusion(
         string TestId,

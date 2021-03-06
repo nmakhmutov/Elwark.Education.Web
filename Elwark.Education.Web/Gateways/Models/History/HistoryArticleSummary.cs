@@ -6,6 +6,6 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string Overview,
         string? Image,
         ContentPermission Permission,
-        ArticleTestSummary? Test
+        uint? QuantityCompletedTimes
     );
 }

@@ -31,26 +31,22 @@
                     </a>
                 }
             </div>
-            @if (article.Test is not null)
+            @if (article.QuantityCompletedTimes.HasValue)
             {
                 <div class="caption">
-                    @if (article.Test.Progress is null)
+                    @if (article.QuantityCompletedTimes > 0)
                     {
                         <MudText Typo="Typo.body2">
-                            <em>@L["Test:NotPassed"]</em>
+                            <em>
+                                @L["Test:QuantityCompletedTimes", article.QuantityCompletedTimes]
+                            </em>
                         </MudText>
+                        
                     }
                     else
                     {
                         <MudText Typo="Typo.body2">
-                            <em>
-                                @L["Test:QuantityCompletedTimes", article.Test.Progress.QuantityCompletedTimes]
-                            </em>
-                        </MudText>
-                        <MudText Typo="Typo.body2">
-                            <em>
-                                @L["Test:LastCompletedAt", article.Test.Progress.TestCompletedAt.ToSimpleFormat()]
-                            </em>
+                            <em>@L["Test:NotPassed"]</em>
                         </MudText>
                     }
                 </div>
