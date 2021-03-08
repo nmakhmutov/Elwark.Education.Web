@@ -28,9 +28,12 @@ namespace Elwark.Education.Web.Gateways.History
         public Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(HistoryPeriodType period) =>
             ExecuteAsync<HistoryPeriodModel>(() => _client.GetAsync($"history/periods/{period}"));
 
-        public Task<ApiResponse<PageableResponse<HistoryTopicSummary>>> GetTopicsAsync(GetTopicsRequest request) =>
-            ExecuteAsync<PageableResponse<HistoryTopicSummary>>(() =>
+        public Task<ApiResponse<PageableResponse<TopicSummary>>> GetTopicsAsync(GetTopicsRequest request) =>
+            ExecuteAsync<PageableResponse<TopicSummary>>(() =>
                 _client.GetAsync($"history/periods/{request.Type}/topics?token={request.Token}&count={request.Count}"));
+
+        public Task<ApiResponse<bool>> ToggleFavoriteAsync(string topicId) =>
+            ExecuteAsync<bool>(() => _client.PostAsync($"history/topics/{topicId}/favorite", EmptyContent));
 
         public Task<ApiResponse<HistoryTopicDetail>> GetTopicAsync(string topicId) =>
             ExecuteAsync<HistoryTopicDetail>(() => _client.GetAsync($"history/topics/{topicId}"));

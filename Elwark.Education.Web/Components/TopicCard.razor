@@ -11,25 +11,47 @@
         </MudText>
     </div>
     <div class="progress px-3">
-        @if (Progress is not null)
-        {
-            <MudProgressLinear Minimum="0" Maximum="100" Color="Color.Primary" Value="@Progress.Percentage"/>
-            <MudText Typo="Typo.subtitle2" Align="Align.Center">
-                @Progress.Percentage%
+        <div>
+            @if (Progress is not null)
+            {
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    @L["Progress"] <strong>@Progress.Percentage%</strong>
+                </MudText>
+                <MudProgressLinear Minimum="0" Maximum="100" Color="Color.Primary" Value="@Progress.Percentage"/>
+            }
+        </div>
+        <MudDivider Vertical="true" Class="mx-3"/>
+        <div>
+            <MudText Typo="Typo.body2">
+                <strong>@Rating.Ranking</strong>
             </MudText>
-        }
+            <MudText Typo="Typo.body2">@L["Rating"]</MudText>
+        </div>
     </div>
-    <div class="d-flex flex-row justify-center pa-3">
+    <div class="d-flex flex-row justify-space-between align-center pa-3">
+        <MudTooltip Text="@(IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
+            <MudToggleIconButton
+                Toggled="@IsFavorite"
+                ToggledChanged="@OnFavoriteChanged"
+                Icon="@Icons.Filled.Favorite"
+                Color="Color.Default"
+                ToggledIcon="@Icons.Filled.Favorite"
+                ToggledColor="Color.Error"/>
+        </MudTooltip>
         <MudButton
             Variant="Variant.Text"
             Color="Color.Primary"
+            EndIcon="@Icons.Filled.ChevronRight"
             Link="@Href">
-            @L["LearnMore"]
+            @L["Read"]
         </MudButton>
     </div>
 </div>
 
 @code {
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
 
     [Parameter]
     public string Image { get; set; } = string.Empty;
@@ -44,6 +66,18 @@
     public string Subtitle { get; set; } = string.Empty;
 
     [Parameter]
+    public ContentRating Rating { get; set; } = default!;
+
+    [Parameter]
     public TopicProgress? Progress { get; set; }
+
+    [Parameter]
+    public bool IsFavorite { get; set; }
+
+    [Parameter]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = s => Task.FromResult(false);
+
+    private async Task OnFavoriteChanged(bool toggled) => 
+        IsFavorite = await OnFavoriteClick.Invoke(Id);
 
 }

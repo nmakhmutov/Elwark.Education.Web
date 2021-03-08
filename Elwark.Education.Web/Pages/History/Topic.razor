@@ -25,7 +25,10 @@
                 <HistoryTopicEventArticles Articles="@x.Articles" OnPremiumClick="@OnPremiumClick"/>
                 if (x.RelatedTopics.Length > 0)
                 {
-                    <HistoryRelatedTopics Topics="@x.RelatedTopics" Class="mw-md mx-lg-auto"/>
+                    <HistoryRelatedTopics
+                        Class="mw-md mx-lg-auto"
+                        Topics="@x.RelatedTopics"
+                        OnFavoriteClick="@OnFavoriteClick"/>
                 }
                 break;
 
@@ -34,7 +37,7 @@
                 <HistoryTopicPersonArticles Articles="@x.Articles" OnPremiumClick="@OnPremiumClick"/>
                 if (x.RelatedTopics.Length > 0)
                 {
-                    <HistoryRelatedTopics Topics="@x.RelatedTopics"/>
+                    <HistoryRelatedTopics Topics="@x.RelatedTopics" OnFavoriteClick="@OnFavoriteClick"/>
                 }
                 break;
         }
@@ -77,6 +80,12 @@
         };
 
         Dialog.Show<SubscriptionModal>(null, parameters, options);
+    }
+
+    private async Task<bool> OnFavoriteClick(string topicId)
+    {
+        var result = await HistoryClient.ToggleFavoriteAsync(topicId);
+        return result.Status == ResponseStatus.Success && result.Data;
     }
 
 }

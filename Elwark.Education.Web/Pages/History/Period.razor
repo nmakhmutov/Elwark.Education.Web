@@ -39,10 +39,14 @@
             @foreach (var item in _aggregate.Data.Topics.Items)
             {
                 <TopicCard
+                    Id="@item.Id"
                     Href="@Links.History.Topic(item.Id)"
                     Image="@item.Image"
                     Title="@item.Title"
                     Subtitle="@item.Overview"
+                    Rating="@item.Rating"
+                    IsFavorite="@item.IsFavorite"
+                    OnFavoriteClick="@OnFavoriteClick"
                     Progress="@item.Progress"/>
             }
         </div>
@@ -59,7 +63,7 @@
 
 @code {
 
-    private record Aggregate(HistoryPeriodModel Period, PageableResponse<HistoryTopicSummary> Topics);
+    private record Aggregate(HistoryPeriodModel Period, PageableResponse<TopicSummary> Topics);
 
     private ApiResponse<Aggregate> _aggregate = ApiResponse<Aggregate>.Loading();
 
@@ -114,13 +118,19 @@
         _aggregate = ApiResponse<Aggregate>.Success(
             new Aggregate(
                 _aggregate.Data.Period,
-                new PageableResponse<HistoryTopicSummary>(
+                new PageableResponse<TopicSummary>(
                     _aggregate.Data.Topics.Items.Union(result.Data.Items).ToArray(),
                     result.Data.Token
                     )
                 )
             );
         _request = _request with {Token = result.Data.Token};
+    }
+
+    private async Task<bool> OnFavoriteClick(string topicId)
+    {
+        var result = await HistoryClient.ToggleFavoriteAsync(topicId);
+        return result.Status == ResponseStatus.Success && result.Data;
     }
 
 }

@@ -16,8 +16,10 @@ namespace Elwark.Education.Web.Gateways.History
         
         Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(HistoryPeriodType period);
         
-        Task<ApiResponse<PageableResponse<HistoryTopicSummary>>> GetTopicsAsync(GetTopicsRequest request);
-        
+        Task<ApiResponse<PageableResponse<TopicSummary>>> GetTopicsAsync(GetTopicsRequest request);
+
+        Task<ApiResponse<bool>> ToggleFavoriteAsync(string topicId);
+
         Task<ApiResponse<HistoryTopicDetail>> GetTopicAsync(string topicId);
         
         Task<ApiResponse<HistoryArticleDetail>> GetArticleAsync(string articleId);

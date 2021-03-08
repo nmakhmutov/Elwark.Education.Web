@@ -11,10 +11,15 @@
         @foreach (var topic in Topics)
         {
             <TopicCard
+                Id="@topic.Id"
                 Href="@Links.History.Topic(topic.Id)"
                 Image="@topic.Image"
                 Title="@topic.Title"
-                Subtitle="@topic.Overview"/>
+                Subtitle="@topic.Overview"
+                Rating="@topic.Rating"
+                IsFavorite="@topic.IsFavorite"
+                OnFavoriteClick="@OnFavoriteClick"
+                Progress="@topic.Progress"/>
         }
     </div>
 </div>
@@ -26,4 +31,7 @@
 
     [Parameter]
     public string? Class { get; set; }
+
+    [Parameter]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = s => Task.FromResult(false);
 }
