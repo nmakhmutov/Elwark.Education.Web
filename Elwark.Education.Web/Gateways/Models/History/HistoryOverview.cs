@@ -2,7 +2,6 @@ namespace Elwark.Education.Web.Gateways.Models.History
 {
     public sealed record HistoryOverview(
         HistoryPeriodModel[] Periods,
-        Ratings<ArticleOverview> Articles,
         Ratings<RatingTopicOverview> Topics
     );
 

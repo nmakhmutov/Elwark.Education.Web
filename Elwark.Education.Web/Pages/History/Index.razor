@@ -1,19 +1,21 @@
 @page "/history"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.History
-@inject IHistoryClient HistoryClient
+@inject IHistoryClient Client
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
 
 <ApiResponseViewer Response="@_response">
     <Loading>
         <div class="ma-6">
-            <CardsSkeleton/>
+            <div class="grid">
+                <CardsSkeleton/>
+            </div>
         </div>
     </Loading>
     <Result Context="overview">
         <Title Value="@L["Subject:History"]"/>
-        <div class="period-grid">
+        <div class="period-grid mb-3">
             @foreach (var period in overview.Periods)
             {
                 <div class="period-box">
@@ -31,72 +33,13 @@
             }
         </div>
 
-        <div class="articles-grid">
+        <HistoryRandomTopicContainer Class="mb-3"/>
+        
+        <div class="grid">
             <div class="trending-container">
                 <div class="container-header">
                     <MudText Typo="Typo.h6">
-                        Trending articles
-                    </MudText>
-                </div>
-                <div class="trending-grid mt-3">
-                    @foreach (var article in overview.Articles.Trends)
-                    {
-                        <div class="trending-article-card">
-                            @if (article.Image is not null)
-                            {
-                                <div class="trending-article-image">
-                                    <img src="@article.Image" loading="lazy" alt="@article.Title">
-                                </div>
-                            }
-                            <div class="trending-article-content">
-                                <MudLink Typo="Typo.h5" Href="@(Links.History.Article(article.Id))">
-                                    @article.Title
-                                </MudLink>
-                                <MudText Typo="Typo.subtitle1">
-                                    @article.Overview
-                                </MudText>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-            <div class="recent-container">
-                <div class="container-header justify-lg-center">
-                    <MudText Typo="Typo.h6" Align="Align.Center">
-                        Recent articles
-                    </MudText>
-                </div>
-                <div class="recent-grid mt-3">
-                    @foreach (var article in overview.Articles.Recent)
-                    {
-                        <div class="recent-article-card">
-                            <div class="recent-article-card-header">
-                                @if (article.Image is not null)
-                                {
-                                    <div class="recent-article-card-image">
-                                        <img src="@article.Image" loading="lazy" style="width: 100%" alt="@article.Title">
-                                    </div>
-                                }
-                                <div>
-                                    <MudLink Typo="Typo.h5" Href="@(Links.History.Article(article.Id))">
-                                        @article.Title
-                                    </MudLink>
-                                </div>
-                            </div>
-                            <MudText Typo="Typo.subtitle1">
-                                @article.Overview
-                            </MudText>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-
-        <div class="articles-grid">
-            <div class="trending-container">
-                <div class="container-header">
-                    <MudText Typo="Typo.h6">
-                        Trending topics
+                        @L["Topics:Trending"]
                     </MudText>
                 </div>
                 <div class="trending-grid mt-3">
@@ -121,7 +64,7 @@
             <div class="recent-container">
                 <div class="container-header justify-lg-center">
                     <MudText Typo="Typo.h6" Align="Align.Center">
-                        Recent topics
+                        @L["Topics:Recent"]
                     </MudText>
                 </div>
                 <div class="recent-grid mt-3">
@@ -154,7 +97,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await HistoryClient.GetAsync();
+        _response = await Client.GetAsync();
     }
-
 }

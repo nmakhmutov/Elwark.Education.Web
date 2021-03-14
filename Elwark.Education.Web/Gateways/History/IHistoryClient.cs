@@ -18,11 +18,17 @@ namespace Elwark.Education.Web.Gateways.History
         
         Task<ApiResponse<PageableResponse<TopicSummary>>> GetTopicsAsync(GetTopicsRequest request);
 
+        Task<ApiResponse<RandomTopic>> GetRandomTopicIdAsync();
+
         Task<ApiResponse<bool>> ToggleFavoriteAsync(string topicId);
 
         Task<ApiResponse<HistoryTopicDetail>> GetTopicAsync(string topicId);
         
         Task<ApiResponse<HistoryArticleDetail>> GetArticleAsync(string articleId);
+
+        Task<ApiResponse<Unit>> LikeArticleAsync(string articleId);
+
+        Task<ApiResponse<Unit>> DislikeArticleAsync(string articleId);
         
         Task<ApiResponse<TestCreatedResult>> CreateTestForArticleAsync(string articleId);
         

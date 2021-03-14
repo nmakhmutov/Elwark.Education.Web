@@ -1,0 +1,50 @@
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+
+@using Elwark.Education.Web.Gateways.History
+@inject IStringLocalizer<App> L
+@inject IHistoryClient Client
+@inject NavigationManager Navigation
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="@Class">
+    <div class="image">
+        <div class="cover">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnClick">
+                @if (_isLoading)
+                {
+                    <div class="d-flex flex-row align-center">
+                        <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                        @L["Loading"]
+                    </div>
+                }
+                else
+                {
+                    @L["Topics:Random"]
+                }
+            </MudButton>
+        </div>
+    </div>
+</MudContainer>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private bool _isLoading;
+
+    private async Task OnClick()
+    {
+        if(_isLoading)
+            return;
+        
+        _isLoading = true;
+        
+        var result = await Client.GetRandomTopicIdAsync();
+        if (result.Status == ResponseStatus.Success)
+            Navigation.NavigateTo(Links.History.Topic(result.Data.TopicId));
+
+        _isLoading = false;
+    }
+
+}

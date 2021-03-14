@@ -1,0 +1,39 @@
+<ul class="list @Class">
+    @foreach (var item in Contents)
+    {
+        <li class="item @(item.Id == SelectedArticleId ? "active" : null)">
+            <div class="item-avatar">
+                <div class="avatar-group">
+                    @if (item.Image is not null)
+                    {
+                        <div class="avatar">
+                            <img alt="@item.Title" src="@item.Image" class="img">
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="MuiListItemText-root MuiListItemText-multiline">
+                <span class="MuiTypography-root MuiListItemText-primary MuiTypography-h6 MuiTypography-colorTextPrimary MuiTypography-noWrap MuiTypography-displayBlock">
+                    @item.Title
+                </span>
+                <p class="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-noWrap MuiTypography-displayBlock">
+                    @item.Permission.Type
+                </p>
+            </div>
+            <div class="MuiBox-root jss927"></div><span class="MuiTouchRipple-root"></span>
+        </li>
+    }
+</ul>
+
+@code {
+
+    [Parameter]
+    public ArticleOverview[] Contents { get; set; } = Array.Empty<ArticleOverview>();
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string SelectedArticleId { get; set; } = string.Empty;
+
+}

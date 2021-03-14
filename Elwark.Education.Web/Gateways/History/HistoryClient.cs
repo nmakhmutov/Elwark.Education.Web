@@ -32,6 +32,9 @@ namespace Elwark.Education.Web.Gateways.History
             ExecuteAsync<PageableResponse<TopicSummary>>(() =>
                 _client.GetAsync($"history/periods/{request.Type}/topics?token={request.Token}&count={request.Count}"));
 
+        public Task<ApiResponse<RandomTopic>> GetRandomTopicIdAsync() =>
+            ExecuteAsync<RandomTopic>(() => _client.GetAsync("history/topics/random"));
+
         public Task<ApiResponse<bool>> ToggleFavoriteAsync(string topicId) =>
             ExecuteAsync<bool>(() => _client.PostAsync($"history/topics/{topicId}/favorite", EmptyContent));
 
@@ -40,6 +43,12 @@ namespace Elwark.Education.Web.Gateways.History
 
         public Task<ApiResponse<HistoryArticleDetail>> GetArticleAsync(string articleId) =>
             ExecuteAsync<HistoryArticleDetail>(() => _client.GetAsync($"history/articles/{articleId}"));
+
+        public Task<ApiResponse<Unit>> LikeArticleAsync(string articleId) =>
+            ExecuteAsync<Unit>(() => _client.PostAsync($"history/articles/{articleId}/like", EmptyContent));
+
+        public Task<ApiResponse<Unit>> DislikeArticleAsync(string articleId) =>
+            ExecuteAsync<Unit>(() => _client.PostAsync($"history/articles/{articleId}/dislike", EmptyContent));
 
         public Task<ApiResponse<TestCreatedResult>> CreateTestForArticleAsync(string articleId) =>
             ExecuteAsync<TestCreatedResult>(() =>

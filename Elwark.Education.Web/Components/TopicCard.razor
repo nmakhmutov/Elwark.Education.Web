@@ -1,7 +1,22 @@
 @inject IStringLocalizer<App> L
 
 <div class="mud-paper mud-elevation-1 grid">
-    <div class="image" style="background-image: url('@Image')"></div>
+    <div class="image" style="background-image: url('@Image')">
+        <div class="d-flex justify-end ma-2">
+            <MudTooltip Placement="Placement.Start" Text="@(IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
+                <MudToggleIconButton
+                    Class="favorite"
+                    Toggled="@IsFavorite"
+                    ToggledChanged="@OnFavoriteChanged"
+                    Icon="@Icons.Filled.Favorite"
+                    Color="Color.Default"
+                    Size="Size.Small"
+                    ToggledIcon="@Icons.Filled.Favorite"
+                    ToggledColor="Color.Error"
+                    ToggledSize="Size.Small"/>
+            </MudTooltip>
+        </div>
+    </div>
     <div class="pa-3">
         <MudLink Typo="Typo.subtitle1" Href="@Href">
             @Title
@@ -10,34 +25,17 @@
             @Subtitle
         </MudText>
     </div>
-    <div class="progress px-3">
-        <div>
-            @if (Progress is not null)
-            {
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    @L["Progress"] <strong>@Progress.Percentage%</strong>
-                </MudText>
-                <MudProgressLinear Minimum="0" Maximum="100" Color="Color.Primary" Value="@Progress.Percentage"/>
-            }
-        </div>
-        <MudDivider Vertical="true" Class="mx-3"/>
-        <div>
-            <MudText Typo="Typo.body2">
-                <strong>@Rating.Ranking</strong>
+    <div class="px-3">
+        @if (Progress is not null)
+        {
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @L["Progress"] <strong>@Progress.Percentage%</strong>
             </MudText>
-            <MudText Typo="Typo.body2">@L["Rating"]</MudText>
-        </div>
+            <MudProgressLinear Minimum="0" Maximum="100" Color="Color.Primary" Value="@Progress.Percentage"/>
+        }
     </div>
     <div class="d-flex flex-row justify-space-between align-center pa-3">
-        <MudTooltip Text="@(IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
-            <MudToggleIconButton
-                Toggled="@IsFavorite"
-                ToggledChanged="@OnFavoriteChanged"
-                Icon="@Icons.Filled.Favorite"
-                Color="Color.Default"
-                ToggledIcon="@Icons.Filled.Favorite"
-                ToggledColor="Color.Error"/>
-        </MudTooltip>
+        <ContentRatingIcon Rating="@Rating"/>
         <MudButton
             Variant="Variant.Text"
             Color="Color.Primary"
@@ -75,9 +73,9 @@
     public bool IsFavorite { get; set; }
 
     [Parameter]
-    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = s => Task.FromResult(false);
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
 
-    private async Task OnFavoriteChanged(bool toggled) => 
+    private async Task OnFavoriteChanged(bool toggled) =>
         IsFavorite = await OnFavoriteClick.Invoke(Id);
 
 }

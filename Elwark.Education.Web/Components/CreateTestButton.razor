@@ -1,0 +1,79 @@
+@inject IStringLocalizer<App> L
+@inject ErrorManager ErrorManager
+@inject IDialogService Dialog
+
+@switch (Status)
+{
+    case PermissionStatus.Allowed when IsLoading:
+        <MudButton Variant="Variant.Filled" Disabled="true">
+            <div class="d-flex flex-row align-center">
+                <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                @L["Loading"]
+            </div>
+        </MudButton>
+        break;
+
+    case PermissionStatus.Allowed:
+        <MudButton
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            OnClick="@OnCreateTestClick">
+            @L["Test:PassATest"]
+        </MudButton>
+        break;
+
+    case PermissionStatus.CreatedMaximumTests:
+    case PermissionStatus.ReachedMaximumAnswerAttempts:
+    case PermissionStatus.PremiumSubscriptionRequired:
+    <div class="d-flex flex-column align-center">
+        <MudButton
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            OnClick="@OnBuyClick">
+            @L["Subscription:ChoosePricingPlan"]
+        </MudButton>
+    <MudText Typo="Typo.body2" Color="Color.Error" Class="mt-2">
+        @ErrorManager.Localize(Status)
+    </MudText>
+    </div>
+        break;
+
+    default:
+        <MudText Typo="Typo.body2" Color="Color.Error">
+            @ErrorManager.Localize(Status)
+        </MudText>
+        break;
+}
+
+@code {
+
+    [Parameter]
+    public PermissionStatus Status { get; set; }
+
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    [Parameter]
+    public SubjectType Subject { get; set; }
+
+    [Parameter]
+    public EventCallback OnCreateTestClick { get; set; }
+
+    private void OnBuyClick()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            NoHeader = true,
+            CloseButton = false,
+            FullWidth = true
+        };
+        var parameters = new DialogParameters
+        {
+            [nameof(SubscriptionModal.SubjectType)] = Subject
+        };
+
+        Dialog.Show<SubscriptionModal>(null, parameters, options);
+    }
+
+}

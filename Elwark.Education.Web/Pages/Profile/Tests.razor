@@ -14,7 +14,9 @@
         InitLoader="@(() => LoaderAsync(new PageableRequest(null, 20)))"
         AppendLoader="@(token => LoaderAsync(new PageableRequest(token, 20)))">
         <Loading>
-            <CardsSkeleton/>
+            <div class="grid">
+                <CardsSkeleton/>
+            </div>
         </Loading>
         <Result Context="items">
             <Title Value="@L["CompletedTests"]"></Title>

@@ -1,30 +1,37 @@
 @using Elwark.Education.Web.Gateways.Models.TestConclusion
 @inject IStringLocalizer<App> L
 
-@switch (Status)
+@if (IsOnlyText)
 {
-    case ConclusionStatus.Complete:
-        <MudChip Label="true" DisableRipple="true" Class="ma-0" Color="Color.Success" Size="Size.Small">
-            @L["CompletedTests:Completed"]
-        </MudChip>
-        break;
-        
-    case ConclusionStatus.TimeExceeded:
-        <MudChip Label="true" Color="Color.Error" Size="Size.Small">
-            @L["CompletedTests:TimeExceeded"]
-        </MudChip>
-        break;
-        
-    case ConclusionStatus.RepliesExceeded:
-        <MudChip Label="true" Color="Color.Warning" Size="Size.Small">
-            @L["CompletedTests:RepliesExceeded"]
-        </MudChip>
-        break;
+    <MudText Typo="Typo.subtitle1" Color="@_data.Color">
+        @_data.Title
+    </MudText>
+}
+else
+{
+    <MudChip Label="true" DisableRipple="true" Class="ma-0" Color="@_data.Color" Size="Size.Small">
+        @_data.Title
+    </MudChip>
 }
 
 @code {
 
     [Parameter]
     public ConclusionStatus Status { get; set; }
+
+    [Parameter]
+    public bool IsOnlyText { get; set; }
+
+    private (string Title, Color Color) _data;
+
+    protected override void OnParametersSet()
+    {
+        _data = Status switch {
+            ConclusionStatus.Complete => (L["CompletedTests:Completed"], Color.Success),
+            ConclusionStatus.TimeExceeded => (L["CompletedTests:TimeExceeded"], Color.Error),
+            ConclusionStatus.RepliesExceeded => (L["CompletedTests:RepliesExceeded"], Color.Warning),
+            _ => throw new ArgumentOutOfRangeException(nameof(Status), $@"Unknown status in {nameof(ConclusionStatusChip)}")
+            };
+    }
 
 }

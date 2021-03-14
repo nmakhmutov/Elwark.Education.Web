@@ -2,15 +2,17 @@ using System;
 
 namespace Elwark.Education.Web.Gateways
 {
-    public class ApiResponse<T>
+    public sealed class ApiResponse<T>
     {
         private readonly Error? _error;
         private readonly T? _data;
 
         public static ApiResponse<T> Loading() => new(ResponseStatus.Loading, default);
-        public static ApiResponse<T> Success(T data) => new(ResponseStatus.Success, data);
-        public static ApiResponse<T> Fail(Error error) => new(ResponseStatus.Fail, default, error);
         
+        public static ApiResponse<T> Success(T data) => new(ResponseStatus.Success, data);
+        
+        public static ApiResponse<T> Fail(Error error) => new(ResponseStatus.Fail, default, error);
+
         private ApiResponse(ResponseStatus status, T? data, Error? error = null)
         {
             Status = status;
