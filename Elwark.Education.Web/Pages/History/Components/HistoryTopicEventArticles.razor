@@ -31,28 +31,27 @@
                     </a>
                 }
             </div>
-            @if (article.QuantityCompletedTimes.HasValue)
-            {
-                <div class="caption">
-                    @if (article.QuantityCompletedTimes > 0)
-                    {
-                        <MudText Typo="Typo.body2">
-                            <em>
+            <div class="caption d-flex flex-row align-center">
+                <ContentRatingIcon Rating="@article.Rating"/>
+                @if (article.QuantityCompletedTimes.HasValue)
+                {
+                    <MudIcon Icon="@(Icons.Filled.PanoramaFishEye)" Class="mx-2" Style="width: 8px; height: 8px"/>
+                    <MudText Typo="Typo.body2">
+                        <em>
+                            @if (article.QuantityCompletedTimes > 0)
+                            {
                                 @L["Test:QuantityCompletedTimes", article.QuantityCompletedTimes]
-                            </em>
-                        </MudText>
-                        
-                    }
-                    else
-                    {
-                        <MudText Typo="Typo.body2">
-                            <em>@L["Test:NotPassed"]</em>
-                        </MudText>
-                    }
-                </div>
-            }
+                            }
+                            else
+                            {
+                                @L["Test:NotPassed"]
+                            }
+                        </em>
+                    </MudText>
+                }
+            </div>
         </div>
-        
+
         <div class="article-description @(article.Image is null ? "two-column" : null)">
             <MudText Typo="Typo.subtitle1">
                 @article.Overview

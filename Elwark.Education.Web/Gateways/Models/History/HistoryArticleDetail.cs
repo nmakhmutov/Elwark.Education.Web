@@ -7,9 +7,10 @@ namespace Elwark.Education.Web.Gateways.Models.History
         ContentType Type,
         ArticleTest? Test,
         string? Image,
+        string Overview,
         string Title,
         string Text,
-        string? Footnotes,
-        AdjacentArticles Adjacent
+        Infobox[] InfoBoxes,
+        ArticleOverview[] Contents
     );
 }

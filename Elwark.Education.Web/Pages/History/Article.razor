@@ -7,7 +7,6 @@
 @inject IStringLocalizer<App> L
 @inject ISnackbar Snackbar
 @inject ErrorManager ErrorManager
-@inject IDialogService Dialog
 
 @attribute [Authorize]
 
@@ -17,96 +16,73 @@
             <div class="content">
                 <CardsSkeleton Count="1"/>
             </div>
-            <div class="image">
-                <CardsSkeleton Count="2"/>
+            <div class="aside">
+                <CardsSkeleton Count="1"/>
+            </div>
+            <div class="sidebar">
+                <CardsSkeleton Count="1"/>
             </div>
         </div>
-
     </Loading>
     <Result Context="article">
-        @{ var breadcrumbs = new List<BreadcrumbItem>
-           {
-               new(L["Subject:History"].Value, Links.History.Index),
-               new(L[$"History:{article.Period}"].Value, Links.History.Period(article.Period)),
-               new(article.Topic.Title, Links.History.Topic(article.Topic.Id))
-           }; }
+        @{
+            var breadcrumbs = new List<BreadcrumbItem>
+            {
+                new(L["Subject:History"].Value, Links.History.Index),
+                new(L[$"History:{article.Period}"].Value, Links.History.Period(article.Period)),
+                new(article.Topic.Title, Links.History.Topic(article.Topic.Id))
+            };
+        }
 
         <Title Value="@article.Title"/>
         <div class="grid">
-            <div class="header">
-                <MudText Typo="Typo.h2" Class="mb-3" Align="Align.Center">
-                    @article.Title
-                </MudText>
-                <Breadcrumbs Items="breadcrumbs" Class="mb-6"/>
-                @if (article.Image is not null)
-                {
-                    <div class="image mb-6">
-                        <img src="@article.Image" alt="@article.Title"/>
-                    </div>
-                }
-            </div>
+
             <div class="content">
+                <HistoryArticleHeader
+                    Breadcrumbs="breadcrumbs"
+                    Class="mb-3"
+                    Image="@article.Image"
+                    Overview="@article.Overview"
+                    Title="@article.Title"/>
                 <MudPaper Class="pa-3">
                     <MarkdownText Text="@article.Text"/>
-                    @if (article.Footnotes is not null)
-                    {
-                        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
-                        <MarkdownText Text="@article.Footnotes"/>
-                    }
                 </MudPaper>
-                <AdjacentArticles Adjacent="@article.Adjacent" Class="my-6" OnPremiumClick="@OnBuyClick"/>
             </div>
+
             <div class="aside">
+                @foreach (var (title, content) in article.InfoBoxes)
+                {
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.subtitle1">
+                                    <strong>@title</strong>
+                                </MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MarkdownText Text="@content"/>
+                        </MudCardContent>
+                    </MudCard>
+                }
                 @if (article.Test is not null)
                 {
-                    <div class="test">
-                        <MudPaper Class="pa-3">
-                            <MudText Typo="Typo.h6" Class="mb-3">
-                                @L["Test:CheckYourKnowledge"]
-                            </MudText>
-                            @switch (article.Test.Status)
-                            {
-                                case PermissionStatus.Allowed when _test?.Status == ResponseStatus.Loading:
-                                    <MudButton Variant="Variant.Filled" Class="mb-3 mx-auto d-block" Disabled="true">
-                                        <div class="d-flex flex-row align-center">
-                                            <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
-                                            @L["Loading"]
-                                        </div>
-                                    </MudButton>
-                                    break;
-
-                                case PermissionStatus.Allowed:
-                                    <MudButton
-                                        Variant="Variant.Filled"
-                                        Color="Color.Primary"
-                                        Class="mb-3 mx-auto d-block"
-                                        OnClick="@CreateTestAsync">
-                                        @L["Test:PassATest"]
-                                    </MudButton>
-                                    break;
-
-                                case PermissionStatus.CreatedMaximumTests:
-                                case PermissionStatus.ReachedMaximumAnswerAttempts:
-                                    <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
-                                        @ErrorManager.Localize(article.Test.Status)
-                                    </MudText>
-                                    <MudButton
-                                        Variant="Variant.Filled"
-                                        Color="Color.Primary"
-                                        Class="mb-3 mx-auto d-block"
-                                        OnClick="@OnBuyClick">
-                                        @L["Subscription:ChoosePricingPlan"]
-                                    </MudButton>
-                                    break;
-
-                                default:
-                                    <MudText Typo="Typo.body2" Color="Color.Error" Class="mb-3">
-                                        @ErrorManager.Localize(article.Test.Status)
-                                    </MudText>
-                                    break;
-                            }
-                            <MudText Typo="Typo.body2" Align="Align.Center">
-                                @if (article.Test is not null)
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.subtitle1">
+                                    <strong>@L["Test:CheckYourKnowledge"]</strong>
+                                </MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <CreateTestButton
+                                Subject="@SubjectType.History"
+                                Status="@article.Test.Status"
+                                IsLoading="@(_test?.Status == ResponseStatus.Loading)"
+                                OnCreateTestClick="@CreateTestAsync"/>
+                            <MudText Typo="Typo.subtitle1" Class="mt-6">
+                                @if (article.Test.QuantityCompletedTimes > 0)
                                 {
                                     @L["Test:QuantityCompletedTimes", article.Test.QuantityCompletedTimes]
                                 }
@@ -115,20 +91,65 @@
                                     @L["Test:NotPassed"]
                                 }
                             </MudText>
-                        </MudPaper>
-                    </div>
-                    @if (article.Test.Conclusions.Length > 0)
-                    {
-                        <div class="conclusions">
-                            <ProgresTestConclusionList
-                                Conclusions="@article.Test.Conclusions"
-                                DetailLinkBuilder="@(id => Links.Profile.TestDetail(SubjectType.History, id))"
-                                SeeAllLink="@Links.Profile.Tests(SubjectType.History)"/>
-                        </div>
-                    }
+                            @if (article.Test.Conclusions.Length > 0)
+                            {
+                                <TestConclusionList
+                                    Class="mt-3"
+                                    Conclusions="@article.Test.Conclusions"
+                                    DetailLinkBuilder="@(id => Links.Profile.TestDetail(SubjectType.History, id))"
+                                    SeeAllLink="@Links.Profile.Tests(SubjectType.History)"/>
+                            }
+                        </MudCardContent>
+                    </MudCard>
                 }
             </div>
+
+            <div class="sidebar">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.subtitle1">
+                                <strong>@L["Contents"]</strong>
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <TopicContents
+                            Class="mx-n4"
+                            Contents="@article.Contents"
+                            SelectedArticleId="@Id"/>
+
+                    </MudCardContent>
+                </MudCard>
+            </div>
+
         </div>
+
+        @* <div class="grid"> *@
+        @*     <div class="header"> *@
+        @*         <MudText Typo="Typo.h2" Class="mb-3" Align="Align.Center"> *@
+        @*             @article.Title *@
+        @*         </MudText> *@
+        @*         <Breadcrumbs Items="breadcrumbs" Class="mb-6"/> *@
+
+        @*     </div> *@
+        @*     <div class="content"> *@
+        @*         <MudIconButton Icon="@Icons.Filled.ThumbUp" OnClick="@Like"/> *@
+        @*         <MudIconButton Icon="@Icons.Filled.ThumbDown" OnClick="@Dislike"/> *@
+        @*         <MudPaper Class="pa-3"> *@
+        @*             <MarkdownText Text="@article.Text"/> *@
+        @*             @if (article.Footnotes is not null) *@
+        @*             { *@
+        @*                 <MudDivider DividerType="DividerType.Middle" Class="my-6"/> *@
+        @*                 <MarkdownText Text="@article.Footnotes"/> *@
+        @*             } *@
+        @*         </MudPaper> *@
+        @*         <AdjacentArticles Adjacent="@article.Adjacent" Class="my-6" OnPremiumClick="@OnBuyClick"/> *@
+        @*     </div> *@
+        @*     <div class="aside"> *@
+
+        @*     </div> *@
+        @* </div> *@
     </Result>
 </ApiResponseViewer>
 
@@ -156,21 +177,14 @@
             Snackbar.Add(ErrorManager.Localize(_test.Error).Title, Severity.Error);
     }
 
-    private void OnBuyClick()
+    private Task Like()
     {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Large,
-            NoHeader = true,
-            CloseButton = false,
-            FullWidth = true
-        };
-        var parameters = new DialogParameters
-        {
-            [nameof(SubscriptionModal.SubjectType)] = SubjectType.History
-        };
+        return HistoryClient.LikeArticleAsync(Id);
+    }
 
-        Dialog.Show<SubscriptionModal>(null, parameters, options);
+    private Task Dislike()
+    {
+        return HistoryClient.DislikeArticleAsync(Id);
     }
 
 }
