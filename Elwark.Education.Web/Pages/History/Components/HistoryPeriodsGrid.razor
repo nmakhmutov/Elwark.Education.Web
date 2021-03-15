@@ -1,0 +1,31 @@
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+
+@using Elwark.Education.Web.Gateways.Models.History
+
+<div class="periods @Class">
+    @foreach (var period in Periods)
+    {
+        <div class="period-box">
+            <a href="@(Links.History.Period(period.Type))">
+                <div class="period-thumbnail">
+                    <img src="@period.Image" loading="lazy" alt="@period.Title"/>
+                </div>
+                <div class="period-header">
+                    <MudLink Typo="Typo.h4" Color="Color.Inherit" Href="@(Links.History.Period(period.Type))">
+                        @period.Title
+                    </MudLink>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public HistoryPeriodModel[] Periods { get; set; } = Array.Empty<HistoryPeriodModel>();
+
+    [Parameter]
+    public string? Class { get; set; }
+}

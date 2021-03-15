@@ -1,0 +1,42 @@
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+
+@using Elwark.Education.Web.Gateways.Models.History
+@inject IStringLocalizer<App> L
+
+<div class="container @Class">
+    <div class="grid">
+        <div class="image">
+            <img src="@Topic.Image" alt="@Topic.Title"/>
+        </div>
+        <div class="text">
+            <MudText Typo="Typo.subtitle1" Color="Color.Default" Class="mb-10">
+                <em>
+                    From today's featured topic
+                </em>
+            </MudText>
+
+            <MudText Typo="Typo.h2" Color="Color.Inherit" Class="mb-3">
+                @Topic.Title
+            </MudText>
+
+            <MudText Typo="Typo.subtitle1" Class="mb-6">
+                @Topic.Overview
+            </MudText>
+
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Link="@Links.History.Topic(Topic.Id)">
+                @L["Read"]
+            </MudButton>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public RatingTopicOverview Topic { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

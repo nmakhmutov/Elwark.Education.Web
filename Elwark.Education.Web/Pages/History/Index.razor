@@ -15,27 +15,12 @@
     </Loading>
     <Result Context="overview">
         <Title Value="@L["Subject:History"]"/>
-        <div class="period-grid mb-3">
-            @foreach (var period in overview.Periods)
-            {
-                <div class="period-box">
-                    <a href="@(Links.History.Period(period.Type))">
-                        <div class="period-thumbnail">
-                            <img src="@period.Image" loading="lazy" alt="@period.Title"/>
-                        </div>
-                        <div class="period-header">
-                            <MudLink Typo="Typo.h4" Color="Color.Inherit" Href="@(Links.History.Period(period.Type))">
-                                @period.Title
-                            </MudLink>
-                        </div>
-                    </a>
-                </div>
-            }
-        </div>
-
-        <HistoryRandomTopicContainer Class="mb-3"/>
         
-        <div class="grid">
+        <HistoryPeriodsGrid Periods="@overview.Periods"/>
+
+        <HistoryDailyTopic Class="mb-6" Topic="@overview.Topics.Trends[0]"/>
+
+        <div class="grid mb-6">
             <div class="trending-container">
                 <div class="container-header">
                     <MudText Typo="Typo.h6">
@@ -89,6 +74,8 @@
                 </div>
             </div>
         </div>
+        
+        <HistoryRandomTopicContainer Class="mb-6"/>
     </Result>
 </ApiResponseViewer>
 
