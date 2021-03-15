@@ -7,7 +7,6 @@ namespace Elwark.Education.Web.Gateways.Models.Statistics
         TimeSpan TimeSpent,
         Score Score,
         AnswerRatio AnswerRatio,
-        TopicsState TopicsState,
         WeeklyDifference WeeklyDifference,
         RankingItem<ulong>[] ScoreRanking,
         RankingItem<TimeSpan>[] TimeSpentRanking,
