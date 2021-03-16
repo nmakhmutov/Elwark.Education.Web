@@ -20,10 +20,17 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
 
                 SubjectType.Astronomy =>
                     new SubjectStatic(
-                        Icons.Custom.Uncategorized.Radioactive,
-                        "/images/subjects/physics.jpg",
-                        "background: linear-gradient(140deg, rgba(53, 58, 95, 1) 0%, rgba(158, 186, 243, 1) 100%)"
+                        Icons.Filled.Flare,
+                        "/images/subjects/astronomy.jpg",
+                        "linear-gradient(140deg, rgba(53, 58, 95, 1) 0%, rgba(158, 186, 243, 1) 100%)"
                     ),
+
+                // SubjectType.Physics =>
+                //     new SubjectStatic(
+                //         Icons.Custom.Uncategorized.Radioactive,
+                //         "/images/subjects/physics.jpg",
+                //         "linear-gradient(140deg, rgba(28, 46, 76, 1) 0%, rgba(108, 208, 255, 1) 100%)"
+                //         ),
 
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };

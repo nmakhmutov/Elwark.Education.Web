@@ -15,10 +15,10 @@
     </Loading>
     <Result Context="overview">
         <Title Value="@L["Subject:History"]"/>
-        
+
         <HistoryPeriodsGrid Periods="@overview.Periods"/>
 
-        <HistoryDailyTopic Class="mb-6" Topic="@overview.Topics.Trends[0]"/>
+        <HistoryDailyTopic Class="mb-6" Topic="@overview.Topics.Trends[new Random().Next(overview.Topics.Trends.Length)]"/>
 
         <div class="grid mb-6">
             <div class="trending-container">
@@ -47,7 +47,14 @@
                 </div>
             </div>
             <div class="recent-container">
-                <div class="container-header justify-lg-center">
+                <div class="container-header">
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @L["Topics:Random"]
+                    </MudText>
+                </div>
+                <HistoryRandomTopicContainer Class="mb-6 mt-3"/>
+
+                <div class="container-header">
                     <MudText Typo="Typo.h6" Align="Align.Center">
                         @L["Topics:Recent"]
                     </MudText>
@@ -74,8 +81,6 @@
                 </div>
             </div>
         </div>
-        
-        <HistoryRandomTopicContainer Class="mb-6"/>
     </Result>
 </ApiResponseViewer>
 
@@ -86,4 +91,5 @@
     {
         _response = await Client.GetAsync();
     }
+
 }
