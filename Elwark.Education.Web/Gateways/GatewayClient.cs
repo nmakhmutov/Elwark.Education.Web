@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,13 +23,23 @@ namespace Elwark.Education.Web.Gateways
                 await using var stream = await message.Content.ReadAsStreamAsync();
                 using var sr = new StreamReader(stream);
                 using var jsonTextReader = new JsonTextReader(sr);
-                if (message.IsSuccessStatusCode)
-                    return ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!);
 
-                var error = Json.Serializer.Deserialize<Error>(jsonTextReader)
-                            ?? Error.Unknown;
-
-                return ApiResponse<T>.Fail(error);
+                return message.StatusCode switch
+                {
+                    HttpStatusCode.OK => 
+                        ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!),
+                    
+                    HttpStatusCode.Created => 
+                        ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!),
+                    
+                    HttpStatusCode.Accepted => 
+                        ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!),
+                    
+                    HttpStatusCode.NoContent => 
+                        ApiResponse<T>.Success(default!),
+                    
+                    _ => ApiResponse<T>.Fail(Json.Serializer.Deserialize<Error>(jsonTextReader) ?? Error.Unknown)
+                };
             }
             catch (AccessTokenNotAvailableException ex)
             {

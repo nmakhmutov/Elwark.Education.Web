@@ -1,36 +1,18 @@
-.background {
-    min-height: 260px;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url("https://source.unsplash.com/600x260/daily?nature");
-}
-
-.cover {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    width: 100%;
-    min-height: inherit;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: var(--mud-palette-white);
-}
-
 .header {
-    margin: 0 12px 24px;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 24px;
+    padding: 24px;
 }
 
-.title {
-    font-size: 3rem;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-weight: 400;
-    line-height: 1.167;
-    letter-spacing: 0;
+.header-text ::deep a {
+    font-family: var(--mud-typography-h4-family);
+    font-size: var(--mud-typography-h4-size);
+    font-weight: var(--mud-typography-h4-weight);
+    line-height: var(--mud-typography-h4-lineheight);
+    letter-spacing: var(--mud-typography-h4-letterspacing);
     color: var(--mud-palette-white);
-}
-
-.title:hover {
-    padding-bottom: 4px;
     border-bottom: 2px solid var(--mud-palette-white);
 }
 
@@ -38,7 +20,6 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-bottom: 24px;
 }
 
 .menu-item {
@@ -59,20 +40,18 @@
 }
 
 @media (min-width: 600px) {
-    .background {
-        min-height: 360px;
-        background-image: url("https://source.unsplash.com/960x360/daily?nature");
-    }
-
     .header {
-        margin: 0 24px 48px;
+        grid-template-columns: 120px 1fr;
+        justify-items: start;
+        align-items: center;
     }
 
-    .title {
-        font-size: 3.75rem;
-        font-weight: 300;
-        line-height: 1.2;
-        letter-spacing: -.00833em;
+    .header-text ::deep a {
+        font-family: var(--mud-typography-h3-family);
+        font-size: var(--mud-typography-h3-size);
+        font-weight: var(--mud-typography-h3-weight);
+        line-height: var(--mud-typography-h3-lineheight);
+        letter-spacing: var(--mud-typography-h3-letterspacing);
     }
 
     .menu-item {
@@ -87,49 +66,20 @@
         color: inherit;
         width: 30px;
         height: 30px;
-        margin-bottom: 12px;
     }
 }
 
 @media (min-width: 960px) {
-    .background {
-        background-image: url("https://source.unsplash.com/1280x460/daily?nature");
-    }
-
-    .title {
-        font-size: 6rem;
-        font-weight: 300;
-        line-height: 1.167;
-        letter-spacing: -.01562em;
+    .header-text ::deep a {
+        font-family: var(--mud-typography-h2-family);
+        font-size: var(--mud-typography-h2-size);
+        font-weight: var(--mud-typography-h2-weight);
+        line-height: var(--mud-typography-h2-lineheight);
+        letter-spacing: var(--mud-typography-h2-letterspacing);
     }
 
     .menu-item ::deep .item-icon {
         width: 40px;
         height: 40px;
-        margin-bottom: 18px;
-    }
-}
-
-@media (min-width: 1280px) {
-    .background {
-        background-image: url("https://source.unsplash.com/1920x460/daily?nature");
-    }
-
-    .container {
-        width: 1280px;
-        margin: 0 auto;
-    }
-}
-
-@media (min-width: 1920px) {
-    .background {
-        min-height: 460px;
-        background-image: url("https://source.unsplash.com/2560x560/daily?nature");
-    }
-}
-
-@media (min-width: 2560px) {
-    .background {
-        background-image: url("https://source.unsplash.com/3840x560/daily?nature");
     }
 }

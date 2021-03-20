@@ -5,35 +5,38 @@
 @inject IStringLocalizer<App> L
 
 <ImageBackground>
-    <div class="container">
-        <div class="header">
-            <a href="@Links.Subjects.Index(SubjectType)" class="title">
+    <div class="header">
+        <div class="header-image">
+            <MudAvatar Image="@(SubjectType.GetStatic().Image)" Style="width: 120px; height: 120px"/>
+        </div>
+        <div class="header-text">
+            <MudLink Color="Color.Inherit" Href="@Links.Subjects.Index(SubjectType)" Underline="Underline.None">
                 @L[$"Subject:{SubjectType}"]
-            </a>
+            </MudLink>
         </div>
-        <div class="menu">
-            @foreach (var item in _items)
+    </div>
+    <div class="menu">
+        @foreach (var item in _items)
+        {
+            @if (item.IsActive)
             {
-                @if (item.IsActive)
-                {
-                    <div class="menu-item item-active">
-                        <MudIcon Icon="@item.Icon" Class="item-icon"/>
-                        <MudText Typo="Typo.subtitle1" Class="item-text">
-                            @item.Title
-                        </MudText>
-                    </div>
-                }
-                else
-                {
-                    <a href="@item.Link" class="menu-item item-link">
-                        <MudIcon Icon="@item.Icon" Class="item-icon"/>
-                        <MudText Typo="Typo.subtitle1" Class="item-text">
-                            @item.Title
-                        </MudText>
-                    </a>
-                }
+                <div class="menu-item item-active">
+                    <MudIcon Icon="@item.Icon" Class="item-icon"/>
+                    <MudText Typo="Typo.subtitle1" Class="item-text">
+                        @item.Title
+                    </MudText>
+                </div>
             }
-        </div>
+            else
+            {
+                <a href="@item.Link" class="menu-item item-link">
+                    <MudIcon Icon="@item.Icon" Class="item-icon"/>
+                    <MudText Typo="Typo.subtitle1" Class="item-text">
+                        @item.Title
+                    </MudText>
+                </a>
+            }
+        }
     </div>
 </ImageBackground>
 

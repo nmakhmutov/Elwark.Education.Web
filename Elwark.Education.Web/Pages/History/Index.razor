@@ -9,7 +9,7 @@
     <Loading>
         <div class="ma-6">
             <div class="grid">
-                <CardsSkeleton/>
+                <CardsSkeleton Count="2"/>
             </div>
         </div>
     </Loading>
@@ -18,41 +18,26 @@
 
         <HistoryPeriodsGrid Periods="@overview.Periods"/>
 
-        <HistoryDailyTopic Class="mb-6" Topic="@overview.Topics.Trends[new Random().Next(overview.Topics.Trends.Length)]"/>
+        <HistoryDailyTopic Class="mb-6" Topic="@overview.TrendingTopics[new Random().Next(overview.TrendingTopics.Length)]"/>
 
         <div class="grid mb-6">
-            <div class="trending-container">
-                <div class="container-header">
+
+            <div>
+                <div class="container-header mb-3">
                     <MudText Typo="Typo.h6">
                         @L["Topics:Trending"]
                     </MudText>
                 </div>
-                <div class="trending-grid mt-3">
-                    @foreach (var topic in overview.Topics.Trends)
-                    {
-                        <div class="trending-article-card">
-                            <div class="trending-article-image">
-                                <img src="@topic.Image" loading="lazy" alt="@topic.Title">
-                            </div>
-                            <div class="trending-article-content">
-                                <MudLink Typo="Typo.h5" Href="@(Links.History.Topic(topic.Id))">
-                                    @topic.Title
-                                </MudLink>
-                                <MudText Typo="Typo.subtitle1">
-                                    @topic.Overview
-                                </MudText>
-                            </div>
-                        </div>
-                    }
-                </div>
+                <HistoryTrendingGrid Items="@overview.TrendingTopics"/>
             </div>
-            <div class="recent-container">
-                <div class="container-header">
+
+            <div>
+                <div class="container-header mb-3">
                     <MudText Typo="Typo.h6" Align="Align.Center">
                         @L["Topics:Random"]
                     </MudText>
                 </div>
-                <HistoryRandomTopicContainer Class="mb-6 mt-3"/>
+                <HistoryRandomTopicContainer Class="mb-6"/>
 
                 <div class="container-header">
                     <MudText Typo="Typo.h6" Align="Align.Center">
@@ -60,7 +45,7 @@
                     </MudText>
                 </div>
                 <div class="recent-grid mt-3">
-                    @foreach (var topic in overview.Topics.Recent)
+                    @foreach (var topic in overview.RecentTopics)
                     {
                         <div class="recent-article-card">
                             <div class="recent-article-card-header">
@@ -71,6 +56,9 @@
                                     <MudLink Typo="Typo.h5" Href="@(Links.History.Topic(topic.Id))">
                                         @topic.Title
                                     </MudLink>
+                                    <div class="mt-3">
+                                                        <ContentRatingIcon Rating="@topic.Rating"/>
+                                                    </div>
                                 </div>
                             </div>
                             <MudText Typo="Typo.subtitle1">
@@ -80,11 +68,22 @@
                     }
                 </div>
             </div>
+
+            <div class="hot">
+                <div class="container-header mb-3">
+                    <MudText Typo="Typo.h6">
+                        @L["Topics:Hot"]
+                    </MudText>
+                </div>
+                <HistoryHotGrid Items="@overview.HotTopics"/>
+            </div>
+
         </div>
     </Result>
 </ApiResponseViewer>
 
-@code{
+@code {
+
     private ApiResponse<HistoryOverview> _response = ApiResponse<HistoryOverview>.Loading();
 
     protected override async Task OnInitializedAsync()

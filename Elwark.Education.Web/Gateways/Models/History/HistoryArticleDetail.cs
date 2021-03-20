@@ -10,6 +10,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string Overview,
         string Title,
         string Text,
+        UserContentRating Rating,
         Infobox[] InfoBoxes,
         ArticleOverview[] Contents
     );

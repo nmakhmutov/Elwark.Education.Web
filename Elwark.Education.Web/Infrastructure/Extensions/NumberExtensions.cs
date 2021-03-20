@@ -6,33 +6,31 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
     {
         private static readonly char[] Prefixes = {'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'};
 
-        public static string ToReadable(this int number, string? format = null) =>
-            ToReadable((double) number, format);
+        public static string ToReadable(this int number) =>
+            ToReadable((double) number);
         
-        public static string ToReadable(this uint number, string? format = null) =>
-            ToReadable((double) number, format);
+        public static string ToReadable(this uint number) =>
+            ToReadable((double) number);
 
-        public static string ToReadable(this long number, string? format = null) =>
-            ToReadable((double) number, format);
+        public static string ToReadable(this long number) =>
+            ToReadable((double) number);
         
-        public static string ToReadable(this ulong number, string? format = null) =>
-            ToReadable((double) number, format);
+        public static string ToReadable(this ulong number) =>
+            ToReadable((double) number);
 
-        public static string ToReadable(this double number, string? format = null)
+        public static string ToReadable(this double number)
         {
-            if (number == 0)
-                return number.ToString(format);
-            
-            var degree = (int) Math.Floor(Math.Log10(Math.Abs(number)) / 3);
-            var scaled = number * Math.Pow(1000, -degree);
-            var prefix = Math.Sign(degree) switch
+            var i = (long)Math.Pow(10, (int)Math.Max(0, Math.Log10(number) - 2));
+            var result = number / i * i;
+
+            return result switch
             {
-                1 => Prefixes[degree - 1],
-                -1 => Prefixes[-degree - 1],
-                _ => ' '
+                >= 1_000_000_000_000 => $"{result / 1_000_000_000_000:0.#}T",
+                >= 1_000_000_000 => $"{result / 1_000_000_000:0.#}B",
+                >= 1_000_000 => $"{result / 1_000_000:0.#}M",
+                >= 1_000 => $"{result / 1_000:0.#}K",
+                _ => result.ToString("#,0")
             };
-            
-            return $"{scaled.ToString(format)}{prefix}";
         }
     }
 }

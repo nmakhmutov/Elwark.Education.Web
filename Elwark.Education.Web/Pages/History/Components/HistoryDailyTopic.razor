@@ -19,7 +19,9 @@
             <MudText Typo="Typo.h2" Color="Color.Inherit" Class="mb-3">
                 @Topic.Title
             </MudText>
-
+            <div class="my-3">
+                <ContentRatingIcon Rating="@Topic.Rating"/>
+            </div>
             <MudText Typo="Typo.subtitle1" Class="mb-6">
                 @Topic.Overview
             </MudText>
@@ -34,7 +36,7 @@
 @code {
 
     [Parameter]
-    public RatingTopicOverview Topic { get; set; } = default!;
+    public TopicOverview Topic { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

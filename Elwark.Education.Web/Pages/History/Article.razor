@@ -50,6 +50,22 @@
             </div>
 
             <div class="aside">
+                <MudCard>
+                    @* <MudCardHeader> *@
+                    @*     <CardHeaderContent> *@
+                    @*         <MudText Typo="Typo.subtitle1"> *@
+                    @*             <strong>@L["Rating"]</strong> *@
+                    @*         </MudText> *@
+                    @*     </CardHeaderContent> *@
+                    @* </MudCardHeader> *@
+                    <MudCardContent>
+                        <RatingButtons
+                            Class="mx-auto"
+                            Rating="@article.Rating"
+                            OnLikeClick="@Like"
+                            OnDislikeClick="@Dislike"/>
+                    </MudCardContent>
+                </MudCard>
                 @foreach (var (title, content) in article.InfoBoxes)
                 {
                     <MudCard>
@@ -124,32 +140,6 @@
             </div>
 
         </div>
-
-        @* <div class="grid"> *@
-        @*     <div class="header"> *@
-        @*         <MudText Typo="Typo.h2" Class="mb-3" Align="Align.Center"> *@
-        @*             @article.Title *@
-        @*         </MudText> *@
-        @*         <Breadcrumbs Items="breadcrumbs" Class="mb-6"/> *@
-
-        @*     </div> *@
-        @*     <div class="content"> *@
-        @*         <MudIconButton Icon="@Icons.Filled.ThumbUp" OnClick="@Like"/> *@
-        @*         <MudIconButton Icon="@Icons.Filled.ThumbDown" OnClick="@Dislike"/> *@
-        @*         <MudPaper Class="pa-3"> *@
-        @*             <MarkdownText Text="@article.Text"/> *@
-        @*             @if (article.Footnotes is not null) *@
-        @*             { *@
-        @*                 <MudDivider DividerType="DividerType.Middle" Class="my-6"/> *@
-        @*                 <MarkdownText Text="@article.Footnotes"/> *@
-        @*             } *@
-        @*         </MudPaper> *@
-        @*         <AdjacentArticles Adjacent="@article.Adjacent" Class="my-6" OnPremiumClick="@OnBuyClick"/> *@
-        @*     </div> *@
-        @*     <div class="aside"> *@
-
-        @*     </div> *@
-        @* </div> *@
     </Result>
 </ApiResponseViewer>
 
@@ -177,14 +167,24 @@
             Snackbar.Add(ErrorManager.Localize(_test.Error).Title, Severity.Error);
     }
 
-    private Task Like()
+    private async Task<bool> Like()
     {
-        return HistoryClient.LikeArticleAsync(Id);
+        var response = await HistoryClient.LikeArticleAsync(Id);
+        if (response.Status == ResponseStatus.Success)
+            return true;
+
+        Snackbar.Add(ErrorManager.Localize(response.Error).Title, Severity.Error);
+        return false;
     }
 
-    private Task Dislike()
+    private async Task<bool> Dislike()
     {
-        return HistoryClient.DislikeArticleAsync(Id);
+        var response = await HistoryClient.DislikeArticleAsync(Id);
+        if (response.Status == ResponseStatus.Success)
+            return true;
+
+        Snackbar.Add(ErrorManager.Localize(response.Error).Title, Severity.Error);
+        return false;
     }
 
 }

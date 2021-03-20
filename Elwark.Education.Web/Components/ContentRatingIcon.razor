@@ -2,8 +2,8 @@
 
 <MudTooltip Text="@L["Rating"]">
     <div class="d-flex flex-row align-center">
-        <MudIcon Icon="@Icons.Filled.ThumbsUpDown" Size="Size.Small" Color="@Color"/>
-        <MudText Typo="Typo.body2" Class="ml-2" Color="@Color">
+        <MudIcon Icon="@Icons.Filled.ThumbsUpDown" Size="Size.Small" Color="@Rating.Color"/>
+        <MudText Typo="Typo.body2" Class="ml-2" Color="@Rating.Color">
             @Rating.Ranking%
         </MudText>
     </div>
@@ -13,12 +13,5 @@
 
     [Parameter]
     public ContentRating Rating { get; set; } = default!;
-
-    private Color Color => Rating.Ranking switch {
-        > 50 => Color.Success,
-        50 => Color.Primary,
-        > 0 and < 50 => Color.Error,
-        _ => Color.Surface
-        };
 
 }

@@ -1,29 +1,29 @@
-@using Elwark.Education.Web.Gateways.Models.Statistics
 @* ReSharper disable once CheckNamespace *@
 @namespace Elwark.Education.Web.Components
+
+@using Elwark.Education.Web.Gateways.Models.Statistics
 @inject UrlsOptions Options;
 @inject IStringLocalizer<App> L
 
 <ImageBackground>
-    <div class="statistics">
-        <div class="profile">
-            <AuthorizeView>
-                <Authorized>
+    <div class="profile">
+        <AuthorizeView>
+            <Authorized>
+                <div class="profile-image">
                     <MudAvatar Image="@(context.User.GetImage())" Style="width: 120px; height: 120px"/>
-                    <MudText Typo="Typo.h6" GutterBottom="true">
-                        @context.User.GetName()
+                </div>
+                <div class="profile-text">
+                    <MudLink Typo="Typo.h5" Color="Color.Inherit" Target="_blank" Href="@Options.Account.ToString()" Underline="Underline.Always">
+                        @context.User.GetName() <MudIcon Icon="@Icons.Filled.OpenInNew" Size="Size.Small"/>
+                    </MudLink>
+                    <MudText Typo="Typo.subtitle2" GutterBottom="true">
+                        @@@context.User.GetNickname()
                     </MudText>
-                    <MudButton
-                        EndIcon="@Icons.Filled.OpenInNew"
-                        Color="Color.Primary"
-                        Variant="Variant.Filled"
-                        Link="@Options.Account.ToString()"
-                        Target="_blank">
-                        @L["ElwarkAccount"]
-                    </MudButton>
-                </Authorized>
-            </AuthorizeView>
-        </div>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+    </div>
+    <div class="statistics">
         <div class="item">
             <MudIcon Icon="@Icons.Filled.School" Size="Size.Large" Class="mr-3"/>
             <div>
