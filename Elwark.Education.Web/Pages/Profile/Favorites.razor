@@ -1,0 +1,63 @@
+@page "/profile/{page}/favorites"
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Pages.Profile.Components
+
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
+
+@attribute [Authorize]
+
+<ProfileSubjectHeader SubjectType="@_type" Selected="@(ProfileSubMenu.Favorites)"/>
+<div class="ma-6">
+    <ApiResponsePageableViewer
+        InitLoader="@(() => LoaderAsync(new PageableRequest(null, 20)))"
+        AppendLoader="@(token => LoaderAsync(new PageableRequest(token, 20)))">
+        <Loading>
+            <div class="grid">
+                <CardsSkeleton/>
+            </div>
+        </Loading>
+        <Result Context="items">
+            <Title Value="@L["Favorites"]"></Title>
+            <div class="grid">
+                @foreach (var item in items)
+                {
+                    <TopicCard
+                        Id="@item.Id"
+                        Href="@Links.History.Topic(item.Id)"
+                        Image="@item.Image"
+                        Title="@item.Title"
+                        Subtitle="@item.Overview"
+                        Rating="@item.Rating"
+                        IsFavorite="@item.IsFavorite"
+                        OnFavoriteClick="@OnFavoriteClick"
+                        Progress="@item.Progress"/>
+                }
+            </div>
+        </Result>
+    </ApiResponsePageableViewer>
+</div>
+
+@code
+{
+    private SubjectType _type;
+
+    [Parameter]
+    public string Page { get; set; } = string.Empty;
+
+    protected override void OnInitialized() =>
+        Enum.TryParse(Page, true, out _type);
+
+    private Task<ApiResponse<PageableResponse<TopicSummary>>> LoaderAsync(PageableRequest request) =>
+        _type switch{
+            SubjectType.History => HistoryClient.GetMyFavoritesAsync(request),
+            _ => Task.FromResult(ApiResponse<PageableResponse<TopicSummary>>.Fail(Error.NotFound))
+            };
+    
+    private async Task<bool> OnFavoriteClick(string topicId)
+    {
+        var result = await HistoryClient.ToggleFavoriteAsync(topicId);
+        return result.Status == ResponseStatus.Success && result.Data;
+    }
+
+}

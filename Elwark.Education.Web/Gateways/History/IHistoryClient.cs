@@ -45,5 +45,7 @@ namespace Elwark.Education.Web.Gateways.History
         Task<ApiResponse<PageableResponse<TestConclusionSummary>>> GetMyTestConclusionsAsync(PageableRequest request);
         
         Task<ApiResponse<TestConclusionDetail>> GetMyTestConclusionAsync(string testId);
+
+        Task<ApiResponse<PageableResponse<TopicSummary>>> GetMyFavoritesAsync(PageableRequest request);
     }
 }

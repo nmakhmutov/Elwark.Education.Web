@@ -16,6 +16,9 @@ namespace Elwark.Education.Web.Pages
 
             public static string Statistics(SubjectType type) =>
                 $"{Index}/{type.ToString().ToLowerInvariant()}/statistics";
+            
+            public static string Favorites(SubjectType type) =>
+                $"{Index}/{type.ToString().ToLowerInvariant()}/favorites";
 
             public static string Tests(SubjectType type) =>
                 $"{Index}/{type.ToString().ToLowerInvariant()}/tests";

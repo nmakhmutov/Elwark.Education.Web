@@ -5,6 +5,7 @@ namespace Elwark.Education.Web.Pages.Profile.Components
         None,
         Overview,
         Statistics,
-        Tests
+        Tests,
+        Favorites
     }
 }

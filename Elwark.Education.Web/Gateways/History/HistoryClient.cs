@@ -80,5 +80,9 @@ namespace Elwark.Education.Web.Gateways.History
 
         public Task<ApiResponse<TestConclusionDetail>> GetMyTestConclusionAsync(string testId) =>
             ExecuteAsync<TestConclusionDetail>(() => _client.GetAsync($"history/me/test-conclusions/{testId}"));
+
+        public Task<ApiResponse<PageableResponse<TopicSummary>>> GetMyFavoritesAsync(PageableRequest request) =>
+            ExecuteAsync<PageableResponse<TopicSummary>>(() =>
+                _client.GetAsync($"history/me/favorites?token={request.Token}&count={request.Count}"));
     }
 }
