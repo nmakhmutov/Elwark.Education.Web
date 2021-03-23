@@ -1,12 +1,11 @@
 .title {
     display: grid;
     gap: 24px;
-    margin: 24px;
+    padding: 24px;
 }
 
 .image {
     width: 100%;
-    margin: 0 auto 6.6vmax;
 }
 
 .image img {
@@ -18,9 +17,14 @@
 
 @media (min-width: 960px) {
     .title {
+        grid-template-columns: 5fr 7fr;
         margin-top: 6.6vmax;
         margin-bottom: 6.6vmax;
-        grid-template-columns: 5fr 7fr;
+    }
+
+    .test {
+        margin-top: 6.6vmax;
+        grid-column: span 2;
     }
 }
 

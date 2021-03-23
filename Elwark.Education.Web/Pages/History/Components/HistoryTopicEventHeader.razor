@@ -22,19 +22,22 @@
             </div>
         }
     </div>
+
     <div>
         <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>
         <MudText Typo="Typo.subtitle1" Class="mb-6">
             @Topic.Description
         </MudText>
-        @if (Topic.Test is not null)
-        {
-            <TopicTestCard Test="@Topic.Test"/>
-        }
     </div>
+    @if (Topic.Test is not null)
+    {
+        <div class="test">
+            <TopicTestCard Test="@Topic.Test"/>
+        </div>
+    }
 </div>
 
-<div class="image">
+<div class="image py-6">
     <img src="@Topic.Image" alt="@Topic.Title"/>
 </div>
 

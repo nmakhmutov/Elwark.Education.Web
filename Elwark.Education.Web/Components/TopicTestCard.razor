@@ -1,36 +1,67 @@
 @inject IStringLocalizer<App> L
 
-<div class="container @Class">
-    <TopicProgressBar Progress="@Test.Progress"/>
-    <div class="d-flex flex-row justify-space-between mt-1">
-        <div class="d-flex flex-row align-center">
-            @if (Test.Progress.QuantityCompletedTimes > 0)
+<div class="grid @Class">
+    <div>
+        <div class="d-flex flex-row justify-center align-end">
+            <MudText Typo="Typo.h3">
+                @Test.Progress.CompletedArticles
+            </MudText>
+            <MudText Typo="Typo.subtitle1">
+                /@Test.Progress.TotalArticles
+            </MudText>
+        </div>
+        <MudProgressLinear Minimum="0" Maximum="100" Color="Color.Primary" Value="@Test.Progress.Percentage" Class="mb-2"/>
+        <div class="d-flex flex-row justify-space-between mb-3">
+            <MudText Typo="Typo.body2" Class="mb-2">
+                <strong>@L["Progress"]</strong>
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                @Test.Progress.Percentage%
+            </MudText>
+        </div>
+
+        <CreateTestButton
+            Subject="@SubjectType.History"
+            Status="@Test.Status"
+            IsLoading="@IsTestLoading"
+            OnCreateTestClick="@OnCreateTestClick"/>
+
+        <div class="d-flex flex-row flex-wrap justify-space-between">
+            @if (Test.Progress.CompletedTimes.Success > 0)
             {
-                <MudIcon Icon="@Icons.Outlined.CheckCircleOutline" Style="@("color:" + Test.Progress.Color)"/>
-                <MudText Typo="Typo.body2" Class="ml-1">
-                    @L.GetString("Exam:QuantityCompletedTimes", Test.Progress.QuantityCompletedTimes)
+                <MudText Align="Align.Center" Typo="Typo.subtitle1" Class="mt-3">
+                    @L["Exam:PassedTimes", Test.Progress.CompletedTimes.Success.ToReadable()]
                 </MudText>
             }
-            else
+            @if (Test.Progress.CompletedTimes.Fail > 0)
             {
-                <MudIcon Icon="@Icons.Outlined.RemoveCircleOutline"/>
-                <MudText Typo="Typo.body2" Class="ml-1">
-                    @L["Exam:NotPassed"]
+                <MudText Align="Align.Center" Typo="Typo.subtitle1" Class="mt-3">
+                    @L["Exam:NotPassedTimes", Test.Progress.CompletedTimes.Fail.ToReadable()]
                 </MudText>
             }
         </div>
-        <MudText Typo="Typo.body2">
-            @Test.Progress.Percentage%
-        </MudText>
     </div>
+
+    @foreach (var conclusion in Test.Conclusions)
+    {
+        <TestConclusionOverviewItem
+            Conclusion="@conclusion"
+            DetailLinkBuilder="@(id => Links.Profile.TestDetail(SubjectType.History, id))"/>
+    }
 </div>
 
 @code {
 
     [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
     public TopicTest Test { get; set; } = default!;
 
     [Parameter]
-    public string? Class { get; set; }
+    public bool IsTestLoading { get; set; }
+
+    [Parameter]
+    public EventCallback OnCreateTestClick { get; set; }
 
 }

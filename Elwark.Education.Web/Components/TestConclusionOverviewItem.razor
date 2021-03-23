@@ -1,0 +1,50 @@
+@using Elwark.Education.Web.Gateways.Models.TestConclusion
+@inject IStringLocalizer<App> L
+
+<ul class="@Class">
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <ConclusionStatusChip Status="@Conclusion.Status" IsOnlyText="true"/>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["Date"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @Conclusion.CompletedAt.ToSimpleFormat()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["Score"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @Conclusion.TotalScore.ToReadable()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["TimeSpent"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @Conclusion.TimeSpent.ToSimpleFormat()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-end mb-1">
+        <MudLink Href="@DetailLinkBuilder(Conclusion.TestId)">
+            @L["Detail"]
+        </MudLink>
+    </li>
+</ul>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public TestConclusionOverview Conclusion { get; set; } = default!;
+
+    [Parameter]
+    public Func<string, string> DetailLinkBuilder { get; set; } = _ => string.Empty;
+
+}

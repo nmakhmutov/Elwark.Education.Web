@@ -50,22 +50,17 @@
             </div>
 
             <div class="aside">
-                <MudCard>
-                    @* <MudCardHeader> *@
-                    @*     <CardHeaderContent> *@
-                    @*         <MudText Typo="Typo.subtitle1"> *@
-                    @*             <strong>@L["Rating"]</strong> *@
-                    @*         </MudText> *@
-                    @*     </CardHeaderContent> *@
-                    @* </MudCardHeader> *@
-                    <MudCardContent>
-                        <RatingButtons
-                            Class="mx-auto"
-                            Rating="@article.Rating"
-                            OnLikeClick="@Like"
-                            OnDislikeClick="@Dislike"/>
-                    </MudCardContent>
-                </MudCard>
+                <div>
+                    <MudCard>
+                        <MudCardContent>
+                            <RatingButtons
+                                Class="mx-auto"
+                                Rating="@article.Rating"
+                                OnLikeClick="@Like"
+                                OnDislikeClick="@Dislike"/>
+                        </MudCardContent>
+                    </MudCard>
+                </div>
                 @foreach (var (title, content) in article.InfoBoxes)
                 {
                     <MudCard>
@@ -97,23 +92,36 @@
                                 Status="@article.Test.Status"
                                 IsLoading="@(_test?.Status == ResponseStatus.Loading)"
                                 OnCreateTestClick="@CreateTestAsync"/>
-                            <MudText Typo="Typo.subtitle1" Class="mt-6">
-                                @if (article.Test.QuantityCompletedTimes > 0)
+                            <div class="d-flex flex-row justify-space-between flex-wrap mt-6">
+                                @if (article.Test.CompletedTimes.Success > 0)
                                 {
-                                    @L["Test:QuantityCompletedTimes", article.Test.QuantityCompletedTimes]
+                                    <MudText Typo="Typo.subtitle1" Class="mr-3">
+                                        @L["Test:PassedTimes", article.Test.CompletedTimes.Success.ToReadable()]
+                                    </MudText>
                                 }
-                                else
+                                @if (article.Test.CompletedTimes.Fail > 0)
                                 {
-                                    @L["Test:NotPassed"]
+                                    <MudText Typo="Typo.subtitle1">
+                                        @L["Test:NotPassedTimes", article.Test.CompletedTimes.Fail.ToReadable()]
+                                    </MudText>
                                 }
-                            </MudText>
+                            </div>
                             @if (article.Test.Conclusions.Length > 0)
                             {
-                                <TestConclusionList
-                                    Class="mt-3"
-                                    Conclusions="@article.Test.Conclusions"
-                                    DetailLinkBuilder="@(id => Links.Profile.TestDetail(SubjectType.History, id))"
-                                    SeeAllLink="@Links.Profile.Tests(SubjectType.History)"/>
+                                <div class="mt-3">
+                                    @foreach (var conclusion in article.Test.Conclusions)
+                                    {
+                                        <TestConclusionOverviewItem
+                                            Class="mb-6"
+                                            Conclusion="@conclusion"
+                                            DetailLinkBuilder="@(id => Links.Profile.TestDetail(SubjectType.History, id))"/>
+                                    }
+                                    <div class="d-flex flex-row justify-end">
+                                        <MudLink Color="Color.Primary" Href="@Links.Profile.Tests(SubjectType.History)">
+                                            @L["SeeAll"]
+                                        </MudLink>
+                                    </div>
+                                </div>
                             }
                         </MudCardContent>
                     </MudCard>

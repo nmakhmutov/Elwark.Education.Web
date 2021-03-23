@@ -48,23 +48,33 @@
                     @article.Overview
                 </MudText>
 
-                <div class="d-flex flex-row align-center">
+                <div class="d-flex flex-row align-center flex-wrap">
                     <ContentRatingIcon Rating="@article.Rating"/>
-                    @if (article.QuantityCompletedTimes.HasValue)
+                    @if (article.CompletedTimes is not null)
                     {
-                        <MudIcon Icon="@(Icons.Filled.PanoramaFishEye)" Class="mx-2" Style="width: 8px; height: 8px"/>
-                        <MudText Typo="Typo.body2">
-                            <em>
-                                @if (article.QuantityCompletedTimes > 0)
-                                {
-                                    @L["Test:QuantityCompletedTimes", article.QuantityCompletedTimes]
-                                }
-                                else
-                                {
-                                    @L["Test:NotPassed"]
-                                }
-                            </em>
-                        </MudText>
+                        @if (article.CompletedTimes.Success > 0)
+                        {
+                            <div class="d-flex flex-row align-center">
+                                <MudIcon Icon="@(Icons.Filled.PanoramaFishEye)" Class="mx-2" Style="width: 8px; height: 8px"/>
+                                <MudText Typo="Typo.body2">
+                                    <em>
+                                        @L["Test:PassedTimes", article.CompletedTimes.Success.ToReadable()]
+                                    </em>
+                                </MudText>
+                            </div>
+                        }
+
+                        @if (article.CompletedTimes.Fail > 0)
+                        {
+                            <div class="d-flex flex-row align-center">
+                                <MudIcon Icon="@(Icons.Filled.PanoramaFishEye)" Class="mx-2" Style="width: 8px; height: 8px"/>
+                                <MudText Typo="Typo.body2">
+                                    <em>
+                                        @L["Test:NotPassedTimes", article.CompletedTimes.Fail.ToReadable()]
+                                    </em>
+                                </MudText>
+                            </div>
+                        }
                     }
                 </div>
             </div>

@@ -5,47 +5,59 @@
 @switch (Status)
 {
     case PermissionStatus.Allowed when IsLoading:
-        <MudButton Variant="Variant.Filled" Disabled="true">
-            <div class="d-flex flex-row align-center">
-                <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
-                @L["Loading"]
-            </div>
-        </MudButton>
+        <div class="@Class">
+            <MudButton Variant="Variant.Filled" Disabled="true">
+                <div class="d-flex flex-row align-center">
+                    <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                    @L["Loading"]
+                </div>
+            </MudButton>
+        </div>
         break;
 
     case PermissionStatus.Allowed:
-        <MudButton
-            Variant="Variant.Filled"
-            Color="Color.Primary"
-            OnClick="@OnCreateTestClick">
-            @L["Test:PassATest"]
-        </MudButton>
+        <div class="@Class">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnCreateTestClick">
+                @L["Test:PassATest"]
+            </MudButton>
+        </div>
         break;
 
     case PermissionStatus.CreatedMaximumTests:
     case PermissionStatus.ReachedMaximumAnswerAttempts:
     case PermissionStatus.PremiumSubscriptionRequired:
-    <div class="d-flex flex-column align-center">
-        <MudButton
-            Variant="Variant.Filled"
-            Color="Color.Primary"
-            OnClick="@OnBuyClick">
-            @L["Subscription:ChoosePricingPlan"]
-        </MudButton>
-    <MudText Typo="Typo.body2" Color="Color.Error" Class="mt-2">
-        @ErrorManager.Localize(Status)
-    </MudText>
-    </div>
+        <div class="grid">
+            <div>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="true">
+                    @L["Test:PassATest"]
+                </MudButton>
+            </div>
+            <div>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnBuyClick">
+                    @L["Subscription:PricingPlan"]
+                </MudButton>
+            </div>
+            <div class="tariff">
+                <MudText Typo="Typo.body2" Color="Color.Tertiary" Class="mt-2">
+                    @ErrorManager.Localize(Status)
+                </MudText>
+            </div>
+        </div>
         break;
 
     default:
-        <MudText Typo="Typo.body2" Color="Color.Error">
-            @ErrorManager.Localize(Status)
-        </MudText>
+        <div class="@Class">
+            <MudText Typo="Typo.body2" Color="Color.Error">
+                @ErrorManager.Localize(Status)
+            </MudText>
+        </div>
         break;
 }
 
 @code {
+
+    [Parameter]
+    public string? Class { get; set; }
 
     [Parameter]
     public PermissionStatus Status { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 namespace Elwark.Education.Web.Gateways.Models.History
 {
     public abstract record HistoryTopicDetail(
+        string Id,
         string Title,
         string Description,
         string Image,
@@ -15,6 +16,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
     );
 
     public sealed record HistoryPersonTopicDetail(
+        string Id,
         string Title,
         string Description,
         string Image,
@@ -28,9 +30,10 @@ namespace Elwark.Education.Web.Gateways.Models.History
         KeyValuePair<string, string>[] Characteristics,
         TopicSummary[] RelatedTopics,
         HistoryArticleSummary[] Articles
-    ) : HistoryTopicDetail(Title, Description, Image, Period, Test, Rating, IsFavorite, RelatedTopics, Articles);
+    ) : HistoryTopicDetail(Id, Title, Description, Image, Period, Test, Rating, IsFavorite, RelatedTopics, Articles);
 
     public sealed record HistoryEventTopicDetail(
+        string Id,
         string Title,
         string Description,
         string Image,
@@ -42,5 +45,5 @@ namespace Elwark.Education.Web.Gateways.Models.History
         bool IsFavorite,
         TopicSummary[] RelatedTopics,
         HistoryArticleSummary[] Articles
-    ) : HistoryTopicDetail(Title, Description, Image, Period, Test, Rating, IsFavorite, RelatedTopics, Articles);
+    ) : HistoryTopicDetail(Id, Title, Description, Image, Period, Test, Rating, IsFavorite, RelatedTopics, Articles);
 }

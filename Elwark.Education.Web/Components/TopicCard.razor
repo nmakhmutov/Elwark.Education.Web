@@ -8,7 +8,7 @@
                     Class="favorite"
                     Toggled="@IsFavorite"
                     ToggledChanged="@OnFavoriteChanged"
-                    Icon="@Icons.Filled.Favorite"
+                    Icon="@Icons.Filled.FavoriteBorder"
                     Color="Color.Default"
                     Size="Size.Small"
                     ToggledIcon="@Icons.Filled.Favorite"
@@ -28,10 +28,15 @@
     <div class="px-3">
         @if (Progress is not null)
         {
-            <MudText Typo="Typo.body2" Class="mb-2">
-                @L["Progress"] <strong>@Progress.Percentage%</strong>
-            </MudText>
-            <MudProgressLinear Minimum="0" Maximum="100" Color="Color.Primary" Value="@Progress.Percentage"/>
+            <MudProgressLinear Minimum="0" Maximum="100" Color="Color.Primary" Value="@Progress.Percentage" Class="mb-2"/>
+            <div class="d-flex flex-row justify-space-between">
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    <strong>@L["Progress"]</strong>
+                </MudText>
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    @Progress.Percentage%
+                </MudText>
+            </div>
         }
     </div>
     <div class="d-flex flex-row justify-space-between align-center pa-3">
