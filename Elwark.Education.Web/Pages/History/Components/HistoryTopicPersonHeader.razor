@@ -4,84 +4,87 @@
 
 @inject IStringLocalizer<App> L
 
-<div class="grid @Class">
-    <div class="image">
-        <img src="@Topic.Image" class="portrait" alt="@Topic.Title"/>
-    </div>
-    <div class="content">
-        <Breadcrumbs Items="@Breadcrumbs" Class="mb-3"/>
-        <MudText Typo="Typo.h2" Class="mb-3">
-            @Topic.Title
-        </MudText>
-        <div class="lifetime mb-3">
-            @if (Topic.Born is not null)
-            {
-                <div>
-                    <MudText Typo="Typo.body2" Color="Color.Surface">
-                        @L["History:Born"]
-                    </MudText>
-                    <HistoryDate Date="@Topic.Born" Typo="Typo.h5" Color="Color.Secondary" Class="mb-2"/>
-                    <MudText Typo="Typo.body1">
-                        @Topic.Born.Place
-                    </MudText>
-                </div>
-            }
-            @if (Topic.Died is not null)
-            {
-                <div>
-                    <MudText Typo="Typo.body2" Color="Color.Surface">
-                        @L["History:Died"]
-                    </MudText>
-                    <HistoryDate Date="@Topic.Died" Typo="Typo.h5" Color="Color.Secondary" Class="mb-2"/>
-                    <MudText Typo="Typo.body1">
-                        @Topic.Died.Place
-                    </MudText>
-                </div>
-            }
+<div class="@Class">
+    <div class="grid">
+        <div class="image">
+            <img src="@Topic.Image" class="portrait" alt="@Topic.Title"/>
         </div>
-
-        <div class="d-flex flex-row align-center mb-3">
-            <ContentRatingIcon Rating="@Topic.Rating" Size="@Size.Medium"/>
-
-            <div class="mx-3"></div>
-
-            <MudTooltip Text="@(Topic.IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
-                <MudToggleIconButton
-                    Toggled="@Topic.IsFavorite"
-                    ToggledChanged="@OnFavoriteChanged"
-                    Icon="@Icons.Filled.FavoriteBorder"
-                    Color="Color.Default"
-                    Size="Size.Medium"
-                    ToggledIcon="@Icons.Filled.Favorite"
-                    ToggledColor="Color.Error"
-                    ToggledSize="Size.Medium"/>
-            </MudTooltip>
-        </div>
-
-        <MudText Typo="Typo.subtitle1" Class="mb-6 mw-sm">
-            @Topic.Description
-        </MudText>
-    </div>
-    <div class="footer">
-        @if (Topic.Characteristics.Length > 0)
-        {
-            <div class="characteristics mb-12">
-                @foreach (var (title, value) in Topic.Characteristics)
+        <div class="content">
+            <Breadcrumbs Items="@Breadcrumbs" Class="mb-3"/>
+            <MudText Typo="Typo.h2" Class="mb-3">
+                @Topic.Title
+            </MudText>
+            <div class="lifetime mb-3">
+                @if (Topic.Born is not null)
                 {
-                    <div class="characteristic">
-                        <MudText Class="title" Typo="Typo.subtitle1">
-                            @title
+                    <div>
+                        <MudText Typo="Typo.body2" Color="Color.Surface">
+                            @L["History:Born"]
                         </MudText>
-                        <MarkdownText Text="@value"/>
+                        <HistoryDate Date="@Topic.Born" Typo="Typo.h5" Color="Color.Secondary" Class="mb-2"/>
+                        <MudText Typo="Typo.body1">
+                            @Topic.Born.Place
+                        </MudText>
+                    </div>
+                }
+                @if (Topic.Died is not null)
+                {
+                    <div>
+                        <MudText Typo="Typo.body2" Color="Color.Surface">
+                            @L["History:Died"]
+                        </MudText>
+                        <HistoryDate Date="@Topic.Died" Typo="Typo.h5" Color="Color.Secondary" Class="mb-2"/>
+                        <MudText Typo="Typo.body1">
+                            @Topic.Died.Place
+                        </MudText>
                     </div>
                 }
             </div>
-        }
-        @if (Topic.Test is not null)
-        {
-            <TopicTestCard Test="@Topic.Test"/>
-        }
+
+            <div class="d-flex flex-row align-center mb-3">
+                <ContentRatingIcon Rating="@Topic.Rating" Size="@Size.Medium"/>
+
+                <div class="mx-3"></div>
+
+                <MudTooltip Text="@(Topic.IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
+                    <MudToggleIconButton
+                        Toggled="@Topic.IsFavorite"
+                        ToggledChanged="@OnFavoriteChanged"
+                        Icon="@Icons.Filled.FavoriteBorder"
+                        Color="Color.Default"
+                        Size="Size.Medium"
+                        ToggledIcon="@Icons.Filled.Favorite"
+                        ToggledColor="Color.Error"
+                        ToggledSize="Size.Medium"/>
+                </MudTooltip>
+            </div>
+
+            <MudText Typo="Typo.subtitle1" Class="mb-6 mw-sm">
+                @Topic.Description
+            </MudText>
+        </div>
+        <div class="footer">
+            @if (Topic.Characteristics.Length > 0)
+            {
+                <div class="characteristics mb-12">
+                    @foreach (var (title, value) in Topic.Characteristics)
+                    {
+                        <div class="characteristic">
+                            <MudText Class="title" Typo="Typo.subtitle1">
+                                @title
+                            </MudText>
+                            <MarkdownText Text="@value"/>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
     </div>
+    
+    @if (Topic.Test is not null)
+    {
+        <TopicTestCard Subject="@SubjectType.History" Test="@Topic.Test" Class="pa-6"/>
+    }
 </div>
 
 @code {

@@ -25,7 +25,6 @@
 
     case PermissionStatus.CreatedMaximumTests:
     case PermissionStatus.ReachedMaximumAnswerAttempts:
-    case PermissionStatus.PremiumSubscriptionRequired:
         <div class="grid">
             <div>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="true">
@@ -42,6 +41,14 @@
                     @ErrorManager.Localize(Status)
                 </MudText>
             </div>
+        </div>
+        break;
+
+    case PermissionStatus.RequiredCompleteArticles:
+        <div class="@Class">
+            <MudText Typo="Typo.body2" Color="Color.Tertiary" Class="mt-2">
+                @ErrorManager.Localize(Status)
+            </MudText>
         </div>
         break;
 

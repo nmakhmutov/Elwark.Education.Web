@@ -6,6 +6,6 @@ namespace Elwark.Education.Web.Gateways.Models
         CreatedMaximumCurrentTests = 1,
         CreatedMaximumTests = 2,
         ReachedMaximumAnswerAttempts = 3,
-        PremiumSubscriptionRequired = 4
+        RequiredCompleteArticles = 4
     }
 }

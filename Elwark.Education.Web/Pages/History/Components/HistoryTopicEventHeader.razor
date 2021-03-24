@@ -28,16 +28,34 @@
         <MudText Typo="Typo.subtitle1" Class="mb-6">
             @Topic.Description
         </MudText>
+        <div class="d-flex flex-row align-center mb-3">
+            <ContentRatingIcon Rating="@Topic.Rating" Size="@Size.Medium"/>
+
+            <div class="mx-3"></div>
+
+            <MudTooltip Text="@(Topic.IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
+                <MudToggleIconButton
+                    Toggled="@Topic.IsFavorite"
+                    ToggledChanged="@OnFavoriteChanged"
+                    Icon="@Icons.Filled.FavoriteBorder"
+                    Color="Color.Default"
+                    Size="Size.Medium"
+                    ToggledIcon="@Icons.Filled.Favorite"
+                    ToggledColor="Color.Error"
+                    ToggledSize="Size.Medium"/>
+            </MudTooltip>
+        </div>
     </div>
+    
     @if (Topic.Test is not null)
     {
         <div class="test">
-            <TopicTestCard Test="@Topic.Test"/>
+            <TopicTestCard Subject="@SubjectType.History" Test="@Topic.Test"/>
         </div>
     }
 </div>
 
-<div class="image py-6">
+<div class="image">
     <img src="@Topic.Image" alt="@Topic.Title"/>
 </div>
 
@@ -48,5 +66,11 @@
 
     [Parameter]
     public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+
+    [Parameter]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+
+    private async Task OnFavoriteChanged(bool toggled) =>
+        Topic = Topic with{IsFavorite = await OnFavoriteClick.Invoke(Topic.Id)};
 
 }

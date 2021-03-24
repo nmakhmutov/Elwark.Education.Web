@@ -21,22 +21,22 @@
         </div>
 
         <CreateTestButton
-            Subject="@SubjectType.History"
+            Subject="@Subject"
             Status="@Test.Status"
             IsLoading="@IsTestLoading"
             OnCreateTestClick="@OnCreateTestClick"/>
 
-        <div class="d-flex flex-row flex-wrap justify-space-between">
+        <div class="d-flex flex-row flex-wrap justify-space-between mt-3">
             @if (Test.Progress.CompletedTimes.Success > 0)
             {
-                <MudText Align="Align.Center" Typo="Typo.subtitle1" Class="mt-3">
-                    @L["Exam:PassedTimes", Test.Progress.CompletedTimes.Success.ToReadable()]
+                <MudText Align="Align.Center" Typo="Typo.subtitle1">
+                    @L["Test:PassedTimes", Test.Progress.CompletedTimes.Success.ToReadable()]
                 </MudText>
             }
             @if (Test.Progress.CompletedTimes.Fail > 0)
             {
-                <MudText Align="Align.Center" Typo="Typo.subtitle1" Class="mt-3">
-                    @L["Exam:NotPassedTimes", Test.Progress.CompletedTimes.Fail.ToReadable()]
+                <MudText Align="Align.Center" Typo="Typo.subtitle1">
+                    @L["Test:NotPassedTimes", Test.Progress.CompletedTimes.Fail.ToReadable()]
                 </MudText>
             }
         </div>
@@ -45,13 +45,19 @@
     @foreach (var conclusion in Test.Conclusions)
     {
         <TestConclusionOverviewItem
-            Conclusion="@conclusion"
-            DetailLinkBuilder="@(id => Links.Profile.TestDetail(SubjectType.History, id))"/>
+            Details="@Links.Profile.TestDetail(Subject, conclusion.TestId)"
+            Status="@conclusion.Status"
+            CompletedAt="@conclusion.CompletedAt"
+            TimeSpent="@conclusion.TimeSpent"
+            TotalScore="@conclusion.TotalScore"/>
     }
 </div>
 
 @code {
 
+    [Parameter]
+    public SubjectType Subject { get; set; }
+    
     [Parameter]
     public string? Class { get; set; }
 

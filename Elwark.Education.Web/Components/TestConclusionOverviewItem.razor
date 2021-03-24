@@ -3,14 +3,14 @@
 
 <ul class="@Class">
     <li class="d-flex flex-row justify-space-between underline mb-1">
-        <ConclusionStatusChip Status="@Conclusion.Status" IsOnlyText="true"/>
+        <ConclusionStatusChip Status="@Status" IsOnlyText="true"/>
     </li>
     <li class="d-flex flex-row justify-space-between underline mb-1">
         <MudText Typo="Typo.subtitle1">
             @L["Date"]
         </MudText>
         <MudText Typo="Typo.subtitle1">
-            @Conclusion.CompletedAt.ToSimpleFormat()
+            @CompletedAt.ToSimpleFormat()
         </MudText>
     </li>
     <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -18,7 +18,7 @@
             @L["Score"]
         </MudText>
         <MudText Typo="Typo.subtitle1">
-            @Conclusion.TotalScore.ToReadable()
+            @TotalScore.ToReadable()
         </MudText>
     </li>
     <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -26,12 +26,12 @@
             @L["TimeSpent"]
         </MudText>
         <MudText Typo="Typo.subtitle1">
-            @Conclusion.TimeSpent.ToSimpleFormat()
+            @TimeSpent.ToSimpleFormat()
         </MudText>
     </li>
-    <li class="d-flex flex-row justify-end mb-1">
-        <MudLink Href="@DetailLinkBuilder(Conclusion.TestId)">
-            @L["Detail"]
+    <li class="d-flex flex-row justify-end">
+        <MudLink Href="@Details">
+            @L["Details"]
         </MudLink>
     </li>
 </ul>
@@ -42,9 +42,18 @@
     public string? Class { get; set; }
 
     [Parameter]
-    public TestConclusionOverview Conclusion { get; set; } = default!;
+    public ConclusionStatus Status { get; set; }
+    
+    [Parameter]
+    public ulong TotalScore { get; set; }
+    
+    [Parameter]
+    public TimeSpan TimeSpent { get; set; }
+    
+    [Parameter]
+    public DateTime CompletedAt { get; set; }
 
     [Parameter]
-    public Func<string, string> DetailLinkBuilder { get; set; } = _ => string.Empty;
+    public string Details { get; set; } = string.Empty;
 
 }
