@@ -9,16 +9,19 @@
     <Loading>
         <div class="ma-6">
             <div class="grid">
-                <CardsSkeleton Count="2"/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
             </div>
         </div>
     </Loading>
     <Result Context="overview">
         <Title Value="@L["Subject:History"]"/>
 
-        <HistoryPeriodsGrid Periods="@overview.Periods"/>
+        <PeriodsGrid Periods="@overview.Periods"/>
 
-        <HistoryDailyTopic Class="mb-6" Topic="@overview.TrendingTopics[new Random().Next(overview.TrendingTopics.Length)]"/>
+        <DailyTopic Class="mb-6" Topic="@overview.TrendingTopics[new Random().Next(overview.TrendingTopics.Length)]"/>
 
         <div class="grid mb-6">
 
@@ -28,7 +31,7 @@
                         @L["Topics:Trending"]
                     </MudText>
                 </div>
-                <HistoryTrendingGrid Items="@overview.TrendingTopics"/>
+                <TrendingGrid Items="@overview.TrendingTopics"/>
             </div>
 
             <div>
@@ -37,7 +40,7 @@
                         @L["Topics:Random"]
                     </MudText>
                 </div>
-                <HistoryRandomTopicContainer Class="mb-6"/>
+                <RandomTopic Class="mb-6"/>
 
                 <div class="container-header">
                     <MudText Typo="Typo.h6" Align="Align.Center">
@@ -57,8 +60,8 @@
                                         @topic.Title
                                     </MudLink>
                                     <div class="mt-3">
-                                                        <ContentRatingIcon Rating="@topic.Rating"/>
-                                                    </div>
+                                        <RatingIcon Rating="@topic.Rating"/>
+                                    </div>
                                 </div>
                             </div>
                             <MudText Typo="Typo.subtitle1">
@@ -75,7 +78,7 @@
                         @L["Topics:Hot"]
                     </MudText>
                 </div>
-                <HistoryHotGrid Items="@overview.HotTopics"/>
+                <HotGrid Items="@overview.HotTopics"/>
             </div>
 
         </div>

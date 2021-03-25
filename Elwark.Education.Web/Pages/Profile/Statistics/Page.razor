@@ -1,4 +1,4 @@
-@page "/profile/{page}/statistics"
+@page "/profile/{subject}/statistics"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.Statistics
 @using Elwark.Education.Web.Pages.Profile.Components
@@ -8,12 +8,12 @@
 
 @attribute [Authorize]
 
-<ProfileSubjectHeader SubjectType="@_type" Selected="@(ProfileSubMenu.Statistics)"/>
+<ProfileSubjectHeader SubjectType="@_subject" Selected="@(ProfileSubMenu.Statistics)"/>
 <div class="ma-6">
     <ApiResponseViewer Response="@_response">
         <Loading>
             <div class="grid">
-                <CardsSkeleton/>
+                <SkeletonCard/>
             </div>
         </Loading>
         <Result Context="statistics">
@@ -25,7 +25,7 @@
                     </MudText>
                     <ProfileTopicStatistics
                         Statistics="@statistics.Topics"
-                        LinkBuilder="@(id => Links.Subjects.Topic(_type, id))"/>
+                        LinkBuilder="@(id => Links.Subjects.Topic(_subject, id))"/>
                 </div>
                 <div>
                     <MudText Typo="Typo.h4" Class="mb-3">
@@ -34,7 +34,7 @@
                     <ProfileArticleStatistics
                         Class="mb-6"
                         Statistics="@statistics.Articles"
-                        LinkBuilder="@(id => Links.Subjects.Article(_type, id))"/>
+                        LinkBuilder="@(id => Links.Subjects.Article(_subject, id))"/>
                 </div>
             </div>
         </Result>
@@ -44,25 +44,18 @@
 @code {
 
     [Parameter]
-    public string Page { get; set; } = string.Empty;
+    public string Subject { get; set; } = string.Empty;
 
-    private SubjectType _type;
+    private SubjectType _subject;
     private ApiResponse<ContentStatistics> _response = ApiResponse<ContentStatistics>.Loading();
 
     protected override async Task OnParametersSetAsync()
     {
-        Enum.TryParse(Page, true, out _type);
-        _response = _type switch
+        Enum.TryParse(Subject, true, out _subject);
+        _response = _subject switch
         {
-            SubjectType.History =>await HistoryClient.GetMyStatisticsAsync(),
+            SubjectType.History => await HistoryClient.GetMyStatisticsAsync(),
             _ => ApiResponse<ContentStatistics>.Fail(Error.NotFound)
             };
     }
-
-    private Task<ApiResponse<ContentStatistics>> Loader() =>
-        _type switch{
-            SubjectType.History => HistoryClient.GetMyStatisticsAsync(),
-            _ => Task.FromResult(ApiResponse<ContentStatistics>.Fail(Error.NotFound))
-            };
-
 }

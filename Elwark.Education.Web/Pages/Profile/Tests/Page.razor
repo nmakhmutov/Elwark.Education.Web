@@ -1,4 +1,4 @@
-@page "/profile/{page}/tests"
+@page "/profile/{subject}/tests"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.TestConclusion
 @using Elwark.Education.Web.Pages.Profile.Components
@@ -8,13 +8,13 @@
 
 @attribute [Authorize]
 
-<ProfileSubjectHeader SubjectType="@_type" Selected="@(ProfileSubMenu.Tests)"/>
+<ProfileSubjectHeader SubjectType="@_subject" Selected="@(ProfileSubMenu.Tests)"/>
 <div class="grid ma-6">
     <ApiResponsePageableViewer
         InitLoader="@(() => LoaderAsync(new PageableRequest(null, 20)))"
         AppendLoader="@(token => LoaderAsync(new PageableRequest(token, 20)))">
         <Loading>
-            <CardsSkeleton/>
+            <SkeletonCard/>
         </Loading>
         <Result Context="items">
             <Title Value="@L["CompletedTests"]"></Title>
@@ -38,7 +38,7 @@
                 <MudCard>
                     <MudCardHeader>
                         <CardHeaderContent>
-                            <MudLink Href="@Links.Profile.TestDetail(_type, item.TestId)" Typo="Typo.h6">
+                            <MudLink Href="@Links.Profile.TestDetail(_subject, item.TestId)" Typo="Typo.h6">
                                 @if (item.Title is null)
                                 {
                                     <em>
@@ -53,17 +53,14 @@
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
-                        <TestConclusionOverviewItem
+                        <TestConclusionItem
                             Status="@item.Status"
                             CompletedAt="@item.CreatedAt"
                             TimeSpent="@item.TimeSpent"
                             TotalScore="@item.UserScore.Total"
-                            Details="@Links.Profile.TestDetail(_type, item.TestId)"/>
+                            Details="@Links.Profile.TestDetail(_subject, item.TestId)"/>
                     </MudCardContent>
                 </MudCard>
-            @*      *@
-            @* <ProfileTestSummary Conclusion="@item" DetailLink="@Links.Profile.TestDetail(_type, item.TestId)"/>  *@
-            @*      *@
             }
         </Result>
     </ApiResponsePageableViewer>
@@ -71,16 +68,16 @@
 
 @code
 {
-    private SubjectType _type;
+    private SubjectType _subject;
 
     [Parameter]
-    public string Page { get; set; } = string.Empty;
+    public string Subject { get; set; } = string.Empty;
 
     protected override void OnInitialized() =>
-        Enum.TryParse(Page, true, out _type);
+        Enum.TryParse(Subject, true, out _subject);
 
     private Task<ApiResponse<PageableResponse<TestConclusionSummary>>> LoaderAsync(PageableRequest request) =>
-        _type switch{
+        _subject switch{
             SubjectType.History => HistoryClient.GetMyTestConclusionsAsync(request),
             _ => Task.FromResult(ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(Error.NotFound))
             };

@@ -1,4 +1,4 @@
-@page "/profile/{page}/tests/{id}"
+@page "/profile/{subject}/tests/{id}"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.TestConclusion
 
@@ -7,11 +7,11 @@
 
 @attribute [Authorize]
 
-<ProfileSubjectHeader SubjectType="@_type"/>
+<ProfileSubjectHeader SubjectType="@_subject"/>
 <div class="ma-6">
     <ApiResponseViewer Response="@_response">
         <Loading>
-            <CardsSkeleton Count="1"/>
+            <SkeletonCard/>
         </Loading>
         <Result Context="data">
             <ProfileTestDetail Class="my-6" Conclusion="@data" ContentLink="@ContentLink(data)"/>
@@ -22,18 +22,18 @@
 @code {
 
     [Parameter]
-    public string Page { get; set; } = string.Empty;
+    public string Subject { get; set; } = string.Empty;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
-    private SubjectType _type;
+    private SubjectType _subject;
     private ApiResponse<TestConclusionDetail> _response = ApiResponse<TestConclusionDetail>.Loading();
 
     protected override async Task OnParametersSetAsync()
     {
-        Enum.TryParse(Page, true, out _type);
-        _response = _type switch
+        Enum.TryParse(Subject, true, out _subject);
+        _response = _subject switch
         {
             SubjectType.History => await HistoryClient.GetMyTestConclusionAsync(Id),
             _ => ApiResponse<TestConclusionDetail>.Fail(Error.NotFound)
@@ -42,8 +42,8 @@
 
     private string ContentLink(TestConclusionDetail detail) =>
         detail switch {
-            ArticleTestConclusionDetail x => Links.Subjects.Article(_type, x.ArticleId),
-            TopicTestConclusionDetail x => Links.Subjects.Topic(_type, x.TopicId),
+            ArticleTestConclusionDetail x => Links.Subjects.Article(_subject, x.ArticleId),
+            TopicTestConclusionDetail x => Links.Subjects.Topic(_subject, x.TopicId),
             _ => string.Empty
             };
 

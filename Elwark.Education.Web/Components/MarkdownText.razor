@@ -1,7 +1,7 @@
 @using Markdig
-@using Markdown = Markdig.Markdown
+
 <div class="markdown @Class">
-    @((MarkupString) Markdown.ToHtml(Text, _pipeline))
+    @((MarkupString) Markdig.Markdown.ToHtml(Text, _pipeline))
 </div>
 
 @code {

@@ -1,4 +1,4 @@
-@page "/profile/{page}/favorites"
+@page "/profile/{subject}/favorites"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Pages.Profile.Components
 
@@ -7,14 +7,14 @@
 
 @attribute [Authorize]
 
-<ProfileSubjectHeader SubjectType="@_type" Selected="@(ProfileSubMenu.Favorites)"/>
+<ProfileSubjectHeader SubjectType="@_subject" Selected="@(ProfileSubMenu.Favorites)"/>
 <div class="ma-6">
     <ApiResponsePageableViewer
         InitLoader="@(() => LoaderAsync(new PageableRequest(null, 20)))"
         AppendLoader="@(token => LoaderAsync(new PageableRequest(token, 20)))">
         <Loading>
             <div class="grid">
-                <CardsSkeleton/>
+                <SkeletonCard/>
             </div>
         </Loading>
         <Result Context="items">
@@ -40,20 +40,20 @@
 
 @code
 {
-    private SubjectType _type;
+    private SubjectType _subject;
 
     [Parameter]
-    public string Page { get; set; } = string.Empty;
+    public string Subject { get; set; } = string.Empty;
 
     protected override void OnInitialized() =>
-        Enum.TryParse(Page, true, out _type);
+        Enum.TryParse(Subject, true, out _subject);
 
     private Task<ApiResponse<PageableResponse<TopicSummary>>> LoaderAsync(PageableRequest request) =>
-        _type switch{
+        _subject switch {
             SubjectType.History => HistoryClient.GetMyFavoritesAsync(request),
             _ => Task.FromResult(ApiResponse<PageableResponse<TopicSummary>>.Fail(Error.NotFound))
             };
-    
+
     private async Task<bool> OnFavoriteClick(string topicId)
     {
         var result = await HistoryClient.ToggleFavoriteAsync(topicId);

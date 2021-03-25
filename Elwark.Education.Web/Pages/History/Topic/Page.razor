@@ -21,23 +21,20 @@
         @switch (_topic.Data)
         {
             case HistoryEventTopicDetail x:
-                <HistoryTopicEventHeader Topic="@x" Breadcrumbs="@_breadcrumbs" OnFavoriteClick="@OnFavoriteClick"/>
-                <HistoryTopicEventArticles Articles="@x.Articles" OnPremiumClick="@OnPremiumClick"/>
+                <EventHeader Topic="@x" Breadcrumbs="@_breadcrumbs" OnFavoriteClick="@OnFavoriteClick"/>
+                <EventArticles Articles="@x.Articles" OnPremiumClick="@OnPremiumClick"/>
                 if (x.RelatedTopics.Length > 0)
                 {
-                    <HistoryRelatedTopics
-                        Class="mw-md mx-lg-auto"
-                        Topics="@x.RelatedTopics"
-                        OnFavoriteClick="@OnFavoriteClick"/>
+                    <RelatedTopics Class="mw-md mx-lg-auto" Topics="@x.RelatedTopics" OnFavoriteClick="@OnFavoriteClick"/>
                 }
                 break;
 
             case HistoryPersonTopicDetail x:
-                <HistoryTopicPersonHeader Class="mb-16" Topic="@x" Breadcrumbs="@_breadcrumbs" OnFavoriteClick="@OnFavoriteClick"/>
-                <HistoryTopicPersonArticles Articles="@x.Articles" OnPremiumClick="@OnPremiumClick"/>
+                <PersonHeader Class="mb-16" Topic="@x" Breadcrumbs="@_breadcrumbs" OnFavoriteClick="@OnFavoriteClick"/>
+                <PersonArticles Articles="@x.Articles" OnPremiumClick="@OnPremiumClick"/>
                 if (x.RelatedTopics.Length > 0)
                 {
-                    <HistoryRelatedTopics Topics="@x.RelatedTopics" OnFavoriteClick="@OnFavoriteClick"/>
+                    <RelatedTopics Topics="@x.RelatedTopics" OnFavoriteClick="@OnFavoriteClick"/>
                 }
                 break;
         }
