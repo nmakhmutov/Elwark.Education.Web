@@ -8,38 +8,34 @@
 
 <ApiResponseViewer Response="@_response">
     <Loading>
-        <div class="ma-6">
-            <div class="subjects">
-                <SkeletonCard/>
-            </div>
+        <div class="subjects">
+            <SkeletonCard/>
         </div>
     </Loading>
     <Result Context="profile">
         <Title Value="@L["Profile"]"/>
         <ProfileUserCard Statistics="@profile.Statistics.Summary"/>
-        <div class="ma-6">
-            <div class="subjects">
-                @if (profile.CurrentTests.Length > 0)
-                {
-                    <MudPaper>
-                        <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
-                            @L["CurrentTests"]
-                        </MudText>
+        <div class="subjects">
+            @if (profile.CurrentTests.Length > 0)
+            {
+                <MudPaper>
+                    <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
+                        @L["CurrentTests"]
+                    </MudText>
 
-                        @foreach (var test in profile.CurrentTests)
-                        {
-                            <ProfileCurrentTestCard Test="@test" Class="mb-3"/>
-                        }
-                    </MudPaper>
-                }
-                @foreach (var subscription in profile.Subjects.OrderBy(x => L[x.SubjectType.ToString()].Value))
-                {
-                    <ProfileSubscriptionCard
-                        Subject="@subscription"
-                        OnBuyClick="@OnBuyClick"
-                        OnManageClick="@OnManageClick"/>
-                }
-            </div>
+                    @foreach (var test in profile.CurrentTests)
+                    {
+                        <ProfileCurrentTestCard Test="@test" Class="mb-3"/>
+                    }
+                </MudPaper>
+            }
+            @foreach (var subscription in profile.Subjects.OrderBy(x => L[x.SubjectType.ToString()].Value))
+            {
+                <ProfileSubscriptionCard
+                    Subject="@subscription"
+                    OnBuyClick="@OnBuyClick"
+                    OnManageClick="@OnManageClick"/>
+            }
         </div>
     </Result>
 </ApiResponseViewer>

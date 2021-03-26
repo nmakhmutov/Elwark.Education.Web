@@ -1,7 +1,16 @@
-.title {
+.grid {
     display: grid;
-    gap: 24px;
-    padding: 24px;
+    gap: 12px;
+    margin: 12px;
+}
+
+.grid ::deep .title {
+    font-family: var(--mud-typography-h4-family);
+    font-size: var(--mud-typography-h4-size);
+    font-weight: var(--mud-typography-h4-weight);
+    line-height: var(--mud-typography-h4-lineheight);
+    letter-spacing: var(--mud-typography-h4-letterspacing);
+    margin-bottom: 12px;
 }
 
 .image {
@@ -16,8 +25,24 @@
     display: block;
 }
 
+@media (min-width: 600px) {
+    .grid {
+        gap: 24px;
+        padding: 24px;
+    }
+
+    .grid ::deep .title {
+        font-family: var(--mud-typography-h2-family);
+        font-size: var(--mud-typography-h2-size);
+        font-weight: var(--mud-typography-h2-weight);
+        line-height: var(--mud-typography-h2-lineheight);
+        letter-spacing: var(--mud-typography-h2-letterspacing);
+        margin-bottom: 24px;
+    }
+}
+
 @media (min-width: 960px) {
-    .title {
+    .grid {
         grid-template-columns: 5fr 7fr;
         margin-top: 6.6vmax;
     }
@@ -33,7 +58,7 @@
 }
 
 @media (min-width: 1920px) {
-    .title {
+    .grid {
         max-width: 1920px;
         margin-left: auto;
         margin-right: auto;

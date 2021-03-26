@@ -4,67 +4,29 @@
 @inject IStringLocalizer<App> L
 
 <MudNavMenu Class="navmenu">
-    <AuthorizeView>
+    @* <MudHidden Breakpoint="Breakpoint.SmAndUp"> *@
+    @*     <MudLink Href="@Links.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None"> *@
+    @*         Education <sup class="beta">beta</sup> *@
+    @*     </MudLink> *@
+    @* </MudHidden> *@
 
-        <NotAuthorized>
-            <div class="appbar-band">
-                <div class="d-flex flex-row justify-center my-7">
-                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@OnLogin">
-                        @L["SignIn"]
-                    </MudButton>
-                </div>
-            </div>
-        </NotAuthorized>
-
-        <Authorizing>
-            <div class="appbar-band">
-                <div class="my-1">
-                    <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Text" Class="mt-1"/>
-                </div>
-            </div>
-        </Authorizing>
-
-        <Authorized>
-            <div class="appbar-band">
-                <MudAvatar Image="@(context.User.GetImage())" Size="Size.Large"/>
-                <MudText Typo="Typo.subtitle1" Class="mt-1">
-                    @context.User.GetName()
-                </MudText>
-            </div>
-
-            <MudNavLink Icon="@Icons.Filled.DonutLarge" Href="@Links.Profile.Index">
-                @L["Profile"]
-            </MudNavLink>
-        </Authorized>
-
-    </AuthorizeView>
-
-    <MudDivider DividerType="DividerType.Middle" Class="my-3"/>
+    <MudHidden Breakpoint="Breakpoint.SmAndUp">
+        <div class="d-flex flex-row justify-center">
+            <MudLink Href="@Links.Root" Underline="Underline.None">
+                <MudAvatar
+                    Color="Color.Transparent"
+                    Square="true"
+                    Rounded="false"
+                    Image="https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/36x36_jki1hi.png"/>
+            </MudLink>
+        </div>
+    </MudHidden>
 
     <MudNavLink Href="@Links.History.Index" Icon="@SubjectType.History.GetStatic().Icon">
         @L["Subject:History"]
     </MudNavLink>
-
-    <AuthorizeView>
-        <Authorized>
-            <MudAppBarSpacer/>
-            <MudButton Variant="Variant.Text" StartIcon="@(Icons.Filled.Login)" OnClick="@BeginSignOut">
-                @L["LogOut"]
-            </MudButton>
-        </Authorized>
-    </AuthorizeView>
 </MudNavMenu>
 
 @code {
-
-    private async Task BeginSignOut(MouseEventArgs args)
-    {
-        await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo("authentication/logout");
-    }
-
-    private void OnLogin() => 
-        Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
-
+    
 }

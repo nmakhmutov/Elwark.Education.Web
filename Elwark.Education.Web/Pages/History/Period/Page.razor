@@ -10,7 +10,7 @@
 @switch (_aggregate.Status)
 {
     case ResponseStatus.Loading:
-        <div class="layout ma-6">
+        <div class="layout">
             <SkeletonCard/>
             <SkeletonCard/>
             <SkeletonCard/>
@@ -25,12 +25,12 @@
 
     case ResponseStatus.Success:
         <Title Value="@(_aggregate.Data.Period.Title)"></Title>
-        <div class="layout ma-6">
+        <div class="layout">
             <div class="header">
                 <div class="image mb-6">
                     <img src="@_aggregate.Data.Period.Image" loading="lazy" alt="@_aggregate.Data.Period.Title"/>
                 </div>
-                <MudText Class="title" Typo="Typo.h3">
+                <MudText Class="title" Typo="Typo.h1">
                     @_aggregate.Data.Period.Title
                 </MudText>
                 <MudLink Class="period-link" Href="@(Links.History.Index)">

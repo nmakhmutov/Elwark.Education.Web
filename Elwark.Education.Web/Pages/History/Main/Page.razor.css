@@ -1,7 +1,5 @@
 .grid {
-    display: grid;
-    gap: 12px;
-    margin: 0 24px;
+    margin: 12px;
 }
 
 .container-header {
@@ -17,7 +15,7 @@
 .recent-grid {
     display: grid;
     gap: 12px;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
 .recent-article-card {
@@ -34,6 +32,24 @@
 
 .recent-article-card-image {
     flex: 0 1 40%;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        display: grid;
+        gap: 12px;
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        margin: 24px;
+        grid-gap: 24px;
+    }
+
+    .recent-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
 }
 
 @media (min-width: 1280px) {

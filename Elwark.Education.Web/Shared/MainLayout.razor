@@ -9,19 +9,48 @@
 
 <MudLayout>
     <MudAppBar Elevation="25">
-        <MudIconButton Icon="@Icons.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle"/>
-        <MudLink Href="@Links.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
-            Education <sup class="beta">beta</sup>
-        </MudLink>
+        @* <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle"/> *@
+
+        <AuthorizeView>
+
+            <NotAuthorized>
+                <MudHidden Breakpoint="Breakpoint.Xs">
+                    <MudLink Href="@Links.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+                        Education <sup class="beta">beta</sup>
+                    </MudLink>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <a href="@Links.Root">
+                        <MudAvatar Rounded="false" Square="true" Color="Color.Transparent" Image="https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/36x36_jki1hi.png"/>
+                    </a>
+                </MudHidden>
+            </NotAuthorized>
+
+            <Authorized>
+                <MudHidden Breakpoint="Breakpoint.Xs">
+                    <MudLink Href="@Links.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+                        @L["Subject:History"] <sup class="beta">beta</sup>
+                    </MudLink>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <a href="@Links.History.Index">
+                        <MudAvatar Rounded="false" Square="true" Color="Color.Transparent" Image="https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/36x36_jki1hi.png"/>
+                    </a>
+                </MudHidden>
+            </Authorized>
+
+        </AuthorizeView>
+
         <MudAppBarSpacer/>
         <LanguageSelector/>
-        <MudTooltip Text="@(_currentTheme == _lightTheme ? L["Theme:Dark"] : L["Theme:Light"])">
-            <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@SwitchTheme"/>
-        </MudTooltip>
+        <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@SwitchTheme"/>
+        <UserMenu/>
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen" Elevation="25">
-        <NavMenu/>
-    </MudDrawer>
+
+    @* <MudDrawer @bind-Open="@_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Docked"> *@
+    @*     <NavMenu/> *@
+    @* </MudDrawer> *@
+
     <MudMainContent Class="main-content">
         <main>
             @Body
@@ -34,15 +63,15 @@
 </MudLayout>
 
 @code {
-    bool _drawerOpen;
+    // bool _drawerOpen;
     MudTheme _currentTheme = new();
     string _themeIcon = Icons.Filled.Brightness7;
 
     protected override void OnInitialized() =>
         _currentTheme = _lightTheme;
 
-    private void DrawerToggle() =>
-        _drawerOpen = !_drawerOpen;
+    // private void DrawerToggle() =>
+    // _drawerOpen = !_drawerOpen;
 
     private void SwitchTheme()
     {

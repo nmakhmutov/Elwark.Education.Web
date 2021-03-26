@@ -1,7 +1,8 @@
 .layout {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 12px;
+    margin: 12px;
 }
 
 .header {
@@ -9,11 +10,11 @@
 }
 
 .header > ::deep .title {
-    font-size: 2.125rem;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-weight: 400;
-    line-height: 1.235;
-    letter-spacing: .00735em;
+    font-family: var(--mud-typography-h4-family);
+    font-size: var(--mud-typography-h4-size);
+    font-weight: var(--mud-typography-h4-weight);
+    line-height: var(--mud-typography-h4-lineheight);
+    letter-spacing: var(--mud-typography-h4-letterspacing);
     text-align: center;
 }
 
@@ -35,14 +36,16 @@
 
 @media (min-width: 600px) {
     .layout {
+        margin: 24px;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
-    
+
     .header > ::deep .title {
-        font-size: 3.75rem;
-        font-weight: 300;
-        line-height: 1.2;
-        letter-spacing: -.00833em;
+        font-family: var(--mud-typography-h2-family);
+        font-size: var(--mud-typography-h2-size);
+        font-weight: var(--mud-typography-h2-weight);
+        line-height: var(--mud-typography-h2-lineheight);
+        letter-spacing: var(--mud-typography-h2-letterspacing);
     }
 }
 
@@ -50,7 +53,7 @@
     .layout {
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
-    
+
     .header {
         grid-column: 1/4;
         grid-row: 1/3;

@@ -1,0 +1,56 @@
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+@inject IStringLocalizer<App> L
+
+<AuthorizeView>
+    <NotAuthorized>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@OnLogin" Class="ml-3">
+            @L["SignIn"]
+        </MudButton>
+    </NotAuthorized>
+
+    <Authorizing>
+        <MudSkeleton SkeletonType="SkeletonType.Circle" Width="40px" Height="40px" Class="mt-1 ml-3"/>
+    </Authorizing>
+
+    <Authorized>
+        <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-3">
+            <ActivatorContent>
+                <MudAvatar Image="@context.User.GetImage()"/>
+            </ActivatorContent>
+            <ChildContent>
+                <MudCard Elevation="0" Square="true">
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Image="@context.User.GetImage()"/>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.body2">
+                                @context.User.GetName()
+                            </MudText>
+                            <MudText Typo="Typo.caption">
+                                @@@context.User.GetNickname()
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </MudCard>
+                <MudDivider Class="mb-2"/>
+                <MudListItem Text="@L["Profile"]" Icon="@Icons.Filled.Person" Href="@Links.Profile.Index"/>
+                <MudListItem Text="@L["Logout"]" Icon="@Icons.Material.Outlined.Login" OnClick="@BeginSignOut"/>
+            </ChildContent>
+        </MudMenu>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+    
+    private void OnLogin() => 
+        Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+
+}

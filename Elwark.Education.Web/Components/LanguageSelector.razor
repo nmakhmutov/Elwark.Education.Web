@@ -2,12 +2,7 @@
 @inject ILocalStorage LocalStorage
 @inject NavigationManager NavigationManager
 
-<MudMenu
-    StartIcon="@Icons.Filled.Translate" 
-    EndIcon="@Icons.Filled.KeyboardArrowDown" 
-    Color="Color.Inherit"
-    FullWidth="true"
-    Label="@Get()">
+<MudMenu Icon="@Icons.Filled.Translate" Color="Color.Inherit" OffsetX="true" Direction="Direction.Left">
     @foreach (var (culture, name) in _cultures)
     {
         <MudMenuItem OnClick="@(() => Set(culture))">
@@ -23,11 +18,6 @@
         ["en"] = "English",
         ["ru"] = "Русский"
     };
-
-    private string Get() =>
-        _cultures.TryGetValue(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, out var language)
-            ? language
-            : _cultures.First().Value;
 
     private async Task Set(string language)
     {

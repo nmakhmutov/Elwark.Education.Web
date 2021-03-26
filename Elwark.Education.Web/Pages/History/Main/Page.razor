@@ -7,13 +7,11 @@
 
 <ApiResponseViewer Response="@_response">
     <Loading>
-        <div class="ma-6">
-            <div class="grid">
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-            </div>
+        <div class="grid">
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
         </div>
     </Loading>
     <Result Context="overview">
@@ -21,9 +19,9 @@
 
         <PeriodsGrid Periods="@overview.Periods"/>
 
-        <DailyTopic Class="mb-6" Topic="@overview.TrendingTopics[new Random().Next(overview.TrendingTopics.Length)]"/>
+        <DailyTopic Topic="@overview.TrendingTopics[new Random().Next(overview.TrendingTopics.Length)]"/>
 
-        <div class="grid mb-6">
+        <div class="grid">
 
             <div>
                 <div class="container-header mb-3">
