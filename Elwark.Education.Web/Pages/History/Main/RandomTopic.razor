@@ -3,20 +3,20 @@
 @inject IHistoryClient Client
 @inject NavigationManager Navigation
 
-<div Class="@Class">
-    <div class="image">
+<div Class="container @Class">
+    <div class="image" style="background-image: url('@SubjectType.History.GetStatic().Image')">
         <div class="cover">
             <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" OnClick="@OnClick">
                 @if (_isLoading)
                 {
                     <div class="d-flex flex-row align-center">
                         <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
-                        @L["Loading"]
+                        @(L["Search"] + "...")
                     </div>
                 }
                 else
                 {
-                    @L["Search"]
+                    @L["Topics:Random"]
                 }
             </MudButton>
         </div>
@@ -32,14 +32,14 @@
 
     private async Task OnClick()
     {
-        if(_isLoading)
+        if (_isLoading)
             return;
-        
+
         _isLoading = true;
-        
-        var result = await Client.GetRandomTopicIdAsync();
+
+        var result = await Client.Topic.GetRandomAsync();
         if (result.Status == ResponseStatus.Success)
-            Navigation.NavigateTo(Links.History.Topic(result.Data.TopicId));
+            Navigation.NavigateTo(Links.History.Topics(result.Data.TopicId));
 
         _isLoading = false;
     }

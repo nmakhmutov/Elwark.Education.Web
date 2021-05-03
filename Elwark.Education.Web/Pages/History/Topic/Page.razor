@@ -1,4 +1,4 @@
-@page "/history/topic/{id}"
+@page "/history/topics/{id}"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.History
 @inject IHistoryClient HistoryClient
@@ -6,40 +6,56 @@
 @inject IStringLocalizer<App> L
 
 @attribute [Authorize]
-@switch (_topic.Status)
-{
-    case ResponseStatus.Loading:
+
+<ApiResponseViewer Response="@_topic">
+    <Loading>
         <PageLoader/>
-        break;
+    </Loading>
+    <Result Context="topic">
+        <Title Value="@topic.Title"/>
 
-    case ResponseStatus.Fail:
-        <ErrorPage Error="_topic.Error"/>
-        break;
-
-    case ResponseStatus.Success:
-        <Title Value="@_topic.Data.Title"/>
-        @switch (_topic.Data)
+        @switch (topic)
         {
-            case HistoryEventTopicDetail x:
-                <EventHeader Topic="@x" Breadcrumbs="@_breadcrumbs" OnFavoriteClick="@OnFavoriteClick"/>
-                <EventArticles Articles="@x.Articles" OnPremiumClick="@OnPremiumClick"/>
-                if (x.RelatedTopics.Length > 0)
-                {
-                    <RelatedTopics Class="mw-md mx-lg-auto" Topics="@x.RelatedTopics" OnFavoriteClick="@OnFavoriteClick"/>
-                }
+            case HistoryPersonTopicDetail x:
+                <PersonHeader
+                    Title="@x.Title"
+                    Description="@x.Description"
+                    Image="@x.Image"
+                    Born="@x.Born"
+                    Died="@x.Died"
+                    Characteristics="@x.Characteristics"
+                    Breadcrumbs="@_breadcrumbs"/>
                 break;
 
-            case HistoryPersonTopicDetail x:
-                <PersonHeader Class="mb-16" Topic="@x" Breadcrumbs="@_breadcrumbs" OnFavoriteClick="@OnFavoriteClick"/>
-                <PersonArticles Articles="@x.Articles" OnPremiumClick="@OnPremiumClick"/>
-                if (x.RelatedTopics.Length > 0)
-                {
-                    <RelatedTopics Topics="@x.RelatedTopics" OnFavoriteClick="@OnFavoriteClick"/>
-                }
+            case HistoryEventTopicDetail x:
+                <EventHeader
+                    Title="@x.Title"
+                    Description="@x.Description"
+                    Image="@x.Image"
+                    Started="@x.Started"
+                    Ended="@x.Ended"
+                    Breadcrumbs="@_breadcrumbs"/>
                 break;
         }
-        break;
-}
+
+        <Content
+            Id="@topic.Id"
+            Chapters="@topic.Chapters"
+            Test="@topic.Test"
+            InfoBoxes="@topic.InfoBoxes"
+            Rating="@topic.Rating"
+            IsFavorite="@topic.IsFavorite"
+            OnFavoriteClick="@OnFavoriteClick"
+            OnLikeClick="@OnLikeClick"
+            OnDislikeClick="@OnDislikeClick"/>
+
+        @if (topic.RelatedTopics.Length > 0)
+        {
+            <RelatedTopics Class="ma-3 ma-lg-6" Topics="@topic.RelatedTopics" OnFavoriteClick="@OnFavoriteClick"/>
+        }
+    </Result>
+</ApiResponseViewer>
+
 
 @code {
     private ApiResponse<HistoryTopicDetail> _topic = ApiResponse<HistoryTopicDetail>.Loading();
@@ -52,7 +68,7 @@
     protected override async Task OnParametersSetAsync()
     {
         _topic = ApiResponse<HistoryTopicDetail>.Loading();
-        _topic = await HistoryClient.GetTopicAsync(Id);
+        _topic = await HistoryClient.Topic.GetAsync(Id);
 
         if (_topic.Status == ResponseStatus.Success)
             _breadcrumbs = new List<BreadcrumbItem>
@@ -81,8 +97,21 @@
 
     private async Task<bool> OnFavoriteClick(string topicId)
     {
-        var result = await HistoryClient.ToggleFavoriteAsync(topicId);
+        var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
         return result.Status == ResponseStatus.Success && result.Data;
+    }
+
+
+    private async Task<bool> OnLikeClick()
+    {
+        var response = await HistoryClient.Topic.LikeAsync(Id);
+        return response.Status == ResponseStatus.Success;
+    }
+
+    private async Task<bool> OnDislikeClick()
+    {
+        var response = await HistoryClient.Topic.DislikeAsync(Id);
+        return response.Status == ResponseStatus.Success;
     }
 
 }

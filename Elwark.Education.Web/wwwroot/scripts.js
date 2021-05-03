@@ -13,7 +13,7 @@ window.Observer = {
                 const firstEntry = entries[0];
                 const y = firstEntry.boundingClientRect.y;
 
-                if (prevY > y) 
+                if (prevY > y)
                     component.invokeMethodAsync('OnIntersection')
 
                 prevY = y;

@@ -1,0 +1,105 @@
+@* ReSharper disable once CheckNamespace *@
+@namespace Elwark.Education.Web.Components
+@inject IStringLocalizer<App> L
+
+<HeaderImageContainer>
+    <div class="header">
+        <div class="header-image">
+            <MudAvatar Image="@(SubjectType.GetStatic().Image)" Style="width: 120px; height: 120px"/>
+        </div>
+        <div class="header-text">
+            <MudLink Color="Color.Inherit" Href="@Links.Subjects.Index(SubjectType)" Underline="Underline.None">
+                @L[$"Subject:{SubjectType}"]
+            </MudLink>
+        </div>
+    </div>
+    <div class="menu">
+        @foreach (var item in _items)
+        {
+            @if (item.IsActive)
+            {
+                <div class="menu-item item-active">
+                    <MudIcon Icon="@item.Icon" Class="item-icon"/>
+                    <MudText Typo="Typo.subtitle1" Class="item-text">
+                        @item.Title
+                    </MudText>
+                </div>
+            }
+            else
+            {
+                <a href="@item.Link" class="menu-item item-link">
+                    <MudIcon Icon="@item.Icon" Class="item-icon"/>
+                    <MudText Typo="Typo.subtitle1" Class="item-text">
+                        @item.Title
+                    </MudText>
+                </a>
+            }
+        }
+    </div>
+</HeaderImageContainer>
+
+@code {
+
+    private IEnumerable<Data> _items = Array.Empty<Data>();
+
+    [Parameter]
+    public SubjectType SubjectType { get; set; }
+
+    [Parameter]
+    public ProfileSubMenu Selected { get; set; } = ProfileSubMenu.None;
+
+    protected override void OnInitialized() =>
+        _items = new Data[]
+        {
+            new(
+                L["Profile"].Value,
+                Links.Profile.Index,
+                Icons.Filled.Person,
+                false
+                ),
+            new(
+                L["Overview"].Value,
+                Links.Profile.Overview(SubjectType),
+                Icons.Filled.CardMembership,
+                Selected == ProfileSubMenu.Overview
+                ),
+            new(
+                L["Statistics"].Value,
+                Links.Profile.Statistics(SubjectType),
+                Icons.Filled.BarChart,
+                Selected == ProfileSubMenu.Statistics
+                ),
+            new(
+                L["Favorites"].Value,
+                Links.Profile.Favorites(SubjectType),
+                Icons.Filled.Favorite,
+                Selected == ProfileSubMenu.Favorites
+                ),
+            new(
+                L["Tests"].Value,
+                Links.Profile.Tests(SubjectType),
+                Icons.Filled.Class,
+                Selected == ProfileSubMenu.Tests
+                )
+        };
+
+    private class Data
+    {
+        public Data(string title, string link, string icon, bool isActive)
+        {
+            Title = title;
+            Link = link;
+            Icon = icon;
+            IsActive = isActive;
+        }
+
+        public string Title { get; }
+
+        public string Link { get; }
+
+        public string Icon { get; }
+
+        public bool IsActive { get; }
+    }
+
+}

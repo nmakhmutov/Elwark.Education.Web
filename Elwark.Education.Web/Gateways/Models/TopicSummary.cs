@@ -1,12 +1,14 @@
+using Elwark.Education.Web.Gateways.Models.History;
+
 namespace Elwark.Education.Web.Gateways.Models
 {
-    public record TopicSummary(
+    public sealed record TopicSummary(
         string Id,
         string Title,
         string Overview,
         string Image,
         bool IsFavorite,
-        ContentRating Rating,
-        TopicProgress? Progress
+        HistoryPeriodType Period,
+        ContentRating Rating
     );
 }

@@ -5,101 +5,82 @@
 <div class="@Class">
     <div class="grid">
         <div class="image">
-            <img src="@Topic.Image" class="portrait" alt="@Topic.Title"/>
+            <img src="@Image" class="portrait" alt="@Title"/>
         </div>
         <div class="content">
-            <Breadcrumbs Items="@Breadcrumbs" Class="mb-3"/>
-            <MudText Typo="Typo.h2" Class="mb-3">
-                @Topic.Title
+            <Breadcrumbs Items="@Breadcrumbs"/>
+            <MudText Typo="Typo.h2">
+                @Title
             </MudText>
-            <div class="lifetime mb-3">
-                @if (Topic.Born is not null)
+            <div class="lifetime">
+                @if (Born is not null)
                 {
                     <div>
                         <MudText Typo="Typo.body2" Color="Color.Surface">
                             @L["History:Born"]
                         </MudText>
-                        <HistoryDate Date="@Topic.Born" Typo="Typo.h5" Color="Color.Secondary" Class="mb-2"/>
+                        <HistoryDate Date="@Born" Typo="Typo.h5" Color="Color.Secondary"/>
                         <MudText Typo="Typo.body1">
-                            @Topic.Born.Place
+                            @Born.Place
                         </MudText>
                     </div>
                 }
-                @if (Topic.Died is not null)
+                @if (Died is not null)
                 {
                     <div>
                         <MudText Typo="Typo.body2" Color="Color.Surface">
                             @L["History:Died"]
                         </MudText>
-                        <HistoryDate Date="@Topic.Died" Typo="Typo.h5" Color="Color.Secondary" Class="mb-2"/>
+                        <HistoryDate Date="@Died" Typo="Typo.h5" Color="Color.Secondary"/>
                         <MudText Typo="Typo.body1">
-                            @Topic.Died.Place
+                            @Died.Place
                         </MudText>
                     </div>
                 }
             </div>
 
-            <div class="d-flex flex-row align-center mb-3">
-                <RatingIcon Rating="@Topic.Rating" Size="@Size.Medium"/>
-
-                <div class="mx-3"></div>
-
-                <MudTooltip Text="@(Topic.IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
-                    <MudToggleIconButton
-                        Toggled="@Topic.IsFavorite"
-                        ToggledChanged="@OnFavoriteChanged"
-                        Icon="@Icons.Filled.FavoriteBorder"
-                        Color="Color.Default"
-                        Size="Size.Medium"
-                        ToggledIcon="@Icons.Filled.Favorite"
-                        ToggledColor="Color.Error"
-                        ToggledSize="Size.Medium"/>
-                </MudTooltip>
-            </div>
-
-            <MudText Typo="Typo.subtitle1" Class="mb-6 mw-sm">
-                @Topic.Description
+            <MudText Typo="Typo.subtitle1" Class="mw-sm">
+                @Description
             </MudText>
         </div>
-        <div class="footer">
-            @if (Topic.Characteristics.Length > 0)
+        <div class="characteristics">
+            @foreach (var (title, value) in Characteristics)
             {
-                <div class="characteristics mb-12">
-                    @foreach (var (title, value) in Topic.Characteristics)
-                    {
-                        <div class="characteristic">
-                            <MudText Class="title" Typo="Typo.subtitle1">
-                                @title
-                            </MudText>
-                            <MarkdownText Text="@value"/>
-                        </div>
-                    }
+                <div class="characteristic">
+                    <MudText Class="title" Typo="Typo.subtitle1">
+                        @title
+                    </MudText>
+                    <MarkdownText Text="@value"/>
                 </div>
             }
         </div>
     </div>
-
-    @if (Topic.Test is not null)
-    {
-        <TopicTestCard Subject="@SubjectType.History" Test="@Topic.Test"/>
-    }
 </div>
 
 @code {
 
     [Parameter]
-    public HistoryPersonTopicDetail Topic { get; set; } = default!;
-
-    [Parameter]
-    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
-
-    [Parameter]
     public string? Class { get; set; }
 
     [Parameter]
-    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+    public string Title { get; set; } = string.Empty;
 
-    private async Task OnFavoriteChanged(bool toggled) =>
-        Topic = Topic with{IsFavorite = await OnFavoriteClick.Invoke(Topic.Id)};
+    [Parameter]
+    public string Description { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter]
+    public HistoryPersonDate? Born { get; set; }
+
+    [Parameter]
+    public HistoryPersonDate? Died { get; set; }
+
+    [Parameter]
+    public Infobox[] Characteristics { get; set; } = Array.Empty<Infobox>();
+
+    [Parameter]
+    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
 
 }

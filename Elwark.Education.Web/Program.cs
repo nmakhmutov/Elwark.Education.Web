@@ -28,8 +28,8 @@ namespace Elwark.Education.Web
 
             builder.Services
                 .AddScoped(_ => new UrlsOptions(
-                    new Uri(builder.Configuration["Urls:Gateway"]),
-                    new Uri(builder.Configuration["Urls:Account"])
+                    new Uri(builder.Configuration["Urls:Gateway"]!),
+                    new Uri(builder.Configuration["Urls:Account"]!)
                 ))
                 .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddScoped<ILocalStorage, LocalStorage>()
@@ -39,21 +39,21 @@ namespace Elwark.Education.Web
 
             builder.Services
                 .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
-
+            
             var policy = HttpPolicyExtensions
                 .HandleTransientHttpError()
                 .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
             builder.Services
                 .AddHttpClient<IHistoryClient, HistoryClient>(
-                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]))
+                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!))
                 .AddHttpMessageHandler<EducationAuthorization>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
 
             builder.Services
                 .AddHttpClient<IUserClient, UserClient>(
-                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
+                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!)
                 )
                 .AddHttpMessageHandler<EducationAuthorization>()
                 .AddHttpMessageHandler<EducationLocalization>()
@@ -61,7 +61,7 @@ namespace Elwark.Education.Web
             
             builder.Services
                 .AddHttpClient<IShopClient, ShopClient>(
-                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"])
+                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!)
                 )
                 .AddHttpMessageHandler<EducationAuthorization>()
                 .AddHttpMessageHandler<EducationLocalization>()

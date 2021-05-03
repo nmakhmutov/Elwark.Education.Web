@@ -1,4 +1,3 @@
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Elwark.Education.Web.Gateways.History.Request;
@@ -17,6 +16,9 @@ namespace Elwark.Education.Web.Gateways.History
         public HistoryClient(HttpClient client)
         {
             _client = client;
+            Topic = new HistoryTopicClient(client);
+            Test = new HistoryTestClient(client);
+            User = new HistoryUserClient(client);
         }
 
         public Task<ApiResponse<HistoryOverview>> GetAsync() =>
@@ -28,61 +30,86 @@ namespace Elwark.Education.Web.Gateways.History
         public Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(HistoryPeriodType period) =>
             ExecuteAsync<HistoryPeriodModel>(() => _client.GetAsync($"history/periods/{period}"));
 
-        public Task<ApiResponse<PageableResponse<TopicSummary>>> GetTopicsAsync(GetTopicsRequest request) =>
-            ExecuteAsync<PageableResponse<TopicSummary>>(() =>
-                _client.GetAsync($"history/periods/{request.Type}/topics?token={request.Token}&count={request.Count}"));
+        public HistoryTopicClient Topic { get; }
+        
+        public HistoryTestClient Test { get; }
+        
+        public HistoryUserClient User { get; }
+    }
 
-        public Task<ApiResponse<RandomTopic>> GetRandomTopicIdAsync() =>
-            ExecuteAsync<RandomTopic>(() => _client.GetAsync("history/topics/random"));
+    internal sealed class HistoryUserClient : GatewayClient
+    {
+        private readonly HttpClient _client;
 
-        public Task<ApiResponse<bool>> ToggleFavoriteAsync(string topicId) =>
-            ExecuteAsync<bool>(() => _client.PostAsync($"history/topics/{topicId}/favorite", EmptyContent));
+        public HistoryUserClient(HttpClient client) =>
+            _client = client;
 
-        public Task<ApiResponse<HistoryTopicDetail>> GetTopicAsync(string topicId) =>
-            ExecuteAsync<HistoryTopicDetail>(() => _client.GetAsync($"history/topics/{topicId}"));
+        public Task<ApiResponse<UserStatistics>> GetStatisticsAsync() =>
+            ExecuteAsync<UserStatistics>(() => _client.GetAsync("history/me/statistics"));
 
-        public Task<ApiResponse<HistoryArticleDetail>> GetArticleAsync(string articleId) =>
-            ExecuteAsync<HistoryArticleDetail>(() => _client.GetAsync($"history/articles/{articleId}"));
+        public Task<ApiResponse<PageResponse<TestConclusionSummary>>> GetTestConclusionsAsync(PageRequest request) =>
+            ExecuteAsync<PageResponse<TestConclusionSummary>>(() =>
+                _client.GetAsync($"history/me/test-conclusions?token={request.Token}&count={request.Count}"));
 
-        public Task<ApiResponse<Unit>> LikeArticleAsync(string articleId) =>
-            ExecuteAsync<Unit>(() => _client.PostAsync($"history/articles/{articleId}/like", EmptyContent));
+        public Task<ApiResponse<TestConclusionDetail>> GetTestConclusionAsync(string testId) =>
+            ExecuteAsync<TestConclusionDetail>(() => _client.GetAsync($"history/me/test-conclusions/{testId}"));
 
-        public Task<ApiResponse<Unit>> DislikeArticleAsync(string articleId) =>
-            ExecuteAsync<Unit>(() => _client.PostAsync($"history/articles/{articleId}/dislike", EmptyContent));
+        public Task<ApiResponse<PageResponse<TopicSummary>>> GetFavoritesAsync(PageRequest request) =>
+            ExecuteAsync<PageResponse<TopicSummary>>(() =>
+                _client.GetAsync($"history/me/favorites?token={request.Token}&count={request.Count}"));
+    }
 
-        public Task<ApiResponse<TestCreatedResult>> CreateTestForArticleAsync(string articleId) =>
-            ExecuteAsync<TestCreatedResult>(() =>
-                _client.PostAsync($"history/articles/{articleId}/test", EmptyContent));
+    internal sealed class HistoryTestClient : GatewayClient
+    {
+        private readonly HttpClient _client;
 
-        public Task<ApiResponse<HistoryTestModel>> GetTestAsync(string testId) =>
-            ExecuteAsync<HistoryTestModel>(() => _client.GetAsync($"history/tests/{testId}"));
+        public HistoryTestClient(HttpClient client) =>
+            _client = client;
 
-        public Task<ApiResponse<ManyAnswersResult>> CheckAnswer(string testId, string questionId, ManyAnswer answer) =>
+        public Task<ApiResponse<HistoryTestModel>> GetAsync(string id) =>
+            ExecuteAsync<HistoryTestModel>(() => _client.GetAsync($"history/tests/{id}"));
+
+        public Task<ApiResponse<ManyAnswersResult>> CheckAsync(string testId, string questionId, ManyAnswer answer) =>
             ExecuteAsync<ManyAnswersResult>(() =>
                 _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
-        public Task<ApiResponse<SingleAnswerResult>>
-            CheckAnswer(string testId, string questionId, SingleAnswer answer) =>
+        public Task<ApiResponse<SingleAnswerResult>> CheckAsync(string testId, string questionId, SingleAnswer answer) =>
             ExecuteAsync<SingleAnswerResult>(() =>
                 _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
-        public Task<ApiResponse<TextAnswerResult>> CheckAnswer(string testId, string questionId, TextAnswer answer) =>
+        public Task<ApiResponse<TextAnswerResult>> CheckAsync(string testId, string questionId, TextAnswer answer) =>
             ExecuteAsync<TextAnswerResult>(() =>
                 _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
+    }
 
-        public Task<ApiResponse<ContentStatistics>> GetMyStatisticsAsync() =>
-            ExecuteAsync<ContentStatistics>(() => _client.GetAsync("history/me/statistics"));
+    internal sealed class HistoryTopicClient : GatewayClient
+    {
+        private readonly HttpClient _client;
 
-        public Task<ApiResponse<PageableResponse<TestConclusionSummary>>> GetMyTestConclusionsAsync(
-            PageableRequest request) =>
-            ExecuteAsync<PageableResponse<TestConclusionSummary>>(() =>
-                _client.GetAsync($"history/me/test-conclusions?token={request.Token}&count={request.Count}"));
+        public HistoryTopicClient(HttpClient client) =>
+            _client = client;
 
-        public Task<ApiResponse<TestConclusionDetail>> GetMyTestConclusionAsync(string testId) =>
-            ExecuteAsync<TestConclusionDetail>(() => _client.GetAsync($"history/me/test-conclusions/{testId}"));
+        public Task<ApiResponse<PageResponse<TopicSummary>>> GetAsync(GetTopicsRequest request) =>
+            ExecuteAsync<PageResponse<TopicSummary>>(() =>
+                _client.GetAsync($"history/topics?period={request.Period}&count={request.Count}&token={request.Token}")
+            );
 
-        public Task<ApiResponse<PageableResponse<TopicSummary>>> GetMyFavoritesAsync(PageableRequest request) =>
-            ExecuteAsync<PageableResponse<TopicSummary>>(() =>
-                _client.GetAsync($"history/me/favorites?token={request.Token}&count={request.Count}"));
+        public Task<ApiResponse<HistoryTopicDetail>> GetAsync(string id) =>
+            ExecuteAsync<HistoryTopicDetail>(() => _client.GetAsync($"history/topics/{id}"));
+
+        public Task<ApiResponse<RandomTopic>> GetRandomAsync() =>
+            ExecuteAsync<RandomTopic>(() => _client.GetAsync("history/topics/random"));
+
+        public Task<ApiResponse<bool>> ToggleFavoriteAsync(string id) =>
+            ExecuteAsync<bool>(() => _client.PostAsync($"history/topics/{id}/favorite", EmptyContent));
+
+        public Task<ApiResponse<Unit>> LikeAsync(string id) =>
+            ExecuteAsync<Unit>(() => _client.PostAsync($"history/topics/{id}/like", EmptyContent));
+
+        public Task<ApiResponse<Unit>> DislikeAsync(string id) =>
+            ExecuteAsync<Unit>(() => _client.PostAsync($"history/topics/{id}/dislike", EmptyContent));
+
+        public Task<ApiResponse<TestCreatedResult>> CreateTestAsync(string id) =>
+            ExecuteAsync<TestCreatedResult>(() => _client.PostAsync($"history/topics/{id}/test", EmptyContent));
     }
 }

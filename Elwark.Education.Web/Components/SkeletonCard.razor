@@ -1,5 +1,5 @@
 <MudCard Class="@Class" Style="@Style">
-    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="200px"/>
+    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="@ImgHeight"/>
     <MudCardContent>
         <MudSkeleton Width="30%" Height="42px;"/>
         <MudSkeleton Width="80%"/>
@@ -18,4 +18,8 @@
 
     [Parameter]
     public string? Style { get; set; }
+
+    [Parameter]
+    public string ImgHeight { get; set; } = "200px";
+
 }

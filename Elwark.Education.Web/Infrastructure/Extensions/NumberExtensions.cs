@@ -4,8 +4,6 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
 {
     public static class NumberExtensions
     {
-        private static readonly char[] Prefixes = {'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'};
-
         public static string ToReadable(this int number) =>
             ToReadable((double) number);
         
@@ -20,10 +18,11 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
 
         public static string ToReadable(this double number)
         {
-            var i = (long)Math.Pow(10, (int)Math.Max(0, Math.Log10(number) - 2));
-            var result = number / i * i;
+            var value = Math.Abs(number);
+            var i = (long)Math.Pow(10, (int)Math.Max(0, Math.Log10(value) - 2));
+            var result = value / i * i;
 
-            return result switch
+            var formatted = Math.Abs(result) switch
             {
                 >= 1_000_000_000_000 => $"{result / 1_000_000_000_000:0.#}T",
                 >= 1_000_000_000 => $"{result / 1_000_000_000:0.#}B",
@@ -31,6 +30,8 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
                 >= 1_000 => $"{result / 1_000:0.#}K",
                 _ => result.ToString("#,0")
             };
+            
+            return $"{(number < 0 ? "-" : "")}{formatted}";
         }
     }
 }

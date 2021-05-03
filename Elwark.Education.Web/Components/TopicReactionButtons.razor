@@ -1,0 +1,71 @@
+@inject IStringLocalizer<App> L
+
+<div class="grid @Class">
+    <MudTooltip Text="@(IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
+        <MudToggleIconButton
+            Toggled="@IsFavorite"
+            ToggledChanged="@OnFavoriteChanged"
+            Icon="@Icons.Filled.FavoriteBorder"
+            Color="Color.Default"
+            Size="Size.Medium"
+            ToggledIcon="@Icons.Filled.Favorite"
+            ToggledColor="Color.Error"
+            ToggledSize="Size.Medium"/>
+    </MudTooltip>
+
+    <MudTooltip Text="@L["Topics:ILikeThis"]">
+        <MudIconButton
+            Icon="@Icons.Filled.ThumbUp"
+            OnClick="@(Rating.IsLiked == true ? () => Task.CompletedTask : OnLike)"
+            Color="@(Rating.IsLiked == true ? Color.Secondary : Color.Default)"/>
+    </MudTooltip>
+    
+    <MudTooltip Text="@L["Topics:IDislikeThis"]">
+        <MudIconButton
+            Icon="@Icons.Filled.ThumbDown"
+            OnClick="@(Rating.IsLiked == false ? () => Task.CompletedTask : OnDislike)"
+            Color="@(Rating.IsLiked == false ? Color.Secondary : Color.Default)"/>
+    </MudTooltip>
+    
+    <RatingIcon Rating="@Rating"/>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public ContentRating Rating { get; set; } = default!;
+
+    [Parameter]
+    public bool IsFavorite { get; set; }
+
+    [Parameter]
+    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter]
+    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+
+    private async Task OnLike()
+    {
+        if (await OnLikeClick())
+            Rating = Rating with{IsLiked = true};
+    }
+
+    private async Task OnDislike()
+    {
+        if (await OnDislikeClick())
+            Rating = Rating with{ IsLiked = false};
+    }
+
+    private async Task OnFavoriteChanged(bool toggled) =>
+        IsFavorite = await OnFavoriteClick.Invoke(Id);
+
+}

@@ -1,0 +1,31 @@
+@using Elwark.Education.Web.Gateways.Models.History
+@inject IStringLocalizer<App> L
+
+<div class="container @Class">
+    <h1 class="title">
+        @L["Subject:History"]
+    </h1>
+    <h2 class="subtitle">
+        @L["History:Description"]
+    </h2>
+
+    <div class="section">
+        <div class="periods">
+            @foreach (var period in Enum.GetValues<HistoryPeriodType>().Where(x => x != HistoryPeriodType.None))
+            {
+                <div class="period">
+                    <MudLink Href="@Links.History.Period(period)" Color="Color.Inherit" Underline="Underline.Always">
+                        @L[$"History:{period}"]
+                    </MudLink>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

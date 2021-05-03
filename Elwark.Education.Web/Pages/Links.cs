@@ -7,6 +7,14 @@ namespace Elwark.Education.Web.Pages
     {
         public const string Root = "/";
 
+        public static class Authentication
+        {
+            public static string LogIn(string returnUrl) =>
+                $"authentication/login?returnUrl={returnUrl}";
+
+            public const string LogOut = "authentication/logout";
+        }
+        
         public static class Profile
         {
             public const string Index = "/profile";
@@ -34,11 +42,11 @@ namespace Elwark.Education.Web.Pages
             public static string Period(HistoryPeriodType period) =>
                 $"{Index}/{period.ToString().ToLowerInvariant()}";
 
-            public static string Topic(string topicId) =>
-                $"{Index}/topic/{topicId}";
-
-            public static string Article(string articleId) =>
-                $"{Index}/article/{articleId}";
+            public static string Topics() =>
+                $"{Index}/topics";
+            
+            public static string Topics(string topicId) =>
+                $"{Topics()}/{topicId}";
 
             public static string Test(string testId) =>
                 $"{Index}/test/{testId}";
@@ -57,15 +65,7 @@ namespace Elwark.Education.Web.Pages
             public static string Topic(SubjectType type, string topicId) =>
                 type switch
                 {
-                    SubjectType.History => History.Topic(topicId),
-                    SubjectType.Astronomy => "",
-                    _ => string.Empty
-                };
-
-            public static string Article(SubjectType type, string articleId) =>
-                type switch
-                {
-                    SubjectType.History => History.Article(articleId),
+                    SubjectType.History => History.Topics(topicId),
                     SubjectType.Astronomy => "",
                     _ => string.Empty
                 };

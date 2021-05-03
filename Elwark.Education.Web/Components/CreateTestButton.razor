@@ -4,7 +4,7 @@
 
 @switch (Status)
 {
-    case PermissionStatus.Allowed when IsLoading:
+    case TestStatus.Allowed when IsLoading:
         <div class="@Class">
             <MudButton Variant="Variant.Filled" Disabled="true">
                 <div class="d-flex flex-row align-center">
@@ -15,7 +15,7 @@
         </div>
         break;
 
-    case PermissionStatus.Allowed:
+    case TestStatus.Allowed:
         <div class="@Class">
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnCreateTestClick">
                 @L["Test:PassATest"]
@@ -23,8 +23,8 @@
         </div>
         break;
 
-    case PermissionStatus.CreatedMaximumTests:
-    case PermissionStatus.ReachedMaximumAnswerAttempts:
+    case TestStatus.CreatedMaximumTests:
+    case TestStatus.ReachedMaximumAnswerAttempts:
         <div class="grid">
             <div>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="true">
@@ -44,14 +44,6 @@
         </div>
         break;
 
-    case PermissionStatus.RequiredCompleteArticles:
-        <div class="@Class">
-            <MudText Typo="Typo.body2" Color="Color.Tertiary" Class="mt-2">
-                @ErrorManager.Localize(Status)
-            </MudText>
-        </div>
-        break;
-
     default:
         <div class="@Class">
             <MudText Typo="Typo.body2" Color="Color.Error">
@@ -67,7 +59,7 @@
     public string? Class { get; set; }
 
     [Parameter]
-    public PermissionStatus Status { get; set; }
+    public TestStatus Status { get; set; }
 
     [Parameter]
     public bool IsLoading { get; set; }

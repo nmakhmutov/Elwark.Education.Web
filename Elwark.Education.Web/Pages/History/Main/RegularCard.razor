@@ -1,0 +1,50 @@
+@using Elwark.Education.Web.Gateways.Models.History
+
+<article class="card">
+    <div class="media">
+        <a href="@Href" class="image-link">
+            <span class="bg-cover" style="background-image: url('@Image')"></span>
+        </a>
+        <span class="labels">
+            <HistoryPeriodChip Class="ma-2" Period="@Period"/>
+        </span>
+    </div>
+    <div class="content">
+        <div class="meta">
+            <h2 class="title">
+                <a href="@Href">
+                    @Title
+                </a>
+            </h2>
+            @* <div class="meta-items"> *@
+            @*     @Subtitle *@
+            @* </div> *@
+        </div>
+        <div class="excerpt">
+            @* <p>@(Subtitle.Length > 80 ? Subtitle[..80] + "..." : Subtitle)</p> *@
+            <RatingIcon Rating="@Rating"/>
+        </div>
+    </div>
+</article>
+
+@code {
+
+    [Parameter]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Href { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Subtitle { get; set; } = string.Empty;
+
+    [Parameter]
+    public HistoryPeriodType Period { get; set; }
+
+    [Parameter]
+    public ContentRating Rating { get; set; } = default!;
+
+}

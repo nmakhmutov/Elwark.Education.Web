@@ -1,0 +1,49 @@
+<div class="grid @Class">
+    <article class="item-first">
+        <ImageCard
+            Href="@Links.History.Topics(Items[0].Id)"
+            Image="@Items[0].Image"
+            Title="@Items[0].Title"
+            Subtitle="@Items[0].Overview"
+            Period="@Items[0].Period"
+            Rating="@Items[0].Rating"/>
+    </article>
+
+    @for (var i = 1; i < Items.Length; i++)
+    {
+        var item = Items[i];
+        <article class="@GetCssClass(i)">
+            <RegularCard
+                Href="@Links.History.Topics(item.Id)"
+                Image="@item.Image"
+                Title="@item.Title"
+                Subtitle="@item.Overview"
+                Period="@item.Period"
+                Rating="@item.Rating"/>
+            @* <TopicCard *@
+            @*     Id="@item.Id" *@
+            @*     Href="@Links.History.Topic(item.Id)" *@
+            @*     Image="@item.Image" *@
+            @*     Title="@item.Title" *@
+            @*     Rating="@item.Rating" *@
+            @*     IsFavorite="@item.IsFavorite"> *@
+            @*     <ImageFooter> *@
+            @*         <HistoryPeriodChip Class="ma-0" Period="@item.Period"/> *@
+            @*     </ImageFooter> *@
+            @*         </TopicCard> *@
+        </article>
+    }
+</div>
+
+@code{
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public TopicSummary[] Items { get; set; } = Array.Empty<TopicSummary>();
+
+    private string GetCssClass(int i) =>
+        i < 5 ? "item-3" : "item-4";
+
+}

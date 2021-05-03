@@ -28,35 +28,36 @@
 }
 
 @code {
-    private ApiResponse<PageableResponse<T>> _response = ApiResponse<PageableResponse<T>>.Loading();
+    private ApiResponse<PageResponse<T>> _response = ApiResponse<PageResponse<T>>.Loading();
 
     [Parameter]
-    public Func<Task<ApiResponse<PageableResponse<T>>>> InitLoader { get; set; } = default!;
-
-    [Parameter]
-    public Func<string, Task<ApiResponse<PageableResponse<T>>>> AppendLoader { get; set; } = default!;
+    public Func<string?, Task<ApiResponse<PageResponse<T>>>> Loader { get; set; } = default!;
 
     [Parameter]
     public RenderFragment Loading { get; set; } = default!;
 
     [Parameter]
-    public RenderFragment<IEnumerable<T>> Result { get; set; } = default!;
+    public RenderFragment<T[]> Result { get; set; } = default!;
 
-    protected override async Task OnParametersSetAsync() => 
-        _response = await InitLoader();
+    protected override async Task OnParametersSetAsync() =>
+        _response = await Loader(null);
 
     private async Task LoadMoreAsync()
     {
         if (_response.Data.Token is null)
             return;
 
-        var result = await AppendLoader(_response.Data.Token);
-        if (result.Status == ResponseStatus.Fail)
-            _response = result;
-
-        _response = ApiResponse<PageableResponse<T>>.Success(
-            new PageableResponse<T>(_response.Data.Items.Union(result.Data.Items).ToArray(), result.Data.Token)
-            );
+        var result = await Loader(_response.Data.Token);
+        
+        _response = result.Status switch
+        {
+            ResponseStatus.Success =>
+                ApiResponse<PageResponse<T>>.Success(
+                    new PageResponse<T>(_response.Data.Items.Union(result.Data.Items).ToArray(), result.Data.Token)
+                    ),
+                    
+            _ => _response
+            };
     }
 
 }

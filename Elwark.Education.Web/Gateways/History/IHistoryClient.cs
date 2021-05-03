@@ -1,3 +1,5 @@
+using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Elwark.Education.Web.Gateways.History.Request;
 using Elwark.Education.Web.Gateways.Models;
@@ -8,44 +10,18 @@ using Elwark.Education.Web.Gateways.Models.TestConclusion;
 
 namespace Elwark.Education.Web.Gateways.History
 {
-    public interface IHistoryClient
+    internal interface IHistoryClient
     {
         Task<ApiResponse<HistoryOverview>> GetAsync();
-        
+
         Task<ApiResponse<HistoryPeriodModel[]>> GetPeriodsAsync();
-        
+
         Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(HistoryPeriodType period);
-        
-        Task<ApiResponse<PageableResponse<TopicSummary>>> GetTopicsAsync(GetTopicsRequest request);
 
-        Task<ApiResponse<RandomTopic>> GetRandomTopicIdAsync();
+        HistoryTopicClient Topic { get; }
 
-        Task<ApiResponse<bool>> ToggleFavoriteAsync(string topicId);
+        HistoryTestClient Test { get; }
 
-        Task<ApiResponse<HistoryTopicDetail>> GetTopicAsync(string topicId);
-        
-        Task<ApiResponse<HistoryArticleDetail>> GetArticleAsync(string articleId);
-
-        Task<ApiResponse<Unit>> LikeArticleAsync(string articleId);
-
-        Task<ApiResponse<Unit>> DislikeArticleAsync(string articleId);
-        
-        Task<ApiResponse<TestCreatedResult>> CreateTestForArticleAsync(string articleId);
-        
-        Task<ApiResponse<HistoryTestModel>> GetTestAsync(string testId);
-        
-        Task<ApiResponse<ManyAnswersResult>> CheckAnswer(string testId, string questionId, ManyAnswer answer);
-
-        Task<ApiResponse<SingleAnswerResult>> CheckAnswer(string testId, string questionId, SingleAnswer answer);
-
-        Task<ApiResponse<TextAnswerResult>> CheckAnswer(string testId, string questionId, TextAnswer answer);
-
-        public Task<ApiResponse<ContentStatistics>> GetMyStatisticsAsync();
-        
-        Task<ApiResponse<PageableResponse<TestConclusionSummary>>> GetMyTestConclusionsAsync(PageableRequest request);
-        
-        Task<ApiResponse<TestConclusionDetail>> GetMyTestConclusionAsync(string testId);
-
-        Task<ApiResponse<PageableResponse<TopicSummary>>> GetMyFavoritesAsync(PageableRequest request);
+        HistoryUserClient User { get; }
     }
 }

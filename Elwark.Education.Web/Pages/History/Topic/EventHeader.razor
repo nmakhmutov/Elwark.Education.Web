@@ -1,73 +1,55 @@
 @using Elwark.Education.Web.Gateways.Models.History
 @inject IStringLocalizer<App> L
 
-<div class="grid">
-    <div>
+<article class="grid">
+    <section>
         <MudText Typo="Typo.h1" Class="title">
-            @Topic.Title
+            @Title
         </MudText>
-        @if (Topic.Started == Topic.Ended && Topic.Started is not null)
+        @if (Started == Ended && Started is not null)
         {
-            <HistoryDate Date="@Topic.Started"/>
+            <HistoryDate Date="@Started"/>
         }
-        else if (Topic.Started != Topic.Ended && Topic.Started is not null)
+        else if (Started != Ended && Started is not null)
         {
             <div class="d-flex flex-row flex-wrap">
-                <HistoryDate Date="@Topic.Started"/>
+                <HistoryDate Date="@Started"/>
                 <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
-                <HistoryDate Date="@Topic.Ended"/>
+                <HistoryDate Date="@Ended"/>
             </div>
         }
-    </div>
+    </section>
 
-    <div>
+    <section>
         <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>
         <MudText Typo="Typo.subtitle1" Class="mb-6">
-            @Topic.Description
+            @Description
         </MudText>
-        <div class="d-flex flex-row align-center mb-3">
-            <RatingIcon Rating="@Topic.Rating" Size="@Size.Medium"/>
-
-            <div class="mx-3"></div>
-
-            <MudTooltip Text="@(Topic.IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
-                <MudToggleIconButton
-                    Toggled="@Topic.IsFavorite"
-                    ToggledChanged="@OnFavoriteChanged"
-                    Icon="@Icons.Filled.FavoriteBorder"
-                    Color="Color.Default"
-                    Size="Size.Medium"
-                    ToggledIcon="@Icons.Filled.Favorite"
-                    ToggledColor="Color.Error"
-                    ToggledSize="Size.Medium"/>
-            </MudTooltip>
-        </div>
-    </div>
-    
-    @if (Topic.Test is not null)
-    {
-        <div class="test">
-            <TopicTestCard Subject="@SubjectType.History" Test="@Topic.Test"/>
-        </div>
-    }
-</div>
+    </section>
+</article>
 
 <div class="image">
-    <img src="@Topic.Image" alt="@Topic.Title"/>
+    <img src="@Image" alt="@Title"/>
 </div>
 
 @code {
 
     [Parameter]
-    public HistoryEventTopicDetail Topic { get; set; } = default!;
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Description { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter]
+    public HistoricalDate? Started { get; set; }
+
+    [Parameter]
+    public HistoricalDate? Ended { get; set; }
 
     [Parameter]
     public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
-
-    [Parameter]
-    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
-
-    private async Task OnFavoriteChanged(bool toggled) =>
-        Topic = Topic with{IsFavorite = await OnFavoriteClick.Invoke(Topic.Id)};
 
 }

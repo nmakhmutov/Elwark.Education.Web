@@ -8,13 +8,16 @@
 
 <ApiResponseViewer Response="@_response">
     <Loading>
+        <SkeletonCard Class="ma-3"/>
         <div class="subjects">
-            <SkeletonCard/>
+            <SkeletonCard Class="mb-3"/>
+            <SkeletonCard Class="mb-3"/>
+            <SkeletonCard Class="mb-3"/>
         </div>
     </Loading>
     <Result Context="profile">
         <Title Value="@L["Profile"]"/>
-        <ProfileUserCard Statistics="@profile.Statistics.Summary"/>
+        <UserCard Statistics="@profile.Statistics.Summary"/>
         <div class="subjects">
             @if (profile.CurrentTests.Length > 0)
             {
@@ -25,16 +28,13 @@
 
                     @foreach (var test in profile.CurrentTests)
                     {
-                        <ProfileCurrentTestCard Test="@test" Class="mb-3"/>
+                        <CurrentTestCard Test="@test" Class="mb-3"/>
                     }
                 </MudPaper>
             }
-            @foreach (var subscription in profile.Subjects.OrderBy(x => L[x.SubjectType.ToString()].Value))
+            @foreach (var subject in profile.Subjects.OrderBy(x => L[x.SubjectType.ToString()].Value))
             {
-                <ProfileSubscriptionCard
-                    Subject="@subscription"
-                    OnBuyClick="@OnBuyClick"
-                    OnManageClick="@OnManageClick"/>
+                <SubjectCard Subject="@subject" OnBuyClick="@OnBuyClick" OnManageClick="@OnManageClick"/>
             }
         </div>
     </Result>

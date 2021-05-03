@@ -1,0 +1,163 @@
+@using Elwark.Education.Web.Gateways.Models.Test
+@using Elwark.Education.Web.Gateways.History
+@inject IHistoryClient HistoryClient
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<App> L
+@inject ISnackbar Snackbar
+@inject ErrorManager ErrorManager
+
+<div class="grid">
+
+    <article class="content">
+        @foreach (var (title, subtitle, text) in Chapters)
+        {
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h4">
+                            @title
+                        </MudText>
+                        @if (!string.IsNullOrEmpty(subtitle))
+                        {
+                            <MudText Typo="Typo.subtitle1">
+                                <em>@subtitle</em>
+                            </MudText>
+                        }
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MarkdownText Text="@text"/>
+                </MudCardContent>
+            </MudCard>
+        }
+    </article>
+
+    <aside class="aside">
+        <section>
+            <MudCard>
+                <MudCardContent>
+                    <TopicReactionButtons
+                        Id="@Id"
+                        IsFavorite="@IsFavorite"
+                        Rating="@Rating"
+                        OnFavoriteClick="@OnFavoriteClick"
+                        OnLikeClick="@OnLikeClick"
+                        OnDislikeClick="@OnDislikeClick"/>
+                </MudCardContent>
+            </MudCard>
+
+            @if (Test.Status != TestStatus.NotAvailable)
+            {
+                <MudCard Class="mt-3 mt-lg-6">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.subtitle1">
+                                <strong>@L["Test:CheckYourKnowledge"]</strong>
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <CreateTestButton
+                            Subject="@SubjectType.History"
+                            Status="@Test.Status"
+                            IsLoading="@(_test?.Status == ResponseStatus.Loading)"
+                            OnCreateTestClick="@CreateTestAsync"/>
+                        <div class="d-flex flex-row justify-space-between flex-wrap mt-6">
+                            @if (Test.CompletedTimes.Success > 0)
+                            {
+                                <MudText Typo="Typo.subtitle1" Class="mr-3">
+                                    @L["Test:PassedTimes", Test.CompletedTimes.Success.ToReadable()]
+                                </MudText>
+                            }
+                            @if (Test.CompletedTimes.Fail > 0)
+                            {
+                                <MudText Typo="Typo.subtitle1">
+                                    @L["Test:NotPassedTimes", Test.CompletedTimes.Fail.ToReadable()]
+                                </MudText>
+                            }
+                        </div>
+                        @if (Test.Conclusions.Length > 0)
+                        {
+                            <div class="mt-3">
+                                @foreach (var conclusion in Test.Conclusions)
+                                {
+                                    <TestConclusionItem
+                                        Class="mb-6"
+                                        Details="@Links.Profile.TestDetail(SubjectType.History, conclusion.TestId)"
+                                        Status="@conclusion.Status"
+                                        CompletedAt="@conclusion.CompletedAt"
+                                        TimeSpent="@conclusion.TimeSpent"
+                                        TotalScore="@conclusion.TotalScore"/>
+                                }
+                                <div class="d-flex flex-row justify-end">
+                                    <MudLink Color="Color.Primary" Href="@Links.Profile.Tests(SubjectType.History)">
+                                        @L["SeeAll"]
+                                    </MudLink>
+                                </div>
+                            </div>
+                        }
+                    </MudCardContent>
+                </MudCard>
+            }
+        </section>
+
+        @foreach (var (title, content) in InfoBoxes)
+        {
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.subtitle1">
+                            <strong>@title</strong>
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MarkdownText Text="@content"/>
+                </MudCardContent>
+            </MudCard>
+        }
+    </aside>
+</div>
+
+@code {
+    private ApiResponse<TestCreatedResult>? _test;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    [Parameter]
+    public TopicTest Test { get; set; }
+
+    [Parameter]
+    public Chapter[] Chapters { get; set; } = Array.Empty<Chapter>();
+
+    [Parameter]
+    public Infobox[] InfoBoxes { get; set; } = Array.Empty<Infobox>();
+
+    [Parameter]
+    public ContentRating Rating { get; set; } = default!;
+
+    [Parameter]
+    public bool IsFavorite { get; set; }
+
+    [Parameter]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+
+    [Parameter]
+    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter]
+    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+
+    private async Task CreateTestAsync()
+    {
+        _test = ApiResponse<TestCreatedResult>.Loading();
+        _test = await HistoryClient.Topic.CreateTestAsync(Id);
+
+        if (_test.Status == ResponseStatus.Success)
+            NavigationManager.NavigateTo(Links.History.Test(_test.Data.Id));
+        else
+            Snackbar.Add(ErrorManager.Localize(_test.Error).Title, Severity.Error);
+    }
+
+}

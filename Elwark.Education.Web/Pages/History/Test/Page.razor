@@ -52,7 +52,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _test = await HistoryClient.GetTestAsync(Id);
+        _test = await HistoryClient.Test.GetAsync(Id);
 
         if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
         {
@@ -76,7 +76,7 @@
         {
             case ManyAnswer x:
             {
-                var result = await HistoryClient.CheckAnswer(_test.Data.Id, _questions[_questionIndex].Id, x);
+                var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _questions[_questionIndex].Id, x);
                 if (result.Status == ResponseStatus.Fail)
                 {
                     _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
@@ -88,7 +88,7 @@
 
             case SingleAnswer x:
             {
-                var result = await HistoryClient.CheckAnswer(_test.Data.Id, _questions[_questionIndex].Id, x);
+                var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _questions[_questionIndex].Id, x);
                 if (result.Status == ResponseStatus.Fail)
                 {
                     _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
@@ -100,7 +100,7 @@
 
             case TextAnswer x:
             {
-                var result = await HistoryClient.CheckAnswer(_test.Data.Id, _questions[_questionIndex].Id, x);
+                var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _questions[_questionIndex].Id, x);
                 if (result.Status == ResponseStatus.Fail)
                 {
                     _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
@@ -141,7 +141,7 @@
     private async Task OnExpired()
     {
         _countdownColor = Color.Error;
-        _test = await HistoryClient.GetTestAsync(Id);
+        _test = await HistoryClient.Test.GetAsync(Id);
 
         if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
             NavigationManager.NavigateTo(Links.Profile.TestDetail(SubjectType.History, Id));

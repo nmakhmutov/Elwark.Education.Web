@@ -1,7 +1,6 @@
 @page "/profile/{subject}/statistics"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.Statistics
-@using Elwark.Education.Web.Pages.Profile.Components
 
 @inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
@@ -12,31 +11,181 @@
 <div class="ma-6">
     <ApiResponseViewer Response="@_response">
         <Loading>
-            <div class="grid">
+            <div class="statistics-grid">
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
                 <SkeletonCard/>
             </div>
         </Loading>
         <Result Context="statistics">
             <Title Value="@L["Statistics"]"></Title>
-            <div class="grid">
-                <div>
-                    <MudText Typo="Typo.h4" Class="mb-3">
-                        @L["Statistics:ByTopics"]
-                    </MudText>
-                    <ProfileTopicStatistics
-                        Statistics="@statistics.Topics"
-                        LinkBuilder="@(id => Links.Subjects.Topic(_subject, id))"/>
+
+            <div class="statistics-grid">
+                <div class="icon-widget-grid">
+                    <IconWidget
+                        Icon="@Icons.Filled.Timer"
+                        Title="@L["TimeSpent"]"
+                        Value="@statistics.TimeSpent.ToSimpleFormat()">
+                        <Caption>
+                            <DifferenceCaption
+                                Current="@statistics.WeeklyDifference.TimeSpent.Current"
+                                Difference="@statistics.WeeklyDifference.TimeSpent.Difference"
+                                ValueConverter="@(span => span.ToSimpleFormat())"/>
+                        </Caption>
+                    </IconWidget>
                 </div>
-                <div>
-                    <MudText Typo="Typo.h4" Class="mb-3">
-                        @L["Statistics:ByArticles"]
-                    </MudText>
-                    <ProfileArticleStatistics
-                        Class="mb-6"
-                        Statistics="@statistics.Articles"
-                        LinkBuilder="@(id => Links.Subjects.Article(_subject, id))"/>
-                </div>
+
+                <DetailWidget
+                    Icon="@Icons.Filled.School"
+                    Value="@statistics.CompletedTests.Total.ToReadable()"
+                    Title="@L["CompletedTests"]">
+                    <Caption>
+                        <DifferenceCaption
+                            Current="@statistics.WeeklyDifference.CompletedTests.Current"
+                            Difference="@statistics.WeeklyDifference.CompletedTests.Difference"
+                            ValueConverter="@(arg => arg.ToReadable())"/>
+                    </Caption>
+                    <Details>
+                        <div class="detail-grid">
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @statistics.CompletedTests.Completed.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["CompletedTests:Completed"]
+                                </MudText>
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @statistics.CompletedTests.TimeExceeded.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["CompletedTests:TimeExceeded"]
+                                </MudText>
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @statistics.CompletedTests.RepliesExceeded.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["CompletedTests:RepliesExceeded"]
+                                </MudText>
+                            </div>
+                        </div>
+                    </Details>
+                </DetailWidget>
+
+                <DetailWidget
+                    Icon="@Icons.Filled.PendingActions"
+                    Value="@statistics.Score.Total.ToReadable()"
+                    Title="@L["Score"]">
+                    <Caption>
+                        <DifferenceCaption
+                            Current="@statistics.WeeklyDifference.Score.Current"
+                            Difference="@statistics.WeeklyDifference.Score.Difference"
+                            ValueConverter="@(arg => arg.ToReadable())"/>
+                    </Caption>
+                    <Details>
+                        <div class="detail-grid">
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @statistics.Score.Questions.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["Score:ByQuestions"]
+                                </MudText>
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @statistics.Score.NoMistakes.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["Score:NoMistakesBonus"]
+                                </MudText>
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @statistics.Score.Speed.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["Score:BySpeedBonus"]
+                                </MudText>
+                            </div>
+                        </div>
+                    </Details>
+                </DetailWidget>
+
+                <DetailWidget
+                    Icon="@Icons.Filled.HelpOutline"
+                    Value="@statistics.AnswerRatio.Questions.ToReadable()"
+                    Title="@L["Questions"]">
+                    <Caption>
+                        <DifferenceCaption
+                            Current="@statistics.WeeklyDifference.Questions.Current"
+                            Difference="@statistics.WeeklyDifference.Questions.Difference"
+                            ValueConverter="@(arg => arg.ToReadable())"/>
+                    </Caption>
+                    <Details>
+                        <div class="detail-grid">
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @statistics.AnswerRatio.Correct.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["Questions:Correct"]
+                                </MudText>
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @statistics.AnswerRatio.Incorrect.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["Questions:Incorrect"]
+                                </MudText>
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @statistics.AnswerRatio.Answered.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["Questions:Answered"]
+                                </MudText>
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @statistics.AnswerRatio.NotAnswered.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["Questions:NotAnswered"]
+                                </MudText>
+                            </div>
+                        </div>
+                    </Details>
+                </DetailWidget>
+
+                <RankingWidget
+                    Title="@L["Ranking:ByScore"]"
+                    Items="@statistics.ScoreRanking"
+                    LinkBuilder="@((string id) => Links.Subjects.Topic(_subject, id))"
+                    ValueConverter="@(arg => arg.ToReadable())"/>
+
+                <RankingWidget
+                    Title="@L["Ranking:ByTimeSpent"]"
+                    Items="@statistics.TimeSpentRanking"
+                    LinkBuilder="@((string id) => Links.Subjects.Topic(_subject, id))"
+                    ValueConverter="@((TimeSpan item) => item.ToSimpleFormat())"/>
+
+                <RankingWidget
+                    Title="@L["Ranking:ByCompletedTimesRanking"]"
+                    Items="@statistics.CompletedTimesRanking"
+                    LinkBuilder="@((string id) => Links.Subjects.Topic(_subject, id))"
+                    ValueConverter="@(arg => arg.ToReadable())"/>
             </div>
+
         </Result>
     </ApiResponseViewer>
 </div>
@@ -47,15 +196,16 @@
     public string Subject { get; set; } = string.Empty;
 
     private SubjectType _subject;
-    private ApiResponse<ContentStatistics> _response = ApiResponse<ContentStatistics>.Loading();
+    private ApiResponse<UserStatistics> _response = ApiResponse<UserStatistics>.Loading();
 
     protected override async Task OnParametersSetAsync()
     {
         Enum.TryParse(Subject, true, out _subject);
         _response = _subject switch
         {
-            SubjectType.History => await HistoryClient.GetMyStatisticsAsync(),
-            _ => ApiResponse<ContentStatistics>.Fail(Error.NotFound)
+            SubjectType.History => await HistoryClient.User.GetStatisticsAsync(),
+            _ => ApiResponse<UserStatistics>.Fail(Error.NotFound)
             };
     }
+
 }

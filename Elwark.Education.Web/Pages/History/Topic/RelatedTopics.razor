@@ -1,6 +1,6 @@
 @inject IStringLocalizer<App> L
 
-<div class="ma-6 @Class">
+<div class="@Class">
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["Topics:Related"]
     </MudText>
@@ -9,14 +9,17 @@
         {
             <TopicCard
                 Id="@topic.Id"
-                Href="@Links.History.Topic(topic.Id)"
+                Href="@Links.History.Topics(topic.Id)"
                 Image="@topic.Image"
                 Title="@topic.Title"
                 Subtitle="@topic.Overview"
                 Rating="@topic.Rating"
                 IsFavorite="@topic.IsFavorite"
-                OnFavoriteClick="@OnFavoriteClick"
-                Progress="@topic.Progress"/>
+                OnFavoriteClick="@OnFavoriteClick">
+                <ImageFooter>
+                    <HistoryPeriodChip Class="ma-0" Period="@topic.Period"/>
+                </ImageFooter>
+            </TopicCard>
         }
     </div>
 </div>
@@ -31,4 +34,5 @@
 
     [Parameter]
     public Func<string, Task<bool>> OnFavoriteClick { get; set; } = s => Task.FromResult(false);
+
 }

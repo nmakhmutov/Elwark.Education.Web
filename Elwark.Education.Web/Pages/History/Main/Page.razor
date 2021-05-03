@@ -7,79 +7,85 @@
 
 <ApiResponseViewer Response="@_response">
     <Loading>
-        <div class="grid">
-            <SkeletonCard/>
-            <SkeletonCard/>
-            <SkeletonCard/>
-            <SkeletonCard/>
-        </div>
-    </Loading>
-    <Result Context="overview">
-        <Title Value="@L["Subject:History"]"/>
-
-        <PeriodsGrid Periods="@overview.Periods"/>
-
-        <DailyTopic Topic="@overview.TrendingTopics[new Random().Next(overview.TrendingTopics.Length)]"/>
-
-        <div class="grid">
-
-            <div>
-                <div class="container-header mb-3">
+        <Header class="mb-12"/>
+        <section class="section mb-12 mx-3">
+            <div class="container">
+                <div class="header mb-3">
                     <MudText Typo="Typo.h6">
                         @L["Topics:Trending"]
                     </MudText>
                 </div>
-                <TrendingGrid Items="@overview.TrendingTopics"/>
-            </div>
-
-            <div>
-                <div class="container-header mb-3">
-                    <MudText Typo="Typo.h6" Align="Align.Center">
-                        @L["Topics:Random"]
-                    </MudText>
-                </div>
-                <RandomTopic Class="mb-6"/>
-
-                <div class="container-header">
-                    <MudText Typo="Typo.h6" Align="Align.Center">
-                        @L["Topics:Recent"]
-                    </MudText>
-                </div>
-                <div class="recent-grid mt-3">
-                    @foreach (var topic in overview.RecentTopics)
-                    {
-                        <div class="recent-article-card">
-                            <div class="recent-article-card-header">
-                                <div class="recent-article-card-image">
-                                    <img src="@topic.Image" loading="lazy" style="width: 100%" alt="@topic.Title">
-                                </div>
-                                <div>
-                                    <MudLink Typo="Typo.h5" Href="@(Links.History.Topic(topic.Id))">
-                                        @topic.Title
-                                    </MudLink>
-                                    <div class="mt-3">
-                                        <RatingIcon Rating="@topic.Rating"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <MudText Typo="Typo.subtitle1">
-                                @topic.Overview
-                            </MudText>
-                        </div>
-                    }
+                <div class="dummy-grid">
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
                 </div>
             </div>
+        </section>
+        <section class="section mb-12 mx-3">
+            <RandomTopic/>
+        </section>
+    </Loading>
+    <Result Context="overview">
+        <Title Value="@L["Subject:History"]"/>
+        <Header Class="mb-12"/>
 
-            <div class="hot">
-                <div class="container-header mb-3">
+        <section class="section mb-12 mx-3">
+            <div class="container">
+                <div class="header mb-3">
+                    <MudText Typo="Typo.h6">
+                        @L["Topics:Trending"]
+                    </MudText>
+                </div>
+                <Trending Items="@overview.TrendingTopics"/>
+            </div>
+        </section>
+
+        @* <section class="section mb-12 mx-3"> *@
+        @*     <RandomTopic/> *@
+        @* </section> *@
+
+        <section class="section mb-12 black-background">
+            <div class="container mx-3 my-6">
+                <DailyTopic Topic="@overview.TrendingTopics[new Random().Next(overview.TrendingTopics.Length)]"/>
+            </div>
+        </section>
+
+        <section class="section mb-12 mx-3">
+            <div class="container">
+                <div class="header mb-3">
                     <MudText Typo="Typo.h6">
                         @L["Topics:Hot"]
                     </MudText>
                 </div>
-                <HotGrid Items="@overview.HotTopics"/>
+                <Trending Items="@overview.HotTopics"/>
             </div>
+        </section>
 
-        </div>
+        @* <section class="section mb-12 mx-3"> *@
+        @*     <RandomTopic/> *@
+        @* </section> *@
+
+        <section class="section mb-12 mx-3">
+            <div class="container">
+                <div class="header mb-3">
+                    <MudText Typo="Typo.h6">
+                        @L["Topics:Recent"]
+                    </MudText>
+                </div>
+                <Trending Items="@overview.RecentTopics"/>
+            </div>
+        </section>
+
+        <section class="section mb-12 mx-3">
+            <RandomTopic/>
+        </section>
+
     </Result>
 </ApiResponseViewer>
 

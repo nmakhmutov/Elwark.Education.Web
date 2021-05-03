@@ -11,7 +11,10 @@
 }
 
 .content {
-    padding: 12px 12px 0;
+    display: grid;
+    grid-auto-rows: min-content;
+    grid-gap: 12px;
+    padding: 12px;
 }
 
 .lifetime {
@@ -23,7 +26,9 @@
 .characteristics {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 24px;
+    grid-auto-rows: max-content;
+    gap: 12px;
+    padding: 12px;
 }
 
 .characteristic ::deep .title {
@@ -35,20 +40,6 @@
     font-size: 1.1rem;
 }
 
-.footer {
-    padding: 12px;
-}
-
-@media (min-width: 600px) {
-    .content {
-        padding: 24px 24px 0;
-    }
-
-    .footer {
-        padding: 24px;
-    }
-}
-
 @media (min-width: 960px) {
     .grid {
         display: grid;
@@ -56,7 +47,7 @@
         grid-template-rows: 1fr auto;
     }
 
-    .footer {
+    .characteristics {
         grid-column: 1/-1;
     }
 }
@@ -71,7 +62,14 @@
         grid-row: 1/-1;
     }
 
-    .footer {
+    .content {
+        padding: 24px;
+        grid-gap: 24px;
+    }
+
+    .characteristics {
         grid-column: span 1;
+        gap: 24px;
+        padding: 0 24px;
     }
 }

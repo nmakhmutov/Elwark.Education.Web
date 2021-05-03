@@ -1,0 +1,41 @@
+@using Elwark.Education.Web.Gateways.Models.TestConclusion
+@inject IStringLocalizer<App> L
+
+<div class="wrapper">
+    <div>
+        @if (Title is null)
+        {
+            <MudText Typo="Typo.h5">
+                @L["Deleted"]
+            </MudText>
+        }
+        else
+        {
+            <MudLink Href="@Link" Typo="Typo.h5">
+                @Title
+            </MudLink>
+        }
+    </div>
+    <div class="status">
+        <ConclusionStatusTitle Status="@Status"/>
+        <MudText Typo="Typo.body1">
+            @CreatedAt.ToSimpleFormat()
+        </MudText>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public string Link { get; set; } = default!;
+
+    [Parameter]
+    public ConclusionStatus Status { get; set; }
+
+    [Parameter]
+    public DateTime CreatedAt { get; set; }
+
+}

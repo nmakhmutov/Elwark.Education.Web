@@ -1,6 +1,5 @@
 @page "/profile/{subject}/favorites"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Pages.Profile.Components
 
 @inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
@@ -9,31 +8,43 @@
 
 <ProfileSubjectHeader SubjectType="@_subject" Selected="@(ProfileSubMenu.Favorites)"/>
 <div class="ma-6">
-    <ApiResponsePageableViewer
-        InitLoader="@(() => LoaderAsync(new PageableRequest(null, 20)))"
-        AppendLoader="@(token => LoaderAsync(new PageableRequest(token, 20)))">
+    <ApiResponsePageableViewer Loader="@(token => LoaderAsync(new PageRequest(token, 20)))">
         <Loading>
             <div class="grid">
+                <SkeletonCard/>
+                <SkeletonCard/>
                 <SkeletonCard/>
             </div>
         </Loading>
         <Result Context="items">
             <Title Value="@L["Favorites"]"></Title>
-            <div class="grid">
-                @foreach (var item in items)
-                {
-                    <TopicCard
-                        Id="@item.Id"
-                        Href="@Links.History.Topic(item.Id)"
-                        Image="@item.Image"
-                        Title="@item.Title"
-                        Subtitle="@item.Overview"
-                        Rating="@item.Rating"
-                        IsFavorite="@item.IsFavorite"
-                        OnFavoriteClick="@OnFavoriteClick"
-                        Progress="@item.Progress"/>
-                }
-            </div>
+            @if (items.Length > 0)
+            {
+                <div class="grid">
+                    @foreach (var item in items)
+                    {
+                        <TopicCard
+                            Id="@item.Id"
+                            Href="@Links.History.Topics(item.Id)"
+                            Image="@item.Image"
+                            Title="@item.Title"
+                            Subtitle="@item.Overview"
+                            Rating="@item.Rating"
+                            IsFavorite="@item.IsFavorite"
+                            OnFavoriteClick="@OnFavoriteClick">
+                            <ImageFooter>
+                                <HistoryPeriodChip Class="ma-0" Period="@item.Period"/>
+                            </ImageFooter>
+                        </TopicCard>
+                    }
+                </div>
+            }
+            else
+            {
+                <MudText Align="Align.Center" Typo="Typo.subtitle1">
+                    @L["Empty"]
+                </MudText>
+            }
         </Result>
     </ApiResponsePageableViewer>
 </div>
@@ -48,15 +59,15 @@
     protected override void OnInitialized() =>
         Enum.TryParse(Subject, true, out _subject);
 
-    private Task<ApiResponse<PageableResponse<TopicSummary>>> LoaderAsync(PageableRequest request) =>
+    private Task<ApiResponse<PageResponse<TopicSummary>>> LoaderAsync(PageRequest request) =>
         _subject switch {
-            SubjectType.History => HistoryClient.GetMyFavoritesAsync(request),
-            _ => Task.FromResult(ApiResponse<PageableResponse<TopicSummary>>.Fail(Error.NotFound))
+            SubjectType.History => HistoryClient.User.GetFavoritesAsync(request),
+            _ => Task.FromResult(ApiResponse<PageResponse<TopicSummary>>.Fail(Error.NotFound))
             };
 
     private async Task<bool> OnFavoriteClick(string topicId)
     {
-        var result = await HistoryClient.ToggleFavoriteAsync(topicId);
+        var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
         return result.Status == ResponseStatus.Success && result.Data;
     }
 

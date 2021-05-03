@@ -1,0 +1,28 @@
+@using Elwark.Education.Web.Gateways.Models.TestConclusion
+@inject IStringLocalizer<App> L
+
+<MudText Typo="@Typo" Color="@_data.Color">
+    @_data.Title
+</MudText>
+
+@code {
+
+    [Parameter]
+    public ConclusionStatus Status { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.subtitle1;
+
+    private (LocalizedString Title, Color Color) _data;
+
+    protected override void OnParametersSet()
+    {
+        _data = Status switch {
+            ConclusionStatus.Complete => (L["CompletedTests:Completed"], Color.Success),
+            ConclusionStatus.TimeExceeded => (L["CompletedTests:TimeExceeded"], Color.Error),
+            ConclusionStatus.RepliesExceeded => (L["CompletedTests:RepliesExceeded"], Color.Warning),
+            _ => throw new ArgumentOutOfRangeException(nameof(Status), $@"Unknown status in {nameof(ConclusionStatusTitle)}")
+            };
+    }
+
+}

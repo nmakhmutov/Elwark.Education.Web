@@ -7,69 +7,73 @@
 
 @attribute [Authorize]
 
-@switch (_aggregate.Status)
-{
-    case ResponseStatus.Loading:
-        <div class="layout">
-            <SkeletonCard/>
-            <SkeletonCard/>
-            <SkeletonCard/>
-            <SkeletonCard/>
-            <SkeletonCard/>
-        </div>
-        break;
+<div class="layout">
+    <ApiResponseViewer Response="_period">
+        <Loading>
+            <div class="header">
+                <SkeletonCard Class="h-100" ImgHeight="70%"/>
+            </div>
+        </Loading>
+        <Result Context="period">
+            <Title Value="@(period.Title)"/>
 
-    case ResponseStatus.Fail:
-        <ErrorPage Error="@_aggregate.Error"/>
-        break;
-
-    case ResponseStatus.Success:
-        <Title Value="@(_aggregate.Data.Period.Title)"></Title>
-        <div class="layout">
             <div class="header">
                 <div class="image mb-6">
-                    <img src="@_aggregate.Data.Period.Image" loading="lazy" alt="@_aggregate.Data.Period.Title"/>
+                    <img src="@period.Image" loading="lazy" alt="@period.Title"/>
                 </div>
                 <MudText Class="title" Typo="Typo.h1">
-                    @_aggregate.Data.Period.Title
+                    @period.Title
                 </MudText>
                 <MudLink Class="period-link" Href="@(Links.History.Index)">
                     @L["Subject:History"]
                 </MudLink>
                 <MudText Typo="Typo.subtitle1" Class="mt-6">
-                    @_aggregate.Data.Period.Description
+                    @period.Description
                 </MudText>
             </div>
-            @foreach (var item in _aggregate.Data.Topics.Items)
+        </Result>
+    </ApiResponseViewer>
+
+    <ApiResponseViewer Response="_topics">
+        <Loading>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+        </Loading>
+        <Result Context="topics">
+            @foreach (var item in topics.Items)
             {
                 <TopicCard
                     Id="@item.Id"
-                    Href="@Links.History.Topic(item.Id)"
+                    Href="@Links.History.Topics(item.Id)"
                     Image="@item.Image"
                     Title="@item.Title"
                     Subtitle="@item.Overview"
                     Rating="@item.Rating"
                     IsFavorite="@item.IsFavorite"
-                    OnFavoriteClick="@OnFavoriteClick"
-                    Progress="@item.Progress"/>
+                    OnFavoriteClick="@OnFavoriteClick">
+                    <ImageFooter>
+                        <HistoryPeriodChip Class="ma-0" Period="@item.Period"/>
+                    </ImageFooter>
+                </TopicCard>
             }
-        </div>
-        <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
-            <div id="observerTarget" class="d-flex justify-center my-6">
-                @if (_request.Token is not null)
-                {
-                    <MudProgressCircular Indeterminate="true"/>
-                }
-            </div>
-        </InfinityScroll>
-        break;
-}
+            <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
+                <div id="observerTarget" class="full-row d-flex justify-center my-6">
+                    @if (_request.Token is not null)
+                    {
+                        <MudProgressCircular Indeterminate="true"/>
+                    }
+                </div>
+            </InfinityScroll>
+        </Result>
+    </ApiResponseViewer>
+</div>
 
 @code {
+    private ApiResponse<HistoryPeriodModel> _period = ApiResponse<HistoryPeriodModel>.Loading();
 
-    private record Aggregate(HistoryPeriodModel Period, PageableResponse<TopicSummary> Topics);
-
-    private ApiResponse<Aggregate> _aggregate = ApiResponse<Aggregate>.Loading();
+    private ApiResponse<PageResponse<TopicSummary>> _topics = ApiResponse<PageResponse<TopicSummary>>.Loading();
 
     private GetTopicsRequest _request = new(HistoryPeriodType.Prehistory, null, 20);
 
@@ -78,31 +82,21 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _aggregate = ApiResponse<Aggregate>.Loading();
+        _period = ApiResponse<HistoryPeriodModel>.Loading();
+        _topics = ApiResponse<PageResponse<TopicSummary>>.Loading();
+
         if (Enum.TryParse<HistoryPeriodType>(Type, true, out var type))
         {
             _request = new GetTopicsRequest(type, null, 20);
-            var period = await HistoryClient.GetPeriodAsync(type);
-            var topics = await HistoryClient.GetTopicsAsync(_request);
 
-            if (period.Status == ResponseStatus.Fail)
-            {
-                _aggregate = ApiResponse<Aggregate>.Fail(period.Error);
-                return;
-            }
+            _period = await HistoryClient.GetPeriodAsync(type);
+            _topics = await HistoryClient.Topic.GetAsync(_request);
 
-            if (topics.Status == ResponseStatus.Fail)
-            {
-                _aggregate = ApiResponse<Aggregate>.Fail(topics.Error);
-                return;
-            }
-
-            _aggregate = ApiResponse<Aggregate>.Success(new Aggregate(period.Data, topics.Data));
-            _request = _request with {Token = topics.Data.Token};
+            _request = _request with {Token = _topics.Data.Token};
         }
         else
         {
-            _aggregate = ApiResponse<Aggregate>.Fail(Error.NotFound);
+            _period = ApiResponse<HistoryPeriodModel>.Fail(Error.NotFound);
         }
     }
 
@@ -111,29 +105,27 @@
         if (_request.Token is null)
             return;
 
-        var result = await HistoryClient.GetTopicsAsync(_request);
+        var result = await HistoryClient.Topic.GetAsync(_request);
 
         if (result.Status == ResponseStatus.Fail)
         {
-            _aggregate = ApiResponse<Aggregate>.Fail(result.Error);
+            _topics = ApiResponse<PageResponse<TopicSummary>>.Fail(result.Error);
             return;
         }
 
-        _aggregate = ApiResponse<Aggregate>.Success(
-            new Aggregate(
-                _aggregate.Data.Period,
-                new PageableResponse<TopicSummary>(
-                    _aggregate.Data.Topics.Items.Union(result.Data.Items).ToArray(),
-                    result.Data.Token
-                    )
+        _topics = ApiResponse<PageResponse<TopicSummary>>.Success(
+            new PageResponse<TopicSummary>(
+                _topics.Data.Items.Union(result.Data.Items).ToArray(),
+                result.Data.Token
                 )
             );
+
         _request = _request with {Token = result.Data.Token};
     }
 
     private async Task<bool> OnFavoriteClick(string topicId)
     {
-        var result = await HistoryClient.ToggleFavoriteAsync(topicId);
+        var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
         return result.Status == ResponseStatus.Success && result.Data;
     }
 

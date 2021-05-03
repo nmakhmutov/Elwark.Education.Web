@@ -47,10 +47,10 @@
     private async Task BeginSignOut(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo("authentication/logout");
+        Navigation.NavigateTo(Links.Authentication.LogOut);
     }
     
     private void OnLogin() => 
-        Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+        Navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(Navigation.Uri)));
 
 }

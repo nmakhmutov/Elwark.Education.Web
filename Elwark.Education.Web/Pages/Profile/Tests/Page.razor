@@ -1,7 +1,6 @@
 @page "/profile/{subject}/tests"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.TestConclusion
-@using Elwark.Education.Web.Pages.Profile.Components
 
 @inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
@@ -10,57 +9,65 @@
 
 <ProfileSubjectHeader SubjectType="@_subject" Selected="@(ProfileSubMenu.Tests)"/>
 <div class="grid ma-6">
-    <ApiResponsePageableViewer
-        InitLoader="@(() => LoaderAsync(new PageableRequest(null, 20)))"
-        AppendLoader="@(token => LoaderAsync(new PageableRequest(token, 20)))">
+    <ApiResponsePageableViewer Loader="@(token => LoaderAsync(new PageRequest(token, 20)))">
         <Loading>
-            <SkeletonCard/>
+            <SkeletonCard Class="mb-3"/>
+            <SkeletonCard Class="mb-3"/>
+            <SkeletonCard Class="mb-3"/>
         </Loading>
         <Result Context="items">
             <Title Value="@L["CompletedTests"]"></Title>
-            @{
-                var date = DateTime.MinValue;
-            }
-            @foreach (var item in items)
+            @if (items.Length > 0)
             {
-                if (date.Date != item.CreatedAt.Date)
+                var date = DateTime.MinValue;
+
+                @foreach (var item in items)
                 {
-                    date = item.CreatedAt;
-                    <div class="date-divider">
-                        <div class="divider-text">
-                            <MudText Typo="Typo.h4">
-                                @item.CreatedAt.ToShortDateString()
-                            </MudText>
-                            <div class="divider-line"></div>
+                    if (date.Date != item.CreatedAt.Date)
+                    {
+                        date = item.CreatedAt;
+                        <div class="date-divider">
+                            <div class="divider-text">
+                                <MudText Typo="Typo.h4">
+                                    @item.CreatedAt.ToShortDateString()
+                                </MudText>
+                                <div class="divider-line"></div>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudLink Href="@Links.Profile.TestDetail(_subject, item.TestId)" Typo="Typo.h6">
+                                    @if (item.Title is null)
+                                    {
+                                        <em>
+                                            @L["Deleted"]
+                                        </em>
+                                    }
+                                    else
+                                    {
+                                        @item.Title
+                                    }
+                                </MudLink>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <TestConclusionItem
+                                Status="@item.Status"
+                                CompletedAt="@item.CreatedAt"
+                                TimeSpent="@item.TimeSpent"
+                                TotalScore="@item.UserScore.Total"
+                                Details="@Links.Profile.TestDetail(_subject, item.TestId)"/>
+                        </MudCardContent>
+                    </MudCard>
                 }
-                <MudCard>
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudLink Href="@Links.Profile.TestDetail(_subject, item.TestId)" Typo="Typo.h6">
-                                @if (item.Title is null)
-                                {
-                                    <em>
-                                        @L["Deleted"]
-                                    </em>
-                                }
-                                else
-                                {
-                                    @item.Title
-                                }
-                            </MudLink>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <TestConclusionItem
-                            Status="@item.Status"
-                            CompletedAt="@item.CreatedAt"
-                            TimeSpent="@item.TimeSpent"
-                            TotalScore="@item.UserScore.Total"
-                            Details="@Links.Profile.TestDetail(_subject, item.TestId)"/>
-                    </MudCardContent>
-                </MudCard>
+            }
+            else
+            {
+                <MudText Align="Align.Center" Typo="Typo.subtitle1">
+                    @L["Empty"]
+                </MudText>
             }
         </Result>
     </ApiResponsePageableViewer>
@@ -76,10 +83,10 @@
     protected override void OnInitialized() =>
         Enum.TryParse(Subject, true, out _subject);
 
-    private Task<ApiResponse<PageableResponse<TestConclusionSummary>>> LoaderAsync(PageableRequest request) =>
+    private Task<ApiResponse<PageResponse<TestConclusionSummary>>> LoaderAsync(PageRequest request) =>
         _subject switch{
-            SubjectType.History => HistoryClient.GetMyTestConclusionsAsync(request),
-            _ => Task.FromResult(ApiResponse<PageableResponse<TestConclusionSummary>>.Fail(Error.NotFound))
+            SubjectType.History => HistoryClient.User.GetTestConclusionsAsync(request),
+            _ => Task.FromResult(ApiResponse<PageResponse<TestConclusionSummary>>.Fail(Error.NotFound))
             };
 
 }

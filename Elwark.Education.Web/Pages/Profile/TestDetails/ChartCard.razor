@@ -1,0 +1,46 @@
+<MudCard>
+    <MudCardContent Class="d-flex flex-column justify-space-between h-100">
+        <div class="mb-3">
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                @Title
+            </MudText>
+            <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                @Subtitle
+            </MudText>
+        </div>
+
+        <div>
+            <MudChart
+                ChartType="ChartType.Donut"
+                Width="100%"
+                ChartOptions="@_chartOptions"
+                InputData="@(new[] {Percentage, 100 - Percentage})"/>
+            <MudText Typo="Typo.h4" Align="Align.Center">
+                @Percentage.ToReadable()%
+            </MudText>
+        </div>
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Subtitle { get; set; } = string.Empty;
+
+    [Parameter]
+    public double Percentage { get; set; }
+
+    private readonly ChartOptions _chartOptions = new()
+    {
+        ChartPalette = new[]
+        {
+            Colors.Indigo.Default,
+            Colors.Grey.Default,
+        },
+        DisableLegend = true
+    };
+
+}

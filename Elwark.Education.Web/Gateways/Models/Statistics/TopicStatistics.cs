@@ -2,7 +2,7 @@ using System;
 
 namespace Elwark.Education.Web.Gateways.Models.Statistics
 {
-    public sealed record TopicStatistics(
+    public sealed record UserStatistics(
         CompletedTests CompletedTests,
         TimeSpan TimeSpent,
         Score Score,

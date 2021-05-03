@@ -14,7 +14,7 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
                 SubjectType.History =>
                     new SubjectStatic(
                         Icons.Outlined.AccountBalance,
-                        "/images/subjects/history.jpg",
+                        "/images/history/history.jpg",
                         "linear-gradient(140deg, rgba(226, 110, 67, 1) 0%, rgba(248, 206, 14, 1) 100%)"
                     ),
 
