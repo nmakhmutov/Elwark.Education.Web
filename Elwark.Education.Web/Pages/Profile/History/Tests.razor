@@ -1,0 +1,110 @@
+@page "/profile/history/tests"
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.Models.TestConclusion
+@layout ProfileLayout
+
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
+@attribute [Authorize]
+
+<ProfileDefaultGrid>
+    <ApiResponseViewer Response="@_conclusions">
+        <Loading>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+        </Loading>
+        <Result Context="conclusions">
+            <Title Value="@L["CompletedTests"]"/>
+            @if (conclusions.Items.Length > 0)
+            {
+                var date = DateTime.MinValue;
+
+                @foreach (var item in conclusions.Items)
+                {
+                    if (date.Date != item.CreatedAt.Date)
+                    {
+                        date = item.CreatedAt;
+                        <div class="date-divider">
+                            <div class="divider-text">
+                                <MudText Typo="Typo.h4">
+                                    @item.CreatedAt.ToShortDateString()
+                                </MudText>
+                                <div class="divider-line"></div>
+                            </div>
+                        </div>
+                    }
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudLink Href="@Links.Profile.TestDetail(SubjectType.History, item.TestId)" Typo="Typo.h6">
+                                    @if (item.Title is null)
+                                    {
+                                        <em>
+                                            @L["Deleted"]
+                                        </em>
+                                    }
+                                    else
+                                    {
+                                        @item.Title
+                                    }
+                                </MudLink>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <TestConclusionList
+                                Status="@item.Status"
+                                Difficulty="@item.Difficulty"
+                                CompletedAt="@item.CreatedAt"
+                                TimeSpent="@item.TimeSpent"
+                                TotalScore="@item.UserScore.Total"
+                                Details="@Links.Profile.TestDetail(SubjectType.History, item.TestId)"/>
+                        </MudCardContent>
+                    </MudCard>
+                }
+
+                <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
+                    <div id="observerTarget" class="grid-full-row d-flex justify-center my-6">
+                        @if (_request.Token is not null)
+                        {
+                            <MudProgressCircular Indeterminate="true"/>
+                        }
+                    </div>
+                </InfinityScroll>
+            }
+            else
+            {
+                <EmptyResult Title="@L["Profile:EmptyTestsTitle"]" Subtitle="@L["Profile:EmptyTestsSubtitle"]"/>
+            }
+        </Result>
+    </ApiResponseViewer>
+</ProfileDefaultGrid>
+
+@code {
+    private PageRequest _request = new(null, 20);
+
+    private ApiResponse<PageResponse<TestConclusionSummary>> _conclusions =
+        ApiResponse<PageResponse<TestConclusionSummary>>.Loading();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadMoreAsync()
+    {
+        if (_request.Token is null)
+            return;
+
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        _conclusions = await HistoryClient.User.GetTestConclusionsAsync(_request);
+        if (_conclusions.Status == ResponseStatus.Success)
+            _request = _request with {Token = _conclusions.Data.Token};
+    }
+
+}

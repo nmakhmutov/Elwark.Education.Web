@@ -1,0 +1,84 @@
+@page "/profile/history/favorites"
+@using Elwark.Education.Web.Gateways.History
+@layout ProfileLayout
+
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
+@attribute [Authorize]
+
+<ProfileDefaultGrid>
+    <ApiResponseViewer Response="@_favorites">
+        <Loading>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+        </Loading>
+        <Result Context="favorites">
+            <Title Value="@L["Favorites"]"></Title>
+            @if (favorites.Items.Length > 0)
+            {
+                @foreach (var item in favorites.Items)
+                {
+                    <TopicCard
+                        Id="@item.Id"
+                        Href="@Links.History.Topics(item.Id)"
+                        Image="@item.Image"
+                        Title="@item.Title"
+                        Subtitle="@item.Overview"
+                        Rating="@item.Rating"
+                        IsFavorite="@item.IsFavorite"
+                        OnFavoriteClick="@OnFavoriteClick">
+                        <ImageFooter>
+                            <HistoryPeriodChip Class="ma-0" Period="@item.Period"/>
+                        </ImageFooter>
+                    </TopicCard>
+                }
+                <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
+                    <div id="observerTarget" class="grid-full-row d-flex justify-center my-6">
+                        @if (_request.Token is not null)
+                        {
+                            <MudProgressCircular Indeterminate="true"/>
+                        }
+                    </div>
+                </InfinityScroll>
+            }
+            else
+            {
+                <EmptyResult Title="@L["Profile:EmptyFavoritesTitle"]" Subtitle="@L["Profile:EmptyFavoritesSubtitle"]"/>
+            }
+        </Result>
+    </ApiResponseViewer>
+</ProfileDefaultGrid>
+
+@code {
+    private PageRequest _request = new(null, 20);
+    private ApiResponse<PageResponse<TopicSummary>> _favorites = ApiResponse<PageResponse<TopicSummary>>.Loading();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadMoreAsync()
+    {
+        if (_request.Token is null)
+            return;
+
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        _favorites = await HistoryClient.User.GetFavoritesAsync(_request);
+        if (_favorites.Status == ResponseStatus.Success)
+            _request = _request with {Token = _favorites.Data.Token};
+    }
+
+    private async Task<bool> OnFavoriteClick(string topicId)
+    {
+        var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
+        return result.Status == ResponseStatus.Success && result.Data;
+    }
+
+}

@@ -1,0 +1,63 @@
+@inject IStringLocalizer<App> L
+
+<ul class="@Class">
+    <li class="underline mb-1">
+        <MudText Typo="Typo.subtitle1" Align="Align.Center">
+            @L[$"Tests:{Difficulty}"]
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["NumberOfTests:Completed"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @Completed.ToReadable()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["NumberOfTests:RepliesExceeded"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @RepliesExceeded.ToReadable()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["NumberOfTests:TimeExceeded"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @TimeExceeded.ToReadable()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["NumberOfTests:Total"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @Total.ToReadable()
+        </MudText>
+    </li>
+</ul>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public TestDifficulty Difficulty { get; set; }
+
+    [Parameter]
+    public uint Total { get; set; }
+
+    [Parameter]
+    public uint Completed { get; set; }
+
+    [Parameter]
+    public uint TimeExceeded { get; set; }
+
+    [Parameter]
+    public uint RepliesExceeded { get; set; }
+
+}

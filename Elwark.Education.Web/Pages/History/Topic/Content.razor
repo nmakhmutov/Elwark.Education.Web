@@ -45,76 +45,109 @@
                         OnDislikeClick="@OnDislikeClick"/>
                 </MudCardContent>
             </MudCard>
-
-            @if (Test.Status != TestStatus.NotAvailable)
-            {
-                <MudCard Class="mt-3 mt-lg-6">
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.subtitle1">
-                                <strong>@L["Test:CheckYourKnowledge"]</strong>
-                            </MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <CreateTestButton
-                            Subject="@SubjectType.History"
-                            Status="@Test.Status"
-                            IsLoading="@(_test?.Status == ResponseStatus.Loading)"
-                            OnCreateTestClick="@CreateTestAsync"/>
-                        <div class="d-flex flex-row justify-space-between flex-wrap mt-6">
-                            @if (Test.CompletedTimes.Success > 0)
-                            {
-                                <MudText Typo="Typo.subtitle1" Class="mr-3">
-                                    @L["Test:PassedTimes", Test.CompletedTimes.Success.ToReadable()]
-                                </MudText>
-                            }
-                            @if (Test.CompletedTimes.Fail > 0)
-                            {
-                                <MudText Typo="Typo.subtitle1">
-                                    @L["Test:NotPassedTimes", Test.CompletedTimes.Fail.ToReadable()]
-                                </MudText>
-                            }
-                        </div>
-                        @if (Test.Conclusions.Length > 0)
-                        {
-                            <div class="mt-3">
-                                @foreach (var conclusion in Test.Conclusions)
-                                {
-                                    <TestConclusionItem
-                                        Class="mb-6"
-                                        Details="@Links.Profile.TestDetail(SubjectType.History, conclusion.TestId)"
-                                        Status="@conclusion.Status"
-                                        CompletedAt="@conclusion.CompletedAt"
-                                        TimeSpent="@conclusion.TimeSpent"
-                                        TotalScore="@conclusion.TotalScore"/>
-                                }
-                                <div class="d-flex flex-row justify-end">
-                                    <MudLink Color="Color.Primary" Href="@Links.Profile.Tests(SubjectType.History)">
-                                        @L["SeeAll"]
-                                    </MudLink>
-                                </div>
-                            </div>
-                        }
-                    </MudCardContent>
-                </MudCard>
-            }
         </section>
 
-        @foreach (var (title, content) in InfoBoxes)
-        {
+        <section>
             <MudCard>
                 <MudCardHeader>
                     <CardHeaderContent>
                         <MudText Typo="Typo.subtitle1">
-                            <strong>@title</strong>
+                            <strong>@L["Test:CheckYourKnowledge"]</strong>
                         </MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
-                    <MarkdownText Text="@content"/>
+                    <TestButtons
+                        Difficulties="@Test.Difficulties"
+                        Status="@Test.Status"
+                        Subject="@SubjectType.History"
+                        IsLoading="@(_test?.Status == ResponseStatus.Loading)"
+                        OnCreateTestClick="@CreateTestAsync"/>
                 </MudCardContent>
             </MudCard>
+        </section>
+
+        @if (Test.NumberOfTests.Count > 0)
+        {
+            <section>
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.subtitle1">
+                                <strong>@L["Statistics"]</strong>
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @foreach (var item in Test.NumberOfTests)
+                        {
+                            <NumberOfTestList 
+                                Class="mb-6"
+                                Completed="@item.Value.Completed"
+                                Difficulty="@item.Key"
+                                Total="@item.Value.Total"
+                                RepliesExceeded="@item.Value.RepliesExceeded"
+                                TimeExceeded="@item.Value.TimeExceeded"/>
+                        }
+                        <div class="d-flex flex-row justify-end">
+                            <MudLink Color="Color.Primary" Href="@Links.Profile.Statistics(SubjectType.History)">
+                                @L["SeeAll"]
+                            </MudLink>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </section>
+        }
+
+        @if (Test.Conclusions.Length > 0)
+        {
+            <section>
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.subtitle1">
+                                <strong>@L["Tests:Latest"]</strong>
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @foreach (var conclusion in Test.Conclusions)
+                        {
+                            <TestConclusionList
+                                Class="mb-6"
+                                Details="@Links.Profile.TestDetail(SubjectType.History, conclusion.TestId)"
+                                Status="@conclusion.Status"
+                                Difficulty="@conclusion.Difficulty"
+                                CompletedAt="@conclusion.CompletedAt"
+                                TimeSpent="@conclusion.TimeSpent"
+                                TotalScore="@conclusion.TotalScore"/>
+                        }
+                        <div class="d-flex flex-row justify-end">
+                            <MudLink Color="Color.Primary" Href="@Links.Profile.Tests(SubjectType.History)">
+                                @L["SeeAll"]
+                            </MudLink>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </section>
+        }
+
+        @foreach (var (title, content) in InfoBoxes)
+        {
+            <section>
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.subtitle1">
+                                <strong>@title</strong>
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MarkdownText Text="@content"/>
+                    </MudCardContent>
+                </MudCard>
+            </section>
         }
     </aside>
 </div>
@@ -126,7 +159,7 @@
     public string Id { get; set; } = string.Empty;
 
     [Parameter]
-    public TopicTest Test { get; set; }
+    public TopicTest Test { get; set; } = default!;
 
     [Parameter]
     public Chapter[] Chapters { get; set; } = Array.Empty<Chapter>();
@@ -149,10 +182,10 @@
     [Parameter]
     public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
 
-    private async Task CreateTestAsync()
+    private async Task CreateTestAsync(TestDifficulty difficulty)
     {
         _test = ApiResponse<TestCreatedResult>.Loading();
-        _test = await HistoryClient.Topic.CreateTestAsync(Id);
+        _test = await HistoryClient.Topic.CreateTestAsync(Id, difficulty);
 
         if (_test.Status == ResponseStatus.Success)
             NavigationManager.NavigateTo(Links.History.Test(_test.Data.Id));

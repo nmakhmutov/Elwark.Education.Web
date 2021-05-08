@@ -21,56 +21,54 @@
         </AuthorizeView>
     </div>
     <div class="statistics">
-        <div class="item">
-            <MudIcon Icon="@Icons.Filled.School" Size="Size.Large" Class="mr-3"/>
-            <div>
-                <MudText Typo="Typo.body2">
-                    @L["CompletedTests"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @Statistics.CompletedTests.Total.ToReadable()
-                </MudText>
-            </div>
-        </div>
-        <div class="item">
-            <MudIcon Icon="@Icons.Filled.Timer" Size="Size.Large" Class="mr-3"/>
-            <div>
-                <MudText Typo="Typo.body2">
-                    @L["TimeSpent"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @Statistics.TimeSpent.ToSimpleFormat()
-                </MudText>
-            </div>
-        </div>
-        <div class="item">
-            <MudIcon Icon="@Icons.Filled.PendingActions" Size="Size.Large" Class="mr-3"/>
-            <div>
-                <MudText Typo="Typo.body2">
-                    @L["Score"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @Statistics.Score.Total.ToReadable()
-                </MudText>
-            </div>
-        </div>
-        <div class="item">
-            <MudIcon Icon="@Icons.Filled.HelpOutline" Size="Size.Large" Class="mr-3"/>
-            <div>
-                <MudText Typo="Typo.body2">
-                    @L["Questions"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @Statistics.AnswerRatio.Questions.ToReadable()
-                </MudText>
-            </div>
-        </div>
+        @* <div class="item"> *@
+        @*     <MudIcon Icon="@Icons.Filled.School" Size="Size.Large" Class="mr-3"/> *@
+        @*     <div> *@
+        @*         <MudText Typo="Typo.body2"> *@
+        @*             @L["CompletedTests"] *@
+        @*         </MudText> *@
+        @*         <MudText Typo="Typo.h5"> *@
+        @*             @Statistics.NumberOfTests.Total.ToReadable() *@
+        @*         </MudText> *@
+        @*     </div> *@
+        @* </div> *@
+        @* <div class="item"> *@
+        @*     <MudIcon Icon="@Icons.Filled.Timer" Size="Size.Large" Class="mr-3"/> *@
+        @*     <div> *@
+        @*         <MudText Typo="Typo.body2"> *@
+        @*             @L["TimeSpent"] *@
+        @*         </MudText> *@
+        @*         <MudText Typo="Typo.h5"> *@
+        @*             @Statistics.TimeSpent.ToSimpleFormat() *@
+        @*         </MudText> *@
+        @*     </div> *@
+        @* </div> *@
+        @* <div class="item"> *@
+        @*     <MudIcon Icon="@Icons.Filled.PendingActions" Size="Size.Large" Class="mr-3"/> *@
+        @*     <div> *@
+        @*         <MudText Typo="Typo.body2"> *@
+        @*             @L["Score"] *@
+        @*         </MudText> *@
+        @*         <MudText Typo="Typo.h5"> *@
+        @*             @Statistics.Score.Total.ToReadable() *@
+        @*         </MudText> *@
+        @*     </div> *@
+        @* </div> *@
+        @* <div class="item"> *@
+        @*     <MudIcon Icon="@Icons.Filled.HelpOutline" Size="Size.Large" Class="mr-3"/> *@
+        @*     <div> *@
+        @*         <MudText Typo="Typo.body2"> *@
+        @*             @L["Questions"] *@
+        @*         </MudText> *@
+        @*         <MudText Typo="Typo.h5"> *@
+        @*             @Statistics.AnswerRatio.Questions.ToReadable() *@
+        @*         </MudText> *@
+        @*     </div> *@
+        @* </div> *@
     </div>
 </HeaderImageContainer>
 
 @code {
 
-    [Parameter]
-    public StatisticsSummary Statistics { get; set; } = default!;
 
 }

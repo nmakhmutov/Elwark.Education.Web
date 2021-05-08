@@ -1,12 +1,16 @@
-.header {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 24px;
-    padding: 24px;
+.container {
+    padding: 12px;
 }
 
-.header-text ::deep a {
+.header {
+    display: flex;
+    padding: 12px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.subject-link {
     font-family: var(--mud-typography-h4-family);
     font-size: var(--mud-typography-h4-size);
     font-weight: var(--mud-typography-h4-weight);
@@ -40,18 +44,18 @@
 }
 
 @media (min-width: 600px) {
-    .header {
-        grid-template-columns: 120px 1fr;
-        justify-items: start;
-        align-items: center;
+    .container {
+        padding: 24px;
     }
 
-    .header-text ::deep a {
-        font-family: var(--mud-typography-h3-family);
+    .header {
+        padding: 24px;
+        justify-content: flex-start;
+    }
+
+    .subject-link {
         font-size: var(--mud-typography-h3-size);
-        font-weight: var(--mud-typography-h3-weight);
-        line-height: var(--mud-typography-h3-lineheight);
-        letter-spacing: var(--mud-typography-h3-letterspacing);
+        font-weight: var(--mud-typography-h2-weight);
     }
 
     .menu-item {
@@ -70,7 +74,7 @@
 }
 
 @media (min-width: 960px) {
-    .header-text ::deep a {
+    .subject-link {
         font-family: var(--mud-typography-h2-family);
         font-size: var(--mud-typography-h2-size);
         font-weight: var(--mud-typography-h2-weight);

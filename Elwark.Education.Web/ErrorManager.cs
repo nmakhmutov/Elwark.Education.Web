@@ -21,6 +21,6 @@ namespace Elwark.Education.Web
 
         public string Localize(string key) => _localizer[key].Value;
 
-        public string Localize(TestStatus status) => _localizer[$"UserRestriction:{status}"].Value;
+        public string Localize(TestStatus status) => _localizer[$"TestStatus:{status}"].Value;
     }
 }

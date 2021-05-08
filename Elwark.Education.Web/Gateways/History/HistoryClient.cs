@@ -31,9 +31,9 @@ namespace Elwark.Education.Web.Gateways.History
             ExecuteAsync<HistoryPeriodModel>(() => _client.GetAsync($"history/periods/{period}"));
 
         public HistoryTopicClient Topic { get; }
-        
+
         public HistoryTestClient Test { get; }
-        
+
         public HistoryUserClient User { get; }
     }
 
@@ -73,7 +73,8 @@ namespace Elwark.Education.Web.Gateways.History
             ExecuteAsync<ManyAnswersResult>(() =>
                 _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
-        public Task<ApiResponse<SingleAnswerResult>> CheckAsync(string testId, string questionId, SingleAnswer answer) =>
+        public Task<ApiResponse<SingleAnswerResult>>
+            CheckAsync(string testId, string questionId, SingleAnswer answer) =>
             ExecuteAsync<SingleAnswerResult>(() =>
                 _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
@@ -109,7 +110,8 @@ namespace Elwark.Education.Web.Gateways.History
         public Task<ApiResponse<Unit>> DislikeAsync(string id) =>
             ExecuteAsync<Unit>(() => _client.PostAsync($"history/topics/{id}/dislike", EmptyContent));
 
-        public Task<ApiResponse<TestCreatedResult>> CreateTestAsync(string id) =>
-            ExecuteAsync<TestCreatedResult>(() => _client.PostAsync($"history/topics/{id}/test", EmptyContent));
+        public Task<ApiResponse<TestCreatedResult>> CreateTestAsync(string id, TestDifficulty difficulty) =>
+            ExecuteAsync<TestCreatedResult>(() =>
+                _client.PostAsync($"history/topics/{id}/test?difficulty={difficulty}", EmptyContent));
     }
 }

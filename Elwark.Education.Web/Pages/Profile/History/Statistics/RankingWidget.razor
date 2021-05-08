@@ -9,13 +9,13 @@
     <MudText Typo="Typo.h5">
         @Title
     </MudText>
-    @if (Items.Count == 0)
+    @if (Items.Length == 0)
     {
         @L["NoDataYet"]
     }
     else
     {
-        @for (var i = 0; i < Items.Count; i++)
+        @for (var i = 0; i < Items.Length; i++)
         {
             var position = i;
             var color = position switch{
@@ -61,7 +61,7 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
-    public IList<RankingItem<TItem>> Items { get; set; } = Array.Empty<RankingItem<TItem>>();
+    public RankingItem<TItem>[] Items { get; set; } = Array.Empty<RankingItem<TItem>>();
 
     [Parameter]
     public Func<TItem, string> ValueConverter { get; set; } = item => item?.ToString() ?? string.Empty;

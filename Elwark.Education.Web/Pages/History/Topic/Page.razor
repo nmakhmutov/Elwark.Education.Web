@@ -78,23 +78,6 @@
             };
     }
 
-    private void OnPremiumClick()
-    {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Large,
-            NoHeader = true,
-            CloseButton = false,
-            FullWidth = true
-        };
-        var parameters = new DialogParameters
-        {
-            [nameof(SubscriptionModal.SubjectType)] = SubjectType.History
-        };
-
-        Dialog.Show<SubscriptionModal>(null, parameters, options);
-    }
-
     private async Task<bool> OnFavoriteClick(string topicId)
     {
         var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);

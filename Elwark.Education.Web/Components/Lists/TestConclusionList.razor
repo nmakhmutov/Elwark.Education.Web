@@ -29,6 +29,14 @@
             @TimeSpent.ToSimpleFormat()
         </MudText>
     </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["Difficulty"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @L[$"Difficulty:{Difficulty}"]
+        </MudText>
+    </li>
     <li class="d-flex flex-row justify-end">
         <MudLink Href="@Details">
             @L["Details"]
@@ -43,13 +51,16 @@
 
     [Parameter]
     public ConclusionStatus Status { get; set; }
-    
+
+    [Parameter]
+    public TestDifficulty Difficulty { get; set; }
+
     [Parameter]
     public ulong TotalScore { get; set; }
-    
+
     [Parameter]
     public TimeSpan TimeSpent { get; set; }
-    
+
     [Parameter]
     public DateTime CompletedAt { get; set; }
 

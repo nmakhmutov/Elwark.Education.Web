@@ -18,9 +18,9 @@
     protected override void OnParametersSet()
     {
         _data = Status switch {
-            ConclusionStatus.Complete => (L["CompletedTests:Completed"], Color.Success),
-            ConclusionStatus.TimeExceeded => (L["CompletedTests:TimeExceeded"], Color.Error),
-            ConclusionStatus.RepliesExceeded => (L["CompletedTests:RepliesExceeded"], Color.Warning),
+            ConclusionStatus.Complete => (L["ConclusionStatus:Completed"], Color.Success),
+            ConclusionStatus.TimeExceeded => (L["ConclusionStatus:TimeExceeded"], Color.Error),
+            ConclusionStatus.RepliesExceeded => (L["ConclusionStatus:RepliesExceeded"], Color.Warning),
             _ => throw new ArgumentOutOfRangeException(nameof(Status), $@"Unknown status in {nameof(ConclusionStatusTitle)}")
             };
     }

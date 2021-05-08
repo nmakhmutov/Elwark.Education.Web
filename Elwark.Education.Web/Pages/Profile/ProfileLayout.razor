@@ -1,0 +1,68 @@
+@inherits LayoutComponentBase
+@layout MainLayout
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<App> L
+
+<HeaderImageContainer>
+    <div class="header">
+        <div class="header-image">
+            <MudAvatar Image="@(_subject.GetStatic().Image)" Style="width: 120px; height: 120px"/>
+        </div>
+        <div class="ml-3 ml-md-6">
+            <a class="subject-link" href="@Links.Subjects.Index(_subject)">
+                @L[$"Subject:{_subject}"]
+            </a>
+        </div>
+    </div>
+    <div class="menu">
+        @foreach (var item in _menu)
+        {
+            @if (item.IsActive)
+            {
+                <div class="menu-item item-active">
+                    <MudIcon Icon="@item.Icon" Class="item-icon"/>
+                    <MudText Typo="Typo.subtitle1" Class="item-text">
+                        @item.Title
+                    </MudText>
+                </div>
+            }
+            else
+            {
+                <a href="@item.Link" class="menu-item item-link">
+                    <MudIcon Icon="@item.Icon" Class="item-icon"/>
+                    <MudText Typo="Typo.subtitle1" Class="item-text">
+                        @item.Title
+                    </MudText>
+                </a>
+            }
+        }
+    </div>
+</HeaderImageContainer>
+
+<div class="container">
+    @Body
+</div>
+
+@code {
+    private SubjectType _subject;
+    private IEnumerable<Data> _menu = Array.Empty<Data>();
+
+    protected override void OnParametersSet()
+    {
+        var parts = new Uri(NavigationManager.Uri).LocalPath.Trim('/').Split('/');
+        _subject = Enum.Parse<SubjectType>(parts[1], true);
+        var page = parts.Length > 2 ? parts[2].ToLowerInvariant() : "overview";
+
+        _menu = new Data[]
+        {
+            // new(L["Profile"], Links.Profile.Index, Icons.Filled.Person, false),
+            new(L["Overview"], Links.Profile.Overview(_subject), Icons.Filled.CardMembership, page == "overview"),
+            new(L["Statistics"], Links.Profile.Statistics(_subject), Icons.Filled.BarChart, page == "statistics"),
+            new(L["Favorites"], Links.Profile.Favorites(_subject), Icons.Filled.Favorite, page == "favorites"),
+            new(L["Tests"], Links.Profile.Tests(_subject), Icons.Filled.Class, page == "tests")
+        };
+    }
+
+    private sealed record Data(LocalizedString Title, string Link, string Icon, bool IsActive);
+
+}

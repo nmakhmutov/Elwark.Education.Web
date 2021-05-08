@@ -7,6 +7,7 @@ namespace Elwark.Education.Web.Gateways.Models.TestConclusion
         string TopicId,
         string? Title,
         ConclusionStatus Status,
+        TestDifficulty Difficulty,
         Score MaxScore,
         TimeSpan TestDuration,
         Score UserScore,

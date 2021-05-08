@@ -1,0 +1,205 @@
+@page "/profile/history/statistics"
+@layout ProfileLayout
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.Models.Statistics
+
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
+
+@attribute [Authorize]
+
+<ProfileDefaultGrid>
+    <ApiResponseViewer Response="@_response">
+        <Loading>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+        </Loading>
+        <Result Context="statistics">
+            <Title Value="@L["Statistics"]"></Title>
+
+            @foreach (var item in statistics.NumberOfTests)
+            {
+                <DetailWidget
+                    Icon="@Icons.Filled.School"
+                    Value="@item.Value.Total.Total.ToReadable()"
+                    Title="@L[$"Tests:{item.Key}"]">
+                    <Caption>
+                        <DifferenceCaption
+                            Current="@item.Value.Total.Current"
+                            CurrentConverter="@(x => x.ToReadable())"
+                            Difference="@item.Value.Total.Changes"
+                            DifferenceConverter="@(x => x.ToReadable())"/>
+                    </Caption>
+                    <Details>
+                        <div class="detail-grid">
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @item.Value.Completed.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["NumberOfTests:Completed"]
+                                </MudText>
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @item.Value.TimeExceeded.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["NumberOfTests:TimeExceeded"]
+                                </MudText>
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.h6" Align="Align.Center">
+                                    @item.Value.RepliesExceeded.ToReadable()
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    @L["NumberOfTests:RepliesExceeded"]
+                                </MudText>
+                            </div>
+                        </div>
+                    </Details>
+                </DetailWidget>
+            }
+
+            <DetailWidget
+                Icon="@Icons.Filled.PendingActions"
+                Value="@statistics.Score.Total.Total.ToReadable()"
+                Title="@L["Score"]">
+                <Caption>
+                    <DifferenceCaption
+                        Current="@statistics.Score.Total.Current"
+                        CurrentConverter="@(x => x.ToReadable())"
+                        Difference="@statistics.Score.Total.Changes"
+                        DifferenceConverter="@(x => x.ToReadable())"/>
+                </Caption>
+                <Details>
+                    <div class="detail-grid">
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @statistics.Score.Questions.ToReadable()
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Score:ByQuestions"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @statistics.Score.NoMistakes.ToReadable()
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Score:NoMistakesBonus"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @statistics.Score.Speed.ToReadable()
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Score:BySpeedBonus"]
+                            </MudText>
+                        </div>
+                    </div>
+                </Details>
+            </DetailWidget>
+
+            <DetailWidget
+                Icon="@Icons.Filled.HelpOutline"
+                Value="@statistics.AnswerRatio.Questions.Total.ToReadable()"
+                Title="@L["Questions"]">
+                <Caption>
+                    <DifferenceCaption
+                        Current="@statistics.AnswerRatio.Questions.Current"
+                        CurrentConverter="@(x => x.ToReadable())"
+                        Difference="@statistics.AnswerRatio.Questions.Changes"
+                        DifferenceConverter="@(x => x.ToReadable())"/>
+                </Caption>
+                <Details>
+                    <div class="detail-grid">
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @statistics.AnswerRatio.Correct.ToReadable()
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Questions:Correct"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @statistics.AnswerRatio.Incorrect.ToReadable()
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Questions:Incorrect"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @statistics.AnswerRatio.Answered.ToReadable()
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Questions:Answered"]
+                            </MudText>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @statistics.AnswerRatio.NotAnswered.ToReadable()
+                            </MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">
+                                @L["Questions:NotAnswered"]
+                            </MudText>
+                        </div>
+                    </div>
+                </Details>
+            </DetailWidget>
+
+            <div class="icon-widget-grid">
+                <IconWidget
+                    Icon="@Icons.Filled.Timer"
+                    Title="@L["TimeSpent"]"
+                    Value="@statistics.TimeSpent.Total.ToSimpleFormat()">
+                    <Caption>
+                        <DifferenceCaption
+                            Current="@statistics.TimeSpent.Current"
+                            CurrentConverter="@(x => x.ToSimpleFormat())"
+                            Difference="@statistics.TimeSpent.Changes"
+                            DifferenceConverter="@(x => x.ToSimpleFormat())"/>
+                    </Caption>
+                </IconWidget>
+            </div>
+
+            @if (statistics.ScoreRanking.Length > 0)
+            {
+                <RankingWidget
+                    Title="@L["Ranking:ByScore"]"
+                    Items="@statistics.ScoreRanking"
+                    LinkBuilder="@((string id) => Links.Subjects.Topic(SubjectType.History, id))"
+                    ValueConverter="@(arg => arg.ToReadable())"/>
+
+                <RankingWidget
+                    Title="@L["Ranking:ByTimeSpent"]"
+                    Items="@statistics.TimeSpentRanking"
+                    LinkBuilder="@((string id) => Links.Subjects.Topic(SubjectType.History, id))"
+                    ValueConverter="@((TimeSpan item) => item.ToSimpleFormat())"/>
+
+                <RankingWidget
+                    Title="@L["Ranking:ByCompletedTimesRanking"]"
+                    Items="@statistics.CompletedTimesRanking"
+                    LinkBuilder="@((string id) => Links.Subjects.Topic(SubjectType.History, id))"
+                    ValueConverter="@(arg => arg.ToReadable())"/>
+            }
+
+        </Result>
+    </ApiResponseViewer>
+</ProfileDefaultGrid>
+
+@code {
+    
+    private ApiResponse<UserStatistics> _response = ApiResponse<UserStatistics>.Loading();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _response = await HistoryClient.User.GetStatisticsAsync();
+    }
+
+}
