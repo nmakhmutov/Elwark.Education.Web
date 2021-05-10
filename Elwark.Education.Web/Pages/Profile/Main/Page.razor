@@ -32,7 +32,7 @@
                     }
                 </MudPaper>
             }
-            @foreach (var subject in profile.Subjects.OrderBy(x => L[x.SubjectType.ToString()].Value))
+            @foreach (var subject in profile.Subjects.OrderBy(x => L[x.Type.ToString()].Value))
             {
                 <SubjectCard Subject="@subject" OnBuyClick="@OnBuyClick" OnManageClick="@OnManageClick"/>
             }

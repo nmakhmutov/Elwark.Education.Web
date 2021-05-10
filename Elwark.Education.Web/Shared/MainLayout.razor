@@ -56,9 +56,11 @@
             @Body
         </main>
         <footer>
-            <MudText Typo="Typo.body1" Align="Align.Center" Class="my-3">
-                &COPY; @DateTime.Now.Year Elwark
-            </MudText>
+            <MudContainer MaxWidth="MaxWidth.False">
+                <MudText Typo="Typo.body2" Class="my-6">
+                    © @DateTime.Now.Year - Elwark
+                </MudText>
+            </MudContainer>
         </footer>
         <MudScrollToTop TopOffset="400" Style="z-index: 1000">
             <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp"/>
@@ -95,14 +97,20 @@
     {
         Palette = new Palette
         {
-            Primary = "#5664d2",
-            Secondary = "#3f51b5",
+            Primary = "#5569ff",
+            Secondary = "#8896ff",
             Tertiary = "#8560c7",
+            Info = "#33c2ff",
+            Success = "#44d600",
+            Warning = "#ffa319",
+            Error = "#ff1943",
             Black = "#272c34",
             Background = "#f4f6f8",
             BackgroundGrey = "#e3e5e7",
             AppbarBackground = Colors.Shades.White, //"#3949ab"
-            AppbarText = Colors.Grey.Darken3 //"#27272f"
+            AppbarText = Colors.Grey.Darken3, //"#27272f"
+            Divider = "rgba(34, 51, 84, 0.1)",
+            TableLines = "rgba(34, 51, 84, 0.1)"
         }
     };
 
@@ -110,17 +118,23 @@
     {
         Palette = new Palette
         {
-            Primary = "#5664d2",
-            Secondary = "#3f51b5",
+            Primary = "#5569ff",
+            Secondary = "#8896ff",
             Tertiary = "#8560c7",
+            Info = "#33c2ff",
+            Success = "#44d600",
+            Warning = "#ffa319",
+            Error = "#ff1943",
             Black = "#27272f",
-            Background = "#32333d",
+            Background = "#1c1c1c",
             BackgroundGrey = "#27272f",
-            Surface = "#373740",
+            Surface = "#252525",
             DrawerBackground = "#27272f",
             DrawerText = "rgba(255,255,255, 0.50)",
-            AppbarBackground = "#27272f",
+            AppbarBackground = "#090a0c",
             AppbarText = "rgba(255,255,255, 0.70)",
+            Divider = "rgba(255, 255, 255, 0.1)",
+            TableLines = "rgba(255, 255, 255, 0.1)",
             TextPrimary = "rgba(255,255,255, 0.70)",
             TextSecondary = "rgba(255,255,255, 0.50)",
             ActionDefault = "#adadb1",

@@ -16,7 +16,7 @@
             <SkeletonCard/>
         </Loading>
         <Result Context="conclusions">
-            <Title Value="@L["CompletedTests"]"/>
+            <Title Value="@L["Tests"]"/>
             @if (conclusions.Items.Length > 0)
             {
                 var date = DateTime.MinValue;
@@ -64,8 +64,8 @@
                     </MudCard>
                 }
 
-                <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
-                    <div id="observerTarget" class="grid-full-row d-flex justify-center my-6">
+                <InfinityScroll ObserverTargetId="tg" ObservableTargetReached="@LoadMoreAsync">
+                    <div id="tg" class="grid-full-row d-flex justify-center my-6">
                         @if (_request.Token is not null)
                         {
                             <MudProgressCircular Indeterminate="true"/>
@@ -89,7 +89,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadAsync();
+        _conclusions = await HistoryClient.User.GetTestConclusionsAsync(_request);
+        if (_conclusions.Status == ResponseStatus.Success)
+            _request = _request with{Token = _conclusions.Data.Token};
     }
 
     private async Task LoadMoreAsync()
@@ -97,14 +99,21 @@
         if (_request.Token is null)
             return;
 
-        await LoadAsync();
-    }
+        var response = await HistoryClient.User.GetTestConclusionsAsync(_request);
+        if (response.Status == ResponseStatus.Fail)
+        {
+            _conclusions = ApiResponse<PageResponse<TestConclusionSummary>>.Fail(response.Error);
+            return;
+        }
 
-    private async Task LoadAsync()
-    {
-        _conclusions = await HistoryClient.User.GetTestConclusionsAsync(_request);
-        if (_conclusions.Status == ResponseStatus.Success)
-            _request = _request with {Token = _conclusions.Data.Token};
+        _conclusions = ApiResponse<PageResponse<TestConclusionSummary>>.Success(
+            new PageResponse<TestConclusionSummary>(
+                _conclusions.Data.Items.Union(response.Data.Items).ToArray(),
+                response.Data.Token
+                )
+            );
+
+        _request = _request with {Token = response.Data.Token};
     }
 
 }

@@ -18,12 +18,12 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
                         "linear-gradient(140deg, rgba(226, 110, 67, 1) 0%, rgba(248, 206, 14, 1) 100%)"
                     ),
 
-                SubjectType.Astronomy =>
-                    new SubjectStatic(
-                        Icons.Filled.Flare,
-                        "/images/subjects/astronomy.jpg",
-                        "linear-gradient(140deg, rgba(53, 58, 95, 1) 0%, rgba(158, 186, 243, 1) 100%)"
-                    ),
+                // SubjectType.Astronomy =>
+                //     new SubjectStatic(
+                //         Icons.Filled.Flare,
+                //         "/images/subjects/astronomy.jpg",
+                //         "linear-gradient(140deg, rgba(53, 58, 95, 1) 0%, rgba(158, 186, 243, 1) 100%)"
+                //     ),
 
                 // SubjectType.Physics =>
                 //     new SubjectStatic(

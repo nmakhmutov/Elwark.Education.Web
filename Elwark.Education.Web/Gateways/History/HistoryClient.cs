@@ -44,6 +44,9 @@ namespace Elwark.Education.Web.Gateways.History
         public HistoryUserClient(HttpClient client) =>
             _client = client;
 
+        public Task<ApiResponse<HistoryUserProfile>> GetOverviewAsync() =>
+            ExecuteAsync<HistoryUserProfile>(() => _client.GetAsync("history/me"));
+        
         public Task<ApiResponse<UserStatistics>> GetStatisticsAsync() =>
             ExecuteAsync<UserStatistics>(() => _client.GetAsync("history/me/statistics"));
 

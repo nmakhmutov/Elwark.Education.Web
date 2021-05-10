@@ -7,90 +7,94 @@
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
 
-<MudContainer MaxWidth="MaxWidth.Large">
-    <ApiResponseViewer Response="@_response">
-        <Loading>
-            <SkeletonCard/>
-            <SkeletonCard/>
-            <SkeletonCard/>
-            <SkeletonCard/>
-        </Loading>
-        <Result Context="conclusion">
-            <Title Value="@conclusion.Title"/>
+<ApiResponseViewer Response="@_response">
+    <Loading>
+        <section class="section mb-12">
+            <div class="container">
+                <SkeletonCard/>
+            </div>
+        </section>
+        <section class="section mb-12">
+            <div class="container">
+                <SkeletonCard/>
+            </div>
+        </section>
+    </Loading>
+    <Result Context="conclusion">
+        <Title Value="@conclusion.Title"/>
 
-            <section class="section mb-12">
-                <div class="container mud-paper mud-elevation-1">
-                    <TestDetailHeader
-                        Title="@conclusion.Title"
-                        Status="@conclusion.Status"
-                        Difficulty="@conclusion.Difficulty"
-                        CreatedAt="@conclusion.CreatedAt"
-                        Link="@Links.Subjects.Topic(SubjectType.History, conclusion.TopicId)"/>
+        <section class="section mb-12">
+            <div class="container mud-paper mud-elevation-1">
+                <TestDetailHeader
+                    Title="@conclusion.Title"
+                    Status="@conclusion.Status"
+                    Difficulty="@conclusion.Difficulty"
+                    CreatedAt="@conclusion.CreatedAt"
+                    Link="@Links.Subjects.Topic(SubjectType.History, conclusion.TopicId)"/>
+            </div>
+        </section>
+
+        <section class="section mb-12">
+            <div class="container">
+                <div class="statistics">
+                    <PercentChartCard
+                        Title="@L["TimeSpent"]"
+                        Subtitle="@conclusion.TimeSpent.ToSimpleFormat()"
+                        Percentage="@Math.Round(conclusion.TimeSpent / conclusion.TestDuration * 100)"/>
+
+                    <PercentChartCard
+                        Title="@L["Score"]"
+                        Subtitle="@(conclusion.UserScore.Total.ToReadable() + " / " + conclusion.MaxScore.Total.ToReadable())"
+                        Percentage="@Math.Round((double) conclusion.UserScore.Total / conclusion.MaxScore.Total * 100)"/>
+
+                    <PercentChartCard
+                        Title="@L["Score:ByQuestions"]"
+                        Subtitle="@(conclusion.UserScore.Questions.ToReadable() + " / " + conclusion.MaxScore.Questions.ToReadable())"
+                        Percentage="@Math.Round((double) conclusion.UserScore.Questions / conclusion.MaxScore.Questions * 100)"/>
+
+                    <PercentChartCard
+                        Title="@L["Score:NoMistakesBonus"]"
+                        Subtitle="@(conclusion.UserScore.NoMistakes.ToReadable() + " / " + conclusion.MaxScore.NoMistakes.ToReadable())"
+                        Percentage="@Math.Round((double) conclusion.UserScore.NoMistakes / conclusion.MaxScore.NoMistakes * 100)"/>
+
+                    <PercentChartCard
+                        Title="@L["Score:BySpeedBonus"]"
+                        Subtitle="@(conclusion.UserScore.Speed.ToReadable() + " / " + conclusion.MaxScore.Speed.ToReadable())"
+                        Percentage="@Math.Round((double) conclusion.UserScore.Speed / conclusion.MaxScore.Speed * 100)"/>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section class="section mb-12">
-                <div class="container">
-                    <div class="statistics">
-                        <PercentChartCard
-                            Title="@L["TimeSpent"]"
-                            Subtitle="@conclusion.TimeSpent.ToSimpleFormat()"
-                            Percentage="@Math.Round(conclusion.TimeSpent / conclusion.TestDuration * 100)"/>
-
-                        <PercentChartCard
-                            Title="@L["Score"]"
-                            Subtitle="@(conclusion.UserScore.Total.ToReadable() + " / " + conclusion.MaxScore.Total.ToReadable())"
-                            Percentage="@Math.Round((double) conclusion.UserScore.Total / conclusion.MaxScore.Total * 100)"/>
-
-                        <PercentChartCard
-                            Title="@L["Score:ByQuestions"]"
-                            Subtitle="@(conclusion.UserScore.Questions.ToReadable() + " / " + conclusion.MaxScore.Questions.ToReadable())"
-                            Percentage="@Math.Round((double) conclusion.UserScore.Questions / conclusion.MaxScore.Questions * 100)"/>
-
-                        <PercentChartCard
-                            Title="@L["Score:NoMistakesBonus"]"
-                            Subtitle="@(conclusion.UserScore.NoMistakes.ToReadable() + " / " + conclusion.MaxScore.NoMistakes.ToReadable())"
-                            Percentage="@Math.Round((double) conclusion.UserScore.NoMistakes / conclusion.MaxScore.NoMistakes * 100)"/>
-
-                        <PercentChartCard
-                            Title="@L["Score:BySpeedBonus"]"
-                            Subtitle="@(conclusion.UserScore.Speed.ToReadable() + " / " + conclusion.MaxScore.Speed.ToReadable())"
-                            Percentage="@Math.Round((double) conclusion.UserScore.Speed / conclusion.MaxScore.Speed * 100)"/>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section mb-12">
-                <div class="container">
-                    <MudText Typo="Typo.h4" Class="mb-3">
-                        @L["Answers"]
-                    </MudText>
-                    <MudTable Items="@conclusion.Answers" Hover="true" Breakpoint="Breakpoint.Sm">
-                        <HeaderContent>
-                            <MudTh>@L["Question"]</MudTh>
-                            <MudTh>@L["Correct"]</MudTh>
-                            <MudTh>@L["Incorrect"]</MudTh>
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="@L["Questions"]">
-                                @if (context.Title is null)
-                                {
-                                    <em>@L["Deleted"]</em>
-                                }
-                                else
-                                {
-                                    @context.Title
-                                }
-                            </MudTd>
-                            <MudTd DataLabel="@L["Correct"]">@context.Correct</MudTd>
-                            <MudTd DataLabel="@L["Incorrect"]">@context.Incorrect</MudTd>
-                        </RowTemplate>
-                    </MudTable>
-                </div>
-            </section>
-        </Result>
-    </ApiResponseViewer>
-</MudContainer>
+        <section class="section">
+            <div class="container">
+                <MudText Typo="Typo.h4" Class="mb-3">
+                    @L["Answers"]
+                </MudText>
+                <MudTable Items="@conclusion.Answers" Hover="true" Breakpoint="Breakpoint.Sm">
+                    <HeaderContent>
+                        <MudTh>@L["Question"]</MudTh>
+                        <MudTh>@L["Correct"]</MudTh>
+                        <MudTh>@L["Incorrect"]</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="@L["Questions"]">
+                            @if (context.Title is null)
+                            {
+                                <em>@L["Deleted"]</em>
+                            }
+                            else
+                            {
+                                @context.Title
+                            }
+                        </MudTd>
+                        <MudTd DataLabel="@L["Correct"]">@context.Correct</MudTd>
+                        <MudTd DataLabel="@L["Incorrect"]">@context.Incorrect</MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </div>
+        </section>
+    </Result>
+</ApiResponseViewer>
 
 @code {
 

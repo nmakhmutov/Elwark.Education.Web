@@ -58,7 +58,6 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Index,
-                    SubjectType.Astronomy => "",
                     _ => string.Empty
                 };
 
@@ -66,7 +65,6 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Topics(topicId),
-                    SubjectType.Astronomy => "",
                     _ => string.Empty
                 };
 
@@ -74,7 +72,6 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Test(testId),
-                    SubjectType.Astronomy => "",
                     _ => string.Empty
                 };
         }

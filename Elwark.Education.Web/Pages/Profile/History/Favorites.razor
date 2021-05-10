@@ -57,7 +57,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadAsync();
+        _favorites = await HistoryClient.User.GetFavoritesAsync(_request);
+        if (_favorites.Status == ResponseStatus.Success)
+            _request = _request with{ Token = _favorites.Data.Token};
     }
 
     private async Task LoadMoreAsync()
@@ -65,14 +67,21 @@
         if (_request.Token is null)
             return;
 
-        await LoadAsync();
-    }
+        var response = await HistoryClient.User.GetFavoritesAsync(_request);
+        if (response.Status == ResponseStatus.Fail)
+        {
+            _favorites = ApiResponse<PageResponse<TopicSummary>>.Fail(response.Error);
+            return;
+        }
 
-    private async Task LoadAsync()
-    {
-        _favorites = await HistoryClient.User.GetFavoritesAsync(_request);
-        if (_favorites.Status == ResponseStatus.Success)
-            _request = _request with {Token = _favorites.Data.Token};
+        _favorites = ApiResponse<PageResponse<TopicSummary>>.Success(
+            new PageResponse<TopicSummary>(
+                _favorites.Data.Items.Union(response.Data.Items).ToArray(),
+                response.Data.Token
+                )
+            );
+
+        _request = _request with {Token = response.Data.Token};
     }
 
     private async Task<bool> OnFavoriteClick(string topicId)

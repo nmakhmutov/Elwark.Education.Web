@@ -4,11 +4,11 @@
 <MudCard Class="d-flex flex-column">
     <MudCardHeader>
         <CardHeaderAvatar>
-            <SubjectIcon SubjectType="@Subject.SubjectType" Size="@Size.Medium"/>
+            <SubjectIcon SubjectType="@Subject.Type" Size="@Size.Medium"/>
         </CardHeaderAvatar>
         <CardHeaderContent>
-            <MudLink Typo="Typo.subtitle1" Href="@Links.Profile.Overview(Subject.SubjectType)">
-                @L[$"Subject:{Subject.SubjectType}"]
+            <MudLink Typo="Typo.subtitle1" Href="@Links.Profile.Overview(Subject.Type)">
+                @L[$"Subject:{Subject.Type}"]
             </MudLink>
             <MudText Typo="Typo.body2" Color="@Subject.Subscription.Type.GetColor()">
                 <MudTooltip Text="@L["Subscription"]">
@@ -18,10 +18,10 @@
         </CardHeaderContent>
         <CardHeaderActions>
             <MudMenu Icon="@Icons.Filled.MoreVert" Direction="Direction.Left" OffsetX="true">
-                <MudMenuItem Link="@(Links.Profile.Statistics(Subject.SubjectType))">
+                <MudMenuItem Link="@(Links.Profile.Statistics(Subject.Type))">
                     @L["Statistics"]
                 </MudMenuItem>
-                <MudMenuItem Link="@(Links.Profile.Tests(Subject.SubjectType))">
+                <MudMenuItem Link="@(Links.Profile.Tests(Subject.Type))">
                     @L["Tests"]
                 </MudMenuItem>
                 @if (Subject.Subscription.Purchase is null)
@@ -39,7 +39,7 @@
             </MudMenu>
         </CardHeaderActions>
     </MudCardHeader>
-    <MudCardMedia Image="@Subject.SubjectType.GetStatic().Image" Height="200"/>
+    <MudCardMedia Image="@Subject.Type.GetStatic().Image" Height="200"/>
     <MudCardContent Class="flex-grow-1">
         <div class="content-grid">
             @if (Subject.Subscription.Purchase is null)
@@ -106,13 +106,13 @@
     </MudCardContent>
     <MudCardActions>
         <MudTooltip Text="@L["Statistics"]">
-            <MudIconButton Link="@(Links.Profile.Statistics(Subject.SubjectType))" Icon="@Icons.Filled.BarChart"/>
+            <MudIconButton Link="@(Links.Profile.Statistics(Subject.Type))" Icon="@Icons.Filled.BarChart"/>
         </MudTooltip>
         <MudTooltip Text="@L["Favorites"]">
-            <MudIconButton Link="@(Links.Profile.Favorites(Subject.SubjectType))" Icon="@Icons.Filled.FavoriteBorder"/>
+            <MudIconButton Link="@(Links.Profile.Favorites(Subject.Type))" Icon="@Icons.Filled.FavoriteBorder"/>
         </MudTooltip>
         <MudTooltip Text="@L["Tests"]">
-            <MudIconButton Link="@(Links.Profile.Tests(Subject.SubjectType))" Icon="@Icons.Filled.Class"/>
+            <MudIconButton Link="@(Links.Profile.Tests(Subject.Type))" Icon="@Icons.Filled.Class"/>
         </MudTooltip>
     </MudCardActions>
 </MudCard>
@@ -129,9 +129,9 @@
     public EventCallback<SubjectType> OnManageClick { get; set; }
 
     private Task OnBuy() =>
-        OnBuyClick.InvokeAsync(Subject.SubjectType);
+        OnBuyClick.InvokeAsync(Subject.Type);
 
     private Task OnManage() =>
-        OnManageClick.InvokeAsync(Subject.SubjectType);
+        OnManageClick.InvokeAsync(Subject.Type);
 
 }

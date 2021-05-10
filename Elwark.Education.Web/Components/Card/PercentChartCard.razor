@@ -13,7 +13,7 @@
             <MudChart
                 ChartType="ChartType.Donut"
                 Width="100%"
-                ChartOptions="@_chartOptions"
+                ChartOptions="@ChartOptions"
                 InputData="@(new[] {Percentage, 100 - Percentage})"/>
             <MudText Typo="Typo.h4" Align="Align.Center">
                 @Percentage.ToReadable()%
@@ -33,12 +33,12 @@
     [Parameter]
     public double Percentage { get; set; }
 
-    private readonly ChartOptions _chartOptions = new()
+    private static readonly ChartOptions ChartOptions = new()
     {
         ChartPalette = new[]
         {
-            Colors.Indigo.Default,
-            Colors.Grey.Default,
+            Colors.Blue.Darken2,
+            Colors.Grey.Lighten1
         },
         DisableLegend = true
     };

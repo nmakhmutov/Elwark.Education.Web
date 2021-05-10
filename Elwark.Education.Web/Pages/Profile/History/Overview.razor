@@ -1,14 +1,50 @@
 @page "/profile/history"
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.Models.History
 @layout ProfileLayout
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
+
 @attribute [Authorize]
 
-<ProfileDefaultGrid>
-    <SkeletonCard/>
-    <SkeletonCard/>
-    <SkeletonCard/>
-    <SkeletonCard/>
-</ProfileDefaultGrid>
+<ApiResponseViewer Response="@_overview">
+    <Loading>
+        <SkeletonCard/>
+        <SkeletonCard/>
+        <SkeletonCard/>
+        <SkeletonCard/>
+    </Loading>
+    <Result Context="overview">
+        <Title Value="@L["Overview"]"></Title>
+        @if (overview.CurrentTests.Length > 0)
+        {
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
+                            @L["CurrentTests"]
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    @foreach (var test in overview.CurrentTests)
+                    {
+                        <CurrentTestCard Test="@test" Class="mb-3"/>
+                    }
+                </MudCardContent>
+            </MudCard>
+        }
+        @overview.Subject.Subscription.Type
+    </Result>
+</ApiResponseViewer>
 
 @code {
-    
+
+    private ApiResponse<HistoryUserProfile> _overview = ApiResponse<HistoryUserProfile>.Loading();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _overview = await HistoryClient.User.GetOverviewAsync();
+    }
+
 }

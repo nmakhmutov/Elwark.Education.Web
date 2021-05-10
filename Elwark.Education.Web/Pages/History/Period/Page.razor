@@ -58,11 +58,11 @@
                     </ImageFooter>
                 </TopicCard>
             }
-            <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
-                <div id="observerTarget" class="full-row d-flex justify-center my-6">
+            <InfinityScroll ObserverTargetId="tg" ObservableTargetReached="@LoadMoreAsync">
+                <div id="tg" class="d-flex justify-center align-center">
                     @if (_request.Token is not null)
                     {
-                        <MudProgressCircular Indeterminate="true"/>
+                        <MudProgressCircular Indeterminate="true" Size="Size.Large"/>
                     }
                 </div>
             </InfinityScroll>
@@ -105,22 +105,22 @@
         if (_request.Token is null)
             return;
 
-        var result = await HistoryClient.Topic.GetAsync(_request);
+        var response = await HistoryClient.Topic.GetAsync(_request);
 
-        if (result.Status == ResponseStatus.Fail)
+        if (response.Status == ResponseStatus.Fail)
         {
-            _topics = ApiResponse<PageResponse<TopicSummary>>.Fail(result.Error);
+            _topics = ApiResponse<PageResponse<TopicSummary>>.Fail(response.Error);
             return;
         }
 
         _topics = ApiResponse<PageResponse<TopicSummary>>.Success(
             new PageResponse<TopicSummary>(
-                _topics.Data.Items.Union(result.Data.Items).ToArray(),
-                result.Data.Token
+                _topics.Data.Items.Union(response.Data.Items).ToArray(),
+                response.Data.Token
                 )
             );
 
-        _request = _request with {Token = result.Data.Token};
+        _request = _request with {Token = response.Data.Token};
     }
 
     private async Task<bool> OnFavoriteClick(string topicId)
