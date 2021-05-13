@@ -1,0 +1,14 @@
+@page "/profile"
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+@code {
+
+    protected override void OnInitialized() => 
+        NavigationManager.NavigateTo(Links.Profile.Overview(SubjectType.History));
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     _response = await UserClient.GetProfileAsync();
+    // }
+}

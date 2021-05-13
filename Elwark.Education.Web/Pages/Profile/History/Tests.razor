@@ -9,12 +9,12 @@
 
 <ProfileDefaultGrid>
     <ApiResponseViewer Response="@_conclusions">
-        <Loading>
+        <Placeholder>
             <SkeletonCard/>
             <SkeletonCard/>
             <SkeletonCard/>
             <SkeletonCard/>
-        </Loading>
+        </Placeholder>
         <Result Context="conclusions">
             <Title Value="@L["Tests"]"/>
             @if (conclusions.Items.Length > 0)
@@ -75,7 +75,10 @@
             }
             else
             {
-                <EmptyResult Title="@L["Profile:EmptyTestsTitle"]" Subtitle="@L["Profile:EmptyTestsSubtitle"]"/>
+                <EmptyResult 
+                    Class="grid-full-row"
+                    Title="@L["Profile:EmptyTestsTitle"]" 
+                    Subtitle="@L["Profile:EmptyTestsSubtitle"]"/>
             }
         </Result>
     </ApiResponseViewer>

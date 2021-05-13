@@ -7,36 +7,38 @@
 
 @attribute [Authorize]
 
-<ApiResponseViewer Response="@_overview">
-    <Loading>
-        <SkeletonCard/>
-        <SkeletonCard/>
-        <SkeletonCard/>
-        <SkeletonCard/>
-    </Loading>
-    <Result Context="overview">
-        <Title Value="@L["Overview"]"></Title>
-        @if (overview.CurrentTests.Length > 0)
-        {
-            <MudCard>
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
-                            @L["CurrentTests"]
-                        </MudText>
-                    </CardHeaderContent>
-                </MudCardHeader>
-                <MudCardContent>
-                    @foreach (var test in overview.CurrentTests)
-                    {
-                        <CurrentTestCard Test="@test" Class="mb-3"/>
-                    }
-                </MudCardContent>
-            </MudCard>
-        }
-        @overview.Subject.Subscription.Type
-    </Result>
-</ApiResponseViewer>
+<ProfileDefaultGrid>
+    <ApiResponseViewer Response="@_overview">
+        <Placeholder>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+        </Placeholder>
+        <Result Context="overview">
+            <Title Value="@L["Overview"]"></Title>
+            <ProfileSubscriptionCard Subject="@overview.Subject"/>
+            @if (overview.CurrentTests.Length > 0)
+            {
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
+                                @L["CurrentTests"]
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @foreach (var test in overview.CurrentTests)
+                        {
+                            <CurrentTestCard Test="@test" Class="mb-3"/>
+                        }
+                    </MudCardContent>
+                </MudCard>
+            }
+        </Result>
+    </ApiResponseViewer>
+</ProfileDefaultGrid>
 
 @code {
 

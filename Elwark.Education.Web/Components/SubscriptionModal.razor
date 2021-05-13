@@ -1,5 +1,4 @@
 @using Elwark.Education.Web.Gateways.Shop
-@using Elwark.Education.Web.Gateways.Models.Shop
 @inject IShopClient Shop
 @inject IStringLocalizer<App> L
 
@@ -15,12 +14,12 @@
                 </MudText>
             </div>
             <ApiResponseViewer Response="@_response">
-                <Loading>
+                <Placeholder>
                     <div class="pricing-grid">
                         <SkeletonCard/>
                         <SkeletonCard/>
                     </div>
-                </Loading>
+                </Placeholder>
                 <Result Context="subscriptions">
                     <MudTabs Elevation="1" Rounded="false" Centered="true" Color="Color.Secondary">
                         @foreach (var group in subscriptions.GroupBy(x => x.Type).OrderBy(x => x.Key))
@@ -60,7 +59,7 @@
     [Parameter]
     public SubjectType SubjectType { get; set; } = SubjectType.Unknown;
 
-    private ApiResponse<Subscription[]> _response = ApiResponse<Subscription[]>.Loading();
+    private ApiResponse<Gateways.Models.Shop.Subscription[]> _response = ApiResponse<Gateways.Models.Shop.Subscription[]>.Loading();
 
     protected override async Task OnInitializedAsync() 
     {

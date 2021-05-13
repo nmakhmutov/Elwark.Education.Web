@@ -9,11 +9,11 @@
 
 <div class="layout">
     <ApiResponseViewer Response="_period">
-        <Loading>
+        <Placeholder>
             <div class="header">
                 <SkeletonCard Class="h-100" ImgHeight="70%"/>
             </div>
-        </Loading>
+        </Placeholder>
         <Result Context="period">
             <Title Value="@(period.Title)"/>
 
@@ -35,12 +35,12 @@
     </ApiResponseViewer>
 
     <ApiResponseViewer Response="_topics">
-        <Loading>
+        <Placeholder>
             <SkeletonCard/>
             <SkeletonCard/>
             <SkeletonCard/>
             <SkeletonCard/>
-        </Loading>
+        </Placeholder>
         <Result Context="topics">
             @foreach (var item in topics.Items)
             {

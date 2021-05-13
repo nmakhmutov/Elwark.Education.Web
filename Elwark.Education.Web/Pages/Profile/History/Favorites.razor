@@ -8,12 +8,12 @@
 
 <ProfileDefaultGrid>
     <ApiResponseViewer Response="@_favorites">
-        <Loading>
+        <Placeholder>
             <SkeletonCard/>
             <SkeletonCard/>
             <SkeletonCard/>
             <SkeletonCard/>
-        </Loading>
+        </Placeholder>
         <Result Context="favorites">
             <Title Value="@L["Favorites"]"></Title>
             @if (favorites.Items.Length > 0)
@@ -45,7 +45,10 @@
             }
             else
             {
-                <EmptyResult Title="@L["Profile:EmptyFavoritesTitle"]" Subtitle="@L["Profile:EmptyFavoritesSubtitle"]"/>
+                <EmptyResult
+                    Class="grid-full-row"
+                    Title="@L["Profile:EmptyFavoritesTitle"]"
+                    Subtitle="@L["Profile:EmptyFavoritesSubtitle"]"/>
             }
         </Result>
     </ApiResponseViewer>

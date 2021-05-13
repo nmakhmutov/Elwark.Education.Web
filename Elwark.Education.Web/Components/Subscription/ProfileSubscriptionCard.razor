@@ -7,39 +7,14 @@
             <SubjectIcon SubjectType="@Subject.Type" Size="@Size.Medium"/>
         </CardHeaderAvatar>
         <CardHeaderContent>
-            <MudLink Typo="Typo.subtitle1" Href="@Links.Profile.Overview(Subject.Type)">
-                @L[$"Subject:{Subject.Type}"]
-            </MudLink>
+            <MudText Typo="Typo.subtitle1">
+                @L["Subscription"]
+            </MudText>
             <MudText Typo="Typo.body2" Color="@Subject.Subscription.Type.GetColor()">
-                <MudTooltip Text="@L["Subscription"]">
-                    @L[$"Subscription:{Subject.Subscription.Type}"]
-                </MudTooltip>
+                @L[$"Subscription:{Subject.Subscription.Type}"]
             </MudText>
         </CardHeaderContent>
-        <CardHeaderActions>
-            <MudMenu Icon="@Icons.Filled.MoreVert" Direction="Direction.Left" OffsetX="true">
-                <MudMenuItem Link="@(Links.Profile.Statistics(Subject.Type))">
-                    @L["Statistics"]
-                </MudMenuItem>
-                <MudMenuItem Link="@(Links.Profile.Tests(Subject.Type))">
-                    @L["Tests"]
-                </MudMenuItem>
-                @if (Subject.Subscription.Purchase is null)
-                {
-                    <MudMenuItem OnClick="@OnBuy">
-                        @L["Subscription:PricingPlan"]
-                    </MudMenuItem>
-                }
-                else
-                {
-                    <MudMenuItem OnClick="@OnManage">
-                        Manage my subscription
-                    </MudMenuItem>
-                }
-            </MudMenu>
-        </CardHeaderActions>
     </MudCardHeader>
-    <MudCardMedia Image="@Subject.Type.GetStatic().Image" Height="200"/>
     <MudCardContent Class="flex-grow-1">
         <div class="content-grid">
             @if (Subject.Subscription.Purchase is null)
@@ -104,17 +79,6 @@
             </div>
         </div>
     </MudCardContent>
-    <MudCardActions>
-        <MudTooltip Text="@L["Statistics"]">
-            <MudIconButton Link="@(Links.Profile.Statistics(Subject.Type))" Icon="@Icons.Filled.BarChart"/>
-        </MudTooltip>
-        <MudTooltip Text="@L["Favorites"]">
-            <MudIconButton Link="@(Links.Profile.Favorites(Subject.Type))" Icon="@Icons.Filled.FavoriteBorder"/>
-        </MudTooltip>
-        <MudTooltip Text="@L["Tests"]">
-            <MudIconButton Link="@(Links.Profile.Tests(Subject.Type))" Icon="@Icons.Filled.Class"/>
-        </MudTooltip>
-    </MudCardActions>
 </MudCard>
 
 @code {
