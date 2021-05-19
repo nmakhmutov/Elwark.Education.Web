@@ -27,19 +27,13 @@ namespace Elwark.Education.Web.Pages
             
             public static string Favorites(SubjectType type) =>
                 $"{Index}/{type.ToString().ToLowerInvariant()}/favorites";
-
-            public static string Tests(SubjectType type) =>
-                $"{Index}/{type.ToString().ToLowerInvariant()}/tests";
-
-            public static string TestDetail(SubjectType type, string testId) =>
-                $"{Tests(type)}/{testId}";
         }
 
         public static class History
         {
             public const string Index = "/history";
 
-            public static string Period(HistoryPeriodType period) =>
+            public static string Epoch(EpochType period) =>
                 $"{Index}/{period.ToString().ToLowerInvariant()}";
 
             public static string Topics() =>
@@ -50,6 +44,9 @@ namespace Elwark.Education.Web.Pages
 
             public static string Test(string testId) =>
                 $"{Index}/test/{testId}";
+            
+            public static string Conclusion(string testId) =>
+                $"{Index}/test/{testId}/conclusion";
         }
 
         public static class Subjects

@@ -7,9 +7,9 @@ namespace Elwark.Education.Web.Gateways.History
     {
         Task<ApiResponse<HistoryOverview>> GetAsync();
 
-        Task<ApiResponse<HistoryPeriodModel[]>> GetPeriodsAsync();
+        Task<ApiResponse<HistoryEpochModel[]>> GetEpochsAsync();
 
-        Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(HistoryPeriodType period);
+        Task<ApiResponse<HistoryEpochModel>> GetEpochAsync(EpochType epoch);
 
         HistoryTopicClient Topic { get; }
 

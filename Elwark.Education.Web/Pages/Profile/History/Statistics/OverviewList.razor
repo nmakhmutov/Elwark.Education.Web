@@ -1,0 +1,41 @@
+<div class="@Class">
+    @foreach (var item in Items)
+    {
+        <div class="item">
+            <div class="header">
+                <div class="header-content">
+                    <MudText Typo="Typo.subtitle1">
+                        @item.Title
+                    </MudText>
+                </div>
+                @if (item.Description is not null)
+                {
+                    <div class="header-action">
+                        <MudTooltip Text="@item.Description" Placement="Placement.Start">
+                            <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Size="Size.Small"/>
+                        </MudTooltip>
+                    </div>
+                }
+            </div>
+            <div class="content">
+                <MudText Typo="Typo.h5">
+                    @item.Value
+                </MudText>
+
+                <Percentage Value="@item.Diff"/>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public Item[] Items { get; set; } = Array.Empty<Item>();
+
+    public sealed record Item(string Title, string Value, double Diff, string? Description = null);
+
+}

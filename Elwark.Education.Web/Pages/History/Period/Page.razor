@@ -3,6 +3,7 @@
 @using Elwark.Education.Web.Gateways.History.Request
 @using Elwark.Education.Web.Gateways.Models.History
 @inject IHistoryClient HistoryClient
+@inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
 
 @attribute [Authorize]
@@ -11,12 +12,17 @@
     <ApiResponseViewer Response="_period">
         <Placeholder>
             <div class="header">
-                <SkeletonCard Class="h-100" ImgHeight="70%"/>
+                <div class="image">
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="40vh" Style="display: block;"/>
+                </div>
+                <MudSkeleton Width="30%" Height="42px"/>
+                <MudSkeleton Width="50%"/>
+                <MudSkeleton Width="40%"/>
+                <MudSkeleton Width="80%"/>
             </div>
         </Placeholder>
         <Result Context="period">
             <Title Value="@(period.Title)"/>
-
             <div class="header">
                 <div class="image mb-6">
                     <img src="@period.Image" loading="lazy" alt="@period.Title"/>
@@ -54,7 +60,7 @@
                     IsFavorite="@item.IsFavorite"
                     OnFavoriteClick="@OnFavoriteClick">
                     <ImageFooter>
-                        <HistoryPeriodChip Class="ma-0" Period="@item.Period"/>
+                        <HistoryEpochChip Class="ma-0" Epoch="@item.Epoch"/>
                     </ImageFooter>
                 </TopicCard>
             }
@@ -71,32 +77,32 @@
 </div>
 
 @code {
-    private ApiResponse<HistoryPeriodModel> _period = ApiResponse<HistoryPeriodModel>.Loading();
+    private ApiResponse<HistoryEpochModel> _period = ApiResponse<HistoryEpochModel>.Loading();
 
     private ApiResponse<PageResponse<TopicSummary>> _topics = ApiResponse<PageResponse<TopicSummary>>.Loading();
 
-    private GetTopicsRequest _request = new(HistoryPeriodType.Prehistory, null, 20);
+    private GetTopicsRequest _request = new(EpochType.Prehistory, null, 20);
 
     [Parameter]
     public string? Type { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        _period = ApiResponse<HistoryPeriodModel>.Loading();
+        _period = ApiResponse<HistoryEpochModel>.Loading();
         _topics = ApiResponse<PageResponse<TopicSummary>>.Loading();
 
-        if (Enum.TryParse<HistoryPeriodType>(Type, true, out var type))
+        if (Enum.TryParse<EpochType>(Type, true, out var type))
         {
-            _request = new GetTopicsRequest(type, null, 20);
+            _request = _request with { Epoch = type };
 
-            _period = await HistoryClient.GetPeriodAsync(type);
+            _period = await HistoryClient.GetEpochAsync(type);
             _topics = await HistoryClient.Topic.GetAsync(_request);
 
             _request = _request with {Token = _topics.Data.Token};
         }
         else
         {
-            _period = ApiResponse<HistoryPeriodModel>.Fail(Error.NotFound);
+            _period = ApiResponse<HistoryEpochModel>.Fail(Error.NotFound);
         }
     }
 

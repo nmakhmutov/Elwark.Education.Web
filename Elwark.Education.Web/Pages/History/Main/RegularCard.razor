@@ -6,7 +6,7 @@
             <span class="bg-cover" style="background-image: url('@Image')"></span>
         </a>
         <span class="labels">
-            <HistoryPeriodChip Class="ma-2" Period="@Period"/>
+            <HistoryEpochChip Class="ma-2" Epoch="@Epoch"/>
         </span>
     </div>
     <div class="content">
@@ -42,7 +42,7 @@
     public string Subtitle { get; set; } = string.Empty;
 
     [Parameter]
-    public HistoryPeriodType Period { get; set; }
+    public EpochType Epoch { get; set; }
 
     [Parameter]
     public ContentRating Rating { get; set; } = default!;

@@ -5,7 +5,7 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string Title,
         string Description,
         string Image,
-        HistoryPeriodType Period,
+        EpochType Epoch,
         TopicTest Test,
         ContentRating Rating,
         bool IsFavorite,
@@ -19,10 +19,10 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string Title,
         string Description,
         string Image,
-        HistoryPeriodType Period,
+        EpochType Epoch,
         TopicTest Test,
-        HistoryPersonDate? Born,
-        HistoryPersonDate? Died,
+        HistoricalPersonDate? Born,
+        HistoricalPersonDate? Died,
         ContentRating Rating,
         bool IsFavorite,
         Chapter[] Content,
@@ -30,21 +30,21 @@ namespace Elwark.Education.Web.Gateways.Models.History
         string[] Occupations,
         Infobox[] Characteristics,
         TopicSummary[] RelatedTopics
-    ) : HistoryTopicDetail(Id, Title, Description, Image, Period, Test, Rating, IsFavorite, Content, InfoBoxes, RelatedTopics);
+    ) : HistoryTopicDetail(Id, Title, Description, Image, Epoch, Test, Rating, IsFavorite, Content, InfoBoxes, RelatedTopics);
 
     public sealed record HistoryEventTopicDetail(
         string Id,
         string Title,
         string Description,
         string Image,
-        HistoryPeriodType Period,
+        EpochType Epoch,
         TopicTest Test,
-        HistoricalDate? Started,
-        HistoricalDate? Ended,
+        HistoricDate? Started,
+        HistoricDate? Ended,
         ContentRating Rating,
         bool IsFavorite,
         Chapter[] Content,
         Infobox[] InfoBoxes,
         TopicSummary[] RelatedTopics
-    ) : HistoryTopicDetail(Id, Title, Description, Image, Period, Test, Rating, IsFavorite, Content, InfoBoxes, RelatedTopics);
+    ) : HistoryTopicDetail(Id, Title, Description, Image, Epoch, Test, Rating, IsFavorite, Content, InfoBoxes, RelatedTopics);
 }

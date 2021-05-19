@@ -12,7 +12,7 @@ namespace Elwark.Education.Web.Gateways.Models.TestConclusion
         TimeSpan TestDuration,
         Score UserScore,
         TimeSpan TimeSpent,
-        DateTime CreatedAt,
+        DateTime CompletedAt,
         AnswerConclusion[] Answers
     );
 }

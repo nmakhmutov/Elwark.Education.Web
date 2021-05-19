@@ -8,35 +8,40 @@
 
 @attribute [Authorize]
 
-@switch (_test.Status)
-{
-    case ResponseStatus.Loading:
-        <PageLoader/>
-        break;
+<Container>
+    <ApiResponseViewer Response="@_test">
+        <Placeholder>
+            <PageLoader/>
+        </Placeholder>
+        <Result Context="test">
+            <Title Value="@test.Title"/>
 
-    case ResponseStatus.Fail:
-        <ErrorPage Error="_test.Error"/>
-        break;
-
-    case ResponseStatus.Success:
-        <Title Value="@_test.Data.Title"></Title>
-        <MudText Typo="Typo.h2" Align="Align.Center" Class="my-6">
-            @_test.Data.Title
-        </MudText>
-
-        <MudContainer MaxWidth="MaxWidth.Medium">
-            <MudPaper Class="pa-6 my-6">
-                <div class="d-flex flex-row justify-space-between align-center mb-3">
-                    <MudText Typo="Typo.subtitle1">
-                        @L["Questions"] @(_questionIndex + 1) / @_questions.Count
-                    </MudText>
-                    <CountdownTimer Date="@_test.Data.ExpiredAt" Color="@_countdownColor" OnComplete="@OnExpired"/>
+            <section class="section">
+                <div class="container mud-paper mud-elevation-1">
+                    <TestHeader
+                        Difficulty="@test.Difficulty"
+                        Title="@test.Title"
+                        AnswerAttempts="@test.AnswerAttempts"
+                        CurrentQuestion="@(_questionIndex + 1)"
+                        TotalQuestions="@_questions.Count"
+                        ExpiredAt="@test.ExpiredAt"
+                        CountDownColor="@_countdownColor"
+                        OnComplete="@OnExpired"/>
                 </div>
-                <TestForm Question="@_questions[_questionIndex]" AnswerResult="@_answerResult" OnAnswer="@OnAnswer" OnNext="@NextQuestion"/>
-            </MudPaper>
-        </MudContainer>
-        break;
-}
+            </section>
+
+            <section class="section">
+                <div class="container mud-paper mud-elevation-1">
+                    <TestForm
+                        Question="@_questions[_questionIndex]"
+                        AnswerResult="@_answerResult"
+                        OnAnswer="@OnAnswer"
+                        OnNext="@NextQuestion"/>
+                </div>
+            </section>
+        </Result>
+    </ApiResponseViewer>
+</Container>
 
 @code {
 
@@ -56,7 +61,7 @@
 
         if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
         {
-            NavigationManager.NavigateTo(Links.Profile.TestDetail(SubjectType.History, Id));
+            NavigationManager.NavigateTo(Links.History.Conclusion(Id));
             return;
         }
 
@@ -121,8 +126,16 @@
 
         if (!_answerResult.IsAnswerCorrect)
         {
-            var wrong = _questions.First(x => x.Id == _questions[_questionIndex].Id);
-            _questions.Add(wrong with{Options = wrong.Options.OrderBy(_ => Guid.NewGuid()).ToArray()});
+            if (_test.Data.AnswerAttempts >= 0)
+            {
+                _test = ApiResponse<HistoryTestModel>.Success(_test.Data with{AnswerAttempts = _test.Data.AnswerAttempts - 1});
+            }
+            
+            if (_test.Data.Difficulty == TestDifficulty.Easy)
+            {
+                var wrong = _questions.First(x => x.Id == _questions[_questionIndex].Id);
+                _questions.Add(wrong with{Options = wrong.Options.OrderBy(_ => Guid.NewGuid()).ToArray()});
+            }
         }
     }
 
@@ -130,7 +143,7 @@
     {
         if (_isTestComplete)
         {
-            NavigationManager.NavigateTo(Links.Profile.TestDetail(SubjectType.History, Id));
+            NavigationManager.NavigateTo(Links.History.Conclusion(Id));
             return;
         }
 
@@ -144,7 +157,7 @@
         _test = await HistoryClient.Test.GetAsync(Id);
 
         if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
-            NavigationManager.NavigateTo(Links.Profile.TestDetail(SubjectType.History, Id));
+            NavigationManager.NavigateTo(Links.History.Conclusion(Id));
     }
 
 }

@@ -1,12 +1,17 @@
 @using System.Timers
 @implements IDisposable
+
 <MudText Typo="Typo" Align="Align" Class="@Class" Color="@Color">
     @_timeLeft.ToSimpleFormat()
 </MudText>
 
 @code {
     private TimeSpan _timeLeft = TimeSpan.FromSeconds(0);
-    private Timer _timer = new() {Enabled = true, Interval = 1000};
+    private Timer _timer = new()
+    {
+        Enabled = true,
+        Interval = 1000
+    };
 
     [Parameter]
     public DateTime Date { get; set; }
@@ -15,10 +20,10 @@
     public EventCallback OnComplete { get; set; }
 
     [Parameter]
-    public Typo Typo { get; set; } = Typo.subtitle2;
+    public Typo Typo { get; set; } = Typo.subtitle1;
 
     [Parameter]
-    public Align Align { get; set; } = Align.Center;
+    public Align Align { get; set; } = Align.Inherit;
 
     [Parameter]
     public Color Color { get; set; } = Color.Default;

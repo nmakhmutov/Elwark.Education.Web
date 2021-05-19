@@ -11,10 +11,10 @@
 
     <div class="section">
         <div class="periods">
-            @foreach (var period in Enum.GetValues<HistoryPeriodType>().Where(x => x != HistoryPeriodType.None))
+            @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
             {
                 <div class="period">
-                    <MudLink Href="@Links.History.Period(period)" Color="Color.Inherit" Underline="Underline.Always">
+                    <MudLink Href="@Links.History.Epoch(period)" Color="Color.Inherit" Underline="Underline.Always">
                         @L[$"History:{period}"]
                     </MudLink>
                 </div>

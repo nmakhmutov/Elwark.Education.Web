@@ -1,6 +1,7 @@
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 @inject IStringLocalizer<App> L
+@inject UrlsOptions Options
 
 <AuthorizeView>
     <NotAuthorized>
@@ -25,17 +26,19 @@
                             <MudAvatar Image="@context.User.GetImage()"/>
                         </CardHeaderAvatar>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.body2">
+                            <MudText Typo="Typo.subtitle1">
                                 @context.User.GetName()
                             </MudText>
                             <MudText Typo="Typo.caption">
-                                @@@context.User.GetNickname()
+                                @("@" + context.User.GetNickname())
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                 </MudCard>
                 <MudDivider Class="mb-2"/>
                 <MudListItem Text="@L["Profile"]" Icon="@Icons.Filled.Person" Href="@Links.Profile.Index"/>
+                <MudListItem Text="@L["ElwarkAccount"]" Icon="@Icons.Filled.Portrait" Href="@Options.Account.ToString()"/>
+                <MudDivider Class="my-2"/>
                 <MudListItem Text="@L["Logout"]" Icon="@Icons.Material.Outlined.Login" OnClick="@BeginSignOut"/>
             </ChildContent>
         </MudMenu>
@@ -49,8 +52,8 @@
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo(Links.Authentication.LogOut);
     }
-    
-    private void OnLogin() => 
+
+    private void OnLogin() =>
         Navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(Navigation.Uri)));
 
 }

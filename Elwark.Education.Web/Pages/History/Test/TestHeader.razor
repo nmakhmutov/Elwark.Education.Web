@@ -1,0 +1,65 @@
+@inject IStringLocalizer<App> L
+
+<div class="wrapper">
+    <div>
+        <MudText Typo="Typo.h5">
+            @Title
+        </MudText>
+        <MudText Typo="Typo.body1">
+            @L[$"Test:{Difficulty}"]
+        </MudText>
+    </div>
+    <div class="status">
+        <div class="mb-1">
+            <div class="d-flex flex-row justify-center">
+                <MudText Typo="Typo.subtitle1" Class="mr-3">
+                    @L["Questions"] @CurrentQuestion / @TotalQuestions
+                </MudText>
+                <div class="d-flex flex-row align-center">
+                    @if (AnswerAttempts >= 0)
+                    {
+                        <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Favorite" Color="Color.Error"/>
+                        <MudText Typo="Typo.subtitle1" Class="ml-1">
+                            @AnswerAttempts
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Favorite" Color="Color.Primary"/>
+                        <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.AllInclusive" Color="Color.Primary" Class="ml-1"/>
+                    }
+                </div>
+            </div>
+            <MudProgressLinear Min="0" Max="100" Value="@((double) CurrentQuestion / TotalQuestions * 100)" Color="Color.Primary"/>
+        </div>
+        <CountdownTimer Typo="Typo.body1" Date="@ExpiredAt" Color="@CountDownColor" OnComplete="@OnComplete"/>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public TestDifficulty Difficulty { get; set; }
+
+    [Parameter]
+    public int AnswerAttempts { get; set; }
+
+    [Parameter]
+    public int CurrentQuestion { get; set; }
+
+    [Parameter]
+    public int TotalQuestions { get; set; }
+
+    [Parameter]
+    public DateTime ExpiredAt { get; set; }
+
+    [Parameter]
+    public Color CountDownColor { get; set; }
+
+    [Parameter]
+    public EventCallback OnComplete { get; set; }
+
+}

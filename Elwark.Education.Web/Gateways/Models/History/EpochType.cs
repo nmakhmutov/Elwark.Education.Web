@@ -1,6 +1,6 @@
 namespace Elwark.Education.Web.Gateways.Models.History
 {
-    public enum HistoryPeriodType
+    public enum EpochType
     {
         None = 0,
         Prehistory = 1,

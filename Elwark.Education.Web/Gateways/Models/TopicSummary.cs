@@ -8,7 +8,7 @@ namespace Elwark.Education.Web.Gateways.Models
         string Overview,
         string Image,
         bool IsFavorite,
-        HistoryPeriodType Period,
+        EpochType Epoch,
         ContentRating Rating
     );
 }

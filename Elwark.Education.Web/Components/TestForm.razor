@@ -4,7 +4,7 @@
 
 <EditForm Model="@_answer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator/>
-    <div class="form-grid">
+    <div class="@Class grid">
         <MudText Typo="Typo.h6" Align="Align.Center" class="mb-3">
             @Question.Title
         </MudText>
@@ -192,6 +192,9 @@
     private AnswerState _answerState = AnswerState.Answer;
 
     [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
     public TestQuestionModel Question { get; set; } = default!;
 
     [Parameter]
@@ -219,7 +222,7 @@
             QuestionType.SortedAnswers => new ManyAnswer(_answer.ManyAnswer),
             _ => throw new ArgumentOutOfRangeException(nameof(_answer.QuestionType))
             };
-        
+
         await OnAnswer.InvokeAsync(answer);
         _answerState = AnswerState.Next;
     }

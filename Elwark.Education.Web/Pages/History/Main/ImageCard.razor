@@ -7,7 +7,7 @@
     <div class="text-wrapper">
         <h2 class="title">@Title</h2>
         <div class="details-wrapper">
-            <HistoryPeriodChip Class="chip" Period="@Period"/>
+            <HistoryEpochChip Class="chip" Epoch="@Epoch"/>
             <div class="rating">
                 <RatingIcon Placement="@Placement.Top" Rating="@Rating"/>
             </div>
@@ -30,7 +30,7 @@
     public string Subtitle { get; set; } = string.Empty;
 
     [Parameter]
-    public HistoryPeriodType Period { get; set; }
+    public EpochType Epoch { get; set; }
 
     [Parameter]
     public ContentRating Rating { get; set; } = default!;

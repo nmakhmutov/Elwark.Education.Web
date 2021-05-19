@@ -1,7 +1,8 @@
-.form-grid {
+.grid {
     display: grid;
     grid-template-rows: 1fr;
     gap: 12px;
+    padding: 12px;
 }
 
 .question-image {
@@ -22,17 +23,25 @@
 
 .options-grid {
     display: grid;
-    gap: 12px;
+    grid-gap: 12px;
+    justify-items: center;
 }
 
 @media (min-width: 600px) {
+    .grid {
+        grid-gap: 24px;
+        padding: 24px;
+    }
+
     .options-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-gap: 24px;
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: start;
     }
 }
 
 @media (min-width: 960px) {
     .options-grid {
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        grid-template-columns: repeat(4, 1fr);
     }
 }

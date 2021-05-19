@@ -3,32 +3,66 @@ using System.Collections.Generic;
 
 namespace Elwark.Education.Web.Gateways.Models.Statistics
 {
-    public sealed record UserStatistics(
-        Difference<TimeSpan, TimeSpan> TimeSpent,
+    internal sealed record UserStatistics(
         ScoreStatistics Score,
         AnswerRatioStatistics AnswerRatio,
-        Dictionary<TestDifficulty, NumberOfTestsStatistics> NumberOfTests,
-        RankingItem<ulong>[] ScoreRanking,
-        RankingItem<TimeSpan>[] TimeSpentRanking,
-        RankingItem<uint>[] CompletedTimesRanking
+        TimeSpentStatistics TimeSpent,
+        IDictionary<TestDifficulty, NumberOfTestsStatistics> NumberOfTests
     );
 
-    public sealed record Difference<TValue, TChanges>(TValue Total, TValue Current, TChanges Changes);
+    internal sealed record Changes<T>(T Current, double Difference);
 
-    public sealed record ScoreStatistics(Difference<ulong, long> Total, uint Questions, uint NoMistakes, uint Speed);
-
-    public sealed record AnswerRatioStatistics(
-        Difference<uint, int> Questions,
-        uint Answered,
-        uint NotAnswered,
-        uint Correct,
-        uint Incorrect
+    internal sealed record ScoreStatistics(
+        Score Total,
+        ScoreProgress Progress,
+        RankingItem<Score>[] Ranking
     );
 
-    public sealed record NumberOfTestsStatistics(
-        Difference<uint, int> Total,
-        uint Completed,
-        uint TimeExceeded,
-        uint RepliesExceeded
+    internal sealed record ScoreProgress(
+        DateTime Starts,
+        DateTime Ends,
+        Changes<ulong> Total,
+        Changes<uint> Questions,
+        Changes<uint> NoMistakes,
+        Changes<uint> Speed
     );
+
+
+    internal sealed record AnswerRatioStatistics(
+        AnswerRatio Total,
+        AnswerRatioProgress Progress
+    );
+
+    internal sealed record AnswerRatioProgress(
+        DateTime Starts,
+        DateTime Ends,
+        Changes<uint> Questions,
+        Changes<uint> Answered,
+        Changes<uint> NotAnswered,
+        Changes<uint> Correct,
+        Changes<uint> Incorrect
+    );
+
+    internal sealed record NumberOfTestsStatistics(
+        NumberOfTests Total,
+        NumberOfTestsProgress Progress,
+        RankingItem<NumberOfTests>[] Ranking
+    );
+
+    internal sealed record NumberOfTestsProgress(
+        DateTime Starts,
+        DateTime Ends,
+        Changes<uint> Total,
+        Changes<uint> Completed,
+        Changes<uint> TimeExceeded,
+        Changes<uint> RepliesExceeded
+    );
+    
+    internal sealed record TimeSpentStatistics(
+        TimeSpan Total,
+        TimeSpentProgress Progress,
+        RankingItem<TimeSpan>[] Ranking
+    );
+
+    internal sealed record TimeSpentProgress(DateTime Starts, DateTime Ends, Changes<TimeSpan> TimeSpent);
 }

@@ -24,11 +24,11 @@ namespace Elwark.Education.Web.Gateways.History
         public Task<ApiResponse<HistoryOverview>> GetAsync() =>
             ExecuteAsync<HistoryOverview>(() => _client.GetAsync("history"));
 
-        public Task<ApiResponse<HistoryPeriodModel[]>> GetPeriodsAsync() =>
-            ExecuteAsync<HistoryPeriodModel[]>(() => _client.GetAsync("history/periods"));
+        public Task<ApiResponse<HistoryEpochModel[]>> GetEpochsAsync() =>
+            ExecuteAsync<HistoryEpochModel[]>(() => _client.GetAsync("history/epochs"));
 
-        public Task<ApiResponse<HistoryPeriodModel>> GetPeriodAsync(HistoryPeriodType period) =>
-            ExecuteAsync<HistoryPeriodModel>(() => _client.GetAsync($"history/periods/{period}"));
+        public Task<ApiResponse<HistoryEpochModel>> GetEpochAsync(EpochType epoch) =>
+            ExecuteAsync<HistoryEpochModel>(() => _client.GetAsync($"history/epochs/{epoch}"));
 
         public HistoryTopicClient Topic { get; }
 
@@ -46,16 +46,9 @@ namespace Elwark.Education.Web.Gateways.History
 
         public Task<ApiResponse<HistoryUserProfile>> GetOverviewAsync() =>
             ExecuteAsync<HistoryUserProfile>(() => _client.GetAsync("history/me"));
-        
+
         public Task<ApiResponse<UserStatistics>> GetStatisticsAsync() =>
             ExecuteAsync<UserStatistics>(() => _client.GetAsync("history/me/statistics"));
-
-        public Task<ApiResponse<PageResponse<TestConclusionSummary>>> GetTestConclusionsAsync(PageRequest request) =>
-            ExecuteAsync<PageResponse<TestConclusionSummary>>(() =>
-                _client.GetAsync($"history/me/test-conclusions?token={request.Token}&count={request.Count}"));
-
-        public Task<ApiResponse<TestConclusionDetail>> GetTestConclusionAsync(string testId) =>
-            ExecuteAsync<TestConclusionDetail>(() => _client.GetAsync($"history/me/test-conclusions/{testId}"));
 
         public Task<ApiResponse<PageResponse<TopicSummary>>> GetFavoritesAsync(PageRequest request) =>
             ExecuteAsync<PageResponse<TopicSummary>>(() =>
@@ -84,6 +77,9 @@ namespace Elwark.Education.Web.Gateways.History
         public Task<ApiResponse<TextAnswerResult>> CheckAsync(string testId, string questionId, TextAnswer answer) =>
             ExecuteAsync<TextAnswerResult>(() =>
                 _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
+
+        public Task<ApiResponse<TestConclusionDetail>> GetConclusionAsync(string id) =>
+            ExecuteAsync<TestConclusionDetail>(() => _client.GetAsync($"history/tests/{id}/conclusion"));
     }
 
     internal sealed class HistoryTopicClient : GatewayClient
@@ -95,8 +91,7 @@ namespace Elwark.Education.Web.Gateways.History
 
         public Task<ApiResponse<PageResponse<TopicSummary>>> GetAsync(GetTopicsRequest request) =>
             ExecuteAsync<PageResponse<TopicSummary>>(() =>
-                _client.GetAsync($"history/topics?period={request.Period}&count={request.Count}&token={request.Token}")
-            );
+                _client.GetAsync($"history/topics?epoch={request.Epoch}&count={request.Count}&token={request.Token}"));
 
         public Task<ApiResponse<HistoryTopicDetail>> GetAsync(string id) =>
             ExecuteAsync<HistoryTopicDetail>(() => _client.GetAsync($"history/topics/{id}"));
