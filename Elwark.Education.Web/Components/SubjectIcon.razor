@@ -1,6 +1,6 @@
 @using MudBlazor.Utilities
-<div class="@Classes">
-    <MudIcon Icon="@SubjectType.GetStatic().Icon" Size="@Size"/>
+<div class="@Classes" style="background: @_static.Gradient">
+    <MudIcon Icon="@_static.Icon" Size="@Size"/>
 </div>
 
 @code {
@@ -11,11 +11,14 @@
     [Parameter]
     public Size Size { get; set; }
 
+    protected override void OnParametersSet() => 
+        _static = SubjectType.GetStatic();
+
     private string Classes => CssBuilder.Empty()
         .AddClass("icon")
         .AddClass("rounded")
         .AddClass(Size.ToString().ToLowerInvariant())
-        .AddClass(SubjectType.ToString().ToLowerInvariant())
         .Build();
 
+    private SubjectStatic _static = new(string.Empty, string.Empty, string.Empty);
 }
