@@ -50,21 +50,15 @@
                 </div>
             </div>
         </Score>
-        <Statistics>
-            <div class="progress">
+        <Ranking>
+            <div class="widget-subheader">
                 <MudText Typo="Typo.h6">
-                    @L["Progress"]
+                    @L["Ranking"]
                 </MudText>
                 <MudText Typo="Typo.body2">
-                    @progress.Starts.ToString("dd MMM") - @progress.Ends.ToString("dd MMM")
+                    @L["ForAllTime"]
                 </MudText>
             </div>
-            <OverviewList Class="mb-3" Items="@GetOverview(progress)"/>
-        </Statistics>
-        <Ranking>
-            <MudText Typo="Typo.h6" Class="mb-3">
-                @L["Ranking"]
-            </MudText>
             @if (ranking.Length > 0)
             {
                 <RankingList
@@ -80,6 +74,17 @@
                 </MudText>
             }
         </Ranking>
+        <Statistics>
+            <div class="widget-subheader">
+                <MudText Typo="Typo.h6">
+                    @L["Progress"]
+                </MudText>
+                <MudText Typo="Typo.body2">
+                    @progress.Starts.ToString("dd MMM") - @progress.Ends.ToString("dd MMM")
+                </MudText>
+            </div>
+            <OverviewList Class="mb-3" Items="@GetOverview(progress)"/>
+        </Statistics>
     </WidgetContainer>
 }
 
@@ -112,21 +117,15 @@
             </div>
         </div>
     </Score>
-    <Statistics>
-        <div class="progress">
+    <Ranking>
+        <div class="widget-subheader">
             <MudText Typo="Typo.h6">
-                @L["Progress"]
+                @L["Ranking"]
             </MudText>
             <MudText Typo="Typo.body2">
-                @result.Score.Progress.Starts.ToString("dd MMM") - @result.Score.Progress.Ends.ToString("dd MMM")
+                @L["ForAllTime"]
             </MudText>
         </div>
-        <OverviewList Class="mb-3" Items="@GetOverview(result.Score.Progress)"/>
-    </Statistics>
-    <Ranking>
-        <MudText Typo="Typo.h6" Class="mb-3">
-            @L["Ranking"]
-        </MudText>
         @if (result.Score.Ranking.Length > 0)
         {
             <RankingList
@@ -142,24 +141,29 @@
             </MudText>
         }
     </Ranking>
-</WidgetContainer>
-
-<WidgetContainer Title="@L["TimeSpent"]" Icon="@Icons.Filled.Timer" Total="@result.TimeSpent.Total.ToSimpleFormat()">
     <Statistics>
-        <div class="progress">
+        <div class="widget-subheader">
             <MudText Typo="Typo.h6">
                 @L["Progress"]
             </MudText>
             <MudText Typo="Typo.body2">
-                @result.TimeSpent.Progress.Starts.ToString("dd MMM") - @result.TimeSpent.Progress.Ends.ToString("dd MMM")
+                @result.Score.Progress.Starts.ToString("dd MMM") - @result.Score.Progress.Ends.ToString("dd MMM")
             </MudText>
         </div>
-        <OverviewList Class="mb-3" Items="@GetOverview(result.TimeSpent.Progress)"/>
+        <OverviewList Class="mb-3" Items="@GetOverview(result.Score.Progress)"/>
     </Statistics>
+</WidgetContainer>
+
+<WidgetContainer Title="@L["TimeSpent"]" Icon="@Icons.Filled.Timer" Total="@result.TimeSpent.Total.ToSimpleFormat()">
     <Ranking>
-        <MudText Typo="Typo.h6" Class="mb-3">
-            @L["Ranking"]
-        </MudText>
+        <div class="widget-subheader">
+            <MudText Typo="Typo.h6">
+                @L["Ranking"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L["ForAllTime"]
+            </MudText>
+        </div>
         @if (result.TimeSpent.Ranking.Length > 0)
         {
             <RankingList
@@ -175,6 +179,17 @@
             </MudText>
         }
     </Ranking>
+    <Statistics>
+        <div class="widget-subheader">
+            <MudText Typo="Typo.h6">
+                @L["Progress"]
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @result.TimeSpent.Progress.Starts.ToString("dd MMM") - @result.TimeSpent.Progress.Ends.ToString("dd MMM")
+            </MudText>
+        </div>
+        <OverviewList Class="mb-3" Items="@GetOverview(result.TimeSpent.Progress)"/>
+    </Statistics>
 </WidgetContainer>
 
 <WidgetContainer Title="@L["Questions"]" Icon="@Icons.Filled.HelpOutline" Total="@result.AnswerRatio.Total.Questions.ToReadable()">
@@ -217,7 +232,7 @@
         </div>
     </Score>
     <Statistics>
-        <div class="progress">
+        <div class="widget-subheader">
             <MudText Typo="Typo.h6">
                 @L["Progress"]
             </MudText>

@@ -15,14 +15,12 @@
 
     private (LocalizedString Title, Color Color) _data;
 
-    protected override void OnParametersSet()
-    {
+    protected override void OnParametersSet() =>
         _data = Status switch {
             ConclusionStatus.Complete => (L["ConclusionStatus:Completed"], Color.Success),
             ConclusionStatus.TimeExceeded => (L["ConclusionStatus:TimeExceeded"], Color.Error),
             ConclusionStatus.RepliesExceeded => (L["ConclusionStatus:RepliesExceeded"], Color.Warning),
             _ => throw new ArgumentOutOfRangeException(nameof(Status), $@"Unknown status in {nameof(ConclusionStatusTitle)}")
-            };
-    }
+        };
 
 }

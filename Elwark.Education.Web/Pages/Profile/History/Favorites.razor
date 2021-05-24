@@ -6,7 +6,7 @@
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
 
-<ProfileDefaultGrid>
+<ProfileGrid>
     <ApiResponseViewer Response="@_favorites">
         <Placeholder>
             <SkeletonCard/>
@@ -52,7 +52,7 @@
             }
         </Result>
     </ApiResponseViewer>
-</ProfileDefaultGrid>
+</ProfileGrid>
 
 @code {
     private PageRequest _request = new(null, 20);

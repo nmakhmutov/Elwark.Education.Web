@@ -3,78 +3,59 @@
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
 
-<div class="header" style="background: @_static.Gradient">
-    <div class="header-container">
-        <MudIcon Icon="@_static.Icon" Size="Size.Large" Color="Color.Inherit"/>
-        <div class="header-title">
-            <a class="subject-link" href="@Links.Subjects.Index(_subject)">
-                @L[$"Subject:{_subject}"]
-            </a>
+<div class="header">
+    <div class="user-container" style="background: @_static.Gradient">
+        <div class="user">
+            <AuthorizeView>
+                <Authorizing>
+                    <MudSkeleton SkeletonType="SkeletonType.Circle"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Class="avatar"/>
+                </Authorizing>
+                <Authorized>
+                    <MudAvatar Image="@context.User.GetImage()" Size="Size.Large" Class="avatar"/>
+                    <MudText Typo="Typo.h5">
+                        @context.User.GetName()
+                    </MudText>
+                </Authorized>
+            </AuthorizeView>
         </div>
     </div>
-    <div class="menu">
-        @foreach (var item in _menu)
-        {
-            @if (item.IsActive)
+    <div class="navbar">
+        <div class="subject">
+            <MudIcon Icon="@_static.Icon" Size="Size.Medium" Color="Color.Inherit" Class="subject-icon"/>
+            <MudLink Typo="Typo.h5" Href="@Links.Subjects.Index(_subject)">
+                @L[$"Subject:{_subject}"]
+            </MudLink>
+        </div>
+        <div class="menu">
+            @foreach (var item in _menu)
             {
-                <div class="menu-item menu-active">
-                    <MudIcon Icon="@item.Icon" Class="item-icon"/>
-                    <MudText Typo="Typo.subtitle1" Class="item-text">
-                        @item.Title
-                    </MudText>
-                </div>
+                @if (item.IsActive)
+                {
+                    <div class="menu-item menu-active">
+                        <MudIcon Icon="@item.Icon" Class="item-icon"/>
+                        <MudText Typo="Typo.subtitle1" Class="item-text">
+                            @item.Title
+                        </MudText>
+                    </div>
+                }
+                else
+                {
+                    <a href="@item.Link" class="menu-item menu-link">
+                        <MudIcon Icon="@item.Icon" Class="item-icon" Color="Color.Inherit"/>
+                        <MudText Typo="Typo.subtitle1" Class="item-text" Color="Color.Inherit">
+                            @item.Title
+                        </MudText>
+                    </a>
+                }
             }
-            else
-            {
-                <a href="@item.Link" class="menu-item menu-link">
-                    <MudIcon Icon="@item.Icon" Class="item-icon"/>
-                    <MudText Typo="Typo.subtitle1" Class="item-text">
-                        @item.Title
-                    </MudText>
-                </a>
-            }
-        }
+        </div>
     </div>
 </div>
-@* <HeaderImageContainer> *@
-@*     <div class="header"> *@
-@*         <div class="header-image"> *@
-@*             <MudAvatar Image="@(_subject.GetStatic().Image)" Style="width: 120px; height: 120px"/> *@
-@*         </div> *@
-@*         <div class="ml-3 ml-md-6"> *@
-@*             <a class="subject-link" href="@Links.Subjects.Index(_subject)"> *@
-@*                 @L[$"Subject:{_subject}"] *@
-@*             </a> *@
-@*         </div> *@
-@*     </div> *@
-@*     <div class="menu"> *@
-@*         @foreach (var item in _menu) *@
-@*         { *@
-@*             @if (item.IsActive) *@
-@*             { *@
-@*                 <div class="menu-item item-active"> *@
-@*                     <MudIcon Icon="@item.Icon" Class="item-icon"/> *@
-@*                     <MudText Typo="Typo.subtitle1" Class="item-text"> *@
-@*                         @item.Title *@
-@*                     </MudText> *@
-@*                 </div> *@
-@*             } *@
-@*             else *@
-@*             { *@
-@*                 <a href="@item.Link" class="menu-item item-link"> *@
-@*                     <MudIcon Icon="@item.Icon" Class="item-icon"/> *@
-@*                     <MudText Typo="Typo.subtitle1" Class="item-text"> *@
-@*                         @item.Title *@
-@*                     </MudText> *@
-@*                 </a> *@
-@*             } *@
-@*         } *@
-@*     </div> *@
-@* </HeaderImageContainer> *@
 
-<div class="container">
+<MainContainer>
     @Body
-</div>
+</MainContainer>
 
 @code {
     private SubjectType _subject;
