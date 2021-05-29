@@ -1,0 +1,27 @@
+@using Elwark.Education.Web.Gateways.Models.Content
+@inject IStringLocalizer<App> L
+
+<MudTooltip Placement="@Placement" Text="@L["Rating"]">
+    <div class="d-flex flex-row align-center">
+        <MudIcon Icon="@Icons.Filled.Star" Size="@Size" Color="Color.Warning"/>
+        <MudText Typo="@Typo" Class="ml-2">
+            @Rating.FiveStarts
+        </MudText>
+    </div>
+</MudTooltip>
+
+@code {
+
+    [Parameter]
+    public ContentRating Rating { get; set; } = default!;
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body2;
+
+    [Parameter]
+    public Size Size { get; set; } = Size.Medium;
+
+    [Parameter]
+    public Placement Placement { get; set; } = Placement.Bottom;
+
+}

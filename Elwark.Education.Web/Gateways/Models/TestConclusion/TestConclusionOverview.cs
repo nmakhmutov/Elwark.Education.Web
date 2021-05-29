@@ -1,8 +1,9 @@
 using System;
+using Elwark.Education.Web.Gateways.Models.Test;
 
 namespace Elwark.Education.Web.Gateways.Models.TestConclusion
 {
-    public sealed record TestConclusionOverview(
+    internal sealed record TestConclusionOverview(
         string TestId,
         ConclusionStatus Status,
         TestDifficulty Difficulty,

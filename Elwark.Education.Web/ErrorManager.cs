@@ -1,5 +1,5 @@
 using Elwark.Education.Web.Gateways;
-using Elwark.Education.Web.Gateways.Models;
+using Elwark.Education.Web.Gateways.Models.Test;
 using Microsoft.Extensions.Localization;
 
 namespace Elwark.Education.Web

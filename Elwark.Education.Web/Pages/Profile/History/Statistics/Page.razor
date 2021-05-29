@@ -1,5 +1,6 @@
 @page "/profile/history/statistics"
 @using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.History.Me
 @using Elwark.Education.Web.Gateways.Models.Statistics
 @layout ProfileLayout
 
@@ -8,251 +9,95 @@
 
 @attribute [Authorize]
 
-<div class="grid">
 <ApiResponseViewer Response="@_response">
-<Placeholder>
-    <SkeletonCard/>
-    <SkeletonCard/>
-    <SkeletonCard/>
-    <SkeletonCard/>
-</Placeholder>
-<Result Context="result">
-<Title Value="@L["Statistics"]"></Title>
-
-@foreach (var (difficulty, (numberOfTests, progress, ranking)) in result.NumberOfTests)
-{
-    <WidgetContainer Title="@L[$"Tests:{difficulty}"]" Icon="@Icons.Filled.School" Total="@numberOfTests.Total.ToReadable()">
-        <Score>
-            <div class="details">
-                <div>
-                    <MudText Typo="Typo.subtitle1">
-                        @L["NumberOfTests:Completed"]
-                    </MudText>
-                    <MudText Typo="Typo.h5">
-                        @numberOfTests.Completed.ToReadable()
-                    </MudText>
-                </div>
-                <div>
-                    <MudText Typo="Typo.subtitle1">
-                        @L["NumberOfTests:TimeExceeded"]
-                    </MudText>
-                    <MudText Typo="Typo.h5">
-                        @numberOfTests.TimeExceeded.ToReadable()
-                    </MudText>
-                </div>
-                <div>
-                    <MudText Typo="Typo.subtitle1">
-                        @L["NumberOfTests:RepliesExceeded"]
-                    </MudText>
-                    <MudText Typo="Typo.h5">
-                        @numberOfTests.RepliesExceeded.ToReadable()
-                    </MudText>
-                </div>
-            </div>
-        </Score>
-        <Ranking>
-            <div class="widget-subheader">
-                <MudText Typo="Typo.h6">
-                    @L["Ranking"]
-                </MudText>
-                <MudText Typo="Typo.body2">
-                    @L["ForAllTime"]
-                </MudText>
-            </div>
-            @if (ranking.Length > 0)
-            {
-                <RankingList
-                    Class="mb-3"
-                    Items="@ranking"
-                    LinkBuilder="@((string id) => Links.Subjects.Topic(SubjectType.History, id))"
-                    ValueConverter="@((NumberOfTests arg) => arg.Total.ToReadable())"/>
-            }
-            else
-            {
-                <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                    @L["Ranking:Empty"]
-                </MudText>
-            }
-        </Ranking>
-        <Statistics>
-            <div class="widget-subheader">
-                <MudText Typo="Typo.h6">
-                    @L["Progress"]
-                </MudText>
-                <MudText Typo="Typo.body2">
-                    @progress.Starts.ToString("dd MMM") - @progress.Ends.ToString("dd MMM")
-                </MudText>
-            </div>
-            <OverviewList Class="mb-3" Items="@GetOverview(progress)"/>
-        </Statistics>
-    </WidgetContainer>
-}
-
-<WidgetContainer Title="@L["Score"]" Icon="@Icons.Filled.PendingActions" Total="@result.Score.Total.Total.ToReadable()">
-    <Score>
-        <div class="details">
-            <div>
-                <MudText Typo="Typo.subtitle1">
-                    @L["Score:ByQuestions"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @result.Score.Total.Questions.ToReadable()
-                </MudText>
-            </div>
-            <div>
-                <MudText Typo="Typo.subtitle1">
-                    @L["Score:NoMistakesBonus"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @result.Score.Total.NoMistakes.ToReadable()
-                </MudText>
-            </div>
-            <div>
-                <MudText Typo="Typo.subtitle1">
-                    @L["Score:BySpeedBonus"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @result.Score.Total.Speed.ToReadable()
-                </MudText>
-            </div>
+    <Placeholder>
+        <div class="mb-3 mb-sm-6">
+            <MudSkeleton SkeletonType="SkeletonType.Text" Height="35px" Width="80%"/>
         </div>
-    </Score>
-    <Ranking>
-        <div class="widget-subheader">
-            <MudText Typo="Typo.h6">
-                @L["Ranking"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @L["ForAllTime"]
-            </MudText>
+        <div class="grid">
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
         </div>
-        @if (result.Score.Ranking.Length > 0)
-        {
-            <RankingList
-                Class="mb-3"
-                Items="@result.Score.Ranking"
-                LinkBuilder="@((string id) => Links.Subjects.Topic(SubjectType.History, id))"
-                ValueConverter="@((Score arg) => arg.Total.ToReadable())"/>
-        }
-        else
-        {
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                @L["Ranking:Empty"]
-            </MudText>
-        }
-    </Ranking>
-    <Statistics>
-        <div class="widget-subheader">
-            <MudText Typo="Typo.h6">
-                @L["Progress"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @result.Score.Progress.Starts.ToString("dd MMM") - @result.Score.Progress.Ends.ToString("dd MMM")
-            </MudText>
-        </div>
-        <OverviewList Class="mb-3" Items="@GetOverview(result.Score.Progress)"/>
-    </Statistics>
-</WidgetContainer>
+    </Placeholder>
+    <Result Context="result">
+        <Title Value="@L["Statistics"]"/>
 
-<WidgetContainer Title="@L["TimeSpent"]" Icon="@Icons.Filled.Timer" Total="@result.TimeSpent.Total.ToSimpleFormat()">
-    <Ranking>
-        <div class="widget-subheader">
-            <MudText Typo="Typo.h6">
-                @L["Ranking"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @L["ForAllTime"]
-            </MudText>
+        <MudText Typo="Typo.h5" Class="mb-3 mb-sm-6">
+            @L["Tests:Easy"]
+        </MudText>
+        <div class="grid mb-12">
+            <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests:Easy"]" Subtitle="@result.EasyTest.NumberOfTests.Total.Total.ToReadable()">
+                <WidgetSubheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.EasyTest.NumberOfTests.Progress)"/>
+                <OverviewList Items="@GetOverview(result.EasyTest.NumberOfTests.Progress)"/>
+            </StatisticsCard>
+            <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Subtitle="@result.EasyTest.Score.Total.Total.ToReadable()">
+                <WidgetSubheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.EasyTest.Score.Progress)"/>
+                <OverviewList Items="@GetOverview(result.EasyTest.Score.Progress)"/>
+            </StatisticsCard>
+            <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Subtitle="@result.EasyTest.AnswerRatio.Total.Questions.ToReadable()">
+                <WidgetSubheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.EasyTest.AnswerRatio.Progress)"/>
+                <OverviewList Items="@GetOverview(result.EasyTest.AnswerRatio.Progress)"/>
+            </StatisticsCard>
+            <StatisticsCard Icon="@Icons.Filled.Timer" Title="@L["TimeSpent"]" Subtitle="@result.EasyTest.TimeSpent.Total.ToSimpleFormat()">
+                <WidgetSubheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.EasyTest.TimeSpent.Progress)"/>
+                <OverviewList Items="@GetOverview(result.EasyTest.TimeSpent.Progress)"/>
+            </StatisticsCard>
         </div>
-        @if (result.TimeSpent.Ranking.Length > 0)
-        {
-            <RankingList
-                Class="mb-3"
-                Items="@result.TimeSpent.Ranking"
-                LinkBuilder="@((string id) => Links.Subjects.Topic(SubjectType.History, id))"
-                ValueConverter="@((TimeSpan arg) => arg.ToSimpleFormat())"/>
-        }
-        else
-        {
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                @L["Ranking:Empty"]
-            </MudText>
-        }
-    </Ranking>
-    <Statistics>
-        <div class="widget-subheader">
-            <MudText Typo="Typo.h6">
-                @L["Progress"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @result.TimeSpent.Progress.Starts.ToString("dd MMM") - @result.TimeSpent.Progress.Ends.ToString("dd MMM")
-            </MudText>
+
+        <MudText Typo="Typo.h5" Class="mb-3 mb-sm-6">
+            @L["Tests:Hard"]
+        </MudText>
+        <div class="grid">
+            <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests:Hard"]" Subtitle="@result.HardTest.NumberOfTests.Total.Total.ToReadable()">
+                <WidgetSubheader Title="@L["Progress"]" Subtitle="@(RangeTitle(result.HardTest.NumberOfTests.Progress))"/>
+                <OverviewList Items="@GetOverview(result.HardTest.NumberOfTests.Progress)"/>
+            </StatisticsCard>
+            <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Subtitle="@result.HardTest.Score.Total.Total.ToReadable()">
+                <WidgetSubheader Title="@L["Progress"]" Subtitle="@(RangeTitle(result.HardTest.Score.Progress))"/>
+                <OverviewList Items="@GetOverview(result.HardTest.Score.Progress)"/>
+            </StatisticsCard>
+            <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Subtitle="@result.HardTest.AnswerRatio.Total.Questions.ToReadable()">
+                <WidgetSubheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.HardTest.AnswerRatio.Progress)"/>
+                <OverviewList Items="@GetOverview(result.HardTest.AnswerRatio.Progress)"/>
+            </StatisticsCard>
+            <StatisticsCard Icon="@Icons.Filled.Timer" Title="@L["TimeSpent"]" Subtitle="@result.HardTest.TimeSpent.Total.ToSimpleFormat()">
+                <WidgetSubheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.HardTest.TimeSpent.Progress)"/>
+                <OverviewList Items="@GetOverview(result.HardTest.TimeSpent.Progress)"/>
+            </StatisticsCard>
         </div>
-        <OverviewList Class="mb-3" Items="@GetOverview(result.TimeSpent.Progress)"/>
-    </Statistics>
-</WidgetContainer>
-
-<WidgetContainer Title="@L["Questions"]" Icon="@Icons.Filled.HelpOutline" Total="@result.AnswerRatio.Total.Questions.ToReadable()">
-    <Score>
-        <div class="details">
-            <div>
-                <MudText Typo="Typo.subtitle1">
-                    @L["Questions:Correct"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @result.AnswerRatio.Total.Correct.ToReadable()
-                </MudText>
-            </div>
-            <div>
-
-                <MudText Typo="Typo.body1">
-                    @L["Questions:Incorrect"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @result.AnswerRatio.Total.Incorrect.ToReadable()
-                </MudText>
-            </div>
-            <div>
-
-                <MudText Typo="Typo.subtitle1">
-                    @L["Questions:Answered"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @result.AnswerRatio.Total.Answered.ToReadable()
-                </MudText>
-            </div>
-            <div>
-                <MudText Typo="Typo.subtitle1">
-                    @L["Questions:NotAnswered"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @result.AnswerRatio.Total.NotAnswered.ToReadable()
-                </MudText>
-            </div>
-        </div>
-    </Score>
-    <Statistics>
-        <div class="widget-subheader">
-            <MudText Typo="Typo.h6">
-                @L["Progress"]
-            </MudText>
-            <MudText Typo="Typo.body2">
-                @result.AnswerRatio.Progress.Starts.ToString("dd MMM") - @result.AnswerRatio.Progress.Ends.ToString("dd MMM")
-            </MudText>
-        </div>
-        <OverviewList Class="mb-3" Items="@GetOverview(result.AnswerRatio.Progress)"/>
-    </Statistics>
-</WidgetContainer>
-
-</Result>
+    </Result>
 </ApiResponseViewer>
-</div>
 
 @code {
 
     private ApiResponse<UserStatistics> _response = ApiResponse<UserStatistics>.Loading();
 
-    protected override async Task OnParametersSetAsync() => _response = await HistoryClient.User.GetStatisticsAsync();
+    protected override async Task OnParametersSetAsync() => _response = await HistoryClient.Me.GetStatisticsAsync();
+
+    private static string RangeTitle(NumberOfTestsProgress progress) =>
+        RangeTitle(progress.Starts, progress.Ends);
+
+    private static string RangeTitle(ScoreProgress progress) =>
+        RangeTitle(progress.Starts, progress.Ends);
+
+    private static string RangeTitle(TimeSpentProgress progress) =>
+        RangeTitle(progress.Starts, progress.Ends);
+
+    private static string RangeTitle(AnswerRatioProgress progress) =>
+        RangeTitle(progress.Starts, progress.Ends);
+
+    private static string RangeTitle(DateTime starts, DateTime ends) =>
+        $"{starts:dd MMM} ― {ends:dd MMM}";
+
+    private OverviewList.Item[] GetOverview(NumberOfTestsProgress progress) => new OverviewList.Item[]
+    {
+        new(L["NumberOfTests:Total"], progress.Total.Current.ToReadable(), progress.Total.Difference),
+        new(L["NumberOfTests:Completed"], progress.Completed.Current.ToReadable(), progress.Completed.Difference),
+        new(L["NumberOfTests:TimeExceeded"], progress.TimeExceeded.Current.ToReadable(), progress.TimeExceeded.Difference),
+        new(L["NumberOfTests:RepliesExceeded"], progress.RepliesExceeded.Current.ToReadable(), progress.RepliesExceeded.Difference)
+    };
 
     private OverviewList.Item[] GetOverview(ScoreProgress progress) => new OverviewList.Item[]
     {
@@ -265,14 +110,6 @@
     private OverviewList.Item[] GetOverview(TimeSpentProgress progress) => new OverviewList.Item[]
     {
         new(L["TimeSpent"], progress.TimeSpent.Current.ToSimpleFormat(), progress.TimeSpent.Difference)
-    };
-
-    private OverviewList.Item[] GetOverview(NumberOfTestsProgress progress) => new OverviewList.Item[]
-    {
-        new(L["NumberOfTests:Total"], progress.Total.Current.ToReadable(), progress.Total.Difference),
-        new(L["NumberOfTests:Completed"], progress.Completed.Current.ToReadable(), progress.Completed.Difference),
-        new(L["NumberOfTests:TimeExceeded"], progress.TimeExceeded.Current.ToReadable(), progress.TimeExceeded.Difference),
-        new(L["NumberOfTests:RepliesExceeded"], progress.RepliesExceeded.Current.ToReadable(), progress.RepliesExceeded.Difference)
     };
 
     private OverviewList.Item[] GetOverview(AnswerRatioProgress progress) => new OverviewList.Item[]

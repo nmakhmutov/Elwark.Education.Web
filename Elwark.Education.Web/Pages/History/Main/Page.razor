@@ -1,6 +1,6 @@
 @page "/history"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways.Models.History
+@using Elwark.Education.Web.Gateways.History.Home
 @inject IHistoryClient Client
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
@@ -94,7 +94,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await Client.GetAsync();
+        _response = await Client.Home.GetAsync();
     }
 
 }

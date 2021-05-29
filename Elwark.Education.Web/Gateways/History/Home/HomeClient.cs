@@ -1,0 +1,16 @@
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace Elwark.Education.Web.Gateways.History.Home
+{
+    internal sealed class HomeClient : GatewayClient
+    {
+        private readonly HttpClient _client;
+
+        public HomeClient(HttpClient client) =>
+            _client = client;
+        
+        public Task<ApiResponse<HistoryOverview>> GetAsync() =>
+            ExecuteAsync<HistoryOverview>(() => _client.GetAsync("history"));
+    }
+}

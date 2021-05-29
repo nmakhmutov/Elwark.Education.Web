@@ -1,4 +1,4 @@
-using Elwark.Education.Web.Gateways.Models.History;
+using Elwark.Education.Web.Gateways.History.Epoch;
 using Elwark.Education.Web.Model;
 
 namespace Elwark.Education.Web.Pages
@@ -9,12 +9,12 @@ namespace Elwark.Education.Web.Pages
 
         public static class Authentication
         {
+            public const string LogOut = "authentication/logout";
+
             public static string LogIn(string returnUrl) =>
                 $"authentication/login?returnUrl={returnUrl}";
-
-            public const string LogOut = "authentication/logout";
         }
-        
+
         public static class Profile
         {
             public const string Index = "/profile";
@@ -24,7 +24,7 @@ namespace Elwark.Education.Web.Pages
 
             public static string Statistics(SubjectType type) =>
                 $"{Index}/{type.ToString().ToLowerInvariant()}/statistics";
-            
+
             public static string Favorites(SubjectType type) =>
                 $"{Index}/{type.ToString().ToLowerInvariant()}/favorites";
         }
@@ -33,18 +33,17 @@ namespace Elwark.Education.Web.Pages
         {
             public const string Index = "/history";
 
+            private const string Topics = Index + "/topics";
+
             public static string Epoch(EpochType period) =>
                 $"{Index}/{period.ToString().ToLowerInvariant()}";
 
-            public static string Topics() =>
-                $"{Index}/topics";
-            
-            public static string Topics(string topicId) =>
-                $"{Topics()}/{topicId}";
+            public static string Topic(string topicId) =>
+                $"{Topics}/{topicId}";
 
             public static string Test(string testId) =>
                 $"{Index}/test/{testId}";
-            
+
             public static string Conclusion(string testId) =>
                 $"{Index}/test/{testId}/conclusion";
         }
@@ -55,13 +54,6 @@ namespace Elwark.Education.Web.Pages
                 type switch
                 {
                     SubjectType.History => History.Index,
-                    _ => string.Empty
-                };
-
-            public static string Topic(SubjectType type, string topicId) =>
-                type switch
-                {
-                    SubjectType.History => History.Topics(topicId),
                     _ => string.Empty
                 };
 

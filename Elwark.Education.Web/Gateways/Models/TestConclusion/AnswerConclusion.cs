@@ -1,6 +1,6 @@
 namespace Elwark.Education.Web.Gateways.Models.TestConclusion
 {
-    public sealed record AnswerConclusion(
+    internal sealed record AnswerConclusion(
         string QuestionId,
         string? Title,
         bool IsAnswered,

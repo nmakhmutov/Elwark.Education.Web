@@ -1,12 +1,24 @@
+using System.Net.Http;
 using System.Threading.Tasks;
-using Elwark.Education.Web.Gateways.Models.User;
 
 namespace Elwark.Education.Web.Gateways.User
 {
     public interface IUserClient
     {
         Task CreateAsync();
-        
-        Task<ApiResponse<Profile>> GetProfileAsync();
+    }
+    
+    internal sealed class UserClient : GatewayClient, IUserClient
+    {
+        private readonly HttpClient _client;
+
+        public UserClient(HttpClient client) =>
+            _client = client;
+
+        public async Task CreateAsync()
+        {
+            var response = await _client.PostAsync("users", EmptyContent);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

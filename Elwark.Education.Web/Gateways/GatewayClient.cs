@@ -26,18 +26,18 @@ namespace Elwark.Education.Web.Gateways
 
                 return message.StatusCode switch
                 {
-                    HttpStatusCode.OK => 
+                    HttpStatusCode.OK =>
                         ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!),
-                    
-                    HttpStatusCode.Created => 
+
+                    HttpStatusCode.Created =>
                         ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!),
-                    
-                    HttpStatusCode.Accepted => 
+
+                    HttpStatusCode.Accepted =>
                         ApiResponse<T>.Success(Json.Serializer.Deserialize<T>(jsonTextReader)!),
-                    
-                    HttpStatusCode.NoContent => 
+
+                    HttpStatusCode.NoContent =>
                         ApiResponse<T>.Success(default!),
-                    
+
                     _ => ApiResponse<T>.Fail(Json.Serializer.Deserialize<Error>(jsonTextReader) ?? Error.Unknown)
                 };
             }
@@ -50,7 +50,7 @@ namespace Elwark.Education.Web.Gateways
             {
                 return ApiResponse<T>.Fail(Error.Unavailable);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return ApiResponse<T>.Fail(Error.Unknown);
             }

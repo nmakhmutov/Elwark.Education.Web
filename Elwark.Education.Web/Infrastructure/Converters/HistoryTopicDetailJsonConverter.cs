@@ -1,19 +1,19 @@
 using System;
-using Elwark.Education.Web.Gateways.Models.History;
+using Elwark.Education.Web.Gateways.History.Topic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Elwark.Education.Web.Infrastructure.Converters
 {
-    internal class HistoryTopicDetailJsonConverter : JsonConverter<HistoryTopicDetail?>
+    internal class HistoryTopicDetailJsonConverter : JsonConverter<TopicDetail?>
     {
         private const string Type = "type";
 
-        public override void WriteJson(JsonWriter writer, HistoryTopicDetail? value, JsonSerializer serializer) =>
+        public override void WriteJson(JsonWriter writer, TopicDetail? value, JsonSerializer serializer) =>
             serializer.Serialize(writer, value);
 
-        public override HistoryTopicDetail? ReadJson(JsonReader reader, Type objectType,
-            HistoryTopicDetail? existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override TopicDetail? ReadJson(JsonReader reader, Type objectType, TopicDetail? existingValue,
+            bool hasExistingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
                 return null;
@@ -24,9 +24,9 @@ namespace Elwark.Education.Web.Infrastructure.Converters
 
             return jObject.Value<string>(Type) switch
             {
-                "Person" => jObject.ToObject<HistoryPersonTopicDetail>(),
-                "Event" => jObject.ToObject<HistoryEventTopicDetail>(),
-                _ => throw new ArgumentOutOfRangeException(nameof(HistoryTopicDetail), @"Unknown topic detail type")
+                "Person" => jObject.ToObject<PersonTopicDetail>(),
+                "Event" => jObject.ToObject<EventTopicDetail>(),
+                _ => throw new ArgumentOutOfRangeException(nameof(TopicDetail), @"Unknown topic detail type")
             };
         }
     }

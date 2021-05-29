@@ -1,13 +1,13 @@
 @page "/profile/history"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways.Models.History
+@using Elwark.Education.Web.Gateways.History.Me
 @layout ProfileLayout
 @inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
 
 @attribute [Authorize]
 
-<ProfileGrid>
+<DefaultFillGrid>
     <ApiResponseViewer Response="@_overview">
         <Placeholder>
             <SkeletonCard/>
@@ -17,7 +17,7 @@
         </Placeholder>
         <Result Context="overview">
             <Title Value="@L["Overview"]"></Title>
-            <ProfileSubscriptionCard Subject="@overview.Subject"/>
+            @* <ProfileSubscriptionCard Subject="@overview."/> *@
             <p>Level @overview.Experience.Level</p>
             <p>Points @overview.Experience.Points</p>
             <p>Next @overview.Experience.NextLevelPoints</p>
@@ -41,7 +41,7 @@
             }
         </Result>
     </ApiResponseViewer>
-</ProfileGrid>
+</DefaultFillGrid>
 
 @code {
 
@@ -49,7 +49,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _overview = await HistoryClient.User.GetOverviewAsync();
+        _overview = await HistoryClient.Me.GetOverviewAsync();
     }
 
 }

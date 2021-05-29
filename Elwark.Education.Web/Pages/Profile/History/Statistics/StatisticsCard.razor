@@ -1,0 +1,41 @@
+<MudCard Class="@Class">
+    <MudCardHeader>
+        <CardHeaderAvatar>
+            <MudAvatar Color="Color.Primary" Size="Size.Large">
+                <MudIcon Icon="@Icon" Size="Size.Large"/>
+            </MudAvatar>
+        </CardHeaderAvatar>
+        <CardHeaderContent>
+            <div class="d-flex flex-column align-end flex-sm-row justify-sm-space-between align-sm-center">
+                <MudText Typo="Typo.h5">
+                    @Title
+                </MudText>
+                <MudText Typo="Typo.h5" Color="Color.Secondary">
+                    @Subtitle
+                </MudText>
+            </div>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        @ChildContent
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Icon { get; set; } = Icons.Filled.Circle;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Subtitle { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+}

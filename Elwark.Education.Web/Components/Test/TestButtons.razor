@@ -1,3 +1,4 @@
+@using Elwark.Education.Web.Gateways.Models.Test
 @inject IStringLocalizer<App> L
 @inject ErrorManager ErrorManager
 @inject IDialogService Dialog
@@ -28,8 +29,8 @@
             }
             break;
 
-        case TestStatus.CreatedMaximumTests:
-        case TestStatus.ReachedMaximumAnswerAttempts:
+        case TestStatus.TestCreationMaximum:
+        case TestStatus.AnswerCreationMaximum:
             <div class="full-row">
                 <MudText Typo="Typo.body2" Color="Color.Info">
                     @ErrorManager.Localize(Status)
@@ -42,7 +43,7 @@
             </div>
             break;
 
-        case TestStatus.CreatedMaximumCurrentTests:
+        case TestStatus.CurrentTestsMaximum:
             <div class="full-row">
                 <MudText Typo="Typo.body2" Color="Color.Info">
                     @ErrorManager.Localize(Status)

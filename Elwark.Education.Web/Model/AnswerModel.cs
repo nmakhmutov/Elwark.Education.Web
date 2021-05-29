@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Elwark.Education.Web.Gateways.Models;
+using Elwark.Education.Web.Gateways.Models.Test;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
 

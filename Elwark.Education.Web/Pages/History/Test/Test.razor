@@ -1,6 +1,6 @@
 @page "/history/test/{id}"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways.Models.History
+@using Elwark.Education.Web.Gateways.History.Test
 @using Elwark.Education.Web.Gateways.Models.Test
 @inject IStringLocalizer<App> L
 @inject IHistoryClient HistoryClient
@@ -50,7 +50,7 @@
 
     private bool _isTestComplete;
     private Color _countdownColor = Color.Default;
-    private ApiResponse<HistoryTestModel> _test = ApiResponse<HistoryTestModel>.Loading();
+    private ApiResponse<TestModel> _test = ApiResponse<TestModel>.Loading();
     private List<TestQuestionModel> _questions = new();
     private int _questionIndex;
     private TestAnswerResult? _answerResult;
@@ -84,7 +84,7 @@
                 var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _questions[_questionIndex].Id, x);
                 if (result.Status == ResponseStatus.Fail)
                 {
-                    _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
+                    _test = ApiResponse<TestModel>.Fail(result.Error);
                     return;
                 }
                 _answerResult = result.Data;
@@ -96,7 +96,7 @@
                 var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _questions[_questionIndex].Id, x);
                 if (result.Status == ResponseStatus.Fail)
                 {
-                    _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
+                    _test = ApiResponse<TestModel>.Fail(result.Error);
                     return;
                 }
                 _answerResult = result.Data;
@@ -108,7 +108,7 @@
                 var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _questions[_questionIndex].Id, x);
                 if (result.Status == ResponseStatus.Fail)
                 {
-                    _test = ApiResponse<HistoryTestModel>.Fail(result.Error);
+                    _test = ApiResponse<TestModel>.Fail(result.Error);
                     return;
                 }
                 _answerResult = result.Data;
@@ -118,7 +118,7 @@
 
         if (_answerResult is null)
         {
-            _test = ApiResponse<HistoryTestModel>.Fail(Error.Unknown);
+            _test = ApiResponse<TestModel>.Fail(Error.Unknown);
             return;
         }
 
@@ -128,7 +128,7 @@
         {
             if (_test.Data.AnswerAttempts >= 0)
             {
-                _test = ApiResponse<HistoryTestModel>.Success(_test.Data with{AnswerAttempts = _test.Data.AnswerAttempts - 1});
+                _test = ApiResponse<TestModel>.Success(_test.Data with{AnswerAttempts = _test.Data.AnswerAttempts - 1});
             }
             
             if (_test.Data.Difficulty == TestDifficulty.Easy)

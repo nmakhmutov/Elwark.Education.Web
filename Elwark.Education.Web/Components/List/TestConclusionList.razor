@@ -1,0 +1,63 @@
+@using Elwark.Education.Web.Gateways.Models.TestConclusion
+@using Elwark.Education.Web.Gateways.Models.Test
+@inject IStringLocalizer<App> L
+
+<ul class="@Class">
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <ConclusionStatusTitle Status="@Status"/>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["Date"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @CompletedAt.ToSimpleFormat()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["Score"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @TotalScore.ToReadable()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["TimeSpent"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @TimeSpent.ToSimpleFormat()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["Difficulty"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @L[$"Difficulty:{Difficulty}"]
+        </MudText>
+    </li>
+</ul>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public ConclusionStatus Status { get; set; }
+
+    [Parameter]
+    public TestDifficulty Difficulty { get; set; }
+
+    [Parameter]
+    public ulong TotalScore { get; set; }
+
+    [Parameter]
+    public TimeSpan TimeSpent { get; set; }
+
+    [Parameter]
+    public DateTime CompletedAt { get; set; }
+
+}

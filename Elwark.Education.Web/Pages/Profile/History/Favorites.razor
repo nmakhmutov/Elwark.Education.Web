@@ -6,7 +6,7 @@
 @inject IStringLocalizer<App> L
 @attribute [Authorize]
 
-<ProfileGrid>
+<DefaultFillGrid>
     <ApiResponseViewer Response="@_favorites">
         <Placeholder>
             <SkeletonCard/>
@@ -22,7 +22,7 @@
                 {
                     <TopicCard
                         Id="@item.Id"
-                        Href="@Links.History.Topics(item.Id)"
+                        Href="@Links.History.Topic(item.Id)"
                         Image="@item.Image"
                         Title="@item.Title"
                         Subtitle="@item.Overview"
@@ -52,7 +52,7 @@
             }
         </Result>
     </ApiResponseViewer>
-</ProfileGrid>
+</DefaultFillGrid>
 
 @code {
     private PageRequest _request = new(null, 20);
@@ -60,7 +60,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _favorites = await HistoryClient.User.GetFavoritesAsync(_request);
+        _favorites = await HistoryClient.Me.GetFavoritesAsync(_request);
         if (_favorites.Status == ResponseStatus.Success)
             _request = _request with{ Token = _favorites.Data.Token};
     }
@@ -70,7 +70,7 @@
         if (_request.Token is null)
             return;
 
-        var response = await HistoryClient.User.GetFavoritesAsync(_request);
+        var response = await HistoryClient.Me.GetFavoritesAsync(_request);
         if (response.Status == ResponseStatus.Fail)
         {
             _favorites = ApiResponse<PageResponse<TopicSummary>>.Fail(response.Error);

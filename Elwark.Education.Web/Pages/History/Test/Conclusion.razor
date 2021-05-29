@@ -1,6 +1,6 @@
 @page "/history/test/{id}/conclusion"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways.Models.TestConclusion
+@using Elwark.Education.Web.Gateways.History.Test
 
 @inject IHistoryClient HistoryClient
 @inject IStringLocalizer<App> L
@@ -45,7 +45,7 @@
                         Status="@conclusion.Status"
                         Difficulty="@conclusion.Difficulty"
                         CompletedAt="@conclusion.CompletedAt"
-                        Link="@Links.Subjects.Topic(SubjectType.History, conclusion.TopicId)"/>
+                        Link="@Links.History.Topic(conclusion.TopicId)"/>
                 </div>
             </section>
 
@@ -117,7 +117,7 @@
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
-    private ApiResponse<TestConclusionDetail> _response = ApiResponse<TestConclusionDetail>.Loading();
+    private ApiResponse<TestConclusion> _response = ApiResponse<TestConclusion>.Loading();
 
     protected override async Task OnParametersSetAsync() =>
         _response = await HistoryClient.Test.GetConclusionAsync(Id);

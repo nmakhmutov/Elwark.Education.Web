@@ -2,5 +2,5 @@ using System;
 
 namespace Elwark.Education.Web.Gateways.Models.User
 {
-    public sealed record Restriction(int Quantity, DateTime? RestoreAt);
+    internal sealed record Restriction(int Quantity, DateTime? RestoreAt);
 }

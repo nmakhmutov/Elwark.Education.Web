@@ -1,34 +1,48 @@
+@using Elwark.Education.Web.Gateways.Models.Content
 @inject IStringLocalizer<App> L
 
-<div class="grid @Class">
-    <MudTooltip Text="@(IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
-        <MudToggleIconButton
-            Toggled="@IsFavorite"
-            ToggledChanged="@OnFavoriteChanged"
-            Icon="@Icons.Filled.FavoriteBorder"
-            Color="Color.Default"
-            Size="Size.Medium"
-            ToggledIcon="@Icons.Filled.Favorite"
-            ToggledColor="Color.Error"
-            ToggledSize="Size.Medium"/>
-    </MudTooltip>
+<div class="@Class d-flex flex-column align-center">
+    <div class="d-flex flex-column align-center">
+        <div class="d-flex flex-row align-center">
+            <MudRating MaxValue="5" ReadOnly="true" SelectedValue="@((int) Math.Round(Rating.FiveStarts))"/>
+            <MudText Typo="@Typo.subtitle2" Class="ml-2 mb-1">
+                @Rating.FiveStarts
+            </MudText>
+        </div>
+        <MudText Typo="@Typo.caption">
+            (@L["Rating:Count", Rating.Votes])
+        </MudText>
+    </div>
 
-    <MudTooltip Text="@L["Topics:ILikeThis"]">
-        <MudIconButton
-            Icon="@Icons.Filled.ThumbUp"
-            OnClick="@(Rating.IsLiked == true ? () => Task.CompletedTask : OnLike)"
-            Color="@(Rating.IsLiked == true ? Color.Secondary : Color.Default)"/>
-    </MudTooltip>
-    
-    <MudTooltip Text="@L["Topics:IDislikeThis"]">
-        <MudIconButton
-            Icon="@Icons.Filled.ThumbDown"
-            OnClick="@(Rating.IsLiked == false ? () => Task.CompletedTask : OnDislike)"
-            Color="@(Rating.IsLiked == false ? Color.Secondary : Color.Default)"/>
-    </MudTooltip>
-    
-    <RatingIcon Rating="@Rating"/>
+    <MudToolBar Class="pa-0">
+        <MudTooltip Text="@L["Topics:ILikeThis"]">
+            <MudIconButton
+                Icon="@Icons.Filled.ThumbUp"
+                OnClick="@(Rating.IsLiked == true ? () => Task.CompletedTask : OnLike)"
+                Color="@(Rating.IsLiked == true ? Color.Secondary : Color.Default)"/>
+        </MudTooltip>
+
+        <MudTooltip Text="@L["Topics:IDislikeThis"]">
+            <MudIconButton
+                Icon="@Icons.Filled.ThumbDown"
+                OnClick="@(Rating.IsLiked == false ? () => Task.CompletedTask : OnDislike)"
+                Color="@(Rating.IsLiked == false ? Color.Secondary : Color.Default)"/>
+        </MudTooltip>
+
+        <MudTooltip Text="@(IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
+            <MudToggleIconButton
+                Toggled="@IsFavorite"
+                ToggledChanged="@OnFavoriteChanged"
+                Icon="@Icons.Filled.FavoriteBorder"
+                Color="Color.Default"
+                Size="Size.Medium"
+                ToggledIcon="@Icons.Filled.Favorite"
+                ToggledColor="Color.Error"
+                ToggledSize="Size.Medium"/>
+        </MudTooltip>
+    </MudToolBar>
 </div>
+
 
 @code {
 

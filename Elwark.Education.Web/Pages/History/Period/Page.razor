@@ -1,7 +1,7 @@
 @page "/history/{type}"
 @using Elwark.Education.Web.Gateways.History
-@using Elwark.Education.Web.Gateways.History.Request
-@using Elwark.Education.Web.Gateways.Models.History
+@using Elwark.Education.Web.Gateways.History.Epoch
+@using Elwark.Education.Web.Gateways.History.Topic
 @inject IHistoryClient HistoryClient
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> L
@@ -52,7 +52,7 @@
             {
                 <TopicCard
                     Id="@item.Id"
-                    Href="@Links.History.Topics(item.Id)"
+                    Href="@Links.History.Topic(item.Id)"
                     Image="@item.Image"
                     Title="@item.Title"
                     Subtitle="@item.Overview"
@@ -77,7 +77,7 @@
 </div>
 
 @code {
-    private ApiResponse<HistoryEpochModel> _period = ApiResponse<HistoryEpochModel>.Loading();
+    private ApiResponse<EpochModel> _period = ApiResponse<EpochModel>.Loading();
 
     private ApiResponse<PageResponse<TopicSummary>> _topics = ApiResponse<PageResponse<TopicSummary>>.Loading();
 
@@ -88,21 +88,22 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _period = ApiResponse<HistoryEpochModel>.Loading();
+        _period = ApiResponse<EpochModel>.Loading();
         _topics = ApiResponse<PageResponse<TopicSummary>>.Loading();
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
         {
             _request = _request with { Epoch = type };
 
-            _period = await HistoryClient.GetEpochAsync(type);
+            _period = await HistoryClient.Epoch.GetAsync(type);
             _topics = await HistoryClient.Topic.GetAsync(_request);
 
             _request = _request with {Token = _topics.Data.Token};
         }
         else
         {
-            _period = ApiResponse<HistoryEpochModel>.Fail(Error.NotFound);
+            _period = ApiResponse<EpochModel>.Fail(Error.NotFound);
+            _topics = ApiResponse<PageResponse<TopicSummary>>.Fail(Error.NotFound);
         }
     }
 
