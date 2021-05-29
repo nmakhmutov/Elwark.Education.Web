@@ -79,7 +79,7 @@
 @code {
     private ApiResponse<EpochModel> _period = ApiResponse<EpochModel>.Loading();
 
-    private ApiResponse<PageResponse<TopicSummary>> _topics = ApiResponse<PageResponse<TopicSummary>>.Loading();
+    private ApiResponse<PageResponse<UserTopicSummary>> _topics = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
 
     private GetTopicsRequest _request = new(EpochType.Prehistory, null, 20);
 
@@ -89,7 +89,7 @@
     protected override async Task OnParametersSetAsync()
     {
         _period = ApiResponse<EpochModel>.Loading();
-        _topics = ApiResponse<PageResponse<TopicSummary>>.Loading();
+        _topics = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
         {
@@ -103,7 +103,7 @@
         else
         {
             _period = ApiResponse<EpochModel>.Fail(Error.NotFound);
-            _topics = ApiResponse<PageResponse<TopicSummary>>.Fail(Error.NotFound);
+            _topics = ApiResponse<PageResponse<UserTopicSummary>>.Fail(Error.NotFound);
         }
     }
 
@@ -116,12 +116,12 @@
 
         if (response.Status == ResponseStatus.Fail)
         {
-            _topics = ApiResponse<PageResponse<TopicSummary>>.Fail(response.Error);
+            _topics = ApiResponse<PageResponse<UserTopicSummary>>.Fail(response.Error);
             return;
         }
 
-        _topics = ApiResponse<PageResponse<TopicSummary>>.Success(
-            new PageResponse<TopicSummary>(
+        _topics = ApiResponse<PageResponse<UserTopicSummary>>.Success(
+            new PageResponse<UserTopicSummary>(
                 _topics.Data.Items.Union(response.Data.Items).ToArray(),
                 response.Data.Token
                 )

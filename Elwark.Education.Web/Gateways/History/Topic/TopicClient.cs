@@ -13,8 +13,8 @@ namespace Elwark.Education.Web.Gateways.History.Topic
         public TopicClient(HttpClient client) =>
             _client = client;
 
-        public Task<ApiResponse<PageResponse<TopicSummary>>> GetAsync(GetTopicsRequest request) =>
-            ExecuteAsync<PageResponse<TopicSummary>>(() =>
+        public Task<ApiResponse<PageResponse<UserTopicSummary>>> GetAsync(GetTopicsRequest request) =>
+            ExecuteAsync<PageResponse<UserTopicSummary>>(() =>
                 _client.GetAsync($"history/topics?epoch={request.Epoch}&count={request.Count}&token={request.Token}"));
 
         public Task<ApiResponse<TopicDetailComposition>> GetAsync(string id) =>

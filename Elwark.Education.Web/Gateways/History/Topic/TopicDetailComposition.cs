@@ -6,9 +6,9 @@ namespace Elwark.Education.Web.Gateways.History.Topic
     internal sealed record TopicDetailComposition(
         TopicDetail Topic,
         TopicTest Test,
-        ContentRating Rating,
+        UserContentRating Rating,
         TopicStatistics Statistics,
         bool IsFavorite,
-        TopicSummary[] RelatedTopics
+        UserTopicSummary[] RelatedTopics
     );
 }

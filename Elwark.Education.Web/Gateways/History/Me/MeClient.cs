@@ -17,8 +17,8 @@ namespace Elwark.Education.Web.Gateways.History.Me
         public Task<ApiResponse<UserStatistics>> GetStatisticsAsync() =>
             ExecuteAsync<UserStatistics>(() => _client.GetAsync("history/me/statistics"));
 
-        public Task<ApiResponse<PageResponse<TopicSummary>>> GetFavoritesAsync(PageRequest request) =>
-            ExecuteAsync<PageResponse<TopicSummary>>(() =>
+        public Task<ApiResponse<PageResponse<UserTopicSummary>>> GetFavoritesAsync(PageRequest request) =>
+            ExecuteAsync<PageResponse<UserTopicSummary>>(() =>
                 _client.GetAsync($"history/me/favorites?token={request.Token}&count={request.Count}"));
     }
 }

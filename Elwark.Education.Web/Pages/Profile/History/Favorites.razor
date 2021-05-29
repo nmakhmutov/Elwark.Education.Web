@@ -56,7 +56,7 @@
 
 @code {
     private PageRequest _request = new(null, 20);
-    private ApiResponse<PageResponse<TopicSummary>> _favorites = ApiResponse<PageResponse<TopicSummary>>.Loading();
+    private ApiResponse<PageResponse<UserTopicSummary>> _favorites = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,12 +73,12 @@
         var response = await HistoryClient.Me.GetFavoritesAsync(_request);
         if (response.Status == ResponseStatus.Fail)
         {
-            _favorites = ApiResponse<PageResponse<TopicSummary>>.Fail(response.Error);
+            _favorites = ApiResponse<PageResponse<UserTopicSummary>>.Fail(response.Error);
             return;
         }
 
-        _favorites = ApiResponse<PageResponse<TopicSummary>>.Success(
-            new PageResponse<TopicSummary>(
+        _favorites = ApiResponse<PageResponse<UserTopicSummary>>.Success(
+            new PageResponse<UserTopicSummary>(
                 _favorites.Data.Items.Union(response.Data.Items).ToArray(),
                 response.Data.Token
                 )
