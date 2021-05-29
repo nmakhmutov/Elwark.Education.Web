@@ -1,11 +1,15 @@
 <ul class="@Class">
     @foreach (var item in Items)
     {
-        <li class="d-flex flex-row justify-space-between underline mb-1">
+        <li class="d-flex flex-row align-center underline mb-1">
+            @if (!string.IsNullOrEmpty(item.Color))
+            {
+                <span class="dot" style="background-color: @item.Color"></span>
+            }
             <MudText Typo="Typo.subtitle1">
                 @item.Title
             </MudText>
-            <MudText Typo="Typo.subtitle1">
+            <MudText Typo="Typo.subtitle1" Class="ml-auto">
                 @item.Value
             </MudText>
         </li>
@@ -20,6 +24,6 @@
     [Parameter]
     public Item[] Items { get; set; } = Array.Empty<Item>();
 
-    public sealed record Item(string Title, string Value);
+    public sealed record Item(string Title, string Value, string? Color);
 
 }

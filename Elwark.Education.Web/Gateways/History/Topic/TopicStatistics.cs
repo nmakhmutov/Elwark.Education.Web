@@ -4,13 +4,13 @@ using Elwark.Education.Web.Gateways.Models.TestConclusion;
 
 namespace Elwark.Education.Web.Gateways.History.Topic
 {
-    internal sealed record TopicStatistics(
+    public sealed record TopicStatistics(
         TopicTestStatistics EasyTest,
         TopicTestStatistics HardTest,
-        TestConclusionOverview[] Conclusions
+        TestConclusion[] Conclusions
     );
     
-    internal sealed record TopicTestStatistics(
+    public sealed record TopicTestStatistics(
         Score Score,
         AnswerRatio AnswerRatio,
         TimeSpan TimeSpent,

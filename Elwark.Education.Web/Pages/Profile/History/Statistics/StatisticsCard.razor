@@ -10,14 +10,29 @@
                 <MudText Typo="Typo.h5">
                     @Title
                 </MudText>
-                <MudText Typo="Typo.h5" Color="Color.Secondary">
+                <MudText Typo="Typo.h4">
                     @Subtitle
                 </MudText>
             </div>
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent>
-        @ChildContent
+        @if (Total is not null && Progress is not null)
+        {
+            <div class="grid">
+                <div>
+                    @Total
+                </div>
+                <div>
+                    @Progress
+                </div>
+            </div>
+        }
+        else
+        {
+            @Total
+            @Progress
+        }
     </MudCardContent>
 </MudCard>
 
@@ -36,6 +51,9 @@
     public string Subtitle { get; set; } = string.Empty;
 
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public RenderFragment? Total { get; set; }
+
+    [Parameter]
+    public RenderFragment? Progress { get; set; }
 
 }

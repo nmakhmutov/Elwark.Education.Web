@@ -1,0 +1,44 @@
+@using Elwark.Education.Web.Gateways.History.Topic
+@inject IStringLocalizer<App> L
+
+<div class="@Class">
+    <MudText Typo="Typo.h6" Class="mb-3">
+        @Title
+    </MudText>
+    <MudText Typo="Typo.subtitle1" Class="mb-3">
+        @L["TimeSpent"]: @Statistics.TimeSpent.ToSimpleFormat()
+    </MudText>
+    <DefaultFitGrid>
+        <div>
+            <MudText Typo="Typo.subtitle1" Class="mb-3">
+                @L["Tests"]
+            </MudText>
+            <NumberOfTestChart Value="@Statistics.NumberOfTests"/>
+        </div>
+        <div>
+            <MudText Typo="Typo.subtitle1" Class="mb-3">
+                @L["Score"]
+            </MudText>
+            <ScoreChart Value="@Statistics.Score"/>
+        </div>
+        <div>
+            <MudText Typo="Typo.subtitle1" Class="mb-3">
+                @L["Questions"]
+            </MudText>
+            <AnswerRatioChart Value="@Statistics.AnswerRatio"/>
+        </div>
+    </DefaultFitGrid>
+</div>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public TopicTestStatistics Statistics { get; set; } = default!;
+
+}

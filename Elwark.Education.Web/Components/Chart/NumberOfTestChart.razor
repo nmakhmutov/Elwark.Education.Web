@@ -1,0 +1,52 @@
+@inject IStringLocalizer<App> L
+
+<div class="@Class">
+    <MudChart ChartType="ChartType.Donut" Width="@Size" Height="@Size" InputData="@Data" ChartOptions="@Options"/>
+    <ChartList Items="@Items"/>
+</div>
+
+@code {
+
+    private ChartOptions Options => new()
+    {
+        DisableLegend = true,
+        ChartPalette = Value.Total > 0
+            ? new[]
+            {
+                Colors.Blue.Darken2,
+                Colors.Green.Darken2,
+                Colors.Orange.Darken2
+            }
+            : new[]
+            {
+                Colors.Grey.Lighten1,
+                Colors.Grey.Lighten1,
+                Colors.Grey.Lighten1
+            }
+    };
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Size { get; set; } = "250px";
+
+    [Parameter]
+    public NumberOfTests Value { get; set; } = default!;
+
+    private double[] Data => new double[]
+    {
+        Value.Completed,
+        Value.RepliesExceeded,
+        Value.TimeExceeded
+    };
+
+    private ChartList.Item[] Items => new[]
+    {
+        new ChartList.Item(L["NumberOfTests:Completed"], Value.Completed.ToReadable(), Colors.Blue.Darken2),
+        new ChartList.Item(L["NumberOfTests:RepliesExceeded"], Value.RepliesExceeded.ToReadable(), Colors.Green.Darken2),
+        new ChartList.Item(L["NumberOfTests:TimeExceeded"], Value.TimeExceeded.ToReadable(), Colors.Orange.Darken2),
+        new ChartList.Item(L["NumberOfTests:Total"], Value.Total.ToReadable(), null)
+    };
+
+}

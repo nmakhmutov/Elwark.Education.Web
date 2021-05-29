@@ -3,11 +3,12 @@ using Elwark.Education.Web.Gateways.Models.Test;
 
 namespace Elwark.Education.Web.Gateways.Models.TestConclusion
 {
-    internal sealed record TestConclusionOverview(
-        string TestId,
+    public sealed record TestConclusion(
+        string Id,
         ConclusionStatus Status,
         TestDifficulty Difficulty,
-        ulong TotalScore,
+        Score Score,
+        AnswerRatio AnswerRatio,
         TimeSpan TimeSpent,
         DateTime CompletedAt
     );

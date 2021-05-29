@@ -1,0 +1,52 @@
+@inject IStringLocalizer<App> L
+
+<div class="@Class">
+    <MudChart ChartType="ChartType.Donut" Width="@Size" Height="@Size" InputData="@Data" ChartOptions="@Options"/>
+    <ChartList Items="@Items"/>
+</div>
+
+@code {
+
+    private ChartOptions Options => new()
+    {
+        DisableLegend = true,
+        ChartPalette = Value.Total > 0
+            ? new[]
+            {
+                Colors.Blue.Darken2,
+                Colors.Green.Darken2,
+                Colors.Orange.Darken2
+            }
+            : new[]
+            {
+                Colors.Grey.Lighten1,
+                Colors.Grey.Lighten1,
+                Colors.Grey.Lighten1
+            }
+    };
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Size { get; set; } = "250px";
+
+    [Parameter]
+    public Score Value { get; set; } = default!;
+
+    private double[] Data => new double[]
+    {
+        Value.Questions,
+        Value.Speed,
+        Value.NoMistakes
+    };
+
+    private ChartList.Item[] Items => new[]
+    {
+        new ChartList.Item(L["Score:ByQuestions"], Value.Questions.ToReadable(), Colors.Blue.Darken2),
+        new ChartList.Item(L["Score:BySpeedBonus"], Value.Speed.ToReadable(), Colors.Green.Darken2),
+        new ChartList.Item(L["Score:NoMistakesBonus"], Value.NoMistakes.ToReadable(), Colors.Orange.Darken2),
+        new ChartList.Item(L["Score:Total"], Value.Total.ToReadable(), null)
+    };
+
+}

@@ -1,0 +1,52 @@
+@inject IStringLocalizer<App> L
+
+<div class="@Class">
+    <MudChart ChartType="ChartType.Bar" Width="100%" Height="@Size" ChartSeries="@Series" ChartOptions="@Options"/>
+    <ChartList Items="@Items"/>
+</div>
+
+@code {
+
+    private static readonly ChartOptions Options = new()
+    {
+        DisableLegend = true,
+        InterpolationOption = InterpolationOption.NaturalSpline,
+        XAxisLines = false,
+        YAxisLines = false,
+        YAxisTicks = 10,
+        ChartPalette = new[]
+        {
+            Colors.Blue.Darken2,
+            Colors.Green.Darken2,
+            Colors.Orange.Darken2,
+            Colors.Purple.Darken2
+        }
+    };
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Size { get; set; } = "250px";
+
+    [Parameter]
+    public AnswerRatio Value { get; set; } = default!;
+
+    private List<ChartSeries> Series => new()
+    {
+        new ChartSeries {Data = new double[] {Value.Answered}},
+        new ChartSeries {Data = new double[] {Value.NotAnswered}},
+        new ChartSeries {Data = new double[] {Value.Correct}},
+        new ChartSeries {Data = new double[] {Value.Incorrect}}
+    };
+
+    private ChartList.Item[] Items => new[]
+    {
+        new ChartList.Item(L["Questions:Answered"], Value.Answered.ToReadable(), Colors.Blue.Darken2),
+        new ChartList.Item(L["Questions:NotAnswered"], Value.NotAnswered.ToReadable(), Colors.Green.Darken2),
+        new ChartList.Item(L["Questions:Correct"], Value.Correct.ToReadable(), Colors.Orange.Darken2),
+        new ChartList.Item(L["Questions:Incorrect"], Value.Incorrect.ToReadable(), Colors.Purple.Darken2),
+        new ChartList.Item(L["Questions:Total"], Value.Questions.ToReadable(), null)
+    };
+
+}

@@ -4,22 +4,11 @@
 
 <ul class="@Class">
     <li class="d-flex flex-row justify-space-between underline mb-1">
-        <ConclusionStatusTitle Status="@Status"/>
-    </li>
-    <li class="d-flex flex-row justify-space-between underline mb-1">
         <MudText Typo="Typo.subtitle1">
-            @L["Date"]
+            @L["Difficulty"]
         </MudText>
         <MudText Typo="Typo.subtitle1">
-            @CompletedAt.ToSimpleFormat()
-        </MudText>
-    </li>
-    <li class="d-flex flex-row justify-space-between underline mb-1">
-        <MudText Typo="Typo.subtitle1">
-            @L["Score"]
-        </MudText>
-        <MudText Typo="Typo.subtitle1">
-            @TotalScore.ToReadable()
+            @L[$"Difficulty:{Difficulty}"]
         </MudText>
     </li>
     <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -32,11 +21,83 @@
     </li>
     <li class="d-flex flex-row justify-space-between underline mb-1">
         <MudText Typo="Typo.subtitle1">
-            @L["Difficulty"]
+            @L["Score:Total"]
         </MudText>
         <MudText Typo="Typo.subtitle1">
-            @L[$"Difficulty:{Difficulty}"]
+            @Score.Total.ToReadable()
         </MudText>
+    </li>
+    <li class="d-flex flex-row">
+        <ul class="w-100 ml-6">
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Score:ByQuestions"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @Score.Questions.ToReadable()
+                </MudText>
+            </li>
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Score:BySpeedBonus"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @Score.Speed.ToReadable()
+                </MudText>
+            </li>
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Score:NoMistakesBonus"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @Score.NoMistakes.ToReadable()
+                </MudText>
+            </li>
+        </ul>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["Questions:Total"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @AnswerRatio.Questions.ToReadable()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row">
+        <ul class="w-100 ml-6">
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Questions:Answered"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @AnswerRatio.Answered.ToReadable()
+                </MudText>
+            </li>
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Questions:NotAnswered"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @AnswerRatio.NotAnswered.ToReadable()
+                </MudText>
+            </li>
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Questions:Correct"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @AnswerRatio.Correct.ToReadable()
+                </MudText>
+            </li>
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Questions:Incorrect"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @AnswerRatio.Incorrect.ToReadable()
+                </MudText>
+            </li>
+        </ul>
     </li>
 </ul>
 
@@ -46,18 +107,15 @@
     public string? Class { get; set; }
 
     [Parameter]
-    public ConclusionStatus Status { get; set; }
-
-    [Parameter]
     public TestDifficulty Difficulty { get; set; }
 
     [Parameter]
-    public ulong TotalScore { get; set; }
+    public Score Score { get; set; } = default!;
+
+    [Parameter]
+    public AnswerRatio AnswerRatio { get; set; } = default!;
 
     [Parameter]
     public TimeSpan TimeSpent { get; set; }
-
-    [Parameter]
-    public DateTime CompletedAt { get; set; }
 
 }
