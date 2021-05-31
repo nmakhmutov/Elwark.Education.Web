@@ -1,12 +1,11 @@
 using System;
-using Elwark.Education.Web.Gateways.Models.Test;
 
-namespace Elwark.Education.Web.Gateways.Models.TestConclusion
+namespace Elwark.Education.Web.Gateways.Models.Test
 {
-    public sealed record TestConclusion(
+    public sealed record TestConclusionSummary(
         string Id,
         ConclusionStatus Status,
-        TestDifficulty Difficulty,
+        TestType TestType,
         Score Score,
         AnswerRatio AnswerRatio,
         TimeSpan TimeSpent,

@@ -7,14 +7,14 @@
     @switch (Status)
     {
         case TestStatus.Allowed:
-            foreach (var difficulty in Difficulties)
+            foreach (var testType in TestTypes)
             {
                 <MudButton
                     Variant="Variant.Filled"
                     Disabled="@IsLoading"
-                    Color="@GetButtonColor(difficulty)"
-                    OnClick="@(() => OnTestClick(difficulty))">
-                    @if (difficulty == _difficulty)
+                    Color="@GetButtonColor(testType)"
+                    OnClick="@(() => OnTestClick(testType))">
+                    @if (testType == _testType)
                     {
                         <div class="d-flex flex-row align-center">
                             <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
@@ -23,7 +23,7 @@
                     }
                     else
                     {
-                        @L[$"Test:{difficulty}"]
+                        @L[$"Test:{testType}"]
                     }
                 </MudButton>
             }
@@ -67,7 +67,7 @@
 </div>
 
 @code {
-    private TestDifficulty? _difficulty;
+    private TestType? _testType;
 
     [Parameter]
     public string? Class { get; set; }
@@ -82,21 +82,21 @@
     public SubjectType Subject { get; set; }
 
     [Parameter]
-    public TestDifficulty[] Difficulties { get; set; } = Array.Empty<TestDifficulty>();
+    public TestType[] TestTypes { get; set; } = Array.Empty<TestType>();
 
     [Parameter]
-    public EventCallback<TestDifficulty> OnCreateTestClick { get; set; }
+    public EventCallback<TestType> OnCreateTestClick { get; set; }
 
     protected override void OnParametersSet()
     {
-        if (IsLoading == false && _difficulty.HasValue)
-            _difficulty = null;
+        if (IsLoading == false && _testType.HasValue)
+            _testType = null;
     }
 
-    private async Task OnTestClick(TestDifficulty difficulty)
+    private async Task OnTestClick(TestType testType)
     {
-        _difficulty = difficulty;
-        await OnCreateTestClick.InvokeAsync(difficulty);
+        _testType = testType;
+        await OnCreateTestClick.InvokeAsync(testType);
     }
 
     private void OnBuyClick()
@@ -116,12 +116,12 @@
         Dialog.Show<SubscriptionModal>(null, parameters, options);
     }
 
-    private Color GetButtonColor(TestDifficulty difficulty) =>
-        difficulty switch
+    private Color GetButtonColor(TestType testType) =>
+        testType switch
         {
-            TestDifficulty.Easy => Color.Primary,
-            TestDifficulty.Hard => Color.Tertiary,
-            _ => throw new ArgumentOutOfRangeException(nameof(difficulty), difficulty, null)
+            TestType.Easy => Color.Primary,
+            TestType.Hard => Color.Tertiary,
+            _ => throw new ArgumentOutOfRangeException(nameof(testType), testType, null)
             };
 }
 

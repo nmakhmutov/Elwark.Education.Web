@@ -4,10 +4,7 @@
 <div class="wrapper">
     <div>
         <MudText Typo="Typo.h5">
-            @Title
-        </MudText>
-        <MudText Typo="Typo.body1">
-            @L[$"Test:{Difficulty}"]
+            @L[$"Test:{Type}"]
         </MudText>
     </div>
     <div class="status">
@@ -40,10 +37,7 @@
 @code {
 
     [Parameter]
-    public string Title { get; set; } = string.Empty;
-
-    [Parameter]
-    public TestDifficulty Difficulty { get; set; }
+    public TestType Type { get; set; }
 
     [Parameter]
     public int AnswerAttempts { get; set; }

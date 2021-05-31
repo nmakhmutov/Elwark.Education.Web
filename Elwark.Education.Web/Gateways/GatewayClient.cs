@@ -50,8 +50,9 @@ namespace Elwark.Education.Web.Gateways
             {
                 return ApiResponse<T>.Fail(Error.Unavailable);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await Console.Error.WriteLineAsync($"Deserialization: {ex.Message}");
                 return ApiResponse<T>.Fail(Error.Unknown);
             }
         }

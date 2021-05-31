@@ -23,8 +23,8 @@ namespace Elwark.Education.Web.Gateways.History.Topic
         public Task<ApiResponse<RandomTopic>> GetRandomAsync() =>
             ExecuteAsync<RandomTopic>(() => _client.GetAsync("history/topics/random"));
 
-        public Task<ApiResponse<TestCreatedResult>> CreateTestAsync(string id, TestDifficulty difficulty) =>
-            ExecuteAsync<TestCreatedResult>(() => _client.PostAsync($"history/topics/{id}/test?difficulty={difficulty}", EmptyContent));
+        public Task<ApiResponse<TestCreatedResult>> CreateTestAsync(string id, TestType testType) =>
+            ExecuteAsync<TestCreatedResult>(() => _client.PostAsync($"history/topics/{id}/test?testType={testType}", EmptyContent));
         
         public Task<ApiResponse<bool>> ToggleFavoriteAsync(string id) =>
             ExecuteAsync<bool>(() => _client.PostAsync($"history/topics/{id}/favorite", EmptyContent));

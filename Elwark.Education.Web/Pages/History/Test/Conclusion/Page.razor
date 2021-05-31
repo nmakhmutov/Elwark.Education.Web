@@ -1,0 +1,128 @@
+@page "/history/test/{id}/conclusion"
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.History.Test
+@using Elwark.Education.Web.Gateways.Models.Test
+
+@inject IHistoryClient HistoryClient
+@inject IStringLocalizer<App> L
+
+@attribute [Authorize]
+
+<MainContainer>
+    <ApiResponseViewer Response="@_response">
+        <Placeholder>
+            <section class="section">
+                <div class="container">
+                    <MudPaper Class="pa-3">
+                        <MudSkeleton Width="30%"/>
+                        <MudSkeleton Width="100%"/>
+                    </MudPaper>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <DefaultFitGrid>
+                        <SkeletonCard/>
+                        <SkeletonCard/>
+                        <SkeletonCard/>
+                    </DefaultFitGrid>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <SkeletonCard/>
+                </div>
+            </section>
+        </Placeholder>
+        <Result Context="conclusion">
+            @switch (conclusion)
+            {
+                case EasyTestConclusion test:
+                    <Title Value="@test.Title"/>
+
+                    <section class="section">
+                        <div class="container mud-paper mud-elevation-1">
+                            <ConclusionLinkHeader
+                                Title="@test.Title"
+                                Type="@TestType.Easy"
+                                Status="@conclusion.Status"
+                                CompletedAt="@conclusion.CompletedAt"
+                                Link="@Links.History.Topic(test.TopicId)"/>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <div class="container">
+                            <div class="mb-3">
+                                <MudLink Href="@Links.Profile.Statistics(SubjectType.History)" Typo="Typo.h5">
+                                    @L["Statistics"]
+                                </MudLink>
+                            </div>
+                            <ConclusionCharts Conclusion="@test"/>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <div class="container">
+                            <MudText Typo="Typo.h5" Class="mb-3">
+                                @L["Answers"]
+                            </MudText>
+                            <EasyQuestionTable Questions="@test.Questions"/>
+                        </div>
+                    </section>
+                    break;
+
+                case HardTestConclusion test:
+                    <Title Value="@test.Title"/>
+
+                    <section class="section">
+                        <div class="container mud-paper mud-elevation-1">
+                            <ConclusionLinkHeader
+                                Title="@test.Title"
+                                Type="@TestType.Hard"
+                                Status="@conclusion.Status"
+                                CompletedAt="@conclusion.CompletedAt"
+                                Link="@Links.History.Topic(test.TopicId)"/>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <div class="container">
+                            <div class="mb-3">
+                                <MudLink Href="@Links.Profile.Statistics(SubjectType.History)" Typo="Typo.h5">
+                                    @L["Statistics"]
+                                </MudLink>
+                            </div>
+                            <ConclusionCharts Conclusion="@test"/>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <div class="container">
+                            <MudText Typo="Typo.h5" Class="mb-3">
+                                @L["Answers"]
+                            </MudText>
+                            <HardQuestionTable Questions="@test.Questions"/>
+                        </div>
+                    </section>
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(conclusion));
+            }
+
+        </Result>
+    </ApiResponseViewer>
+</MainContainer>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    private ApiResponse<TestConclusion> _response = ApiResponse<TestConclusion>.Loading();
+
+    protected override async Task OnParametersSetAsync() =>
+        _response = await HistoryClient.Test.GetConclusionAsync(Id);
+
+}

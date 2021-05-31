@@ -1,0 +1,34 @@
+@using Elwark.Education.Web.Gateways.History.Test
+@inject IStringLocalizer<App> L
+
+<MudTable Items="@Questions" Hover="true" Breakpoint="Breakpoint.Sm">
+    <HeaderContent>
+        <MudTh>
+            @L["Question"]
+        </MudTh>
+        <MudTh>
+            @L["Question:IsAnswered"]
+        </MudTh>
+        <MudTh>
+            @L["Question:IsCorrect"]
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="@L["Question"]">
+            @context.Title
+        </MudTd>
+        <MudTd DataLabel="@L["Question:IsAnswered"]">
+            <MudCheckBox ReadOnly="true" Checked="@context.IsAnswered"/>
+        </MudTd>
+        <MudTd DataLabel="@L["Question:IsCorrect"]">
+            <MudCheckBox ReadOnly="true" Checked="@context.IsCorrect"/>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+
+    [Parameter]
+    public HardTestConclusion.Question[] Questions { get; set; } = Array.Empty<HardTestConclusion.Question>();
+
+}

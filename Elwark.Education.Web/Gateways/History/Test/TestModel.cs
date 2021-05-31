@@ -5,11 +5,10 @@ namespace Elwark.Education.Web.Gateways.History.Test
 {
     internal sealed record TestModel(
         string Id,
-        string Title,
-        TestDifficulty Difficulty,
+        TestType TestType,
         int AnswerAttempts,
         DateTime CreatedAt,
         DateTime ExpiredAt,
-        TestQuestionModel[] Questions
+        TestQuestion[] Questions
     );
 }

@@ -14,13 +14,12 @@
             <PageLoader/>
         </Placeholder>
         <Result Context="test">
-            <Title Value="@test.Title"/>
+            <Title Value="@L[$"TestType:{test.TestType}"]"/>
 
             <section class="section">
                 <div class="container mud-paper mud-elevation-1">
                     <TestHeader
-                        Difficulty="@test.Difficulty"
-                        Title="@test.Title"
+                        Type="@test.TestType"
                         AnswerAttempts="@test.AnswerAttempts"
                         CurrentQuestion="@(_questionIndex + 1)"
                         TotalQuestions="@_questions.Count"
@@ -51,7 +50,7 @@
     private bool _isTestComplete;
     private Color _countdownColor = Color.Default;
     private ApiResponse<TestModel> _test = ApiResponse<TestModel>.Loading();
-    private List<TestQuestionModel> _questions = new();
+    private List<TestQuestion> _questions = new();
     private int _questionIndex;
     private TestAnswerResult? _answerResult;
 
@@ -131,7 +130,7 @@
                 _test = ApiResponse<TestModel>.Success(_test.Data with{AnswerAttempts = _test.Data.AnswerAttempts - 1});
             }
             
-            if (_test.Data.Difficulty == TestDifficulty.Easy)
+            if (_test.Data.TestType == TestType.Easy)
             {
                 var wrong = _questions.First(x => x.Id == _questions[_questionIndex].Id);
                 _questions.Add(wrong with{Options = wrong.Options.OrderBy(_ => Guid.NewGuid()).ToArray()});

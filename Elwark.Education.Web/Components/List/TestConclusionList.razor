@@ -1,14 +1,13 @@
-@using Elwark.Education.Web.Gateways.Models.TestConclusion
 @using Elwark.Education.Web.Gateways.Models.Test
 @inject IStringLocalizer<App> L
 
 <ul class="@Class">
     <li class="d-flex flex-row justify-space-between underline mb-1">
         <MudText Typo="Typo.subtitle1">
-            @L["Difficulty"]
+            @L["Test:Type"]
         </MudText>
         <MudText Typo="Typo.subtitle1">
-            @L[$"Difficulty:{Difficulty}"]
+            @L[$"Test:{TestType}"]
         </MudText>
     </li>
     <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -107,7 +106,7 @@
     public string? Class { get; set; }
 
     [Parameter]
-    public TestDifficulty Difficulty { get; set; }
+    public TestType TestType { get; set; }
 
     [Parameter]
     public Score Score { get; set; } = default!;

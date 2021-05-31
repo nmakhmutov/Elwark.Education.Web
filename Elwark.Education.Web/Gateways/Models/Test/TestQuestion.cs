@@ -1,6 +1,6 @@
 namespace Elwark.Education.Web.Gateways.Models.Test
 {
-    public sealed record TestQuestionModel(
+    public sealed record TestQuestion(
         string Id,
         QuestionType Type,
         string Title,

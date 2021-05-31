@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Elwark.Education.Web.Infrastructure.Converters
 {
-    internal class HistoryTopicDetailJsonConverter : JsonConverter<TopicDetail?>
+    internal sealed class HistoryTopicDetailJsonConverter : JsonConverter<TopicDetail?>
     {
         private const string Type = "type";
 
