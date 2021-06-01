@@ -11,9 +11,9 @@
 
 <ApiResponseViewer Response="@_response">
     <Placeholder>
-        <div class="mb-3 mb-sm-6">
+        <h2 class="title">
             <MudSkeleton SkeletonType="SkeletonType.Text" Height="35px" Width="80%"/>
-        </div>
+        </h2>
         <div class="grid">
             <SkeletonCard/>
             <SkeletonCard/>
@@ -24,10 +24,10 @@
     <Result Context="result">
         <Title Value="@L["Statistics"]"/>
 
-        <MudText Typo="Typo.h5" Class="mb-3 mb-sm-6">
+        <h2 class="title">
             @L["Tests:Easy"]
-        </MudText>
-        <div class="grid mb-12">
+        </h2>
+        <div class="grid">
             <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.EasyTest.NumberOfTests.Total.Total.ToReadable()">
                 <Total>
                     <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
@@ -66,10 +66,10 @@
             </StatisticsCard>
         </div>
 
-        <MudText Typo="Typo.h5" Class="mb-3 mb-sm-6">
+        <h2 class="title mt-6 mt-sm-12">
             @L["Tests:Hard"]
-        </MudText>
-        <div class="grid mb-12">
+        </h2>
+        <div class="grid">
             <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.HardTest.NumberOfTests.Total.Total.ToReadable()">
                 <Total>
                     <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>

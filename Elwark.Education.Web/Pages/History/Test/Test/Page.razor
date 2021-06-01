@@ -14,7 +14,7 @@
             <PageLoader/>
         </Placeholder>
         <Result Context="test">
-            <Title Value="@L[$"TestType:{test.TestType}"]"/>
+            <Title Value="@L[$"Test:{test.TestType}"]"/>
 
             <section class="section">
                 <div class="container mud-paper mud-elevation-1">
@@ -35,7 +35,8 @@
                         Question="@_questions[_questionIndex]"
                         AnswerResult="@_answerResult"
                         OnAnswer="@OnAnswer"
-                        OnNext="@NextQuestion"/>
+                        OnNext="@NextQuestion"
+                        OnSkip="@OnSkip"/>
                 </div>
             </section>
         </Result>
@@ -150,6 +151,13 @@
         _answerResult = null;
     }
 
+    private void OnSkip()
+    {
+        var question = _questions[_questionIndex];
+        _questions.RemoveAt(_questionIndex);
+        _questions.Add(question);
+    }
+    
     private async Task OnExpired()
     {
         _countdownColor = Color.Error;

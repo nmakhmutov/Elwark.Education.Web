@@ -46,6 +46,7 @@
 
         <section class="section pt-3 pt-sm-6">
             <div class="container mud-paper pa-3">
+
                 <div class="content-header">
                     <div class="contents">
                         <MudText Typo="Typo.h6">
@@ -69,11 +70,8 @@
                             OnLikeClick="@OnLikeClick"
                             OnDislikeClick="@OnDislikeClick"/>
                     </div>
-                    <div class="test-buttons">
-                        <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="mb-3">
-                            <strong>@L["Test:CheckYourKnowledge"]</strong>
-                        </MudText>
-                        <TestButtons
+                    <div class="test">
+                        <CreateTestButtons
                             TestTypes="@result.Test.TestTypes"
                             Status="@result.Test.Status"
                             Subject="@SubjectType.History"
@@ -81,6 +79,8 @@
                             OnCreateTestClick="@CreateTestAsync"/>
                     </div>
                 </div>
+
+                <MudDivider DividerType="DividerType.Middle" Class="my-6 my-sm-8 my-md-12"/>
 
                 @foreach (var (title, subtitle, content) in result.Topic.Chapters)
                 {
@@ -141,6 +141,14 @@
                         </MudLink>
                     </div>
                     <MudPaper Class="pa-3">
+                        <div class="mb-6">
+                            <CreateTestButtons
+                                TestTypes="@result.Test.TestTypes"
+                                Status="@result.Test.Status"
+                                Subject="@SubjectType.History"
+                                IsLoading="@(_test?.Status == ResponseStatus.Loading)"
+                                OnCreateTestClick="@CreateTestAsync"/>
+                        </div>
                         @if (result.Test.TestTypes.Contains(TestType.Easy))
                         {
                             <TestStatisticsGrid Class="mb-3" Title="@L["Tests:Easy"]" Statistics="@result.Statistics.EasyTest"/>

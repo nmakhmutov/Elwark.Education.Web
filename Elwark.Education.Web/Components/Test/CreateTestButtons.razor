@@ -3,65 +3,60 @@
 @inject ErrorManager ErrorManager
 @inject IDialogService Dialog
 
-<div class="grid @Class">
+<div class="@Class">
     @switch (Status)
     {
         case TestStatus.Allowed:
-            foreach (var testType in TestTypes)
-            {
-                <MudButton
-                    Variant="Variant.Filled"
-                    Disabled="@IsLoading"
-                    Color="@GetButtonColor(testType)"
-                    OnClick="@(() => OnTestClick(testType))">
-                    @if (testType == _testType)
-                    {
-                        <div class="d-flex flex-row align-center">
-                            <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
-                            @L["Loading"]
-                        </div>
-                    }
-                    else
-                    {
-                        @L[$"Test:{testType}"]
-                    }
-                </MudButton>
-            }
+            <MudText Typo="Typo.h6" Class="mb-3">
+                @L["Test:CheckYourKnowledge"]
+            </MudText>
+            <div class="grid">
+                @foreach (var testType in TestTypes)
+                {
+                    <MudButton
+                        Variant="Variant.Filled"
+                        Disabled="@IsLoading"
+                        Color="@GetButtonColor(testType)"
+                        OnClick="@(() => OnTestClick(testType))">
+                        @if (testType == _testType)
+                        {
+                            <div class="d-flex flex-row align-center">
+                                <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                                @L["Loading"]
+                            </div>
+                        }
+                        else
+                        {
+                            @L[$"Test:{testType}"]
+                        }
+                    </MudButton>
+                }
+            </div>
             break;
 
         case TestStatus.TestCreationMaximum:
         case TestStatus.AnswerCreationMaximum:
-            <div class="full-row">
-                <MudText Typo="Typo.body2" Color="Color.Info">
-                    @ErrorManager.Localize(Status)
-                </MudText>
-            </div>
-            <div class="full-row centered-row">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnBuyClick">
-                    @L["Subscription:PricingPlan"]
-                </MudButton>
-            </div>
+            <MudText Typo="Typo.body2" Color="Color.Info" Class="mb-3">
+                @ErrorManager.Localize(Status)
+            </MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnBuyClick">
+                @L["Subscription:Upgrade"]
+            </MudButton>
             break;
 
         case TestStatus.CurrentTestsMaximum:
-            <div class="full-row">
-                <MudText Typo="Typo.body2" Color="Color.Info">
-                    @ErrorManager.Localize(Status)
-                </MudText>
-            </div>
-            <div class="full-row centered-row">
-                <MudButton Variant="Variant.Filled" Link="@Links.Profile.Index" Color="Color.Primary">
-                    @L["Profile"]
-                </MudButton>
-            </div>
+            <MudText Typo="Typo.body2" Color="Color.Info" Class="mb-3">
+                @ErrorManager.Localize(Status)
+            </MudText>
+            <MudButton Variant="Variant.Filled" Link="@Links.Profile.Index" Color="Color.Primary">
+                @L["Profile"]
+            </MudButton>
             break;
 
         default:
-            <div class="full-row">
-                <MudText Typo="Typo.body2" Color="Color.Info">
-                    @ErrorManager.Localize(Status)
-                </MudText>
-            </div>
+            <MudText Typo="Typo.body2" Color="Color.Info">
+                @ErrorManager.Localize(Status)
+            </MudText>
             break;
     }
 </div>
@@ -123,5 +118,5 @@
             TestType.Hard => Color.Tertiary,
             _ => throw new ArgumentOutOfRangeException(nameof(testType), testType, null)
             };
-}
 
+}

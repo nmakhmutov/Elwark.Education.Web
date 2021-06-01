@@ -135,54 +135,67 @@
                 throw new ArgumentOutOfRangeException(nameof(Question.Type), Question.Title, null);
         }
 
-        <div class="mx-auto">
-            @switch (_answerState)
-            {
-                case AnswerState.Answer:
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">
-                        @L["Test:Answer"]
-                    </MudButton>
-                    break;
+        <div class="button-grid">
+            <div class="answer-container">
+                <div class="d-flex justify-center">
+                    @switch (_answerState)
+                    {
+                        case AnswerState.Answer:
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">
+                                @L["Test:Answer"]
+                            </MudButton>
+                            break;
 
-                case AnswerState.Answering:
-                    <MudButton Variant="Variant.Filled" Disabled="true">
-                        <div class="d-flex flex-row align-center">
-                            <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
-                            @L["Loading"]
-                        </div>
-                    </MudButton>
-                    break;
+                        case AnswerState.Answering:
+                            <MudButton Variant="Variant.Filled" Disabled="true">
+                                <div class="d-flex flex-row align-center">
+                                    <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                                    @L["Loading"]
+                                </div>
+                            </MudButton>
+                            break;
 
-                case AnswerState.Next:
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnNextClick">
-                        @(AnswerResult?.IsTestComplete == true ? L["Test:Result"] : L["Test:Next"])
-                    </MudButton>
-                    break;
-            }
+                        case AnswerState.Next:
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnNextClick">
+                                @(AnswerResult?.IsTestComplete == true ? L["Test:Result"] : L["Test:Next"])
+                            </MudButton>
+                            break;
+                    }
+                </div>
+                @if (AnswerResult is null)
+                {
+                    <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@Color.Error">
+                        <ValidationSummary/>
+                    </MudText>
+                }
+                else
+                {
+                    if (AnswerResult.IsAnswerCorrect)
+                    {
+                        <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@Color.Success">
+                            @L["Test:CorrectAnswer"]
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@Color.Error">
+                            @L["Test:IncorrectAnswer"]
+                        </MudText>
+                    }
+                }
+            </div>
+            <div class="skip-container">
+                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@OnSkip">
+                    @L["Test:SkipQuestion"]
+                </MudButton>
+            </div>
+            <div class="delete-container">
+                <MudButton Variant="Variant.Text" Color="Color.Error" Disabled="true">
+                    @L["Test:DeleteQuestion"]
+                </MudButton>
+            </div>
         </div>
 
-        @if (AnswerResult is null)
-        {
-            <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@Color.Error">
-                <ValidationMessage For="@(() => _answer.SingleAnswer)"/>
-                <ValidationMessage For="@(() => _answer.ManyAnswer)"/>
-            </MudText>
-        }
-        else
-        {
-            if (AnswerResult.IsAnswerCorrect)
-            {
-                <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@Color.Success">
-                    @L["Test:CorrectAnswer"]
-                </MudText>
-            }
-            else
-            {
-                <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@Color.Error">
-                    @L["Test:IncorrectAnswer"]
-                </MudText>
-            }
-        }
     </div>
 </EditForm>
 
@@ -205,6 +218,9 @@
 
     [Parameter]
     public EventCallback OnNext { get; set; }
+    
+    [Parameter]
+    public EventCallback OnSkip { get; set; }
 
     protected override void OnParametersSet()
     {
