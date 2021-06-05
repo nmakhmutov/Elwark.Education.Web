@@ -1,11 +1,12 @@
 ﻿@page "/authentication/{action}"
 @using Elwark.Education.Web.Gateways.User
 
-@inject IUserClient UserClient
-
 <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnSuccessCallback"/>
 
 @code{
+
+    [Inject]
+    private IUserClient UserClient { get; set; } = default!;
 
     [Parameter]
     public string? Action { get; set; }

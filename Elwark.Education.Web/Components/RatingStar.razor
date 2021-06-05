@@ -1,5 +1,4 @@
 @using Elwark.Education.Web.Gateways.Models.Content
-@inject IStringLocalizer<App> L
 
 <MudTooltip Placement="@Placement" Text="@L["Rating"]">
     <div class="d-flex flex-row align-center">
@@ -12,6 +11,9 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public ContentRating Rating { get; set; } = default!;
 

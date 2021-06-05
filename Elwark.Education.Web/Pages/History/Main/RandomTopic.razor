@@ -1,8 +1,4 @@
 @using Elwark.Education.Web.Gateways.History
-@inject IStringLocalizer<App> L
-@inject IHistoryClient Client
-@inject NavigationManager Navigation
-
 <div Class="container @Class">
     <div class="image" style="background-image: url('@SubjectType.History.GetStatic().Image')">
         <div class="cover">
@@ -25,6 +21,15 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient Client { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
     [Parameter]
     public string? Class { get; set; }
 
@@ -39,7 +44,7 @@
 
         var result = await Client.Topic.GetRandomAsync();
         if (result.Status == ResponseStatus.Success)
-            Navigation.NavigateTo(Links.History.Topic(result.Data.Id));
+            Navigation.NavigateTo(Links.Subject.History.Topic(result.Data.Id));
 
         _isLoading = false;
     }

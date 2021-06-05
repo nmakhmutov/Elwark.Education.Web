@@ -1,11 +1,21 @@
-@inject IStringLocalizer<App> L
-
 <div class="@Class">
     <MudChart ChartType="ChartType.Bar" Width="100%" Height="@Size" ChartSeries="@Series" ChartOptions="@Options"/>
     <ChartList Items="@Items"/>
 </div>
 
 @code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Size { get; set; } = "250px";
+
+    [Parameter]
+    public AnswerRatio Value { get; set; } = default!;
 
     private static readonly ChartOptions Options = new()
     {
@@ -22,16 +32,7 @@
             Colors.Purple.Darken2
         }
     };
-
-    [Parameter]
-    public string? Class { get; set; }
-
-    [Parameter]
-    public string Size { get; set; } = "250px";
-
-    [Parameter]
-    public AnswerRatio Value { get; set; } = default!;
-
+    
     private List<ChartSeries> Series => new()
     {
         new ChartSeries {Data = new double[] {Value.Answered}},

@@ -3,9 +3,6 @@
 @using Elwark.Education.Web.Gateways.History.Test
 @using Elwark.Education.Web.Gateways.Models.Test
 
-@inject IHistoryClient HistoryClient
-@inject IStringLocalizer<App> L
-
 @attribute [Authorize]
 
 <MainContainer>
@@ -38,7 +35,7 @@
             @switch (conclusion)
             {
                 case EasyTestConclusion test:
-                    <Title Value="@test.Title"/>
+                    <Title Value="@test.Title"></Title>
 
                     <section class="section">
                         <div class="container mud-paper mud-elevation-1">
@@ -47,14 +44,14 @@
                                 Type="@TestType.Easy"
                                 Status="@conclusion.Status"
                                 CompletedAt="@conclusion.CompletedAt"
-                                Link="@Links.History.Topic(test.TopicId)"/>
+                                Link="@Links.Subject.History.Topic(test.TopicId)"/>
                         </div>
                     </section>
 
                     <section class="section">
                         <div class="container">
                             <div class="mb-3">
-                                <MudLink Href="@Links.Profile.Statistics(SubjectType.History)" Typo="Typo.h5">
+                                <MudLink Href="@Links.Profile.History.Statistics" Typo="Typo.h5">
                                     @L["Statistics"]
                                 </MudLink>
                             </div>
@@ -73,7 +70,7 @@
                     break;
 
                 case HardTestConclusion test:
-                    <Title Value="@test.Title"/>
+                    <Title Value="@test.Title"></Title>
 
                     <section class="section">
                         <div class="container mud-paper mud-elevation-1">
@@ -82,14 +79,14 @@
                                 Type="@TestType.Hard"
                                 Status="@conclusion.Status"
                                 CompletedAt="@conclusion.CompletedAt"
-                                Link="@Links.History.Topic(test.TopicId)"/>
+                                Link="@Links.Subject.History.Topic(test.TopicId)"/>
                         </div>
                     </section>
 
                     <section class="section">
                         <div class="container">
                             <div class="mb-3">
-                                <MudLink Href="@Links.Profile.Statistics(SubjectType.History)" Typo="Typo.h5">
+                                <MudLink Href="@Links.Profile.History.Statistics" Typo="Typo.h5">
                                     @L["Statistics"]
                                 </MudLink>
                             </div>
@@ -116,6 +113,12 @@
 </MainContainer>
 
 @code {
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;

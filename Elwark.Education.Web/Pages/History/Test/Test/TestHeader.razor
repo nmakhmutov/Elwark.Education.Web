@@ -1,5 +1,4 @@
 @using Elwark.Education.Web.Gateways.Models.Test
-@inject IStringLocalizer<App> L
 
 <div class="wrapper">
     <div>
@@ -36,6 +35,9 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public TestType Type { get; set; }
 

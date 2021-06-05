@@ -1,7 +1,4 @@
 @using Elwark.Education.Web.Infrastructure.LocalStorage
-@inject ILocalStorage LocalStorage
-@inject NavigationManager NavigationManager
-
 <MudMenu Icon="@Icons.Filled.Translate" Color="Color.Inherit" OffsetX="true" Direction="Direction.Left">
     @foreach (var (culture, name) in _cultures)
     {
@@ -12,6 +9,12 @@
 </MudMenu>
 
 @code {
+
+    [Inject]
+    private ILocalStorage LocalStorage { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
 
     private IReadOnlyDictionary<string, string> _cultures = new Dictionary<string, string>
     {

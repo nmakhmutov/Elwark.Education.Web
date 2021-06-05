@@ -2,8 +2,6 @@
 @using Elwark.Education.Web.Gateways.History
 @layout ProfileLayout
 
-@inject IHistoryClient HistoryClient
-@inject IStringLocalizer<App> L
 @attribute [Authorize]
 
 <DefaultFillGrid>
@@ -22,7 +20,7 @@
                 {
                     <TopicCard
                         Id="@item.Id"
-                        Href="@Links.History.Topic(item.Id)"
+                        Href="@Links.Subject.History.Topic(item.Id)"
                         Image="@item.Image"
                         Title="@item.Title"
                         Subtitle="@item.Overview"
@@ -55,6 +53,13 @@
 </DefaultFillGrid>
 
 @code {
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
     private PageRequest _request = new(null, 20);
     private ApiResponse<PageResponse<UserTopicSummary>> _favorites = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
 

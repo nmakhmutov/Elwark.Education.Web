@@ -1,164 +1,53 @@
 @page "/profile/history/statistics"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.History.Me
-@using Elwark.Education.Web.Gateways.Models.Statistics
 @layout ProfileLayout
-
-@inject IHistoryClient HistoryClient
-@inject IStringLocalizer<App> L
 
 @attribute [Authorize]
 
-<ApiResponseViewer Response="@_response">
-    <Placeholder>
-        <h2 class="title">
-            <MudSkeleton SkeletonType="SkeletonType.Text" Height="35px" Width="80%"/>
-        </h2>
-        <div class="grid">
+<DefaultFillGrid>
+    <ApiResponseViewer Response="@_response">
+        <Placeholder>
             <SkeletonCard/>
             <SkeletonCard/>
             <SkeletonCard/>
             <SkeletonCard/>
-        </div>
-    </Placeholder>
-    <Result Context="result">
-        <Title Value="@L["Statistics"]"/>
+        </Placeholder>
+        <Result Context="result">
+            <Title Value="@L["Statistics"]"></Title>
 
-        <h2 class="title">
-            @L["Tests:Easy"]
-        </h2>
-        <div class="grid">
-            <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.EasyTest.NumberOfTests.Total.Total.ToReadable()">
-                <Total>
-                    <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
-                    <NumberOfTestChart Value="@result.EasyTest.NumberOfTests.Total"/>
-                </Total>
-                <Progress>
-                    <Subheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.EasyTest.NumberOfTests.Progress)"/>
-                    <ProgressList Items="@GetProgress(result.EasyTest.NumberOfTests.Progress)"/>
-                </Progress>
+            <StatisticsCard
+                Icon="@Icons.Filled.School"
+                Title="@L["Tests:Easy"]"
+                Subtitle="@result.EasyTest.NumberOfTests.Total.ToReadable()"
+                Href="@Links.Profile.History.EasyTestStatistics">
+                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <ScoreChart Value="@result.EasyTest.Score"/>
             </StatisticsCard>
-            <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Subtitle="@result.EasyTest.Score.Total.Total.ToReadable()">
-                <Total>
-                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <ScoreChart Value="@result.EasyTest.Score.Total"/>
-                </Total>
-                <Progress>
-                    <Subheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.EasyTest.Score.Progress)"/>
-                    <ProgressList Items="@GetProgress(result.EasyTest.Score.Progress)"/>
-                </Progress>
-            </StatisticsCard>
-            <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Subtitle="@result.EasyTest.AnswerRatio.Total.Questions.ToReadable()">
-                <Total>
-                    <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
-                    <AnswerRatioChart Value="@result.EasyTest.AnswerRatio.Total"/>
-                </Total>
-                <Progress>
-                    <Subheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.EasyTest.AnswerRatio.Progress)"/>
-                    <ProgressList Items="@GetProgress(result.EasyTest.AnswerRatio.Progress)"/>
-                </Progress>
-            </StatisticsCard>
-            <StatisticsCard Icon="@Icons.Filled.Timer" Title="@L["TimeSpent"]" Subtitle="@result.EasyTest.TimeSpent.Total.ToSimpleFormat()">
-                <Progress>
-                    <Subheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.EasyTest.TimeSpent.Progress)"/>
-                    <ProgressList Items="@GetProgress(result.EasyTest.TimeSpent.Progress)"/>
-                </Progress>
-            </StatisticsCard>
-        </div>
 
-        <h2 class="title mt-6 mt-sm-12">
-            @L["Tests:Hard"]
-        </h2>
-        <div class="grid">
-            <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.HardTest.NumberOfTests.Total.Total.ToReadable()">
-                <Total>
-                    <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
-                    <NumberOfTestChart Value="@result.HardTest.NumberOfTests.Total"/>
-                </Total>
-                <Progress>
-                    <Subheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.HardTest.NumberOfTests.Progress)"/>
-                    <ProgressList Items="@GetProgress(result.HardTest.NumberOfTests.Progress)"/>
-                </Progress>
+            <StatisticsCard 
+                Icon="@Icons.Filled.School" 
+                Title="@L["Tests:Hard"]" 
+                Subtitle="@result.HardTest.NumberOfTests.Total.ToReadable()"
+                Href="@Links.Profile.History.HardTestStatistics">
+                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <ScoreChart Value="@result.HardTest.Score"/>
             </StatisticsCard>
-            <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Subtitle="@result.HardTest.Score.Total.Total.ToReadable()">
-                <Total>
-                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <ScoreChart Value="@result.HardTest.Score.Total"/>
-                </Total>
-                <Progress>
-                    <Subheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.HardTest.Score.Progress)"/>
-                    <ProgressList Items="@GetProgress(result.HardTest.Score.Progress)"/>
-                </Progress>
-            </StatisticsCard>
-            <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Subtitle="@result.HardTest.AnswerRatio.Total.Questions.ToReadable()">
-                <Total>
-                    <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
-                    <AnswerRatioChart Value="@result.HardTest.AnswerRatio.Total"/>
-                </Total>
-                <Progress>
-                    <Subheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.HardTest.AnswerRatio.Progress)"/>
-                    <ProgressList Items="@GetProgress(result.HardTest.AnswerRatio.Progress)"/>
-                </Progress>
-            </StatisticsCard>
-            <StatisticsCard Icon="@Icons.Filled.Timer" Title="@L["TimeSpent"]" Subtitle="@result.HardTest.TimeSpent.Total.ToSimpleFormat()">
-                <Progress>
-                    <Subheader Title="@L["Progress"]" Subtitle="@RangeTitle(result.HardTest.TimeSpent.Progress)"/>
-                    <ProgressList Items="@GetProgress(result.HardTest.TimeSpent.Progress)"/>
-                </Progress>
-            </StatisticsCard>
-        </div>
-    </Result>
-</ApiResponseViewer>
+        </Result>
+    </ApiResponseViewer>
+</DefaultFillGrid>
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
     private ApiResponse<UserStatistics> _response = ApiResponse<UserStatistics>.Loading();
 
-    protected override async Task OnParametersSetAsync() => _response = await HistoryClient.Me.GetStatisticsAsync();
-
-    private static string RangeTitle(NumberOfTestsProgress progress) =>
-        RangeTitle(progress.Starts, progress.Ends);
-
-    private static string RangeTitle(ScoreProgress progress) =>
-        RangeTitle(progress.Starts, progress.Ends);
-
-    private static string RangeTitle(TimeSpentProgress progress) =>
-        RangeTitle(progress.Starts, progress.Ends);
-
-    private static string RangeTitle(AnswerRatioProgress progress) =>
-        RangeTitle(progress.Starts, progress.Ends);
-
-    private static string RangeTitle(DateTime starts, DateTime ends) =>
-        $"{starts:dd MMM} ― {ends:dd MMM}";
-
-    private ProgressList.Item[] GetProgress(NumberOfTestsProgress progress) => new ProgressList.Item[]
-    {
-        new(L["NumberOfTests:Completed"], progress.Completed.Current.ToReadable(), progress.Completed.Difference),
-        new(L["NumberOfTests:RepliesExceeded"], progress.RepliesExceeded.Current.ToReadable(), progress.RepliesExceeded.Difference),
-        new(L["NumberOfTests:TimeExceeded"], progress.TimeExceeded.Current.ToReadable(), progress.TimeExceeded.Difference),
-        new(L["NumberOfTests:Total"], progress.Total.Current.ToReadable(), progress.Total.Difference),
-    };
-
-    private ProgressList.Item[] GetProgress(ScoreProgress progress) => new ProgressList.Item[]
-    {
-        new(L["Score:ByQuestions"], progress.Questions.Current.ToReadable(), progress.Questions.Difference),
-        new(L["Score:BySpeedBonus"], progress.Speed.Current.ToReadable(), progress.Speed.Difference),
-        new(L["Score:NoMistakesBonus"], progress.NoMistakes.Current.ToReadable(), progress.NoMistakes.Difference),
-        new(L["Score:Total"], progress.Total.Current.ToReadable(), progress.Total.Difference)
-    };
-
-    private ProgressList.Item[] GetProgress(AnswerRatioProgress progress) => new ProgressList.Item[]
-    {
-        new(L["Questions:Answered"], progress.Answered.Current.ToReadable(), progress.Answered.Difference),
-        new(L["Questions:NotAnswered"], progress.NotAnswered.Current.ToReadable(), progress.NotAnswered.Difference),
-        new(L["Questions:Correct"], progress.Correct.Current.ToReadable(), progress.Questions.Difference),
-        new(L["Questions:Incorrect"], progress.Incorrect.Current.ToReadable(), progress.Incorrect.Difference),
-        new(L["Questions:Total"], progress.Questions.Current.ToReadable(), progress.Questions.Difference)
-    };
-
-    private ProgressList.Item[] GetProgress(TimeSpentProgress progress) => new ProgressList.Item[]
-    {
-        new(L["TimeSpent"], progress.TimeSpent.Current.ToSimpleFormat(), progress.TimeSpent.Difference)
-    };
+    protected override async Task OnParametersSetAsync() =>
+        _response = await HistoryClient.Me.GetStatisticsAsync();
 
 }

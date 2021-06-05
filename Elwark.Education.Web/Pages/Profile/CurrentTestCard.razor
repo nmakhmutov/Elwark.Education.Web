@@ -1,11 +1,10 @@
 @using Elwark.Education.Web.Gateways.Models.User
-@inject IStringLocalizer<App> L
 
 <div class="@Class pa-4">
     <div class="header">
         <SubjectIcon SubjectType="@Test.SubjectType" Size="Size.Medium"/>
         <div>
-            <MudLink Typo="Typo.subtitle1" Href="@Links.Subjects.Test(Test.SubjectType, Test.Id)">
+            <MudLink Typo="Typo.subtitle1" Href="@Links.Subject.History.Test(Test.Id)">
                 @Test.Title
             </MudLink>
             <MudText Typo="Typo.body2">
@@ -27,6 +26,9 @@
 
 @code{
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public CurrentTest Test { get; set; } = default!;
 

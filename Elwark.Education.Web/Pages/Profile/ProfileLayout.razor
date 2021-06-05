@@ -1,56 +1,26 @@
 @inherits LayoutComponentBase
 @layout MainLayout
-@inject NavigationManager NavigationManager
-@inject IStringLocalizer<App> L
 
-<div class="header">
-    <div class="user-container" style="background: @_static.Gradient">
-        <div class="user">
-            <AuthorizeView>
-                <Authorizing>
-                    <MudSkeleton SkeletonType="SkeletonType.Circle"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Text" Class="avatar"/>
-                </Authorizing>
-                <Authorized>
-                    <MudAvatar Image="@context.User.GetImage()" Size="Size.Large" Class="avatar"/>
-                    <MudText Typo="Typo.h5">
-                        @context.User.GetName()
+<div class="header" style="background: @_static.Gradient">
+    <div class="subject">
+        <MudIcon Icon="@_static.Icon" Size="Size.Large" Color="Color.Inherit" Class="mr-sm-3"/>
+        <MudText Typo="Typo.h4">
+            @L[$"Subject:{_subject}"]
+        </MudText>
+    </div>
+    <ul class="navbar">
+        @foreach (var item in _menu)
+        {
+            <li>
+                <a href="@item.Link" class="@(item.IsActive ? "active" : null)">
+                    <MudIcon Icon="@item.Icon" Size="Size.Large" Class="navbar-icon" Color="Color.Inherit"/>
+                    <MudText Typo="Typo.subtitle1" Class="navbar-text" Color="Color.Inherit">
+                        @item.Title
                     </MudText>
-                </Authorized>
-            </AuthorizeView>
-        </div>
-    </div>
-    <div class="navbar">
-        <div class="subject">
-            <MudIcon Icon="@_static.Icon" Size="Size.Medium" Color="Color.Inherit" Class="subject-icon"/>
-            <MudLink Typo="Typo.h5" Href="@Links.Subjects.Index(_subject)">
-                @L[$"Subject:{_subject}"]
-            </MudLink>
-        </div>
-        <div class="menu">
-            @foreach (var item in _menu)
-            {
-                @if (item.IsActive)
-                {
-                    <div class="menu-item menu-active">
-                        <MudIcon Icon="@item.Icon" Class="item-icon"/>
-                        <MudText Typo="Typo.subtitle1" Class="item-text">
-                            @item.Title
-                        </MudText>
-                    </div>
-                }
-                else
-                {
-                    <a href="@item.Link" class="menu-item menu-link">
-                        <MudIcon Icon="@item.Icon" Class="item-icon" Color="Color.Inherit"/>
-                        <MudText Typo="Typo.subtitle1" Class="item-text" Color="Color.Inherit">
-                            @item.Title
-                        </MudText>
-                    </a>
-                }
-            }
-        </div>
-    </div>
+                </a>
+            </li>
+        }
+    </ul>
 </div>
 
 <MainContainer>
@@ -58,9 +28,16 @@
 </MainContainer>
 
 @code {
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
     private SubjectType _subject;
     private Data[] _menu = Array.Empty<Data>();
-    private SubjectStatic _static = new(string.Empty, String.Empty, string.Empty);
+    private SubjectStatic _static = new(string.Empty, string.Empty, string.Empty);
 
     protected override void OnParametersSet()
     {
@@ -72,11 +49,32 @@
         _menu = new Data[]
         {
     // new(L["Profile"], Links.Profile.Index, Icons.Filled.Person, false),
-            new(L["Overview"], Links.Profile.Overview(_subject), Icons.Filled.CardMembership, page == "overview"),
-            new(L["Statistics"], Links.Profile.Statistics(_subject), Icons.Filled.BarChart, page == "statistics"),
-            new(L["Favorites"], Links.Profile.Favorites(_subject), Icons.Filled.Favorite, page == "favorites")
+            new(L["Overview"], OverviewLink(_subject), Icons.Filled.CardMembership, page == "overview"),
+            new(L["Statistics"], StatisticsLink(_subject), Icons.Filled.BarChart, page == "statistics"),
+            new(L["Favorites"], FavoritesLink(_subject), Icons.Filled.Favorite, page == "favorites")
         };
     }
+
+    private static string OverviewLink(SubjectType subject) =>
+        subject switch
+        {
+            SubjectType.History => Links.Profile.History.Overview,
+            _ => throw new ArgumentOutOfRangeException(nameof(subject), subject, null)
+            };
+
+    private static string StatisticsLink(SubjectType subject) =>
+        subject switch
+        {
+            SubjectType.History => Links.Profile.History.Statistics,
+            _ => throw new ArgumentOutOfRangeException(nameof(subject), subject, null)
+            };
+
+    private static string FavoritesLink(SubjectType subject) =>
+        subject switch
+        {
+            SubjectType.History => Links.Profile.History.Favorites,
+            _ => throw new ArgumentOutOfRangeException(nameof(subject), subject, null)
+            };
 
     private sealed record Data(LocalizedString Title, string Link, string Icon, bool IsActive);
 

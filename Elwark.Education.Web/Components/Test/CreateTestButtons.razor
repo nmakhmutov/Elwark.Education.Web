@@ -1,7 +1,4 @@
 @using Elwark.Education.Web.Gateways.Models.Test
-@inject IStringLocalizer<App> L
-@inject ErrorManager ErrorManager
-@inject IDialogService Dialog
 
 <div class="@Class">
     @switch (Status)
@@ -64,6 +61,15 @@
 @code {
     private TestType? _testType;
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private ErrorManager ErrorManager { get; set; } = default!;
+
+    [Inject]
+    private IDialogService Dialog { get; set; } = default!;
+    
     [Parameter]
     public string? Class { get; set; }
 

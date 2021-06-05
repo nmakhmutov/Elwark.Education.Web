@@ -1,0 +1,141 @@
+@using Elwark.Education.Web.Gateways.Models.User
+
+<MudPaper Class="@Class">
+    <div class="background" style="background-image: url('@Background')">
+        <div class="cover">
+            <AuthorizeView>
+                <Authorized>
+                    <div class="user-container">
+                        <div class="user-avatar">
+                            <img class="avatar-img" src="@context.User.GetImage()" alt="@context.User.GetName()">
+                        </div>
+                        <div class="user">
+                            <a class="user-name" href="@Options.Account.ToString()" target="_blank">
+                                @context.User.GetName()
+                                <MudIcon Icon="@Icons.Material.Filled.OpenInNew" Size="Size.Small" Class="ml-1"/>
+                            </a>
+                            <h6 class="user-nickname">
+                                @@@context.User.GetNickname()
+                            </h6>
+                        </div>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </div>
+    <MainContainer>
+        <ul class="mb-3 mb-sm-6">
+            <li class="row">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Subscription"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1" Color="@Subscription.Type.GetColor()">
+                    @L[$"Subscription:{Subscription.Type}"]
+                </MudText>
+            </li>
+            <li class="row">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Subscription:TestTimeCoefficient"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1" Class="ml-3">
+                    @("x" + TestTimeCoefficient)
+                </MudText>
+            </li>
+            <li class="row">
+                <div>
+                    <MudText Typo="Typo.subtitle1">
+                        @L["Subscription:TestCreation"]
+                    </MudText>
+                    @if (TestCreation.RestoreAt.HasValue)
+                    {
+                        <MudText Typo="Typo.caption">
+                            <em>
+                                @L["Subscription:RestrictionRestoreAt", TestCreation.RestoreAt.Value.ToSimpleFormat()]
+                            </em>
+                        </MudText>
+                    }
+                </div>
+                <MudText Typo="Typo.subtitle1">
+                    @(TestCreation.Quantity < 0 ? "∞" : TestCreation.Quantity)
+                </MudText>
+            </li>
+            <li class="row">
+                <div>
+                    <MudText Typo="Typo.subtitle1">
+                        @L["Subscription:AnswerCreation"]
+                    </MudText>
+                    @if (AnswerCreation.RestoreAt.HasValue)
+                    {
+                        <MudText Typo="Typo.caption">
+                            <em>
+                                @L["Subscription:RestrictionRestoreAt", AnswerCreation.RestoreAt.Value.ToSimpleFormat()]
+                            </em>
+                        </MudText>
+                    }
+                </div>
+                <MudText Typo="Typo.subtitle1" Class="ml-3">
+                    @(AnswerCreation.Quantity < 0 ? "∞" : AnswerCreation.Quantity)
+                </MudText>
+            </li>
+        </ul>
+        <div class="subscription">
+            @if (Subscription.Purchase is null)
+            {
+                <div class="d-flex flex-row justify-center">
+                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@OnBuyClick">
+                        @L["Subscription:Upgrade"]
+                    </MudButton>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex flex-row justify-space-between align-center">
+                    <MudTooltip Text="@L["Subscription"]">
+                        <MudChip Color="@Subscription.Type.GetColor()" Size="Size.Small" Label="true" Class="ma-0">
+                            @L[$"Subscription:{Subscription.Type}"]
+                        </MudChip>
+                    </MudTooltip>
+                    <MudText Typo="Typo.body2" Align="Align.Right">
+                        <em>
+                            @L["Subscription:ExpiresAt", Subscription.Purchase.ExpiredAt.ToSimpleFormat()]
+                        </em>
+                    </MudText>
+                </div>
+            }
+        </div>
+    </MainContainer>
+</MudPaper>
+
+@code{
+
+    [Inject]
+    private UrlsOptions Options { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Background { get; set; } = string.Empty;
+
+    [Parameter]
+    public Subscription Subscription { get; set; } = default!;
+
+    [Parameter]
+    public Restriction TestCreation { get; set; } = default!;
+
+    [Parameter]
+    public Restriction AnswerCreation { get; set; } = default!;
+
+    [Parameter]
+    public float TestTimeCoefficient { get; set; }
+
+    [Parameter]
+    public bool IsAllowedPremiumContent { get; set; }
+
+    [Parameter]
+    public EventCallback OnBuyClick { get; set; }
+
+}

@@ -1,8 +1,3 @@
-@inject NavigationManager Navigation
-@inject SignOutSessionStateManager SignOutManager
-@inject IStringLocalizer<App> L
-@inject UrlsOptions Options
-
 <AuthorizeView>
     <NotAuthorized>
         <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@OnLogin" Class="ml-3">
@@ -46,6 +41,18 @@
 </AuthorizeView>
 
 @code {
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Inject]
+    private SignOutSessionStateManager SignOutManager { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private UrlsOptions Options { get; set; } = default!;
 
     private async Task BeginSignOut(MouseEventArgs args)
     {

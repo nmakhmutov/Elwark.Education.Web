@@ -1,0 +1,99 @@
+@page "/profile/history"
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.History.Me
+@layout ProfileLayout
+
+@attribute [Authorize]
+
+<DefaultFillGrid>
+    <ApiResponseViewer Response="@_overview">
+        <Placeholder>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+        </Placeholder>
+        <Result Context="overview">
+            <Title Value="@L["Overview"]"></Title>
+
+            <ProfileCard
+                Background="@SubjectType.History.GetStatic().Image"
+                Subscription="@overview.Subscription"
+                TestCreation="@overview.TestCreation"
+                AnswerCreation="@overview.AnswerCreation"
+                TestTimeCoefficient="@overview.TestTimeCoefficient"
+                IsAllowedPremiumContent="@overview.IsAllowedPremiumContent"
+                OnBuyClick="@OnBuyClick"/>
+
+            <XpCard Xp="@overview.Rank.Xp" Recent="@overview.Rank.Recent"/>
+
+            <LevelCard Level="@overview.Rank.Level" Xp="@overview.Rank.Xp" NextLevelXp="@overview.Rank.NextLevelXp"/>
+
+            <DailyRewardCard Reward="@overview.DailyReward" OnCollect="@CollectDailyReward"/>
+            @* <ProfileSubscriptionCard Subject="@overview."/> *@
+
+            @if (overview.CurrentTests.Length > 0)
+            {
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
+                                @L["CurrentTests"]
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @foreach (var test in overview.CurrentTests)
+                        {
+                            <CurrentTestCard Test="@test" Class="mb-3"/>
+                        }
+                    </MudCardContent>
+                </MudCard>
+            }
+        </Result>
+    </ApiResponseViewer>
+</DefaultFillGrid>
+
+@code {
+
+    [Inject]
+    private IDialogService Dialog { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+    
+    private ApiResponse<HistoryUserProfile> _overview = ApiResponse<HistoryUserProfile>.Loading();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _overview = await HistoryClient.Me.GetOverviewAsync();
+    }
+
+    private void OnBuyClick()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            NoHeader = true,
+            CloseButton = false,
+            FullWidth = true
+        };
+        
+        var parameters = new DialogParameters
+        {
+            [nameof(SubscriptionModal.SubjectType)] = SubjectType.History
+        };
+
+        Dialog.Show<SubscriptionModal>(null, parameters, options);
+    }
+
+    private async Task CollectDailyReward()
+    {
+        var response = await HistoryClient.Me.CollectDailyReward();
+        if (response.Status == ResponseStatus.Success)
+            _overview = await HistoryClient.Me.GetOverviewAsync();
+    }
+}

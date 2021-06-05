@@ -1,0 +1,38 @@
+@using Elwark.Education.Web.Gateways.History.Me
+
+<MudPaper Class="pa-3 pa-sm-6">
+    <MudText Typo="Typo.h5" Align="Align.Center">
+        @L["Experience:DailyReward"]
+    </MudText>
+    @if (Reward.IsCollectable)
+    {
+        <MudText Typo="Typo.subtitle1">
+            @Reward.Xp xp
+        </MudText>
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnCollect">
+            Collect
+        </MudButton>
+    }
+    else
+    {
+        <p>
+            @Reward.NextTimeAt.ToLongDateString()
+            &nbsp;
+            @Reward.NextTimeAt.ToSimpleFormat()
+        </p>
+    }
+</MudPaper>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public DailyReward Reward { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnCollect { get; set; }
+
+}

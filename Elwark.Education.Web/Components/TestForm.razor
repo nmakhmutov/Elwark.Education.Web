@@ -1,6 +1,5 @@
 @using Elwark.Education.Web.Gateways.Models.Test
 @using MudBlazor.Extensions
-@inject IStringLocalizer<App> L
 
 <EditForm Model="@_answer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator/>
@@ -204,6 +203,9 @@
     private AnswerModel _answer = new();
     private AnswerState _answerState = AnswerState.Answer;
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public string? Class { get; set; }
 

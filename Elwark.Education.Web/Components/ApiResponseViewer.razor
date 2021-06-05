@@ -1,15 +1,14 @@
 @typeparam T
-@inject IStringLocalizer<App> L
 
 @switch (Response.Status)
 {
     case ResponseStatus.Loading:
-        <Title Value="@L["Loading"]"/>
+        <Title Value="@L["Loading"]"></Title>
         @Placeholder
         break;
 
     case ResponseStatus.Fail:
-        <Title Value="@Response.Error.Title"/>
+        <Title Value="@Response.Error.Title"></Title>
         <ErrorPage Error="Response.Error"/>
         break;
 
@@ -19,7 +18,10 @@
 }
 
 @code {
-    
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
     [Parameter]
     public ApiResponse<T> Response { get; set; } = ApiResponse<T>.Loading();
 
@@ -28,4 +30,5 @@
 
     [Parameter]
     public RenderFragment<T> Result { get; set; } = default!;
+
 }

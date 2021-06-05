@@ -1,6 +1,4 @@
 @using Elwark.Education.Web.Gateways.Shop
-@inject IShopClient Shop
-@inject IStringLocalizer<App> L
 
 <MudDialog DisableSidePadding="true" ClassContent="modal-content" ClassActions="modal-actions" Style="padding: 0">
     <DialogContent>
@@ -53,6 +51,12 @@
 
 @code {
 
+    [Inject]
+    private IShopClient Shop { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;
 

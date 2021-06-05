@@ -1,6 +1,3 @@
-@inject NavigationManager NavigationManager
-@inject ErrorManager ErrorManager
-
 <Title Value="@_localizedError.Title"></Title>
 <div class="d-flex justify-content-center flex-column error">
     <MudText Typo="Typo.h4" Align="Align.Center">
@@ -26,11 +23,17 @@
 
 @code {
 
-    private Error _localizedError = Error.Unknown;
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject]
+    private ErrorManager ErrorManager { get; set; } = default!;
 
     [Parameter]
     public Error Error { get; init; } = default!;
-
+    
+    private Error _localizedError = Error.Unknown;
+    
     protected override void OnParametersSet() => 
         _localizedError = ErrorManager.Localize(Error);
 

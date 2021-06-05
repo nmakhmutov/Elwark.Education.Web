@@ -7,9 +7,18 @@
         </CardHeaderAvatar>
         <CardHeaderContent>
             <div class="d-flex flex-column align-end flex-sm-row justify-sm-space-between align-sm-center">
-                <MudText Typo="Typo.h5">
-                    @Title
-                </MudText>
+                @if (Href is null)
+                {
+                    <MudText Typo="Typo.h5">
+                        @Title
+                    </MudText>
+                }
+                else
+                {
+                    <MudLink Typo="Typo.h5" Href="@Href">
+                        @Title
+                    </MudLink>
+                }
                 <MudText Typo="Typo.h4">
                     @Subtitle
                 </MudText>
@@ -17,22 +26,7 @@
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent>
-        @if (Total is not null && Progress is not null)
-        {
-            <div class="grid">
-                <div>
-                    @Total
-                </div>
-                <div>
-                    @Progress
-                </div>
-            </div>
-        }
-        else
-        {
-            @Total
-            @Progress
-        }
+        @ChildContent
     </MudCardContent>
 </MudCard>
 
@@ -49,11 +43,11 @@
 
     [Parameter]
     public string Subtitle { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string? Href { get; set; }
 
     [Parameter]
-    public RenderFragment? Total { get; set; }
-
-    [Parameter]
-    public RenderFragment? Progress { get; set; }
+    public RenderFragment ChildContent { get; set; } = default!;
 
 }

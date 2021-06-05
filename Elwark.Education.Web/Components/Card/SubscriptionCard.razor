@@ -1,6 +1,5 @@
 @using Elwark.Education.Web.Gateways.Models.User
 @using Elwark.Education.Web.Gateways.Shop
-@inject IStringLocalizer<App> L
 
 <div class="card">
     <div class="d-flex flex-column align-center">
@@ -56,6 +55,9 @@
 </div>
 
 @code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public string Id { get; set; } = default!;

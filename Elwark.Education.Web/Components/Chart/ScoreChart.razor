@@ -1,11 +1,21 @@
-@inject IStringLocalizer<App> L
-
 <div class="@Class">
     <MudChart ChartType="ChartType.Donut" Width="@Size" Height="@Size" InputData="@Data" ChartOptions="@Options"/>
     <ChartList Items="@Items"/>
 </div>
 
 @code {
+    
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Size { get; set; } = "250px";
+
+    [Parameter]
+    public Score Value { get; set; } = default!;
 
     private ChartOptions Options => new()
     {
@@ -24,15 +34,6 @@
                 Colors.Grey.Lighten1
             }
     };
-
-    [Parameter]
-    public string? Class { get; set; }
-
-    [Parameter]
-    public string Size { get; set; } = "250px";
-
-    [Parameter]
-    public Score Value { get; set; } = default!;
 
     private double[] Data => new double[]
     {

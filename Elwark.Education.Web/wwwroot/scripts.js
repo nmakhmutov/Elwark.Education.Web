@@ -1,4 +1,5 @@
-Blazor.start({applicationCulture: JSON.parse(localStorage['language'])});
+const language = localStorage['language'];
+Blazor.start({applicationCulture: language ? JSON.parse(language) : undefined});
 
 window.Observer = {
     observer: null,

@@ -1,5 +1,4 @@
 @using Elwark.Education.Web.Gateways.History
-@inject IStringLocalizer<App> L
 
 <MudText Typo="@Typo" Color="@Color" Class="@Class">
     @if (Date is null)
@@ -14,6 +13,9 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public HistoricDate? Date { get; set; }
 

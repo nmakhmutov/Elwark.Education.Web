@@ -2,9 +2,6 @@
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.History.Test
 @using Elwark.Education.Web.Gateways.Models.Test
-@inject IStringLocalizer<App> L
-@inject IHistoryClient HistoryClient
-@inject NavigationManager NavigationManager
 
 @attribute [Authorize]
 
@@ -14,7 +11,7 @@
             <PageLoader/>
         </Placeholder>
         <Result Context="test">
-            <Title Value="@L[$"Test:{test.TestType}"]"/>
+            <Title Value="@L[$"Test:{test.TestType}"]"></Title>
 
             <section class="section">
                 <div class="container mud-paper mud-elevation-1">
@@ -45,6 +42,15 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+    
     [Parameter]
     public string Id { get; init; } = default!;
 
@@ -61,7 +67,7 @@
 
         if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
         {
-            NavigationManager.NavigateTo(Links.History.Conclusion(Id));
+            NavigationManager.NavigateTo(Links.Subject.History.Conclusion(Id));
             return;
         }
 
@@ -143,7 +149,7 @@
     {
         if (_isTestComplete)
         {
-            NavigationManager.NavigateTo(Links.History.Conclusion(Id));
+            NavigationManager.NavigateTo(Links.Subject.History.Conclusion(Id));
             return;
         }
 
@@ -164,7 +170,7 @@
         _test = await HistoryClient.Test.GetAsync(Id);
 
         if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
-            NavigationManager.NavigateTo(Links.History.Conclusion(Id));
+            NavigationManager.NavigateTo(Links.Subject.History.Conclusion(Id));
     }
 
 }

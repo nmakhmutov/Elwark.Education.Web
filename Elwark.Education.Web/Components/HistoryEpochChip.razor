@@ -1,12 +1,14 @@
 @using Elwark.Education.Web.Gateways.History.Epoch
-@inject IStringLocalizer<App> L
 
-<MudChip Label="true" DisableRipple="false" Class="@Class" Color="Color.Primary" Size="Size.Small" Link="@Links.History.Epoch(Epoch)">
+<MudChip Label="true" DisableRipple="false" Class="@Class" Color="Color.Primary" Size="Size.Small" Link="@Links.Subject.History.Epoch(Epoch)">
     @L[$"History:{Epoch}"]
 </MudChip>
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public EpochType Epoch { get; set; }
 

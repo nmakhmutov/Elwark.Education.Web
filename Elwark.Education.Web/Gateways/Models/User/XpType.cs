@@ -1,6 +1,6 @@
 namespace Elwark.Education.Web.Gateways.Models.User
 {
-    public enum ExperienceType
+    public enum XpType
     {
         DailyReward = 0,
         EasyTestCompleted = 1,

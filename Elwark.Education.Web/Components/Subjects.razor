@@ -1,5 +1,3 @@
-@inject IStringLocalizer<App> L
-
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-12">
     <MudGrid Spacing="6" Justify="Justify.Center">
         <Virtualize Items="_subjects" Context="subject">
@@ -32,13 +30,16 @@
 
     private SubjectItem[] _subjects = Array.Empty<SubjectItem>();
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     protected override void OnInitialized() =>
         _subjects = new SubjectItem[]
         {
             new(
                 SubjectType.History,
                 L[$"Subject:{SubjectType.History}"].Value,
-                Links.History.Index,
+                Links.Subject.History.Index,
                 new Dictionary<string, int>
                 {
                     [L["Topics"].Value] = 10,

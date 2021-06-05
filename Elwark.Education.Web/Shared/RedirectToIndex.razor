@@ -1,6 +1,9 @@
-@inject NavigationManager Navigation
-
 @code {
-    protected override void OnInitialized() => 
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    protected override void OnInitialized() =>
         Navigation.NavigateTo(Links.Root);
+
 }

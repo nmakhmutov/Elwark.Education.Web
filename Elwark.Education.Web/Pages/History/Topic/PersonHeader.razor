@@ -1,8 +1,6 @@
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.Models.Content
 
-@inject IStringLocalizer<App> L
-
 <div class="@Class">
     <div class="grid">
         <div class="image">
@@ -60,6 +58,9 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public string? Class { get; set; }
 

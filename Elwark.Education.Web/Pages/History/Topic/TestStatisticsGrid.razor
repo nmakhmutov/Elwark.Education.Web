@@ -1,5 +1,4 @@
 @using Elwark.Education.Web.Gateways.History.Topic
-@inject IStringLocalizer<App> L
 
 <div class="@Class">
     <MudText Typo="Typo.h6" Class="mb-3">
@@ -32,6 +31,9 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public string? Class { get; set; }
 

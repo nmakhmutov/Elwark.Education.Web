@@ -15,7 +15,7 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
                     new SubjectStatic(
                         Icons.Outlined.AccountBalance,
                         "/images/history/history.jpg",
-                        "linear-gradient(140deg, #E26E43 0%, #F6AF04 100%)"
+                        "linear-gradient(140deg, #e26e43 0%, #f6af04 100%)"
                     ),
 
                 // SubjectType.Astronomy =>

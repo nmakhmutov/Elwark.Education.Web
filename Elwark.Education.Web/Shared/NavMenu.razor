@@ -1,8 +1,4 @@
-﻿@inject NavigationManager Navigation
-@inject SignOutSessionStateManager SignOutManager
-@inject IStringLocalizer<App> L
-
-<MudNavMenu Class="navmenu">
+﻿<MudNavMenu Class="navmenu">
     @* <MudHidden Breakpoint="Breakpoint.SmAndUp"> *@
     @*     <MudLink Href="@Links.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None"> *@
     @*         Education <sup class="beta">beta</sup> *@
@@ -21,11 +17,14 @@
         </div>
     </MudHidden>
 
-    <MudNavLink Href="@Links.History.Index" Icon="@SubjectType.History.GetStatic().Icon">
+    <MudNavLink Href="@Links.Subject.History.Index" Icon="@SubjectType.History.GetStatic().Icon">
         @L["Subject:History"]
     </MudNavLink>
 </MudNavMenu>
 
 @code {
-    
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
 }

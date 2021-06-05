@@ -1,5 +1,4 @@
 @using Elwark.Education.Web.Gateways.History.Test
-@inject IStringLocalizer<App> L
 
 <MudTable Items="@Questions" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
@@ -27,6 +26,9 @@
 </MudTable>
 
 @code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public HardTestConclusion.Question[] Questions { get; set; } = Array.Empty<HardTestConclusion.Question>();

@@ -1,5 +1,4 @@
 @using Elwark.Education.Web.Gateways.History.Epoch
-@inject IStringLocalizer<App> L
 
 <div class="container @Class">
     <h1 class="title">
@@ -14,7 +13,7 @@
             @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
             {
                 <div class="period">
-                    <MudLink Href="@Links.History.Epoch(period)" Color="Color.Inherit" Underline="Underline.Always">
+                    <MudLink Href="@Links.Subject.History.Epoch(period)" Color="Color.Inherit" Underline="Underline.Always">
                         @L[$"History:{period}"]
                     </MudLink>
                 </div>
@@ -25,6 +24,9 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public string? Class { get; set; }
 

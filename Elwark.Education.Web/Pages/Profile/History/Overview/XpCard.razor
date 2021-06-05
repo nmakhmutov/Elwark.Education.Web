@@ -1,0 +1,67 @@
+@using Elwark.Education.Web.Gateways.Models.User
+
+<MudPaper Class="pa-3 pa-sm-6">
+    <MudText Typo="Typo.h5">
+        @L["Experience:MyXp"]
+    </MudText>
+    <div class="d-flex align-center mb-3">
+        <MudIcon Icon="@Icons.Material.Filled.FilterTiltShift" Style="width: 50px; height: 50px" Color="Color.Primary" Class="mr-3"/>
+        @if (Xp > 1000)
+        {
+            <MudTooltip Text="@Xp.ToString("N0")">
+                <MudText Typo="Typo.h3">
+                    @Xp.ToReadable()
+                </MudText>
+            </MudTooltip>
+        }
+        else
+        {
+            <MudText Typo="Typo.h3">
+                @Xp.ToReadable()
+            </MudText>
+        }
+    </div>
+    <div class="mb-1">
+        <MudText Typo="Typo.subtitle2">
+            @L["Experience:RecentTransactions"]
+        </MudText>
+    </div>
+    @if (Recent.Length > 0)
+    {
+        <ul>
+            @foreach (var transaction in Recent)
+            {
+                <li class="d-flex flex-row justify-space-between align-center mb-1">
+                    <MudText Typo="Typo.subtitle1">
+                        @L[$"XpType:{transaction.Type}"]
+                    </MudText>
+                    <div class="d-flex align-center">
+                        <MudIcon Icon="@Icons.Material.Filled.FilterTiltShift" Size="Size.Small" Color="Color.Primary" Class="mr-1"/>
+                        <MudText Typo="Typo.subtitle1">
+                            @transaction.Value.ToReadable()
+                        </MudText>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <MudText Typo="Typo.body2">
+            @L["Empty"]
+        </MudText>
+    }
+</MudPaper>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public long Xp { get; set; }
+
+    [Parameter]
+    public Xp[] Recent { get; set; } = Array.Empty<Xp>();
+
+}

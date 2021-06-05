@@ -1,5 +1,4 @@
 @using Elwark.Education.Web.Gateways.Models.Test
-@inject IStringLocalizer<App> L
 
 <MudText Typo="@Typo" Color="@_data.Color">
     @_data.Title
@@ -7,6 +6,9 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public ConclusionStatus Status { get; set; }
 

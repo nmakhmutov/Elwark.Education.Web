@@ -1,11 +1,10 @@
 @page "/history"
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.History.Home
-@inject IHistoryClient Client
-@inject IStringLocalizer<App> L
+
 @attribute [Authorize]
 
-<Header Class="mb-12"/>
+<PageHeader Class="mb-12"/>
 <ApiResponseViewer Response="@_response">
     <Placeholder>
         <section class="section mb-12 px-3 px-sm-6">
@@ -32,7 +31,7 @@
         </section>
     </Placeholder>
     <Result Context="overview">
-        <Title Value="@L["Subject:History"]"/>
+        <Title Value="@L["Subject:History"]"></Title>
 
         <section class="section mb-12 px-3 px-sm-6">
             <div class="container">
@@ -92,6 +91,12 @@
 
     private ApiResponse<HistoryOverview> _response = ApiResponse<HistoryOverview>.Loading();
 
+    [Inject]
+    private IHistoryClient Client { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     protected override async Task OnInitializedAsync()
     {
         _response = await Client.Home.GetAsync();

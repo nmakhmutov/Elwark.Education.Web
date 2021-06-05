@@ -1,5 +1,4 @@
 using Elwark.Education.Web.Gateways.History.Epoch;
-using Elwark.Education.Web.Model;
 
 namespace Elwark.Education.Web.Pages
 {
@@ -19,50 +18,40 @@ namespace Elwark.Education.Web.Pages
         {
             public const string Index = "/profile";
 
-            public static string Overview(SubjectType type) =>
-                $"{Index}/{type.ToString().ToLowerInvariant()}";
+            public static class History
+            {
+                public const string Overview = Index + "/history";
 
-            public static string Statistics(SubjectType type) =>
-                $"{Index}/{type.ToString().ToLowerInvariant()}/statistics";
+                public const string Statistics = Overview + "/statistics";
 
-            public static string Favorites(SubjectType type) =>
-                $"{Index}/{type.ToString().ToLowerInvariant()}/favorites";
+                public const string EasyTestStatistics = Statistics + "/easy-tests";
+                
+                public const string HardTestStatistics = Statistics + "/hard-tests";
+
+                public const string Favorites = Overview + "/favorites";
+            }
         }
 
-        public static class History
+        public static class Subject
         {
-            public const string Index = "/history";
+            public static class History
+            {
+                public const string Index = "/history";
 
-            private const string Topics = Index + "/topics";
+                private const string Topics = Index + "/topics";
 
-            public static string Epoch(EpochType period) =>
-                $"{Index}/{period.ToString().ToLowerInvariant()}";
+                public static string Epoch(EpochType period) =>
+                    $"{Index}/{period.ToString().ToLowerInvariant()}";
 
-            public static string Topic(string topicId) =>
-                $"{Topics}/{topicId}";
+                public static string Topic(string topicId) =>
+                    $"{Topics}/{topicId}";
 
-            public static string Test(string testId) =>
-                $"{Index}/test/{testId}";
+                public static string Test(string testId) =>
+                    $"{Index}/test/{testId}";
 
-            public static string Conclusion(string testId) =>
-                $"{Index}/test/{testId}/conclusion";
-        }
-
-        public static class Subjects
-        {
-            public static string Index(SubjectType type) =>
-                type switch
-                {
-                    SubjectType.History => History.Index,
-                    _ => string.Empty
-                };
-
-            public static string Test(SubjectType type, string testId) =>
-                type switch
-                {
-                    SubjectType.History => History.Test(testId),
-                    _ => string.Empty
-                };
+                public static string Conclusion(string testId) =>
+                    $"{Index}/test/{testId}/conclusion";
+            }
         }
 
         public static class Shop

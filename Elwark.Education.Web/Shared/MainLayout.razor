@@ -1,7 +1,4 @@
-﻿@using Elwark.Education.Web.Infrastructure.LocalStorage
-@inherits LayoutComponentBase
-@inject ILocalStorage LocalStorage
-@inject IStringLocalizer<App> L
+﻿@inherits LayoutComponentBase
 
 <MudThemeProvider Theme="_currentTheme"/>
 <MudDialogProvider/>
@@ -28,12 +25,12 @@
 
             <Authorized>
                 <MudHidden Breakpoint="Breakpoint.Xs">
-                    <MudLink Href="@Links.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+                    <MudLink Href="@Links.Subject.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
                         @L["Subject:History"] <sup class="beta">beta</sup>
                     </MudLink>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <a href="@Links.History.Index">
+                    <a href="@Links.Subject.History.Index">
                         <MudAvatar Rounded="false" Square="true" Color="Color.Transparent" Image="https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/36x36_jki1hi.png"/>
                     </a>
                 </MudHidden>
@@ -69,6 +66,10 @@
 </MudLayout>
 
 @code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
     // bool _drawerOpen;
     MudTheme _currentTheme = new();
     string _themeIcon = Icons.Filled.Brightness7;

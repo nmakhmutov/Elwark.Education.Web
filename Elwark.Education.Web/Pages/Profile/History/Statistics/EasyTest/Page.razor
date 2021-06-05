@@ -1,0 +1,82 @@
+@page "/profile/history/statistics/easy-tests"
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.Models.Statistics
+@layout ProfileLayout
+
+@attribute [Authorize]
+
+<ApiResponseViewer Response="@_response">
+    <Placeholder>
+        <div class="d-flex justify-center mb-3">
+            <MudSkeleton SkeletonType="SkeletonType.Text" Height="35px" Width="80%"/>
+        </div>
+        <StatisticsDetailsGrid>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+            <SkeletonCard/>
+        </StatisticsDetailsGrid>
+    </Placeholder>
+    <Result Context="result">
+        <Title Value="@L["Tests:Easy"]"></Title>
+
+        <StatisticsDetailsTitle Title="@L["Tests:Easy"]" Class="mb-3"/>
+        <StatisticsDetailsGrid>
+            <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.NumberOfTests.Total.Total.ToReadable()">
+                <TwoColumnGrid>
+                    <div>
+                        <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
+                        <NumberOfTestChart Value="@result.NumberOfTests.Total"/>
+                    </div>
+                    <div>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.NumberOfTests.Progress.RangeTitle()"/>
+                        <ProgressList Items="@result.NumberOfTests.Progress.GetProgress(L)"/>
+                    </div>
+                </TwoColumnGrid>
+            </StatisticsCard>
+            <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Subtitle="@result.Score.Total.Total.ToReadable()">
+                <TwoColumnGrid>
+                    <div>
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <ScoreChart Value="@result.Score.Total"/>
+                    </div>
+                    <div>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.Score.Progress.RangeTitle()"/>
+                        <ProgressList Items="@result.Score.Progress.GetProgress(L)"/>
+                    </div>
+                </TwoColumnGrid>
+            </StatisticsCard>
+            <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Subtitle="@result.AnswerRatio.Total.Questions.ToReadable()">
+                <TwoColumnGrid>
+                    <div>
+                        <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
+                        <AnswerRatioChart Value="@result.AnswerRatio.Total"/>
+                    </div>
+                    <div>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.AnswerRatio.Progress.RangeTitle()"/>
+                        <ProgressList Items="@result.AnswerRatio.Progress.GetProgress(L)"/>
+                    </div>
+                </TwoColumnGrid>
+            </StatisticsCard>
+            <StatisticsCard Icon="@Icons.Filled.Timer" Title="@L["TimeSpent"]" Subtitle="@result.TimeSpent.Total.ToSimpleFormat()">
+                <Subheader Title="@L["Progress"]" Subtitle="@result.TimeSpent.Progress.RangeTitle()"/>
+                <ProgressList Items="@result.TimeSpent.Progress.GetProgress(L)"/>
+            </StatisticsCard>
+        </StatisticsDetailsGrid>
+    </Result>
+</ApiResponseViewer>
+
+@code {
+
+    private ApiResponse<TestStatistics> _response = ApiResponse<TestStatistics>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync() =>
+        _response = await HistoryClient.Me.GetEasyTestStatisticsAsync();
+
+}

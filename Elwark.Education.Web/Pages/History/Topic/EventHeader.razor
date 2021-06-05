@@ -1,5 +1,4 @@
 @using Elwark.Education.Web.Gateways.History
-@inject IStringLocalizer<App> L
 
 <article class="grid">
     <section>
@@ -34,6 +33,9 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter]
     public string Title { get; set; } = string.Empty;
 

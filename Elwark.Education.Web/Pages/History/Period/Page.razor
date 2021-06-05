@@ -2,9 +2,6 @@
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.History.Epoch
 @using Elwark.Education.Web.Gateways.History.Topic
-@inject IHistoryClient HistoryClient
-@inject NavigationManager NavigationManager
-@inject IStringLocalizer<App> L
 
 @attribute [Authorize]
 
@@ -22,7 +19,7 @@
             </div>
         </Placeholder>
         <Result Context="period">
-            <Title Value="@(period.Title)"/>
+            <Title Value="@(period.Title)"></Title>
             <div class="header">
                 <div class="image mb-6">
                     <img src="@period.Image" loading="lazy" alt="@period.Title"/>
@@ -30,7 +27,7 @@
                 <MudText Class="title" Typo="Typo.h1">
                     @period.Title
                 </MudText>
-                <MudLink Class="period-link" Href="@(Links.History.Index)">
+                <MudLink Class="period-link" Href="@(Links.Subject.History.Index)">
                     @L["Subject:History"]
                 </MudLink>
                 <MudText Typo="Typo.subtitle1" Class="mt-6">
@@ -52,7 +49,7 @@
             {
                 <TopicCard
                     Id="@item.Id"
-                    Href="@Links.History.Topic(item.Id)"
+                    Href="@Links.Subject.History.Topic(item.Id)"
                     Image="@item.Image"
                     Title="@item.Title"
                     Subtitle="@item.Overview"
@@ -78,10 +75,14 @@
 
 @code {
     private ApiResponse<EpochModel> _period = ApiResponse<EpochModel>.Loading();
-
     private ApiResponse<PageResponse<UserTopicSummary>> _topics = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
-
     private GetTopicsRequest _request = new(EpochType.Prehistory, null, 20);
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public string? Type { get; set; }

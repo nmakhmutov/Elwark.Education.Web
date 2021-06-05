@@ -4,13 +4,6 @@
 @using Elwark.Education.Web.Gateways.History.Topic
 @using Elwark.Education.Web.Gateways.Models.Test
 
-@inject IHistoryClient HistoryClient
-@inject IDialogService Dialog
-@inject NavigationManager NavigationManager
-@inject ISnackbar Snackbar
-@inject ErrorManager ErrorManager
-@inject IStringLocalizer<App> L
-
 @attribute [Authorize]
 
 <ApiResponseViewer Response="@_topic">
@@ -18,7 +11,7 @@
         <PageLoader/>
     </Placeholder>
     <Result Context="result">
-        <Title Value="@result.Topic.Title"/>
+        <Title Value="@result.Topic.Title"></Title>
 
         @switch (result.Topic)
         {
@@ -114,7 +107,7 @@
                         {
                             <TopicCard
                                 Id="@topic.Id"
-                                Href="@Links.History.Topic(topic.Id)"
+                                Href="@Links.Subject.History.Topic(topic.Id)"
                                 Image="@topic.Image"
                                 Title="@topic.Title"
                                 Subtitle="@topic.Overview"
@@ -136,7 +129,7 @@
             <section class="section">
                 <div class="container">
                     <div class="mb-3">
-                        <MudLink Href="@Links.Profile.Statistics(SubjectType.History)" Typo="Typo.h5">
+                        <MudLink Href="@Links.Profile.History.Statistics" Typo="Typo.h5">
                             @L["Statistics"]
                         </MudLink>
                     </div>
@@ -161,41 +154,41 @@
                     </MudPaper>
                 </div>
             </section>
-        }
 
-        @if (result.Statistics.Conclusions.Length > 0)
-        {
-            <section class="section">
-                <div class="container">
-                    <MudText Typo="Typo.h5" Class="mb-3">
-                        @L["Tests:Latest"]
-                    </MudText>
-                    <DefaultFillGrid>
-                        @foreach (var conclusion in result.Statistics.Conclusions)
-                        {
-                            <MudExpansionPanels>
-                                <MudExpansionPanel>
-                                    <TitleContent>
-                                        <div class="d-flex">
-                                            <MudText Typo="Typo.subtitle1" Class="mr-3">
-                                                @conclusion.CompletedAt.ToSimpleFormat()
-                                            </MudText>
-                                            <ConclusionStatusTitle Status="@conclusion.Status"/>
-                                        </div>
-                                    </TitleContent>
-                                    <ChildContent>
-                                        <TestConclusionList
-                                            TestType="@conclusion.TestType"
-                                            TimeSpent="@conclusion.TimeSpent"
-                                            Score="@conclusion.Score"
-                                            AnswerRatio="@conclusion.AnswerRatio"/>
-                                    </ChildContent>
-                                </MudExpansionPanel>
-                            </MudExpansionPanels>
-                        }
-                    </DefaultFillGrid>
-                </div>
-            </section>
+            @if (result.Statistics.Conclusions.Length > 0)
+            {
+                <section class="section">
+                    <div class="container">
+                        <MudText Typo="Typo.h5" Class="mb-3">
+                            @L["Tests:Latest"]
+                        </MudText>
+                        <DefaultFillGrid>
+                            @foreach (var conclusion in result.Statistics.Conclusions)
+                            {
+                                <MudExpansionPanels>
+                                    <MudExpansionPanel>
+                                        <TitleContent>
+                                            <div class="d-flex">
+                                                <MudText Typo="Typo.subtitle1" Class="mr-3">
+                                                    @conclusion.CompletedAt.ToSimpleFormat()
+                                                </MudText>
+                                                <ConclusionStatusTitle Status="@conclusion.Status"/>
+                                            </div>
+                                        </TitleContent>
+                                        <ChildContent>
+                                            <TestConclusionList
+                                                TestType="@conclusion.TestType"
+                                                TimeSpent="@conclusion.TimeSpent"
+                                                Score="@conclusion.Score"
+                                                AnswerRatio="@conclusion.AnswerRatio"/>
+                                        </ChildContent>
+                                    </MudExpansionPanel>
+                                </MudExpansionPanels>
+                            }
+                        </DefaultFillGrid>
+                    </div>
+                </section>
+            }
         }
     </Result>
 </ApiResponseViewer>
@@ -204,8 +197,22 @@
 @code {
     private ApiResponse<TestCreatedResult>? _test;
     private ApiResponse<TopicDetailComposition> _topic = ApiResponse<TopicDetailComposition>.Loading();
-
     private List<BreadcrumbItem> _breadcrumbs = new();
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
+    [Inject]
+    private ErrorManager ErrorManager { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
@@ -218,8 +225,8 @@
         if (_topic.Status == ResponseStatus.Success)
             _breadcrumbs = new List<BreadcrumbItem>
             {
-                new(L["Subject:History"].Value, Links.History.Index),
-                new(L[$"History:{_topic.Data.Topic.Epoch}"].Value, Links.History.Epoch(_topic.Data.Topic.Epoch))
+                new(L["Subject:History"].Value, Links.Subject.History.Index),
+                new(L[$"History:{_topic.Data.Topic.Epoch}"].Value, Links.Subject.History.Epoch(_topic.Data.Topic.Epoch))
             };
     }
 
@@ -229,7 +236,7 @@
         _test = await HistoryClient.Topic.CreateTestAsync(Id, testType);
 
         if (_test.Status == ResponseStatus.Success)
-            NavigationManager.NavigateTo(Links.History.Test(_test.Data.Id));
+            NavigationManager.NavigateTo(Links.Subject.History.Test(_test.Data.Id));
         else
             Snackbar.Add(ErrorManager.Localize(_test.Error).Title, Severity.Error);
     }
