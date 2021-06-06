@@ -25,9 +25,9 @@
                 IsAllowedPremiumContent="@overview.IsAllowedPremiumContent"
                 OnBuyClick="@OnBuyClick"/>
 
-            <XpCard Xp="@overview.Rank.Xp" Recent="@overview.Rank.Recent"/>
-
             <LevelCard Level="@overview.Rank.Level" Xp="@overview.Rank.Xp" NextLevelXp="@overview.Rank.NextLevelXp"/>
+            
+            <XpCard Xp="@overview.Rank.Xp" Recent="@overview.Rank.Recent.Take(7).ToArray()"/>
 
             <DailyRewardCard Reward="@overview.DailyReward" OnCollect="@CollectDailyReward"/>
             @* <ProfileSubscriptionCard Subject="@overview."/> *@

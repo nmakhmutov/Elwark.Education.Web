@@ -7,190 +7,230 @@
 @attribute [Authorize]
 
 <ApiResponseViewer Response="@_topic">
-    <Placeholder>
-        <PageLoader/>
-    </Placeholder>
-    <Result Context="result">
-        <Title Value="@result.Topic.Title"></Title>
+<Placeholder>
+    <PageLoader/>
+</Placeholder>
+<Result Context="result">
+<Title Value="@result.Topic.Title"></Title>
 
-        @switch (result.Topic)
-        {
-            case PersonTopicDetail x:
-                <PersonHeader
-                    Title="@x.Title"
-                    Description="@x.Description"
-                    Image="@x.Image"
-                    Born="@x.Born"
-                    Died="@x.Died"
-                    Characteristics="@x.Characteristics"
-                    Breadcrumbs="@_breadcrumbs"/>
-                break;
+@switch (result.Topic)
+{
+    case PersonTopicDetail x:
+        <PersonHeader
+            Title="@x.Title"
+            Description="@x.Description"
+            Image="@x.Image"
+            Born="@x.Born"
+            Died="@x.Died"
+            Characteristics="@x.Characteristics"
+            Breadcrumbs="@_breadcrumbs"/>
+        break;
 
-            case EventTopicDetail x:
-                <EventHeader
-                    Title="@x.Title"
-                    Description="@x.Description"
-                    Image="@x.Image"
-                    Started="@x.Started"
-                    Ended="@x.Ended"
-                    Breadcrumbs="@_breadcrumbs"/>
-                break;
-        }
+    case EventTopicDetail x:
+        <EventHeader
+            Title="@x.Title"
+            Description="@x.Description"
+            Image="@x.Image"
+            Started="@x.Started"
+            Ended="@x.Ended"
+            Breadcrumbs="@_breadcrumbs"/>
+        break;
+}
 
-        <section class="section pt-3 pt-sm-6">
-            <div class="container mud-paper pa-3">
+<section class="section pt-3 pt-sm-6">
+    <div class="container mud-paper pa-3">
 
-                <div class="content-header">
-                    <div class="contents">
-                        <MudText Typo="Typo.h6">
-                            @L["Contents"]
-                        </MudText>
-                        <ul>
-                            @foreach (var (title, _, _) in result.Topic.Chapters)
-                            {
-                                <li>
-                                    <MudText Typo="Typo.subtitle1">@title</MudText>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                    <div class="reactions">
-                        <TopicReactionButtons
-                            Id="@Id"
-                            IsFavorite="@result.IsFavorite"
-                            Rating="@result.Rating"
-                            OnFavoriteClick="@OnFavoriteClick"
-                            OnLikeClick="@OnLikeClick"
-                            OnDislikeClick="@OnDislikeClick"/>
-                    </div>
-                    <div class="test">
-                        <CreateTestButtons
-                            TestTypes="@result.Test.TestTypes"
-                            Status="@result.Test.Status"
-                            Subject="@SubjectType.History"
-                            IsLoading="@(_test?.Status == ResponseStatus.Loading)"
-                            OnCreateTestClick="@CreateTestAsync"/>
-                    </div>
-                </div>
-
-                <MudDivider DividerType="DividerType.Middle" Class="my-6 my-sm-8 my-md-12"/>
-
-                @foreach (var (title, subtitle, content) in result.Topic.Chapters)
-                {
-                    <article class="mb-6 mb-sm-12">
-                        <div class="mb-6">
-                            <h2 class="chapter-title">
-                                @title
-                            </h2>
-                            @if (!string.IsNullOrEmpty(subtitle))
-                            {
-                                <h3 class="chapter-subtitle">
-                                    @subtitle
-                                </h3>
-                            }
-                        </div>
-                        <MarkdownText Text="@content"/>
-                    </article>
-                }
+        <div class="content-header">
+            <div class="contents">
+                <MudText Typo="Typo.h6">
+                    @L["Contents"]
+                </MudText>
+                <ul>
+                    @foreach (var (title, _, _) in result.Topic.Chapters)
+                    {
+                        <li>
+                            <MudText Typo="Typo.subtitle1">@title</MudText>
+                        </li>
+                    }
+                </ul>
             </div>
-        </section>
+            <div class="reactions">
+                <TopicReactionButtons
+                    Id="@Id"
+                    IsFavorite="@result.IsFavorite"
+                    Rating="@result.Rating"
+                    OnFavoriteClick="@OnFavoriteClick"
+                    OnLikeClick="@OnLikeClick"
+                    OnDislikeClick="@OnDislikeClick"/>
+            </div>
+            <div class="test">
+                <CreateTestButtons
+                    TestTypes="@result.Test.TestTypes"
+                    Status="@result.Test.Status"
+                    Subject="@SubjectType.History"
+                    IsLoading="@(_test?.Status == ResponseStatus.Loading)"
+                    OnCreateTestClick="@CreateTestAsync"/>
+            </div>
+        </div>
 
-        @if (result.RelatedTopics.Length > 0)
+        <MudDivider DividerType="DividerType.Middle" Class="my-6 my-sm-8 my-md-12"/>
+
+        @foreach (var (title, subtitle, content) in result.Topic.Chapters)
         {
-            <section class="section">
-                <div class="container">
-                    <MudText Typo="Typo.h5" Class="mb-3">
-                        @L["Topics:Related"]
-                    </MudText>
-                    <DefaultFillGrid>
-                        @foreach (var topic in result.RelatedTopics)
-                        {
-                            <TopicCard
-                                Id="@topic.Id"
-                                Href="@Links.Subject.History.Topic(topic.Id)"
-                                Image="@topic.Image"
-                                Title="@topic.Title"
-                                Subtitle="@topic.Overview"
-                                Rating="@topic.Rating"
-                                IsFavorite="@topic.IsFavorite"
-                                OnFavoriteClick="@OnFavoriteClick">
-                                <ImageFooter>
-                                    <HistoryEpochChip Class="ma-0" Epoch="@topic.Epoch"/>
-                                </ImageFooter>
-                            </TopicCard>
-                        }
-                    </DefaultFillGrid>
+            <article class="mb-6 mb-sm-12">
+                <div class="mb-6">
+                    <h2 class="chapter-title">
+                        @title
+                    </h2>
+                    @if (!string.IsNullOrEmpty(subtitle))
+                    {
+                        <h3 class="chapter-subtitle">
+                            @subtitle
+                        </h3>
+                    }
                 </div>
-            </section>
+                <MarkdownText Text="@content"/>
+            </article>
         }
+    </div>
+</section>
 
-        @if (result.Test.TestTypes.Length > 0)
-        {
-            <section class="section">
-                <div class="container">
-                    <div class="mb-3">
-                        <MudLink Href="@Links.Profile.History.Statistics" Typo="Typo.h5">
-                            @L["Statistics"]
-                        </MudLink>
-                    </div>
-                    <MudPaper Class="pa-3">
-                        <div class="mb-6">
+@if (result.RelatedTopics.Length > 0)
+{
+    <section class="section">
+        <div class="container">
+            <MudText Typo="Typo.h5" Class="mb-3">
+                @L["Topics:Related"]
+            </MudText>
+            <DefaultFillGrid>
+                @foreach (var topic in result.RelatedTopics)
+                {
+                    <TopicCard
+                        Id="@topic.Id"
+                        Href="@Links.Subject.History.Topic(topic.Id)"
+                        Image="@topic.Image"
+                        Title="@topic.Title"
+                        Subtitle="@topic.Overview"
+                        Rating="@topic.Rating"
+                        IsFavorite="@topic.IsFavorite"
+                        OnFavoriteClick="@OnFavoriteClick">
+                        <ImageFooter>
+                            <HistoryEpochChip Class="ma-0" Epoch="@topic.Epoch"/>
+                        </ImageFooter>
+                    </TopicCard>
+                }
+            </DefaultFillGrid>
+        </div>
+    </section>
+}
+
+@if (result.Test.TestTypes.Length > 0)
+{
+    <section class="section">
+        <div class="container">
+            <div class="mb-3">
+                <MudLink Href="@Links.Profile.History.Statistics" Typo="Typo.h5">
+                    @L["Statistics"]
+                </MudLink>
+            </div>
+            <MudExpansionPanels>
+                @if (result.Test.TestTypes.Contains(TestType.Easy))
+                {
+                    <MudExpansionPanel>
+                        <TitleContent>
+                            <div class="d-flex flex-wrap justify-space-between mr-3 mr-sm-6">
+                                <MudText Typo="Typo.subtitle1">
+                                    @L["Tests:Easy"]
+                                </MudText>
+                                <MudText Typo="Typo.subtitle1">
+                                    @L["TimeSpent"]: @result.Statistics.EasyTest.TimeSpent.ToSimpleFormat()
+                                </MudText>
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
                             <CreateTestButtons
-                                TestTypes="@result.Test.TestTypes"
+                                Class="mb-3 mb-sm-6"
+                                TestTypes="@(new[] {TestType.Easy})"
                                 Status="@result.Test.Status"
                                 Subject="@SubjectType.History"
                                 IsLoading="@(_test?.Status == ResponseStatus.Loading)"
                                 OnCreateTestClick="@CreateTestAsync"/>
-                        </div>
-                        @if (result.Test.TestTypes.Contains(TestType.Easy))
-                        {
-                            <TestStatisticsGrid Class="mb-3" Title="@L["Tests:Easy"]" Statistics="@result.Statistics.EasyTest"/>
-                        }
+                            <TestStatisticsGrid
+                                Score="@result.Statistics.EasyTest.Score"
+                                AnswerRatio="@result.Statistics.EasyTest.AnswerRatio"
+                                NumberOfTests="@result.Statistics.EasyTest.NumberOfTests"/>
+                        </ChildContent>
+                    </MudExpansionPanel>
+                }
 
-                        @if (result.Test.TestTypes.Contains(TestType.Hard))
-                        {
-                            <TestStatisticsGrid Class="mb-3" Title="@L["Tests:Hard"]" Statistics="@result.Statistics.HardTest"/>
-                        }
-                    </MudPaper>
-                </div>
-            </section>
+                @if (result.Test.TestTypes.Contains(TestType.Hard))
+                {
+                    <MudExpansionPanel>
+                        <TitleContent>
+                            <div class="d-flex flex-wrap justify-space-between mr-3 mr-sm-6">
+                                <MudText Typo="Typo.subtitle1">
+                                    @L["Tests:Hard"]
+                                </MudText>
+                                <MudText Typo="Typo.subtitle1">
+                                    @L["TimeSpent"]: @result.Statistics.HardTest.TimeSpent.ToSimpleFormat()
+                                </MudText>
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+                            <CreateTestButtons
+                                Class="mb-3 mb-sm-6"
+                                TestTypes="@(new[] {TestType.Hard})"
+                                Status="@result.Test.Status"
+                                Subject="@SubjectType.History"
+                                IsLoading="@(_test?.Status == ResponseStatus.Loading)"
+                                OnCreateTestClick="@CreateTestAsync"/>
+                            <TestStatisticsGrid
+                                Score="@result.Statistics.HardTest.Score"
+                                AnswerRatio="@result.Statistics.HardTest.AnswerRatio"
+                                NumberOfTests="@result.Statistics.HardTest.NumberOfTests"/>
+                        </ChildContent>
+                    </MudExpansionPanel>
+                }
+            </MudExpansionPanels>
+        </div>
+    </section>
 
-            @if (result.Statistics.Conclusions.Length > 0)
-            {
-                <section class="section">
-                    <div class="container">
-                        <MudText Typo="Typo.h5" Class="mb-3">
-                            @L["Tests:Latest"]
-                        </MudText>
-                        <DefaultFillGrid>
-                            @foreach (var conclusion in result.Statistics.Conclusions)
-                            {
-                                <MudExpansionPanels>
-                                    <MudExpansionPanel>
-                                        <TitleContent>
-                                            <div class="d-flex">
-                                                <MudText Typo="Typo.subtitle1" Class="mr-3">
-                                                    @conclusion.CompletedAt.ToSimpleFormat()
-                                                </MudText>
-                                                <ConclusionStatusTitle Status="@conclusion.Status"/>
-                                            </div>
-                                        </TitleContent>
-                                        <ChildContent>
-                                            <TestConclusionList
-                                                TestType="@conclusion.TestType"
-                                                TimeSpent="@conclusion.TimeSpent"
-                                                Score="@conclusion.Score"
-                                                AnswerRatio="@conclusion.AnswerRatio"/>
-                                        </ChildContent>
-                                    </MudExpansionPanel>
-                                </MudExpansionPanels>
-                            }
-                        </DefaultFillGrid>
-                    </div>
-                </section>
-            }
-        }
-    </Result>
+    @if (result.Statistics.Conclusions.Length > 0)
+    {
+        <section class="section">
+            <div class="container">
+                <MudText Typo="Typo.h5" Class="mb-3">
+                    @L["Tests:Latest"]
+                </MudText>
+                <DefaultFillGrid>
+                    @foreach (var conclusion in result.Statistics.Conclusions)
+                    {
+                        <MudExpansionPanels>
+                            <MudExpansionPanel>
+                                <TitleContent>
+                                    <div class="d-flex">
+                                        <MudText Typo="Typo.subtitle1" Class="mr-3">
+                                            @conclusion.CompletedAt.ToSimpleFormat()
+                                        </MudText>
+                                        <ConclusionStatusTitle Status="@conclusion.Status"/>
+                                    </div>
+                                </TitleContent>
+                                <ChildContent>
+                                    <TestConclusionList
+                                        TestType="@conclusion.TestType"
+                                        TimeSpent="@conclusion.TimeSpent"
+                                        Score="@conclusion.Score"
+                                        AnswerRatio="@conclusion.AnswerRatio"/>
+                                </ChildContent>
+                            </MudExpansionPanel>
+                        </MudExpansionPanels>
+                    }
+                </DefaultFillGrid>
+            </div>
+        </section>
+    }
+}
+</Result>
 </ApiResponseViewer>
 
 

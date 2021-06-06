@@ -7,7 +7,7 @@ namespace Elwark.Education.Web.Gateways.Models.Test
     public sealed record TextAnswerResult(bool IsAnswerCorrect, bool IsTestComplete, string Text)
         : TestAnswerResult(IsAnswerCorrect, IsTestComplete);
 
-    public sealed record SingleAnswerResult(bool IsAnswerCorrect, bool IsTestComplete, int Number)
+    public sealed record OneAnswerResult(bool IsAnswerCorrect, bool IsTestComplete, int Number)
         : TestAnswerResult(IsAnswerCorrect, IsTestComplete);
 
     public sealed record ManyAnswersResult(bool IsAnswerCorrect, bool IsTestComplete, IEnumerable<int> Numbers)

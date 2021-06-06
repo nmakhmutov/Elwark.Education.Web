@@ -1,14 +1,25 @@
 @using Elwark.Education.Web.Gateways.Models.Test
 
 <ul class="@Class">
-    <li class="d-flex flex-row justify-space-between underline mb-1">
-        <MudText Typo="Typo.subtitle1">
-            @L["Test:Type"]
-        </MudText>
-        <MudText Typo="Typo.subtitle1">
-            @L[$"Test:{TestType}"]
-        </MudText>
-    </li>
+    @if (Link is not null)
+    {
+        <li class="d-flex flex-row justify-space-between underline mb-1">
+            <MudLink Href="@Link.Href">
+                @Link.Title
+            </MudLink>
+        </li>
+    }
+    @if (TestType.HasValue)
+    {
+        <li class="d-flex flex-row justify-space-between underline mb-1">
+            <MudText Typo="Typo.subtitle1">
+                @L["Test:Type"]
+            </MudText>
+            <MudText Typo="Typo.subtitle1">
+                @L[$"Test:{TestType}"]
+            </MudText>
+        </li>
+    }
     <li class="d-flex flex-row justify-space-between underline mb-1">
         <MudText Typo="Typo.subtitle1">
             @L["TimeSpent"]
@@ -108,8 +119,11 @@
     public string? Class { get; set; }
 
     [Parameter]
-    public TestType TestType { get; set; }
+    public TestType? TestType { get; set; }
 
+    [Parameter]
+    public LinkModel? Link { get; set; }
+    
     [Parameter]
     public Score Score { get; set; } = default!;
 

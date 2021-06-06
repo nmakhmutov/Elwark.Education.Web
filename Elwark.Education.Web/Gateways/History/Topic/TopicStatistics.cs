@@ -7,7 +7,7 @@ namespace Elwark.Education.Web.Gateways.History.Topic
     public sealed record TopicStatistics(
         TopicTestStatistics EasyTest,
         TopicTestStatistics HardTest,
-        TestConclusionSummary[] Conclusions
+        TopicTestConclusion[] Conclusions
     );
     
     public sealed record TopicTestStatistics(

@@ -21,7 +21,7 @@
         <Title Value="@L["Tests:Hard"]"></Title>
 
         <StatisticsDetailsTitle Title="@L["Tests:Hard"]" Class="mb-3"/>
-        <StatisticsDetailsGrid>
+        <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
             <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.NumberOfTests.Total.Total.ToReadable()">
                 <TwoColumnGrid>
                     <div>
@@ -63,19 +63,50 @@
                 <ProgressList Items="@result.TimeSpent.Progress.GetProgress(L)"/>
             </StatisticsCard>
         </StatisticsDetailsGrid>
+        @if (result.Conclusions.Length > 0)
+        {
+            <MudText Typo="Typo.h5" Class="mb-3">
+                @L["Tests:Latest"]
+            </MudText>
+            <DefaultFillGrid>
+                @foreach (var conclusion in result.Conclusions)
+                {
+                    <MudExpansionPanels>
+                        <MudExpansionPanel>
+                            <TitleContent>
+                                <div class="d-flex">
+                                    <MudText Typo="Typo.subtitle1" Class="mr-3">
+                                        @conclusion.CompletedAt.ToSimpleFormat()
+                                    </MudText>
+                                    <ConclusionStatusTitle Status="@conclusion.Status"/>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+                                <TestConclusionList
+                                    Link="@(new LinkModel(conclusion.Title, Links.Subject.History.Topic(conclusion.TopicId)))"
+                                    TimeSpent="@conclusion.TimeSpent"
+                                    Score="@conclusion.Score"
+                                    AnswerRatio="@conclusion.AnswerRatio"/>
+                            </ChildContent>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                }
+            </DefaultFillGrid>
+        }
     </Result>
 </ApiResponseViewer>
 
 @code {
-    
+
     private ApiResponse<TestStatistics> _response = ApiResponse<TestStatistics>.Loading();
-    
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync() =>
         _response = await HistoryClient.Me.GetHardTestStatisticsAsync();
+
 }

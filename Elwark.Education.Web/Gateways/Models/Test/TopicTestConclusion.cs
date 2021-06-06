@@ -2,8 +2,7 @@ using System;
 
 namespace Elwark.Education.Web.Gateways.Models.Test
 {
-    public sealed record TestConclusionSummary(
-        string Id,
+    public sealed record TopicTestConclusion(
         ConclusionStatus Status,
         TestType TestType,
         Score Score,

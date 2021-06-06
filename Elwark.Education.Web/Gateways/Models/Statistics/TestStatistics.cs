@@ -4,6 +4,7 @@ namespace Elwark.Education.Web.Gateways.Models.Statistics
         ScoreStatistics Score,
         AnswerRatioStatistics AnswerRatio,
         TimeSpentStatistics TimeSpent,
-        NumberOfTestsStatistics NumberOfTests
+        NumberOfTestsStatistics NumberOfTests,
+        TopicTestConclusion[] Conclusions
     );
 }

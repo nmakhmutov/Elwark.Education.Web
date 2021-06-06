@@ -1,30 +1,49 @@
 @using Elwark.Education.Web.Gateways.History.Me
+@using System.Diagnostics.Contracts
 
 <MudPaper Class="pa-3 pa-sm-6">
     <MudText Typo="Typo.h5" Align="Align.Center">
         @L["Experience:DailyReward"]
     </MudText>
-    @if (Reward.IsCollectable)
-    {
-        <MudText Typo="Typo.subtitle1">
-            @Reward.Xp xp
+    <div class="header">
+        <MudIcon Icon="@Icons.Material.Filled.FilterTiltShift" Class="icon" Color="Color.Primary"/>
+        <MudText Typo="Typo.h2">
+            @Reward.Xp
         </MudText>
+    </div>
 
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnCollect">
-            Collect
-        </MudButton>
-    }
-    else
-    {
-        <p>
-            @Reward.NextTimeAt.ToLongDateString()
-            &nbsp;
-            @Reward.NextTimeAt.ToSimpleFormat()
-        </p>
-    }
+    <div class="d-flex justify-center">
+        @if (Reward.IsCollectable)
+        {
+            <MudButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                Disabled="@_isLoading"
+                OnClick="@CollectAsync">
+                @if (_isLoading)
+                {
+                    <div class="d-flex flex-row align-center">
+                        <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                        @L["Loading"]
+                    </div>
+                }
+                else
+                {
+                    @L["Experience:CollectDailyReward"]
+                }
+            </MudButton>
+        }
+        else
+        {
+            <MudButton Disabled="true">
+                @L["Experience:DailyRewardUnlockedAt", Reward.NextTimeAt.ToSimpleFormat()]
+            </MudButton>
+        }
+    </div>
 </MudPaper>
 
 @code {
+    private bool _isLoading;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -34,5 +53,12 @@
 
     [Parameter]
     public EventCallback OnCollect { get; set; }
+
+    private async Task CollectAsync()
+    {
+        _isLoading = true;
+        await OnCollect.InvokeAsync();
+        _isLoading = false;
+    }
 
 }

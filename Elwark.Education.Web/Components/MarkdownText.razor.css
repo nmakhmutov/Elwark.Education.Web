@@ -14,14 +14,14 @@
     border: thin var(--mud-palette-background) solid;
     display: flex;
     flex-flow: column;
-    padding: 5px;
+    padding: 4px;
     margin: auto;
 }
 
 .markdown ::deep figcaption {
     background-color: var(--mud-palette-black);
     color: var(--mud-palette-white);
-    padding: 3px;
+    padding: 4px;
     text-align: center;
 }
 
@@ -31,14 +31,28 @@
     max-height: 50vh;
 }
 
-.markdown ::deep ol, ul {
-    margin-left: 16px;
+.markdown ::deep ol {
+    margin-left: 2rem;
+    list-style: decimal;
+    margin-bottom: 4px;
+}
+
+.markdown ::deep ul {
+    margin-left: 2rem;
+    list-style: disc;
+    margin-bottom: 4px;
+}
+
+.markdown ::deep li {
+    font-size: inherit;
 }
 
 .markdown ::deep hr {
-    border: 0;
+    border: none;
     height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    flex-shrink: 0;
+    margin: 12px 16px;
+    background-color: var(--mud-palette-divider);
 }
 
 .markdown ::deep a {
@@ -50,9 +64,10 @@
 }
 
 .markdown ::deep p {
-    font-size: 0.95rem;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-weight: 400;
-    line-height: 1.8;
-    letter-spacing: .00938em;
+    font-family: var(--mud-typography-body1-family);
+    font-size: inherit;
+    font-weight: var(--mud-typography-body1-weight);
+    line-height: var(--mud-typography-body1-lineheight);
+    letter-spacing: var(--mud-typography-body1-letterspacing);
+    margin-bottom: 4px;
 }

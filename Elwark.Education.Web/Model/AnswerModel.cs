@@ -11,7 +11,7 @@ namespace Elwark.Education.Web.Model
 
         public string TextAnswer { get; set; } = string.Empty;
 
-        public int SingleAnswer { get; set; }
+        public int OneAnswer { get; set; }
 
         public List<int> ManyAnswer { get; set; } = new();
     }
@@ -25,10 +25,10 @@ namespace Elwark.Education.Web.Model
                 .WithMessage(localizer["Test:AnswerCannotBeEmpty"])
                 .When(x => x.QuestionType == QuestionType.TextAnswer);
 
-            RuleFor(x => x.SingleAnswer)
+            RuleFor(x => x.OneAnswer)
                 .NotEmpty()
                 .WithMessage(localizer["Test:AnswerCannotBeEmpty"])
-                .When(x => x.QuestionType == QuestionType.SingleAnswer);
+                .When(x => x.QuestionType == QuestionType.OneAnswer);
 
             RuleFor(x => x.ManyAnswer)
                 .NotEmpty()

@@ -7,10 +7,10 @@
             <i>@Level</i>
         </div>
     </div>
-    <MudProgressLinear Min="0" Max="@NextLevelXp" Value="@Xp" Color="Color.Primary" Class="mb-2 mt-3"/>
+    <MudProgressLinear Min="0" Max="@NextLevelXp" Value="@Xp" Color="Color.Primary" Class="mb-2"/>
     <div class="d-flex justify-space-between">
         <MudText Typo="Typo.body2">
-            @L["Experience:XpToNextLevel", NextLevelXp - Xp]
+            @L["Experience:XpToNextLevel", (NextLevelXp - Xp).ToString("N0")]
         </MudText>
         <MudText Typo="Typo.body2">
             @(Math.Round((double)Xp / NextLevelXp * 100))%

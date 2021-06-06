@@ -33,16 +33,16 @@
                 </MudContainer>
                 break;
 
-            case QuestionType.SingleAnswer:
+            case QuestionType.OneAnswer:
                 <div class="options-grid">
-                    <MudRadioGroup @bind-SelectedOption="@_answer.SingleAnswer">
+                    <MudRadioGroup @bind-SelectedOption="@_answer.OneAnswer">
                         @foreach (var option in Question.Options)
                         {
                             var (icon, color) = AnswerResult switch {
-                                SingleAnswerResult x when option.Number == x.Number => 
+                                OneAnswerResult x when option.Number == x.Number => 
                                     (Icon: Icons.Filled.Check , Color: Color.Success),
                                 
-                                SingleAnswerResult {IsAnswerCorrect: false} when option.Number == _answer.SingleAnswer => 
+                                OneAnswerResult {IsAnswerCorrect: false} when option.Number == _answer.OneAnswer => 
                                     (Icon: Icons.Filled.Clear , Color: Color.Error),
                                     
                                 _ => (Icon: null, Color: Color.Default)
@@ -235,7 +235,7 @@
         _answerState = AnswerState.Answering;
         TestAnswer answer = _answer.QuestionType switch {
             QuestionType.TextAnswer => new TextAnswer(_answer.TextAnswer),
-            QuestionType.SingleAnswer => new SingleAnswer(_answer.SingleAnswer),
+            QuestionType.OneAnswer => new OneAnswer(_answer.OneAnswer),
             QuestionType.ManyAnswers => new ManyAnswer(_answer.ManyAnswer),
             QuestionType.SortedAnswers => new ManyAnswer(_answer.ManyAnswer),
             _ => throw new ArgumentOutOfRangeException(nameof(_answer.QuestionType))

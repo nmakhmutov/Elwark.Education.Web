@@ -18,8 +18,8 @@ namespace Elwark.Education.Web.Gateways.History.Test
             ExecuteAsync<ManyAnswersResult>(() =>
                 _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
-        public Task<ApiResponse<SingleAnswerResult>> CheckAsync(string testId, string questionId, SingleAnswer answer) =>
-            ExecuteAsync<SingleAnswerResult>(() =>
+        public Task<ApiResponse<OneAnswerResult>> CheckAsync(string testId, string questionId, OneAnswer answer) =>
+            ExecuteAsync<OneAnswerResult>(() =>
                 _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
 
         public Task<ApiResponse<TextAnswerResult>> CheckAsync(string testId, string questionId, TextAnswer answer) =>
