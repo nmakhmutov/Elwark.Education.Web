@@ -55,6 +55,11 @@
         order: 2;
     }
 
+    .toolbar {
+        grid-column: 1/-1;
+        order: 4;
+    }
+
     .chapter-title {
         font-size: var(--mud-typography-h4-size);
     }
@@ -62,7 +67,7 @@
 
 @media (min-width: 960px) {
     .content-header {
-        grid-template-columns: 3fr 1fr;
+        grid-template-columns: 1fr 1fr;
     }
 
     .contents {
@@ -79,11 +84,18 @@
         order: 3;
         grid-column: span 1;
     }
+
+    .toolbar {
+        order: 4;
+        justify-self: end;
+        align-self: end;
+        grid-column: span 1;
+    }
 }
 
 @media (min-width: 1280px) {
     .content-header {
-        grid-template-columns: 10fr 2fr;
+        grid-template-columns: 2fr 1fr;
     }
 }
 

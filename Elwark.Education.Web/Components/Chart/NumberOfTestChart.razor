@@ -38,14 +38,14 @@
     private double[] Data => new double[]
     {
         Value.Completed,
-        Value.RepliesExceeded,
+        Value.MistakesExceeded,
         Value.TimeExceeded
     };
 
     private ChartList.Item[] Items => new[]
     {
         new ChartList.Item(L["NumberOfTests:Completed"], Value.Completed.ToReadable(), Colors.Blue.Darken2),
-        new ChartList.Item(L["NumberOfTests:RepliesExceeded"], Value.RepliesExceeded.ToReadable(), Colors.Green.Darken2),
+        new ChartList.Item(L["NumberOfTests:MistakesExceeded"], Value.MistakesExceeded.ToReadable(), Colors.Green.Darken2),
         new ChartList.Item(L["NumberOfTests:TimeExceeded"], Value.TimeExceeded.ToReadable(), Colors.Orange.Darken2),
         new ChartList.Item(L["NumberOfTests:Total"], Value.Total.ToReadable(), null)
     };

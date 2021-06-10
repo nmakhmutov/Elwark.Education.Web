@@ -38,7 +38,7 @@
                     @L["Subscription:TestTimeCoefficient"]
                 </MudText>
                 <MudText Typo="Typo.subtitle1" Class="ml-3">
-                    @("x" + TestTimeCoefficient)
+                    @("x" + TestDurationCoefficient)
                 </MudText>
             </li>
             <li class="row">
@@ -64,17 +64,53 @@
                     <MudText Typo="Typo.subtitle1">
                         @L["Subscription:AnswerCreation"]
                     </MudText>
-                    @if (AnswerCreation.RestoreAt.HasValue)
+                    @if (TestQuestionMistakes.RestoreAt.HasValue)
                     {
                         <MudText Typo="Typo.caption">
                             <em>
-                                @L["Subscription:RestrictionRestoreAt", AnswerCreation.RestoreAt.Value.ToSimpleFormat()]
+                                @L["Subscription:RestrictionRestoreAt", TestQuestionMistakes.RestoreAt.Value.ToSimpleFormat()]
                             </em>
                         </MudText>
                     }
                 </div>
                 <MudText Typo="Typo.subtitle1" Class="ml-3">
-                    @(AnswerCreation.Quantity < 0 ? "∞" : AnswerCreation.Quantity)
+                    @(TestQuestionMistakes.Quantity < 0 ? "∞" : TestQuestionMistakes.Quantity)
+                </MudText>
+            </li>
+            <li class="row">
+                <div>
+                    <MudText Typo="Typo.subtitle1">
+                        @L["Subscription:TestQuestionDeletion"]
+                    </MudText>
+                    @if (TestQuestionDeletion.RestoreAt.HasValue)
+                    {
+                        <MudText Typo="Typo.caption">
+                            <em>
+                                @L["Subscription:RestrictionRestoreAt", TestQuestionDeletion.RestoreAt.Value.ToSimpleFormat()]
+                            </em>
+                        </MudText>
+                    }
+                </div>
+                <MudText Typo="Typo.subtitle1" Class="ml-3">
+                    @(TestQuestionDeletion.Quantity < 0 ? "∞" : TestQuestionDeletion.Quantity)
+                </MudText>
+            </li>
+            <li class="row">
+                <div>
+                    <MudText Typo="Typo.subtitle1">
+                        @L["Subscription:DateGuesserCreation"]
+                    </MudText>
+                    @if (DateGuesserCreation.RestoreAt.HasValue)
+                    {
+                        <MudText Typo="Typo.caption">
+                            <em>
+                                @L["Subscription:RestrictionRestoreAt", DateGuesserCreation.RestoreAt.Value.ToSimpleFormat()]
+                            </em>
+                        </MudText>
+                    }
+                </div>
+                <MudText Typo="Typo.subtitle1" Class="ml-3">
+                    @(DateGuesserCreation.Quantity < 0 ? "∞" : DateGuesserCreation.Quantity)
                 </MudText>
             </li>
         </ul>
@@ -124,16 +160,19 @@
     public Subscription Subscription { get; set; } = default!;
 
     [Parameter]
-    public Restriction TestCreation { get; set; } = default!;
+    public Permission TestCreation { get; set; } = default!;
 
     [Parameter]
-    public Restriction AnswerCreation { get; set; } = default!;
+    public Permission TestQuestionMistakes { get; set; } = default!;
 
     [Parameter]
-    public float TestTimeCoefficient { get; set; }
+    public Permission TestQuestionDeletion { get; set; } = default!;
 
     [Parameter]
-    public bool IsAllowedPremiumContent { get; set; }
+    public Permission DateGuesserCreation { get; set; } = default!;
+
+    [Parameter]
+    public float TestDurationCoefficient { get; set; }
 
     [Parameter]
     public EventCallback OnBuyClick { get; set; }

@@ -4,9 +4,9 @@
     @switch (Status)
     {
         case TestStatus.Allowed:
-            <MudText Typo="Typo.h6" Class="mb-3">
+            <h6 class="title">
                 @L["Test:CheckYourKnowledge"]
-            </MudText>
+            </h6>
             <div class="grid">
                 @foreach (var testType in TestTypes)
                 {
@@ -32,7 +32,7 @@
             break;
 
         case TestStatus.TestCreationMaximum:
-        case TestStatus.AnswerCreationMaximum:
+        case TestStatus.TestQuestionMistakesMaximum:
             <MudText Typo="Typo.body2" Color="Color.Info" Class="mb-3">
                 @ErrorManager.Localize(Status)
             </MudText>

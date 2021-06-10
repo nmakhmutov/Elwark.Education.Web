@@ -59,8 +59,20 @@
                 </TwoColumnGrid>
             </StatisticsCard>
             <StatisticsCard Icon="@Icons.Filled.Timer" Title="@L["TimeSpent"]" Subtitle="@result.TimeSpent.Total.ToSimpleFormat()">
-                <Subheader Title="@L["Progress"]" Subtitle="@result.TimeSpent.Progress.RangeTitle()"/>
-                <ProgressList Items="@result.TimeSpent.Progress.GetProgress(L)"/>
+                <TwoColumnGrid>
+                    <div>
+                        <Subheader Title="@L["TimeSpent"]" Subtitle="@L["ForAllTime"]"/>
+                        <TimeSpentChart
+                            Average="@result.TimeSpent.Average"
+                            Max="@result.TimeSpent.Max"
+                            Min="@result.TimeSpent.Min"
+                            Total="@result.TimeSpent.Total"/>
+                    </div>
+                    <div>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.TimeSpent.Progress.RangeTitle()"/>
+                        <ProgressList Items="@result.TimeSpent.Progress.GetProgress(L)"/>
+                    </div>
+                </TwoColumnGrid>
             </StatisticsCard>
         </StatisticsDetailsGrid>
         @if (result.Conclusions.Length > 0)

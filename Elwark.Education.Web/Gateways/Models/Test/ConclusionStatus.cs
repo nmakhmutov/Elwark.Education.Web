@@ -4,6 +4,6 @@ namespace Elwark.Education.Web.Gateways.Models.Test
     {
         Complete = 0,
         TimeExceeded = 1,
-        RepliesExceeded = 2
+        MistakesExceeded = 2
     }
 }

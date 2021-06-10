@@ -3,7 +3,8 @@
 @using Elwark.Education.Web.Gateways.History
 @using Elwark.Education.Web.Gateways.History.Topic
 @using Elwark.Education.Web.Gateways.Models.Test
-
+@using Elwark.Education.Web.Infrastructure.Services
+@implements IDisposable
 @attribute [Authorize]
 
 <ApiResponseViewer Response="@_topic">
@@ -38,7 +39,7 @@
 }
 
 <section class="section pt-3 pt-sm-6">
-    <div class="container mud-paper pa-3">
+    <div class="container mud-paper pa-3 pa-sm-6">
 
         <div class="content-header">
             <div class="contents">
@@ -54,6 +55,7 @@
                     }
                 </ul>
             </div>
+
             <div class="reactions">
                 <TopicReactionButtons
                     Id="@Id"
@@ -63,6 +65,7 @@
                     OnLikeClick="@OnLikeClick"
                     OnDislikeClick="@OnDislikeClick"/>
             </div>
+
             <div class="test">
                 <CreateTestButtons
                     TestTypes="@result.Test.TestTypes"
@@ -71,13 +74,17 @@
                     IsLoading="@(_test?.Status == ResponseStatus.Loading)"
                     OnCreateTestClick="@CreateTestAsync"/>
             </div>
+
+            <div class="toolbar">
+                <TextToolbar/>
+            </div>
         </div>
 
         <MudDivider DividerType="DividerType.Middle" Class="my-6 my-sm-8 my-md-12"/>
 
         @foreach (var (title, subtitle, content) in result.Topic.Chapters)
         {
-            <article class="mb-6 mb-sm-12">
+            <article class="mb-6 mb-sm-12" style="@FormatService.WidthStyles">
                 <div class="mb-6">
                     <h2 class="chapter-title">
                         @title
@@ -89,7 +96,7 @@
                         </h3>
                     }
                 </div>
-                <MarkdownText Text="@content"/>
+                <MarkdownText Text="@content" Style="@FormatService.TextStyles"/>
             </article>
         }
     </div>
@@ -252,10 +259,18 @@
     private ErrorManager ErrorManager { get; set; } = default!;
 
     [Inject]
+    private TopicContentFormatService FormatService { get; set; } = default!;
+
+    [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        FormatService.OnChange += StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -299,5 +314,7 @@
         var response = await HistoryClient.Topic.DislikeAsync(Id);
         return response.Status == ResponseStatus.Success;
     }
+
+    public void Dispose() => FormatService.OnChange -= StateHasChanged;
 
 }

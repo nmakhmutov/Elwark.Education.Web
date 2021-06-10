@@ -20,14 +20,15 @@
                 Background="@SubjectType.History.GetStatic().Image"
                 Subscription="@overview.Subscription"
                 TestCreation="@overview.TestCreation"
-                AnswerCreation="@overview.AnswerCreation"
-                TestTimeCoefficient="@overview.TestTimeCoefficient"
-                IsAllowedPremiumContent="@overview.IsAllowedPremiumContent"
+                TestQuestionMistakes="@overview.TestQuestionMistakes"
+                TestDurationCoefficient="@overview.TestDurationCoefficient"
+                TestQuestionDeletion="@overview.TestQuestionDeletion"
+                DateGuesserCreation="@overview.DateGuesserCreation"
                 OnBuyClick="@OnBuyClick"/>
 
-            <LevelCard Level="@overview.Rank.Level" Xp="@overview.Rank.Xp" NextLevelXp="@overview.Rank.NextLevelXp"/>
+            <LevelCard Level="@overview.Level.Value" Xp="@overview.Level.Xp" NextLevelXp="@overview.Level.NextLevelXp"/>
             
-            <XpCard Xp="@overview.Rank.Xp" Recent="@overview.Rank.Recent.Take(7).ToArray()"/>
+            <XpCard Xp="@overview.Level.Xp" Recent="@overview.Level.Recent"/>
 
             <DailyRewardCard Reward="@overview.DailyReward" OnCollect="@CollectDailyReward"/>
             @* <ProfileSubscriptionCard Subject="@overview."/> *@

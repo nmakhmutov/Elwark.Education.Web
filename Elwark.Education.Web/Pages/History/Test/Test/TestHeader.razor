@@ -13,11 +13,11 @@
                     @L["Questions"] @CurrentQuestion / @TotalQuestions
                 </MudText>
                 <div class="d-flex flex-row align-center">
-                    @if (AnswerAttempts >= 0)
+                    @if (AllowedMistakes >= 0)
                     {
                         <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Favorite" Color="Color.Error"/>
                         <MudText Typo="Typo.subtitle1" Class="ml-1">
-                            @AnswerAttempts
+                            @AllowedMistakes
                         </MudText>
                     }
                     else
@@ -42,7 +42,7 @@
     public TestType Type { get; set; }
 
     [Parameter]
-    public int AnswerAttempts { get; set; }
+    public int AllowedMistakes { get; set; }
 
     [Parameter]
     public int CurrentQuestion { get; set; }

@@ -1,0 +1,60 @@
+<div class="@Class">
+    <MudChart ChartType="ChartType.Bar" Width="100%" Height="@Size" ChartSeries="@Series" ChartOptions="@Options"/>
+    <ChartList Items="@Items"/>
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Size { get; set; } = "250px";
+
+    [Parameter]
+    public TimeSpan Min { get; set; }
+
+    [Parameter]
+    public TimeSpan Max { get; set; }
+
+    [Parameter]
+    public TimeSpan Average { get; set; }
+
+    [Parameter]
+    public TimeSpan Total { get; set; }
+
+    private static readonly ChartOptions Options = new()
+    {
+        DisableLegend = true,
+        InterpolationOption = InterpolationOption.NaturalSpline,
+        XAxisLines = false,
+        YAxisLines = false,
+        YAxisTicks = 10,
+        ChartPalette = new[]
+        {
+            Colors.Blue.Darken2,
+            Colors.Green.Darken2,
+            Colors.Orange.Darken2,
+            Colors.Purple.Darken2
+        }
+    };
+
+    private List<ChartSeries> Series => new()
+    {
+        new ChartSeries {Data = new[] {Min.TotalSeconds}},
+        new ChartSeries {Data = new[] {Max.TotalSeconds}},
+        new ChartSeries {Data = new[] {Average.TotalSeconds}}
+    };
+
+    private ChartList.Item[] Items => new[]
+    {
+        new ChartList.Item(L["TimeSpent:Min"], Min.ToSimpleFormat(), Colors.Blue.Darken2),
+        new ChartList.Item(L["TimeSpent:Max"], Max.ToSimpleFormat(), Colors.Green.Darken2),
+        new ChartList.Item(L["TimeSpent:Average"], Average.ToSimpleFormat(), Colors.Orange.Darken2),
+        new ChartList.Item(L["TimeSpent:Total"], Total.ToSimpleFormat(), null)
+    };
+
+}

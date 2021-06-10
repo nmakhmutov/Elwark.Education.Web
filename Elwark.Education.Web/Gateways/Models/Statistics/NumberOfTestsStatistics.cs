@@ -10,6 +10,6 @@ namespace Elwark.Education.Web.Gateways.Models.Statistics
         Contrast<uint> Total,
         Contrast<uint> Completed,
         Contrast<uint> TimeExceeded,
-        Contrast<uint> RepliesExceeded
+        Contrast<uint> MistakesExceeded
     );
 }

@@ -6,7 +6,7 @@ namespace Elwark.Education.Web.Gateways.History.Test
     internal sealed record TestModel(
         string Id,
         TestType TestType,
-        int AnswerAttempts,
+        int AllowedMistakes,
         DateTime CreatedAt,
         DateTime ExpiredAt,
         TestQuestion[] Questions

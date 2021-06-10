@@ -23,7 +23,7 @@ namespace Elwark.Education.Web.Pages.Profile.History.Statistics
             new ProgressList.Item[]
             {
                 new(l["NumberOfTests:Completed"], progress.Completed.Current.ToReadable(), progress.Completed.Difference),
-                new(l["NumberOfTests:RepliesExceeded"], progress.RepliesExceeded.Current.ToReadable(), progress.RepliesExceeded.Difference),
+                new(l["NumberOfTests:MistakesExceeded"], progress.MistakesExceeded.Current.ToReadable(), progress.MistakesExceeded.Difference),
                 new(l["NumberOfTests:TimeExceeded"], progress.TimeExceeded.Current.ToReadable(), progress.TimeExceeded.Difference),
                 new(l["NumberOfTests:Total"], progress.Total.Current.ToReadable(), progress.Total.Difference),
             };

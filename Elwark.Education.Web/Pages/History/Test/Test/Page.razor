@@ -17,7 +17,7 @@
                 <div class="container mud-paper mud-elevation-1">
                     <TestHeader
                         Type="@test.TestType"
-                        AnswerAttempts="@test.AnswerAttempts"
+                        AllowedMistakes="@test.AllowedMistakes"
                         CurrentQuestion="@(_questionIndex + 1)"
                         TotalQuestions="@_questions.Count"
                         ExpiredAt="@test.ExpiredAt"
@@ -132,9 +132,9 @@
 
         if (!_answerResult.IsAnswerCorrect)
         {
-            if (_test.Data.AnswerAttempts >= 0)
+            if (_test.Data.AllowedMistakes >= 0)
             {
-                _test = ApiResponse<TestModel>.Success(_test.Data with{AnswerAttempts = _test.Data.AnswerAttempts - 1});
+                _test = ApiResponse<TestModel>.Success(_test.Data with{AllowedMistakes = _test.Data.AllowedMistakes - 1});
             }
             
             if (_test.Data.TestType == TestType.Easy)

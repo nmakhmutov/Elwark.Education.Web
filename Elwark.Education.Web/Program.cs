@@ -5,7 +5,8 @@ using Elwark.Education.Web.Gateways.History;
 using Elwark.Education.Web.Gateways.Shop;
 using Elwark.Education.Web.Gateways.User;
 using Elwark.Education.Web.Infrastructure;
-using Elwark.Education.Web.Infrastructure.LocalStorage;
+using Elwark.Education.Web.Infrastructure.LanguageStorage;
+using Elwark.Education.Web.Infrastructure.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,14 +33,15 @@ namespace Elwark.Education.Web
                     new Uri(builder.Configuration["Urls:Account"]!)
                 ))
                 .AddLocalization(options => options.ResourcesPath = "Resources")
-                .AddScoped<ILocalStorage, LocalStorage>()
+                .AddScoped<ILanguageStorage, LanguageStorage>()
+                .AddScoped<TopicContentFormatService>()
                 .AddScoped<EducationAuthorization>()
                 .AddScoped<EducationLocalization>()
                 .AddScoped<ErrorManager>();
 
             builder.Services
                 .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
-            
+
             var policy = HttpPolicyExtensions
                 .HandleTransientHttpError()
                 .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
@@ -58,7 +60,7 @@ namespace Elwark.Education.Web
                 .AddHttpMessageHandler<EducationAuthorization>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
-            
+
             builder.Services
                 .AddHttpClient<IShopClient, ShopClient>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!)
@@ -67,8 +69,12 @@ namespace Elwark.Education.Web
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
 
-            await builder.Build()
-                .RunAsync();
+            var host = builder.Build();
+
+            await host.Services.GetRequiredService<TopicContentFormatService>()
+                .InitAsync();
+
+            await host.RunAsync();
         }
     }
 

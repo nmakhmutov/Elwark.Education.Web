@@ -1,0 +1,77 @@
+@using Elwark.Education.Web.Infrastructure.Services
+<div class="toolbar @Class">
+    <div class="buttons content-width">
+        <MudText Typo="Typo.body2" Class="subtitle">
+            @L["TopicFormatting:ContentWidth"]
+        </MudText>
+        <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+            <MudIconButton
+                Disabled="@(FormatService.Width == Width.False)"
+                Icon="@Icons.Material.Filled.CropFree"
+                OnClick="@FormatService.SetWidthFalseAsync"/>
+            <div class="only-lg-plus">
+                <MudIconButton
+                    Disabled="@(FormatService.Width == Width.lg)"
+                    Icon="@Icons.Material.Filled.CropDin"
+                    OnClick="@FormatService.SetWidthLgAsync"/>
+            </div>
+            <MudIconButton
+                Disabled="@(FormatService.Width == Width.md)"
+                Icon="@Icons.Material.Filled.CropPortrait"
+                OnClick="@FormatService.SetWidthMdAsync"/>
+        </MudButtonGroup>
+    </div>
+
+    <div class="buttons">
+        <MudText Typo="Typo.body2" Class="subtitle">
+            @L["TopicFormatting:TextAlignment"]
+        </MudText>
+        <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+            <MudIconButton
+                Disabled="@(FormatService.TextAlign == Align.Left)"
+                Icon="@Icons.Material.Filled.FormatAlignLeft"
+                OnClick="@FormatService.AlignTextLeftAsync"/>
+            <MudIconButton
+                Disabled="@(FormatService.TextAlign == Align.Center)"
+                Icon="@Icons.Material.Filled.FormatAlignCenter"
+                OnClick="@FormatService.AlignTextCenterAsync"/>
+            <MudIconButton
+                Disabled="@(FormatService.TextAlign == Align.Right)"
+                Icon="@Icons.Material.Filled.FormatAlignRight"
+                OnClick="@FormatService.AlignTextRightAsync"/>
+            <MudIconButton
+                Disabled="@(FormatService.TextAlign == Align.Justify)"
+                Icon="@Icons.Material.Filled.FormatAlignJustify"
+                OnClick="@FormatService.AlignTextJustifyAsync"/>
+        </MudButtonGroup>
+    </div>
+
+    <div class="buttons">
+        <MudText Typo="Typo.body2" Class="subtitle">
+            @L["TopicFormatting:FontSize"]
+        </MudText>
+        <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+            <MudIconButton
+                Disabled="@(!FormatService.CanDecreaseFontSize())"
+                Icon="@Icons.Material.Filled.Remove"
+                OnClick="@FormatService.DecreaseFontSizeAsync"/>
+            <MudIconButton
+                Disabled="@(!FormatService.CanIncreaseFontSize())"
+                Icon="@Icons.Material.Filled.Add"
+                OnClick="@FormatService.IncreaseFontSizeAsync"/>
+        </MudButtonGroup>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private TopicContentFormatService FormatService { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

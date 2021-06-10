@@ -1,4 +1,4 @@
-@using Elwark.Education.Web.Infrastructure.LocalStorage
+@using Elwark.Education.Web.Infrastructure.LanguageStorage
 <MudMenu Icon="@Icons.Filled.Translate" Color="Color.Inherit" OffsetX="true" Direction="Direction.Left">
     @foreach (var (culture, name) in _cultures)
     {
@@ -11,7 +11,7 @@
 @code {
 
     [Inject]
-    private ILocalStorage LocalStorage { get; set; } = default!;
+    private ILanguageStorage LanguageStorage { get; set; } = default!;
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
@@ -24,7 +24,7 @@
 
     private async Task Set(string language)
     {
-        await LocalStorage.SetLanguageAsync(language);
+        await LanguageStorage.SetAsync(language);
         NavigationManager.NavigateTo(NavigationManager.Uri, true);
     }
 
