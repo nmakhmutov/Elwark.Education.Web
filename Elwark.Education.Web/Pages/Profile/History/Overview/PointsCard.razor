@@ -6,18 +6,18 @@
     </MudText>
     <div class="header">
         <MudIcon Icon="@Icons.Material.Filled.FilterTiltShift" Class="icon" Color="Color.Primary"/>
-        @if (Xp > 1000)
+        @if (Points > 1000)
         {
-            <MudTooltip Text="@Xp.ToString("N0")">
+            <MudTooltip Text="@Points.ToString("N0")">
                 <MudText Typo="Typo.h2">
-                    @Xp.ToReadable()
+                    @Points.ToReadable()
                 </MudText>
             </MudTooltip>
         }
         else
         {
             <MudText Typo="Typo.h2">
-                @Xp.ToReadable()
+                @Points.ToReadable()
             </MudText>
         }
     </div>
@@ -59,9 +59,9 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
-    public long Xp { get; set; }
+    public long Points { get; set; }
 
     [Parameter]
-    public RecentXp[] Recent { get; set; } = Array.Empty<RecentXp>();
+    public RecentExperience[] Recent { get; set; } = Array.Empty<RecentExperience>();
 
 }

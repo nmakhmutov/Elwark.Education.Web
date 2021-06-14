@@ -68,7 +68,7 @@
 
             <div class="test">
                 <CreateTestButtons
-                    TestTypes="@result.Test.TestTypes"
+                    TestTypes="@result.Test.TestTypes.ToArray()"
                     Status="@result.Test.Status"
                     Subject="@SubjectType.History"
                     IsLoading="@(_test?.Status == ResponseStatus.Loading)"
@@ -131,7 +131,7 @@
     </section>
 }
 
-@if (result.Test.TestTypes.Length > 0)
+@if (result.Test.Status != TestStatus.NotAvailable)
 {
     <section class="section">
         <div class="container">
@@ -141,7 +141,7 @@
                 </MudLink>
             </div>
             <MudExpansionPanels>
-                @if (result.Test.TestTypes.Contains(TestType.Easy))
+                @if (result.Test.HasEasyTest)
                 {
                     <MudExpansionPanel>
                         <TitleContent>
@@ -163,14 +163,33 @@
                                 IsLoading="@(_test?.Status == ResponseStatus.Loading)"
                                 OnCreateTestClick="@CreateTestAsync"/>
                             <TestStatisticsGrid
+                                Class="mb-3 mb-sm-6"
                                 Score="@result.Statistics.EasyTest.Score"
                                 AnswerRatio="@result.Statistics.EasyTest.AnswerRatio"
                                 NumberOfTests="@result.Statistics.EasyTest.NumberOfTests"/>
+
+                            @if (result.Statistics.EasyTest.Conclusions.Length > 0)
+                            {
+                                <MudText Typo="Typo.h5" Class="mb-3">
+                                    @L["Tests:Latest"]
+                                </MudText>
+                                <DefaultFillGrid>
+                                    @foreach (var conclusion in result.Statistics.EasyTest.Conclusions)
+                                    {
+                                        <TestConclusionList
+                                            Status="@conclusion.Status"
+                                            CompletedAt="@conclusion.CompletedAt"
+                                            TimeSpent="@conclusion.TimeSpent"
+                                            Score="@conclusion.Score"
+                                            AnswerRatio="@conclusion.AnswerRatio"/>
+                                    }
+                                </DefaultFillGrid>
+                            }
                         </ChildContent>
                     </MudExpansionPanel>
                 }
 
-                @if (result.Test.TestTypes.Contains(TestType.Hard))
+                @if (result.Test.HasHardTest)
                 {
                     <MudExpansionPanel>
                         <TitleContent>
@@ -192,50 +211,34 @@
                                 IsLoading="@(_test?.Status == ResponseStatus.Loading)"
                                 OnCreateTestClick="@CreateTestAsync"/>
                             <TestStatisticsGrid
+                                Class="mb-3 mb-sm-6"
                                 Score="@result.Statistics.HardTest.Score"
                                 AnswerRatio="@result.Statistics.HardTest.AnswerRatio"
                                 NumberOfTests="@result.Statistics.HardTest.NumberOfTests"/>
+
+                            @if (result.Statistics.HardTest.Conclusions.Length > 0)
+                            {
+                                <MudText Typo="Typo.h5" Class="mb-3">
+                                    @L["Tests:Latest"]
+                                </MudText>
+                                <DefaultFillGrid>
+                                    @foreach (var conclusion in result.Statistics.HardTest.Conclusions)
+                                    {
+                                        <TestConclusionList
+                                            Status="@conclusion.Status"
+                                            CompletedAt="@conclusion.CompletedAt"
+                                            TimeSpent="@conclusion.TimeSpent"
+                                            Score="@conclusion.Score"
+                                            AnswerRatio="@conclusion.AnswerRatio"/>
+                                    }
+                                </DefaultFillGrid>
+                            }
                         </ChildContent>
                     </MudExpansionPanel>
                 }
             </MudExpansionPanels>
         </div>
     </section>
-
-    @if (result.Statistics.Conclusions.Length > 0)
-    {
-        <section class="section">
-            <div class="container">
-                <MudText Typo="Typo.h5" Class="mb-3">
-                    @L["Tests:Latest"]
-                </MudText>
-                <DefaultFillGrid>
-                    @foreach (var conclusion in result.Statistics.Conclusions)
-                    {
-                        <MudExpansionPanels>
-                            <MudExpansionPanel>
-                                <TitleContent>
-                                    <div class="d-flex">
-                                        <MudText Typo="Typo.subtitle1" Class="mr-3">
-                                            @conclusion.CompletedAt.ToSimpleFormat()
-                                        </MudText>
-                                        <ConclusionStatusTitle Status="@conclusion.Status"/>
-                                    </div>
-                                </TitleContent>
-                                <ChildContent>
-                                    <TestConclusionList
-                                        TestType="@conclusion.TestType"
-                                        TimeSpent="@conclusion.TimeSpent"
-                                        Score="@conclusion.Score"
-                                        AnswerRatio="@conclusion.AnswerRatio"/>
-                                </ChildContent>
-                            </MudExpansionPanel>
-                        </MudExpansionPanels>
-                    }
-                </DefaultFillGrid>
-            </div>
-        </section>
-    }
 }
 </Result>
 </ApiResponseViewer>
@@ -288,7 +291,11 @@
     private async Task CreateTestAsync(TestType testType)
     {
         _test = ApiResponse<TestCreatedResult>.Loading();
-        _test = await HistoryClient.Topic.CreateTestAsync(Id, testType);
+        _test = testType switch {
+            TestType.Easy => await HistoryClient.Topic.CreateEasyTestAsync(Id),
+            TestType.Hard => await HistoryClient.Topic.CreateHardTestAsync(Id),
+            _ => throw new ArgumentOutOfRangeException(nameof(testType), testType, null)
+            };
 
         if (_test.Status == ResponseStatus.Success)
             NavigationManager.NavigateTo(Links.Subject.History.Test(_test.Data.Id));

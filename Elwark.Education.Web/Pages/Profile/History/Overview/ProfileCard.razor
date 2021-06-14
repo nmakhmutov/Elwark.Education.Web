@@ -29,8 +29,8 @@
                 <MudText Typo="Typo.subtitle1">
                     @L["Subscription"]
                 </MudText>
-                <MudText Typo="Typo.subtitle1" Color="@Subscription.Type.GetColor()">
-                    @L[$"Subscription:{Subscription.Type}"]
+                <MudText Typo="Typo.subtitle1" Color="@Subscription.GetColor()">
+                    @L[$"Subscription:{Subscription}"]
                 </MudText>
             </li>
             <li class="row">
@@ -115,27 +115,12 @@
             </li>
         </ul>
         <div class="subscription">
-            @if (Subscription.Purchase is null)
+            @if (Subscription == SubscriptionType.Free)
             {
                 <div class="d-flex flex-row justify-center">
                     <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@OnBuyClick">
                         @L["Subscription:Upgrade"]
                     </MudButton>
-                </div>
-            }
-            else
-            {
-                <div class="d-flex flex-row justify-space-between align-center">
-                    <MudTooltip Text="@L["Subscription"]">
-                        <MudChip Color="@Subscription.Type.GetColor()" Size="Size.Small" Label="true" Class="ma-0">
-                            @L[$"Subscription:{Subscription.Type}"]
-                        </MudChip>
-                    </MudTooltip>
-                    <MudText Typo="Typo.body2" Align="Align.Right">
-                        <em>
-                            @L["Subscription:ExpiresAt", Subscription.Purchase.ExpiredAt.ToSimpleFormat()]
-                        </em>
-                    </MudText>
                 </div>
             }
         </div>
@@ -157,7 +142,7 @@
     public string Background { get; set; } = string.Empty;
 
     [Parameter]
-    public Subscription Subscription { get; set; } = default!;
+    public SubscriptionType Subscription { get; set; } = default!;
 
     [Parameter]
     public Permission TestCreation { get; set; } = default!;

@@ -9,7 +9,7 @@ namespace Elwark.Education.Web.Gateways
 
         public static readonly Error NotFound = new("NotFound", "NotFound", 404);
 
-        public static readonly Error TestExpired = new("TestExpired", "Rpc", 412);
+        public static readonly Error TestExpired = new("Expired", "Rpc", 412);
 
         public static readonly Error Unavailable = new("Unavailable", "Internal", 503);
 

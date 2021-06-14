@@ -4,9 +4,14 @@
 <EditForm Model="@_answer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator/>
     <div class="@Class grid">
-        <MudText Typo="Typo.h6" Align="Align.Center" class="mb-3">
-            @Question.Title
-        </MudText>
+        <div>
+            <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="mb-3">
+                @Question.Topic.Title
+            </MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                @Question.Title
+            </MudText>
+        </div>
         @if (Question.Image is not null)
         {
             <img class="question-image mb-3" src="@Question.Image" alt="@Question.Title"/>
@@ -205,7 +210,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Parameter]
     public string? Class { get; set; }
 
@@ -220,7 +225,7 @@
 
     [Parameter]
     public EventCallback OnNext { get; set; }
-    
+
     [Parameter]
     public EventCallback OnSkip { get; set; }
 

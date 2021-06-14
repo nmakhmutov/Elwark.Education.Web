@@ -1,5 +1,6 @@
 using System;
 using Elwark.Education.Web.Gateways.Models;
+using Elwark.Education.Web.Gateways.Models.Content;
 using Elwark.Education.Web.Gateways.Models.Test;
 
 namespace Elwark.Education.Web.Gateways.History.Test
@@ -16,8 +17,7 @@ namespace Elwark.Education.Web.Gateways.History.Test
     
     public sealed record EasyTestConclusion(
         string TestId,
-        string TopicId,
-        string Title,
+        TopicTitle Topic,
         ConclusionStatus Status,
         Score MaxScore,
         TimeSpan TestDuration,
@@ -32,8 +32,7 @@ namespace Elwark.Education.Web.Gateways.History.Test
     
     public sealed record HardTestConclusion(
         string TestId,
-        string TopicId,
-        string Title,
+        TopicTitle Topic,
         ConclusionStatus Status,
         Score MaxScore,
         TimeSpan TestDuration,
@@ -44,5 +43,19 @@ namespace Elwark.Education.Web.Gateways.History.Test
     ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, CompletedAt)
     {
         public sealed record Question(string Id, string Title, bool IsAnswered, bool IsCorrect);
+    }
+    
+    public sealed record MixedTestConclusion(
+        string TestId,
+        ConclusionStatus Status,
+        Score MaxScore,
+        TimeSpan TestDuration,
+        Score UserScore,
+        TimeSpan TimeSpent,
+        DateTime CompletedAt,
+        MixedTestConclusion.Question[] Questions
+    ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, CompletedAt)
+    {
+        public sealed record Question(string Id, string Title, bool IsAnswered, bool IsCorrect, TopicTitle Topic);
     }
 }

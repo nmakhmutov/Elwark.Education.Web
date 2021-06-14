@@ -35,16 +35,26 @@
             @switch (conclusion)
             {
                 case EasyTestConclusion test:
-                    <Title Value="@test.Title"></Title>
+                    <Title Value="@test.Topic.Title"></Title>
 
                     <section class="section">
                         <div class="container mud-paper mud-elevation-1">
-                            <ConclusionLinkHeader
-                                Title="@test.Title"
-                                Type="@TestType.Easy"
-                                Status="@conclusion.Status"
-                                CompletedAt="@conclusion.CompletedAt"
-                                Link="@Links.Subject.History.Topic(test.TopicId)"/>
+                            <div class="d-flex flex-wrap justify-space-between">
+                                <div class="pa-3">
+                                    <MudLink Href="@Links.Subject.History.Topic(test.Topic.Id)" Typo="Typo.h5">
+                                        @test.Topic.Title
+                                    </MudLink>
+                                    <MudText Typo="Typo.body1">
+                                        @L["Test:Easy"]
+                                    </MudText>
+                                </div>
+                                <div class="pa-3">
+                                    <ConclusionStatusTitle Status="@test.Status"/>
+                                    <MudText Typo="Typo.body1" Align="Align.Right">
+                                        @test.CompletedAt.ToSimpleFormat()
+                                    </MudText>
+                                </div>
+                            </div>
                         </div>
                     </section>
 
@@ -70,16 +80,26 @@
                     break;
 
                 case HardTestConclusion test:
-                    <Title Value="@test.Title"></Title>
+                    <Title Value="@test.Topic.Title"></Title>
 
                     <section class="section">
                         <div class="container mud-paper mud-elevation-1">
-                            <ConclusionLinkHeader
-                                Title="@test.Title"
-                                Type="@TestType.Hard"
-                                Status="@conclusion.Status"
-                                CompletedAt="@conclusion.CompletedAt"
-                                Link="@Links.Subject.History.Topic(test.TopicId)"/>
+                            <div class="d-flex flex-wrap justify-space-between">
+                                <div class="pa-3">
+                                    <MudLink Href="@Links.Subject.History.Topic(test.Topic.Id)" Typo="Typo.h5">
+                                        @test.Topic.Title
+                                    </MudLink>
+                                    <MudText Typo="Typo.body1">
+                                        @L["Test:Hard"]
+                                    </MudText>
+                                </div>
+                                <div class="pa-3">
+                                    <ConclusionStatusTitle Status="@test.Status"/>
+                                    <MudText Typo="Typo.body1" Align="Align.Right">
+                                        @test.CompletedAt.ToSimpleFormat()
+                                    </MudText>
+                                </div>
+                            </div>
                         </div>
                     </section>
 
@@ -102,6 +122,49 @@
                             <HardQuestionTable Questions="@test.Questions"/>
                         </div>
                     </section>
+                    break;
+
+                case MixedTestConclusion test:
+                    <Title Value="@L["Test:Mixed"]"></Title>
+
+                    <section class="section">
+                        <div class="container mud-paper mud-elevation-1">
+                            <div class="d-flex flex-wrap align-center justify-space-between">
+                                <div class="pa-3">
+                                    <MudText Typo="Typo.h5">
+                                        @L["Test:Mixed"]
+                                    </MudText>
+                                </div>
+                                <div class="pa-3">
+                                    <ConclusionStatusTitle Status="@test.Status"/>
+                                    <MudText Typo="Typo.body1" Align="Align.Right">
+                                        @test.CompletedAt.ToSimpleFormat()
+                                    </MudText>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <div class="container">
+                            <div class="mb-3">
+                                <MudLink Href="@Links.Profile.History.HardTestStatistics" Typo="Typo.h5">
+                                    @L["Statistics"]
+                                </MudLink>
+                            </div>
+                            <ConclusionCharts Conclusion="@test"/>
+                        </div>
+                    </section>
+                    
+                    <section class="section">
+                        <div class="container">
+                            <MudText Typo="Typo.h5" Class="mb-3">
+                                @L["Answers"]
+                            </MudText>
+                            <MixedQuestionTable Questions="@test.Questions"/>
+                        </div>
+                    </section>
+                    
                     break;
 
                 default:

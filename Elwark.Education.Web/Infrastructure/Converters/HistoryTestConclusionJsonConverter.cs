@@ -29,6 +29,7 @@ namespace Elwark.Education.Web.Infrastructure.Converters
                 {
                     Gateways.Models.Test.TestType.Easy => jObject.ToObject<EasyTestConclusion>(),
                     Gateways.Models.Test.TestType.Hard => jObject.ToObject<HardTestConclusion>(),
+                    Gateways.Models.Test.TestType.Mixed => jObject.ToObject<MixedTestConclusion>(),
                     _ => throw new ArgumentOutOfRangeException(nameof(reader), value, null)
                 };
             

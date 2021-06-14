@@ -1,3 +1,5 @@
+using Elwark.Education.Web.Gateways.Models.Content;
+
 namespace Elwark.Education.Web.Gateways.Models.Test
 {
     public sealed record TestQuestion(
@@ -6,6 +8,7 @@ namespace Elwark.Education.Web.Gateways.Models.Test
         string Title,
         string? Image,
         bool IsAnswered,
+        TopicTitle Topic,
         AnswerOption[] Options
     );
 }

@@ -1,7 +1,10 @@
 @using Elwark.Education.Web.Gateways.History.Test
 
-<MudTable Items="@Questions" Hover="true" Breakpoint="Breakpoint.Xs">
+<MudTable Items="@Questions" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
+        <MudTh>
+            @L["Topic"]
+        </MudTh>
         <MudTh>
             @L["Question"]
         </MudTh>
@@ -13,6 +16,11 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
+        <MudTd DataLabel="@L["Topic"]">
+            <MudLink Href="@Links.Subject.History.Topic(context.Topic.Id)">
+                @context.Topic.Title
+            </MudLink>
+        </MudTd>
         <MudTd DataLabel="@L["Question"]">
             @context.Title
         </MudTd>
@@ -31,6 +39,6 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
-    public HardTestConclusion.Question[] Questions { get; set; } = Array.Empty<HardTestConclusion.Question>();
+    public MixedTestConclusion.Question[] Questions { get; set; } = Array.Empty<MixedTestConclusion.Question>();
 
 }

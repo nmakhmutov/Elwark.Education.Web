@@ -26,9 +26,14 @@
                 DateGuesserCreation="@overview.DateGuesserCreation"
                 OnBuyClick="@OnBuyClick"/>
 
-            <LevelCard Level="@overview.Level.Value" Xp="@overview.Level.Xp" NextLevelXp="@overview.Level.NextLevelXp"/>
-            
-            <XpCard Xp="@overview.Level.Xp" Recent="@overview.Level.Recent"/>
+            <LevelCard
+                Level="@overview.Experience.Level"
+                Points="@overview.Experience.Points"
+                PointsToNextLevel="@overview.Experience.PointsToNextLevel"/>
+
+            <PointsCard
+                Points="@overview.Experience.Points"
+                Recent="@overview.Experience.Recent"/>
 
             <DailyRewardCard Reward="@overview.DailyReward" OnCollect="@CollectDailyReward"/>
             @* <ProfileSubscriptionCard Subject="@overview."/> *@
@@ -62,16 +67,13 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
-    
+
     private ApiResponse<HistoryUserProfile> _overview = ApiResponse<HistoryUserProfile>.Loading();
 
-    protected override async Task OnInitializedAsync()
-    {
-        _overview = await HistoryClient.Me.GetOverviewAsync();
-    }
+    protected override async Task OnInitializedAsync() => _overview = await HistoryClient.Me.GetOverviewAsync();
 
     private void OnBuyClick()
     {
@@ -82,7 +84,7 @@
             CloseButton = false,
             FullWidth = true
         };
-        
+
         var parameters = new DialogParameters
         {
             [nameof(SubscriptionModal.SubjectType)] = SubjectType.History
@@ -97,4 +99,5 @@
         if (response.Status == ResponseStatus.Success)
             _overview = await HistoryClient.Me.GetOverviewAsync();
     }
+
 }
