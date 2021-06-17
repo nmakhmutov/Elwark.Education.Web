@@ -10,6 +10,7 @@ namespace Elwark.Education.Web.Gateways.History
         string Image,
         EpochType Epoch,
         bool IsFavorite,
-        UserContentRating Rating
+        UserContentRating Rating,
+        UserTopicProgress Progress
     );
 }

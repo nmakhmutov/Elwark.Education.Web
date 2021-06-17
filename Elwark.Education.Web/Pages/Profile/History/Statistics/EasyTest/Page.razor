@@ -91,12 +91,14 @@
                                     <MudText Typo="Typo.subtitle1" Class="mr-3">
                                         @conclusion.CompletedAt.ToSimpleFormat()
                                     </MudText>
-                                    <ConclusionStatusTitle Status="@conclusion.Status"/>
+                                    <MudText Typo="@Typo.subtitle1" Color="@conclusion.Status.GetColor()">
+                                        @L[$"ConclusionStatus:{conclusion.Status}"]
+                                    </MudText>
                                 </div>
                             </TitleContent>
                             <ChildContent>
                                 <TestConclusionList
-                                    Link="@(new LinkModel(conclusion.Title, Links.Subject.History.Topic(conclusion.TopicId)))"
+                                    Link="@(new LinkModel(conclusion.Title, Links.Profile.History.TopicStatistics(conclusion.TopicId)))"
                                     TimeSpent="@conclusion.TimeSpent"
                                     Score="@conclusion.Score"
                                     AnswerRatio="@conclusion.AnswerRatio"/>
@@ -111,7 +113,7 @@
 
 @code {
 
-    private ApiResponse<TestStatistics> _response = ApiResponse<TestStatistics>.Loading();
+    private ApiResponse<TopicTestStatistics> _response = ApiResponse<TopicTestStatistics>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

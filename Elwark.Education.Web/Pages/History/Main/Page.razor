@@ -7,85 +7,63 @@
 <PageHeader Class="mb-12"/>
 <ApiResponseViewer Response="@_response">
     <Placeholder>
-        <section class="section mb-12 px-3 px-sm-6">
-            <div class="container">
-                <div class="header mb-3">
-                    <MudText Typo="Typo.h6">
-                        @L["Topics:Trending"]
-                    </MudText>
-                </div>
-                <div class="dummy-grid">
-                    <SkeletonCard/>
-                    <SkeletonCard/>
-                    <SkeletonCard/>
-                    <SkeletonCard/>
-                    <SkeletonCard/>
-                    <SkeletonCard/>
-                    <SkeletonCard/>
-                    <SkeletonCard/>
-                </div>
-            </div>
-        </section>
-        <section class="section mb-12 mx-3">
-            <RandomTopic/>
-        </section>
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-12">
+            <DefaultFitGrid>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+            </DefaultFitGrid>
+        </CenteredContainer>
     </Placeholder>
     <Result Context="overview">
         <Title Value="@L["Subject:History"]"></Title>
 
-        <section class="section mb-12 px-3 px-sm-6">
-            <div class="container">
-                <div class="header mb-3">
-                    <MudText Typo="Typo.h6">
-                        @L["Topics:Trending"]
-                    </MudText>
-                </div>
-                <Trending Items="@overview.TrendingTopics"/>
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-12">
+            <div class="header">
+                <MudText Typo="Typo.h6">
+                    @L["Topics:Trending"]
+                </MudText>
             </div>
-        </section>
+            <Trending Items="@overview.TrendingTopics"/>
+        </CenteredContainer>
 
         @* <section class="section mb-12 mx-3"> *@
         @*     <RandomTopic/> *@
         @* </section> *@
 
-        <section class="section mb-12 px-3 px-sm-6 black-background">
-            <div class="container mx-3 my-6">
-                <DailyTopic Topic="@overview.TrendingTopics[new Random().Next(overview.TrendingTopics.Length)]"/>
-            </div>
-        </section>
+        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-12" Style="background-color: var(--mud-palette-black)">
+            <DailyTopic Topic="@overview.DailyTopic" Class="mx-3 my-6"/>
+        </CenteredContainer>
 
-        <section class="section mb-12 px-3 px-sm-6">
-            <div class="container">
-                <div class="header mb-3">
-                    <MudText Typo="Typo.h6">
-                        @L["Topics:Hot"]
-                    </MudText>
-                </div>
-                <Trending Items="@overview.HotTopics"/>
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-12">
+            <div class="header">
+                <MudText Typo="Typo.h6">
+                    @L["Topics:Hot"]
+                </MudText>
             </div>
-        </section>
+            <Trending Items="@overview.HotTopics"/>
+        </CenteredContainer>
 
         @* <section class="section mb-12 mx-3"> *@
         @*     <RandomTopic/> *@
         @* </section> *@
 
-        <section class="section mb-12 px-3 px-sm-6">
-            <div class="container">
-                <div class="header mb-3">
-                    <MudText Typo="Typo.h6">
-                        @L["Topics:Recent"]
-                    </MudText>
-                </div>
-                <Trending Items="@overview.RecentTopics"/>
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-12">
+            <div class="header">
+                <MudText Typo="Typo.h6">
+                    @L["Topics:Recent"]
+                </MudText>
             </div>
-        </section>
-
-        <section class="section px-3 px-sm-6">
-            <RandomTopic/>
-        </section>
-
+            <Trending Items="@overview.RecentTopics"/>
+        </CenteredContainer>
     </Result>
 </ApiResponseViewer>
+<CenteredContainer MaxWidth="@ContainerWidth.W960">
+    <RandomTopic/>
+</CenteredContainer>
 
 @code {
 
@@ -96,7 +74,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     protected override async Task OnInitializedAsync()
     {
         _response = await Client.Home.GetAsync();

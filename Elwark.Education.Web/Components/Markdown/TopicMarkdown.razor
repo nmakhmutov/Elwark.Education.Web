@@ -1,0 +1,25 @@
+@using Markdig
+
+<div class="markdown @Class" style="@Style">
+    @((MarkupString) Markdown.ToHtml(Text, _pipeline))
+</div>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+    
+    [Parameter]
+    public string Text { get; set; } = string.Empty;
+
+    private MarkdownPipeline? _pipeline;
+
+    protected override void OnInitialized() =>
+        _pipeline = new MarkdownPipelineBuilder()
+            .UseAdvancedExtensions()
+            .Build();
+
+}

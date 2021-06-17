@@ -1,0 +1,42 @@
+@using MudBlazor.Utilities
+<section class="section @Class" style="@Style">
+    <div class="container @_css">
+        @ChildContent
+    </div>
+</section>
+
+@code {
+
+    private CssBuilder _css = CssBuilder.Empty();
+    
+    [Parameter]
+    public string? Class { get; set; }
+    
+    [Parameter]
+    public string? Style { get; set; }
+    
+    [Parameter]
+    public bool Paper { get; set; }
+
+    [Parameter]
+    public int Elevation { get; set; }
+
+    [Parameter]
+    public ContainerWidth MaxWidth { get; set; } = ContainerWidth.None;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    
+    protected override void OnParametersSet()
+    {
+        if (MaxWidth != ContainerWidth.None)
+            _css.AddClass(MaxWidth.ToString().ToLowerInvariant());
+
+        if (Paper) 
+            _css.AddClass("mud-paper");
+
+        if (Elevation > 0)
+            _css.AddClass($"mud-elevation-{Elevation}");
+    }
+
+}

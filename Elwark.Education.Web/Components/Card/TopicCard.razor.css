@@ -1,32 +1,46 @@
-.grid {
+.card {
+    background-color: var(--mud-palette-surface);
+    border-radius: var(--mud-default-borderradius);
+    box-shadow: var(--mud-elevation-1);
+    height: 100%;
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 200px 40px 1fr auto auto;
+    grid-gap: 12px;
 }
 
-.image {
-    display: block;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: top;
-    height: 180px;
+.card-header {
+    box-sizing: border-box;
+    overflow: hidden;
     border-top-left-radius: var(--mud-default-borderradius);
     border-top-right-radius: var(--mud-default-borderradius);
 }
 
-.cover {
-    display: flex;
+.card-header img {
     width: 100%;
     height: 100%;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 8px;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 2s ease;
 }
 
-::deep .favorite {
-    background-color: var(--mud-palette-surface);
-    border-radius: var(--mud-default-borderradius);
+.card-header:hover img {
+    transform: scale(1.1);
 }
 
-::deep .favorite:hover {
-    background-color: var(--mud-palette-background-grey);
+.progress {
+    border-top: 1px solid var(--mud-palette-divider);
+    border-bottom: 1px solid var(--mud-palette-divider);
+    padding: 12px 0;
+}
+
+@media (min-width: 1600px) {
+    .card {
+        grid-template-rows: 250px 40px 1fr auto auto;
+    }
+}
+
+@media (min-width: 1920px) {
+    .card {
+        grid-template-rows: 300px 40px 1fr auto auto;
+    }
 }

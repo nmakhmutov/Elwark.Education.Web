@@ -20,17 +20,14 @@
                 {
                     <TopicCard
                         Id="@item.Id"
-                        Href="@Links.Subject.History.Topic(item.Id)"
+                        Epoch="@item.Epoch"
                         Image="@item.Image"
                         Title="@item.Title"
-                        Subtitle="@item.Overview"
+                        Overview="@item.Overview"
                         Rating="@item.Rating"
+                        Progress="@item.Progress"
                         IsFavorite="@item.IsFavorite"
-                        OnFavoriteClick="@OnFavoriteClick">
-                        <ImageFooter>
-                            <HistoryEpochChip Class="ma-0" Epoch="@item.Epoch"/>
-                        </ImageFooter>
-                    </TopicCard>
+                        OnFavoriteClick="@OnFavoriteClick"/>
                 }
                 <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
                     <div id="observerTarget" class="grid-full-row d-flex justify-center my-6">

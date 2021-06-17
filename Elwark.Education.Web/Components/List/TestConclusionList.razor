@@ -12,7 +12,9 @@
     @if (Status.HasValue)
     {
         <li class="d-flex flex-row justify-space-between underline mb-1">
-            <ConclusionStatusTitle Status="@Status.Value"/>
+            <MudText Typo="@Typo.subtitle1" Color="@Status.Value.GetColor()">
+                @L[$"ConclusionStatus:{Status.Value}"]
+            </MudText>
         </li>
     }
     @if (CompletedAt.HasValue)

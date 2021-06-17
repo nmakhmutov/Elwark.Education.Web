@@ -2,14 +2,11 @@
 
 <div class="@Class d-flex flex-column align-center">
     <div class="d-flex flex-column align-center">
-        <div class="d-flex flex-row align-center">
+        <MudTooltip Placement="Placement.Top" Text="@(L["Rating"] + " " + Rating.FiveStarts.ToReadable())">
             <MudRating MaxValue="5" ReadOnly="true" SelectedValue="@((int) Math.Round(Rating.FiveStarts))"/>
-            <MudText Typo="@Typo.subtitle2" Class="ml-2 mb-1">
-                @Rating.FiveStarts
-            </MudText>
-        </div>
-        <MudText Typo="@Typo.caption">
-            (@L["Rating:Count", Rating.Votes])
+        </MudTooltip>
+        <MudText Typo="@Typo.body2">
+            @L["Rating:Count", Rating.Votes]
         </MudText>
     </div>
 
@@ -47,7 +44,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Parameter]
     public string Id { get; set; } = default!;
 

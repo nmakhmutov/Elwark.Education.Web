@@ -1,6 +1,6 @@
 namespace Elwark.Education.Web.Gateways.Models.Statistics
 {
-    public sealed record TestStatistics(
+    public sealed record TopicTestStatistics(
         ScoreStatistics Score,
         AnswerRatioStatistics AnswerRatio,
         TimeSpentStatistics TimeSpent,

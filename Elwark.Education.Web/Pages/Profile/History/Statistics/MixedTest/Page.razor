@@ -1,4 +1,4 @@
-@page "/profile/history/statistics/hard-tests"
+@page "/profile/history/statistics/mixed-tests"
 @using Elwark.Education.Web.Gateways.Models.Statistics
 @using Elwark.Education.Web.Gateways.History
 @layout ProfileLayout
@@ -18,9 +18,9 @@
         </StatisticsDetailsGrid>
     </Placeholder>
     <Result Context="result">
-        <Title Value="@L["Tests:Hard"]"></Title>
+        <Title Value="@L["Tests:Mixed"]"></Title>
 
-        <StatisticsDetailsTitle Title="@L["Tests:Hard"]" Class="mb-3"/>
+        <StatisticsDetailsTitle Title="@L["Tests:Mixed"]" Class="mb-3"/>
         <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
             <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.NumberOfTests.Total.Total.ToReadable()">
                 <TwoColumnGrid>
@@ -97,7 +97,6 @@
                             </TitleContent>
                             <ChildContent>
                                 <TestConclusionList
-                                    Link="@(new LinkModel(conclusion.Title, Links.Profile.History.TopicStatistics(conclusion.TopicId)))"
                                     TimeSpent="@conclusion.TimeSpent"
                                     Score="@conclusion.Score"
                                     AnswerRatio="@conclusion.AnswerRatio"/>
@@ -112,7 +111,7 @@
 
 @code {
 
-    private ApiResponse<TopicTestStatistics> _response = ApiResponse<TopicTestStatistics>.Loading();
+    private ApiResponse<MixedTestStatistics> _response = ApiResponse<MixedTestStatistics>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -121,6 +120,6 @@
     private IHistoryClient HistoryClient { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync() =>
-        _response = await HistoryClient.Me.GetHardTestStatisticsAsync();
+        _response = await HistoryClient.Me.GetMixedTestStatisticsAsync();
 
 }

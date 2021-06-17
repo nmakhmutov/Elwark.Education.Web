@@ -7,7 +7,7 @@ using MudBlazor.Utilities;
 
 namespace Elwark.Education.Web.Infrastructure.Services
 {
-    internal sealed class TopicContentFormatService
+    public sealed class TopicContentFormatService
     {
         private const double MinTextSize = 1;
         private const double MaxTextSize = 2;

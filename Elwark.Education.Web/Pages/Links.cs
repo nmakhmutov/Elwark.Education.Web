@@ -25,10 +25,14 @@ namespace Elwark.Education.Web.Pages
                 public const string Statistics = Overview + "/statistics";
 
                 public const string EasyTestStatistics = Statistics + "/easy-tests";
-                
+
                 public const string HardTestStatistics = Statistics + "/hard-tests";
 
+                public const string MixedTestStatistics = Statistics + "/mixed-tests";
+
                 public const string Favorites = Overview + "/favorites";
+
+                public static string TopicStatistics(string topicId) => $"{Statistics}/topic/{topicId}";
             }
         }
 

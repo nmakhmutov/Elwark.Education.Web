@@ -10,6 +10,7 @@
         <Placeholder>
             <SkeletonCard/>
             <SkeletonCard/>
+            <SkeletonCard/>
         </Placeholder>
         <Result Context="result">
             <Title Value="@L["Statistics"]"></Title>
@@ -23,13 +24,22 @@
                 <ScoreChart Value="@result.EasyTest.Score"/>
             </StatisticsCard>
 
-            <StatisticsCard 
-                Icon="@Icons.Filled.School" 
-                Title="@L["Tests:Hard"]" 
+            <StatisticsCard
+                Icon="@Icons.Filled.School"
+                Title="@L["Tests:Hard"]"
                 Subtitle="@result.HardTest.NumberOfTests.Total.ToReadable()"
                 Href="@Links.Profile.History.HardTestStatistics">
                 <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
                 <ScoreChart Value="@result.HardTest.Score"/>
+            </StatisticsCard>
+
+            <StatisticsCard
+                Icon="@Icons.Filled.School"
+                Title="@L["Tests:Mixed"]"
+                Subtitle="@result.MixedTest.NumberOfTests.Total.ToReadable()"
+                Href="@Links.Profile.History.MixedTestStatistics">
+                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <ScoreChart Value="@result.MixedTest.Score"/>
             </StatisticsCard>
         </Result>
     </ApiResponseViewer>

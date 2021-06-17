@@ -7,7 +7,7 @@ namespace Elwark.Education.Web.Gateways.History.Topic
         TopicDetail Topic,
         TopicTest Test,
         UserContentRating Rating,
-        TopicStatistics Statistics,
+        UserTopicProgress Progress,
         bool IsFavorite,
         UserTopicSummary[] RelatedTopics
     );
