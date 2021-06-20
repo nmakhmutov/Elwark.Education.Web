@@ -29,6 +29,8 @@
     
     protected override void OnParametersSet()
     {
+        _css = CssBuilder.Empty();
+        
         if (MaxWidth != ContainerWidth.None)
             _css.AddClass(MaxWidth.ToString().ToLowerInvariant());
 

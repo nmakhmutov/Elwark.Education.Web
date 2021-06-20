@@ -40,12 +40,21 @@
         <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="py-3 py-sm-6" Paper="true" Elevation="1">
             <div class="topic-toolbar">
                 <div>
-                    <MudLink Typo="Typo.h6" Href="@Links.Profile.History.TopicStatistics(result.Topic.Id)">
-                        @L["Test:MyProgress"]
-                    </MudLink>
+                    @if (result.Test.Status == TestStatus.NotAvailable)
+                    {
+                        <MudText Typo="Typo.h6">
+                            @L["Test:MyProgress"]
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudLink Typo="Typo.h6" Href="@Links.Profile.History.TopicStatistics(result.Topic.Id)">
+                            @L["Test:MyProgress"]
+                        </MudLink>
+                    }
                     
                     <TopicProgressView Progress="@result.Progress" Class="py-3"/>
-                    
+
                     <CreateTestButtons
                         TestTypes="@result.Test.TestTypes.ToArray()"
                         Status="@result.Test.Status"
@@ -64,7 +73,7 @@
             </div>
         </CenteredContainer>
 
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Paper="true" Elevation="1">
+        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6" Paper="true" Elevation="1">
             <div class="pa-3 pa-sm-6">
                 <MudExpansionPanels Elevation="0" Dense="false" DisableGutters="true" Class="mb-6">
                     <MudExpansionPanel Class="text-toolbar">
@@ -101,7 +110,7 @@
 
         @if (result.RelatedTopics.Length > 0)
         {
-            <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mt-3 mt-sm-6">
+            <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
                 <MudText Typo="Typo.h5" Class="mb-3">
                     @L["Topics:Related"]
                 </MudText>

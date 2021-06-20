@@ -30,9 +30,39 @@
             <Trending Items="@overview.TrendingTopics"/>
         </CenteredContainer>
 
-        @* <section class="section mb-12 mx-3"> *@
-        @*     <RandomTopic/> *@
-        @* </section> *@
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-12">
+            <div class="header">
+                <MudText Typo="Typo.h6">
+                    @L["Test:Random"]
+                </MudText>
+            </div>
+            <DefaultFitGrid>
+                <MudPaper Class="d-flex flex-column align-center pa-6 pa-sm-9" Style="background-color: var(--mud-palette-primary-lighten)">
+                    <MudAvatar Color="Color.Primary" Size="Size.Large" Class="mb-6 mb-sm-9">
+                        <MudIcon Icon="@Icons.Filled.School" Size="Size.Large"/>
+                    </MudAvatar>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                        @L["Test:Easy"]
+                    </MudButton>
+                </MudPaper>
+                <MudPaper Class="d-flex flex-column align-center pa-6 pa-sm-9" Style="background-color: var(--mud-palette-secondary-lighten)">
+                    <MudAvatar Color="Color.Secondary" Size="Size.Large" Class="mb-6 mb-sm-9">
+                        <MudIcon Icon="@Icons.Filled.School" Size="Size.Large"/>
+                    </MudAvatar>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">
+                        @L["Test:Hard"]
+                    </MudButton>
+                </MudPaper>
+                <MudPaper Class="d-flex flex-column align-center pa-6 pa-sm-9" Style="background-color: var(--mud-palette-tertiary-lighten)">
+                    <MudAvatar Color="Color.Tertiary" Size="Size.Large" Class="mb-6 mb-sm-9">
+                        <MudIcon Icon="@Icons.Filled.School" Size="Size.Large"/>
+                    </MudAvatar>
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary">
+                        @L["Test:Mixed"]
+                    </MudButton>
+                </MudPaper>
+            </DefaultFitGrid>
+        </CenteredContainer>
 
         <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-12" Style="background-color: var(--mud-palette-black)">
             <DailyTopic Topic="@overview.DailyTopic" Class="mx-3 my-6"/>
@@ -61,7 +91,7 @@
         </CenteredContainer>
     </Result>
 </ApiResponseViewer>
-<CenteredContainer MaxWidth="@ContainerWidth.W960">
+<CenteredContainer MaxWidth="@ContainerWidth.W960" Class="mb-3 mb-sm-6">
     <RandomTopic/>
 </CenteredContainer>
 

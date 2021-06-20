@@ -35,7 +35,7 @@
             </li>
             <li class="row">
                 <MudText Typo="Typo.subtitle1">
-                    @L["Subscription:TestTimeCoefficient"]
+                    @L["Subscription:TestDurationCoefficient"]
                 </MudText>
                 <MudText Typo="Typo.subtitle1" Class="ml-3">
                     @("x" + TestDurationCoefficient)
@@ -75,24 +75,6 @@
                 </div>
                 <MudText Typo="Typo.subtitle1" Class="ml-3">
                     @(TestQuestionMistakes.Quantity < 0 ? "∞" : TestQuestionMistakes.Quantity)
-                </MudText>
-            </li>
-            <li class="row">
-                <div>
-                    <MudText Typo="Typo.subtitle1">
-                        @L["Subscription:TestQuestionDeletion"]
-                    </MudText>
-                    @if (TestQuestionDeletion.RestoreAt.HasValue)
-                    {
-                        <MudText Typo="Typo.caption">
-                            <em>
-                                @L["Subscription:RestrictionRestoreAt", TestQuestionDeletion.RestoreAt.Value.ToSimpleFormat()]
-                            </em>
-                        </MudText>
-                    }
-                </div>
-                <MudText Typo="Typo.subtitle1" Class="ml-3">
-                    @(TestQuestionDeletion.Quantity < 0 ? "∞" : TestQuestionDeletion.Quantity)
                 </MudText>
             </li>
             <li class="row">
@@ -142,16 +124,13 @@
     public string Background { get; set; } = string.Empty;
 
     [Parameter]
-    public SubscriptionType Subscription { get; set; } = default!;
+    public SubscriptionType Subscription { get; set; }
 
     [Parameter]
     public Permission TestCreation { get; set; } = default!;
 
     [Parameter]
     public Permission TestQuestionMistakes { get; set; } = default!;
-
-    [Parameter]
-    public Permission TestQuestionDeletion { get; set; } = default!;
 
     [Parameter]
     public Permission DateGuesserCreation { get; set; } = default!;

@@ -1,5 +1,13 @@
-.drawer {
-    min-height: 100%;
+.main-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 56px;
+    overflow: hidden;
+    min-height: 100vh;
+    margin: 0;
+    transition: margin 225ms cubic-bezier(0, 0, .2, 1) 0ms;
 }
 
 .beta {
@@ -8,9 +16,27 @@
 }
 
 footer {
+    display: flex;
+    justify-content: center;
     color: var(--mud-palette-text-primary);
     background-color: var(--mud-palette-surface);
-    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    box-shadow: rgba(159, 162, 191, 0.18) 0px 9px 16px, rgba(159, 162, 191, 0.32) 0px 2px 2px;
-    margin-top: 24px;
+    padding: 12px;
+}
+
+.footer-body {
+    max-width: 1280px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (min-width: 600px) {
+    .main-content {
+        padding-top: 64px;
+    }
+
+    footer {
+        padding: 24px;
+    }
 }

@@ -6,10 +6,7 @@
 
 <MudLayout>
     <MudAppBar Elevation="25">
-        @* <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle"/> *@
-
         <AuthorizeView>
-
             <NotAuthorized>
                 <MudHidden Breakpoint="Breakpoint.Xs">
                     <MudLink Href="@Links.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
@@ -35,34 +32,29 @@
                     </a>
                 </MudHidden>
             </Authorized>
-
         </AuthorizeView>
 
         <MudAppBarSpacer/>
-        <LanguageSelector/>
         <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@SwitchTheme"/>
         <UserMenu/>
     </MudAppBar>
 
-    @* <MudDrawer @bind-Open="@_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Docked"> *@
-    @*     <NavMenu/> *@
-    @* </MudDrawer> *@
-
-    <MudMainContent Class="main-content">
+    <div class="main-content">
         <main>
             @Body
         </main>
         <footer>
-            <MudContainer MaxWidth="MaxWidth.False">
-                <MudText Typo="Typo.body2" Class="my-6">
+            <div class="footer-body">
+                <LanguageSelector/>
+                <MudText Typo="Typo.body2">
                     © @DateTime.Now.Year - Elwark
                 </MudText>
-            </MudContainer>
+            </div>
         </footer>
-        <MudScrollToTop TopOffset="400" Style="z-index: 1000">
-            <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp"/>
-        </MudScrollToTop>
-    </MudMainContent>
+    </div>
+    <MudScrollToTop TopOffset="300" >
+        <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp"/>
+    </MudScrollToTop>
 </MudLayout>
 
 @code {
@@ -70,15 +62,11 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    // bool _drawerOpen;
     MudTheme _currentTheme = new();
     string _themeIcon = Icons.Filled.Brightness7;
 
     protected override void OnInitialized() =>
         _currentTheme = _lightTheme;
-
-    // private void DrawerToggle() =>
-    // _drawerOpen = !_drawerOpen;
 
     private void SwitchTheme()
     {
@@ -99,8 +87,8 @@
         Palette = new Palette
         {
             Primary = "#5569ff",
-            Secondary = "#8896ff",
-            Tertiary = "#8560c7",
+            Secondary = "#8560c7",
+            Tertiary = "#584bb0",
             Info = "#33c2ff",
             Success = "#44d600",
             Warning = "#ffa319",
@@ -120,8 +108,8 @@
         Palette = new Palette
         {
             Primary = "#5569ff",
-            Secondary = "#8896ff",
-            Tertiary = "#8560c7",
+            Secondary = "#8560c7",
+            Tertiary = "#584bb0",
             Info = "#33c2ff",
             Success = "#44d600",
             Warning = "#ffa319",

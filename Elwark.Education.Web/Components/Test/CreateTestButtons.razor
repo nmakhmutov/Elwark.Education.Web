@@ -4,7 +4,7 @@
     @switch (Status)
     {
         case TestStatus.Allowed:
-            <div class="grid">
+            <div class="grid col-@TestTypes.Length">
                 @foreach (var testType in TestTypes)
                 {
                     <MudButton
@@ -118,7 +118,7 @@
         testType switch
         {
             TestType.Easy => Color.Primary,
-            TestType.Hard => Color.Tertiary,
+            TestType.Hard => Color.Secondary,
             _ => throw new ArgumentOutOfRangeException(nameof(testType), testType, null)
             };
 

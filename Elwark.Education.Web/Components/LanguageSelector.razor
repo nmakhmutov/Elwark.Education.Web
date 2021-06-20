@@ -1,5 +1,10 @@
 @using Elwark.Education.Web.Infrastructure.LanguageStorage
-<MudMenu Icon="@Icons.Filled.Translate" Color="Color.Inherit" OffsetX="true" Direction="Direction.Left">
+<MudMenu
+    Label="@_cultures[CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLowerInvariant()]"
+    StartIcon="@Icons.Filled.Translate"
+    Color="Color.Inherit"
+    OffsetY="true"
+    Direction="Direction.Top">
     @foreach (var (culture, name) in _cultures)
     {
         <MudMenuItem OnClick="@(() => Set(culture))">
@@ -16,7 +21,7 @@
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
 
-    private IReadOnlyDictionary<string, string> _cultures = new Dictionary<string, string>
+    private Dictionary<string, string> _cultures = new()
     {
         ["en"] = "English",
         ["ru"] = "Русский"

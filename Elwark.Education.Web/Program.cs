@@ -55,16 +55,14 @@ namespace Elwark.Education.Web
 
             builder.Services
                 .AddHttpClient<IUserClient, UserClient>(
-                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!)
-                )
+                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!))
                 .AddHttpMessageHandler<EducationAuthorization>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
 
             builder.Services
                 .AddHttpClient<IShopClient, ShopClient>(
-                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!)
-                )
+                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!))
                 .AddHttpMessageHandler<EducationAuthorization>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);

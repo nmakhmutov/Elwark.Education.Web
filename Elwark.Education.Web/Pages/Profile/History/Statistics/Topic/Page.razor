@@ -20,6 +20,22 @@
         <Result Context="result">
             <Title Value="@result.Topic.Title"></Title>
 
+            <div class="header">
+                <div class="avatar">
+                    <img src="@result.Topic.Image" alt="@result.Topic.Title"/>
+                </div>
+                <div class="header-body">
+                    <MudLink Typo="Typo.h5" Href="@Links.Subject.History.Topic(result.Topic.Id)">
+                        @result.Topic.Title
+                    </MudLink>
+                    <div class="label">
+                        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.Subject.History.Epoch(result.Topic.Epoch)">
+                            @L[$"History:{result.Topic.Epoch}"]
+                        </MudChip>
+                    </div>
+                </div>
+            </div>
+
             @Header(new HeaderProps(L["Tests:Easy"], Links.Profile.History.EasyTestStatistics, L["TimeSpent"], result.EasyTest.TimeSpent))
             <DefaultFillGrid Class="mb-3 mb-sm-6">
                 <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.EasyTest.NumberOfTests.Total.ToReadable()">
@@ -126,7 +142,7 @@
 
     private readonly RenderFragment<HeaderProps> Header = message => __builder =>
     {
-        <div class="d-flex flex-wrap align-center justify-space-between mb-3">
+        <div class="d-flex flex-wrap align-center justify-space-between mb-3 mr-3">
             <MudLink Href="@message.Link" Typo="Typo.h5">
                 @message.Title
             </MudLink>

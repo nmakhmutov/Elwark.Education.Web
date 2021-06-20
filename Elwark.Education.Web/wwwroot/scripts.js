@@ -1,5 +1,7 @@
 const language = localStorage['language'];
-Blazor.start({applicationCulture: language ? JSON.parse(language) : undefined});
+(async function (){
+    await Blazor.start({applicationCulture: language ? JSON.parse(language) : undefined});
+})();
 
 window.Observer = {
     observer: null,

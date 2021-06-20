@@ -7,7 +7,6 @@ namespace Elwark.Education.Web.Gateways.Models.Test
         CurrentTestsMaximum = 2,
         TestCreationMaximum = 3,
         TestQuestionMistakesMaximum = 4,
-        TestQuestionDeletionMaximum = 5,
-        DateGuesserMaximum = 6
+        DateGuesserMaximum = 5
     }
 }

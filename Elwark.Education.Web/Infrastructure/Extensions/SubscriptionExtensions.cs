@@ -9,7 +9,7 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
             type switch
             {
                 SubscriptionType.Free => Color.Default,
-                SubscriptionType.Basic => Color.Tertiary,
+                SubscriptionType.Basic => Color.Secondary,
                 SubscriptionType.Advanced => Color.Warning,
                 _ => Color.Default
             };

@@ -6,7 +6,6 @@ namespace Elwark.Education.Web.Gateways.History.Me
         SubscriptionType Subscription,
         Permission TestCreation,
         Permission TestQuestionMistakes,
-        Permission TestQuestionDeletion,
         Permission DateGuesserCreation,
         float TestDurationCoefficient,
         UserExperience Experience,
