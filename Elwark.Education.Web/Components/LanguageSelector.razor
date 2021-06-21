@@ -1,6 +1,7 @@
 @using Elwark.Education.Web.Infrastructure.LanguageStorage
+
 <MudMenu
-    Label="@_cultures[CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLowerInvariant()]"
+    Label="@_cultures[CultureInfo.CurrentCulture.Name.ToLowerInvariant()]"
     StartIcon="@Icons.Filled.Translate"
     Color="Color.Inherit"
     OffsetY="true"
@@ -23,8 +24,9 @@
 
     private Dictionary<string, string> _cultures = new()
     {
-        ["en"] = "English",
-        ["ru"] = "Русский"
+        ["en-us"] = "English (US)",
+        ["en-gb"] = "English (UK)",
+        ["ru-ru"] = "Русский"
     };
 
     private async Task Set(string language)

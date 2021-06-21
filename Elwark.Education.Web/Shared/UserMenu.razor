@@ -31,10 +31,16 @@
                     </MudCardHeader>
                 </MudCard>
                 <MudDivider Class="mb-2"/>
-                <MudListItem Text="@L["Profile"]" Icon="@Icons.Filled.Person" Href="@Links.Profile.Index"/>
-                <MudListItem Text="@L["ElwarkAccount"]" Icon="@Icons.Filled.Portrait" Href="@Options.Account.ToString()"/>
+                <MudMenuItem Icon="@Icons.Filled.Person" Link="@Links.Profile.Index">
+                    @L["Profile"]
+                </MudMenuItem>
+                <MudMenuItem Icon="@Icons.Filled.Portrait" Link="@Options.Account.ToString()" Target="_blank">
+                    @L["ElwarkAccount"]
+                </MudMenuItem>
                 <MudDivider Class="my-2"/>
-                <MudListItem Text="@L["Logout"]" Icon="@Icons.Material.Outlined.Login" OnClick="@BeginSignOut"/>
+                <MudMenuItem Icon="@Icons.Material.Outlined.Login" OnClick="@BeginSignOut">
+                    @L["Logout"]
+                </MudMenuItem>
             </ChildContent>
         </MudMenu>
     </Authorized>
