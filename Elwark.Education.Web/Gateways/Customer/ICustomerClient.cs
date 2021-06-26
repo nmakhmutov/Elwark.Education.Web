@@ -1,23 +1,23 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Elwark.Education.Web.Gateways.User
+namespace Elwark.Education.Web.Gateways.Customer
 {
-    public interface IUserClient
+    public interface ICustomerClient
     {
         Task CreateAsync();
     }
     
-    internal sealed class UserClient : GatewayClient, IUserClient
+    internal sealed class CustomerClient : GatewayClient, ICustomerClient
     {
         private readonly HttpClient _client;
 
-        public UserClient(HttpClient client) =>
+        public CustomerClient(HttpClient client) =>
             _client = client;
 
         public async Task CreateAsync()
         {
-            var response = await _client.PostAsync("users", EmptyContent);
+            var response = await _client.PostAsync("customers", EmptyContent);
             response.EnsureSuccessStatusCode();
         }
     }

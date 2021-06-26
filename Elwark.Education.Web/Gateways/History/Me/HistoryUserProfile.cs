@@ -4,9 +4,9 @@ namespace Elwark.Education.Web.Gateways.History.Me
 {
     public sealed record HistoryUserProfile(
         SubscriptionType Subscription,
-        Permission TestCreation,
-        Permission TestQuestionMistakes,
-        Permission DateGuesserCreation,
+        Restriction TestCreation,
+        Restriction TestQuestionMistakes,
+        Restriction DateGuesserCreation,
         float TestDurationCoefficient,
         UserExperience Experience,
         DailyReward DailyReward,

@@ -28,5 +28,14 @@ namespace Elwark.Education.Web.Gateways.History.Test
 
         public Task<ApiResponse<TestConclusion>> GetConclusionAsync(string id) =>
             ExecuteAsync<TestConclusion>(() => _client.GetAsync($"history/tests/{id}/conclusion"));
+        
+        public Task<ApiResponse<TestCreatedResult>> CreateRandomEasyTestAsync() =>
+            ExecuteAsync<TestCreatedResult>(() => _client.PostAsync("history/tests/easy", EmptyContent));
+        
+        public Task<ApiResponse<TestCreatedResult>> CreateRandomHardTestAsync() =>
+            ExecuteAsync<TestCreatedResult>(() => _client.PostAsync("history/tests/hard", EmptyContent));
+        
+        public Task<ApiResponse<TestCreatedResult>> CreateRandomMixedTestAsync() =>
+            ExecuteAsync<TestCreatedResult>(() => _client.PostAsync("history/tests/mixed", EmptyContent));
     }
 }

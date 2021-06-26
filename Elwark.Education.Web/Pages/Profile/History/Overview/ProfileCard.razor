@@ -56,7 +56,7 @@
                     }
                 </div>
                 <MudText Typo="Typo.subtitle1">
-                    @(TestCreation.Quantity < 0 ? "∞" : TestCreation.Quantity)
+                    @Quantity(TestCreation)
                 </MudText>
             </li>
             <li class="row">
@@ -74,7 +74,7 @@
                     }
                 </div>
                 <MudText Typo="Typo.subtitle1" Class="ml-3">
-                    @(TestQuestionMistakes.Quantity < 0 ? "∞" : TestQuestionMistakes.Quantity)
+                    @Quantity(TestQuestionMistakes)
                 </MudText>
             </li>
             <li class="row">
@@ -92,7 +92,7 @@
                     }
                 </div>
                 <MudText Typo="Typo.subtitle1" Class="ml-3">
-                    @(DateGuesserCreation.Quantity < 0 ? "∞" : DateGuesserCreation.Quantity)
+                    @Quantity(DateGuesserCreation)
                 </MudText>
             </li>
         </ul>
@@ -109,6 +109,8 @@
     </MainContainer>
 </MudPaper>
 
+@* ReSharper disable InconsistentNaming *@
+@* ReSharper disable once UnusedParameter.Local *@
 @code{
 
     [Inject]
@@ -127,18 +129,23 @@
     public SubscriptionType Subscription { get; set; }
 
     [Parameter]
-    public Permission TestCreation { get; set; } = default!;
+    public Restriction TestCreation { get; set; } = default!;
 
     [Parameter]
-    public Permission TestQuestionMistakes { get; set; } = default!;
+    public Restriction TestQuestionMistakes { get; set; } = default!;
 
     [Parameter]
-    public Permission DateGuesserCreation { get; set; } = default!;
+    public Restriction DateGuesserCreation { get; set; } = default!;
 
     [Parameter]
     public float TestDurationCoefficient { get; set; }
 
     [Parameter]
     public EventCallback OnBuyClick { get; set; }
+
+    private readonly RenderFragment<Restriction> Quantity = message => __builder =>
+    {
+        @(message.Quantity < 0 ? "∞" : $"{message.Quantity}/{message.Threshold}")
+    };
 
 }

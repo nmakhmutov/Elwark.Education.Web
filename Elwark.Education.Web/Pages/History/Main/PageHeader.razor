@@ -1,4 +1,6 @@
 @using Elwark.Education.Web.Gateways.History.Epoch
+@using Elwark.Education.Web.Gateways.History
+@using Elwark.Education.Web.Gateways.Models.Content
 
 <div class="container @Class">
     <h1 class="title">
@@ -8,26 +10,53 @@
         @L["History:Description"]
     </h2>
 
-    <div class="section">
-        <div class="periods">
+    <CenteredContainer MaxWidth="ContainerWidth.W960" Class="mt-6 mt-md-12">
+        <MudPaper Elevation="0">
+            <MudAutocomplete DebounceInterval="300" AdornmentIcon="@Icons.Filled.Search" T="TopicSummary" Placeholder="@L["Search"]" Variant="Variant.Outlined" SearchFunc="Search" ValueChanged="OnSearchResult">
+                <ItemTemplate Context="result">
+                    <div class="d-flex align-center">
+                        <MudAvatar Image="@result.Image" Size="Size.Large" Square="true" Class="mr-4"/>
+                        <div>
+                            <MudText>@result.Title</MudText>
+                        </div>
+                    </div>
+                </ItemTemplate>
+            </MudAutocomplete>
+        </MudPaper>
+    </CenteredContainer>
+
+    <CenteredContainer MaxWidth="ContainerWidth.W960" Class="mt-6 mt-mb-12">
+        <div class="d-flex flex-wrap justify-space-between">
             @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
             {
-                <div class="period">
+                <div class="pa-3">
                     <MudLink Href="@Links.Subject.History.Epoch(period)" Color="Color.Inherit" Underline="Underline.Always">
                         @L[$"History:{period}"]
                     </MudLink>
                 </div>
             }
         </div>
-    </div>
+    </CenteredContainer>
 </div>
 
 @code {
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
     [Parameter]
     public string? Class { get; set; }
+
+    [Parameter]
+    public Func<string, Task<IEnumerable<TopicSummary>>> Search { get; set; } = _ =>
+        Task.FromResult<IEnumerable<TopicSummary>>(Array.Empty<TopicSummary>());
+
+    private void OnSearchResult(TopicSummary entry)
+    {
+        NavigationManager.NavigateTo(Links.Subject.History.Topic(entry.Id));
+    }
 
 }

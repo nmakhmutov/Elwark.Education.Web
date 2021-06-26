@@ -12,5 +12,8 @@ namespace Elwark.Education.Web.Gateways.History.Home
         
         public Task<ApiResponse<HistoryOverview>> GetAsync() =>
             ExecuteAsync<HistoryOverview>(() => _client.GetAsync("history"));
+        
+        public Task<ApiResponse<TopicSummary[]>> SearchAsync(string query) =>
+            ExecuteAsync<TopicSummary[]>(() => _client.GetAsync($"history/search?q={query}"));
     }
 }

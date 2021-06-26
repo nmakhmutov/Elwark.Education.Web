@@ -1,0 +1,48 @@
+<div class="grid @Class">
+    @foreach (var testType in TestTypes)
+    {
+        <MudButton
+            Variant="Variant.Filled"
+            Disabled="@IsLoading"
+            Color="@testType.GetColor()"
+            OnClick="@(() => OnTestClick(testType))">
+            @if (testType == _testType && IsLoading)
+            {
+                <div class="d-flex flex-row align-center">
+                    <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                    @L["Loading"]
+                </div>
+            }
+            else
+            {
+                @L[$"Test:{testType}"]
+            }
+        </MudButton>
+    }
+</div>
+
+@code {
+    private TestType? _testType;
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    [Parameter]
+    public TestType[] TestTypes { get; set; } = Array.Empty<TestType>();
+
+    [Parameter]
+    public EventCallback<TestType> OnCreateTestClick { get; set; }
+
+    private async Task OnTestClick(TestType testType)
+    {
+        _testType = testType;
+        await OnCreateTestClick.InvokeAsync(testType);
+    }
+
+}

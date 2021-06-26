@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using Elwark.Education.Web.Gateways.Customer;
 using Elwark.Education.Web.Gateways.History;
 using Elwark.Education.Web.Gateways.Shop;
-using Elwark.Education.Web.Gateways.User;
 using Elwark.Education.Web.Infrastructure;
 using Elwark.Education.Web.Infrastructure.LanguageStorage;
 using Elwark.Education.Web.Infrastructure.Services;
@@ -54,7 +54,7 @@ namespace Elwark.Education.Web
                 .AddPolicyHandler(policy);
 
             builder.Services
-                .AddHttpClient<IUserClient, UserClient>(
+                .AddHttpClient<ICustomerClient, CustomerClient>(
                     client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!))
                 .AddHttpMessageHandler<EducationAuthorization>()
                 .AddHttpMessageHandler<EducationLocalization>()

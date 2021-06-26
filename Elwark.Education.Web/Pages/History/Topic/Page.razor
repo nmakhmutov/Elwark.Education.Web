@@ -39,7 +39,7 @@
 
         <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="py-3 py-sm-6" Paper="true" Elevation="1">
             <div class="topic-toolbar">
-                <div>
+                <div class="d-flex flex-column align-start">
                     @if (result.Test.Status == TestStatus.NotAvailable)
                     {
                         <MudText Typo="Typo.h6">
@@ -55,12 +55,12 @@
                     
                     <TopicProgressView Progress="@result.Progress" Class="py-3"/>
 
-                    <CreateTestButtons
-                        TestTypes="@result.Test.TestTypes.ToArray()"
-                        Status="@result.Test.Status"
-                        Subject="@SubjectType.History"
-                        IsLoading="@(_test?.Status == ResponseStatus.Loading)"
-                        OnCreateTestClick="@CreateTestAsync"/>
+                    <TestWrapper Subject="@SubjectType.History" Status="@result.Test.Status">
+                        <TopicTestButtons 
+                            IsLoading="@(_test?.Status == ResponseStatus.Loading)"
+                            TestTypes="@result.Test.TestTypes.ToArray()"
+                            OnCreateTestClick="@CreateTestAsync"/>
+                    </TestWrapper>
                 </div>
 
                 <TopicReactionButtons

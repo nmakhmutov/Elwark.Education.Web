@@ -20,21 +20,76 @@
         <Result Context="result">
             <Title Value="@result.Topic.Title"></Title>
 
-            <div class="header">
-                <div class="avatar">
-                    <img src="@result.Topic.Image" alt="@result.Topic.Title"/>
-                </div>
-                <div class="header-body">
-                    <MudLink Typo="Typo.h5" Href="@Links.Subject.History.Topic(result.Topic.Id)">
-                        @result.Topic.Title
-                    </MudLink>
-                    <div class="label">
-                        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.Subject.History.Epoch(result.Topic.Epoch)">
-                            @L[$"History:{result.Topic.Epoch}"]
-                        </MudChip>
+            <MudPaper Class="d-md-flex justify-space-between align-center pa-3 pa-sm-6 mb-3 mb-sm-6">
+                <div class="d-flex justify-center align-center mb-3 mb-sm-6 mb-md-0">
+                    <div class="avatar">
+                        <img src="@result.Topic.Image" alt="@result.Topic.Title"/>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <div>
+                            <MudLink Typo="Typo.h5" Href="@Links.Subject.History.Topic(result.Topic.Id)">
+                                @result.Topic.Title
+                            </MudLink>
+                        </div>
+                        <div class="d-none d-sm-block mt-1">
+                            <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.Subject.History.Epoch(result.Topic.Epoch)">
+                                @L[$"History:{result.Topic.Epoch}"]
+                            </MudChip>
+                        </div>
+                        <div class="d-none d-sm-block mt-1 mw-xs">
+                            <MudText Typo="Typo.body2">
+                                @result.Topic.Overview
+                            </MudText>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div>
+                    <div class="d-flex justify-space-between mb-3">
+                        <div class="d-flex align-center mr-3">
+                            <MudIcon Icon="@Icons.Filled.School" Size="Size.Small" Class="mr-3"/>
+                            <MudText Typo="Typo.body2">
+                                @L["NumberOfTests:TotalPassed"]
+                            </MudText>
+                        </div>
+                        <MudText Typo="Typo.body2">
+                            @result.Progress.Tests.ToReadable()
+                        </MudText>
+                    </div>
+                    <div class="d-flex justify-space-between mb-3">
+                        <div class="d-flex align-center mr-3">
+                            <MudIcon Icon="@Icons.Filled.PendingActions" Size="Size.Small" Class="mr-3"/>
+                            <MudText Typo="Typo.body2">
+                                @L["Score:Total"]
+                            </MudText>
+                        </div>
+                        <MudText Typo="Typo.body2">
+                            @result.Progress.Score.ToReadable()
+                        </MudText>
+                    </div>
+                    <div class="d-flex justify-space-between mb-3">
+                        <div class="d-flex align-center mr-3">
+                            <MudIcon Icon="@Icons.Filled.HelpOutline" Size="Size.Small" Class="mr-3"/>
+                            <MudText Typo="Typo.body2">
+                                @L["Questions:Total"]
+                            </MudText>
+                        </div>
+                        <MudText Typo="Typo.body2">
+                            @result.Progress.Questions.ToReadable()
+                        </MudText>
+                    </div>
+                    <div class="d-flex justify-space-between mb-3">
+                        <div class="d-flex align-center mr-3">
+                            <MudIcon Icon="@Icons.Filled.Timer" Size="Size.Small" Class="mr-3"/>
+                            <MudText Typo="Typo.body2">
+                                @L["TimeSpent:Total"]
+                            </MudText>
+                        </div>
+                        <MudText Typo="Typo.body2">
+                            @result.Progress.TimeSpent.ToSimpleFormat()
+                        </MudText>
+                    </div>
+                </div>
+            </MudPaper>
 
             @Header(new HeaderProps(L["Tests:Easy"], Links.Profile.History.EasyTestStatistics, L["TimeSpent"], result.EasyTest.TimeSpent))
             <DefaultFillGrid Class="mb-3 mb-sm-6">

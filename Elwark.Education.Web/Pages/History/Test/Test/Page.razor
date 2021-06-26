@@ -31,8 +31,7 @@
                         Question="@_questions[_questionIndex]"
                         AnswerResult="@_answerResult"
                         OnAnswer="@OnAnswer"
-                        OnNext="@NextQuestion"
-                        OnSkip="@OnSkip"/>
+                        OnNext="@NextQuestion"/>
                 </div>
             </section>
         </Result>
@@ -156,13 +155,6 @@
         _answerResult = null;
     }
 
-    private void OnSkip()
-    {
-        var question = _questions[_questionIndex];
-        _questions.RemoveAt(_questionIndex);
-        _questions.Add(question);
-    }
-    
     private async Task OnExpired()
     {
         _countdownColor = Color.Error;
