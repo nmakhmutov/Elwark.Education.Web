@@ -3,18 +3,12 @@
 <Title Value="Elwark education"></Title>
 <AuthorizeView>
     <Authorized>
-        <MudContainer MaxWidth="MaxWidth.Small" Class="mx-auto">
-            <MudText Typo="Typo.h4" Align="Align.Center" Class="my-6">
-                Choose your favorite subject
-            </MudText>
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                Welcome to the brand new education platform!
-            </MudText>
-        </MudContainer>
-        <Subjects/>
+        <RedirectTo Url="@Links.Subject.History.Index"/>
     </Authorized>
 
     <NotAuthorized>
-        <PageLoader/>
+        <MudText Typo="Typo.h1" Align="Align.Center">
+            Welcome
+        </MudText>
     </NotAuthorized>
 </AuthorizeView>

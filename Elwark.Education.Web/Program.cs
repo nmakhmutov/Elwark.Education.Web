@@ -5,7 +5,6 @@ using Elwark.Education.Web.Gateways.Customer;
 using Elwark.Education.Web.Gateways.History;
 using Elwark.Education.Web.Gateways.Shop;
 using Elwark.Education.Web.Infrastructure;
-using Elwark.Education.Web.Infrastructure.LanguageStorage;
 using Elwark.Education.Web.Infrastructure.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,8 +32,9 @@ namespace Elwark.Education.Web
                     new Uri(builder.Configuration["Urls:Account"]!)
                 ))
                 .AddLocalization(options => options.ResourcesPath = "Resources")
-                .AddScoped<ILanguageStorage, LanguageStorage>()
+                .AddScoped<LanguageService>()
                 .AddScoped<TopicContentFormatService>()
+                .AddScoped<ThemeService>()
                 .AddScoped<EducationAuthorization>()
                 .AddScoped<EducationLocalization>()
                 .AddScoped<ErrorManager>();
@@ -47,9 +47,9 @@ namespace Elwark.Education.Web
                 .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
             builder.Services
-                .AddHttpClient<IHistoryClient, HistoryClient>(
-                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!))
-                .AddHttpMessageHandler<EducationAuthorization>()
+                .AddHttpClient<IHistoryClient, HistoryClient>(client =>
+                    client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!))
+                // .AddHttpMessageHandler<EducationAuthorization>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
 
@@ -70,6 +70,9 @@ namespace Elwark.Education.Web
             var host = builder.Build();
 
             await host.Services.GetRequiredService<TopicContentFormatService>()
+                .InitAsync();
+
+            await host.Services.GetRequiredService<ThemeService>()
                 .InitAsync();
 
             await host.RunAsync();

@@ -50,7 +50,7 @@ namespace Elwark.Education.Web.Pages.Profile.History.Statistics
         public static ProgressList.Item[] GetProgress(this TimeSpentProgress progress, IStringLocalizer<App> l) =>
             new ProgressList.Item[]
             {
-                new(l["TimeSpent"], progress.TimeSpent.Current.ToSimpleFormat(), progress.TimeSpent.Difference)
+                new(l["TimeSpent"], progress.TimeSpent.Current.ToLongFormat(), progress.TimeSpent.Difference)
             };
 
         private static string RangeTitle(DateTime starts, DateTime ends) =>

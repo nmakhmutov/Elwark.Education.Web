@@ -14,11 +14,10 @@ namespace Elwark.Education.Web.Infrastructure.Extensions
                 : local.ToShortDateString();
         }
 
-        public static string ToSimpleFormat(this TimeSpan span) =>
-            span.TotalDays > 1
-                ? span.ToString(@"dd\.hh\:mm")
-                : span.Seconds > 0
-                    ? span.ToString(@"hh\:mm\:ss")
-                    : span.ToString(@"hh\:mm");
+        public static string ToLongFormat(this TimeSpan span) =>
+            span.ToString(span.TotalDays > 1 ? @"dd\.hh\:mm" : @"hh\:mm\:ss");
+
+        public static string ToShortFormat(this TimeSpan span) =>
+            span.ToString(span.TotalDays > 1 ? @"dd\.hh\:mm" : @"hh\:mm");
     }
 }

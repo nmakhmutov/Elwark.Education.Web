@@ -10,9 +10,17 @@
         @L["History:Description"]
     </h2>
 
-    <CenteredContainer MaxWidth="ContainerWidth.W960" Class="mt-6 mt-md-12">
+    <CenteredContainer MaxWidth="ContainerWidth.W960" Class="pt-6 pt-md-12">
         <MudPaper Elevation="0">
-            <MudAutocomplete DebounceInterval="300" AdornmentIcon="@Icons.Filled.Search" T="TopicSummary" Placeholder="@L["Search"]" Variant="Variant.Outlined" SearchFunc="Search" ValueChanged="OnSearchResult">
+            <MudAutocomplete
+                T="TopicSummary"
+                Dense="true"
+                DebounceInterval="300"
+                AdornmentIcon="@Icons.Filled.Search"
+                Placeholder="@L["Search"]"
+                Variant="Variant.Outlined"
+                SearchFunc="Search"
+                ValueChanged="OnSearchResult">
                 <ItemTemplate Context="result">
                     <div class="d-flex align-center">
                         <MudAvatar Image="@result.Image" Size="Size.Large" Square="true" Class="mr-4"/>
@@ -25,7 +33,7 @@
         </MudPaper>
     </CenteredContainer>
 
-    <CenteredContainer MaxWidth="ContainerWidth.W960" Class="mt-6 mt-mb-12">
+    <CenteredContainer MaxWidth="ContainerWidth.W960" Class="py-6 py-md-12">
         <div class="d-flex flex-wrap justify-space-between">
             @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
             {

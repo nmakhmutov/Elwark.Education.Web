@@ -1,56 +1,30 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider Theme="_currentTheme"/>
+<MudThemeProvider Theme="@ThemeService.Current"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
 <MudLayout>
     <MudAppBar Elevation="25">
-        <AuthorizeView>
-            <NotAuthorized>
-                <MudHidden Breakpoint="Breakpoint.Xs">
-                    <MudLink Href="@Links.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
-                        Education <sup class="beta">beta</sup>
-                    </MudLink>
-                </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <a href="@Links.Root">
-                        <img src="https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/36x36_jki1hi.png" alt="logo"/>
-                    </a>
-                </MudHidden>
-            </NotAuthorized>
-
-            <Authorized>
-                <MudHidden Breakpoint="Breakpoint.Xs">
-                    <MudLink Href="@Links.Subject.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
-                        @L["Subject:History"] <sup class="beta">beta</sup>
-                    </MudLink>
-                </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <a href="@Links.Subject.History.Index">
-                        <img src="https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/36x36_jki1hi.png" alt="logo"/>
-                    </a>
-                </MudHidden>
-            </Authorized>
-        </AuthorizeView>
+        <MudLink Href="@Links.Subject.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+            @L["Subject:History"] <sup class="beta">beta</sup>
+        </MudLink>
         <MudSpacer/>
-        <MudIconButton Icon="@_themeIcon" Color="Color.Inherit" OnClick="@SwitchTheme"/>
+        <MudIconButton Icon="@ThemeService.Icon" Color="Color.Inherit" OnClick="@ThemeService.ToggleAsync"/>
         <UserMenu/>
     </MudAppBar>
 
-    <div class="main-content">
-        <main>
-            @Body
-        </main>
-        <footer>
-            <div class="footer-body">
-                <LanguageSelector/>
-                <MudText Typo="Typo.body2">
-                    © @DateTime.Now.Year - Elwark
-                </MudText>
-            </div>
-        </footer>
-    </div>
+    <main class="main-content">
+        @Body
+    </main>
+    <footer>
+        <div class="footer-body">
+            <LanguageSelector/>
+            <MudText Typo="Typo.body2">
+                © @DateTime.Now.Year - Elwark
+            </MudText>
+        </div>
+    </footer>
     <MudScrollToTop TopOffset="300">
         <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp"/>
     </MudScrollToTop>
@@ -61,75 +35,7 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    MudTheme _currentTheme = new();
-    string _themeIcon = Icons.Filled.Brightness7;
-
-    protected override void OnInitialized() =>
-        _currentTheme = _lightTheme;
-
-    private void SwitchTheme()
-    {
-        if (_currentTheme == _lightTheme)
-        {
-            _currentTheme = _darkTheme;
-            _themeIcon = Icons.Filled.Brightness3;
-        }
-        else
-        {
-            _currentTheme = _lightTheme;
-            _themeIcon = Icons.Filled.Brightness7;
-        }
-    }
-
-    private readonly MudTheme _lightTheme = new()
-    {
-        Palette = new Palette
-        {
-            Primary = "#5569ff",
-            Secondary = "#8560c7",
-            Tertiary = "#584bb0",
-            Info = "#33c2ff",
-            Success = "#44d600",
-            Warning = "#ffa319",
-            Error = "#ff1943",
-            Black = "#272c34",
-            Background = "#f6f8fb",
-            BackgroundGrey = "#e3e5e7",
-            AppbarBackground = Colors.Shades.White, //"#3949ab"
-            AppbarText = Colors.Grey.Darken3, //"#27272f"
-            Divider = "rgba(34, 51, 84, 0.1)",
-            TableLines = "rgba(34, 51, 84, 0.1)"
-        }
-    };
-
-    private readonly MudTheme _darkTheme = new()
-    {
-        Palette = new Palette
-        {
-            Primary = "#5569ff",
-            Secondary = "#8560c7",
-            Tertiary = "#584bb0",
-            Info = "#33c2ff",
-            Success = "#44d600",
-            Warning = "#ffa319",
-            Error = "#ff1943",
-            Black = "#27272f",
-            Background = "#1c1c1c",
-            BackgroundGrey = "#27272f",
-            Surface = "#252525",
-            DrawerBackground = "#27272f",
-            DrawerText = "rgba(255,255,255, 0.50)",
-            AppbarBackground = "#090a0c",
-            AppbarText = "rgba(255,255,255, 0.70)",
-            Divider = "rgba(255, 255, 255, 0.1)",
-            TableLines = "rgba(255, 255, 255, 0.1)",
-            TextPrimary = "rgba(255,255,255, 0.70)",
-            TextSecondary = "rgba(255,255,255, 0.50)",
-            ActionDefault = "#adadb1",
-            ActionDisabled = "rgba(255,255,255, 0.26)",
-            ActionDisabledBackground = "rgba(255,255,255, 0.12)",
-            DrawerIcon = "rgba(255,255,255, 0.50)"
-        }
-    };
-
+    [Inject]
+    private ThemeService ThemeService { get; set; } = default!;
+    
 }
