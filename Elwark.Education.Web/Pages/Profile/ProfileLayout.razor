@@ -1,27 +1,19 @@
 @inherits LayoutComponentBase
 @layout MainLayout
 
-<div class="header" style="background: @_static.Gradient">
-    <div class="subject">
-        <MudIcon Icon="@_static.Icon" Size="Size.Large" Color="Color.Inherit" Class="mr-sm-3"/>
-        <MudText Typo="Typo.h4">
-            @L[$"Subject:{_subject}"]
-        </MudText>
-    </div>
-    <ul class="navbar">
-        @foreach (var item in _menu)
-        {
-            <li>
-                <a href="@item.Link" class="@(item.IsActive ? "active" : null)">
-                    <MudIcon Icon="@item.Icon" Size="Size.Large" Class="navbar-icon" Color="Color.Inherit"/>
-                    <MudText Typo="Typo.subtitle1" Class="navbar-text" Color="Color.Inherit">
-                        @item.Title
-                    </MudText>
-                </a>
-            </li>
-        }
-    </ul>
-</div>
+<ul class="navbar" style="background: @_static.Gradient">
+    @foreach (var item in _menu)
+    {
+        <li>
+            <a href="@item.Link" class="@(item.IsActive ? "active" : null)">
+                <MudIcon Icon="@item.Icon" Size="Size.Medium" Class="navbar-icon" Color="Color.Inherit"/>
+                <MudText Typo="Typo.subtitle2" Class="navbar-text" Color="Color.Inherit">
+                    @item.Title
+                </MudText>
+            </a>
+        </li>
+    }
+</ul>
 
 <MainContainer>
     @Body

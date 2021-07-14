@@ -6,9 +6,12 @@ using Elwark.Education.Web.Gateways.History;
 using Elwark.Education.Web.Gateways.Shop;
 using Elwark.Education.Web.Infrastructure;
 using Elwark.Education.Web.Infrastructure.Services;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http.Logging;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
@@ -26,16 +29,20 @@ namespace Elwark.Education.Web
                 .AddMudServices()
                 .AddBlazoredLocalStorage();
 
+            var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway");
+
             builder.Services
-                .AddScoped(_ => new UrlsOptions(
-                    new Uri(builder.Configuration["Urls:Gateway"]!),
-                    new Uri(builder.Configuration["Urls:Account"]!)
-                ))
                 .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddScoped<LanguageService>()
                 .AddScoped<TopicContentFormatService>()
                 .AddScoped<ThemeService>()
-                .AddScoped<EducationAuthorization>()
+                .AddScoped<AuthorizationMessageHandler>(provider =>
+                    new AuthorizationMessageHandler(
+                            provider.GetRequiredService<IAccessTokenProvider>(),
+                            provider.GetRequiredService<NavigationManager>()
+                        )
+                        .ConfigureHandler(new[] {gatewayUrl.ToString()})
+                )
                 .AddScoped<EducationLocalization>()
                 .AddScoped<ErrorManager>();
 
@@ -47,23 +54,20 @@ namespace Elwark.Education.Web
                 .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
             builder.Services
-                .AddHttpClient<IHistoryClient, HistoryClient>(client =>
-                    client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!))
-                // .AddHttpMessageHandler<EducationAuthorization>()
+                .AddHttpClient<IHistoryClient, HistoryClient>(client => client.BaseAddress = gatewayUrl)
+                .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
 
             builder.Services
-                .AddHttpClient<ICustomerClient, CustomerClient>(
-                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!))
-                .AddHttpMessageHandler<EducationAuthorization>()
+                .AddHttpClient<ICustomerClient, CustomerClient>(client => client.BaseAddress = gatewayUrl)
+                .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
 
             builder.Services
-                .AddHttpClient<IShopClient, ShopClient>(
-                    client => client.BaseAddress = new Uri(builder.Configuration["Urls:Gateway"]!))
-                .AddHttpMessageHandler<EducationAuthorization>()
+                .AddHttpClient<IShopClient, ShopClient>(client => client.BaseAddress = gatewayUrl)
+                .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);
 
@@ -78,6 +82,4 @@ namespace Elwark.Education.Web
             await host.RunAsync();
         }
     }
-
-    public sealed record UrlsOptions(Uri Gateway, Uri Account);
 }
