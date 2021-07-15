@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http.Logging;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
@@ -30,7 +29,10 @@ namespace Elwark.Education.Web
                 .AddBlazoredLocalStorage();
 
             var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway");
-
+            var policy = HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
+            
             builder.Services
                 .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddScoped<LanguageService>()
@@ -48,10 +50,6 @@ namespace Elwark.Education.Web
 
             builder.Services
                 .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
-
-            var policy = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
             builder.Services
                 .AddHttpClient<IHistoryClient, HistoryClient>(client => client.BaseAddress = gatewayUrl)
@@ -72,12 +70,6 @@ namespace Elwark.Education.Web
                 .AddPolicyHandler(policy);
 
             var host = builder.Build();
-
-            await host.Services.GetRequiredService<TopicContentFormatService>()
-                .InitAsync();
-
-            await host.Services.GetRequiredService<ThemeService>()
-                .InitAsync();
 
             await host.RunAsync();
         }

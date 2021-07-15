@@ -24,3 +24,18 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+
+@code
+{
+    [Inject]
+    private TopicContentFormatService TopicContentFormatService { get; set; } = default!;
+
+    [Inject]
+    private ThemeService ThemeService { get; set; } = default!;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await TopicContentFormatService.InitAsync();
+        await ThemeService.InitAsync();
+    }
+}

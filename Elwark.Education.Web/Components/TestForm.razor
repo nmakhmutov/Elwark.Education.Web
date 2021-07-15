@@ -203,16 +203,16 @@
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter]
+    [Parameter,EditorRequired]
     public TestQuestion Question { get; set; } = default!;
 
     [Parameter]
     public TestAnswerResult? AnswerResult { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public EventCallback<TestAnswer> OnAnswer { get; set; }
 
-    [Parameter]
+    [Parameter,EditorRequired]
     public EventCallback OnNext { get; set; }
 
     protected override void OnParametersSet()
