@@ -1,0 +1,41 @@
+@using Education.Client.Gateways.History
+
+<div class="grid @Class">
+    <div class="image">
+        <img src="@Topic.Image" alt="@Topic.Title"/>
+    </div>
+    <article class="text">
+        <MudText Typo="Typo.subtitle1" Color="Color.Default" Class="mb-10">
+            <em>
+                From today's featured topic
+            </em>
+        </MudText>
+
+        <MudText Typo="Typo.h2" Color="Color.Inherit" Class="mb-3">
+            @Topic.Title
+        </MudText>
+        <div class="my-3">
+            <RatingStar Rating="@Topic.Rating"/>
+        </div>
+        <MudText Typo="Typo.subtitle1" Class="mb-6">
+            @Topic.Overview
+        </MudText>
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Link="@Links.Subject.History.Topic(Topic.Id)">
+            @L["Read"]
+        </MudButton>
+    </article>
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
+    [Parameter]
+    public TopicSummary Topic { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

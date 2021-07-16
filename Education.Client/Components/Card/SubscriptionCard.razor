@@ -1,0 +1,93 @@
+@using Education.Client.Gateways.Models.User
+@using Education.Client.Gateways.Shop
+
+<div class="card">
+    <div class="d-flex flex-column align-center">
+        <MudChip Color="@Type.GetColor()" Size="Size.Small" Label="true">
+            @L[$"Subscription:{Type}"]
+        </MudChip>
+        <MudText Typo="Typo.h5">
+            @Title
+        </MudText>
+    </div>
+    <MudText Typo="Typo.body2">
+        @Overview
+    </MudText>
+    <div class="d-flex flex-row justify-center align-end my-3">
+        <MudText Typo="Typo.h3" Align="Align.Center" Style="line-height: 0.9">
+            @GetCurrencySymbol(Price.Currency) @Price.Total
+        </MudText>
+        <MudText Typo="Typo.body2" Color="Color.Surface">
+            /per @Days days
+        </MudText>
+    </div>
+    <div class="d-flex flex-column">
+        <div class="d-flex flex-row align-center">
+            <MudIcon Icon="@Icons.Filled.Check" Size="Size.Small" Color="Color.Success"/>
+            <MudText Typo="Typo.subtitle1" Class="ml-3">
+                Unlimit test creation
+            </MudText>
+        </div>
+        <div class="d-flex flex-row">
+            <MudIcon Icon="@Icons.Filled.Check" Size="Size.Small" Color="Color.Success"/>
+            <MudText Typo="Typo.subtitle1" Class="ml-3">
+                Unlimit answer attempts
+            </MudText>
+        </div>
+        <div class="d-flex flex-row">
+            <MudIcon Icon="@Icons.Filled.Check" Size="Size.Small" Color="Color.Success"/>
+            <MudText Typo="Typo.subtitle1" Class="ml-3">
+                Premium article content
+            </MudText>
+        </div>
+        <div class="d-flex flex-row">
+            <MudIcon Icon="@Icons.Filled.Close" Size="Size.Small" Color="Color.Error"/>
+            <MudText Typo="Typo.subtitle1" Class="ml-3">
+                Premium functionality
+            </MudText>
+        </div>
+    </div>
+    <div class="d-flex flex-row justify-center my-3">
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@OnClick">
+            Buy now
+        </MudButton>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = default!;
+
+    [Parameter]
+    public SubscriptionType Type { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Overview { get; set; } = string.Empty;
+
+    [Parameter]
+    public Price Price { get; set; } = default!;
+
+    [Parameter]
+    public uint Days { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnBuyClick { get; set; }
+
+    private Task OnClick() => OnBuyClick.InvokeAsync(Id);
+
+    private string GetCurrencySymbol(string currency) =>
+        currency switch{
+            "USD" => "$",
+            "EUR" => "€",
+            "RUB" => "₽",
+            _ => currency
+            };
+
+}

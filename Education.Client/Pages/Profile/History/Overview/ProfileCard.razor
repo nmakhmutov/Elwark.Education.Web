@@ -1,0 +1,152 @@
+@using Education.Client.Gateways.Models.User
+@using Microsoft.Extensions.Configuration
+
+<MudPaper Class="@Class">
+    <div class="background" style="background-image: url('@Background')">
+        <div class="cover">
+            <AuthorizeView>
+                <Authorized>
+                    <div class="user-container">
+                        <div class="user-avatar">
+                            <img class="avatar-img" src="@context.User.GetImage()" alt="@context.User.GetName()">
+                        </div>
+                        <div class="user">
+                            <a class="user-name" href="@Configuration["Urls:Account"]" target="_blank">
+                                @context.User.GetName()
+                                <MudIcon Icon="@Icons.Material.Filled.OpenInNew" Size="Size.Small" Class="ml-1"/>
+                            </a>
+                            <h6 class="user-nickname">
+                                @@@context.User.GetNickname()
+                            </h6>
+                        </div>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </div>
+    <MainContainer>
+        <ul class="mb-3 mb-sm-6">
+            <li class="row">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Subscription"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1" Color="@Subscription.GetColor()">
+                    @L[$"Subscription:{Subscription}"]
+                </MudText>
+            </li>
+            <li class="row">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Subscription:TestDurationCoefficient"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1" Class="ml-3">
+                    @("x" + TestDurationCoefficient)
+                </MudText>
+            </li>
+            <li class="row">
+                <div>
+                    <MudText Typo="Typo.subtitle1">
+                        @L["Subscription:TestCreation"]
+                    </MudText>
+                    @if (TestCreation.RestoreAt.HasValue)
+                    {
+                        <MudText Typo="Typo.caption">
+                            <em>
+                                @L["Subscription:RestrictionRestoreAt", TestCreation.RestoreAt.Value.ToSimpleFormat()]
+                            </em>
+                        </MudText>
+                    }
+                </div>
+                <MudText Typo="Typo.subtitle1">
+                    @Quantity(TestCreation)
+                </MudText>
+            </li>
+            <li class="row">
+                <div>
+                    <MudText Typo="Typo.subtitle1">
+                        @L["Subscription:AnswerCreation"]
+                    </MudText>
+                    @if (TestQuestionMistakes.RestoreAt.HasValue)
+                    {
+                        <MudText Typo="Typo.caption">
+                            <em>
+                                @L["Subscription:RestrictionRestoreAt", TestQuestionMistakes.RestoreAt.Value.ToSimpleFormat()]
+                            </em>
+                        </MudText>
+                    }
+                </div>
+                <MudText Typo="Typo.subtitle1" Class="ml-3">
+                    @Quantity(TestQuestionMistakes)
+                </MudText>
+            </li>
+            <li class="row">
+                <div>
+                    <MudText Typo="Typo.subtitle1">
+                        @L["Subscription:DateGuesserCreation"]
+                    </MudText>
+                    @if (DateGuesserCreation.RestoreAt.HasValue)
+                    {
+                        <MudText Typo="Typo.caption">
+                            <em>
+                                @L["Subscription:RestrictionRestoreAt", DateGuesserCreation.RestoreAt.Value.ToSimpleFormat()]
+                            </em>
+                        </MudText>
+                    }
+                </div>
+                <MudText Typo="Typo.subtitle1" Class="ml-3">
+                    @Quantity(DateGuesserCreation)
+                </MudText>
+            </li>
+        </ul>
+        <div class="subscription">
+            @if (Subscription == SubscriptionType.Free)
+            {
+                <div class="d-flex flex-row justify-center">
+                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@OnBuyClick">
+                        @L["Subscription:Upgrade"]
+                    </MudButton>
+                </div>
+            }
+        </div>
+    </MainContainer>
+</MudPaper>
+
+@* ReSharper disable InconsistentNaming *@
+@* ReSharper disable once UnusedParameter.Local *@
+@code{
+
+    [Inject]
+    private IConfiguration Configuration { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Background { get; set; } = string.Empty;
+
+    [Parameter]
+    public SubscriptionType Subscription { get; set; }
+
+    [Parameter]
+    public Restriction TestCreation { get; set; } = default!;
+
+    [Parameter]
+    public Restriction TestQuestionMistakes { get; set; } = default!;
+
+    [Parameter]
+    public Restriction DateGuesserCreation { get; set; } = default!;
+
+    [Parameter]
+    public float TestDurationCoefficient { get; set; }
+
+    [Parameter]
+    public EventCallback OnBuyClick { get; set; }
+
+    private readonly RenderFragment<Restriction> Quantity = message => __builder =>
+    {
+        @(message.Quantity < 0 ? "∞" : $"{message.Quantity}/{message.Threshold}")
+    };
+
+}

@@ -1,0 +1,16 @@
+﻿@page "/authentication/{action}"
+@using Education.Client.Gateways.Customer
+
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnSuccessCallback"/>
+
+@code{
+
+    [Inject]
+    private ICustomerClient CustomerClient { get; set; } = default!;
+
+    [Parameter]
+    public string? Action { get; set; }
+
+    private Task OnSuccessCallback() => CustomerClient.CreateAsync();
+
+}

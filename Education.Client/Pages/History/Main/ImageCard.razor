@@ -1,0 +1,38 @@
+@using Education.Client.Gateways.History.Epoch
+@using Education.Client.Gateways.Models.Content
+
+<article class="card">
+    <a href="@Href" class="card-link"></a>
+    <img src="@Image" alt="@Title" class="image">
+    <div class="text-wrapper">
+        <h2 class="title">@Title</h2>
+        <div class="details-wrapper">
+            <HistoryEpochChip Class="chip" Epoch="@Epoch"/>
+            <div class="rating">
+                <RatingStar Placement="@Placement.Top" Rating="@Rating"/>
+            </div>
+        </div>
+    </div>
+</article>
+
+@code {
+
+    [Parameter]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Href { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Subtitle { get; set; } = string.Empty;
+
+    [Parameter]
+    public EpochType Epoch { get; set; }
+
+    [Parameter]
+    public ContentRating Rating { get; set; } = default!;
+
+}
