@@ -1,12 +1,4 @@
 <ul class="@Class">
-    @if (Link is not null)
-    {
-        <li class="d-flex flex-row justify-space-between underline mb-1">
-            <MudLink Href="@Link.Href">
-                @Link.Title
-            </MudLink>
-        </li>
-    }
     @if (Status.HasValue)
     {
         <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -15,15 +7,12 @@
             </MudText>
         </li>
     }
-    @if (CompletedAt.HasValue)
+    @if (Link is not null)
     {
         <li class="d-flex flex-row justify-space-between underline mb-1">
-            <MudText Typo="Typo.subtitle1">
-                @L["Date"]
-            </MudText>
-            <MudText Typo="Typo.subtitle1">
-                @CompletedAt.Value.ToSimpleFormat()
-            </MudText>
+            <MudLink Href="@Link.Href">
+                @Link.Title
+            </MudLink>
         </li>
     }
     <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -114,6 +103,17 @@
             </li>
         </ul>
     </li>
+    @if (CompletedAt.HasValue)
+    {
+        <li class="d-flex flex-row justify-space-between underline mb-1">
+            <MudText Typo="Typo.subtitle1">
+                @L["Date"]
+            </MudText>
+            <MudText Typo="Typo.subtitle1">
+                @CompletedAt.Value.ToSimpleFormat()
+            </MudText>
+        </li>
+    }
 </ul>
 
 @code {

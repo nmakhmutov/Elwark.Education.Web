@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using MudBlazor;
@@ -40,6 +41,24 @@ namespace Education.Client.Infrastructure.Services
 
         public bool CanIncreaseFontSize() => FontSize < MaxTextSize;
 
+        public async Task InitAsync()
+        {
+            var result = await _storage.GetItemAsync<State>(StorageKey);
+            if (result is null)
+                return;
+
+            TextAlign = result.TextAlign;
+            Width = result.Width;
+            FontSize = result.FontSize switch
+            {
+                < MinTextSize => MinTextSize,
+                > MaxTextSize => MaxTextSize,
+                _ => result.FontSize
+            };
+
+            UpdateStyles();
+        }
+        
         public async Task IncreaseFontSizeAsync()
         {
             if (!CanIncreaseFontSize())
@@ -103,24 +122,6 @@ namespace Education.Client.Infrastructure.Services
             return Update();
         }
 
-        public async ValueTask InitAsync()
-        {
-            var result = await _storage.GetItemAsync<State>(StorageKey);
-            if (result is null)
-                return;
-
-            TextAlign = result.TextAlign;
-            Width = result.Width;
-            FontSize = result.FontSize switch
-            {
-                < MinTextSize => MinTextSize,
-                > MaxTextSize => MaxTextSize,
-                _ => result.FontSize
-            };
-
-            UpdateStyles();
-        }
-
         private ValueTask SaveStateAsync() =>
             _storage.SetItemAsync(StorageKey, new State(TextAlign, Math.Round(FontSize, 2), Width));
 
@@ -149,6 +150,23 @@ namespace Education.Client.Infrastructure.Services
             await SaveStateAsync();
         }
         
-        private record State(Align TextAlign, double FontSize, Width Width);
+        private record State
+        {
+            public State(Align textAlign, double fontSize, Width width)
+            {
+                TextAlign = textAlign;
+                FontSize = fontSize;
+                Width = width;
+            }
+
+            [JsonPropertyName("ta")]
+            public Align TextAlign { get; }
+            
+            [JsonPropertyName("fs")]
+            public double FontSize { get; }
+            
+            [JsonPropertyName("w")]
+            public Width Width { get; }
+        }
     }
 }

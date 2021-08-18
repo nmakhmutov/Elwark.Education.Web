@@ -1,5 +1,4 @@
 using System.Net.Http;
-using Education.Client.Gateways.History.Epoch;
 using Education.Client.Gateways.History.Home;
 using Education.Client.Gateways.History.Me;
 using Education.Client.Gateways.History.Test;
@@ -9,8 +8,6 @@ namespace Education.Client.Gateways.History
 {
     internal interface IHistoryClient
     {
-        public EpochClient Epoch { get; }
-
         public HomeClient Home { get; }
 
         public MeClient Me { get; }
@@ -24,14 +21,11 @@ namespace Education.Client.Gateways.History
     {
         public HistoryClient(HttpClient client)
         {
-            Epoch = new EpochClient(client);
             Home = new HomeClient(client);
             Me = new MeClient(client);
             Test = new TestClient(client);
             Topic = new TopicClient(client);
         }
-
-        public EpochClient Epoch { get; }
 
         public HomeClient Home { get; }
 

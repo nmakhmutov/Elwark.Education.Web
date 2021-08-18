@@ -5,22 +5,25 @@
         <MudText Typo="Typo.h1" Class="title">
             @Title
         </MudText>
-        @if (Started == Ended && Started is not null)
+        @if (Started is not null)
         {
-            <HistoryDate Date="@Started"/>
-        }
-        else if (Started != Ended && Started is not null)
-        {
-            <div class="d-flex flex-row flex-wrap">
+            @if (Started == Ended)
+            {
                 <HistoryDate Date="@Started"/>
-                <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
-                <HistoryDate Date="@Ended"/>
-            </div>
+            }
+            else if (Started != Ended)
+            {
+                <div class="d-flex flex-row flex-wrap">
+                    <HistoryDate Date="@Started"/>
+                    <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
+                    <HistoryDate Date="@Ended"/>
+                </div>
+            }
         }
     </section>
 
     <section>
-        <Breadcrumbs Items="@Breadcrumbs" Class="mb-6"/>
+        <Breadcrumbs Items="@Breadcrumbs" Class="pa-0 mb-6 mt-md-3"/>
         <MudText Typo="Typo.subtitle1" Class="mb-6">
             @Description
         </MudText>

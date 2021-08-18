@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Education.Client.Gateways.Customer;
@@ -7,6 +8,7 @@ using Education.Client.Gateways.Shop;
 using Education.Client.Infrastructure;
 using Education.Client.Infrastructure.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,10 +25,15 @@ namespace Education.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+            builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services
                 .AddMudServices()
-                .AddBlazoredLocalStorage();
+                .AddBlazoredLocalStorage(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+                });
 
             var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway");
             var policy = HttpPolicyExtensions
@@ -38,6 +45,7 @@ namespace Education.Client
                 .AddScoped<LanguageService>()
                 .AddScoped<TopicContentFormatService>()
                 .AddScoped<ThemeService>()
+                .AddScoped<SidebarService>()
                 .AddScoped<AuthorizationMessageHandler>(provider =>
                     new AuthorizationMessageHandler(
                             provider.GetRequiredService<IAccessTokenProvider>(),

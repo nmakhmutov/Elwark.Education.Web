@@ -24,7 +24,7 @@ namespace Education.Client.Infrastructure.Services
                 Background = "#1c1c1c",
                 BackgroundGrey = "#27272f",
                 Surface = "#252525",
-                DrawerBackground = "#27272f",
+                DrawerBackground = "#090a0c",
                 DrawerText = "rgba(255,255,255, 0.50)",
                 AppbarBackground = "#090a0c",
                 AppbarText = "rgba(255,255,255, 0.70)",
@@ -35,7 +35,8 @@ namespace Education.Client.Infrastructure.Services
                 ActionDefault = "#adadb1",
                 ActionDisabled = "rgba(255,255,255, 0.26)",
                 ActionDisabledBackground = "rgba(255,255,255, 0.12)",
-                DrawerIcon = "rgba(255,255,255, 0.50)"
+                DrawerIcon = "rgba(255,255,255, 0.50)",
+                HoverOpacity = 0.6
             }
         };
 

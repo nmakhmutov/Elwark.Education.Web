@@ -1,26 +1,20 @@
-<nav class="breadcrumbs @Class">
-    <ol class="breadcrumbs-list">
-        @for (var i = 0; i < Items.Count; i++)
-        {
-            var item = Items[i];
-            <li>
-                <MudLink Href="@item.Href">@item.Text</MudLink>
-            </li>
-            @if (i != Items.Count - 1)
+<MudBreadcrumbs Items="@Items" Class="@Class">
+    <ItemTemplate Context="item">
+        <MudLink Disabled="@item.Disabled" Href="@item.Href">
+            @if (!string.IsNullOrEmpty(item.Icon))
             {
-                <li class="breadcrumbs-separator">
-                    <MudIcon Icon="@Separator" Size="Size.Small"/>
-                </li>
+                <MudIcon Icon="@item.Icon" Size="Size.Small"/>
             }
-        }
-    </ol>
-</nav>
+            @item.Text
+        </MudLink>
+    </ItemTemplate>
+</MudBreadcrumbs>
 
 @code {
 
-    [Parameter]
-    public List<BreadcrumbItem> Items { get; init; } = new();
-    
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Items { get; set; } = new();
+
     [Parameter]
     public string? Class { get; set; }
 

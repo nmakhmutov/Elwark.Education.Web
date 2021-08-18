@@ -3,12 +3,12 @@
 @switch (Response.Status)
 {
     case ResponseStatus.Loading:
-        <Title Value="@L["Loading"]"></Title>
+        <PageTitle>@L["Loading"]</PageTitle>
         @Placeholder
         break;
 
     case ResponseStatus.Fail:
-        <Title Value="@Response.Error.Title"></Title>
+        <PageTitle>@Response.Error.Title</PageTitle>
         <ErrorPage Error="Response.Error"/>
         break;
 

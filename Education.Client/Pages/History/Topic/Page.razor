@@ -1,4 +1,5 @@
 @page "/history/topics/{id}"
+@layout HistoryLayout
 
 @using Education.Client.Gateways.History
 @using Education.Client.Gateways.History.Topic
@@ -11,7 +12,7 @@
         <PageLoader/>
     </Placeholder>
     <Result Context="result">
-        <Title Value="@result.Topic.Title"></Title>
+        <PageTitle>@result.Topic.Title</PageTitle>
 
         @switch (result.Topic)
         {
@@ -38,48 +39,12 @@
         }
 
         <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="py-3 py-sm-6" Paper="true" Elevation="1">
-            <div class="topic-toolbar">
-                <div class="d-flex flex-column align-start">
-                    @if (result.Test.Status == TestStatus.NotAvailable)
-                    {
-                        <MudText Typo="Typo.h6">
-                            @L["Test:MyProgress"]
-                        </MudText>
-                    }
-                    else
-                    {
-                        <MudLink Typo="Typo.h6" Href="@Links.Profile.History.TopicStatistics(result.Topic.Id)">
-                            @L["Test:MyProgress"]
-                        </MudLink>
-                    }
-                    
-                    <TopicProgressView Progress="@result.Progress" Class="py-3"/>
-
-                    <TestWrapper Subject="@SubjectType.History" Status="@result.Test.Status">
-                        <TopicTestButtons 
-                            IsLoading="@(_test?.Status == ResponseStatus.Loading)"
-                            TestTypes="@result.Test.TestTypes.ToArray()"
-                            OnCreateTestClick="@CreateTestAsync"/>
-                    </TestWrapper>
-                </div>
-
-                <TopicReactionButtons
-                    Id="@Id"
-                    IsFavorite="@result.IsFavorite"
-                    Rating="@result.Rating"
-                    OnFavoriteClick="@OnFavoriteClick"
-                    OnLikeClick="@OnLikeClick"
-                    OnDislikeClick="@OnDislikeClick"/>
-            </div>
-        </CenteredContainer>
-
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6" Paper="true" Elevation="1">
             <div class="pa-3 pa-sm-6">
                 <MudExpansionPanels Elevation="0" Dense="false" DisableGutters="true" Class="mb-6">
                     <MudExpansionPanel Class="text-toolbar">
                         <TitleContent>
                             <MudText Color="Color.Primary" Typo="Typo.button">
-                                Настройки
+                                @L["Settings"]
                             </MudText>
                         </TitleContent>
                         <ChildContent>
@@ -108,6 +73,42 @@
             </div>
         </CenteredContainer>
 
+        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6" Paper="true" Elevation="1">
+            <div class="topic-toolbar">
+                <div class="d-flex flex-column align-start">
+                    @if (result.Test.Status == TestStatus.NotAvailable)
+                    {
+                        <MudText Typo="Typo.h6">
+                            @L["Test:MyProgress"]
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudLink Typo="Typo.h6" Href="@Links.Subject.History.Profile.TopicStatistics(result.Topic.Id)">
+                            @L["Test:MyProgress"]
+                        </MudLink>
+                    }
+                            
+                    <TopicProgressView Progress="@result.Progress" Class="py-3"/>
+        
+                    <TestWrapper Subject="@SubjectType.History" Status="@result.Test.Status">
+                        <TopicTestButtons 
+                            IsLoading="@(_test?.Status == ResponseStatus.Loading)"
+                            TestTypes="@result.Test.TestTypes.ToArray()"
+                            OnCreateTestClick="@CreateTestAsync"/>
+                    </TestWrapper>
+                </div>
+        
+                <TopicReactionButtons
+                    Id="@Id"
+                    IsFavorite="@result.IsFavorite"
+                    Rating="@result.Rating"
+                    OnFavoriteClick="@OnFavoriteClick"
+                    OnLikeClick="@OnLikeClick"
+                    OnDislikeClick="@OnDislikeClick"/>
+            </div>
+        </CenteredContainer>
+        
         @if (result.RelatedTopics.Length > 0)
         {
             <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
@@ -139,7 +140,7 @@
     private ApiResponse<TestCreatedResult>? _test;
     private ApiResponse<TopicDetailComposition> _topic = ApiResponse<TopicDetailComposition>.Loading();
     private List<BreadcrumbItem> _breadcrumbs = new();
-
+    
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 
@@ -175,7 +176,7 @@
             _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Subject:History"].Value, Links.Subject.History.Index),
-                new(L[$"History:{_topic.Data.Topic.Epoch}"].Value, Links.Subject.History.Epoch(_topic.Data.Topic.Epoch))
+                new(L[$"History:{_topic.Data.Topic.Epoch}"].Value, Links.Subject.History.Topics(_topic.Data.Topic.Epoch))
             };
     }
 

@@ -1,4 +1,4 @@
-using Education.Client.Gateways.History.Epoch;
+using Education.Client.Gateways.History;
 
 namespace Education.Client.Pages
 {
@@ -8,32 +8,15 @@ namespace Education.Client.Pages
 
         public static class Authentication
         {
-            public const string LogOut = "authentication/logout";
+            public const string LogOut = "/authentication/logout";
 
             public static string LogIn(string returnUrl) =>
-                $"authentication/login?returnUrl={returnUrl}";
+                $"/authentication/login?returnUrl={returnUrl}";
         }
 
-        public static class Profile
+        public static class Account
         {
-            public const string Index = "/profile";
-
-            public static class History
-            {
-                public const string Overview = Index + "/history";
-
-                public const string Statistics = Overview + "/statistics";
-
-                public const string EasyTestStatistics = Statistics + "/easy-tests";
-
-                public const string HardTestStatistics = Statistics + "/hard-tests";
-
-                public const string MixedTestStatistics = Statistics + "/mixed-tests";
-
-                public const string Favorites = Overview + "/favorites";
-
-                public static string TopicStatistics(string topicId) => $"{Statistics}/topic/{topicId}";
-            }
+            public const string Index = "/account";
         }
 
         public static class Subject
@@ -42,19 +25,34 @@ namespace Education.Client.Pages
             {
                 public const string Index = "/history";
 
-                private const string Topics = Index + "/topics";
-
-                public static string Epoch(EpochType period) =>
-                    $"{Index}/{period.ToString().ToLowerInvariant()}";
+                public const string Tests = $"{Index}/tests";
+                
+                public static string Topics(EpochType epoch) =>
+                    $"{Index}/{epoch.ToString().ToLowerInvariant()}";
 
                 public static string Topic(string topicId) =>
-                    $"{Topics}/{topicId}";
+                    $"{Index}/topics/{topicId}";
 
                 public static string Test(string testId) =>
-                    $"{Index}/test/{testId}";
+                    $"{Tests}/{testId}";
 
                 public static string Conclusion(string testId) =>
-                    $"{Index}/test/{testId}/conclusion";
+                    $"{Tests}/{testId}/conclusion";
+
+                public static class Profile
+                {
+                    public const string Me = Index + "/profile/me";
+
+                    public const string EasyTestStatistics = Me + "/statistics/easy-tests";
+
+                    public const string HardTestStatistics = Me + "/statistics/hard-tests";
+
+                    public const string MixedTestStatistics = Me + "/statistics/mixed-tests";
+
+                    public const string Favorites = Me + "/favorites";
+
+                    public static string TopicStatistics(string topicId) => $"{Me}/statistics/topic/{topicId}";
+                }
             }
         }
 

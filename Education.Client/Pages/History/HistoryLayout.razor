@@ -1,0 +1,60 @@
+@using Education.Client.Gateways.History
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="@ThemeService.Current"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudAppBar Elevation="25">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@SidebarService.ToggleAsync"/>
+        <MudLink Href="@Links.Subject.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+            @L["Subject:History"] <sup class="beta" style="font-size: 0.9rem;color: var(--mud-palette-primary);">beta</sup>
+        </MudLink>
+        <MudSpacer/>
+        <MudIconButton Icon="@ThemeService.Icon" Color="Color.Inherit" OnClick="@ThemeService.ToggleAsync"/>
+    </MudAppBar>
+    <MudDrawer Open="@SidebarService.IsOpen" OpenChanged="@SidebarService.SetAsync" Breakpoint="Breakpoint.Lg" ClipMode="DrawerClipMode.Docked" Elevation="25">
+        <UserDrawerHeader/>
+        <MudNavMenu>
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.Subject.History.Index" Icon="@SubjectType.History.GetStatic().Icon">
+                @L["HomePage"]
+            </MudNavLink>
+            <MudNavGroup Title="@L["History:Epochs"]" Icon="@Icons.Filled.HistoryToggleOff">
+                @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
+                {
+                    <MudNavLink Href="@Links.Subject.History.Topics(period)">
+                        @L[$"History:{period}"]
+                    </MudNavLink>
+                }
+            </MudNavGroup>
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.Subject.History.Tests" Icon="@Icons.Filled.School">
+                @L["Tests"]
+            </MudNavLink>
+            <MudDivider Class="my-2"/>
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.Subject.History.Profile.Me" Icon="@Icons.Filled.CardMembership">
+                @L["Profile"]
+            </MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.Subject.History.Profile.Favorites" Icon="@Icons.Filled.Favorite">
+                @L["Favorites"]
+            </MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private ThemeService ThemeService { get; set; } = default!;
+
+
+    [Inject]
+    private SidebarService SidebarService { get; set; } = default!;
+
+}

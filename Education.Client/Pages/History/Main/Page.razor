@@ -1,10 +1,12 @@
 @page "/history"
+@layout HistoryLayout
 @using Education.Client.Gateways.History
 @using Education.Client.Gateways.History.Home
+@using Education.Client.Gateways.History.Test
 
 @attribute [Authorize]
 
-<PageHeader Search="@OnSearch" Class="mb-6 mb-sm-12"/>
+<SearchHeader Search="@OnSearch" Class="mb-6 mb-sm-12"/>
 <ApiResponseViewer Response="@_response">
     <Placeholder>
         <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12">
@@ -13,13 +15,11 @@
                 <SkeletonCard/>
                 <SkeletonCard/>
                 <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
             </DefaultFitGrid>
         </CenteredContainer>
     </Placeholder>
     <Result Context="result">
-        <Title Value="@L["Subject:History"]"></Title>
+        <PageTitle>@L["Subject:History"]</PageTitle>
 
         <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12">
             <div class="header">
@@ -29,10 +29,6 @@
             </div>
             <Trending Items="@result.TrendingTopics"/>
         </CenteredContainer>
-
-        @* <section class="section mb-12 mx-3"> *@
-        @*     <RandomTopic/> *@
-        @* </section> *@
 
         <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
             <DailyTopic Topic="@result.DailyTopic" Class="mx-3 my-6"/>
@@ -69,7 +65,7 @@
     </Result>
 </ApiResponseViewer>
 
-<CenteredContainer MaxWidth="@ContainerWidth.W960" Class="mb-6 mb-sm-12">
+<CenteredContainer MaxWidth="@ContainerWidth.W600" Class="mb-6 mb-sm-12">
     <RandomTopic/>
 </CenteredContainer>
 
@@ -104,10 +100,11 @@
     private async Task OnCreateTest(TestType type)
     {
         _test = ApiResponse<TestCreatedResult>.Loading();
+        var request = new CreateTestRequest(EpochType.None);
         var result = type switch {
-            TestType.Easy => await Client.Test.CreateRandomEasyTestAsync(),
-            TestType.Hard => await Client.Test.CreateRandomHardTestAsync(),
-            TestType.Mixed => await Client.Test.CreateRandomMixedTestAsync(),
+            TestType.Easy => await Client.Test.CreateRandomEasyTestAsync(request),
+            TestType.Hard => await Client.Test.CreateRandomHardTestAsync(request),
+            TestType.Mixed => await Client.Test.CreateRandomMixedTestAsync(request),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
 

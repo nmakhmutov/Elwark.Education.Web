@@ -22,8 +22,8 @@ namespace Education.Client.Gateways.History.Me
         public Task<ApiResponse<Unit>> CollectDailyReward() =>
             ExecuteAsync<Unit>(() => _client.PostAsync("history/me/reward/daily", EmptyContent));
         
-        public Task<ApiResponse<UserStatistics>> GetStatisticsAsync() =>
-            ExecuteAsync<UserStatistics>(() => _client.GetAsync("history/me/statistics"));
+        public Task<ApiResponse<HistoryUserRestriction>> GetRestrictions() =>
+            ExecuteAsync<HistoryUserRestriction>(() => _client.GetAsync("history/me/restrictions"));
         
         public Task<ApiResponse<TopicTestStatistics>> GetEasyTestStatisticsAsync() =>
             ExecuteAsync<TopicTestStatistics>(() => _client.GetAsync("history/me/statistics/easy-tests"));

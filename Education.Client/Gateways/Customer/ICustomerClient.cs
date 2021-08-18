@@ -5,6 +5,8 @@ namespace Education.Client.Gateways.Customer
 {
     public interface ICustomerClient
     {
+        Task<ApiResponse<Customer>> GetAsync();
+        
         Task CreateAsync();
     }
     
@@ -14,6 +16,9 @@ namespace Education.Client.Gateways.Customer
 
         public CustomerClient(HttpClient client) =>
             _client = client;
+
+        public Task<ApiResponse<Customer>> GetAsync() =>
+            ExecuteAsync<Customer>(() => _client.GetAsync("customers/me"));
 
         public async Task CreateAsync()
         {

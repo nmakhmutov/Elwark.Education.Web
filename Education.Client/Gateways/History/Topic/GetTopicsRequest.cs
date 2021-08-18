@@ -1,4 +1,3 @@
-using Education.Client.Gateways.History.Epoch;
 using Education.Client.Gateways.Models;
 
 namespace Education.Client.Gateways.History.Topic

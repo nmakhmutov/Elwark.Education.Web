@@ -32,10 +32,14 @@
 
     [Inject]
     private ThemeService ThemeService { get; set; } = default!;
-    
+
+    [Inject]
+    private SidebarService SidebarService { get; set; } = default!;
+
     protected override async Task OnInitializedAsync()
     {
         await TopicContentFormatService.InitAsync();
         await ThemeService.InitAsync();
+        await SidebarService.InitAsync();
     }
 }

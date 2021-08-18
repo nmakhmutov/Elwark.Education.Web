@@ -8,6 +8,7 @@ namespace Education.Client.Gateways.History.Me
         Restriction TestQuestionMistakes,
         Restriction DateGuesserCreation,
         float TestDurationCoefficient,
+        UserStatistics Statistics,
         UserExperience Experience,
         DailyReward DailyReward,
         CurrentTest[] CurrentTests

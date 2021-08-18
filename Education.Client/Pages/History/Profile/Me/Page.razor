@@ -1,0 +1,227 @@
+@page "/history/profile/me"
+@using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Me
+@using Education.Client.Gateways.Models.User
+@layout HistoryLayout
+
+@attribute [Authorize]
+
+<PageTitle>@L["Profile"]</PageTitle>
+<MainContainer>
+    <PageHeader Title="@L["Profile"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
+    <ApiResponseViewer Response="@_overview">
+        <Placeholder>
+            <div class="grid">
+                <section class="subject">
+                    <SkeletonCard/>
+                </section>
+
+                <section class="points">
+                    <SkeletonCard/>
+                </section>
+
+                <section class="level">
+                    <SkeletonCard/>
+                </section>
+
+                <section class="daily-reward">
+                    <SkeletonCard/>
+                </section>
+
+                <section class="easy-test">
+                    <SkeletonCard/>
+                </section>
+
+                <section class="hard-test">
+                    <SkeletonCard/>
+                </section>
+
+                <section class="mixed-test">
+                    <SkeletonCard/>
+                </section>
+
+                <section class="activity">
+                    <SkeletonCard/>
+                </section>
+
+            </div>
+        </Placeholder>
+        <Result Context="overview">
+            @if (overview.CurrentTests.Length > 0)
+            {
+                <MudText Typo="Typo.h5" Class="mb-3">
+                    @L["CurrentTests"]
+                </MudText>
+
+                <DefaultFillGrid Class="mb-3 mb-sm-6">
+                    @foreach (var test in overview.CurrentTests)
+                    {
+                        <CurrentTestCard Test="@test"/>
+                    }
+                </DefaultFillGrid>
+            }
+            <div class="grid">
+                <section class="subject">
+                    <SubjectCard
+                        Class="h-100"
+                        Subject="SubjectType.History"
+                        Subscription="@overview.Subscription"
+                        TestCreation="@overview.TestCreation"
+                        TestQuestionMistakes="@overview.TestQuestionMistakes"
+                        TestDurationCoefficient="@overview.TestDurationCoefficient"
+                        DateGuesserCreation="@overview.DateGuesserCreation"
+                        OnBuyClick="@OnBuyClick"/>
+                </section>
+
+                <section class="points">
+                    <PointsCard
+                        Class="h-100"
+                        Points="@overview.Experience.Points"
+                        Recent="@overview.Experience.Recent"/>
+                </section>
+
+                <section class="level">
+                    <LevelCard
+                        Level="@overview.Experience.Level"
+                        Points="@overview.Experience.Points"
+                        PointsToNextLevel="@overview.Experience.PointsToNextLevel"/>
+                </section>
+
+                <section class="daily-reward">
+                    <DailyRewardCard Reward="@overview.DailyReward" OnCollect="@CollectDailyReward"/>
+                </section>
+
+                <section class="easy-test">
+                    <StatisticsCard
+                        Icon="@Icons.Filled.School"
+                        Title="@L["Tests:Easy"]"
+                        Subtitle="@overview.Statistics.EasyTest.NumberOfTests.Total.ToReadable()"
+                        Href="@Links.Subject.History.Profile.EasyTestStatistics">
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <ScoreChart Value="@overview.Statistics.EasyTest.Score"/>
+                    </StatisticsCard>
+                </section>
+
+                <section class="hard-test">
+                    <StatisticsCard
+                        Icon="@Icons.Filled.School"
+                        Title="@L["Tests:Hard"]"
+                        Subtitle="@overview.Statistics.HardTest.NumberOfTests.Total.ToReadable()"
+                        Href="@Links.Subject.History.Profile.HardTestStatistics">
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <ScoreChart Value="@overview.Statistics.HardTest.Score"/>
+                    </StatisticsCard>
+                </section>
+
+                <section class="mixed-test">
+                    <StatisticsCard
+                        Icon="@Icons.Filled.School"
+                        Title="@L["Tests:Mixed"]"
+                        Subtitle="@overview.Statistics.MixedTest.NumberOfTests.Total.ToReadable()"
+                        Href="@Links.Subject.History.Profile.MixedTestStatistics">
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <ScoreChart Value="@overview.Statistics.MixedTest.Score"/>
+                    </StatisticsCard>
+                </section>
+
+                <section class="activity">
+                    <MudPaper>
+                        <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+                            <MudTabPanel Text="Daily">
+                                <MudChart
+                                    ChartType="ChartType.Bar"
+                                    Width="100%"
+                                    Height="350px"
+                                    ChartSeries="@DailyChartSeries()"
+                                    XAxisLabels="@overview.Experience.Daily.Select(x => x.Date.ToString("M")).ToArray()"/>
+                            </MudTabPanel>
+                            <MudTabPanel Text="Monthly">
+                                <MudText>Content Two</MudText>
+                            </MudTabPanel>
+                        </MudTabs>
+                    </MudPaper>
+                </section>
+
+            </div>
+        </Result>
+    </ApiResponseViewer>
+</MainContainer>
+
+@code {
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
+        new BreadcrumbItem(L["Subject:History"].Value, Links.Subject.History.Index)
+    };
+
+    [Inject]
+    private IDialogService Dialog { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    private ApiResponse<HistoryUserProfile> _overview = ApiResponse<HistoryUserProfile>.Loading();
+
+    protected override async Task OnInitializedAsync() => _overview = await HistoryClient.Me.GetOverviewAsync();
+
+    private void OnBuyClick()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            NoHeader = true,
+            CloseButton = false,
+            FullWidth = true
+        };
+
+        var parameters = new DialogParameters
+        {
+            [nameof(SubscriptionModal.SubjectType)] = SubjectType.History
+        };
+
+        Dialog.Show<SubscriptionModal>(null, parameters, options);
+    }
+
+    private async Task CollectDailyReward()
+    {
+        var response = await HistoryClient.Me.CollectDailyReward();
+        if (response.Status == ResponseStatus.Success)
+            _overview = await HistoryClient.Me.GetOverviewAsync();
+    }
+
+
+    private List<ChartSeries> DailyChartSeries()
+    {
+        if (_overview.Status != ResponseStatus.Success)
+            return new List<ChartSeries>();
+
+        var result = _overview.Data.Experience.Daily
+            .SelectMany(x => x.Values.Keys)
+            .Distinct()
+            .Select(x => new ChartSeries
+            {
+                Name = x.ToString(),
+                Data = new double[_overview.Data.Experience.Daily.Length]
+            })
+            .OrderBy(x => x.Name)
+            .ToList();
+
+        for (var index = 0; index < _overview.Data.Experience.Daily.Length; index++)
+        {
+            var experience = _overview.Data.Experience.Daily[index];
+            foreach (var item in result)
+            {
+                item.Data[index] = experience.Values.TryGetValue(Enum.Parse<ExperienceName>(item.Name), out var score)
+                    ? score
+                    : 0;
+            }
+        }
+
+        return result;
+    }
+
+}

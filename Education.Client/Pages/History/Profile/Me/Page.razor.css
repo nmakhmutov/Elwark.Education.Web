@@ -1,0 +1,69 @@
+.grid {
+    display: grid;
+    grid-gap: 12px;
+    grid-template-areas: 
+                "subject"
+                "points"
+                "level"
+                "daily-reward"
+                "easy-test"
+                "hard-test"
+                "mixed-test"
+                "activity";
+}
+
+.subject {
+    grid-area: subject;
+}
+
+.points {
+    grid-area: points;
+}
+
+.level {
+    grid-area: level;
+}
+
+.daily-reward {
+    grid-area: daily-reward;
+}
+
+.easy-test {
+    grid-area: easy-test;
+}
+
+.hard-test {
+    grid-area: hard-test;
+}
+
+.mixed-test {
+    grid-area: mixed-test;
+}
+
+.activity {
+    grid-area: activity;
+}
+
+@media (min-width: 720px) {
+    .grid {
+        grid-gap: 24px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+        "subject points"
+        "level daily-reward"
+        "easy-test hard-test"
+        "mixed-test ."
+        "activity activity";
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-areas:
+        "subject points level"
+        "subject points daily-reward"
+        "easy-test hard-test mixed-test"
+        "activity activity activity";
+    }
+}

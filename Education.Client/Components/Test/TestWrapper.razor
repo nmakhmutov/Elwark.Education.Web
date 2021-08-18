@@ -16,7 +16,7 @@ else
         }
         else if (Status is TestStatus.CurrentTestsMaximum)
         {
-            <MudButton Variant="Variant.Filled" Link="@Links.Profile.Index" Color="Color.Primary">
+            <MudButton Variant="Variant.Filled" Link="@Links.Account.Index" Color="Color.Primary">
                 @L["Profile"]
             </MudButton>
         }
@@ -34,15 +34,15 @@ else
     [Inject]
     private IDialogService Dialog { get; set; } = default!;
 
-    [Parameter]
-    public string? Class { get; set; }
-
-    [Parameter]
+    [Parameter, EditorRequired]
     public TestStatus Status { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public SubjectType Subject { get; set; }
-
+    
+    [Parameter]
+    public string? Class { get; set; }
+    
     [Parameter]
     public Typo Typo { get; set; } = Typo.body2;
 

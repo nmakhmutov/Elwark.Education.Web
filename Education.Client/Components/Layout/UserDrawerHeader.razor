@@ -1,0 +1,21 @@
+<div class="wrapper">
+    <div class="table">
+        <AuthorizeView>
+            <Authorized>
+                <MudAvatar Image="@(context.User.GetImage())" Size="Size.Large"/>
+                <div class="ml-2">
+                    <MudLink Href="@Links.Account.Index">
+                        @context.User.GetName()
+                    </MudLink>
+                    <MudText Typo="Typo.body2">
+                        @@@context.User.GetNickname()
+                    </MudText>
+                </div>
+            </Authorized>
+            <Authorizing>
+                <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px" Style="margin: 10px auto"/>
+                <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
+            </Authorizing>
+        </AuthorizeView>
+    </div>
+</div>

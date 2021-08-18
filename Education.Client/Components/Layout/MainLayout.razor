@@ -7,24 +7,30 @@
 <MudLayout>
     <MudAppBar Elevation="25">
         <MudLink Href="@Links.Subject.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
-            @L["Subject:History"] <sup class="beta">beta</sup>
+            Education <sup class="beta" style="font-size: 0.9rem;color: var(--mud-palette-primary);">beta</sup>
         </MudLink>
         <MudSpacer/>
         <MudIconButton Icon="@ThemeService.Icon" Color="Color.Inherit" OnClick="@ThemeService.ToggleAsync"/>
-        <UserMenu/>
+        <AuthorizeView>
+            <NotAuthorized>
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@OnLogin" Class="ml-3">
+                    @L["SignIn"]
+                </MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
     </MudAppBar>
 
-    <main class="main-content">
+    <MudMainContent>
         @Body
-    </main>
-    <footer>
-        <div class="footer-body">
-            <LanguageSelector/>
-            <MudText Typo="Typo.body2">
-                © @DateTime.Now.Year - Elwark
-            </MudText>
-        </div>
-    </footer>
+    </MudMainContent>
+    @* <footer> *@
+    @*     <div class="footer-body"> *@
+    @*         <LanguageSelector/> *@
+    @*         <MudText Typo="Typo.body2"> *@
+    @*             © @DateTime.Now.Year - Elwark *@
+    @*         </MudText> *@
+    @*     </div> *@
+    @* </footer> *@
     @* <MudScrollToTop TopOffset="300"> *@
     @*     <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp"/> *@
     @* </MudScrollToTop> *@
@@ -33,9 +39,16 @@
 @code {
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private ThemeService ThemeService { get; set; } = default!;
 
     [Inject]
-    private ThemeService ThemeService { get; set; } = default!;
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
+
+    private void OnLogin() =>
+        Navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(Navigation.Uri)));
 
 }
