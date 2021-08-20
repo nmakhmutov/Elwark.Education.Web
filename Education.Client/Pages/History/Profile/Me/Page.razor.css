@@ -3,13 +3,13 @@
     grid-gap: 12px;
     grid-template-areas: 
                 "subject"
-                "points"
                 "level"
+                "points"
                 "daily-reward"
+                "activity"
                 "easy-test"
                 "hard-test"
-                "mixed-test"
-                "activity";
+                "mixed-test";
 }
 
 .subject {
@@ -50,7 +50,8 @@
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
         "subject points"
-        "level daily-reward"
+        "level points"
+        "daily-reward points"
         "easy-test hard-test"
         "mixed-test ."
         "activity activity";
@@ -59,11 +60,10 @@
 
 @media (min-width: 1280px) {
     .grid {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: repeat(4, minmax(200px, 1fr));
         grid-template-areas:
-        "subject points level"
-        "subject points daily-reward"
-        "easy-test hard-test mixed-test"
-        "activity activity activity";
+        "subject activity activity activity"
+        "points points points level"
+        "easy-test hard-test mixed-test daily-reward";
     }
 }

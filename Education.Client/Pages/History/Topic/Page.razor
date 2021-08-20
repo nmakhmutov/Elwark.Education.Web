@@ -9,7 +9,35 @@
 
 <ApiResponseViewer Response="@_topic">
     <Placeholder>
-        <PageLoader/>
+        <div class="ma-3 ma-sm-6">
+            <MudSkeleton Width="80vw" Class="mx-auto" SkeletonType="SkeletonType.Text"/>
+            <MudSkeleton Width="70vw" Class="mx-auto" SkeletonType="SkeletonType.Text"/>
+            <MudSkeleton Width="60vw" Height="40vh" Class="mx-auto mt-12" SkeletonType="SkeletonType.Rectangle"/>
+        </div>
+        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="py-3 py-sm-6" Paper="true" Elevation="1">
+            <div class="pa-3 pa-sm-6">
+                <MudSkeleton Width="89%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="94%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="83%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="81%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="82%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="88%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="99%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="86%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="98%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="88%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="83%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="85%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="90%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="85%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="98%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="85%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="97%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="96%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="83%" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Width="99%" SkeletonType="SkeletonType.Text"/>
+            </div>
+        </CenteredContainer>
     </Placeholder>
     <Result Context="result">
         <PageTitle>@result.Topic.Title</PageTitle>
@@ -88,17 +116,17 @@
                             @L["Test:MyProgress"]
                         </MudLink>
                     }
-                            
+
                     <TopicProgressView Progress="@result.Progress" Class="py-3"/>
-        
+
                     <TestWrapper Subject="@SubjectType.History" Status="@result.Test.Status">
-                        <TopicTestButtons 
+                        <TopicTestButtons
                             IsLoading="@(_test?.Status == ResponseStatus.Loading)"
                             TestTypes="@result.Test.TestTypes.ToArray()"
                             OnCreateTestClick="@CreateTestAsync"/>
                     </TestWrapper>
                 </div>
-        
+
                 <TopicReactionButtons
                     Id="@Id"
                     IsFavorite="@result.IsFavorite"
@@ -108,7 +136,7 @@
                     OnDislikeClick="@OnDislikeClick"/>
             </div>
         </CenteredContainer>
-        
+
         @if (result.RelatedTopics.Length > 0)
         {
             <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
@@ -140,7 +168,7 @@
     private ApiResponse<TestCreatedResult>? _test;
     private ApiResponse<TopicDetailComposition> _topic = ApiResponse<TopicDetailComposition>.Loading();
     private List<BreadcrumbItem> _breadcrumbs = new();
-    
+
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 

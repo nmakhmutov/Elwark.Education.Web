@@ -18,6 +18,11 @@ namespace Education.Client.Infrastructure.Extensions
             span.ToString(span.TotalDays > 1 ? @"dd\.hh\:mm" : @"hh\:mm\:ss");
 
         public static string ToShortFormat(this TimeSpan span) =>
-            span.ToString(span.TotalDays > 1 ? @"dd\.hh\:mm" : @"hh\:mm");
+            span.ToString(span.TotalSeconds switch
+            {
+                < 3600 => @"mm\:ss", // less then one hour
+                < 86400 => @"hh\:mm\:ss", // less then one day
+                _ => @"dd\.hh\:mm"
+            });
     }
 }

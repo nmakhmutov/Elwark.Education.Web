@@ -1,20 +1,17 @@
 using System;
-using System.Collections.Generic;
 
 namespace Education.Client.Gateways.Models.User
 {
     public sealed record UserExperience(
         uint Level,
         long Points,
-        long PointsToNextLevel,
-        RecentExperience[] Recent,
-        DailyExperience[] Daily,
-        MonthlyExperience[] Monthly
+        long NextLevelPoints,
+        TypedExperience[] Recent,
+        Experience[] Daily,
+        Experience[] Monthly
     );
 
-    public sealed record RecentExperience(ExperienceName Type, long Value, DateTime CreatedAt);
-    
-    public sealed record DailyExperience(DateTime Date, Dictionary<ExperienceName, long> Values);
+    public sealed record TypedExperience(ExperienceName Type, long Points, DateTime CreatedAt);
 
-    public sealed record MonthlyExperience(DateTime Date, long Value);
+    public sealed record Experience(long Points, DateTime CreatedAt);
 }

@@ -83,13 +83,13 @@
 
                 @Header(new HeaderProps(L["Tests:Easy"], Links.Subject.History.Profile.EasyTestStatistics, L["TimeSpent"], result.EasyTest.TimeSpent))
                 <DefaultFitGrid Class="mb-3 mb-sm-6">
-                    <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.EasyTest.NumberOfTests.Total.ToReadable()">
+                    <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Value="@result.EasyTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.EasyTest.NumberOfTests"/>
                     </StatisticsCard>
-                    <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Subtitle="@result.EasyTest.Score.Total.ToReadable()">
+                    <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Value="@result.EasyTest.Score.Total">
                         <ScoreChart Value="@result.EasyTest.Score"/>
                     </StatisticsCard>
-                    <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Subtitle="@result.EasyTest.AnswerRatio.Questions.ToReadable()">
+                    <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Value="@result.EasyTest.AnswerRatio.Questions">
                         <AnswerRatioChart Value="@result.EasyTest.AnswerRatio"/>
                     </StatisticsCard>
                 </DefaultFitGrid>
@@ -124,13 +124,13 @@
                 <div class="py-6"></div>
                 @Header(new HeaderProps(L["Tests:Hard"], Links.Subject.History.Profile.HardTestStatistics, L["TimeSpent"], result.HardTest.TimeSpent))
                 <DefaultFitGrid Class="mb-3 mb-sm-6">
-                    <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.HardTest.NumberOfTests.Total.ToReadable()">
+                    <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Value="@result.HardTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.HardTest.NumberOfTests"/>
                     </StatisticsCard>
-                    <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Subtitle="@result.HardTest.Score.Total.ToReadable()">
+                    <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Value="@result.HardTest.Score.Total">
                         <ScoreChart Value="@result.HardTest.Score"/>
                     </StatisticsCard>
-                    <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Subtitle="@result.HardTest.AnswerRatio.Questions.ToReadable()">
+                    <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Value="@result.HardTest.AnswerRatio.Questions">
                         <AnswerRatioChart Value="@result.HardTest.AnswerRatio"/>
                     </StatisticsCard>
                 </DefaultFitGrid>

@@ -4,7 +4,7 @@
 </div>
 
 @code {
-    
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -44,10 +44,10 @@
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["Score:ByQuestions"], Value.Questions.ToReadable(), Colors.Blue.Darken2),
-        new ChartList.Item(L["Score:BySpeedBonus"], Value.Speed.ToReadable(), Colors.Green.Darken2),
-        new ChartList.Item(L["Score:NoMistakesBonus"], Value.NoMistakes.ToReadable(), Colors.Orange.Darken2),
-        new ChartList.Item(L["Score:Total"], Value.Total.ToReadable(), null)
+        new ChartList.Item(L["Score:ByQuestions"], Value.Questions, Colors.Blue.Darken2),
+        new ChartList.Item(L["Score:BySpeedBonus"], Value.Speed, Colors.Green.Darken2),
+        new ChartList.Item(L["Score:NoMistakesBonus"], Value.NoMistakes, Colors.Orange.Darken2),
+        new ChartList.Item(L["Score:Total"], Value.Total, null)
     };
 
 }

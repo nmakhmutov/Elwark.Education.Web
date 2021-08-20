@@ -9,9 +9,9 @@
             <MudText Typo="Typo.subtitle1">
                 @item.Title
             </MudText>
-            <MudText Typo="Typo.subtitle1" Class="ml-auto">
-                @item.Value
-            </MudText>
+            <div class="ml-auto">
+                <HumanReadableText Value="@item.Value"/>
+            </div>
         </li>
     }
 </ul>
@@ -24,6 +24,6 @@
     [Parameter]
     public Item[] Items { get; set; } = Array.Empty<Item>();
 
-    public sealed record Item(string Title, string Value, string? Color);
+    public sealed record Item(string Title, object Value, string? Color);
 
 }

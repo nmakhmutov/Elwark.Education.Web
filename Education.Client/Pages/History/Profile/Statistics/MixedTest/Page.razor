@@ -18,7 +18,7 @@
         </Placeholder>
         <Result Context="result">
             <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
-                <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Subtitle="@result.NumberOfTests.Total.Total.ToReadable()">
+                <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Value="@result.NumberOfTests.Total.Total">
                     <TwoColumnGrid>
                         <div>
                             <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
@@ -30,7 +30,7 @@
                         </div>
                     </TwoColumnGrid>
                 </StatisticsCard>
-                <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Subtitle="@result.Score.Total.Total.ToReadable()">
+                <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Value="@result.Score.Total.Total">
                     <TwoColumnGrid>
                         <div>
                             <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
@@ -42,7 +42,7 @@
                         </div>
                     </TwoColumnGrid>
                 </StatisticsCard>
-                <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Subtitle="@result.AnswerRatio.Total.Questions.ToReadable()">
+                <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Value="@result.AnswerRatio.Total.Questions">
                     <TwoColumnGrid>
                         <div>
                             <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
@@ -54,7 +54,7 @@
                         </div>
                     </TwoColumnGrid>
                 </StatisticsCard>
-                <StatisticsCard Icon="@Icons.Filled.Timer" Title="@L["TimeSpent"]" Subtitle="@result.TimeSpent.Total.ToLongFormat()">
+                <StatisticsCard Icon="@Icons.Filled.Timer" Title="@L["TimeSpent"]" Value="@result.TimeSpent.Total">
                     <TwoColumnGrid>
                         <div>
                             <Subheader Title="@L["TimeSpent"]" Subtitle="@L["ForAllTime"]"/>
@@ -76,7 +76,7 @@
                 <MudText Typo="Typo.h5" Class="mb-3 mt-6 mt-md-12">
                     @L["Tests:Latest"]
                 </MudText>
-                <DefaultFitGrid>
+                <DefaultFillGrid>
                     @foreach (var conclusion in result.Conclusions)
                     {
                         <MudCard>
@@ -90,7 +90,7 @@
                             </MudCardContent>
                         </MudCard>
                     }
-                </DefaultFitGrid>
+                </DefaultFillGrid>
             }
         </Result>
     </ApiResponseViewer>
@@ -101,8 +101,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
-        new BreadcrumbItem(L["Subject:History"].Value, Links.Subject.History.Index),
-        new BreadcrumbItem(L["Profile"].Value, Links.Subject.History.Profile.Me)
+        new BreadcrumbItem(L["Profile"].Value, Links.Subject.History.Profile.Me),
     };
 
     private ApiResponse<MixedTestStatistics> _response = ApiResponse<MixedTestStatistics>.Loading();
