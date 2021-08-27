@@ -13,13 +13,17 @@
                     }
                 </NotAuthorized>
                 <Authorizing>
-                    @* <PageLoader/> *@
+                    <div class="d-flex justify-content-center app-loader flex-column">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                    </div>
                 </Authorizing>
             </AuthorizeRouteView>
         </Found>
         <NotFound>
             <LayoutView Layout="@typeof(MainLayout)">
-                <ErrorPage Error="Error.NotFound"/>
+                <ErrorPage Error="@(Error.Create(L["Error:NotFound"], string.Empty, 404))"/>
             </LayoutView>
         </NotFound>
     </Router>
@@ -27,6 +31,9 @@
 
 @code
 {
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Inject]
     private TopicContentFormatService TopicContentFormatService { get; set; } = default!;
 

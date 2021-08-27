@@ -8,101 +8,167 @@
 @attribute [Authorize]
 
 <ApiResponseViewer Response="@_topic">
-    <Placeholder>
-        <div class="ma-3 ma-sm-6">
-            <MudSkeleton Width="80vw" Class="mx-auto" SkeletonType="SkeletonType.Text"/>
-            <MudSkeleton Width="70vw" Class="mx-auto" SkeletonType="SkeletonType.Text"/>
-            <MudSkeleton Width="60vw" Height="40vh" Class="mx-auto mt-12" SkeletonType="SkeletonType.Rectangle"/>
+<Placeholder>
+    <div class="ma-3 ma-sm-6">
+        <MudSkeleton Width="80vw" Class="mx-auto" SkeletonType="SkeletonType.Text"/>
+        <MudSkeleton Width="70vw" Class="mx-auto" SkeletonType="SkeletonType.Text"/>
+        <MudSkeleton Width="60vw" Height="40vh" Class="mx-auto mt-12" SkeletonType="SkeletonType.Rectangle"/>
+    </div>
+    <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="py-3 py-sm-6" Paper="true" Elevation="1">
+        <div class="pa-3 pa-sm-6">
+            <MudSkeleton Width="89%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
+            <MudSkeleton Width="94%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
+            <MudSkeleton Width="83%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
+            <MudSkeleton Width="81%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
+            <MudSkeleton Width="82%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
+            <MudSkeleton Width="88%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
+            <MudSkeleton Width="99%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
+            <MudSkeleton Width="86%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
+            <MudSkeleton Width="98%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
+            <MudSkeleton Width="88%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
         </div>
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="py-3 py-sm-6" Paper="true" Elevation="1">
-            <div class="pa-3 pa-sm-6">
-                <MudSkeleton Width="89%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="94%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="83%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="81%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="82%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="88%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="99%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="86%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="98%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="88%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="83%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="85%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="90%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="85%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="98%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="85%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="97%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="96%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="83%" SkeletonType="SkeletonType.Text"/>
-                <MudSkeleton Width="99%" SkeletonType="SkeletonType.Text"/>
-            </div>
-        </CenteredContainer>
-    </Placeholder>
-    <Result Context="result">
-        <PageTitle>@result.Topic.Title</PageTitle>
+    </CenteredContainer>
+</Placeholder>
+<Result Context="result">
+    <PageTitle>@result.Topic.Title</PageTitle>
 
-        @switch (result.Topic)
-        {
-            case PersonTopicDetail x:
-                <PersonHeader
-                    Title="@x.Title"
-                    Description="@x.Description"
-                    Image="@x.Image"
-                    Born="@x.Born"
-                    Died="@x.Died"
-                    Characteristics="@x.Characteristics"
-                    Breadcrumbs="@_breadcrumbs"/>
-                break;
+    @switch (result.Topic)
+    {
+        case PersonTopicDetail x:
+            <PersonHeader
+                Class="mb-6 mb-sm-12"
+                Title="@x.Title"
+                Description="@x.Description"
+                Image="@x.Image"
+                Born="@x.Born"
+                Died="@x.Died"
+                Characteristics="@x.Characteristics"
+                Breadcrumbs="@_breadcrumbs"/>
+            break;
 
-            case EventTopicDetail x:
-                <EventHeader
-                    Title="@x.Title"
-                    Description="@x.Description"
-                    Image="@x.Image"
-                    Started="@x.Started"
-                    Ended="@x.Ended"
-                    Breadcrumbs="@_breadcrumbs"/>
-                break;
-        }
+        case EventTopicDetail x:
+            <EventHeader
+                Class="mb-6 mb-sm-12"
+                Title="@x.Title"
+                Description="@x.Description"
+                Image="@x.Image"
+                Started="@x.Started"
+                Ended="@x.Ended"
+                Breadcrumbs="@_breadcrumbs"/>
+            break;
+    }
 
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="py-3 py-sm-6" Paper="true" Elevation="1">
-            <div class="pa-3 pa-sm-6">
-                <MudExpansionPanels Elevation="0" Dense="false" DisableGutters="true" Class="mb-6">
-                    <MudExpansionPanel Class="text-toolbar">
-                        <TitleContent>
-                            <MudText Color="Color.Primary" Typo="Typo.button">
-                                @L["Settings"]
-                            </MudText>
-                        </TitleContent>
-                        <ChildContent>
-                            <TextToolbar FormatService="@FormatService"/>
-                        </ChildContent>
-                    </MudExpansionPanel>
-                </MudExpansionPanels>
-
-                @foreach (var (title, subtitle, content) in result.Topic.Chapters)
+    <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
+        <div class="toolbar">
+            <div class="toolbar-contents">
+                @if (result.Topic.Chapters.Length > 2)
                 {
-                    <article class="mb-6 mb-sm-12" style="@FormatService.WidthStyles">
-                        <div class="mb-3">
-                            <h2 class="chapter-title">
-                                @title
-                            </h2>
-                            @if (!string.IsNullOrEmpty(subtitle))
-                            {
-                                <h3 class="chapter-subtitle">
-                                    @subtitle
-                                </h3>
-                            }
-                        </div>
-                        <TopicMarkdown Text="@content" Style="@FormatService.TextStyles"/>
-                    </article>
+                    <MudMenu Label="@L["Topic:Contents"]" Color="Color.Primary" Variant="Variant.Filled">
+                        @foreach (var chapter in result.Topic.Chapters)
+                        {
+                            <MudMenuItem OnClick="@(() => Scroll.ScrollToFragmentAsync($"chapter-{chapter.Id}", ScrollBehavior.Smooth))">
+                                @chapter.Title
+                            </MudMenuItem>
+                        }
+                    </MudMenu>
                 }
             </div>
-        </CenteredContainer>
 
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6" Paper="true" Elevation="1">
-            <div class="topic-toolbar">
+            <div class="toolbar-width d-none d-lg-block">
+                <div class="d-flex flex-column align-sm-center">
+                    <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+                        <MudIconButton
+                            Disabled="@(FormatService.Width == Width.False)"
+                            Icon="@Icons.Material.Filled.CropFree"
+                            OnClick="@FormatService.SetWidthFalseAsync"/>
+                        <div class="d-none d-lg-plus-block">
+                            <MudIconButton
+                                Disabled="@(FormatService.Width == Width.lg)"
+                                Icon="@Icons.Material.Filled.CropDin"
+                                OnClick="@FormatService.SetWidthLgAsync"/>
+                        </div>
+                        <MudIconButton
+                            Disabled="@(FormatService.Width == Width.md)"
+                            Icon="@Icons.Material.Filled.CropPortrait"
+                            OnClick="@FormatService.SetWidthMdAsync"/>
+                    </MudButtonGroup>
+                    <MudText Typo="Typo.body2" Class="subtitle">
+                        @L["TopicFormatting:ContentWidth"]
+                    </MudText>
+                </div>
+            </div>
+
+            <div class="toolbar-align">
+                <div class="d-flex flex-column align-sm-center">
+                    <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+                        <MudIconButton
+                            Disabled="@(FormatService.TextAlign == Align.Left)"
+                            Icon="@Icons.Material.Filled.FormatAlignLeft"
+                            OnClick="@FormatService.AlignTextLeftAsync"/>
+                        <MudIconButton
+                            Disabled="@(FormatService.TextAlign == Align.Center)"
+                            Icon="@Icons.Material.Filled.FormatAlignCenter"
+                            OnClick="@FormatService.AlignTextCenterAsync"/>
+                        <MudIconButton
+                            Disabled="@(FormatService.TextAlign == Align.Right)"
+                            Icon="@Icons.Material.Filled.FormatAlignRight"
+                            OnClick="@FormatService.AlignTextRightAsync"/>
+                        <MudIconButton
+                            Disabled="@(FormatService.TextAlign == Align.Justify)"
+                            Icon="@Icons.Material.Filled.FormatAlignJustify"
+                            OnClick="@FormatService.AlignTextJustifyAsync"/>
+                    </MudButtonGroup>
+                    <MudText Typo="Typo.body2" Class="subtitle">
+                        @L["TopicFormatting:TextAlignment"]
+                    </MudText>
+                </div>
+            </div>
+
+            <div class="toolbar-font-size">
+                <div class="d-flex flex-column align-sm-center">
+                    <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+                        <MudIconButton
+                            Disabled="@(!FormatService.CanDecreaseFontSize())"
+                            Icon="@Icons.Material.Filled.Remove"
+                            OnClick="@FormatService.DecreaseFontSizeAsync"/>
+                        <MudIconButton
+                            Disabled="@(!FormatService.CanIncreaseFontSize())"
+                            Icon="@Icons.Material.Filled.Add"
+                            OnClick="@FormatService.IncreaseFontSizeAsync"/>
+                    </MudButtonGroup>
+                    <MudText Typo="Typo.body2" Class="subtitle">
+                        @L["TopicFormatting:FontSize"]
+                    </MudText>
+                </div>
+            </div>
+        </div>
+    </CenteredContainer>
+
+    @foreach (var (id, title, subtitle, content) in result.Topic.Chapters)
+    {
+        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
+            <MudCard Style="@FormatService.WidthStyles">
+                <MudCardHeader Class="pa-3 pa-sm-6">
+                    <CardHeaderContent>
+                        <h2 class="chapter-title" id="chapter-@id">
+                            @title
+                        </h2>
+                        @if (!string.IsNullOrEmpty(subtitle))
+                        {
+                            <SimpleMarkdown Text="@subtitle"/>
+                        }
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent Class="pa-3 pa-sm-6">
+                    <TopicMarkdown Text="@content" Style="@FormatService.TextStyles"/>
+                </MudCardContent>
+            </MudCard>
+        </CenteredContainer>
+    }
+
+    <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
+        <MudPaper Style="@FormatService.WidthStyles">
+            <div class="progress">
                 <div class="d-flex flex-column align-start">
                     @if (result.Test.Status == TestStatus.NotAvailable)
                     {
@@ -135,32 +201,33 @@
                     OnLikeClick="@OnLikeClick"
                     OnDislikeClick="@OnDislikeClick"/>
             </div>
-        </CenteredContainer>
+        </MudPaper>
+    </CenteredContainer>
 
-        @if (result.RelatedTopics.Length > 0)
-        {
-            <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
-                <MudText Typo="Typo.h5" Class="mb-3">
-                    @L["Topics:Related"]
-                </MudText>
-                <DefaultFillGrid>
-                    @foreach (var topic in result.RelatedTopics)
-                    {
-                        <TopicCard
-                            Id="@topic.Id"
-                            Epoch="@topic.Epoch"
-                            Image="@topic.Image"
-                            Title="@topic.Title"
-                            Overview="@topic.Overview"
-                            Rating="@topic.Rating"
-                            Progress="@topic.Progress"
-                            IsFavorite="@topic.IsFavorite"
-                            OnFavoriteClick="@OnFavoriteClick"/>
-                    }
-                </DefaultFillGrid>
-            </CenteredContainer>
-        }
-    </Result>
+    @if (result.RelatedTopics.Length > 0)
+    {
+        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
+            <MudText Typo="Typo.h5" Class="mb-3">
+                @L["Topics:Related"]
+            </MudText>
+            <DefaultFillGrid>
+                @foreach (var topic in result.RelatedTopics)
+                {
+                    <TopicCard
+                        Id="@topic.Id"
+                        Epoch="@topic.Epoch"
+                        Image="@topic.Image"
+                        Title="@topic.Title"
+                        Overview="@topic.Overview"
+                        Rating="@topic.Rating"
+                        Progress="@topic.Progress"
+                        IsFavorite="@topic.IsFavorite"
+                        OnFavoriteClick="@OnFavoriteClick"/>
+                }
+            </DefaultFillGrid>
+        </CenteredContainer>
+    }
+</Result>
 </ApiResponseViewer>
 
 
@@ -179,13 +246,13 @@
     private ISnackbar Snackbar { get; set; } = default!;
 
     [Inject]
-    private ErrorManager ErrorManager { get; set; } = default!;
-
-    [Inject]
     private TopicContentFormatService FormatService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IScrollManager Scroll { get; set; } = default!;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
@@ -220,7 +287,7 @@
         if (_test.Status == ResponseStatus.Success)
             NavigationManager.NavigateTo(Links.Subject.History.Test(_test.Data.Id));
         else
-            Snackbar.Add(ErrorManager.Localize(_test.Error).Title, Severity.Error);
+            Snackbar.Add(_test.Error.Message);
     }
 
     private async Task<bool> OnFavoriteClick(string topicId)
@@ -228,7 +295,6 @@
         var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
         return result.Status == ResponseStatus.Success && result.Data;
     }
-
 
     private async Task<bool> OnLikeClick()
     {

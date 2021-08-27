@@ -1,6 +1,7 @@
 @page "/history/{type}"
 @using Education.Client.Gateways.History
 @using Education.Client.Gateways.History.Topic
+@using System.Web
 @layout HistoryLayout
 
 @attribute [Authorize]
@@ -10,20 +11,18 @@
 </PageTitle>
 
 <MainContainer>
-    <PageHeader Title="@L[$"History:{_request.Epoch}"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
-    <DefaultFillGrid>
-        <ApiResponseViewer Response="_topics">
-            <Placeholder>
+    <ApiResponseViewer Response="_topics">
+        <Placeholder>
+            <DefaultFitGrid>
                 <SkeletonCard/>
                 <SkeletonCard/>
                 <SkeletonCard/>
                 <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-            </Placeholder>
-            <Result Context="topics">
+            </DefaultFitGrid>
+        </Placeholder>
+        <Result Context="topics">
+            <PageHeader Title="@L[$"History:{_request.Epoch}"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
+            <DefaultFillGrid>
                 @foreach (var item in topics.Items)
                 {
                     <TopicCard
@@ -37,17 +36,12 @@
                         Epoch="@item.Epoch"
                         OnFavoriteClick="@OnFavoriteClick"/>
                 }
-                <InfinityScroll ObserverTargetId="tg" ObservableTargetReached="@LoadMoreAsync">
-                    <div id="tg" class="d-flex justify-center align-center">
-                        @if (_request.Page < _topics.Data.Pages)
-                        {
-                            <MudProgressCircular Indeterminate="true" Size="Size.Large"/>
-                        }
-                    </div>
-                </InfinityScroll>
-            </Result>
-        </ApiResponseViewer>
-    </DefaultFillGrid>
+            </DefaultFillGrid>
+            <div class="d-flex justify-center mt-6 mt-sm-12">
+                <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_topics.Data.Pages)"/>
+            </div>
+        </Result>
+    </ApiResponseViewer>
 </MainContainer>
 
 @code {
@@ -66,50 +60,47 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
     [Parameter]
     public string? Type { get; set; }
+
+    [Parameter, SupplyParameterFromQuery(Name = "page")]
+    public int CurrentPage { get; set; } = 1;
 
     protected override async Task OnParametersSetAsync()
     {
         _topics = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
+        CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
         {
-            _request = _request with { Epoch = type };
+            _request = _request with { Epoch = type, Page = CurrentPage };
             _topics = await HistoryClient.Topic.GetAsync(_request);
         }
         else
         {
-            _topics = ApiResponse<PageResponse<UserTopicSummary>>.Fail(Error.NotFound);
+            var error = Error.Create(L["Error:NotFound"], string.Empty, 404);
+            _topics = ApiResponse<PageResponse<UserTopicSummary>>.Fail(error);
         }
-    }
-
-    private async Task LoadMoreAsync()
-    {
-        if (_topics.Status != ResponseStatus.Success || _request.Page == _topics.Data.Pages)
-            return;
-
-        _request = _request with { Page = _request.Page + 1};
-        var response = await HistoryClient.Topic.GetAsync(_request);
-
-        if (response.Status == ResponseStatus.Fail)
-        {
-            _topics = ApiResponse<PageResponse<UserTopicSummary>>.Fail(response.Error);
-            return;
-        }
-
-        _topics = ApiResponse<PageResponse<UserTopicSummary>>.Success(
-            new PageResponse<UserTopicSummary>(
-                _topics.Data.Items.Union(response.Data.Items).ToArray(),
-                response.Data.Pages
-                )
-            );
     }
 
     private async Task<bool> OnFavoriteClick(string topicId)
     {
         var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
         return result.Status == ResponseStatus.Success && result.Data;
+    }
+
+    private void OnPagination(int page)
+    {
+        var uri = new UriBuilder(Navigation.Uri);
+        var query = HttpUtility.ParseQueryString(uri.Query);
+        query.Set("page", page.ToString());
+        uri.Query = query.ToString();
+
+        CurrentPage = page;
+        Navigation.NavigateTo(uri.ToString(), replace: true);
     }
 
 }

@@ -146,8 +146,8 @@ namespace Education.Client.Infrastructure.Services
         private async Task Update()
         {
             UpdateStyles();
-            OnChange();
             await SaveStateAsync();
+            OnChange();
         }
         
         private record State

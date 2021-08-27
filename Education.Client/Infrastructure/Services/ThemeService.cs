@@ -36,7 +36,7 @@ namespace Education.Client.Infrastructure.Services
                 ActionDisabled = "rgba(255,255,255, 0.26)",
                 ActionDisabledBackground = "rgba(255,255,255, 0.12)",
                 DrawerIcon = "rgba(255,255,255, 0.50)",
-                HoverOpacity = 0.6
+                HoverOpacity = 0.6,
             }
         };
 

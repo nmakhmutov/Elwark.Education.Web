@@ -94,6 +94,9 @@
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
 
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
     protected override async Task OnInitializedAsync()
     {
         _response = await Client.Me.GetRestrictions();
@@ -112,6 +115,8 @@
 
         if (response.Status == ResponseStatus.Success)
             NavigationManager.NavigateTo(Links.Subject.History.Test(response.Data.Id));
+        else
+            Snackbar.Add(response.Error.Message, Severity.Error);
 
         _isLoading = false;
     }

@@ -28,7 +28,12 @@ namespace Education.Client
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services
-                .AddMudServices()
+                .AddMudServices(configuration =>
+                {
+                    configuration.SnackbarConfiguration.PreventDuplicates = false;
+                    configuration.SnackbarConfiguration.NewestOnTop = true;
+                    configuration.SnackbarConfiguration.MaxDisplayedSnackbars = 3;
+                })
                 .AddBlazoredLocalStorage(options =>
                 {
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -53,8 +58,7 @@ namespace Education.Client
                         )
                         .ConfigureHandler(new[] {gatewayUrl.ToString()})
                 )
-                .AddScoped<EducationLocalization>()
-                .AddScoped<ErrorManager>();
+                .AddScoped<EducationLocalization>();
 
             builder.Services
                 .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));

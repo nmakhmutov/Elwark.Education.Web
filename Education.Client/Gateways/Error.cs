@@ -1,20 +1,31 @@
-using System.Linq;
+using System.Collections.Generic;
 
 namespace Education.Client.Gateways
 {
-    public sealed record Error(string Title, string Type, int Status = 400)
+    public sealed record Error
     {
-        public bool OneOf(params Error[] errors) =>
-            errors.Any(error => Equals(this, error));
+        public Error(string title, string type, string? detail, int status, Dictionary<string, string[]>? errors)
+        {
+            Title = title;
+            Type = type;
+            Detail = detail;
+            Status = status;
+            Errors = errors ?? new Dictionary<string, string[]>();
+        }
 
-        public static readonly Error NotFound = new("NotFound", "NotFound", 404);
+        public string Title { get; }
 
-        public static readonly Error TestExpired = new("Expired", "Rpc", 412);
+        public string Type { get; }
 
-        public static readonly Error Unavailable = new("Unavailable", "Internal", 503);
+        public string? Detail { get; }
 
-        public static readonly Error Unknown = new("Unknown", "Internal", 500);
+        public int Status { get; }
 
-        public static readonly Error Unauthorized = new("Unauthorized", "Internal", 401);
+        public Dictionary<string, string[]> Errors { get; } = new();
+
+        public string Message => Detail ?? Title;
+
+        public static Error Create(string title, string type, int status) =>
+            new(title, type, null, status, new Dictionary<string, string[]>());
     }
 }

@@ -6,7 +6,7 @@ else
 {
     <div class="@Class">
         <MudText Typo="@Typo" Color="Color.Info" Class="mb-3">
-            @ErrorManager.Localize(Status)
+            @L[$"TestStatus:{Status}"]
         </MudText>
         @if (Status is TestStatus.TestCreationMaximum or TestStatus.TestQuestionMistakesMaximum)
         {
@@ -27,9 +27,6 @@ else
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private ErrorManager ErrorManager { get; set; } = default!;
 
     [Inject]
     private IDialogService Dialog { get; set; } = default!;

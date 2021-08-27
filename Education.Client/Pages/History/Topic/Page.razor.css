@@ -6,35 +6,43 @@
     letter-spacing: var(--mud-typography-h4-letterspacing);
 }
 
-.chapter-subtitle {
-    font-style: italic;
-    font-size: var(--mud-typography-subtitle1-size);
-    font-family: var(--mud-typography-subtitle1-family);
-    font-weight: var(--mud-typography-subtitle1-weight);
-    line-height: var(--mud-typography-subtitle1-lineheight);
-    letter-spacing: var(--mud-typography-subtitle1-letterspacing);
+.toolbar {
+    display: grid;
+    grid-gap: 12px;
 }
 
-::deep .text-toolbar > .mud-expand-panel-header {
-    padding: 0;
-}
-
-.topic-toolbar {
+.progress {
     display: grid;
     grid-gap: 12px;
     padding: 12px;
 }
 
 @media (min-width: 600px) {
-    .chapter-title {
-        font-size: var(--mud-typography-h5-size);
+    .toolbar {
+        grid-template-columns: 1fr auto auto;
     }
 
-    .topic-toolbar {
+    .progress {
         display: grid;
         grid-template-columns: auto auto;
         justify-content: space-between;
         grid-gap: 24px;
         padding: 24px;
+    }
+}
+
+@media (min-width: 960px) {
+    .chapter-title {
+        font-size: var(--mud-typography-h4-size);
+    }
+
+    .toolbar {
+        grid-template-columns: 1fr auto auto auto;
+    }
+}
+
+@media (min-width: 1600px) {
+    .d-lg-plus-block {
+        display: block !important;
     }
 }

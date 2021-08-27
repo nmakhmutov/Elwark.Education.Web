@@ -71,15 +71,12 @@
                     </AuthorizeView>
                 </div>
                 <div class="subjects">
-                    <MudText Typo="Typo.h5" Class="mb-3">
-                        @L["Subjects"]
-                    </MudText>
                     <MudTable Items="@customer.Subjects" Breakpoint="Breakpoint.Sm">
                         <HeaderContent>
                             <MudTh>@L["Subject"]</MudTh>
                             <MudTh>@L["Subscription"]</MudTh>
-                            <MudTh>@L["Subscription:TestCreation"]</MudTh>
-                            <MudTh>@L["Subscription:TestQuestionMistakes"]</MudTh>
+                            <MudTh Style="text-align: center">@L["Subscription:TestCreation"]</MudTh>
+                            <MudTh Style="text-align: center">@L["Subscription:TestQuestionMistakes"]</MudTh>
                             <MudTh/>
                         </HeaderContent>
                         <RowTemplate>
@@ -102,10 +99,10 @@
                             <MudTd DataLabel="@L["Subscription"]">
                                 @L[$"Subscription:{context.Subscription}"]
                             </MudTd>
-                            <MudTd DataLabel="@L["Subscription:TestCreation"]">
+                            <MudTd DataLabel="@L["Subscription:TestCreation"]" Style="text-align: center">
                                 <RestrictionQuantityView Restriction="@context.TestCreation"/>
                             </MudTd>
-                            <MudTd DataLabel="@L["Subscription:TestQuestionMistakes"]">
+                            <MudTd DataLabel="@L["Subscription:TestQuestionMistakes"]" Style="text-align: center">
                                 <RestrictionQuantityView Restriction="@context.TestQuestionMistakes"/>
                             </MudTd>
                             <MudTd>

@@ -11,14 +11,14 @@
     </div>
 
     <MudToolBar Class="pa-0">
-        <MudTooltip Text="@L["Topics:ILikeThis"]">
+        <MudTooltip Text="@L["Topic:ILikeThis"]">
             <MudIconButton
                 Icon="@Icons.Filled.ThumbUp"
                 OnClick="@(Rating.IsLiked == true ? () => Task.CompletedTask : OnLike)"
                 Color="@(Rating.IsLiked == true ? Color.Primary : Color.Default)"/>
         </MudTooltip>
 
-        <MudTooltip Text="@L["Topics:IDislikeThis"]">
+        <MudTooltip Text="@L["Topic:IDislikeThis"]">
             <MudIconButton
                 Icon="@Icons.Filled.ThumbDown"
                 OnClick="@(Rating.IsLiked == false ? () => Task.CompletedTask : OnDislike)"

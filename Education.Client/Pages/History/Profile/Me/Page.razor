@@ -82,8 +82,13 @@
                         Value="@overview.Experience.Points">
                         @if (overview.Experience.Recent.Length > 0)
                         {
+                            var items = (_timelineOrientation == TimelineOrientation.Horizontal
+                                ? overview.Experience.Recent.Reverse()
+                                : overview.Experience.Recent)
+                                .Take(_recentCount);
+
                             <MudTimeline TimelineOrientation="@_timelineOrientation">
-                                @foreach (var transaction in overview.Experience.Recent.Take(_recentCount))
+                                @foreach (var transaction in items)
                                 {
                                     <MudTimelineItem Color="Color.Transparent" Size="Size.Medium" Variant="Variant.Outlined">
                                         <ItemOpposite>
@@ -166,7 +171,7 @@
                             </MudTabPanel>
                             <MudTabPanel Text="Monthly">
                                 <MudChart
-                                    ChartType="ChartType.Line"
+                                    ChartType="ChartType.Bar"
                                     Width="100%"
                                     Height="300px"
                                     ChartSeries="@_monthlyChartSeries"

@@ -38,22 +38,20 @@ namespace Education.Client.Gateways
                     HttpStatusCode.NoContent =>
                         ApiResponse<T>.Success(default!),
 
-                    _ => ApiResponse<T>.Fail(Json.Serializer.Deserialize<Error>(jsonTextReader) ?? Error.Unknown)
+                    _ => ApiResponse<T>.Fail(Json.Serializer.Deserialize<Error>(jsonTextReader)!)
                 };
             }
             catch (AccessTokenNotAvailableException ex)
             {
                 ex.Redirect();
-                return ApiResponse<T>.Fail(Error.Unauthorized);
-            }
-            catch (HttpRequestException)
-            {
-                return ApiResponse<T>.Fail(Error.Unavailable);
+                var error = Error.Create("Unauthorized", "https://tools.ietf.org/html/rfc7235#section-3.1", 401);
+                return ApiResponse<T>.Fail(error);
             }
             catch (Exception ex)
             {
-                await Console.Error.WriteLineAsync($"Deserialization: {ex.Message}");
-                return ApiResponse<T>.Fail(Error.Unknown);
+                Console.WriteLine(ex);
+                var error = Error.Create("Internal", "https://tools.ietf.org/html/rfc7231#section-6.6.3", 502);
+                return ApiResponse<T>.Fail(error);
             }
         }
 

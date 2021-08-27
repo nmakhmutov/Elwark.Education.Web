@@ -1,26 +1,51 @@
-<PageTitle>@_localizedError.Title</PageTitle>
+<PageTitle>@Error.Title</PageTitle>
 
-<div class="d-flex justify-content-center flex-column error">
-    <MudText Typo="Typo.h4" Align="Align.Center">
-        @_localizedError.Status: @_localizedError.Type
+<CenteredContainer MaxWidth="ContainerWidth.W600" Class="my-3 my-sm-6">
+    <div class="title">
+        <MudText Typo="Typo.h4" Inline="true" Style="vertical-align: middle">
+            @Error.Status&nbsp;
+        </MudText>
+        <MudText Typo="Typo.h5" Inline="true" Style="vertical-align: middle">
+            @Error.Title
+        </MudText>
+    </div>
+
+    <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="mb-6">
+        @Error.Detail
     </MudText>
-    <MudText Typo="Typo.subtitle1" Class="mb-6">
-        @_localizedError.Title
-    </MudText>
+
+    @if (Error.Errors.Count > 0)
+    {
+        <MudPaper Class="mb-6">
+            <MudList>
+                @foreach (var (field, errors) in Error.Errors)
+                {
+                    <MudListItem Text="@field">
+                        <NestedList>
+                            @foreach (var value in errors)
+                            {
+                                <MudListItem Text="@value"/>
+                            }
+                        </NestedList>
+                    </MudListItem>
+                }
+            </MudList>
+        </MudPaper>
+    }
+
     <div class="d-flex justify-center">
         <MudButton Link="@Links.Root" Color="Color.Primary" Variant="Variant.Outlined">
-            @ErrorManager.Localize("GoToHomepage")
+            @L["Page:GoToHome"]
         </MudButton>
         @if (Error.Status > 499)
         {
             <MudButton OnClick="@(() => NavigationManager.NavigateTo(NavigationManager.Uri, true))"
                        Color="Color.Primary" Variant="Variant.Filled" Class="ml-6">
-                @ErrorManager.Localize("ReloadPage")
+                @L["Page:Reload"]
             </MudButton>
         }
     </div>
-</div>
-
+</CenteredContainer>
 
 @code {
 
@@ -28,14 +53,9 @@
     private NavigationManager NavigationManager { get; set; } = default!;
 
     [Inject]
-    private ErrorManager ErrorManager { get; set; } = default!;
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public Error Error { get; init; } = default!;
-    
-    private Error _localizedError = Error.Unknown;
-    
-    protected override void OnParametersSet() => 
-        _localizedError = ErrorManager.Localize(Error);
 
 }

@@ -8,7 +8,28 @@
 <MainContainer>
     <ApiResponseViewer Response="@_test">
         <Placeholder>
-            <PageLoader/>
+            <section class="section">
+                <div class="container mud-paper mud-elevation-1">
+                    <div class="d-flex justify-space-between align-center ma-3">
+                        <div>
+                            <MudSkeleton Width="15vw" SkeletonType="SkeletonType.Text"/>
+                            <MudSkeleton Width="20vw" SkeletonType="SkeletonType.Text"/>
+                        </div>
+                        <div>
+                            <MudSkeleton Width="15vw" Height="24px" SkeletonType="SkeletonType.Rectangle"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container mud-paper mud-elevation-1 pa-3 pa-sm-6">
+                    <MudSkeleton Width="80%" SkeletonType="SkeletonType.Text" Class="mx-auto"/>
+                    <MudSkeleton Width="80%" SkeletonType="SkeletonType.Text" Class="mx-auto"/>
+                    <MudSkeleton Width="80%" Height="30vh" SkeletonType="SkeletonType.Rectangle" Class="mx-auto my-6"/>
+                    <MudSkeleton Width="20%" Height="36px" SkeletonType="SkeletonType.Rectangle" Class="mx-auto"/>
+                </div>
+            </section>
         </Placeholder>
         <Result Context="test">
             <PageTitle>@L[$"Test:{test.TestType}"]</PageTitle>
@@ -49,7 +70,7 @@
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
-    
+
     [Parameter]
     public string Id { get; init; } = default!;
 
@@ -64,7 +85,7 @@
     {
         _test = await HistoryClient.Test.GetAsync(Id);
 
-        if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
+        if (_test.Status == ResponseStatus.Fail && _test.Error.Status == 404)
         {
             NavigationManager.NavigateTo(Links.Subject.History.Conclusion(Id));
             return;
@@ -119,12 +140,9 @@
                 _answerResult = result.Data;
                 break;
             }
-        }
-
-        if (_answerResult is null)
-        {
-            _test = ApiResponse<TestModel>.Fail(Error.Unknown);
-            return;
+                
+            default:
+                throw new ArgumentOutOfRangeException(nameof(answer));
         }
 
         _isTestComplete = _answerResult.IsTestComplete;
@@ -135,7 +153,7 @@
             {
                 _test = ApiResponse<TestModel>.Success(_test.Data with{AllowedMistakes = _test.Data.AllowedMistakes - 1});
             }
-            
+
             if (_test.Data.TestType == TestType.Easy)
             {
                 var wrong = _questions.First(x => x.Id == _questions[_questionIndex].Id);
@@ -161,7 +179,7 @@
         _countdownColor = Color.Error;
         _test = await HistoryClient.Test.GetAsync(Id);
 
-        if (_test.Status == ResponseStatus.Fail && _test.Error.OneOf(Error.NotFound, Error.TestExpired))
+        if (_test.Status == ResponseStatus.Fail && _test.Error.Status == 404)
             NavigationManager.NavigateTo(Links.Subject.History.Conclusion(Id));
     }
 
