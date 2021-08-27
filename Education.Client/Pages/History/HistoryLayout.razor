@@ -8,7 +8,7 @@
 <MudLayout>
     <MudAppBar Elevation="25">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@SidebarService.ToggleAsync"/>
-        <MudLink Href="@Links.Subject.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+        <MudLink Href="@Links.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
             @L["Subject:History"] <sup class="beta" style="font-size: 0.9rem;color: var(--mud-palette-primary);">beta</sup>
         </MudLink>
         <MudSpacer/>
@@ -17,25 +17,28 @@
     <MudDrawer Open="@SidebarService.IsOpen" OpenChanged="@SidebarService.SetAsync" Breakpoint="Breakpoint.Lg" ClipMode="DrawerClipMode.Docked" Elevation="25">
         <UserDrawerHeader/>
         <MudNavMenu>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.Subject.History.Index" Icon="@SubjectType.History.GetStatic().Icon">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Index" Icon="@SubjectType.History.GetStatic().Icon">
                 @L["Page:Home"]
             </MudNavLink>
             <MudNavGroup Title="@L["History:Epochs"]" Icon="@Icons.Filled.HistoryToggleOff">
-                @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
+                @foreach (var epoch in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
                 {
-                    <MudNavLink Href="@Links.Subject.History.Topics(period)">
-                        @L[$"History:{period}"]
+                    <MudNavLink Href="@Links.History.Topic.ByEpoch(epoch)">
+                        @L[$"History:{epoch}"]
                     </MudNavLink>
                 }
             </MudNavGroup>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.Subject.History.Tests" Icon="@Icons.Filled.School">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Test.Builder" Icon="@Icons.Filled.School">
                 @L["Tests"]
             </MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.DateGuesser.Builder" Icon="@Icons.Filled.EventAvailable">
+                @L["DateGuesser"]
+            </MudNavLink>
             <MudDivider Class="my-2"/>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.Subject.History.Profile.Me" Icon="@Icons.Filled.CardMembership">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Profile.Me" Icon="@Icons.Filled.CardMembership">
                 @L["Profile"]
             </MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.Subject.History.Profile.Favorites" Icon="@Icons.Filled.Favorite">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Profile.Favorites" Icon="@Icons.Filled.Favorite">
                 @L["Favorites"]
             </MudNavLink>
         </MudNavMenu>

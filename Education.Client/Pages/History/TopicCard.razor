@@ -3,12 +3,12 @@
 
 <section class="card">
     <header class="card-header">
-        <a href="@Links.Subject.History.Topic(Id)">
+        <a href="@Links.History.Topic.ById(Id)">
             <img src="@Image" alt="@Title"/>
         </a>
     </header>
     <div class="d-flex align-center justify-space-between px-3">
-        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.Subject.History.Topics(Epoch)">
+        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.Topic.ByEpoch(Epoch)">
             @L[$"History:{Epoch}"]
         </MudChip>
 
@@ -25,7 +25,7 @@
     </div>
 
     <div class="px-3">
-        <MudLink Href="@Links.Subject.History.Topic(Id)" Typo="Typo.subtitle1">
+        <MudLink Href="@Links.History.Topic.ById(Id)" Typo="Typo.subtitle1">
             @Title
         </MudLink>
         <MudText Typo="Typo.body2" Class="pt-3">

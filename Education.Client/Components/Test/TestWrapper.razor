@@ -8,7 +8,7 @@ else
         <MudText Typo="@Typo" Color="Color.Info" Class="mb-3">
             @L[$"TestStatus:{Status}"]
         </MudText>
-        @if (Status is TestStatus.TestCreationMaximum or TestStatus.TestQuestionMistakesMaximum)
+        @if (Status is TestStatus.TestCreationMaximum or TestStatus.TestMistakesMaximum)
         {
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnBuyClick">
                 @L["Subscription:Upgrade"]

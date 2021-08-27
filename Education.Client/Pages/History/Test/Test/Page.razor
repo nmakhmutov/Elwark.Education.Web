@@ -85,9 +85,9 @@
     {
         _test = await HistoryClient.Test.GetAsync(Id);
 
-        if (_test.Status == ResponseStatus.Fail && _test.Error.Status == 404)
+        if (_test.Status == ResponseStatus.Fail && _test.Error.Status is 404 or 408)
         {
-            NavigationManager.NavigateTo(Links.Subject.History.Conclusion(Id));
+            NavigationManager.NavigateTo(Links.History.Test.Conclusion(Id));
             return;
         }
 
@@ -166,7 +166,7 @@
     {
         if (_isTestComplete)
         {
-            NavigationManager.NavigateTo(Links.Subject.History.Conclusion(Id));
+            NavigationManager.NavigateTo(Links.History.Test.Conclusion(Id));
             return;
         }
 
@@ -179,8 +179,8 @@
         _countdownColor = Color.Error;
         _test = await HistoryClient.Test.GetAsync(Id);
 
-        if (_test.Status == ResponseStatus.Fail && _test.Error.Status == 404)
-            NavigationManager.NavigateTo(Links.Subject.History.Conclusion(Id));
+        if (_test.Status == ResponseStatus.Fail && _test.Error.Status is 404 or 408)
+            NavigationManager.NavigateTo(Links.History.Test.Conclusion(Id));
     }
 
 }

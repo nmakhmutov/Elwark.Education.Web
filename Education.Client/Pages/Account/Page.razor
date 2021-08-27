@@ -76,7 +76,7 @@
                             <MudTh>@L["Subject"]</MudTh>
                             <MudTh>@L["Subscription"]</MudTh>
                             <MudTh Style="text-align: center">@L["Subscription:TestCreation"]</MudTh>
-                            <MudTh Style="text-align: center">@L["Subscription:TestQuestionMistakes"]</MudTh>
+                            <MudTh Style="text-align: center">@L["Subscription:TestMistakes"]</MudTh>
                             <MudTh/>
                         </HeaderContent>
                         <RowTemplate>
@@ -102,8 +102,8 @@
                             <MudTd DataLabel="@L["Subscription:TestCreation"]" Style="text-align: center">
                                 <RestrictionQuantityView Restriction="@context.TestCreation"/>
                             </MudTd>
-                            <MudTd DataLabel="@L["Subscription:TestQuestionMistakes"]" Style="text-align: center">
-                                <RestrictionQuantityView Restriction="@context.TestQuestionMistakes"/>
+                            <MudTd DataLabel="@L["Subscription:TestMistakes"]" Style="text-align: center">
+                                <RestrictionQuantityView Restriction="@context.TestMistakes"/>
                             </MudTd>
                             <MudTd>
                                 @if (context.Subscription == SubscriptionType.Free)
@@ -177,7 +177,7 @@
 
     private static string SubjectLink(SubjectType type) =>
         type switch {
-            SubjectType.History => Links.Subject.History.Profile.Me,
+            SubjectType.History => Links.History.Profile.Me,
             _ => "#"
             };
 

@@ -24,7 +24,7 @@
                             <img src="@result.Topic.Image" alt="@result.Topic.Title"/>
                         </div>
                         <div class="d-flex flex-column justify-space-between">
-                            <MudLink Class="mt-3 mt-sm-0" Typo="Typo.h5" Href="@Links.Subject.History.Topic(result.Topic.Id)">
+                            <MudLink Class="mt-3 mt-sm-0" Typo="Typo.h5" Href="@Links.History.Topic.ById(result.Topic.Id)">
                                 @result.Topic.Title
                             </MudLink>
                             <Breadcrumbs Items="@Breadcrumbs" Class="pa-0 mt-3"/>
@@ -81,7 +81,7 @@
                     </div>
                 </MudPaper>
 
-                @Header(new HeaderProps(L["Tests:Easy"], Links.Subject.History.Profile.EasyTestStatistics, L["TimeSpent"], result.EasyTest.TimeSpent))
+                @Header(new HeaderProps(L["Tests:Easy"], Links.History.Profile.EasyTestStatistics, L["TimeSpent"], result.EasyTest.TimeSpent))
                 <DefaultFitGrid Class="mb-3 mb-sm-6">
                     <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Value="@result.EasyTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.EasyTest.NumberOfTests"/>
@@ -122,7 +122,7 @@
                 }
 
                 <div class="py-6"></div>
-                @Header(new HeaderProps(L["Tests:Hard"], Links.Subject.History.Profile.HardTestStatistics, L["TimeSpent"], result.HardTest.TimeSpent))
+                @Header(new HeaderProps(L["Tests:Hard"], Links.History.Profile.HardTestStatistics, L["TimeSpent"], result.HardTest.TimeSpent))
                 <DefaultFitGrid Class="mb-3 mb-sm-6">
                     <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Value="@result.HardTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.HardTest.NumberOfTests"/>
@@ -190,9 +190,9 @@
         if (_response.Status == ResponseStatus.Success)
             Breadcrumbs = new List<BreadcrumbItem>
             {
-                new(L["Profile"].Value, Links.Subject.History.Profile.Me),
-                new(L["Subject:History"].Value, Links.Subject.History.Index),
-                new(L[$"History:{_response.Data.Topic.Epoch}"].Value, Links.Subject.History.Topics(_response.Data.Topic.Epoch))
+                new(L["Profile"].Value, Links.History.Profile.Me),
+                new(L["Subject:History"].Value, Links.History.Index),
+                new(L[$"History:{_response.Data.Topic.Epoch}"].Value, Links.History.Topic.ByEpoch(_response.Data.Topic.Epoch))
             };
     }
 

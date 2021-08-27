@@ -2,7 +2,7 @@
 <div class="grid @Class">
     <article class="item-1">
         <ImageCard
-            Href="@Links.Subject.History.Topic(Items[0].Id)"
+            Href="@Links.History.Topic.ById(Items[0].Id)"
             Image="@Items[0].Image"
             Title="@Items[0].Title"
             Subtitle="@Items[0].Overview"
@@ -14,15 +14,8 @@
     {
         var item = Items[i];
         <article class="@GetCssClass(i)">
-            @* <ImageCard *@
-            @*     Href="@Links.Subject.History.Topic(item.Id)" *@
-            @*     Image="@item.Image" *@
-            @*     Title="@item.Title" *@
-            @*     Subtitle="@item.Overview" *@
-            @*     Epoch="@item.Epoch" *@
-            @*     Rating="@item.Rating"/> *@
             <RegularCard
-                Href="@Links.Subject.History.Topic(item.Id)"
+                Href="@Links.History.Topic.ById(item.Id)"
                 Image="@item.Image"
                 Title="@item.Title"
                 Subtitle="@item.Overview"

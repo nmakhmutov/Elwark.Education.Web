@@ -6,7 +6,7 @@ namespace Education.Client.Gateways.History.Me
     public sealed record HistoryUserRestriction(
         TestStatus TestStatus,
         Restriction TestCreation,
-        Restriction TestQuestionMistakes,
+        Restriction TestMistakes,
         Restriction DateGuesserCreation
     );
 }

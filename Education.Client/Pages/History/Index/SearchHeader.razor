@@ -33,11 +33,11 @@
 
     <CenteredContainer MaxWidth="ContainerWidth.W960" Class="py-6 py-md-12">
         <div class="d-flex flex-wrap justify-space-between">
-            @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
+            @foreach (var epoch in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
             {
                 <div class="pa-3">
-                    <MudLink Href="@Links.Subject.History.Topics(period)" Color="Color.Inherit" Underline="Underline.Always">
-                        @L[$"History:{period}"]
+                    <MudLink Href="@Links.History.Topic.ByEpoch(epoch)" Color="Color.Inherit" Underline="Underline.Always">
+                        @L[$"History:{epoch}"]
                     </MudLink>
                 </div>
             }
@@ -62,7 +62,7 @@
 
     private void OnSearchResult(TopicSummary entry)
     {
-        NavigationManager.NavigateTo(Links.Subject.History.Topic(entry.Id));
+        NavigationManager.NavigateTo(Links.History.Topic.ById(entry.Id));
     }
 
 }

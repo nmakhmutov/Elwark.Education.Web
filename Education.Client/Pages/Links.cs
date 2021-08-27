@@ -19,40 +19,50 @@ namespace Education.Client.Pages
             public const string Index = "/account";
         }
 
-        public static class Subject
+        public static class History
         {
-            public static class History
+            public const string Index = "/history";
+
+            public static class Topic
             {
-                public const string Index = "/history";
+                public static string ByEpoch(EpochType epoch) =>
+                    $"{Index}/{epoch.ToFastString()}";
 
-                public const string Tests = $"{Index}/tests";
-                
-                public static string Topics(EpochType epoch) =>
-                    $"{Index}/{epoch.ToString().ToLowerInvariant()}";
-
-                public static string Topic(string topicId) =>
+                public static string ById(string topicId) =>
                     $"{Index}/topics/{topicId}";
+            }
 
-                public static string Test(string testId) =>
-                    $"{Tests}/{testId}";
+            public static class Test
+            {
+                public const string Builder = $"{Index}/tests";
+
+                public static string ById(string testId) =>
+                    $"{Builder}/{testId}";
 
                 public static string Conclusion(string testId) =>
-                    $"{Tests}/{testId}/conclusion";
+                    $"{Builder}/{testId}/conclusion";
+            }
 
-                public static class Profile
-                {
-                    public const string Me = Index + "/profile/me";
+            public static class DateGuesser
+            {
+                public const string Builder = $"{Index}/date-guesser";
 
-                    public const string EasyTestStatistics = Me + "/statistics/easy-tests";
+                public const string Test = $"{Builder}/test";
+            }
 
-                    public const string HardTestStatistics = Me + "/statistics/hard-tests";
+            public static class Profile
+            {
+                public const string Me = Index + "/profile/me";
 
-                    public const string MixedTestStatistics = Me + "/statistics/mixed-tests";
+                public const string EasyTestStatistics = Me + "/statistics/easy-tests";
 
-                    public const string Favorites = Me + "/favorites";
+                public const string HardTestStatistics = Me + "/statistics/hard-tests";
 
-                    public static string TopicStatistics(string topicId) => $"{Me}/statistics/topic/{topicId}";
-                }
+                public const string MixedTestStatistics = Me + "/statistics/mixed-tests";
+
+                public const string Favorites = Me + "/favorites";
+
+                public static string TopicStatistics(string topicId) => $"{Me}/statistics/topic/{topicId}";
             }
         }
 

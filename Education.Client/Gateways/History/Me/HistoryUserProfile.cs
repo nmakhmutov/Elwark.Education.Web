@@ -5,7 +5,7 @@ namespace Education.Client.Gateways.History.Me
     public sealed record HistoryUserProfile(
         SubscriptionType Subscription,
         Restriction TestCreation,
-        Restriction TestQuestionMistakes,
+        Restriction TestMistakes,
         Restriction DateGuesserCreation,
         float TestDurationCoefficient,
         UserStatistics Statistics,

@@ -83,7 +83,7 @@
                         <MudCard>
                             <MudCardHeader Class="pa-3">
                                 <CardHeaderContent>
-                                    <MudLink Typo="Typo.h6" Href="@Links.Subject.History.Profile.TopicStatistics(conclusion.TopicId)">
+                                    <MudLink Typo="Typo.h6" Href="@Links.History.Profile.TopicStatistics(conclusion.TopicId)">
                                         @conclusion.Title
                                     </MudLink>
                                 </CardHeaderContent>
@@ -109,7 +109,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
-        new BreadcrumbItem(L["Profile"].Value, Links.Subject.History.Profile.Me)
+        new BreadcrumbItem(L["Profile"].Value, Links.History.Profile.Me)
     };
 
     private ApiResponse<TopicTestStatistics> _response = ApiResponse<TopicTestStatistics>.Loading();

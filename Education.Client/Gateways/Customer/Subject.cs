@@ -9,7 +9,7 @@ namespace Education.Client.Gateways.Customer
         SubscriptionType Subscription,
         DateTime? ExpiredAt,
         Restriction TestCreation,
-        Restriction TestQuestionMistakes,
+        Restriction TestMistakes,
         int CurrentTests
     );
 }

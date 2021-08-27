@@ -6,6 +6,6 @@ namespace Education.Client.Gateways.Models.Test
         Allowed = 1,
         CurrentTestsMaximum = 2,
         TestCreationMaximum = 3,
-        TestQuestionMistakesMaximum = 4,
+        TestMistakesMaximum = 4,
     }
 }

@@ -6,10 +6,6 @@
 
 @attribute [Authorize]
 
-<PageTitle>
-    @L[$"History:{_request.Epoch}"]
-</PageTitle>
-
 <MainContainer>
     <ApiResponseViewer Response="_topics">
         <Placeholder>
@@ -21,6 +17,9 @@
             </DefaultFitGrid>
         </Placeholder>
         <Result Context="topics">
+            <PageTitle>
+                @L[$"History:{_request.Epoch}"]
+            </PageTitle>
             <PageHeader Title="@L[$"History:{_request.Epoch}"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
             <DefaultFillGrid>
                 @foreach (var item in topics.Items)
@@ -48,7 +47,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, Links.Subject.History.Index)
+        new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
     };
 
     private ApiResponse<PageResponse<UserTopicSummary>> _topics = ApiResponse<PageResponse<UserTopicSummary>>.Loading();

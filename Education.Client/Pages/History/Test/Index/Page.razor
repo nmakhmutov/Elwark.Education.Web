@@ -78,7 +78,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, Links.Subject.History.Index)
+        new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
     };
 
     private ApiResponse<HistoryUserRestriction> _response = ApiResponse<HistoryUserRestriction>.Loading();
@@ -114,7 +114,7 @@
             });
 
         if (response.Status == ResponseStatus.Success)
-            NavigationManager.NavigateTo(Links.Subject.History.Test(response.Data.Id));
+            NavigationManager.NavigateTo(Links.History.Test.ById(response.Data.Id));
         else
             Snackbar.Add(response.Error.Message, Severity.Error);
 
