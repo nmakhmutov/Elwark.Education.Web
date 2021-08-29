@@ -1,4 +1,5 @@
 using System.Net.Http;
+using Education.Client.Gateways.History.DateGuesser;
 using Education.Client.Gateways.History.Home;
 using Education.Client.Gateways.History.Me;
 using Education.Client.Gateways.History.Test;
@@ -8,6 +9,8 @@ namespace Education.Client.Gateways.History
 {
     internal interface IHistoryClient
     {
+        public DateGuesserClient DateGuesser { get; }
+        
         public HomeClient Home { get; }
 
         public MeClient Me { get; }
@@ -21,12 +24,15 @@ namespace Education.Client.Gateways.History
     {
         public HistoryClient(HttpClient client)
         {
+            DateGuesser = new DateGuesserClient(client);
             Home = new HomeClient(client);
             Me = new MeClient(client);
             Test = new TestClient(client);
             Topic = new TopicClient(client);
         }
 
+        public DateGuesserClient DateGuesser { get; }
+        
         public HomeClient Home { get; }
 
         public MeClient Me { get; }

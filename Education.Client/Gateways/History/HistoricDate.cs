@@ -1,4 +1,4 @@
 namespace Education.Client.Gateways.History
 {
-    public record HistoricDate(int Year, int? Month, int? Day);
+    public record HistoricDate(int Year, uint? Month, uint? Day);
 }

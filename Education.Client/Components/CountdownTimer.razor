@@ -2,7 +2,7 @@
 @implements IDisposable
 
 <MudText Typo="Typo" Align="Align" Class="@Class" Color="@Color">
-    @_timeLeft.ToLongFormat()
+    @_timeLeft.ToShortFormat()
 </MudText>
 
 @code {
@@ -17,7 +17,7 @@
     public DateTime Date { get; set; }
 
     [Parameter]
-    public EventCallback OnComplete { get; set; }
+    public EventCallback OnComplete { get; set; } = EventCallback.Empty;
 
     [Parameter]
     public Typo Typo { get; set; } = Typo.subtitle1;

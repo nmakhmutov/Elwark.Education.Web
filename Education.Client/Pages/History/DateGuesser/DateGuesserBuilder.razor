@@ -1,0 +1,93 @@
+@using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.DateGuesser
+@using Education.Client.Gateways.History.Me
+@using Education.Client.Gateways.Models.User
+
+<EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
+    <MudSelect Label="@L["History:Epoch"]" @bind-Value="@_model.Epoch" Class="mb-3">
+        <MudSelectItem Value="@EpochType.None">@L["All"]</MudSelectItem>
+        @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
+        {
+            <MudSelectItem Value="@period">
+                @L[$"History:{period}"]
+            </MudSelectItem>
+        }
+    </MudSelect>
+
+    <MudSlider @bind-Value="@_model.Questions" Min="3" Max="13" Color="Color.Primary" Class="mb-3">
+        @L["DateGuesser:NumberOfDates", _model.Questions]
+    </MudSlider>
+
+    <ApiResponseViewer Response="@Restriction">
+        <Placeholder>
+            <div class="mb-3">
+                <MudSkeleton SkeletonType="SkeletonType.Text" Height="28px"/>
+            </div>
+            <div class="d-flex justify-end">
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="140px" Height="36px"/>
+            </div>
+        </Placeholder>
+        <Result Context="restriction">
+            <div class="d-flex justify-space-between mb-3">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Subscription:DateGuesserCreation"]
+                </MudText>
+                <RestrictionQuantityView Restriction="@restriction.DateGuesserCreation" Class="mr-2"/>
+            </div>
+            <div class="d-flex justify-end">
+                @if (restriction.DateGuesserCreation.Quantity == 0)
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="true" Class="ml-auto">
+                        @L["Test:Create"]
+                    </MudButton>
+                }
+                else
+                {
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="_isLoading" Class="ml-auto">
+                        @if (_isLoading)
+                        {
+                            <div class="d-flex flex-row align-center">
+                                <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
+                                @L["Test:Creating"]
+                            </div>
+                        }
+                        else
+                        {
+                            @L["Test:Create"]
+                        }
+                    </MudButton>
+                }
+            </div>
+        </Result>
+    </ApiResponseViewer>
+</EditForm>
+
+@code {
+
+    private readonly Model _model = new();
+    private bool _isLoading;
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public ApiResponse<HistoryUserRestriction> Restriction { get; set; } = ApiResponse<HistoryUserRestriction>.Loading();
+
+    [Parameter, EditorRequired]
+    public EventCallback<DateGuesserCreateRequest> OnCreate { get; set; }
+
+    private async Task OnValidSubmit()
+    {
+        _isLoading = true;
+        await OnCreate.InvokeAsync(new DateGuesserCreateRequest(_model.Questions, _model.Epoch));
+        _isLoading = false;
+    }
+
+    public record Model
+    {
+        public EpochType Epoch { get; set; } = EpochType.None;
+
+        public int Questions { get; set; } = 4;
+    }
+
+}

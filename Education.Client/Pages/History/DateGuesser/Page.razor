@@ -1,0 +1,105 @@
+@page "/history/date-guesser"
+@using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.DateGuesser
+@using Education.Client.Gateways.History.Me
+@layout HistoryLayout
+
+<PageTitle>
+    @L["DateGuesser"]
+</PageTitle>
+
+@if (_conclusion.Status == ResponseStatus.Success)
+{
+    <MainContainer>
+        <PageHeader Title="@L["DateGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+    </MainContainer>
+    <CenteredContainer MaxWidth="ContainerWidth.W1280" Class="mb-3 mb-sm-6" Paper="true" Elevation="1">
+        <DateGuesserConclusion Class="ma-3 ma-sm-6" Conclusion="@_conclusion.Data" OnCreateNew="@OnCreateNewClick"/>
+    </CenteredContainer>
+}
+else if (_dateGuesser.Status == ResponseStatus.Success)
+{
+    <MainContainer>
+        <PageHeader Title="@L["DateGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+    </MainContainer>
+    <CenteredContainer MaxWidth="ContainerWidth.W960" Class="mb-3 mb-sm-6" Paper="true" Elevation="1">
+        <DateGuesserTest Class="ma-3 ma-sm-6" Test="@_dateGuesser.Data" OnCheck="@OnCheckAsync"/>
+    </CenteredContainer>
+}
+else
+{
+    <div class="background">
+        <MainContainer>
+            <PageHeader Title="@L["DateGuesser"]" Class="mb-3" Breadcrumbs="@Breadcrumbs"/>
+            <div class="mw-xs">
+                <DateGuesserBuilder Restriction="@_restrictions" OnCreate="@OnCreateAsync"/>
+            </div>
+        </MainContainer>
+    </div>
+}
+
+@code {
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
+    };
+
+    private ApiResponse<HistoryUserRestriction> _restrictions = ApiResponse<HistoryUserRestriction>.Loading();
+    private ApiResponse<DateGuesserTestModel> _dateGuesser = ApiResponse<DateGuesserTestModel>.Loading();
+    private ApiResponse<DateGuesserConclusionModel> _conclusion = ApiResponse<DateGuesserConclusionModel>.Loading();
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient Client { get; set; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var dateGuesser = await Client.DateGuesser.GetAsync();
+
+        if (dateGuesser.IsSuccess)
+            _dateGuesser = dateGuesser;
+        else
+            _restrictions = await Client.Me.GetRestrictions();
+    }
+
+    private async Task OnCreateAsync(DateGuesserCreateRequest request)
+    {
+        _dateGuesser = await Client.DateGuesser.CreateAsync(request);
+        if (!_dateGuesser.IsSuccess)
+            Snackbar.Add(_dateGuesser.Error.Message, Severity.Error);
+    }
+
+    private async Task<DateGuesserCheckModel?> OnCheckAsync(DateGuesserCheckRequest request)
+    {
+        var result = await Client.DateGuesser.CheckAsync(request);
+        if (!result.IsSuccess)
+        {
+            Snackbar.Add(result.Error.Message, Severity.Error);
+            return null;
+        }
+
+        if (!result.Data.IsComplete)
+            return result.Data;
+
+        _conclusion = await Client.DateGuesser.ConcludeAsync();
+        if (!_conclusion.IsSuccess)
+            Snackbar.Add(_conclusion.Error.Message, Severity.Error);
+
+        StateHasChanged();
+        return result.Data;
+    }
+
+    private async Task OnCreateNewClick()
+    {
+        _dateGuesser = ApiResponse<DateGuesserTestModel>.Loading();
+        _conclusion = ApiResponse<DateGuesserConclusionModel>.Loading();
+        _restrictions = await Client.Me.GetRestrictions();
+    }
+
+}

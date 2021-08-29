@@ -15,14 +15,6 @@
         </MudList>
         <div class="mw-xs">
             <EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
-                <MudSelect Label="@L["Test:Difficulty"]" @bind-Value="@_model.Difficulty" Class="mb-3">
-                    @foreach (var difficulty in Enum.GetValues<TestType>())
-                    {
-                        <MudSelectItem Value="@difficulty">
-                            @L[$"Test:{difficulty}"]
-                        </MudSelectItem>
-                    }
-                </MudSelect>
 
                 <MudSelect Label="@L["History:Epoch"]" @bind-Value="@_model.Epoch" Class="mb-3">
                     <MudSelectItem Value="@EpochType.None">@L["All"]</MudSelectItem>
@@ -34,6 +26,15 @@
                     }
                 </MudSelect>
 
+                <MudSelect Label="@L["Test:Difficulty"]" @bind-Value="@_model.Difficulty" Class="mb-3">
+                    @foreach (var difficulty in Enum.GetValues<TestType>())
+                    {
+                        <MudSelectItem Value="@difficulty">
+                            @L[$"Test:{difficulty}"]
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                
                 <ApiResponseViewer Response="_response">
                     <Placeholder>
                         <div class="mb-3">

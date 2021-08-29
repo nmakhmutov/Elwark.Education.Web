@@ -22,7 +22,8 @@ namespace Education.Client.Pages
         public static class History
         {
             public const string Index = "/history";
-
+            public const string DateGuesser = $"{Index}/date-guesser";
+            
             public static class Topic
             {
                 public static string ByEpoch(EpochType epoch) =>
@@ -42,14 +43,7 @@ namespace Education.Client.Pages
                 public static string Conclusion(string testId) =>
                     $"{Builder}/{testId}/conclusion";
             }
-
-            public static class DateGuesser
-            {
-                public const string Builder = $"{Index}/date-guesser";
-
-                public const string Test = $"{Builder}/test";
-            }
-
+            
             public static class Profile
             {
                 public const string Me = Index + "/profile/me";

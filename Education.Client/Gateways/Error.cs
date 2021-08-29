@@ -25,6 +25,12 @@ namespace Education.Client.Gateways
 
         public string Message => Detail ?? Title;
 
+        public bool IsNotFound() =>
+            Type == "not-found";
+
+        public bool IsExpired() =>
+            Type == "expired";
+
         public static Error Create(string title, string type, int status) =>
             new(title, type, null, status, new Dictionary<string, string[]>());
     }

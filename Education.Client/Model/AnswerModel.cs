@@ -33,7 +33,7 @@ namespace Education.Client.Model
             RuleFor(x => x.ManyAnswer)
                 .NotEmpty()
                 .WithMessage(localizer["Test:AnswerCannotBeEmpty"])
-                .When(x => x.QuestionType == QuestionType.ManyAnswers || x.QuestionType == QuestionType.SortedAnswers);
+                .When(x => x.QuestionType is QuestionType.ManyAnswers or QuestionType.SortedAnswers);
         }
     }
 }

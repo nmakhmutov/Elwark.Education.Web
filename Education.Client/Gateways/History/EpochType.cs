@@ -17,12 +17,12 @@ namespace Education.Client.Gateways.History
         public static string ToFastString(this EpochType type) =>
             type switch
             {
-                EpochType.None => nameof(EpochType.None),
-                EpochType.Prehistory => nameof(EpochType.Prehistory),
-                EpochType.Ancient => nameof(EpochType.Ancient),
-                EpochType.MiddleAges => nameof(EpochType.MiddleAges),
-                EpochType.EarlyModern => nameof(EpochType.EarlyModern),
-                EpochType.Modern => nameof(EpochType.Modern),
+                EpochType.None => nameof(EpochType.None).ToLowerInvariant(),
+                EpochType.Prehistory => nameof(EpochType.Prehistory).ToLowerInvariant(),
+                EpochType.Ancient => nameof(EpochType.Ancient).ToLowerInvariant(),
+                EpochType.MiddleAges => nameof(EpochType.MiddleAges).ToLowerInvariant(),
+                EpochType.EarlyModern => nameof(EpochType.EarlyModern).ToLowerInvariant(),
+                EpochType.Modern => nameof(EpochType.Modern).ToLowerInvariant(),
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
     }

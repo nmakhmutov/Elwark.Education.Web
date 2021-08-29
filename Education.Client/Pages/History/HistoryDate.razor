@@ -15,7 +15,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Parameter]
     public HistoricDate? Date { get; set; }
 
@@ -30,15 +30,15 @@
 
     private string ToString(HistoricDate date)
     {
-        if (date.Month is not null && date.Day is not null)
+        if (date.Month.HasValue && date.Day.HasValue)
         {
             return date.Year < 0
-                ? $"{new DateTime(-date.Year, date.Month.Value, date.Day.Value).ToShortDateString()} {L["HistoricalDate:Bc"]}"
-                : $"{new DateTime(date.Year, date.Month.Value, date.Day.Value).ToShortDateString()}";
+                ? $"{new DateTime(-date.Year, (int)date.Month.Value, (int)date.Day.Value).ToShortDateString()} {L["HistoricalDate:Bc"]}"
+                : $"{new DateTime(date.Year, (int)date.Month.Value, (int)date.Day.Value).ToShortDateString()}";
         }
 
         var month = date.Month.HasValue
-            ? CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(date.Month.Value)
+            ? CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName((int)date.Month.Value)
             : null;
 
         return date.Year < 0

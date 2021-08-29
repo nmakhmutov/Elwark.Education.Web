@@ -85,7 +85,7 @@
     {
         _test = await HistoryClient.Test.GetAsync(Id);
 
-        if (_test.Status == ResponseStatus.Fail && _test.Error.Status is 404 or 408)
+        if (_test.Status == ResponseStatus.Fail && (_test.Error.IsNotFound() || _test.Error.IsExpired()))
         {
             NavigationManager.NavigateTo(Links.History.Test.Conclusion(Id));
             return;
@@ -179,7 +179,7 @@
         _countdownColor = Color.Error;
         _test = await HistoryClient.Test.GetAsync(Id);
 
-        if (_test.Status == ResponseStatus.Fail && _test.Error.Status is 404 or 408)
+        if (_test.Status == ResponseStatus.Fail && (_test.Error.IsNotFound() || _test.Error.IsExpired()))
             NavigationManager.NavigateTo(Links.History.Test.Conclusion(Id));
     }
 

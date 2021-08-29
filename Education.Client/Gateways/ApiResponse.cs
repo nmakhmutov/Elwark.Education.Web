@@ -22,6 +22,8 @@ namespace Education.Client.Gateways
 
         public ResponseStatus Status { get; }
 
+        public bool IsSuccess => Status == ResponseStatus.Success;
+        
         public T Data
         {
             get
