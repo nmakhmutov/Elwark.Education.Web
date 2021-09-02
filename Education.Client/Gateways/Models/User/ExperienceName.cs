@@ -6,6 +6,7 @@ namespace Education.Client.Gateways.Models.User
         LevelUp = 1,
         EasyTest = 2,
         HardTest = 3,
-        MixedTest = 4
+        MixedTest = 4,
+        EventGuesser = 5
     }
 }

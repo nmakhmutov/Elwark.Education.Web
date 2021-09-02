@@ -22,42 +22,36 @@ namespace Education.Client.Pages
         public static class History
         {
             public const string Index = "/history";
-            public const string DateGuesser = $"{Index}/date-guesser";
-            
-            public static class Topic
-            {
-                public static string ByEpoch(EpochType epoch) =>
-                    $"{Index}/{epoch.ToFastString()}";
 
-                public static string ById(string topicId) =>
-                    $"{Index}/topics/{topicId}";
-            }
+            public const string TestBuilder = $"{Index}/tests";
 
-            public static class Test
-            {
-                public const string Builder = $"{Index}/tests";
+            public const string EventGuesserBuilder = $"{Index}/event-guesser";
 
-                public static string ById(string testId) =>
-                    $"{Builder}/{testId}";
+            public const string ProfileMe = $"{Index}/profile/me";
 
-                public static string Conclusion(string testId) =>
-                    $"{Builder}/{testId}/conclusion";
-            }
-            
-            public static class Profile
-            {
-                public const string Me = Index + "/profile/me";
+            public const string ProfileEasyTest = $"{ProfileMe}/tests/easy";
 
-                public const string EasyTestStatistics = Me + "/statistics/easy-tests";
+            public const string ProfileHardTest = $"{ProfileMe}/tests/hard";
 
-                public const string HardTestStatistics = Me + "/statistics/hard-tests";
+            public const string ProfileMixedTest = $"{ProfileMe}/tests/mixed";
 
-                public const string MixedTestStatistics = Me + "/statistics/mixed-tests";
+            public const string ProfileEventGuesser = $"{ProfileMe}/event-guesser";
 
-                public const string Favorites = Me + "/favorites";
+            public const string ProfileFavorites = $"{ProfileMe}/favorites";
 
-                public static string TopicStatistics(string topicId) => $"{Me}/statistics/topic/{topicId}";
-            }
+            public static string TopicByEpoch(EpochType epoch) =>
+                $"{Index}/{epoch.ToFastString()}";
+
+            public static string TopicById(string topicId) =>
+                $"{Index}/topics/{topicId}";
+
+            public static string TestById(string testId) =>
+                $"{TestBuilder}/{testId}";
+
+            public static string TestConclusion(string testId) =>
+                $"{TestBuilder}/{testId}/conclusion";
+
+            public static string ProfileTopic(string topicId) => $"{ProfileMe}/topics/{topicId}";
         }
 
         public static class Shop

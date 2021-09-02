@@ -178,7 +178,7 @@
                     }
                     else
                     {
-                        <MudLink Typo="Typo.h6" Href="@Links.History.Profile.TopicStatistics(result.Topic.Id)">
+                        <MudLink Typo="Typo.h6" Href="@Links.History.ProfileTopic(result.Topic.Id)">
                             @L["Test:MyProgress"]
                         </MudLink>
                     }
@@ -271,7 +271,7 @@
             _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Subject:History"].Value, Links.History.Index),
-                new(L[$"History:{_topic.Data.Topic.Epoch}"].Value, Links.History.Topic.ByEpoch(_topic.Data.Topic.Epoch))
+                new(L[$"History:{_topic.Data.Topic.Epoch}"].Value, Links.History.TopicByEpoch(_topic.Data.Topic.Epoch))
             };
     }
 
@@ -285,7 +285,7 @@
             };
 
         if (_test.Status == ResponseStatus.Success)
-            NavigationManager.NavigateTo(Links.History.Test.ById(_test.Data.Id));
+            NavigationManager.NavigateTo(Links.History.TestById(_test.Data.Id));
         else
             Snackbar.Add(_test.Error.Message);
     }

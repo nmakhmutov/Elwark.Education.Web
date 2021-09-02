@@ -41,6 +41,10 @@
                     <SkeletonCard/>
                 </section>
 
+                <section class="event-guesser">
+                    <SkeletonCard/>
+                </section>
+
                 <section class="activity">
                     <SkeletonCard/>
                 </section>
@@ -70,7 +74,7 @@
                         TestCreation="@overview.TestCreation"
                         TestQuestionMistakes="@overview.TestMistakes"
                         TestDurationCoefficient="@overview.TestDurationCoefficient"
-                        DateGuesserCreation="@overview.DateGuesserCreation"
+                        EventGuesserCreation="@overview.EventGuesserCreation"
                         OnBuyClick="@OnBuyClick"/>
                 </section>
 
@@ -82,10 +86,9 @@
                         Value="@overview.Experience.Points">
                         @if (overview.Experience.Recent.Length > 0)
                         {
-                            var items = (_timelineOrientation == TimelineOrientation.Horizontal
-                                ? overview.Experience.Recent.Reverse()
-                                : overview.Experience.Recent)
-                                .Take(_recentCount);
+                            var items = _timelineOrientation == TimelineOrientation.Horizontal
+                                ? overview.Experience.Recent.Take(_recentCount).Reverse()
+                                : overview.Experience.Recent.Take(_recentCount);
 
                             <MudTimeline TimelineOrientation="@_timelineOrientation">
                                 @foreach (var transaction in items)
@@ -130,7 +133,7 @@
                         Icon="@Icons.Filled.School"
                         Title="@L["Tests:Easy"]"
                         Value="@overview.Statistics.EasyTest.NumberOfTests.Total"
-                        Href="@Links.History.Profile.EasyTestStatistics">
+                        Href="@Links.History.ProfileEasyTest">
                         <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
                         <ScoreChart Value="@overview.Statistics.EasyTest.Score"/>
                     </StatisticsCard>
@@ -141,7 +144,7 @@
                         Icon="@Icons.Filled.School"
                         Title="@L["Tests:Hard"]"
                         Value="@overview.Statistics.HardTest.NumberOfTests.Total"
-                        Href="@Links.History.Profile.HardTestStatistics">
+                        Href="@Links.History.ProfileHardTest">
                         <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
                         <ScoreChart Value="@overview.Statistics.HardTest.Score"/>
                     </StatisticsCard>
@@ -152,9 +155,23 @@
                         Icon="@Icons.Filled.School"
                         Title="@L["Tests:Mixed"]"
                         Value="@overview.Statistics.MixedTest.NumberOfTests.Total"
-                        Href="@Links.History.Profile.MixedTestStatistics">
+                        Href="@Links.History.ProfileMixedTest">
                         <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
                         <ScoreChart Value="@overview.Statistics.MixedTest.Score"/>
+                    </StatisticsCard>
+                </section>
+
+                <section class="event-guesser">
+                    <StatisticsCard
+                        Icon="@Icons.Filled.EventAvailable"
+                        Title="@L["EventGuesser"]"
+                        Value="@overview.Statistics.EventGuesser.Tests"
+                        Href="@Links.History.ProfileEventGuesser">
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <EventGuesserScoreChart
+                            Score="@overview.Statistics.EventGuesser.Score"
+                            Points="@overview.Statistics.EventGuesser.Points"
+                            Bonus="@overview.Statistics.EventGuesser.Bonus"/>
                     </StatisticsCard>
                 </section>
 
@@ -286,7 +303,7 @@
     private void OnBreakpointChanged(object? sender, Breakpoint e)
     {
         var (orientation, count) = e switch {
-            Breakpoint.Lg => (TimelineOrientation.Horizontal, 6),
+            Breakpoint.Lg => (TimelineOrientation.Horizontal, 5),
             Breakpoint.Xl => (TimelineOrientation.Horizontal, 10),
             _ => (TimelineOrientation.Vertical, 10)
             };

@@ -87,7 +87,7 @@
 
         if (_test.Status == ResponseStatus.Fail && (_test.Error.IsNotFound() || _test.Error.IsExpired()))
         {
-            NavigationManager.NavigateTo(Links.History.Test.Conclusion(Id));
+            NavigationManager.NavigateTo(Links.History.TestConclusion(Id));
             return;
         }
 
@@ -140,7 +140,7 @@
                 _answerResult = result.Data;
                 break;
             }
-                
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(answer));
         }
@@ -166,7 +166,7 @@
     {
         if (_isTestComplete)
         {
-            NavigationManager.NavigateTo(Links.History.Test.Conclusion(Id));
+            NavigationManager.NavigateTo(Links.History.TestConclusion(Id));
             return;
         }
 
@@ -179,8 +179,8 @@
         _countdownColor = Color.Error;
         _test = await HistoryClient.Test.GetAsync(Id);
 
-        if (_test.Status == ResponseStatus.Fail && (_test.Error.IsNotFound() || _test.Error.IsExpired()))
-            NavigationManager.NavigateTo(Links.History.Test.Conclusion(Id));
+        if (_test.Status == ResponseStatus.Fail && (_test.Error.IsExpired() || _test.Error.IsNotFound()))
+            NavigationManager.NavigateTo(Links.History.TestConclusion(Id));
     }
 
 }

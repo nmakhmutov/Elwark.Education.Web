@@ -1,38 +1,38 @@
-@page "/history/date-guesser"
+@page "/history/event-guesser"
 @using Education.Client.Gateways.History
-@using Education.Client.Gateways.History.DateGuesser
+@using Education.Client.Gateways.History.EventGuesser
 @using Education.Client.Gateways.History.Me
 @layout HistoryLayout
 
 <PageTitle>
-    @L["DateGuesser"]
+    @L["EventGuesser"]
 </PageTitle>
 
 @if (_conclusion.Status == ResponseStatus.Success)
 {
     <MainContainer>
-        <PageHeader Title="@L["DateGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+        <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
     </MainContainer>
     <CenteredContainer MaxWidth="ContainerWidth.W1280" Class="mb-3 mb-sm-6" Paper="true" Elevation="1">
-        <DateGuesserConclusion Class="ma-3 ma-sm-6" Conclusion="@_conclusion.Data" OnCreateNew="@OnCreateNewClick"/>
+        <EventGuesserConclusion Class="ma-3 ma-sm-6" Conclusion="@_conclusion.Data" OnCreateNew="@OnCreateNewClick"/>
     </CenteredContainer>
 }
-else if (_dateGuesser.Status == ResponseStatus.Success)
+else if (_eventGuesser.Status == ResponseStatus.Success)
 {
     <MainContainer>
-        <PageHeader Title="@L["DateGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+        <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
     </MainContainer>
     <CenteredContainer MaxWidth="ContainerWidth.W960" Class="mb-3 mb-sm-6" Paper="true" Elevation="1">
-        <DateGuesserTest Class="ma-3 ma-sm-6" Test="@_dateGuesser.Data" OnCheck="@OnCheckAsync"/>
+        <EventGuesserTest Class="ma-3 ma-sm-6" Test="@_eventGuesser.Data" OnCheck="@OnCheckAsync"/>
     </CenteredContainer>
 }
 else
 {
     <div class="background">
         <MainContainer>
-            <PageHeader Title="@L["DateGuesser"]" Class="mb-3" Breadcrumbs="@Breadcrumbs"/>
+            <PageHeader Title="@L["EventGuesser"]" Class="mb-3" Breadcrumbs="@Breadcrumbs"/>
             <div class="mw-xs">
-                <DateGuesserBuilder Restriction="@_restrictions" OnCreate="@OnCreateAsync"/>
+                <EventGuesserBuilder Restriction="@_restrictions" OnCreate="@OnCreateAsync"/>
             </div>
         </MainContainer>
     </div>
@@ -46,8 +46,8 @@ else
     };
 
     private ApiResponse<HistoryUserRestriction> _restrictions = ApiResponse<HistoryUserRestriction>.Loading();
-    private ApiResponse<DateGuesserTestModel> _dateGuesser = ApiResponse<DateGuesserTestModel>.Loading();
-    private ApiResponse<DateGuesserConclusionModel> _conclusion = ApiResponse<DateGuesserConclusionModel>.Loading();
+    private ApiResponse<EventGuesserTestModel> _eventGuesser = ApiResponse<EventGuesserTestModel>.Loading();
+    private ApiResponse<EventGuesserConclusionModel> _conclusion = ApiResponse<EventGuesserConclusionModel>.Loading();
 
     [Inject]
     public IStringLocalizer<App> L { get; set; } = default!;
@@ -60,24 +60,24 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var dateGuesser = await Client.DateGuesser.GetAsync();
+        var eventGuesser = await Client.EventGuesser.GetAsync();
 
-        if (dateGuesser.IsSuccess)
-            _dateGuesser = dateGuesser;
+        if (eventGuesser.IsSuccess)
+            _eventGuesser = eventGuesser;
         else
             _restrictions = await Client.Me.GetRestrictions();
     }
 
-    private async Task OnCreateAsync(DateGuesserCreateRequest request)
+    private async Task OnCreateAsync(EventGuesserCreateRequest request)
     {
-        _dateGuesser = await Client.DateGuesser.CreateAsync(request);
-        if (!_dateGuesser.IsSuccess)
-            Snackbar.Add(_dateGuesser.Error.Message, Severity.Error);
+        _eventGuesser = await Client.EventGuesser.CreateAsync(request);
+        if (!_eventGuesser.IsSuccess)
+            Snackbar.Add(_eventGuesser.Error.Message, Severity.Error);
     }
 
-    private async Task<DateGuesserCheckModel?> OnCheckAsync(DateGuesserCheckRequest request)
+    private async Task<EventGuesserCheckModel?> OnCheckAsync(EventGuesserCheckRequest request)
     {
-        var result = await Client.DateGuesser.CheckAsync(request);
+        var result = await Client.EventGuesser.CheckAsync(request);
         if (!result.IsSuccess)
         {
             Snackbar.Add(result.Error.Message, Severity.Error);
@@ -87,7 +87,7 @@ else
         if (!result.Data.IsComplete)
             return result.Data;
 
-        _conclusion = await Client.DateGuesser.ConcludeAsync();
+        _conclusion = await Client.EventGuesser.ConcludeAsync();
         if (!_conclusion.IsSuccess)
             Snackbar.Add(_conclusion.Error.Message, Severity.Error);
 
@@ -97,8 +97,8 @@ else
 
     private async Task OnCreateNewClick()
     {
-        _dateGuesser = ApiResponse<DateGuesserTestModel>.Loading();
-        _conclusion = ApiResponse<DateGuesserConclusionModel>.Loading();
+        _eventGuesser = ApiResponse<EventGuesserTestModel>.Loading();
+        _conclusion = ApiResponse<EventGuesserConclusionModel>.Loading();
         _restrictions = await Client.Me.GetRestrictions();
     }
 

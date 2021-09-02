@@ -115,7 +115,7 @@
             });
 
         if (response.Status == ResponseStatus.Success)
-            NavigationManager.NavigateTo(Links.History.Test.ById(response.Data.Id));
+            NavigationManager.NavigateTo(Links.History.TestById(response.Data.Id));
         else
             Snackbar.Add(response.Error.Message, Severity.Error);
 

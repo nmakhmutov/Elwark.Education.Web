@@ -6,7 +6,7 @@ namespace Education.Client.Gateways.History.Me
         SubscriptionType Subscription,
         Restriction TestCreation,
         Restriction TestMistakes,
-        Restriction DateGuesserCreation,
+        Restriction EventGuesserCreation,
         float TestDurationCoefficient,
         UserStatistics Statistics,
         UserExperience Experience,

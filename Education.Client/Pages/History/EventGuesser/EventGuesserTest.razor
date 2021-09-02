@@ -1,23 +1,23 @@
 @using FluentValidation
-@using Education.Client.Gateways.History.DateGuesser
+@using Education.Client.Gateways.History.EventGuesser
 
 <div class="@Class">
     <div class="header">
         <div class="header-score">
             <MudText Typo="Typo.subtitle1">
-                @L["Score:Total"]
+                @L["EventGuesser:Score"]
             </MudText>
             <div class="d-flex flex-row align-center">
                 <MudIcon Icon="@Icons.Material.Filled.FilterTiltShift" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
                 <MudText Typo="Typo.subtitle1">
-                    @_totalPoints
+                    @_score
                 </MudText>
             </div>
         </div>
         <div class="header-bonus">
             <div class="d-flex flex-row align-center">
                 <MudText Typo="Typo.subtitle1">
-                    @L["Bonus"]
+                    @L["EventGuesser:Bonus"]
                 </MudText>
                 @if (_x2BonusUntil > DateTime.UtcNow)
                 {
@@ -47,12 +47,12 @@
             <MudNumericField
                 @bind-Value="@_model.Year"
                 For="@(() => _model.Year)"
-                Label="@L["DateGuesser:Year"]"
+                Label="@L["EventGuesser:Year"]"
                 Variant="Variant.Text"
                 HideSpinButtons="true"
                 AutoFocus="true"/>
 
-            <MudSelect T="uint?" @bind-Value="@_model.Month" For="@(() => _model.Month)" Label="@L["DateGuesser:Month"]" Clearable="true">
+            <MudSelect T="uint?" @bind-Value="@_model.Month" For="@(() => _model.Month)" Label="@L["EventGuesser:Month"]" Clearable="true">
                 <MudSelectItem Value="@(1u)" T="uint?">
                     @L["Month:January"]
                 </MudSelectItem>
@@ -91,7 +91,7 @@
                 </MudSelectItem>
             </MudSelect>
 
-            <MudSelect T="uint?" @bind-Value="@_model.Day" For="@(() => _model.Day)" Label="@L["DateGuesser:Day"]" Clearable="true">
+            <MudSelect T="uint?" @bind-Value="@_model.Day" For="@(() => _model.Day)" Label="@L["EventGuesser:Day"]" Clearable="true">
                 @foreach (var day in Enumerable.Range(1, 31))
                 {
                     <MudSelectItem Value="@((uint)day)" T="uint?">
@@ -137,24 +137,24 @@
     public IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public DateGuesserTestModel Test { get; set; } = default!;
+    public EventGuesserTestModel Test { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public Func<DateGuesserCheckRequest, Task<DateGuesserCheckModel?>> OnCheck { get; set; } = default!;
+    public Func<EventGuesserCheckRequest, Task<EventGuesserCheckModel?>> OnCheck { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
 
     private Model _model = new();
     private int _questionIndex;
-    private uint _totalPoints;
+    private uint _score;
     private DateTime _x2BonusUntil;
     private bool _isLoading;
     private bool _isComplete;
 
     protected override void OnParametersSet()
     {
-        _totalPoints = Test.TotalPoints;
+        _score = Test.Score;
         _x2BonusUntil = Test.X2BonusUntil;
 
         for (var i = 0; i < Test.Questions.Length; i++)
@@ -183,7 +183,7 @@
     {
         _isLoading = true;
         var result = await OnCheck(
-            new DateGuesserCheckRequest(
+            new EventGuesserCheckRequest(
                 _model.Id,
                 _model.IsBc ? -_model.Year.GetValueOrDefault(0) : _model.Year.GetValueOrDefault(0),
                 _model.Month,
@@ -197,7 +197,7 @@
             return;
         }
 
-        _totalPoints = result.TotalPoints;
+        _score = result.Score;
         _x2BonusUntil = result.X2BonusUntil;
         _isComplete = result.IsComplete;
 

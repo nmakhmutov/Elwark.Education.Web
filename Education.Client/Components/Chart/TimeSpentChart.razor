@@ -15,17 +15,8 @@
     public string Size { get; set; } = "250px";
 
     [Parameter]
-    public TimeSpan Min { get; set; }
-
-    [Parameter]
-    public TimeSpan Max { get; set; }
-
-    [Parameter]
-    public TimeSpan Average { get; set; }
-
-    [Parameter]
-    public TimeSpan Total { get; set; }
-
+    public TimeSpent Value { get; set; } = default!;
+    
     private static readonly ChartOptions Options = new()
     {
         DisableLegend = true,
@@ -44,17 +35,17 @@
 
     private List<ChartSeries> Series => new()
     {
-        new ChartSeries {Data = new[] {Min.TotalSeconds}},
-        new ChartSeries {Data = new[] {Max.TotalSeconds}},
-        new ChartSeries {Data = new[] {Average.TotalSeconds}}
+        new ChartSeries {Data = new[] {Value.Min.TotalSeconds}},
+        new ChartSeries {Data = new[] {Value.Max.TotalSeconds}},
+        new ChartSeries {Data = new[] {Value.Average.TotalSeconds}}
     };
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["TimeSpent:Min"], Min, Colors.Blue.Darken2),
-        new ChartList.Item(L["TimeSpent:Max"], Max, Colors.Green.Darken2),
-        new ChartList.Item(L["TimeSpent:Average"], Average, Colors.Orange.Darken2),
-        new ChartList.Item(L["TimeSpent:Total"], Total, null)
+        new ChartList.Item(L["TimeSpent:Min"], Value.Min, Colors.Blue.Darken2),
+        new ChartList.Item(L["TimeSpent:Max"], Value.Max, Colors.Green.Darken2),
+        new ChartList.Item(L["TimeSpent:Average"], Value.Average, Colors.Orange.Darken2),
+        new ChartList.Item(L["TimeSpent:Total"], Value.Total, null)
     };
 
 }

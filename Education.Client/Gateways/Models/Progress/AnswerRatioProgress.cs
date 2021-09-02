@@ -1,12 +1,6 @@
-using System;
-
-namespace Education.Client.Gateways.Models.Statistics
+namespace Education.Client.Gateways.Models.Progress
 {
-    public sealed record AnswerRatioStatistics(AnswerRatio Total, AnswerRatioProgress Progress);
-
     public sealed record AnswerRatioProgress(
-        DateTime Starts,
-        DateTime Ends,
         Contrast<uint> Questions,
         Contrast<uint> Answered,
         Contrast<uint> NotAnswered,

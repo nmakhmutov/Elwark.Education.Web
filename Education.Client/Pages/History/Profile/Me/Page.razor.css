@@ -9,7 +9,8 @@
                 "activity"
                 "easy-test"
                 "hard-test"
-                "mixed-test";
+                "mixed-test"
+                "event-guesser";
 }
 
 .subject {
@@ -40,6 +41,10 @@
     grid-area: mixed-test;
 }
 
+.event-guesser {
+    grid-area: event-guesser;
+}
+
 .activity {
     grid-area: activity;
 }
@@ -52,18 +57,40 @@
         "subject points"
         "level points"
         "daily-reward points"
+        "activity activity"
         "easy-test hard-test"
-        "mixed-test ."
-        "activity activity";
+        "mixed-test event-guesser";
     }
 }
 
 @media (min-width: 1280px) {
     .grid {
+        grid-template-columns: repeat(3, minmax(200px, 1fr));
+        grid-template-areas:
+        "subject activity activity"
+        "points points level"
+        "easy-test hard-test daily-reward"
+        "mixed-test event-guesser . ";
+    }
+}
+
+@media (min-width: 1600px) {
+    .grid {
         grid-template-columns: repeat(4, minmax(200px, 1fr));
         grid-template-areas:
         "subject activity activity activity"
         "points points points level"
-        "easy-test hard-test mixed-test daily-reward";
+        "easy-test hard-test mixed-test daily-reward"
+        "event-guesser . . .";
+    }
+}
+
+@media (min-width: 1920px) {
+    .grid {
+        grid-template-columns: repeat(5, minmax(200px, 1fr));
+        grid-template-areas:
+        "subject activity activity activity activity"
+        "points points points points level"
+        "easy-test hard-test mixed-test event-guesser daily-reward";
     }
 }

@@ -20,21 +20,24 @@ namespace Education.Client.Gateways.History.Me
                 _client.GetAsync($"history/me/favorites?page={request.Page}&count={request.Count}"));
 
         public Task<ApiResponse<Unit>> CollectDailyReward() =>
-            ExecuteAsync<Unit>(() => _client.PostAsync("history/me/reward/daily", EmptyContent));
+            ExecuteAsync<Unit>(() => _client.PostAsync("history/me/rewards/daily", EmptyContent));
         
         public Task<ApiResponse<HistoryUserRestriction>> GetRestrictions() =>
             ExecuteAsync<HistoryUserRestriction>(() => _client.GetAsync("history/me/restrictions"));
         
         public Task<ApiResponse<TopicTestStatistics>> GetEasyTestStatisticsAsync() =>
-            ExecuteAsync<TopicTestStatistics>(() => _client.GetAsync("history/me/statistics/easy-tests"));
+            ExecuteAsync<TopicTestStatistics>(() => _client.GetAsync("history/me/tests/easy"));
         
         public Task<ApiResponse<TopicTestStatistics>> GetHardTestStatisticsAsync() =>
-            ExecuteAsync<TopicTestStatistics>(() => _client.GetAsync("history/me/statistics/hard-tests"));
+            ExecuteAsync<TopicTestStatistics>(() => _client.GetAsync("history/me/tests/hard"));
         
         public Task<ApiResponse<MixedTestStatistics>> GetMixedTestStatisticsAsync() =>
-            ExecuteAsync<MixedTestStatistics>(() => _client.GetAsync("history/me/statistics/mixed-tests"));
+            ExecuteAsync<MixedTestStatistics>(() => _client.GetAsync("history/me/tests/mixed"));
+        
+        public Task<ApiResponse<EventGuesserStatistics>> GetEventGuesserStatisticsAsync() =>
+            ExecuteAsync<EventGuesserStatistics>(() => _client.GetAsync("history/me/event-guessers"));
         
         public Task<ApiResponse<TopicStatistics>> GetTopicStatisticsAsync(string topicId) =>
-            ExecuteAsync<TopicStatistics>(() => _client.GetAsync($"history/me/statistics/topic/{topicId}"));
+            ExecuteAsync<TopicStatistics>(() => _client.GetAsync($"history/me/topics/{topicId}"));
     }
 }

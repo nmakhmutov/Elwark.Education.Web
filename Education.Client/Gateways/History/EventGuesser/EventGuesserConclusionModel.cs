@@ -1,10 +1,10 @@
 using System;
 using Education.Client.Gateways.Models.Content;
 
-namespace Education.Client.Gateways.History.DateGuesser
+namespace Education.Client.Gateways.History.EventGuesser
 {
-    public sealed record DateGuesserConclusionModel(
-        uint TotalPoints,
+    public sealed record EventGuesserConclusionModel(
+        uint Score,
         TimeSpan TimeSpent,
         ConclusionQuestionModel[] Questions
     );
@@ -12,9 +12,9 @@ namespace Education.Client.Gateways.History.DateGuesser
     public sealed record ConclusionQuestionModel(
         TopicTitle Topic,
         string Title,
-        uint RawPoints,
-        uint BonusPoints,
-        uint TotalPoints,
+        uint Points,
+        uint Bonus,
+        uint Score,
         HistoricDate CorrectAnswer,
         HistoricDate UserAnswer
     )

@@ -1,24 +1,19 @@
 using System;
-using Education.Client.Gateways.Models.Statistics;
+using Education.Client.Gateways.History.Me;
+using Education.Client.Gateways.Models.Progress;
 using Education.Client.Infrastructure.Extensions;
 using Microsoft.Extensions.Localization;
 
-namespace Education.Client.Pages.History.Profile.Statistics
+namespace Education.Client.Pages.History.Profile
 {
     public static class StatisticsExtensions
     {
-        public static string RangeTitle(this NumberOfTestsProgress progress) =>
+        public static string RangeTitle(this WeeklyProgress progress) =>
             RangeTitle(progress.Starts, progress.Ends);
 
-        public static string RangeTitle(this ScoreProgress progress) =>
+        public static string RangeTitle(this EventGuesserProgress progress) =>
             RangeTitle(progress.Starts, progress.Ends);
-
-        public static string RangeTitle(this TimeSpentProgress progress) =>
-            RangeTitle(progress.Starts, progress.Ends);
-
-        public static string RangeTitle(this AnswerRatioProgress progress) =>
-            RangeTitle(progress.Starts, progress.Ends);
-
+        
         public static ProgressList.Item[] GetProgress(this NumberOfTestsProgress progress, IStringLocalizer<App> l) =>
             new ProgressList.Item[]
             {
@@ -50,9 +45,12 @@ namespace Education.Client.Pages.History.Profile.Statistics
         public static ProgressList.Item[] GetProgress(this TimeSpentProgress progress, IStringLocalizer<App> l) =>
             new ProgressList.Item[]
             {
-                new(l["TimeSpent"], progress.TimeSpent.Current.ToLongFormat(), progress.TimeSpent.Difference)
+                new(l["TimeSpent:Min"], progress.Min.Current.ToLongFormat(), progress.Min.Difference),
+                new(l["TimeSpent:Max"], progress.Max.Current.ToLongFormat(), progress.Max.Difference),
+                new(l["TimeSpent:Average"], progress.Average.Current.ToLongFormat(), progress.Average.Difference),
+                new(l["TimeSpent:Total"], progress.Total.Current.ToLongFormat(), progress.Total.Difference)
             };
-
+        
         private static string RangeTitle(DateTime starts, DateTime ends) =>
             $"{starts:dd MMM} ― {ends:dd MMM}";
     }

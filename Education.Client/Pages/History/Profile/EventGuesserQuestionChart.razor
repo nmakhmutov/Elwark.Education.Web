@@ -1,0 +1,52 @@
+<div class="@Class">
+    <MudChart ChartType="ChartType.Donut" Width="250px" Height="250px" InputData="@Data" ChartOptions="@Options"/>
+    <ChartList Items="@Items"/>
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public uint Questions { get; set; }
+
+    [Parameter]
+    public uint Correct { get; set; }
+
+    [Parameter]
+    public uint Incorrect { get; set; }
+    
+    private ChartOptions Options => new()
+    {
+        DisableLegend = true,
+        ChartPalette = Questions > 0
+            ? new[]
+            {
+                Colors.Blue.Darken2,
+                Colors.Green.Darken2
+            }
+            : new[]
+            {
+                Colors.Grey.Lighten1,
+                Colors.Grey.Lighten1
+            }
+    };
+
+    private double[] Data => new double[]
+    {
+        Incorrect,
+        Correct
+    };
+
+    private ChartList.Item[] Items => new[]
+    {
+        new ChartList.Item(L["EventGuesser:Incorrect"], Incorrect, Colors.Blue.Darken2),
+        new ChartList.Item(L["EventGuesser:Correct"], Correct, Colors.Green.Darken2),
+        new ChartList.Item(L["EventGuesser:Questions"], Questions, null)
+    };
+
+}

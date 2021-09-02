@@ -7,6 +7,6 @@ namespace Education.Client.Gateways.History.Me
         TestStatus TestStatus,
         Restriction TestCreation,
         Restriction TestMistakes,
-        Restriction DateGuesserCreation
+        Restriction EventGuesserCreation
     );
 }

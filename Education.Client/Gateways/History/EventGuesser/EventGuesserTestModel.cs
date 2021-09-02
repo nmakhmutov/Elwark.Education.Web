@@ -1,10 +1,10 @@
 using System;
 
-namespace Education.Client.Gateways.History.DateGuesser
+namespace Education.Client.Gateways.History.EventGuesser
 {
-    public sealed record DateGuesserTestModel(
+    public sealed record EventGuesserTestModel(
         DateTime X2BonusUntil,
-        uint TotalPoints,
+        uint Score,
         TestQuestionModel[] Questions
     );
     

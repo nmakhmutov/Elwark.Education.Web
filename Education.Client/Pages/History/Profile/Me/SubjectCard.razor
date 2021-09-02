@@ -64,18 +64,18 @@
             <li class="row">
                 <div>
                     <MudText Typo="Typo.subtitle1">
-                        @L["Subscription:DateGuesserCreation"]
+                        @L["Subscription:EventGuesserCreation"]
                     </MudText>
-                    @if (DateGuesserCreation.RestoreAt.HasValue)
+                    @if (EventGuesserCreation.RestoreAt.HasValue)
                     {
                         <MudText Typo="Typo.caption">
                             <em>
-                                @L["Subscription:RestrictionRestoreAt", DateGuesserCreation.RestoreAt.Value.ToSimpleFormat()]
+                                @L["Subscription:RestrictionRestoreAt", EventGuesserCreation.RestoreAt.Value.ToSimpleFormat()]
                             </em>
                         </MudText>
                     }
                 </div>
-                <RestrictionQuantityView Restriction="@DateGuesserCreation" Class="ml-3"/>
+                <RestrictionQuantityView Restriction="@EventGuesserCreation" Class="ml-3"/>
             </li>
         </ul>
         <div class="subscription">
@@ -118,7 +118,7 @@
     public Restriction TestQuestionMistakes { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public Restriction DateGuesserCreation { get; set; } = default!;
+    public Restriction EventGuesserCreation { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public float TestDurationCoefficient { get; set; }

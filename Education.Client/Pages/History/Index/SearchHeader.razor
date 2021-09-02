@@ -36,7 +36,7 @@
             @foreach (var epoch in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
             {
                 <div class="pa-3">
-                    <MudLink Href="@Links.History.Topic.ByEpoch(epoch)" Color="Color.Inherit" Underline="Underline.Always">
+                    <MudLink Href="@Links.History.TopicByEpoch(epoch)" Color="Color.Inherit" Underline="Underline.Always">
                         @L[$"History:{epoch}"]
                     </MudLink>
                 </div>
@@ -62,7 +62,7 @@
 
     private void OnSearchResult(TopicSummary entry)
     {
-        NavigationManager.NavigateTo(Links.History.Topic.ById(entry.Id));
+        NavigationManager.NavigateTo(Links.History.TopicById(entry.Id));
     }
 
 }

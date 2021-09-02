@@ -23,22 +23,22 @@
             <MudNavGroup Title="@L["History:Epochs"]" Icon="@Icons.Filled.HistoryToggleOff">
                 @foreach (var epoch in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
                 {
-                    <MudNavLink Href="@Links.History.Topic.ByEpoch(epoch)">
+                    <MudNavLink Href="@Links.History.TopicByEpoch(epoch)">
                         @L[$"History:{epoch}"]
                     </MudNavLink>
                 }
             </MudNavGroup>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Test.Builder" Icon="@Icons.Filled.School">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.TestBuilder" Icon="@Icons.Filled.School">
                 @L["Tests"]
             </MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.DateGuesser" Icon="@Icons.Filled.EventAvailable">
-                @L["DateGuesser"]
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.EventGuesserBuilder" Icon="@Icons.Filled.EventAvailable">
+                @L["EventGuesser"]
             </MudNavLink>
             <MudDivider Class="my-2"/>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Profile.Me" Icon="@Icons.Filled.CardMembership">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.ProfileMe" Icon="@Icons.Filled.CardMembership">
                 @L["Profile"]
             </MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Profile.Favorites" Icon="@Icons.Filled.Favorite">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.ProfileFavorites" Icon="@Icons.Filled.Favorite">
                 @L["Favorites"]
             </MudNavLink>
         </MudNavMenu>

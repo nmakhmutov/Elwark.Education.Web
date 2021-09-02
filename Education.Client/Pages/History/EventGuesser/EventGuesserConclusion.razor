@@ -1,22 +1,21 @@
-@using Education.Client.Gateways.History.DateGuesser
-
+@using Education.Client.Gateways.History.EventGuesser
 <div class="@Class">
     <div class="header">
         <div class="header-score">
             <MudText Typo="Typo.subtitle1">
-                @L["Score:Total"]
+                @L["EventGuesser:Score"]
             </MudText>
             <div class="d-flex flex-row align-center">
                 <MudIcon Icon="@Icons.Material.Filled.FilterTiltShift" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
                 <MudText Typo="Typo.subtitle1">
-                    @Conclusion.TotalPoints
+                    @Conclusion.Score
                 </MudText>
             </div>
         </div>
 
         <div class="header-time-spent">
             <MudText Typo="Typo.subtitle1" Align="Align.End">
-                @L["TimeSpent"]
+                @L["EventGuesser:TimeSpent"]
             </MudText>
             <MudText Typo="Typo.subtitle1" Align="Align.End">
                 @Conclusion.TimeSpent.ToShortFormat()
@@ -33,38 +32,38 @@
                 @L["Question"]
             </MudTh>
             <MudTh>
-                @L["DateGuesser:CorrectAnswer"]
+                @L["EventGuesser:CorrectAnswer"]
             </MudTh>
             <MudTh>
-                @L["DateGuesser:UserAnswer"]
+                @L["EventGuesser:UserAnswer"]
             </MudTh>
             <MudTh>
-                @L["DateGuesser:Points"] / @L["Bonus"]
+                @L["EventGuesser:Points"] / @L["EventGuesser:Bonus"]
             </MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="@L["Topic"]">
-                <MudLink Href="@Links.History.Topic.ById(context.Topic.Id)">
+                <MudLink Href="@Links.History.TopicById(context.Topic.Id)">
                     @context.Topic.Title
                 </MudLink>
             </MudTd>
             <MudTd DataLabel="@L["Question"]">
                 @context.Title
             </MudTd>
-            <MudTd DataLabel="@L["DateGuesser:CorrectAnswer"]">
+            <MudTd DataLabel="@L["EventGuesser:CorrectAnswer"]">
                 <HistoryDate Typo="Typo.body2" Date="@context.CorrectAnswer"/>
             </MudTd>
-            <MudTd DataLabel="@L["DateGuesser:UserAnswer"]">
+            <MudTd DataLabel="@L["EventGuesser:UserAnswer"]">
                 <HistoryDate Typo="Typo.body2" Date="@context.UserAnswer" Color="@(context.IsCorrect ? Color.Success : Color.Error)"/>
             </MudTd>
-            <MudTd DataLabel="@($"{L["DateGuesser:Points"]} / {L["Bonus"]}")">
-                @context.RawPoints / @context.BonusPoints (@context.TotalPoints)
+            <MudTd DataLabel="@($"{L["EventGuesser:Points"]} / {L["EventGuesser:Bonus"]}")">
+                @context.Points / @context.Bonus (@context.Score)
             </MudTd>
         </RowTemplate>
     </MudTable>
 
     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnCreateNew">
-        @L["DateGuesser:CreateNew"]
+        @L["EventGuesser:CreateNew"]
     </MudButton>
 </div>
 
@@ -74,7 +73,7 @@
     public IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public DateGuesserConclusionModel Conclusion { get; set; } = default!;
+    public EventGuesserConclusionModel Conclusion { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public EventCallback OnCreateNew { get; set; }

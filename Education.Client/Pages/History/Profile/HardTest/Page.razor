@@ -1,12 +1,13 @@
-@page "/history/profile/me/statistics/easy-tests"
-@using Education.Client.Gateways.History
+@page "/history/profile/me/tests/hard"
 @using Education.Client.Gateways.Models.Statistics
+@using Education.Client.Gateways.History
 @layout HistoryLayout
 
 @attribute [Authorize]
-<PageTitle>@L["Tests:Easy"]</PageTitle>
+
+<PageTitle>@L["Tests:Hard"]</PageTitle>
 <MainContainer>
-    <PageHeader Title="@L["Tests:Easy"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
+    <PageHeader Title="@L["Tests:Hard"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
     <ApiResponseViewer Response="@_response">
         <Placeholder>
             <StatisticsDetailsGrid>
@@ -18,39 +19,39 @@
         </Placeholder>
         <Result Context="result">
             <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
-                <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Value="@result.NumberOfTests.Total.Total">
+                <StatisticsCard Icon="@Icons.Filled.School" Title="@L["Tests"]" Value="@result.NumberOfTests.Total">
                     <TwoColumnGrid>
                         <div>
                             <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
-                            <NumberOfTestChart Value="@result.NumberOfTests.Total"/>
+                            <NumberOfTestChart Value="@result.NumberOfTests"/>
                         </div>
                         <div>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.NumberOfTests.Progress.RangeTitle()"/>
-                            <ProgressList Items="@result.NumberOfTests.Progress.GetProgress(L)"/>
+                            <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                            <ProgressList Items="@result.Progress.NumberOfTests.GetProgress(L)"/>
                         </div>
                     </TwoColumnGrid>
                 </StatisticsCard>
-                <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Value="@result.Score.Total.Total">
+                <StatisticsCard Icon="@Icons.Filled.PendingActions" Title="@L["Score"]" Value="@result.Score.Total">
                     <TwoColumnGrid>
                         <div>
                             <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                            <ScoreChart Value="@result.Score.Total"/>
+                            <ScoreChart Value="@result.Score"/>
                         </div>
                         <div>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.Score.Progress.RangeTitle()"/>
-                            <ProgressList Items="@result.Score.Progress.GetProgress(L)"/>
+                            <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                            <ProgressList Items="@result.Progress.Score.GetProgress(L)"/>
                         </div>
                     </TwoColumnGrid>
                 </StatisticsCard>
-                <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Value="@result.AnswerRatio.Total.Questions">
+                <StatisticsCard Icon="@Icons.Filled.HelpOutline" Title="@L["Questions"]" Value="@result.AnswerRatio.Questions">
                     <TwoColumnGrid>
                         <div>
                             <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
-                            <AnswerRatioChart Value="@result.AnswerRatio.Total"/>
+                            <AnswerRatioChart Value="@result.AnswerRatio"/>
                         </div>
                         <div>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.AnswerRatio.Progress.RangeTitle()"/>
-                            <ProgressList Items="@result.AnswerRatio.Progress.GetProgress(L)"/>
+                            <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                            <ProgressList Items="@result.Progress.AnswerRatio.GetProgress(L)"/>
                         </div>
                     </TwoColumnGrid>
                 </StatisticsCard>
@@ -58,20 +59,15 @@
                     <TwoColumnGrid>
                         <div>
                             <Subheader Title="@L["TimeSpent"]" Subtitle="@L["ForAllTime"]"/>
-                            <TimeSpentChart
-                                Average="@result.TimeSpent.Average"
-                                Max="@result.TimeSpent.Max"
-                                Min="@result.TimeSpent.Min"
-                                Total="@result.TimeSpent.Total"/>
+                            <TimeSpentChart Value="@result.TimeSpent"/>
                         </div>
                         <div>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.TimeSpent.Progress.RangeTitle()"/>
-                            <ProgressList Items="@result.TimeSpent.Progress.GetProgress(L)"/>
+                            <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                            <ProgressList Items="@result.Progress.TimeSpent.GetProgress(L)"/>
                         </div>
                     </TwoColumnGrid>
                 </StatisticsCard>
             </StatisticsDetailsGrid>
-
             @if (result.Conclusions.Length > 0)
             {
                 <MudText Typo="Typo.h5" Class="mb-3 mt-6 mt-md-12">
@@ -83,7 +79,7 @@
                         <MudCard>
                             <MudCardHeader Class="pa-3">
                                 <CardHeaderContent>
-                                    <MudLink Typo="Typo.h6" Href="@Links.History.Profile.TopicStatistics(conclusion.TopicId)">
+                                    <MudLink Typo="Typo.h6" Href="@Links.History.ProfileTopic(conclusion.TopicId)">
                                         @conclusion.Title
                                     </MudLink>
                                 </CardHeaderContent>
@@ -109,7 +105,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
-        new BreadcrumbItem(L["Profile"].Value, Links.History.Profile.Me)
+        new BreadcrumbItem(L["Profile"].Value, Links.History.ProfileMe)
     };
 
     private ApiResponse<TopicTestStatistics> _response = ApiResponse<TopicTestStatistics>.Loading();
@@ -121,6 +117,6 @@
     private IHistoryClient HistoryClient { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync() =>
-        _response = await HistoryClient.Me.GetEasyTestStatisticsAsync();
+        _response = await HistoryClient.Me.GetHardTestStatisticsAsync();
 
 }
