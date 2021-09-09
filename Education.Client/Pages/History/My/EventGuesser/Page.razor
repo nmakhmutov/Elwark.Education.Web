@@ -1,0 +1,94 @@
+@page "/history/my/event-guessers"
+@using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Me
+@layout HistoryLayout
+
+@attribute [Authorize]
+
+<PageTitle>@L["EventGuesser"]</PageTitle>
+<MainContainer>
+    <ApiResponseViewer Response="@_response">
+        <Placeholder>
+            <PageHeader Title="@L["EventGuesser"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
+            <StatisticsDetailsGrid>
+                <SkeletonCard/>
+                <SkeletonCard/>
+            </StatisticsDetailsGrid>
+        </Placeholder>
+        <Result Context="result">
+            <PageHeader Title="@L["EventGuesser"]" Class="mb-6" Breadcrumbs="@Breadcrumbs">
+                <div class="d-flex align-center">
+                    <HumanReadableText Typo="Typo.h5" Class="mr-3" Value="@result.Tests"/>
+                    <MudAvatar Color="Color.Primary" Size="Size.Medium">
+                        <MudIcon Icon="@EducationIcons.Tests" Size="Size.Medium"/>
+                    </MudAvatar>
+                </div>
+            </PageHeader>
+            <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
+                <StatisticsCard Icon="@EducationIcons.Score" Title="@L["EventGuesser:Score"]" Value="@result.Score">
+                    <TwoColumnGrid>
+                        <div>
+                            <Subheader Title="@L["EventGuesser:Score"]" Subtitle="@L["ForAllTime"]"/>
+                            <EventGuesserScoreChart Bonus="@result.Bonus" Points="@result.Points" Score="@result.Score"/>
+                        </div>
+                        <div>
+                            <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                            <ProgressList Items="@GetScore(result.Progress)"/>
+                        </div>
+                    </TwoColumnGrid>
+                </StatisticsCard>
+                <StatisticsCard Icon="@EducationIcons.Questions" Title="@L["EventGuesser:Questions"]" Value="@result.Questions">
+                    <TwoColumnGrid>
+                        <div>
+                            <Subheader Title="@L["EventGuesser:Questions"]" Subtitle="@L["ForAllTime"]"/>
+                            <EventGuesserQuestionChart Correct="@result.Correct" Incorrect="@result.Incorrect" Questions="@result.Questions"/>
+                        </div>
+                        <div>
+                            <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                            <ProgressList Items="@GetQuestions(result.Progress)"/>
+                        </div>
+                    </TwoColumnGrid>
+                </StatisticsCard>
+            </StatisticsDetailsGrid>
+        </Result>
+    </ApiResponseViewer>
+</MainContainer>
+
+@code {
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
+        new BreadcrumbItem(L["Profile"].Value, Links.History.MyProfile)
+    };
+
+    private ApiResponse<EventGuesserStatistics> _response = ApiResponse<EventGuesserStatistics>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _response = await HistoryClient.Me.GetEventGuesserStatisticsAsync();
+    }
+
+    private ProgressList.Item[] GetScore(EventGuesserProgress progress) =>
+        new ProgressList.Item[]
+        {
+            new(L["EventGuesser:Score"], progress.Score.Current.ToReadable(), progress.Score.Difference),
+            new(L["EventGuesser:Points"], progress.Points.Current.ToReadable(), progress.Points.Difference),
+            new(L["EventGuesser:Bonus"], progress.Bonus.Current.ToReadable(), progress.Bonus.Difference)
+        };
+
+    private ProgressList.Item[] GetQuestions(EventGuesserProgress progress) =>
+        new ProgressList.Item[]
+        {
+            new(L["EventGuesser:Questions"], progress.Questions.Current.ToReadable(), progress.Questions.Difference),
+            new(L["EventGuesser:Correct"], progress.Correct.Current.ToReadable(), progress.Correct.Difference),
+            new(L["EventGuesser:Incorrect"], progress.Incorrect.Current.ToReadable(), progress.Incorrect.Difference)
+        };
+
+}

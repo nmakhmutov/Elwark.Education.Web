@@ -32,10 +32,10 @@
                 <MudText Typo="Typo.subtitle1">
                     @L["Subscription:EventGuesserCreation"]
                 </MudText>
-                <RestrictionQuantityView Restriction="@restriction.EventGuesserCreation" Class="mr-2"/>
+                <RestrictionQuantityView Restriction="@restriction.EventGuesser.Restriction" Class="mr-2"/>
             </div>
             <div class="d-flex justify-end">
-                @if (restriction.EventGuesserCreation.Quantity == 0)
+                @if (restriction.EventGuesser.Restriction.Quantity == 0)
                 {
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="true" Class="ml-auto">
                         @L["Test:Create"]
@@ -43,19 +43,12 @@
                 }
                 else
                 {
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="_isLoading" Class="ml-auto">
-                        @if (_isLoading)
-                        {
-                            <div class="d-flex flex-row align-center">
-                                <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
-                                @L["Test:Creating"]
-                            </div>
-                        }
-                        else
-                        {
-                            @L["Test:Create"]
-                        }
-                    </MudButton>
+                    <LoadingButton
+                        Class="ml-auto"
+                        ButtonType="ButtonType.Submit"
+                        Text="@L["Test:Create"]"
+                        LoadingText="@L["Test:Creating"]"
+                        IsLoading="@_isLoading"/>
                 }
             </div>
         </Result>

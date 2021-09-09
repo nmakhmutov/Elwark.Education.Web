@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Education.Client.Gateways.Models.User;
 
 namespace Education.Client.Gateways.Models.Test
 {
-    public sealed record TopicTest(TestStatus Status, bool HasEasyTest, bool HasHardTest)
+    public sealed record TopicTest(TestPermission Permission, bool HasEasyTest, bool HasHardTest)
     {
         public IEnumerable<TestType> TestTypes
         {

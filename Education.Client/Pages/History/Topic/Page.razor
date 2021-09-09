@@ -170,27 +170,27 @@
         <MudPaper Style="@FormatService.WidthStyles">
             <div class="progress">
                 <div class="d-flex flex-column align-start">
-                    @if (result.Test.Status == TestStatus.NotAvailable)
+                    @if (result.Test.TestTypes.Any())
+                    {
+                        <MudLink Typo="Typo.h6" Href="@Links.History.MyTopicProgress(result.Topic.Id)">
+                            @L["Test:MyProgress"]
+                        </MudLink>
+                    }
+                    else
                     {
                         <MudText Typo="Typo.h6">
                             @L["Test:MyProgress"]
                         </MudText>
                     }
-                    else
-                    {
-                        <MudLink Typo="Typo.h6" Href="@Links.History.ProfileTopic(result.Topic.Id)">
-                            @L["Test:MyProgress"]
-                        </MudLink>
-                    }
 
                     <TopicProgressView Progress="@result.Progress" Class="py-3"/>
 
-                    <TestWrapper Subject="@SubjectType.History" Status="@result.Test.Status">
+                    <TestPermissionWrapper Status="@result.Test.Permission.Status" Subject="@SubjectType.History">
                         <TopicTestButtons
                             IsLoading="@(_test?.Status == ResponseStatus.Loading)"
                             TestTypes="@result.Test.TestTypes.ToArray()"
                             OnCreateTestClick="@CreateTestAsync"/>
-                    </TestWrapper>
+                    </TestPermissionWrapper>
                 </div>
 
                 <TopicReactionButtons

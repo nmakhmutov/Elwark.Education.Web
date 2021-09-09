@@ -17,10 +17,10 @@
     <MudDrawer Open="@SidebarService.IsOpen" OpenChanged="@SidebarService.SetAsync" Breakpoint="Breakpoint.Lg" ClipMode="DrawerClipMode.Docked" Elevation="25">
         <UserDrawerHeader/>
         <MudNavMenu>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Index" Icon="@SubjectType.History.GetStatic().Icon">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Index" Icon="@EducationIcons.History">
                 @L["Page:Home"]
             </MudNavLink>
-            <MudNavGroup Title="@L["History:Epochs"]" Icon="@Icons.Filled.HistoryToggleOff">
+            <MudNavGroup Title="@L["History:Epochs"]" Icon="@EducationIcons.Epochs">
                 @foreach (var epoch in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
                 {
                     <MudNavLink Href="@Links.History.TopicByEpoch(epoch)">
@@ -28,17 +28,17 @@
                     </MudNavLink>
                 }
             </MudNavGroup>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.TestBuilder" Icon="@Icons.Filled.School">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.TestBuilder" Icon="@EducationIcons.Tests">
                 @L["Tests"]
             </MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.EventGuesserBuilder" Icon="@Icons.Filled.EventAvailable">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.EventGuesserBuilder" Icon="@EducationIcons.EventGuesser">
                 @L["EventGuesser"]
             </MudNavLink>
             <MudDivider Class="my-2"/>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.ProfileMe" Icon="@Icons.Filled.CardMembership">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.MyProfile" Icon="@EducationIcons.MyProfile">
                 @L["Profile"]
             </MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.ProfileFavorites" Icon="@Icons.Filled.Favorite">
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.MyFavorites" Icon="@EducationIcons.MyFavorites">
                 @L["Favorites"]
             </MudNavLink>
         </MudNavMenu>

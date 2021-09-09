@@ -4,6 +4,8 @@
 @using Education.Client.Gateways.History.Test
 @layout HistoryLayout
 
+@attribute [Authorize]
+
 <div class="background">
     <MainContainer>
         <PageTitle>@L["Tests"]</PageTitle>
@@ -49,25 +51,18 @@
                             <MudText Typo="Typo.subtitle1">
                                 @L["Subscription:TestCreation"]
                             </MudText>
-                            <RestrictionQuantityView Restriction="@restrictions.TestCreation" Class="mr-2"/>
+                            <RestrictionQuantityView Restriction="@restrictions.TestCreation.Restriction" Class="mr-2"/>
                         </div>
-                        <TestWrapper Typo="Typo.subtitle1" Subject="@SubjectType.History" Status="@restrictions.TestStatus">
+                        <TestPermissionWrapper Status="@restrictions.TestCreation.Status" Subject="@SubjectType.History" Typo="Typo.subtitle1">
                             <div class="d-flex justify-end">
-                                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="_isLoading" Class="ml-auto">
-                                    @if (_isLoading)
-                                    {
-                                        <div class="d-flex flex-row align-center">
-                                            <MudProgressCircular Class="mr-3" Size="Size.Small" Indeterminate="true"/>
-                                            @L["Test:Creating"]
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        @L["Test:Create"]
-                                    }
-                                </MudButton>
+                                <LoadingButton
+                                    Class="ml-auto"
+                                    ButtonType="ButtonType.Submit" 
+                                    Text="@L["Test:Create"]"
+                                    LoadingText="@L["Test:Creating"]"
+                                    IsLoading="@_isLoading"/>
                             </div>
-                        </TestWrapper>
+                        </TestPermissionWrapper>
                     </Result>
                 </ApiResponseViewer>
             </EditForm>

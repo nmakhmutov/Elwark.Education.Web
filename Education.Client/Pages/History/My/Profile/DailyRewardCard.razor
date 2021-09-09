@@ -1,0 +1,59 @@
+@using Education.Client.Gateways.History.Me
+
+<MudCard Class="@Class">
+    <MudCardHeader Class="pa-3 pa-sm-6">
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                @L["Experience:DailyReward"]
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent Class="pa-3 pa-sm-6">
+        <div class="d-flex align-center justify-center">
+            <MudIcon Icon="@EducationIcons.Points" Size="Size.Large" Class="mr-1" Color="Color.Primary"/>
+            <MudText Typo="Typo.h3">
+                @Reward.Points
+            </MudText>
+        </div>
+    </MudCardContent>
+    <MudCardActions Class="d-flex justify-center pa-3 pa-sm-6">
+        @if (Reward.IsCollectable)
+        {
+            <LoadingButton
+                OnClick="@CollectAsync"
+                Text="@L["Experience:CollectDailyReward"]"
+                LoadingText="@L["Loading"]"
+                IsLoading="@_isLoading"/>
+        }
+        else
+        {
+            <MudButton Variant="Variant.Text" Disabled="true">
+                @L["Experience:DailyRewardUnlockedAt", Reward.NextTimeAt.ToSimpleFormat()]
+            </MudButton>
+        }
+    </MudCardActions>
+</MudCard>
+
+@code {
+    private bool _isLoading;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public DailyReward Reward { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnCollect { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task CollectAsync()
+    {
+        _isLoading = true;
+        await OnCollect.InvokeAsync();
+        _isLoading = false;
+    }
+
+}

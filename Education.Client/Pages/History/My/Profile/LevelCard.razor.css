@@ -1,0 +1,73 @@
+.hexagon-wrapper {
+    margin: 0 auto 12px auto;
+    display: flex;
+    text-align: initial;
+    width: 200px;
+    height: 200px;
+}
+
+.hexagon {
+    position: relative;
+    width: 46%;
+    height: 80%;
+    margin: auto;
+    color: white;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    transition: 0.5s;
+    transform: rotate(90deg);
+}
+
+.hexagon span {
+    z-index: 1;
+    margin: auto;
+    font-size: var(--mud-typography-h3-size);
+    font-family: var(--mud-typography-h3-family);
+    font-weight: var(--mud-typography-h3-weight);
+    line-height: var(--mud-typography-h3-lineheight);
+    letter-spacing: var(--mud-typography-h3-letterspacing);
+    color: var(--mud-palette-white);
+    transform: rotate(-90deg);
+}
+
+.hexagon:before,
+.hexagon:after {
+    position: absolute;
+    content: "";
+    background: inherit;
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+    transition: 0.5s;
+    transform-origin: center;
+}
+
+.hexagon:before {
+    transform: rotateZ(60deg);
+}
+
+.hexagon:after {
+    transform: rotateZ(-60deg);
+}
+
+@media (min-width: 600px) {
+    .hexagon-wrapper {
+        margin: 0 auto 24px auto;
+    }
+}
+
+/*.hexagon:hover {*/
+/*    border-radius: 50px;*/
+/*    transition: 0.5s;*/
+/*}*/
+
+/*.hexagon:hover:before {*/
+/*    border-radius: 50px;*/
+/*    transition: 0.5s;*/
+/*}*/
+
+/*.hexagon:hover:after {*/
+/*    border-radius: 50px;*/
+/*    transition: 0.5s;*/
+/*}*/

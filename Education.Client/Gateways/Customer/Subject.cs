@@ -10,6 +10,6 @@ namespace Education.Client.Gateways.Customer
         DateTime? ExpiredAt,
         Restriction TestCreation,
         Restriction TestMistakes,
-        int CurrentTests
+        uint CurrentTests
     );
 }

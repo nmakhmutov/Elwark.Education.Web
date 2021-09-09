@@ -2,18 +2,7 @@
 
 <div class="image @Class" style="background-image: url('@SubjectType.History.GetStatic().Image')">
     <div class="cover">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" OnClick="@OnClick">
-            @if (_isLoading)
-            {
-                <div class="d-flex flex-row align-center">
-                    <MudProgressCircular Class="mx-12" Size="Size.Small" Indeterminate="true"/>
-                </div>
-            }
-            else
-            {
-                @L["Topic:Random"]
-            }
-        </MudButton>
+        <LoadingButton Size="Size.Large" OnClick="@OnClick" IsLoading="@_isLoading" Text="@L["Topic:Random"]"/>
     </div>
 </div>
 
@@ -39,7 +28,6 @@
             return;
 
         _isLoading = true;
-
         var result = await Client.Topic.GetRandomAsync();
         if (result.Status == ResponseStatus.Success)
             Navigation.NavigateTo(Links.History.TopicById(result.Data.Id));

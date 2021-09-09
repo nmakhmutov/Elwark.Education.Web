@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Education.Client.Gateways.Customer;
 using Education.Client.Gateways.History;
-using Education.Client.Gateways.Shop;
+using Education.Client.Gateways.Store;
 using Education.Client.Infrastructure;
 using Education.Client.Infrastructure.Services;
 using Microsoft.AspNetCore.Components;
@@ -76,7 +76,7 @@ namespace Education.Client
                 .AddPolicyHandler(policy);
 
             builder.Services
-                .AddHttpClient<IShopClient, ShopClient>(client => client.BaseAddress = gatewayUrl)
+                .AddHttpClient<IStoreClient, StoreClient>(client => client.BaseAddress = gatewayUrl)
                 .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .AddHttpMessageHandler<EducationLocalization>()
                 .AddPolicyHandler(policy);

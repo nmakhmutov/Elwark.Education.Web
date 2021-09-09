@@ -1,0 +1,109 @@
+@using Education.Client.Gateways.Models.User
+@using Education.Client.Gateways.Store
+@using Education.Client.Gateways.Store.Catalog
+
+<div class="card">
+    <div class="pricing">
+        <div class="pricing-icon">
+            @switch (Type)
+            {
+                case SubscriptionType.Basic:
+                    <MudIcon Icon="@EducationIcons.SubscriptionBasic" Size="Size.Large" ViewBox="0 -17 512.00046 512"/>
+                    break;
+
+                case SubscriptionType.Advanced:
+                    <MudIcon Icon="@EducationIcons.SubscriptionAdvanced" Size="Size.Large" ViewBox="0 -17 512.00046 512"/>
+                    break;
+
+                default:
+                    <MudIcon Icon="@EducationIcons.SubscriptionFree" Size="Size.Large" ViewBox="0 -17 512.00046 512"/>
+                    break;
+            }
+        </div>
+        <div class="price">
+            <h6 class="price-symbol">
+                @GetCurrencySymbol(Price.Currency)
+            </h6>
+            <h4 class="price-value">
+                @Price.Total.ToReadable()
+            </h4>
+            <h6 class="price-period">
+                /@(Months == 1 ? "mo" : $"{Months} mo")
+            </h6>
+        </div>
+        <h6 class="pricing-title">
+            @L[$"Subscription:{Type}"]
+        </h6>
+        <p class="pricing-description">
+            @string.Join(",", Subjects.Select(x => L[$"Subject:{x}"]))
+        </p>
+    </div>
+    <MudDivider/>
+    <div class="options">
+        <div class="option-item">
+            <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small"/>
+            <MudText Typo="Typo.body2" Class="ml-3">
+                All previous
+            </MudText>
+        </div>
+        <div class="option-item">
+            <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small"/>
+            <MudText Typo="Typo.body2" Class="ml-3">
+                Highlights reporting
+            </MudText>
+        </div>
+        <div class="option-item">
+            <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small"/>
+            <MudText Typo="Typo.body2" Class="ml-3">
+                Data history
+            </MudText>
+        </div>
+        <div class="option-item">
+            <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small"/>
+            <MudText Typo="Typo.body2" Class="ml-3">
+                Unlimited users
+            </MudText>
+        </div>
+        <div class="flex-grow-1"></div>
+        <div class="d-flex justify-center mt-12">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnClick">
+                Buy now
+            </MudButton>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Id { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public SubscriptionType Type { get; set; }
+
+    [Parameter, EditorRequired]
+    public Price Price { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public uint Months { get; set; }
+
+    [Parameter, EditorRequired]
+    public IEnumerable<SubjectType> Subjects { get; set; } = Array.Empty<SubjectType>();
+
+    [Parameter, EditorRequired]
+    public EventCallback<string> OnBuyClick { get; set; }
+
+    private Task OnClick() => OnBuyClick.InvokeAsync(Id);
+
+    private string GetCurrencySymbol(Currency currency) =>
+        currency switch {
+            Currency.Usd => "$",
+            Currency.Eur => "€",
+            Currency.Rub => "₽",
+            _ => currency.ToString()
+            };
+
+}

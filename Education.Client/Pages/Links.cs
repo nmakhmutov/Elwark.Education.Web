@@ -27,17 +27,20 @@ namespace Education.Client.Pages
 
             public const string EventGuesserBuilder = $"{Index}/event-guesser";
 
-            public const string ProfileMe = $"{Index}/profile/me";
+            public const string MyProfile = $"{Index}/my/profile";
 
-            public const string ProfileEasyTest = $"{ProfileMe}/tests/easy";
+            public const string MyEasyTests = $"{Index}/my/tests/easy";
 
-            public const string ProfileHardTest = $"{ProfileMe}/tests/hard";
+            public const string MyHardTests = $"{Index}/my/tests/hard";
 
-            public const string ProfileMixedTest = $"{ProfileMe}/tests/mixed";
+            public const string MyMixedTests = $"{Index}/my/tests/mixed";
 
-            public const string ProfileEventGuesser = $"{ProfileMe}/event-guesser";
+            public const string MyEventGuessers = $"{Index}/my/event-guessers";
 
-            public const string ProfileFavorites = $"{ProfileMe}/favorites";
+            public const string MyFavorites = $"{Index}/my/favorites";
+
+            public static string MyTopicProgress(string topicId) => 
+                $"{Index}/my/topics/{topicId}";
 
             public static string TopicByEpoch(EpochType epoch) =>
                 $"{Index}/{epoch.ToFastString()}";
@@ -50,13 +53,13 @@ namespace Education.Client.Pages
 
             public static string TestConclusion(string testId) =>
                 $"{TestBuilder}/{testId}/conclusion";
-
-            public static string ProfileTopic(string topicId) => $"{ProfileMe}/topics/{topicId}";
         }
 
-        public static class Shop
+        public static class Store
         {
-            public const string Index = "/shop";
+            public const string Index = "/store";
+
+            public const string Basket = $"{Index}/basket";
         }
     }
 }

@@ -5,16 +5,19 @@ namespace Education.Client.Infrastructure.Extensions
     public static class NumberExtensions
     {
         public static string ToReadable(this int number) =>
-            ToReadable((double) number);
-        
+            ToReadable((double)number);
+
         public static string ToReadable(this uint number) =>
-            ToReadable((double) number);
+            ToReadable((double)number);
 
         public static string ToReadable(this long number) =>
-            ToReadable((double) number);
-        
+            ToReadable((double)number);
+
         public static string ToReadable(this ulong number) =>
-            ToReadable((double) number);
+            ToReadable((double)number);
+
+        public static string ToReadable(this decimal number) =>
+            ToReadable(decimal.ToDouble(number));
 
         public static string ToReadable(this double number)
         {
@@ -30,7 +33,7 @@ namespace Education.Client.Infrastructure.Extensions
                 >= 1_000 => $"{result / 1_000:0.#}K",
                 _ => result.ToString("#,0")
             };
-            
+
             return $"{(number < 0 ? "-" : "")}{formatted}";
         }
     }

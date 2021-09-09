@@ -1,0 +1,103 @@
+.grid {
+    display: grid;
+    grid-gap: 12px;
+    grid-template-areas: 
+                "subject"
+                "level"
+                "points"
+                "achievements"
+                "daily-reward"
+                "easy-test"
+                "hard-test"
+                "mixed-test"
+                "event-guesser"
+                "activity";
+}
+
+.grid ::deep .subject {
+    grid-area: subject;
+}
+
+.grid ::deep .achievements {
+    grid-area: achievements;
+}
+
+.grid ::deep .points {
+    grid-area: points;
+}
+
+.grid ::deep .level {
+    grid-area: level;
+}
+
+.grid ::deep .daily-reward {
+    grid-area: daily-reward;
+}
+
+.grid ::deep .easy-test {
+    grid-area: easy-test;
+}
+
+.grid ::deep .hard-test {
+    grid-area: hard-test;
+}
+
+.grid ::deep .mixed-test {
+    grid-area: mixed-test;
+}
+
+.grid ::deep .event-guesser {
+    grid-area: event-guesser;
+}
+
+.grid ::deep .activity {
+    grid-area: activity;
+}
+
+@media (min-width: 720px) {
+    .grid {
+        grid-gap: 24px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+        "subject points"
+        "level points"
+        "daily-reward points"
+        "achievements achievements"
+        "easy-test hard-test"
+        "mixed-test event-guesser"
+        "activity activity";
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: repeat(3, minmax(200px, 1fr));
+        grid-template-areas:
+        "subject achievements level"
+        "points points daily-reward"
+        "easy-test hard-test mixed-test"
+        "event-guesser . . "
+        "activity activity activity";
+    }
+}
+
+@media (min-width: 1600px) {
+    .grid {
+        grid-template-columns: repeat(4, minmax(200px, 1fr));
+        grid-template-areas:
+        "subject achievements achievements level"
+        "points points points daily-reward"
+        "easy-test hard-test mixed-test event-guesser"
+        "activity activity activity activity";
+    }
+}
+
+@media (min-width: 1920px) {
+    .grid {
+        grid-template-columns: repeat(5, minmax(200px, 1fr));
+        grid-template-areas:
+        "subject activity activity activity activity"
+        "points points points points level"
+        "easy-test hard-test mixed-test event-guesser daily-reward";
+    }
+}

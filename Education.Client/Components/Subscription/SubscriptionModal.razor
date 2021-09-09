@@ -1,0 +1,72 @@
+@using Education.Client.Gateways.Store
+@using Education.Client.Gateways.Store.Catalog
+<MudDialog DisableSidePadding="true" Class="pa-0" ClassContent="pa-0">
+    <DialogContent>
+        <div class="container">
+            <div class="ma-6">
+                <MudText Typo="Typo.h4" Align="Align.Center">
+                    Start today. Boost up your learning!
+                </MudText>
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                    Start with premium subscription today.
+                </MudText>
+            </div>
+            <ApiResponseViewer Response="@_response">
+                <Placeholder>
+                    <div class="pricing-grid">
+                        <SkeletonCard/>
+                        <SkeletonCard/>
+                    </div>
+                </Placeholder>
+                <Result Context="subscriptions">
+                    <div class="pricing-grid">
+                        @foreach (var item in subscriptions)
+                        {
+                            <SubscriptionCard
+                                Id="@item.Id"
+                                Months="@item.Months"
+                                Price="@item.Price"
+                                Type="@item.Type"
+                                Subjects="@item.Subjects"
+                                OnBuyClick="@OnBuyClick"/>
+                        }
+                    </div>
+                </Result>
+            </ApiResponseViewer>
+            @* <div class="d-flex flex-row justify-center my-3"> *@
+            @*     <MudButton Variant="Variant.Filled" Color="Color.Success" Link="@Links.Shop.Index"> *@
+            @*         @L["SeeAll"] *@
+            @*     </MudButton> *@
+            @* </div> *@
+        </div>
+    </DialogContent>
+</MudDialog>
+
+@code {
+
+    [Inject]
+    private IStoreClient Store { get; set; } = default!;
+
+    [Inject]
+    public NavigationManager Navigation { get; set; } = default!;
+    
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter]
+    public SubjectType SubjectType { get; set; } = SubjectType.Unknown;
+
+
+    private ApiResponse<Subscription[]> _response = ApiResponse<Subscription[]>.Loading();
+
+    protected override async Task OnInitializedAsync() =>
+        _response = await Store.Catalog.GetSubscriptions(SubjectType);
+
+    private async Task OnBuyClick(string id)
+    {
+        var response = await Store.Basket.AddItemAsync(id);
+        if (response.IsSuccess)
+            Navigation.NavigateTo(Links.Store.Basket);
+    }
+
+}
