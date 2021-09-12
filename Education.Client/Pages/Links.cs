@@ -59,7 +59,7 @@ namespace Education.Client.Pages
         {
             public const string Index = "/store";
 
-            public const string Basket = $"{Index}/basket";
+            public const string Checkout = $"{Index}/checkout";
         }
     }
 }

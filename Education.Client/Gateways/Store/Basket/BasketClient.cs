@@ -15,9 +15,15 @@ namespace Education.Client.Gateways.Store.Basket
             ExecuteAsync<Basket>(() => _client.GetAsync("store/basket"));
 
         public Task<ApiResponse<Unit>> AddItemAsync(string productId) =>
-            ExecuteAsync<Unit>(() => _client.PutAsync($"store/basket/{productId}", EmptyContent));
+            ExecuteAsync<Unit>(() => _client.PutAsync($"store/basket/items/{productId}", EmptyContent));
         
         public Task<ApiResponse<Unit>> RemoveItemAsync(string productId) =>
-            ExecuteAsync<Unit>(() => _client.DeleteAsync($"store/basket/{productId}"));
+            ExecuteAsync<Unit>(() => _client.DeleteAsync($"store/basket/items/{productId}"));
+        
+        public Task<ApiResponse<Unit>> AddCouponAsync(string coupon) =>
+            ExecuteAsync<Unit>(() => _client.PutAsync($"store/basket/coupons/{coupon}", EmptyContent));
+        
+        public Task<ApiResponse<Unit>> RemoveCouponAsync() =>
+            ExecuteAsync<Unit>(() => _client.DeleteAsync($"store/basket/coupons"));
     }
 }

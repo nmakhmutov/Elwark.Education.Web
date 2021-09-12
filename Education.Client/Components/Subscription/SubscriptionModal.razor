@@ -45,7 +45,7 @@
 @code {
 
     [Inject]
-    private IStoreClient Store { get; set; } = default!;
+    private IStoreClient Client { get; set; } = default!;
 
     [Inject]
     public NavigationManager Navigation { get; set; } = default!;
@@ -60,13 +60,13 @@
     private ApiResponse<Subscription[]> _response = ApiResponse<Subscription[]>.Loading();
 
     protected override async Task OnInitializedAsync() =>
-        _response = await Store.Catalog.GetSubscriptions(SubjectType);
+        _response = await Client.Catalog.GetSubscriptions(SubjectType);
 
     private async Task OnBuyClick(string id)
     {
-        var response = await Store.Basket.AddItemAsync(id);
+        var response = await Client.Basket.AddItemAsync(id);
         if (response.IsSuccess)
-            Navigation.NavigateTo(Links.Store.Basket);
+            Navigation.NavigateTo(Links.Store.Checkout);
     }
 
 }

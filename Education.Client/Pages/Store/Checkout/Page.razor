@@ -1,0 +1,292 @@
+@page "/store/checkout"
+@using Education.Client.Gateways.Store
+@using Education.Client.Gateways.Store.Basket
+@using FluentValidation
+@using Education.Client.Gateways.Models.User
+@using Severity = MudBlazor.Severity
+
+@attribute [Authorize]
+
+<div class="wrapper">
+<ApiResponseViewer Response="_response">
+<Placeholder>
+    <div class="shopping-cart">
+        <h2 class="title">
+            @L["Store:ShoppingCart"]
+        </h2>
+    </div>
+
+    <div class="order-summary">
+        <h2 class="title">
+            @L["Store:OrderSummary"]
+        </h2>
+
+        <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8">
+            <MudSkeleton Width="150px" Height="30px"/>
+            <MudSkeleton Width="60px" Height="30px"/>
+        </div>
+
+        <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8">
+            <MudSkeleton Width="150px" Height="30px"/>
+            <MudSkeleton Width="60px" Height="30px"/>
+        </div>
+
+        <MudDivider Class="mb-6 mb-sm-8"/>
+
+        <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8">
+            <MudSkeleton Width="150px" Height="30px"/>
+            <MudSkeleton Width="60px" Height="30px"/>
+        </div>
+
+        <div class="d-flex flex-row justify-center">
+            <MudSkeleton Style="width:100%; max-width: 600px" Height="52px"/>
+        </div>
+    </div>
+</Placeholder>
+<Result Context="basket">
+    <div class="shopping-cart">
+        <h2 class="title">
+            @L["Store:ShoppingCart"]
+        </h2>
+
+        @if (basket.Items.Length > 0)
+        {
+            <MudTable
+                Items="@basket.Items"
+                Breakpoint="Breakpoint.Sm"
+                Outlined="false"
+                Bordered="false"
+                Hover="false"
+                Striped="false"
+                Elevation="0">
+                <HeaderContent>
+                    <MudTh Style="width: 50px"/>
+                    <MudTh>@L["Store:Product"]</MudTh>
+                    <MudTh>@L["Store:Price"]</MudTh>
+                    <MudTh>@L["Store:Quantity"]</MudTh>
+                    <MudTh>@L["Store:Total"]</MudTh>
+                    <MudTh Style="width: 50px"/>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd HideSmall="true">
+                        <MudIcon
+                            Icon="@(context.Subscription switch {
+                                      SubscriptionType.Free => EducationIcons.SubscriptionFree,
+                                      SubscriptionType.Basic => EducationIcons.SubscriptionBasic,
+                                      SubscriptionType.Advanced => EducationIcons.SubscriptionAdvanced,
+                                      _ => throw new ArgumentOutOfRangeException()})"
+                            Style="width: 50px; height: 50px"
+                            ViewBox="0 -17 512.00046 512"/>
+                    </MudTd>
+                    <MudTd DataLabel="@L["Store:Product"]">
+                        <div class="cell-align">
+                            <MudText Typo="Typo.body1">
+                                @L[$"Subscription:{context.Subscription}"]
+                            </MudText>
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                                @string.Join(",", context.Subjects.Select(x => L[$"Subject:{x}"]))
+                            </MudText>
+                        </div>
+                    </MudTd>
+                    <MudTd DataLabel="@L["Store:Price"]">
+                        <MudText Typo="Typo.body1">
+                            @context.Price.Symbol@context.Price.Amount
+                        </MudText>
+                    </MudTd>
+                    <MudTd DataLabel="@L["Store:Quantity"]">
+                        <MudText Typo="Typo.body1">
+                            @context.Quantity
+                        </MudText>
+                    </MudTd>
+                    <MudTd DataLabel="@L["Store:Total"]">
+                        <div class="cell-align">
+                            @if (context.Price.Discount > 0)
+                            {
+                                <MudText Typo="Typo.body2" Class="mud-text-secondary" Style="text-decoration: line-through">
+                                    @context.Price.Symbol@context.Price.Amount
+                                </MudText>
+                            }
+                            <MudText Typo="Typo.body1">
+                                @context.Price.Symbol@context.Price.Total
+                            </MudText>
+                        </div>
+                    </MudTd>
+                    <MudTd>
+                        <MudIconButton
+                            Icon="@Icons.Outlined.Close"
+                            Size="Size.Small"
+                            OnClick="@(() => OnDeleteItem(context.ProductId))"/>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
+        else
+        {
+            <div class="d-flex flex-column align-center">
+                <MudIcon Icon="@Icons.Outlined.ShoppingBag" Size="Size.Large" Class="mud-text-secondary mb-3"/>
+                <MudText Typo="Typo.h5" Class="mud-text-secondary mb-3">
+                    @L["Store:CartIsEmpty"]
+                </MudText>
+                <MudButton Link="@Links.Store.Index" Color="Color.Primary" Variant="Variant.Filled">
+                    @L["Store:Catalog"]
+                </MudButton>
+            </div>
+        }
+    </div>
+
+    <div class="order-summary">
+        <h2 class="title">
+            @L["Store:OrderSummary"]
+        </h2>
+
+        <div class="d-flex flex-row justify-space-between">
+            <MudText Typo="Typo.h6">
+                @L["Store:Items", basket.Items.Length]
+            </MudText>
+            <MudText Typo="Typo.h6">
+                @basket.Summary.Currency.GetSymbol()@basket.Summary.TotalItems
+            </MudText>
+        </div>
+
+        @if (basket.Summary.TotalDiscount > 0)
+        {
+            <div class="d-flex flex-row justify-space-between">
+                <MudText Typo="Typo.subtitle2">
+                    @L["Store:Discount"]
+                </MudText>
+                <MudText Typo="Typo.subtitle2">
+                    @basket.Summary.Currency.GetSymbol()-@basket.Summary.TotalDiscount
+                </MudText>
+            </div>
+        }
+
+        @if (basket.Summary.CouponDiscount > 0)
+        {
+            <div class="d-flex flex-row justify-space-between">
+                <MudText Typo="Typo.subtitle2">
+                    @L["Store:PromoCode"]
+                </MudText>
+                <MudText Typo="Typo.subtitle2">
+                    @basket.Summary.Currency.GetSymbol()-@basket.Summary.CouponDiscount
+                </MudText>
+            </div>
+        }
+
+        <div class="my-6 my-sm-8" style="width:100%; max-width: 400px">
+            <MudText Typo="Typo.h6">
+                @L["Store:PromoCode"]
+            </MudText>
+
+            <EditForm Model="@_coupon" OnValidSubmit="@OnValidCoupon">
+                <FluentValidationValidator/>
+
+                <div class="d-flex flex-row align-start">
+                    <MudTextField
+                        @bind-Value="@_coupon.Code"
+                        For="@(() => _coupon.Code)"
+                        Variant="Variant.Outlined"
+                        Margin="Margin.Dense"
+                        Class="ma-0 mr-3"/>
+
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Style="margin-top: 2px">
+                        @(_coupon.IsAvailable ? L["Store:Delete"] : L["Store:Apply"])
+                    </MudButton>
+                </div>
+            </EditForm>
+        </div>
+
+        <MudDivider Class="mb-6 mb-sm-8"/>
+
+        <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8">
+            <MudText Typo="Typo.h6">
+                @L["Store:Total"]
+            </MudText>
+            <MudText Typo="Typo.h6">
+                @basket.Summary.Currency.GetSymbol()@basket.Summary.TotalPrice
+            </MudText>
+        </div>
+
+        <div class="d-flex flex-row justify-center">
+            <MudButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                Size="Size.Large"
+                Disabled="@(basket.Items.Length == 0)"
+                Style="width:100%; max-width: 600px">
+                @L["Store:Checkout"]
+            </MudButton>
+        </div>
+    </div>
+</Result>
+</ApiResponseViewer>
+</div>
+
+@code {
+
+    private Coupon _coupon = new();
+
+    private ApiResponse<Basket> _response = ApiResponse<Basket>.Loading();
+
+    [Inject]
+    private IStoreClient Client { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
+    protected override Task OnInitializedAsync() =>
+        LoadAsync();
+
+    private async Task LoadAsync()
+    {
+        _response = await Client.Basket.GetAsync();
+
+        if (_response.IsSuccess)
+            _coupon = new Coupon
+            {
+                IsAvailable = !string.IsNullOrEmpty(_response.Data.Coupon),
+                Code = _response.Data.Coupon
+            };
+        else
+            Snackbar.Add(_response.Error.Message);
+    }
+
+    private async Task OnDeleteItem(string productId)
+    {
+        var response = await Client.Basket.RemoveItemAsync(productId);
+
+        if (response.IsSuccess)
+            await LoadAsync();
+        else
+            Snackbar.Add(response.Error.Message, Severity.Error);
+    }
+
+    private async Task OnValidCoupon()
+    {
+        var response = _coupon.IsAvailable
+            ? await Client.Basket.RemoveCouponAsync()
+            : await Client.Basket.AddCouponAsync(_coupon.Code!);
+
+        if (response.IsSuccess)
+            await LoadAsync();
+        else
+            Snackbar.Add(response.Error.Message);
+    }
+
+    public sealed record Coupon
+    {
+        public bool IsAvailable { get; set; }
+
+        public string? Code { get; set; }
+
+        public sealed class Validator : AbstractValidator<Coupon>
+        {
+            public Validator() =>
+                RuleFor(x => x.Code)
+                    .NotEmpty().When(x => !x.IsAvailable);
+        }
+    }
+
+}

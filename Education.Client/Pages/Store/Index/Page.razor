@@ -1,0 +1,69 @@
+@page "/store"
+@using Education.Client.Gateways.Store
+@using Education.Client.Gateways.Store.Catalog
+@attribute [Authorize]
+
+<div class="header-wrapper">
+    <div class="header">
+        <div class="header-text-wrapper">
+            <MudText Typo="Typo.h4" Class="mb-3">
+                Start today. Boost up your learning!
+            </MudText>
+            <MudText Typo="Typo.subtitle1" Class="mud-text-secondary">
+                Start with premium subscription today.
+            </MudText>
+        </div>
+        <div class="header-image-wrapper">
+            <div class="header-image">
+                <img alt="Pricing" src="/images/illustration/product-teardown.svg">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="product-wrapper">
+    <DefaultFitGrid Style="justify-items: center">
+        <ApiResponseViewer Response="@_response">
+            <Placeholder>
+                <SkeletonCard Style="width: 100%; max-width: 460px"/>
+                <SkeletonCard Style="width: 100%; max-width: 460px"/>
+                <SkeletonCard Style="width: 100%; max-width: 460px"/>
+            </Placeholder>
+            <Result Context="subscriptions">
+                @foreach (var item in subscriptions)
+                {
+                    <SubscriptionCard
+                        Id="@item.Id"
+                        Months="@item.Months"
+                        Price="@item.Price"
+                        Subjects="@item.Subjects"
+                        Type="@item.Type"
+                        OnBuyClick="@OnBuyClick"/>
+                }
+            </Result>
+        </ApiResponseViewer>
+    </DefaultFitGrid>
+</div>
+
+@code {
+    private ApiResponse<Subscription[]> _response = ApiResponse<Subscription[]>.Loading();
+
+    [Inject]
+    private IStoreClient Client { get; set; } = default!;
+
+    [Inject]
+    public NavigationManager Navigation { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _response = await Client.Catalog.GetSubscriptions();
+    }
+
+    private async Task OnBuyClick(string id)
+    {
+        var response = await Client.Basket.AddItemAsync(id);
+        if (response.IsSuccess)
+            Navigation.NavigateTo(Links.Store.Checkout);
+    }
+
+}
