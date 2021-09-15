@@ -6,6 +6,7 @@
 @attribute [Authorize]
 
 <SearchHeader Search="@OnSearch" Class="mb-6 mb-sm-12"/>
+
 <ApiResponseViewer Response="@_response">
     <Placeholder>
         <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12">
@@ -18,7 +19,9 @@
         </CenteredContainer>
     </Placeholder>
     <Result Context="result">
-        <PageTitle>@L["Subject:History"]</PageTitle>
+        <PageTitle>
+            @L["Subject:History"]
+        </PageTitle>
 
         <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12">
             <div class="header">
@@ -50,12 +53,12 @@
             </div>
             <Trending Items="@result.RecentTopics"/>
         </CenteredContainer>
+        
+        <CenteredContainer MaxWidth="@ContainerWidth.W600" Class="mb-6 mb-sm-12">
+            <RandomTopic/>
+        </CenteredContainer>
     </Result>
 </ApiResponseViewer>
-
-<CenteredContainer MaxWidth="@ContainerWidth.W600" Class="mb-6 mb-sm-12">
-    <RandomTopic/>
-</CenteredContainer>
 
 @code {
 

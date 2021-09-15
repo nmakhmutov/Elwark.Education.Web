@@ -1,6 +1,5 @@
 using System.Net.Http;
 using System.Threading.Tasks;
-using Education.Client.Model;
 
 namespace Education.Client.Gateways.Store.Catalog
 {

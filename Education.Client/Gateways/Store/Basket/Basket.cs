@@ -1,5 +1,4 @@
 using Education.Client.Gateways.Models.User;
-using Education.Client.Model;
 
 namespace Education.Client.Gateways.Store.Basket
 {

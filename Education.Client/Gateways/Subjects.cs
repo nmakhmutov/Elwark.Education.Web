@@ -1,4 +1,4 @@
-namespace Education.Client.Model
+namespace Education.Client.Gateways
 {
     public enum SubjectType
     {

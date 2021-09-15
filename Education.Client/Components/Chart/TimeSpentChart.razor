@@ -23,7 +23,7 @@
         InterpolationOption = InterpolationOption.NaturalSpline,
         XAxisLines = false,
         YAxisLines = false,
-        YAxisTicks = 10,
+        YAxisTicks = 20,
         ChartPalette = new[]
         {
             Colors.Blue.Darken2,
@@ -35,9 +35,9 @@
 
     private List<ChartSeries> Series => new()
     {
-        new ChartSeries {Data = new[] {Value.Min.TotalSeconds}},
-        new ChartSeries {Data = new[] {Value.Max.TotalSeconds}},
-        new ChartSeries {Data = new[] {Value.Average.TotalSeconds}}
+        new ChartSeries { Data = new[] { Value.Min.TotalSeconds / Value.Total.TotalSeconds * 100 } },
+        new ChartSeries { Data = new[] { Value.Max.TotalSeconds / Value.Total.TotalSeconds * 100} },
+        new ChartSeries { Data = new[] { Value.Average.TotalSeconds / Value.Total.TotalSeconds * 100} }
     };
 
     private ChartList.Item[] Items => new[]

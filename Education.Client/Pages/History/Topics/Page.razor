@@ -101,13 +101,8 @@
 
     private void OnPagination(int page)
     {
-        var uri = new UriBuilder(Navigation.Uri);
-        var query = HttpUtility.ParseQueryString(uri.Query);
-        query.Set("page", page.ToString());
-        uri.Query = query.ToString();
-
         CurrentPage = page;
-        Navigation.NavigateTo(uri.ToString(), replace: true);
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", CurrentPage));
     }
 
 }

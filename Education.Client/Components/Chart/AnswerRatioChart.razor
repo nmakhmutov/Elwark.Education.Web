@@ -7,7 +7,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Parameter]
     public string? Class { get; set; }
 
@@ -23,7 +23,7 @@
         InterpolationOption = InterpolationOption.NaturalSpline,
         XAxisLines = false,
         YAxisLines = false,
-        YAxisTicks = 10,
+        YAxisTicks = 20,
         ChartPalette = new[]
         {
             Colors.Blue.Darken2,
@@ -32,13 +32,13 @@
             Colors.Purple.Darken2
         }
     };
-    
+
     private List<ChartSeries> Series => new()
     {
-        new ChartSeries {Data = new double[] {Value.Answered}},
-        new ChartSeries {Data = new double[] {Value.NotAnswered}},
-        new ChartSeries {Data = new double[] {Value.Correct}},
-        new ChartSeries {Data = new double[] {Value.Incorrect}}
+        new ChartSeries { Data = new[] { Value.Answered / (double)Value.Questions * 100 } },
+        new ChartSeries { Data = new[] { Value.NotAnswered / (double)Value.Questions * 100 } },
+        new ChartSeries { Data = new[] { Value.Correct / (double)Value.Questions * 100 } },
+        new ChartSeries { Data = new[] { Value.Incorrect / (double)Value.Questions * 100 } }
     };
 
     private ChartList.Item[] Items => new[]

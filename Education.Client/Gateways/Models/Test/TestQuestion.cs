@@ -7,7 +7,7 @@ namespace Education.Client.Gateways.Models.Test
         QuestionType Type,
         string Title,
         string? Image,
-        bool IsAnswered,
+        bool IsCompleted,
         TopicTitle Topic,
         AnswerOption[] Options
     );

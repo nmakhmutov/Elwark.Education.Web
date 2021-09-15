@@ -1,0 +1,28 @@
+.grid {
+    display: grid;
+    grid-gap: 12px;
+    justify-items: center;
+}
+
+.image {
+    max-width: 300px;
+}
+
+.image img {
+    width: 100%;
+    height: auto;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        grid-gap: 24px;
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: start;
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

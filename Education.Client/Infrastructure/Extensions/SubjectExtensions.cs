@@ -1,5 +1,5 @@
 using System;
-using Education.Client.Model;
+using Education.Client.Gateways;
 using MudBlazor;
 
 namespace Education.Client.Infrastructure.Extensions
