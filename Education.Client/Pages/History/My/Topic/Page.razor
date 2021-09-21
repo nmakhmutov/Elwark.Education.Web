@@ -9,6 +9,35 @@
     <CenteredContainer MaxWidth="ContainerWidth.W1280" Class="pa-0">
         <ApiResponseViewer Response="@_response">
             <Placeholder>
+                <MudPaper Class="d-md-flex justify-space-between align-center pa-3 pa-sm-6 mb-3 mb-sm-6">
+                    <div class="d-flex flex-column flex-sm-row justify-center align-center mb-3 mb-sm-6 mb-md-0">
+                        <div class="avatar">
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="120px" Height="120px"/>
+                        </div>
+                        <div class="d-flex flex-column justify-space-between">
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="160px" Height="40px" Class="mb-3"/>
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="120px" Height="30px"/>
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="180px"/>
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="190px"/>
+                        </div>
+                    </div>
+                    <div>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Style="width: 100%; min-width: 200px"/>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Style="width: 100%; min-width: 200px"/>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Style="width: 100%; min-width: 200px"/>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Style="width: 100%; min-width: 200px"/>
+                    </div>
+                </MudPaper>
+
+                @Header(new HeaderProps(L["Tests:Easy"], Links.History.MyEasyTests, L["TimeSpent"], TimeSpan.Zero))
+                <DefaultFitGrid>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                </DefaultFitGrid>
+
+                <div class="py-6"></div>
+                @Header(new HeaderProps(L["Tests:Hard"], Links.History.MyEasyTests, L["TimeSpent"], TimeSpan.Zero))
                 <DefaultFitGrid>
                     <SkeletonCard/>
                     <SkeletonCard/>

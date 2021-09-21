@@ -8,6 +8,7 @@ namespace Education.Client.Gateways.History.Topic
         string Description,
         string Image,
         EpochType Epoch,
+        string[] Tags,
         Chapter[] Chapters
     );
     
@@ -19,10 +20,10 @@ namespace Education.Client.Gateways.History.Topic
         EpochType Epoch,
         HistoricalPersonDate? Born,
         HistoricalPersonDate? Died,
-        Chapter[] Content,
-        string[] Occupations,
+        string[] Tags,
+        Chapter[] Chapters,
         Characteristic[] Characteristics
-    ) : TopicDetail(Id, Title, Description, Image, Epoch, Content);
+    ) : TopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);
     
     internal sealed record EventTopicDetail(
         string Id,
@@ -32,6 +33,7 @@ namespace Education.Client.Gateways.History.Topic
         EpochType Epoch,
         HistoricDate? Started,
         HistoricDate? Ended,
-        Chapter[] Content
-    ) : TopicDetail(Id, Title, Description, Image, Epoch, Content);
+        string[] Tags,
+        Chapter[] Chapters
+    ) : TopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);
 }

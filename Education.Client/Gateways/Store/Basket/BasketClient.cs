@@ -20,10 +20,10 @@ namespace Education.Client.Gateways.Store.Basket
         public Task<ApiResponse<Unit>> RemoveItemAsync(string productId) =>
             ExecuteAsync<Unit>(() => _client.DeleteAsync($"store/basket/items/{productId}"));
         
-        public Task<ApiResponse<Unit>> AddCouponAsync(string coupon) =>
-            ExecuteAsync<Unit>(() => _client.PutAsync($"store/basket/coupons/{coupon}", EmptyContent));
+        public Task<ApiResponse<Unit>> AddPromoCodeAsync(string code) =>
+            ExecuteAsync<Unit>(() => _client.PutAsync($"store/basket/promo-codes/{code}", EmptyContent));
         
-        public Task<ApiResponse<Unit>> RemoveCouponAsync() =>
-            ExecuteAsync<Unit>(() => _client.DeleteAsync($"store/basket/coupons"));
+        public Task<ApiResponse<Unit>> RemovePromoCodeAsync() =>
+            ExecuteAsync<Unit>(() => _client.DeleteAsync("store/basket/promo-codes"));
     }
 }

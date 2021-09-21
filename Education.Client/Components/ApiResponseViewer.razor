@@ -3,7 +3,6 @@
 @switch (Response.Status)
 {
     case ResponseStatus.Loading:
-        <PageTitle>@L["Loading"]</PageTitle>
         @Placeholder
         break;
 
@@ -15,6 +14,9 @@
     case ResponseStatus.Success:
         @Result(Response.Data)
         break;
+        
+    default:
+        throw new ArgumentOutOfRangeException();
 }
 
 @code {

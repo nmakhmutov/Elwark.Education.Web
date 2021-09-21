@@ -93,7 +93,7 @@
                                             </MudText>
                                         }
                                     </div>
-                                    <MudAvatar Class="ml-3 ml-sm-0 mr-sm-3" Image="@context.Type.GetStatic().Image"/>
+                                    <MudAvatar Class="ml-3 ml-sm-0 mr-sm-3" Image="@SubjectImage(context.Type)"/>
                                 </div>
                             </MudTd>
                             <MudTd DataLabel="@L["Subscription"]">
@@ -179,6 +179,13 @@
         type switch {
             SubjectType.History => Links.History.MyProfile,
             _ => "#"
+            };
+
+    private static string SubjectImage(SubjectType type) =>
+        type switch{
+            SubjectType.Unknown => "",
+            SubjectType.History => "/images/history/history.jpg",
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
 
 }

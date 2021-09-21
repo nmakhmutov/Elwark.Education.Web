@@ -6,7 +6,7 @@ namespace Education.Client.Gateways.Store.Catalog
         string Id,
         SubscriptionType Type,
         uint Months,
-        Price Price,
+        Money Price,
         SubjectType[] Subjects
     );
 }

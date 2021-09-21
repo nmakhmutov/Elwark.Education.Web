@@ -50,7 +50,8 @@
 </ApiResponseViewer>
 
 @code {
-
+    private ApiResponse<TestConclusion> _response = ApiResponse<TestConclusion>.Loading();
+    
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 
@@ -59,8 +60,6 @@
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
-
-    private ApiResponse<TestConclusion> _response = ApiResponse<TestConclusion>.Loading();
 
     protected override async Task OnParametersSetAsync() =>
         _response = await HistoryClient.Test.GetConclusionAsync(Id);

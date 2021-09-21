@@ -96,7 +96,7 @@
                 </StatisticsCard>
 
                 <MudPaper Class="achievements d-flex justify-center align-center">
-                    <MudText Typo="Typo.h3" Class="ma-3 ma-sm-6">
+                    <MudText Typo="Typo.h4" Class="ma-3 ma-sm-6">
                         "Achievements" comming soon
                     </MudText>
                 </MudPaper>
@@ -150,24 +150,12 @@
                 </StatisticsCard>
 
                 <MudPaper Class="activity">
-                    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
-                        <MudTabPanel Text="Daily">
-                            <MudChart
-                                ChartType="ChartType.Line"
-                                Width="100%"
-                                Height="300px"
-                                ChartSeries="@_dailyChartSeries"
-                                XAxisLabels="@_dailyXAxis.ToArray()"/>
-                        </MudTabPanel>
-                        <MudTabPanel Text="Monthly">
-                            <MudChart
-                                ChartType="ChartType.Bar"
-                                Width="100%"
-                                Height="300px"
-                                ChartSeries="@_monthlyChartSeries"
-                                XAxisLabels="@_monthlyXAxis.ToArray()"/>
-                        </MudTabPanel>
-                    </MudTabs>
+                    <MudChart
+                        ChartType="ChartType.Line"
+                        Width="100%"
+                        Height="300px"
+                        ChartSeries="@_dailyChartSeries"
+                        XAxisLabels="@_dailyXAxis.ToArray()"/>
                 </MudPaper>
             </div>
         </Result>
@@ -185,9 +173,6 @@
     private int _recentCount = 10;
     private readonly List<string> _dailyXAxis = new();
     private readonly List<ChartSeries> _dailyChartSeries = new();
-
-    private readonly List<string> _monthlyXAxis = new();
-    private readonly List<ChartSeries> _monthlyChartSeries = new();
 
     [Inject]
     private IDialogService Dialog { get; set; } = default!;
@@ -216,20 +201,6 @@
             }
 
             _dailyChartSeries.Add(new ChartSeries
-            {
-                Name = L["Experience:MyPoints"],
-                Data = list.ToArray()
-            });
-
-            list.Clear();
-
-            foreach (var (points, createdAt) in _overview.Data.Experience.Monthly.OrderBy(x => x.CreatedAt))
-            {
-                _monthlyXAxis.Add(createdAt.ToString("MMMM yyyy"));
-                list.Add(points);
-            }
-
-            _monthlyChartSeries.Add(new ChartSeries
             {
                 Name = L["Experience:MyPoints"],
                 Data = list.ToArray()
@@ -276,6 +247,7 @@
         var (orientation, count) = e switch {
             Breakpoint.Lg => (TimelineOrientation.Horizontal, 5),
             Breakpoint.Xl => (TimelineOrientation.Horizontal, 10),
+            Breakpoint.Xxl => (TimelineOrientation.Horizontal, 10),
             _ => (TimelineOrientation.Vertical, 10)
             };
 

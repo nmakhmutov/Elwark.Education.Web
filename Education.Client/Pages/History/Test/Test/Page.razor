@@ -46,19 +46,19 @@
             <CenteredContainer MaxWidth="ContainerWidth.W1280" Elevation="1" Paper="true">
                 <div class="d-flex flex-column align-center pa-3 pa-sm-6">
                     <MudText Typo="Typo.subtitle1" Class="mb-3">
-                        @Question.Topic.Title
+                        @_question.Topic.Title
                     </MudText>
 
-                    @if (Question.Image is not null)
+                    @if (_question.Image is not null)
                     {
-                        <img class="image mb-3" src="@Question.Image" alt="@Question.Title"/>
+                        <img class="image mb-3" src="@_question.Image" alt="@_question.Title"/>
                     }
 
                     <MudText Typo="Typo.h6" Class="mb-3">
-                        @Question.Title
+                        @_question.Title
                     </MudText>
 
-                    @switch (Question.Type)
+                    @switch (_question.Type)
                     {
                         case QuestionType.TextAnswer:
                             <TextAnswerForm
@@ -69,7 +69,7 @@
 
                         case QuestionType.OneAnswer:
                             <OneAnswerForm
-                                Options="@Question.Options"
+                                Options="@_question.Options"
                                 OnAnswer="@OnOneAnswer"
                                 OnNext="@OnNext"
                                 OnComplete="@OnComplete"/>
@@ -77,7 +77,7 @@
 
                         case QuestionType.ManyAnswers:
                             <ManyAnswerForm
-                                Options="@Question.Options"
+                                Options="@_question.Options"
                                 OnAnswer="@OnManyAnswer"
                                 OnNext="@OnNext"
                                 OnComplete="@OnComplete"/>
@@ -96,6 +96,12 @@
 </MainContainer>
 
 @code {
+    private Color _countdownColor = Color.Default;
+    private ApiResponse<TestModel> _test = ApiResponse<TestModel>.Loading();
+    private List<TestQuestion> _questions = new();
+    private int _allowedMistakes;
+    private int _questionIndex;
+    private TestQuestion _question = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -108,13 +114,6 @@
 
     [Parameter]
     public string Id { get; init; } = default!;
-
-    private Color _countdownColor = Color.Default;
-    private ApiResponse<TestModel> _test = ApiResponse<TestModel>.Loading();
-    private List<TestQuestion> _questions = new();
-    private int _questionIndex;
-    private int _allowedMistakes;
-    private TestQuestion Question => _questions[_questionIndex];
 
     protected override async Task OnInitializedAsync()
     {
@@ -134,8 +133,15 @@
         
         _allowedMistakes = _test.Data.AllowedMistakes;
         _questionIndex = _questions.FindLastIndex(x => x.IsCompleted) + 1;
+        if (_questionIndex == _questions.Count)
+        {
+            NavigationManager.NavigateTo(Links.History.TestConclusion(Id));
+            return;
+        }
+
+        _question = _questions[_questionIndex];
     }
-    
+
     private async Task OnExpired()
     {
         _countdownColor = Color.Error;
@@ -147,7 +153,7 @@
 
     private async Task<TextAnswerResult> OnTextAnswer(TextAnswer answer)
     {
-        var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, Question.Id, answer);
+        var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _question.Id, answer);
         if (!result.IsSuccess)
         {
             _test = ApiResponse<TestModel>.Fail(result.Error);
@@ -158,10 +164,10 @@
 
         return result.Data;
     }
-    
+
     private async Task<OneAnswerResult> OnOneAnswer(OneAnswer answer)
     {
-        var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, Question.Id, answer);
+        var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _question.Id, answer);
         if (!result.IsSuccess)
         {
             _test = ApiResponse<TestModel>.Fail(result.Error);
@@ -175,7 +181,7 @@
 
     private async Task<ManyAnswersResult> OnManyAnswer(ManyAnswer answer)
     {
-        var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, Question.Id, answer);
+        var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _question.Id, answer);
         if (!result.IsSuccess)
         {
             _test = ApiResponse<TestModel>.Fail(result.Error);
@@ -193,13 +199,14 @@
         if (result.IsCorrect || !_test.Data.CanAnswerAgain)
             return;
 
-        var wrong = _questions.First(x => x.Id == Question.Id);
+        var wrong = _questions.First(x => x.Id == _question.Id);
         _questions.Add(wrong with{Options = wrong.Options.OrderBy(_ => Guid.NewGuid()).ToArray()});
     }
 
     private void OnNext()
     {
         _questionIndex++;
+        _question = _questions[_questionIndex];
         StateHasChanged();
     }
 

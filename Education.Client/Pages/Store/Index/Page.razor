@@ -1,7 +1,12 @@
 @page "/store"
 @using Education.Client.Gateways.Store
 @using Education.Client.Gateways.Store.Catalog
+
 @attribute [Authorize]
+
+<PageTitle>
+    @L["Store:Catalog"]
+</PageTitle>
 
 <div class="header-wrapper">
     <div class="header">
@@ -51,6 +56,9 @@
     [Inject]
     private IStoreClient Client { get; set; } = default!;
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Inject]
     public NavigationManager Navigation { get; set; } = default!;
 

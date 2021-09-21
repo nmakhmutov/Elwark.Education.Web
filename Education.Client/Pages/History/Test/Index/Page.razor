@@ -1,7 +1,7 @@
 @page "/history/tests"
-@using Education.Client.Gateways.History
 @using Education.Client.Gateways.History.Me
 @using Education.Client.Gateways.History.Test
+@using Education.Client.Gateways.History
 @layout HistoryLayout
 
 @attribute [Authorize]
@@ -36,7 +36,7 @@
                         </MudSelectItem>
                     }
                 </MudSelect>
-                
+
                 <ApiResponseViewer Response="_response">
                     <Placeholder>
                         <div class="mb-3">
@@ -57,7 +57,7 @@
                             <div class="d-flex justify-end">
                                 <LoadingButton
                                     Class="ml-auto"
-                                    ButtonType="ButtonType.Submit" 
+                                    ButtonType="ButtonType.Submit"
                                     Text="@L["Test:Create"]"
                                     LoadingText="@L["Test:Creating"]"
                                     IsLoading="@_isLoading"/>
@@ -71,15 +71,14 @@
 </div>
 
 @code {
+    private bool _isLoading;
+    private ApiResponse<HistoryUserRestriction> _response = ApiResponse<HistoryUserRestriction>.Loading();
+    private readonly Model _model = new();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
     };
-
-    private ApiResponse<HistoryUserRestriction> _response = ApiResponse<HistoryUserRestriction>.Loading();
-    private Model _model = new();
-    private bool _isLoading;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -93,21 +92,20 @@
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() =>
         _response = await Client.Me.GetRestrictions();
-    }
 
     private async Task OnValidSubmit()
     {
         _isLoading = true;
+        
         var request = new CreateTestRequest(_model.Epoch);
-        var response = await (_model.Difficulty switch {
-            TestType.Easy => Client.Test.CreateRandomEasyTestAsync(request),
-            TestType.Hard => Client.Test.CreateRandomHardTestAsync(request),
-            TestType.Mixed => Client.Test.CreateRandomMixedTestAsync(request),
+        var response = _model.Difficulty switch {
+            TestType.Easy => await Client.Test.CreateRandomEasyTestAsync(request),
+            TestType.Hard => await Client.Test.CreateRandomHardTestAsync(request),
+            TestType.Mixed => await Client.Test.CreateRandomMixedTestAsync(request),
             _ => throw new ArgumentOutOfRangeException()
-            });
+            };
 
         if (response.Status == ResponseStatus.Success)
             NavigationManager.NavigateTo(Links.History.TestById(response.Data.Id));

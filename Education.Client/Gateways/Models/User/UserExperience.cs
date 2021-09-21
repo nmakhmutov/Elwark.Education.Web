@@ -7,8 +7,7 @@ namespace Education.Client.Gateways.Models.User
         long Points,
         long NextLevelPoints,
         TypedExperience[] Recent,
-        Experience[] Daily,
-        Experience[] Monthly
+        Experience[] Daily
     );
 
     public sealed record TypedExperience(ExperienceName Type, long Points, DateTime CreatedAt);

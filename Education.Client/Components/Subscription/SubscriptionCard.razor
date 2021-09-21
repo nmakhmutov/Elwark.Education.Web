@@ -25,7 +25,7 @@
                 @Price.Symbol
             </h6>
             <h4 class="price-value">
-                @Price.Total
+                @Price.Amount
             </h4>
             <h6 class="price-period">
                 /@(Months == 1 ? "mo" : $"{Months} mo")
@@ -90,7 +90,7 @@
     public SubscriptionType Type { get; set; }
 
     [Parameter, EditorRequired]
-    public Price Price { get; set; } = default!;
+    public Money Price { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public uint Months { get; set; }

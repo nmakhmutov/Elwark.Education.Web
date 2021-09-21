@@ -1,8 +1,7 @@
 @using Education.Client.Gateways.Models.User
-@using Microsoft.Extensions.Configuration
 
 <MudPaper Class="@Class">
-    <section class="background" style="background-image: url('@Subject.GetStatic().Image')">
+    <section class="background">
         <div class="cover">
             <div class="title-container">
                 <MudText Typo="Typo.h4" Color="Color.Inherit">
@@ -13,15 +12,15 @@
     </section>
     <MainContainer>
         <ul class="mb-3 mb-sm-6">
-            <li class="row">
+            <li class="row d-flex flex-row align-start justify-space-between">
                 <MudText Typo="Typo.subtitle1">
                     @L["Subscription"]
                 </MudText>
-                <MudText Typo="Typo.subtitle1" Color="@Subscription.GetColor()">
+                <MudText Typo="Typo.subtitle1">
                     @L[$"Subscription:{Subscription}"]
                 </MudText>
             </li>
-            <li class="row">
+            <li class="row d-flex flex-row align-start justify-space-between">
                 <MudText Typo="Typo.subtitle1">
                     @L["Subscription:TestDurationCoefficient"]
                 </MudText>
@@ -30,52 +29,52 @@
                 </MudText>
             </li>
             <li class="row">
-                <div>
+                <div class="d-flex flex-row align-start justify-space-between">
                     <MudText Typo="Typo.subtitle1">
                         @L["Subscription:TestCreation"]
                     </MudText>
-                    @if (TestCreation.RestoreAt.HasValue)
-                    {
-                        <MudText Typo="Typo.caption">
-                            <em>
-                                @L["Subscription:RestrictionRestoreAt", TestCreation.RestoreAt.Value.ToSimpleFormat()]
-                            </em>
-                        </MudText>
-                    }
+                    <RestrictionQuantityView Restriction="@TestCreation" Class="ml-3"/>
                 </div>
-                <RestrictionQuantityView Restriction="@TestCreation" Class="ml-3"/>
+                @if (TestCreation.RestoreAt.HasValue)
+                {
+                    <MudText Typo="Typo.caption">
+                        <em>
+                            @L["Subscription:RestrictionRestoreAt", TestCreation.RestoreAt.Value.ToSimpleFormat()]
+                        </em>
+                    </MudText>
+                }
             </li>
             <li class="row">
-                <div>
+                <div class="d-flex flex-row align-start justify-space-between">
                     <MudText Typo="Typo.subtitle1">
                         @L["Subscription:TestMistakes"]
                     </MudText>
-                    @if (TestQuestionMistakes.RestoreAt.HasValue)
-                    {
-                        <MudText Typo="Typo.caption">
-                            <em>
-                                @L["Subscription:RestrictionRestoreAt", TestQuestionMistakes.RestoreAt.Value.ToSimpleFormat()]
-                            </em>
-                        </MudText>
-                    }
+                    <RestrictionQuantityView Restriction="@TestQuestionMistakes" Class="ml-3"/>
                 </div>
-                <RestrictionQuantityView Restriction="@TestQuestionMistakes" Class="ml-3"/>
+                @if (TestQuestionMistakes.RestoreAt.HasValue)
+                {
+                    <MudText Typo="Typo.caption">
+                        <em>
+                            @L["Subscription:RestrictionRestoreAt", TestQuestionMistakes.RestoreAt.Value.ToSimpleFormat()]
+                        </em>
+                    </MudText>
+                }
             </li>
             <li class="row">
-                <div>
+                <div class="d-flex flex-row align-start justify-space-between">
                     <MudText Typo="Typo.subtitle1">
                         @L["Subscription:EventGuesserCreation"]
                     </MudText>
-                    @if (EventGuesserCreation.RestoreAt.HasValue)
-                    {
-                        <MudText Typo="Typo.caption">
-                            <em>
-                                @L["Subscription:RestrictionRestoreAt", EventGuesserCreation.RestoreAt.Value.ToSimpleFormat()]
-                            </em>
-                        </MudText>
-                    }
+                    <RestrictionQuantityView Restriction="@EventGuesserCreation" Class="ml-3"/>
                 </div>
-                <RestrictionQuantityView Restriction="@EventGuesserCreation" Class="ml-3"/>
+                @if (EventGuesserCreation.RestoreAt.HasValue)
+                {
+                    <MudText Typo="Typo.caption">
+                        <em>
+                            @L["Subscription:RestrictionRestoreAt", EventGuesserCreation.RestoreAt.Value.ToSimpleFormat()]
+                        </em>
+                    </MudText>
+                }
             </li>
         </ul>
         <div class="subscription">
@@ -91,13 +90,7 @@
     </MainContainer>
 </MudPaper>
 
-@* ReSharper disable InconsistentNaming *@
-@* ReSharper disable once UnusedParameter.Local *@
-
 @code {
-
-    [Inject]
-    private IConfiguration Configuration { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
