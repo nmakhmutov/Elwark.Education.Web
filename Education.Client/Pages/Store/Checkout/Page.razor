@@ -184,7 +184,7 @@
                     <EditForm Model="@_promoCode" OnValidSubmit="@OnValidPromoCode">
                         <FluentValidationValidator/>
 
-                        <div class="d-flex flex-row align-center">
+                        <div class="d-flex flex-row align-start">
                             <MudTextField
                                 @bind-Value="@_promoCode.Code"
                                 For="@(() => _promoCode.Code)"
@@ -194,6 +194,7 @@
                                 Class="ma-0 mr-3"/>
 
                             <LoadingButton
+                                Class="promo-code-button"
                                 ButtonType="ButtonType.Submit"
                                 Variant="Variant.Filled"
                                 Color="Color.Primary"
@@ -222,7 +223,7 @@
                     Size="Size.Large"
                     Disabled="@(basket.Items.Length == 0)"
                     Style="width:100%; max-width: 600px">
-                    @L["Store:Checkout"]
+                    @L["Store:PlaceYourOrder"]
                 </MudButton>
             </div>
         </div>

@@ -5,21 +5,20 @@
                 "subject"
                 "level"
                 "points"
-                "achievements"
+                "experience"
                 "daily-reward"
                 "easy-test"
                 "hard-test"
                 "mixed-test"
-                "event-guesser"
-                "activity";
+                "event-guesser";
 }
 
 .grid ::deep .subject {
     grid-area: subject;
 }
 
-.grid ::deep .achievements {
-    grid-area: achievements;
+.grid ::deep .experience {
+    grid-area: experience;
 }
 
 .grid ::deep .points {
@@ -50,10 +49,6 @@
     grid-area: event-guesser;
 }
 
-.grid ::deep .activity {
-    grid-area: activity;
-}
-
 @media (min-width: 720px) {
     .grid {
         grid-gap: 24px;
@@ -62,10 +57,9 @@
         "subject points"
         "level points"
         "daily-reward points"
-        "achievements achievements"
+        "experience experience"
         "easy-test hard-test"
-        "mixed-test event-guesser"
-        "activity activity";
+        "mixed-test event-guesser";
     }
 }
 
@@ -73,10 +67,10 @@
     .grid {
         grid-template-columns: repeat(3, minmax(200px, 1fr));
         grid-template-areas:
-        "subject achievements level"
+        "subject experience level"
         "points points daily-reward"
         "easy-test hard-test mixed-test"
-        "event-guesser activity activity";
+        "event-guesser . .";
     }
 }
 
@@ -84,9 +78,8 @@
     .grid {
         grid-template-columns: repeat(4, minmax(200px, 1fr));
         grid-template-areas:
-        "subject achievements achievements level"
+        "subject experience experience level"
         "points points points daily-reward"
-        "easy-test hard-test mixed-test event-guesser"
-        "activity activity activity activity";
+        "easy-test hard-test mixed-test event-guesser";
     }
 }

@@ -1,0 +1,40 @@
+@using Education.Client.Gateways.Models.User
+
+<MudTimeline TimelineOrientation="@Orientation">
+    @foreach (var experience in Experiences)
+    {
+        <MudTimelineItem Color="Color.Transparent" Size="Size.Medium" Variant="Variant.Outlined">
+            <ItemOpposite>
+                <MudText Typo="Typo.h6">
+                    @experience.Points
+                </MudText>
+            </ItemOpposite>
+            <ItemDot>
+                <MudIcon Icon="@EducationIcons.Points" Size="Size.Medium" Color="Color.Primary"/>
+            </ItemDot>
+            <ItemContent>
+                <div class="@(Orientation == TimelineOrientation.Horizontal ? "d-flex flex-column align-center" : string.Empty)">
+                    <MudText Typo="Typo.button" Align="Align.Center">
+                        @L[$"XpType:{experience.Type}"]
+                    </MudText>
+                    <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                        @experience.CreatedAt.ToSimpleFormat()
+                    </MudText>
+                </div>
+            </ItemContent>
+        </MudTimelineItem>
+    }
+</MudTimeline>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
+    [Parameter, EditorRequired]
+    public TimelineOrientation Orientation { get; set; }
+
+    [Parameter, EditorRequired]
+    public IEnumerable<TypedExperience> Experiences { get; set; } = Enumerable.Empty<TypedExperience>();
+
+}

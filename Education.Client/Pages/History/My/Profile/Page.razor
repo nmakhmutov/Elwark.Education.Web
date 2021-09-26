@@ -2,6 +2,7 @@
 @using Education.Client.Gateways.History
 @using Education.Client.Gateways.History.Me
 @using MudBlazor.Services
+
 @implements IDisposable
 @layout HistoryLayout
 
@@ -16,13 +17,12 @@
                 <SkeletonCard Class="subject"/>
                 <SkeletonCard Class="level"/>
                 <SkeletonCard Class="points"/>
-                <SkeletonCard Class="achievements"/>
+                <SkeletonCard Class="experience"/>
                 <SkeletonCard Class="daily-reward"/>
                 <SkeletonCard Class="easy-test"/>
                 <SkeletonCard Class="hard-test"/>
                 <SkeletonCard Class="mixed-test"/>
                 <SkeletonCard Class="event-guesser"/>
-                <SkeletonCard Class="activity"/>
             </div>
         </Placeholder>
         <Result Context="overview">
@@ -59,47 +59,33 @@
                 <StatisticsCard
                     Class="points"
                     Icon="@EducationIcons.Points"
-                    Title="@L["Experience:MyPoints"]"
-                    Value="@overview.Experience.Points">
+                    Title="@L["Experience:MyRecentPoints"]"
+                    Value="@(overview.Experience.Recent.FirstOrDefault()?.Points ?? 0)">
                     @if (overview.Experience.Recent.Length > 0)
                     {
                         var items = _timelineOrientation == TimelineOrientation.Horizontal
                             ? overview.Experience.Recent.Take(_recentCount).Reverse()
                             : overview.Experience.Recent.Take(_recentCount);
 
-                        <MudTimeline TimelineOrientation="@_timelineOrientation">
-                            @foreach (var transaction in items)
-                            {
-                                <MudTimelineItem Color="Color.Transparent" Size="Size.Medium" Variant="Variant.Outlined">
-                                    <ItemOpposite>
-                                        <MudText Typo="Typo.h6">
-                                            @transaction.Points
-                                        </MudText>
-                                    </ItemOpposite>
-                                    <ItemDot>
-                                        <MudIcon Icon="@EducationIcons.Points" Size="Size.Medium" Color="Color.Primary"/>
-                                    </ItemDot>
-                                    <ItemContent>
-                                        <div class="@(_timelineOrientation == TimelineOrientation.Horizontal ? "d-flex flex-column align-center" : null)">
-                                            <MudText Typo="Typo.button" Align="Align.Center">
-                                                @L[$"XpType:{transaction.Type}"]
-                                            </MudText>
-                                            <MudText Typo="Typo.body2" Class="mud-text-secondary">
-                                                @transaction.CreatedAt.ToSimpleFormat()
-                                            </MudText>
-                                        </div>
-                                    </ItemContent>
-                                </MudTimelineItem>
-                            }
-                        </MudTimeline>
+                        <ExperienceTimeline
+                            Orientation="@_timelineOrientation"
+                            Experiences="@items"/>
                     }
                 </StatisticsCard>
 
-                <MudPaper Class="achievements d-flex justify-center align-center">
-                    <MudText Typo="Typo.h4" Class="ma-3 ma-sm-6">
-                        "Achievements" comming soon
-                    </MudText>
-                </MudPaper>
+                <StatisticsCard
+                    Class="experience"
+                    Icon="@EducationIcons.Points"
+                    Title="@L["Experience:MyExperience"]"
+                    Value="@overview.Experience.Points">
+                    <MudChart
+                        ChartType="ChartType.Line"
+                        Width="100%"
+                        Height="300px"
+                        ChartOptions="@(new ChartOptions { DisableLegend = true })"
+                        ChartSeries="@_dailyChartSeries"
+                        XAxisLabels="@_dailyXAxis.ToArray()"/>
+                </StatisticsCard>
 
                 <DailyRewardCard
                     Class="daily-reward"
@@ -148,15 +134,6 @@
                         Points="@overview.Statistics.EventGuesser.Points"
                         Bonus="@overview.Statistics.EventGuesser.Bonus"/>
                 </StatisticsCard>
-
-                <MudPaper Class="activity">
-                    <MudChart
-                        ChartType="ChartType.Line"
-                        Width="100%"
-                        Height="300px"
-                        ChartSeries="@_dailyChartSeries"
-                        XAxisLabels="@_dailyXAxis.ToArray()"/>
-                </MudPaper>
             </div>
         </Result>
     </ApiResponseViewer>
@@ -193,7 +170,10 @@
         _overview = await HistoryClient.Me.GetOverviewAsync();
         if (_overview.Status == ResponseStatus.Success)
         {
+            _dailyXAxis.Clear();
+            _dailyChartSeries.Clear();
             var list = new List<double>();
+
             foreach (var (points, createdAt) in _overview.Data.Experience.Daily.OrderBy(x => x.CreatedAt))
             {
                 _dailyXAxis.Add(createdAt.ToString("dd MMM"));
@@ -202,7 +182,6 @@
 
             _dailyChartSeries.Add(new ChartSeries
             {
-                Name = L["Experience:MyPoints"],
                 Data = list.ToArray()
             });
         }
@@ -239,14 +218,14 @@
     {
         var response = await HistoryClient.Me.CollectDailyReward();
         if (response.Status == ResponseStatus.Success)
-            _overview = await HistoryClient.Me.GetOverviewAsync();
+            await OnInitializedAsync();
     }
 
     private void OnBreakpointChanged(object? sender, Breakpoint e)
     {
         var (orientation, count) = e switch {
             Breakpoint.Lg => (TimelineOrientation.Horizontal, 5),
-            Breakpoint.Xl => (TimelineOrientation.Horizontal, 10),
+            Breakpoint.Xl => (TimelineOrientation.Horizontal, 7),
             Breakpoint.Xxl => (TimelineOrientation.Horizontal, 10),
             _ => (TimelineOrientation.Vertical, 10)
             };
