@@ -8,14 +8,14 @@
 <MainContainer>
     <PageHeader Title="@L["Favorites"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
     <DefaultFitGrid>
-        <ApiResponseViewer Response="@_favorites">
-            <Placeholder>
+        <ApiViewer Response="@_favorites">
+            <Loading>
                 <SkeletonCard/>
                 <SkeletonCard/>
                 <SkeletonCard/>
                 <SkeletonCard/>
-            </Placeholder>
-            <Result Context="favorites">
+            </Loading>
+            <Success Context="favorites">
                 @if (favorites.Items.Length > 0)
                 {
                     @foreach (var item in favorites.Items)
@@ -47,18 +47,19 @@
                         Title="@L["Profile:EmptyFavoritesTitle"]"
                         Subtitle="@L["Profile:EmptyFavoritesSubtitle"]"/>
                 }
-            </Result>
-        </ApiResponseViewer>
+            </Success>
+        </ApiViewer>
     </DefaultFitGrid>
 </MainContainer>
 
 @code {
+
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
         new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
     };
-    
+
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 
@@ -89,7 +90,8 @@
         _favorites = ApiResponse<PageResponse<UserTopicSummary>>.Success(
             new PageResponse<UserTopicSummary>(
                 _favorites.Data.Items.Union(response.Data.Items).ToArray(),
-                response.Data.Pages
+                response.Data.Pages,
+                response.Data.Count
                 )
             );
     }

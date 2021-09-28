@@ -7,8 +7,8 @@
 
 <SearchHeader Search="@OnSearch" Class="mb-6 mb-sm-12"/>
 
-<ApiResponseViewer Response="@_response">
-    <Placeholder>
+<ApiViewer Response="@_response">
+    <Loading>
         <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12">
             <SpotlightContainer Title="@L["Topics:Trending"]">
                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
@@ -21,8 +21,8 @@
                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
             </SpotlightContainer>
         </CenteredContainer>
-    </Placeholder>
-    <Result Context="result">
+    </Loading>
+    <Success Context="result">
         <PageTitle>
             @L["Subject:History"]
         </PageTitle>
@@ -79,8 +79,8 @@
                 }
             </SpotlightContainer>
         </CenteredContainer>
-    </Result>
-</ApiResponseViewer>
+    </Success>
+</ApiViewer>
 
 @code {
 

@@ -6,8 +6,8 @@
 @attribute [Authorize]
 
 <MainContainer>
-    <ApiResponseViewer Response="@_test">
-        <Placeholder>
+    <ApiViewer Response="@_test">
+        <Loading>
             <CenteredContainer MaxWidth="ContainerWidth.W1280" Elevation="1" Paper="true" Class="mb-3 mb-sm-6">
                 <div class="d-flex justify-space-between align-center ma-3">
                     <div>
@@ -28,8 +28,8 @@
                     <MudSkeleton Width="20%" Height="36px" SkeletonType="SkeletonType.Rectangle" Class="mx-auto"/>
                 </div>
             </CenteredContainer>
-        </Placeholder>
-        <Result Context="test">
+        </Loading>
+        <Success Context="test">
             <PageTitle>@L[$"Test:{test.TestType}"]</PageTitle>
 
             <CenteredContainer MaxWidth="ContainerWidth.W1280" Elevation="1" Paper="true" Class="mb-3 mb-sm-6">
@@ -91,8 +91,8 @@
                     }
                 </div>
             </CenteredContainer>
-        </Result>
-    </ApiResponseViewer>
+        </Success>
+    </ApiViewer>
 </MainContainer>
 
 @code {

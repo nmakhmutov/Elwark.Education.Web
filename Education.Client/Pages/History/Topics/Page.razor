@@ -6,8 +6,8 @@
 @attribute [Authorize]
 
 <MainContainer>
-    <ApiResponseViewer Response="_topics">
-        <Placeholder>
+    <ApiViewer Response="_topics">
+        <Loading>
             <div class="mb-3 mb-sm-6">
                 <MudSkeleton SkeletonType="SkeletonType.Text" Width="200px" Height="35px"/>
                 <MudSkeleton SkeletonType="SkeletonType.Text" Width="120px" Height="20px"/>
@@ -22,8 +22,8 @@
                 <SkeletonCard/>
                 <SkeletonCard/>
             </DefaultFitGrid>
-        </Placeholder>
-        <Result Context="topics">
+        </Loading>
+        <Success Context="topics">
             <PageTitle>
                 @L[$"History:{_request.Epoch}"]
             </PageTitle>
@@ -46,8 +46,8 @@
             <div class="d-flex justify-center mt-6 mt-sm-12">
                 <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_topics.Data.Pages)"/>
             </div>
-        </Result>
-    </ApiResponseViewer>
+        </Success>
+    </ApiViewer>
 </MainContainer>
 
 @code {

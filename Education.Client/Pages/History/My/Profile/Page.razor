@@ -11,8 +11,8 @@
 <PageTitle>@L["Profile"]</PageTitle>
 <MainContainer>
     <PageHeader Title="@L["Profile"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
-    <ApiResponseViewer Response="@_overview">
-        <Placeholder>
+    <ApiViewer Response="@_overview">
+        <Loading>
             <div class="grid">
                 <SkeletonCard Class="subject"/>
                 <SkeletonCard Class="level"/>
@@ -24,8 +24,8 @@
                 <SkeletonCard Class="mixed-test"/>
                 <SkeletonCard Class="event-guesser"/>
             </div>
-        </Placeholder>
-        <Result Context="overview">
+        </Loading>
+        <Success Context="overview">
             @if (overview.CurrentTests.Length > 0)
             {
                 <MudText Typo="Typo.h5" Class="mb-3">
@@ -135,8 +135,8 @@
                         Bonus="@overview.Statistics.EventGuesser.Bonus"/>
                 </StatisticsCard>
             </div>
-        </Result>
-    </ApiResponseViewer>
+        </Success>
+    </ApiViewer>
 </MainContainer>
 
 @code {

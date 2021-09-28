@@ -5,8 +5,8 @@
 
 @attribute [Authorize]
 
-<ApiResponseViewer Response="@_response">
-    <Placeholder>
+<ApiViewer Response="@_response">
+    <Loading>
         <CenteredContainer MaxWidth="ContainerWidth.W1280" Class="my-3 my-sm-6" Paper="true" Elevation="1">
             <div class="pa-3">
                 <MudSkeleton Width="30%"/>
@@ -23,8 +23,8 @@
         <CenteredContainer MaxWidth="ContainerWidth.W1280">
             <SkeletonCard/>
         </CenteredContainer>
-    </Placeholder>
-    <Result Context="conclusion">
+    </Loading>
+    <Success Context="conclusion">
         @switch (conclusion)
         {
             case EasyTestConclusion test:
@@ -46,8 +46,8 @@
                 throw new ArgumentOutOfRangeException(nameof(conclusion));
         }
 
-    </Result>
-</ApiResponseViewer>
+    </Success>
+</ApiViewer>
 
 @code {
     private ApiResponse<TestConclusion> _response = ApiResponse<TestConclusion>.Loading();

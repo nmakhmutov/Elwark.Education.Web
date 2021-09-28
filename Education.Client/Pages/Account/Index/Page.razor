@@ -6,8 +6,8 @@
 @attribute [Authorize]
 
 <MainContainer>
-    <ApiResponseViewer Response="@_customer">
-        <Placeholder>
+    <ApiViewer Response="@_customer">
+        <Loading>
             <div class="wrapper">
                 <div class="account">
                     <SkeletonCard/>
@@ -16,8 +16,8 @@
                     <SkeletonCard/>
                 </div>
             </div>
-        </Placeholder>
-        <Result Context="customer">
+        </Loading>
+        <Success Context="customer">
             <PageTitle>@customer.Name</PageTitle>
             <div class="wrapper">
                 <div class="account mud-paper mud-elevation-1">
@@ -121,8 +121,8 @@
                     </MudTable>
                 </div>
             </div>
-        </Result>
-    </ApiResponseViewer>
+        </Success>
+    </ApiViewer>
 </MainContainer>
 
 @code {

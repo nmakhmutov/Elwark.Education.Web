@@ -37,16 +37,16 @@
                     }
                 </MudSelect>
 
-                <ApiResponseViewer Response="_response">
-                    <Placeholder>
+                <ApiViewer Response="_response">
+                    <Loading>
                         <div class="mb-3">
                             <MudSkeleton SkeletonType="SkeletonType.Text" Height="28px"/>
                         </div>
                         <div class="d-flex justify-end">
                             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="140px" Height="36px"/>
                         </div>
-                    </Placeholder>
-                    <Result Context="restrictions">
+                    </Loading>
+                    <Success Context="restrictions">
                         <div class="d-flex justify-space-between mb-3">
                             <MudText Typo="Typo.subtitle1">
                                 @L["Subscription:TestCreation"]
@@ -63,8 +63,8 @@
                                     IsLoading="@_isLoading"/>
                             </div>
                         </TestPermissionWrapper>
-                    </Result>
-                </ApiResponseViewer>
+                    </Success>
+                </ApiViewer>
             </EditForm>
         </div>
     </MainContainer>

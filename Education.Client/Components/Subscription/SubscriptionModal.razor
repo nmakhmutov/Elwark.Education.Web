@@ -11,14 +11,14 @@
                     Start with premium subscription today.
                 </MudText>
             </div>
-            <ApiResponseViewer Response="@_response">
-                <Placeholder>
+            <ApiViewer Response="@_response">
+                <Loading>
                     <div class="pricing-grid">
                         <SkeletonCard/>
                         <SkeletonCard/>
                     </div>
-                </Placeholder>
-                <Result Context="subscriptions">
+                </Loading>
+                <Success Context="subscriptions">
                     <div class="pricing-grid">
                         @foreach (var item in subscriptions)
                         {
@@ -31,8 +31,8 @@
                                 OnBuyClick="@OnBuyClick"/>
                         }
                     </div>
-                </Result>
-            </ApiResponseViewer>
+                </Success>
+            </ApiViewer>
             @* <div class="d-flex flex-row justify-center my-3"> *@
             @*     <MudButton Variant="Variant.Filled" Color="Color.Success" Link="@Links.Shop.Index"> *@
             @*         @L["SeeAll"] *@

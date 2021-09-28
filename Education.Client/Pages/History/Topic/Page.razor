@@ -7,8 +7,8 @@
 @implements IDisposable
 @attribute [Authorize]
 
-<ApiResponseViewer Response="@_topic">
-<Placeholder>
+<ApiViewer Response="@_topic">
+<Loading>
     <div class="ma-3 ma-sm-6">
         <MudSkeleton Width="80vw" Class="mx-auto" SkeletonType="SkeletonType.Text"/>
         <MudSkeleton Width="70vw" Class="mx-auto" SkeletonType="SkeletonType.Text"/>
@@ -28,8 +28,8 @@
             <MudSkeleton Width="88%" SkeletonType="SkeletonType.Text" Class="mb-3 mb-sm-6"/>
         </div>
     </CenteredContainer>
-</Placeholder>
-<Result Context="result">
+</Loading>
+<Success Context="result">
     <PageTitle>@result.Topic.Title</PageTitle>
 
     @switch (result.Topic)
@@ -227,8 +227,8 @@
             </DefaultFillGrid>
         </CenteredContainer>
     }
-</Result>
-</ApiResponseViewer>
+</Success>
+</ApiViewer>
 
 
 @code {

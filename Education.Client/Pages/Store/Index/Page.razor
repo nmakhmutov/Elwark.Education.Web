@@ -28,13 +28,13 @@
 
 <div class="product-wrapper">
     <DefaultFitGrid Style="justify-items: center">
-        <ApiResponseViewer Response="@_response">
-            <Placeholder>
+        <ApiViewer Response="@_response">
+            <Loading>
                 <SkeletonCard Style="width: 100%; max-width: 460px"/>
                 <SkeletonCard Style="width: 100%; max-width: 460px"/>
                 <SkeletonCard Style="width: 100%; max-width: 460px"/>
-            </Placeholder>
-            <Result Context="subscriptions">
+            </Loading>
+            <Success Context="subscriptions">
                 @foreach (var item in subscriptions)
                 {
                     <SubscriptionCard
@@ -45,8 +45,8 @@
                         Type="@item.Type"
                         OnBuyClick="@OnBuyClick"/>
                 }
-            </Result>
-        </ApiResponseViewer>
+            </Success>
+        </ApiViewer>
     </DefaultFitGrid>
 </div>
 

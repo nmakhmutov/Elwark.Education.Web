@@ -3,34 +3,31 @@
 @switch (Response.Status)
 {
     case ResponseStatus.Loading:
-        @Placeholder
+        @Loading
         break;
 
     case ResponseStatus.Fail:
         <PageTitle>@Response.Error.Title</PageTitle>
-        <ErrorPage Error="Response.Error"/>
+        <ErrorContainer Error="Response.Error"/>
         break;
 
     case ResponseStatus.Success:
-        @Result(Response.Data)
+        @Success(Response.Data)
         break;
-        
+
     default:
         throw new ArgumentOutOfRangeException();
 }
 
 @code {
 
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Parameter]
+    [Parameter, EditorRequired]
     public ApiResponse<T> Response { get; set; } = ApiResponse<T>.Loading();
 
     [Parameter]
-    public RenderFragment Placeholder { get; set; } = default!;
+    public RenderFragment Loading { get; set; } = default!;
 
     [Parameter]
-    public RenderFragment<T> Result { get; set; } = default!;
+    public RenderFragment<T> Success { get; set; } = default!;
 
 }

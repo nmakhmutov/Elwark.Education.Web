@@ -7,15 +7,15 @@
 
 <PageTitle>@L["EventGuesser"]</PageTitle>
 <MainContainer>
-    <ApiResponseViewer Response="@_response">
-        <Placeholder>
+    <ApiViewer Response="@_response">
+        <Loading>
             <PageHeader Title="@L["EventGuesser"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
             <StatisticsDetailsGrid>
                 <SkeletonCard/>
                 <SkeletonCard/>
             </StatisticsDetailsGrid>
-        </Placeholder>
-        <Result Context="result">
+        </Loading>
+        <Success Context="result">
             <PageHeader Title="@L["EventGuesser"]" Class="mb-6" Breadcrumbs="@Breadcrumbs">
                 <div class="d-flex align-center">
                     <HumanReadableText Typo="Typo.h5" Class="mr-3" Value="@result.Tests"/>
@@ -50,8 +50,8 @@
                     </TwoColumnGrid>
                 </StatisticsCard>
             </StatisticsDetailsGrid>
-        </Result>
-    </ApiResponseViewer>
+        </Success>
+    </ApiViewer>
 </MainContainer>
 
 @code {

@@ -18,16 +18,16 @@
         @L["EventGuesser:NumberOfDates", _model.Questions]
     </MudSlider>
 
-    <ApiResponseViewer Response="@Restriction">
-        <Placeholder>
+    <ApiViewer Response="@Restriction">
+        <Loading>
             <div class="mb-3">
                 <MudSkeleton SkeletonType="SkeletonType.Text" Height="28px"/>
             </div>
             <div class="d-flex justify-end">
                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="140px" Height="36px"/>
             </div>
-        </Placeholder>
-        <Result Context="restriction">
+        </Loading>
+        <Success Context="restriction">
             <div class="d-flex justify-space-between mb-3">
                 <MudText Typo="Typo.subtitle1">
                     @L["Subscription:EventGuesserCreation"]
@@ -51,8 +51,8 @@
                         IsLoading="@_isLoading"/>
                 }
             </div>
-        </Result>
-    </ApiResponseViewer>
+        </Success>
+    </ApiViewer>
 </EditForm>
 
 @code {

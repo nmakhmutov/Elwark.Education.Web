@@ -8,16 +8,16 @@
 <PageTitle>@L["Tests:Hard"]</PageTitle>
 <MainContainer>
     <PageHeader Title="@L["Tests:Hard"]" Class="mb-6" Breadcrumbs="@Breadcrumbs"/>
-    <ApiResponseViewer Response="@_response">
-        <Placeholder>
+    <ApiViewer Response="@_response">
+        <Loading>
             <StatisticsDetailsGrid>
                 <SkeletonCard/>
                 <SkeletonCard/>
                 <SkeletonCard/>
                 <SkeletonCard/>
             </StatisticsDetailsGrid>
-        </Placeholder>
-        <Result Context="result">
+        </Loading>
+        <Success Context="result">
             <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
                 <StatisticsCard Icon="@EducationIcons.Tests" Title="@L["Tests"]" Value="@result.NumberOfTests.Total">
                     <TwoColumnGrid>
@@ -96,8 +96,8 @@
                     }
                 </DefaultFillGrid>
             }
-        </Result>
-    </ApiResponseViewer>
+        </Success>
+    </ApiViewer>
 </MainContainer>
 
 @code {
