@@ -1,0 +1,61 @@
+@using System.Timers
+@using Education.Client.Extensions
+@implements IDisposable
+
+<MudText Typo="Typo" Align="Align" Class="@Class" Color="@Color">
+    @_timeLeft.ToShortFormat()
+</MudText>
+
+@code {
+    private TimeSpan _timeLeft = TimeSpan.FromSeconds(0);
+    private Timer _timer = new()
+    {
+        Enabled = true,
+        Interval = 1000
+    };
+
+    [Parameter]
+    public DateTime Date { get; set; }
+
+    [Parameter]
+    public EventCallback OnComplete { get; set; } = EventCallback.Empty;
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.subtitle1;
+
+    [Parameter]
+    public Align Align { get; set; } = Align.Inherit;
+
+    [Parameter]
+    public Color Color { get; set; } = Color.Default;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _timer.Elapsed += (_, _) =>
+        {
+            _timeLeft = Date - DateTime.UtcNow;
+
+            StateHasChanged();
+
+            if (_timeLeft >= TimeSpan.Zero)
+                return;
+            
+            _timer.Stop();
+            _timer.Dispose();
+            _timeLeft = TimeSpan.Zero;
+            
+            if (OnComplete.HasDelegate)
+                OnComplete.InvokeAsync();
+        };
+    }
+
+    public void Dispose()
+    {
+        _timer.Stop();
+        _timer.Dispose();
+    }
+
+}

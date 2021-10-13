@@ -1,0 +1,28 @@
+<div class="d-flex flex-wrap justify-space-between align-center w-100 @Class">
+    <div>
+        <MudText Typo="Typo.h4" Class="mb-1">
+            @Title
+        </MudText>
+        <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
+    </div>
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+}

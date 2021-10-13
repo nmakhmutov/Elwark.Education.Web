@@ -1,0 +1,19 @@
+@using Education.Client.Features
+@using Education.Client.Extensions
+
+<div class="wrapper">
+    <div class="d-flex flex-row align-center pa-3 py-sm-6">
+        <AuthorizeView>
+            <Authorized>
+                <MudAvatar Image="@(context.User.GetImage())" Size="Size.Large" Class="mr-3"/>
+                <MudLink Typo="Typo.subtitle1" Href="@Links.Account.Index">
+                    @context.User.GetName()
+                </MudLink>
+            </Authorized>
+            <Authorizing>
+                <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px" Style="margin: 10px auto"/>
+                <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%" Style="margin: 0 auto"/>
+            </Authorizing>
+        </AuthorizeView>
+    </div>
+</div>

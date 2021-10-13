@@ -1,0 +1,34 @@
+.wrapper {
+    display: grid;
+    grid-gap: 12px;
+    grid-template-areas:
+        "account"
+        "subjects";
+}
+
+.account {
+    grid-area: account;
+}
+
+.subjects {
+    grid-area: subjects;
+}
+
+@media (min-width: 600px) {
+    .wrapper {
+        grid-gap: 24px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .wrapper {
+        grid-template-columns: 3fr 1fr;
+        grid-template-areas: "subjects account";
+    }
+}
+
+@media (min-width: 1920px) {
+    .wrapper {
+        grid-template-columns: 4fr 1fr;
+    }
+}

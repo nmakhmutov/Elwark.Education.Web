@@ -1,0 +1,109 @@
+@page "/history"
+@layout HistoryLayout
+
+@using Education.Client.Gateways.History.Home
+@using Education.Client.Gateways.History
+@using Education.Client.Features.History.Components
+
+@attribute [Authorize]
+
+<SearchHeader Search="@OnSearch" Class="mb-6 mb-sm-12"/>
+
+<ApiViewer Response="@_response">
+    <Loading>
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12">
+            <SpotlightContainer Title="@L["Topics:Trending"]">
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+            </SpotlightContainer>
+        </CenteredContainer>
+    </Loading>
+    <Success Context="result">
+        <PageTitle>
+            @L["Subject:History"]
+        </PageTitle>
+
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12">
+            <SpotlightContainer Title="@L["Topics:Trending"]">
+                @foreach (var item in result.TrendingTopics)
+                {
+                    <ImageCard
+                        Href="@Links.History.TopicById(item.Id)"
+                        Image="@item.Image"
+                        Title="@item.Title"
+                        Subtitle="@item.Overview"
+                        Epoch="@item.Epoch"
+                        Rating="@item.Rating"/>
+                }
+            </SpotlightContainer>
+        </CenteredContainer>
+
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
+            <DailyTopic Topic="@result.DailyTopic" Class="my-6"/>
+        </CenteredContainer>
+
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12">
+            <SpotlightContainer Title="@L["Topics:Hot"]">
+                @foreach (var item in result.HotTopics)
+                {
+                    <ImageCard
+                        Href="@Links.History.TopicById(item.Id)"
+                        Image="@item.Image"
+                        Title="@item.Title"
+                        Subtitle="@item.Overview"
+                        Epoch="@item.Epoch"
+                        Rating="@item.Rating"/>
+                }
+            </SpotlightContainer>
+        </CenteredContainer>
+
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
+            <RandomTopic Class="my-6"/>
+        </CenteredContainer>
+
+        <CenteredContainer MaxWidth="@ContainerWidth.W1280" Class="mb-6 mb-sm-12">
+            <SpotlightContainer Title="@L["Topics:Recent"]">
+                @foreach (var item in result.RecentTopics)
+                {
+                    <ImageCard
+                        Href="@Links.History.TopicById(item.Id)"
+                        Image="@item.Image"
+                        Title="@item.Title"
+                        Subtitle="@item.Overview"
+                        Epoch="@item.Epoch"
+                        Rating="@item.Rating"/>
+                }
+            </SpotlightContainer>
+        </CenteredContainer>
+    </Success>
+</ApiViewer>
+
+@code {
+
+    private ApiResponse<HistoryOverview> _response = ApiResponse<HistoryOverview>.Loading();
+
+    [Inject]
+    private IHistoryClient Client { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() => 
+        _response = await Client.Home.GetAsync();
+
+    private async Task<IEnumerable<TopicSummary>> OnSearch(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
+            return Array.Empty<TopicSummary>();
+
+        var result = await Client.Home.SearchAsync(text);
+        return result.Status == ResponseStatus.Success ? result.Data : Array.Empty<TopicSummary>();
+    }
+
+}

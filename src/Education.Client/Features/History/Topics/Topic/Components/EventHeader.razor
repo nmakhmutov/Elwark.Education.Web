@@ -1,0 +1,65 @@
+@using Education.Client.Gateways.History
+@using Education.Client.Features.History.Components
+
+<div class="@Class">
+    <article class="grid">
+        <section>
+            <MudText Typo="Typo.h1" Class="title">
+                @Title
+            </MudText>
+            @if (Started is not null)
+            {
+                @if (Started == Ended)
+                {
+                    <HistoryDate Date="@Started"/>
+                }
+                else if (Started != Ended)
+                {
+                    <div class="d-flex flex-row flex-wrap">
+                        <HistoryDate Date="@Started"/>
+                        <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
+                        <HistoryDate Date="@Ended"/>
+                    </div>
+                }
+            }
+        </section>
+
+        <section>
+            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0 mb-6 mt-md-3"/>
+            <MudText Typo="Typo.subtitle1" Class="mb-6">
+                @Description
+            </MudText>
+        </section>
+
+
+    </article>
+
+    <div class="image">
+        <img src="@Image" alt="@Title"/>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Description { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter]
+    public HistoricDate? Started { get; set; }
+
+    [Parameter]
+    public HistoricDate? Ended { get; set; }
+
+    [Parameter]
+    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+
+}

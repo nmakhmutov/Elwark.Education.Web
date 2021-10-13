@@ -1,0 +1,52 @@
+@using Education.Client.Extensions
+@typeparam TValue
+
+@if (_tooltip is null)
+{
+    <MudText Typo="Typo" Class="@Class" Color="@Color">
+        @_value
+    </MudText>
+}
+else
+{
+    <MudTooltip Text="@_tooltip" Placement="@Placement">
+        <MudText Typo="@Typo" Class="@Class" Color="@Color">
+            @_value
+        </MudText>
+    </MudTooltip>
+}
+
+@code {
+
+    [Parameter, EditorRequired]
+    public TValue Value { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body1;
+
+    [Parameter]
+    public Color Color { get; set; } = Color.Inherit;
+
+    [Parameter]
+    public Placement Placement { get; set; } = Placement.Bottom;
+
+    private string _value = string.Empty;
+    private string? _tooltip;
+
+    protected override void OnParametersSet() =>
+        (_value, _tooltip) = Value switch {
+            int i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
+            uint i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
+            long i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
+            ulong i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
+            double i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
+            TimeSpan t => (t.ToShortFormat(), t.TotalDays > 1 ? t.ToLongFormat() : null),
+            DateTime d => (d.ToSimpleFormat(), null),
+            string s => (s, null),
+            _ => (Value?.ToString() ?? string.Empty, null)
+            };
+
+}

@@ -1,0 +1,44 @@
+﻿@inherits LayoutComponentBase
+
+@using Education.Client.Features
+
+<MudThemeProvider Theme="@ThemeProvider.Current"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudAppBar Elevation="25">
+        <MudLink Href="@Links.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+            Education <sup class="beta" style="font-size: 0.9rem;color: var(--mud-palette-primary);">beta</sup>
+        </MudLink>
+        <MudSpacer/>
+        <MudIconButton Icon="@ThemeProvider.Icon" Color="Color.Inherit" OnClick="@ThemeProvider.ToggleAsync"/>
+        <AuthorizeView>
+            <NotAuthorized>
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@OnLogin" Class="ml-3">
+                    @L["SignIn"]
+                </MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudAppBar>
+
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+@code {
+
+    [Inject]
+    private ThemeProvider ThemeProvider { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
+    private void OnLogin() =>
+        Navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(Navigation.Uri)));
+
+}

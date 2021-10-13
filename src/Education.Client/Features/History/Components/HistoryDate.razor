@@ -1,0 +1,50 @@
+@using Education.Client.Gateways.History
+
+<MudText Typo="@Typo" Color="@Color" Class="@Class">
+    @if (Date is null)
+    {
+        @L["HistoricalDate:Unknown"]
+    }
+    else
+    {
+        @ToString(Date)
+    }
+</MudText>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public HistoricDate? Date { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.subtitle1;
+
+    [Parameter]
+    public Color Color { get; set; } = Color.Default;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private string ToString(HistoricDate date)
+    {
+        var (year, month, day) = date;
+        if (month.HasValue && day.HasValue)
+        {
+            return year < 0
+                ? $"{new DateTime(-year, (int)month.Value, (int)day.Value).ToShortDateString()} {L["HistoricalDate:Bc"]}"
+                : $"{new DateTime(year, (int)month.Value, (int)day.Value).ToShortDateString()}";
+        }
+
+        var name = month.HasValue
+            ? CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName((int)month.Value)
+            : null;
+
+        return year < 0
+            ? $"{day} {name} {-year} {L["HistoricalDate:Bc"]}"
+            : $"{day} {name} {year}";
+    }
+
+}

@@ -1,0 +1,85 @@
+@using Education.Client.Gateways.Models.Content
+@using Education.Client.Extensions
+
+<div class="@Class d-flex flex-column align-center">
+    <div class="d-flex flex-column align-center">
+        <MudTooltip Placement="Placement.Top" Text="@(L["Rating"] + " " + Rating.FiveStarts.ToReadable())">
+            <MudRating MaxValue="5" ReadOnly="true" SelectedValue="@((int) Math.Round(Rating.FiveStarts))"/>
+        </MudTooltip>
+        <MudText Typo="@Typo.body2">
+            @L["Rating:Count", Rating.Votes]
+        </MudText>
+    </div>
+
+    <MudToolBar Class="pa-0">
+        <MudTooltip Text="@L["Topic:ILikeThis"]">
+            <MudIconButton
+                Icon="@Icons.Filled.ThumbUp"
+                OnClick="@(Rating.IsLiked == true ? () => Task.CompletedTask : OnLike)"
+                Color="@(Rating.IsLiked == true ? Color.Primary : Color.Default)"/>
+        </MudTooltip>
+
+        <MudTooltip Text="@L["Topic:IDislikeThis"]">
+            <MudIconButton
+                Icon="@Icons.Filled.ThumbDown"
+                OnClick="@(Rating.IsLiked == false ? () => Task.CompletedTask : OnDislike)"
+                Color="@(Rating.IsLiked == false ? Color.Primary : Color.Default)"/>
+        </MudTooltip>
+
+        <MudTooltip Text="@(IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
+            <MudToggleIconButton
+                Toggled="@IsFavorite"
+                ToggledChanged="@OnFavoriteChanged"
+                Icon="@Icons.Filled.FavoriteBorder"
+                Color="Color.Default"
+                Size="Size.Medium"
+                ToggledIcon="@Icons.Filled.Favorite"
+                ToggledColor="Color.Error"
+                ToggledSize="Size.Medium"/>
+        </MudTooltip>
+    </MudToolBar>
+</div>
+
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Id { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public UserContentRating Rating { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public bool IsFavorite { get; set; }
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+
+    private async Task OnLike()
+    {
+        if (await OnLikeClick())
+            Rating = Rating with{IsLiked = true};
+    }
+
+    private async Task OnDislike()
+    {
+        if (await OnDislikeClick())
+            Rating = Rating with{ IsLiked = false};
+    }
+
+    private async Task OnFavoriteChanged(bool toggled) =>
+        IsFavorite = await OnFavoriteClick.Invoke(Id);
+
+}

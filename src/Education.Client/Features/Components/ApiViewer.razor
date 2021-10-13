@@ -1,0 +1,33 @@
+@typeparam T
+
+@switch (Response.Status)
+{
+    case ResponseStatus.Loading:
+        @Loading
+        break;
+
+    case ResponseStatus.Fail:
+        <PageTitle>@Response.Error.Title</PageTitle>
+        <ErrorContainer Error="Response.Error"/>
+        break;
+
+    case ResponseStatus.Success:
+        @Success(Response.Data)
+        break;
+
+    default:
+        throw new ArgumentOutOfRangeException();
+}
+
+@code {
+
+    [Parameter, EditorRequired]
+    public ApiResponse<T> Response { get; set; } = ApiResponse<T>.Loading();
+
+    [Parameter, EditorRequired]
+    public RenderFragment<T> Success { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment? Loading { get; set; }
+
+}

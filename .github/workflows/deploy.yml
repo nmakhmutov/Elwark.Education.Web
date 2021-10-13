@@ -1,0 +1,20 @@
+name: Deploy solution
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  account:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Github Action
+        uses: actions/checkout@master
+
+      - name: Compose build ${{ env.SERVICE }}
+        run: sudo -E docker-compose build ${{ env.SERVICE }}
+        working-directory: ./src
+        shell: bash
+        env:
+          TAG: latest
+          SERVICE: account.web

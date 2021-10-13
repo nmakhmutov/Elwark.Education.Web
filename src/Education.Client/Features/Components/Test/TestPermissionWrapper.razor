@@ -1,0 +1,60 @@
+<div class="@Class">
+    @if (Status is TestPermissionStatus.Allowed)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <MudText Typo="@Typo" Color="Color.Info" Class="mb-3">
+            @L[$"TestPermission:{Status}"]
+        </MudText>
+        @if (Status is TestPermissionStatus.CreationReached or TestPermissionStatus.MistakesReached)
+        {
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnBuyClick">
+                @L["Subscription:Upgrade"]
+            </MudButton>
+        }
+    }
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IDialogService Dialog { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public TestPermissionStatus Status { get; set; }
+
+    [Parameter, EditorRequired]
+    public SubjectType Subject { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body2;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private void OnBuyClick()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Medium,
+            NoHeader = true,
+            CloseButton = false,
+            FullWidth = true
+        };
+        var parameters = new DialogParameters
+        {
+            [nameof(SubscriptionModal.SubjectType)] = Subject
+        };
+
+        Dialog.Show<SubscriptionModal>(null, parameters, options);
+    }
+
+}

@@ -1,0 +1,83 @@
+@using Microsoft.Extensions.Configuration
+<MudPaper Class="pa-3">
+    <div class="list">
+        <div class="image">
+            <div class="image-wrapper">
+                <img src="@Image" alt="@Name">
+            </div>
+        </div>
+        <div class="field">
+            <MudText Typo="Typo.subtitle1">
+                @L["Customer:Name"]
+            </MudText>
+            <MudText Typo="Typo.subtitle1">
+                @Name
+            </MudText>
+        </div>
+        <div class="field">
+            <MudText Typo="Typo.subtitle1">
+                @L["Customer:Timezone"]
+            </MudText>
+            <MudText Typo="Typo.subtitle1">
+                @Timezone
+            </MudText>
+        </div>
+        <div class="field">
+            <MudText Typo="Typo.subtitle1">
+                @L["Customer:FirstDayOfWeek"]
+            </MudText>
+            <MudText Typo="Typo.subtitle1">
+                @L[$"DayOfWeek:{FirstDayOfWeek}"]
+            </MudText>
+        </div>
+        <div class="field">
+            <MudText Typo="Typo.subtitle1">
+                @L["Customer:Edit"]
+            </MudText>
+            <MudButton Color="Color.Primary" Variant="Variant.Text" Size="Size.Small" EndIcon="@Icons.Filled.OpenInNew" Link="@Configuration["Urls:Account"]" Target="_blank">
+                @L["ElwarkAccount"]
+            </MudButton>
+        </div>
+        <div class="d-flex justify-end">
+            <MudButton Color="Color.Default" Variant="Variant.Text" Size="Size.Small" EndIcon="@Icons.Filled.Logout" OnClick="@BeginSignOut">
+                @L["Logout"]
+            </MudButton>
+        </div>
+    </div>
+</MudPaper>
+
+@code {
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
+    [Inject]
+    private IConfiguration Configuration { get; set; } = default!;
+
+    [Inject]
+    private SignOutSessionStateManager SignOutManager { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Name { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public Uri Image { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Timezone { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public DayOfWeek FirstDayOfWeek { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Language { get; set; } = string.Empty;
+
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo(Links.Authentication.LogOut);
+    }
+
+}
