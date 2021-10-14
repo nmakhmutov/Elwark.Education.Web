@@ -12,34 +12,34 @@ internal sealed class TestClient : GatewayClient
         _client = client;
 
     public Task<ApiResponse<TestBuilder>> GetTestBuilderAsync() =>
-        ExecuteAsync<TestBuilder>(() => _client.GetAsync("history/tests/builder"));
-        
+        ExecuteAsync<TestBuilder>(ct => _client.GetAsync("history/tests/builder", ct));
+
     public Task<ApiResponse<TestModel>> GetAsync(string id) =>
-        ExecuteAsync<TestModel>(() => _client.GetAsync($"history/tests/{id}"));
+        ExecuteAsync<TestModel>(ct => _client.GetAsync($"history/tests/{id}", ct));
 
     public Task<ApiResponse<ManyAnswersResult>> CheckAsync(string testId, string questionId, ManyAnswer answer) =>
-        ExecuteAsync<ManyAnswersResult>(() =>
-            _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
+        ExecuteAsync<ManyAnswersResult>(ct =>
+            _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer), ct));
 
     public Task<ApiResponse<OneAnswerResult>> CheckAsync(string testId, string questionId, OneAnswer answer) =>
-        ExecuteAsync<OneAnswerResult>(() =>
-            _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
+        ExecuteAsync<OneAnswerResult>(ct =>
+            _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer), ct));
 
     public Task<ApiResponse<TextAnswerResult>> CheckAsync(string testId, string questionId, TextAnswer answer) =>
-        ExecuteAsync<TextAnswerResult>(() =>
-            _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer)));
+        ExecuteAsync<TextAnswerResult>(ct =>
+            _client.PostAsync($"history/tests/{testId}/questions/{questionId}", ToJson(answer), ct));
 
     public Task<ApiResponse<TestConclusion>> GetConclusionAsync(string id) =>
-        ExecuteAsync<TestConclusion>(() => _client.GetAsync($"history/tests/{id}/conclusion"));
-        
+        ExecuteAsync<TestConclusion>(ct => _client.GetAsync($"history/tests/{id}/conclusion", ct));
+
     public Task<ApiResponse<TestCreatedResult>> CreateRandomEasyTestAsync(CreateTestRequest request) =>
-        ExecuteAsync<TestCreatedResult>(() => _client.PostAsync("history/tests/easy", ToJson(request)));
-        
+        ExecuteAsync<TestCreatedResult>(ct => _client.PostAsync("history/tests/easy", ToJson(request), ct));
+
     public Task<ApiResponse<TestCreatedResult>> CreateRandomHardTestAsync(CreateTestRequest request) =>
-        ExecuteAsync<TestCreatedResult>(() => _client.PostAsync("history/tests/hard", ToJson(request)));
-        
+        ExecuteAsync<TestCreatedResult>(ct => _client.PostAsync("history/tests/hard", ToJson(request), ct));
+
     public Task<ApiResponse<TestCreatedResult>> CreateRandomMixedTestAsync(CreateTestRequest request) =>
-        ExecuteAsync<TestCreatedResult>(() => _client.PostAsync("history/tests/mixed", ToJson(request)));
+        ExecuteAsync<TestCreatedResult>(ct => _client.PostAsync("history/tests/mixed", ToJson(request), ct));
 }
-    
+
 public sealed record CreateTestRequest(EpochType Epoch);

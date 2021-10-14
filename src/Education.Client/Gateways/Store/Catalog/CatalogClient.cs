@@ -12,8 +12,8 @@ internal sealed class CatalogClient : GatewayClient
         _client = client;
 
     public Task<ApiResponse<Subscription[]>> GetSubscriptions() =>
-        ExecuteAsync<Subscription[]>(() => _client.GetAsync("store/catalog/subscriptions"));
+        ExecuteAsync<Subscription[]>(ct => _client.GetAsync("store/catalog/subscriptions", ct));
 
     public Task<ApiResponse<Subscription[]>> GetSubscriptions(SubjectType subject) =>
-        ExecuteAsync<Subscription[]>(() => _client.GetAsync($"store/catalog/subscriptions/{subject}"));
+        ExecuteAsync<Subscription[]>(ct => _client.GetAsync($"store/catalog/subscriptions/{subject}", ct));
 }

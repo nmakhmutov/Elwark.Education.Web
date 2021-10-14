@@ -12,17 +12,17 @@ internal sealed class BasketClient : GatewayClient
         _client = client;
 
     public Task<ApiResponse<Basket>> GetAsync() =>
-        ExecuteAsync<Basket>(() => _client.GetAsync("store/basket"));
+        ExecuteAsync<Basket>(ct => _client.GetAsync("store/basket", ct));
 
     public Task<ApiResponse<Unit>> AddItemAsync(string productId) =>
-        ExecuteAsync<Unit>(() => _client.PutAsync($"store/basket/items/{productId}", EmptyContent));
+        ExecuteAsync<Unit>(ct => _client.PutAsync($"store/basket/items/{productId}", EmptyContent, ct));
         
     public Task<ApiResponse<Unit>> RemoveItemAsync(string productId) =>
-        ExecuteAsync<Unit>(() => _client.DeleteAsync($"store/basket/items/{productId}"));
+        ExecuteAsync<Unit>(ct => _client.DeleteAsync($"store/basket/items/{productId}", ct));
         
     public Task<ApiResponse<Unit>> AddPromoCodeAsync(string code) =>
-        ExecuteAsync<Unit>(() => _client.PutAsync($"store/basket/promo-codes/{code}", EmptyContent));
+        ExecuteAsync<Unit>(ct => _client.PutAsync($"store/basket/promo-codes/{code}", EmptyContent, ct));
         
     public Task<ApiResponse<Unit>> RemovePromoCodeAsync() =>
-        ExecuteAsync<Unit>(() => _client.DeleteAsync("store/basket/promo-codes"));
+        ExecuteAsync<Unit>(ct => _client.DeleteAsync("store/basket/promo-codes", ct));
 }

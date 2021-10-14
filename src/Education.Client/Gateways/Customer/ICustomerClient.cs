@@ -6,10 +6,10 @@ namespace Education.Client.Gateways.Customer;
 public interface ICustomerClient
 {
     Task<ApiResponse<Customer>> GetAsync();
-        
+
     Task CreateAsync();
 }
-    
+
 internal sealed class CustomerClient : GatewayClient, ICustomerClient
 {
     private readonly HttpClient _client;
@@ -18,7 +18,7 @@ internal sealed class CustomerClient : GatewayClient, ICustomerClient
         _client = client;
 
     public Task<ApiResponse<Customer>> GetAsync() =>
-        ExecuteAsync<Customer>(() => _client.GetAsync("customers/me"));
+        ExecuteAsync<Customer>(ct => _client.GetAsync("customers/me", ct));
 
     public async Task CreateAsync()
     {

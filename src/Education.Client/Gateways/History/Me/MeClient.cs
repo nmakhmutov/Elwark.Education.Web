@@ -13,27 +13,26 @@ internal sealed class MeClient : GatewayClient
         _client = client;
 
     public Task<ApiResponse<HistoryUserProfile>> GetOverviewAsync() =>
-        ExecuteAsync<HistoryUserProfile>(() => _client.GetAsync("history/me"));
+        ExecuteAsync<HistoryUserProfile>(ct => _client.GetAsync("history/me", ct));
 
     public Task<ApiResponse<PageResponse<UserTopicSummary>>> GetFavoritesAsync(PageRequest request) =>
-        ExecuteAsync<PageResponse<UserTopicSummary>>(() =>
-            _client.GetAsync($"history/me/favorites?page={request.Page}&count={request.Count}"));
+        ExecuteAsync<PageResponse<UserTopicSummary>>(ct => _client.GetAsync($"history/me/favorites{request.ToQuery()}", ct));
 
     public Task<ApiResponse<Unit>> CollectDailyReward() =>
-        ExecuteAsync<Unit>(() => _client.PostAsync("history/me/rewards/daily", EmptyContent));
+        ExecuteAsync<Unit>(ct => _client.PostAsync("history/me/rewards/daily", EmptyContent, ct));
 
     public Task<ApiResponse<TopicTestStatistics>> GetEasyTestStatisticsAsync() =>
-        ExecuteAsync<TopicTestStatistics>(() => _client.GetAsync("history/me/tests/easy"));
+        ExecuteAsync<TopicTestStatistics>(ct => _client.GetAsync("history/me/tests/easy", ct));
 
     public Task<ApiResponse<TopicTestStatistics>> GetHardTestStatisticsAsync() =>
-        ExecuteAsync<TopicTestStatistics>(() => _client.GetAsync("history/me/tests/hard"));
+        ExecuteAsync<TopicTestStatistics>(ct => _client.GetAsync("history/me/tests/hard", ct));
 
     public Task<ApiResponse<MixedTestStatistics>> GetMixedTestStatisticsAsync() =>
-        ExecuteAsync<MixedTestStatistics>(() => _client.GetAsync("history/me/tests/mixed"));
+        ExecuteAsync<MixedTestStatistics>(ct => _client.GetAsync("history/me/tests/mixed", ct));
 
     public Task<ApiResponse<EventGuesserStatistics>> GetEventGuesserStatisticsAsync() =>
-        ExecuteAsync<EventGuesserStatistics>(() => _client.GetAsync("history/me/event-guessers"));
+        ExecuteAsync<EventGuesserStatistics>(ct => _client.GetAsync("history/me/event-guessers", ct));
 
     public Task<ApiResponse<TopicStatistics>> GetTopicStatisticsAsync(string topicId) =>
-        ExecuteAsync<TopicStatistics>(() => _client.GetAsync($"history/me/topics/{topicId}"));
+        ExecuteAsync<TopicStatistics>(ct => _client.GetAsync($"history/me/topics/{topicId}", ct));
 }

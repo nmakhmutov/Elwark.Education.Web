@@ -13,17 +13,17 @@ internal sealed class EventGuesserClient : GatewayClient
         _client = client;
 
     public Task<ApiResponse<TestModel>> GetAsync() =>
-        ExecuteAsync<TestModel>(() => _client.GetAsync("history/event-guessers"));
+        ExecuteAsync<TestModel>(ct => _client.GetAsync("history/event-guessers", ct));
 
     public Task<ApiResponse<TestBuilder>> GetBuilderAsync() =>
-        ExecuteAsync<TestBuilder>(() => _client.GetAsync("history/event-guessers/builder"));
+        ExecuteAsync<TestBuilder>(ct => _client.GetAsync("history/event-guessers/builder", ct));
 
     public Task<ApiResponse<ConclusionModel>> ConcludeAsync() =>
-        ExecuteAsync<ConclusionModel>(() => _client.GetAsync("history/event-guessers/conclusion"));
+        ExecuteAsync<ConclusionModel>(ct => _client.GetAsync("history/event-guessers/conclusion", ct));
 
     public Task<ApiResponse<TestModel>> CreateAsync(CreateRequest request) =>
-        ExecuteAsync<TestModel>(() => _client.PostAsync("history/event-guessers", ToJson(request)));
+        ExecuteAsync<TestModel>(ct => _client.PostAsync("history/event-guessers", ToJson(request), ct));
 
     public Task<ApiResponse<CheckModel>> CheckAsync(CheckRequest request) =>
-        ExecuteAsync<CheckModel>(() => _client.PutAsync("history/event-guessers", ToJson(request)));
+        ExecuteAsync<CheckModel>(ct => _client.PutAsync("history/event-guessers", ToJson(request), ct));
 }

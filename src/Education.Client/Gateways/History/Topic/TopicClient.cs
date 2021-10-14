@@ -14,27 +14,26 @@ internal sealed class TopicClient : GatewayClient
         _client = client;
 
     public Task<ApiResponse<PageResponse<UserTopicSummary>>> GetAsync(GetTopicsRequest request) =>
-        ExecuteAsync<PageResponse<UserTopicSummary>>(() =>
-            _client.GetAsync($"history/topics?epoch={request.Epoch}&count={request.Count}&page={request.Page}"));
+        ExecuteAsync<PageResponse<UserTopicSummary>>(ct => _client.GetAsync($"history/topics{request.ToQuery()}", ct));
 
     public Task<ApiResponse<TopicDetailComposition>> GetAsync(string id) =>
-        ExecuteAsync<TopicDetailComposition>(() => _client.GetAsync($"history/topics/{id}"));
+        ExecuteAsync<TopicDetailComposition>(ct => _client.GetAsync($"history/topics/{id}", ct));
 
     public Task<ApiResponse<RandomTopic>> GetRandomAsync() =>
-        ExecuteAsync<RandomTopic>(() => _client.GetAsync("history/topics/random"));
+        ExecuteAsync<RandomTopic>(ct => _client.GetAsync("history/topics/random", ct));
 
     public Task<ApiResponse<TestCreatedResult>> CreateEasyTestAsync(string id) =>
-        ExecuteAsync<TestCreatedResult>(() => _client.PostAsync($"history/topics/{id}/test/easy", EmptyContent));
+        ExecuteAsync<TestCreatedResult>(ct => _client.PostAsync($"history/topics/{id}/test/easy", EmptyContent, ct));
         
     public Task<ApiResponse<TestCreatedResult>> CreateHardTestAsync(string id) =>
-        ExecuteAsync<TestCreatedResult>(() => _client.PostAsync($"history/topics/{id}/test/hard", EmptyContent));
+        ExecuteAsync<TestCreatedResult>(ct => _client.PostAsync($"history/topics/{id}/test/hard", EmptyContent, ct));
         
     public Task<ApiResponse<bool>> ToggleFavoriteAsync(string id) =>
-        ExecuteAsync<bool>(() => _client.PostAsync($"history/topics/{id}/favorite", EmptyContent));
+        ExecuteAsync<bool>(ct => _client.PostAsync($"history/topics/{id}/favorite", EmptyContent, ct));
 
     public Task<ApiResponse<Unit>> LikeAsync(string id) =>
-        ExecuteAsync<Unit>(() => _client.PostAsync($"history/topics/{id}/like", EmptyContent));
+        ExecuteAsync<Unit>(ct => _client.PostAsync($"history/topics/{id}/like", EmptyContent, ct));
 
     public Task<ApiResponse<Unit>> DislikeAsync(string id) =>
-        ExecuteAsync<Unit>(() => _client.PostAsync($"history/topics/{id}/dislike", EmptyContent));
+        ExecuteAsync<Unit>(ct => _client.PostAsync($"history/topics/{id}/dislike", EmptyContent, ct));
 }

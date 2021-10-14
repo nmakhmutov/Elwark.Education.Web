@@ -15,15 +15,13 @@ internal abstract class GatewayClient
 {
     protected static readonly StringContent EmptyContent = new(string.Empty, Encoding.UTF8, "application/json");
 
-    protected static Task<ApiResponse<T>> ExecuteAsync<T>(Func<Task<HttpResponseMessage>> handler) =>
-        ExecuteAsync<T>(_ => handler());
-
-    protected static async Task<ApiResponse<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> handler)
+    protected static async Task<ApiResponse<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> action)
     {
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+        
         try
         {
-            using var message = await handler(cts.Token);
+            using var message = await action(cts.Token);
             await using var stream = await message.Content.ReadAsStreamAsync(cts.Token);
             using var sr = new StreamReader(stream);
             using var jsonTextReader = new JsonTextReader(sr);

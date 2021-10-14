@@ -9,10 +9,10 @@ internal sealed class HomeClient : GatewayClient
 
     public HomeClient(HttpClient client) =>
         _client = client;
-        
+
     public Task<ApiResponse<HistoryOverview>> GetAsync() =>
-        ExecuteAsync<HistoryOverview>(() => _client.GetAsync("history"));
-        
+        ExecuteAsync<HistoryOverview>(ct => _client.GetAsync("history", ct));
+
     public Task<ApiResponse<TopicSummary[]>> SearchAsync(string query) =>
-        ExecuteAsync<TopicSummary[]>(() => _client.GetAsync($"history/search?q={query}"));
+        ExecuteAsync<TopicSummary[]>(ct => _client.GetAsync($"history/search?q={query}", ct));
 }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Education.Client.Gateways.Models;
 
-public struct Unit : IEquatable<Unit>, IComparable<Unit>, IComparable
+internal readonly struct Unit : IEquatable<Unit>, IComparable<Unit>, IComparable
 {
     public static readonly Unit Value = new ();
 
