@@ -41,25 +41,25 @@
 
 @code {
 
-    [Parameter]
-    public string? Class { get; set; }
-
-    [Parameter]
+    [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string Description { get; set; } = string.Empty;
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string Image { get; set; } = string.Empty;
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public HistoricDate? Started { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public HistoricDate? Ended { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+
+    [Parameter]
+    public string? Class { get; set; }
 
 }

@@ -15,6 +15,9 @@ internal sealed class TopicClient : GatewayClient
 
     public Task<ApiResponse<PageResponse<UserTopicSummary>>> GetAsync(GetTopicsRequest request) =>
         ExecuteAsync<PageResponse<UserTopicSummary>>(ct => _client.GetAsync($"history/topics{request.ToQuery()}", ct));
+    
+    public Task<ApiResponse<PageResponse<EmpireSummary>>> GetAsync(GetEmpiresRequest request) =>
+        ExecuteAsync<PageResponse<EmpireSummary>>(ct => _client.GetAsync($"history/empires{request.ToQuery()}", ct));
 
     public Task<ApiResponse<TopicDetailComposition>> GetAsync(string id) =>
         ExecuteAsync<TopicDetailComposition>(ct => _client.GetAsync($"history/topics/{id}", ct));

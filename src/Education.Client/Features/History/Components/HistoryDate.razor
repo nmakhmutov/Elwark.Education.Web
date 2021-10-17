@@ -1,9 +1,9 @@
 @using Education.Client.Gateways.History
 
-<MudText Typo="@Typo" Color="@Color" Class="@Class">
+<MudText Typo="@Typo" Color="@Color" Align="Align" Class="@Class">
     @if (Date is null)
     {
-        @L["HistoricalDate:Unknown"]
+        @L["History:Unknown"]
     }
     else
     {
@@ -25,6 +25,9 @@
     [Parameter]
     public Color Color { get; set; } = Color.Default;
 
+    [Parameter]
+    public Align Align { get; set; }
+    
     [Parameter]
     public string? Class { get; set; }
 

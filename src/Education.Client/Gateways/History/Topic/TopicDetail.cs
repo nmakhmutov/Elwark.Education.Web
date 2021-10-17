@@ -32,7 +32,21 @@ internal sealed record EventTopicDetail(
     string Image,
     EpochType Epoch,
     HistoricDate? Started,
+    HistoricDate? Finished,
+    string[] Tags,
+    Chapter[] Chapters
+) : TopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);
+
+internal sealed record EmpireTopicDetail(
+    string Id,
+    string Title,
+    string Description,
+    string Image,
+    EpochType Epoch,
+    HistoricDate? Founded,
     HistoricDate? Ended,
+    uint MaxArea,
+    uint MaxPopulation,
     string[] Tags,
     Chapter[] Chapters
 ) : TopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);

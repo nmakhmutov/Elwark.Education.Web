@@ -1,47 +1,53 @@
 using System;
-using System.Globalization;
-using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using Education.Client.Gateways.Converters;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Newtonsoft.Json;
 
 namespace Education.Client.Gateways;
 
 internal abstract class GatewayClient
 {
+    private static readonly JsonSerializerOptions Serializer = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+        IgnoreReadOnlyProperties = false,
+        PropertyNameCaseInsensitive = true,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        ReferenceHandler = ReferenceHandler.IgnoreCycles,
+        Converters =
+        {
+            new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
+            new HistoryTestConclusionJsonConverter(),
+            new HistoryTopicDetailJsonConverter()
+        }
+    };
+
     protected static readonly StringContent EmptyContent = new(string.Empty, Encoding.UTF8, "application/json");
 
+    protected static JsonContent CreateJson<T>(T value) =>
+        JsonContent.Create(value, null, Serializer);
+    
     protected static async Task<ApiResponse<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> action)
     {
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-        
+
         try
         {
             using var message = await action(cts.Token);
-            await using var stream = await message.Content.ReadAsStreamAsync(cts.Token);
-            using var sr = new StreamReader(stream);
-            using var jsonTextReader = new JsonTextReader(sr);
-
-            return message.StatusCode switch
-            {
-                HttpStatusCode.OK =>
-                    ApiResponse<T>.Success(JsonConfiguration.Serializer.Deserialize<T>(jsonTextReader)!),
-
-                HttpStatusCode.Created =>
-                    ApiResponse<T>.Success(JsonConfiguration.Serializer.Deserialize<T>(jsonTextReader)!),
-
-                HttpStatusCode.Accepted =>
-                    ApiResponse<T>.Success(JsonConfiguration.Serializer.Deserialize<T>(jsonTextReader)!),
-
-                HttpStatusCode.NoContent =>
-                    ApiResponse<T>.Success(default!),
-
-                _ => ApiResponse<T>.Fail(JsonConfiguration.Serializer.Deserialize<Error>(jsonTextReader)!)
-            };
+            
+            return message.IsSuccessStatusCode
+                ? message.StatusCode == HttpStatusCode.NoContent
+                    ? ApiResponse<T>.Success(default!)
+                    : ApiResponse<T>.Success((await message.Content.ReadFromJsonAsync<T>(Serializer, cts.Token))!)
+                : ApiResponse<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(Serializer, cts.Token))!);
         }
         catch (AccessTokenNotAvailableException ex)
         {
@@ -59,16 +65,5 @@ internal abstract class GatewayClient
             var error = Error.Create("Internal", "https://tools.ietf.org/html/rfc7231#section-6.6.3", 502);
             return ApiResponse<T>.Fail(error);
         }
-    }
-
-    protected static StringContent ToJson<T>(T value)
-    {
-        var sb = new StringBuilder(256);
-        var sw = new StringWriter(sb, CultureInfo.InvariantCulture);
-        using var jsonWriter = new JsonTextWriter(sw) { Formatting = JsonConfiguration.Serializer.Formatting };
-
-        JsonConfiguration.Serializer.Serialize(jsonWriter, value);
-
-        return new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
     }
 }

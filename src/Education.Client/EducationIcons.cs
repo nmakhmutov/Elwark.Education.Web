@@ -17,6 +17,8 @@ public static class EducationIcons
 
     public static readonly string Epochs = Icons.Outlined.HistoryToggleOff;
 
+    public static readonly string Empires = Icons.Outlined.Foundation;
+
     public static readonly string Tests = Icons.Outlined.School;
 
     public static readonly string Score = Icons.Outlined.PendingActions;

@@ -1,38 +1,32 @@
 using System;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using Education.Client.Gateways.History.Test;
 using Education.Client.Gateways.Models.Test;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Education.Client.Gateways.Converters;
 
 internal sealed class HistoryTestConclusionJsonConverter : JsonConverter<TestConclusion?>
 {
-    private const string TestType = "testType";
+    private const string Type = "testType";
 
-    public override void WriteJson(JsonWriter writer, TestConclusion? value, JsonSerializer serializer) =>
-        serializer.Serialize(writer, value);
-
-    public override TestConclusion? ReadJson(JsonReader reader, Type objectType, TestConclusion? existingValue,
-        bool hasExistingValue, JsonSerializer serializer)
+    public override TestConclusion? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType == JsonToken.Null)
-            return null;
+        var node = JsonNode.Parse(ref reader);
 
-        var jObject = JObject.Load(reader);
-        if (jObject.Type == JTokenType.Null)
-            return null;
-
-        var testType = jObject.Value<string>(TestType);
-        if (Enum.TryParse(testType, true, out TestType value))
-            return value switch
+        if (Enum.TryParse<TestType>(node?[Type]?.GetValue<string>(), true, out var type))
+            return type switch
             {
-                Gateways.Models.Test.TestType.Easy => jObject.ToObject<EasyTestConclusion>(),
-                Gateways.Models.Test.TestType.Hard => jObject.ToObject<HardTestConclusion>(),
-                Gateways.Models.Test.TestType.Mixed => jObject.ToObject<MixedTestConclusion>(),
-                _ => throw new ArgumentOutOfRangeException(nameof(reader), value, null)
+                TestType.Easy => node.Deserialize<EasyTestConclusion>(options),
+                TestType.Hard => node.Deserialize<HardTestConclusion>(options),
+                TestType.Mixed => node.Deserialize<MixedTestConclusion>(options),
+                _ => throw new ArgumentOutOfRangeException(nameof(TestConclusion), @"Unknown topic conclusion type")
             };
 
-        throw new JsonReaderException($"Test type '{testType}' cannot be parse");
+        return null;
     }
+
+    public override void Write(Utf8JsonWriter writer, TestConclusion? value, JsonSerializerOptions options) =>
+        JsonSerializer.Serialize(writer, value, options);
 }

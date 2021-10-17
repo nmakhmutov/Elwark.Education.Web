@@ -7,6 +7,12 @@ namespace Education.Client;
 
 public sealed class ThemeProvider
 {
+    public enum ThemeType
+    {
+        Light,
+        Dark
+    }
+
     private const string StorageKey = "ts";
 
     private static readonly MudTheme LightTheme = new()
@@ -14,8 +20,8 @@ public sealed class ThemeProvider
         Palette = new Palette
         {
             Primary = "#5569ff",
-            Secondary = "#8560c7",
-            Tertiary = "#584bb0",
+            Secondary = "#584bb0",
+            Tertiary = "#8560c7",
             Info = "#33c2ff",
             Success = "#44d600",
             Warning = "#ffa319",
@@ -26,7 +32,8 @@ public sealed class ThemeProvider
             AppbarBackground = Colors.Shades.White, //"#3949ab"
             AppbarText = Colors.Grey.Darken3, //"#27272f"
             Divider = "rgba(34, 51, 84, 0.1)",
-            TableLines = "rgba(34, 51, 84, 0.1)"
+            TableLines = "rgba(34, 51, 84, 0.1)",
+            OverlayLight = "rgba(255, 255, 255, 0.7)"
         }
     };
 
@@ -35,8 +42,8 @@ public sealed class ThemeProvider
         Palette = new Palette
         {
             Primary = "#5569ff",
-            Secondary = "#8560c7",
-            Tertiary = "#584bb0",
+            Secondary = "#584bb0",
+            Tertiary = "#8560c7",
             Info = "#33c2ff",
             Success = "#44d600",
             Warning = "#ffa319",
@@ -57,42 +64,47 @@ public sealed class ThemeProvider
             ActionDisabled = "rgba(255,255,255, 0.26)",
             ActionDisabledBackground = "rgba(255,255,255, 0.12)",
             DrawerIcon = "rgba(255,255,255, 0.50)",
-            HoverOpacity = 0.2
+            HoverOpacity = 0.2,
+            OverlayDark = "rgba(33, 33, 33, 0.7)"
         }
     };
 
     private readonly ILocalStorageService _storage;
-    private Theme _theme;
 
     public ThemeProvider(ILocalStorageService storage)
     {
         _storage = storage;
-        _theme = Theme.Light;
+        Type = ThemeType.Light;
     }
 
-    public MudTheme Current => _theme switch
+    public ThemeType Type { get; private set; }
+
+    public MudTheme Theme => Type switch
     {
-        Theme.Light => LightTheme,
-        Theme.Dark => DarkTheme,
+        ThemeType.Light => LightTheme,
+        ThemeType.Dark => DarkTheme,
         _ => throw new ArgumentOutOfRangeException()
     };
 
-    public string Icon => _theme switch
+    public string Icon => Type switch
     {
-        Theme.Light => Icons.Outlined.LightMode,
-        Theme.Dark => Icons.Outlined.DarkMode,
+        ThemeType.Light => Icons.Outlined.LightMode,
+        ThemeType.Dark => Icons.Outlined.DarkMode,
         _ => throw new ArgumentOutOfRangeException()
     };
 
-    public async Task ToggleAsync() =>
-        await _storage.SetItemAsync(StorageKey, _theme = _theme == Theme.Dark ? Theme.Light : Theme.Dark);
+    public event Action OnChange = () => { };
 
-    public async Task InitAsync() =>
-        _theme = await _storage.GetItemAsync<Theme>(StorageKey);
-
-    private enum Theme
+    public async Task ToggleAsync()
     {
-        Light,
-        Dark
+        Type = Type == ThemeType.Dark ? ThemeType.Light : ThemeType.Dark;
+        await _storage.SetItemAsync(StorageKey, Type);
+        OnChange();
+    }
+
+    public async Task InitAsync()
+    {
+        Type = await _storage.GetItemAsync<ThemeType>(StorageKey);
+        OnChange();
     }
 }

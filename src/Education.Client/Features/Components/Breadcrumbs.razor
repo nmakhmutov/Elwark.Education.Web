@@ -1,9 +1,9 @@
 <MudBreadcrumbs Items="@Items" Class="@Class">
     <ItemTemplate Context="item">
-        <MudLink Disabled="@item.Disabled" Href="@item.Href">
+        <MudLink Typo="Typo" Disabled="@item.Disabled" Href="@item.Href">
             @if (!string.IsNullOrEmpty(item.Icon))
             {
-                <MudIcon Icon="@item.Icon" Size="Size.Small"/>
+                <MudIcon Icon="@item.Icon" Size="@SeparatorSize"/>
             }
             @item.Text
         </MudLink>
@@ -20,5 +20,11 @@
 
     [Parameter]
     public string Separator { get; set; } = Icons.Filled.ChevronRight;
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body1;
+
+    [Parameter]
+    public Size SeparatorSize { get; set; } = Size.Small;
 
 }

@@ -1,11 +1,11 @@
 @page "/history/topics/{id}"
 @layout HistoryLayout
 
-@using Education.Client.Gateways.History
 @using Education.Client.Gateways.History.Topic
+@using Education.Client.Services
+@using Education.Client.Gateways.History
 @using Education.Client.Features.History.Topics.Topic.Components
 @using Education.Client.Features.History.Components
-@using Education.Client.Services
 
 @implements IDisposable
 @attribute [Authorize]
@@ -33,203 +33,216 @@
     </CenteredContainer>
 </Loading>
 <Success Context="result">
-    <PageTitle>@result.Topic.Title</PageTitle>
+<PageTitle>@result.Topic.Title</PageTitle>
 
-    @switch (result.Topic)
-    {
-        case PersonTopicDetail x:
-            <PersonHeader
-                Class="mb-6 mb-sm-12"
-                Title="@x.Title"
-                Description="@x.Description"
-                Image="@x.Image"
-                Born="@x.Born"
-                Died="@x.Died"
-                Characteristics="@x.Characteristics"
-                Breadcrumbs="@_breadcrumbs"/>
-            break;
+@switch (result.Topic)
+{
+    case EmpireTopicDetail topic:
+        <EmpireHeader
+            Class="mb-6 mb-sm-12"
+            Title="@topic.Title"
+            Description="@topic.Description"
+            Image="@topic.Image"
+            Founded="@topic.Founded"
+            Ended="@topic.Ended"
+            MaxArea="@topic.MaxArea"
+            MaxPopulation="@topic.MaxPopulation"
+            Breadcrumbs="@_breadcrumbs"/>
+        break;
 
-        case EventTopicDetail x:
-            <EventHeader
-                Class="mb-6 mb-sm-12"
-                Title="@x.Title"
-                Description="@x.Description"
-                Image="@x.Image"
-                Started="@x.Started"
-                Ended="@x.Ended"
-                Breadcrumbs="@_breadcrumbs"/>
-            break;
-    }
+    case PersonTopicDetail topic:
+        <PersonHeader
+            Class="mb-6 mb-sm-12"
+            Title="@topic.Title"
+            Description="@topic.Description"
+            Image="@topic.Image"
+            Born="@topic.Born"
+            Died="@topic.Died"
+            Characteristics="@topic.Characteristics"
+            Breadcrumbs="@_breadcrumbs"/>
+        break;
 
-    <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
-        <div class="toolbar">
-            <div class="toolbar-contents">
-                @if (result.Topic.Chapters.Length > 2)
-                {
-                    <MudMenu Label="@L["Topic:Contents"]" Color="Color.Primary" Variant="Variant.Filled">
-                        @foreach (var chapter in result.Topic.Chapters)
-                        {
-                            <MudMenuItem OnClick="@(() => Scroll.ScrollToFragmentAsync($"chapter-{chapter.Id}", ScrollBehavior.Smooth))">
-                                @chapter.Title
-                            </MudMenuItem>
-                        }
-                    </MudMenu>
-                }
-            </div>
+    case EventTopicDetail topic:
+        <EventHeader
+            Class="mb-6 mb-sm-12"
+            Title="@topic.Title"
+            Description="@topic.Description"
+            Image="@topic.Image"
+            Started="@topic.Started"
+            Ended="@topic.Finished"
+            Breadcrumbs="@_breadcrumbs"/>
+        break;
+}
 
-            <div class="toolbar-width d-none d-lg-block">
-                <div class="d-flex flex-column align-sm-center">
-                    <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
-                        <MudIconButton
-                            Disabled="@(FormatService.Width == Width.False)"
-                            Icon="@Icons.Material.Filled.CropFree"
-                            OnClick="@FormatService.SetWidthFalseAsync"/>
-                        <div class="d-none d-lg-plus-block">
-                            <MudIconButton
-                                Disabled="@(FormatService.Width == Width.lg)"
-                                Icon="@Icons.Material.Filled.CropDin"
-                                OnClick="@FormatService.SetWidthLgAsync"/>
-                        </div>
-                        <MudIconButton
-                            Disabled="@(FormatService.Width == Width.md)"
-                            Icon="@Icons.Material.Filled.CropPortrait"
-                            OnClick="@FormatService.SetWidthMdAsync"/>
-                    </MudButtonGroup>
-                    <MudText Typo="Typo.body2" Class="subtitle">
-                        @L["TopicFormatting:ContentWidth"]
-                    </MudText>
-                </div>
-            </div>
+<CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
+    <div class="toolbar">
+        <div class="toolbar-contents">
+            @if (result.Topic.Chapters.Length > 2)
+            {
+                <MudMenu Label="@L["Topic:Contents"]" Variant="Variant.Outlined" EndIcon="@Icons.Outlined.KeyboardArrowDown">
+                    @foreach (var chapter in result.Topic.Chapters)
+                    {
+                        <MudMenuItem OnClick="@(() => Scroll.ScrollToFragmentAsync(ChapterId(chapter.Id), ScrollBehavior.Smooth))">
+                            @chapter.Title
+                        </MudMenuItem>
+                    }
+                </MudMenu>
+            }
+        </div>
 
-            <div class="toolbar-align">
-                <div class="d-flex flex-column align-sm-center">
-                    <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+        <div class="toolbar-width d-none d-lg-block">
+            <div class="d-flex flex-column align-sm-center">
+                <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+                    <MudIconButton
+                        Disabled="@(FormatService.Width == Width.False)"
+                        Icon="@Icons.Material.Filled.CropFree"
+                        OnClick="@FormatService.SetWidthFalseAsync"/>
+                    <div class="d-none d-lg-plus-block">
                         <MudIconButton
-                            Disabled="@(FormatService.TextAlign == Align.Left)"
-                            Icon="@Icons.Material.Filled.FormatAlignLeft"
-                            OnClick="@FormatService.AlignTextLeftAsync"/>
-                        <MudIconButton
-                            Disabled="@(FormatService.TextAlign == Align.Center)"
-                            Icon="@Icons.Material.Filled.FormatAlignCenter"
-                            OnClick="@FormatService.AlignTextCenterAsync"/>
-                        <MudIconButton
-                            Disabled="@(FormatService.TextAlign == Align.Right)"
-                            Icon="@Icons.Material.Filled.FormatAlignRight"
-                            OnClick="@FormatService.AlignTextRightAsync"/>
-                        <MudIconButton
-                            Disabled="@(FormatService.TextAlign == Align.Justify)"
-                            Icon="@Icons.Material.Filled.FormatAlignJustify"
-                            OnClick="@FormatService.AlignTextJustifyAsync"/>
-                    </MudButtonGroup>
-                    <MudText Typo="Typo.body2" Class="subtitle">
-                        @L["TopicFormatting:TextAlignment"]
-                    </MudText>
-                </div>
-            </div>
-
-            <div class="toolbar-font-size">
-                <div class="d-flex flex-column align-sm-center">
-                    <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
-                        <MudIconButton
-                            Disabled="@(!FormatService.CanDecreaseFontSize())"
-                            Icon="@Icons.Material.Filled.Remove"
-                            OnClick="@FormatService.DecreaseFontSizeAsync"/>
-                        <MudIconButton
-                            Disabled="@(!FormatService.CanIncreaseFontSize())"
-                            Icon="@Icons.Material.Filled.Add"
-                            OnClick="@FormatService.IncreaseFontSizeAsync"/>
-                    </MudButtonGroup>
-                    <MudText Typo="Typo.body2" Class="subtitle">
-                        @L["TopicFormatting:FontSize"]
-                    </MudText>
-                </div>
+                            Disabled="@(FormatService.Width == Width.lg)"
+                            Icon="@Icons.Material.Filled.CropDin"
+                            OnClick="@FormatService.SetWidthLgAsync"/>
+                    </div>
+                    <MudIconButton
+                        Disabled="@(FormatService.Width == Width.md)"
+                        Icon="@Icons.Material.Filled.CropPortrait"
+                        OnClick="@FormatService.SetWidthMdAsync"/>
+                </MudButtonGroup>
+                <MudText Typo="Typo.body2" Class="subtitle">
+                    @L["TopicFormatting:ContentWidth"]
+                </MudText>
             </div>
         </div>
-    </CenteredContainer>
 
-    @foreach (var (id, title, subtitle, content) in result.Topic.Chapters)
-    {
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
-            <MudCard Style="@FormatService.WidthStyles">
-                <MudCardHeader Class="pa-3 pa-sm-6">
-                    <CardHeaderContent>
-                        <h2 class="chapter-title" id="chapter-@id">
-                            @title
-                        </h2>
-                        @if (!string.IsNullOrEmpty(subtitle))
-                        {
-                            <SimpleMarkdown Text="@subtitle"/>
-                        }
-                    </CardHeaderContent>
-                </MudCardHeader>
-                <MudCardContent Class="pa-3 pa-sm-6">
-                    <TopicMarkdown Text="@content" Style="@FormatService.TextStyles"/>
-                </MudCardContent>
-            </MudCard>
-        </CenteredContainer>
-    }
-
-    <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
-        <MudPaper Style="@FormatService.WidthStyles">
-            <div class="progress">
-                <div class="d-flex flex-column align-start">
-                    @if (result.Test.TestTypes.Any())
-                    {
-                        <MudLink Typo="Typo.h6" Href="@Links.History.MyTopicProgress(result.Topic.Id)">
-                            @L["Test:MyProgress"]
-                        </MudLink>
-                    }
-                    else
-                    {
-                        <MudText Typo="Typo.h6">
-                            @L["Test:MyProgress"]
-                        </MudText>
-                    }
-
-                    <TopicProgressView Progress="@result.Progress" Class="py-3"/>
-
-                    <TestPermissionWrapper Status="@result.Test.Permission.Status" Subject="@SubjectType.History">
-                        <TopicTestButtons
-                            IsLoading="@(_test?.Status == ResponseStatus.Loading)"
-                            TestTypes="@result.Test.TestTypes.ToArray()"
-                            OnCreateTestClick="@CreateTestAsync"/>
-                    </TestPermissionWrapper>
-                </div>
-
-                <TopicReactionButtons
-                    Id="@Id"
-                    IsFavorite="@result.IsFavorite"
-                    Rating="@result.Rating"
-                    OnFavoriteClick="@OnFavoriteClick"
-                    OnLikeClick="@OnLikeClick"
-                    OnDislikeClick="@OnDislikeClick"/>
+        <div class="toolbar-align">
+            <div class="d-flex flex-column align-sm-center">
+                <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+                    <MudIconButton
+                        Disabled="@(FormatService.TextAlign == Align.Left)"
+                        Icon="@Icons.Material.Filled.FormatAlignLeft"
+                        OnClick="@FormatService.AlignTextLeftAsync"/>
+                    <MudIconButton
+                        Disabled="@(FormatService.TextAlign == Align.Center)"
+                        Icon="@Icons.Material.Filled.FormatAlignCenter"
+                        OnClick="@FormatService.AlignTextCenterAsync"/>
+                    <MudIconButton
+                        Disabled="@(FormatService.TextAlign == Align.Right)"
+                        Icon="@Icons.Material.Filled.FormatAlignRight"
+                        OnClick="@FormatService.AlignTextRightAsync"/>
+                    <MudIconButton
+                        Disabled="@(FormatService.TextAlign == Align.Justify)"
+                        Icon="@Icons.Material.Filled.FormatAlignJustify"
+                        OnClick="@FormatService.AlignTextJustifyAsync"/>
+                </MudButtonGroup>
+                <MudText Typo="Typo.body2" Class="subtitle">
+                    @L["TopicFormatting:TextAlignment"]
+                </MudText>
             </div>
-        </MudPaper>
-    </CenteredContainer>
+        </div>
 
-    @if (result.RelatedTopics.Length > 0)
-    {
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
-            <MudText Typo="Typo.h5" Class="mb-3">
-                @L["Topics:Related"]
-            </MudText>
-            <DefaultFillGrid>
-                @foreach (var topic in result.RelatedTopics)
+        <div class="toolbar-font-size">
+            <div class="d-flex flex-column align-sm-center">
+                <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+                    <MudIconButton
+                        Disabled="@(!FormatService.CanDecreaseFontSize())"
+                        Icon="@Icons.Material.Filled.Remove"
+                        OnClick="@FormatService.DecreaseFontSizeAsync"/>
+                    <MudIconButton
+                        Disabled="@(!FormatService.CanIncreaseFontSize())"
+                        Icon="@Icons.Material.Filled.Add"
+                        OnClick="@FormatService.IncreaseFontSizeAsync"/>
+                </MudButtonGroup>
+                <MudText Typo="Typo.body2" Class="subtitle">
+                    @L["TopicFormatting:FontSize"]
+                </MudText>
+            </div>
+        </div>
+    </div>
+</CenteredContainer>
+
+@foreach (var (id, title, subtitle, content) in result.Topic.Chapters)
+{
+    <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
+        <MudCard Style="@FormatService.WidthStyles">
+            <MudCardHeader Class="pa-3 pa-sm-6">
+                <CardHeaderContent>
+                    <h2 class="chapter-title" id="@ChapterId(id)">
+                        @title
+                    </h2>
+                    @if (!string.IsNullOrEmpty(subtitle))
+                    {
+                        <SimpleMarkdown Text="@subtitle"/>
+                    }
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent Class="pa-3 pa-sm-6">
+                <TopicMarkdown Text="@content" Style="@FormatService.TextStyles"/>
+            </MudCardContent>
+        </MudCard>
+    </CenteredContainer>
+}
+
+<CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
+    <MudPaper Style="@FormatService.WidthStyles">
+        <div class="progress">
+            <div class="d-flex flex-column align-start">
+                @if (result.Test.TestTypes.Any())
                 {
-                    <TopicCard
-                        Id="@topic.Id"
-                        Epoch="@topic.Epoch"
-                        Image="@topic.Image"
-                        Title="@topic.Title"
-                        Overview="@topic.Overview"
-                        Rating="@topic.Rating"
-                        Progress="@topic.Progress"
-                        IsFavorite="@topic.IsFavorite"
-                        OnFavoriteClick="@OnFavoriteClick"/>
+                    <MudLink Typo="Typo.h6" Href="@Links.History.MyTopicProgress(result.Topic.Id)">
+                        @L["Test:MyProgress"]
+                    </MudLink>
                 }
-            </DefaultFillGrid>
-        </CenteredContainer>
-    }
+                else
+                {
+                    <MudText Typo="Typo.h6">
+                        @L["Test:MyProgress"]
+                    </MudText>
+                }
+
+                <TopicProgressView Progress="@result.Progress" Class="py-3"/>
+
+                <TestPermissionWrapper Status="@result.Test.Permission.Status" Subject="@SubjectType.History">
+                    <TopicTestButtons
+                        IsLoading="@(_test?.Status == ResponseStatus.Loading)"
+                        TestTypes="@result.Test.TestTypes.ToArray()"
+                        OnCreateTestClick="@CreateTestAsync"/>
+                </TestPermissionWrapper>
+            </div>
+
+            <TopicReactionButtons
+                Id="@Id"
+                IsFavorite="@result.IsFavorite"
+                Rating="@result.Rating"
+                OnFavoriteClick="@OnFavoriteClick"
+                OnLikeClick="@OnLikeClick"
+                OnDislikeClick="@OnDislikeClick"/>
+        </div>
+    </MudPaper>
+</CenteredContainer>
+
+@if (result.RelatedTopics.Length > 0)
+{
+    <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
+        <MudText Typo="Typo.h5" Class="mb-3">
+            @L["Topics:Related"]
+        </MudText>
+        <DefaultFillGrid>
+            @foreach (var topic in result.RelatedTopics)
+            {
+                <TopicCard
+                    Id="@topic.Id"
+                    Epoch="@topic.Epoch"
+                    Image="@topic.Image"
+                    Title="@topic.Title"
+                    Overview="@topic.Overview"
+                    Rating="@topic.Rating"
+                    Progress="@topic.Progress"
+                    IsFavorite="@topic.IsFavorite"
+                    OnFavoriteClick="@OnFavoriteClick"/>
+            }
+        </DefaultFillGrid>
+    </CenteredContainer>
+}
 </Success>
 </ApiViewer>
 
@@ -311,6 +324,8 @@
         var response = await HistoryClient.Topic.DislikeAsync(Id);
         return response.Status == ResponseStatus.Success;
     }
+
+    private static string ChapterId(uint id) => $"chapter-{id}";
 
     public void Dispose() => FormatService.OnChange -= StateHasChanged;
 

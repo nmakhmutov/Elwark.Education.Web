@@ -23,6 +23,8 @@ public static class Links
     {
         public const string Index = "/history";
 
+        public const string Empires = $"{Index}/empires";
+        
         public const string TestBuilder = $"{Index}/tests";
 
         public const string EventGuesserBuilder = $"{Index}/event-guessers";

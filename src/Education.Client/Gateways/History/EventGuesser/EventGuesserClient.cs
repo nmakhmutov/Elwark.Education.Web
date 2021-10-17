@@ -22,8 +22,8 @@ internal sealed class EventGuesserClient : GatewayClient
         ExecuteAsync<ConclusionModel>(ct => _client.GetAsync("history/event-guessers/conclusion", ct));
 
     public Task<ApiResponse<TestModel>> CreateAsync(CreateRequest request) =>
-        ExecuteAsync<TestModel>(ct => _client.PostAsync("history/event-guessers", ToJson(request), ct));
+        ExecuteAsync<TestModel>(ct => _client.PostAsync("history/event-guessers", CreateJson(request), ct));
 
     public Task<ApiResponse<CheckModel>> CheckAsync(CheckRequest request) =>
-        ExecuteAsync<CheckModel>(ct => _client.PutAsync("history/event-guessers", ToJson(request), ct));
+        ExecuteAsync<CheckModel>(ct => _client.PutAsync("history/event-guessers", CreateJson(request), ct));
 }

@@ -1,0 +1,84 @@
+.container ::deep .mud-timeline-vertical.mud-timeline-position-start::before {
+    left: 0 !important;
+    width: 96px !important;
+    background: var(--mud-palette-secondary) !important;
+}
+
+.container ::deep .mud-timeline-vertical.mud-timeline-position-alternate::before {
+    right: calc(50% - 48px) !important;
+    width: 96px !important;
+    background: var(--mud-palette-secondary) !important;
+}
+
+.title {
+    font-size: var(--mud-typography-h4-size);
+    font-family: var(--mud-typography-h4-family);
+    font-weight: var(--mud-typography-h4-weight);
+    line-height: var(--mud-typography-h4-lineheight);
+    letter-spacing: var(--mud-typography-h4-letterspacing);
+    text-transform: uppercase;
+    color: var(--mud-palette-secondary);
+}
+
+.subtitle {
+    font-size: var(--mud-typography-h5-size);
+    font-family: var(--mud-typography-h5-family);
+    font-weight: var(--mud-typography-h6-weight);
+    line-height: var(--mud-typography-h5-lineheight);
+    letter-spacing: var(--mud-typography-h5-letterspacing);
+    text-transform: uppercase;
+}
+
+.content {
+    margin: 12px;
+}
+
+@media (min-width: 600px) {
+    .title {
+        font-size: var(--mud-typography-h3-size);
+        font-family: var(--mud-typography-h3-family);
+        font-weight: var(--mud-typography-h3-weight);
+        line-height: var(--mud-typography-h3-lineheight);
+        letter-spacing: var(--mud-typography-h3-letterspacing);
+    }
+
+    .subtitle {
+        font-size: var(--mud-typography-h4-size);
+        font-family: var(--mud-typography-h4-family);
+        font-weight: var(--mud-typography-h6-weight);
+        line-height: var(--mud-typography-h4-lineheight);
+        letter-spacing: var(--mud-typography-h4-letterspacing);
+    }
+
+    .content {
+        margin: 24px;
+    }
+}
+
+@media (min-width: 960px) {
+    .title {
+        font-size: var(--mud-typography-h2-size);
+        font-family: var(--mud-typography-h2-family);
+        font-weight: var(--mud-typography-h2-weight);
+        line-height: var(--mud-typography-h2-lineheight);
+        letter-spacing: var(--mud-typography-h2-letterspacing);
+    }
+
+    .subtitle {
+        max-width: 200px;
+    }
+
+    .content {
+        max-width: 450px;
+    }
+
+    .content-wrapper.end {
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+    }
+
+    .content-wrapper.end > .content {
+        text-align: end;
+    }
+}

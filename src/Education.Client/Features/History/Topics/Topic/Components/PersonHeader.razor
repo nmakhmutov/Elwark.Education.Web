@@ -61,29 +61,29 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
-    [Parameter]
-    public string? Class { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string Description { get; set; } = string.Empty;
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string Image { get; set; } = string.Empty;
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public HistoricalPersonDate? Born { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public HistoricalPersonDate? Died { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public Characteristic[] Characteristics { get; set; } = Array.Empty<Characteristic>();
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+
+    [Parameter]
+    public string? Class { get; set; }
 
 }

@@ -1,7 +1,8 @@
 using System;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using Education.Client.Gateways.History.Topic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Education.Client.Gateways.Converters;
 
@@ -9,24 +10,19 @@ internal sealed class HistoryTopicDetailJsonConverter : JsonConverter<TopicDetai
 {
     private const string Type = "type";
 
-    public override void WriteJson(JsonWriter writer, TopicDetail? value, JsonSerializer serializer) =>
-        serializer.Serialize(writer, value);
-
-    public override TopicDetail? ReadJson(JsonReader reader, Type objectType, TopicDetail? existingValue,
-        bool hasExistingValue, JsonSerializer serializer)
+    public override TopicDetail? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType == JsonToken.Null)
-            return null;
-
-        var jObject = JObject.Load(reader);
-        if (jObject.Type == JTokenType.Null)
-            return null;
-
-        return jObject.Value<string>(Type) switch
+        var node = JsonNode.Parse(ref reader);
+        
+        return node?[Type]?.GetValue<string>() switch
         {
-            "Person" => jObject.ToObject<PersonTopicDetail>(),
-            "Event" => jObject.ToObject<EventTopicDetail>(),
+            "Person" => node.Deserialize<PersonTopicDetail>(options),
+            "Event" => node.Deserialize<EventTopicDetail>(options),
+            "Empire" => node.Deserialize<EmpireTopicDetail>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(TopicDetail), @"Unknown topic detail type")
         };
     }
+
+    public override void Write(Utf8JsonWriter writer, TopicDetail? value, JsonSerializerOptions options) =>
+        JsonSerializer.Serialize(writer, value, options);
 }

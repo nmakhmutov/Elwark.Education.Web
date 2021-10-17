@@ -35,7 +35,7 @@
                     }
                     <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
                         <div id="observerTarget" class="grid-full-row d-flex justify-center my-6">
-                            @if (_request.Page < _favorites.Data.Pages)
+                            @if (_request.Page < favorites.Pages)
                             {
                                 <MudProgressCircular Indeterminate="true"/>
                             }
@@ -55,6 +55,8 @@
 </MainContainer>
 
 @code {
+    private PageRequest _request = new(1, 20);
+    private ApiResponse<PageResponse<UserTopicSummary>> _favorites = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -68,9 +70,6 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    private PageRequest _request = new(1, 20);
-    private ApiResponse<PageResponse<UserTopicSummary>> _favorites = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
-
     protected override async Task OnInitializedAsync()
     {
         _favorites = await HistoryClient.Me.GetFavoritesAsync(_request);
@@ -83,19 +82,15 @@
 
         _request = _request with{Page = _request.Page + 1};
         var response = await HistoryClient.Me.GetFavoritesAsync(_request);
-        if (response.Status == ResponseStatus.Fail)
-        {
-            _favorites = ApiResponse<PageResponse<UserTopicSummary>>.Fail(response.Error);
-            return;
-        }
-
-        _favorites = ApiResponse<PageResponse<UserTopicSummary>>.Success(
-            new PageResponse<UserTopicSummary>(
-                _favorites.Data.Items.Union(response.Data.Items).ToArray(),
-                response.Data.Pages,
-                response.Data.Count
+        _favorites = response.IsSuccess
+            ? ApiResponse<PageResponse<UserTopicSummary>>.Success(
+                new PageResponse<UserTopicSummary>(
+                    _favorites.Data.Items.Union(response.Data.Items).ToArray(),
+                    response.Data.Pages,
+                    response.Data.Count
+                    )
                 )
-            );
+            : ApiResponse<PageResponse<UserTopicSummary>>.Fail(response.Error);
     }
 
     private async Task<bool> OnFavoriteClick(string topicId)
