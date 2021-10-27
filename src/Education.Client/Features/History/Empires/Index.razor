@@ -41,7 +41,7 @@
             <Loading>
                 @for (var i = 0; i < 4; i++)
                 {
-                    var align = i % 2 == 0 ? "d-flex flex-column align-end" : null;
+                    var align = i % 2 == 0 ? "d-flex flex-column align-end" : "d-flex flex-column align-start";
 
                     <MudTimelineItem Color="Color.Secondary" Size="Size.Large" Variant="Variant.Text">
                         <ItemDot>
@@ -50,9 +50,14 @@
                         <ItemContent>
                             <div class="ma-3 ma-sm-6 @align">
                                 <MudSkeleton SkeletonType="SkeletonType.Text" Width="60%" Height="37px"/>
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="70%" Height="24px"/>
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="61%" Height="24px"/>
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="53%" Height="24px"/>
+                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="20%" Height="24px"/>
+                                <div class="my-3 @align w-100">
+                                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="70%" Height="24px"/>
+                                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="58%" Height="24px"/>
+                                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="65%" Height="24px"/>
+                                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="53%" Height="24px"/>
+                                </div>
+                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="38%" Height="24px"/>
                                 <MudSkeleton SkeletonType="SkeletonType.Text" Width="38%" Height="24px"/>
                             </div>
                         </ItemContent>
@@ -78,7 +83,7 @@
                                     <div class="d-flex flex-row flex-wrap justify-md-@direction">
                                         <HistoryDate Date="@empire.Founded"/>
                                         <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
-                                        <HistoryDate Date="@empire.Ended"/>
+                                        <HistoryDate Date="@empire.Dissolved"/>
                                     </div>
                                     <MudText Typo="Typo.body1" Class="my-3">
                                         @empire.Overview

@@ -9,6 +9,7 @@ public sealed record HistoryUserProfile(
     Restriction EventGuesser,
     float TestDurationCoefficient,
     UserStatistics Statistics,
-    UserExperience Experience,
-    DailyReward DailyReward
+    UserProfile Profile,
+    DailyReward DailyReward,
+    Achievement[] Achievements
 );

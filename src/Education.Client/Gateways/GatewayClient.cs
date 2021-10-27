@@ -26,7 +26,8 @@ internal abstract class GatewayClient
         {
             new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
             new HistoryTestConclusionJsonConverter(),
-            new HistoryTopicDetailJsonConverter()
+            new HistoryTopicDetailJsonConverter(),
+            new HistoryAchievementConverter()
         }
     };
 

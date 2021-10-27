@@ -12,9 +12,10 @@ public abstract record TestConclusion(
     TimeSpan TestDuration,
     Score UserScore,
     TimeSpan TimeSpent,
+    Reward Reward,
     DateTime CompletedAt
 );
-    
+
 public sealed record EasyTestConclusion(
     string TestId,
     TopicTitle Topic,
@@ -23,13 +24,14 @@ public sealed record EasyTestConclusion(
     TimeSpan TestDuration,
     Score UserScore,
     TimeSpan TimeSpent,
+    Reward Reward,
     DateTime CompletedAt,
     EasyTestConclusion.Question[] Questions
-) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, CompletedAt)
+) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Reward, CompletedAt)
 {
     public sealed record Question(string Id, string Title, bool IsAnswered, uint Correct, uint Incorrect);
 }
-    
+
 public sealed record HardTestConclusion(
     string TestId,
     TopicTitle Topic,
@@ -38,13 +40,14 @@ public sealed record HardTestConclusion(
     TimeSpan TestDuration,
     Score UserScore,
     TimeSpan TimeSpent,
+    Reward Reward,
     DateTime CompletedAt,
     HardTestConclusion.Question[] Questions
-) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, CompletedAt)
+) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Reward, CompletedAt)
 {
     public sealed record Question(string Id, string Title, bool IsAnswered, bool IsCorrect);
 }
-    
+
 public sealed record MixedTestConclusion(
     string TestId,
     ConclusionStatus Status,
@@ -52,9 +55,10 @@ public sealed record MixedTestConclusion(
     TimeSpan TestDuration,
     Score UserScore,
     TimeSpan TimeSpent,
+    Reward Reward,
     DateTime CompletedAt,
     MixedTestConclusion.Question[] Questions
-) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, CompletedAt)
+) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Reward, CompletedAt)
 {
     public sealed record Question(string Id, string Title, bool IsAnswered, bool IsCorrect, TopicTitle Topic);
 }

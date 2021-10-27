@@ -23,7 +23,7 @@ public static class EducationIcons
 
     public static readonly string Score = Icons.Outlined.PendingActions;
 
-    public static readonly string Points = Icons.Outlined.FilterTiltShift;
+    public static readonly string Experience = Icons.Outlined.FilterTiltShift;
 
     public static readonly string Questions = Icons.Outlined.HelpOutline;
 
@@ -34,4 +34,6 @@ public static class EducationIcons
     public static readonly string MyProfile = Icons.Outlined.CardMembership;
 
     public static readonly string MyFavorites = Icons.Outlined.Favorite;
+    
+    public static readonly string Achievement = Icons.Outlined.EmojiEvents;
 }

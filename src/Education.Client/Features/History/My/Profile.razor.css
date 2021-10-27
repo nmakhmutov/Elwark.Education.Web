@@ -2,27 +2,28 @@
     display: grid;
     grid-gap: 12px;
     grid-template-areas: 
-                "subject"
-                "level"
-                "points"
-                "experience"
-                "daily-reward"
-                "easy-test"
-                "hard-test"
-                "mixed-test"
-                "event-guesser";
+        "subject"
+        "level"
+        "achievements"
+        "balance"
+        "daily-reward"
+        "easy-test"
+        "hard-test"
+        "mixed-test"
+        "event-guesser"
+        "activity";
 }
 
 .grid ::deep .subject {
     grid-area: subject;
 }
 
-.grid ::deep .experience {
-    grid-area: experience;
+.grid ::deep .achievements {
+    grid-area: achievements;
 }
 
-.grid ::deep .points {
-    grid-area: points;
+.grid ::deep .balance {
+    grid-area: balance;
 }
 
 .grid ::deep .level {
@@ -49,17 +50,22 @@
     grid-area: event-guesser;
 }
 
+.grid ::deep .activity {
+    grid-area: activity;
+}
+
 @media (min-width: 720px) {
     .grid {
         grid-gap: 24px;
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
-        "subject points"
-        "level points"
-        "daily-reward points"
-        "experience experience"
-        "easy-test hard-test"
-        "mixed-test event-guesser";
+            "subject balance"
+            "level balance"
+            "daily-reward balance"
+            "achievements achievements"
+            "easy-test hard-test"
+            "mixed-test event-guesser"
+            "activity activity";
     }
 }
 
@@ -67,19 +73,20 @@
     .grid {
         grid-template-columns: repeat(3, minmax(200px, 1fr));
         grid-template-areas:
-        "subject experience level"
-        "points points daily-reward"
-        "easy-test hard-test mixed-test"
-        "event-guesser . .";
+            "subject level achievements"
+            "balance balance daily-reward"
+            "easy-test hard-test mixed-test"
+            "event-guesser activity activity";
     }
 }
 
 @media (min-width: 1600px) {
     .grid {
-        grid-template-columns: repeat(4, minmax(200px, 1fr));
+        grid-template-columns: repeat(4, minmax(160px, 1fr));
         grid-template-areas:
-        "subject experience experience level"
-        "points points points daily-reward"
-        "easy-test hard-test mixed-test event-guesser";
+            "subject level achievements achievements"
+            "balance balance balance daily-reward"
+            "easy-test hard-test mixed-test event-guesser"
+            "activity activity activity activity";
     }
 }

@@ -18,5 +18,6 @@ public sealed record MixedTestConclusion(
     Score Score,
     AnswerRatio AnswerRatio,
     TimeSpan TimeSpent,
+    Reward Reward,
     DateTime CompletedAt
 );

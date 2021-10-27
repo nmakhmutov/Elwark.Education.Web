@@ -20,5 +20,6 @@ public sealed record TopicTestConclusion(
     Score Score,
     AnswerRatio AnswerRatio,
     TimeSpan TimeSpent,
+    Reward Reward,
     DateTime CompletedAt
 );

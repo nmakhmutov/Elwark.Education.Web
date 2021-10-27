@@ -17,13 +17,14 @@
             <div class="grid">
                 <SkeletonCard Class="subject"/>
                 <SkeletonCard Class="level"/>
-                <SkeletonCard Class="points"/>
-                <SkeletonCard Class="experience"/>
+                <SkeletonCard Class="achievements"/>
+                <SkeletonCard Class="balance"/>
                 <SkeletonCard Class="daily-reward"/>
                 <SkeletonCard Class="easy-test"/>
                 <SkeletonCard Class="hard-test"/>
                 <SkeletonCard Class="mixed-test"/>
                 <SkeletonCard Class="event-guesser"/>
+                <SkeletonCard Class="activity"/>
             </div>
         </Loading>
         <Success Context="overview">
@@ -40,44 +41,17 @@
 
                 <LevelCard
                     Class="level"
-                    Level="@overview.Experience.Level"
-                    Points="@overview.Experience.Points"
-                    PointsToNextLevel="@overview.Experience.NextLevelPoints"/>
+                    Level="@overview.Profile.Level"
+                    Experience="@overview.Profile.Experience"
+                    NextLevelExperience="@overview.Profile.NextLevelExperience"/>
 
-                <StatisticsCard
-                    Class="points"
-                    Icon="@EducationIcons.Points"
-                    Title="@L["Experience:MyRecentPoints"]"
-                    Value="@(overview.Experience.Recent.Sum(x => x.Points))">
-                    @if (overview.Experience.Recent.Length > 0)
-                    {
-                        var items = _timelineOrientation == TimelineOrientation.Horizontal
-                            ? overview.Experience.Recent.Take(_recentCount).Reverse()
-                            : overview.Experience.Recent.Take(_recentCount);
+                <AchievementsCard Class="achievements" Achievements="@overview.Achievements"/>
 
-                        <ExperienceTimeline
-                            Class="mb-6"
-                            Orientation="@_timelineOrientation"
-                            Experiences="@items"/>
-                    }
-                </StatisticsCard>
-
-                <StatisticsCard
-                    Class="experience"
-                    Icon="@EducationIcons.Points"
-                    Title="@L["Experience:MyPoints"]"
-                    Value="@overview.Experience.Points">
-                    @if (overview.Experience.Daily.Length > 0)
-                    {
-                        <MudChart
-                            ChartType="ChartType.Line"
-                            Width="100%"
-                            Height="300px"
-                            ChartOptions="@(new ChartOptions { DisableLegend = true })"
-                            ChartSeries="@_dailyChartSeries"
-                            XAxisLabels="@_dailyXAxis.ToArray()"/>
-                    }
-                </StatisticsCard>
+                <BalanceCard
+                    Class="balance"
+                    Orientation="@_timelineOrientation"
+                    Balance="@overview.Profile.Balance"
+                    Experiences="@((_timelineOrientation == TimelineOrientation.Horizontal ? overview.Profile.Transactions.Take(_recentCount).Reverse() : overview.Profile.Transactions.Take(_recentCount)).ToArray())"/>
 
                 <DailyRewardCard
                     Class="daily-reward"
@@ -126,6 +100,23 @@
                         Points="@overview.Statistics.EventGuesser.Points"
                         Bonus="@overview.Statistics.EventGuesser.Bonus"/>
                 </StatisticsCard>
+
+                <StatisticsCard
+                    Class="activity"
+                    Icon="@EducationIcons.Experience"
+                    Title="@L["Experience:MyProgress"]"
+                    Value="@overview.Profile.Balance">
+                    @if (overview.Statistics.Progress.Length > 0)
+                    {
+                        <MudChart
+                            ChartType="ChartType.Line"
+                            Width="100%"
+                            Height="300px"
+                            ChartOptions="@(new ChartOptions { DisableLegend = true })"
+                            ChartSeries="@_dailyChartSeries"
+                            XAxisLabels="@_dailyXAxis.ToArray()"/>
+                    }
+                </StatisticsCard>
             </div>
         </Success>
     </ApiViewer>
@@ -138,6 +129,7 @@
         new BreadcrumbItem(L["Account"].Value, Links.Account.Index)
     };
 
+    private ApiResponse<HistoryUserProfile> _overview = ApiResponse<HistoryUserProfile>.Loading();
     private TimelineOrientation _timelineOrientation = TimelineOrientation.Vertical;
     private int _recentCount = 10;
     private readonly List<string> _dailyXAxis = new();
@@ -155,8 +147,6 @@
     [Inject]
     private IResizeListenerService ResizeListener { get; set; } = default!;
 
-    private ApiResponse<HistoryUserProfile> _overview = ApiResponse<HistoryUserProfile>.Loading();
-
     protected override async Task OnInitializedAsync()
     {
         _overview = await HistoryClient.Me.GetOverviewAsync();
@@ -166,7 +156,7 @@
             _dailyChartSeries.Clear();
             var list = new List<double>();
 
-            foreach (var (points, createdAt) in _overview.Data.Experience.Daily.OrderBy(x => x.CreatedAt))
+            foreach (var (createdAt,points) in _overview.Data.Statistics.Progress.OrderBy(x => x.CreatedAt))
             {
                 _dailyXAxis.Add(createdAt.ToString("dd MMM"));
                 list.Add(points);
@@ -183,8 +173,8 @@
     {
         if (firstRender)
         {
-            ResizeListener.OnBreakpointChanged += OnBreakpointChanged;
-            OnBreakpointChanged(null, await ResizeListener.GetBreakpoint());
+            ResizeListener.OnResized += OnWindowSizeChanged;
+            OnWindowSizeChanged(null, await ResizeListener.GetBrowserWindowSize());
         }
     }
 
@@ -213,13 +203,17 @@
             await OnInitializedAsync();
     }
 
-    private void OnBreakpointChanged(object? sender, Breakpoint e)
+    private void OnWindowSizeChanged(object? sender, BrowserWindowSize e)
     {
         var (orientation, count) = e switch {
-            Breakpoint.Lg => (TimelineOrientation.Horizontal, 5),
-            Breakpoint.Xl => (TimelineOrientation.Horizontal, 7),
-            Breakpoint.Xxl => (TimelineOrientation.Horizontal, 10),
-            _ => (TimelineOrientation.Vertical, 10)
+        {Width: < 1280} => (TimelineOrientation.Vertical, 10),
+        {Width: >= 1280 and < 1450} => (TimelineOrientation.Horizontal, 3),
+        {Width: >= 1450 and < 1620} => (TimelineOrientation.Horizontal, 4),
+        {Width: >= 1620 and < 1790} => (TimelineOrientation.Horizontal, 5),
+        {Width: >= 1790 and < 1960} => (TimelineOrientation.Horizontal, 6),
+        {Width: >= 1960 and < 2130} => (TimelineOrientation.Horizontal, 7),
+        {Width: >= 2130 and < 2300} => (TimelineOrientation.Horizontal, 8),
+            _ => (TimelineOrientation.Horizontal, 10)
             };
 
         if (_timelineOrientation == orientation && _recentCount == count)
@@ -232,7 +226,7 @@
 
     public void Dispose()
     {
-        ResizeListener.OnBreakpointChanged -= OnBreakpointChanged;
+        ResizeListener.OnResized -= OnWindowSizeChanged;
     }
 
 }

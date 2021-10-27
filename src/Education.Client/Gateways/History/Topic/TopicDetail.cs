@@ -44,7 +44,7 @@ internal sealed record EmpireTopicDetail(
     string Image,
     EpochType Epoch,
     HistoricDate? Founded,
-    HistoricDate? Ended,
+    HistoricDate? Dissolved,
     uint MaxArea,
     uint MaxPopulation,
     string[] Tags,

@@ -2,4 +2,4 @@ using System;
 
 namespace Education.Client.Gateways.History.Me;
 
-public sealed record DailyReward(uint Points, bool IsCollectable, DateTime NextTimeAt);
+public sealed record DailyReward(uint Experience, bool IsCollectable, DateTime NextTimeAt);
