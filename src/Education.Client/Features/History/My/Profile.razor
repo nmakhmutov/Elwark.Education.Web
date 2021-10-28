@@ -3,10 +3,8 @@
 
 @using Education.Client.Gateways.History
 @using Education.Client.Gateways.History.Me
-@using MudBlazor.Services
 @using Education.Client.Features.History.My.Components
 
-@implements IDisposable
 @attribute [Authorize]
 
 <PageTitle>@L["Profile"]</PageTitle>
@@ -45,13 +43,16 @@
                     Experience="@overview.Profile.Experience"
                     NextLevelExperience="@overview.Profile.NextLevelExperience"/>
 
-                <AchievementsCard Class="achievements" Achievements="@overview.Achievements"/>
+                <AchievementsCard 
+                    Class="achievements" 
+                    Achievements="@overview.Achievements"/>
 
                 <BalanceCard
                     Class="balance"
-                    Orientation="@_timelineOrientation"
+                    Orientation="@TimelineOrientation.Vertical"
+                    TimelinePosition="@TimelinePosition.Start"
                     Balance="@overview.Profile.Balance"
-                    Experiences="@((_timelineOrientation == TimelineOrientation.Horizontal ? overview.Profile.Transactions.Take(_recentCount).Reverse() : overview.Profile.Transactions.Take(_recentCount)).ToArray())"/>
+                    Experiences="@overview.Profile.Transactions"/>
 
                 <DailyRewardCard
                     Class="daily-reward"
@@ -130,8 +131,6 @@
     };
 
     private ApiResponse<HistoryUserProfile> _overview = ApiResponse<HistoryUserProfile>.Loading();
-    private TimelineOrientation _timelineOrientation = TimelineOrientation.Vertical;
-    private int _recentCount = 10;
     private readonly List<string> _dailyXAxis = new();
     private readonly List<ChartSeries> _dailyChartSeries = new();
 
@@ -143,9 +142,6 @@
 
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
-
-    [Inject]
-    private IResizeListenerService ResizeListener { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -168,16 +164,7 @@
             });
         }
     }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            ResizeListener.OnResized += OnWindowSizeChanged;
-            OnWindowSizeChanged(null, await ResizeListener.GetBrowserWindowSize());
-        }
-    }
-
+    
     private void OnBuyClick()
     {
         var options = new DialogOptions
@@ -201,32 +188,6 @@
         var response = await HistoryClient.Me.CollectDailyReward();
         if (response.Status == ResponseStatus.Success)
             await OnInitializedAsync();
-    }
-
-    private void OnWindowSizeChanged(object? sender, BrowserWindowSize e)
-    {
-        var (orientation, count) = e switch {
-        {Width: < 1280} => (TimelineOrientation.Vertical, 10),
-        {Width: >= 1280 and < 1450} => (TimelineOrientation.Horizontal, 3),
-        {Width: >= 1450 and < 1620} => (TimelineOrientation.Horizontal, 4),
-        {Width: >= 1620 and < 1790} => (TimelineOrientation.Horizontal, 5),
-        {Width: >= 1790 and < 1960} => (TimelineOrientation.Horizontal, 6),
-        {Width: >= 1960 and < 2130} => (TimelineOrientation.Horizontal, 7),
-        {Width: >= 2130 and < 2300} => (TimelineOrientation.Horizontal, 8),
-            _ => (TimelineOrientation.Horizontal, 10)
-            };
-
-        if (_timelineOrientation == orientation && _recentCount == count)
-            return;
-
-        _timelineOrientation = orientation;
-        _recentCount = count;
-        InvokeAsync(StateHasChanged);
-    }
-
-    public void Dispose()
-    {
-        ResizeListener.OnResized -= OnWindowSizeChanged;
     }
 
 }

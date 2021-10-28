@@ -17,13 +17,13 @@
             <HumanReadableText Value="@Balance" Typo="Typo.h5" Class="mt-2 mr-2"/>
         </CardHeaderActions>
     </MudCardHeader>
-    <MudCardContent Class="pa-3 pa-sm-6">
+    <MudCardContent Class="pa-0">
         @if (Experiences.Length > 0)
         {
-            <MudTimeline Class="@Class" TimelineOrientation="@Orientation">
+            <MudTimeline Class="@Class" TimelineOrientation="@Orientation" TimelinePosition="@TimelinePosition">
                 @foreach (var experience in Experiences)
                 {
-                    <MudTimelineItem Color="Color.Transparent" Size="Size.Medium" Variant="Variant.Outlined">
+                    <MudTimelineItem Color="Color.Transparent" Size="Size.Medium" Variant="Variant.Outlined" Class="px-0 mx-0">
                         <ItemOpposite>
                             <MudText Typo="Typo.h6">
                                 @experience.Value
@@ -34,7 +34,7 @@
                         </ItemDot>
                         <ItemContent>
                             <div class="@(Orientation == TimelineOrientation.Horizontal ? "d-flex flex-column align-center" : null)">
-                                <MudText Typo="Typo.button" Align="Align.Center">
+                                <MudText Typo="Typo.button" Align="Align.Center" Style="word-wrap: break-word">
                                     @if (experience.Type == ExperienceType.Achievement)
                                     {
                                         @L[$"ExperienceType:{experience.Type}", L[$"Achievement:{experience.Comment}"]]
@@ -66,6 +66,9 @@
 
     [Parameter, EditorRequired]
     public TimelineOrientation Orientation { get; set; }
+
+    [Parameter, EditorRequired]
+    public TimelinePosition TimelinePosition { get; set; }
 
     [Parameter, EditorRequired]
     public long Balance { get; set; }

@@ -18,53 +18,86 @@
         </CardHeaderActions>
     </MudCardHeader>
     <MudCardContent Class="pa-3 pa-sm-6">
-        @foreach (var achievement in Achievements)
-        {
-            switch (achievement)
+        <MudGrid Spacing="3">
+            @foreach (var achievement in Achievements)
             {
-                case CumulativeAchievement (var name, var level, var earned, var goal, var progress, var reward):
-                    <div class="mb-3">
-                        <div class="d-flex flex-row justify-space-between align-end">
-                            <div>
-                                <MudText Typo="Typo.subtitle1">
-                                    @L[$"Achievement:{name}"]
-                                </MudText>
-                                <MudText Typo="Typo.body2">
-                                    @L["Achievement:Level"]: @level
-                                </MudText>
-                                <MudText Typo="Typo.caption">
-                                    @reward
-                                </MudText>
+                switch (achievement)
+                {
+                    case CumulativeAchievement (var name, var level, var earned, var goal, var progress, var reward):
+                        <MudItem xs="12" md="6">
+                            <div class="d-flex flex-row w-100">
+                                <div class="d-flex flex-column align-center justify-center rounded py-3 px-2 mr-3 mud-elevation-1 white-text light-blue lighten-1">
+                                    <MudIcon Icon="@Icons.Outlined.Biotech" Size="Size.Large" Class="mb-1" Color="Color.Inherit"/>
+                                    <MudText Typo="Typo.caption" Style="text-transform: uppercase" Color="Color.Inherit">
+                                        @L["Achievement:Level"] @level
+                                    </MudText>
+                                </div>
+
+                                <div class="d-flex flex-column justify-space-between">
+                                    <MudText Typo="Typo.h6" Style="word-wrap: break-word">
+                                        @L[$"Achievement:{name}"]
+                                    </MudText>
+                                    <div>
+                                        <div class="d-flex flex-row justify-space-between mb-1">
+                                            <div class="d-flex flex-row align-center">
+                                                <MudIcon Size="Size.Small" Color="Color.Primary" Class="mr-1" Icon="@EducationIcons.Experience"/>
+                                                @reward.Experience
+                                            </div>
+                                            <MudText Typo="Typo.subtitle1">
+                                                @earned / @goal
+                                            </MudText>
+                                        </div>
+                                        <MudProgressLinear Min="0" Max="100" Value="@progress" Color="Color.Primary"/>
+                                    </div>
+                                </div>
                             </div>
-                            <MudText Typo="Typo.subtitle1">
-                                @earned / @goal
-                            </MudText>
-                        </div>
+                        </MudItem>
+                        break;
 
-                        <MudProgressLinear Min="0" Max="100" Value="@progress" Color="Color.Primary"/>
-                    </div>
-                    break;
-
-                case var (name, progress, reward):
-                    <div class="mb-3">
-                        <div class="d-flex flex-row justify-space-between align-end">
-                            <div>
-                                <MudText Typo="Typo.subtitle1">
-                                    @L[$"Achievement:{name}"]
-                                </MudText>
-                                <MudText Typo="Typo.caption">
-                                    Reward: @reward
-                                </MudText>
+                    case var (name, progress, reward):
+                        <div class="mb-3">
+                            <div class="d-flex flex-row justify-space-between align-end">
+                                <div>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @L[$"Achievement:{name}"]
+                                    </MudText>
+                                    <MudText Typo="Typo.caption">
+                                        Reward: @reward
+                                    </MudText>
+                                </div>
                             </div>
-                        </div>
 
-                        <MudProgressLinear Min="0" Max="100" Value="@progress" Color="Color.Primary"/>
-                    </div>
-                    break;
+                            <MudProgressLinear Min="0" Max="100" Value="@progress" Color="Color.Primary"/>
+                        </div>
+                        break;
+                }
             }
-        }
+        </MudGrid>
     </MudCardContent>
 </MudCard>
+
+@* 
+                           <div class="mb-3">
+                                <div class="d-flex flex-row justify-space-between align-end">
+                                    <div>
+                                        <MudText Typo="Typo.subtitle1">
+                                            @L[$"Achievement:{name}"]
+                                        </MudText>
+                                        <MudText Typo="Typo.body2">
+                                            @L["Achievement:Level"]: @level
+                                        </MudText>
+                                        <MudText Typo="Typo.caption">
+                                            @reward
+                                        </MudText>
+                                    </div>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @earned / @goal
+                                    </MudText>
+                                </div>
+
+                                <MudProgressLinear Min="0" Max="100" Value="@progress" Color="Color.Primary"/>
+                            </div>
+ *@
 
 @code {
 
