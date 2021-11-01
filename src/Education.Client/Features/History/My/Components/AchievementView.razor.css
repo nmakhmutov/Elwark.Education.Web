@@ -1,0 +1,39 @@
+.grid {
+    display: grid;
+    grid-gap: 12px;
+    grid-template-columns: 85px 1fr;
+    grid-template-areas: 
+        "icon title"
+        "icon progress"
+        "description description";
+    align-content: center;
+    align-items: center;
+}
+
+.icon {
+    grid-area: icon;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--mud-default-borderradius);
+    box-shadow: var(--mud-elevation-1);
+    width: 85px;
+    height: 95px;
+}
+
+.title {
+    grid-area: title;
+    word-wrap: break-word;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}
+
+.progress {
+    grid-area: progress;
+}
+
+.description{
+    grid-area: description;
+}

@@ -1,0 +1,65 @@
+@page "/history/my/achievements"
+@layout HistoryLayout
+
+@using Education.Client.Gateways.History
+@using Education.Client.Features.History.My.Components
+@using Education.Client.Gateways.History.Me
+
+@attribute [Authorize]
+
+<PageTitle>@L["Achievements"]</PageTitle>
+<MainContainer>
+    <PageHeader Title="@L["Achievements"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+    <ApiViewer Response="@_response">
+        <Loading>
+            <StatisticsDetailsGrid>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+            </StatisticsDetailsGrid>
+        </Loading>
+        <Success Context="result">
+            <MudText Typo="Typo.h6" Class="mb-3">
+                In progress <MudText Typo="Typo.subtitle1" Inline="true">@result.InProgress.Length/@result.Total</MudText>
+            </MudText>
+            <div class="grid mb-3 mb-sm-6">
+                @foreach (var achievement in result.InProgress)
+                {
+                    <AchievementView Achievement="@achievement" ShowDescription="true"/>
+                }
+            </div>
+
+            <MudText Typo="Typo.h6" Class="mb-3">
+                Completed <MudText Typo="Typo.subtitle1" Inline="true">@result.Completed.Length/@result.Total</MudText>
+            </MudText>
+            <div class="grid">
+                @foreach (var achievement in result.Completed)
+                {
+                    <AchievementView Achievement="@achievement" ShowDescription="true"/>
+                }
+            </div>
+        </Success>
+    </ApiViewer>
+</MainContainer>
+
+@code {
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
+        new BreadcrumbItem(L["Profile"].Value, Links.History.MyProfile)
+    };
+
+    private ApiResponse<AchievementStatistics> _response = ApiResponse<AchievementStatistics>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync() =>
+        _response = await HistoryClient.Me.GetAchievementsAsync();
+
+}

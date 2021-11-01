@@ -17,6 +17,9 @@ internal sealed class MeClient : GatewayClient
 
     public Task<ApiResponse<PageResponse<UserTopicSummary>>> GetFavoritesAsync(PageRequest request) =>
         ExecuteAsync<PageResponse<UserTopicSummary>>(ct => _client.GetAsync($"history/me/favorites{request.ToQuery()}", ct));
+    
+    public Task<ApiResponse<AchievementStatistics>> GetAchievementsAsync() =>
+        ExecuteAsync<AchievementStatistics>(ct => _client.GetAsync($"history/me/achievements", ct));
 
     public Task<ApiResponse<Unit>> CollectDailyReward() =>
         ExecuteAsync<Unit>(ct => _client.PostAsync("history/me/rewards/daily", EmptyContent, ct));

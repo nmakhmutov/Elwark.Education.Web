@@ -11,5 +11,5 @@ public sealed record HistoryUserProfile(
     UserStatistics Statistics,
     UserProfile Profile,
     DailyReward DailyReward,
-    Achievement[] Achievements
+    AchievementsOverview Achievements
 );
