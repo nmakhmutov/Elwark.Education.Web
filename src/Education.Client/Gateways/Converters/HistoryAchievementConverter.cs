@@ -17,8 +17,8 @@ internal sealed class HistoryAchievementConverter : JsonConverter<Achievement?>
         
         return node?[Type]?.GetValue<string>() switch
         {
-            "common" => node.Deserialize<CommonAchievement>(options),
-            "leveled" => node.Deserialize<LeveledAchievement>(options),
+            "completed" => node.Deserialize<CompletedAchievement>(options),
+            "ladder" => node.Deserialize<LadderAchievement>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(TopicDetail), @"Unknown achievement type")
         };
     }

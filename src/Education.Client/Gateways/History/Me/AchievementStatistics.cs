@@ -1,7 +1,3 @@
 namespace Education.Client.Gateways.History.Me;
 
-public sealed record AchievementStatistics(
-    uint Total,
-    Achievement[] InProgress,
-    Achievement[] Completed
-);
+public sealed record AchievementStatistics(string Category, uint Total, uint Completed, Achievement[] Achievements);

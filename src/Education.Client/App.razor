@@ -1,5 +1,4 @@
 @using Education.Client.Features
-@using Education.Client.Services
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
@@ -44,18 +43,12 @@
     private SidebarService SidebarService { get; set; } = default!;
 
     [Inject]
-    private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
-
+    private CustomerService CustomerService { get; set; } = default!;
+    
     protected override async Task OnInitializedAsync()
     {
         await ThemeProvider.InitAsync();
         await SidebarService.InitAsync();
-        
-        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        if (state.User.Identity?.IsAuthenticated == true)
-            Navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(Navigation.Uri)));
+        await CustomerService.InitAsync();
     }
 }

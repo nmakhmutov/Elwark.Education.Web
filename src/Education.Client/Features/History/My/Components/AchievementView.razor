@@ -4,32 +4,21 @@
 <section class="grid">
     @switch (Achievement)
     {
-        case CommonAchievement(var name, var progress, var completedAt, var reward):
-            <aside class="icon @_background">
+        case CompletedAchievement(_, var title, _, var completedAt):
+            <aside class="icon yellow accent-4 grey-text text-darken-3">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
             <h6 class="title mud-typography mud-typography-subtitle1">
-                @L[$"Achievement:{name}"]
+                @title
             </h6>
             <footer class="progress">
-                @if (completedAt.HasValue)
-                {
-                    <MudText Typo="Typo.body1">
-                        @completedAt.Value.ToSimpleFormat()
-                    </MudText>
-                }
-                else
-                {
-                    <div class="d-flex flex-row align-center justify-end mb-1">
-                        +@reward.Experience
-                        <MudIcon Size="Size.Small" Color="Color.Primary" Class="ml-1" Icon="@EducationIcons.Experience"/>
-                    </div>
-                    <MudProgressLinear Min="0" Max="100" Value="@progress" Color="Color.Primary"/>
-                }
+                <MudText Typo="Typo.body1">
+                    @L["Achievement:Completed"] @completedAt.ToSimpleFormat()
+                </MudText>
             </footer>
             break;
 
-        case LeveledAchievement(var name, var level, var current, var target, var progress, var completedAt, var reward):
+        case LadderAchievement(_, var title, _, var level, var score, var goal, var progress, var reward):
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
                 <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
@@ -37,13 +26,13 @@
                 </MudText>
             </aside>
             <h6 class="title mud-typography mud-typography-subtitle1">
-                @L[$"Achievement:{name}"]
+                @title
             </h6>
             <footer class="progress">
                 <div class="d-flex flex-row justify-space-between mb-1">
-                    <MudText Typo="Typo.subtitle2">
-                        @current/@target
-                    </MudText>
+                    <div class="d-flex align-center">
+                        <HumanReadableText Value="@score" Typo="Typo.subtitle2"/>/<HumanReadableText Value="@goal" Typo="Typo.subtitle2"/>
+                    </div>
                     <div class="d-flex flex-row align-center">
                         +@reward.Experience
                         <MudIcon Size="Size.Small" Color="Color.Primary" Class="ml-1" Icon="@EducationIcons.Experience"/>
@@ -57,7 +46,7 @@
     {
         <section class="description">
             <MudText Typo="Typo.body2">
-                @L[$"Achievement:{Achievement.Name}Description"]
+                @Achievement.Description
             </MudText>
         </section>
     }
@@ -79,21 +68,25 @@
     protected override void OnInitialized()
     {
         (_icon, _background) = Achievement.Name switch {
-            "EasyTestCompletedAchievement" => (EducationIcons.Tests, "green lighten-1 white-text"),
-            "EasyTestScoreAchievement" => (EducationIcons.Score, "green lighten-1 white-text"),
+            "EasyTest.Completed" => (EducationIcons.Tests, "green lighten-1 white-text"),
+            "EasyTest.Score" => (EducationIcons.Score, "green lighten-1 white-text"),
+            "EasyTest.WithoutMistakes" => (Icons.Outlined.AddTask, "green lighten-1 white-text"),
             
-            "HardTestCompletedAchievement" => (EducationIcons.Tests, "indigo default white-text"),
-            "HardTestScoreAchievement" => (EducationIcons.Score, "indigo default white-text"),
+            "HardTest.Completed" => (EducationIcons.Tests, "indigo default white-text"),
+            "HardTest.Score" => (EducationIcons.Score, "indigo default white-text"),
+            "HardTest.WithoutMistakes" => (Icons.Outlined.AddTask, "indigo default white-text"),
             
-            "MixedTestCompletedAchievement" => (EducationIcons.Tests, "red accent-2 white-text"),
-            "MixedTestScoreAchievement" => (EducationIcons.Score, "red accent-2 white-text"),
+            "MixedTest.Completed" => (EducationIcons.Tests, "red accent-2 white-text"),
+            "MixedTest.Score" => (EducationIcons.Score, "red accent-2 white-text"),
+            "MixedTest.WithoutMistakes" => (Icons.Outlined.AddTask, "red accent-2 white-text"),
             
-            "CompleteOnceAllTypeOfTestsAchievement" => (Icons.Outlined.DoneAll, "yellow darken-2 white-text"),
+            "AllTest.CompleteOnceAllType" => (Icons.Outlined.DoneAll, "yellow darken-2 white-text"),
+            "AllTest.Score" => (EducationIcons.Score, "light-blue darken-1 white-text"),
+            "AllTest.Completed" => (EducationIcons.Tests, "light-blue darken-1 white-text"),
+            "AllTest.WithoutMistakes" => (Icons.Outlined.AddTask, "light-blue darken-1 white-text"),
             
             "TotalAnswersAchievement" => (Icons.Outlined.RecordVoiceOver, "light-blue darken-1 white-text"),
             "TotalCorrectAnswersAchievement" => (Icons.Outlined.TaskAlt, "light-blue darken-1 white-text"),
-            "TotalTestCompletedAchievement" => (EducationIcons.Tests, "light-blue darken-1 white-text"),
-            "TotalTestCompletedWithoutMistakesAchievement" => (Icons.Outlined.AddTask, "light-blue darken-1 white-text"),
             
             _=> (EducationIcons.Achievement, "black white-text")
             };

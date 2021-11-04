@@ -44,6 +44,7 @@ builder.Services
     .AddScoped<SidebarService>()
     .AddScoped<LanguageService>()
     .AddScoped<TopicContentFormatService>()
+    .AddScoped<CustomerService>()
     .AddScoped<AuthorizationMessageHandler>(provider =>
         new AuthorizationMessageHandler(
                 provider.GetRequiredService<IAccessTokenProvider>(),

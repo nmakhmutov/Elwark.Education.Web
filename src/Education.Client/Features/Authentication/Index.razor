@@ -1,27 +1,16 @@
 ﻿@page "/authentication/{action}"
-@using Education.Client.Gateways.Customer
-@using Blazored.LocalStorage
 
 <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnSuccessCallback"/>
 
 @code{
-
-    [Inject]
-    private ICustomerClient CustomerClient { get; set; } = default!;
-
-    [Inject]
-    private ILocalStorageService Storage { get; set; } = default!;
     
+    [Inject]
+    private CustomerService CustomerService { get; set; } = default!;
+
     [Parameter]
     public string? Action { get; set; }
 
-    private async Task OnSuccessCallback()
-    {
-        if(await Storage.ContainKeyAsync("au"))
-            return;
-        
-        await CustomerClient.CreateAsync();
-        await Storage.SetItemAsync("au", Guid.NewGuid());
-    }
+    private Task OnSuccessCallback() => 
+        CustomerService.CreateAsync();
 
 }
