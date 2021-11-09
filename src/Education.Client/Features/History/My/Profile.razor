@@ -49,8 +49,6 @@
 
                 <BalanceCard
                     Class="balance"
-                    Orientation="@TimelineOrientation.Vertical"
-                    TimelinePosition="@TimelinePosition.Start"
                     Balance="@overview.Profile.Balance"
                     Experiences="@overview.Profile.Transactions"/>
 
@@ -102,22 +100,10 @@
                         Bonus="@overview.Statistics.EventGuesser.Bonus"/>
                 </StatisticsCard>
 
-                <StatisticsCard
+                <ActivityOverviewCard
                     Class="activity"
-                    Icon="@EducationIcons.Experience"
-                    Title="@L["Experience:MyProgress"]"
-                    Value="@overview.Profile.Balance">
-                    @if (overview.Statistics.Progress.Length > 0)
-                    {
-                        <MudChart
-                            ChartType="ChartType.Line"
-                            Width="100%"
-                            Height="300px"
-                            ChartOptions="@(new ChartOptions { DisableLegend = true })"
-                            ChartSeries="@_dailyChartSeries"
-                            XAxisLabels="@_dailyXAxis.ToArray()"/>
-                    }
-                </StatisticsCard>
+                    Title="@L["Test:MyActivity"]"
+                    Activities="@overview.Statistics.Activities"/>
             </div>
         </Success>
     </ApiViewer>
@@ -131,8 +117,6 @@
     };
 
     private ApiResponse<HistoryUserProfile> _overview = ApiResponse<HistoryUserProfile>.Loading();
-    private readonly List<string> _dailyXAxis = new();
-    private readonly List<ChartSeries> _dailyChartSeries = new();
 
     [Inject]
     private IDialogService Dialog { get; set; } = default!;
@@ -146,25 +130,8 @@
     protected override async Task OnInitializedAsync()
     {
         _overview = await HistoryClient.Me.GetOverviewAsync();
-        if (_overview.Status == ResponseStatus.Success)
-        {
-            _dailyXAxis.Clear();
-            _dailyChartSeries.Clear();
-            var list = new List<double>();
-
-            foreach (var (createdAt,points) in _overview.Data.Statistics.Progress.OrderBy(x => x.CreatedAt))
-            {
-                _dailyXAxis.Add(createdAt.ToString("dd MMM"));
-                list.Add(points);
-            }
-
-            _dailyChartSeries.Add(new ChartSeries
-            {
-                Data = list.ToArray()
-            });
-        }
     }
-    
+
     private void OnBuyClick()
     {
         var options = new DialogOptions

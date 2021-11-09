@@ -35,5 +35,7 @@ public static class EducationIcons
 
     public static readonly string MyFavorites = Icons.Outlined.Favorite;
     
+    public static readonly string MyActivity = Icons.Outlined.Moving;
+    
     public static readonly string Achievement = Icons.Outlined.EmojiEvents;
 }

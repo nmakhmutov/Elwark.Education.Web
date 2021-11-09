@@ -26,8 +26,8 @@
         ChartPalette = Questions > 0
             ? new[]
             {
-                Colors.Blue.Darken2,
-                Colors.Green.Darken2
+                Colors.Green.Accent4,
+                Colors.Red.Default
             }
             : new[]
             {
@@ -38,14 +38,14 @@
 
     private double[] Data => new double[]
     {
-        Incorrect,
-        Correct
+        Correct,
+        Incorrect
     };
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["EventGuesser:Incorrect"], Incorrect, Colors.Blue.Darken2),
-        new ChartList.Item(L["EventGuesser:Correct"], Correct, Colors.Green.Darken2),
+        new ChartList.Item(L["EventGuesser:Correct"], Correct, Colors.Green.Accent4),
+        new ChartList.Item(L["EventGuesser:Incorrect"], Incorrect, Colors.Red.Default),
         new ChartList.Item(L["EventGuesser:Questions"], Questions, null)
     };
 

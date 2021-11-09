@@ -9,7 +9,7 @@
     <MudAppBar Elevation="25">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@SidebarService.ToggleAsync"/>
         <MudLink Href="@Links.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
-            @L["Subject:History"] <sup class="beta" style="font-size: 0.9rem;color: var(--mud-palette-secondary);">beta</sup>
+            @L["Subject:History"] <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
         </MudLink>
         <MudSpacer/>
         <MudIconButton Icon="@ThemeProvider.Icon" Color="Color.Inherit" OnClick="@ThemeProvider.ToggleAsync"/>
@@ -31,6 +31,7 @@
             <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Empires" Icon="@EducationIcons.Empires">
                 @L["History:Empires"]
             </MudNavLink>
+            <MudDivider Class="my-2"/>
             <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.TestBuilder" Icon="@EducationIcons.Tests">
                 @L["Tests"]
             </MudNavLink>

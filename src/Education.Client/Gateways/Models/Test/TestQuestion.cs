@@ -8,6 +8,7 @@ public sealed record TestQuestion(
     string Title,
     string? Image,
     bool IsCompleted,
+    bool CanAnswerAgain,
     TopicTitle Topic,
     AnswerOption[] Options
 );

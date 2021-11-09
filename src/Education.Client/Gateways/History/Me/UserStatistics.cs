@@ -7,7 +7,7 @@ public sealed record UserStatistics(
     ScoreOverview HardTest,
     ScoreOverview MixedTest,
     EventGuesserOverview EventGuesser,
-    Experience[] Progress
+    Activity[] Activities
 );
 
-public sealed record Experience(DateTime CreatedAt, uint Value);
+public sealed record Activity(DateTime Date, uint Total);

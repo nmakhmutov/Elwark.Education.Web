@@ -11,7 +11,7 @@ public sealed record TopicStatistics(
     TopicStatistics.Statistics HardTest
 )
 {
-    public sealed record TotalProgress(uint Tests, ulong Score, uint Questions, TimeSpan TimeSpent);
+    public sealed record TotalProgress(ulong Tests, ulong Score, uint Questions, TimeSpan TimeSpent);
         
     public sealed record Statistics(
         Score Score,

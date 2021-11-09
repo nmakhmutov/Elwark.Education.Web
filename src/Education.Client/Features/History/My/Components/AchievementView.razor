@@ -18,7 +18,25 @@
             </footer>
             break;
 
-        case LadderAchievement(_, var title, _, var level, var score, var goal, var progress, var reward):
+        case ProgressiveAchievement(_, var title, _, var completeness, var reward):
+            <aside class="icon @_background">
+                <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
+            </aside>
+            <h6 class="title mud-typography mud-typography-subtitle1">
+                @title
+            </h6>
+            <footer class="progress">
+                <div class="d-flex flex-row justify-end mb-1">
+                    <div class="d-flex flex-row align-center">
+                        +@reward.Experience
+                        <MudIcon Size="Size.Small" Color="Color.Primary" Class="ml-1" Icon="@EducationIcons.Experience"/>
+                    </div>
+                </div>
+                <MudProgressLinear Min="0" Max="100" Value="@completeness" Color="Color.Primary"/>
+            </footer>
+            break;
+            
+        case LadderAchievement(_, var title, _, var level, var score, var goal, var completeness, var reward):
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
                 <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
@@ -38,9 +56,12 @@
                         <MudIcon Size="Size.Small" Color="Color.Primary" Class="ml-1" Icon="@EducationIcons.Experience"/>
                     </div>
                 </div>
-                <MudProgressLinear Min="0" Max="100" Value="@progress" Color="Color.Primary"/>
+                <MudProgressLinear Min="0" Max="100" Value="@completeness" Color="Color.Primary"/>
             </footer>
             break;
+            
+        default:
+            throw new ArgumentOutOfRangeException(nameof(Achievement));
     }
     @if (ShowDescription)
     {
@@ -68,22 +89,21 @@
     protected override void OnInitialized()
     {
         (_icon, _background) = Achievement.Name switch {
-            "EasyTest.Completed" => (EducationIcons.Tests, "green lighten-1 white-text"),
+            "EasyTest.Successful" => (EducationIcons.Tests, "green lighten-1 white-text"),
             "EasyTest.Score" => (EducationIcons.Score, "green lighten-1 white-text"),
             "EasyTest.WithoutMistakes" => (Icons.Outlined.AddTask, "green lighten-1 white-text"),
             
-            "HardTest.Completed" => (EducationIcons.Tests, "indigo default white-text"),
+            "HardTest.Successful" => (EducationIcons.Tests, "indigo default white-text"),
             "HardTest.Score" => (EducationIcons.Score, "indigo default white-text"),
             "HardTest.WithoutMistakes" => (Icons.Outlined.AddTask, "indigo default white-text"),
             
-            "MixedTest.Completed" => (EducationIcons.Tests, "red accent-2 white-text"),
+            "MixedTest.Successful" => (EducationIcons.Tests, "red accent-2 white-text"),
             "MixedTest.Score" => (EducationIcons.Score, "red accent-2 white-text"),
             "MixedTest.WithoutMistakes" => (Icons.Outlined.AddTask, "red accent-2 white-text"),
             
-            "AllTest.CompleteOnceAllType" => (Icons.Outlined.DoneAll, "yellow darken-2 white-text"),
+            "AllTest.Successful" => (EducationIcons.Tests, "light-blue darken-1 white-text"),
             "AllTest.Score" => (EducationIcons.Score, "light-blue darken-1 white-text"),
-            "AllTest.Completed" => (EducationIcons.Tests, "light-blue darken-1 white-text"),
-            "AllTest.WithoutMistakes" => (Icons.Outlined.AddTask, "light-blue darken-1 white-text"),
+            "AllTest.CompleteOnceAllType" => (Icons.Outlined.DoneAll, "light-blue darken-1 white-text"),
             
             "TotalAnswersAchievement" => (Icons.Outlined.RecordVoiceOver, "light-blue darken-1 white-text"),
             "TotalCorrectAnswersAchievement" => (Icons.Outlined.TaskAlt, "light-blue darken-1 white-text"),

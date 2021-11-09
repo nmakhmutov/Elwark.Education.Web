@@ -17,42 +17,37 @@
             </div>
         </CardHeaderContent>
     </MudCardHeader>
-    <MudCardContent Class="pa-0">
-        @if (Experiences.Length > 0)
-        {
-            <MudTimeline Class="@Class" TimelineOrientation="@Orientation" TimelinePosition="@TimelinePosition">
-                @foreach (var experience in Experiences)
-                {
-                    <MudTimelineItem Color="Color.Transparent" Size="Size.Medium" Variant="Variant.Outlined" Class="px-0 mx-0">
-                        <ItemOpposite>
-                            <MudText Typo="Typo.h6">
-                                @experience.Value
+    <MudCardContent Class="pa-3 pa-sm-6">
+        <MudList Clickable="false" Dense="true" DisableGutters="true" DisablePadding="true">
+            @foreach (var experience in Experiences)
+            {
+                <MudListItem>
+                    <div class="d-flex flex-row justify-space-between">
+                        <div>
+                            <MudText Typo="Typo.button" Align="Align.Center" Style="word-wrap: break-word">
+                                @if (experience.Type == ExperienceType.Achievement)
+                                {
+                                    @L[$"ExperienceType:{experience.Type}", L[$"Achievement:{experience.Comment}"]]
+                                }
+                                else
+                                {
+                                    @L[$"ExperienceType:{experience.Type}"]
+                                }
                             </MudText>
-                        </ItemOpposite>
-                        <ItemDot>
-                            <MudIcon Icon="@EducationIcons.Experience" Size="Size.Medium" Color="Color.Primary"/>
-                        </ItemDot>
-                        <ItemContent>
-                            <div class="@(Orientation == TimelineOrientation.Horizontal ? "d-flex flex-column align-center" : null)">
-                                <MudText Typo="Typo.button" Align="Align.Center" Style="word-wrap: break-word">
-                                    @if (experience.Type == ExperienceType.Achievement)
-                                    {
-                                        @L[$"ExperienceType:{experience.Type}", L[$"Achievement:{experience.Comment}"]]
-                                    }
-                                    else
-                                    {
-                                        @L[$"ExperienceType:{experience.Type}"]
-                                    }
-                                </MudText>
-                                <MudText Typo="Typo.body2" Class="mud-text-secondary">
-                                    @experience.CreatedAt.ToSimpleFormat()
-                                </MudText>
-                            </div>
-                        </ItemContent>
-                    </MudTimelineItem>
-                }
-            </MudTimeline>
-        }
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                                @experience.CreatedAt.ToSimpleFormat()
+                            </MudText>
+                        </div>
+                        <div class="d-flex flex-row align-center">
+                            <MudText Typo="Typo.subtitle1" Color="Color.Success">
+                                +@experience.Value
+                            </MudText>
+                            <MudIcon Size="Size.Small" Color="Color.Primary" Class="ml-1" Icon="@EducationIcons.Experience"/>
+                        </div>
+                    </div>
+                </MudListItem>
+            }
+        </MudList>
     </MudCardContent>
 </MudCard>
 
@@ -63,12 +58,6 @@
 
     [Parameter]
     public string? Class { get; set; }
-
-    [Parameter, EditorRequired]
-    public TimelineOrientation Orientation { get; set; }
-
-    [Parameter, EditorRequired]
-    public TimelinePosition TimelinePosition { get; set; }
 
     [Parameter, EditorRequired]
     public long Balance { get; set; }

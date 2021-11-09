@@ -1,3 +1,3 @@
 namespace Education.Client.Gateways.Models;
 
-public sealed record NumberOfTests(uint Total, uint Completed, uint TimeExceeded, uint MistakesExceeded);
+public sealed record NumberOfTests(uint Successful, uint Failed, uint TimeExceeded, uint MistakesExceeded, ulong Total);

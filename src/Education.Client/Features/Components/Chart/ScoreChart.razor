@@ -23,9 +23,9 @@
         ChartPalette = Value.Total > 0
             ? new[]
             {
-                Colors.Blue.Darken2,
-                Colors.Green.Darken2,
-                Colors.Orange.Darken2
+                Colors.Green.Accent4,
+                Colors.Blue.Default,
+                Colors.DeepPurple.Default
             }
             : new[]
             {
@@ -44,9 +44,9 @@
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["Score:ByQuestions"], Value.Questions, Colors.Blue.Darken2),
-        new ChartList.Item(L["Score:BySpeedBonus"], Value.Speed, Colors.Green.Darken2),
-        new ChartList.Item(L["Score:NoMistakesBonus"], Value.NoMistakes, Colors.Orange.Darken2),
+        new ChartList.Item(L["Score:ByQuestions"], Value.Questions, Colors.Green.Accent4),
+        new ChartList.Item(L["Score:BySpeedBonus"], Value.Speed, Colors.Blue.Default),
+        new ChartList.Item(L["Score:NoMistakesBonus"], Value.NoMistakes, Colors.DeepPurple.Default),
         new ChartList.Item(L["Score:Total"], Value.Total, null)
     };
 

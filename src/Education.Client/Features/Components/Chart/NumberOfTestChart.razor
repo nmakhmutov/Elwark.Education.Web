@@ -23,12 +23,14 @@
         ChartPalette = Value.Total > 0
             ? new[]
             {
-                Colors.Blue.Darken2,
-                Colors.Green.Darken2,
-                Colors.Orange.Darken2
+                Colors.Green.Accent4,
+                Colors.Red.Default,
+                Colors.Blue.Default,
+                Colors.DeepPurple.Default
             }
             : new[]
             {
+                Colors.Grey.Lighten1,
                 Colors.Grey.Lighten1,
                 Colors.Grey.Lighten1,
                 Colors.Grey.Lighten1
@@ -37,16 +39,18 @@
     
     private double[] Data => new double[]
     {
-        Value.Completed,
+        Value.Successful,
+        Value.Failed,
         Value.MistakesExceeded,
         Value.TimeExceeded
     };
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["NumberOfTests:Completed"], Value.Completed, Colors.Blue.Darken2),
-        new ChartList.Item(L["NumberOfTests:MistakesExceeded"], Value.MistakesExceeded, Colors.Green.Darken2),
-        new ChartList.Item(L["NumberOfTests:TimeExceeded"], Value.TimeExceeded, Colors.Orange.Darken2),
+        new ChartList.Item(L["NumberOfTests:Successful"], Value.Successful, Colors.Green.Accent4),
+        new ChartList.Item(L["NumberOfTests:Failed"], Value.Failed, Colors.Red.Default),
+        new ChartList.Item(L["NumberOfTests:MistakesExceeded"], Value.MistakesExceeded, Colors.Blue.Default),
+        new ChartList.Item(L["NumberOfTests:TimeExceeded"], Value.TimeExceeded, Colors.DeepPurple.Default),
         new ChartList.Item(L["NumberOfTests:Total"], Value.Total, null)
     };
 
