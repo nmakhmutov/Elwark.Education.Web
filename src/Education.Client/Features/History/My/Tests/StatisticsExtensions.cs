@@ -1,10 +1,11 @@
 using System;
 using Education.Client.Extensions;
+using Education.Client.Features.History.My.Tests.Components;
 using Education.Client.Gateways.History.Me;
 using Education.Client.Gateways.Models.Progress;
 using Microsoft.Extensions.Localization;
 
-namespace Education.Client.Features.History.My.Components;
+namespace Education.Client.Features.History.My.Tests;
 
 public static class StatisticsExtensions
 {
@@ -17,10 +18,13 @@ public static class StatisticsExtensions
     public static ProgressList.Item[] GetProgress(this NumberOfTestsProgress progress, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
-            new(l["NumberOfTests:Successful"], progress.Successful.Current.ToReadable(), progress.Successful.Difference),
+            new(l["NumberOfTests:Successful"], progress.Successful.Current.ToReadable(),
+                progress.Successful.Difference),
             new(l["NumberOfTests:Failed"], progress.Failed.Current.ToReadable(), progress.Failed.Difference),
-            new(l["NumberOfTests:MistakesExceeded"], progress.MistakesExceeded.Current.ToReadable(), progress.MistakesExceeded.Difference),
-            new(l["NumberOfTests:TimeExceeded"], progress.TimeExceeded.Current.ToReadable(), progress.TimeExceeded.Difference),
+            new(l["NumberOfTests:MistakesExceeded"], progress.MistakesExceeded.Current.ToReadable(),
+                progress.MistakesExceeded.Difference),
+            new(l["NumberOfTests:TimeExceeded"], progress.TimeExceeded.Current.ToReadable(),
+                progress.TimeExceeded.Difference),
             new(l["NumberOfTests:Total"], progress.Total.Current.ToReadable(), progress.Total.Difference)
         };
 

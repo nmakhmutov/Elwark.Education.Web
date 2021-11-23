@@ -13,7 +13,7 @@ public sealed record ProgressiveAchievement(
     string Title,
     string Description,
     uint Completeness,
-    Reward Reward
+    IGameCurrency[] Rewards
 ) : Achievement(Name, Title, Description);
 
 public sealed record LadderAchievement(
@@ -24,5 +24,5 @@ public sealed record LadderAchievement(
     uint Score,
     uint Goal,
     uint Completeness,
-    Reward Reward
+    IGameCurrency[] Rewards
 ) : Achievement(Name, Title, Description);

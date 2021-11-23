@@ -7,7 +7,7 @@ public sealed record UserStatistics(
     ScoreOverview HardTest,
     ScoreOverview MixedTest,
     EventGuesserOverview EventGuesser,
-    Activity[] Activities
+    ActivityOverview[] Activities
 );
 
-public sealed record Activity(DateTime Date, uint Total);
+public sealed record ActivityOverview(DateTime Date, uint Total);

@@ -11,10 +11,11 @@
     </MudCardHeader>
     <MudCardContent Class="pa-3 pa-sm-6">
         <div class="d-flex flex-row align-center justify-center">
-            <MudText Typo="Typo.h4">
-                +@Reward.Experience
-            </MudText>
-            <MudIcon Icon="@EducationIcons.Experience" Size="Size.Large" Class="ml-1" Color="Color.Primary"/>
+            @for (var i = 0; i < Reward.Rewards.Length; i++)
+            {
+                var cls = i + 1 == Reward.Rewards.Length ? null : "mr-3";
+                <GameCurrencyView Class="@cls" Typo="Typo.h4" IconSize="Size.Medium" Currency="@Reward.Rewards[i]"/>
+            }
         </div>
     </MudCardContent>
     <MudCardActions Class="d-flex justify-center pa-3 pa-sm-6">

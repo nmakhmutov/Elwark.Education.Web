@@ -4,72 +4,85 @@
 <section class="grid">
     @switch (Achievement)
     {
-        case CompletedAchievement(_, var title, _, var completedAt):
+        case CompletedAchievement(_, var title, var description, var completedAt):
             <aside class="icon yellow accent-4 grey-text text-darken-3">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
-            <h6 class="title mud-typography mud-typography-subtitle1">
-                @title
-            </h6>
-            <footer class="progress">
-                <MudText Typo="Typo.body1">
+            <header class="header">
+                <div class="d-flex flex-row flex-wrap justify-space-between">
+                    <h6 class="title">
+                        @title
+                    </h6>
+                    <MudTooltip Text="@description" Placement="Placement.Left" Arrow="true">
+                        <MudIconButton Icon="@Icons.Outlined.Info" Size="Size.Small" DisableElevation="true"/>
+                    </MudTooltip>
+                </div>
+                <MudText Typo="Typo.caption">
                     @L["Achievement:Completed"] @completedAt.ToSimpleFormat()
                 </MudText>
-            </footer>
+            </header>
             break;
 
-        case ProgressiveAchievement(_, var title, _, var completeness, var reward):
+        case ProgressiveAchievement(_, var title, var description, var completeness, var rewards):
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
-            <h6 class="title mud-typography mud-typography-subtitle1">
-                @title
-            </h6>
-            <footer class="progress">
-                <div class="d-flex flex-row justify-end mb-1">
-                    <div class="d-flex flex-row align-center">
-                        +@reward.Experience
-                        <MudIcon Size="Size.Small" Color="Color.Primary" Class="ml-1" Icon="@EducationIcons.Experience"/>
-                    </div>
+            <header class="header">
+                <div class="d-flex flex-row flex-wrap justify-space-between">
+                    <h6 class="title">
+                        @title
+                    </h6>
+                    <MudTooltip Text="@description" Placement="Placement.Left" Arrow="true">
+                        <MudIconButton Icon="@Icons.Outlined.Info" Size="Size.Small" DisableElevation="true"/>
+                    </MudTooltip>
                 </div>
-                <MudProgressLinear Min="0" Max="100" Value="@completeness" Color="Color.Primary"/>
+            </header>
+            <footer class="progress">
+                <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@completeness" Color="Color.Primary"/>
+                <div class="d-flex flex-row">
+                    @foreach (var reward in rewards)
+                    {
+                        <GameCurrencyView Currency="@reward"/>
+                    }
+                </div>
             </footer>
             break;
-            
-        case LadderAchievement(_, var title, _, var level, var score, var goal, var completeness, var reward):
+
+        case LadderAchievement(_, var title, var description, var level, var score, var goal, var completeness, var rewards):
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
                 <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
                     @L["Achievement:Level"] @level
                 </MudText>
             </aside>
-            <h6 class="title mud-typography mud-typography-subtitle1">
-                @title
-            </h6>
-            <footer class="progress">
-                <div class="d-flex flex-row justify-space-between mb-1">
-                    <div class="d-flex align-center">
-                        <HumanReadableText Value="@score" Typo="Typo.subtitle2"/>/<HumanReadableText Value="@goal" Typo="Typo.subtitle2"/>
-                    </div>
-                    <div class="d-flex flex-row align-center">
-                        +@reward.Experience
-                        <MudIcon Size="Size.Small" Color="Color.Primary" Class="ml-1" Icon="@EducationIcons.Experience"/>
-                    </div>
+            <header class="header">
+                <div class="d-flex flex-row flex-wrap justify-space-between">
+                    <h6 class="title">
+                        @title
+                    </h6>
+                    <MudTooltip Text="@description" Placement="Placement.Left" Arrow="true">
+                        <MudIconButton Icon="@Icons.Outlined.Info" Size="Size.Small" DisableElevation="true"/>
+                    </MudTooltip>
                 </div>
-                <MudProgressLinear Min="0" Max="100" Value="@completeness" Color="Color.Primary"/>
+            </header>
+            <footer class="progress">
+                <div class="d-flex flex-row mb-1">
+                    <HumanReadableText Value="@score" Typo="Typo.subtitle2"/>
+                    <span>/</span>
+                    <HumanReadableText Value="@goal" Typo="Typo.subtitle2"/>
+                </div>
+                <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@completeness" Color="Color.Primary"/>
+                <div class="d-flex flex-row">
+                    @foreach (var reward in rewards)
+                    {
+                        <GameCurrencyView Currency="@reward"/>
+                    }
+                </div>
             </footer>
             break;
-            
+
         default:
             throw new ArgumentOutOfRangeException(nameof(Achievement));
-    }
-    @if (ShowDescription)
-    {
-        <section class="description">
-            <MudText Typo="Typo.body2">
-                @Achievement.Description
-            </MudText>
-        </section>
     }
 </section>
 
@@ -83,30 +96,29 @@
     [Parameter, EditorRequired]
     public Achievement Achievement { get; set; } = default!;
 
-    [Parameter]
-    public bool ShowDescription { get; set; }
-
     protected override void OnInitialized()
     {
         (_icon, _background) = Achievement.Name switch {
             "EasyTest.Successful" => (EducationIcons.Tests, "green lighten-1 white-text"),
             "EasyTest.Score" => (EducationIcons.Score, "green lighten-1 white-text"),
             "EasyTest.WithoutMistakes" => (Icons.Outlined.AddTask, "green lighten-1 white-text"),
+            "EasyTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "green lighten-1 white-text"),
             
             "HardTest.Successful" => (EducationIcons.Tests, "indigo default white-text"),
             "HardTest.Score" => (EducationIcons.Score, "indigo default white-text"),
             "HardTest.WithoutMistakes" => (Icons.Outlined.AddTask, "indigo default white-text"),
+            "HardTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "indigo default white-text"),
             
             "MixedTest.Successful" => (EducationIcons.Tests, "red accent-2 white-text"),
             "MixedTest.Score" => (EducationIcons.Score, "red accent-2 white-text"),
             "MixedTest.WithoutMistakes" => (Icons.Outlined.AddTask, "red accent-2 white-text"),
+            "MixedTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "red accent-2 white-text"),
             
             "AllTest.Successful" => (EducationIcons.Tests, "light-blue darken-1 white-text"),
             "AllTest.Score" => (EducationIcons.Score, "light-blue darken-1 white-text"),
             "AllTest.CompleteOnceAllType" => (Icons.Outlined.DoneAll, "light-blue darken-1 white-text"),
             
-            "TotalAnswersAchievement" => (Icons.Outlined.RecordVoiceOver, "light-blue darken-1 white-text"),
-            "TotalCorrectAnswersAchievement" => (Icons.Outlined.TaskAlt, "light-blue darken-1 white-text"),
+            "EventGuesser.Successful" => (Icons.Outlined.ManageSearch, "amber darken-2 white-text"),
             
             _=> (EducationIcons.Achievement, "black white-text")
             };

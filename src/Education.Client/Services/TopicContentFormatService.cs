@@ -157,7 +157,7 @@ public sealed class TopicContentFormatService
         await SaveStateAsync();
     }
 
-    private record State
+    private sealed record State
     {
         public State(Align textAlign, double fontSize, Width width)
         {

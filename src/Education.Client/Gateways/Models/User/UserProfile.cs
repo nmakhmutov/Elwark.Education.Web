@@ -6,13 +6,13 @@ public sealed record UserProfile(
     uint Level,
     ulong Experience,
     ulong NextLevelExperience,
-    long Balance,
-    Experience[] Transactions
+    long Silver,
+    Transaction[] Transactions
 );
 
-public sealed record Experience(ExperienceType Type, uint Value, DateTime CreatedAt, string? Comment);
+public sealed record Transaction(TransactionType Type, DateTime CreatedAt, IGameCurrency[] Currencies, string? Comment);
 
-public enum ExperienceType
+public enum TransactionType
 {
     LevelUp = 0,
     DailyReward = 1,

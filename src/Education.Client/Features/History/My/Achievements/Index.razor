@@ -32,13 +32,16 @@
         <Success Context="statistics">
             @foreach (var statistic in statistics)
             {
-                <MudText Typo="Typo.h6" Class="mb-3">
-                    @L[$"AchievementCategory:{statistic.Category}"] <MudText Typo="Typo.subtitle1" Inline="true">@statistic.Completed/@statistic.Total</MudText>
+                <MudText Typo="Typo.h5" Class="mb-3">
+                    @L[$"AchievementCategory:{statistic.Category}"] 
+                    <MudText Typo="Typo.subtitle1" Inline="true">
+                        @statistic.Completed/@statistic.Total
+                    </MudText>
                 </MudText>
                 <div class="grid mb-6 mb-sm-12">
                     @foreach (var achievement in statistic.Achievements)
                     {
-                        <AchievementView Achievement="@achievement" ShowDescription="true"/>
+                        <AchievementView Achievement="@achievement"/>
                     }
                 </div>
             }

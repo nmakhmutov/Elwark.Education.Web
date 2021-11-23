@@ -8,14 +8,14 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [Parameter, EditorRequired]
+    public AnswerRatio Value { get; set; } = default!;
+
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter]
     public string Size { get; set; } = "250px";
-
-    [Parameter]
-    public AnswerRatio Value { get; set; } = default!;
 
     private static readonly ChartOptions Options = new()
     {

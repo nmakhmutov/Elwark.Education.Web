@@ -3,7 +3,7 @@
     grid-gap: 12px;
     grid-template-columns: 85px 1fr;
     grid-template-areas: 
-        "icon title"
+        "icon header"
         "icon progress"
         "description description";
     align-content: center;
@@ -22,18 +22,27 @@
     height: 95px;
 }
 
+.header {
+    grid-area: header;
+}
+
 .title {
-    grid-area: title;
     word-wrap: break-word;
-    overflow:hidden;
-    white-space:nowrap;
+    overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
+    font-size: var(--mud-typography-subtitle1-size);
+    font-family: var(--mud-typography-subtitle1-family);
+    font-weight: var(--mud-typography-h6-weight);
+    line-height: var(--mud-typography-subtitle1-lineheight);
+    letter-spacing: var(--mud-typography-subtitle1-letterspacing);
+    text-transform: var(--mud-typography-subtitle1-text-transform);
 }
 
 .progress {
     grid-area: progress;
 }
 
-.description{
+.description {
     grid-area: description;
 }

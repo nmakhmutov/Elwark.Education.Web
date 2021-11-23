@@ -1,0 +1,126 @@
+@using Education.Client.Gateways.History.Me
+@using ApexCharts
+@using Color = MudBlazor.Color
+
+@implements IDisposable
+
+<MudCard Class="@Class">
+    <MudCardHeader Class="pa-3 pa-sm-6">
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">
+                @Title
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent Class="pa-3 pa-sm-6">
+        <div style="max-height: 400px; height: 100%; position: relative">
+            <ApexChart @ref="@_chart" TItem="Activity" Options="_options" Height="@("400px")">
+                <ApexPointSeries
+                    TItem="Activity"
+                    Items="Activities"
+                    Name="@L["Tests:Easy"]"
+                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Default })"
+                    SeriesType="SeriesType"
+                    XValue="@(e => e.Date.ToString(DateFormat))"
+                    YValue="@(x => x.EasyTests)"/>
+
+                <ApexPointSeries
+                    TItem="Activity"
+                    Items="Activities"
+                    Name="@L["Tests:Hard"]"
+                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
+                    SeriesType="SeriesType"
+                    XValue="@(e => e.Date.ToString(DateFormat))"
+                    YValue="@(x => x.HardTests)"/>
+
+                <ApexPointSeries
+                    TItem="Activity"
+                    Items="Activities"
+                    Name="@L["Tests:Mixed"]"
+                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Red.Default })"
+                    SeriesType="SeriesType"
+                    XValue="@(e => e.Date.ToString(DateFormat))"
+                    YValue="@(x => x.MixedTests)"/>
+
+                <ApexPointSeries
+                    TItem="Activity"
+                    Items="Activities"
+                    Name="@L["EventGuesser"]"
+                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Amber.Default })"
+                    SeriesType="SeriesType"
+                    XValue="@(e => e.Date.ToString(DateFormat))"
+                    YValue="@(x => x.EventGuessers)"/>
+
+                <ApexPointSeries
+                    TItem="Activity"
+                    Items="Activities"
+                    Name="@L["NumberOfTests:Total"]"
+                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.DeepPurple.Default })"
+                    SeriesType="SeriesType.Line"
+                    XValue="@(e => e.Date.ToString(DateFormat))"
+                    YValue="@(x => x.Total)"/>
+            </ApexChart>
+        </div>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    private ApexChart<Activity> _chart = default!;
+    private ApexChartOptions<Activity>? _options;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private ThemeProvider ThemeProvider { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public SeriesType SeriesType { get; set; } = SeriesType.Line;
+
+    [Parameter]
+    public string DateFormat { get; set; } = "dd MMM";
+
+    [Parameter, EditorRequired]
+    public Activity[] Activities { get; set; } = Array.Empty<Activity>();
+
+    protected override void OnInitialized()
+    {
+        _options = new ApexChartOptions<Activity>
+        {
+            Chart = new Chart
+            {
+                Background = "transparent"
+            },
+            Grid = new Grid
+            {
+                BorderColor = ThemeProvider.Theme.Palette.Divider.Value
+            },
+            Theme = new Theme
+            {
+                Mode = ThemeProvider.Type == ThemeProvider.ThemeType.Light ? Mode.Light : Mode.Dark,
+            }
+        };
+
+        ThemeProvider.OnChange += Update;
+    }
+
+    public void Dispose() => ThemeProvider.OnChange -= Update;
+
+    private void Update()
+    {
+        if (_options is null)
+            return;
+
+        _options.Theme.Mode = ThemeProvider.Type == ThemeProvider.ThemeType.Light ? Mode.Light : Mode.Dark;
+        _options.Grid.BorderColor = ThemeProvider.Theme.Palette.Divider.Value;
+        _chart.SetRerenderChart();
+        StateHasChanged();
+    }
+
+}

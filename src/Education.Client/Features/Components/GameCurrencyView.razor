@@ -1,0 +1,38 @@
+<div class="d-flex flex-row align-center @Class">
+    @switch (Currency)
+    {
+        case ExperienceCurrency x:
+            <MudText Typo="@Typo">
+                +@x.Value
+            </MudText>
+            <MudIcon Size="IconSize" Color="Color.Primary" Class="ml-1" Icon="@EducationIcons.Experience"/>
+            break;
+
+        case SilverCurrency x:
+            <MudText Typo="@Typo">
+                @(x.Value > 0 ? "+" : null)@x.Value
+            </MudText>
+            <MudIcon Size="IconSize" Color="Color.Error" Class="ml-1" Icon="@EducationIcons.Silver"/>
+            break;
+
+        default:
+            throw new ArgumentOutOfRangeException(nameof(Currency));
+    }
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public IGameCurrency Currency { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+    
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body1;
+
+    [Parameter]
+    public Size IconSize { get; set; } = Size.Small;
+
+}
+

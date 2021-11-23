@@ -12,7 +12,7 @@ public abstract record TestConclusion(
     TimeSpan TestDuration,
     Score UserScore,
     TimeSpan TimeSpent,
-    Reward Reward,
+    IGameCurrency[] Rewards,
     DateTime CompletedAt
 );
 
@@ -24,10 +24,10 @@ public sealed record EasyTestConclusion(
     TimeSpan TestDuration,
     Score UserScore,
     TimeSpan TimeSpent,
-    Reward Reward,
     DateTime CompletedAt,
+    IGameCurrency[] Rewards,
     EasyTestConclusion.Question[] Questions
-) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Reward, CompletedAt)
+) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
 {
     public sealed record Question(string Id, string Title, bool IsAnswered, uint Correct, uint Incorrect);
 }
@@ -40,10 +40,10 @@ public sealed record HardTestConclusion(
     TimeSpan TestDuration,
     Score UserScore,
     TimeSpan TimeSpent,
-    Reward Reward,
     DateTime CompletedAt,
+    IGameCurrency[] Rewards,
     HardTestConclusion.Question[] Questions
-) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Reward, CompletedAt)
+) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
 {
     public sealed record Question(string Id, string Title, bool IsAnswered, bool IsCorrect);
 }
@@ -55,10 +55,10 @@ public sealed record MixedTestConclusion(
     TimeSpan TestDuration,
     Score UserScore,
     TimeSpan TimeSpent,
-    Reward Reward,
     DateTime CompletedAt,
+    IGameCurrency[] Rewards,
     MixedTestConclusion.Question[] Questions
-) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Reward, CompletedAt)
+) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
 {
     public sealed record Question(string Id, string Title, bool IsAnswered, bool IsCorrect, TopicTitle Topic);
 }

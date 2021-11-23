@@ -1,21 +1,5 @@
 @using Education.Client.Extensions
 <ul class="@Class">
-    @if (Status.HasValue)
-    {
-        <li class="d-flex flex-row justify-space-between underline mb-1">
-            <MudText Typo="@Typo.subtitle1" Color="@Status.Value.GetColor()">
-                @L[$"ConclusionStatus:{Status.Value}"]
-            </MudText>
-        </li>
-    }
-    @if (Link is not null)
-    {
-        <li class="d-flex flex-row justify-space-between underline mb-1">
-            <MudLink Href="@Link.Href">
-                @Link.Title
-            </MudLink>
-        </li>
-    }
     <li class="d-flex flex-row justify-space-between underline mb-1">
         <MudText Typo="Typo.subtitle1">
             @L["TimeSpent"]
@@ -104,36 +88,6 @@
             </li>
         </ul>
     </li>
-
-    <li class="d-flex flex-row justify-space-between underline mb-1">
-        <MudText Typo="Typo.subtitle1">
-            @L["Reward"]
-        </MudText>
-    </li>
-    <li class="d-flex flex-row">
-        <ul class="w-100 ml-6">
-            <li class="d-flex flex-row justify-space-between underline mb-1">
-                <MudText Typo="Typo.subtitle1">
-                    @L["Reward:Experience"]
-                </MudText>
-                <MudText Typo="Typo.subtitle1">
-                    @Reward.Experience.ToReadable()
-                </MudText>
-            </li>
-        </ul>
-    </li>
-    
-    @if (CompletedAt.HasValue)
-    {
-        <li class="d-flex flex-row justify-space-between underline mb-1">
-            <MudText Typo="Typo.subtitle1">
-                @L["Date"]
-            </MudText>
-            <MudText Typo="Typo.subtitle1">
-                @CompletedAt.Value.ToSimpleFormat()
-            </MudText>
-        </li>
-    }
 </ul>
 
 @code {
@@ -144,15 +98,6 @@
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter]
-    public ConclusionStatus? Status { get; set; }
-
-    [Parameter]
-    public DateTime? CompletedAt { get; set; }
-
-    [Parameter]
-    public LinkModel? Link { get; set; }
-
     [Parameter, EditorRequired]
     public Score Score { get; set; } = default!;
 
@@ -161,10 +106,5 @@
 
     [Parameter, EditorRequired]
     public TimeSpan TimeSpent { get; set; }
-
-    [Parameter, EditorRequired]
-    public Reward Reward { get; set; } = default!;
-
-    public sealed record LinkModel(string Title, string Href);
 
 }

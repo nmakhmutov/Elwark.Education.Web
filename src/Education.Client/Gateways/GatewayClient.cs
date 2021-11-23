@@ -25,6 +25,7 @@ internal abstract class GatewayClient
         Converters =
         {
             new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
+            new GameCurrencyConverter(),
             new HistoryTestConclusionJsonConverter(),
             new HistoryTopicDetailJsonConverter(),
             new HistoryAchievementConverter()

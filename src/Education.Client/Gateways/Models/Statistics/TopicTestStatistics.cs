@@ -1,25 +1,11 @@
-using System;
 using Education.Client.Gateways.Models.Progress;
-using Education.Client.Gateways.Models.Test;
 
 namespace Education.Client.Gateways.Models.Statistics;
 
-public sealed record TopicTestStatistics(
+public sealed record TestStatistics(
     Score Score,
     AnswerRatio AnswerRatio,
     TimeSpent TimeSpent,
     NumberOfTests NumberOfTests,
-    WeeklyProgress Progress,
-    TopicTestConclusion[] Conclusions
-);
-    
-public sealed record TopicTestConclusion(
-    string TopicId,
-    string Title,
-    ConclusionStatus Status,
-    Score Score,
-    AnswerRatio AnswerRatio,
-    TimeSpan TimeSpent,
-    Reward Reward,
-    DateTime CompletedAt
+    WeeklyProgress Progress
 );

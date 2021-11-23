@@ -39,12 +39,14 @@ public static class Links
 
         public const string MyEventGuessers = $"{Index}/my/event-guessers";
 
-        public const string MyFavorites = $"{Index}/my/favorites";
-        
         public const string MyAchievements = $"{Index}/my/achievements";
 
-        public static string MyTopicProgress(string topicId) =>
-            $"{Index}/my/topics/{topicId}";
+        public const string MyActivities = $"{Index}/my/activities";
+        
+        public const string MyTopics = $"{Index}/my/topics";
+        
+        public static string MyTopic(string topicId) =>
+            $"{MyTopics}/{topicId}";
 
         public static string TopicByEpoch(EpochType epoch) =>
             $"{Index}/{epoch.ToFastString()}";
