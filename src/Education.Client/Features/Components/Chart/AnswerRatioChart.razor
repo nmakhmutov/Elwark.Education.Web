@@ -1,9 +1,48 @@
+@using ApexCharts
+
 <div class="@Class">
-    <MudChart ChartType="ChartType.Bar" Width="100%" Height="@Size" ChartSeries="@Series" ChartOptions="@Options"/>
+    <ApexChart TItem="Data" Options="@Options">
+        <ApexPointSeries
+            TItem="Data"
+            Items="@Series"
+            SeriesType="SeriesType.RadialBar"
+            XValue="@(x => x.Name)"
+            YAggregate="@(x => x.Sum(e => e.Value))"/>
+    </ApexChart>
+
     <ChartList Items="@Items"/>
 </div>
 
 @code {
+
+    private static readonly ApexChartOptions<Data> Options = new()
+    {
+        PlotOptions = new PlotOptions
+        {
+            RadialBar = new PlotOptionsRadialBar
+            {
+                DataLabels = new RadialBarDataLabels
+                {
+                    Show = true
+                }
+            }
+        },
+        Tooltip = new Tooltip
+        {
+            Enabled = false
+        },
+        Legend = new Legend
+        {
+            Show = false
+        },
+        Colors = new List<string>
+        {
+            Colors.Blue.Default,
+            Colors.DeepPurple.Default,
+            Colors.Green.Accent4,
+            Colors.Red.Default
+        },
+    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -14,31 +53,12 @@
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter]
-    public string Size { get; set; } = "250px";
-
-    private static readonly ChartOptions Options = new()
+    private List<Data> Series => new()
     {
-        DisableLegend = true,
-        InterpolationOption = InterpolationOption.NaturalSpline,
-        XAxisLines = false,
-        YAxisLines = false,
-        YAxisTicks = 20,
-        ChartPalette = new[]
-        {
-            Colors.Blue.Default,
-            Colors.DeepPurple.Default,
-            Colors.Green.Accent4,
-            Colors.Red.Default
-        }
-    };
-
-    private List<ChartSeries> Series => new()
-    {
-        new ChartSeries { Data = new[] { Value.Answered / (double)Value.Questions * 100 } },
-        new ChartSeries { Data = new[] { Value.NotAnswered / (double)Value.Questions * 100 } },
-        new ChartSeries { Data = new[] { Value.Correct / (double)Value.Questions * 100 } },
-        new ChartSeries { Data = new[] { Value.Incorrect / (double)Value.Questions * 100 } }
+        new Data(L["Questions:Answered"], Value.Answered),
+        new Data(L["Questions:NotAnswered"], Value.NotAnswered),
+        new Data(L["Questions:Correct"], Value.Correct),
+        new Data(L["Questions:Incorrect"], Value.Incorrect)
     };
 
     private ChartList.Item[] Items => new[]
@@ -49,5 +69,7 @@
         new ChartList.Item(L["Questions:Incorrect"], Value.Incorrect, Colors.Red.Default),
         new ChartList.Item(L["Questions:Total"], Value.Questions, null)
     };
+
+    private record Data(string Name, decimal Value);
 
 }
