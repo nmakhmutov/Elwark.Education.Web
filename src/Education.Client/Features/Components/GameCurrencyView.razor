@@ -3,16 +3,16 @@
     {
         case ExperienceCurrency x:
             <MudText Typo="@Typo">
-                +@x.Value
+                @(x.Value > 0 ? "+" : null)@x.Value
             </MudText>
-            <MudIcon Size="IconSize" Color="Color.Primary" Class="ml-1" Icon="@EducationIcons.Experience"/>
+            <MudIcon Size="IconSize" Style="color: #FF6F00" Class="ml-1" Icon="@EducationIcons.Experience"/>
             break;
 
         case SilverCurrency x:
             <MudText Typo="@Typo">
                 @(x.Value > 0 ? "+" : null)@x.Value
             </MudText>
-            <MudIcon Size="IconSize" Color="Color.Error" Class="ml-1" Icon="@EducationIcons.Silver"/>
+            <MudIcon Size="IconSize" Style="color: #C0C0C0" Class="ml-1" Icon="@EducationIcons.Silver"/>
             break;
 
         default:

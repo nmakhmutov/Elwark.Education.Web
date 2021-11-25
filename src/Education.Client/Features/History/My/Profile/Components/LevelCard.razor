@@ -1,3 +1,4 @@
+@using Education.Client.Extensions
 <MudCard Class="@Class">
     <MudCardContent Class="pa-3 pa-sm-6">
         <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
@@ -8,33 +9,20 @@
                 <span>@Level</span>
             </div>
         </div>
-        <MudProgressLinear Min="0" Max="@NextLevelExperience" Value="@Experience" Color="Color.Primary" Class="mb-2"/>
+        <MudProgressLinear Min="0" Max="@NextLevelExperience" Value="@Experience.Value" Color="Color.Primary" Class="mb-2"/>
         <div class="d-flex justify-space-between mb-6">
             <div class="d-flex align-center">
                 <MudIcon Icon="@EducationIcons.Experience" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
                 <MudText Typo="Typo.body2">
-                    @L["Experience:PointsToNextLevel", (NextLevelExperience - Experience).ToString("N0")]
+                    @L["Experience:PointsToNextLevel", (NextLevelExperience - Experience.Value).ToString("N0")]
                 </MudText>
             </div>
             <MudText Typo="Typo.body2">
-                @((int)((double)Experience / NextLevelExperience * 100))%
+                @(((double)Experience.Value / NextLevelExperience * 100).ToReadable())%
             </MudText>
         </div>
-        <MudText Typo="Typo.subtitle1" Class="mb-1">
-            Баланс
-        </MudText>
-        <div class="d-flex flex-row align-center">
-            <MudIcon Color="Color.Primary" Size="Size.Small" Class="mr-1" Icon="@EducationIcons.Experience"/>
-            <MudText Typo="Typo.body1">
-                @Experience
-            </MudText>
-        </div>
-        <div class="d-flex flex-row align-center">
-            <MudIcon Color="Color.Error" Size="Size.Small" ViewBox="0 0 512 512" Class="mr-1" Icon="@EducationIcons.Silver"/>
-            <MudText Typo="Typo.body1">
-                @Silver
-            </MudText>
-        </div>
+        <GameCurrencyView Currency="@Experience"/>
+        <GameCurrencyView Currency="@Silver"/>
     </MudCardContent>
 </MudCard>
 
@@ -50,10 +38,10 @@
     public ulong NextLevelExperience { get; set; }
 
     [Parameter, EditorRequired]
-    public ulong Experience { get; set; }
+    public ExperienceCurrency Experience { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public long Silver { get; set; }
+    public SilverCurrency Silver { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
