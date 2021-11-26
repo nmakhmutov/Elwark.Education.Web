@@ -15,7 +15,7 @@
 
 @code {
 
-    private static readonly ApexChartOptions<Data> Options = new()
+    private ApexChartOptions<Data> Options => new()
     {
         PlotOptions = new PlotOptions
         {
@@ -23,7 +23,11 @@
             {
                 DataLabels = new RadialBarDataLabels
                 {
-                    Show = true
+                    Show = true,
+                    Value = new RadialBarDataLabelsValue
+                    {
+                        Formatter = @"function(value) { return value }"
+                    }
                 }
             }
         },

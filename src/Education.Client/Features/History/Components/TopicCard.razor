@@ -13,16 +13,10 @@
             @L[$"History:{Epoch}"]
         </MudChip>
 
-        <MudTooltip Text="@(IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
-            <MudToggleIconButton
-                Class="favorite"
-                Toggled="@IsFavorite"
-                ToggledChanged="@OnFavoriteChanged"
-                Icon="@Icons.Filled.FavoriteBorder"
-                Color="Color.Default"
-                ToggledIcon="@Icons.Filled.Favorite"
-                ToggledColor="Color.Error"/>
-        </MudTooltip>
+        <FavoriteToggleButton
+            IsFavorite="@IsFavorite"
+            TopicId="@Id"
+            OnFavoriteClick="@OnFavoriteClick"/>
     </aside>
 
     <article class="px-3">
@@ -40,7 +34,7 @@
 
     <footer class="d-flex flex-row align-center px-3 mb-3">
         <MudTooltip Placement="Placement.Top" Text="@(L["Rating"] + " " + Rating.FiveStarts.ToReadable())">
-            <MudRating MaxValue="5" ReadOnly="true" SelectedValue="@((int) Math.Round(Rating.FiveStarts))"/>
+            <MudRating MaxValue="5" ReadOnly="true" SelectedValue="@((int)Math.Round(Rating.FiveStarts))"/>
         </MudTooltip>
         <MudText Typo="@Typo.body2" Class="ml-2 mb-1">
             @L["Rating:Count", Rating.Votes]

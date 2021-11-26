@@ -1,0 +1,32 @@
+<MudTooltip Text="@(IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
+    <MudToggleIconButton
+        Class="@Class"
+        Toggled="@IsFavorite"
+        ToggledChanged="@OnFavoriteChanged"
+        Icon="@Icons.Filled.FavoriteBorder"
+        Color="Color.Default"
+        ToggledIcon="@Icons.Filled.Favorite"
+        ToggledColor="Color.Error"/>
+</MudTooltip>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string TopicId { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public bool IsFavorite { get; set; }
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+
+    [Parameter]
+    public string? Class { get; set; }
+    
+    private async Task OnFavoriteChanged(bool toggled) =>
+        IsFavorite = await OnFavoriteClick.Invoke(TopicId);
+
+}
