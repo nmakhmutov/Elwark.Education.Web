@@ -12,7 +12,7 @@
 <MainContainer>
     <PageHeader Title="@L["Test:MyProgress"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 
-    <MudTable ServerData="@ServerReload" Dense="true" Hover="true" RowsPerPage="25">
+    <MudTable ServerData="@ServerReload" Dense="true" Hover="true" RowsPerPage="25" Loading="true">
         <HeaderContent>
             <MudTh/>
             <MudTh>@L["Title"]</MudTh>
@@ -49,7 +49,10 @@
             </MudTd>
         </RowTemplate>
         <NoRecordsContent>
-            <MudText>No matching records found</MudText>
+            <EmptyResult
+                Class="grid-full-row"
+                Title="@L["Profile:EmptyFavoritesTitle"]"
+                Subtitle="@L["Profile:EmptyFavoritesSubtitle"]"/>
         </NoRecordsContent>
         <LoadingContent>
             <MudText>Loading...</MudText>
@@ -59,10 +62,6 @@
         </PagerContent>
     </MudTable>
 
-    @* <EmptyResult *@
-    @* Class="grid-full-row" *@
-    @* Title="@L["Profile:EmptyFavoritesTitle"]" *@
-    @* Subtitle="@L["Profile:EmptyFavoritesSubtitle"]"/> *@
 
 </MainContainer>
 
