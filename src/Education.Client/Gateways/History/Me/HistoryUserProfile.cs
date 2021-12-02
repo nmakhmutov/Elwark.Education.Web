@@ -7,7 +7,7 @@ public sealed record HistoryUserProfile(
     Restriction TestCreation,
     Restriction TestMistakes,
     Restriction EventGuesser,
-    float TestDurationCoefficient,
+    double TestDurationCoefficient,
     UserStatistics Statistics,
     UserProfile Profile,
     DailyReward DailyReward,

@@ -12,22 +12,28 @@
 <MainContainer>
     <PageHeader Title="@L["Test:MyProgress"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 
-    <MudTable ServerData="@ServerReload" Dense="true" Hover="true" RowsPerPage="25" Loading="true">
+    <MudTable ServerData="@ServerReload" Breakpoint="Breakpoint.Sm" Dense="true" Hover="true" RowsPerPage="25" Loading="true">
         <HeaderContent>
             <MudTh/>
-            <MudTh>@L["Title"]</MudTh>
+            <MudTh>@L["Topic"]</MudTh>
+            <MudTh>@L["History:Epoch"]</MudTh>
             <MudTh>@L["NumberOfTests:TotalPassed"]</MudTh>
             <MudTh>@L["TimeSpent:Total"]</MudTh>
             <MudTh/>
             <MudTh/>
         </HeaderContent>
         <RowTemplate>
-            <MudTd>
+            <MudTd HideSmall="true">
                 <MudAvatar Image="@context.Image"/>
             </MudTd>
             <MudTd DataLabel="@L["Title"]">
                 <MudLink Href="@Links.History.TopicById(context.Id)">
                     @context.Title
+                </MudLink>
+            </MudTd>
+            <MudTd>
+                <MudLink Href="@Links.History.TopicByEpoch(context.Epoch)">
+                    @L[$"History:{context.Epoch}"]
                 </MudLink>
             </MudTd>
             <MudTd DataLabel="@L["NumberOfTests:TotalPassed"]">
