@@ -7,6 +7,11 @@
         <a href="@Links.History.TopicById(Id)">
             <img src="@Image" alt="@Title"/>
         </a>
+        <div class="rating-container">
+            <MudTooltip Placement="Placement.Top" Text="@(L["Rating"] + " " + Rating.FiveStarts.ToReadable())">
+                <MudRating MaxValue="5" Size="Size.Small" ReadOnly="true" SelectedValue="@((int)Math.Round(Rating.FiveStarts))"/>
+            </MudTooltip>
+        </div>
     </header>
     <aside class="d-flex align-center justify-space-between px-3">
         <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.TopicByEpoch(Epoch)">
@@ -20,7 +25,7 @@
     </aside>
 
     <article class="px-3">
-        <MudLink Href="@Links.History.TopicById(Id)" Typo="Typo.subtitle1">
+        <MudLink Href="@Links.History.TopicById(Id)" Typo="Typo.h6">
             @Title
         </MudLink>
         <MudText Typo="Typo.body2" Class="pt-3">
@@ -31,15 +36,6 @@
     <section class="progress">
         <TopicProgressView Class="px-3" Progress="Progress"/>
     </section>
-
-    <footer class="d-flex flex-row align-center px-3 mb-3">
-        <MudTooltip Placement="Placement.Top" Text="@(L["Rating"] + " " + Rating.FiveStarts.ToReadable())">
-            <MudRating MaxValue="5" ReadOnly="true" SelectedValue="@((int)Math.Round(Rating.FiveStarts))"/>
-        </MudTooltip>
-        <MudText Typo="@Typo.body2" Class="ml-2 mb-1">
-            @L["Rating:Count", Rating.Votes]
-        </MudText>
-    </footer>
 </section>
 
 @code {
