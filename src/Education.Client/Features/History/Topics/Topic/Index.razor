@@ -73,7 +73,7 @@
         break;
 }
 
-<CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
+<CenteredContainer MaxWidth="@ContainerWidth.W1600" Paper="true" Elevation="1" Style="@FormatService.WidthStyles" Class="mb-3 mb-sm-6">
     <div class="toolbar">
         <div class="toolbar-contents">
             @if (result.Topic.Chapters.Length > 2)
@@ -157,29 +157,21 @@
             </div>
         </div>
     </div>
-</CenteredContainer>
 
-@foreach (var (id, title, subtitle, content) in result.Topic.Chapters)
-{
-    <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
-        <MudCard Style="@FormatService.WidthStyles">
-            <MudCardHeader Class="pa-3 pa-sm-6">
-                <CardHeaderContent>
-                    <h2 class="chapter-title" id="@ChapterId(id)">
-                        @title
-                    </h2>
-                    @if (!string.IsNullOrEmpty(subtitle))
-                    {
-                        <SimpleMarkdown Text="@subtitle"/>
-                    }
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent Class="pa-3 pa-sm-6">
-                <TopicMarkdown Text="@content" Style="@FormatService.TextStyles"/>
-            </MudCardContent>
-        </MudCard>
-    </CenteredContainer>
-}
+    @foreach (var (id, title, subtitle, content) in result.Topic.Chapters)
+    {
+        <section class="pa-3 pa-sm-6">
+            <h2 class="chapter-title" id="@ChapterId(id)">
+                @title
+            </h2>
+            @if (!string.IsNullOrEmpty(subtitle))
+            {
+                <SimpleMarkdown Text="@subtitle" Class="mb-3 mb-sm-6"/>
+            }
+            <TopicMarkdown Text="@content" Style="@FormatService.TextStyles"/>
+        </section>
+    }
+</CenteredContainer>
 
 <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
     <MudPaper Style="@FormatService.WidthStyles">
