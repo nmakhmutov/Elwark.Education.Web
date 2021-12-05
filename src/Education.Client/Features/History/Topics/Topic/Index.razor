@@ -173,42 +173,40 @@
     }
 </CenteredContainer>
 
-<CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
-    <MudPaper Style="@FormatService.WidthStyles">
-        <div class="progress">
-            <div class="d-flex flex-column align-start">
-                @if (result.Test.TestTypes.Any())
-                {
-                    <MudLink Typo="Typo.h6" Href="@Links.History.MyTopic(result.Topic.Id)">
-                        @L["Test:MyProgress"]
-                    </MudLink>
-                }
-                else
-                {
-                    <MudText Typo="Typo.h6">
-                        @L["Test:MyProgress"]
-                    </MudText>
-                }
+<CenteredContainer MaxWidth="@ContainerWidth.W1600" Paper="true" Elevation="1" Style="@FormatService.WidthStyles" Class="mb-3 mb-sm-6">
+    <div class="progress">
+        <div class="d-flex flex-column align-start">
+            @if (result.Test.TestTypes.Any())
+            {
+                <MudLink Typo="Typo.h6" Href="@Links.History.MyTopic(result.Topic.Id)">
+                    @L["Test:MyProgress"]
+                </MudLink>
+            }
+            else
+            {
+                <MudText Typo="Typo.h6">
+                    @L["Test:MyProgress"]
+                </MudText>
+            }
 
-                <TopicProgressView Progress="@result.Progress" Class="py-3"/>
+            <TopicProgressView Progress="@result.Progress" Class="py-3"/>
 
-                <TestPermissionWrapper Status="@result.Test.Permission.Status" Subject="@SubjectType.History">
-                    <TopicTestButtons
-                        IsLoading="@(_test?.Status == ResponseStatus.Loading)"
-                        TestTypes="@result.Test.TestTypes.ToArray()"
-                        OnCreateTestClick="@CreateTestAsync"/>
-                </TestPermissionWrapper>
-            </div>
-
-            <TopicReactionButtons
-                Id="@Id"
-                IsFavorite="@result.IsFavorite"
-                Rating="@result.Rating"
-                OnFavoriteClick="@OnFavoriteClick"
-                OnLikeClick="@OnLikeClick"
-                OnDislikeClick="@OnDislikeClick"/>
+            <TestPermissionWrapper Status="@result.Test.Permission.Status" Subject="@SubjectType.History">
+                <TopicTestButtons
+                    IsLoading="@(_test?.Status == ResponseStatus.Loading)"
+                    TestTypes="@result.Test.TestTypes.ToArray()"
+                    OnCreateTestClick="@CreateTestAsync"/>
+            </TestPermissionWrapper>
         </div>
-    </MudPaper>
+
+        <TopicReactionButtons
+            Id="@Id"
+            IsFavorite="@result.IsFavorite"
+            Rating="@result.Rating"
+            OnFavoriteClick="@OnFavoriteClick"
+            OnLikeClick="@OnLikeClick"
+            OnDislikeClick="@OnDislikeClick"/>
+    </div>
 </CenteredContainer>
 
 @if (result.RelatedTopics.Length > 0)
