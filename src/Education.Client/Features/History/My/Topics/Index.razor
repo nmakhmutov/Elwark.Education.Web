@@ -3,7 +3,6 @@
 
 @using Education.Client.Gateways.History
 @using Education.Client.Gateways.History.Me
-@using Education.Client.Extensions
 @using Education.Client.Features.History.Components
 
 @attribute [Authorize]
@@ -64,7 +63,7 @@
             <MudText>Loading...</MudText>
         </LoadingContent>
         <PagerContent>
-            <MudTablePager/>
+            <MudTablePager RowsPerPageString="@L["RowsPerPage"]"/>
         </PagerContent>
     </MudTable>
 
