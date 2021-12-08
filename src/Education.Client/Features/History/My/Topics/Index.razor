@@ -71,7 +71,7 @@
 </MainContainer>
 
 @code {
-    private TopicsProgressRequest _request = new(false, TopicsProgressRequest.SortType.DateAddedNewest, 1, 20);
+    private TopicsRequest _request = new(false, TopicsRequest.SortType.DateAddedNewest, 1, 20);
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -92,7 +92,7 @@
             Count = (short)state.PageSize
             };
 
-        var data = await HistoryClient.Me.GetTopicsProgressAsync(_request);
+        var data = await HistoryClient.Me.GetTopicsAsync(_request);
 
         return new TableData<UserTopicSummary>
         {

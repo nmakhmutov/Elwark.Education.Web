@@ -216,7 +216,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _response = await HistoryClient.Me.GetTopicStatisticsAsync(Id);
+        _response = await HistoryClient.Me.GetTopicsAsync(Id);
 
         if (_response.Status == ResponseStatus.Success)
             Breadcrumbs = new List<BreadcrumbItem>
