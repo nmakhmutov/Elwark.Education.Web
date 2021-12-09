@@ -60,10 +60,10 @@
                 Subtitle="@L["Profile:EmptyFavoritesSubtitle"]"/>
         </NoRecordsContent>
         <LoadingContent>
-            <MudText>Loading...</MudText>
+            <MudText>@L["Loading"]</MudText>
         </LoadingContent>
         <PagerContent>
-            <MudTablePager RowsPerPageString="@L["RowsPerPage"]"/>
+            <MudTablePager RowsPerPageString="@L["RowsPerPage"]" />
         </PagerContent>
     </MudTable>
 
@@ -87,10 +87,7 @@
 
     private async Task<TableData<UserTopicSummary>> ServerReload(TableState state)
     {
-        _request = _request with {
-            Page = state.Page + 1,
-            Count = (short)state.PageSize
-            };
+        _request = _request with { Page = state.Page + 1, Count = (short)state.PageSize };
 
         var data = await HistoryClient.Me.GetTopicsAsync(_request);
 
