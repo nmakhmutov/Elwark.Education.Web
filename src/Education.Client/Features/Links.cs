@@ -41,7 +41,7 @@ public static class Links
 
         public const string MyAchievements = $"{Index}/my/achievements";
 
-        public const string MyActivities = $"{Index}/my/activities";
+        public const string MyStatistics = $"{Index}/my/statistics";
         
         public const string MyTopics = $"{Index}/my/topics";
         

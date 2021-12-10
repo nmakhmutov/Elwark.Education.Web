@@ -1,16 +1,16 @@
-@page "/history/my/activities"
+@page "/history/my/statistics"
 @layout HistoryLayout
 
 @attribute [Authorize]
 
 @using Education.Client.Gateways.History.Me
 @using Education.Client.Gateways.History
-@using Education.Client.Features.History.My.Activities.Components;
+@using Education.Client.Features.History.My.Statistics.Components;
 @using ApexCharts
 
-<PageTitle>@L["Test:MyActivity"]</PageTitle>
+<PageTitle>@L["Statistics"]</PageTitle>
 <MainContainer>
-    <PageHeader Title="@L["Test:MyActivity"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+    <PageHeader Title="@L["Statistics"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
     <ApiViewer Response="@_response">
         <Loading>
             <SkeletonCard Class="mb-3 mb-sm-6"/>
@@ -19,7 +19,7 @@
         <Success Context="activity">
             <ActivityCard
                 Class="mb-3 mb-sm-6"
-                Title="Daily activity"
+                Title="Daily statistics"
                 Activities="@activity.Daily"
                 SeriesType="SeriesType.Bar"
                 DateFormat="dd MMM"/>
@@ -28,7 +28,7 @@
             {
                 <ActivityCard
                     Class="monthly"
-                    Title="Monthly activity"
+                    Title="Monthly statistics"
                     Activities="@activity.Monthly"
                     SeriesType="SeriesType.Line"
                     DateFormat="MMM yyyy"/>
