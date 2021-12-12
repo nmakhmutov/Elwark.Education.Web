@@ -2,10 +2,19 @@
 @using Education.Client.Extensions
 
 <MudCard Class="@Class">
+    <MudCardHeader Class="pb-0 px-3 pt-3 px-sm-6 pt-sm-6">
+        <CardHeaderAvatar>
+            <MudAvatar Color="Color.Primary" Size="Size.Medium">
+                <MudIcon Icon="@EducationIcons.MyTransactions" Size="Size.Medium"/>
+            </MudAvatar>
+        </CardHeaderAvatar>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">
+                @L["RecentTransactions"]
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
     <MudCardContent Class="pa-3 pa-sm-6">
-        <MudText Typo="Typo.h6">
-            @L["RecentTransactions"]
-        </MudText>
         <MudList Clickable="false" Dense="true" DisableGutters="true" DisablePadding="true">
             @foreach (var transaction in Transactions)
             {
