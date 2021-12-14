@@ -10,8 +10,19 @@
 <PageTitle>@L["Test:MyActivity"]</PageTitle>
 <MainContainer>
     <PageHeader Title="@L["Test:MyActivity"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-
-    <MudTable ServerData="@ServerReload" Breakpoint="Breakpoint.Sm" Dense="true" Hover="true" RowsPerPage="25" Loading="true">
+    <div class="mb-3 mb-sm-6">
+        <MudCheckBox CheckedChanged="@((bool b) => OnOnlyFavoriteClick(b))" Label="@L["OnlyFavorite"]" Color="Color.Primary"/>
+        <MudCheckBox @bind-Checked="@_dense" Label="@L["CompactView"]" Color="Color.Primary"/>
+    </div>
+    <MudTable
+        ServerData="@ServerReload"
+        Dense="@_dense"
+        Loading="@_loading"
+        Hover="true"
+        RowsPerPage="25"
+        Breakpoint="Breakpoint.Sm"
+        LoadingProgressColor="Color.Primary"
+        @ref="@_table">
         <HeaderContent>
             <MudTh/>
             <MudTh>@L["Topic"]</MudTh>
@@ -56,20 +67,23 @@
         <NoRecordsContent>
             <EmptyResult
                 Class="grid-full-row"
-                Title="@L["Profile:EmptyFavoritesTitle"]"
-                Subtitle="@L["Profile:EmptyFavoritesSubtitle"]"/>
+                Title="@L["Empty:FavoritesTitle"]"
+                Subtitle="@L["Empty:FavoritesSubtitle"]"/>
         </NoRecordsContent>
         <LoadingContent>
             <MudText>@L["Loading"]</MudText>
         </LoadingContent>
         <PagerContent>
-            <MudTablePager RowsPerPageString="@L["RowsPerPage"]" />
+            <MudTablePager RowsPerPageString="@L["RowsPerPage"]"/>
         </PagerContent>
     </MudTable>
 
 </MainContainer>
 
 @code {
+    private bool _loading = true;
+    private bool _dense;
+    private MudTable<UserTopicSummary> _table = default!;
     private TopicsRequest _request = new(false, TopicsRequest.SortType.DateAddedNewest, 1, 20);
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -86,9 +100,12 @@
 
     private async Task<TableData<UserTopicSummary>> ServerReload(TableState state)
     {
-        _request = _request with { Page = state.Page + 1, Count = (short)state.PageSize };
+        _loading = true;
+        _request = _request with { Page = state.Page + 1, Count = state.PageSize };
 
         var data = await HistoryClient.Me.GetTopicsAsync(_request);
+
+        _loading = false;
 
         return new TableData<UserTopicSummary>
         {
@@ -101,6 +118,12 @@
     {
         var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
         return result.Status == ResponseStatus.Success && result.Data;
+    }
+
+    private async Task OnOnlyFavoriteClick(bool arg)
+    {
+        _request = _request with { OnlyFavorite = arg };
+        await _table.ReloadServerData();
     }
 
 }

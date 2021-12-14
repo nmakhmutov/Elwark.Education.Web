@@ -3,7 +3,7 @@ using Education.Client.Gateways.Models;
 
 namespace Education.Client.Gateways.History.Me;
 
-public sealed record TopicsRequest(bool OnlyFavorite, TopicsRequest.SortType Sort, int Page, short Count)
+public sealed record TopicsRequest(bool OnlyFavorite, TopicsRequest.SortType Sort, int Page, int Count)
     : PageRequest(Page, Count)
 {
     public enum SortType

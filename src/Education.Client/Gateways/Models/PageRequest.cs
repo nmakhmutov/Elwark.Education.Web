@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Education.Client.Gateways.Models;
 
-public record PageRequest(int Page, short Count)
+public record PageRequest(int Page, int Count)
 {
     public virtual string ToQuery() =>
         QueryString.Create(

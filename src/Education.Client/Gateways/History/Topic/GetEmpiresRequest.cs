@@ -3,7 +3,7 @@ using Education.Client.Gateways.Models;
 
 namespace Education.Client.Gateways.History.Topic;
 
-public sealed record GetEmpiresRequest(GetEmpiresRequest.SortType Sort, int Page, short Count) 
+public sealed record GetEmpiresRequest(GetEmpiresRequest.SortType Sort, int Page, int Count) 
     : PageRequest(Page, Count)
 {
     public enum SortType {
