@@ -10,16 +10,28 @@
 <PageTitle>@L["Test:MyActivity"]</PageTitle>
 <MainContainer>
     <PageHeader Title="@L["Test:MyActivity"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-    <div class="mb-3 mb-sm-6">
-        <MudCheckBox CheckedChanged="@((bool b) => OnOnlyFavoriteClick(b))" Label="@L["OnlyFavorite"]" Color="Color.Primary"/>
-        <MudCheckBox @bind-Checked="@_dense" Label="@L["CompactView"]" Color="Color.Primary"/>
+    <div class="d-flex flex-wrap justify-sm-space-between mb-3 mb-sm-6">
+        <div>
+            <MudCheckBox CheckedChanged="@((bool b) => OnOnlyFavoriteClick(b))" Label="@L["OnlyFavorite"]" Color="Color.Primary"/>
+            <MudCheckBox @bind-Checked="@_dense" Label="@L["CompactView"]" Color="Color.Primary"/>
+        </div>
+        <div class="ml-3 ml-sm-6">
+            <MudSelect T="TopicsRequest.SortType" Value="@_request.Sort" ValueChanged="@Callback" Margin="Margin.None">
+                @foreach (var sort in Enum.GetValues<TopicsRequest.SortType>())
+                {
+                    <MudSelectItem T="TopicsRequest.SortType" Value="sort">
+                        @L[$"Sort:{sort}"]
+                    </MudSelectItem>    
+                }
+            </MudSelect>
+        </div>
     </div>
     <MudTable
         ServerData="@ServerReload"
         Dense="@_dense"
         Loading="@_loading"
         Hover="true"
-        RowsPerPage="25"
+        RowsPerPage="@_request.Count"
         Breakpoint="Breakpoint.Sm"
         LoadingProgressColor="Color.Primary"
         @ref="@_table">
@@ -84,7 +96,7 @@
     private bool _loading = true;
     private bool _dense;
     private MudTable<UserTopicSummary> _table = default!;
-    private TopicsRequest _request = new(false, TopicsRequest.SortType.DateAddedNewest, 1, 20);
+    private TopicsRequest _request = new(false, TopicsRequest.SortType.DateAddedNewest, 1, 25);
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -123,6 +135,12 @@
     private async Task OnOnlyFavoriteClick(bool arg)
     {
         _request = _request with { OnlyFavorite = arg };
+        await _table.ReloadServerData();
+    }
+    
+    private async Task Callback(TopicsRequest.SortType arg)
+    {
+        _request = _request with { Sort = arg };
         await _table.ReloadServerData();
     }
 
