@@ -1,4 +1,5 @@
 @using Education.Client.Extensions
+@using Education.Client.Gateways.Models.User
 <MudCard Class="@Class">
     <MudCardContent Class="pa-3 pa-sm-6">
         <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3">
@@ -6,23 +7,35 @@
         </MudText>
         <div class="hexagon-wrapper">
             <div class="hexagon">
-                <span>@Level</span>
+                <span>@Level.Value</span>
             </div>
         </div>
-        <MudProgressLinear Min="0" Max="@NextLevelExperience" Value="@Experience.Value" Color="Color.Primary" Class="mb-2"/>
+        <MudProgressLinear Min="0" Max="@Level.NextLevelExperience" Value="@Level.Experience" Color="Color.Primary" Class="mb-2"/>
         <div class="d-flex justify-space-between mb-6">
             <div class="d-flex align-center">
                 <MudIcon Icon="@EducationIcons.Experience" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
                 <MudText Typo="Typo.body2">
-                    @L["Experience:PointsToNextLevel", (NextLevelExperience - Experience.Value).ToString("N0")]
+                    @L["Experience:PointsToNextLevel", (Level.NextLevelExperience - Level.Experience).ToString("N0")]
                 </MudText>
             </div>
             <MudText Typo="Typo.body2">
-                @(((double)Experience.Value / NextLevelExperience * 100).ToReadable())%
+                @(((double)Level.Experience / Level.NextLevelExperience * 100).ToReadable())%
             </MudText>
         </div>
-        <GameCurrencyView Currency="@Experience"/>
-        <GameCurrencyView Currency="@Silver"/>
+        <div class="d-flex flex-row align-center">
+            <MudText Typo="Typo.body1">
+                @(Wallet.Experience > 0 ? "+" : null)@Wallet.Experience
+            </MudText>
+            <MudIcon Size="Size.Small" Style="color: #FF6F00" Class="ml-1" Icon="@EducationIcons.Experience"/>
+        </div>
+        <div class="d-flex flex-row align-center">
+            <MudText Typo="Typo.body1">
+                @(Wallet.Silver > 0 ? "+" : null)@Wallet.Silver
+            </MudText>
+            <MudIcon Size="Size.Small" Style="color: #C0C0C0" Class="ml-1" Icon="@EducationIcons.Silver"/>
+        </div>
+        @* <GameCurrencyView Currency="@Experience"/> *@
+        @* <GameCurrencyView Currency="@Silver"/> *@
     </MudCardContent>
 </MudCard>
 
@@ -32,16 +45,10 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public uint Level { get; set; }
+    public Level Level { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public ulong NextLevelExperience { get; set; }
-
-    [Parameter, EditorRequired]
-    public ExperienceCurrency Experience { get; set; } = default!;
-
-    [Parameter, EditorRequired]
-    public SilverCurrency Silver { get; set; } = default!;
+    public Wallet Wallet { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

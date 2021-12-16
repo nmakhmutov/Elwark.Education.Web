@@ -2,13 +2,11 @@ using System;
 
 namespace Education.Client.Gateways.Models.User;
 
-public sealed record UserProfile(
-    uint Level,
-    ulong Experience,
-    ulong NextLevelExperience,
-    long Silver,
-    Transaction[] Transactions
-);
+public sealed record UserProfile(Level Level, Wallet Wallet, Transaction[] Transactions);
+
+public sealed record Level(uint Value, ulong Experience, ulong NextLevelExperience);
+
+public sealed record Wallet(long Experience, long Silver);
 
 public sealed record Transaction(TransactionType Type, DateTime CreatedAt, IGameCurrency[] Currencies, string? Comment);
 
