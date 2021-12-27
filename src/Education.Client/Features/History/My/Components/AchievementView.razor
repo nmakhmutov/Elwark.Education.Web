@@ -4,38 +4,28 @@
 <section class="grid">
     @switch (Achievement)
     {
-        case CompletedAchievement(_, var title, var description, var completedAt):
+        case CompletedAchievement(_, var title, _, var completedAt):
             <aside class="icon yellow accent-4 grey-text text-darken-3">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
             <header class="header">
-                <div class="d-flex flex-row flex-wrap justify-space-between">
-                    <h6 class="title">
-                        @title
-                    </h6>
-                    <MudTooltip Text="@description" Placement="Placement.Left" Arrow="true">
-                        <MudIconButton Icon="@Icons.Outlined.Info" Size="Size.Small" DisableElevation="true"/>
-                    </MudTooltip>
-                </div>
+                <h6 class="title">
+                    @title
+                </h6>
                 <MudText Typo="Typo.caption">
                     @L["Achievement:Completed"] @completedAt.ToSimpleFormat()
                 </MudText>
             </header>
             break;
 
-        case ProgressiveAchievement(_, var title, var description, var completeness, var rewards):
+        case ProgressiveAchievement(_, var title, _, var completeness, var rewards):
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
             <header class="header">
-                <div class="d-flex flex-row flex-wrap justify-space-between">
-                    <h6 class="title">
-                        @title
-                    </h6>
-                    <MudTooltip Text="@description" Placement="Placement.Left" Arrow="true">
-                        <MudIconButton Icon="@Icons.Outlined.Info" Size="Size.Small" DisableElevation="true"/>
-                    </MudTooltip>
-                </div>
+                <h6 class="title">
+                    @title
+                </h6>
             </header>
             <footer class="progress">
                 <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@completeness" Color="Color.Primary"/>
@@ -48,7 +38,7 @@
             </footer>
             break;
 
-        case LadderAchievement(_, var title, var description, var level, var score, var goal, var completeness, var rewards):
+        case LadderAchievement(_, var title, _, var level, var score, var goal, var completeness, var rewards):
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
                 <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
@@ -56,14 +46,9 @@
                 </MudText>
             </aside>
             <header class="header">
-                <div class="d-flex flex-row flex-wrap justify-space-between">
-                    <h6 class="title">
-                        @title
-                    </h6>
-                    <MudTooltip Text="@description" Placement="Placement.Left" Arrow="true">
-                        <MudIconButton Icon="@Icons.Outlined.Info" Size="Size.Small" DisableElevation="true"/>
-                    </MudTooltip>
-                </div>
+                <h6 class="title">
+                    @title
+                </h6>
             </header>
             <footer class="progress">
                 <div class="d-flex flex-row mb-1">
@@ -84,6 +69,12 @@
         default:
             throw new ArgumentOutOfRangeException(nameof(Achievement));
     }
+    
+    <section class="description">
+        <MudText Typo="Typo.body2">
+            @Achievement.Description
+        </MudText>
+    </section>
 </section>
 
 @code {
@@ -99,10 +90,10 @@
     protected override void OnInitialized()
     {
         (_icon, _background) = Achievement.Name switch {
-            "EasyTest.Successful" => (EducationIcons.Tests, "green lighten-1 white-text"),
-            "EasyTest.Score" => (EducationIcons.Score, "green lighten-1 white-text"),
-            "EasyTest.WithoutMistakes" => (Icons.Outlined.AddTask, "green lighten-1 white-text"),
-            "EasyTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "green lighten-1 white-text"),
+            "EasyTest.Successful" => (EducationIcons.Tests, "green default white-text"),
+            "EasyTest.Score" => (EducationIcons.Score, "green default white-text"),
+            "EasyTest.WithoutMistakes" => (Icons.Outlined.AddTask, "green default white-text"),
+            "EasyTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "green default white-text"),
             
             "HardTest.Successful" => (EducationIcons.Tests, "indigo default white-text"),
             "HardTest.Score" => (EducationIcons.Score, "indigo default white-text"),
