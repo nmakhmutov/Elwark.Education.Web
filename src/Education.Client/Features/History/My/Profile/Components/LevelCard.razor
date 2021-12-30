@@ -22,18 +22,6 @@
                 @(((double)Level.Experience / Level.NextLevelExperience * 100).ToReadable())%
             </MudText>
         </div>
-        <div class="d-flex flex-row align-center">
-            <MudText Typo="Typo.body1">
-                @(Wallet.Experience > 0 ? "+" : null)@Wallet.Experience
-            </MudText>
-            <MudIcon Size="Size.Small" Style="color: #FF6F00" Class="ml-1" Icon="@EducationIcons.Experience"/>
-        </div>
-        <div class="d-flex flex-row align-center">
-            <MudText Typo="Typo.body1">
-                @(Wallet.Silver > 0 ? "+" : null)@Wallet.Silver
-            </MudText>
-            <MudIcon Size="Size.Small" Style="color: #C0C0C0" Class="ml-1" Icon="@EducationIcons.Silver"/>
-        </div>
     </MudCardContent>
 </MudCard>
 
@@ -44,9 +32,6 @@
 
     [Parameter, EditorRequired]
     public Level Level { get; set; } = default!;
-
-    [Parameter, EditorRequired]
-    public Wallet Wallet { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

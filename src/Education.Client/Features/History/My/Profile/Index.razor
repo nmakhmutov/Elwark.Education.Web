@@ -15,9 +15,10 @@
         <Loading>
             <div class="grid">
                 <SkeletonCard Class="subject"/>
+                <SkeletonCard Class="balance"/>
                 <SkeletonCard Class="level"/>
                 <SkeletonCard Class="achievements"/>
-                <SkeletonCard Class="balance"/>
+                <SkeletonCard Class="transactions"/>
                 <SkeletonCard Class="daily-reward"/>
                 <SkeletonCard Class="easy-test"/>
                 <SkeletonCard Class="hard-test"/>
@@ -38,17 +39,20 @@
                     EventGuesserCreation="@overview.EventGuesser"
                     OnBuyClick="@OnBuyClick"/>
 
+                <WalletCard 
+                    Class="balance"
+                    Wallet="@overview.Profile.Wallet"/>
+
                 <LevelCard
                     Class="level"
-                    Level="@overview.Profile.Level"
-                    Wallet="@overview.Profile.Wallet"/>
+                    Level="@overview.Profile.Level"/>
 
                 <AchievementsCard
                     Class="achievements"
                     Achievements="@overview.Achievements"/>
 
                 <RecentTransactionsCard
-                    Class="balance"
+                    Class="transactions"
                     Transactions="@overview.Profile.Transactions"/>
 
                 <DailyRewardCard

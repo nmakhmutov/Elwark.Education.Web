@@ -13,14 +13,23 @@
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent Class="pa-3 pa-sm-6">
-        <div style="max-height: 400px; height: 100%; position: relative">
-            <ApexChart @ref="@_chart" TItem="Activity" Options="_options" Height="@("400px")">
+        <div style="max-height: 350px; height: 100%; position: relative">
+            <ApexChart @ref="@_chart" TItem="Activity" Options="_options" Height="@("350px")">
+                <ApexPointSeries
+                    TItem="Activity"
+                    Items="Activities"
+                    Name="@L["NumberOfTests:Total"]"
+                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
+                    SeriesType="SeriesType.Area"
+                    XValue="@(e => e.Date.ToString(DateFormat))"
+                    YValue="@(x => x.Total)"/>
+                
                 <ApexPointSeries
                     TItem="Activity"
                     Items="Activities"
                     Name="@L["Tests:Easy"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Default })"
-                    SeriesType="SeriesType"
+                    SeriesType="SeriesType.Area"
                     XValue="@(e => e.Date.ToString(DateFormat))"
                     YValue="@(x => x.EasyTests)"/>
 
@@ -28,8 +37,8 @@
                     TItem="Activity"
                     Items="Activities"
                     Name="@L["Tests:Hard"]"
-                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
-                    SeriesType="SeriesType"
+                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.DeepPurple.Default })"
+                    SeriesType="SeriesType.Area"
                     XValue="@(e => e.Date.ToString(DateFormat))"
                     YValue="@(x => x.HardTests)"/>
 
@@ -38,7 +47,7 @@
                     Items="Activities"
                     Name="@L["Tests:Mixed"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Red.Default })"
-                    SeriesType="SeriesType"
+                    SeriesType="SeriesType.Area"
                     XValue="@(e => e.Date.ToString(DateFormat))"
                     YValue="@(x => x.MixedTests)"/>
 
@@ -47,18 +56,9 @@
                     Items="Activities"
                     Name="@L["EventGuesser"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Amber.Default })"
-                    SeriesType="SeriesType"
+                    SeriesType="SeriesType.Area"
                     XValue="@(e => e.Date.ToString(DateFormat))"
                     YValue="@(x => x.EventGuessers)"/>
-
-                <ApexPointSeries
-                    TItem="Activity"
-                    Items="Activities"
-                    Name="@L["NumberOfTests:Total"]"
-                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.DeepPurple.Default })"
-                    SeriesType="SeriesType.Line"
-                    XValue="@(e => e.Date.ToString(DateFormat))"
-                    YValue="@(x => x.Total)"/>
             </ApexChart>
         </div>
     </MudCardContent>
@@ -81,9 +81,6 @@
     public string? Title { get; set; }
 
     [Parameter]
-    public SeriesType SeriesType { get; set; } = SeriesType.Line;
-
-    [Parameter]
     public string DateFormat { get; set; } = "dd MMM";
 
     [Parameter, EditorRequired]
@@ -93,6 +90,10 @@
     {
         _options = new ApexChartOptions<Activity>
         {
+            Legend = new Legend
+            {
+                Position = LegendPosition.Top
+            },
             Chart = new Chart
             {
                 Background = "transparent"

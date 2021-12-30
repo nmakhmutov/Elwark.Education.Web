@@ -3,14 +3,14 @@
 
 @if (_tooltip is null)
 {
-    <MudText Typo="Typo" Class="@Class" Color="@Color">
+    <MudText Typo="Typo" Class="@Class" Style="@Style" Color="@Color">
         @_value
     </MudText>
 }
 else
 {
     <MudTooltip Text="@_tooltip" Placement="@Placement">
-        <MudText Typo="@Typo" Class="@Class" Color="@Color">
+        <MudText Typo="@Typo" Class="@Class" Style="@Style" Color="@Color">
             @_value
         </MudText>
     </MudTooltip>
@@ -24,6 +24,9 @@ else
     [Parameter]
     public string? Class { get; set; }
 
+    [Parameter]
+    public string? Style { get; set; }
+    
     [Parameter]
     public Typo Typo { get; set; } = Typo.body1;
 
