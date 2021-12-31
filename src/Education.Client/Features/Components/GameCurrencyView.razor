@@ -2,17 +2,17 @@
     @switch (Currency)
     {
         case ExperienceCurrency x:
+            <MudIcon Size="IconSize" Style="color: #FFCA28" Class="mr-2" Icon="@EducationIcons.Experience"/>
             <MudText Typo="@Typo">
-                @(x.Value > 0 ? "+" : null)@x.Value
+                @x.Value
             </MudText>
-            <MudIcon Size="IconSize" Style="color: #FF6F00" Class="ml-1" Icon="@EducationIcons.Experience"/>
             break;
 
         case SilverCurrency x:
+            <MudIcon Size="IconSize" Style="color: #C0C0C0" Class="mr-2" Icon="@EducationIcons.Silver"/>
             <MudText Typo="@Typo">
-                @(x.Value > 0 ? "+" : null)@x.Value
+                @x.Value
             </MudText>
-            <MudIcon Size="IconSize" Style="color: #C0C0C0" Class="ml-1" Icon="@EducationIcons.Silver"/>
             break;
 
         default:
