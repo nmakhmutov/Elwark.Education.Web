@@ -23,30 +23,7 @@
                     @item.Value
                 </MudText>
 
-                <div class="d-flex flex-row align-center">
-                    @switch (item.Diff)
-                    {
-                        case < 0:
-                            <MudChip Color="Color.Error" Size="Size.Small" Label="true" Variant="Variant.Outlined">
-                                @item.Diff.ToReadable()%
-                            </MudChip>
-                            <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" Color="Color.Error"/>
-                            break;
-
-                        case 0:
-                            <MudChip Color="Color.Surface" Size="Size.Small" Label="true" Variant="Variant.Outlined">
-                                @item.Diff.ToReadable()%
-                            </MudChip>
-                            break;
-
-                        case > 0:
-                            <MudChip Color="Color.Success" Size="Size.Small" Label="true" Variant="Variant.Outlined">
-                                +@item.Diff.ToReadable()%
-                            </MudChip>
-                            <MudIcon Icon="@Icons.Material.Filled.ArrowUpward" Color="Color.Success"/>
-                            break;
-                    }
-                </div>
+                <DifferenceLabel Difference="@item.Diff"/>
             </div>
         </div>
     }

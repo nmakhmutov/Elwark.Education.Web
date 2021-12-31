@@ -1,0 +1,39 @@
+@typeparam T
+@using Education.Client.Gateways.Models.Progress
+
+<MudPaper Class="@($"{Class} pa-3")">
+    <MudLink Href="@Href" Typo="Typo.subtitle1">
+        @Title
+    </MudLink>
+    <div class="d-flex flex-wrap justify-space-between mt-3">
+        <div class="d-flex flex-wrap align-center">
+            <MudIcon Icon="@Icon" Class="@IconClass" Style="width:54px; height:54px;"/>
+            <MudText Typo="Typo.h5" Class="ml-3">
+                @Value.Current
+            </MudText>
+        </div>
+        <DifferenceLabel Difference="@Value.Difference"/>
+    </div>
+</MudPaper>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Icon { get; set; } = Icons.Material.Outlined.Circle;
+
+    [Parameter]
+    public string? IconClass { get; set; }
+
+    [Parameter, EditorRequired]
+    public Contrast<T> Value { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Href { get; set; } = "#";
+
+}

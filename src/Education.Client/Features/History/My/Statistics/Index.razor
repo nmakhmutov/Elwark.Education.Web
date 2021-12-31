@@ -1,11 +1,11 @@
 @page "/history/my/statistics"
 @layout HistoryLayout
 
-@attribute [Authorize]
-
 @using Education.Client.Gateways.History.Me
 @using Education.Client.Gateways.History
 @using Education.Client.Features.History.My.Statistics.Components;
+
+@attribute [Authorize]
 
 <PageTitle>@L["Statistics"]</PageTitle>
 <MainContainer>
@@ -13,23 +13,57 @@
     <ApiViewer Response="@_response">
         <Loading>
             <SkeletonCard Class="mb-3 mb-sm-6"/>
-            <SkeletonCard />
+            <SkeletonCard/>
         </Loading>
         <Success Context="activity">
-            <ActivityCard
-                Class="mb-3 mb-sm-6"
-                Title="@L["Statistics:Daily"]"
-                Activities="@activity.Daily"
-                DateFormat="dd MMM"/>
+            <div class="grid">
+                <TestCard
+                    Class="easy-test"
+                    Icon="@EducationIcons.Tests"
+                    IconClass="blue-text"
+                    Title="@L["Tests:Easy"]"
+                    Href="@Links.History.MyEasyTests"
+                    Value="@activity.EasyTests"/>
 
-            @if (activity.Monthly.Length > 1)
-            {
+                <TestCard
+                    Class="hard-test"
+                    Icon="@EducationIcons.Tests"
+                    IconClass="deep-purple-text"
+                    Title="@L["Tests:Hard"]"
+                    Href="@Links.History.MyHardTests"
+                    Value="@activity.HardTests"/>
+
+                <TestCard
+                    Class="mixed-test"
+                    Icon="@EducationIcons.Tests"
+                    IconClass="red-text"
+                    Title="@L["Tests:Mixed"]"
+                    Href="@Links.History.MyMixedTests"
+                    Value="@activity.MixedTests"/>
+
+                <TestCard
+                    Class="event-guesser"
+                    Icon="@EducationIcons.EventGuesser"
+                    IconClass="amber-text"
+                    Title="@L["EventGuesser"]"
+                    Href="@Links.History.MyEventGuessers"
+                    Value="@activity.EventGuessers"/>
+
                 <ActivityCard
                     Class="monthly"
-                    Title="@L["Statistics:Monthly"]"
-                    Activities="@activity.Monthly"
-                    DateFormat="MMM yyyy"/>
-            }
+                    Title="@L["Statistics:Daily"]"
+                    Activities="@activity.Daily"
+                    DateFormat="dd MMM"/>
+
+                @if (activity.Monthly.Length > 1)
+                {
+                    <ActivityCard
+                        Class="annual"
+                        Title="@L["Statistics:Monthly"]"
+                        Activities="@activity.Monthly"
+                        DateFormat="MMM yyyy"/>
+                }
+            </div>
         </Success>
     </ApiViewer>
 </MainContainer>
@@ -50,7 +84,7 @@
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 
-    protected override async Task OnParametersSetAsync() =>
+    protected override async Task OnParametersSetAsync() => 
         _response = await HistoryClient.Me.GetActivitiesAsync();
 
 }

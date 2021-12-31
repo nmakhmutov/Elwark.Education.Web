@@ -1,14 +1,16 @@
 @using ApexCharts
 
 <div class="@Class">
-    <ApexChart TItem="Data" Options="@Options">
-        <ApexPointSeries
-            TItem="Data"
-            Items="@Series"
-            SeriesType="SeriesType.RadialBar"
-            XValue="@(x => x.Name)"
-            YAggregate="@(x => x.Sum(e => e.Value))"/>
-    </ApexChart>
+    @if (Value.Questions > 0)
+    {
+        <ApexChart TItem="Data" Options="@Options">
+            <ApexRangeSeries
+                TItem="Data"
+                Items="@Series"
+                XValue="@(x => x.Name)"
+                YValue="@(x => x.Value)"/>
+        </ApexChart>
+    }
 
     <ChartList Items="@Items"/>
 </div>
@@ -19,25 +21,21 @@
     {
         PlotOptions = new PlotOptions
         {
-            RadialBar = new PlotOptionsRadialBar
+            Bar = new PlotOptionsBar
             {
-                DataLabels = new RadialBarDataLabels
-                {
-                    Show = true,
-                    Value = new RadialBarDataLabelsValue
-                    {
-                        Formatter = @"function(value) { return value }"
-                    }
-                }
+                Horizontal = true
             }
         },
         Tooltip = new Tooltip
         {
             Enabled = false
         },
-        Legend = new Legend
+        Chart = new Chart
         {
-            Show = false
+            Toolbar = new Toolbar
+            {
+                Show = false
+            }
         },
         Colors = new List<string>
         {
@@ -45,7 +43,7 @@
             Colors.DeepPurple.Default,
             Colors.Green.Accent4,
             Colors.Red.Default
-        },
+        }
     };
 
     [Inject]
@@ -59,9 +57,13 @@
 
     private List<Data> Series => new()
     {
+        new Data(L["Questions:Answered"], 0),
         new Data(L["Questions:Answered"], Value.Answered),
+        new Data(L["Questions:NotAnswered"], 0),
         new Data(L["Questions:NotAnswered"], Value.NotAnswered),
+        new Data(L["Questions:Correct"], 0),
         new Data(L["Questions:Correct"], Value.Correct),
+        new Data(L["Questions:Incorrect"], 0),
         new Data(L["Questions:Incorrect"], Value.Incorrect)
     };
 
@@ -74,6 +76,6 @@
         new ChartList.Item(L["Questions:Total"], Value.Questions, null)
     };
 
-    private record Data(string Name, decimal Value);
+    private record Data(string Name, uint Value);
 
 }

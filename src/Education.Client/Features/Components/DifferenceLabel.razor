@@ -1,0 +1,31 @@
+<div class="d-flex flex-row align-center">
+    @switch (Difference)
+    {
+        case < 0:
+            <MudChip Color="Color.Error" Size="Size.Small" Label="true" Variant="Variant.Outlined">
+                @Difference.ToReadable()%
+            </MudChip>
+            <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" Color="Color.Error"/>
+            break;
+
+        case 0:
+            <MudChip Color="Color.Surface" Size="Size.Small" Label="true" Variant="Variant.Outlined">
+                @Difference.ToReadable()%
+            </MudChip>
+            break;
+
+        case > 0:
+            <MudChip Color="Color.Success" Size="Size.Small" Label="true" Variant="Variant.Outlined">
+                +@Difference.ToReadable()%
+            </MudChip>
+            <MudIcon Icon="@Icons.Material.Filled.ArrowUpward" Color="Color.Success"/>
+            break;
+    }
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public double Difference { get; set; }
+
+}
