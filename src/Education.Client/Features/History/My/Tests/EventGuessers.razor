@@ -9,25 +9,22 @@
 @attribute [Authorize]
 
 <PageTitle>@L["EventGuesser"]</PageTitle>
+<PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 <MainContainer>
     <ApiViewer Response="@_response">
         <Loading>
-            <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
             <StatisticsDetailsGrid>
+                <SkeletonCard/>
                 <SkeletonCard/>
                 <SkeletonCard/>
             </StatisticsDetailsGrid>
         </Loading>
         <Success Context="result">
-            <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs">
-                <div class="d-flex align-center">
-                    <HumanReadableText Typo="Typo.h5" Class="mr-3" Value="@result.Tests"/>
-                    <MudAvatar Color="Color.Primary" Size="Size.Medium">
-                        <MudIcon Icon="@EducationIcons.Tests" Size="Size.Medium"/>
-                    </MudAvatar>
-                </div>
-            </PageHeader>
             <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
+                <StatisticsCard Icon="@EducationIcons.Tests" Title="@L["Tests"]" Value="@result.Tests">
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                    <ProgressList Items="@GetTest(result.Progress)"/>
+                </StatisticsCard>
                 <StatisticsCard Icon="@EducationIcons.Score" Title="@L["EventGuesser:Score"]" Value="@result.Score">
                     <TwoColumnGrid>
                         <div>
@@ -77,6 +74,12 @@
     {
         _response = await HistoryClient.Me.GetEventGuesserStatisticsAsync();
     }
+
+    private ProgressList.Item[] GetTest(EventGuesserProgress progress) =>
+        new ProgressList.Item[]
+        {
+            new(L["Tests"], progress.Tests.Current.ToReadable(), progress.Tests.Difference)
+        };
 
     private ProgressList.Item[] GetScore(EventGuesserProgress progress) =>
         new ProgressList.Item[]
