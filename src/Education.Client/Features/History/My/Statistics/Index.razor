@@ -84,7 +84,7 @@
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 
-    protected override async Task OnParametersSetAsync() => 
+    protected override async Task OnParametersSetAsync() =>
         _response = await HistoryClient.Me.GetActivitiesAsync();
 
 }

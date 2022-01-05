@@ -14,9 +14,9 @@
         <MudText Typo="Typo.h2" Color="Color.Inherit" Class="mb-3">
             @Topic.Title
         </MudText>
-        <div class="my-3">
-            <RatingStar Rating="@Topic.Rating"/>
-        </div>
+
+        <RatingStars Rating="@Topic.Rating" ShowDetails="true" Class="my-3"/>
+
         <MudText Typo="Typo.subtitle1" Class="mb-6">
             @Topic.Overview
         </MudText>
@@ -31,7 +31,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Parameter]
     public TopicSummary Topic { get; set; } = default!;
 

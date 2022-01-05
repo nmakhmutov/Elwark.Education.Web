@@ -2,15 +2,8 @@
 @using Education.Client.Extensions
 
 <div class="@Class d-flex flex-column align-center">
-    <div class="d-flex flex-column align-center">
-        <MudTooltip Placement="Placement.Top" Text="@(L["Rating"] + " " + Rating.FiveStarts.ToReadable())">
-            <MudRating MaxValue="5" ReadOnly="true" SelectedValue="@((int) Math.Round(Rating.FiveStarts))"/>
-        </MudTooltip>
-        <MudText Typo="@Typo.body2">
-            @L["Rating:Count", Rating.Votes]
-        </MudText>
-    </div>
-
+    <RatingStars Rating="@Rating" ShowDetails="true" Class="d-flex flex-column align-center"/>
+    
     <MudToolBar Class="pa-0">
         <MudTooltip Text="@L["Topic:ILikeThis"]">
             <MudIconButton

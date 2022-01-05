@@ -1,6 +1,6 @@
 @using MudBlazor.Utilities
 <section class="section @Class" style="@Style">
-    <div class="container @_css">
+    <div class="@_css">
         @ChildContent
     </div>
 </section>
@@ -29,7 +29,7 @@
     
     protected override void OnParametersSet()
     {
-        _css = CssBuilder.Empty();
+        _css = CssBuilder.Default("container");
         
         if (MaxWidth != ContainerWidth.None)
             _css.AddClass(MaxWidth.ToString().ToLowerInvariant());

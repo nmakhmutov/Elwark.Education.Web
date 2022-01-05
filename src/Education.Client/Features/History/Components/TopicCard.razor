@@ -1,76 +1,29 @@
-@using Education.Client.Gateways.Models.Content
-@using Education.Client.Gateways.History
-@using Education.Client.Extensions
-
-<section class="card">
-    <header class="card-header">
-        <a href="@Links.History.TopicById(Id)">
-            <img src="@Image" alt="@Title"/>
-        </a>
-        <div class="rating-container">
-            <MudTooltip Placement="Placement.Top" Text="@(L["Rating"] + " " + Rating.FiveStarts.ToReadable())">
-                <MudRating MaxValue="5" Size="Size.Small" ReadOnly="true" SelectedValue="@((int)Math.Round(Rating.FiveStarts))"/>
-            </MudTooltip>
+<div class="card">
+    <div class="body">
+        <div class="image">
+            <div class="mask"></div>
+            <a href="http://startup-news.topper.themerex.net/improving-mental-health-while-working-on-startups/" aria-hidden="true" class="icons"></a>
         </div>
-    </header>
-    <aside class="d-flex align-center justify-space-between px-3">
-        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.TopicByEpoch(Epoch)">
-            @L[$"History:{Epoch}"]
-        </MudChip>
-
-        <FavoriteToggleButton
-            IsFavorite="@IsFavorite"
-            TopicId="@Id"
-            OnFavoriteClick="@OnFavoriteClick"/>
-    </aside>
-
-    <article class="px-3">
-        <MudLink Href="@Links.History.TopicById(Id)" Typo="Typo.h6">
-            @Title
-        </MudLink>
-        <MudText Typo="Typo.body2" Class="pt-3">
-            @Overview
-        </MudText>
-    </article>
-
-    <section class="progress">
-        <TopicProgressView Class="px-3" Progress="Progress"/>
-    </section>
-</section>
+        <div class="content">
+            <div class="meta">
+                <span class="post_meta_item post_categories">
+                    <a href="http://startup-news.topper.themerex.net/category/ideas/" rel="category tag">Ideas</a>
+                </span>
+            </div><!-- .post_meta -->
+            <MudLink Href="#" Typo="Typo.h6">
+                Title
+            </MudLink>
+            <div class="description">Young developers get activated by coming up with revolutionary ideas that bring positive changes to digital products’ development process!</div>
+            <div class="meta">
+                <span class="post_meta_item post_date">March 16, 2019</span>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
 
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Parameter]
-    public string Id { get; set; } = string.Empty;
-
-    [Parameter]
-    public EpochType Epoch { get; set; }
-
-    [Parameter]
+    [Parameter, EditorRequired]
     public string Image { get; set; } = string.Empty;
-
-    [Parameter]
-    public string Title { get; set; } = string.Empty;
-
-    [Parameter]
-    public string Overview { get; set; } = string.Empty;
-
-    [Parameter]
-    public ContentRating Rating { get; set; } = default!;
-
-    [Parameter]
-    public UserTopicProgress Progress { get; set; } = default!;
-
-    [Parameter]
-    public bool IsFavorite { get; set; }
-
-    [Parameter]
-    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
-
-    private async Task OnFavoriteChanged(bool toggled) =>
-        IsFavorite = await OnFavoriteClick.Invoke(Id);
 
 }

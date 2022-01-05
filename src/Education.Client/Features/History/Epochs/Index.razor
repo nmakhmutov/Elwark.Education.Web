@@ -1,0 +1,108 @@
+@page "/history/{type}"
+@layout HistoryLayout
+
+@using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Topic
+@using Education.Client.Features.History.Components
+
+@attribute [Authorize]
+
+<MainContainer>
+    <ApiViewer Response="_topics">
+        <Loading>
+            <div class="mb-3 mb-sm-6">
+                <MudSkeleton SkeletonType="SkeletonType.Text" Width="200px" Height="50px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Text" Width="120px" Height="20px"/>
+            </div>
+            <DefaultFitGrid>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+                <SkeletonCard/>
+            </DefaultFitGrid>
+        </Loading>
+        <Success Context="topics">
+            <PageTitle>
+                @L[$"History:{_request.Epoch}"]
+            </PageTitle>
+            <PageHeader Title="@L[$"History:{_request.Epoch}"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+            <DefaultFitGrid>
+                @foreach (var item in topics.Items)
+                {
+                    <TopicAndUserProgressCard
+                        Id="@item.Id"
+                        Image="@item.Image"
+                        Title="@item.Title"
+                        Overview="@item.Overview"
+                        Rating="@item.Rating"
+                        Progress="@item.Progress"
+                        IsFavorite="@item.IsFavorite"
+                        Epoch="@item.Epoch"
+                        OnFavoriteClick="@OnFavoriteClick"/>
+                }
+            </DefaultFitGrid>
+            <div class="d-flex justify-center mt-6 mt-sm-12">
+                <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_topics.Data.Pages)"/>
+            </div>
+        </Success>
+    </ApiViewer>
+</MainContainer>
+
+@code {
+    private GetTopicsRequest _request = new(EpochType.Prehistory, 1, 20);
+    private ApiResponse<PageResponse<UserTopicSummary>> _topics = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
+    
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
+    };
+    
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter]
+    public string? Type { get; set; }
+
+    [Parameter, SupplyParameterFromQuery(Name = "page")]
+    public int CurrentPage { get; set; } = 1;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _topics = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
+        CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
+
+        if (Enum.TryParse<EpochType>(Type, true, out var type))
+        {
+            _request = _request with { Epoch = type, Page = CurrentPage };
+            _topics = await HistoryClient.Topic.GetAsync(_request);
+        }
+        else
+        {
+            var error = Error.Create(L["Error:NotFound"], string.Empty, 404);
+            _topics = ApiResponse<PageResponse<UserTopicSummary>>.Fail(error);
+        }
+    }
+
+    private async Task<bool> OnFavoriteClick(string topicId)
+    {
+        var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
+        return result.Status == ResponseStatus.Success && result.Data;
+    }
+
+    private void OnPagination(int page)
+    {
+        CurrentPage = page;
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", CurrentPage));
+    }
+
+}
