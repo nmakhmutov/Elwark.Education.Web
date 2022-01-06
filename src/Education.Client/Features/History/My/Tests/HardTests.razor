@@ -92,6 +92,6 @@
     private IHistoryClient HistoryClient { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync() =>
-        _response = await HistoryClient.Me.GetHardTestStatisticsAsync();
+        _response = await HistoryClient.User.GetHardTestStatisticsAsync();
 
 }

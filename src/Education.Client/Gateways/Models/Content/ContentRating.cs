@@ -2,7 +2,7 @@ using System;
 
 namespace Education.Client.Gateways.Models.Content;
 
-public record ContentRating(double Value, uint Votes)
+public record ContentRating(double Rating, uint Votes)
 {
-    public double Stars => Math.Round(Value / 20, 1);
+    public double Stars => Math.Round(Rating / 20, 1);
 }

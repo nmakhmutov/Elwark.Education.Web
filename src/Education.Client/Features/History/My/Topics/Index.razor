@@ -115,7 +115,7 @@
         _loading = true;
         _request = _request with { Page = state.Page + 1, Count = state.PageSize };
 
-        var data = await HistoryClient.Me.GetTopicsAsync(_request);
+        var data = await HistoryClient.User.GetTopicsAsync(_request);
 
         _loading = false;
 

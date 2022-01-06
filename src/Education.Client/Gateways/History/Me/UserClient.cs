@@ -5,11 +5,11 @@ using Education.Client.Gateways.Models.Statistics;
 
 namespace Education.Client.Gateways.History.Me;
 
-internal sealed class MeClient : GatewayClient
+internal sealed class UserClient : GatewayClient
 {
     private readonly HttpClient _client;
 
-    public MeClient(HttpClient client) =>
+    public UserClient(HttpClient client) =>
         _client = client;
 
     public Task<ApiResponse<HistoryUserProfile>> GetOverviewAsync() =>

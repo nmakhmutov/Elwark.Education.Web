@@ -72,7 +72,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await HistoryClient.Me.GetEventGuesserStatisticsAsync();
+        _response = await HistoryClient.User.GetEventGuesserStatisticsAsync();
     }
 
     private ProgressList.Item[] GetTest(EventGuesserProgress progress) =>

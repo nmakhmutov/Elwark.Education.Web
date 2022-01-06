@@ -13,7 +13,7 @@ internal interface IHistoryClient
         
     public HomeClient Home { get; }
 
-    public MeClient Me { get; }
+    public UserClient User { get; }
 
     public TestClient Test { get; }
 
@@ -26,7 +26,7 @@ internal sealed class HistoryClient : GatewayClient, IHistoryClient
     {
         EventGuesser = new EventGuesserClient(client);
         Home = new HomeClient(client);
-        Me = new MeClient(client);
+        User = new UserClient(client);
         Test = new TestClient(client);
         Topic = new TopicClient(client);
     }
@@ -35,7 +35,7 @@ internal sealed class HistoryClient : GatewayClient, IHistoryClient
         
     public HomeClient Home { get; }
 
-    public MeClient Me { get; }
+    public UserClient User { get; }
 
     public TestClient Test { get; }
 
