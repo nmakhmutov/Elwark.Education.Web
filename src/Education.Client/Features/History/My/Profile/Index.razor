@@ -9,25 +9,14 @@
 @attribute [Authorize]
 
 <PageTitle>@L["Profile"]</PageTitle>
-<MainContainer>
-    <PageHeader Title="@L["Profile"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-    <ApiViewer Response="@_overview">
-        <Loading>
-            <div class="grid">
-                <SkeletonCard Class="subject"/>
-                <SkeletonCard Class="balance"/>
-                <SkeletonCard Class="level"/>
-                <SkeletonCard Class="achievements"/>
-                <SkeletonCard Class="transactions"/>
-                <SkeletonCard Class="daily-reward"/>
-                <SkeletonCard Class="easy-test"/>
-                <SkeletonCard Class="hard-test"/>
-                <SkeletonCard Class="mixed-test"/>
-                <SkeletonCard Class="event-guesser"/>
-                <SkeletonCard Class="activity"/>
-            </div>
-        </Loading>
-        <Success Context="overview">
+
+<ApiViewer Response="@_overview">
+    <Loading>
+        <PageSpinner/>
+    </Loading>
+    <Success Context="overview">
+        <MainContainer>
+            <PageHeader Title="@L["Profile"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
             <div class="grid">
                 <SubjectCard
                     Class="subject"
@@ -39,7 +28,7 @@
                     EventGuesserCreation="@overview.EventGuesser"
                     OnBuyClick="@OnBuyClick"/>
 
-                <WalletCard 
+                <WalletCard
                     Class="balance"
                     Wallet="@overview.Profile.Wallet"/>
 
@@ -108,9 +97,9 @@
                     Title="@L["Statistics"]"
                     Activities="@overview.Statistics.Activities"/>
             </div>
-        </Success>
-    </ApiViewer>
-</MainContainer>
+        </MainContainer>
+    </Success>
+</ApiViewer>
 
 @code {
 

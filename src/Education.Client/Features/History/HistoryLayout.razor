@@ -71,11 +71,25 @@
             </MudNavLink>
         </MudNavMenu>
     </MudDrawer>
-    
+
     <MudMainContent>
         @Body
+        
+        <MudDivider/>
+        
+        <CenteredContainer MaxWidth="ContainerWidth.W1600">
+            <footer class="d-flex justify-space-between align-center my-3 my-sm-6">
+                <img style="width: 40px; height: 40px"
+                     src="https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/60x60_eonbge.png"
+                     alt="elwark logo"/>
+
+                <MudText Typo="Typo.subtitle1">
+                    Elwark @L["Subject:History"]. &copy; @DateTime.Now.Year
+                </MudText>
+            </footer>
+        </CenteredContainer>
     </MudMainContent>
-    
+
     <MudScrollToTop TopOffset="400" Style="z-index:2000;">
         <MudFab Icon="@Icons.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
     </MudScrollToTop>

@@ -6,30 +6,17 @@
 
 @attribute [Authorize]
 
+<PageTitle>@L["Tests"]</PageTitle>
+
 <div class="background">
-    <MainContainer>
-        <PageTitle>@L["Tests"]</PageTitle>
-        <PageHeader Title="@L["Tests"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-        
-        <section class="grid">
-            <ApiViewer Response="@_response">
-                <Loading>
-                    <section>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Height="52px"/>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Height="52px"/>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Height="28px" Class="mb-3"/>
-                        <div class="d-flex justify-end">
-                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="140px" Height="36px"/>
-                        </div>
-                    </section>
-                    <section>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Width="30%" Height="38px"/>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Width="80%"/>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Width="70%"/>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%"/>
-                    </section>
-                </Loading>
-                <Success Context="builder">
+    <ApiViewer Response="@_response">
+        <Loading>
+            <PageSpinner/>
+        </Loading>
+        <Success Context="builder">
+            <MainContainer>
+                <PageHeader Title="@L["Tests"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+                <section class="grid">
                     <section>
                         <EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
 
@@ -98,15 +85,15 @@
                             </section>
                         }
                     </section>
-                    
+
                     <article>
                         <MudText Typo="Typo.h5" Class="mb-3">@builder.Rule.Title</MudText>
                         <SimpleMarkdown Text="@builder.Rule.Content"/>
                     </article>
-                </Success>
-            </ApiViewer>
-        </section>
-    </MainContainer>
+                </section>
+            </MainContainer>
+        </Success>
+    </ApiViewer>
 </div>
 
 @code {
@@ -131,7 +118,7 @@
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() =>
+    protected override async Task OnInitializedAsync() => 
         _response = await Client.Test.GetTestBuilderAsync();
 
     private async Task OnValidSubmit()

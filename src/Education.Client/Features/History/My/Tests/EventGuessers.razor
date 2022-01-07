@@ -9,17 +9,14 @@
 @attribute [Authorize]
 
 <PageTitle>@L["EventGuesser"]</PageTitle>
-<PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-<MainContainer>
-    <ApiViewer Response="@_response">
-        <Loading>
-            <StatisticsDetailsGrid>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-            </StatisticsDetailsGrid>
-        </Loading>
-        <Success Context="result">
+
+<ApiViewer Response="@_response">
+    <Loading>
+        <PageSpinner/>
+    </Loading>
+    <Success Context="result">
+        <MainContainer>
+            <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
             <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
                 <StatisticsCard Icon="@EducationIcons.Tests" Title="@L["Tests"]" Value="@result.Tests">
                     <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
@@ -50,9 +47,9 @@
                     </TwoColumnGrid>
                 </StatisticsCard>
             </StatisticsDetailsGrid>
-        </Success>
-    </ApiViewer>
-</MainContainer>
+        </MainContainer>
+    </Success>
+</ApiViewer>
 
 @code {
 

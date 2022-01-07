@@ -7,30 +7,17 @@
 
 @attribute [Authorize]
 
-<MainContainer>
-    <ApiViewer Response="_topics">
-        <Loading>
-            <div class="mb-3 mb-sm-6">
-                <MudSkeleton SkeletonType="SkeletonType.Text" Width="200px" Height="50px"/>
-                <MudSkeleton SkeletonType="SkeletonType.Text" Width="120px" Height="20px"/>
-            </div>
-            <DefaultFitGrid>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-            </DefaultFitGrid>
-        </Loading>
-        <Success Context="topics">
+<ApiViewer Response="_topics">
+    <Loading>
+        <PageSpinner/>
+    </Loading>
+    <Success Context="topics">
+        <MainContainer>
             <PageTitle>
                 @L[$"History:{_request.Epoch}"]
             </PageTitle>
             <PageHeader Title="@L[$"History:{_request.Epoch}"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-            <DefaultFitGrid>
+            <DefaultFillGrid>
                 @foreach (var item in topics.Items)
                 {
                     <TopicAndUserProgressCard
@@ -44,23 +31,23 @@
                         Epoch="@item.Epoch"
                         OnFavoriteClick="@OnFavoriteClick"/>
                 }
-            </DefaultFitGrid>
+            </DefaultFillGrid>
             <div class="d-flex justify-center mt-6 mt-sm-12">
                 <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_topics.Data.Pages)"/>
             </div>
-        </Success>
-    </ApiViewer>
-</MainContainer>
+        </MainContainer>
+    </Success>
+</ApiViewer>
 
 @code {
     private GetTopicsRequest _request = new(EpochType.Prehistory, 1, 20);
     private ApiResponse<PageResponse<UserTopicSummary>> _topics = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
-    
+
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
     };
-    
+
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 

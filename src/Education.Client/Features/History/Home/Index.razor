@@ -10,14 +10,7 @@
 
 <ApiViewer Response="@_response">
     <Loading>
-        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
-        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
-        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
-        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
-        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
-        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
-        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
-        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+        <PageSpinner/>
     </Loading>
     <Success Context="result">
         <PageTitle>
@@ -71,7 +64,7 @@
             <SpotlightGrid Gap="true" Topics="@result.Recent"/>
         </CenteredContainer>
 
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
+        <CenteredContainer MaxWidth="@ContainerWidth.W960" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
             <RandomTopic Class="my-6 my-sm-12"/>
         </CenteredContainer>
     </Success>

@@ -6,19 +6,12 @@
 
 @attribute [Authorize]
 
-<MainContainer>
-    <ApiViewer Response="@_customer">
-        <Loading>
-            <div class="wrapper">
-                <div class="account">
-                    <SkeletonCard/>
-                </div>
-                <div class="subjects">
-                    <SkeletonCard/>
-                </div>
-            </div>
-        </Loading>
-        <Success Context="customer">
+<ApiViewer Response="@_customer">
+    <Loading>
+        <PageSpinner/>
+    </Loading>
+    <Success Context="customer">
+        <MainContainer>
             <PageTitle>@customer.Name</PageTitle>
             <div class="wrapper">
                 <div class="account">
@@ -80,9 +73,9 @@
                     </MudTable>
                 </div>
             </div>
-        </Success>
-    </ApiViewer>
-</MainContainer>
+        </MainContainer>
+    </Success>
+</ApiViewer>
 
 @code {
     private ApiResponse<Customer> _customer = ApiResponse<Customer>.Loading();
@@ -96,7 +89,7 @@
     [Inject]
     private IDialogService Dialog { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() => 
+    protected override async Task OnInitializedAsync() =>
         _customer = await CustomerClient.GetAsync();
 
     private void OnBuyClick(SubjectType type)

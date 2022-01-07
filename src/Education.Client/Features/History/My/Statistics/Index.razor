@@ -8,14 +8,14 @@
 @attribute [Authorize]
 
 <PageTitle>@L["Statistics"]</PageTitle>
-<MainContainer>
-    <PageHeader Title="@L["Statistics"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-    <ApiViewer Response="@_response">
-        <Loading>
-            <SkeletonCard Class="mb-3 mb-sm-6"/>
-            <SkeletonCard/>
-        </Loading>
-        <Success Context="activity">
+
+<ApiViewer Response="@_response">
+    <Loading>
+        <PageSpinner/>
+    </Loading>
+    <Success Context="activity">
+        <MainContainer>
+            <PageHeader Title="@L["Statistics"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
             <div class="grid">
                 <TestCard
                     Class="easy-test"
@@ -64,9 +64,10 @@
                         DateFormat="MMM yyyy"/>
                 }
             </div>
-        </Success>
-    </ApiViewer>
-</MainContainer>
+        </MainContainer>
+    </Success>
+</ApiViewer>
+
 
 @code {
 

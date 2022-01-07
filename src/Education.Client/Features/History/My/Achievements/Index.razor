@@ -8,32 +8,19 @@
 @attribute [Authorize]
 
 <PageTitle>@L["Achievements"]</PageTitle>
-<MainContainer>
-    <PageHeader Title="@L["Achievements"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-    <ApiViewer Response="@_response">
-        <Loading>
-            <MudSkeleton SkeletonType="SkeletonType.Text" Width="200px" Height="30px" Class="mb-3 mb-sm-6"/>
-            <div class="grid mb-6 mb-sm-12">
-                @for (var i = 0; i < 4; i++)
-                {
-                    <div class="d-flex flex-row">
-                        <div style="width: 105px; height: 95px">
-                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="100%"/>
-                        </div>
-                        <div class="pa-3 w-100">
-                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="65%" Class="mb-6"/>
-                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="85%"/>
-                        </div>
-                    </div>
-                }
-            </div>
-        </Loading>
 
-        <Success Context="statistics">
+<ApiViewer Response="@_response">
+    <Loading>
+        <PageSpinner/>
+    </Loading>
+
+    <Success Context="statistics">
+        <MainContainer>
+            <PageHeader Title="@L["Achievements"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
             @foreach (var statistic in statistics)
             {
                 <MudText Typo="Typo.h5" Class="mb-3">
-                    @L[$"AchievementCategory:{statistic.Category}"] 
+                    @L[$"AchievementCategory:{statistic.Category}"]
                     <MudText Typo="Typo.subtitle1" Inline="true">
                         @statistic.Completed/@statistic.Total
                     </MudText>
@@ -45,9 +32,10 @@
                     }
                 </div>
             }
-        </Success>
-    </ApiViewer>
-</MainContainer>
+        </MainContainer>
+    </Success>
+</ApiViewer>
+
 
 @code {
 
@@ -66,6 +54,6 @@
     private IHistoryClient HistoryClient { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync() =>
-    _response = await HistoryClient.User.GetAchievementsAsync();
+        _response = await HistoryClient.User.GetAchievementsAsync();
 
 }

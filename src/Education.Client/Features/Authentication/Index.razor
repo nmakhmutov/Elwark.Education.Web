@@ -1,6 +1,16 @@
 ﻿@page "/authentication/{action}"
 
-<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnSuccessCallback"/>
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnSuccessCallback">
+    <LoggingIn>
+        <PageSpinner/>
+    </LoggingIn>
+    <CompletingLoggingIn>
+        <PageSpinner/>
+    </CompletingLoggingIn>
+    <LogOut>
+        <PageSpinner/>
+    </LogOut>
+</RemoteAuthenticatorView>
 
 @code{
     

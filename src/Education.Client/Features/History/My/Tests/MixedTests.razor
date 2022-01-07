@@ -9,18 +9,14 @@
 @attribute [Authorize]
 
 <PageTitle>@L["Tests:Mixed"]</PageTitle>
-<MainContainer>
-    <PageHeader Title="@L["Tests:Mixed"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-    <ApiViewer Response="@_response">
-        <Loading>
-            <StatisticsDetailsGrid>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-                <SkeletonCard/>
-            </StatisticsDetailsGrid>
-        </Loading>
-        <Success Context="result">
+
+<ApiViewer Response="@_response">
+    <Loading>
+        <PageSpinner/>
+    </Loading>
+    <Success Context="result">
+        <MainContainer>
+            <PageHeader Title="@L["Tests:Mixed"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
             <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
                 <StatisticsCard Icon="@EducationIcons.Tests" Title="@L["Tests"]" Value="@result.NumberOfTests.Total">
                     <TwoColumnGrid>
@@ -71,9 +67,9 @@
                     </TwoColumnGrid>
                 </StatisticsCard>
             </StatisticsDetailsGrid>
-        </Success>
-    </ApiViewer>
-</MainContainer>
+        </MainContainer>
+    </Success>
+</ApiViewer>
 
 @code {
 
