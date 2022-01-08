@@ -1,42 +1,37 @@
 @typeparam TValue
 
-<MudCard Class="@Class" Elevation="0">
-    <MudCardHeader Class="pb-0 px-3 pt-3 px-sm-6 pt-sm-6">
-        <CardHeaderAvatar>
-            <MudAvatar Color="Color.Primary" Size="Size.Medium">
-                <MudIcon Icon="@Icon" Size="Size.Medium"/>
-            </MudAvatar>
-        </CardHeaderAvatar>
+<MudCard Class="@($"{Class} d-flex flex-column")" Elevation="0">
+    <MudCardHeader Class="pa-3 pa-sm-6">
         <CardHeaderContent>
             <div class="d-flex align-center justify-space-between">
-                @if (Href is not null)
-                {
-                    <MudLink Typo="Typo.h6" Href="@Href">
-                        @Title
-                    </MudLink>
-                }
-                else
-                {
-                    <MudText Typo="Typo.h6">
-                        @Title
-                    </MudText>
-                }
+                <MudText Typo="Typo.h6">
+                    @Title
+                </MudText>
                 <HumanReadableText Value="@Value" Typo="Typo.h5"/>
             </div>
         </CardHeaderContent>
     </MudCardHeader>
-    <MudCardContent Class="pa-3 pa-sm-6">
+    <MudCardContent Class="flex-grow-1 pa-0 px-3 px-sm-6 mb-3 mb-sm-6">
         @ChildContent
     </MudCardContent>
+    @if (Href is not null)
+    {
+        <MudDivider/>
+        <MudCardActions Class="d-flex justify-center pa-3">
+            <MudLink Typo="Typo.subtitle1" Href="@Href">
+                @L["Details"]
+            </MudLink>
+        </MudCardActions>
+    }
 </MudCard>
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
     [Parameter]
     public string? Class { get; set; }
-
-    [Parameter, EditorRequired]
-    public string Icon { get; set; } = Icons.Filled.Circle;
 
     [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;

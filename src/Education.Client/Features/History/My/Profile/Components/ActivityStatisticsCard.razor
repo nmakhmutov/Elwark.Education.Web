@@ -5,16 +5,16 @@
 @implements IDisposable
 
 <MudCard Class="@Class" Elevation="0">
-    <MudCardHeader Class="pb-0 px-3 pt-3 px-sm-6 pt-sm-6">
-        <CardHeaderAvatar>
-            <MudAvatar Color="Color.Primary" Size="Size.Medium">
-                <MudIcon Icon="@EducationIcons.MyActivity" Size="Size.Medium"/>
-            </MudAvatar>
-        </CardHeaderAvatar>
+    <MudCardHeader Class="pa-3 pa-sm-6">
         <CardHeaderContent>
-            <MudLink Typo="Typo.h6" Href="@Links.History.MyStatistics">
-                @Title
-            </MudLink>
+            <div class="d-flex align-center justify-space-between">
+                <MudText Typo="Typo.h6">
+                    @Title
+                </MudText>
+                <MudLink Typo="Typo.subtitle1" Href="@Links.History.MyStatistics">
+                    @L["Details"]
+                </MudLink>
+            </div>
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent Class="pa-3 pa-sm-6">

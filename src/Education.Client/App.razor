@@ -1,8 +1,8 @@
 @using Education.Client.Features
 
-<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly">
-        <Found Context="routeData">
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <CascadingAuthenticationState>
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <Authorizing>
                     <PageSpinner/>
@@ -18,14 +18,15 @@
                     }
                 </NotAuthorized>
             </AuthorizeRouteView>
-        </Found>
-        <NotFound>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <ErrorContainer Error="@(Error.Create(L["Error:NotFound"], string.Empty, 404))"/>
-            </LayoutView>
-        </NotFound>
-    </Router>
-</CascadingAuthenticationState>
+        </CascadingAuthenticationState>
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <ErrorContainer Error="@(Error.Create(L["Error:NotFound"], string.Empty, 404))"/>
+        </LayoutView>
+    </NotFound>
+</Router>
+
 
 @code
 {
