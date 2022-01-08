@@ -11,7 +11,7 @@
     <CenteredContainer MaxWidth="ContainerWidth.W1280" Class="pa-0">
         <ApiViewer Response="@_response">
             <Loading>
-                <MudPaper Class="d-md-flex justify-space-between align-center pa-3 pa-sm-6 mb-3 mb-sm-6">
+                <MudPaper Class="d-md-flex justify-space-between align-center pa-3 pa-sm-6 mb-3 mb-sm-6" Elevation="0">
                     <div class="d-flex flex-column flex-sm-row justify-center align-center mb-3 mb-sm-6 mb-md-0">
                         <div class="avatar">
                             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="120px" Height="120px"/>
@@ -49,7 +49,7 @@
             <Success Context="result">
                 <PageTitle>@result.Topic.Title</PageTitle>
 
-                <MudPaper Class="d-md-flex justify-space-between align-center pa-3 pa-sm-6 mb-3 mb-sm-6">
+                <MudPaper Class="d-md-flex justify-space-between align-center pa-3 pa-sm-6 mb-3 mb-sm-6" Elevation="0">
                     <div class="d-flex flex-column flex-sm-row justify-center align-center mb-3 mb-sm-6 mb-md-0">
                         <div class="avatar">
                             <img src="@result.Topic.Image" alt="@result.Topic.Title"/>
@@ -127,7 +127,7 @@
 
                 @if (result.EasyTest.Conclusions.Length > 0)
                 {
-                    <MudExpansionPanels>
+                    <MudExpansionPanels Elevation="0">
                         @foreach (var conclusion in result.EasyTest.Conclusions)
                         {
                             <MudExpansionPanel>
@@ -168,7 +168,7 @@
 
                 @if (result.HardTest.Conclusions.Length > 0)
                 {
-                    <MudExpansionPanels>
+                    <MudExpansionPanels Elevation="0">
                         @foreach (var conclusion in result.HardTest.Conclusions)
                         {
                             <MudExpansionPanel>

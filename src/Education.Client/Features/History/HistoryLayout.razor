@@ -1,12 +1,12 @@
 @using Education.Client.Gateways.History
 @inherits LayoutComponentBase
 
-<MudThemeProvider Theme="@ThemeProvider.Theme"/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
-
 <MudLayout>
-    <MudAppBar Elevation="25">
+    <MudThemeProvider Theme="@ThemeProvider.Theme"/>
+    <MudDialogProvider/>
+    <MudSnackbarProvider/>
+
+    <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@SidebarService.ToggleAsync"/>
         <MudLink Href="@Links.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None" Class="d-none d-sm-block">
             @L["Subject:History"] <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
@@ -38,7 +38,7 @@
         <MudIconButton Icon="@ThemeProvider.Icon" Color="Color.Inherit" OnClick="@ThemeProvider.ToggleAsync"/>
     </MudAppBar>
 
-    <MudDrawer Open="@SidebarService.IsOpen" OpenChanged="@SidebarService.SetAsync" Breakpoint="Breakpoint.Lg" ClipMode="DrawerClipMode.Docked" Elevation="1">
+    <MudDrawer Open="@SidebarService.IsOpen" OpenChanged="@SidebarService.SetAsync" Breakpoint="Breakpoint.Lg" ClipMode="DrawerClipMode.Docked" Elevation="0">
         <UserDrawerHeader/>
         <MudNavMenu>
             <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Index" Icon="@EducationIcons.History">
@@ -72,22 +72,25 @@
         </MudNavMenu>
     </MudDrawer>
 
-    <MudMainContent>
-        @Body
-        
-        <MudDivider/>
-        
-        <CenteredContainer MaxWidth="ContainerWidth.W1600">
-            <footer class="d-flex justify-space-between align-center my-3 my-sm-6">
-                <img style="width: 40px; height: 40px"
-                     src="https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/60x60_eonbge.png"
-                     alt="elwark logo"/>
+    <MudMainContent Class="d-flex flex-column h-100">
+        <main style="flex: 1 1 auto">
+            @Body
+        </main>
 
-                <MudText Typo="Typo.subtitle1">
-                    Elwark @L["Subject:History"]. &copy; @DateTime.Now.Year
-                </MudText>
-            </footer>
-        </CenteredContainer>
+        <footer >
+            <MudDivider/>
+            <CenteredContainer MaxWidth="ContainerWidth.W1600">
+                <div class="d-flex justify-space-between align-center my-3 my-sm-6">
+                    <img style="width: 40px; height: 40px"
+                         src="https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/60x60_eonbge.png"
+                         alt="elwark logo"/>
+
+                    <MudText Typo="Typo.subtitle1">
+                        Elwark @L["Subject:History"]. &copy; @DateTime.Now.Year
+                    </MudText>
+                </div>
+            </CenteredContainer>
+        </footer>
     </MudMainContent>
 
     <MudScrollToTop TopOffset="400" Style="z-index:2000;">

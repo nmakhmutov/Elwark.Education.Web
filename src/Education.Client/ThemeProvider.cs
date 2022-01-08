@@ -19,16 +19,16 @@ public sealed class ThemeProvider
     {
         Palette = new Palette
         {
-            Primary = "#5569ff",
-            Secondary = "#584bb0",
-            Tertiary = "#8560c7",
-            Info = "#33c2ff",
-            Success = "#44d600",
-            Warning = "#ffa319",
-            Error = "#ff1943",
-            Black = "#272c34",
-            Background = "#f6f8fb",
-            BackgroundGrey = "#e3e5e7",
+            Primary = "#5569FF",
+            Secondary = "#584BB0",
+            Tertiary = "#8560C7",
+            Info = "#33C2FF",
+            Success = "#44D600",
+            Warning = "#FFA319",
+            Error = "#FF1943",
+            Black = "#272C34",
+            Background = "#F6F6F6",
+            BackgroundGrey = "#E3E5E7",
             AppbarBackground = Colors.Shades.White, //"#3949ab"
             AppbarText = Colors.Grey.Darken3, //"#27272f"
             Divider = "rgba(34, 51, 84, 0.1)",

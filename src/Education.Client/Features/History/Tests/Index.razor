@@ -8,93 +8,94 @@
 
 <PageTitle>@L["Tests"]</PageTitle>
 
-<div class="background">
-    <ApiViewer Response="@_response">
-        <Loading>
+<ApiViewer Response="@_response">
+    <Loading>
+        <div class="background d-flex justify-center align-center">
             <PageSpinner/>
-        </Loading>
-        <Success Context="builder">
-            <MainContainer>
-                <PageHeader Title="@L["Tests"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-                <section class="grid">
-                    <section>
-                        <EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
+        </div>
+    </Loading>
+    <Success Context="builder">
+        <div class="background pa-3 pa-sm-6">
+            <PageHeader Title="@L["Tests"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+            <section class="grid">
+                <section>
+                    <EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
 
-                            <MudSelect Label="@L["History:Epoch"]" @bind-Value="@_model.Epoch" Class="mb-3">
-                                <MudSelectItem Value="@EpochType.None">@L["All"]</MudSelectItem>
-                                @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
-                                {
-                                    <MudSelectItem Value="@period">
-                                        @L[$"History:{period}"]
-                                    </MudSelectItem>
-                                }
-                            </MudSelect>
+                        <MudSelect Label="@L["History:Epoch"]" @bind-Value="@_model.Epoch" Class="mb-3">
+                            <MudSelectItem Value="@EpochType.None">@L["All"]</MudSelectItem>
+                            @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
+                            {
+                                <MudSelectItem Value="@period">
+                                    @L[$"History:{period}"]
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
 
-                            <MudSelect Label="@L["Test:Difficulty"]" @bind-Value="@_model.Difficulty" Class="mb-3">
-                                @foreach (var difficulty in Enum.GetValues<TestType>())
-                                {
-                                    <MudSelectItem Value="@difficulty">
-                                        @L[$"Test:{difficulty}"]
-                                    </MudSelectItem>
-                                }
-                            </MudSelect>
+                        <MudSelect Label="@L["Test:Difficulty"]" @bind-Value="@_model.Difficulty" Class="mb-3">
+                            @foreach (var difficulty in Enum.GetValues<TestType>())
+                            {
+                                <MudSelectItem Value="@difficulty">
+                                    @L[$"Test:{difficulty}"]
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
 
-                            <div class="d-flex justify-space-between mb-3">
-                                <MudText Typo="Typo.subtitle1">
-                                    @L["Subscription:TestCreation"]
-                                </MudText>
-                                <RestrictionQuantityView Restriction="@builder.Restriction.TestCreation.Restriction" Class="mr-2"/>
-                            </div>
-
-                            <TestPermissionWrapper
-                                Class="mb-3 mb-sm-6"
-                                Subject="@SubjectType.History"
-                                Status="@builder.Restriction.TestCreation.Status"
-                                Typo="Typo.subtitle1">
-                                <div class="d-flex justify-end">
-                                    <LoadingButton
-                                        Class="ml-auto"
-                                        ButtonType="ButtonType.Submit"
-                                        Text="@L["Test:Create"]"
-                                        LoadingText="@L["Test:Creating"]"
-                                        IsLoading="@_isLoading"/>
-                                </div>
-                            </TestPermissionWrapper>
-                        </EditForm>
-
-                        @if (builder.CurrentTests.Length > 0)
-                        {
-                            <MudText Typo="Typo.h5" Class="mb-1">
-                                @L["CurrentTests"]
+                        <div class="d-flex justify-space-between mb-3">
+                            <MudText Typo="Typo.subtitle1">
+                                @L["Subscription:TestCreation"]
                             </MudText>
-                            <section class="d-flex flex-wrap flex-row mb-3 mb-sm-6">
-                                @foreach (var test in builder.CurrentTests)
-                                {
-                                    <div class="mr-3 mr-sm-6">
-                                        <MudLink Typo="Typo.subtitle1" Href="@Links.History.TestById(test.Id)">
-                                            @L[$"Test:{test.Type}"]
-                                        </MudLink>
-                                        <div class="d-flex flex-row align-center">
-                                            <MudIcon Icon="@Icons.Filled.Timer" Size="Size.Small" Class="mr-1"/>
-                                            <MudText Typo="Typo.body2">
-                                                @test.ExpiredAt.ToSimpleFormat()
-                                            </MudText>
-                                        </div>
-                                    </div>
-                                }
-                            </section>
-                        }
-                    </section>
+                            <RestrictionQuantityView Restriction="@builder.Restriction.TestCreation.Restriction" Class="mr-2"/>
+                        </div>
 
-                    <article>
-                        <MudText Typo="Typo.h5" Class="mb-3">@builder.Rule.Title</MudText>
-                        <SimpleMarkdown Text="@builder.Rule.Content"/>
-                    </article>
+                        <TestPermissionWrapper
+                            Class="mb-3 mb-sm-6"
+                            Subject="@SubjectType.History"
+                            Status="@builder.Restriction.TestCreation.Status"
+                            Typo="Typo.subtitle1">
+                            <div class="d-flex justify-end">
+                                <LoadingButton
+                                    Class="ml-auto"
+                                    ButtonType="ButtonType.Submit"
+                                    Text="@L["Test:Create"]"
+                                    LoadingText="@L["Test:Creating"]"
+                                    IsLoading="@_isLoading"/>
+                            </div>
+                        </TestPermissionWrapper>
+                    </EditForm>
+
+                    @if (builder.CurrentTests.Length > 0)
+                    {
+                        <MudText Typo="Typo.h5" Class="mb-1">
+                            @L["CurrentTests"]
+                        </MudText>
+                        <section class="d-flex flex-wrap flex-row mb-3 mb-sm-6">
+                            @foreach (var test in builder.CurrentTests)
+                            {
+                                <div class="mr-3 mr-sm-6">
+                                    <MudLink Typo="Typo.subtitle1" Href="@Links.History.TestById(test.Id)">
+                                        @L[$"Test:{test.Type}"]
+                                    </MudLink>
+                                    <div class="d-flex flex-row align-center">
+                                        <MudIcon Icon="@Icons.Filled.Timer" Size="Size.Small" Class="mr-1"/>
+                                        <MudText Typo="Typo.body2">
+                                            @test.ExpiredAt.ToSimpleFormat()
+                                        </MudText>
+                                    </div>
+                                </div>
+                            }
+                        </section>
+                    }
                 </section>
-            </MainContainer>
-        </Success>
-    </ApiViewer>
-</div>
+
+                <article>
+                    <MudText Typo="Typo.h5" Class="mb-3">@builder.Rule.Title</MudText>
+                    <SimpleMarkdown Text="@builder.Rule.Content"/>
+                </article>
+            </section>
+        </div>
+    </Success>
+</ApiViewer>
+
 
 @code {
     private bool _isLoading;
@@ -118,7 +119,7 @@
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() => 
+    protected override async Task OnInitializedAsync() =>
         _response = await Client.Test.GetTestBuilderAsync();
 
     private async Task OnValidSubmit()

@@ -119,10 +119,8 @@
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() => 
         _overview = await HistoryClient.User.GetOverviewAsync();
-    }
 
     private void OnBuyClick()
     {

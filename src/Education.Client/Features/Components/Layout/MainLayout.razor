@@ -7,7 +7,7 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <MudAppBar Elevation="25">
+    <MudAppBar Elevation="0">
         <MudLink Href="@Links.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
             Education <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
         </MudLink>
@@ -22,8 +22,10 @@
         </AuthorizeView>
     </MudAppBar>
 
-    <MudMainContent>
-        @Body
+    <MudMainContent Class="d-flex flex-column h-100">
+        <main style="flex: 1 1 auto">
+            @Body
+        </main>
     </MudMainContent>
 </MudLayout>
 
@@ -37,7 +39,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     private void OnLogin() =>
         Navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(Navigation.Uri)));
 

@@ -4,7 +4,7 @@
 
 @implements IDisposable
 
-<MudCard Class="@Class">
+<MudCard Class="@Class" Elevation="0">
     <MudCardHeader Class="pb-0 px-3 pt-3 px-sm-6 pt-sm-6">
         <CardHeaderContent>
             <MudText Typo="Typo.h6">
@@ -96,11 +96,12 @@
             },
             Chart = new Chart
             {
-                Background = "transparent"
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
             },
             Grid = new Grid
             {
-                BorderColor = ThemeProvider.Theme.Palette.Divider.Value
+                BorderColor = "var(--mud-palette-divider)"
             },
             Theme = new Theme
             {
@@ -119,7 +120,6 @@
             return;
 
         _options.Theme.Mode = ThemeProvider.Type == ThemeProvider.ThemeType.Light ? Mode.Light : Mode.Dark;
-        _options.Grid.BorderColor = ThemeProvider.Theme.Palette.Divider.Value;
         _chart.SetRerenderChart();
         StateHasChanged();
     }

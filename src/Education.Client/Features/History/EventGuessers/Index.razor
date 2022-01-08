@@ -15,7 +15,7 @@
     <MainContainer>
         <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
     </MainContainer>
-    <CenteredContainer MaxWidth="ContainerWidth.W1280" Class="mb-3 mb-sm-6" Paper="true" Elevation="1">
+    <CenteredContainer MaxWidth="ContainerWidth.W1280" Class="mb-3 mb-sm-6" Paper="true">
         <EventGuesserConclusion Class="ma-3 ma-sm-6" Conclusion="@_conclusion.Data" OnCreateNew="@OnCreateNewClick"/>
     </CenteredContainer>
 }
@@ -24,7 +24,7 @@ else if (_eventGuesser.Status == ResponseStatus.Success)
     <MainContainer>
         <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
     </MainContainer>
-    <CenteredContainer MaxWidth="ContainerWidth.W960" Class="mb-3 mb-sm-6" Paper="true" Elevation="1">
+    <CenteredContainer MaxWidth="ContainerWidth.W960" Class="mb-3 mb-sm-6">
         <EventGuesserTest Class="ma-3 ma-sm-6" Test="@_eventGuesser.Data" OnCheck="@OnCheckAsync"/>
     </CenteredContainer>
 }
