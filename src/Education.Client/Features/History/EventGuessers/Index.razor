@@ -1,9 +1,9 @@
 @page "/history/event-guessers"
 @layout HistoryLayout
 
-@using Education.Client.Gateways.History
 @using Education.Client.Gateways.History.EventGuesser.Models
 @using Education.Client.Gateways.History.EventGuesser.Requests
+@using Education.Client.Gateways.History
 @using Education.Client.Features.History.EventGuessers.Components
 
 <PageTitle>
@@ -58,10 +58,7 @@ else
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
-        _builder = await Client.EventGuesser.GetBuilderAsync();
-    }
+    protected override async Task OnInitializedAsync() => _builder = await Client.EventGuesser.GetBuilderAsync();
 
     private async Task OnCreateAsync(CreateRequest request)
     {

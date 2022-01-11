@@ -20,4 +20,4 @@ public sealed record QuestionModel(
 )
 {
     public bool IsCorrect => CorrectAnswer == UserAnswer;
-};
+}

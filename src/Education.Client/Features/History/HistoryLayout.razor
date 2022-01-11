@@ -1,11 +1,11 @@
 @using Education.Client.Gateways.History
 @inherits LayoutComponentBase
 
-<MudLayout>
-    <MudThemeProvider Theme="@ThemeProvider.Theme"/>
-    <MudDialogProvider/>
-    <MudSnackbarProvider/>
+<MudThemeProvider Theme="@ThemeProvider.Theme"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
+<MudLayout>
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@SidebarService.ToggleAsync"/>
         <MudLink Href="@Links.History.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None" Class="d-none d-sm-block">
@@ -66,8 +66,8 @@
             <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.MyProfile" Icon="@EducationIcons.MyProfile">
                 @L["Profile"]
             </MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.MyTopics" Icon="@EducationIcons.MyTopics">
-                @L["Test:MyActivity"]
+            <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.MyFavorites" Icon="@EducationIcons.MyTopics">
+                @L["Favorites"]
             </MudNavLink>
         </MudNavMenu>
     </MudDrawer>

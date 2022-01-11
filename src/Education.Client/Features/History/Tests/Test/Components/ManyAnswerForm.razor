@@ -1,5 +1,4 @@
 @using FluentValidation
-
 <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator/>
 
@@ -122,15 +121,15 @@
         _result = await OnAnswer(new ManyAnswer(_model.Numbers));
         _isLoading = false;
     }
-    
+
     private void OnChecked(bool isAdded, int number)
     {
         if (isAdded)
             _model.Numbers.Add(number);
-        else 
+        else
             _model.Numbers.Remove(number);
     }
-    
+
     private (string? Icon, Color Color) Get(AnswerOption option) =>
         _result switch {
         { } x when x.Numbers.Contains(option.Number) => 
@@ -148,12 +147,9 @@
 
         public class Validator : AbstractValidator<Model>
         {
-            public Validator(IStringLocalizer<App> localizer)
-            {
-                RuleFor(x => x.Numbers)
-                    .NotEmpty()
-                    .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
-            }
+            public Validator(IStringLocalizer<App> localizer) => RuleFor(x => x.Numbers)
+                .NotEmpty()
+                .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
         }
     }
 

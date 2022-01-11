@@ -11,7 +11,7 @@ internal abstract record TopicDetail(
     string[] Tags,
     Chapter[] Chapters
 );
-    
+
 internal sealed record PersonTopicDetail(
     string Id,
     string Title,
@@ -24,7 +24,7 @@ internal sealed record PersonTopicDetail(
     Chapter[] Chapters,
     Characteristic[] Characteristics
 ) : TopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);
-    
+
 internal sealed record EventTopicDetail(
     string Id,
     string Title,

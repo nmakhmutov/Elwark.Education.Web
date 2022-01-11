@@ -25,7 +25,7 @@
                     }
                 </div>
             </div>
-            <MudProgressLinear Min="0" Max="100" Value="@((double) CurrentQuestion / TotalQuestions * 100)" Color="Color.Primary"/>
+            <MudProgressLinear Min="0" Max="100" Value="@((double)CurrentQuestion / TotalQuestions * 100)" Color="Color.Primary"/>
         </div>
         <CountdownTimer Typo="Typo.body1" Date="@ExpiredAt" Color="@CountDownColor" OnComplete="@OnComplete"/>
     </div>
@@ -35,7 +35,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Parameter]
     public TestType Type { get; set; }
 

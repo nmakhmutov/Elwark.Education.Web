@@ -2,8 +2,8 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using Education.Client.Gateways.History.Me;
 using Education.Client.Gateways.History.Topic;
+using Education.Client.Gateways.History.User;
 
 namespace Education.Client.Gateways.Converters;
 
@@ -14,7 +14,7 @@ internal sealed class HistoryAchievementConverter : JsonConverter<Achievement?>
     public override Achievement? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var node = JsonNode.Parse(ref reader);
-        
+
         return node?[Type]?.GetValue<string>() switch
         {
             "completed" => node.Deserialize<CompletedAchievement>(options),

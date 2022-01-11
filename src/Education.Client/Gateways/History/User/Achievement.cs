@@ -1,7 +1,7 @@
 using System;
 using Education.Client.Gateways.Models;
 
-namespace Education.Client.Gateways.History.Me;
+namespace Education.Client.Gateways.History.User;
 
 public abstract record Achievement(string Name, string Title, string Description);
 

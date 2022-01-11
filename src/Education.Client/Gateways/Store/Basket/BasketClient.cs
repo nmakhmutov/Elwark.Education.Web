@@ -16,13 +16,13 @@ internal sealed class BasketClient : GatewayClient
 
     public Task<ApiResponse<Unit>> AddItemAsync(string productId) =>
         ExecuteAsync<Unit>(ct => _client.PutAsync($"store/basket/items/{productId}", EmptyContent, ct));
-        
+
     public Task<ApiResponse<Unit>> RemoveItemAsync(string productId) =>
         ExecuteAsync<Unit>(ct => _client.DeleteAsync($"store/basket/items/{productId}", ct));
-        
+
     public Task<ApiResponse<Unit>> AddPromoCodeAsync(string code) =>
         ExecuteAsync<Unit>(ct => _client.PutAsync($"store/basket/promo-codes/{code}", EmptyContent, ct));
-        
+
     public Task<ApiResponse<Unit>> RemovePromoCodeAsync() =>
         ExecuteAsync<Unit>(ct => _client.DeleteAsync("store/basket/promo-codes", ct));
 }

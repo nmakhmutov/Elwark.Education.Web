@@ -1,7 +1,5 @@
-@using Education.Client.Gateways.History.Me
+@using Education.Client.Gateways.History.User
 @using ApexCharts
-@using Color = MudBlazor.Color
-
 @implements IDisposable
 
 <MudCard Class="@Class" Elevation="0">
@@ -23,7 +21,7 @@
                     SeriesType="SeriesType.Area"
                     XValue="@(e => e.Date.ToString(DateFormat))"
                     YValue="@(x => x.Total)"/>
-                
+
                 <ApexPointSeries
                     TItem="ActivityStatistics.Statistics"
                     Items="Activities"

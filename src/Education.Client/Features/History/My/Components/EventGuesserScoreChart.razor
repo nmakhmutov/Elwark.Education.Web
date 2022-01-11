@@ -9,7 +9,7 @@
             XValue="@(x => x.Name)"
             YAggregate="@(x => x.Sum(e => e.Value))"/>
     </ApexChart>
-    
+
     <ChartList Items="@Items"/>
 </div>
 
@@ -27,7 +27,7 @@
             Colors.DeepPurple.Default
         }
     };
-    
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -56,5 +56,6 @@
         new Data(L["EventGuesser:Bonus"], Bonus)
     };
 
-    private record Data(string Name, decimal Value);
+    private sealed record Data(string Name, decimal Value);
+
 }

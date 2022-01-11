@@ -14,7 +14,7 @@ internal sealed class GameCurrencyConverter : JsonConverter<IGameCurrency?>
     public override IGameCurrency? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var node = JsonNode.Parse(ref reader);
-        
+
         return node?[Type]?.GetValue<string>() switch
         {
             "experience" => node.Deserialize<ExperienceCurrency>(options),

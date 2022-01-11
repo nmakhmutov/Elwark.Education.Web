@@ -1,8 +1,8 @@
 @page "/history/my/event-guessers"
 @layout HistoryLayout
 
+@using Education.Client.Gateways.History.User
 @using Education.Client.Gateways.History
-@using Education.Client.Gateways.History.Me
 @using Education.Client.Features.History.My.Components
 @using Education.Client.Features.History.My.Tests.Components
 
@@ -17,7 +17,7 @@
     <Success Context="result">
         <MainContainer>
             <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-            <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
+            <StatisticsDetailsGrid>
                 <StatisticsCard Title="@L["Tests"]" Value="@result.Tests">
                     <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
                     <ProgressList Items="@GetTest(result.Progress)"/>
@@ -67,10 +67,8 @@
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() => 
         _response = await HistoryClient.User.GetEventGuesserStatisticsAsync();
-    }
 
     private ProgressList.Item[] GetTest(EventGuesserProgress progress) =>
         new ProgressList.Item[]

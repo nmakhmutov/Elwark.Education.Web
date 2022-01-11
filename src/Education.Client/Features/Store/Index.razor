@@ -1,6 +1,8 @@
 @page "/store"
-@using Education.Client.Gateways.Store
+@layout MainLayout
+
 @using Education.Client.Gateways.Store.Catalog
+@using Education.Client.Gateways.Store
 
 @attribute [Authorize]
 
@@ -58,14 +60,11 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Inject]
     public NavigationManager Navigation { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
-        _response = await Client.Catalog.GetSubscriptions();
-    }
+    protected override async Task OnInitializedAsync() => _response = await Client.Catalog.GetSubscriptions();
 
     private async Task OnBuyClick(string id)
     {

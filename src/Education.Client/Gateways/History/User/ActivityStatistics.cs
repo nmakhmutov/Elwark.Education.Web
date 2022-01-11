@@ -1,7 +1,7 @@
 using System;
 using Education.Client.Gateways.Models.Progress;
 
-namespace Education.Client.Gateways.History.Me;
+namespace Education.Client.Gateways.History.User;
 
 public sealed record ActivityStatistics(
     Contrast<ulong> EasyTests,

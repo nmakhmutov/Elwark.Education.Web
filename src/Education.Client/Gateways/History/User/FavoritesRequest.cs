@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Education.Client.Gateways.Models;
 
-namespace Education.Client.Gateways.History.Me;
+namespace Education.Client.Gateways.History.User;
 
-public sealed record TopicsRequest(bool OnlyFavorite, TopicsRequest.SortType Sort, int Page, int Count)
+public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, int Page, int Count)
     : PageRequest(Page, Count)
 {
     public enum SortType
@@ -17,7 +17,6 @@ public sealed record TopicsRequest(bool OnlyFavorite, TopicsRequest.SortType Sor
                 new Dictionary<string, string?>
                 {
                     { nameof(Sort), Sort.ToString() },
-                    { nameof(OnlyFavorite), OnlyFavorite.ToString() },
                     { nameof(Page), Page.ToString() },
                     { nameof(Count), Count.ToString() }
                 }

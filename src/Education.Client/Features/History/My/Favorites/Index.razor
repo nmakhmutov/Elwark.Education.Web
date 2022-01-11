@@ -1,0 +1,139 @@
+@page "/history/my/favorites"
+@using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.User
+@layout HistoryLayout
+
+@attribute [Authorize]
+
+<PageTitle>@L["Favorites"]</PageTitle>
+<MainContainer>
+    <PageHeader Title="@L["Favorites"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+    <div class="d-flex flex-wrap justify-sm-space-between align-center mb-3 mb-sm-6">
+        <div>
+            <MudSelect T="FavoritesRequest.SortType" Value="@_request.Sort" ValueChanged="@Callback" Margin="Margin.Dense">
+                @foreach (var sort in Enum.GetValues<FavoritesRequest.SortType>())
+                {
+                    <MudSelectItem T="FavoritesRequest.SortType" Value="sort">
+                        @L[$"Sort:{sort}"]
+                    </MudSelectItem>
+                }
+            </MudSelect>
+        </div>
+        <div class="ml-3 ml-sm-6" style="align-self: end">
+            <MudCheckBox @bind-Checked="@_dense" Label="@L["CompactView"]" Color="Color.Primary" Dense="true"/>
+        </div>
+    </div>
+    <MudTable
+        ServerData="@ServerReload"
+        Dense="@_dense"
+        Loading="@_loading"
+        Elevation="0"
+        Hover="true"
+        RowsPerPage="@_request.Count"
+        Breakpoint="Breakpoint.Sm"
+        LoadingProgressColor="Color.Primary"
+        @ref="@_table">
+        <HeaderContent>
+            <MudTh/>
+            <MudTh>@L["Topic"]</MudTh>
+            <MudTh>@L["History:Epoch"]</MudTh>
+            <MudTh>@L["NumberOfTests:TotalPassed"]</MudTh>
+            <MudTh>@L["TimeSpent:Total"]</MudTh>
+            <MudTh/>
+            <MudTh/>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd HideSmall="true">
+                <MudAvatar Image="@context.Image"/>
+            </MudTd>
+            <MudTd DataLabel="@L["Title"]">
+                <MudLink Href="@Links.History.TopicById(context.Id)">
+                    @context.Title
+                </MudLink>
+            </MudTd>
+            <MudTd DataLabel="@L["History:Epoch"]">
+                <MudLink Href="@Links.History.TopicByEpoch(context.Epoch)">
+                    @L[$"History:{context.Epoch}"]
+                </MudLink>
+            </MudTd>
+            <MudTd DataLabel="@L["NumberOfTests:TotalPassed"]">
+                @context.Progress.PassedTests.ToReadable()
+            </MudTd>
+            <MudTd DataLabel="@L["TimeSpent:Total"]">
+                @context.Progress.TimeSpent.ToLongFormat()
+            </MudTd>
+            <MudTd>
+                <FavoriteToggleButton
+                    IsFavorite="@context.IsFavorite"
+                    TopicId="@context.Id"
+                    OnFavoriteClick="@OnFavoriteClick"/>
+            </MudTd>
+            <MudTd>
+                <MudTooltip Text="@L["Details"]">
+                    <MudIconButton Link="@Links.History.MyTopic(context.Id)" Icon="@Icons.Material.Outlined.ReadMore"/>
+                </MudTooltip>
+            </MudTd>
+        </RowTemplate>
+        <NoRecordsContent>
+            <EmptyResult
+                Class="grid-full-row"
+                Title="@L["Empty:FavoritesTitle"]"
+                Subtitle="@L["Empty:FavoritesSubtitle"]"/>
+        </NoRecordsContent>
+        <LoadingContent>
+            <MudText>@L["Loading"]</MudText>
+        </LoadingContent>
+        <PagerContent>
+            <MudTablePager RowsPerPageString="@L["RowsPerPage"]"/>
+        </PagerContent>
+    </MudTable>
+
+</MainContainer>
+
+@code {
+    private bool _loading = true;
+    private bool _dense;
+    private MudTable<UserTopicSummary> _table = default!;
+    private FavoritesRequest _request = new(FavoritesRequest.SortType.DateAddedNewest, 1, 25);
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
+        new BreadcrumbItem(L["Profile"].Value, Links.History.MyProfile)
+    };
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    private async Task<TableData<UserTopicSummary>> ServerReload(TableState state)
+    {
+        _loading = true;
+        _request = _request with { Page = state.Page + 1, Count = state.PageSize };
+
+        var data = await HistoryClient.User.GetFavoritesAsync(_request);
+
+        _loading = false;
+
+        return new TableData<UserTopicSummary>
+        {
+            Items = data.Data.Items,
+            TotalItems = (int)data.Data.Count
+        };
+    }
+
+    private async Task<bool> OnFavoriteClick(string topicId)
+    {
+        var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
+        return result.Status == ResponseStatus.Success && result.Data;
+    }
+
+    private async Task Callback(FavoritesRequest.SortType arg)
+    {
+        _request = _request with { Sort = arg };
+        await _table.ReloadServerData();
+    }
+
+}

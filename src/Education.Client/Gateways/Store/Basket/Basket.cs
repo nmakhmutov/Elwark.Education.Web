@@ -14,5 +14,5 @@ public sealed record BasketItem(
     SubscriptionType Subscription,
     SubjectType[] Subjects
 );
-    
+
 public sealed record BasketSummary(Money Items, Money Discount, Money Promo, Money Total);

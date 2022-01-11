@@ -10,7 +10,7 @@ public enum ConclusionStatus
     TimeExceeded = 2,
     MistakesExceeded = 3
 }
-    
+
 internal static class ConclusionStatusExtensions
 {
     public static Color GetColor(this ConclusionStatus status) =>

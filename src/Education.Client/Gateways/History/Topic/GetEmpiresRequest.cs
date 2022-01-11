@@ -3,14 +3,15 @@ using Education.Client.Gateways.Models;
 
 namespace Education.Client.Gateways.History.Topic;
 
-public sealed record GetEmpiresRequest(GetEmpiresRequest.SortType Sort, int Page, int Count) 
+public sealed record GetEmpiresRequest(GetEmpiresRequest.SortType Sort, int Page, int Count)
     : PageRequest(Page, Count)
 {
-    public enum SortType {
+    public enum SortType
+    {
         Area = 0,
         Population = 1
     }
-    
+
     public override string ToQuery() =>
         QueryString.Create(
                 new Dictionary<string, string?>

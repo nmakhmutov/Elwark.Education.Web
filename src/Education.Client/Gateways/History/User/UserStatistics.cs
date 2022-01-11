@@ -1,6 +1,6 @@
 using System;
 
-namespace Education.Client.Gateways.History.Me;
+namespace Education.Client.Gateways.History.User;
 
 public sealed record UserStatistics(
     ScoreOverview EasyTest,

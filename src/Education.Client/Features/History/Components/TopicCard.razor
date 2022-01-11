@@ -1,7 +1,5 @@
-@using Education.Client.Gateways.Models.Content
 @using Education.Client.Gateways.History
-@using Education.Client.Extensions
-
+@using Education.Client.Gateways.Models.Content
 <section class="card">
     <header class="card-header">
         <a href="@Links.History.TopicById(Id)">
@@ -11,7 +9,7 @@
             <RatingStars Rating="@Rating" ShowTooltip="true"/>
         </div>
     </header>
-    
+
     <aside class="d-flex align-center justify-space-between px-3">
         <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.TopicByEpoch(Epoch)">
             @L[$"History:{Epoch}"]

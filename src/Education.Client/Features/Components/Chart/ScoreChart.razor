@@ -1,5 +1,4 @@
 @using ApexCharts
-
 <div class="@Class">
     @if (Value.Total > 0)
     {
@@ -12,7 +11,7 @@
                 YAggregate="@(x => x.Sum(e => e.Value))"/>
         </ApexChart>
     }
-    
+
     <ChartList Items="@Items"/>
 </div>
 
@@ -61,6 +60,6 @@
         new(L["Score:NoMistakesBonus"], Value.NoMistakes)
     };
 
-    private record Data(string Name, decimal Value);
+    private sealed record Data(string Name, decimal Value);
 
 }

@@ -3,7 +3,7 @@
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <CascadingAuthenticationState>
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(BaseLayout)">
                 <Authorizing>
                     <PageSpinner/>
                 </Authorizing>
@@ -21,7 +21,7 @@
         </CascadingAuthenticationState>
     </Found>
     <NotFound>
-        <LayoutView Layout="@typeof(MainLayout)">
+        <LayoutView Layout="@typeof(BaseLayout)">
             <ErrorContainer Error="@(Error.Create(L["Error:NotFound"], string.Empty, 404))"/>
         </LayoutView>
     </NotFound>

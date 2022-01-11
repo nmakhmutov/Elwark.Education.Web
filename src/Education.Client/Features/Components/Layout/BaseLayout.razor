@@ -1,0 +1,16 @@
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="@ThemeProvider.Theme"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    @Body
+</MudLayout>
+
+@code {
+
+    [Inject]
+    private ThemeProvider ThemeProvider { get; set; } = default!;
+
+}

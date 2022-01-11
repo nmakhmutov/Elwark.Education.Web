@@ -1,5 +1,4 @@
 @using FluentValidation
-
 <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator/>
 
@@ -91,12 +90,9 @@
 
         public class Validator : AbstractValidator<Model>
         {
-            public Validator(IStringLocalizer<App> localizer)
-            {
-                RuleFor(x => x.Value)
-                    .NotEmpty()
-                    .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
-            }
+            public Validator(IStringLocalizer<App> localizer) => RuleFor(x => x.Value)
+                .NotEmpty()
+                .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
         }
     }
 

@@ -7,7 +7,7 @@ namespace Education.Client.Gateways.Store;
 internal interface IStoreClient
 {
     CatalogClient Catalog { get; }
-        
+
     BasketClient Basket { get; }
 }
 
@@ -20,6 +20,6 @@ internal sealed class StoreClient : GatewayClient, IStoreClient
     }
 
     public CatalogClient Catalog { get; }
-        
+
     public BasketClient Basket { get; }
 }

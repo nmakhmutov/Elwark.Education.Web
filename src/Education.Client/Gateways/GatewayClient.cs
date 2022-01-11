@@ -36,15 +36,16 @@ internal abstract class GatewayClient
 
     protected static JsonContent CreateJson<T>(T value) =>
         JsonContent.Create(value, null, Serializer);
-    
-    protected static async Task<ApiResponse<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> action)
+
+    protected static async Task<ApiResponse<T>> ExecuteAsync<T>(
+        Func<CancellationToken, Task<HttpResponseMessage>> action)
     {
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
         try
         {
             using var message = await action(cts.Token);
-            
+
             return message.IsSuccessStatusCode
                 ? message.StatusCode == HttpStatusCode.NoContent
                     ? ApiResponse<T>.Success(default!)

@@ -1,6 +1,4 @@
 @using FluentValidation
-@using System.Data
-
 <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator/>
 
@@ -138,12 +136,10 @@
 
         public class Validator : AbstractValidator<Model>
         {
-            public Validator(IStringLocalizer<App> localizer)
-            {
-                RuleFor(x => x.Number)
-                    .NotEmpty()
-                    .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
-            }
+            public Validator(IStringLocalizer<App> localizer) => RuleFor(x => x.Number)
+                .NotEmpty()
+                .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
         }
     }
+
 }

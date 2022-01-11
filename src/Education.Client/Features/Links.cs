@@ -24,7 +24,7 @@ public static class Links
         public const string Index = "/history";
 
         public const string Empires = $"{Index}/empires";
-        
+
         public const string TestBuilder = $"{Index}/tests";
 
         public const string EventGuesserBuilder = $"{Index}/event-guessers";
@@ -41,12 +41,12 @@ public static class Links
 
         public const string MyAchievements = $"{Index}/my/achievements";
 
-        public const string MyStatistics = $"{Index}/my/statistics";
-        
-        public const string MyTopics = $"{Index}/my/topics";
-        
+        public const string MyActivities = $"{Index}/my/activities";
+
+        public const string MyFavorites = $"{Index}/my/favorites";
+
         public static string MyTopic(string topicId) =>
-            $"{MyTopics}/{topicId}";
+            $"{Index}/my/topics/{topicId}";
 
         public static string TopicByEpoch(EpochType epoch) =>
             $"{Index}/{epoch.ToFastString()}";

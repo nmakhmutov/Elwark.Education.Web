@@ -13,7 +13,7 @@ internal sealed class HistoryTopicDetailJsonConverter : JsonConverter<TopicDetai
     public override TopicDetail? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var node = JsonNode.Parse(ref reader);
-        
+
         return node?[Type]?.GetValue<string>() switch
         {
             "Person" => node.Deserialize<PersonTopicDetail>(options),

@@ -13,14 +13,14 @@
 </RemoteAuthenticatorView>
 
 @code{
-    
+
     [Inject]
     private CustomerService CustomerService { get; set; } = default!;
 
     [Parameter]
     public string? Action { get; set; }
 
-    private Task OnSuccessCallback() => 
+    private Task OnSuccessCallback() =>
         CustomerService.CreateAsync();
 
 }

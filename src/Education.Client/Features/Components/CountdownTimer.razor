@@ -1,5 +1,4 @@
 @using System.Timers
-@using Education.Client.Extensions
 @implements IDisposable
 
 <MudText Typo="Typo" Align="Align" Class="@Class" Color="@Color">
@@ -8,6 +7,7 @@
 
 @code {
     private TimeSpan _timeLeft = TimeSpan.FromSeconds(0);
+
     private Timer _timer = new()
     {
         Enabled = true,
@@ -32,25 +32,23 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override void OnInitialized()
-    {
+    protected override void OnInitialized() => 
         _timer.Elapsed += (_, _) =>
-        {
-            _timeLeft = Date - DateTime.UtcNow;
+    {
+        _timeLeft = Date - DateTime.UtcNow;
 
-            StateHasChanged();
+        StateHasChanged();
 
-            if (_timeLeft >= TimeSpan.Zero)
-                return;
-            
-            _timer.Stop();
-            _timer.Dispose();
-            _timeLeft = TimeSpan.Zero;
-            
-            if (OnComplete.HasDelegate)
-                OnComplete.InvokeAsync();
-        };
-    }
+        if (_timeLeft >= TimeSpan.Zero)
+            return;
+
+        _timer.Stop();
+        _timer.Dispose();
+        _timeLeft = TimeSpan.Zero;
+
+        if (OnComplete.HasDelegate)
+            OnComplete.InvokeAsync();
+    };
 
     public void Dispose()
     {

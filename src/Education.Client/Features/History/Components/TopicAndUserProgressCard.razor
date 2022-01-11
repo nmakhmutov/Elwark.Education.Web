@@ -1,7 +1,5 @@
-@using Education.Client.Gateways.Models.Content
 @using Education.Client.Gateways.History
-@using Education.Client.Extensions
-
+@using Education.Client.Gateways.Models.Content
 <section class="card">
     <header class="card-header">
         <a href="@Links.History.TopicById(Id)">
@@ -67,8 +65,5 @@
 
     [Parameter]
     public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
-
-    private async Task OnFavoriteChanged(bool toggled) =>
-        IsFavorite = await OnFavoriteClick.Invoke(Id);
 
 }

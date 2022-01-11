@@ -79,7 +79,7 @@
     [Inject]
     private ThemeProvider ThemeProvider { get; set; } = default!;
 
-    protected override void OnInitialized() => 
+    protected override void OnInitialized() =>
         ThemeProvider.OnChange += StateHasChanged;
 
     private string Overlay =>

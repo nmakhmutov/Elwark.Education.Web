@@ -1,7 +1,7 @@
 using System;
 using Education.Client.Extensions;
 using Education.Client.Features.History.My.Tests.Components;
-using Education.Client.Gateways.History.Me;
+using Education.Client.Gateways.History.User;
 using Education.Client.Gateways.Models.Progress;
 using Microsoft.Extensions.Localization;
 

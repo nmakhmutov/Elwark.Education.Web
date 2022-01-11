@@ -1,7 +1,6 @@
 @using Markdig
-
 <div class="markdown @Class" style="@Style">
-    @((MarkupString) Markdown.ToHtml(Text, _pipeline))
+    @((MarkupString)Markdown.ToHtml(Text, _pipeline))
 </div>
 
 @code {
@@ -11,7 +10,7 @@
 
     [Parameter]
     public string? Style { get; set; }
-    
+
     [Parameter]
     public string Text { get; set; } = string.Empty;
 

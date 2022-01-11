@@ -1,5 +1,4 @@
-@using Education.Client.Gateways.History.Me
-@using Education.Client.Extensions
+@using Education.Client.Gateways.History.User
 
 <section class="grid">
     @switch (Achievement)
@@ -69,7 +68,7 @@
         default:
             throw new ArgumentOutOfRangeException(nameof(Achievement));
     }
-    
+
     <section class="description">
         <MudText Typo="Typo.body2">
             @Achievement.Description
@@ -87,32 +86,30 @@
     [Parameter, EditorRequired]
     public Achievement Achievement { get; set; } = default!;
 
-    protected override void OnInitialized()
-    {
+    protected override void OnInitialized() => 
         (_icon, _background) = Achievement.Name switch {
-            "EasyTest.Successful" => (EducationIcons.Tests, "green default white-text"),
-            "EasyTest.Score" => (EducationIcons.Score, "green default white-text"),
-            "EasyTest.WithoutMistakes" => (Icons.Outlined.AddTask, "green default white-text"),
-            "EasyTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "green default white-text"),
+        "EasyTest.Successful" => (EducationIcons.Tests, "green default white-text"),
+        "EasyTest.Score" => (EducationIcons.Score, "green default white-text"),
+        "EasyTest.WithoutMistakes" => (Icons.Outlined.AddTask, "green default white-text"),
+        "EasyTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "green default white-text"),
             
-            "HardTest.Successful" => (EducationIcons.Tests, "indigo default white-text"),
-            "HardTest.Score" => (EducationIcons.Score, "indigo default white-text"),
-            "HardTest.WithoutMistakes" => (Icons.Outlined.AddTask, "indigo default white-text"),
-            "HardTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "indigo default white-text"),
+        "HardTest.Successful" => (EducationIcons.Tests, "indigo default white-text"),
+        "HardTest.Score" => (EducationIcons.Score, "indigo default white-text"),
+        "HardTest.WithoutMistakes" => (Icons.Outlined.AddTask, "indigo default white-text"),
+        "HardTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "indigo default white-text"),
             
-            "MixedTest.Successful" => (EducationIcons.Tests, "red accent-2 white-text"),
-            "MixedTest.Score" => (EducationIcons.Score, "red accent-2 white-text"),
-            "MixedTest.WithoutMistakes" => (Icons.Outlined.AddTask, "red accent-2 white-text"),
-            "MixedTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "red accent-2 white-text"),
+        "MixedTest.Successful" => (EducationIcons.Tests, "red accent-2 white-text"),
+        "MixedTest.Score" => (EducationIcons.Score, "red accent-2 white-text"),
+        "MixedTest.WithoutMistakes" => (Icons.Outlined.AddTask, "red accent-2 white-text"),
+        "MixedTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "red accent-2 white-text"),
             
-            "AllTest.Successful" => (EducationIcons.Tests, "light-blue darken-1 white-text"),
-            "AllTest.Score" => (EducationIcons.Score, "light-blue darken-1 white-text"),
-            "AllTest.CompleteOnceAllType" => (Icons.Outlined.DoneAll, "light-blue darken-1 white-text"),
+        "AllTest.Successful" => (EducationIcons.Tests, "light-blue darken-1 white-text"),
+        "AllTest.Score" => (EducationIcons.Score, "light-blue darken-1 white-text"),
+        "AllTest.CompleteOnceAllType" => (Icons.Outlined.DoneAll, "light-blue darken-1 white-text"),
             
-            "EventGuesser.Successful" => (Icons.Outlined.ManageSearch, "amber darken-2 white-text"),
+        "EventGuesser.Successful" => (Icons.Outlined.ManageSearch, "amber darken-2 white-text"),
             
-            _=> (EducationIcons.Achievement, "black white-text")
-            };
-    }
+        _=> (EducationIcons.Achievement, "black white-text")
+        };
 
 }

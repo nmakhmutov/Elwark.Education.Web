@@ -1,5 +1,4 @@
 @using Education.Client.Gateways.Models.Content
-
 <div class="@Class">
     @if (ShowTooltip)
     {
@@ -11,7 +10,7 @@
     {
         <MudRating MaxValue="5" Size="@Size" ReadOnly="true" SelectedValue="@((int)Math.Round(Rating.Stars))"/>
     }
-    
+
     @if (ShowDetails)
     {
         <MudText Typo="Typo.body2">
@@ -36,7 +35,7 @@
 
     [Parameter]
     public bool ShowTooltip { get; set; }
-    
+
     [Parameter]
     public bool ShowDetails { get; set; }
 

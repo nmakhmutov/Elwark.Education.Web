@@ -1,18 +1,16 @@
 @using Education.Client.Gateways.Models.User
-@using Education.Client.Extensions
-
-<MudPaper Class="@Class" Elevation="0">
+<MudPaper Class="@(Class + " d-flex flex-column")" Elevation="0">
     <section class="background">
         <div class="cover">
             <div class="title-container">
-                <MudText Typo="Typo.h4" Color="Color.Inherit">
+                <MudText Typo="Typo.h2" Color="Color.Inherit">
                     @L[$"Subject:{Subject}"]
                 </MudText>
             </div>
         </div>
     </section>
-    <MainContainer>
-        <ul class="mb-3 mb-sm-6">
+    <MainContainer Class="d-flex flex-column h-100">
+        <ul class="flex-grow-1 mb-3 mb-sm-6">
             <li class="row d-flex flex-row align-start justify-space-between">
                 <MudText Typo="Typo.subtitle1">
                     @L["Subscription"]
@@ -78,16 +76,14 @@
                 }
             </li>
         </ul>
-        <div class="subscription">
-            @if (Subscription == SubscriptionType.Free)
-            {
-                <div class="d-flex flex-row justify-center">
-                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@OnBuyClick">
-                        @L["Subscription:Upgrade"]
-                    </MudButton>
-                </div>
-            }
-        </div>
+        @if (Subscription == SubscriptionType.Free)
+        {
+            <div class="d-flex flex-row justify-center">
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@OnBuyClick">
+                    @L["Subscription:Upgrade"]
+                </MudButton>
+            </div>
+        }
     </MainContainer>
 </MudPaper>
 

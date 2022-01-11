@@ -1,13 +1,13 @@
-@page "/history/my/statistics"
+@page "/history/my/activities"
 @layout HistoryLayout
 
-@using Education.Client.Gateways.History.Me
+@using Education.Client.Gateways.History.User
 @using Education.Client.Gateways.History
-@using Education.Client.Features.History.My.Statistics.Components;
+@using Education.Client.Features.History.My.Activities.Components;
 
 @attribute [Authorize]
 
-<PageTitle>@L["Statistics"]</PageTitle>
+<PageTitle>@L["Test:MyActivity"]</PageTitle>
 
 <ApiViewer Response="@_response">
     <Loading>
@@ -15,7 +15,7 @@
     </Loading>
     <Success Context="activity">
         <MainContainer>
-            <PageHeader Title="@L["Statistics"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+            <PageHeader Title="@L["Test:MyActivity"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
             <div class="grid">
                 <TestCard
                     Class="easy-test"

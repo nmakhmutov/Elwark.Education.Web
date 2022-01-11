@@ -43,11 +43,11 @@ public sealed class TopicContentFormatService
 
     public async ValueTask InitAsync()
     {
-        if(_isInitialized)
+        if (_isInitialized)
             return;
-        
+
         _isInitialized = true;
-        
+
         var result = await _storage.GetItemAsync<State>(StorageKey);
         if (result is null)
             return;
@@ -65,7 +65,7 @@ public sealed class TopicContentFormatService
     }
 
     public bool CanIncreaseFontSize() => FontSize < MaxTextSize;
-    
+
     public async Task IncreaseFontSizeAsync()
     {
         if (!CanIncreaseFontSize())

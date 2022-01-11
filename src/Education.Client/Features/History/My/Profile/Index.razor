@@ -1,8 +1,8 @@
 @page "/history/my/profile"
 @layout HistoryLayout
 
+@using Education.Client.Gateways.History.User
 @using Education.Client.Gateways.History
-@using Education.Client.Gateways.History.Me
 @using Education.Client.Features.History.My.Components
 @using Education.Client.Features.History.My.Profile.Components
 
@@ -88,9 +88,9 @@
                         Bonus="@overview.Statistics.EventGuesser.Bonus"/>
                 </StatisticsCard>
 
-                <ActivityStatisticsCard
+                <ActivityCard
                     Class="activity"
-                    Title="@L["Statistics"]"
+                    Title="@L["Test:MyActivity"]"
                     Activities="@overview.Statistics.Activities"/>
             </div>
         </MainContainer>
@@ -115,7 +115,7 @@
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() => 
+    protected override async Task OnInitializedAsync() =>
         _overview = await HistoryClient.User.GetOverviewAsync();
 
     private void OnBuyClick()

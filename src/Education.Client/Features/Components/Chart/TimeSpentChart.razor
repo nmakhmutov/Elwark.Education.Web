@@ -1,5 +1,4 @@
 @using ApexCharts
-
 <div class="@Class">
     @if (Value.Total > TimeSpan.Zero)
     {
@@ -11,7 +10,7 @@
                 YValue="@(x => x.Value)"/>
         </ApexChart>
     }
-    
+
     <ChartList Items="@Items"/>
 </div>
 
@@ -74,6 +73,6 @@
         new Data(L["TimeSpent:Max"], (decimal)Value.Max.TotalMinutes)
     };
 
-    private record Data(string Name, decimal Value);
+    private sealed record Data(string Name, decimal Value);
 
 }

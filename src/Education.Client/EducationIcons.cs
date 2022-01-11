@@ -35,10 +35,10 @@ public static class EducationIcons
 
     public static readonly string MyProfile = Icons.Outlined.CardMembership;
 
-    public static readonly string MyTopics = Icons.Outlined.MenuBook;
+    public static readonly string MyTopics = Icons.Outlined.Favorite;
 
     public static readonly string MyActivity = Icons.Outlined.Moving;
-    
+
     public static readonly string MyTransactions = Icons.Outlined.History;
 
     public static readonly string Achievement = Icons.Outlined.EmojiEvents;

@@ -1,10 +1,6 @@
-@using Education.Client.Gateways.History
-@using Education.Client.Gateways.History.EventGuesser
 @using Education.Client.Gateways.History.EventGuesser.Models
 @using Education.Client.Gateways.History.EventGuesser.Requests
-@using Education.Client.Gateways.History.Me
-@using Education.Client.Gateways.Models.User
-@using Education.Client.Features.History.Components
+@using Education.Client.Gateways.History
 
 <section class="grid">
     <ApiViewer Response="@Builder">
@@ -17,7 +13,7 @@
                     <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="140px" Height="36px"/>
                 </div>
             </section>
-            
+
             <section>
                 <MudSkeleton SkeletonType="SkeletonType.Text" Width="30%" Height="38px"/>
                 <MudSkeleton SkeletonType="SkeletonType.Text" Width="80%"/>
@@ -48,7 +44,7 @@
                         </MudText>
                         <RestrictionQuantityView Restriction="@builder.Restriction.EventGuesser.Restriction" Class="mr-2"/>
                     </div>
-                    
+
                     <div class="d-flex flex-row justify-end">
                         @if (builder.IsExistCurrent)
                         {
@@ -60,7 +56,7 @@
                                 IsLoading="@_isContinuing"
                                 OnClick="@OnContinuationClick"/>
                         }
-                        
+
                         @if (builder.Restriction.EventGuesser.Restriction.Quantity == 0)
                         {
                             <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="true">
@@ -78,7 +74,7 @@
                     </div>
                 </EditForm>
             </section>
-            
+
             <article>
                 <MudText Typo="Typo.h5" Class="mb-3">@builder.Rule.Title</MudText>
                 <SimpleMarkdown Text="@builder.Rule.Content"/>
@@ -101,10 +97,10 @@
 
     [Parameter, EditorRequired]
     public EventCallback<CreateRequest> OnCreate { get; set; }
-    
-    [Parameter,EditorRequired]
+
+    [Parameter, EditorRequired]
     public EventCallback OnContinuation { get; set; }
-    
+
     private async Task OnValidSubmit()
     {
         _isCreating = true;
@@ -118,7 +114,7 @@
         await OnContinuation.InvokeAsync();
         _isContinuing = false;
     }
-    
+
     public sealed record Model
     {
         public EpochType Epoch { get; set; } = EpochType.None;

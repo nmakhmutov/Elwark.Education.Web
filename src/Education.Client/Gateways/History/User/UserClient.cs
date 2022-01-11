@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Education.Client.Gateways.Models;
 using Education.Client.Gateways.Models.Statistics;
 
-namespace Education.Client.Gateways.History.Me;
+namespace Education.Client.Gateways.History.User;
 
 internal sealed class UserClient : GatewayClient
 {
@@ -36,8 +36,9 @@ internal sealed class UserClient : GatewayClient
     public Task<ApiResponse<EventGuesserStatistics>> GetEventGuesserStatisticsAsync() =>
         ExecuteAsync<EventGuesserStatistics>(ct => _client.GetAsync("history/users/me/event-guessers", ct));
 
-    public Task<ApiResponse<PageResponse<UserTopicSummary>>> GetTopicsAsync(TopicsRequest request) =>
-        ExecuteAsync<PageResponse<UserTopicSummary>>(ct => _client.GetAsync($"history/users/me/topics{request.ToQuery()}", ct));
+    public Task<ApiResponse<PageResponse<UserTopicSummary>>> GetFavoritesAsync(FavoritesRequest request) =>
+        ExecuteAsync<PageResponse<UserTopicSummary>>(ct =>
+            _client.GetAsync($"history/users/me/favorites{request.ToQuery()}", ct));
 
     public Task<ApiResponse<TopicStatistics>> GetTopicsAsync(string topicId) =>
         ExecuteAsync<TopicStatistics>(ct => _client.GetAsync($"history/users/me/topics/{topicId}", ct));

@@ -1,8 +1,8 @@
 @page "/history/my/tests/easy"
 @layout HistoryLayout
 
-@using Education.Client.Gateways.History
 @using Education.Client.Gateways.Models.Statistics
+@using Education.Client.Gateways.History
 @using Education.Client.Features.History.My.Components
 @using Education.Client.Features.History.My.Tests.Components
 
@@ -18,7 +18,7 @@
         <MainContainer>
             <PageHeader Title="@L["Tests:Easy"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 
-            <StatisticsDetailsGrid Class="mb-3 mb-sm-6">
+            <StatisticsDetailsGrid>
                 <StatisticsCard Title="@L["Tests"]" Value="@result.NumberOfTests.Total">
                     <TwoColumnGrid>
                         <div>
@@ -31,6 +31,7 @@
                         </div>
                     </TwoColumnGrid>
                 </StatisticsCard>
+
                 <StatisticsCard Title="@L["Score"]" Value="@result.Score.Total">
                     <TwoColumnGrid>
                         <div>
@@ -43,6 +44,7 @@
                         </div>
                     </TwoColumnGrid>
                 </StatisticsCard>
+
                 <StatisticsCard Title="@L["Questions"]" Value="@result.AnswerRatio.Questions">
                     <TwoColumnGrid>
                         <div>
