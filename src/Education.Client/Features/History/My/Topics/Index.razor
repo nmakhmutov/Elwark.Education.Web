@@ -32,19 +32,19 @@
                 </MudPaper>
 
                 @Header(new HeaderProps(L["Tests:Easy"], Links.History.MyEasyTests, L["TimeSpent"], TimeSpan.Zero))
-                <DefaultFitGrid>
+                <EduFitGrid>
                     <SkeletonCard/>
                     <SkeletonCard/>
                     <SkeletonCard/>
-                </DefaultFitGrid>
+                </EduFitGrid>
 
                 <div class="py-6"></div>
                 @Header(new HeaderProps(L["Tests:Hard"], Links.History.MyEasyTests, L["TimeSpent"], TimeSpan.Zero))
-                <DefaultFitGrid>
+                <EduFitGrid>
                     <SkeletonCard/>
                     <SkeletonCard/>
                     <SkeletonCard/>
-                </DefaultFitGrid>
+                </EduFitGrid>
             </Loading>
             <Success Context="result">
                 <PageTitle>@result.Topic.Title</PageTitle>
@@ -113,7 +113,7 @@
                 </MudPaper>
 
                 @Header(new HeaderProps(L["Tests:Easy"], Links.History.MyEasyTests, L["TimeSpent"], result.EasyTest.TimeSpent))
-                <DefaultFitGrid Class="mb-3 mb-sm-6">
+                <EduFitGrid Class="mb-3 mb-sm-6">
                     <StatisticsCard Title="@L["Tests"]" Value="@result.EasyTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.EasyTest.NumberOfTests"/>
                     </StatisticsCard>
@@ -123,7 +123,7 @@
                     <StatisticsCard Title="@L["Questions"]" Value="@result.EasyTest.AnswerRatio.Questions">
                         <AnswerRatioChart Value="@result.EasyTest.AnswerRatio"/>
                     </StatisticsCard>
-                </DefaultFitGrid>
+                </EduFitGrid>
 
                 @if (result.EasyTest.Conclusions.Length > 0)
                 {
@@ -154,7 +154,7 @@
 
                 <div class="py-6"></div>
                 @Header(new HeaderProps(L["Tests:Hard"], Links.History.MyHardTests, L["TimeSpent"], result.HardTest.TimeSpent))
-                <DefaultFitGrid Class="mb-3 mb-sm-6">
+                <EduFitGrid Class="mb-3 mb-sm-6">
                     <StatisticsCard Title="@L["Tests"]" Value="@result.HardTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.HardTest.NumberOfTests"/>
                     </StatisticsCard>
@@ -164,7 +164,7 @@
                     <StatisticsCard Title="@L["Questions"]" Value="@result.HardTest.AnswerRatio.Questions">
                         <AnswerRatioChart Value="@result.HardTest.AnswerRatio"/>
                     </StatisticsCard>
-                </DefaultFitGrid>
+                </EduFitGrid>
 
                 @if (result.HardTest.Conclusions.Length > 0)
                 {

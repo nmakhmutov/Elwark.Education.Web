@@ -39,8 +39,9 @@
         </MudButton>
         @if (Error.Status > 499)
         {
-            <MudButton OnClick="@(() => NavigationManager.NavigateTo(NavigationManager.Uri, true))"
-                       Color="Color.Primary" Variant="Variant.Filled" Class="ml-6">
+            <MudButton
+                OnClick="@(() => NavigationManager.NavigateTo(NavigationManager.Uri, true))"
+                Color="Color.Primary" Variant="Variant.Filled" Class="ml-6">
                 @L["Page:Reload"]
             </MudButton>
         }

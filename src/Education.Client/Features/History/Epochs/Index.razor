@@ -17,7 +17,7 @@
                 @L[$"History:{_request.Epoch}"]
             </PageTitle>
             <PageHeader Title="@L[$"History:{_request.Epoch}"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-            <DefaultFillGrid>
+            <EduFillGrid>
                 @foreach (var item in topics.Items)
                 {
                     <TopicAndUserProgressCard
@@ -31,7 +31,7 @@
                         Epoch="@item.Epoch"
                         OnFavoriteClick="@OnFavoriteClick"/>
                 }
-            </DefaultFillGrid>
+            </EduFillGrid>
             <div class="d-flex justify-center mt-6 mt-sm-12">
                 <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_topics.Data.Pages)"/>
             </div>

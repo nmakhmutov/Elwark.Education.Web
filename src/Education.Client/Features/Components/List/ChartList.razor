@@ -1,16 +1,16 @@
 <ul class="@Class">
-    @foreach (var item in Items)
+    @foreach (var (title, value, color) in Items)
     {
         <li class="row">
-            @if (!string.IsNullOrEmpty(item.Color))
+            @if (!string.IsNullOrEmpty(color))
             {
-                <span class="dot" style="background-color: @item.Color"></span>
+                <span class="dot" style="background-color: @color"></span>
             }
             <MudText Typo="Typo.subtitle1">
-                @item.Title
+                @title
             </MudText>
             <div class="ml-auto">
-                <HumanReadableText Value="@item.Value"/>
+                <HumanReadableText Value="@value"/>
             </div>
         </li>
     }
