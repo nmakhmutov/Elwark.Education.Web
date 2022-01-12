@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Education.Client.Gateways;
 
 public sealed record Error

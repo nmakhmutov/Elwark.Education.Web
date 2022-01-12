@@ -1,4 +1,3 @@
-using System.Net.Http;
 using Education.Client.Gateways.History.EventGuesser;
 using Education.Client.Gateways.History.Home;
 using Education.Client.Gateways.History.Test;

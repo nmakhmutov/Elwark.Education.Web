@@ -1,4 +1,3 @@
-using System;
 using Education.Client.Gateways.Models.Content;
 
 namespace Education.Client.Gateways.History.EventGuesser.Models;

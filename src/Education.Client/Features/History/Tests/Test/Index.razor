@@ -7,10 +7,10 @@
 
 @attribute [Authorize]
 
-<MainContainer>
+<EduContainer>
     <ApiViewer Response="@_test">
         <Loading>
-            <CenteredContainer MaxWidth="ContainerWidth.W1280" Paper="true" Class="mb-3 mb-sm-6">
+            <EduContainer MaxWidth="EduWidth.W1280" Paper="true" Class="mb-3 mb-sm-6">
                 <div class="d-flex justify-space-between align-center ma-3">
                     <div>
                         <MudSkeleton Width="15vw" SkeletonType="SkeletonType.Text"/>
@@ -20,21 +20,21 @@
                         <MudSkeleton Width="15vw" Height="24px" SkeletonType="SkeletonType.Rectangle"/>
                     </div>
                 </div>
-            </CenteredContainer>
+            </EduContainer>
 
-            <CenteredContainer MaxWidth="ContainerWidth.W1280" Paper="true">
+            <EduContainer MaxWidth="EduWidth.W1280" Paper="true">
                 <div class="py-3 py-sm-6">
                     <MudSkeleton Width="80%" SkeletonType="SkeletonType.Text" Class="mx-auto"/>
                     <MudSkeleton Width="80%" SkeletonType="SkeletonType.Text" Class="mx-auto"/>
                     <MudSkeleton Width="80%" Height="30vh" SkeletonType="SkeletonType.Rectangle" Class="mx-auto my-6"/>
                     <MudSkeleton Width="20%" Height="36px" SkeletonType="SkeletonType.Rectangle" Class="mx-auto"/>
                 </div>
-            </CenteredContainer>
+            </EduContainer>
         </Loading>
         <Success Context="test">
             <PageTitle>@L[$"Test:{test.TestType}"]</PageTitle>
 
-            <CenteredContainer MaxWidth="ContainerWidth.W1280" Paper="true" Class="mb-3 mb-sm-6">
+            <EduContainer MaxWidth="EduWidth.W1280" Paper="true" Class="mb-3 mb-sm-6">
                 <TestHeader
                     Type="@test.TestType"
                     AllowedMistakes="@_allowedMistakes"
@@ -43,9 +43,9 @@
                     ExpiredAt="@test.ExpiredAt"
                     CountDownColor="@_countdownColor"
                     OnComplete="@OnExpired"/>
-            </CenteredContainer>
+            </EduContainer>
 
-            <CenteredContainer MaxWidth="ContainerWidth.W1280" Paper="true">
+            <EduContainer MaxWidth="EduWidth.W1280" Paper="true">
                 <div class="d-flex flex-column align-center pa-3 pa-sm-6">
                     <MudText Typo="Typo.subtitle1" Class="mb-3">
                         @_question.Topic.Title
@@ -92,10 +92,10 @@
                             throw new ArgumentOutOfRangeException();
                     }
                 </div>
-            </CenteredContainer>
+            </EduContainer>
         </Success>
     </ApiViewer>
-</MainContainer>
+</EduContainer>
 
 @code {
     private Color _countdownColor = Color.Default;

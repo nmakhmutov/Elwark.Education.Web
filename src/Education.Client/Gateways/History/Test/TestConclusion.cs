@@ -1,4 +1,3 @@
-using System;
 using Education.Client.Gateways.Models;
 using Education.Client.Gateways.Models.Content;
 using Education.Client.Gateways.Models.Test;

@@ -1,5 +1,3 @@
-using System;
-
 namespace Education.Client.Gateways.Customer;
 
 public record Customer(

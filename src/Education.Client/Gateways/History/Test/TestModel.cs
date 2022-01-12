@@ -1,4 +1,3 @@
-using System;
 using Education.Client.Gateways.Models.Test;
 
 namespace Education.Client.Gateways.History.Test;

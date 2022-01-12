@@ -1,4 +1,3 @@
-using System;
 using Education.Client.Extensions;
 using Education.Client.Features.History.My.Tests.Components;
 using Education.Client.Gateways.History.User;
@@ -50,10 +49,10 @@ public static class StatisticsExtensions
     public static ProgressList.Item[] GetProgress(this TimeSpentProgress progress, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
-            new(l["TimeSpent:Min"], progress.Min.Current.ToLongFormat(), progress.Min.Difference),
-            new(l["TimeSpent:Max"], progress.Max.Current.ToLongFormat(), progress.Max.Difference),
-            new(l["TimeSpent:Average"], progress.Average.Current.ToLongFormat(), progress.Average.Difference),
-            new(l["TimeSpent:Total"], progress.Total.Current.ToLongFormat(), progress.Total.Difference)
+            new(l["TimeSpent:Min"], progress.Min.Current.ToSimpleFormat(), progress.Min.Difference),
+            new(l["TimeSpent:Max"], progress.Max.Current.ToSimpleFormat(), progress.Max.Difference),
+            new(l["TimeSpent:Average"], progress.Average.Current.ToSimpleFormat(), progress.Average.Difference),
+            new(l["TimeSpent:Total"], progress.Total.Current.ToSimpleFormat(), progress.Total.Difference)
         };
 
     private static string RangeTitle(DateTime starts, DateTime ends) =>

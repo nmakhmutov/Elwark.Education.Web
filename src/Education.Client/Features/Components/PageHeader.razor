@@ -1,17 +1,27 @@
-<div class="d-flex flex-wrap justify-space-between align-center w-100 @Class">
-    <div>
+@if (ChildContent is null)
+{
+    <div class="@Class">
         <MudText Typo="Typo.h4" Class="mb-1">
             @Title
         </MudText>
         <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
     </div>
-    @if (ChildContent is not null)
-    {
+}
+else
+{
+    <div class="d-flex flex-wrap justify-space-between align-center w-100 @Class">
+        <div>
+            <MudText Typo="Typo.h4" Class="mb-1">
+                @Title
+            </MudText>
+            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
+        </div>
+
         <div>
             @ChildContent
         </div>
-    }
-</div>
+    </div>
+}
 
 @code {
 

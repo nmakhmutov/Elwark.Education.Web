@@ -56,7 +56,7 @@
         break;
 }
 
-<CenteredContainer MaxWidth="@ContainerWidth.W1600" Paper="true" Style="@FormatService.WidthStyles" Class="mb-3 mb-sm-6">
+<EduContainer MaxWidth="@EduWidth.W1600" Paper="true" Style="@FormatService.WidthStyles" Class="mb-3 mb-sm-6">
     <div class="toolbar">
         <div class="toolbar-contents">
             @if (result.Topic.Chapters.Length > 2)
@@ -154,9 +154,9 @@
             <TopicMarkdown Text="@content" Style="@FormatService.TextStyles"/>
         </section>
     }
-</CenteredContainer>
+</EduContainer>
 
-<CenteredContainer MaxWidth="@ContainerWidth.W1600" Paper="true" Style="@FormatService.WidthStyles" Class="mb-3 mb-sm-6">
+<EduContainer MaxWidth="@EduWidth.W1600" Paper="true" Style="@FormatService.WidthStyles" Class="mb-3 mb-sm-6">
     <div class="progress">
         <div class="d-flex flex-column align-start">
             @if (result.Test.TestTypes.Any())
@@ -190,11 +190,11 @@
             OnLikeClick="@OnLikeClick"
             OnDislikeClick="@OnDislikeClick"/>
     </div>
-</CenteredContainer>
+</EduContainer>
 
 @if (result.RelatedTopics.Length > 0)
 {
-    <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-3 mb-sm-6">
+    <EduContainer MaxWidth="@EduWidth.W1600" Class="mb-3 mb-sm-6">
         <MudText Typo="Typo.h5" Class="mb-3">
             @L["Topics:Related"]
         </MudText>
@@ -213,7 +213,7 @@
                     OnFavoriteClick="@OnFavoriteClick"/>
             }
         </EduFillGrid>
-    </CenteredContainer>
+    </EduContainer>
 }
 </Success>
 </ApiViewer>

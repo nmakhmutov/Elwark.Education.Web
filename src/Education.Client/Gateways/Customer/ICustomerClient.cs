@@ -1,6 +1,3 @@
-using System.Net.Http;
-using System.Threading.Tasks;
-
 namespace Education.Client.Gateways.Customer;
 
 public interface ICustomerClient

@@ -1,0 +1,57 @@
+@typeparam TValue
+
+<MudCard Class="@Class" Elevation="0">
+    <MudCardHeader Class="pa-3 pa-sm-6">
+        <CardHeaderContent>
+            <div class="d-flex align-center justify-space-between">
+                <MudText Typo="Typo.h5">
+                    @Title
+                </MudText>
+                <HumanReadableText Value="@Value" Typo="Typo.h5"/>
+            </div>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent Class="pa-3 pa-sm-6">
+        <div class="grid">
+            @if (TotalContent is not null)
+            {
+                <div class="total">
+                    @TotalContent
+                </div>
+            }
+            @if (ProgressContent is not null)
+            {
+                <div class="progress">
+                    @ProgressContent
+                </div>
+            }
+            @if (ActivityContent is not null)
+            {
+                <div class="activity">
+                    @ActivityContent
+                </div>
+            }
+        </div>
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public TValue Value { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment? TotalContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? ProgressContent { get; set; }
+    
+    [Parameter]
+    public RenderFragment? ActivityContent { get; set; }
+}

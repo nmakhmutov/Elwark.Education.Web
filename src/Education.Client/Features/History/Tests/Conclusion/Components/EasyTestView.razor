@@ -1,7 +1,7 @@
 @using Education.Client.Gateways.History.Test
 @using Education.Client.Extensions
 
-<CenteredContainer MaxWidth="ContainerWidth.W1280" Class="my-3 my-sm-6" Paper="true">
+<EduContainer MaxWidth="EduWidth.W1280" Class="my-3 my-sm-6" Paper="true">
     <div class="d-flex flex-wrap justify-space-between">
         <div class="pa-3">
             <MudLink Href="@Links.History.TopicById(Conclusion.Topic.Id)" Typo="Typo.h5">
@@ -20,18 +20,18 @@
             </MudText>
         </div>
     </div>
-</CenteredContainer>
+</EduContainer>
 
-<CenteredContainer MaxWidth="ContainerWidth.W1280" Class="mb-3 mb-sm-6">
+<EduContainer MaxWidth="EduWidth.W1280" Class="mb-3 mb-sm-6">
     <div class="mb-3">
         <MudLink Href="@Links.History.MyTopic(Conclusion.Topic.Id)" Typo="Typo.h5">
             @L["Statistics"]
         </MudLink>
     </div>
     <ConclusionCharts Conclusion="@Conclusion"/>
-</CenteredContainer>
+</EduContainer>
 
-<CenteredContainer MaxWidth="ContainerWidth.W1280" Class="mb-3 mb-sm-6">
+<EduContainer MaxWidth="EduWidth.W1280" Class="mb-3 mb-sm-6">
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["Answers"]
     </MudText>
@@ -65,7 +65,7 @@
             </MudTd>
         </RowTemplate>
     </MudTable>
-</CenteredContainer>
+</EduContainer>
 
 @code {
 

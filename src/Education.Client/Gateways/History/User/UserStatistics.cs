@@ -1,5 +1,3 @@
-using System;
-
 namespace Education.Client.Gateways.History.User;
 
 public sealed record UserStatistics(

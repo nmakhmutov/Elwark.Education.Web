@@ -1,5 +1,3 @@
-using System;
-
 namespace Education.Client.Gateways.Models.Content;
 
 public record ContentRating(double Rating, uint Votes)

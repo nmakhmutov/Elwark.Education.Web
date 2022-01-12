@@ -1,4 +1,3 @@
-using System;
 using Education.Client.Gateways.Models.Progress;
 
 namespace Education.Client.Gateways.History.User;

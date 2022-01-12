@@ -1,5 +1,3 @@
-using System;
-
 namespace Education.Client.Gateways.Models.Progress;
 
 public sealed record TimeSpentProgress(

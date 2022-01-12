@@ -1,11 +1,10 @@
 @page "/history/my/tests/easy"
-@layout HistoryLayout
-
 @using Education.Client.Gateways.Models.Statistics
 @using Education.Client.Gateways.History
 @using Education.Client.Features.History.My.Components
 @using Education.Client.Features.History.My.Tests.Components
 
+@layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>@L["Tests:Easy"]</PageTitle>
@@ -15,67 +14,61 @@
         <PageSpinner/>
     </Loading>
     <Success Context="result">
-        <MainContainer>
+        <EduContainer>
             <PageHeader Title="@L["Tests:Easy"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 
-            <StatisticsDetailsGrid>
-                <StatisticsCard Title="@L["Tests"]" Value="@result.NumberOfTests.Total">
-                    <TwoColumnGrid>
-                        <div>
-                            <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
-                            <NumberOfTestChart Value="@result.NumberOfTests"/>
-                        </div>
-                        <div>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                            <ProgressList Items="@result.Progress.NumberOfTests.GetProgress(L)"/>
-                        </div>
-                    </TwoColumnGrid>
-                </StatisticsCard>
+            <TestPageGrid>
+                <StatisticDetailsCard Title="@L["Tests"]" Value="@result.NumberOfTests.Total">
+                    <TotalContent>
+                        <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
+                        <NumberOfTestChart Value="@result.NumberOfTests"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                        <ProgressList Items="@result.Progress.NumberOfTests.GetProgress(L)"/>
+                    </ProgressContent>
+                </StatisticDetailsCard>
 
-                <StatisticsCard Title="@L["Score"]" Value="@result.Score.Total">
-                    <TwoColumnGrid>
-                        <div>
-                            <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                            <ScoreChart Value="@result.Score"/>
-                        </div>
-                        <div>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                            <ProgressList Items="@result.Progress.Score.GetProgress(L)"/>
-                        </div>
-                    </TwoColumnGrid>
-                </StatisticsCard>
+                <StatisticDetailsCard Title="@L["Score"]" Value="@result.Score.Total">
+                    <TotalContent>
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <ScoreChart Value="@result.Score"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                        <ProgressList Items="@result.Progress.Score.GetProgress(L)"/>
+                    </ProgressContent>
+                </StatisticDetailsCard>
 
-                <StatisticsCard Title="@L["Questions"]" Value="@result.AnswerRatio.Questions">
-                    <TwoColumnGrid>
-                        <div>
-                            <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
-                            <AnswerRatioChart Value="@result.AnswerRatio"/>
-                        </div>
-                        <div>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                            <ProgressList Items="@result.Progress.AnswerRatio.GetProgress(L)"/>
-                        </div>
-                    </TwoColumnGrid>
-                </StatisticsCard>
-                <StatisticsCard Title="@L["TimeSpent"]" Value="@result.TimeSpent.Total">
-                    <TwoColumnGrid>
-                        <div>
-                            <Subheader Title="@L["TimeSpent"]" Subtitle="@L["ForAllTime"]"/>
-                            <TimeSpentChart Value="@result.TimeSpent"/>
-                        </div>
-                        <div>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                            <ProgressList Items="@result.Progress.TimeSpent.GetProgress(L)"/>
-                        </div>
-                    </TwoColumnGrid>
-                </StatisticsCard>
-            </StatisticsDetailsGrid>
-        </MainContainer>
+                <StatisticDetailsCard Title="@L["Questions"]" Value="@result.AnswerRatio.Questions">
+                    <TotalContent>
+                        <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
+                        <AnswerRatioChart Value="@result.AnswerRatio"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                        <ProgressList Items="@result.Progress.AnswerRatio.GetProgress(L)"/>
+                    </ProgressContent>
+                </StatisticDetailsCard>
+
+                <StatisticDetailsCard Title="@L["TimeSpent"]" Value="@result.TimeSpent.Total">
+                    <TotalContent>
+                        <Subheader Title="@L["TimeSpent"]" Subtitle="@L["ForAllTime"]"/>
+                        <TimeSpentChart Value="@result.TimeSpent"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
+                        <ProgressList Items="@result.Progress.TimeSpent.GetProgress(L)"/>
+                    </ProgressContent>
+                </StatisticDetailsCard>
+            </TestPageGrid>
+        </EduContainer>
     </Success>
 </ApiViewer>
 
 
 @code {
+
     private ApiResponse<TestStatistics> _response = ApiResponse<TestStatistics>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()

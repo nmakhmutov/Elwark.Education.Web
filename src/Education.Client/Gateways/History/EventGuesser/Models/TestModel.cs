@@ -1,5 +1,3 @@
-using System;
-
 namespace Education.Client.Gateways.History.EventGuesser.Models;
 
 public sealed record TestModel(

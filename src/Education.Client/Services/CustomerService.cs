@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Education.Client.Features;
 using Education.Client.Gateways.Customer;

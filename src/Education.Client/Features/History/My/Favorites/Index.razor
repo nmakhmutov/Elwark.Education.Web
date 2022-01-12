@@ -1,12 +1,13 @@
 @page "/history/my/favorites"
 @using Education.Client.Gateways.History
 @using Education.Client.Gateways.History.User
+@using Margin = MudBlazor.Margin
 @layout HistoryLayout
 
 @attribute [Authorize]
 
 <PageTitle>@L["Favorites"]</PageTitle>
-<MainContainer>
+<EduContainer>
     <PageHeader Title="@L["Favorites"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
     <div class="d-flex flex-wrap justify-sm-space-between align-center mb-3 mb-sm-6">
         <div>
@@ -60,7 +61,7 @@
                 @context.Progress.PassedTests.ToReadable()
             </MudTd>
             <MudTd DataLabel="@L["TimeSpent:Total"]">
-                @context.Progress.TimeSpent.ToLongFormat()
+                @context.Progress.TimeSpent.ToSimpleFormat()
             </MudTd>
             <MudTd>
                 <FavoriteToggleButton
@@ -88,7 +89,7 @@
         </PagerContent>
     </MudTable>
 
-</MainContainer>
+</EduContainer>
 
 @code {
     private bool _loading = true;

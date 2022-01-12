@@ -1,4 +1,3 @@
-using System.Net.Http;
 using Education.Client.Gateways.Store.Basket;
 using Education.Client.Gateways.Store.Catalog;
 

@@ -12,29 +12,29 @@
 
 @if (_conclusion.Status == ResponseStatus.Success)
 {
-    <MainContainer>
+    <EduContainer>
         <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-    </MainContainer>
-    <CenteredContainer MaxWidth="ContainerWidth.W1280" Class="mb-3 mb-sm-6" Paper="true">
+    </EduContainer>
+    <EduContainer MaxWidth="EduWidth.W1280" Class="mb-3 mb-sm-6" Paper="true">
         <EventGuesserConclusion Class="ma-3 ma-sm-6" Conclusion="@_conclusion.Data" OnCreateNew="@OnCreateNewClick"/>
-    </CenteredContainer>
+    </EduContainer>
 }
 else if (_eventGuesser.Status == ResponseStatus.Success)
 {
-    <MainContainer>
+    <EduContainer>
         <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-    </MainContainer>
-    <CenteredContainer MaxWidth="ContainerWidth.W960" Class="mb-3 mb-sm-6">
+    </EduContainer>
+    <EduContainer MaxWidth="EduWidth.W960" Class="mb-3 mb-sm-6">
         <EventGuesserTest Class="ma-3 ma-sm-6" Test="@_eventGuesser.Data" OnCheck="@OnCheckAsync"/>
-    </CenteredContainer>
+    </EduContainer>
 }
 else
 {
     <div class="background">
-        <MainContainer>
+        <EduContainer>
             <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
             <EventGuesserBuilder Builder="@_builder" OnCreate="@OnCreateAsync" OnContinuation="@OnContinueAsync"/>
-        </MainContainer>
+        </EduContainer>
     </div>
 }
 

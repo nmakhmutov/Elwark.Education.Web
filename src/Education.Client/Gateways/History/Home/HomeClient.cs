@@ -1,6 +1,3 @@
-using System.Net.Http;
-using System.Threading.Tasks;
-
 namespace Education.Client.Gateways.History.Home;
 
 internal sealed class HomeClient : GatewayClient

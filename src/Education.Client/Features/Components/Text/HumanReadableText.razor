@@ -46,7 +46,7 @@ else
             long i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
             ulong i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
             double i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
-            TimeSpan t => (t.ToShortFormat(), t.TotalDays > 1 ? t.ToLongFormat() : null),
+            TimeSpan t => (t.ToSimpleFormat(), null),
             DateTime d => (d.ToSimpleFormat(), null),
             string s => (s, null),
             _ => (Value?.ToString() ?? string.Empty, null)

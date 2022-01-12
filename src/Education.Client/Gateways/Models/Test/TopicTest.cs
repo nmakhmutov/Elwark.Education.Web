@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Education.Client.Gateways.Models.User;
 
 namespace Education.Client.Gateways.Models.Test;

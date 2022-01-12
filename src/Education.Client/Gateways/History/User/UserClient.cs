@@ -1,5 +1,3 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using Education.Client.Gateways.Models;
 using Education.Client.Gateways.Models.Statistics;
 

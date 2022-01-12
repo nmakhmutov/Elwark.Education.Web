@@ -1,5 +1,3 @@
-using System;
-
 namespace Education.Client.Gateways.Models.User;
 
 public sealed record UserProfile(Level Level, Wallet Wallet, Transaction[] Transactions);

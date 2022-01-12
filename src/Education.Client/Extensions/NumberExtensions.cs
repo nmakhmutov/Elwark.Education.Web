@@ -1,5 +1,3 @@
-using System;
-
 namespace Education.Client.Extensions;
 
 public static class NumberExtensions

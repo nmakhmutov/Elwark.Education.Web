@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Blazored.LocalStorage;
 
 namespace Education.Client.Services;

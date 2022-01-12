@@ -1,5 +1,3 @@
-using System;
-
 namespace Education.Client.Extensions;
 
 public static class DateTimeExtensions
@@ -7,6 +5,7 @@ public static class DateTimeExtensions
     public static string ToSimpleFormat(this DateTime date)
     {
         var local = TimeZoneInfo.ConvertTimeFromUtc(date, TimeZoneInfo.Local);
+        
         return local.Date == DateTime.Today
             ? local.Second > 0
                 ? local.ToLongTimeString()
@@ -14,14 +13,17 @@ public static class DateTimeExtensions
             : local.ToShortDateString();
     }
 
-    public static string ToLongFormat(this TimeSpan span) =>
-        span.ToString(span.TotalDays > 1 ? @"dd\.hh\:mm" : @"hh\:mm\:ss");
-
-    public static string ToShortFormat(this TimeSpan span) =>
-        span.ToString(span.TotalSeconds switch
+    public static string ToSimpleFormat(this TimeSpan span)
+    {
+        var format = span switch
         {
-            < 3600 => @"mm\:ss", // less then one hour
-            < 86400 => @"hh\:mm\:ss", // less then one day
-            _ => @"dd\.hh\:mm"
-        });
+            { TotalDays: >= 1 } => @"dd\.hh\:mm",
+            { TotalHours: >= 1, TotalSeconds: 0 } => @"hh\:mm",
+            { TotalHours: >= 1, TotalSeconds: > 0 } => @"hh\:mm\:ss",
+            { TotalMilliseconds: 0 } => @"mm\:ss",
+            _ => @"mm\:ss"
+        };
+
+        return span.ToString(format);
+    }
 }

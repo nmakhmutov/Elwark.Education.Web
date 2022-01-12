@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json;
 using Blazored.LocalStorage;
 using Education.Client;
@@ -10,8 +9,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;

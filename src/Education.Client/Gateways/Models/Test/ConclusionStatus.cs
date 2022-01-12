@@ -1,4 +1,3 @@
-using System;
 using MudBlazor;
 
 namespace Education.Client.Gateways.Models.Test;

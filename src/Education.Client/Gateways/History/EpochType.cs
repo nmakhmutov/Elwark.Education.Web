@@ -1,5 +1,3 @@
-using System;
-
 namespace Education.Client.Gateways.History;
 
 public enum EpochType

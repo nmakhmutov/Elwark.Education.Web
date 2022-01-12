@@ -19,7 +19,7 @@
 
         <SpotlightGrid Class="mb-3 mb-sm-6" Topics="@result.Trends.Take(8).ToArray()"/>
 
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-6 mb-sm-12">
+        <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
             <div class="header">
                 <h2>@L["Topics:Trending"]</h2>
             </div>
@@ -37,36 +37,36 @@
                     </MudItem>
                 }
             </MudGrid>
-        </CenteredContainer>
+        </EduContainer>
 
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
+        <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
             <DailyTopic Topic="@result.DailyTopic" Class="my-6 my-sm-12"/>
-        </CenteredContainer>
+        </EduContainer>
 
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-6 mb-sm-12">
+        <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
             <div class="header">
                 <h2>@L["Topics:TopFavorites"]</h2>
             </div>
             <SpotlightGrid Gap="true" Topics="@result.TopFavorites"/>
-        </CenteredContainer>
+        </EduContainer>
 
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-6 mb-sm-12">
+        <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
             <div class="header">
                 <h2>@L["Topics:TopRatings"]</h2>
             </div>
             <SpotlightGrid Gap="true" Topics="@result.TopRatings"/>
-        </CenteredContainer>
+        </EduContainer>
 
-        <CenteredContainer MaxWidth="@ContainerWidth.W1600" Class="mb-6 mb-sm-12">
+        <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
             <div class="header">
                 <h2>@L["Topics:Recent"]</h2>
             </div>
             <SpotlightGrid Gap="true" Topics="@result.Recent"/>
-        </CenteredContainer>
+        </EduContainer>
 
-        <CenteredContainer MaxWidth="@ContainerWidth.W960" Style="background-color: var(--mud-palette-black)">
+        <EduContainer MaxWidth="@EduWidth.W960" Style="background-color: var(--mud-palette-black)">
             <RandomTopic Class="my-6 my-sm-12"/>
-        </CenteredContainer>
+        </EduContainer>
     </Success>
 </ApiViewer>
 

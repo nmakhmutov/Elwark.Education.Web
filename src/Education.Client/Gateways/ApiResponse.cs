@@ -1,5 +1,3 @@
-using System;
-
 namespace Education.Client.Gateways;
 
 public sealed class ApiResponse<T>
