@@ -12,9 +12,9 @@
     </MudCardHeader>
     <MudCardContent Class="pa-3 pa-sm-6">
         <div style="max-height: 350px; height: 100%; position: relative">
-            <ApexChart @ref="@_chart" TItem="ActivityStatistics.Statistics" Options="_options" Height="@("350px")">
+            <ApexChart @ref="@_chart" TItem="ProgressStatistics.Progress" Options="_options" Height="@("350px")">
                 <ApexPointSeries
-                    TItem="ActivityStatistics.Statistics"
+                    TItem="ProgressStatistics.Progress"
                     Items="Activities"
                     Name="@L["NumberOfTests:Total"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
@@ -23,7 +23,7 @@
                     YValue="@(x => x.Total)"/>
 
                 <ApexPointSeries
-                    TItem="ActivityStatistics.Statistics"
+                    TItem="ProgressStatistics.Progress"
                     Items="Activities"
                     Name="@L["Tests:Easy"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Default })"
@@ -32,7 +32,7 @@
                     YValue="@(x => x.EasyTests)"/>
 
                 <ApexPointSeries
-                    TItem="ActivityStatistics.Statistics"
+                    TItem="ProgressStatistics.Progress"
                     Items="Activities"
                     Name="@L["Tests:Hard"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.DeepPurple.Default })"
@@ -41,7 +41,7 @@
                     YValue="@(x => x.HardTests)"/>
 
                 <ApexPointSeries
-                    TItem="ActivityStatistics.Statistics"
+                    TItem="ProgressStatistics.Progress"
                     Items="Activities"
                     Name="@L["Tests:Mixed"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Red.Default })"
@@ -50,7 +50,7 @@
                     YValue="@(x => x.MixedTests)"/>
 
                 <ApexPointSeries
-                    TItem="ActivityStatistics.Statistics"
+                    TItem="ProgressStatistics.Progress"
                     Items="Activities"
                     Name="@L["EventGuesser"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Amber.Default })"
@@ -63,8 +63,8 @@
 </MudCard>
 
 @code {
-    private ApexChart<ActivityStatistics.Statistics> _chart = default!;
-    private ApexChartOptions<ActivityStatistics.Statistics>? _options;
+    private ApexChart<ProgressStatistics.Progress> _chart = default!;
+    private ApexChartOptions<ProgressStatistics.Progress>? _options;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -82,11 +82,11 @@
     public string DateFormat { get; set; } = "dd MMM";
 
     [Parameter, EditorRequired]
-    public ActivityStatistics.Statistics[] Activities { get; set; } = Array.Empty<ActivityStatistics.Statistics>();
+    public ProgressStatistics.Progress[] Activities { get; set; } = Array.Empty<ProgressStatistics.Progress>();
 
     protected override void OnInitialized()
     {
-        _options = new ApexChartOptions<ActivityStatistics.Statistics>
+        _options = new ApexChartOptions<ProgressStatistics.Progress>
         {
             Legend = new Legend
             {

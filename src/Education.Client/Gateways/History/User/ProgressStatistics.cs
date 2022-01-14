@@ -1,17 +1,17 @@
-using Education.Client.Gateways.Models.Progress;
+using Education.Client.Gateways.Models.Statistics;
 
 namespace Education.Client.Gateways.History.User;
 
-public sealed record ActivityStatistics(
+public sealed record ProgressStatistics(
     Contrast<ulong> EasyTests,
     Contrast<ulong> HardTests,
     Contrast<ulong> MixedTests,
     Contrast<uint> EventGuessers,
-    ActivityStatistics.Statistics[] Daily,
-    ActivityStatistics.Statistics[] Monthly
+    ProgressStatistics.Progress[] Daily,
+    ProgressStatistics.Progress[] Monthly
 )
 {
-    public sealed record Statistics(
+    public sealed record Progress(
         DateTime Date,
         uint Total,
         uint EasyTests,

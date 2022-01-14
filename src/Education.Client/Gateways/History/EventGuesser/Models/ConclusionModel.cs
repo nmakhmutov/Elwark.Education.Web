@@ -14,8 +14,8 @@ public sealed record QuestionModel(
     uint Points,
     uint Bonus,
     uint Score,
-    HistoricDate CorrectAnswer,
-    HistoricDate UserAnswer
+    HistoricalDate CorrectAnswer,
+    HistoricalDate UserAnswer
 )
 {
     public bool IsCorrect => CorrectAnswer == UserAnswer;

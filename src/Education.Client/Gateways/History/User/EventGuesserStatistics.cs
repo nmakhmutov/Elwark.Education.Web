@@ -1,4 +1,4 @@
-using Education.Client.Gateways.Models.Progress;
+using Education.Client.Gateways.Models.Statistics;
 
 namespace Education.Client.Gateways.History.User;
 
@@ -10,10 +10,10 @@ public sealed record EventGuesserStatistics(
     uint Questions,
     uint Correct,
     uint Incorrect,
-    EventGuesserProgress Progress
+    EventGuesserRangeContrast RangeContrast
 );
 
-public sealed record EventGuesserProgress(
+public sealed record EventGuesserRangeContrast(
     DateTime Starts,
     DateTime Ends,
     Contrast<uint> Tests,

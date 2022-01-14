@@ -1,6 +1,6 @@
-namespace Education.Client.Gateways.Models.Progress;
+namespace Education.Client.Gateways.Models.Statistics;
 
-public sealed record NumberOfTestsProgress(
+public sealed record NumberOfTestsContrast(
     Contrast<uint> Successful,
     Contrast<uint> Failed,
     Contrast<uint> TimeExceeded,

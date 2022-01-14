@@ -9,7 +9,7 @@
             </MudText>
         </div>
         <MudText Typo="Typo.body2">
-            @Progress.PassedTests.ToReadable()
+            @PassedTests.ToReadable()
         </MudText>
     </div>
     <div class="d-flex justify-space-between">
@@ -20,7 +20,7 @@
             </MudText>
         </div>
         <MudText Typo="Typo.body2">
-            @Progress.TimeSpent.ToSimpleFormat()
+            @TimeSpent.ToSimpleFormat()
         </MudText>
     </div>
 </div>
@@ -33,7 +33,10 @@
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter]
-    public UserTopicProgress Progress { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public ulong PassedTests { get; set; }
+
+    [Parameter, EditorRequired]
+    public TimeSpan TimeSpent { get; set; }
 
 }

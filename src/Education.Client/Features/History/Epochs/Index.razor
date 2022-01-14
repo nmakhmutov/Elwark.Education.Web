@@ -21,14 +21,8 @@
                 @foreach (var item in topics.Items)
                 {
                     <TopicAndUserProgressCard
-                        Id="@item.Id"
-                        Image="@item.Image"
-                        Title="@item.Title"
-                        Overview="@item.Overview"
-                        Rating="@item.Rating"
-                        Progress="@item.Progress"
-                        IsFavorite="@item.IsFavorite"
-                        Epoch="@item.Epoch"
+                        Topic="@item.Topic"
+                        UserActivity="@item.UserActivity"
                         OnFavoriteClick="@OnFavoriteClick"/>
                 }
             </EduFillGrid>
@@ -41,7 +35,7 @@
 
 @code {
     private GetTopicsRequest _request = new(EpochType.Prehistory, 1, 20);
-    private ApiResponse<PageResponse<UserTopicSummary>> _topics = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
+    private ApiResponse<PageResponse<HistoryUserTopicSummary>> _topics = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -65,7 +59,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _topics = ApiResponse<PageResponse<UserTopicSummary>>.Loading();
+        _topics = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Loading();
         CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
@@ -76,7 +70,7 @@
         else
         {
             var error = Error.Create(L["Error:NotFound"], string.Empty, 404);
-            _topics = ApiResponse<PageResponse<UserTopicSummary>>.Fail(error);
+            _topics = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Fail(error);
         }
     }
 

@@ -18,16 +18,19 @@
         <EduContainer>
             <PageHeader Title="@L["Achievements"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 
-            @foreach (var statistic in statistics)
+            @for (var index = 0; index < statistics.Length; index++)
             {
+                var statistic = statistics[index];
+                var css = index + 1 == statistics.Length ? "grid" : "grid mb-6 mb-sm-12";
+
                 <MudText Typo="Typo.h5" Class="mb-3">
                     @L[$"AchievementCategory:{statistic.Category}"]
                     <MudText Typo="Typo.subtitle1" Inline="true">
                         @statistic.Completed/@statistic.Total
                     </MudText>
                 </MudText>
-                <div class="grid mb-6 mb-sm-12">
-                    @foreach (var achievement in statistic.Achievements)
+                <div class="@css">
+                    @foreach (var achievement in statistic.Items)
                     {
                         <AchievementView Achievement="@achievement"/>
                     }
@@ -46,7 +49,7 @@
         new BreadcrumbItem(L["Profile"].Value, Links.History.MyProfile)
     };
 
-    private ApiResponse<AchievementStatistics[]> _response = ApiResponse<AchievementStatistics[]>.Loading();
+    private ApiResponse<CategorizedAchievements[]> _response = ApiResponse<CategorizedAchievements[]>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

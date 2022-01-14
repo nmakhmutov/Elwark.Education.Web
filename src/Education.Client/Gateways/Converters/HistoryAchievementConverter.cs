@@ -19,7 +19,7 @@ internal sealed class HistoryAchievementConverter : JsonConverter<Achievement?>
             "completed" => node.Deserialize<CompletedAchievement>(options),
             "progressive" => node.Deserialize<ProgressiveAchievement>(options),
             "ladder" => node.Deserialize<LadderAchievement>(options),
-            _ => throw new ArgumentOutOfRangeException(nameof(TopicDetail), @"Unknown achievement type")
+            _ => throw new ArgumentOutOfRangeException(nameof(HistoryTopicDetail), @"Unknown achievement type")
         };
     }
 

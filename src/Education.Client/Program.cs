@@ -31,9 +31,13 @@ builder.Services
     });
 
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway");
-var policy = HttpPolicyExtensions
-    .HandleTransientHttpError()
-    .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
+var policy = builder.HostEnvironment.IsDevelopment()
+    ? HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .WaitAndRetryAsync(1, _ => TimeSpan.Zero)
+    : HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
 builder.Services
     .AddLocalization(options => options.ResourcesPath = "Resources")

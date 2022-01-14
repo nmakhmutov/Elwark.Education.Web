@@ -18,7 +18,7 @@ internal sealed class GameCurrencyConverter : JsonConverter<IGameCurrency?>
         {
             "experience" => node.Deserialize<ExperienceCurrency>(options),
             "silver" => node.Deserialize<SilverCurrency>(options),
-            _ => throw new ArgumentOutOfRangeException(nameof(TopicDetail), @"Unknown game currency type")
+            _ => throw new ArgumentOutOfRangeException(nameof(HistoryTopicDetail), @"Unknown game currency type")
         };
     }
 

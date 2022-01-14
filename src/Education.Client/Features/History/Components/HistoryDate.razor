@@ -16,7 +16,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
-    public HistoricDate? Date { get; set; }
+    public HistoricalDate? Date { get; set; }
 
     [Parameter]
     public Typo Typo { get; set; } = Typo.subtitle1;
@@ -30,7 +30,7 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private string ToString(HistoricDate date)
+    private string ToString(HistoricalDate date)
     {
         var (year, month, day) = date;
         if (month.HasValue && day.HasValue)

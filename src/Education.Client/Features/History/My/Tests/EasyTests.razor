@@ -1,8 +1,9 @@
 @page "/history/my/tests/easy"
-@using Education.Client.Gateways.Models.Statistics
 @using Education.Client.Gateways.History
 @using Education.Client.Features.History.My.Components
 @using Education.Client.Features.History.My.Tests.Components
+@using ApexCharts
+@using Education.Client.Gateways.Models.Statistics
 
 @layout HistoryLayout
 @attribute [Authorize]
@@ -24,9 +25,22 @@
                         <NumberOfTestChart Value="@result.NumberOfTests"/>
                     </TotalContent>
                     <ProgressContent>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                        <ProgressList Items="@result.Progress.NumberOfTests.GetProgress(L)"/>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.NumberOfTests.GetProgress(L)"/>
                     </ProgressContent>
+                    <ActivityContent>
+                        <Subheader Title="@L["Test:MyActivity"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ApexChart TItem="TestStatistics.DailyProgress" Height="@("350px")">
+                            <ApexPointSeries
+                                TItem="TestStatistics.DailyProgress"
+                                Items="@result.Progress"
+                                Name="@L["NumberOfTests:Total"]"
+                                Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
+                                SeriesType="SeriesType.Area"
+                                XValue="@(e => e.Date.ToString("dd MMM"))"
+                                YValue="@(x => x.NumberOfTests.Total)"/>
+                        </ApexChart>
+                    </ActivityContent>
                 </StatisticDetailsCard>
 
                 <StatisticDetailsCard Title="@L["Score"]" Value="@result.Score.Total">
@@ -35,8 +49,8 @@
                         <ScoreChart Value="@result.Score"/>
                     </TotalContent>
                     <ProgressContent>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                        <ProgressList Items="@result.Progress.Score.GetProgress(L)"/>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.Score.GetProgress(L)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
 
@@ -46,8 +60,8 @@
                         <AnswerRatioChart Value="@result.AnswerRatio"/>
                     </TotalContent>
                     <ProgressContent>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                        <ProgressList Items="@result.Progress.AnswerRatio.GetProgress(L)"/>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.AnswerRatio.GetProgress(L)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
 
@@ -57,8 +71,8 @@
                         <TimeSpentChart Value="@result.TimeSpent"/>
                     </TotalContent>
                     <ProgressContent>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                        <ProgressList Items="@result.Progress.TimeSpent.GetProgress(L)"/>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.TimeSpent.GetProgress(L)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
             </TestPageGrid>

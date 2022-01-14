@@ -5,8 +5,8 @@ public sealed record EmpireSummary(
     string Title,
     string Overview,
     string Image,
-    HistoricDate? Founded,
-    HistoricDate? Dissolved,
+    HistoricalDate? Founded,
+    HistoricalDate? Dissolved,
     uint MaxArea,
     uint MaxPopulation
 );

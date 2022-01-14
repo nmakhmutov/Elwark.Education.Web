@@ -172,9 +172,9 @@
                 </MudText>
             }
 
-            <TopicProgressView Progress="@result.Progress" Class="py-3"/>
+            <TopicProgressView PassedTests="@result.UserActivity.PassedTests" TimeSpent="@result.UserActivity.TimeSpent" Class="py-3"/>
 
-            <TestPermissionWrapper Status="@result.Test.Permission.Status" Subject="@SubjectType.History">
+            <TestPermissionWrapper Status="@result.UserPermission.Status" Subject="@SubjectType.History">
                 <TopicTestButtons
                     IsLoading="@(_test?.Status == ResponseStatus.Loading)"
                     TestTypes="@result.Test.TestTypes.ToArray()"
@@ -184,7 +184,8 @@
 
         <TopicReactionButtons
             Id="@Id"
-            IsFavorite="@result.IsFavorite"
+            IsFavorite="@result.UserActivity.IsFavorite"
+            IsLiked="@result.UserActivity.IsLiked"
             Rating="@result.Rating"
             OnFavoriteClick="@OnFavoriteClick"
             OnLikeClick="@OnLikeClick"
@@ -202,14 +203,8 @@
             @foreach (var topic in result.RelatedTopics)
             {
                 <TopicAndUserProgressCard
-                    Id="@topic.Id"
-                    Epoch="@topic.Epoch"
-                    Image="@topic.Image"
-                    Title="@topic.Title"
-                    Overview="@topic.Overview"
-                    Rating="@topic.Rating"
-                    Progress="@topic.Progress"
-                    IsFavorite="@topic.IsFavorite"
+                    Topic="@topic.Topic"
+                    UserActivity="@topic.UserActivity"
                     OnFavoriteClick="@OnFavoriteClick"/>
             }
         </EduFillGrid>

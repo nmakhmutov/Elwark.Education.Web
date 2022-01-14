@@ -20,8 +20,8 @@
             <TestPageGrid>
                 <StatisticDetailsCard Title="@L["Tests"]" Value="@result.Tests">
                     <ProgressContent>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                        <ProgressList Items="@GetTest(result.Progress)"/>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@GetTest(result.RangeContrast)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
                 <StatisticDetailsCard Title="@L["EventGuesser:Score"]" Value="@result.Score">
@@ -30,8 +30,8 @@
                         <EventGuesserScoreChart Bonus="@result.Bonus" Points="@result.Points" Score="@result.Score"/>
                     </TotalContent>
                     <ProgressContent>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                        <ProgressList Items="@GetScore(result.Progress)"/>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@GetScore(result.RangeContrast)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
                 <StatisticDetailsCard Title="@L["EventGuesser:Questions"]" Value="@result.Questions">
@@ -40,8 +40,8 @@
                         <EventGuesserQuestionChart Correct="@result.Correct" Incorrect="@result.Incorrect" Questions="@result.Questions"/>
                     </TotalContent>
                     <ProgressContent>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.Progress.RangeTitle()"/>
-                        <ProgressList Items="@GetQuestions(result.Progress)"/>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@GetQuestions(result.RangeContrast)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
             </TestPageGrid>
@@ -68,13 +68,13 @@
     protected override async Task OnInitializedAsync() =>
         _response = await HistoryClient.User.GetEventGuesserStatisticsAsync();
 
-    private ProgressList.Item[] GetTest(EventGuesserProgress progress) =>
+    private ProgressList.Item[] GetTest(EventGuesserRangeContrast progress) =>
         new ProgressList.Item[]
         {
             new(L["Tests"], progress.Tests.Current.ToReadable(), progress.Tests.Difference)
         };
 
-    private ProgressList.Item[] GetScore(EventGuesserProgress progress) =>
+    private ProgressList.Item[] GetScore(EventGuesserRangeContrast progress) =>
         new ProgressList.Item[]
         {
             new(L["EventGuesser:Score"], progress.Score.Current.ToReadable(), progress.Score.Difference),
@@ -82,7 +82,7 @@
             new(L["EventGuesser:Bonus"], progress.Bonus.Current.ToReadable(), progress.Bonus.Difference)
         };
 
-    private ProgressList.Item[] GetQuestions(EventGuesserProgress progress) =>
+    private ProgressList.Item[] GetQuestions(EventGuesserRangeContrast progress) =>
         new ProgressList.Item[]
         {
             new(L["EventGuesser:Questions"], progress.Questions.Current.ToReadable(), progress.Questions.Difference),

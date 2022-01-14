@@ -10,6 +10,6 @@ internal sealed class HomeClient : GatewayClient
     public Task<ApiResponse<HistoryOverview>> GetAsync() =>
         ExecuteAsync<HistoryOverview>(ct => _client.GetAsync("history", ct));
 
-    public Task<ApiResponse<TopicSummary[]>> SearchAsync(string query) =>
-        ExecuteAsync<TopicSummary[]>(ct => _client.GetAsync($"history/search?q={query}", ct));
+    public Task<ApiResponse<HistoryTopicSummary[]>> SearchAsync(string query) =>
+        ExecuteAsync<HistoryTopicSummary[]>(ct => _client.GetAsync($"history/search?q={query}", ct));
 }

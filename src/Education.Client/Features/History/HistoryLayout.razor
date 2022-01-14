@@ -13,7 +13,7 @@
         </MudLink>
         <MudSpacer/>
         <MudAutocomplete
-            T="TopicSummary"
+            T="HistoryTopicSummary"
             @ref="@_searchAutocomplete"
             Dense="true"
             DebounceInterval="300"
@@ -36,11 +36,11 @@
         </MudAutocomplete>
         <MudSpacer/>
         <MudIconButton Icon="@ThemeProvider.Icon" Color="Color.Inherit" OnClick="@ThemeProvider.ToggleAsync"/>
+        <UserAppbarMenu/>
     </MudAppBar>
 
-    <MudDrawer Open="@SidebarService.IsOpen" OpenChanged="@SidebarService.SetAsync" Breakpoint="Breakpoint.Lg" ClipMode="DrawerClipMode.Docked" Elevation="0">
-        <UserDrawerHeader/>
-        <MudNavMenu>
+    <MudDrawer Open="@SidebarService.IsOpen" OpenChanged="@SidebarService.SetAsync" ClipMode="DrawerClipMode.Docked" Breakpoint="Breakpoint.Lg" Elevation="0">
+        <MudNavMenu Color="Color.Primary" Dense="true" Margin="Margin.Dense" Rounded="true" Class="pa-2">
             <MudNavLink Match="NavLinkMatch.All" Href="@Links.History.Index" Icon="@EducationIcons.History">
                 @L["Page:Home"]
             </MudNavLink>
@@ -76,7 +76,7 @@
         <main class="flex-grow-1">
             @Body
         </main>
-        
+
         <EduFooter Subject="@L["Subject:History"]"/>
     </MudMainContent>
 
@@ -86,7 +86,7 @@
 </MudLayout>
 
 @code {
-    private MudAutocomplete<TopicSummary> _searchAutocomplete = default!;
+    private MudAutocomplete<HistoryTopicSummary> _searchAutocomplete = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -103,16 +103,16 @@
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
 
-    private async Task<IEnumerable<TopicSummary>> OnSearch(string text)
+    private async Task<IEnumerable<HistoryTopicSummary>> OnSearch(string text)
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
-            return Array.Empty<TopicSummary>();
+            return Array.Empty<HistoryTopicSummary>();
 
         var result = await Client.Home.SearchAsync(text);
-        return result.IsSuccess ? result.Data : Array.Empty<TopicSummary>();
+        return result.IsSuccess ? result.Data : Array.Empty<HistoryTopicSummary>();
     }
 
-    private Task OnSearchResult(TopicSummary entry)
+    private Task OnSearchResult(HistoryTopicSummary entry)
     {
         NavigationManager.NavigateTo(Links.History.TopicById(entry.Id));
         return _searchAutocomplete.Clear();

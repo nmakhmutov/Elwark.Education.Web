@@ -13,11 +13,11 @@ internal sealed class UserClient : GatewayClient
     public Task<ApiResponse<HistoryUserProfile>> GetOverviewAsync() =>
         ExecuteAsync<HistoryUserProfile>(ct => _client.GetAsync("history/users/me", ct));
 
-    public Task<ApiResponse<ActivityStatistics>> GetActivitiesAsync() =>
-        ExecuteAsync<ActivityStatistics>(ct => _client.GetAsync("history/users/me/activities", ct));
+    public Task<ApiResponse<ProgressStatistics>> GetProgressAsync() =>
+        ExecuteAsync<ProgressStatistics>(ct => _client.GetAsync("history/users/me/progress", ct));
 
-    public Task<ApiResponse<AchievementStatistics[]>> GetAchievementsAsync() =>
-        ExecuteAsync<AchievementStatistics[]>(ct => _client.GetAsync("history/users/me/achievements", ct));
+    public Task<ApiResponse<CategorizedAchievements[]>> GetAchievementsAsync() =>
+        ExecuteAsync<CategorizedAchievements[]>(ct => _client.GetAsync("history/users/me/achievements", ct));
 
     public Task<ApiResponse<Unit>> CollectDailyReward() =>
         ExecuteAsync<Unit>(ct => _client.PostAsync("history/users/me/rewards/daily", EmptyContent, ct));
@@ -34,8 +34,8 @@ internal sealed class UserClient : GatewayClient
     public Task<ApiResponse<EventGuesserStatistics>> GetEventGuesserStatisticsAsync() =>
         ExecuteAsync<EventGuesserStatistics>(ct => _client.GetAsync("history/users/me/event-guessers", ct));
 
-    public Task<ApiResponse<PageResponse<UserTopicSummary>>> GetFavoritesAsync(FavoritesRequest request) =>
-        ExecuteAsync<PageResponse<UserTopicSummary>>(ct =>
+    public Task<ApiResponse<PageResponse<HistoryUserTopicSummary>>> GetFavoritesAsync(FavoritesRequest request) =>
+        ExecuteAsync<PageResponse<HistoryUserTopicSummary>>(ct =>
             _client.GetAsync($"history/users/me/favorites{request.ToQuery()}", ct));
 
     public Task<ApiResponse<TopicStatistics>> GetTopicsAsync(string topicId) =>

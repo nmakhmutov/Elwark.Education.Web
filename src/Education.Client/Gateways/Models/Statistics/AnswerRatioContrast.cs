@@ -1,6 +1,6 @@
-namespace Education.Client.Gateways.Models.Progress;
+namespace Education.Client.Gateways.Models.Statistics;
 
-public sealed record AnswerRatioProgress(
+public sealed record AnswerRatioContrast(
     Contrast<uint> Questions,
     Contrast<uint> Answered,
     Contrast<uint> NotAnswered,

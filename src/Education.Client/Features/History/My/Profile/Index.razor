@@ -1,12 +1,11 @@
 @page "/history/my/profile"
 @layout HistoryLayout
+@attribute [Authorize]
 
 @using Education.Client.Gateways.History.User
 @using Education.Client.Gateways.History
 @using Education.Client.Features.History.My.Components
 @using Education.Client.Features.History.My.Profile.Components
-
-@attribute [Authorize]
 
 <PageTitle>@L["Profile"]</PageTitle>
 
@@ -22,19 +21,19 @@
                     Class="subject"
                     Subject="SubjectType.History"
                     Subscription="@overview.Subscription"
-                    TestCreation="@overview.TestCreation"
-                    TestQuestionMistakes="@overview.TestMistakes"
+                    TestCreation="@overview.TestCreationRestriction"
+                    TestQuestionMistakes="@overview.TestMistakesRestriction"
                     TestDurationCoefficient="@overview.TestDurationCoefficient"
-                    EventGuesserCreation="@overview.EventGuesser"
+                    EventGuesserCreation="@overview.EventGuesserRestriction"
                     OnBuyClick="@OnBuyClick"/>
 
                 <WalletCard
                     Class="balance"
-                    Wallet="@overview.Profile.Wallet"/>
+                    Wallet="@overview.Wallet"/>
 
                 <LevelCard
                     Class="level"
-                    Level="@overview.Profile.Level"/>
+                    Level="@overview.Level"/>
 
                 <AchievementsCard
                     Class="achievements"
@@ -42,7 +41,7 @@
 
                 <RecentTransactionsCard
                     Class="transactions"
-                    Transactions="@overview.Profile.Transactions"/>
+                    Transactions="@overview.Transactions"/>
 
                 <DailyRewardCard
                     Class="daily-reward"
@@ -52,46 +51,46 @@
                 <StatisticsCard
                     Class="easy-test"
                     Title="@L["Tests:Easy"]"
-                    Value="@overview.Statistics.EasyTest.NumberOfTests.Total"
+                    Value="@overview.EasyTestStatistic.NumberOfTests.Total"
                     Href="@Links.History.MyEasyTests">
                     <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <ScoreChart Value="@overview.Statistics.EasyTest.Score"/>
+                    <ScoreChart Value="@overview.EasyTestStatistic.Score"/>
                 </StatisticsCard>
 
                 <StatisticsCard
                     Class="hard-test"
                     Title="@L["Tests:Hard"]"
-                    Value="@overview.Statistics.HardTest.NumberOfTests.Total"
+                    Value="@overview.HardTestStatistic.NumberOfTests.Total"
                     Href="@Links.History.MyHardTests">
                     <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <ScoreChart Value="@overview.Statistics.HardTest.Score"/>
+                    <ScoreChart Value="@overview.HardTestStatistic.Score"/>
                 </StatisticsCard>
 
                 <StatisticsCard
                     Class="mixed-test"
                     Title="@L["Tests:Mixed"]"
-                    Value="@overview.Statistics.MixedTest.NumberOfTests.Total"
+                    Value="@overview.MixedTestStatistic.NumberOfTests.Total"
                     Href="@Links.History.MyMixedTests">
                     <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <ScoreChart Value="@overview.Statistics.MixedTest.Score"/>
+                    <ScoreChart Value="@overview.MixedTestStatistic.Score"/>
                 </StatisticsCard>
 
                 <StatisticsCard
                     Class="event-guesser"
                     Title="@L["EventGuesser"]"
-                    Value="@overview.Statistics.EventGuesser.Tests"
+                    Value="@overview.EventGuesserStatistic.Tests"
                     Href="@Links.History.MyEventGuessers">
                     <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
                     <EventGuesserScoreChart
-                        Score="@overview.Statistics.EventGuesser.Score"
-                        Points="@overview.Statistics.EventGuesser.Points"
-                        Bonus="@overview.Statistics.EventGuesser.Bonus"/>
+                        Score="@overview.EventGuesserStatistic.Score"
+                        Points="@overview.EventGuesserStatistic.Points"
+                        Bonus="@overview.EventGuesserStatistic.Bonus"/>
                 </StatisticsCard>
 
                 <ActivityCard
                     Class="activity"
                     Title="@L["Test:MyActivity"]"
-                    Activities="@overview.Statistics.Activities"/>
+                    Activities="@overview.TestProgress"/>
             </div>
         </EduContainer>
     </Success>

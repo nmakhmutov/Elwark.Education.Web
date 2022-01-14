@@ -5,11 +5,11 @@ using Education.Client.Gateways.History.Topic;
 
 namespace Education.Client.Gateways.Converters;
 
-internal sealed class HistoryTopicDetailJsonConverter : JsonConverter<TopicDetail?>
+internal sealed class HistoryTopicDetailJsonConverter : JsonConverter<HistoryTopicDetail?>
 {
     private const string Type = "type";
 
-    public override TopicDetail? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override HistoryTopicDetail? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var node = JsonNode.Parse(ref reader);
 
@@ -18,10 +18,10 @@ internal sealed class HistoryTopicDetailJsonConverter : JsonConverter<TopicDetai
             "Person" => node.Deserialize<PersonTopicDetail>(options),
             "Event" => node.Deserialize<EventTopicDetail>(options),
             "Empire" => node.Deserialize<EmpireTopicDetail>(options),
-            _ => throw new ArgumentOutOfRangeException(nameof(TopicDetail), @"Unknown topic detail type")
+            _ => throw new ArgumentOutOfRangeException(nameof(HistoryTopicDetail), @"Unknown topic detail type")
         };
     }
 
-    public override void Write(Utf8JsonWriter writer, TopicDetail? value, JsonSerializerOptions options) =>
+    public override void Write(Utf8JsonWriter writer, HistoryTopicDetail? value, JsonSerializerOptions options) =>
         JsonSerializer.Serialize(writer, value, options);
 }

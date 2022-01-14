@@ -4,15 +4,15 @@ using Education.Client.Gateways.Models.Test;
 namespace Education.Client.Gateways.History.User;
 
 public sealed record TopicStatistics(
-    TopicSummary Topic,
-    TopicStatistics.TotalProgress Progress,
-    TopicStatistics.Statistics EasyTest,
-    TopicStatistics.Statistics HardTest
+    HistoryTopicSummary Topic,
+    TopicStatistics.TotalStatistics Total,
+    TopicStatistics.TestProgress EasyTest,
+    TopicStatistics.TestProgress HardTest
 )
 {
-    public sealed record TotalProgress(ulong Tests, ulong Score, uint Questions, TimeSpan TimeSpent);
+    public sealed record TotalStatistics(ulong Tests, ulong Score, uint Questions, TimeSpan TimeSpent);
 
-    public sealed record Statistics(
+    public sealed record TestProgress(
         Score Score,
         AnswerRatio AnswerRatio,
         TimeSpan TimeSpent,

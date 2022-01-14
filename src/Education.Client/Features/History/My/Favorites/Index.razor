@@ -45,33 +45,33 @@
         </HeaderContent>
         <RowTemplate>
             <MudTd HideSmall="true">
-                <MudAvatar Image="@context.Image"/>
+                <MudAvatar Image="@context.Topic.Image"/>
             </MudTd>
             <MudTd DataLabel="@L["Title"]">
-                <MudLink Href="@Links.History.TopicById(context.Id)">
-                    @context.Title
+                <MudLink Href="@Links.History.TopicById(context.Topic.Id)">
+                    @context.Topic.Title
                 </MudLink>
             </MudTd>
             <MudTd DataLabel="@L["History:Epoch"]">
-                <MudLink Href="@Links.History.TopicByEpoch(context.Epoch)">
-                    @L[$"History:{context.Epoch}"]
+                <MudLink Href="@Links.History.TopicByEpoch(context.Topic.Epoch)">
+                    @L[$"History:{context.Topic.Epoch}"]
                 </MudLink>
             </MudTd>
             <MudTd DataLabel="@L["NumberOfTests:TotalPassed"]">
-                @context.Progress.PassedTests.ToReadable()
+                @context.UserActivity.PassedTests.ToReadable()
             </MudTd>
             <MudTd DataLabel="@L["TimeSpent:Total"]">
-                @context.Progress.TimeSpent.ToSimpleFormat()
+                @context.UserActivity.TimeSpent.ToSimpleFormat()
             </MudTd>
             <MudTd>
                 <FavoriteToggleButton
-                    IsFavorite="@context.IsFavorite"
-                    TopicId="@context.Id"
+                    IsFavorite="@context.UserActivity.IsFavorite"
+                    TopicId="@context.Topic.Id"
                     OnFavoriteClick="@OnFavoriteClick"/>
             </MudTd>
             <MudTd>
                 <MudTooltip Text="@L["Details"]">
-                    <MudIconButton Link="@Links.History.MyTopic(context.Id)" Icon="@Icons.Material.Outlined.ReadMore"/>
+                    <MudIconButton Link="@Links.History.MyTopic(context.Topic.Id)" Icon="@Icons.Material.Outlined.ReadMore"/>
                 </MudTooltip>
             </MudTd>
         </RowTemplate>
@@ -94,7 +94,7 @@
 @code {
     private bool _loading = true;
     private bool _dense;
-    private MudTable<UserTopicSummary> _table = default!;
+    private MudTable<HistoryUserTopicSummary> _table = default!;
     private FavoritesRequest _request = new(FavoritesRequest.SortType.DateAddedNewest, 1, 25);
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -109,7 +109,7 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    private async Task<TableData<UserTopicSummary>> ServerReload(TableState state)
+    private async Task<TableData<HistoryUserTopicSummary>> ServerReload(TableState state)
     {
         _loading = true;
         _request = _request with { Page = state.Page + 1, Count = state.PageSize };
@@ -118,7 +118,7 @@
 
         _loading = false;
 
-        return new TableData<UserTopicSummary>
+        return new TableData<HistoryUserTopicSummary>
         {
             Items = data.Data.Items,
             TotalItems = (int)data.Data.Count

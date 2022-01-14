@@ -1,3 +1,3 @@
-namespace Education.Client.Gateways.History;
+namespace Education.Client.Gateways.Models;
 
 public sealed record TestRule(string Title, string Content);

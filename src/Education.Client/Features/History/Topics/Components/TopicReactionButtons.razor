@@ -6,15 +6,15 @@
         <MudTooltip Text="@L["Topic:ILikeThis"]">
             <MudIconButton
                 Icon="@Icons.Filled.ThumbUp"
-                OnClick="@(Rating.IsLiked == true ? () => Task.CompletedTask : OnLike)"
-                Color="@(Rating.IsLiked == true ? Color.Primary : Color.Default)"/>
+                OnClick="@(IsLiked == true ? () => Task.CompletedTask : OnLike)"
+                Color="@(IsLiked == true ? Color.Primary : Color.Default)"/>
         </MudTooltip>
 
         <MudTooltip Text="@L["Topic:IDislikeThis"]">
             <MudIconButton
                 Icon="@Icons.Filled.ThumbDown"
-                OnClick="@(Rating.IsLiked == false ? () => Task.CompletedTask : OnDislike)"
-                Color="@(Rating.IsLiked == false ? Color.Primary : Color.Default)"/>
+                OnClick="@(IsLiked == false ? () => Task.CompletedTask : OnDislike)"
+                Color="@(IsLiked == false ? Color.Primary : Color.Default)"/>
         </MudTooltip>
 
         <MudTooltip Text="@(IsFavorite ? L["RemoveFromFavorite"] : L["AddToFavorite"])">
@@ -44,10 +44,13 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public UserContentRating Rating { get; set; } = default!;
+    public ContentRating Rating { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public bool IsFavorite { get; set; }
+    
+    [Parameter, EditorRequired]
+    public bool? IsLiked { get; set; }
 
     [Parameter, EditorRequired]
     public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
@@ -61,13 +64,13 @@
     private async Task OnLike()
     {
         if (await OnLikeClick())
-            Rating = Rating with{IsLiked = true};
+            IsLiked = true;
     }
 
     private async Task OnDislike()
     {
         if (await OnDislikeClick())
-            Rating = Rating with{ IsLiked = false};
+            IsLiked = false;
     }
 
     private async Task OnFavoriteChanged(bool toggled) =>

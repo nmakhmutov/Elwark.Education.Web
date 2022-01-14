@@ -17,9 +17,9 @@
     </MudCardHeader>
     <MudCardContent Class="pa-3 pa-sm-6">
         <div style="max-height: 400px; height: 100%; position: relative">
-            <ApexChart @ref="@_chart" TItem="ActivityOverview" Options="_options" Height="@("400px")">
+            <ApexChart @ref="@_chart" TItem="HistoryUserProfile.ProgressOverview" Options="_options" Height="@("400px")">
                 <ApexPointSeries
-                    TItem="ActivityOverview"
+                    TItem="HistoryUserProfile.ProgressOverview"
                     Items="Activities"
                     Name="@L["NumberOfTests:Total"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
@@ -32,9 +32,9 @@
 </MudCard>
 
 @code {
-    private ApexChart<ActivityOverview> _chart = default!;
-    private ApexChartOptions<ActivityOverview>? _options;
-
+    private ApexChart<HistoryUserProfile.ProgressOverview> _chart = default!;
+    private ApexChartOptions<HistoryUserProfile.ProgressOverview>? _options;
+    
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -48,11 +48,11 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public ActivityOverview[] Activities { get; set; } = Array.Empty<ActivityOverview>();
+    public HistoryUserProfile.ProgressOverview[] Activities { get; set; } = Array.Empty<HistoryUserProfile.ProgressOverview>();
 
     protected override void OnInitialized()
     {
-        _options = new ApexChartOptions<ActivityOverview>
+        _options = new ApexChartOptions<HistoryUserProfile.ProgressOverview>
         {
             Chart = new Chart
             {

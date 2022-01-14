@@ -2,7 +2,7 @@ using Education.Client.Gateways.Models.Content;
 
 namespace Education.Client.Gateways.History.Topic;
 
-internal abstract record TopicDetail(
+internal abstract record HistoryTopicDetail(
     string Id,
     string Title,
     string Description,
@@ -18,12 +18,12 @@ internal sealed record PersonTopicDetail(
     string Description,
     string Image,
     EpochType Epoch,
-    HistoricalPersonDate? Born,
-    HistoricalPersonDate? Died,
+    HistoricalPersonBirthday? Born,
+    HistoricalPersonBirthday? Died,
     string[] Tags,
     Chapter[] Chapters,
     Characteristic[] Characteristics
-) : TopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);
+) : HistoryTopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);
 
 internal sealed record EventTopicDetail(
     string Id,
@@ -31,11 +31,11 @@ internal sealed record EventTopicDetail(
     string Description,
     string Image,
     EpochType Epoch,
-    HistoricDate? Started,
-    HistoricDate? Finished,
+    HistoricalDate? Started,
+    HistoricalDate? Finished,
     string[] Tags,
     Chapter[] Chapters
-) : TopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);
+) : HistoryTopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);
 
 internal sealed record EmpireTopicDetail(
     string Id,
@@ -43,10 +43,10 @@ internal sealed record EmpireTopicDetail(
     string Description,
     string Image,
     EpochType Epoch,
-    HistoricDate? Founded,
-    HistoricDate? Dissolved,
+    HistoricalDate? Founded,
+    HistoricalDate? Dissolved,
     uint MaxArea,
     uint MaxPopulation,
     string[] Tags,
     Chapter[] Chapters
-) : TopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);
+) : HistoryTopicDetail(Id, Title, Description, Image, Epoch, Tags, Chapters);

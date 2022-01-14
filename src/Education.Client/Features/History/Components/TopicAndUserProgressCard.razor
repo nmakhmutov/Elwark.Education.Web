@@ -1,36 +1,37 @@
 @using Education.Client.Gateways.History
 @using Education.Client.Gateways.Models.Content
+
 <section class="card">
     <header class="card-header">
-        <a href="@Links.History.TopicById(Id)">
-            <img src="@Image" alt="@Title" loading="lazy"/>
+        <a href="@Links.History.TopicById(Topic.Id)">
+            <img src="@Topic.Image" alt="@Topic.Title" loading="lazy"/>
         </a>
         <div class="rating-container">
-            <RatingStars Rating="@Rating" ShowTooltip="true"/>
+            <RatingStars Rating="@Topic.Rating" ShowTooltip="true"/>
         </div>
     </header>
     <aside class="d-flex align-center justify-space-between px-3">
-        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.TopicByEpoch(Epoch)">
-            @L[$"History:{Epoch}"]
+        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.TopicByEpoch(Topic.Epoch)">
+            @L[$"History:{Topic.Epoch}"]
         </MudChip>
 
         <FavoriteToggleButton
-            IsFavorite="@IsFavorite"
-            TopicId="@Id"
+            IsFavorite="@UserActivity.IsFavorite"
+            TopicId="@Topic.Id"
             OnFavoriteClick="@OnFavoriteClick"/>
     </aside>
 
     <article class="px-3">
-        <MudLink Href="@Links.History.TopicById(Id)" Typo="Typo.h6">
-            @Title
+        <MudLink Href="@Links.History.TopicById(Topic.Id)" Typo="Typo.h6">
+            @Topic.Title
         </MudLink>
         <MudText Typo="Typo.body2" Class="pt-3">
-            @Overview
+            @Topic.Overview
         </MudText>
     </article>
 
     <section class="progress">
-        <TopicProgressView Class="px-3" Progress="Progress"/>
+        <TopicProgressView PassedTests="@UserActivity.PassedTests" TimeSpent="@UserActivity.TimeSpent" Class="px-3" />
     </section>
 </section>
 
@@ -39,29 +40,11 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [Parameter]
-    public string Id { get; set; } = string.Empty;
+    [Parameter, EditorRequired]
+    public HistoryTopicSummary Topic { get; set; } = default!;
 
-    [Parameter]
-    public EpochType Epoch { get; set; }
-
-    [Parameter]
-    public string Image { get; set; } = string.Empty;
-
-    [Parameter]
-    public string Title { get; set; } = string.Empty;
-
-    [Parameter]
-    public string Overview { get; set; } = string.Empty;
-
-    [Parameter]
-    public ContentRating Rating { get; set; } = default!;
-
-    [Parameter]
-    public UserTopicProgress Progress { get; set; } = default!;
-
-    [Parameter]
-    public bool IsFavorite { get; set; }
+    [Parameter, EditorRequired]
+    public UserActivitySummary UserActivity { get; set; } = default!;
 
     [Parameter]
     public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
