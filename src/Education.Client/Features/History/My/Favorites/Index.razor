@@ -49,12 +49,12 @@
                     <MudAvatar Image="@context.Topic.Image"/>
                 </MudTd>
                 <MudTd DataLabel="@L["Title"]">
-                    <MudLink Href="@Links.History.TopicById(context.Topic.Id)">
+                    <MudLink Href="@Links.History.Content.Topic(context.Topic.Id)">
                         @context.Topic.Title
                     </MudLink>
                 </MudTd>
                 <MudTd DataLabel="@L["History:Epoch"]">
-                    <MudLink Href="@Links.History.TopicByEpoch(context.Topic.Epoch)">
+                    <MudLink Href="@Links.History.Content.Epoch(context.Topic.Epoch)">
                         @L[$"History:{context.Topic.Epoch}"]
                     </MudLink>
                 </MudTd>
@@ -72,7 +72,7 @@
                 </MudTd>
                 <MudTd>
                     <MudTooltip Text="@L["Details"]">
-                        <MudIconButton Link="@Links.History.MyTopic(context.Topic.Id)" Icon="@Icons.Material.Outlined.ReadMore"/>
+                        <MudIconButton Link="@Links.History.User.MyTopic(context.Topic.Id)" Icon="@Icons.Material.Outlined.ReadMore"/>
                     </MudTooltip>
                 </MudTd>
             </RowTemplate>
@@ -101,7 +101,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
-        new BreadcrumbItem(L["Profile"].Value, Links.History.MyProfile)
+        new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
     };
 
     [Inject]

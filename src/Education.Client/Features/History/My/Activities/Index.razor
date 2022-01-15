@@ -20,7 +20,7 @@
                         Icon="@EducationIcons.Tests"
                         IconClass="blue-text"
                         Title="@L["Tests:Easy"]"
-                        Href="@Links.History.MyEasyTests"
+                        Href="@Links.History.User.MyEasyTests"
                         Value="@activity.EasyTests"/>
 
                     <TestCard
@@ -28,7 +28,7 @@
                         Icon="@EducationIcons.Tests"
                         IconClass="deep-purple-text"
                         Title="@L["Tests:Hard"]"
-                        Href="@Links.History.MyHardTests"
+                        Href="@Links.History.User.MyHardTests"
                         Value="@activity.HardTests"/>
 
                     <TestCard
@@ -36,7 +36,7 @@
                         Icon="@EducationIcons.Tests"
                         IconClass="red-text"
                         Title="@L["Tests:Mixed"]"
-                        Href="@Links.History.MyMixedTests"
+                        Href="@Links.History.User.MyMixedTests"
                         Value="@activity.MixedTests"/>
 
                     <TestCard
@@ -44,7 +44,7 @@
                         Icon="@EducationIcons.EventGuesser"
                         IconClass="amber-text"
                         Title="@L["EventGuesser"]"
-                        Href="@Links.History.MyEventGuessers"
+                        Href="@Links.History.User.MyEventGuessers"
                         Value="@activity.EventGuessers"/>
 
                     <ActivityCard
@@ -72,7 +72,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
-        new BreadcrumbItem(L["Profile"].Value, Links.History.MyProfile)
+        new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
     };
 
     private ApiResponse<ProgressStatistics> _response = ApiResponse<ProgressStatistics>.Loading();

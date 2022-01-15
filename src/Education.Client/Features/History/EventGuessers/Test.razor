@@ -148,7 +148,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index),
-        new BreadcrumbItem(L["EventGuesser"].Value, Links.History.EventGuesserBuilder),
+        new BreadcrumbItem(L["EventGuesser"].Value, Links.History.EventGuesser.Builder),
     };
 
     [Inject]
@@ -209,7 +209,7 @@
         
         if (result.Data.IsComplete)
         {
-            Navigation.NavigateTo(Links.History.EventGuesserPersonalConclusion);
+            Navigation.NavigateTo(Links.History.EventGuesser.Conclusion);
             return;
         }
         

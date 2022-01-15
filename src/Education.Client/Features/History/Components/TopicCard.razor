@@ -2,7 +2,7 @@
 @using Education.Client.Gateways.Models.Content
 <section class="card">
     <header class="card-header">
-        <a href="@Links.History.TopicById(Id)">
+        <a href="@Links.History.Content.Topic(Id)">
             <img src="@Image" alt="@Title" loading="lazy"/>
         </a>
         <div class="rating-container">
@@ -11,13 +11,13 @@
     </header>
 
     <aside class="d-flex align-center justify-space-between px-3">
-        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.TopicByEpoch(Epoch)">
+        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.Content.Epoch(Epoch)">
             @L[$"History:{Epoch}"]
         </MudChip>
     </aside>
 
     <article class="px-3">
-        <MudLink Href="@Links.History.TopicById(Id)" Typo="Typo.h6">
+        <MudLink Href="@Links.History.Content.Topic(Id)" Typo="Typo.h6">
             @Title
         </MudLink>
         <MudText Typo="Typo.body2" Class="pt-3">

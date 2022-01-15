@@ -4,7 +4,10 @@ namespace Education.Client.Features;
 
 public static class Links
 {
-    public const string Root = "/";
+    public static class Root
+    {
+        public const string Index = "/";
+    }
 
     public static class Authentication
     {
@@ -23,46 +26,58 @@ public static class Links
     {
         public const string Index = "/history";
 
-        public const string Empires = $"{Index}/empires";
+        public static class Content
+        {
+            public const string Empires = $"{Index}/empires";
 
-        public const string TestBuilder = $"{Index}/tests";
+            public static string Epoch(EpochType epoch) =>
+                $"{Index}/epochs/{epoch.ToFastString()}";
 
-        public const string EventGuesserBuilder = $"{Index}/event-guessers";
-        
-        public const string EventGuesserPersonal = $"{Index}/event-guessers/test";
-        
-        public const string EventGuesserPersonalConclusion = $"{Index}/event-guessers/conclusion";
+            public static string Topic(string topicId) =>
+                $"{Index}/topics/{topicId}";
+        }
 
-        public const string MyProfile = $"{Index}/my/profile";
+        public static class TopicTest
+        {
+            public const string Builder = $"{Index}/tests";
 
-        public const string MyEasyTests = $"{Index}/my/tests/easy";
+            public static string Test(string testId) =>
+                $"{Builder}/{testId}";
 
-        public const string MyHardTests = $"{Index}/my/tests/hard";
+            public static string Conclusion(string testId) =>
+                $"{Builder}/{testId}/conclusion";
+        }
 
-        public const string MyMixedTests = $"{Index}/my/tests/mixed";
+        public static class EventGuesser
+        {
+            public const string Builder = $"{Index}/event-guessers";
 
-        public const string MyEventGuessers = $"{Index}/my/event-guessers";
+            public const string Test = $"{Index}/event-guessers/test";
 
-        public const string MyAchievements = $"{Index}/my/achievements";
+            public const string Conclusion = $"{Index}/event-guessers/conclusion";
+        }
 
-        public const string MyActivities = $"{Index}/my/activities";
+        public static class User
+        {
+            public const string MyProfile = $"{Index}/my/profile";
 
-        public const string MyFavorites = $"{Index}/my/favorites";
+            public const string MyEasyTests = $"{Index}/my/tests/easy";
 
-        public static string MyTopic(string topicId) =>
-            $"{Index}/my/topics/{topicId}";
+            public const string MyHardTests = $"{Index}/my/tests/hard";
 
-        public static string TopicByEpoch(EpochType epoch) =>
-            $"{Index}/{epoch.ToFastString()}";
+            public const string MyMixedTests = $"{Index}/my/tests/mixed";
 
-        public static string TopicById(string topicId) =>
-            $"{Index}/topics/{topicId}";
+            public const string MyEventGuessers = $"{Index}/my/event-guessers";
 
-        public static string TestById(string testId) =>
-            $"{TestBuilder}/{testId}";
+            public const string MyAchievements = $"{Index}/my/achievements";
 
-        public static string TestConclusion(string testId) =>
-            $"{TestBuilder}/{testId}/conclusion";
+            public const string MyActivities = $"{Index}/my/activities";
+
+            public const string MyFavorites = $"{Index}/my/favorites";
+            
+            public static string MyTopic(string topicId) =>
+                $"{Index}/my/topics/{topicId}";
+        }
     }
 
     public static class Store

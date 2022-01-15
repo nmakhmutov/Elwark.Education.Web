@@ -9,14 +9,9 @@
 <PageTitle>@L["EventGuesser"]</PageTitle>
 
 <EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
-    <ApiViewer Response="@_response">
-        <Loading>
-            <div class="background d-flex justify-center align-center">
-                <PageSpinner/>
-            </div>
-        </Loading>
-        <Success Context="builder">
-            <div class="background pa-3 pa-sm-6">
+    <div class="background d-flex flex-column pa-3 pa-sm-6 h-100">
+        <ApiViewer Response="@_response">
+            <Success Context="builder">
                 <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
                 <section class="grid">
                     <section>
@@ -49,7 +44,7 @@
                                         Class="mr-3"
                                         Variant="Variant.Filled"
                                         Color="Color.Primary"
-                                        Link="@Links.History.EventGuesserPersonal">
+                                        Link="@Links.History.EventGuesser.Test">
                                         @L["Test:Continue"]
                                     </MudButton>
                                 }
@@ -77,9 +72,9 @@
                         <SimpleMarkdown Text="@builder.Rule.Content"/>
                     </aside>
                 </section>
-            </div>
-        </Success>
-    </ApiViewer>
+            </Success>
+        </ApiViewer>
+    </div>
 </EduPage>
 
 @code {
@@ -113,7 +108,7 @@
 
         var response = await Client.EventGuesser.CreateAsync(new CreateRequest(_model.Questions, _model.Epoch));
         if (response.IsSuccess)
-            Navigation.NavigateTo(Links.History.EventGuesserPersonal);
+            Navigation.NavigateTo(Links.History.EventGuesser.Test);
         else
             Snackbar.Add(response.Error.Message, Severity.Error);
 
@@ -126,4 +121,5 @@
 
         public int Questions { get; set; } = 4;
     }
+
 }

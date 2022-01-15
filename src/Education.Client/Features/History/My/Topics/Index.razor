@@ -31,7 +31,7 @@
                     </div>
                 </MudPaper>
 
-                @Header(new HeaderProps(L["Tests:Easy"], Links.History.MyEasyTests, L["TimeSpent"], TimeSpan.Zero))
+                @Header(new HeaderProps(L["Tests:Easy"], Links.History.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero))
                 <EduFitGrid>
                     <SkeletonCard/>
                     <SkeletonCard/>
@@ -39,7 +39,7 @@
                 </EduFitGrid>
 
                 <div class="py-6"></div>
-                @Header(new HeaderProps(L["Tests:Hard"], Links.History.MyEasyTests, L["TimeSpent"], TimeSpan.Zero))
+                @Header(new HeaderProps(L["Tests:Hard"], Links.History.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero))
                 <EduFitGrid>
                     <SkeletonCard/>
                     <SkeletonCard/>
@@ -55,7 +55,7 @@
                             <img src="@result.Topic.Image" alt="@result.Topic.Title" loading="lazy"/>
                         </div>
                         <div class="d-flex flex-column justify-space-between">
-                            <MudLink Class="mt-3 mt-sm-0" Typo="Typo.h5" Href="@Links.History.TopicById(result.Topic.Id)">
+                            <MudLink Class="mt-3 mt-sm-0" Typo="Typo.h5" Href="@Links.History.Content.Topic(result.Topic.Id)">
                                 @result.Topic.Title
                             </MudLink>
                             <Breadcrumbs Items="@Breadcrumbs" Class="pa-0 mt-3"/>
@@ -112,7 +112,7 @@
                     </div>
                 </MudPaper>
 
-                @Header(new HeaderProps(L["Tests:Easy"], Links.History.MyEasyTests, L["TimeSpent"], result.EasyTest.TimeSpent))
+                @Header(new HeaderProps(L["Tests:Easy"], Links.History.User.MyEasyTests, L["TimeSpent"], result.EasyTest.TimeSpent))
                 <EduFitGrid Class="mb-3 mb-sm-6">
                     <StatisticsCard Title="@L["Tests"]" Value="@result.EasyTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.EasyTest.NumberOfTests"/>
@@ -153,7 +153,7 @@
                 }
 
                 <div class="py-6"></div>
-                @Header(new HeaderProps(L["Tests:Hard"], Links.History.MyHardTests, L["TimeSpent"], result.HardTest.TimeSpent))
+                @Header(new HeaderProps(L["Tests:Hard"], Links.History.User.MyHardTests, L["TimeSpent"], result.HardTest.TimeSpent))
                 <EduFitGrid Class="mb-3 mb-sm-6">
                     <StatisticsCard Title="@L["Tests"]" Value="@result.HardTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.HardTest.NumberOfTests"/>
@@ -221,9 +221,9 @@
         if (_response.Status == ResponseStatus.Success)
             Breadcrumbs = new List<BreadcrumbItem>
             {
-                new(L["Profile"].Value, Links.History.MyProfile),
+                new(L["Profile"].Value, Links.History.User.MyProfile),
                 new(L["Subject:History"].Value, Links.History.Index),
-                new(L[$"History:{_response.Data.Topic.Epoch}"].Value, Links.History.TopicByEpoch(_response.Data.Topic.Epoch))
+                new(L[$"History:{_response.Data.Topic.Epoch}"].Value, Links.History.Content.Epoch(_response.Data.Topic.Epoch))
             };
     }
 

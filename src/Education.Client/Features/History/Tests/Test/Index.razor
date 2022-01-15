@@ -102,7 +102,7 @@
         if (_response.Status == ResponseStatus.Fail)
         {
             if (_response.Error.IsNotFound() || _response.Error.IsExpired())
-                Navigation.NavigateTo(Links.History.TestConclusion(Id));
+                Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
 
             return;
         }
@@ -115,7 +115,7 @@
         _questionIndex = _questions.FindLastIndex(x => x.IsCompleted) + 1;
         if (_questionIndex == _questions.Count)
         {
-            Navigation.NavigateTo(Links.History.TestConclusion(Id));
+            Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
             return;
         }
 
@@ -128,7 +128,7 @@
         _response = await HistoryClient.Test.GetAsync(Id);
 
         if (_response.Status == ResponseStatus.Fail && (_response.Error.IsExpired() || _response.Error.IsNotFound()))
-            Navigation.NavigateTo(Links.History.TestConclusion(Id));
+            Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
     }
 
     private async Task<TextAnswerResult> OnTextAnswer(TextAnswer answer)
@@ -191,6 +191,6 @@
         StateHasChanged();
     }
 
-    private void OnComplete() => Navigation.NavigateTo(Links.History.TestConclusion(Id));
+    private void OnComplete() => Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
 
 }

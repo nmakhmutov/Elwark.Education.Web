@@ -35,7 +35,7 @@
         _isLoading = true;
         var result = await Client.Topic.GetRandomAsync();
         if (result.Status == ResponseStatus.Success)
-            Navigation.NavigateTo(Links.History.TopicById(result.Data.Id));
+            Navigation.NavigateTo(Links.History.Content.Topic(result.Data.Id));
 
         _isLoading = false;
     }
