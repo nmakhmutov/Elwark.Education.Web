@@ -7,34 +7,12 @@
 
 @attribute [Authorize]
 
-<EduContainer>
-    <ApiViewer Response="@_test">
-        <Loading>
-            <EduContainer MaxWidth="EduWidth.W1280" Paper="true" Class="mb-3 mb-sm-6">
-                <div class="d-flex justify-space-between align-center ma-3">
-                    <div>
-                        <MudSkeleton Width="15vw" SkeletonType="SkeletonType.Text"/>
-                        <MudSkeleton Width="20vw" SkeletonType="SkeletonType.Text"/>
-                    </div>
-                    <div>
-                        <MudSkeleton Width="15vw" Height="24px" SkeletonType="SkeletonType.Rectangle"/>
-                    </div>
-                </div>
-            </EduContainer>
-
-            <EduContainer MaxWidth="EduWidth.W1280" Paper="true">
-                <div class="py-3 py-sm-6">
-                    <MudSkeleton Width="80%" SkeletonType="SkeletonType.Text" Class="mx-auto"/>
-                    <MudSkeleton Width="80%" SkeletonType="SkeletonType.Text" Class="mx-auto"/>
-                    <MudSkeleton Width="80%" Height="30vh" SkeletonType="SkeletonType.Rectangle" Class="mx-auto my-6"/>
-                    <MudSkeleton Width="20%" Height="36px" SkeletonType="SkeletonType.Rectangle" Class="mx-auto"/>
-                </div>
-            </EduContainer>
-        </Loading>
+<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+    <ApiViewer Response="@_response">
         <Success Context="test">
             <PageTitle>@L[$"Test:{test.TestType}"]</PageTitle>
 
-            <EduContainer MaxWidth="EduWidth.W1280" Paper="true" Class="mb-3 mb-sm-6">
+            <EduContainer MaxWidth="EduWidth.W1280" Paper="true">
                 <TestHeader
                     Type="@test.TestType"
                     AllowedMistakes="@_allowedMistakes"
@@ -95,11 +73,11 @@
             </EduContainer>
         </Success>
     </ApiViewer>
-</EduContainer>
+</EduPage>
 
 @code {
     private Color _countdownColor = Color.Default;
-    private ApiResponse<TestModel> _test = ApiResponse<TestModel>.Loading();
+    private ApiResponse<TestModel> _response = ApiResponse<TestModel>.Loading();
     private List<TestQuestion> _questions = new();
     private int _allowedMistakes;
     private int _questionIndex;
@@ -112,32 +90,32 @@
     private IHistoryClient HistoryClient { get; set; } = default!;
 
     [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
+    private NavigationManager Navigation { get; set; } = default!;
 
     [Parameter]
     public string Id { get; init; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        _test = await HistoryClient.Test.GetAsync(Id);
+        _response = await HistoryClient.Test.GetAsync(Id);
 
-        if (_test.Status == ResponseStatus.Fail)
+        if (_response.Status == ResponseStatus.Fail)
         {
-            if (_test.Error.IsNotFound() || _test.Error.IsExpired())
-                NavigationManager.NavigateTo(Links.History.TestConclusion(Id));
+            if (_response.Error.IsNotFound() || _response.Error.IsExpired())
+                Navigation.NavigateTo(Links.History.TestConclusion(Id));
 
             return;
         }
 
-        _questions = _test.Data.Questions
+        _questions = _response.Data.Questions
             .OrderByDescending(x => x.IsCompleted)
             .ToList();
 
-        _allowedMistakes = _test.Data.AllowedMistakes;
+        _allowedMistakes = _response.Data.AllowedMistakes;
         _questionIndex = _questions.FindLastIndex(x => x.IsCompleted) + 1;
         if (_questionIndex == _questions.Count)
         {
-            NavigationManager.NavigateTo(Links.History.TestConclusion(Id));
+            Navigation.NavigateTo(Links.History.TestConclusion(Id));
             return;
         }
 
@@ -147,18 +125,18 @@
     private async Task OnExpired()
     {
         _countdownColor = Color.Error;
-        _test = await HistoryClient.Test.GetAsync(Id);
+        _response = await HistoryClient.Test.GetAsync(Id);
 
-        if (_test.Status == ResponseStatus.Fail && (_test.Error.IsExpired() || _test.Error.IsNotFound()))
-            NavigationManager.NavigateTo(Links.History.TestConclusion(Id));
+        if (_response.Status == ResponseStatus.Fail && (_response.Error.IsExpired() || _response.Error.IsNotFound()))
+            Navigation.NavigateTo(Links.History.TestConclusion(Id));
     }
 
     private async Task<TextAnswerResult> OnTextAnswer(TextAnswer answer)
     {
-        var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _question.Id, answer);
+        var result = await HistoryClient.Test.CheckAsync(_response.Data.Id, _question.Id, answer);
         if (!result.IsSuccess)
         {
-            _test = ApiResponse<TestModel>.Fail(result.Error);
+            _response = ApiResponse<TestModel>.Fail(result.Error);
             return new TextAnswerResult(false, false, 0, string.Empty);
         }
 
@@ -169,10 +147,10 @@
 
     private async Task<OneAnswerResult> OnOneAnswer(OneAnswer answer)
     {
-        var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _question.Id, answer);
+        var result = await HistoryClient.Test.CheckAsync(_response.Data.Id, _question.Id, answer);
         if (!result.IsSuccess)
         {
-            _test = ApiResponse<TestModel>.Fail(result.Error);
+            _response = ApiResponse<TestModel>.Fail(result.Error);
             return new OneAnswerResult(false, false, 0, 0);
         }
 
@@ -183,10 +161,10 @@
 
     private async Task<ManyAnswersResult> OnManyAnswer(ManyAnswer answer)
     {
-        var result = await HistoryClient.Test.CheckAsync(_test.Data.Id, _question.Id, answer);
+        var result = await HistoryClient.Test.CheckAsync(_response.Data.Id, _question.Id, answer);
         if (!result.IsSuccess)
         {
-            _test = ApiResponse<TestModel>.Fail(result.Error);
+            _response = ApiResponse<TestModel>.Fail(result.Error);
             return new ManyAnswersResult(false, false, 0, Array.Empty<int>());
         }
 
@@ -213,6 +191,6 @@
         StateHasChanged();
     }
 
-    private void OnComplete() => NavigationManager.NavigateTo(Links.History.TestConclusion(Id));
+    private void OnComplete() => Navigation.NavigateTo(Links.History.TestConclusion(Id));
 
 }

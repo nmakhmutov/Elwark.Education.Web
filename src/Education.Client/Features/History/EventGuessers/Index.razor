@@ -1,53 +1,96 @@
 @page "/history/event-guessers"
 @layout HistoryLayout
+@attribute [Authorize]
 
 @using Education.Client.Gateways.History.EventGuesser.Models
 @using Education.Client.Gateways.History.EventGuesser.Requests
 @using Education.Client.Gateways.History
-@using Education.Client.Features.History.EventGuessers.Components
 
-<PageTitle>
-    @L["EventGuesser"]
-</PageTitle>
+<PageTitle>@L["EventGuesser"]</PageTitle>
 
-@if (_conclusion.Status == ResponseStatus.Success)
-{
-    <EduContainer>
-        <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-    </EduContainer>
-    <EduContainer MaxWidth="EduWidth.W1280" Class="mb-3 mb-sm-6" Paper="true">
-        <EventGuesserConclusion Class="ma-3 ma-sm-6" Conclusion="@_conclusion.Data" OnCreateNew="@OnCreateNewClick"/>
-    </EduContainer>
-}
-else if (_eventGuesser.Status == ResponseStatus.Success)
-{
-    <EduContainer>
-        <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-    </EduContainer>
-    <EduContainer MaxWidth="EduWidth.W960" Class="mb-3 mb-sm-6">
-        <EventGuesserTest Class="ma-3 ma-sm-6" Test="@_eventGuesser.Data" OnCheck="@OnCheckAsync"/>
-    </EduContainer>
-}
-else
-{
-    <div class="background">
-        <EduContainer>
-            <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-            <EventGuesserBuilder Builder="@_builder" OnCreate="@OnCreateAsync" OnContinuation="@OnContinueAsync"/>
-        </EduContainer>
-    </div>
-}
+<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+    <ApiViewer Response="@_response">
+        <Loading>
+            <div class="background d-flex justify-center align-center">
+                <PageSpinner/>
+            </div>
+        </Loading>
+        <Success Context="builder">
+            <div class="background pa-3 pa-sm-6">
+                <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+                <section class="grid">
+                    <section>
+                        <EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
+                            <MudSelect Label="@L["History:Epoch"]" @bind-Value="@_model.Epoch" Class="mb-3">
+                                <MudSelectItem Value="@EpochType.None">@L["All"]</MudSelectItem>
+                                @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
+                                {
+                                    <MudSelectItem Value="@period">
+                                        @L[$"History:{period}"]
+                                    </MudSelectItem>
+                                }
+                            </MudSelect>
+
+                            <MudSlider @bind-Value="@_model.Questions" Min="3" Max="13" Color="Color.Primary" Class="mb-3">
+                                @L["EventGuesser:NumberOfDates", _model.Questions]
+                            </MudSlider>
+
+                            <div class="d-flex justify-space-between mb-3">
+                                <MudText Typo="Typo.subtitle1">
+                                    @L["Subscription:EventGuesserCreation"]
+                                </MudText>
+                                <RestrictionQuantityText Restriction="@builder.Restriction.EventGuesser.Restriction" Class="mr-2"/>
+                            </div>
+
+                            <div class="d-flex flex-row justify-end">
+                                @if (builder.IsExistCurrent)
+                                {
+                                    <MudButton
+                                        Class="mr-3"
+                                        Variant="Variant.Filled"
+                                        Color="Color.Primary"
+                                        Link="@Links.History.EventGuesserPersonal">
+                                        @L["Test:Continue"]
+                                    </MudButton>
+                                }
+
+                                @if (builder.Restriction.EventGuesser.Restriction.Quantity == 0)
+                                {
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="true">
+                                        @L["Test:Create"]
+                                    </MudButton>
+                                }
+                                else
+                                {
+                                    <LoadingButton
+                                        ButtonType="ButtonType.Submit"
+                                        Text="@L["Test:Create"]"
+                                        LoadingText="@L["Test:Creating"]"
+                                        IsLoading="@_isCreating"/>
+                                }
+                            </div>
+                        </EditForm>
+                    </section>
+
+                    <aside>
+                        <MudText Typo="Typo.h5" Class="mb-3">@builder.Rule.Title</MudText>
+                        <SimpleMarkdown Text="@builder.Rule.Content"/>
+                    </aside>
+                </section>
+            </div>
+        </Success>
+    </ApiViewer>
+</EduPage>
 
 @code {
+    private bool _isCreating;
+    private readonly Model _model = new();
+    private ApiResponse<TestBuilder> _response = ApiResponse<TestBuilder>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
     };
-
-    private ApiResponse<TestBuilder> _builder = ApiResponse<TestBuilder>.Loading();
-    private ApiResponse<TestModel> _eventGuesser = ApiResponse<TestModel>.Loading();
-    private ApiResponse<ConclusionModel> _conclusion = ApiResponse<ConclusionModel>.Loading();
 
     [Inject]
     public IStringLocalizer<App> L { get; set; } = default!;
@@ -58,47 +101,29 @@ else
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() => _builder = await Client.EventGuesser.GetBuilderAsync();
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
 
-    private async Task OnCreateAsync(CreateRequest request)
+    protected override async Task OnInitializedAsync() =>
+        _response = await Client.EventGuesser.GetBuilderAsync();
+
+    private async Task OnValidSubmit()
     {
-        _eventGuesser = await Client.EventGuesser.CreateAsync(request);
-        if (!_eventGuesser.IsSuccess)
-            Snackbar.Add(_eventGuesser.Error.Message, Severity.Error);
+        _isCreating = true;
+
+        var response = await Client.EventGuesser.CreateAsync(new CreateRequest(_model.Questions, _model.Epoch));
+        if (response.IsSuccess)
+            Navigation.NavigateTo(Links.History.EventGuesserPersonal);
+        else
+            Snackbar.Add(response.Error.Message, Severity.Error);
+
+        _isCreating = false;
     }
 
-    private async Task OnContinueAsync()
+    internal sealed record Model
     {
-        _eventGuesser = await Client.EventGuesser.GetAsync();
-        if (!_eventGuesser.IsSuccess)
-            Snackbar.Add(_eventGuesser.Error.Message, Severity.Error);
+        public EpochType Epoch { get; set; } = EpochType.None;
+
+        public int Questions { get; set; } = 4;
     }
-
-    private async Task<CheckModel?> OnCheckAsync(CheckRequest request)
-    {
-        var result = await Client.EventGuesser.CheckAsync(request);
-        if (!result.IsSuccess)
-        {
-            Snackbar.Add(result.Error.Message, Severity.Error);
-            return null;
-        }
-
-        if (!result.Data.IsComplete)
-            return result.Data;
-
-        _conclusion = await Client.EventGuesser.ConcludeAsync();
-        if (!_conclusion.IsSuccess)
-            Snackbar.Add(_conclusion.Error.Message, Severity.Error);
-
-        StateHasChanged();
-        return result.Data;
-    }
-
-    private async Task OnCreateNewClick()
-    {
-        _eventGuesser = ApiResponse<TestModel>.Loading();
-        _conclusion = ApiResponse<ConclusionModel>.Loading();
-        _builder = await Client.EventGuesser.GetBuilderAsync();
-    }
-
 }

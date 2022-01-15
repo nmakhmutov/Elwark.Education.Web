@@ -7,89 +7,90 @@
 @attribute [Authorize]
 
 <PageTitle>@L["Favorites"]</PageTitle>
-<EduContainer>
-    <PageHeader Title="@L["Favorites"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-    <div class="d-flex flex-wrap justify-sm-space-between align-center mb-3 mb-sm-6">
-        <div>
-            <MudSelect T="FavoritesRequest.SortType" Value="@_request.Sort" ValueChanged="@Callback" Margin="Margin.Dense">
-                @foreach (var sort in Enum.GetValues<FavoritesRequest.SortType>())
-                {
-                    <MudSelectItem T="FavoritesRequest.SortType" Value="sort">
-                        @L[$"Sort:{sort}"]
-                    </MudSelectItem>
-                }
-            </MudSelect>
+<EduPage Subject="@L["Subject:History"]" ShowFooter="true">
+    <EduContainer>
+        <PageHeader Title="@L["Favorites"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+        <div class="d-flex flex-wrap justify-sm-space-between align-center mb-3 mb-sm-6">
+            <div>
+                <MudSelect T="FavoritesRequest.SortType" Value="@_request.Sort" ValueChanged="@Callback" Margin="Margin.Dense">
+                    @foreach (var sort in Enum.GetValues<FavoritesRequest.SortType>())
+                    {
+                        <MudSelectItem T="FavoritesRequest.SortType" Value="sort">
+                            @L[$"Sort:{sort}"]
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </div>
+            <div class="ml-3 ml-sm-6" style="align-self: end">
+                <MudCheckBox @bind-Checked="@_dense" Label="@L["CompactView"]" Color="Color.Primary" Dense="true"/>
+            </div>
         </div>
-        <div class="ml-3 ml-sm-6" style="align-self: end">
-            <MudCheckBox @bind-Checked="@_dense" Label="@L["CompactView"]" Color="Color.Primary" Dense="true"/>
-        </div>
-    </div>
-    <MudTable
-        ServerData="@ServerReload"
-        Dense="@_dense"
-        Loading="@_loading"
-        Elevation="0"
-        Hover="true"
-        RowsPerPage="@_request.Count"
-        Breakpoint="Breakpoint.Sm"
-        LoadingProgressColor="Color.Primary"
-        @ref="@_table">
-        <HeaderContent>
-            <MudTh/>
-            <MudTh>@L["Topic"]</MudTh>
-            <MudTh>@L["History:Epoch"]</MudTh>
-            <MudTh>@L["NumberOfTests:TotalPassed"]</MudTh>
-            <MudTh>@L["TimeSpent:Total"]</MudTh>
-            <MudTh/>
-            <MudTh/>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd HideSmall="true">
-                <MudAvatar Image="@context.Topic.Image"/>
-            </MudTd>
-            <MudTd DataLabel="@L["Title"]">
-                <MudLink Href="@Links.History.TopicById(context.Topic.Id)">
-                    @context.Topic.Title
-                </MudLink>
-            </MudTd>
-            <MudTd DataLabel="@L["History:Epoch"]">
-                <MudLink Href="@Links.History.TopicByEpoch(context.Topic.Epoch)">
-                    @L[$"History:{context.Topic.Epoch}"]
-                </MudLink>
-            </MudTd>
-            <MudTd DataLabel="@L["NumberOfTests:TotalPassed"]">
-                @context.UserActivity.PassedTests.ToReadable()
-            </MudTd>
-            <MudTd DataLabel="@L["TimeSpent:Total"]">
-                @context.UserActivity.TimeSpent.ToSimpleFormat()
-            </MudTd>
-            <MudTd>
-                <FavoriteToggleButton
-                    IsFavorite="@context.UserActivity.IsFavorite"
-                    TopicId="@context.Topic.Id"
-                    OnFavoriteClick="@OnFavoriteClick"/>
-            </MudTd>
-            <MudTd>
-                <MudTooltip Text="@L["Details"]">
-                    <MudIconButton Link="@Links.History.MyTopic(context.Topic.Id)" Icon="@Icons.Material.Outlined.ReadMore"/>
-                </MudTooltip>
-            </MudTd>
-        </RowTemplate>
-        <NoRecordsContent>
-            <EmptyResult
-                Class="grid-full-row"
-                Title="@L["Empty:FavoritesTitle"]"
-                Subtitle="@L["Empty:FavoritesSubtitle"]"/>
-        </NoRecordsContent>
-        <LoadingContent>
-            <MudText>@L["Loading"]</MudText>
-        </LoadingContent>
-        <PagerContent>
-            <MudTablePager RowsPerPageString="@L["RowsPerPage"]"/>
-        </PagerContent>
-    </MudTable>
-
-</EduContainer>
+        <MudTable
+            ServerData="@ServerReload"
+            Dense="@_dense"
+            Loading="@_loading"
+            Elevation="0"
+            Hover="true"
+            RowsPerPage="@_request.Count"
+            Breakpoint="Breakpoint.Sm"
+            LoadingProgressColor="Color.Primary"
+            @ref="@_table">
+            <HeaderContent>
+                <MudTh/>
+                <MudTh>@L["Topic"]</MudTh>
+                <MudTh>@L["History:Epoch"]</MudTh>
+                <MudTh>@L["NumberOfTests:TotalPassed"]</MudTh>
+                <MudTh>@L["TimeSpent:Total"]</MudTh>
+                <MudTh/>
+                <MudTh/>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd HideSmall="true">
+                    <MudAvatar Image="@context.Topic.Image"/>
+                </MudTd>
+                <MudTd DataLabel="@L["Title"]">
+                    <MudLink Href="@Links.History.TopicById(context.Topic.Id)">
+                        @context.Topic.Title
+                    </MudLink>
+                </MudTd>
+                <MudTd DataLabel="@L["History:Epoch"]">
+                    <MudLink Href="@Links.History.TopicByEpoch(context.Topic.Epoch)">
+                        @L[$"History:{context.Topic.Epoch}"]
+                    </MudLink>
+                </MudTd>
+                <MudTd DataLabel="@L["NumberOfTests:TotalPassed"]">
+                    @context.UserActivity.PassedTests.ToReadable()
+                </MudTd>
+                <MudTd DataLabel="@L["TimeSpent:Total"]">
+                    @context.UserActivity.TimeSpent.ToSimpleFormat()
+                </MudTd>
+                <MudTd>
+                    <FavoriteToggleButton
+                        IsFavorite="@context.UserActivity.IsFavorite"
+                        TopicId="@context.Topic.Id"
+                        OnFavoriteClick="@OnFavoriteClick"/>
+                </MudTd>
+                <MudTd>
+                    <MudTooltip Text="@L["Details"]">
+                        <MudIconButton Link="@Links.History.MyTopic(context.Topic.Id)" Icon="@Icons.Material.Outlined.ReadMore"/>
+                    </MudTooltip>
+                </MudTd>
+            </RowTemplate>
+            <NoRecordsContent>
+                <EmptyResult
+                    Class="grid-full-row"
+                    Title="@L["Empty:FavoritesTitle"]"
+                    Subtitle="@L["Empty:FavoritesSubtitle"]"/>
+            </NoRecordsContent>
+            <LoadingContent>
+                <MudText>@L["Loading"]</MudText>
+            </LoadingContent>
+            <PagerContent>
+                <MudTablePager RowsPerPageString="@L["RowsPerPage"]"/>
+            </PagerContent>
+        </MudTable>
+    </EduContainer>
+</EduPage>
 
 @code {
     private bool _loading = true;

@@ -9,9 +9,22 @@
 
 @implements IDisposable
 
+<style>
+    .mud-timeline-position-start::before {
+        left: 0 !important;
+        width: 96px !important;
+        background-color: var(--mud-palette-secondary) !important;
+    }
+    
+    .mud-timeline-vertical.mud-timeline-position-alternate::before {
+        right: calc(50% - 48px) !important;
+        width: 96px !important;
+        background-color: var(--mud-palette-secondary) !important;
+    }
+</style>
 <PageTitle>@L["History:Empires"]</PageTitle>
-<div class="container">
-    <MudTimeline TimelinePosition="@_timelinePosition" DisableModifiers="true">
+<EduPage Subject="@L["Subject:History"]" ShowFooter="false">
+    <MudTimeline TimelinePosition="@_timelinePosition" DisableModifiers="true" Class="fff">
         <MudTimelineItem HideDot="true">
             <div class="ma-3 ma-sm-6">
                 <h2 class="subtitle">
@@ -111,7 +124,7 @@
             </Success>
         </ApiViewer>
     </MudTimeline>
-</div>
+</EduPage>
 
 @code {
 

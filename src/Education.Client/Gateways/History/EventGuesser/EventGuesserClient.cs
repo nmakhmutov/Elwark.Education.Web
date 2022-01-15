@@ -16,7 +16,7 @@ internal sealed class EventGuesserClient : GatewayClient
     public Task<ApiResponse<TestBuilder>> GetBuilderAsync() =>
         ExecuteAsync<TestBuilder>(ct => _client.GetAsync("history/event-guessers/builder", ct));
 
-    public Task<ApiResponse<ConclusionModel>> ConcludeAsync() =>
+    public Task<ApiResponse<ConclusionModel>> GetConclusionAsync() =>
         ExecuteAsync<ConclusionModel>(ct => _client.GetAsync("history/event-guessers/conclusion", ct));
 
     public Task<ApiResponse<TestModel>> CreateAsync(CreateRequest request) =>

@@ -1,0 +1,23 @@
+<MudMainContent Class="d-flex flex-column h-100">
+    <main class="flex-grow-1">
+        @ChildContent
+    </main>
+
+    @if (ShowFooter)
+    {
+        <EduFooter Subject="@Subject"/>
+    }
+</MudMainContent>
+
+
+@code {
+
+    [Parameter]
+    public string? Subject { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public bool ShowFooter { get; set; } = true;
+}

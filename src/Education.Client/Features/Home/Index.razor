@@ -4,15 +4,17 @@
 
 <PageTitle>Elwark education</PageTitle>
 
-<AuthorizeView>
-    <Authorized>
-        <RedirectTo Url="@Links.History.Index"/>
-        <NonAuthorizedLanding/>
-    </Authorized>
+<EduPage Subject="Education" ShowFooter="false">
+    <AuthorizeView>
+        <Authorized>
+            <RedirectTo Url="@Links.History.Index"/>
+            <NonAuthorizedLanding/>
+        </Authorized>
 
-    <NotAuthorized>
-        <MudText Typo="Typo.h1" Align="Align.Center">
-            Welcome
-        </MudText>
-    </NotAuthorized>
-</AuthorizeView>
+        <NotAuthorized>
+            <MudText Typo="Typo.h1" Align="Align.Center">
+                Welcome
+            </MudText>
+        </NotAuthorized>
+    </AuthorizeView>
+</EduPage>

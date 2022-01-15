@@ -2,9 +2,11 @@
     display: grid;
     grid-gap: 12px;
     margin-bottom: 12px;
-    grid-template-areas: 
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    grid-template-areas:
+        "questions questions"
         "score bonus"
-        "questions questions";
+        "title title";
 }
 
 .header-score {
@@ -21,6 +23,10 @@
     justify-self: center;
 }
 
+.header-title {
+    grid-area: title;
+}
+
 .form {
     display: grid;
     grid-gap: 12px;
@@ -34,7 +40,10 @@
     .header {
         grid-gap: 24px;
         margin-bottom: 24px;
-        grid-template-areas: "score questions bonus";
+        grid-template-columns: repeat(3, minmax(100px, 1fr));
+        grid-template-areas:
+            "score questions bonus"
+            "title title title";
     }
 
     .form {

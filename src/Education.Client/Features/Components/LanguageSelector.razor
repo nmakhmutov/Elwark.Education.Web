@@ -18,12 +18,12 @@
     private LanguageService LanguageService { get; set; } = default!;
 
     [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
+    private NavigationManager Navigation { get; set; } = default!;
 
     private async Task Set(string language)
     {
         if (await LanguageService.SetAsync(language))
-            NavigationManager.NavigateTo(NavigationManager.Uri, true);
+            Navigation.NavigateTo(Navigation.Uri, true);
     }
 
 }

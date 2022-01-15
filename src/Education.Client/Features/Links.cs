@@ -28,6 +28,10 @@ public static class Links
         public const string TestBuilder = $"{Index}/tests";
 
         public const string EventGuesserBuilder = $"{Index}/event-guessers";
+        
+        public const string EventGuesserPersonal = $"{Index}/event-guessers/test";
+        
+        public const string EventGuesserPersonalConclusion = $"{Index}/event-guessers/conclusion";
 
         public const string MyProfile = $"{Index}/my/profile";
 

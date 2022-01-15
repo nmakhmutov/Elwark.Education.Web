@@ -2,6 +2,24 @@
     min-height: calc(100vh - 64px);
 }
 
+.grid {
+    display: grid;
+    grid-gap: 12px;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        grid-gap: 24px;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: minmax(250px, 600px) minmax(250px, 1fr);
+    }
+}
+
 @media (min-width: 600px) and (min-height: 600px) {
     .background {
         transition: background 1s ease-out;

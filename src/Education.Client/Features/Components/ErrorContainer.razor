@@ -1,6 +1,6 @@
 <PageTitle>@Error.Title</PageTitle>
 
-<EduContainer MaxWidth="EduWidth.W600" Class="my-3 my-sm-6">
+<EduContainer MaxWidth="EduWidth.W600" Class="align-center h-100">
     <div class="title">
         <MudText Typo="Typo.h4" Inline="true" Style="vertical-align: middle">
             @Error.Status&nbsp;
@@ -40,7 +40,7 @@
         @if (Error.Status > 499)
         {
             <MudButton
-                OnClick="@(() => NavigationManager.NavigateTo(NavigationManager.Uri, true))"
+                OnClick="@(() => Navigation.NavigateTo(Navigation.Uri, true))"
                 Color="Color.Primary" Variant="Variant.Filled" Class="ml-6">
                 @L["Page:Reload"]
             </MudButton>
@@ -51,7 +51,7 @@
 @code {
 
     [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
+    private NavigationManager Navigation { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

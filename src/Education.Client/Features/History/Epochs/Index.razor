@@ -7,35 +7,32 @@
 
 @attribute [Authorize]
 
-<ApiViewer Response="_topics">
-    <Loading>
-        <PageSpinner/>
-    </Loading>
-    <Success Context="topics">
-        <EduContainer>
-            <PageTitle>
-                @L[$"History:{_request.Epoch}"]
-            </PageTitle>
-            <PageHeader Title="@L[$"History:{_request.Epoch}"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-            <EduFillGrid>
-                @foreach (var item in topics.Items)
-                {
-                    <TopicAndUserProgressCard
-                        Topic="@item.Topic"
-                        UserActivity="@item.UserActivity"
-                        OnFavoriteClick="@OnFavoriteClick"/>
-                }
-            </EduFillGrid>
-            <div class="d-flex justify-center mt-6 mt-sm-12">
-                <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_topics.Data.Pages)"/>
-            </div>
-        </EduContainer>
-    </Success>
-</ApiViewer>
+<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+    <ApiViewer Response="_response">
+        <Success Context="topics">
+            <EduContainer>
+                <PageTitle>@L[$"History:{_request.Epoch}"]</PageTitle>
+                <PageHeader Title="@L[$"History:{_request.Epoch}"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+                <EduFillGrid Class="mb-6 mb-sm-12">
+                    @foreach (var (topic, userActivity) in topics.Items)
+                    {
+                        <TopicAndUserProgressCard
+                            Topic="@topic"
+                            UserActivity="@userActivity"
+                            OnFavoriteClick="@OnFavoriteClick"/>
+                    }
+                </EduFillGrid>
+                <div class="d-flex justify-center">
+                    <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_response.Data.Pages)"/>
+                </div>
+            </EduContainer>
+        </Success>
+    </ApiViewer>
+</EduPage>
 
 @code {
     private GetTopicsRequest _request = new(EpochType.Prehistory, 1, 20);
-    private ApiResponse<PageResponse<HistoryUserTopicSummary>> _topics = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Loading();
+    private ApiResponse<PageResponse<HistoryUserTopicSummary>> _response = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -59,18 +56,18 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _topics = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Loading();
+        _response = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Loading();
         CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
         {
             _request = _request with { Epoch = type, Page = CurrentPage };
-            _topics = await HistoryClient.Topic.GetAsync(_request);
+            _response = await HistoryClient.Topic.GetAsync(_request);
         }
         else
         {
             var error = Error.Create(L["Error:NotFound"], string.Empty, 404);
-            _topics = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Fail(error);
+            _response = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Fail(error);
         }
     }
 

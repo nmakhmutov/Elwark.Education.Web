@@ -1,0 +1,254 @@
+@page "/history/event-guessers/test"
+@layout HistoryLayout
+@attribute [Authorize]
+
+@using Education.Client.Gateways.History.EventGuesser.Models
+@using Education.Client.Gateways.History.EventGuesser.Requests
+@using FluentValidation
+@using Education.Client.Gateways.History
+@using Severity = MudBlazor.Severity
+
+<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+    <ApiViewer Response="@_response">
+        <Success Context="test">
+            <EduContainer>
+                <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+            </EduContainer>
+
+            <EduContainer MaxWidth="EduWidth.W960">
+                <div class="header">
+                    <div class="header-score">
+                        <div class="d-flex flex-row align-center">
+                            <MudIcon Icon="@EducationIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
+                            <MudText Typo="Typo.subtitle1">
+                                @_score
+                            </MudText>
+                        </div>
+                        <MudText Typo="Typo.caption">
+                            @L["EventGuesser:Score"]
+                        </MudText>
+                    </div>
+
+                    <div class="header-bonus">
+                        @if (_x2BonusUntil > DateTime.UtcNow)
+                        {
+                            <div class="d-flex flex-row justify-end align-center">
+                                <MudIcon Icon="@EducationIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
+                                <MudText Typo="Typo.subtitle1">
+                                    @L["EventGuesser:Bonus"]
+                                </MudText>
+                            </div>
+                            <div class="d-flex flex-row justify-end">
+                                <CountdownTimer Typo="Typo.caption" Date="@_x2BonusUntil" OnComplete="@(StateHasChanged)"/>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="header-questions">
+                        <MudText Typo="Typo.subtitle1">
+                            @L["Questions"] @(_questionIndex + 1) / @test.Questions.Length
+                        </MudText>
+                    </div>
+
+                    <div class="header-title">
+                        <MudText Typo="Typo.h5" Align="Align.Center">
+                            @test.Questions[_questionIndex].Title
+                        </MudText>
+                    </div>
+                </div>
+
+                <EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
+                    <FluentValidationValidator/>
+
+                    <div class="form">
+                        <MudNumericField
+                            @bind-Value="@_model.Year"
+                            For="@(() => _model.Year)"
+                            Label="@L["EventGuesser:Year"]"
+                            Variant="Variant.Text"
+                            HideSpinButtons="true"
+                            AutoFocus="true"/>
+
+                        <MudSelect T="uint?" @bind-Value="@_model.Month" For="@(() => _model.Month)" Label="@L["EventGuesser:Month"]" Clearable="true">
+                            <MudSelectItem Value="@(1u)" T="uint?">
+                                @L["Month:January"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(2u)" T="uint?">
+                                @L["Month:February"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(3u)" T="uint?">
+                                @L["Month:March"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(4u)" T="uint?">
+                                @L["Month:April"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(5u)" T="uint?">
+                                @L["Month:May"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(6u)" T="uint?">
+                                @L["Month:June"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(7u)" T="uint?">
+                                @L["Month:July"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(8u)" T="uint?">
+                                @L["Month:August"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(9u)" T="uint?">
+                                @L["Month:September"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(10u)" T="uint?">
+                                @L["Month:October"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(11u)" T="uint?">
+                                @L["Month:November"]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@(12u)" T="uint?">
+                                @L["Month:December"]
+                            </MudSelectItem>
+                        </MudSelect>
+
+                        <MudSelect T="uint?" @bind-Value="@_model.Day" For="@(() => _model.Day)" Label="@L["EventGuesser:Day"]" Clearable="true">
+                            @foreach (var day in Enumerable.Range(1, 31))
+                            {
+                                <MudSelectItem Value="@((uint)day)" T="uint?">
+                                    @day
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+
+                        <MudRadioGroup @bind-SelectedOption="@_model.IsBc">
+                            <MudRadio Option="false">
+                                @L["HistoricalDate:Ad"]
+                            </MudRadio>
+                            <MudRadio Option="true">
+                                @L["HistoricalDate:Bc"]
+                            </MudRadio>
+                        </MudRadioGroup>
+
+                        <div class="submit">
+                            <LoadingButton
+                                ButtonType="ButtonType.Submit"
+                                Text="@L["Test:Answer"]"
+                                LoadingText="@L["Loading"]"
+                                IsLoading="@_isLoading"/>
+                        </div>
+                    </div>
+                </EditForm>
+            </EduContainer>
+        </Success>
+    </ApiViewer>
+</EduPage>
+
+@code {
+
+    private ApiResponse<TestModel> _response = ApiResponse<TestModel>.Loading();
+    private uint _score;
+    private DateTime _x2BonusUntil;
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index),
+        new BreadcrumbItem(L["EventGuesser"].Value, Links.History.EventGuesserBuilder),
+    };
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient Client { get; set; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    private Model _model = new();
+    private int _questionIndex;
+    private bool _isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _response = await Client.EventGuesser.GetAsync();
+        if (!_response.IsSuccess)
+            return;
+        
+        _score = _response.Data.Score;
+        _x2BonusUntil = _response.Data.X2BonusUntil;
+        
+        for (var i = 0; i < _response.Data.Questions.Length; i++)
+        {
+            if (_response.Data.Questions[i].IsAnswered)
+                continue;
+
+            _questionIndex = i;
+            break;
+        }
+    }
+
+    private async Task OnValidSubmit()
+    {
+        _isLoading = true;
+        var request = new CheckRequest(
+            _response.Data.Questions[_questionIndex].Id,
+            _model.IsBc ? -_model.Year.GetValueOrDefault(0) : _model.Year.GetValueOrDefault(0),
+            _model.Month,
+            _model.Day
+            );
+
+        var result = await Client.EventGuesser.CheckAsync(request);
+        if (!result.IsSuccess)
+        {
+            Snackbar.Add(result.Error.Message, Severity.Error);
+            _isLoading = false;
+            return;
+        }
+
+        _score = _response.Data.Score;
+        _x2BonusUntil = _response.Data.X2BonusUntil;
+        
+        if (result.Data.IsComplete)
+        {
+            Navigation.NavigateTo(Links.History.EventGuesserPersonalConclusion);
+            return;
+        }
+        
+        if (_questionIndex == _response.Data.Questions.Length - 1)
+            return;
+
+        _model = new Model();
+        _questionIndex++;
+        _isLoading = false;
+    }
+
+    public sealed record Model
+    {
+        public int? Year { get; set; }
+
+        public uint? Month { get; set; }
+
+        public uint? Day { get; set; }
+
+        public bool IsBc { get; set; }
+
+        public sealed class Validator : AbstractValidator<Model>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.Year)
+                    .NotNull()
+                    .GreaterThan(0)
+                    .LessThanOrEqualTo(9999);
+
+                RuleFor(x => x.Month)
+                    .GreaterThan(0u)
+                    .LessThanOrEqualTo(12u);
+
+                RuleFor(x => x.Day)
+                    .GreaterThan(0u)
+                    .LessThanOrEqualTo(31u);
+            }
+        }
+    }
+
+}

@@ -10,47 +10,49 @@
     @L["Store:Catalog"]
 </PageTitle>
 
-<div class="header-wrapper">
-    <div class="header">
-        <div class="header-text-wrapper">
-            <MudText Typo="Typo.h4" Class="mb-3">
-                Start today. Boost up your learning!
-            </MudText>
-            <MudText Typo="Typo.subtitle1" Class="mud-text-secondary">
-                Start with premium subscription today.
-            </MudText>
-        </div>
-        <div class="header-image-wrapper">
-            <div class="header-image">
-                <img src="/images/illustration/product-teardown.svg" alt="Pricing" loading="lazy">
+<EduPage Subject="Education" ShowFooter="true">
+    <div class="header-wrapper">
+        <div class="header">
+            <div class="header-text-wrapper">
+                <MudText Typo="Typo.h4" Class="mb-3">
+                    Start today. Boost up your learning!
+                </MudText>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary">
+                    Start with premium subscription today.
+                </MudText>
+            </div>
+            <div class="header-image-wrapper">
+                <div class="header-image">
+                    <img src="/images/illustration/product-teardown.svg" alt="Pricing" loading="lazy">
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="product-wrapper">
-    <EduFitGrid Style="justify-items: center">
-        <ApiViewer Response="@_response">
-            <Loading>
-                <SkeletonCard Style="width: 100%; max-width: 460px"/>
-                <SkeletonCard Style="width: 100%; max-width: 460px"/>
-                <SkeletonCard Style="width: 100%; max-width: 460px"/>
-            </Loading>
-            <Success Context="subscriptions">
-                @foreach (var item in subscriptions)
-                {
-                    <SubscriptionCard
-                        Id="@item.Id"
-                        Months="@item.Months"
-                        Price="@item.Price"
-                        Subjects="@item.Subjects"
-                        Type="@item.Type"
-                        OnBuyClick="@OnBuyClick"/>
-                }
-            </Success>
-        </ApiViewer>
-    </EduFitGrid>
-</div>
+    <div class="product-wrapper">
+        <EduFitGrid Style="justify-items: center">
+            <ApiViewer Response="@_response">
+                <Loading>
+                    <SkeletonCard Style="width: 100%; max-width: 460px"/>
+                    <SkeletonCard Style="width: 100%; max-width: 460px"/>
+                    <SkeletonCard Style="width: 100%; max-width: 460px"/>
+                </Loading>
+                <Success Context="subscriptions">
+                    @foreach (var item in subscriptions)
+                    {
+                        <SubscriptionCard
+                            Id="@item.Id"
+                            Months="@item.Months"
+                            Price="@item.Price"
+                            Subjects="@item.Subjects"
+                            Type="@item.Type"
+                            OnBuyClick="@OnBuyClick"/>
+                    }
+                </Success>
+            </ApiViewer>
+        </EduFitGrid>
+    </div>
+</EduPage>
 
 @code {
     private ApiResponse<Subscription[]> _response = ApiResponse<Subscription[]>.Loading();

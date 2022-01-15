@@ -72,13 +72,14 @@
         </MudNavMenu>
     </MudDrawer>
 
-    <MudMainContent Class="d-flex flex-column h-100">
-        <main class="flex-grow-1">
-            @Body
-        </main>
-
-        <EduFooter Subject="@L["Subject:History"]"/>
-    </MudMainContent>
+    @Body
+    @* <MudMainContent Class="d-flex flex-column h-100"> *@
+    @*     <main class="flex-grow-1"> *@
+    @*         @Body *@
+    @*     </main> *@
+    @* *@
+    @*     <EduFooter Subject="@L["Subject:History"]"/> *@
+    @* </MudMainContent> *@
 
     <MudScrollToTop TopOffset="400" Style="z-index:2000;">
         <MudFab Icon="@Icons.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
@@ -101,7 +102,7 @@
     private IHistoryClient Client { get; set; } = default!;
 
     [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
+    private NavigationManager Navigation { get; set; } = default!;
 
     private async Task<IEnumerable<HistoryTopicSummary>> OnSearch(string text)
     {
@@ -114,7 +115,7 @@
 
     private Task OnSearchResult(HistoryTopicSummary entry)
     {
-        NavigationManager.NavigateTo(Links.History.TopicById(entry.Id));
+        Navigation.NavigateTo(Links.History.TopicById(entry.Id));
         return _searchAutocomplete.Clear();
     }
 

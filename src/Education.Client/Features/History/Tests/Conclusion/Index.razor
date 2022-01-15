@@ -7,34 +7,33 @@
 
 @attribute [Authorize]
 
-<ApiViewer Response="@_response">
-    <Loading>
-        <PageSpinner/>
-    </Loading>
-    <Success Context="conclusion">
-        @switch (conclusion)
-        {
-            case EasyTestConclusion test:
-                <PageTitle>@test.Topic.Title</PageTitle>
-                <EasyTestView Conclusion="@test"/>
-                break;
+<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+    <ApiViewer Response="@_response">
+        <Success Context="conclusion">
+            @switch (conclusion)
+            {
+                case EasyTestConclusion test:
+                    <PageTitle>@test.Topic.Title</PageTitle>
+                    <EasyTestView Conclusion="@test"/>
+                    break;
 
-            case HardTestConclusion test:
-                <PageTitle>@test.Topic.Title</PageTitle>
-                <HardTestView Conclusion="@test"/>
-                break;
+                case HardTestConclusion test:
+                    <PageTitle>@test.Topic.Title</PageTitle>
+                    <HardTestView Conclusion="@test"/>
+                    break;
 
-            case MixedTestConclusion test:
-                <PageTitle>@L["Test:Mixed"]</PageTitle>
-                <MixedTestView Conclusion="@test"/>
-                break;
+                case MixedTestConclusion test:
+                    <PageTitle>@L["Test:Mixed"]</PageTitle>
+                    <MixedTestView Conclusion="@test"/>
+                    break;
 
-            default:
-                throw new ArgumentOutOfRangeException(nameof(conclusion));
-        }
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(conclusion));
+            }
 
-    </Success>
-</ApiViewer>
+        </Success>
+    </ApiViewer>
+</EduPage>
 
 @code {
     private ApiResponse<TestConclusion> _response = ApiResponse<TestConclusion>.Loading();
