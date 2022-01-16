@@ -6,7 +6,7 @@ public sealed record TestStatistics(
     TimeSpent TimeSpent,
     NumberOfTests NumberOfTests,
     TestRangeContrast RangeContrast,
-    IEnumerable<TestStatistics.DailyProgress> Progress
+    TestStatistics.DailyProgress[] Progress
 )
 {
     public sealed record DailyProgress(

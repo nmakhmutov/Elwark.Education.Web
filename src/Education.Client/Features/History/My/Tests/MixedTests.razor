@@ -25,6 +25,10 @@
                             <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
                             <ProgressList Items="@result.RangeContrast.NumberOfTests.GetProgress(L)"/>
                         </ProgressContent>
+                        <ActivityContent>
+                            <Subheader Title="@L["Test:MyActivity"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                            <NumberOfTestDailyProgressChart Progress="@result.Progress"/>
+                        </ActivityContent>
                     </StatisticDetailsCard>
                     <StatisticDetailsCard Title="@L["Score"]" Value="@result.Score.Total">
                         <TotalContent>
@@ -35,6 +39,10 @@
                             <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
                             <ProgressList Items="@result.RangeContrast.Score.GetProgress(L)"/>
                         </ProgressContent>
+                        <ActivityContent>
+                            <Subheader Title="@L["Test:MyActivity"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                            <ScoreDailyProgressChart Progress="@result.Progress"/>
+                        </ActivityContent>
                     </StatisticDetailsCard>
                     <StatisticDetailsCard Title="@L["Questions"]" Value="@result.AnswerRatio.Questions">
                         <TotalContent>
@@ -45,6 +53,10 @@
                             <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
                             <ProgressList Items="@result.RangeContrast.AnswerRatio.GetProgress(L)"/>
                         </ProgressContent>
+                        <ActivityContent>
+                            <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                            <AnswerRatioDailyProgressChart Progress="@result.Progress"/>
+                        </ActivityContent>
                     </StatisticDetailsCard>
                     <StatisticDetailsCard Title="@L["TimeSpent"]" Value="@result.TimeSpent.Total">
                         <TotalContent>
@@ -55,6 +67,10 @@
                             <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
                             <ProgressList Items="@result.RangeContrast.TimeSpent.GetProgress(L)"/>
                         </ProgressContent>
+                        <ActivityContent>
+                            <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                            <TimeSpentDailyProgressChart Progress="@result.Progress"/>
+                        </ActivityContent>
                     </StatisticDetailsCard>
                 </TestPageGrid>
             </EduContainer>

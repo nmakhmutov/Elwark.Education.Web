@@ -1,6 +1,6 @@
 @typeparam TValue
 
-<MudCard Class="@Class" Elevation="0">
+<MudCard Class="@(Class + "d-flex flex-column")" Elevation="0">
     <MudCardHeader Class="pa-3 pa-sm-6">
         <CardHeaderContent>
             <div class="d-flex align-center justify-space-between">
@@ -11,7 +11,7 @@
             </div>
         </CardHeaderContent>
     </MudCardHeader>
-    <MudCardContent Class="pa-3 pa-sm-6">
+    <MudCardContent Class="flex-grow-1 pa-3 pa-sm-6">
         <div class="grid">
             @if (TotalContent is not null)
             {
@@ -51,7 +51,8 @@
 
     [Parameter]
     public RenderFragment? ProgressContent { get; set; }
-    
+
     [Parameter]
     public RenderFragment? ActivityContent { get; set; }
+
 }

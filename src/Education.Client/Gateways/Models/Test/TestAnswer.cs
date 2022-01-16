@@ -6,4 +6,4 @@ public sealed record TextAnswer(string Text) : TestAnswer;
 
 public sealed record OneAnswer(int Number) : TestAnswer;
 
-public sealed record ManyAnswer(IEnumerable<int> Numbers) : TestAnswer;
+public sealed record ManyAnswer(int[] Numbers) : TestAnswer;

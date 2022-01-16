@@ -118,7 +118,7 @@
     private async Task OnValidSubmit()
     {
         _isLoading = true;
-        _result = await OnAnswer(new ManyAnswer(_model.Numbers));
+        _result = await OnAnswer(new ManyAnswer(_model.Numbers.ToArray()));
         _isLoading = false;
     }
 
@@ -141,7 +141,7 @@
             _ => (Icon: null, Color: Color.Default)
             };
 
-    public record Model
+    public sealed record Model
     {
         public List<int> Numbers { get; set; } = new();
 
