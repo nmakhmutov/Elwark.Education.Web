@@ -138,7 +138,8 @@ public sealed class TopicContentFormatService
             .Build();
 
         WidthStyles = StyleBuilder.Empty()
-            .AddStyle("margin", "0 auto")
+            .AddStyle("margin-left", "auto")
+            .AddStyle("margin-right", "auto")
             .AddStyle("max-width", Width switch
             {
                 Width.md => "960px",

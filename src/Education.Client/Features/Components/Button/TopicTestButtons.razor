@@ -30,13 +30,13 @@
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public bool IsLoading { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public TestType[] TestTypes { get; set; } = Array.Empty<TestType>();
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public EventCallback<TestType> OnCreateTestClick { get; set; }
 
     private async Task OnTestClick(TestType testType)

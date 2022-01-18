@@ -29,8 +29,9 @@ public sealed class ThemeProvider
             BackgroundGrey = "#E3E5E7",
             AppbarBackground = Colors.Shades.White, //"#3949ab"
             AppbarText = Colors.Grey.Darken3, //"#27272f"
-            Divider = "rgba(34, 51, 84, 0.1)",
-            TableLines = "rgba(34, 51, 84, 0.1)",
+            Divider = "#E8E8E8",
+            DividerLight = "#ECECEC",
+            TableLines = "#E8E8E8",
             OverlayLight = "rgba(255, 255, 255, 0.7)"
         }
     };

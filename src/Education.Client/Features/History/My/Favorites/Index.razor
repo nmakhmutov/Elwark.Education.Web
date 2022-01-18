@@ -42,7 +42,6 @@
                 <MudTh>@L["NumberOfTests:TotalPassed"]</MudTh>
                 <MudTh>@L["TimeSpent:Total"]</MudTh>
                 <MudTh/>
-                <MudTh/>
             </HeaderContent>
             <RowTemplate>
                 <MudTd HideSmall="true">
@@ -65,15 +64,17 @@
                     @context.UserActivity.TimeSpent.ToSimpleFormat()
                 </MudTd>
                 <MudTd>
-                    <FavoriteToggleButton
-                        IsFavorite="@context.UserActivity.IsFavorite"
-                        TopicId="@context.Topic.Id"
-                        OnFavoriteClick="@OnFavoriteClick"/>
-                </MudTd>
-                <MudTd>
-                    <MudTooltip Text="@L["Details"]">
-                        <MudIconButton Link="@Links.History.User.MyTopic(context.Topic.Id)" Icon="@Icons.Material.Outlined.ReadMore"/>
-                    </MudTooltip>
+                    <div class="d-flex flex-row justify-end">
+                        <FavoriteToggleButton
+                            IsFavorite="@context.UserActivity.IsFavorite"
+                            TopicId="@context.Topic.Id"
+                            OnFavoriteClick="@OnFavoriteClick"/>
+                        <MudTooltip Text="@L["Details"]">
+                            <MudIconButton 
+                                Link="@Links.History.User.MyTopic(context.Topic.Id)" 
+                                Icon="@Icons.Material.Outlined.ReadMore"/>
+                        </MudTooltip>
+                    </div>
                 </MudTd>
             </RowTemplate>
             <NoRecordsContent>
