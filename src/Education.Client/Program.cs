@@ -41,7 +41,7 @@ var policy = builder.HostEnvironment.IsDevelopment()
 
 builder.Services
     .AddLocalization(options => options.ResourcesPath = "Resources")
-    .AddScoped<ThemeProvider>()
+    .AddScoped<ThemeService>()
     .AddScoped<SidebarService>()
     .AddScoped<LanguageService>()
     .AddScoped<TopicContentFormatService>()

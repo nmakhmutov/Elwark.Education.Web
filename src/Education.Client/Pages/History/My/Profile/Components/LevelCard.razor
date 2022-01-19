@@ -1,0 +1,38 @@
+@using Education.Client.Gateways.Models.User
+<MudCard Class="@Class" Elevation="0">
+    <MudCardContent Class="pa-3 pa-sm-6">
+        <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-3">
+            @L["Experience:MyLevel"]
+        </MudText>
+        <div class="hexagon-wrapper">
+            <div class="hexagon">
+                <span>@Level.Value</span>
+            </div>
+        </div>
+        <MudProgressLinear Min="0" Max="@Level.NextLevelExperience" Value="@Level.Experience" Color="Color.Primary" Class="mb-2"/>
+        <div class="d-flex justify-space-between">
+            <div class="d-flex align-center">
+                <MudIcon Style="color: #FFCA28" Icon="@EducationIcons.Experience" Class="mr-2" Size="Size.Small"/>
+                <MudText Typo="Typo.body2">
+                    @L["Experience:PointsToNextLevel", (Level.NextLevelExperience - Level.Experience).ToString("N0")]
+                </MudText>
+            </div>
+            <MudText Typo="Typo.body2">
+                @(((double)Level.Experience / Level.NextLevelExperience * 100).ToReadable())%
+            </MudText>
+        </div>
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public Level Level { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

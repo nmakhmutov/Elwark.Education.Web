@@ -1,0 +1,123 @@
+@page "/history/my/profile"
+@layout HistoryLayout
+@attribute [Authorize]
+
+@using Education.Client.Gateways.History.User
+@using Education.Client.Gateways.History
+@using Education.Client.Pages.History.My.Components
+@using Education.Client.Pages.History.My.Profile.Components
+
+<PageTitle>@L["Profile"]</PageTitle>
+
+<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+    <ApiViewer Response="@_response">
+        <Success Context="overview">
+
+            <EduContainer MaxWidth="EduWidth.W1920">
+                <div class="grid">
+                    <AuthorizeView>
+                        <Authorized>
+                            <ProfileHeader
+                                Class="header"
+                                Image="@context.User.GetImage()"
+                                Name="@context.User.GetName()"
+                                Nickname="@context.User.GetNickname()"/>
+                        </Authorized>
+                    </AuthorizeView>
+                    
+                    <SubjectCard
+                        Class="subject"
+                        Subject="SubjectType.History"
+                        Subscription="@overview.Subscription"/>
+
+                    <LevelCard
+                        Class="level"
+                        Level="@overview.Level"/>
+
+                    <WalletCard
+                        Class="wallet"
+                        Wallet="@overview.Wallet"/>
+
+                    <DailyRewardCard
+                        Class="daily-reward"
+                        Reward="@overview.DailyReward"
+                        OnCollect="@CollectDailyReward"/>
+
+                    <StatisticsCard
+                        Class="easy-test"
+                        Title="@L["Tests:Easy"]"
+                        Value="@overview.EasyTestStatistic.NumberOfTests.Total"
+                        Href="@Links.History.User.MyEasyTests">
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <ScoreChart Value="@overview.EasyTestStatistic.Score"/>
+                    </StatisticsCard>
+
+                    <StatisticsCard
+                        Class="hard-test"
+                        Title="@L["Tests:Hard"]"
+                        Value="@overview.HardTestStatistic.NumberOfTests.Total"
+                        Href="@Links.History.User.MyHardTests">
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <ScoreChart Value="@overview.HardTestStatistic.Score"/>
+                    </StatisticsCard>
+
+                    <StatisticsCard
+                        Class="mixed-test"
+                        Title="@L["Tests:Mixed"]"
+                        Value="@overview.MixedTestStatistic.NumberOfTests.Total"
+                        Href="@Links.History.User.MyMixedTests">
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <ScoreChart Value="@overview.MixedTestStatistic.Score"/>
+                    </StatisticsCard>
+
+                    <StatisticsCard
+                        Class="event-guesser"
+                        Title="@L["EventGuesser"]"
+                        Value="@overview.EventGuesserStatistic.Tests"
+                        Href="@Links.History.User.MyEventGuessers">
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <EventGuesserScoreChart
+                            Score="@overview.EventGuesserStatistic.Score"
+                            Points="@overview.EventGuesserStatistic.Points"
+                            Bonus="@overview.EventGuesserStatistic.Bonus"/>
+                    </StatisticsCard>
+
+                    <ActivityCard
+                        Class="activity"
+                        Title="@L["Test:MyActivity"]"
+                        Activities="@overview.TestProgress"/>
+
+                    <AchievementsCard
+                        Class="achievements"
+                        Achievements="@overview.Achievements"/>
+
+                    <RecentTransactionsCard
+                        Class="transactions"
+                        Transactions="@overview.Transactions"/>
+                </div>
+            </EduContainer>
+        </Success>
+    </ApiViewer>
+</EduPage>
+
+@code {
+
+    private ApiResponse<HistoryUserProfile> _response = ApiResponse<HistoryUserProfile>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        _response = await HistoryClient.User.GetOverviewAsync();
+
+    private async Task CollectDailyReward()
+    {
+        var response = await HistoryClient.User.CollectDailyReward();
+        if (response.Status == ResponseStatus.Success)
+            await OnInitializedAsync();
+    }
+
+}

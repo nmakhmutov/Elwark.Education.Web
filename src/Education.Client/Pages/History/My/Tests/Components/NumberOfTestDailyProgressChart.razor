@@ -1,0 +1,107 @@
+@using ApexCharts
+@using Education.Client.Gateways.Models.Statistics
+
+@implements IDisposable
+
+<ApexChart @ref="@_chart" TItem="TestStatistics.DailyProgress" Options="_options" Height="@("350px")">
+    <ApexPointSeries
+        TItem="TestStatistics.DailyProgress"
+        Items="@Progress"
+        Name="@L["NumberOfTests:Successful"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => x.NumberOfTests.Successful)"/>
+
+    <ApexPointSeries
+        TItem="TestStatistics.DailyProgress"
+        Items="@Progress"
+        Name="@L["NumberOfTests:Failed"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Red.Default })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => x.NumberOfTests.Failed)"/>
+
+    <ApexPointSeries
+        TItem="TestStatistics.DailyProgress"
+        Items="@Progress"
+        Name="@L["NumberOfTests:MistakesExceeded"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Default })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => x.NumberOfTests.MistakesExceeded)"/>
+
+    <ApexPointSeries
+        TItem="TestStatistics.DailyProgress"
+        Items="@Progress"
+        Name="@L["NumberOfTests:TimeExceeded"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.DeepPurple.Default })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => x.NumberOfTests.TimeExceeded)"/>
+</ApexChart>
+
+@code {
+    private ApexChart<TestStatistics.DailyProgress> _chart = default!;
+    private ApexChartOptions<TestStatistics.DailyProgress>? _options;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private ThemeService ThemeService { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public TestStatistics.DailyProgress[] Progress { get; set; } = Array.Empty<TestStatistics.DailyProgress>();
+
+    protected override void OnInitialized()
+    {
+        _options = new ApexChartOptions<TestStatistics.DailyProgress>
+        {
+            Legend = new Legend
+            {
+                Show = false
+            },
+            Chart = new Chart
+            {
+                Toolbar = new Toolbar
+                {
+                    Show = false
+                },
+                Selection = new Selection
+                {
+                    Enabled = false
+                },
+                Zoom = new Zoom
+                {
+                    Enabled = false
+                },
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Grid = new Grid
+            {
+                BorderColor = "var(--mud-palette-divider)"
+            },
+            Theme = new Theme
+            {
+                Mode = ThemeService.Type == ThemeService.ThemeType.Light ? Mode.Light : Mode.Dark
+            }
+        };
+
+        ThemeService.OnChange += Update;
+    }
+
+    public void Dispose() => ThemeService.OnChange -= Update;
+
+    private void Update()
+    {
+        if (_options is null)
+            return;
+
+        _options.Theme.Mode = ThemeService.Type == ThemeService.ThemeType.Light ? Mode.Light : Mode.Dark;
+        _chart.SetRerenderChart();
+        StateHasChanged();
+    }
+
+}

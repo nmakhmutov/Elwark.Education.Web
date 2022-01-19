@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace Education.Client;
 
-public class LocalizationHandler : DelegatingHandler
+public sealed class LocalizationHandler : DelegatingHandler
 {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
     {

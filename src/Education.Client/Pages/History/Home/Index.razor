@@ -1,0 +1,85 @@
+@page "/history"
+@layout HistoryLayout
+
+@using Education.Client.Gateways.History.Home
+@using Education.Client.Gateways.History
+@using Education.Client.Pages.History.Home.Components
+@using Education.Client.Pages.History.Components
+
+@attribute [Authorize]
+
+<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+    <ApiViewer Response="@_response">
+        <Success Context="result">
+            <PageTitle>
+                @L["Subject:History"]
+            </PageTitle>
+
+            <SpotlightGrid Class="mb-3 mb-sm-6" Topics="@result.Trends.Take(8).ToArray()"/>
+
+            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
+                <div class="header">
+                    <h2>@L["Topics:Trending"]</h2>
+                </div>
+                <MudGrid Spacing="3">
+                    @foreach (var item in result.Trends.Skip(8))
+                    {
+                        <MudItem xs="12" sm="6" md="3">
+                            <TopicCard
+                                Epoch="@item.Epoch"
+                                Id="@item.Id"
+                                Overview="@item.Overview"
+                                Rating="@item.Rating"
+                                Title="@item.Title"
+                                Image="@item.Image"/>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </EduContainer>
+
+            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
+                <DailyTopic Topic="@result.DailyTopic" Class="my-6 my-sm-12"/>
+            </EduContainer>
+
+            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
+                <div class="header">
+                    <h2>@L["Topics:TopFavorites"]</h2>
+                </div>
+                <SpotlightGrid Gap="true" Topics="@result.TopFavorites"/>
+            </EduContainer>
+
+            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
+                <div class="header">
+                    <h2>@L["Topics:TopRatings"]</h2>
+                </div>
+                <SpotlightGrid Gap="true" Topics="@result.TopRatings"/>
+            </EduContainer>
+
+            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
+                <div class="header">
+                    <h2>@L["Topics:Recent"]</h2>
+                </div>
+                <SpotlightGrid Gap="true" Topics="@result.Recent"/>
+            </EduContainer>
+
+            <EduContainer MaxWidth="@EduWidth.W960" Style="background-color: var(--mud-palette-black)">
+                <RandomTopic Class="my-6 my-sm-12"/>
+            </EduContainer>
+        </Success>
+    </ApiViewer>
+</EduPage>
+
+@code {
+
+    private ApiResponse<HistoryOverview> _response = ApiResponse<HistoryOverview>.Loading();
+
+    [Inject]
+    private IHistoryClient Client { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        _response = await Client.Home.GetAsync();
+
+}

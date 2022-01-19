@@ -1,0 +1,54 @@
+@using Education.Client.Pages
+<AuthorizeView>
+    <Authorized>
+        <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-3">
+            <ActivatorContent>
+                <MudAvatar Image="@context.User.GetImage()"/>
+            </ActivatorContent>
+            <ChildContent>
+
+                <MudCard Elevation="0" Class="mt-n3">
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Image="@context.User.GetImage()"/>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.body1">@context.User.GetName()</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </MudCard>
+
+                <MudDivider Class="mb-2"/>
+                <MudListItem Text="@L["Account"]" Icon="@Icons.Material.Outlined.Person" Href="@Links.Account.Index"/>
+                <MudListItem Text="@L["Logout"]" Icon="@Icons.Material.Outlined.Login" OnClick="@OnLogout"/>
+            </ChildContent>
+        </MudMenu>
+    </Authorized>
+
+    <NotAuthorized>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@OnLogin" Class="ml-3">
+            @L["SignIn"]
+        </MudButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private SignOutSessionStateManager SignOutManager { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    private void OnLogin() =>
+        Navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(Navigation.Uri)));
+        
+    private async Task OnLogout(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo(Links.Authentication.LogOut);
+    }
+}

@@ -1,0 +1,99 @@
+@using Education.Client.Gateways.History.User
+@using ApexCharts
+@implements IDisposable
+
+<MudCard Class="@Class" Elevation="0">
+    <MudCardHeader Class="pa-3 pa-sm-6">
+        <CardHeaderContent>
+            <div class="d-flex align-center justify-space-between">
+                <MudText Typo="Typo.h5">
+                    @Title
+                </MudText>
+                <MudLink Typo="Typo.subtitle1" Href="@Links.History.User.MyActivities">
+                    @L["Details"]
+                </MudLink>
+            </div>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent Class="pa-3 pa-sm-6">
+        <div style="max-height: 400px; height: 100%; position: relative">
+            <ApexChart @ref="@_chart" TItem="HistoryUserProfile.ProgressOverview" Options="_options" Height="@("400px")">
+                <ApexPointSeries
+                    TItem="HistoryUserProfile.ProgressOverview"
+                    Items="Activities"
+                    Name="@L["NumberOfTests:Total"]"
+                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
+                    SeriesType="SeriesType.Area"
+                    XValue="@(e => e.Date.ToString("dd MMM"))"
+                    YValue="@(x => x.Total)"/>
+            </ApexChart>
+        </div>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    private ApexChart<HistoryUserProfile.ProgressOverview> _chart = default!;
+    private ApexChartOptions<HistoryUserProfile.ProgressOverview>? _options;
+    
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private ThemeService ThemeService { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public HistoryUserProfile.ProgressOverview[] Activities { get; set; } = Array.Empty<HistoryUserProfile.ProgressOverview>();
+
+    protected override void OnInitialized()
+    {
+        _options = new ApexChartOptions<HistoryUserProfile.ProgressOverview>
+        {
+            Chart = new Chart
+            {
+                Toolbar = new Toolbar
+                {
+                    Show = false
+                },
+                Selection = new Selection
+                {
+                    Enabled = false
+                },
+                Zoom = new Zoom
+                {
+                    Enabled = false
+                },
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Grid = new Grid
+            {
+                BorderColor = "var(--mud-palette-divider)"
+            },
+            Theme = new Theme
+            {
+                Mode = ThemeService.Type == ThemeService.ThemeType.Light ? Mode.Light : Mode.Dark
+            }
+        };
+
+        ThemeService.OnChange += Update;
+    }
+
+    public void Dispose() => ThemeService.OnChange -= Update;
+
+    private void Update()
+    {
+        if (_options is null)
+            return;
+
+        _options.Theme.Mode = ThemeService.Type == ThemeService.ThemeType.Light ? Mode.Light : Mode.Dark;
+        _chart.SetRerenderChart();
+        StateHasChanged();
+    }
+
+}

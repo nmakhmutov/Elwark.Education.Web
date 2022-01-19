@@ -1,0 +1,20 @@
+﻿@page "/"
+@layout BaseLayout
+@using Education.Client.Pages.Home.Components
+
+<PageTitle>Elwark education</PageTitle>
+
+<EduPage Subject="Education" ShowFooter="false">
+    <AuthorizeView>
+        <Authorized>
+            <RedirectTo Url="@Links.History.Index"/>
+            <NonAuthorizedLanding/>
+        </Authorized>
+
+        <NotAuthorized>
+            <MudText Typo="Typo.h1" Align="Align.Center">
+                Welcome
+            </MudText>
+        </NotAuthorized>
+    </AuthorizeView>
+</EduPage>

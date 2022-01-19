@@ -128,7 +128,12 @@ public sealed class TopicContentFormatService
     }
 
     private ValueTask SaveStateAsync() =>
-        _storage.SetItemAsync(StorageKey, new State(TextAlign, Math.Round(FontSize, 2), Width));
+        _storage.SetItemAsync(StorageKey, new State
+        {
+            Width = Width,
+            FontSize = Math.Round(FontSize, 2),
+            TextAlign = TextAlign
+        });
 
     private void UpdateStyles()
     {
@@ -158,20 +163,13 @@ public sealed class TopicContentFormatService
 
     private sealed record State
     {
-        public State(Align textAlign, double fontSize, Width width)
-        {
-            TextAlign = textAlign;
-            FontSize = fontSize;
-            Width = width;
-        }
-
         [JsonPropertyName("ta")]
-        public Align TextAlign { get; }
+        public Align TextAlign { get; init; }
 
         [JsonPropertyName("fs")]
-        public double FontSize { get; }
+        public double FontSize { get; init;  }
 
         [JsonPropertyName("w")]
-        public Width Width { get; }
+        public Width Width { get; init; }
     }
 }

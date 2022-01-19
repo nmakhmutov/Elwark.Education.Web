@@ -1,0 +1,121 @@
+.grid {
+    display: grid;
+    grid-gap: 12px;
+    grid-template-columns: minmax(100px, 1fr);
+    grid-template-areas: 
+        "header"
+        "subject"
+        "level"
+        "wallet"
+        "daily-reward"
+        "easy-test"
+        "hard-test"
+        "mixed-test"
+        "event-guesser"
+        "activity"
+        "achievements"
+        "transactions";
+}
+
+.grid ::deep .header {
+    grid-area: header;
+}
+
+.grid ::deep .subject {
+    grid-area: subject;
+}
+
+.grid ::deep .achievements {
+    grid-area: achievements;
+}
+
+.grid ::deep .transactions {
+    grid-area: transactions;
+}
+
+.grid ::deep .level {
+    grid-area: level;
+}
+
+.grid ::deep .wallet {
+    grid-area: wallet;
+}
+
+.grid ::deep .daily-reward {
+    grid-area: daily-reward;
+}
+
+.grid ::deep .easy-test {
+    grid-area: easy-test;
+}
+
+.grid ::deep .hard-test {
+    grid-area: hard-test;
+}
+
+.grid ::deep .mixed-test {
+    grid-area: mixed-test;
+}
+
+.grid ::deep .event-guesser {
+    grid-area: event-guesser;
+}
+
+.grid ::deep .activity {
+    grid-area: activity;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        grid-gap: 24px;
+        grid-template-columns: repeat(2, minmax(160px, 1fr));
+        grid-template-areas:
+            "header header"
+            "subject level"
+            "wallet daily-reward"
+            "easy-test hard-test"
+            "mixed-test event-guesser"
+            "activity activity"
+            "achievements achievements"
+            "transactions transactions";
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+        grid-template-areas:
+            "header header header"
+            "subject . ."
+            "level wallet daily-reward"
+            "easy-test hard-test mixed-test"
+            "event-guesser activity activity"
+            "achievements achievements transactions";
+    }
+}
+
+@media (min-width: 1600px) {
+    .grid {
+        grid-template-columns: repeat(4, minmax(180px, 1fr));
+        grid-template-areas:
+            "header header header header"
+            "subject . . level"
+            "easy-test hard-test mixed-test wallet"
+            "easy-test hard-test mixed-test daily-reward"
+            "event-guesser activity activity activity"
+            "achievements achievements transactions transactions";
+    }
+}
+
+@media (min-width: 1920px) {
+    .grid {
+        grid-template-columns: repeat(5, minmax(180px, 1fr));
+        grid-template-areas:
+            "header header header header header"
+            "subject . . . level"
+            "easy-test hard-test mixed-test event-guesser wallet"
+            "easy-test hard-test mixed-test event-guesser daily-reward"
+            "activity activity activity activity activity"
+            "achievements achievements achievements transactions transactions";
+    }
+}

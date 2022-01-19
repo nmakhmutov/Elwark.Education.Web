@@ -1,5 +1,4 @@
-@using Education.Client.Features
-
+@using Education.Client.Pages
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
@@ -36,7 +35,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private ThemeProvider ThemeProvider { get; set; } = default!;
+    private ThemeService ThemeService { get; set; } = default!;
 
     [Inject]
     private SidebarService SidebarService { get; set; } = default!;
@@ -46,7 +45,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await ThemeProvider.InitAsync();
+        await ThemeService.InitAsync();
         await SidebarService.InitAsync();
         await CustomerService.InitAsync();
     }
