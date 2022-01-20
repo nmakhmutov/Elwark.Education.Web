@@ -3,7 +3,7 @@
     border-radius: var(--mud-default-borderradius);
     box-shadow: var(--mud-elevation-0);
     display: grid;
-    grid-template-rows: 200px 40px 1fr auto auto;
+    grid-template-rows: 200px 1fr;
     grid-gap: 12px;
 }
 
@@ -31,13 +31,20 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    background: var(--mud-palette-surface);
     padding: 6px 12px 0;
+    background: var(--mud-palette-surface);
     border-top-right-radius: var(--mud-default-borderradius);
+}
+
+@media (min-width: 600px) {
+    .card.horizontal {
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: minmax(200px, 300px);
+    }
 }
 
 @media (min-width: 1920px) {
     .card {
-        grid-template-rows: 250px 40px 1fr auto auto;
+        grid-template-rows: 250px 1fr;
     }
 }

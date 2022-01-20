@@ -18,23 +18,21 @@
             <SpotlightGrid Class="mb-3 mb-sm-6" Topics="@result.Trends.Take(8).ToArray()"/>
 
             <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
-                <div class="header">
-                    <h2>@L["Topics:Trending"]</h2>
-                </div>
-                <MudGrid Spacing="3">
+                <section class="trending">
+                    <div class="header">
+                        <h2>@L["Topics:Trending"]</h2>
+                    </div>
                     @foreach (var item in result.Trends.Skip(8))
                     {
-                        <MudItem xs="12" sm="6" md="3">
-                            <TopicCard
-                                Epoch="@item.Epoch"
-                                Id="@item.Id"
-                                Overview="@item.Overview"
-                                Rating="@item.Rating"
-                                Title="@item.Title"
-                                Image="@item.Image"/>
-                        </MudItem>
+                        <TopicCard
+                            Epoch="@item.Epoch"
+                            Id="@item.Id"
+                            Overview="@item.Overview"
+                            Rating="@item.Rating"
+                            Title="@item.Title"
+                            Image="@item.Image"/>
                     }
-                </MudGrid>
+                </section>
             </EduContainer>
 
             <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
@@ -42,29 +40,64 @@
             </EduContainer>
 
             <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
-                <div class="header">
-                    <h2>@L["Topics:TopFavorites"]</h2>
-                </div>
-                <SpotlightGrid Gap="true" Topics="@result.TopFavorites"/>
-            </EduContainer>
+                <div class="grid">
+                    <section class="recent">
+                        <div class="header">
+                            <h2>@L["Topics:Recent"]</h2>
+                        </div>
+                        @foreach (var item in result.Recent)
+                        {
+                            <TopicCard
+                                Id="@item.Id"
+                                Epoch="@item.Epoch"
+                                Title="@item.Title"
+                                Image="@item.Image"
+                                Overview="@item.Overview"
+                                Rating="@item.Rating"
+                                Horizontal="true"
+                                Class="mb-3 mb-sm-6"/>
+                        }
+                    </section>
 
-            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
-                <div class="header">
-                    <h2>@L["Topics:TopRatings"]</h2>
-                </div>
-                <SpotlightGrid Gap="true" Topics="@result.TopRatings"/>
-            </EduContainer>
+                    <section class="top-rating">
+                        <div class="header">
+                            <h2>@L["Topics:TopRatings"]</h2>
+                        </div>
+                        @foreach (var item in result.TopRatings)
+                        {
+                            <TopicCard
+                                Id="@item.Id"
+                                Epoch="@item.Epoch"
+                                Title="@item.Title"
+                                Image="@item.Image"
+                                Overview="@item.Overview"
+                                Rating="@item.Rating"/>
+                        }
+                    </section>
 
-            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
-                <div class="header">
-                    <h2>@L["Topics:Recent"]</h2>
+                    <section class="top-favorite">
+                        <div class="header">
+                            <h2>@L["Topics:TopFavorites"]</h2>
+                        </div>
+
+                        @foreach (var item in result.TopFavorites)
+                        {
+                            <TopicCard
+                                Id="@item.Id"
+                                Epoch="@item.Epoch"
+                                Title="@item.Title"
+                                Image="@item.Image"
+                                Overview="@item.Overview"
+                                Rating="@item.Rating"/>
+                        }
+                    </section>
                 </div>
-                <SpotlightGrid Gap="true" Topics="@result.Recent"/>
             </EduContainer>
 
             <EduContainer MaxWidth="@EduWidth.W960" Style="background-color: var(--mud-palette-black)">
                 <RandomTopic Class="my-6 my-sm-12"/>
             </EduContainer>
+
         </Success>
     </ApiViewer>
 </EduPage>

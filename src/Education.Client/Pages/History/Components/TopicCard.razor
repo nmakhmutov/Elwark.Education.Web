@@ -1,6 +1,8 @@
 @using Education.Client.Gateways.History
 @using Education.Client.Gateways.Models.Content
-<section class="card">
+@using MudBlazor.Utilities
+
+<section class="@_class">
     <header class="card-header">
         <a href="@Links.History.Content.Topic(Id)">
             <img src="@Image" alt="@Title" loading="lazy"/>
@@ -10,13 +12,12 @@
         </div>
     </header>
 
-    <aside class="d-flex align-center justify-space-between px-3">
-        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.Content.Epoch(Epoch)">
-            @L[$"History:{Epoch}"]
-        </MudChip>
-    </aside>
-
-    <article class="px-3">
+    <article class="pa-3">
+        <div class="mb-3">
+            <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.Content.Epoch(Epoch)">
+                @L[$"History:{Epoch}"]
+            </MudChip>
+        </div>
         <MudLink Href="@Links.History.Content.Topic(Id)" Typo="Typo.h6">
             @Title
         </MudLink>
@@ -28,25 +29,41 @@
 
 @code {
 
+    private string _class = string.Empty;
+    
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
     public string Id { get; set; } = string.Empty;
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public EpochType Epoch { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string Image { get; set; } = string.Empty;
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
-    public string Overview { get; set; } = string.Empty;
+    public string? Overview { get; set; }
+
+    [Parameter,EditorRequired]
+    public ContentRating Rating { get; set; } = default!;
 
     [Parameter]
-    public ContentRating Rating { get; set; } = default!;
+    public bool Horizontal { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _class = CssBuilder.Default("card")
+            .AddClass("horizontal", Horizontal)
+            .AddClass(Class, !string.IsNullOrEmpty(Class))
+            .Build();
+    }
 
 }
