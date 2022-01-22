@@ -1,11 +1,10 @@
 @page "/history/my/topics/{id}"
 @layout HistoryLayout
+@attribute [Authorize]
 
 @using Education.Client.Gateways.History.User
 @using Education.Client.Gateways.History
 @using Education.Client.Pages.History.My.Components
-
-@attribute [Authorize]
 
 <EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1280">
@@ -31,7 +30,7 @@
                     </div>
                 </MudPaper>
 
-                @Header(new HeaderProps(L["Tests:Easy"], Links.History.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero))
+                @RenderHeader(L["Tests:Easy"], Links.History.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero)
                 <EduFitGrid>
                     <SkeletonCard/>
                     <SkeletonCard/>
@@ -39,7 +38,7 @@
                 </EduFitGrid>
 
                 <div class="py-6"></div>
-                @Header(new HeaderProps(L["Tests:Hard"], Links.History.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero))
+                @RenderHeader(L["Tests:Hard"], Links.History.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero)
                 <EduFitGrid>
                     <SkeletonCard/>
                     <SkeletonCard/>
@@ -58,7 +57,7 @@
                             <MudLink Class="mt-3 mt-sm-0" Typo="Typo.h5" Href="@Links.History.Content.Topic(result.Topic.Id)">
                                 @result.Topic.Title
                             </MudLink>
-                            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0 mt-3"/>
+                            <Breadcrumbs Items="@_breadcrumbs" Class="pa-0 mt-3"/>
                             <MudText Class="d-none d-sm-block mt-3 mw-xs" Typo="Typo.body2">
                                 @result.Topic.Overview
                             </MudText>
@@ -112,7 +111,7 @@
                     </div>
                 </MudPaper>
 
-                @Header(new HeaderProps(L["Tests:Easy"], Links.History.User.MyEasyTests, L["TimeSpent"], result.EasyTest.TimeSpent))
+                @RenderHeader(L["Tests:Easy"], Links.History.User.MyEasyTests, L["TimeSpent"], result.EasyTest.TimeSpent)
                 <EduFitGrid Class="mb-3 mb-sm-6">
                     <StatisticsCard Title="@L["Tests"]" Value="@result.EasyTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.EasyTest.NumberOfTests"/>
@@ -153,7 +152,7 @@
                 }
 
                 <div class="py-6"></div>
-                @Header(new HeaderProps(L["Tests:Hard"], Links.History.User.MyHardTests, L["TimeSpent"], result.HardTest.TimeSpent))
+                @RenderHeader(L["Tests:Hard"], Links.History.User.MyHardTests, L["TimeSpent"], result.HardTest.TimeSpent)
                 <EduFitGrid Class="mb-3 mb-sm-6">
                     <StatisticsCard Title="@L["Tests"]" Value="@result.HardTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.HardTest.NumberOfTests"/>
@@ -197,11 +196,8 @@
     </EduContainer>
 </EduPage>
 
-@* ReSharper disable InconsistentNaming *@
-@* ReSharper disable once UnusedParameter.Local *@
-
 @code {
-    private List<BreadcrumbItem> Breadcrumbs = new();
+    private List<BreadcrumbItem> _breadcrumbs = new();
 
     private ApiResponse<TopicStatistics> _response = ApiResponse<TopicStatistics>.Loading();
 
@@ -219,7 +215,7 @@
         _response = await HistoryClient.User.GetTopicsAsync(Id);
 
         if (_response.Status == ResponseStatus.Success)
-            Breadcrumbs = new List<BreadcrumbItem>
+            _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Profile"].Value, Links.History.User.MyProfile),
                 new(L["Subject:History"].Value, Links.History.Index),
@@ -227,25 +223,21 @@
             };
     }
 
-    private readonly RenderFragment<HeaderProps> Header = message => __builder =>
-    {
-        <div class="d-flex flex-wrap align-center justify-space-between mb-3 mr-3">
-            <MudLink Href="@message.Link" Typo="Typo.h5">
-                @message.Title
+    private RenderFragment RenderHeader(LocalizedString title, string link, LocalizedString tooltip, TimeSpan timeSpent) =>
+        @<div class="d-flex flex-wrap align-center justify-space-between mb-3 mr-3">
+            <MudLink Href="@link" Typo="Typo.h5">
+                @title
             </MudLink>
             <div class="d-flex align-center">
-                <MudTooltip Text="@message.Tooltip">
+                <MudTooltip Text="@tooltip">
                     <MudText Typo="Typo.h5" Class="mr-3">
-                        @message.TimeSpent.ToSimpleFormat()
+                        @timeSpent.ToSimpleFormat()
                     </MudText>
                 </MudTooltip>
                 <MudAvatar Color="Color.Primary" Size="Size.Medium">
                     <MudIcon Icon="@EducationIcons.TimeSpent" Size="Size.Medium"/>
                 </MudAvatar>
             </div>
-        </div>
-    };
-
-    private sealed record HeaderProps(LocalizedString Title, string Link, LocalizedString Tooltip, TimeSpan TimeSpent);
+        </div>;
 
 }
