@@ -20,8 +20,8 @@ internal sealed class TopicClient : GatewayClient
     public Task<ApiResponse<TopicDetailComposition>> GetAsync(string id) =>
         ExecuteAsync<TopicDetailComposition>(ct => _client.GetAsync($"history/topics/{id}", ct));
 
-    public Task<ApiResponse<RandomTopicId>> GetRandomAsync() =>
-        ExecuteAsync<RandomTopicId>(ct => _client.GetAsync("history/topics/random", ct));
+    public Task<ApiResponse<RandomTopicId>> GetRandomAsync(EpochType epoch) =>
+        ExecuteAsync<RandomTopicId>(ct => _client.GetAsync($"history/topics/random?epoch={epoch}", ct));
 
     public Task<ApiResponse<TestCreatedResult>> CreateEasyTestAsync(string id) =>
         ExecuteAsync<TestCreatedResult>(ct => _client.PostAsync($"history/topics/{id}/tests/easy", EmptyContent, ct));

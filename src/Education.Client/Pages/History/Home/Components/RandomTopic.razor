@@ -1,17 +1,38 @@
 @using Education.Client.Gateways.History
-<div class="grid @Class">
-    <div class="image">
-        <img src="/images/history/history.jpg" alt="history" loading="lazy"/>
-    </div>
-    <article class="text">
-        <MudText Typo="Typo.h2" Color="Color.Inherit" Class="mb-3">
-            @L["Topic:Random"]
-        </MudText>
-        <LoadingButton OnClick="@OnClick" IsLoading="@_isLoading" Text="@L["Search"]"/>
-    </article>
+
+<div class="background pa-6 pa-sm-16">
+    <EduContainer MaxWidth="EduWidth.W960">
+        <MudCard Elevation="0">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h4" Align="Align.Center" Class="py-3 py-sm-6">
+                        @L["Topic:Random"]
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <div class="d-flex flex-row flex-wrap justify-center align-center mw-xs mx-auto pb-3 pb-sm-6">
+                    <MudSelect Label="@L["History:Epoch"]" @bind-Value="@_epoch" Margin="Margin.Dense" Variant="Variant.Outlined">
+                        <MudSelectItem Value="@EpochType.None">@L["All"]</MudSelectItem>
+                        @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
+                        {
+                            <MudSelectItem Value="@period">
+                                @L[$"History:{period}"]
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                    <div class="ml-3">
+                        <LoadingButton OnClick="@OnClick" IsLoading="@_isLoading" Text="@L["Search"]"/>
+                    </div>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </EduContainer>
 </div>
 
 @code {
+
+    private EpochType _epoch = EpochType.None;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -33,7 +54,7 @@
             return;
 
         _isLoading = true;
-        var result = await Client.Topic.GetRandomAsync();
+        var result = await Client.Topic.GetRandomAsync(_epoch);
         if (result.Status == ResponseStatus.Success)
             Navigation.NavigateTo(Links.History.Content.Topic(result.Data.Id));
 
