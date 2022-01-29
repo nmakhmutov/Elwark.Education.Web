@@ -6,7 +6,7 @@ namespace Education.Client.Gateways.History.User;
 public sealed record HistoryUserProfile(
     SubscriptionType Subscription,
     Level Level,
-    Wallet Wallet,
+    long Silver,
     DailyReward DailyReward,
     Restriction TestCreationRestriction,
     Restriction TestMistakesRestriction,
@@ -16,9 +16,9 @@ public sealed record HistoryUserProfile(
     HistoryUserProfile.TestOverview HardTestStatistic,
     HistoryUserProfile.TestOverview MixedTestStatistic,
     HistoryUserProfile.EventGuesserOverview EventGuesserStatistic,
-    Achievements Achievements,
-    HistoryUserProfile.ProgressOverview[] TestProgress,
-    Transaction[] Transactions
+    AchievementsOverview Achievements,
+    Equipments Equipments,
+    HistoryUserProfile.ProgressOverview[] TestProgress
 )
 {
     public sealed record TestOverview(NumberOfTests NumberOfTests, Score Score);

@@ -6,22 +6,22 @@ using Education.Client.Gateways.Models;
 
 namespace Education.Client.Gateways.Converters;
 
-internal sealed class GameCurrencyConverter : JsonConverter<IGameCurrency?>
+internal sealed class VirtualCurrencyConverter : JsonConverter<IVirtualCurrency?>
 {
     private const string Type = "type";
 
-    public override IGameCurrency? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override IVirtualCurrency? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var node = JsonNode.Parse(ref reader);
 
         return node?[Type]?.GetValue<string>() switch
         {
-            "experience" => node.Deserialize<ExperienceCurrency>(options),
+            "experience" => node.Deserialize<UserExperience>(options),
             "silver" => node.Deserialize<SilverCurrency>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(HistoryTopicDetail), @"Unknown game currency type")
         };
     }
 
-    public override void Write(Utf8JsonWriter writer, IGameCurrency? value, JsonSerializerOptions options) =>
+    public override void Write(Utf8JsonWriter writer, IVirtualCurrency? value, JsonSerializerOptions options) =>
         JsonSerializer.Serialize(writer, value, options);
 }

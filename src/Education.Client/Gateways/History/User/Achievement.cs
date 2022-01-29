@@ -2,26 +2,26 @@ using Education.Client.Gateways.Models;
 
 namespace Education.Client.Gateways.History.User;
 
-public abstract record Achievement(string Name, string Title, string Description);
+public abstract record Achievement(string Id, string Title, string Description);
 
-public sealed record CompletedAchievement(string Name, string Title, string Description, DateTime CompletedAt)
-    : Achievement(Name, Title, Description);
+public sealed record CompletedAchievement(string Id, string Title, string Description, DateTime CompletedAt)
+    : Achievement(Id, Title, Description);
 
 public sealed record ProgressiveAchievement(
-    string Name,
+    string Id,
     string Title,
     string Description,
     uint Completeness,
-    IGameCurrency[] Rewards
-) : Achievement(Name, Title, Description);
+    IVirtualCurrency[] Rewards
+) : Achievement(Id, Title, Description);
 
 public sealed record LadderAchievement(
-    string Name,
+    string Id,
     string Title,
     string Description,
     uint Level,
     uint Score,
     uint Goal,
     uint Completeness,
-    IGameCurrency[] Rewards
-) : Achievement(Name, Title, Description);
+    IVirtualCurrency[] Rewards
+) : Achievement(Id, Title, Description);

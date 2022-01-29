@@ -16,8 +16,11 @@ internal sealed class UserClient : GatewayClient
     public Task<ApiResponse<ProgressStatistics>> GetProgressAsync() =>
         ExecuteAsync<ProgressStatistics>(ct => _client.GetAsync("history/users/me/progress", ct));
 
-    public Task<ApiResponse<CategorizedAchievements[]>> GetAchievementsAsync() =>
-        ExecuteAsync<CategorizedAchievements[]>(ct => _client.GetAsync("history/users/me/achievements", ct));
+    public Task<ApiResponse<AchievementsDetail>> GetAchievementsAsync() =>
+        ExecuteAsync<AchievementsDetail>(ct => _client.GetAsync("history/users/me/achievements", ct));
+    
+    public Task<ApiResponse<Inventory>> GetInventoryAsync() =>
+        ExecuteAsync<Inventory>(ct => _client.GetAsync("history/users/me/inventories", ct));
 
     public Task<ApiResponse<Unit>> CollectDailyReward() =>
         ExecuteAsync<Unit>(ct => _client.PostAsync("history/users/me/rewards/daily", EmptyContent, ct));

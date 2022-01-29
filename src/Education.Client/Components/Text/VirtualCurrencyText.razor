@@ -1,7 +1,7 @@
 <div class="d-flex flex-row align-center @Class">
     @switch (Currency)
     {
-        case ExperienceCurrency x:
+        case UserExperience x:
             <MudIcon Size="IconSize" Style="color: #FFCA28" Class="mr-2" Icon="@EducationIcons.Experience"/>
             <MudText Typo="@Typo">
                 @x.Value
@@ -23,7 +23,7 @@
 @code {
 
     [Parameter, EditorRequired]
-    public IGameCurrency Currency { get; set; } = default!;
+    public IVirtualCurrency Currency { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

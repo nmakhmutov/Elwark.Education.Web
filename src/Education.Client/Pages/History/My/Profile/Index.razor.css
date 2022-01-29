@@ -6,6 +6,7 @@
         "header"
         "subject"
         "level"
+        "equipments"
         "wallet"
         "daily-reward"
         "easy-test"
@@ -13,8 +14,7 @@
         "mixed-test"
         "event-guesser"
         "activity"
-        "achievements"
-        "transactions";
+        "achievements";
 }
 
 .grid ::deep .header {
@@ -29,8 +29,8 @@
     grid-area: achievements;
 }
 
-.grid ::deep .transactions {
-    grid-area: transactions;
+.grid ::deep .equipments {
+    grid-area: equipments;
 }
 
 .grid ::deep .level {
@@ -72,12 +72,12 @@
         grid-template-areas:
             "header header"
             "subject level"
+            "equipments equipments"
             "wallet daily-reward"
+            "achievements achievements"
             "easy-test hard-test"
             "mixed-test event-guesser"
-            "activity activity"
-            "achievements achievements"
-            "transactions transactions";
+            "activity activity";
     }
 }
 
@@ -86,11 +86,12 @@
         grid-template-columns: repeat(3, minmax(180px, 1fr));
         grid-template-areas:
             "header header header"
-            "subject . ."
-            "level wallet daily-reward"
+            "subject level wallet"
+            "subject level daily-reward"
+            "equipments equipments equipments"
+            "achievements achievements achievements"
             "easy-test hard-test mixed-test"
-            "event-guesser activity activity"
-            "achievements achievements transactions";
+            "event-guesser activity activity";
     }
 }
 
@@ -99,23 +100,11 @@
         grid-template-columns: repeat(4, minmax(180px, 1fr));
         grid-template-areas:
             "header header header header"
-            "subject . . level"
-            "easy-test hard-test mixed-test wallet"
-            "easy-test hard-test mixed-test daily-reward"
-            "event-guesser activity activity activity"
-            "achievements achievements transactions transactions";
-    }
-}
-
-@media (min-width: 1920px) {
-    .grid {
-        grid-template-columns: repeat(5, minmax(180px, 1fr));
-        grid-template-areas:
-            "header header header header header"
-            "subject . . . level"
-            "easy-test hard-test mixed-test event-guesser wallet"
-            "easy-test hard-test mixed-test event-guesser daily-reward"
-            "activity activity activity activity activity"
-            "achievements achievements achievements transactions transactions";
+            "subject equipments equipments level"
+            "achievements achievements achievements level"
+            "achievements achievements achievements wallet"
+            "achievements achievements achievements daily-reward"
+            "easy-test hard-test mixed-test event-guesser"
+            "activity activity activity activity";
     }
 }

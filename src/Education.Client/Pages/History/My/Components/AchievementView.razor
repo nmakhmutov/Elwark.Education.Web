@@ -31,7 +31,7 @@
                 <div class="d-flex flex-row">
                     @foreach (var reward in rewards)
                     {
-                        <GameCurrencyText Currency="@reward"/>
+                        <VirtualCurrencyText Currency="@reward"/>
                     }
                 </div>
             </footer>
@@ -59,7 +59,7 @@
                 <div class="d-flex flex-row">
                     @foreach (var reward in rewards)
                     {
-                        <GameCurrencyText Currency="@reward"/>
+                        <VirtualCurrencyText Currency="@reward"/>
                     }
                 </div>
             </footer>
@@ -77,8 +77,8 @@
 </section>
 
 @code {
-    private string _icon = string.Empty;
-    private string _background = string.Empty;
+    private string _icon = EducationIcons.Achievement;
+    private string _background = "black white-text";
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -86,25 +86,32 @@
     [Parameter, EditorRequired]
     public Achievement Achievement { get; set; } = default!;
 
-    protected override void OnInitialized() => 
-        (_icon, _background) = Achievement.Name switch {
+    protected override void OnInitialized() => (_icon, _background) = Achievement.Id switch {
         "EasyTest.Successful" => (EducationIcons.Tests, "green default white-text"),
         "EasyTest.Score" => (EducationIcons.Score, "green default white-text"),
-        "EasyTest.WithoutMistakes" => (Icons.Outlined.AddTask, "green default white-text"),
+        "EasyTest.UserExperience" => (EducationIcons.Experience, "green default white-text"),
+        "EasyTest.Silver" => (EducationIcons.Silver, "green default white-text"),
         "EasyTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "green default white-text"),
+        "EasyTest.WithoutMistakes" => (Icons.Outlined.AddTask, "green default white-text"),
             
         "HardTest.Successful" => (EducationIcons.Tests, "indigo default white-text"),
         "HardTest.Score" => (EducationIcons.Score, "indigo default white-text"),
-        "HardTest.WithoutMistakes" => (Icons.Outlined.AddTask, "indigo default white-text"),
+        "HardTest.UserExperience" => (EducationIcons.Experience, "indigo default white-text"),
+        "HardTest.Silver" => (EducationIcons.Silver, "indigo default white-text"),
         "HardTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "indigo default white-text"),
+        "HardTest.WithoutMistakes" => (Icons.Outlined.AddTask, "indigo default white-text"),
             
         "MixedTest.Successful" => (EducationIcons.Tests, "red accent-2 white-text"),
         "MixedTest.Score" => (EducationIcons.Score, "red accent-2 white-text"),
-        "MixedTest.WithoutMistakes" => (Icons.Outlined.AddTask, "red accent-2 white-text"),
+        "MixedTest.UserExperience" => (EducationIcons.Experience, "red accent-2 white-text"),
+        "MixedTest.Silver" => (EducationIcons.Silver, "red accent-2 white-text"),
         "MixedTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "red accent-2 white-text"),
+        "MixedTest.WithoutMistakes" => (Icons.Outlined.AddTask, "red accent-2 white-text"),
             
         "AllTest.Successful" => (EducationIcons.Tests, "light-blue darken-1 white-text"),
         "AllTest.Score" => (EducationIcons.Score, "light-blue darken-1 white-text"),
+        "AllTest.UserExperience" => (EducationIcons.Experience, "light-blue darken-1 white-text"),
+        "AllTest.Silver" => (EducationIcons.Silver, "light-blue darken-1 white-text"),
         "AllTest.CompleteOnceAllType" => (Icons.Outlined.DoneAll, "light-blue darken-1 white-text"),
             
         "EventGuesser.Successful" => (Icons.Outlined.ManageSearch, "amber darken-2 white-text"),

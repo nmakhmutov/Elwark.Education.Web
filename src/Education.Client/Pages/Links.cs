@@ -70,6 +70,8 @@ public static class Links
             public const string MyEventGuessers = $"{Index}/my/event-guessers";
 
             public const string MyAchievements = $"{Index}/my/achievements";
+            
+            public const string MyInventories = $"{Index}/my/inventories";
 
             public const string MyActivities = $"{Index}/my/activities";
 

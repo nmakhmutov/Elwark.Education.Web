@@ -2,8 +2,8 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-@using Education.Client.Gateways.History.User
 @using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.User
 @using Education.Client.Pages.History.My.Components
 
 <PageTitle>@L["Achievements"]</PageTitle>
@@ -12,27 +12,41 @@
     <ApiViewer Response="@_response">
         <Success Context="achievements">
             <EduContainer>
-                <PageHeader Title="@L["Achievements"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+                <PageHeader Title="@L["Achievements"]" Breadcrumbs="@Breadcrumbs">
+                    <MudText Typo="Typo.h5">
+                        @achievements.Completed / @achievements.Total
+                    </MudText>
+                </PageHeader>
 
                 <MudGrid>
-                    @foreach (var group in achievements)
+                    @foreach (var category in achievements.Categories)
                     {
-                        <MudItem xs="12" md="3" xl="2" Class="mt-6 mt-sm-12">
+                        <MudItem xs="12" md="3" xl="2" Class="mt-6 mt-sm-16">
                             <div class="sticky-info">
-                                <MudText Typo="Typo.h5">
-                                    @L[$"AchievementCategory:{group.Category}"]
-                                </MudText>
-                                <MudText Typo="Typo.subtitle1">
-                                    @group.Completed/@group.Total
+                                <div class="d-flex align-end">
+                                    <MudText Typo="Typo.h5">
+                                        @category.Title
+                                    </MudText>
+                                    <MudText Typo="Typo.subtitle1" Class="ml-3">
+                                        @category.Completed/@category.Total
+                                    </MudText>
+                                </div>
+
+                                <MudText Typo="Typo.body1">
+                                    @category.Description
                                 </MudText>
                             </div>
                         </MudItem>
 
-                        <MudItem xs="12" md="9" xl="10" Class="mt-6 mt-sm-12">
+                        <MudItem xs="12" md="9" xl="10" Class="mt-6 mt-sm-16">
                             <div class="grid">
-                                @foreach (var achievement in group.Items)
+                                @foreach (var achievement in category.Achievements)
                                 {
-                                    <AchievementView Achievement="@achievement"/>
+                                    <MudCard Elevation="0" Square="true">
+                                        <MudCardContent Class="pa-3 pa-sm-6">
+                                            <AchievementView Achievement="@achievement"/>
+                                        </MudCardContent>
+                                    </MudCard>
                                 }
                             </div>
                         </MudItem>
@@ -51,7 +65,7 @@
         new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
     };
 
-    private ApiResponse<CategorizedAchievements[]> _response = ApiResponse<CategorizedAchievements[]>.Loading();
+    private ApiResponse<AchievementsDetail> _response = ApiResponse<AchievementsDetail>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

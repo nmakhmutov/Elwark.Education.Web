@@ -8,23 +8,13 @@
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent Class="pa-3 pa-sm-6">
-        <div class="d-flex flex-wrap justify-center">
-            <div class="d-flex flex-column align-center">
-                <div class="d-flex flex-row align-center">
-                    <MudIcon Style="color: #FFCA28" Class="mr-2" Icon="@EducationIcons.Experience"/>
-                    <HumanReadableText Value="@Wallet.Experience" Typo="Typo.h5" Style="font-weight: 500"/>
-                </div>
-                <MudText Typo="Typo.caption">(@L["GameCurrency:Experience"])</MudText>
-            </div>
-
-            <div class="mr-6"></div>
-
+        <div class="d-flex flex-wrap">
             <div class="d-flex flex-column align-center">
                 <div class="d-flex flex-row align-center">
                     <MudIcon Style="color: #C0C0C0" Class="mr-2" Icon="@EducationIcons.Silver"/>
-                    <HumanReadableText Value="@Wallet.Silver" Typo="Typo.h5" Style="font-weight: 500"/>
+                    <HumanReadableText Value="@Silver" Typo="Typo.h5" Style="font-weight: 500"/>
                 </div>
-                <MudText Typo="Typo.caption">(@L["GameCurrency:Silver"])</MudText>
+                <MudText Typo="Typo.caption">(@L["VirtualCurrency:Silver"])</MudText>
             </div>
         </div>
     </MudCardContent>
@@ -35,11 +25,8 @@
     [Inject]
     public IStringLocalizer<App> L { get; set; } = default!;
 
-    [Inject]
-    public ThemeService Service { get; set; } = default!;
-
     [Parameter, EditorRequired]
-    public Wallet Wallet { get; set; } = default!;
+    public long Silver { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

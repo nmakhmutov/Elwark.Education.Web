@@ -1,24 +1,25 @@
 @using Education.Client.Gateways.History.User
-@using Education.Client.Pages.History.My.Components
 
 <MudCard Class="@($"{Class} d-flex flex-column")" Elevation="0">
     <MudCardHeader Class="pa-3 pa-sm-6">
         <CardHeaderContent>
             <div class="d-flex align-center justify-space-between">
                 <MudText Typo="Typo.h5">
-                    @L["Achievements"]
+                    @L["Equipments"]
                 </MudText>
                 <MudText Typo="Typo.h5">
-                    @Achievements.Completed / @Achievements.Total
+                    @Equipments.Fullness / @Equipments.Capacity
                 </MudText>
             </div>
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent Class="flex-grow-1 pa-0 px-3 px-sm-6 mb-3 mb-sm-6">
         <section class="grid">
-            @foreach (var achievement in Achievements.Items)
+            @foreach (var equipment in Equipments.Items)
             {
-                <AchievementView Achievement="@achievement"/>
+                <div>
+                    @equipment.Name
+                </div>
             }
         </section>
     </MudCardContent>
@@ -26,7 +27,7 @@
     <MudDivider/>
 
     <MudCardActions Class="d-flex justify-center pa-3">
-        <MudLink Typo="Typo.subtitle1" Href="@Links.History.User.MyAchievements">
+        <MudLink Typo="Typo.subtitle1" Href="@Links.History.User.MyInventories">
             @L["Details"]
         </MudLink>
     </MudCardActions>
@@ -41,6 +42,6 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public AchievementsOverview Achievements { get; set; } = default!;
+    public Equipments Equipments { get; set; } = default!;
 
 }

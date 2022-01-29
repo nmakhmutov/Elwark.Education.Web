@@ -11,7 +11,7 @@
 
 <EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
-        <Success Context="overview">
+        <Success Context="profile">
 
             <EduContainer MaxWidth="EduWidth.W1920">
                 <div class="grid">
@@ -28,72 +28,72 @@
                     <SubjectCard
                         Class="subject"
                         Subject="SubjectType.History"
-                        Subscription="@overview.Subscription"/>
+                        Subscription="@profile.Subscription"/>
 
                     <LevelCard
                         Class="level"
-                        Level="@overview.Level"/>
+                        Level="@profile.Level"/>
 
+                    <EquipmentsCard
+                        Class="equipments"
+                        Equipments="@profile.Equipments"/>
+                    
                     <WalletCard
                         Class="wallet"
-                        Wallet="@overview.Wallet"/>
+                        Silver="@profile.Silver"/>
 
                     <DailyRewardCard
                         Class="daily-reward"
-                        Reward="@overview.DailyReward"
+                        Reward="@profile.DailyReward"
                         OnCollect="@CollectDailyReward"/>
 
                     <StatisticsCard
                         Class="easy-test"
                         Title="@L["Tests:Easy"]"
-                        Value="@overview.EasyTestStatistic.NumberOfTests.Total"
+                        Value="@profile.EasyTestStatistic.NumberOfTests.Total"
                         Href="@Links.History.User.MyEasyTests">
                         <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                        <ScoreChart Value="@overview.EasyTestStatistic.Score"/>
+                        <ScoreChart Value="@profile.EasyTestStatistic.Score"/>
                     </StatisticsCard>
 
                     <StatisticsCard
                         Class="hard-test"
                         Title="@L["Tests:Hard"]"
-                        Value="@overview.HardTestStatistic.NumberOfTests.Total"
+                        Value="@profile.HardTestStatistic.NumberOfTests.Total"
                         Href="@Links.History.User.MyHardTests">
                         <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                        <ScoreChart Value="@overview.HardTestStatistic.Score"/>
+                        <ScoreChart Value="@profile.HardTestStatistic.Score"/>
                     </StatisticsCard>
 
                     <StatisticsCard
                         Class="mixed-test"
                         Title="@L["Tests:Mixed"]"
-                        Value="@overview.MixedTestStatistic.NumberOfTests.Total"
+                        Value="@profile.MixedTestStatistic.NumberOfTests.Total"
                         Href="@Links.History.User.MyMixedTests">
                         <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                        <ScoreChart Value="@overview.MixedTestStatistic.Score"/>
+                        <ScoreChart Value="@profile.MixedTestStatistic.Score"/>
                     </StatisticsCard>
 
                     <StatisticsCard
                         Class="event-guesser"
                         Title="@L["EventGuesser"]"
-                        Value="@overview.EventGuesserStatistic.Tests"
+                        Value="@profile.EventGuesserStatistic.Tests"
                         Href="@Links.History.User.MyEventGuessers">
                         <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
                         <EventGuesserScoreChart
-                            Score="@overview.EventGuesserStatistic.Score"
-                            Points="@overview.EventGuesserStatistic.Points"
-                            Bonus="@overview.EventGuesserStatistic.Bonus"/>
+                            Score="@profile.EventGuesserStatistic.Score"
+                            Points="@profile.EventGuesserStatistic.Points"
+                            Bonus="@profile.EventGuesserStatistic.Bonus"/>
                     </StatisticsCard>
 
                     <ActivityCard
                         Class="activity"
                         Title="@L["Test:MyActivity"]"
-                        Activities="@overview.TestProgress"/>
+                        Activities="@profile.TestProgress"/>
 
                     <AchievementsCard
                         Class="achievements"
-                        Achievements="@overview.Achievements"/>
-
-                    <RecentTransactionsCard
-                        Class="transactions"
-                        Transactions="@overview.Transactions"/>
+                        Achievements="@profile.Achievements"/>
                 </div>
             </EduContainer>
         </Success>
