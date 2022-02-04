@@ -16,8 +16,8 @@ public sealed record HistoryUserProfile(
     HistoryUserProfile.TestOverview HardTestStatistic,
     HistoryUserProfile.TestOverview MixedTestStatistic,
     HistoryUserProfile.EventGuesserOverview EventGuesserStatistic,
+    InventorySummary Inventory,
     AchievementsOverview Achievements,
-    Equipments Equipments,
     HistoryUserProfile.ProgressOverview[] TestProgress
 )
 {

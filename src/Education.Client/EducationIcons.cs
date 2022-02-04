@@ -17,6 +17,8 @@ public static class EducationIcons
 
     public const string Experience = "fas fa-star";
 
+    public const string Achievements = "fas fa-award pl-1";
+
     public static readonly string History = Icons.Outlined.AccountBalance;
 
     public static readonly string Epochs = Icons.Outlined.HistoryToggleOff;
@@ -38,6 +40,4 @@ public static class EducationIcons
     public static readonly string MyTopics = Icons.Outlined.Favorite;
 
     public static readonly string MyTransactions = Icons.Outlined.History;
-
-    public static readonly string Achievement = Icons.Outlined.EmojiEvents;
 }

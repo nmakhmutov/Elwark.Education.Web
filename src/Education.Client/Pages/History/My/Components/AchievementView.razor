@@ -3,63 +3,43 @@
 <section class="grid">
     @switch (Achievement)
     {
-        case CompletedAchievement(_, var title, _, var completedAt):
-            <aside class="icon yellow accent-4 grey-text text-darken-3">
+        case CompletedAchievement achievement:
+            <aside class="icon completed">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
             <header class="header">
                 <h6 class="title">
-                    @title
+                    @achievement.Title
                 </h6>
-                <MudText Typo="Typo.caption">
-                    @L["Achievement:Completed"] @completedAt.ToSimpleFormat()
+                <MudText Typo="Typo.caption" Class="d-block">
+                    @L["Achievement:Completed"] @achievement.CompletedAt.ToSimpleFormat()
                 </MudText>
             </header>
             break;
 
-        case ProgressiveAchievement(_, var title, _, var completeness, var rewards):
-            <aside class="icon @_background">
-                <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
-            </aside>
-            <header class="header">
-                <h6 class="title">
-                    @title
-                </h6>
-            </header>
-            <footer class="progress">
-                <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@completeness" Color="Color.Primary"/>
-                <div class="d-flex flex-row">
-                    @foreach (var reward in rewards)
-                    {
-                        <VirtualCurrencyText Currency="@reward"/>
-                    }
-                </div>
-            </footer>
-            break;
-
-        case LadderAchievement(_, var title, _, var level, var score, var goal, var completeness, var rewards):
+        case LadderAchievement achievement:
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
                 <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
-                    @L["Achievement:Level"] @level
+                    @L["Achievement:Level"] @achievement.Level
                 </MudText>
             </aside>
             <header class="header">
                 <h6 class="title">
-                    @title
+                    @achievement.Title
                 </h6>
             </header>
             <footer class="progress">
                 <div class="d-flex flex-row mb-1">
-                    <HumanReadableText Value="@score" Typo="Typo.subtitle2"/>
+                    <HumanReadableText Value="@achievement.Score" Typo="Typo.subtitle2"/>
                     <span>/</span>
-                    <HumanReadableText Value="@goal" Typo="Typo.subtitle2"/>
+                    <HumanReadableText Value="@achievement.Goal" Typo="Typo.subtitle2"/>
                 </div>
-                <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@completeness" Color="Color.Primary"/>
+                <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
                 <div class="d-flex flex-row">
-                    @foreach (var reward in rewards)
+                    @foreach (var reward in achievement.Rewards)
                     {
-                        <VirtualCurrencyText Currency="@reward"/>
+                        <InternalMoneyText Money="@reward"/>
                     }
                 </div>
             </footer>
@@ -77,7 +57,7 @@
 </section>
 
 @code {
-    private string _icon = EducationIcons.Achievement;
+    private string _icon = EducationIcons.Achievements;
     private string _background = "black white-text";
 
     [Inject]
@@ -86,37 +66,44 @@
     [Parameter, EditorRequired]
     public Achievement Achievement { get; set; } = default!;
 
-    protected override void OnInitialized() => (_icon, _background) = Achievement.Id switch {
-        "EasyTest.Successful" => (EducationIcons.Tests, "green default white-text"),
-        "EasyTest.Score" => (EducationIcons.Score, "green default white-text"),
-        "EasyTest.UserExperience" => (EducationIcons.Experience, "green default white-text"),
-        "EasyTest.Silver" => (EducationIcons.Silver, "green default white-text"),
-        "EasyTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "green default white-text"),
-        "EasyTest.WithoutMistakes" => (Icons.Outlined.AddTask, "green default white-text"),
+    protected override void OnParametersSet()
+    {
+        _background = Achievement.Category switch {
+            "EasyTest" => "green default white-text",
+            "HardTest" => "indigo default white-text",
+            "MixedTest" => "red accent-2 white-text",
+            "AllTest" => "light-blue darken-1 white-text",
+            "EventGuesser" => "amber darken-2 white-text",
+            _ => "black white-text"
+            };
+
+        _icon = Achievement switch {
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "Successful"} => 
+            EducationIcons.Tests,
             
-        "HardTest.Successful" => (EducationIcons.Tests, "indigo default white-text"),
-        "HardTest.Score" => (EducationIcons.Score, "indigo default white-text"),
-        "HardTest.UserExperience" => (EducationIcons.Experience, "indigo default white-text"),
-        "HardTest.Silver" => (EducationIcons.Silver, "indigo default white-text"),
-        "HardTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "indigo default white-text"),
-        "HardTest.WithoutMistakes" => (Icons.Outlined.AddTask, "indigo default white-text"),
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "Score"} =>
+            EducationIcons.Score,
             
-        "MixedTest.Successful" => (EducationIcons.Tests, "red accent-2 white-text"),
-        "MixedTest.Score" => (EducationIcons.Score, "red accent-2 white-text"),
-        "MixedTest.UserExperience" => (EducationIcons.Experience, "red accent-2 white-text"),
-        "MixedTest.Silver" => (EducationIcons.Silver, "red accent-2 white-text"),
-        "MixedTest.CorrectAnswers" => (Icons.Outlined.QuestionAnswer, "red accent-2 white-text"),
-        "MixedTest.WithoutMistakes" => (Icons.Outlined.AddTask, "red accent-2 white-text"),
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "UserExperience"} =>
+            EducationIcons.Experience,
             
-        "AllTest.Successful" => (EducationIcons.Tests, "light-blue darken-1 white-text"),
-        "AllTest.Score" => (EducationIcons.Score, "light-blue darken-1 white-text"),
-        "AllTest.UserExperience" => (EducationIcons.Experience, "light-blue darken-1 white-text"),
-        "AllTest.Silver" => (EducationIcons.Silver, "light-blue darken-1 white-text"),
-        "AllTest.CompleteOnceAllType" => (Icons.Outlined.DoneAll, "light-blue darken-1 white-text"),
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "Silver"} =>
+            EducationIcons.Silver,
             
-        "EventGuesser.Successful" => (Icons.Outlined.ManageSearch, "amber darken-2 white-text"),
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "CorrectAnswers"} => 
+            Icons.Outlined.QuestionAnswer,
             
-        _=> (EducationIcons.Achievement, "black white-text")
-        };
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "WithoutMistakes"} => 
+            Icons.Outlined.AddTask,
+            
+        {Category: "AllTest", Name: "CompleteOnceAllType" } =>
+            Icons.Outlined.DoneAll,
+            
+        {Category: "EventGuesser", Name: "Completed"} =>
+            Icons.Outlined.ManageSearch,
+            
+            _ => EducationIcons.Achievements
+            };
+    }
 
 }

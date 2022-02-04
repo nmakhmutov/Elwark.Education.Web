@@ -1,29 +1,29 @@
 <div class="d-flex flex-row align-center @Class">
-    @switch (Currency)
+    @switch (Money)
     {
-        case UserExperience x:
+        case Experience x:
             <MudIcon Size="IconSize" Style="color: #FFCA28" Class="mr-2" Icon="@EducationIcons.Experience"/>
             <MudText Typo="@Typo">
-                @x.Value
+                @x.Amount
             </MudText>
             break;
 
-        case SilverCurrency x:
+        case Silver x:
             <MudIcon Size="IconSize" Style="color: #C0C0C0" Class="mr-2" Icon="@EducationIcons.Silver"/>
             <MudText Typo="@Typo">
-                @x.Value
+                @x.Amount
             </MudText>
             break;
 
         default:
-            throw new ArgumentOutOfRangeException(nameof(Currency));
+            throw new ArgumentOutOfRangeException(nameof(Money));
     }
 </div>
 
 @code {
 
     [Parameter, EditorRequired]
-    public IVirtualCurrency Currency { get; set; } = default!;
+    public IInternalMoney Money { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

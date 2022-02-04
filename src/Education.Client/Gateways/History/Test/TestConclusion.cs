@@ -11,7 +11,7 @@ public abstract record TestConclusion(
     TimeSpan TestDuration,
     Score UserScore,
     TimeSpan TimeSpent,
-    IVirtualCurrency[] Rewards,
+    IInternalMoney[] Rewards,
     DateTime CompletedAt
 );
 
@@ -24,7 +24,7 @@ public sealed record EasyTestConclusion(
     Score UserScore,
     TimeSpan TimeSpent,
     DateTime CompletedAt,
-    IVirtualCurrency[] Rewards,
+    IInternalMoney[] Rewards,
     EasyTestConclusion.Question[] Questions
 ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
 {
@@ -40,7 +40,7 @@ public sealed record HardTestConclusion(
     Score UserScore,
     TimeSpan TimeSpent,
     DateTime CompletedAt,
-    IVirtualCurrency[] Rewards,
+    IInternalMoney[] Rewards,
     HardTestConclusion.Question[] Questions
 ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
 {
@@ -55,7 +55,7 @@ public sealed record MixedTestConclusion(
     Score UserScore,
     TimeSpan TimeSpent,
     DateTime CompletedAt,
-    IVirtualCurrency[] Rewards,
+    IInternalMoney[] Rewards,
     MixedTestConclusion.Question[] Questions
 ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
 {

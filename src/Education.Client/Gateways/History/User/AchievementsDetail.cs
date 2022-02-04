@@ -7,7 +7,7 @@ public sealed record AchievementsDetail(
 )
 {
     public sealed record Category(
-        string Id,
+        string Name,
         string Title,
         string Description,
         uint Total,

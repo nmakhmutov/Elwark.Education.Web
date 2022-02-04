@@ -8,15 +8,20 @@
             </MudText>
         </CardHeaderContent>
     </MudCardHeader>
+
     <MudCardContent Class="pa-3 pa-sm-6">
         <div class="d-flex flex-row align-center justify-center">
             @for (var i = 0; i < Reward.Rewards.Length; i++)
             {
-                var cls = i + 1 == Reward.Rewards.Length ? null : "mr-3";
-                <VirtualCurrencyText Class="@cls" Typo="Typo.h4" IconSize="Size.Medium" Currency="@Reward.Rewards[i]"/>
+                <InternalMoneyText
+                    Class="@(i + 1 == Reward.Rewards.Length ? null : "mr-3")"
+                    Typo="Typo.h4"
+                    IconSize="Size.Medium"
+                    Money="@Reward.Rewards[i]"/>
             }
         </div>
     </MudCardContent>
+
     <MudCardActions Class="d-flex justify-center pa-3 pa-sm-6">
         @if (Reward.IsCollectable)
         {

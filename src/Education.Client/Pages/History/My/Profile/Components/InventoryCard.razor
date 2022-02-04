@@ -8,14 +8,14 @@
                     @L["Equipments"]
                 </MudText>
                 <MudText Typo="Typo.h5">
-                    @Equipments.Fullness / @Equipments.Capacity
+                    @Inventory.Fullness / @Inventory.Capacity
                 </MudText>
             </div>
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent Class="flex-grow-1 pa-0 px-3 px-sm-6 mb-3 mb-sm-6">
         <section class="grid">
-            @foreach (var equipment in Equipments.Items)
+            @foreach (var equipment in Inventory.Items)
             {
                 <div>
                     @equipment.Name
@@ -42,6 +42,6 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public Equipments Equipments { get; set; } = default!;
+    public InventorySummary Inventory { get; set; } = default!;
 
 }
