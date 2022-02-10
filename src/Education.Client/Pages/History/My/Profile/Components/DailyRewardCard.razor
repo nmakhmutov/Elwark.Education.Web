@@ -10,38 +10,57 @@
     </MudCardHeader>
 
     <MudCardContent Class="pa-3 pa-sm-6">
-        <div class="d-flex flex-row align-center justify-center">
-            @for (var i = 0; i < Reward.Rewards.Length; i++)
-            {
-                <InternalMoneyText
-                    Class="@(i + 1 == Reward.Rewards.Length ? null : "mr-3")"
-                    Typo="Typo.h4"
-                    IconSize="Size.Medium"
-                    Money="@Reward.Rewards[i]"/>
-            }
-        </div>
+        @if (Reward.NextTimeAt.HasValue)
+        {
+            <div class="d-flex flex-column align-center">
+                <MudText Typo="Typo.subtitle2" Class="mud-text-secondary">
+                    @L["Experience:DailyRewardUnlockedAt"]
+                </MudText>
+                <CountdownTimer Date="@Reward.NextTimeAt.Value" Typo="Typo.h3" OnComplete="@OnReached"/>
+            </div>
+        }
+        else
+        {
+            <div class="d-flex flex-row align-center justify-center">
+                @for (var i = 0; i < Reward.Rewards.Length; i++)
+                {
+                    <InternalMoneyText
+                        Class="@(i + 1 == Reward.Rewards.Length ? null : "mr-3")"
+                        Typo="Typo.h4"
+                        IconSize="Size.Medium"
+                        Money="@Reward.Rewards[i]"/>
+                }
+            </div>
+        }
     </MudCardContent>
 
     <MudCardActions Class="d-flex justify-center pa-3 pa-sm-6">
         @if (Reward.IsCollectable)
         {
             <LoadingButton
+                Class="mr-3"
+                Variant="Variant.Filled"
+                Color="Color.Primary"
                 OnClick="@CollectAsync"
                 Text="@L["Experience:CollectDailyReward"]"
                 LoadingText="@L["Loading"]"
-                IsLoading="@_isLoading"/>
-        }
-        else
-        {
-            <MudText Typo="Typo.button" Class="mud-text-secondary">
-                @L["Experience:DailyRewardUnlockedAt", Reward.NextTimeAt.ToSimpleFormat()]
-            </MudText>
+                Disabled="@(_loading != Loading.None)"
+                IsLoading="@(_loading == Loading.Collect)"/>
+
+            <LoadingButton
+                Variant="Variant.Outlined"
+                OnClick="@RejectAsync"
+                Text="@L["Experience:RejectDailyReward"]"
+                LoadingText="@L["Loading"]"
+                Disabled="@(_loading != Loading.None)"
+                IsLoading="@(_loading == Loading.Reject)"/>
         }
     </MudCardActions>
+
 </MudCard>
 
 @code {
-    private bool _isLoading;
+    private Loading _loading = Loading.None;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -53,13 +72,32 @@
     public EventCallback OnCollect { get; set; }
 
     [Parameter]
+    public EventCallback OnReject { get; set; }
+
+    [Parameter]
+    public EventCallback OnReached { get; set; }
+
+    [Parameter]
     public string? Class { get; set; }
 
     private async Task CollectAsync()
     {
-        _isLoading = true;
+        _loading = Loading.Collect;
         await OnCollect.InvokeAsync();
-        _isLoading = false;
+        _loading = Loading.None;
     }
 
+    private async Task RejectAsync()
+    {
+        _loading = Loading.Reject;
+        await OnReject.InvokeAsync();
+        _loading = Loading.None;
+    }
+
+    private enum Loading
+    {
+        None,
+        Collect,
+        Reject
+    }
 }

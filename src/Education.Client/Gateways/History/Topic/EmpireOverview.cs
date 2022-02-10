@@ -1,6 +1,6 @@
 namespace Education.Client.Gateways.History.Topic;
 
-public sealed record EmpireSummary(
+public sealed record EmpireOverview(
     string Id,
     string Title,
     string Overview,

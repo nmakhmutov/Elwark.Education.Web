@@ -9,6 +9,6 @@ internal sealed record TopicDetailComposition(
     ContentRating Rating,
     TopicAvailableTest Test,
     UserTestPermission UserPermission,
-    UserActivitySummary UserActivity,
-    HistoryUserTopicSummary[] RelatedTopics
+    UserActivityOverview UserActivity,
+    HistoryUserTopicOverview[] RelatedTopics
 );

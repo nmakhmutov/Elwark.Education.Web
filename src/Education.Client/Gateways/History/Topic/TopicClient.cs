@@ -11,11 +11,11 @@ internal sealed class TopicClient : GatewayClient
     public TopicClient(HttpClient client) =>
         _client = client;
 
-    public Task<ApiResponse<PageResponse<HistoryUserTopicSummary>>> GetAsync(GetTopicsRequest request) =>
-        ExecuteAsync<PageResponse<HistoryUserTopicSummary>>(ct => _client.GetAsync($"history/topics{request.ToQuery()}", ct));
+    public Task<ApiResponse<PageResponse<HistoryUserTopicOverview>>> GetAsync(GetTopicsRequest request) =>
+        ExecuteAsync<PageResponse<HistoryUserTopicOverview>>(ct => _client.GetAsync($"history/topics{request.ToQuery()}", ct));
 
-    public Task<ApiResponse<PageResponse<EmpireSummary>>> GetAsync(GetEmpiresRequest request) =>
-        ExecuteAsync<PageResponse<EmpireSummary>>(ct => _client.GetAsync($"history/empires{request.ToQuery()}", ct));
+    public Task<ApiResponse<PageResponse<EmpireOverview>>> GetAsync(GetEmpiresRequest request) =>
+        ExecuteAsync<PageResponse<EmpireOverview>>(ct => _client.GetAsync($"history/empires{request.ToQuery()}", ct));
 
     public Task<ApiResponse<TopicDetailComposition>> GetAsync(string id) =>
         ExecuteAsync<TopicDetailComposition>(ct => _client.GetAsync($"history/topics/{id}", ct));

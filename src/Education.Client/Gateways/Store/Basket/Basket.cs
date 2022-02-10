@@ -3,7 +3,7 @@ using Education.Client.Gateways.Models.User;
 
 namespace Education.Client.Gateways.Store.Basket;
 
-public sealed record Basket(string? PromoCode, BasketSummary Summary, BasketItem[] Items);
+public sealed record Basket(string? PromoCode, BasketOverview Overview, BasketItem[] Items);
 
 public sealed record BasketItem(
     string ProductId,
@@ -15,4 +15,4 @@ public sealed record BasketItem(
     SubjectType[] Subjects
 );
 
-public sealed record BasketSummary(Money Items, Money Discount, Money Promo, Money Total);
+public sealed record BasketOverview(Money Items, Money Discount, Money Promo, Money Total);

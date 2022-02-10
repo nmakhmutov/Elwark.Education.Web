@@ -25,6 +25,9 @@ internal sealed class UserClient : GatewayClient
     public Task<ApiResponse<Unit>> CollectDailyReward() =>
         ExecuteAsync<Unit>(ct => _client.PostAsync("history/users/me/rewards/daily", EmptyContent, ct));
 
+    public Task<ApiResponse<Unit>> RejectDailyReward()=>
+        ExecuteAsync<Unit>(ct => _client.DeleteAsync("history/users/me/rewards/daily", ct));
+
     public Task<ApiResponse<TestStatistics>> GetEasyTestStatisticsAsync() =>
         ExecuteAsync<TestStatistics>(ct => _client.GetAsync("history/users/me/tests/easy", ct));
 
@@ -37,8 +40,8 @@ internal sealed class UserClient : GatewayClient
     public Task<ApiResponse<EventGuesserStatistics>> GetEventGuesserStatisticsAsync() =>
         ExecuteAsync<EventGuesserStatistics>(ct => _client.GetAsync("history/users/me/event-guessers", ct));
 
-    public Task<ApiResponse<PageResponse<HistoryUserTopicSummary>>> GetFavoritesAsync(FavoritesRequest request) =>
-        ExecuteAsync<PageResponse<HistoryUserTopicSummary>>(ct =>
+    public Task<ApiResponse<PageResponse<HistoryUserTopicOverview>>> GetFavoritesAsync(FavoritesRequest request) =>
+        ExecuteAsync<PageResponse<HistoryUserTopicOverview>>(ct =>
             _client.GetAsync($"history/users/me/favorites{request.ToQuery()}", ct));
 
     public Task<ApiResponse<TopicStatistics>> GetTopicsAsync(string topicId) =>

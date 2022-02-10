@@ -32,23 +32,26 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override void OnInitialized() => 
-        _timer.Elapsed += (_, _) =>
-    {
+    protected override void OnParametersSet() => 
         _timeLeft = Date - DateTime.UtcNow;
 
-        StateHasChanged();
+    protected override void OnInitialized() =>
+        _timer.Elapsed += (_, _) =>
+        {
+            _timeLeft = Date - DateTime.UtcNow;
 
-        if (_timeLeft >= TimeSpan.Zero)
-            return;
+            StateHasChanged();
 
-        _timer.Stop();
-        _timer.Dispose();
-        _timeLeft = TimeSpan.Zero;
+            if (_timeLeft > TimeSpan.Zero)
+                return;
 
-        if (OnComplete.HasDelegate)
-            OnComplete.InvokeAsync();
-    };
+            _timer.Stop();
+            _timer.Dispose();
+            _timeLeft = TimeSpan.Zero;
+
+            if (OnComplete.HasDelegate)
+                OnComplete.InvokeAsync();
+        };
 
     public void Dispose()
     {

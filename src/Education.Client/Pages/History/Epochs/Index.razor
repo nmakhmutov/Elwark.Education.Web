@@ -32,7 +32,7 @@
 
 @code {
     private GetTopicsRequest _request = new(EpochType.Prehistory, 1, 20);
-    private ApiResponse<PageResponse<HistoryUserTopicSummary>> _response = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Loading();
+    private ApiResponse<PageResponse<HistoryUserTopicOverview>> _response = ApiResponse<PageResponse<HistoryUserTopicOverview>>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -56,7 +56,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _response = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Loading();
+        _response = ApiResponse<PageResponse<HistoryUserTopicOverview>>.Loading();
         CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
@@ -67,7 +67,7 @@
         else
         {
             var error = Error.Create(L["Error:NotFound"], string.Empty, 404);
-            _response = ApiResponse<PageResponse<HistoryUserTopicSummary>>.Fail(error);
+            _response = ApiResponse<PageResponse<HistoryUserTopicOverview>>.Fail(error);
         }
     }
 

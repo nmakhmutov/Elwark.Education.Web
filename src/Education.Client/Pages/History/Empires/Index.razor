@@ -130,7 +130,7 @@
 
     private TimelinePosition _timelinePosition = TimelinePosition.Start;
     private GetEmpiresRequest _request = new(GetEmpiresRequest.SortType.Area, 1, 20);
-    private ApiResponse<PageResponse<EmpireSummary>> _response = ApiResponse<PageResponse<EmpireSummary>>.Loading();
+    private ApiResponse<PageResponse<EmpireOverview>> _response = ApiResponse<PageResponse<EmpireOverview>>.Loading();
 
     [Inject]
     private IResizeListenerService ResizeListener { get; set; } = default!;
@@ -153,19 +153,19 @@
 
         var response = await HistoryClient.Topic.GetAsync(_request = _request with {Page = _request.Page + 1});
         _response = response.IsSuccess
-            ? ApiResponse<PageResponse<EmpireSummary>>.Success(
-                new PageResponse<EmpireSummary>(
+            ? ApiResponse<PageResponse<EmpireOverview>>.Success(
+                new PageResponse<EmpireOverview>(
                     response.Data.Items.Union(response.Data.Items).ToArray(),
                     response.Data.Pages,
                     response.Data.Count
                     )
                 )
-            : ApiResponse<PageResponse<EmpireSummary>>.Fail(response.Error);
+            : ApiResponse<PageResponse<EmpireOverview>>.Fail(response.Error);
     }
 
     private async Task SortChangedAsync(GetEmpiresRequest.SortType sort)
     {
-        _response = ApiResponse<PageResponse<EmpireSummary>>.Loading();
+        _response = ApiResponse<PageResponse<EmpireOverview>>.Loading();
         _response = await HistoryClient.Topic.GetAsync(_request = new GetEmpiresRequest(sort, 1, 20));
     }
 

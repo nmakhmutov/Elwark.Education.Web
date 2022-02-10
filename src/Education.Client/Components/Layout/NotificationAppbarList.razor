@@ -1,0 +1,75 @@
+@implements IDisposable
+
+<MudBadge Color="Color.Secondary" Dot="true" Overlap="true" Visible="Notification.HasNotifications">
+    <MudMenu
+        Icon="@Icons.Outlined.Notifications"
+        Color="Color.Inherit"
+        AnchorOrigin="Origin.BottomLeft"
+        TransformOrigin="Origin.TopCenter"
+        ListClass="pa-0">
+        
+        <div class="d-flex justify-space-between align-center px-3 py-1">
+            <MudText Typo="Typo.subtitle2" Class="pr-16">
+                @L["Notifications"]
+            </MudText>
+            <MudButton
+                Style="text-transform: none"
+                Disabled="@(!Notification.HasNotifications)"
+                OnClick="Notification.MarkAllAsReadAsync"
+                StartIcon="@Icons.Filled.DoneAll"
+                Variant="Variant.Text"
+                Size="Size.Small"
+                Color="Color.Primary">
+                @L["Notifications:MarkAsRead"]
+            </MudButton>
+        </div>
+
+        @if (Notification.HasNotifications)
+        {
+            @foreach (var notification in Notification.Messages)
+            {
+                <MudDivider/>
+                <MudMenuItem Class="px-3 py-2">
+                    <MudText Typo="Typo.subtitle2">
+                        @notification.Message
+                    </MudText>
+                    <div class="d-flex justify-space-between">
+                        <MudText Typo="Typo.body2">
+                            @notification.CreatedAt.ToSimpleFormat()
+                        </MudText>
+                        <MudText Typo="Typo.body2">
+                            @L[$"Subject:{notification.Subject}"]
+                        </MudText>
+                    </div>
+                </MudMenuItem>
+            }
+        }
+        else
+        {
+            <div class="d-flex justify-center align-center py-6">
+                <MudText Class="mud-text-secondary my-12">
+                    @L["Notifications:NothingNew"]
+                </MudText>
+            </div>
+        }
+    </MudMenu>
+</MudBadge>
+
+@code {
+
+    [Inject]
+    private NotificationService Notification { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Notification.StartAsync();
+        Notification.OnChange += StateHasChanged;
+    }
+
+    public void Dispose() =>
+        Notification.OnChange -= StateHasChanged;
+
+}

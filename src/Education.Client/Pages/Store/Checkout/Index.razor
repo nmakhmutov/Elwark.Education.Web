@@ -151,30 +151,30 @@
                         @L["Store:Items", basket.Items.Length]
                     </MudText>
                     <MudText Typo="Typo.h6">
-                        @basket.Summary.Items.Symbol@basket.Summary.Items.Amount
+                        @basket.Overview.Items.Symbol@basket.Overview.Items.Amount
                     </MudText>
                 </div>
 
-                @if (basket.Summary.Discount.Amount > 0)
+                @if (basket.Overview.Discount.Amount > 0)
                 {
                     <div class="d-flex flex-row justify-space-between">
                         <MudText Typo="Typo.subtitle2">
                             @L["Store:Discount"]
                         </MudText>
                         <MudText Typo="Typo.subtitle2">
-                            @basket.Summary.Discount.Symbol-@basket.Summary.Discount.Amount
+                            @basket.Overview.Discount.Symbol-@basket.Overview.Discount.Amount
                         </MudText>
                     </div>
                 }
 
-                @if (basket.Summary.Promo.Amount > 0)
+                @if (basket.Overview.Promo.Amount > 0)
                 {
                     <div class="d-flex flex-row justify-space-between">
                         <MudText Typo="Typo.subtitle2">
                             @L["Store:PromoCode"]
                         </MudText>
                         <MudText Typo="Typo.subtitle2">
-                            @basket.Summary.Promo.Symbol-@basket.Summary.Promo.Amount
+                            @basket.Overview.Promo.Symbol-@basket.Overview.Promo.Amount
                         </MudText>
                     </div>
                 }
@@ -202,7 +202,8 @@
                                 Variant="Variant.Filled"
                                 Color="Color.Primary"
                                 IsLoading="@_isPromoCodeLoading"
-                                Text="@(_promoCode.IsAvailable ? L["Store:Remove"] : L["Store:Apply"])"/>
+                                Text="@(_promoCode.IsAvailable ? L["Store:Remove"] : L["Store:Apply"])"
+                                LoadingText="@L["Loading"]"/>
                         </div>
                     </EditForm>
                 </div>
@@ -215,7 +216,7 @@
                     @L["Store:Total"]
                 </MudText>
                 <MudText Typo="Typo.h6">
-                    @basket.Summary.Total.Symbol@basket.Summary.Total.Amount
+                    @basket.Overview.Total.Symbol@basket.Overview.Total.Amount
                 </MudText>
             </div>
 

@@ -2,7 +2,7 @@ using Education.Client.Gateways.Models.Content;
 
 namespace Education.Client.Gateways.History;
 
-public sealed record HistoryTopicSummary(
+public sealed record HistoryTopicOverview(
     string Id,
     string Title,
     string Overview,

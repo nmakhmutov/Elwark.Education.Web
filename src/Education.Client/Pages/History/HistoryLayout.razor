@@ -13,7 +13,7 @@
         </MudLink>
         <MudSpacer/>
         <MudAutocomplete
-            T="HistoryTopicSummary"
+            T="HistoryTopicOverview"
             @ref="@_searchAutocomplete"
             Dense="true"
             DebounceInterval="300"
@@ -35,6 +35,7 @@
             </ItemTemplate>
         </MudAutocomplete>
         <MudSpacer/>
+        <NotificationAppbarList/>
         <MudIconButton Icon="@ThemeService.Icon" Color="Color.Inherit" OnClick="@ThemeService.ToggleAsync"/>
         <UserAppbarMenu/>
     </MudAppBar>
@@ -80,7 +81,7 @@
 </MudLayout>
 
 @code {
-    private MudAutocomplete<HistoryTopicSummary> _searchAutocomplete = default!;
+    private MudAutocomplete<HistoryTopicOverview> _searchAutocomplete = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -97,16 +98,16 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
-    private async Task<IEnumerable<HistoryTopicSummary>> OnSearch(string text)
+    private async Task<IEnumerable<HistoryTopicOverview>> OnSearch(string text)
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
-            return Array.Empty<HistoryTopicSummary>();
+            return Array.Empty<HistoryTopicOverview>();
 
         var result = await Client.Home.SearchAsync(text);
-        return result.IsSuccess ? result.Data : Array.Empty<HistoryTopicSummary>();
+        return result.IsSuccess ? result.Data : Array.Empty<HistoryTopicOverview>();
     }
 
-    private Task OnSearchResult(HistoryTopicSummary entry)
+    private Task OnSearchResult(HistoryTopicOverview entry)
     {
         Navigation.NavigateTo(Links.History.Content.Topic(entry.Id));
         return _searchAutocomplete.Clear();

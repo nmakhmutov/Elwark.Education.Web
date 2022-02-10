@@ -1,6 +1,6 @@
 namespace Education.Client.Gateways.Customer;
 
-public record Customer(
+public sealed record Customer(
     long Id,
     string Name,
     Uri Image,

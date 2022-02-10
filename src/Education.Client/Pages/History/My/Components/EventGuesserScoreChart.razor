@@ -1,15 +1,18 @@
 @using ApexCharts
 
 <div class="@Class">
-    <ApexChart TItem="Data" Options="@Options">
-        <ApexPointSeries
-            TItem="Data"
-            Items="@Series"
-            SeriesType="SeriesType.Donut"
-            XValue="@(x => x.Name)"
-            YAggregate="@(x => x.Sum(e => e.Value))"/>
-    </ApexChart>
-
+    @if (Score > 0)
+    {
+        <ApexChart TItem="Data" Options="@Options">
+            <ApexPointSeries
+                TItem="Data"
+                Items="@Series"
+                SeriesType="SeriesType.Donut"
+                XValue="@(x => x.Name)"
+                YAggregate="@(x => x.Sum(e => e.Value))"/>
+        </ApexChart>
+    }
+    
     <ChartList Items="@Items"/>
 </div>
 

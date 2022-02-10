@@ -4,7 +4,7 @@ using Education.Client.Gateways.Models.Test;
 namespace Education.Client.Gateways.History.User;
 
 public sealed record TopicStatistics(
-    HistoryTopicSummary Topic,
+    HistoryTopicOverview Topic,
     TopicStatistics.TotalStatistics Total,
     TopicStatistics.TestProgress EasyTest,
     TopicStatistics.TestProgress HardTest

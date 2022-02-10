@@ -32,12 +32,8 @@ builder.Services
 
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway");
 var policy = builder.HostEnvironment.IsDevelopment()
-    ? HttpPolicyExtensions
-        .HandleTransientHttpError()
-        .WaitAndRetryAsync(1, _ => TimeSpan.Zero)
-    : HttpPolicyExtensions
-        .HandleTransientHttpError()
-        .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
+    ? HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(1, _ => TimeSpan.Zero)
+    : HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
 builder.Services
     .AddLocalization(options => options.ResourcesPath = "Resources")
@@ -46,6 +42,7 @@ builder.Services
     .AddScoped<LanguageService>()
     .AddScoped<TopicContentFormatService>()
     .AddScoped<CustomerService>()
+    .AddScoped(provider => new NotificationService(gatewayUrl, provider.GetRequiredService<IAccessTokenProvider>()))
     .AddScoped<AuthorizationMessageHandler>(provider =>
         new AuthorizationMessageHandler(
                 provider.GetRequiredService<IAccessTokenProvider>(),

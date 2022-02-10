@@ -45,7 +45,9 @@
                     <DailyRewardCard
                         Class="daily-reward"
                         Reward="@profile.DailyReward"
-                        OnCollect="@CollectDailyReward"/>
+                        OnCollect="@CollectDailyReward"
+                        OnReject="@RejectDailyReward"
+                        OnReached="@OnInitializedAsync"/>
 
                     <StatisticsCard
                         Class="easy-test"
@@ -116,6 +118,13 @@
     private async Task CollectDailyReward()
     {
         var response = await HistoryClient.User.CollectDailyReward();
+        if (response.Status == ResponseStatus.Success)
+            await OnInitializedAsync();
+    }
+
+    private async Task RejectDailyReward()
+    {
+        var response = await HistoryClient.User.RejectDailyReward();
         if (response.Status == ResponseStatus.Success)
             await OnInitializedAsync();
     }

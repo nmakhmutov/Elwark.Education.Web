@@ -13,14 +13,12 @@ public static class DateTimeExtensions
             : local.ToShortDateString();
     }
 
-    public static string ToSimpleFormat(this TimeSpan span)
+    public static string ToSimpleFormat(this TimeSpan span, bool hideSeconds = false)
     {
         var format = span switch
         {
-            { TotalDays: >= 1 } => @"dd\.hh\:mm",
-            { TotalHours: >= 1, TotalSeconds: 0 } => @"hh\:mm",
-            { TotalHours: >= 1, TotalSeconds: > 0 } => @"hh\:mm\:ss",
-            { TotalMilliseconds: 0 } => @"mm\:ss",
+            { TotalDays: > 1 } => @"dd\.hh\:mm",
+            { TotalHours: > 1 } => hideSeconds ? @"hh\:mm" : @"hh\:mm\:ss",
             _ => @"mm\:ss"
         };
 

@@ -96,7 +96,7 @@
 @code {
     private bool _loading = true;
     private bool _dense;
-    private MudTable<HistoryUserTopicSummary> _table = default!;
+    private MudTable<HistoryUserTopicOverview> _table = default!;
     private FavoritesRequest _request = new(FavoritesRequest.SortType.DateAddedNewest, 1, 25);
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -111,7 +111,7 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    private async Task<TableData<HistoryUserTopicSummary>> ServerReload(TableState state)
+    private async Task<TableData<HistoryUserTopicOverview>> ServerReload(TableState state)
     {
         _loading = true;
         _request = _request with { Page = state.Page + 1, Count = state.PageSize };
@@ -120,7 +120,7 @@
 
         _loading = false;
 
-        return new TableData<HistoryUserTopicSummary>
+        return new TableData<HistoryUserTopicOverview>
         {
             Items = data.Data.Items,
             TotalItems = (int)data.Data.Count
