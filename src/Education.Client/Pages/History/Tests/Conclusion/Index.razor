@@ -1,28 +1,27 @@
 @page "/history/tests/{id}/conclusion"
 @layout HistoryLayout
-
-@using Education.Client.Gateways.History.Test
-@using Education.Client.Gateways.History
-@using Education.Client.Pages.History.Tests.Conclusion.Components
-
 @attribute [Authorize]
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+@using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Tests.Model
+@using Education.Client.Pages.History.Tests.Conclusion.Components
+
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Success Context="conclusion">
             @switch (conclusion)
             {
-                case EasyTestConclusion test:
+                case EasyTestConclusionModel test:
                     <PageTitle>@test.Topic.Title</PageTitle>
                     <EasyTestView Conclusion="@test"/>
                     break;
 
-                case HardTestConclusion test:
+                case HardTestConclusionModel test:
                     <PageTitle>@test.Topic.Title</PageTitle>
                     <HardTestView Conclusion="@test"/>
                     break;
 
-                case MixedTestConclusion test:
+                case MixedTestConclusionModel test:
                     <PageTitle>@L["Test:Mixed"]</PageTitle>
                     <MixedTestView Conclusion="@test"/>
                     break;
@@ -36,7 +35,7 @@
 </EduPage>
 
 @code {
-    private ApiResponse<TestConclusion> _response = ApiResponse<TestConclusion>.Loading();
+    private ApiResponse<TestConclusionModel> _response = ApiResponse<TestConclusionModel>.Loading();
 
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;

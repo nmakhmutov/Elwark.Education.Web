@@ -1,4 +1,5 @@
-using Education.Client.Gateways.Customer;
+using Education.Client.Gateways.Customers.Model;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -6,12 +7,14 @@ namespace Education.Client.Services;
 
 internal sealed class NotificationService : IAsyncDisposable
 {
+    private readonly AuthenticationStateProvider _stateProvider;
     private readonly HubConnection _connection;
-    private List<Notification> _notifications;
+    private List<NotificationModel> _notifications;
 
-    public NotificationService(Uri host, IAccessTokenProvider tokenProvider)
+    public NotificationService(Uri host, IAccessTokenProvider tokenProvider, AuthenticationStateProvider stateProvider)
     {
-        _notifications = new List<Notification>();
+        _stateProvider = stateProvider;
+        _notifications = new List<NotificationModel>();
         _connection = new HubConnectionBuilder()
             .WithUrl(new Uri(host, "/hubs/notification"), options =>
             {
@@ -24,15 +27,15 @@ internal sealed class NotificationService : IAsyncDisposable
             .WithAutomaticReconnect()
             .Build();
 
-        _connection.On("Notify", (Notification notification) =>
+        _connection.On("Notify", (NotificationModel notification) =>
         {
             _notifications = _notifications.Prepend(notification)
                 .Take(5)
                 .ToList();
 
-            OnChange();
+            OnChange.Invoke();
         });
-        
+
         _connection.Reconnected += _ =>
         {
             _notifications.Clear();
@@ -40,7 +43,10 @@ internal sealed class NotificationService : IAsyncDisposable
         };
     }
 
-    public IEnumerable<Notification> Messages =>
+    // ReSharper disable once MemberInitializerValueIgnored
+    public event Action OnChange = () => { };
+
+    public IEnumerable<NotificationModel> Messages =>
         _notifications.AsReadOnly();
 
     public bool HasNotifications =>
@@ -53,8 +59,10 @@ internal sealed class NotificationService : IAsyncDisposable
     {
         if (_connection.State == HubConnectionState.Connected)
             return;
-
-        await _connection.StartAsync();
+        
+        var state = await _stateProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated ?? false)
+            await _connection.StartAsync();
     }
 
     public async Task MarkAllAsReadAsync()
@@ -64,6 +72,4 @@ internal sealed class NotificationService : IAsyncDisposable
         if (_connection.State == HubConnectionState.Connected)
             await _connection.SendAsync("MarkAllAsRead");
     }
-
-    public event Action OnChange = () => { };
 }

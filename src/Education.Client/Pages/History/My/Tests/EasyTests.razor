@@ -9,7 +9,7 @@
 
 <PageTitle>@L["Tests:Easy"]</PageTitle>
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Success Context="result">
             <EduContainer>
@@ -83,7 +83,7 @@
 
 @code {
 
-    private ApiResponse<TestStatistics> _response = ApiResponse<TestStatistics>.Loading();
+    private ApiResponse<TestStatisticsModel> _response = ApiResponse<TestStatisticsModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {

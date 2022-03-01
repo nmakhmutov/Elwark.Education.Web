@@ -2,11 +2,11 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-@using Education.Client.Gateways.History.EventGuesser.Models
 @using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.EventGuesser.Model
 @using Education.Client.Pages.History.Components
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Success Context="conclusion">
             <EduContainer>

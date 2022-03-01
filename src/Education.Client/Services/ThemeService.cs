@@ -3,17 +3,12 @@ using MudBlazor;
 
 namespace Education.Client.Services;
 
-public sealed class ThemeService
+internal sealed class ThemeService
 {
-    public enum ThemeType
-    {
-        Light,
-        Dark
-    }
-
     private const string StorageKey = "ts";
+    private readonly ILocalStorageService _storage;
 
-    private static readonly MudTheme LightTheme = new()
+    public readonly MudTheme Theme = new()
     {
         Palette = new Palette
         {
@@ -27,18 +22,14 @@ public sealed class ThemeService
             Black = "#272C34",
             Background = "#F6F6F6",
             BackgroundGrey = "#E3E5E7",
-            AppbarBackground = Colors.Shades.White, //"#3949ab"
-            AppbarText = Colors.Grey.Darken3, //"#27272f"
+            AppbarBackground = Colors.Shades.White,
+            AppbarText = Colors.Grey.Darken3,
             Divider = "#E8E8E8",
             DividerLight = "#ECECEC",
             TableLines = "#E8E8E8",
             OverlayLight = "rgba(255, 255, 255, 0.7)"
-        }
-    };
-
-    private static readonly MudTheme DarkTheme = new()
-    {
-        Palette = new Palette
+        },
+        PaletteDark = new Palette
         {
             Primary = "#5569ff",
             Secondary = "#584bb0",
@@ -68,42 +59,28 @@ public sealed class ThemeService
         }
     };
 
-    private readonly ILocalStorageService _storage;
-
     public ThemeService(ILocalStorageService storage)
     {
         _storage = storage;
-        Type = ThemeType.Light;
+        IsDarkMode = false;
     }
 
-    public ThemeType Type { get; private set; }
+    public bool IsDarkMode { get; private set; }
 
-    public MudTheme Theme => Type switch
-    {
-        ThemeType.Light => LightTheme,
-        ThemeType.Dark => DarkTheme,
-        _ => throw new ArgumentOutOfRangeException()
-    };
-
-    public string Icon => Type switch
-    {
-        ThemeType.Light => Icons.Outlined.LightMode,
-        ThemeType.Dark => Icons.Outlined.DarkMode,
-        _ => throw new ArgumentOutOfRangeException()
-    };
+    public string Icon =>
+        IsDarkMode ? Icons.Outlined.DarkMode : Icons.Outlined.LightMode;
 
     public event Action OnChange = () => { };
 
     public async Task ToggleAsync()
     {
-        Type = Type == ThemeType.Dark ? ThemeType.Light : ThemeType.Dark;
-        await _storage.SetItemAsync(StorageKey, Type);
+        await _storage.SetItemAsync(StorageKey, IsDarkMode = !IsDarkMode);
         OnChange();
     }
 
     public async Task InitAsync()
     {
-        Type = await _storage.GetItemAsync<ThemeType>(StorageKey);
+        IsDarkMode = await _storage.GetItemAsync<bool>(StorageKey);
         OnChange();
     }
 }

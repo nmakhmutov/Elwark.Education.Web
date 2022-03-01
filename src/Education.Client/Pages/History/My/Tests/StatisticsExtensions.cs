@@ -1,5 +1,5 @@
 using Education.Client.Extensions;
-using Education.Client.Gateways.History.User;
+using Education.Client.Gateways.History.Users.Model;
 using Education.Client.Gateways.Models.Statistics;
 using Education.Client.Pages.History.My.Tests.Components;
 using Microsoft.Extensions.Localization;
@@ -8,25 +8,23 @@ namespace Education.Client.Pages.History.My.Tests;
 
 public static class StatisticsExtensions
 {
-    public static string RangeTitle(this TestRangeContrast contrast) =>
+    public static string RangeTitle(this TestRangeContrastModel contrast) =>
         RangeTitle(contrast.Starts, contrast.Ends);
 
-    public static string RangeTitle(this EventGuesserRangeContrast contrast) =>
+    public static string RangeTitle(this EventGuesserStatisticsModel.Contrast contrast) =>
         RangeTitle(contrast.Starts, contrast.Ends);
 
-    public static ProgressList.Item[] GetProgress(this NumberOfTestsContrast contrast, IStringLocalizer<App> l) =>
+    public static ProgressList.Item[] GetProgress(this NumberOfTestsContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
             new(l["NumberOfTests:Successful"], contrast.Successful.Current.ToReadable(), contrast.Successful.Difference),
             new(l["NumberOfTests:Failed"], contrast.Failed.Current.ToReadable(), contrast.Failed.Difference),
-            new(l["NumberOfTests:MistakesExceeded"], contrast.MistakesExceeded.Current.ToReadable(),
-                contrast.MistakesExceeded.Difference),
-            new(l["NumberOfTests:TimeExceeded"], contrast.TimeExceeded.Current.ToReadable(),
-                contrast.TimeExceeded.Difference),
+            new(l["NumberOfTests:MistakesExceeded"], contrast.MistakesExceeded.Current.ToReadable(), contrast.MistakesExceeded.Difference),
+            new(l["NumberOfTests:TimeExceeded"], contrast.TimeExceeded.Current.ToReadable(), contrast.TimeExceeded.Difference),
             new(l["NumberOfTests:Total"], contrast.Total.Current.ToReadable(), contrast.Total.Difference)
         };
 
-    public static ProgressList.Item[] GetProgress(this ScoreContrast contrast, IStringLocalizer<App> l) =>
+    public static ProgressList.Item[] GetProgress(this ScoreContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
             new(l["Score:ByQuestions"], contrast.Questions.Current.ToReadable(), contrast.Questions.Difference),
@@ -35,7 +33,7 @@ public static class StatisticsExtensions
             new(l["Score:Total"], contrast.Total.Current.ToReadable(), contrast.Total.Difference)
         };
 
-    public static ProgressList.Item[] GetProgress(this AnswerRatioContrast contrast, IStringLocalizer<App> l) =>
+    public static ProgressList.Item[] GetProgress(this AnswerRatioContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
             new(l["Questions:Answered"], contrast.Answered.Current.ToReadable(), contrast.Answered.Difference),
@@ -45,7 +43,7 @@ public static class StatisticsExtensions
             new(l["Questions:Total"], contrast.Questions.Current.ToReadable(), contrast.Questions.Difference)
         };
 
-    public static ProgressList.Item[] GetProgress(this TimeSpentContrast contrast, IStringLocalizer<App> l) =>
+    public static ProgressList.Item[] GetProgress(this TimeSpentContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
             new(l["TimeSpent:Min"], contrast.Min.Current.ToSimpleFormat(), contrast.Min.Difference),
@@ -54,6 +52,6 @@ public static class StatisticsExtensions
             new(l["TimeSpent:Total"], contrast.Total.Current.ToSimpleFormat(), contrast.Total.Difference)
         };
 
-    private static string RangeTitle(DateTime starts, DateTime ends) =>
+    private static string RangeTitle(DateOnly starts, DateOnly ends) =>
         $"{starts:dd MMM} ― {ends:dd MMM}";
 }

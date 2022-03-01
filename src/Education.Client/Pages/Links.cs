@@ -31,7 +31,7 @@ public static class Links
             public const string Empires = $"{Index}/empires";
 
             public static string Epoch(EpochType epoch) =>
-                $"{Index}/epochs/{epoch.ToFastString()}";
+                $"{Index}/epochs/{epoch.ToFastString().ToLowerInvariant()}";
 
             public static string Topic(string topicId) =>
                 $"{Index}/topics/{topicId}";
@@ -39,13 +39,16 @@ public static class Links
 
         public static class TopicTest
         {
-            public const string Builder = $"{Index}/tests";
+            public static string Builder(string? topicId = null) =>
+                string.IsNullOrEmpty(topicId)
+                    ? $"{Index}/tests"
+                    : $"{Index}/tests?topic={topicId}";
 
             public static string Test(string testId) =>
-                $"{Builder}/{testId}";
+                $"{Index}/tests/{testId}";
 
             public static string Conclusion(string testId) =>
-                $"{Builder}/{testId}/conclusion";
+                $"{Index}/tests/{testId}/conclusion";
         }
 
         public static class EventGuesser
@@ -70,13 +73,13 @@ public static class Links
             public const string MyEventGuessers = $"{Index}/my/event-guessers";
 
             public const string MyAchievements = $"{Index}/my/achievements";
-            
+
             public const string MyInventories = $"{Index}/my/inventories";
 
             public const string MyActivities = $"{Index}/my/activities";
 
             public const string MyFavorites = $"{Index}/my/favorites";
-            
+
             public static string MyTopic(string topicId) =>
                 $"{Index}/my/topics/{topicId}";
         }

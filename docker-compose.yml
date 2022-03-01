@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+
+  education.web:
+    container_name: "education_web"
+    image: elwark/education/web:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Education.Client/Dockerfile
+    ports:
+      - "5010:80"

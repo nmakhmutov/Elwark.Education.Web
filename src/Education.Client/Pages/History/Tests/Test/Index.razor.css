@@ -1,6 +1,51 @@
+.grid {
+    display: grid;
+    grid-gap: 12px;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        "header"
+        "test"
+        "inventory";
+}
+
+.grid .header {
+    grid-area: header;
+}
+
+.grid .test {
+    grid-area: test;
+}
+
+.grid .inventory {
+    grid-area: inventory;
+}
+
+.progress {
+    text-align: right;
+}
+
 .image {
     width: 100%;
     max-width: 960px;
     height: auto;
     display: block;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        grid-gap: 24px;
+    }
+
+    .progress {
+        min-width: 200px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: 3fr 1fr;
+        grid-template-areas:
+            "header header"
+            "test inventory";
+    }
 }

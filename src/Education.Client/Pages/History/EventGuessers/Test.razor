@@ -1,14 +1,13 @@
 @page "/history/event-guessers/test"
 @layout HistoryLayout
 @attribute [Authorize]
-
-@using Education.Client.Gateways.History.EventGuesser.Models
-@using Education.Client.Gateways.History.EventGuesser.Requests
 @using FluentValidation
 @using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.EventGuesser.Model
+@using Education.Client.Gateways.History.EventGuesser.Request
 @using Severity = MudBlazor.Severity
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Success Context="test">
             <EduContainer>
@@ -199,7 +198,7 @@
         var result = await Client.EventGuesser.CheckAsync(request);
         if (!result.IsSuccess)
         {
-            Snackbar.Add(result.Error.Message, Severity.Error);
+            Snackbar.Add(result.Error.Detail, Severity.Error);
             _isLoading = false;
             return;
         }

@@ -1,11 +1,11 @@
 using System.Text.Json;
 using Blazored.LocalStorage;
 using Education.Client;
-using Education.Client.Gateways.Customer;
+using Education.Client.Gateways.Customers;
 using Education.Client.Gateways.History;
-using Education.Client.Gateways.Store;
 using Education.Client.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -42,15 +42,22 @@ builder.Services
     .AddScoped<LanguageService>()
     .AddScoped<TopicContentFormatService>()
     .AddScoped<CustomerService>()
-    .AddScoped(provider => new NotificationService(gatewayUrl, provider.GetRequiredService<IAccessTokenProvider>()))
+    .AddScoped<LocalizationHandler>()
+    .AddScoped(provider =>
+    {
+        var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
+        var stateProvider = provider.GetRequiredService<AuthenticationStateProvider>();
+        
+        return new NotificationService(gatewayUrl, tokenProvider, stateProvider);
+    })
     .AddScoped<AuthorizationMessageHandler>(provider =>
-        new AuthorizationMessageHandler(
-                provider.GetRequiredService<IAccessTokenProvider>(),
-                provider.GetRequiredService<NavigationManager>()
-            )
-            .ConfigureHandler(new[] { gatewayUrl.ToString() })
-    )
-    .AddScoped<LocalizationHandler>();
+    {
+        var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
+        var navigation = provider.GetRequiredService<NavigationManager>();
+        
+        return new AuthorizationMessageHandler(tokenProvider, navigation)
+            .ConfigureHandler(new[] { gatewayUrl.ToString() });
+    });
 
 builder.Services
     .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
@@ -63,12 +70,6 @@ builder.Services
 
 builder.Services
     .AddHttpClient<ICustomerClient, CustomerClient>(client => client.BaseAddress = gatewayUrl)
-    .AddHttpMessageHandler<AuthorizationMessageHandler>()
-    .AddHttpMessageHandler<LocalizationHandler>()
-    .AddPolicyHandler(policy);
-
-builder.Services
-    .AddHttpClient<IStoreClient, StoreClient>(client => client.BaseAddress = gatewayUrl)
     .AddHttpMessageHandler<AuthorizationMessageHandler>()
     .AddHttpMessageHandler<LocalizationHandler>()
     .AddPolicyHandler(policy);

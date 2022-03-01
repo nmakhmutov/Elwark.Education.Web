@@ -9,7 +9,7 @@
 
 <PageTitle>@L["Tests:Mixed"]</PageTitle>
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Success Context="result">
             <EduContainer>
@@ -86,7 +86,7 @@
         new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
     };
 
-    private ApiResponse<TestStatistics> _response = ApiResponse<TestStatistics>.Loading();
+    private ApiResponse<TestStatisticsModel> _response = ApiResponse<TestStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

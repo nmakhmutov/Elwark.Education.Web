@@ -83,11 +83,7 @@
         ThemeService.OnChange += StateHasChanged;
 
     private string Overlay =>
-        ThemeService.Type switch {
-            ThemeService.ThemeType.Light => "light",
-            ThemeService.ThemeType.Dark => "dark",
-            _ => throw new ArgumentOutOfRangeException()
-            };
+        ThemeService.IsDarkMode ? "dark" : "light";
 
     [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;
@@ -99,10 +95,10 @@
     public string Image { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public HistoricalDate? Founded { get; set; }
+    public HistoricalDateModel? Founded { get; set; }
 
     [Parameter, EditorRequired]
-    public HistoricalDate? Dissolved { get; set; }
+    public HistoricalDateModel? Dissolved { get; set; }
 
     [Parameter, EditorRequired]
     public uint MaxArea { get; set; }

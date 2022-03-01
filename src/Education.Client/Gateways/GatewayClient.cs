@@ -20,11 +20,17 @@ internal abstract class GatewayClient
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
         Converters =
         {
-            new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
+            new AchievementModelConverter(),
+            new AnswerOptionModelConverter(),
+            new AnswerResultModelConverter(),
+            new DateOnlyConverter(),
+            new HistoryTopicDetailModelConverter(),
             new InternalMoneyConverter(),
-            new HistoryTestConclusionJsonConverter(),
-            new HistoryTopicDetailJsonConverter(),
-            new HistoryAchievementConverter()
+            new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
+            new TestConclusionConverter(),
+            new TestOverviewModelConverter(),
+            new TestQuestionModelConverter(),
+            new TimeOnlyConverter()
         }
     };
 
@@ -33,14 +39,13 @@ internal abstract class GatewayClient
     protected static JsonContent CreateJson<T>(T value) =>
         JsonContent.Create(value, null, Serializer);
 
-    protected static async Task<ApiResponse<T>> ExecuteAsync<T>(
-        Func<CancellationToken, Task<HttpResponseMessage>> action)
+    protected static async Task<ApiResponse<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> func)
     {
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
         try
         {
-            using var message = await action(cts.Token);
+            using var message = await func(cts.Token);
 
             return message.IsSuccessStatusCode
                 ? message.StatusCode == HttpStatusCode.NoContent
@@ -51,17 +56,17 @@ internal abstract class GatewayClient
         catch (AccessTokenNotAvailableException ex)
         {
             ex.Redirect();
-            var error = Error.Create("Unauthorized", "https://tools.ietf.org/html/rfc7235#section-3.1", 401);
+            var error = Error.Create("Unauthorized", 401);
             return ApiResponse<T>.Fail(error);
         }
         catch (HttpRequestException)
         {
-            var error = Error.Create("Unavailable", "https://tools.ietf.org/html/rfc7231#section-6.6.4", 503);
+            var error = Error.Create("Unavailable", 503);
             return ApiResponse<T>.Fail(error);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            var error = Error.Create("Internal", "https://tools.ietf.org/html/rfc7231#section-6.6.3", 502);
+            var error = Error.Create("Internal", 502, ex.Message);
             return ApiResponse<T>.Fail(error);
         }
     }

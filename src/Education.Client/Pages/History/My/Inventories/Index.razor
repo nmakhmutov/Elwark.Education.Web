@@ -1,14 +1,13 @@
 @page "/history/my/inventories"
-
 @layout HistoryLayout
 @attribute [Authorize]
 
-@using Education.Client.Gateways.History.User
 @using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Users.Model
 
 <PageTitle>@L["Inventories"]</PageTitle>
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="true">
+<EduPage ShowFooter="true">
     <ApiViewer Response="@_response">
         <Success Context="inventory">
             <EduContainer>
@@ -29,7 +28,7 @@
         new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
     };
     
-    private ApiResponse<Inventory> _response = ApiResponse<Inventory>.Loading();
+    private ApiResponse<InventoryModel> _response = ApiResponse<InventoryModel>.Loading();
     
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

@@ -1,5 +1,5 @@
-@using Education.Client.Gateways.History.User
 @using Education.Client.Pages.History.My.Components
+@using Education.Client.Gateways.History.Users.Model
 
 <MudCard Class="@($"{Class} d-flex flex-column")" Elevation="0">
     <MudCardHeader Class="pa-3 pa-sm-6">
@@ -41,6 +41,6 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public AchievementsOverview Achievements { get; set; } = default!;
+    public AchievementsOverviewModel Achievements { get; set; } = default!;
 
 }

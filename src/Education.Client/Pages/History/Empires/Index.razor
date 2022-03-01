@@ -2,9 +2,10 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-@using Education.Client.Gateways.History.Topic
 @using MudBlazor.Services
 @using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Empires.Model
+@using Education.Client.Gateways.History.Empires.Request
 @using Education.Client.Pages.History.Components
 
 @implements IDisposable
@@ -23,7 +24,7 @@
     }
 </style>
 <PageTitle>@L["History:Empires"]</PageTitle>
-<EduPage Subject="@L["Subject:History"]" ShowFooter="false">
+<EduPage ShowFooter="false">
     <MudTimeline TimelinePosition="@_timelinePosition" DisableModifiers="true" Class="fff">
         <MudTimelineItem HideDot="true">
             <div class="ma-3 ma-sm-6">
@@ -141,7 +142,8 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() => _response = await HistoryClient.Topic.GetAsync(_request);
+    protected override async Task OnInitializedAsync() => 
+        _response = await HistoryClient.Empire.GetAsync(_request);
 
     private async Task LoadMoreAsync()
     {
@@ -151,7 +153,7 @@
         if (_request.Page == _response.Data.Pages)
             return;
 
-        var response = await HistoryClient.Topic.GetAsync(_request = _request with {Page = _request.Page + 1});
+        var response = await HistoryClient.Empire.GetAsync(_request = _request with {Page = _request.Page + 1});
         _response = response.IsSuccess
             ? ApiResponse<PageResponse<EmpireOverview>>.Success(
                 new PageResponse<EmpireOverview>(
@@ -166,7 +168,7 @@
     private async Task SortChangedAsync(GetEmpiresRequest.SortType sort)
     {
         _response = ApiResponse<PageResponse<EmpireOverview>>.Loading();
-        _response = await HistoryClient.Topic.GetAsync(_request = new GetEmpiresRequest(sort, 1, 20));
+        _response = await HistoryClient.Empire.GetAsync(_request = new GetEmpiresRequest(sort, 1, 20));
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

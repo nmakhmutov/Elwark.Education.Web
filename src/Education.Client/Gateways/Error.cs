@@ -2,33 +2,23 @@ namespace Education.Client.Gateways;
 
 public sealed record Error
 {
-    public Error(string title, string type, string? detail, int status, Dictionary<string, string[]>? errors)
-    {
-        Title = title;
-        Type = type;
-        Detail = detail;
-        Status = status;
-        Errors = errors ?? new Dictionary<string, string[]>();
-    }
+    public string Type { get; init; } = string.Empty;
 
-    public string Title { get; }
+    public string Title { get; init; } = string.Empty;
 
-    public string Type { get; }
+    public int Status { get; init; } = 400;
 
-    public string? Detail { get; }
+    public string Detail { get; init; } = string.Empty;
 
-    public int Status { get; }
+    public IDictionary<string, object> Extensions { get; init; } = new Dictionary<string, object>();
 
-    public Dictionary<string, string[]> Errors { get; } = new();
+    public IDictionary<string, string[]> Errors { get; init; } = new Dictionary<string, string[]>();
 
-    public string Message => Detail ?? Title;
-
-    public bool IsNotFound() =>
-        Type == "not-found";
-
-    public bool IsExpired() =>
-        Type == "expired";
-
-    public static Error Create(string title, string type, int status) =>
-        new(title, type, null, status, new Dictionary<string, string[]>());
+    public static Error Create(string title, int status, string detail = "") =>
+        new()
+        {
+            Title = title,
+            Status = status,
+            Detail = detail
+        };
 }

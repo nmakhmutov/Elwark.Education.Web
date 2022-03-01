@@ -1,5 +1,5 @@
-using Education.Client.Gateways.History.EventGuesser.Models;
-using Education.Client.Gateways.History.EventGuesser.Requests;
+using Education.Client.Gateways.History.EventGuesser.Model;
+using Education.Client.Gateways.History.EventGuesser.Request;
 
 namespace Education.Client.Gateways.History.EventGuesser;
 
@@ -13,8 +13,8 @@ internal sealed class EventGuesserClient : GatewayClient
     public Task<ApiResponse<TestModel>> GetAsync() =>
         ExecuteAsync<TestModel>(ct => _client.GetAsync("history/event-guessers", ct));
 
-    public Task<ApiResponse<TestBuilder>> GetBuilderAsync() =>
-        ExecuteAsync<TestBuilder>(ct => _client.GetAsync("history/event-guessers/builder", ct));
+    public Task<ApiResponse<TestBuilderModel>> GetBuilderAsync() =>
+        ExecuteAsync<TestBuilderModel>(ct => _client.GetAsync("history/event-guessers/builder", ct));
 
     public Task<ApiResponse<ConclusionModel>> GetConclusionAsync() =>
         ExecuteAsync<ConclusionModel>(ct => _client.GetAsync("history/event-guessers/conclusion", ct));

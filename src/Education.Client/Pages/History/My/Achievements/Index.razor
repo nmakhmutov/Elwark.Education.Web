@@ -3,12 +3,12 @@
 @attribute [Authorize]
 
 @using Education.Client.Gateways.History
-@using Education.Client.Gateways.History.User
+@using Education.Client.Gateways.History.Users.Model
 @using Education.Client.Pages.History.My.Components
 
 <PageTitle>@L["Achievements"]</PageTitle>
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Success Context="achievements">
             <EduContainer>
@@ -65,7 +65,7 @@
         new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
     };
 
-    private ApiResponse<AchievementsDetail> _response = ApiResponse<AchievementsDetail>.Loading();
+    private ApiResponse<AchievementsDetailModel> _response = ApiResponse<AchievementsDetailModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

@@ -1,5 +1,4 @@
 @using Education.Client.Gateways.Models.User
-@using Education.Client.Gateways.Store
 
 <div class="card">
     <div class="pricing">
@@ -21,10 +20,10 @@
         </div>
         <div class="price">
             <h6 class="price-symbol">
-                @Price.Symbol
+                $
             </h6>
             <h4 class="price-value">
-                @Price.Amount
+                @Price
             </h4>
             <h6 class="price-period">
                 /@(Months == 1 ? "mo" : $"{Months} mo")
@@ -34,7 +33,7 @@
             @L[$"Subscription:{Type}"]
         </h6>
         <p class="pricing-description">
-            @string.Join(",", Subjects.Select(x => L[$"Subject:{x}"]))
+            @* @string.Join(",", Subjects.Select(x => L[$"Subject:{x}"])) *@
         </p>
     </div>
     <MudDivider/>
@@ -90,13 +89,10 @@
     public SubscriptionType Type { get; set; }
 
     [Parameter, EditorRequired]
-    public Money Price { get; set; } = default!;
+    public decimal Price { get; set; }
 
     [Parameter, EditorRequired]
     public uint Months { get; set; }
-
-    [Parameter, EditorRequired]
-    public SubjectType[] Subjects { get; set; } = Array.Empty<SubjectType>();
 
     [Parameter, EditorRequired]
     public EventCallback<string> OnBuyClick { get; set; }

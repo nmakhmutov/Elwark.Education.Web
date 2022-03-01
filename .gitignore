@@ -1,6 +1,5 @@
-
-# Created by https://www.toptal.com/developers/gitignore/api/rider,visualstudio,visualstudiocode,macos,windows,linux,aspnetcore,dotnetcore
-# Edit at https://www.toptal.com/developers/gitignore?templates=rider,visualstudio,visualstudiocode,macos,windows,linux,aspnetcore,dotnetcore
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,rider,dotenv,dotnetcore,aspnetcore,macos,windows,linux
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,visualstudiocode,rider,dotenv,dotnetcore,aspnetcore,macos,windows,linux
 
 ### ASPNETCore ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -150,7 +149,6 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
@@ -272,6 +270,9 @@ __pycache__/
 # Cake - Uncomment if you are using it
 # tools/
 
+### dotenv ###
+.env
+
 ### DotnetCore ###
 # .NET Core build folders
 bin/
@@ -304,6 +305,7 @@ obj/
 # Icon must end with two \r
 Icon
 
+
 # Thumbnails
 ._*
 
@@ -333,6 +335,9 @@ Temporary Items
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+
+# AWS User-specific
+.idea/**/aws.xml
 
 # Generated files
 .idea/**/contentModel.xml
@@ -384,6 +389,9 @@ atlassian-ide-plugin.xml
 # Cursive Clojure plugin
 .idea/replstate.xml
 
+# SonarLint plugin
+.idea/sonarlint/
+
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
 crashlytics.properties
@@ -402,11 +410,20 @@ fabric.properties
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-*.code-workspace
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+.ionide
+
+# Support for Project snippet scope
 
 ### Windows ###
 # Windows thumbnail cache files
@@ -436,7 +453,7 @@ $RECYCLE.BIN/
 
 ### VisualStudio ###
 ##
-## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
+## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # User-specific files
 *.rsuser
@@ -447,6 +464,7 @@ $RECYCLE.BIN/
 mono_crash.*
 
 # Build results
+[Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 [Ll]ogs/
@@ -469,6 +487,9 @@ BenchmarkDotNet.Artifacts/
 
 # .NET Core
 
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
 # StyleCop
 StyleCopReport.xml
 
@@ -477,6 +498,7 @@ StyleCopReport.xml
 *.iobj
 *.ipdb
 *_wpftmp.csproj
+*.tlog
 
 # Chutzpah Test files
 
@@ -502,7 +524,9 @@ StyleCopReport.xml
 !.axoCover/settings.json
 
 # Coverlet is a free, cross platform Code Coverage Tool
-coverage*[.json, .xml, .info]
+coverage*.json
+coverage*.xml
+coverage*.info
 
 # Visual Studio code coverage results
 
@@ -590,6 +614,15 @@ ServiceFabricBackup/
 # Visual Studio 6 auto-generated workspace file (contains which files were open etc.)
 *.vbw
 
+# Visual Studio 6 auto-generated project file (contains which files were open etc.)
+*.vbp
+
+# Visual Studio 6 workspace and project file (working project files containing files to include in project)
+*.dsw
+*.dsp
+
+# Visual Studio 6 technical files
+
 # Visual Studio LightSwitch build output
 
 # Paket dependency manager
@@ -635,6 +668,9 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+# Visual Studio History (VSHistory) files
+.vshistory/
+
 # BeatPulse healthcheck temp database
 healthchecksdb
 
@@ -644,5 +680,19 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-# End of https://www.toptal.com/developers/gitignore/api/rider,visualstudio,visualstudiocode,macos,windows,linux,aspnetcore,dotnetcore
-# Результаты анализа OpenCover UI
+# Fody - auto-generated XML schema
+FodyWeavers.xsd
+
+# VS Code files for those working on multiple tools
+*.code-workspace
+
+# Local History for Visual Studio Code
+
+# Windows Installer files from build outputs
+
+# JetBrains Rider
+
+### VisualStudio Patch ###
+# Additional files built by Visual Studio
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,rider,dotenv,dotnetcore,aspnetcore,macos,windows,linux

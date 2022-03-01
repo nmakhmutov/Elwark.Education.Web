@@ -1,5 +1,5 @@
-@using Education.Client.Gateways.History.User
 @using ApexCharts
+@using Education.Client.Gateways.History.Users.Model
 @implements IDisposable
 
 <MudCard Class="@Class" Elevation="0">
@@ -17,9 +17,9 @@
     </MudCardHeader>
     <MudCardContent Class="pa-3 pa-sm-6">
         <div style="max-height: 400px; height: 100%; position: relative">
-            <ApexChart @ref="@_chart" TItem="HistoryUserProfile.ProgressOverview" Options="_options" Height="@("400px")">
+            <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.TestActivity" Options="_options" Height="@("400px")">
                 <ApexPointSeries
-                    TItem="HistoryUserProfile.ProgressOverview"
+                    TItem="HistoryUserProfileModel.TestActivity"
                     Items="Activities"
                     Name="@L["NumberOfTests:Total"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
@@ -32,9 +32,9 @@
 </MudCard>
 
 @code {
-    private ApexChart<HistoryUserProfile.ProgressOverview> _chart = default!;
-    private ApexChartOptions<HistoryUserProfile.ProgressOverview>? _options;
-    
+    private ApexChart<HistoryUserProfileModel.TestActivity> _chart = default!;
+    private ApexChartOptions<HistoryUserProfileModel.TestActivity>? _options;
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -48,11 +48,11 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public HistoryUserProfile.ProgressOverview[] Activities { get; set; } = Array.Empty<HistoryUserProfile.ProgressOverview>();
+    public HistoryUserProfileModel.TestActivity[] Activities { get; set; } = Array.Empty<HistoryUserProfileModel.TestActivity>();
 
     protected override void OnInitialized()
     {
-        _options = new ApexChartOptions<HistoryUserProfile.ProgressOverview>
+        _options = new ApexChartOptions<HistoryUserProfileModel.TestActivity>
         {
             Chart = new Chart
             {
@@ -77,7 +77,7 @@
             },
             Theme = new Theme
             {
-                Mode = ThemeService.Type == ThemeService.ThemeType.Light ? Mode.Light : Mode.Dark
+                Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light
             }
         };
 
@@ -91,7 +91,7 @@
         if (_options is null)
             return;
 
-        _options.Theme.Mode = ThemeService.Type == ThemeService.ThemeType.Light ? Mode.Light : Mode.Dark;
+        _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
         _chart.SetRerenderChart();
         StateHasChanged();
     }

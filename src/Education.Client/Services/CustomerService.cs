@@ -1,5 +1,5 @@
 using Blazored.LocalStorage;
-using Education.Client.Gateways.Customer;
+using Education.Client.Gateways.Customers;
 using Education.Client.Pages;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;

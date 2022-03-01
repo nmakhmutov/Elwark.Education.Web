@@ -40,10 +40,10 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public HistoryTopicOverview Topic { get; set; } = default!;
+    public TopicOverviewModel Topic { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public UserActivityOverview UserActivity { get; set; } = default!;
+    public UserActivityOverviewModel UserActivity { get; set; } = default!;
 
     [Parameter]
     public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);

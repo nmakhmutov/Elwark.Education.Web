@@ -1,15 +1,14 @@
 @page "/history/my/activities"
 @layout HistoryLayout
-
-@using Education.Client.Gateways.History.User
-@using Education.Client.Gateways.History
-@using Education.Client.Pages.History.My.Activities.Components;
-
 @attribute [Authorize]
+
+@using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Users.Model
+@using Education.Client.Pages.History.My.Activities.Components;
 
 <PageTitle>@L["Test:MyActivity"]</PageTitle>
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Success Context="activity">
             <EduContainer MaxWidth="EduWidth.W1920">
@@ -18,7 +17,7 @@
                     <TestCard
                         Class="easy-test"
                         Icon="@EducationIcons.Tests"
-                        IconClass="blue-text"
+                        IconClass="blue-text text-lighten-1"
                         Title="@L["Tests:Easy"]"
                         Href="@Links.History.User.MyEasyTests"
                         Value="@activity.EasyTests"/>
@@ -26,7 +25,7 @@
                     <TestCard
                         Class="hard-test"
                         Icon="@EducationIcons.Tests"
-                        IconClass="deep-purple-text"
+                        IconClass="blue-text text-darken-2"
                         Title="@L["Tests:Hard"]"
                         Href="@Links.History.User.MyHardTests"
                         Value="@activity.HardTests"/>
@@ -34,7 +33,7 @@
                     <TestCard
                         Class="mixed-test"
                         Icon="@EducationIcons.Tests"
-                        IconClass="red-text"
+                        IconClass="indigo-text text-darken-1"
                         Title="@L["Tests:Mixed"]"
                         Href="@Links.History.User.MyMixedTests"
                         Value="@activity.MixedTests"/>
@@ -42,7 +41,7 @@
                     <TestCard
                         Class="event-guesser"
                         Icon="@EducationIcons.EventGuesser"
-                        IconClass="amber-text"
+                        IconClass="deep-orange-text"
                         Title="@L["EventGuesser"]"
                         Href="@Links.History.User.MyEventGuessers"
                         Value="@activity.EventGuessers"/>
@@ -75,7 +74,7 @@
         new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
     };
 
-    private ApiResponse<ProgressStatistics> _response = ApiResponse<ProgressStatistics>.Loading();
+    private ApiResponse<ProgressStatisticsModel> _response = ApiResponse<ProgressStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

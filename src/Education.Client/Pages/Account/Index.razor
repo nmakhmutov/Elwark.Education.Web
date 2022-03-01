@@ -1,11 +1,10 @@
 @page "/account"
 @layout MainLayout
-
-@using Education.Client.Gateways.Customer
-@using Education.Client.Gateways.Models.User
-@using Education.Client.Pages.Account.Components
-
 @attribute [Authorize]
+
+@using Education.Client.Pages.Account.Components
+@using Education.Client.Gateways.Customers.Model
+@using Education.Client.Gateways.Customers
 
 <EduPage ShowFooter="true">
     <ApiViewer Response="@_customer">
@@ -25,54 +24,6 @@
                             FirstDayOfWeek="@customer.FirstDayOfWeek"/>
                     </div>
                     <div class="subjects">
-                        <MudTable Items="@customer.Subjects" Breakpoint="Breakpoint.Sm" Elevation="0">
-                            <HeaderContent>
-                                <MudTh>@L["Subject"]</MudTh>
-                                <MudTh>@L["Subscription"]</MudTh>
-                                <MudTh Style="text-align: center">@L["Subscription:TestCreation"]</MudTh>
-                                <MudTh Style="text-align: center">@L["Subscription:TestMistakes"]</MudTh>
-                                <MudTh/>
-                            </HeaderContent>
-                            <RowTemplate>
-                                <MudTd DataLabel="@L["Subject"]">
-                                    <div class="d-flex flex-sm-row-reverse justify-sm-end align-center">
-                                        <div>
-                                            <MudLink Href="@SubjectLink(context.Type)" Typo="Typo.subtitle1">
-                                                @L[$"Subject:{context.Type}"]
-                                            </MudLink>
-                                            @if (context.CurrentTests > 0)
-                                            {
-                                                <MudText Typo="Typo.body2" Color="Color.Warning">
-                                                    @L["CurrentTests"] @context.CurrentTests
-                                                </MudText>
-                                            }
-                                        </div>
-                                        <MudAvatar Class="ml-3 ml-sm-0 mr-sm-3" Image="@SubjectImage(context.Type)"/>
-                                    </div>
-                                </MudTd>
-                                <MudTd DataLabel="@L["Subscription"]">
-                                    @L[$"Subscription:{context.Subscription}"]
-                                </MudTd>
-                                <MudTd DataLabel="@L["Subscription:TestCreation"]" Style="text-align: center">
-                                    <RestrictionQuantityText Restriction="@context.TestCreation"/>
-                                </MudTd>
-                                <MudTd DataLabel="@L["Subscription:TestMistakes"]" Style="text-align: center">
-                                    <RestrictionQuantityText Restriction="@context.TestMistakes"/>
-                                </MudTd>
-                                <MudTd>
-                                    @if (context.Subscription == SubscriptionType.Free)
-                                    {
-                                        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => OnBuyClick(context.Type))">
-                                            @L["Subscription:Upgrade"]
-                                        </MudButton>
-                                    }
-                                    else
-                                    {
-                                        @context.ExpiredAt?.ToSimpleFormat()
-                                    }
-                                </MudTd>
-                            </RowTemplate>
-                        </MudTable>
                     </div>
                 </div>
             </EduContainer>
@@ -81,49 +32,32 @@
 </EduPage>
 
 @code {
-    private ApiResponse<Customer> _customer = ApiResponse<Customer>.Loading();
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private ApiResponse<CustomerModel> _customer = ApiResponse<CustomerModel>.Loading();
 
     [Inject]
     private ICustomerClient CustomerClient { get; set; } = default!;
 
-    [Inject]
-    private IDialogService Dialog { get; set; } = default!;
+    // [Inject]
+    // private IDialogService Dialog { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
         _customer = await CustomerClient.GetAsync();
 
-    private void OnBuyClick(SubjectType type)
-    {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Medium,
-            NoHeader = true,
-            CloseButton = false,
-            FullWidth = true
-        };
-
-        var parameters = new DialogParameters
-        {
-            [nameof(SubscriptionModal.SubjectType)] = type
-        };
-
-        Dialog.Show<SubscriptionModal>(null, parameters, options);
-    }
-
-    private static string SubjectLink(SubjectType type) =>
-        type switch {
-            SubjectType.History => Links.History.User.MyProfile,
-            _ => "#"
-            };
-
-    private static string SubjectImage(SubjectType type) =>
-        type switch{
-            SubjectType.Unknown => string.Empty,
-            SubjectType.History => "/images/history/history.jpg",
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-            };
-
+    // private void OnBuyClick(SubjectType type)
+    // {
+    //     var options = new DialogOptions
+    //     {
+    //         MaxWidth = MaxWidth.Medium,
+    //         NoHeader = true,
+    //         CloseButton = false,
+    //         FullWidth = true
+    //     };
+    //
+    //     var parameters = new DialogParameters
+    //     {
+    //         [nameof(SubscriptionModal.SubjectType)] = type
+    //     };
+    //
+    //     Dialog.Show<SubscriptionModal>(null, parameters, options);
+    // }
 }

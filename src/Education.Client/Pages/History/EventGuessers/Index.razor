@@ -2,13 +2,13 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-@using Education.Client.Gateways.History.EventGuesser.Models
-@using Education.Client.Gateways.History.EventGuesser.Requests
 @using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.EventGuesser.Model
+@using Education.Client.Gateways.History.EventGuesser.Request
 
 <PageTitle>@L["EventGuesser"]</PageTitle>
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="false">
     <div class="background d-flex flex-column pa-3 pa-sm-6 h-100">
         <ApiViewer Response="@_response">
             <Success Context="builder">
@@ -34,7 +34,6 @@
                                 <MudText Typo="Typo.subtitle1">
                                     @L["Subscription:EventGuesserCreation"]
                                 </MudText>
-                                <RestrictionQuantityText Restriction="@builder.Restriction.EventGuesser.Restriction" Class="mr-2"/>
                             </div>
 
                             <div class="d-flex flex-row justify-end">
@@ -49,20 +48,12 @@
                                     </MudButton>
                                 }
 
-                                @if (builder.Restriction.EventGuesser.Restriction.Quantity == 0)
-                                {
-                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="true">
-                                        @L["Test:Create"]
-                                    </MudButton>
-                                }
-                                else
-                                {
-                                    <LoadingButton
-                                        ButtonType="ButtonType.Submit"
-                                        Text="@L["Test:Create"]"
-                                        LoadingText="@L["Test:Creating"]"
-                                        IsLoading="@_isCreating"/>
-                                }
+                                <LoadingButton
+                                    ButtonType="ButtonType.Submit"
+                                    Text="@L["Test:Create"]"
+                                    LoadingText="@L["Test:Creating"]"
+                                    IsLoading="@_isCreating"/>
+
                             </div>
                         </EditForm>
                     </section>
@@ -80,7 +71,7 @@
 @code {
     private bool _isCreating;
     private readonly Model _model = new();
-    private ApiResponse<TestBuilder> _response = ApiResponse<TestBuilder>.Loading();
+    private ApiResponse<TestBuilderModel> _response = ApiResponse<TestBuilderModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -110,7 +101,7 @@
         if (response.IsSuccess)
             Navigation.NavigateTo(Links.History.EventGuesser.Test);
         else
-            Snackbar.Add(response.Error.Message, Severity.Error);
+            Snackbar.Add(response.Error.Detail, Severity.Error);
 
         _isCreating = false;
     }

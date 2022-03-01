@@ -2,89 +2,61 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-@using Education.Client.Gateways.History.Test
 @using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Tests.Model
+@using Education.Client.Pages.History.Tests.Components
 
 <PageTitle>@L["Tests"]</PageTitle>
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="false">
     <div class="background d-flex flex-column pa-3 pa-sm-6 h-100">
         <ApiViewer Response="@_response">
             <Success Context="builder">
                 <PageHeader Title="@L["Tests"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+
                 <section class="grid">
-                    <section>
-                        <EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
-                            <MudSelect Label="@L["History:Epoch"]" @bind-Value="@_model.Epoch" Class="mb-3">
-                                <MudSelectItem Value="@EpochType.None">@L["All"]</MudSelectItem>
-                                @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
-                                {
-                                    <MudSelectItem Value="@period">
-                                        @L[$"History:{period}"]
-                                    </MudSelectItem>
-                                }
-                            </MudSelect>
+                    @if (builder.Topic is null)
+                    {
+                        <EpochTestBuilder
+                            Class="builder"
+                            AllowedEasyTest="@_allowedEasyTest"
+                            AllowedHardTest="@_allowedHardTest"
+                            AllowedMixedTest="@_allowedMixedTest"
+                            OnEasyTestCreate="@CreateEasyTest"
+                            OnHardTestCreate="@CreateHardTest"
+                            OnMixedTestCreate="@CreateMixedTest"/>
+                    }
+                    else
+                    {
+                        <TopicTestBuilder
+                            Class="builder"
+                            Topic="@builder.Topic"
+                            AvailableEasyTest="@builder.Topic.HasEasyTest"
+                            AllowedEasyTest="@_allowedEasyTest"
+                            AvailableHardTest="@builder.Topic.HasHardTest"
+                            AllowedHardTest="@_allowedHardTest"
+                            OnEasyTestCreate="@CreateEasyTest"
+                            OnHardTestCreate="@CreateHardTest"/>
+                    }
 
-                            <MudSelect Label="@L["Test:Difficulty"]" @bind-Value="@_model.Difficulty" Class="mb-3">
-                                @foreach (var difficulty in Enum.GetValues<TestType>())
-                                {
-                                    <MudSelectItem Value="@difficulty">
-                                        @L[$"Test:{difficulty}"]
-                                    </MudSelectItem>
-                                }
-                            </MudSelect>
-
-                            <div class="d-flex justify-space-between mb-3">
-                                <MudText Typo="Typo.subtitle1">
-                                    @L["Subscription:TestCreation"]
-                                </MudText>
-                                <RestrictionQuantityText Restriction="@builder.Restriction.TestCreation.Restriction" Class="mr-2"/>
-                            </div>
-
-                            <TestPermissionWrapper
-                                Class="mb-3 mb-sm-6"
-                                Subject="@SubjectType.History"
-                                Status="@builder.Restriction.TestCreation.Status"
-                                Typo="Typo.subtitle1">
-                                <div class="d-flex justify-end">
-                                    <LoadingButton
-                                        Class="ml-auto"
-                                        ButtonType="ButtonType.Submit"
-                                        Text="@L["Test:Create"]"
-                                        LoadingText="@L["Test:Creating"]"
-                                        IsLoading="@_isLoading"/>
-                                </div>
-                            </TestPermissionWrapper>
-                        </EditForm>
-
-                        @if (builder.CurrentTests.Length > 0)
+                    <section class="inventory">
+                        <MudText Typo="Typo.h5" Class="mb-3">
+                            @L["Inventory"]
+                        </MudText>
+                        @foreach (var item in builder.Inventory)
                         {
-                            <MudText Typo="Typo.h5" Class="mb-1">
-                                @L["CurrentTests"]
+                            <MudText>
+                                @item.Title @item.Count
                             </MudText>
-                            <section class="d-flex flex-wrap flex-row mb-3 mb-sm-6">
-                                @foreach (var test in builder.CurrentTests)
-                                {
-                                    <div class="mr-3 mr-sm-6">
-                                        <MudLink Typo="Typo.subtitle1" Href="@Links.History.TopicTest.Test(test.Id)">
-                                            @L[$"Test:{test.Type}"]
-                                        </MudLink>
-                                        <div class="d-flex flex-row align-center">
-                                            <MudIcon Icon="@Icons.Filled.Timer" Size="Size.Small" Class="mr-1"/>
-                                            <MudText Typo="Typo.body2">
-                                                @test.ExpiredAt.ToSimpleFormat()
-                                            </MudText>
-                                        </div>
-                                    </div>
-                                }
-                            </section>
                         }
                     </section>
 
-                    <aside>
-                        <MudText Typo="Typo.h5" Class="mb-3">@builder.Rule.Title</MudText>
+                    <footer class="rule">
+                        <MudText Typo="Typo.h6" Class="mb-3 mt-6">
+                            @builder.Rule.Title
+                        </MudText>
                         <SimpleMarkdown Text="@builder.Rule.Content"/>
-                    </aside>
+                    </footer>
                 </section>
             </Success>
         </ApiViewer>
@@ -92,9 +64,11 @@
 </EduPage>
 
 @code {
-    private bool _isLoading;
-    private ApiResponse<TestBuilder> _response = ApiResponse<TestBuilder>.Loading();
-    private readonly Model _model = new();
+    private bool _allowedEasyTest;
+    private bool _allowedHardTest;
+    private bool _allowedMixedTest;
+
+    private ApiResponse<TestBuilderModel> _response = ApiResponse<TestBuilderModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -113,34 +87,69 @@
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() =>
-        _response = await Client.Test.GetTestBuilderAsync();
+    [Parameter, SupplyParameterFromQuery(Name = "topic")]
+    public string? TopicId { get; set; }
 
-    private async Task OnValidSubmit()
+    protected override async Task OnParametersSetAsync()
     {
-        _isLoading = true;
+        _response = await Client.Test.GetTestBuilderAsync(TopicId);
 
-        var request = new CreateTestRequest(_model.Epoch);
-        var response = _model.Difficulty switch {
-            TestType.Easy => await Client.Test.CreateRandomEasyTestAsync(request),
-            TestType.Hard => await Client.Test.CreateRandomHardTestAsync(request),
-            TestType.Mixed => await Client.Test.CreateRandomMixedTestAsync(request),
-            _ => throw new ArgumentOutOfRangeException()
-            };
+        if (_response.IsSuccess)
+            foreach (var item in _response.Data.Inventory)
+                switch (item.Id)
+                {
+                    case 101:
+                        _allowedEasyTest = true;
+                        break;
 
+                    case 102:
+                        _allowedHardTest = true;
+                        break;
+
+                    case 103:
+                        _allowedMixedTest = true;
+                        break;
+                }
+        else if (_response.Error.IsTestAlreadyCreated(out var id))
+            Navigation.NavigateTo(Links.History.TopicTest.Test(id));
+    }
+
+    private async Task CreateEasyTest(string topicId)
+    {
+        var result = await Client.Test.CreateEasyTestAsync(topicId);
+        HandleCreateResponse(result);
+    }
+
+    private async Task CreateEasyTest(EpochType epoch)
+    {
+        var result = await Client.Test.CreateEasyTestAsync(epoch);
+        HandleCreateResponse(result);
+    }
+
+    private async Task CreateHardTest(string topicId)
+    {
+        var result = await Client.Test.CreateHardTestAsync(topicId);
+        HandleCreateResponse(result);
+    }
+
+    private async Task CreateHardTest(EpochType epoch)
+    {
+        var result = await Client.Test.CreateHardTestAsync(epoch);
+        HandleCreateResponse(result);
+    }
+
+    private async Task CreateMixedTest(EpochType epoch)
+    {
+        var result = await Client.Test.CreateMixedTestAsync(epoch);
+        HandleCreateResponse(result);
+    }
+
+    private void HandleCreateResponse(ApiResponse<TestCreatedModel> response)
+    {
         if (response.IsSuccess)
             Navigation.NavigateTo(Links.History.TopicTest.Test(response.Data.Id));
         else
-            Snackbar.Add(response.Error.Message, Severity.Error);
-
-        _isLoading = false;
-    }
-
-    internal sealed record Model
-    {
-        public EpochType Epoch { get; set; } = EpochType.None;
-
-        public TestType Difficulty { get; set; } = TestType.Easy;
+            Snackbar.Add(response.Error.Detail, Severity.Error);
     }
 
 }

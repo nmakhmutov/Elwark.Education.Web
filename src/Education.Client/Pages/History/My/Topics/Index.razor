@@ -2,11 +2,11 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-@using Education.Client.Gateways.History.User
 @using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Users.Model
 @using Education.Client.Pages.History.My.Components
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_response.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1280">
         <ApiViewer Response="@_response">
             <Loading>
@@ -199,7 +199,7 @@
 @code {
     private List<BreadcrumbItem> _breadcrumbs = new();
 
-    private ApiResponse<TopicStatistics> _response = ApiResponse<TopicStatistics>.Loading();
+    private ApiResponse<TopicStatisticsModel> _response = ApiResponse<TopicStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

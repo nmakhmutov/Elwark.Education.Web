@@ -1,15 +1,14 @@
 @page "/history/my/event-guessers"
 @layout HistoryLayout
 @attribute [Authorize]
-
-@using Education.Client.Gateways.History.User
 @using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Users.Model
 @using Education.Client.Pages.History.My.Components
 @using Education.Client.Pages.History.My.Tests.Components
 
 <PageTitle>@L["EventGuesser"]</PageTitle>
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Loading>
             <PageSpinner/>
@@ -62,7 +61,7 @@
         new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
     };
 
-    private ApiResponse<EventGuesserStatistics> _response = ApiResponse<EventGuesserStatistics>.Loading();
+    private ApiResponse<EventGuesserStatisticsModel> _response = ApiResponse<EventGuesserStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -73,13 +72,13 @@
     protected override async Task OnInitializedAsync() =>
         _response = await HistoryClient.User.GetEventGuesserStatisticsAsync();
 
-    private ProgressList.Item[] GetTest(EventGuesserRangeContrast progress) =>
+    private ProgressList.Item[] GetTest(EventGuesserStatisticsModel.Contrast progress) =>
         new ProgressList.Item[]
         {
             new(L["Tests"], progress.Tests.Current.ToReadable(), progress.Tests.Difference)
         };
 
-    private ProgressList.Item[] GetScore(EventGuesserRangeContrast progress) =>
+    private ProgressList.Item[] GetScore(EventGuesserStatisticsModel.Contrast progress) =>
         new ProgressList.Item[]
         {
             new(L["EventGuesser:Score"], progress.Score.Current.ToReadable(), progress.Score.Difference),
@@ -87,7 +86,7 @@
             new(L["EventGuesser:Bonus"], progress.Bonus.Current.ToReadable(), progress.Bonus.Difference)
         };
 
-    private ProgressList.Item[] GetQuestions(EventGuesserRangeContrast progress) =>
+    private ProgressList.Item[] GetQuestions(EventGuesserStatisticsModel.Contrast progress) =>
         new ProgressList.Item[]
         {
             new(L["EventGuesser:Questions"], progress.Questions.Current.ToReadable(), progress.Questions.Difference),

@@ -1,19 +1,15 @@
-@using Education.Client.Gateways.History.User
+@using Education.Client.Gateways.History.Users.Model
+@using Education.Client.Gateways.Models.User
+<section class="card @Class">
+    <div class="d-flex flex-column justify-space-between white-text">
+        <MudText Typo="Typo.h5" Align="Align.Center" Class="pa-3 pa-sm-6">
+            @L["Experience:DailyReward"]
+        </MudText>
 
-<MudCard Class="@($"{Class} d-flex flex-column justify-space-between")" Elevation="0">
-    <MudCardHeader Class="pa-3 pa-sm-6">
-        <CardHeaderContent>
-            <MudText Typo="Typo.h5">
-                @L["Experience:DailyReward"]
-            </MudText>
-        </CardHeaderContent>
-    </MudCardHeader>
-
-    <MudCardContent Class="pa-3 pa-sm-6">
         @if (Reward.NextTimeAt.HasValue)
         {
-            <div class="d-flex flex-column align-center">
-                <MudText Typo="Typo.subtitle2" Class="mud-text-secondary">
+            <div class="d-flex flex-column align-center pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle2">
                     @L["Experience:DailyRewardUnlockedAt"]
                 </MudText>
                 <CountdownTimer Date="@Reward.NextTimeAt.Value" Typo="Typo.h3" OnComplete="@OnReached"/>
@@ -21,7 +17,7 @@
         }
         else
         {
-            <div class="d-flex flex-row align-center justify-center">
+            <div class="d-flex flex-row align-center justify-center pa-3 pa-sm-6">
                 @for (var i = 0; i < Reward.Rewards.Length; i++)
                 {
                     <InternalMoneyText
@@ -31,33 +27,34 @@
                         Money="@Reward.Rewards[i]"/>
                 }
             </div>
+            
+            <div class="d-flex justify-center pa-3 pa-sm-6">
+
+                <LoadingButton
+                    Class="mr-3"
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    OnClick="@CollectAsync"
+                    Text="@L["Experience:CollectDailyReward"]"
+                    LoadingText="@L["Loading"]"
+                    DisableElevation="true"
+                    Disabled="@(_loading != Loading.None)"
+                    IsLoading="@(_loading == Loading.Collect)"/>
+
+                <LoadingButton
+                    Variant="Variant.Text"
+                    Color="Color.Inherit"
+                    OnClick="@RejectAsync"
+                    Text="@L["Experience:RejectDailyReward"]"
+                    LoadingText="@L["Loading"]"
+                    DisableElevation="true"
+                    Disabled="@(_loading != Loading.None)"
+                    IsLoading="@(_loading == Loading.Reject)"/>
+
+            </div>
         }
-    </MudCardContent>
-
-    <MudCardActions Class="d-flex justify-center pa-3 pa-sm-6">
-        @if (Reward.IsCollectable)
-        {
-            <LoadingButton
-                Class="mr-3"
-                Variant="Variant.Filled"
-                Color="Color.Primary"
-                OnClick="@CollectAsync"
-                Text="@L["Experience:CollectDailyReward"]"
-                LoadingText="@L["Loading"]"
-                Disabled="@(_loading != Loading.None)"
-                IsLoading="@(_loading == Loading.Collect)"/>
-
-            <LoadingButton
-                Variant="Variant.Outlined"
-                OnClick="@RejectAsync"
-                Text="@L["Experience:RejectDailyReward"]"
-                LoadingText="@L["Loading"]"
-                Disabled="@(_loading != Loading.None)"
-                IsLoading="@(_loading == Loading.Reject)"/>
-        }
-    </MudCardActions>
-
-</MudCard>
+    </div>
+</section>
 
 @code {
     private Loading _loading = Loading.None;
@@ -66,7 +63,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
-    public DailyReward Reward { get; set; } = default!;
+    public DailyRewardModel Reward { get; set; } = default!;
 
     [Parameter]
     public EventCallback OnCollect { get; set; }
@@ -100,4 +97,5 @@
         Collect,
         Reject
     }
+
 }

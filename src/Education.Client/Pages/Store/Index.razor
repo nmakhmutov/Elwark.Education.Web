@@ -1,78 +1,78 @@
-@page "/store"
-@layout MainLayout
-
-@using Education.Client.Gateways.Store.Catalog
-@using Education.Client.Gateways.Store
-
-@attribute [Authorize]
-
-<PageTitle>
-    @L["Store:Catalog"]
-</PageTitle>
-
-<EduPage Subject="Education" ShowFooter="true">
-    <div class="header-wrapper">
-        <div class="header">
-            <div class="header-text-wrapper">
-                <MudText Typo="Typo.h4" Class="mb-3">
-                    Start today. Boost up your learning!
-                </MudText>
-                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary">
-                    Start with premium subscription today.
-                </MudText>
-            </div>
-            <div class="header-image-wrapper">
-                <div class="header-image">
-                    <img src="/images/illustration/product-teardown.svg" alt="Pricing" loading="lazy">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="product-wrapper">
-        <EduFitGrid Style="justify-items: center">
-            <ApiViewer Response="@_response">
-                <Loading>
-                    <SkeletonCard Style="width: 100%; max-width: 460px"/>
-                    <SkeletonCard Style="width: 100%; max-width: 460px"/>
-                    <SkeletonCard Style="width: 100%; max-width: 460px"/>
-                </Loading>
-                <Success Context="subscriptions">
-                    @foreach (var item in subscriptions)
-                    {
-                        <SubscriptionCard
-                            Id="@item.Id"
-                            Months="@item.Months"
-                            Price="@item.Price"
-                            Subjects="@item.Subjects"
-                            Type="@item.Type"
-                            OnBuyClick="@OnBuyClick"/>
-                    }
-                </Success>
-            </ApiViewer>
-        </EduFitGrid>
-    </div>
-</EduPage>
-
-@code {
-    private ApiResponse<Subscription[]> _response = ApiResponse<Subscription[]>.Loading();
-
-    [Inject]
-    private IStoreClient Client { get; set; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    public NavigationManager Navigation { get; set; } = default!;
-
-    protected override async Task OnInitializedAsync() => _response = await Client.Catalog.GetSubscriptions();
-
-    private async Task OnBuyClick(string id)
-    {
-        var response = await Client.Basket.AddItemAsync(id);
-        if (response.IsSuccess)
-            Navigation.NavigateTo(Links.Store.Checkout);
-    }
-
-}
+@* @page "/store" *@
+@* @layout MainLayout *@
+@* *@
+@* @using Education.Client.Gateways.Store.Catalog *@
+@* @using Education.Client.Gateways.Store *@
+@* *@
+@* @attribute [Authorize] *@
+@* *@
+@* <PageTitle> *@
+@*     @L["Store:Catalog"] *@
+@* </PageTitle> *@
+@* *@
+@* <EduPage Subject="Education" ShowFooter="true"> *@
+@*     <div class="header-wrapper"> *@
+@*         <div class="header"> *@
+@*             <div class="header-text-wrapper"> *@
+@*                 <MudText Typo="Typo.h4" Class="mb-3"> *@
+@*                     Start today. Boost up your learning! *@
+@*                 </MudText> *@
+@*                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary"> *@
+@*                     Start with premium subscription today. *@
+@*                 </MudText> *@
+@*             </div> *@
+@*             <div class="header-image-wrapper"> *@
+@*                 <div class="header-image"> *@
+@*                     <img src="/images/illustration/product-teardown.svg" alt="Pricing" loading="lazy"> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* *@
+@*     <div class="product-wrapper"> *@
+@*         <EduFitGrid Style="justify-items: center"> *@
+@*             <ApiViewer Response="@_response"> *@
+@*                 <Loading> *@
+@*                     <SkeletonCard Style="width: 100%; max-width: 460px"/> *@
+@*                     <SkeletonCard Style="width: 100%; max-width: 460px"/> *@
+@*                     <SkeletonCard Style="width: 100%; max-width: 460px"/> *@
+@*                 </Loading> *@
+@*                 <Success Context="subscriptions"> *@
+@*                     @foreach (var item in subscriptions) *@
+@*                     { *@
+@*                         <SubscriptionCard *@
+@*                             Id="@item.Id" *@
+@*                             Months="@item.Months" *@
+@*                             Price="@item.Price" *@
+@*                             Subjects="@item.Subjects" *@
+@*                             Type="@item.Type" *@
+@*                             OnBuyClick="@OnBuyClick"/> *@
+@*                     } *@
+@*                 </Success> *@
+@*             </ApiViewer> *@
+@*         </EduFitGrid> *@
+@*     </div> *@
+@* </EduPage> *@
+@* *@
+@* @code { *@
+@*     private ApiResponse<Subscription[]> _response = ApiResponse<Subscription[]>.Loading(); *@
+@* *@
+@*     [Inject] *@
+@*     private IStoreClient Client { get; set; } = default!; *@
+@* *@
+@*     [Inject] *@
+@*     private IStringLocalizer<App> L { get; set; } = default!; *@
+@* *@
+@*     [Inject] *@
+@*     public NavigationManager Navigation { get; set; } = default!; *@
+@* *@
+@*     protected override async Task OnInitializedAsync() => _response = await Client.Catalog.GetSubscriptions(); *@
+@* *@
+@*     private async Task OnBuyClick(string id) *@
+@*     { *@
+@*         var response = await Client.Basket.AddItemAsync(id); *@
+@*         if (response.IsSuccess) *@
+@*             Navigation.NavigateTo(Links.Store.Checkout); *@
+@*     } *@
+@* *@
+@* } *@

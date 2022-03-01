@@ -1,14 +1,13 @@
 @page "/history"
 @layout HistoryLayout
+@attribute [Authorize]
 
-@using Education.Client.Gateways.History.Home
 @using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Home.Model
 @using Education.Client.Pages.History.Home.Components
 @using Education.Client.Pages.History.Components
 
-@attribute [Authorize]
-
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Success Context="result">
             <PageTitle>
@@ -18,10 +17,10 @@
             <SpotlightGrid Class="mb-3 mb-sm-6" Topics="@result.Trends.Take(8).ToArray()"/>
 
             <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
-                <section class="trending">
-                    <div class="header">
-                        <h2>@L["Topics:Trending"]</h2>
-                    </div>
+                <div class="header">
+                    <h2>@L["Topics:Trending"]</h2>
+                </div>
+                <section class="four-column">
                     @foreach (var item in result.Trends.Skip(8))
                     {
                         <TopicCard
@@ -39,14 +38,16 @@
                 <DailyTopic Topic="@result.DailyTopic" Class="my-6 my-sm-12"/>
             </EduContainer>
 
-            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
-                <div class="grid">
-                    <section class="recent">
-                        <div class="header mb-3 mb-sm-6">
+            <EduContainer MaxWidth="@EduWidth.W1440" Class="pb-0">
+                <div class="two-column">
+                    <section>
+                        <div class="header">
                             <h2>@L["Topics:Recent"]</h2>
                         </div>
-                        @foreach (var item in result.Recent)
+                        @for (var i = 0; i < result.Recent.Length; i++)
                         {
+                            var item = result.Recent[i];
+                            
                             <TopicCard
                                 Id="@item.Id"
                                 Epoch="@item.Epoch"
@@ -55,43 +56,48 @@
                                 Overview="@item.Overview"
                                 Rating="@item.Rating"
                                 Horizontal="true"
-                                Class="mb-3 mb-sm-6"/>
+                                Class="@(i == result.Recent.Length - 1 ? null : "mb-3 mb-sm-6")"/>
                         }
                     </section>
 
-                    <section class="top-rating">
-                        <div class="header">
-                            <h2>@L["Topics:TopRatings"]</h2>
-                        </div>
-                        @foreach (var item in result.TopRatings)
-                        {
-                            <TopicCard
-                                Id="@item.Id"
-                                Epoch="@item.Epoch"
-                                Title="@item.Title"
-                                Image="@item.Image"
-                                Overview="@item.Overview"
-                                Rating="@item.Rating"/>
-                        }
-                    </section>
-
-                    <section class="top-favorite">
+                    <section>
                         <div class="header">
                             <h2>@L["Topics:TopFavorites"]</h2>
                         </div>
 
-                        @foreach (var item in result.TopFavorites)
-                        {
-                            <TopicCard
-                                Id="@item.Id"
-                                Epoch="@item.Epoch"
-                                Title="@item.Title"
-                                Image="@item.Image"
-                                Overview="@item.Overview"
-                                Rating="@item.Rating"/>
-                        }
+                        <EduFitGrid>
+                            @foreach (var item in result.TopFavorites)
+                            {
+                                <TopicCard
+                                    Id="@item.Id"
+                                    Epoch="@item.Epoch"
+                                    Title="@item.Title"
+                                    Image="@item.Image"
+                                    Overview="@item.Overview"
+                                    Rating="@item.Rating"/>
+                            }
+                        </EduFitGrid>
                     </section>
                 </div>
+            </EduContainer>
+
+            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
+                <div class="header">
+                    <h2>@L["Topics:TopRatings"]</h2>
+                </div>
+
+                <section class="four-column">
+                    @foreach (var item in result.TopRatings)
+                    {
+                        <TopicCard
+                            Id="@item.Id"
+                            Epoch="@item.Epoch"
+                            Title="@item.Title"
+                            Image="@item.Image"
+                            Overview="@item.Overview"
+                            Rating="@item.Rating"/>
+                    }
+                </section>
             </EduContainer>
 
             <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
@@ -104,7 +110,7 @@
 
 @code {
 
-    private ApiResponse<HistoryOverview> _response = ApiResponse<HistoryOverview>.Loading();
+    private ApiResponse<HistoryOverviewModel> _response = ApiResponse<HistoryOverviewModel>.Loading();
 
     [Inject]
     private IHistoryClient Client { get; set; } = default!;

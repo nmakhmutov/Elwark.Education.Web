@@ -72,13 +72,13 @@
     public string Image { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public HistoricalPersonBirthday? Born { get; set; }
+    public PersonBirthdayModel? Born { get; set; }
 
     [Parameter, EditorRequired]
-    public HistoricalPersonBirthday? Died { get; set; }
+    public PersonBirthdayModel? Died { get; set; }
 
     [Parameter, EditorRequired]
-    public Characteristic[] Characteristics { get; set; } = Array.Empty<Characteristic>();
+    public CharacteristicModel[] Characteristics { get; set; } = Array.Empty<CharacteristicModel>();
 
     [Parameter, EditorRequired]
     public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();

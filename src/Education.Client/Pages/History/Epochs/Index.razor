@@ -1,13 +1,12 @@
 @page "/history/epochs/{type}"
 @layout HistoryLayout
-
-@using Education.Client.Gateways.History.Topic
-@using Education.Client.Gateways.History
-@using Education.Client.Pages.History.Components
-
 @attribute [Authorize]
 
-<EduPage Subject="@L["Subject:History"]" ShowFooter="@_response.IsLoaded">
+@using Education.Client.Gateways.History
+@using Education.Client.Gateways.History.Topics.Request
+@using Education.Client.Pages.History.Components
+
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="_response">
         <Success Context="topics">
             <EduContainer>
@@ -32,7 +31,7 @@
 
 @code {
     private GetTopicsRequest _request = new(EpochType.Prehistory, 1, 20);
-    private ApiResponse<PageResponse<HistoryUserTopicOverview>> _response = ApiResponse<PageResponse<HistoryUserTopicOverview>>.Loading();
+    private ApiResponse<PageResponse<UserTopicOverviewModel>> _response = ApiResponse<PageResponse<UserTopicOverviewModel>>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -56,7 +55,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _response = ApiResponse<PageResponse<HistoryUserTopicOverview>>.Loading();
+        _response = ApiResponse<PageResponse<UserTopicOverviewModel>>.Loading();
         CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
@@ -66,8 +65,8 @@
         }
         else
         {
-            var error = Error.Create(L["Error:NotFound"], string.Empty, 404);
-            _response = ApiResponse<PageResponse<HistoryUserTopicOverview>>.Fail(error);
+            var error = Error.Create(L["Error:NotFound"], 404);
+            _response = ApiResponse<PageResponse<UserTopicOverviewModel>>.Fail(error);
         }
     }
 

@@ -3,9 +3,9 @@
 
 @implements IDisposable
 
-<ApexChart @ref="@_chart" TItem="TestStatistics.DailyProgress" Options="_options" Height="@("350px")">
+<ApexChart @ref="@_chart" TItem="TestStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
     <ApexPointSeries
-        TItem="TestStatistics.DailyProgress"
+        TItem="TestStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Score:ByQuestions"]"
         Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
@@ -14,7 +14,7 @@
         YValue="@(x => x.Score.Questions)"/>
 
     <ApexPointSeries
-        TItem="TestStatistics.DailyProgress"
+        TItem="TestStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Score:BySpeedBonus"]"
         Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Default })"
@@ -23,7 +23,7 @@
         YValue="@(x => x.Score.Speed)"/>
 
     <ApexPointSeries
-        TItem="TestStatistics.DailyProgress"
+        TItem="TestStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Score:NoMistakesBonus"]"
         Stroke="@(new SeriesStroke { Width = 3, Color = Colors.DeepPurple.Default })"
@@ -33,8 +33,8 @@
 </ApexChart>
 
 @code {
-    private ApexChart<TestStatistics.DailyProgress> _chart = default!;
-    private ApexChartOptions<TestStatistics.DailyProgress>? _options;
+    private ApexChart<TestStatisticsModel.DailyProgress> _chart = default!;
+    private ApexChartOptions<TestStatisticsModel.DailyProgress>? _options;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -43,11 +43,11 @@
     private ThemeService ThemeService { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public TestStatistics.DailyProgress[] Progress { get; set; } = Array.Empty<TestStatistics.DailyProgress>();
+    public TestStatisticsModel.DailyProgress[] Progress { get; set; } = Array.Empty<TestStatisticsModel.DailyProgress>();
 
     protected override void OnInitialized()
     {
-        _options = new ApexChartOptions<TestStatistics.DailyProgress>
+        _options = new ApexChartOptions<TestStatisticsModel.DailyProgress>
         {
             Legend = new Legend
             {
@@ -76,7 +76,7 @@
             },
             Theme = new Theme
             {
-                Mode = ThemeService.Type == ThemeService.ThemeType.Light ? Mode.Light : Mode.Dark
+                Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light
             }
         };
 
@@ -90,7 +90,7 @@
         if (_options is null)
             return;
 
-        _options.Theme.Mode = ThemeService.Type == ThemeService.ThemeType.Light ? Mode.Light : Mode.Dark;
+        _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
         _chart.SetRerenderChart();
         StateHasChanged();
     }

@@ -11,16 +11,17 @@
             <RatingStars Rating="@Rating" ShowTooltip="true"/>
         </div>
     </header>
-    
+
     <article class="pa-3">
         <div class="mb-3">
-            <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.Content.Epoch(Epoch)">
-                @L[$"History:{Epoch}"]
-            </MudChip>
+            <MudLink Href="@Links.History.Content.Topic(Id)" Typo="Typo.h6">
+                @Title
+            </MudLink>
         </div>
-        <MudLink Href="@Links.History.Content.Topic(Id)" Typo="Typo.h6">
-            @Title
-        </MudLink>
+        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.Content.Epoch(Epoch)">
+            @L[$"History:{Epoch}"]
+        </MudChip>
+
         <MudText Typo="Typo.body2" Class="pt-3">
             @Overview
         </MudText>
@@ -30,7 +31,7 @@
 @code {
 
     private string _class = string.Empty;
-    
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -52,8 +53,8 @@
     [Parameter]
     public string? Overview { get; set; }
 
-    [Parameter,EditorRequired]
-    public ContentRating Rating { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public ContentRatingModel Rating { get; set; } = default!;
 
     [Parameter]
     public bool Horizontal { get; set; }

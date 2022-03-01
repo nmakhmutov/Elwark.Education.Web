@@ -1,5 +1,4 @@
-@using Education.Client.Gateways.History.User
-
+@using Education.Client.Gateways.History.Users.Model
 <MudCard Class="@($"{Class} d-flex flex-column")" Elevation="0">
     <MudCardHeader Class="pa-3 pa-sm-6">
         <CardHeaderContent>
@@ -42,6 +41,6 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public InventoryOverview Inventory { get; set; } = default!;
+    public InventoryOverviewModel Inventory { get; set; } = default!;
 
 }

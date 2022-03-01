@@ -1,316 +1,316 @@
-@page "/store/checkout"
-@layout MainLayout
-
-@using FluentValidation
-@using Education.Client.Gateways.Store.Basket
-@using Education.Client.Gateways.Store
-@using Severity = MudBlazor.Severity
-
-@attribute [Authorize]
-
-<PageTitle>
-    @L["Store:ShoppingCart"]
-</PageTitle>
-
-<EduPage Subject="Education" ShowFooter="false">
-<ApiViewer Response="_response">
-<Loading>
-    <div class="wrapper">
-        <div class="shopping-cart">
-            <h2 class="title">
-                @L["Store:ShoppingCart"]
-            </h2>
-        </div>
-
-        <div class="order-summary">
-            <h2 class="title">
-                @L["Store:OrderSummary"]
-            </h2>
-
-            <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8">
-                <MudSkeleton Width="150px" Height="30px"/>
-                <MudSkeleton Width="60px" Height="30px"/>
-            </div>
-
-            <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8">
-                <MudSkeleton Width="150px" Height="30px"/>
-                <MudSkeleton Width="60px" Height="30px"/>
-            </div>
-
-            <MudDivider Class="mb-6 mb-sm-8"/>
-
-            <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8">
-                <MudSkeleton Width="150px" Height="30px"/>
-                <MudSkeleton Width="60px" Height="30px"/>
-            </div>
-
-            <div class="d-flex flex-row justify-center">
-                <MudSkeleton Style="width:100%; max-width: 600px" Height="52px"/>
-            </div>
-        </div>
-    </div>
-</Loading>
-<Success Context="basket">
-    <div class="wrapper">
-        <div class="shopping-cart">
-            <h2 class="title">
-                @L["Store:ShoppingCart"]
-            </h2>
-
-            @if (basket.Items.Length > 0)
-            {
-                <MudTable
-                    Items="@basket.Items"
-                    Breakpoint="Breakpoint.Sm"
-                    Outlined="false"
-                    Bordered="false"
-                    Hover="false"
-                    Striped="false"
-                    Elevation="0">
-                    <HeaderContent>
-                        <MudTh Style="width: 50px"/>
-                        <MudTh>@L["Store:Product"]</MudTh>
-                        <MudTh>@L["Store:Price"]</MudTh>
-                        <MudTh>@L["Store:Quantity"]</MudTh>
-                        <MudTh>@L["Store:Total"]</MudTh>
-                        <MudTh Style="width: 50px"/>
-                    </HeaderContent>
-                    <RowTemplate>
-                        <MudTd HideSmall="true">
-                            <SubscriptionIcon Subscription="@context.Subscription" Style="width: 50px; height: 50px"/>
-                        </MudTd>
-                        <MudTd DataLabel="@L["Store:Product"]">
-                            <div class="cell-align">
-                                <MudText Typo="Typo.subtitle1">
-                                    @L["Subscription"]
-                                </MudText>
-                                <MudText Typo="Typo.body2">
-                                    @L[$"Subscription:{context.Subscription}"]:
-                                    <span class="mud-text-secondary">@string.Join(",", context.Subjects.Select(x => L[$"Subject:{x}"]))</span>
-                                </MudText>
-                            </div>
-                        </MudTd>
-                        <MudTd DataLabel="@L["Store:Price"]">
-                            <MudText Typo="Typo.body1">
-                                @context.Price.Symbol@context.Price.Amount
-                            </MudText>
-                        </MudTd>
-                        <MudTd DataLabel="@L["Store:Quantity"]">
-                            <MudText Typo="Typo.body1">
-                                @context.Quantity
-                            </MudText>
-                        </MudTd>
-                        <MudTd DataLabel="@L["Store:Total"]">
-                            <div class="cell-align">
-                                @if (context.Discount.Amount > 0)
-                                {
-                                    <MudText Typo="Typo.body2" Class="mud-text-secondary" Style="text-decoration: line-through">
-                                        @context.Price.Symbol@context.Price.Amount
-                                    </MudText>
-                                }
-                                <MudText Typo="Typo.body1">
-                                    @context.Total.Symbol@context.Total.Amount
-                                </MudText>
-                            </div>
-                        </MudTd>
-                        <MudTd>
-                            <MudIconButton
-                                Icon="@Icons.Outlined.Close"
-                                Size="Size.Small"
-                                OnClick="@(() => OnDeleteItem(context.ProductId))"/>
-                        </MudTd>
-                    </RowTemplate>
-                </MudTable>
-            }
-            else
-            {
-                <div class="d-flex flex-column align-center">
-                    <MudIcon Icon="@Icons.Outlined.ShoppingBag" Style="width: 100px; height: 100px" Class="mud-text-secondary mb-3"/>
-                    <MudText Typo="Typo.h5">
-                        @L["Empty:CartTitle"]
-                    </MudText>
-                    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-6">
-                        @L["Empty:CartDescription"]
-                    </MudText>
-                    <MudButton Link="@Links.Store.Index" Color="Color.Primary" Variant="Variant.Filled">
-                        @L["Store:Catalog"]
-                    </MudButton>
-                </div>
-            }
-        </div>
-
-        <div class="order-summary">
-            <h2 class="title">
-                @L["Store:OrderSummary"]
-            </h2>
-
-            @if (basket.Items.Length > 0)
-            {
-                <div class="d-flex flex-row justify-space-between">
-                    <MudText Typo="Typo.h6">
-                        @L["Store:Items", basket.Items.Length]
-                    </MudText>
-                    <MudText Typo="Typo.h6">
-                        @basket.Overview.Items.Symbol@basket.Overview.Items.Amount
-                    </MudText>
-                </div>
-
-                @if (basket.Overview.Discount.Amount > 0)
-                {
-                    <div class="d-flex flex-row justify-space-between">
-                        <MudText Typo="Typo.subtitle2">
-                            @L["Store:Discount"]
-                        </MudText>
-                        <MudText Typo="Typo.subtitle2">
-                            @basket.Overview.Discount.Symbol-@basket.Overview.Discount.Amount
-                        </MudText>
-                    </div>
-                }
-
-                @if (basket.Overview.Promo.Amount > 0)
-                {
-                    <div class="d-flex flex-row justify-space-between">
-                        <MudText Typo="Typo.subtitle2">
-                            @L["Store:PromoCode"]
-                        </MudText>
-                        <MudText Typo="Typo.subtitle2">
-                            @basket.Overview.Promo.Symbol-@basket.Overview.Promo.Amount
-                        </MudText>
-                    </div>
-                }
-
-                <div class="my-6 my-sm-8" style="width:100%; max-width: 400px">
-                    <MudText Typo="Typo.h6">
-                        @L["Store:PromoCode"]
-                    </MudText>
-
-                    <EditForm Model="@_promoCode" OnValidSubmit="@OnValidPromoCode">
-                        <FluentValidationValidator/>
-
-                        <div class="d-flex flex-row align-start">
-                            <MudTextField
-                                @bind-Value="@_promoCode.Code"
-                                For="@(() => _promoCode.Code)"
-                                Disabled="_promoCode.IsAvailable"
-                                Variant="Variant.Outlined"
-                                Margin="Margin.Dense"
-                                Class="ma-0 mr-3"/>
-
-                            <LoadingButton
-                                Class="promo-code-button"
-                                ButtonType="ButtonType.Submit"
-                                Variant="Variant.Filled"
-                                Color="Color.Primary"
-                                IsLoading="@_isPromoCodeLoading"
-                                Text="@(_promoCode.IsAvailable ? L["Store:Remove"] : L["Store:Apply"])"
-                                LoadingText="@L["Loading"]"/>
-                        </div>
-                    </EditForm>
-                </div>
-
-                <MudDivider Class="mb-6 mb-sm-8"/>
-            }
-
-            <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8">
-                <MudText Typo="Typo.h6">
-                    @L["Store:Total"]
-                </MudText>
-                <MudText Typo="Typo.h6">
-                    @basket.Overview.Total.Symbol@basket.Overview.Total.Amount
-                </MudText>
-            </div>
-
-            <div class="d-flex flex-row justify-center">
-                <MudButton
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    Size="Size.Large"
-                    Disabled="@(basket.Items.Length == 0)"
-                    Style="width:100%; max-width: 600px">
-                    @L["Store:PlaceYourOrder"]
-                </MudButton>
-            </div>
-        </div>
-    </div>
-</Success>
-</ApiViewer>
-</EduPage>
-
-@code {
-
-    private PromoCode _promoCode = new();
-    private bool _isPromoCodeLoading;
-
-    private ApiResponse<Basket> _response = ApiResponse<Basket>.Loading();
-
-    [Inject]
-    private IStoreClient Client { get; set; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private ISnackbar Snackbar { get; set; } = default!;
-
-    protected override Task OnInitializedAsync() =>
-        LoadAsync();
-
-    private async Task LoadAsync()
-    {
-        _response = await Client.Basket.GetAsync();
-
-        if (_response.IsSuccess)
-            _promoCode = PromoCode.Create(_response.Data.PromoCode);
-        else
-            Snackbar.Add(_response.Error.Message, Severity.Error);
-    }
-
-    private async Task OnDeleteItem(string productId)
-    {
-        var response = await Client.Basket.RemoveItemAsync(productId);
-
-        if (response.IsSuccess)
-            await LoadAsync();
-        else
-            Snackbar.Add(response.Error.Message, Severity.Error);
-    }
-
-    private async Task OnValidPromoCode()
-    {
-        _isPromoCodeLoading = true;
-
-        var response = _promoCode.IsAvailable
-            ? await Client.Basket.RemovePromoCodeAsync()
-            : await Client.Basket.AddPromoCodeAsync(_promoCode.Code!);
-
-        if (response.IsSuccess)
-            await LoadAsync();
-        else
-            Snackbar.Add(response.Error.Message, Severity.Error);
-
-        _isPromoCodeLoading = false;
-    }
-
-    public sealed record PromoCode
-    {
-        public static PromoCode Create(string? code) =>
-            new()
-            {
-                IsAvailable = !string.IsNullOrEmpty(code),
-                Code = code
-            };
-
-        public bool IsAvailable { get; set; }
-
-        public string? Code { get; set; }
-
-        public sealed class Validator : AbstractValidator<PromoCode>
-        {
-            public Validator(IStringLocalizer<App> localizer) =>
-                RuleFor(x => x.Code)
-                    .NotEmpty().When(x => !x.IsAvailable)
-                    .WithName(localizer["Store:PromoCode"]);
-        }
-    }
-
-}
+@* @page "/store/checkout" *@
+@* @layout MainLayout *@
+@* *@
+@* @using FluentValidation *@
+@* @using Education.Client.Gateways.Store.Basket *@
+@* @using Education.Client.Gateways.Store *@
+@* @using Severity = MudBlazor.Severity *@
+@* *@
+@* @attribute [Authorize] *@
+@* *@
+@* <PageTitle> *@
+@*     @L["Store:ShoppingCart"] *@
+@* </PageTitle> *@
+@* *@
+@* <EduPage Subject="Education" ShowFooter="false"> *@
+@* <ApiViewer Response="_response"> *@
+@* <Loading> *@
+@*     <div class="wrapper"> *@
+@*         <div class="shopping-cart"> *@
+@*             <h2 class="title"> *@
+@*                 @L["Store:ShoppingCart"] *@
+@*             </h2> *@
+@*         </div> *@
+@* *@
+@*         <div class="order-summary"> *@
+@*             <h2 class="title"> *@
+@*                 @L["Store:OrderSummary"] *@
+@*             </h2> *@
+@* *@
+@*             <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8"> *@
+@*                 <MudSkeleton Width="150px" Height="30px"/> *@
+@*                 <MudSkeleton Width="60px" Height="30px"/> *@
+@*             </div> *@
+@* *@
+@*             <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8"> *@
+@*                 <MudSkeleton Width="150px" Height="30px"/> *@
+@*                 <MudSkeleton Width="60px" Height="30px"/> *@
+@*             </div> *@
+@* *@
+@*             <MudDivider Class="mb-6 mb-sm-8"/> *@
+@* *@
+@*             <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8"> *@
+@*                 <MudSkeleton Width="150px" Height="30px"/> *@
+@*                 <MudSkeleton Width="60px" Height="30px"/> *@
+@*             </div> *@
+@* *@
+@*             <div class="d-flex flex-row justify-center"> *@
+@*                 <MudSkeleton Style="width:100%; max-width: 600px" Height="52px"/> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </Loading> *@
+@* <Success Context="basket"> *@
+@*     <div class="wrapper"> *@
+@*         <div class="shopping-cart"> *@
+@*             <h2 class="title"> *@
+@*                 @L["Store:ShoppingCart"] *@
+@*             </h2> *@
+@* *@
+@*             @if (basket.Items.Length > 0) *@
+@*             { *@
+@*                 <MudTable *@
+@*                     Items="@basket.Items" *@
+@*                     Breakpoint="Breakpoint.Sm" *@
+@*                     Outlined="false" *@
+@*                     Bordered="false" *@
+@*                     Hover="false" *@
+@*                     Striped="false" *@
+@*                     Elevation="0"> *@
+@*                     <HeaderContent> *@
+@*                         <MudTh Style="width: 50px"/> *@
+@*                         <MudTh>@L["Store:Product"]</MudTh> *@
+@*                         <MudTh>@L["Store:Price"]</MudTh> *@
+@*                         <MudTh>@L["Store:Quantity"]</MudTh> *@
+@*                         <MudTh>@L["Store:Total"]</MudTh> *@
+@*                         <MudTh Style="width: 50px"/> *@
+@*                     </HeaderContent> *@
+@*                     <RowTemplate> *@
+@*                         <MudTd HideSmall="true"> *@
+@*                             <SubscriptionIcon Subscription="@context.Subscription" Style="width: 50px; height: 50px"/> *@
+@*                         </MudTd> *@
+@*                         <MudTd DataLabel="@L["Store:Product"]"> *@
+@*                             <div class="cell-align"> *@
+@*                                 <MudText Typo="Typo.subtitle1"> *@
+@*                                     @L["Subscription"] *@
+@*                                 </MudText> *@
+@*                                 <MudText Typo="Typo.body2"> *@
+@*                                     @L[$"Subscription:{context.Subscription}"]: *@
+@*                                     <span class="mud-text-secondary">@string.Join(",", context.Subjects.Select(x => L[$"Subject:{x}"]))</span> *@
+@*                                 </MudText> *@
+@*                             </div> *@
+@*                         </MudTd> *@
+@*                         <MudTd DataLabel="@L["Store:Price"]"> *@
+@*                             <MudText Typo="Typo.body1"> *@
+@*                                 @context.Price.Symbol@context.Price.Amount *@
+@*                             </MudText> *@
+@*                         </MudTd> *@
+@*                         <MudTd DataLabel="@L["Store:Quantity"]"> *@
+@*                             <MudText Typo="Typo.body1"> *@
+@*                                 @context.Quantity *@
+@*                             </MudText> *@
+@*                         </MudTd> *@
+@*                         <MudTd DataLabel="@L["Store:Total"]"> *@
+@*                             <div class="cell-align"> *@
+@*                                 @if (context.Discount.Amount > 0) *@
+@*                                 { *@
+@*                                     <MudText Typo="Typo.body2" Class="mud-text-secondary" Style="text-decoration: line-through"> *@
+@*                                         @context.Price.Symbol@context.Price.Amount *@
+@*                                     </MudText> *@
+@*                                 } *@
+@*                                 <MudText Typo="Typo.body1"> *@
+@*                                     @context.Total.Symbol@context.Total.Amount *@
+@*                                 </MudText> *@
+@*                             </div> *@
+@*                         </MudTd> *@
+@*                         <MudTd> *@
+@*                             <MudIconButton *@
+@*                                 Icon="@Icons.Outlined.Close" *@
+@*                                 Size="Size.Small" *@
+@*                                 OnClick="@(() => OnDeleteItem(context.ProductId))"/> *@
+@*                         </MudTd> *@
+@*                     </RowTemplate> *@
+@*                 </MudTable> *@
+@*             } *@
+@*             else *@
+@*             { *@
+@*                 <div class="d-flex flex-column align-center"> *@
+@*                     <MudIcon Icon="@Icons.Outlined.ShoppingBag" Style="width: 100px; height: 100px" Class="mud-text-secondary mb-3"/> *@
+@*                     <MudText Typo="Typo.h5"> *@
+@*                         @L["Empty:CartTitle"] *@
+@*                     </MudText> *@
+@*                     <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-6"> *@
+@*                         @L["Empty:CartDescription"] *@
+@*                     </MudText> *@
+@*                     <MudButton Link="@Links.Store.Index" Color="Color.Primary" Variant="Variant.Filled"> *@
+@*                         @L["Store:Catalog"] *@
+@*                     </MudButton> *@
+@*                 </div> *@
+@*             } *@
+@*         </div> *@
+@* *@
+@*         <div class="order-summary"> *@
+@*             <h2 class="title"> *@
+@*                 @L["Store:OrderSummary"] *@
+@*             </h2> *@
+@* *@
+@*             @if (basket.Items.Length > 0) *@
+@*             { *@
+@*                 <div class="d-flex flex-row justify-space-between"> *@
+@*                     <MudText Typo="Typo.h6"> *@
+@*                         @L["Store:Items", basket.Items.Length] *@
+@*                     </MudText> *@
+@*                     <MudText Typo="Typo.h6"> *@
+@*                         @basket.Overview.Items.Symbol@basket.Overview.Items.Amount *@
+@*                     </MudText> *@
+@*                 </div> *@
+@* *@
+@*                 @if (basket.Overview.Discount.Amount > 0) *@
+@*                 { *@
+@*                     <div class="d-flex flex-row justify-space-between"> *@
+@*                         <MudText Typo="Typo.subtitle2"> *@
+@*                             @L["Store:Discount"] *@
+@*                         </MudText> *@
+@*                         <MudText Typo="Typo.subtitle2"> *@
+@*                             @basket.Overview.Discount.Symbol-@basket.Overview.Discount.Amount *@
+@*                         </MudText> *@
+@*                     </div> *@
+@*                 } *@
+@* *@
+@*                 @if (basket.Overview.Promo.Amount > 0) *@
+@*                 { *@
+@*                     <div class="d-flex flex-row justify-space-between"> *@
+@*                         <MudText Typo="Typo.subtitle2"> *@
+@*                             @L["Store:PromoCode"] *@
+@*                         </MudText> *@
+@*                         <MudText Typo="Typo.subtitle2"> *@
+@*                             @basket.Overview.Promo.Symbol-@basket.Overview.Promo.Amount *@
+@*                         </MudText> *@
+@*                     </div> *@
+@*                 } *@
+@* *@
+@*                 <div class="my-6 my-sm-8" style="width:100%; max-width: 400px"> *@
+@*                     <MudText Typo="Typo.h6"> *@
+@*                         @L["Store:PromoCode"] *@
+@*                     </MudText> *@
+@* *@
+@*                     <EditForm Model="@_promoCode" OnValidSubmit="@OnValidPromoCode"> *@
+@*                         <FluentValidationValidator/> *@
+@* *@
+@*                         <div class="d-flex flex-row align-start"> *@
+@*                             <MudTextField *@
+@*                                 @bind-Value="@_promoCode.Code" *@
+@*                                 For="@(() => _promoCode.Code)" *@
+@*                                 Disabled="_promoCode.IsAvailable" *@
+@*                                 Variant="Variant.Outlined" *@
+@*                                 Margin="Margin.Dense" *@
+@*                                 Class="ma-0 mr-3"/> *@
+@* *@
+@*                             <LoadingButton *@
+@*                                 Class="promo-code-button" *@
+@*                                 ButtonType="ButtonType.Submit" *@
+@*                                 Variant="Variant.Filled" *@
+@*                                 Color="Color.Primary" *@
+@*                                 IsLoading="@_isPromoCodeLoading" *@
+@*                                 Text="@(_promoCode.IsAvailable ? L["Store:Remove"] : L["Store:Apply"])" *@
+@*                                 LoadingText="@L["Loading"]"/> *@
+@*                         </div> *@
+@*                     </EditForm> *@
+@*                 </div> *@
+@* *@
+@*                 <MudDivider Class="mb-6 mb-sm-8"/> *@
+@*             } *@
+@* *@
+@*             <div class="d-flex flex-row justify-space-between mb-6 mb-sm-8"> *@
+@*                 <MudText Typo="Typo.h6"> *@
+@*                     @L["Store:Total"] *@
+@*                 </MudText> *@
+@*                 <MudText Typo="Typo.h6"> *@
+@*                     @basket.Overview.Total.Symbol@basket.Overview.Total.Amount *@
+@*                 </MudText> *@
+@*             </div> *@
+@* *@
+@*             <div class="d-flex flex-row justify-center"> *@
+@*                 <MudButton *@
+@*                     Variant="Variant.Filled" *@
+@*                     Color="Color.Primary" *@
+@*                     Size="Size.Large" *@
+@*                     Disabled="@(basket.Items.Length == 0)" *@
+@*                     Style="width:100%; max-width: 600px"> *@
+@*                     @L["Store:PlaceYourOrder"] *@
+@*                 </MudButton> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </Success> *@
+@* </ApiViewer> *@
+@* </EduPage> *@
+@* *@
+@* @code { *@
+@* *@
+@*     private PromoCode _promoCode = new(); *@
+@*     private bool _isPromoCodeLoading; *@
+@* *@
+@*     private ApiResponse<Basket> _response = ApiResponse<Basket>.Loading(); *@
+@* *@
+@*     [Inject] *@
+@*     private IStoreClient Client { get; set; } = default!; *@
+@* *@
+@*     [Inject] *@
+@*     private IStringLocalizer<App> L { get; set; } = default!; *@
+@* *@
+@*     [Inject] *@
+@*     private ISnackbar Snackbar { get; set; } = default!; *@
+@* *@
+@*     protected override Task OnInitializedAsync() => *@
+@*         LoadAsync(); *@
+@* *@
+@*     private async Task LoadAsync() *@
+@*     { *@
+@*         _response = await Client.Basket.GetAsync(); *@
+@* *@
+@*         if (_response.IsSuccess) *@
+@*             _promoCode = PromoCode.Create(_response.Data.PromoCode); *@
+@*         else *@
+@*             Snackbar.Add(_response.Error.Detail, Severity.Error); *@
+@*     } *@
+@* *@
+@*     private async Task OnDeleteItem(string productId) *@
+@*     { *@
+@*         var response = await Client.Basket.RemoveItemAsync(productId); *@
+@* *@
+@*         if (response.IsSuccess) *@
+@*             await LoadAsync(); *@
+@*         else *@
+@*             Snackbar.Add(response.Error.Detail, Severity.Error); *@
+@*     } *@
+@* *@
+@*     private async Task OnValidPromoCode() *@
+@*     { *@
+@*         _isPromoCodeLoading = true; *@
+@* *@
+@*         var response = _promoCode.IsAvailable *@
+@*             ? await Client.Basket.RemovePromoCodeAsync() *@
+@*             : await Client.Basket.AddPromoCodeAsync(_promoCode.Code!); *@
+@* *@
+@*         if (response.IsSuccess) *@
+@*             await LoadAsync(); *@
+@*         else *@
+@*             Snackbar.Add(response.Error.Detail, Severity.Error); *@
+@* *@
+@*         _isPromoCodeLoading = false; *@
+@*     } *@
+@* *@
+@*     public sealed record PromoCode *@
+@*     { *@
+@*         public static PromoCode Create(string? code) => *@
+@*             new() *@
+@*             { *@
+@*                 IsAvailable = !string.IsNullOrEmpty(code), *@
+@*                 Code = code *@
+@*             }; *@
+@* *@
+@*         public bool IsAvailable { get; set; } *@
+@* *@
+@*         public string? Code { get; set; } *@
+@* *@
+@*         public sealed class Validator : AbstractValidator<PromoCode> *@
+@*         { *@
+@*             public Validator(IStringLocalizer<App> localizer) => *@
+@*                 RuleFor(x => x.Code) *@
+@*                     .NotEmpty().When(x => !x.IsAvailable) *@
+@*                     .WithName(localizer["Store:PromoCode"]); *@
+@*         } *@
+@*     } *@
+@* *@
+@* } *@

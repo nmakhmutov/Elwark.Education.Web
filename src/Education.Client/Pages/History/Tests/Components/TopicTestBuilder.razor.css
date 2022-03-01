@@ -1,0 +1,20 @@
+::deep .test-radio-group {
+    display: grid;
+    grid-row-gap: 12px;
+    grid-template-columns: 1fr;
+}
+
+::deep .radio {
+    display: flex;
+}
+
+::deep .radio .mud-radio-content {
+    width: 100%;
+}
+
+@media (min-width: 600px) {
+    ::deep .test-radio-group {
+        grid-row-gap: 24px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}

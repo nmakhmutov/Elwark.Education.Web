@@ -1,9 +1,8 @@
-@using Education.Client.Gateways.History.User
-
+@using Education.Client.Gateways.History.Users.Model
 <section class="grid">
     @switch (Achievement)
     {
-        case CompletedAchievement achievement:
+        case CompletedAchievementModel achievement:
             <aside class="icon completed">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
@@ -17,7 +16,7 @@
             </header>
             break;
 
-        case LadderAchievement achievement:
+        case LadderAchievementModel achievement:
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
                 <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
@@ -35,6 +34,26 @@
                     <span>/</span>
                     <HumanReadableText Value="@achievement.Goal" Typo="Typo.subtitle2"/>
                 </div>
+                <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
+                <div class="d-flex flex-row">
+                    @foreach (var reward in achievement.Rewards)
+                    {
+                        <InternalMoneyText Class="mr-3" Money="@reward"/>
+                    }
+                </div>
+            </footer>
+            break;
+            
+        case ProgressiveAchievementModel achievement:
+            <aside class="icon @_background">
+                <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
+            </aside>
+            <header class="header">
+                <h6 class="title">
+                    @achievement.Title
+                </h6>
+            </header>
+            <footer class="progress">
                 <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
                 <div class="d-flex flex-row">
                     @foreach (var reward in achievement.Rewards)
@@ -64,7 +83,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public Achievement Achievement { get; set; } = default!;
+    public AchievementModel Achievement { get; set; } = default!;
 
     protected override void OnParametersSet()
     {
