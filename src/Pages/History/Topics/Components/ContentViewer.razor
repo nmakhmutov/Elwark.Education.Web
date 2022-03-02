@@ -1,0 +1,130 @@
+@using Education.Web.Gateways.Models.Content
+@implements IDisposable
+
+<div class="toolbar">
+    <div class="toolbar-contents">
+        @if (Chapters.Length > 2)
+        {
+            <MudMenu Label="@L["Topic:Contents"]" Variant="Variant.Outlined" EndIcon="@Icons.Outlined.KeyboardArrowDown">
+                @foreach (var chapter in Chapters)
+                {
+                    <MudMenuItem OnClick="@(() => Scroll.ScrollToFragmentAsync(ChapterId(chapter.Id), ScrollBehavior.Smooth))">
+                        @chapter.Title
+                    </MudMenuItem>
+                }
+            </MudMenu>
+        }
+    </div>
+
+    <div class="toolbar-width d-none d-lg-block">
+        <div class="d-flex flex-column align-sm-center">
+            <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+                <MudIconButton
+                    Disabled="@(FormatService.Width == Width.False)"
+                    Icon="@Icons.Material.Filled.CropFree"
+                    OnClick="@FormatService.SetWidthFalseAsync"/>
+                <div class="d-none d-lg-plus-block">
+                    <MudIconButton
+                        Disabled="@(FormatService.Width == Width.lg)"
+                        Icon="@Icons.Material.Filled.CropDin"
+                        OnClick="@FormatService.SetWidthLgAsync"/>
+                </div>
+                <MudIconButton
+                    Disabled="@(FormatService.Width == Width.md)"
+                    Icon="@Icons.Material.Filled.CropPortrait"
+                    OnClick="@FormatService.SetWidthMdAsync"/>
+            </MudButtonGroup>
+            <MudText Typo="Typo.body2" Class="subtitle">
+                @L["TopicFormatting:ContentWidth"]
+            </MudText>
+        </div>
+    </div>
+
+    <div class="toolbar-align">
+        <div class="d-flex flex-column align-sm-center">
+            <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+                <MudIconButton
+                    Disabled="@(FormatService.TextAlign == Align.Left)"
+                    Icon="@Icons.Material.Filled.FormatAlignLeft"
+                    OnClick="@FormatService.AlignTextLeftAsync"/>
+                <MudIconButton
+                    Disabled="@(FormatService.TextAlign == Align.Center)"
+                    Icon="@Icons.Material.Filled.FormatAlignCenter"
+                    OnClick="@FormatService.AlignTextCenterAsync"/>
+                <MudIconButton
+                    Disabled="@(FormatService.TextAlign == Align.Right)"
+                    Icon="@Icons.Material.Filled.FormatAlignRight"
+                    OnClick="@FormatService.AlignTextRightAsync"/>
+                <MudIconButton
+                    Disabled="@(FormatService.TextAlign == Align.Justify)"
+                    Icon="@Icons.Material.Filled.FormatAlignJustify"
+                    OnClick="@FormatService.AlignTextJustifyAsync"/>
+            </MudButtonGroup>
+            <MudText Typo="Typo.body2" Class="subtitle">
+                @L["TopicFormatting:TextAlignment"]
+            </MudText>
+        </div>
+    </div>
+
+    <div class="toolbar-font-size">
+        <div class="d-flex flex-column align-sm-center">
+            <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+                <MudIconButton
+                    Disabled="@(!FormatService.CanDecreaseFontSize())"
+                    Icon="@Icons.Material.Filled.Remove"
+                    OnClick="@FormatService.DecreaseFontSizeAsync"/>
+                <MudIconButton
+                    Disabled="@(!FormatService.CanIncreaseFontSize())"
+                    Icon="@Icons.Material.Filled.Add"
+                    OnClick="@FormatService.IncreaseFontSizeAsync"/>
+            </MudButtonGroup>
+            <MudText Typo="Typo.body2" Class="subtitle">
+                @L["TopicFormatting:FontSize"]
+            </MudText>
+        </div>
+    </div>
+</div>
+
+@foreach (var (id, title, subtitle, content) in Chapters)
+{
+    <section class="chapter" style="@FormatService.WidthStyles">
+        <h2 class="title" id="@ChapterId(id)">
+            @title
+        </h2>
+
+        @if (!string.IsNullOrEmpty(subtitle))
+        {
+            <SimpleMarkdown Text="@subtitle" Class="subtitle"/>
+        }
+
+        <MudDivider Class="divider"/>
+
+        <TopicMarkdown Text="@content" Style="@FormatService.TextStyles"/>
+    </section>
+}
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IScrollManager Scroll { get; set; } = default!;
+
+    [Inject]
+    private TopicContentFormatService FormatService { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ChapterModel[] Chapters { get; set; } = Array.Empty<ChapterModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FormatService.InitAsync();
+        FormatService.OnChange += StateHasChanged;
+    }
+
+    private static string ChapterId(uint id) => $"chapter-{id}";
+
+    public void Dispose() => FormatService.OnChange -= StateHasChanged;
+
+}

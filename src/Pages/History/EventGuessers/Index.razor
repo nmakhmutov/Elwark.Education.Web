@@ -1,0 +1,116 @@
+@page "/history/event-guessers"
+@layout HistoryLayout
+@attribute [Authorize]
+
+@using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.EventGuesser.Model
+@using Education.Web.Gateways.History.EventGuesser.Request
+
+<PageTitle>@L["EventGuesser"]</PageTitle>
+
+<EduPage ShowFooter="false">
+    <div class="background d-flex flex-column pa-3 pa-sm-6 h-100">
+        <ApiViewer Response="@_response">
+            <Success Context="builder">
+                <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+                <section class="grid">
+                    <section>
+                        <EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
+                            <MudSelect Label="@L["History:Epoch"]" @bind-Value="@_model.Epoch" Class="mb-3">
+                                <MudSelectItem Value="@EpochType.None">@L["All"]</MudSelectItem>
+                                @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
+                                {
+                                    <MudSelectItem Value="@period">
+                                        @L[$"History:{period}"]
+                                    </MudSelectItem>
+                                }
+                            </MudSelect>
+
+                            <MudSlider @bind-Value="@_model.Questions" Min="3" Max="13" Color="Color.Primary" Class="mb-3">
+                                @L["EventGuesser:NumberOfDates", _model.Questions]
+                            </MudSlider>
+
+                            <div class="d-flex justify-space-between mb-3">
+                                <MudText Typo="Typo.subtitle1">
+                                    @L["Subscription:EventGuesserCreation"]
+                                </MudText>
+                            </div>
+
+                            <div class="d-flex flex-row justify-end">
+                                @if (builder.IsExistCurrent)
+                                {
+                                    <MudButton
+                                        Class="mr-3"
+                                        Variant="Variant.Filled"
+                                        Color="Color.Primary"
+                                        Link="@Links.History.EventGuesser.Test">
+                                        @L["Test:Continue"]
+                                    </MudButton>
+                                }
+
+                                <LoadingButton
+                                    ButtonType="ButtonType.Submit"
+                                    Text="@L["Test:Create"]"
+                                    LoadingText="@L["Test:Creating"]"
+                                    IsLoading="@_isCreating"/>
+
+                            </div>
+                        </EditForm>
+                    </section>
+
+                    <aside>
+                        <MudText Typo="Typo.h5" Class="mb-3">@builder.Rule.Title</MudText>
+                        <SimpleMarkdown Text="@builder.Rule.Content"/>
+                    </aside>
+                </section>
+            </Success>
+        </ApiViewer>
+    </div>
+</EduPage>
+
+@code {
+    private bool _isCreating;
+    private readonly Model _model = new();
+    private ApiResponse<TestBuilderModel> _response = ApiResponse<TestBuilderModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
+    };
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient Client { get; set; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        _response = await Client.EventGuesser.GetBuilderAsync();
+
+    private async Task OnValidSubmit()
+    {
+        _isCreating = true;
+
+        var response = await Client.EventGuesser.CreateAsync(new CreateRequest(_model.Questions, _model.Epoch));
+        if (response.IsSuccess)
+            Navigation.NavigateTo(Links.History.EventGuesser.Test);
+        else
+            Snackbar.Add(response.Error.Detail, Severity.Error);
+
+        _isCreating = false;
+    }
+
+    internal sealed record Model
+    {
+        public EpochType Epoch { get; set; } = EpochType.None;
+
+        public int Questions { get; set; } = 4;
+    }
+
+}

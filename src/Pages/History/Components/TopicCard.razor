@@ -1,0 +1,70 @@
+@using Education.Web.Gateways.History
+@using Education.Web.Gateways.Models.Content
+@using MudBlazor.Utilities
+
+<section class="@_class">
+    <header class="card-header">
+        <a href="@Links.History.Content.Topic(Id)">
+            <img src="@Image" alt="@Title" loading="lazy"/>
+        </a>
+        <div class="rating-container">
+            <RatingStars Rating="@Rating" ShowTooltip="true"/>
+        </div>
+    </header>
+
+    <article class="pa-3">
+        <div class="mb-3">
+            <MudLink Href="@Links.History.Content.Topic(Id)" Typo="Typo.h6">
+                @Title
+            </MudLink>
+        </div>
+        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.Content.Epoch(Epoch)">
+            @L[$"History:{Epoch}"]
+        </MudChip>
+
+        <MudText Typo="Typo.body2" Class="pt-3">
+            @Overview
+        </MudText>
+    </article>
+</section>
+
+@code {
+
+    private string _class = string.Empty;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Id { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public EpochType Epoch { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string? Overview { get; set; }
+
+    [Parameter, EditorRequired]
+    public ContentRatingModel Rating { get; set; } = default!;
+
+    [Parameter]
+    public bool Horizontal { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _class = CssBuilder.Default("card")
+            .AddClass("horizontal", Horizontal)
+            .AddClass(Class, !string.IsNullOrEmpty(Class))
+            .Build();
+    }
+
+}

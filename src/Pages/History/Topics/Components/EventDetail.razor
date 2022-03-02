@@ -1,0 +1,65 @@
+@using Education.Web.Gateways.History
+@using Education.Web.Pages.History.Components
+
+<EduContainer MaxWidth="EduWidth.W1920" Class="@Class">
+    <article class="grid">
+        <section>
+            <MudText Typo="Typo.h1" Class="title">
+                @Title
+            </MudText>
+            @if (Started is not null)
+            {
+                @if (Started == Ended)
+                {
+                    <HistoryDate Date="@Started"/>
+                }
+                else if (Started != Ended)
+                {
+                    <div class="d-flex flex-row flex-wrap">
+                        <HistoryDate Date="@Started"/>
+                        <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
+                        <HistoryDate Date="@Ended"/>
+                    </div>
+                }
+            }
+        </section>
+
+        <section>
+            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0 mb-6 mt-md-3"/>
+            <MudText Typo="Typo.subtitle1" Class="mb-6">
+                @Description
+            </MudText>
+        </section>
+
+
+    </article>
+
+    <div class="image">
+        <img src="@Image" alt="@Title" loading="lazy"/>
+    </div>
+</EduContainer>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Description { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public HistoricalDateModel? Started { get; set; }
+
+    [Parameter, EditorRequired]
+    public HistoricalDateModel? Ended { get; set; }
+
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

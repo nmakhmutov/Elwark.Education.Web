@@ -1,0 +1,61 @@
+@using Education.Web.Pages
+<EduContainer MaxWidth="EduWidth.W600" Class="align-center h-100">
+    <div class="title">
+        <MudText Typo="Typo.h4" Inline="true" Style="vertical-align: middle">
+            @Error.Status&nbsp;
+        </MudText>
+        <MudText Typo="Typo.h5" Inline="true" Style="vertical-align: middle">
+            @Error.Title
+        </MudText>
+    </div>
+
+    <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="mb-6">
+        @Error.Detail
+    </MudText>
+
+    @if (Error.Errors.Count > 0)
+    {
+        <MudPaper Class="mb-6">
+            <MudList>
+                @foreach (var (field, errors) in Error.Errors)
+                {
+                    <MudListItem Text="@field">
+                        <NestedList>
+                            @foreach (var value in errors)
+                            {
+                                <MudListItem Text="@value"/>
+                            }
+                        </NestedList>
+                    </MudListItem>
+                }
+            </MudList>
+        </MudPaper>
+    }
+
+    <div class="d-flex justify-center">
+        <MudButton Link="@Links.Root.Index" Color="Color.Primary" Variant="Variant.Outlined">
+            @L["Page:GoToHome"]
+        </MudButton>
+        @if (Error.Status > 499)
+        {
+            <MudButton
+                OnClick="@(() => Navigation.NavigateTo(Navigation.Uri, true))"
+                Color="Color.Primary" Variant="Variant.Filled" Class="ml-6">
+                @L["Page:Reload"]
+            </MudButton>
+        }
+    </div>
+</EduContainer>
+
+@code {
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public Error Error { get; init; } = default!;
+
+}

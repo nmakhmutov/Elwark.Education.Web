@@ -1,0 +1,52 @@
+@page "/history/tests/{id}/conclusion"
+@layout HistoryLayout
+@attribute [Authorize]
+
+@using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Tests.Model
+@using Education.Web.Pages.History.Tests.Conclusion.Components
+
+<EduPage ShowFooter="@_response.IsLoaded">
+    <ApiViewer Response="@_response">
+        <Success Context="conclusion">
+            @switch (conclusion)
+            {
+                case EasyTestConclusionModel test:
+                    <PageTitle>@test.Topic.Title</PageTitle>
+                    <EasyTestView Conclusion="@test"/>
+                    break;
+
+                case HardTestConclusionModel test:
+                    <PageTitle>@test.Topic.Title</PageTitle>
+                    <HardTestView Conclusion="@test"/>
+                    break;
+
+                case MixedTestConclusionModel test:
+                    <PageTitle>@L["Test:Mixed"]</PageTitle>
+                    <MixedTestView Conclusion="@test"/>
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(conclusion));
+            }
+
+        </Success>
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private ApiResponse<TestConclusionModel> _response = ApiResponse<TestConclusionModel>.Loading();
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync() =>
+        _response = await HistoryClient.Test.GetConclusionAsync(Id);
+
+}

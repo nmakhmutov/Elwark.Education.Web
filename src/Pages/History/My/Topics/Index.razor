@@ -1,0 +1,243 @@
+@page "/history/my/topics/{id}"
+@layout HistoryLayout
+@attribute [Authorize]
+
+@using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Users.Model
+@using Education.Web.Pages.History.My.Components
+
+<EduPage ShowFooter="@_response.IsLoaded">
+    <EduContainer MaxWidth="EduWidth.W1280">
+        <ApiViewer Response="@_response">
+            <Loading>
+                <MudPaper Class="d-md-flex justify-space-between align-center pa-3 pa-sm-6 mb-3 mb-sm-6" Elevation="0">
+                    <div class="d-flex flex-column flex-sm-row justify-center align-center mb-3 mb-sm-6 mb-md-0">
+                        <div class="avatar">
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="120px" Height="120px"/>
+                        </div>
+                        <div class="d-flex flex-column justify-space-between">
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="160px" Height="40px" Class="mb-3"/>
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="120px" Height="30px"/>
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="180px"/>
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="190px"/>
+                        </div>
+                    </div>
+                    <div>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Style="width: 100%; min-width: 200px"/>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Style="width: 100%; min-width: 200px"/>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Style="width: 100%; min-width: 200px"/>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Style="width: 100%; min-width: 200px"/>
+                    </div>
+                </MudPaper>
+
+                @RenderHeader(L["Tests:Easy"], Links.History.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero)
+                <EduFitGrid>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                </EduFitGrid>
+
+                <div class="py-6"></div>
+                @RenderHeader(L["Tests:Hard"], Links.History.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero)
+                <EduFitGrid>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                    <SkeletonCard/>
+                </EduFitGrid>
+            </Loading>
+            <Success Context="result">
+                <PageTitle>@result.Topic.Title</PageTitle>
+
+                <MudPaper Class="d-md-flex justify-space-between align-center pa-3 pa-sm-6 mb-3 mb-sm-6" Elevation="0">
+                    <div class="d-flex flex-column flex-sm-row justify-center align-center mb-3 mb-sm-6 mb-md-0">
+                        <div class="avatar">
+                            <img src="@result.Topic.Image" alt="@result.Topic.Title" loading="lazy"/>
+                        </div>
+                        <div class="d-flex flex-column justify-space-between">
+                            <MudLink Class="mt-3 mt-sm-0" Typo="Typo.h5" Href="@Links.History.Content.Topic(result.Topic.Id)">
+                                @result.Topic.Title
+                            </MudLink>
+                            <Breadcrumbs Items="@_breadcrumbs" Class="pa-0 mt-3"/>
+                            <MudText Class="d-none d-sm-block mt-3 mw-xs" Typo="Typo.body2">
+                                @result.Topic.Overview
+                            </MudText>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-space-between mb-3">
+                            <div class="d-flex align-center mr-3">
+                                <MudIcon Icon="@EducationIcons.Tests" Size="Size.Small" Class="mr-3"/>
+                                <MudText Typo="Typo.body2">
+                                    @L["NumberOfTests:TotalPassed"]
+                                </MudText>
+                            </div>
+                            <MudText Typo="Typo.body2">
+                                @result.Total.Tests.ToReadable()
+                            </MudText>
+                        </div>
+                        <div class="d-flex justify-space-between mb-3">
+                            <div class="d-flex align-center mr-3">
+                                <MudIcon Icon="@EducationIcons.Score" Size="Size.Small" Class="mr-3"/>
+                                <MudText Typo="Typo.body2">
+                                    @L["Score:Total"]
+                                </MudText>
+                            </div>
+                            <MudText Typo="Typo.body2">
+                                @result.Total.Score.ToReadable()
+                            </MudText>
+                        </div>
+                        <div class="d-flex justify-space-between mb-3">
+                            <div class="d-flex align-center mr-3">
+                                <MudIcon Icon="@EducationIcons.Questions" Size="Size.Small" Class="mr-3"/>
+                                <MudText Typo="Typo.body2">
+                                    @L["Questions:Total"]
+                                </MudText>
+                            </div>
+                            <MudText Typo="Typo.body2">
+                                @result.Total.Questions.ToReadable()
+                            </MudText>
+                        </div>
+                        <div class="d-flex justify-space-between mb-3">
+                            <div class="d-flex align-center mr-3">
+                                <MudIcon Icon="@EducationIcons.TimeSpent" Size="Size.Small" Class="mr-3"/>
+                                <MudText Typo="Typo.body2">
+                                    @L["TimeSpent:Total"]
+                                </MudText>
+                            </div>
+                            <MudText Typo="Typo.body2">
+                                @result.Total.TimeSpent.ToSimpleFormat()
+                            </MudText>
+                        </div>
+                    </div>
+                </MudPaper>
+
+                @RenderHeader(L["Tests:Easy"], Links.History.User.MyEasyTests, L["TimeSpent"], result.EasyTest.TimeSpent)
+                <EduFitGrid Class="mb-3 mb-sm-6">
+                    <StatisticsCard Title="@L["Tests"]" Value="@result.EasyTest.NumberOfTests.Total">
+                        <NumberOfTestChart Value="@result.EasyTest.NumberOfTests"/>
+                    </StatisticsCard>
+                    <StatisticsCard Title="@L["Score"]" Value="@result.EasyTest.Score.Total">
+                        <ScoreChart Value="@result.EasyTest.Score"/>
+                    </StatisticsCard>
+                    <StatisticsCard Title="@L["Questions"]" Value="@result.EasyTest.AnswerRatio.Questions">
+                        <AnswerRatioChart Value="@result.EasyTest.AnswerRatio"/>
+                    </StatisticsCard>
+                </EduFitGrid>
+
+                @if (result.EasyTest.Conclusions.Length > 0)
+                {
+                    <MudExpansionPanels Elevation="0">
+                        @foreach (var conclusion in result.EasyTest.Conclusions)
+                        {
+                            <MudExpansionPanel>
+                                <TitleContent>
+                                    <div class="d-flex">
+                                        <MudText Typo="Typo.subtitle1" Class="mr-3">
+                                            @conclusion.CompletedAt.ToSimpleFormat()
+                                        </MudText>
+                                        <MudText Typo="@Typo.subtitle1" Color="@conclusion.Status.GetColor()">
+                                            @L[$"ConclusionStatus:{conclusion.Status}"]
+                                        </MudText>
+                                    </div>
+                                </TitleContent>
+                                <ChildContent>
+                                    <TestConclusionList
+                                        TimeSpent="@conclusion.TimeSpent"
+                                        Score="@conclusion.Score"
+                                        AnswerRatio="@conclusion.AnswerRatio"/>
+                                </ChildContent>
+                            </MudExpansionPanel>
+                        }
+                    </MudExpansionPanels>
+                }
+
+                <div class="py-6"></div>
+                @RenderHeader(L["Tests:Hard"], Links.History.User.MyHardTests, L["TimeSpent"], result.HardTest.TimeSpent)
+                <EduFitGrid Class="mb-3 mb-sm-6">
+                    <StatisticsCard Title="@L["Tests"]" Value="@result.HardTest.NumberOfTests.Total">
+                        <NumberOfTestChart Value="@result.HardTest.NumberOfTests"/>
+                    </StatisticsCard>
+                    <StatisticsCard Title="@L["Score"]" Value="@result.HardTest.Score.Total">
+                        <ScoreChart Value="@result.HardTest.Score"/>
+                    </StatisticsCard>
+                    <StatisticsCard Title="@L["Questions"]" Value="@result.HardTest.AnswerRatio.Questions">
+                        <AnswerRatioChart Value="@result.HardTest.AnswerRatio"/>
+                    </StatisticsCard>
+                </EduFitGrid>
+
+                @if (result.HardTest.Conclusions.Length > 0)
+                {
+                    <MudExpansionPanels Elevation="0">
+                        @foreach (var conclusion in result.HardTest.Conclusions)
+                        {
+                            <MudExpansionPanel>
+                                <TitleContent>
+                                    <div class="d-flex">
+                                        <MudText Typo="Typo.subtitle1" Class="mr-3">
+                                            @conclusion.CompletedAt.ToSimpleFormat()
+                                        </MudText>
+                                        <MudText Typo="@Typo.subtitle1" Color="@conclusion.Status.GetColor()">
+                                            @L[$"ConclusionStatus:{conclusion.Status}"]
+                                        </MudText>
+                                    </div>
+                                </TitleContent>
+                                <ChildContent>
+                                    <TestConclusionList
+                                        TimeSpent="@conclusion.TimeSpent"
+                                        Score="@conclusion.Score"
+                                        AnswerRatio="@conclusion.AnswerRatio"/>
+                                </ChildContent>
+                            </MudExpansionPanel>
+                        }
+                    </MudExpansionPanels>
+                }
+            </Success>
+        </ApiViewer>
+    </EduContainer>
+</EduPage>
+
+@code {
+    private List<BreadcrumbItem> _breadcrumbs = new();
+
+    private ApiResponse<TopicStatisticsModel> _response = ApiResponse<TopicStatisticsModel>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _response = await HistoryClient.User.GetTopicsAsync(Id);
+
+        if (_response.Status == ResponseStatus.Success)
+            _breadcrumbs = new List<BreadcrumbItem>
+            {
+                new(L["Profile"].Value, Links.History.User.MyProfile),
+                new(L["Subject:History"].Value, Links.History.Index),
+                new(L[$"History:{_response.Data.Topic.Epoch}"].Value, Links.History.Content.Epoch(_response.Data.Topic.Epoch))
+            };
+    }
+
+    private RenderFragment RenderHeader(LocalizedString title, string link, LocalizedString tooltip, TimeSpan timeSpent) =>
+        @<div class="d-flex flex-wrap align-center justify-space-between mb-3 mr-3">
+            <MudLink Href="@link" Typo="Typo.h5">
+                @title
+            </MudLink>
+            <div class="d-flex align-center">
+                <MudTooltip Text="@tooltip">
+                    <MudText Typo="Typo.h5" Class="mr-3">
+                        @timeSpent.ToSimpleFormat()
+                    </MudText>
+                </MudTooltip>
+                <MudAvatar Color="Color.Primary" Size="Size.Medium">
+                    <MudIcon Icon="@EducationIcons.TimeSpent" Size="Size.Medium"/>
+                </MudAvatar>
+            </div>
+        </div>;
+
+}

@@ -1,0 +1,113 @@
+@using Education.Web.Gateways.Models.User
+@using ApexCharts
+@using Align = MudBlazor.Align
+
+<MudPaper Class="@Class" Elevation="0">
+    <div class="d-flex flex-column justify-space-between h-100 pa-3 pa-sm-6">
+        <MudText Typo="Typo.h5" Class="mb-3">
+            @L["InternalMoney:Balance"]
+        </MudText>
+
+        <div class="d-flex justify-space-between align-start">
+            <div class="flex-grow-0 flex-shrink-0">
+                <ApexChart TItem="Data" Options="@_options" Width="@("140px")" Height="@("160px")">
+                    <ApexPointSeries
+                        TItem="Data"
+                        Items="@(new[] { new Data(Silver.Flow.Income, "Income") })"
+                        XValue="@(e => e.Name)"
+                        YValue="@(x => x.Value)"
+                        SeriesType="SeriesType.Bar"/>
+
+                    <ApexPointSeries
+                        TItem="Data"
+                        Items="@(new[] { new Data(-Silver.Flow.Expense, "Expense") })"
+                        XValue="@(e => e.Name)"
+                        YValue="@(x => x.Value)"
+                        SeriesType="SeriesType.Bar"/>
+                </ApexChart>
+                <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-1">
+                    @Silver.Flow.Date.ToString("MMM yyyy")
+                </MudText>
+            </div>
+            <div class="flex-grow-1 flex-shrink-0">
+                <div class="d-flex flex-column align-end mb-3">
+                    <MudText Typo="Typo.body2">@L["InternalMoney:Income"]</MudText>
+                    <div class="d-flex flex-row align-center">
+                        <HumanReadableText Value="@Silver.Flow.Income" Typo="Typo.subtitle1" Style="font-weight: 500"/>
+                        <MudIcon Size="Size.Small" Style="color: #C0C0C0" Class="ml-2" Icon="@EducationIcons.Silver"/>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column align-end">
+                    <MudText Typo="Typo.body2">@L["InternalMoney:Expense"]</MudText>
+                    <div class="d-flex flex-row align-center">
+                        <HumanReadableText Value="@Silver.Flow.Expense" Typo="Typo.subtitle1" Style="font-weight: 500"/>
+                        <MudIcon Size="Size.Small" Style="color: #C0C0C0" Class="ml-2" Icon="@EducationIcons.Silver"/>
+                    </div>
+                </div>
+
+                <MudDivider Class="my-3"/>
+
+                <div class="d-flex flex-column align-end">
+                    <MudText Typo="Typo.body2">@L["InternalMoney:Silver"]</MudText>
+                    <div class="d-flex flex-row align-center">
+                        <HumanReadableText Value="@Silver.Balance" Typo="Typo.subtitle1" Style="font-weight: 500"/>
+                        <MudIcon Size="Size.Small" Style="color: #C0C0C0" Class="ml-2" Icon="@EducationIcons.Silver"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</MudPaper>
+
+@code {
+
+    private ApexChartOptions<Data> _options = new()
+    {
+        Tooltip = new Tooltip
+        {
+            Enabled = false
+        },
+        Chart = new Chart
+        {
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)",
+            Sparkline = new ChartSparkline
+            {
+                Enabled = true
+            }
+        },
+        PlotOptions = new PlotOptions
+        {
+            Bar = new PlotOptionsBar
+            {
+                ColumnWidth = "90px"
+            }
+        },
+        Stroke = new Stroke
+        {
+            Colors = new List<string>
+            {
+                "transparent"
+            },
+            Width = 10
+        },
+        Colors = new List<string>
+        {
+            Colors.Green.Accent4,
+            Colors.Blue.Default
+        }
+    };
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public SilverWalletModel Silver { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private sealed record Data(int Value, string Name);
+
+}

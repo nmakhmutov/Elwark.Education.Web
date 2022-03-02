@@ -1,0 +1,117 @@
+@using Education.Web.Gateways.History
+@using Education.Web.Pages.History.Components
+
+@implements IDisposable
+
+<style>
+    .dark {
+        background: linear-gradient(0deg, var(--mud-palette-background) 15%, var(--mud-palette-overlay-dark) 100%), url('@Image') no-repeat top center;
+    }
+    
+    .light {
+        background: linear-gradient(0deg, var(--mud-palette-background) 15%, var(--mud-palette-overlay-light) 100%), url('@Image') no-repeat top center;
+    }
+</style>
+
+<header class="@Class @Overlay background">
+    <section class="d-flex flex-column justify-center align-center h-100">
+        <Breadcrumbs Items="@Breadcrumbs" Typo="Typo.subtitle1" Class="pa-0"/>
+        <h1 class="title mb-3 mb-sm-6">@Title</h1>
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="mb-3 mb-sm-6">
+            <MudGrid Spacing="3">
+                <MudItem xs="6" sm="3">
+                    <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                        @L["History:EmpireFounded"]
+                    </MudText>
+                    <HistoryDate Date="@Founded" Typo="Typo.h6" Align="Align.Center"/>
+                </MudItem>
+                <MudItem xs="6" sm="3">
+                    <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                        @L["History:EmpireEnded"]
+                    </MudText>
+                    <HistoryDate Date="@Dissolved" Typo="Typo.h6" Align="Align.Center"/>
+                </MudItem>
+                <MudItem xs="6" sm="3">
+                    <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                        @L["History:EmpireMaxArea"]
+                    </MudText>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @if (MaxArea > 0)
+                        {
+                            @MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                        }
+                        else
+                        {
+                            @L["History:Unknown"]
+                        }
+                    </MudText>
+                </MudItem>
+                <MudItem xs="6" sm="3">
+                    <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                        @L["History:EmpireMaxPopulation"]
+                    </MudText>
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        @if (MaxPopulation > 0)
+                        {
+                            @MaxPopulation.ToString("N0")
+                        }
+                        else
+                        {
+                            @L["History:Unknown"]
+                        }
+                    </MudText>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+        <EduContainer MaxWidth="EduWidth.W1280" Class="mb-3 mb-sm-6">
+            <MudText Typo="Typo.subtitle1">
+                @Description
+            </MudText>
+        </EduContainer>
+    </section>
+</header>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private ThemeService ThemeService { get; set; } = default!;
+
+    protected override void OnInitialized() =>
+        ThemeService.OnChange += StateHasChanged;
+
+    private string Overlay =>
+        ThemeService.IsDarkMode ? "dark" : "light";
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Description { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public HistoricalDateModel? Founded { get; set; }
+
+    [Parameter, EditorRequired]
+    public HistoricalDateModel? Dissolved { get; set; }
+
+    [Parameter, EditorRequired]
+    public uint MaxArea { get; set; }
+
+    [Parameter, EditorRequired]
+    public uint MaxPopulation { get; set; }
+
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    public void Dispose() => ThemeService.OnChange -= StateHasChanged;
+
+}

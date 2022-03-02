@@ -1,0 +1,89 @@
+@using Education.Web.Gateways.History
+@using Education.Web.Gateways.Models.Content
+@using Education.Web.Pages.History.Components
+
+<EduContainer MaxWidth="EduWidth.W1920" Class="@Class">
+    <div class="grid">
+        <div class="image">
+            <img src="@Image" class="portrait" alt="@Title" loading="lazy"/>
+        </div>
+        <div class="content">
+            <MudText Typo="Typo.h2">
+                @Title
+            </MudText>
+            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
+            <div class="lifetime">
+                @if (Born is not null)
+                {
+                    <div>
+                        <MudText Typo="Typo.caption" Color="Color.Surface">
+                            @L["History:Born"]
+                        </MudText>
+                        <HistoryDate Date="@Born" Typo="Typo.h5" Color="Color.Info"/>
+                        <MudText Typo="Typo.body1">
+                            @Born.Place
+                        </MudText>
+                    </div>
+                }
+                @if (Died is not null)
+                {
+                    <div>
+                        <MudText Typo="Typo.caption" Color="Color.Surface">
+                            @L["History:Died"]
+                        </MudText>
+                        <HistoryDate Date="@Died" Typo="Typo.h5" Color="Color.Info"/>
+                        <MudText Typo="Typo.body1">
+                            @Died.Place
+                        </MudText>
+                    </div>
+                }
+            </div>
+
+            <MudText Typo="Typo.subtitle1" Class="mw-sm">
+                @Description
+            </MudText>
+        </div>
+        <div class="characteristics">
+            @foreach (var (title, text) in Characteristics)
+            {
+                <div class="characteristic">
+                    <MudText Class="title" Typo="Typo.subtitle1">
+                        @title
+                    </MudText>
+                    <SimpleMarkdown Text="@text"/>
+                </div>
+            }
+        </div>
+    </div>
+</EduContainer>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Description { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public PersonBirthdayModel? Born { get; set; }
+
+    [Parameter, EditorRequired]
+    public PersonBirthdayModel? Died { get; set; }
+
+    [Parameter, EditorRequired]
+    public CharacteristicModel[] Characteristics { get; set; } = Array.Empty<CharacteristicModel>();
+
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

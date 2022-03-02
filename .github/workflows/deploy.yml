@@ -1,11 +1,19 @@
 name: Deploy solution
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - src/**
+      - .github/workflows/deploy.yml
+
+env:
+  SERVICE: education.web
 
 jobs:
-  account:
+  BuildContainer:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Github Action
@@ -15,6 +23,3 @@ jobs:
         run: sudo -E docker-compose build ${{ env.SERVICE }}
         working-directory: ./src
         shell: bash
-        env:
-          TAG: latest
-          SERVICE: education.web

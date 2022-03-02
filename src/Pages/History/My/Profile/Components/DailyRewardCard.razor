@@ -1,0 +1,101 @@
+@using Education.Web.Gateways.History.Users.Model
+@using Education.Web.Gateways.Models.User
+<section class="card @Class">
+    <div class="d-flex flex-column justify-space-between white-text">
+        <MudText Typo="Typo.h5" Align="Align.Center" Class="pa-3 pa-sm-6">
+            @L["Experience:DailyReward"]
+        </MudText>
+
+        @if (Reward.NextTimeAt.HasValue)
+        {
+            <div class="d-flex flex-column align-center pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle2">
+                    @L["Experience:DailyRewardUnlockedAt"]
+                </MudText>
+                <CountdownTimer Date="@Reward.NextTimeAt.Value" Typo="Typo.h3" OnComplete="@OnReached"/>
+            </div>
+        }
+        else
+        {
+            <div class="d-flex flex-row align-center justify-center pa-3 pa-sm-6">
+                @for (var i = 0; i < Reward.Rewards.Length; i++)
+                {
+                    <InternalMoneyText
+                        Class="@(i + 1 == Reward.Rewards.Length ? null : "mr-3")"
+                        Typo="Typo.h4"
+                        IconSize="Size.Medium"
+                        Money="@Reward.Rewards[i]"/>
+                }
+            </div>
+            
+            <div class="d-flex justify-center pa-3 pa-sm-6">
+
+                <LoadingButton
+                    Class="mr-3"
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    OnClick="@CollectAsync"
+                    Text="@L["Experience:CollectDailyReward"]"
+                    LoadingText="@L["Loading"]"
+                    DisableElevation="true"
+                    Disabled="@(_loading != Loading.None)"
+                    IsLoading="@(_loading == Loading.Collect)"/>
+
+                <LoadingButton
+                    Variant="Variant.Text"
+                    Color="Color.Inherit"
+                    OnClick="@RejectAsync"
+                    Text="@L["Experience:RejectDailyReward"]"
+                    LoadingText="@L["Loading"]"
+                    DisableElevation="true"
+                    Disabled="@(_loading != Loading.None)"
+                    IsLoading="@(_loading == Loading.Reject)"/>
+
+            </div>
+        }
+    </div>
+</section>
+
+@code {
+    private Loading _loading = Loading.None;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public DailyRewardModel Reward { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnCollect { get; set; }
+
+    [Parameter]
+    public EventCallback OnReject { get; set; }
+
+    [Parameter]
+    public EventCallback OnReached { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task CollectAsync()
+    {
+        _loading = Loading.Collect;
+        await OnCollect.InvokeAsync();
+        _loading = Loading.None;
+    }
+
+    private async Task RejectAsync()
+    {
+        _loading = Loading.Reject;
+        await OnReject.InvokeAsync();
+        _loading = Loading.None;
+    }
+
+    private enum Loading
+    {
+        None,
+        Collect,
+        Reject
+    }
+
+}

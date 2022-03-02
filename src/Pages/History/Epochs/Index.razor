@@ -1,0 +1,85 @@
+@page "/history/epochs/{type}"
+@layout HistoryLayout
+@attribute [Authorize]
+
+@using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Topics.Request
+@using Education.Web.Pages.History.Components
+
+<EduPage ShowFooter="@_response.IsLoaded">
+    <ApiViewer Response="_response">
+        <Success Context="topics">
+            <EduContainer>
+                <PageTitle>@L[$"History:{_request.Epoch}"]</PageTitle>
+                <PageHeader Title="@L[$"History:{_request.Epoch}"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+                <EduFillGrid Class="mb-6 mb-sm-12">
+                    @foreach (var (topic, userActivity) in topics.Items)
+                    {
+                        <TopicAndUserProgressCard
+                            Topic="@topic"
+                            UserActivity="@userActivity"
+                            OnFavoriteClick="@OnFavoriteClick"/>
+                    }
+                </EduFillGrid>
+                <div class="d-flex justify-center">
+                    <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_response.Data.Pages)"/>
+                </div>
+            </EduContainer>
+        </Success>
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private GetTopicsRequest _request = new(EpochType.Prehistory, 1, 20);
+    private ApiResponse<PageResponse<UserTopicOverviewModel>> _response = ApiResponse<PageResponse<UserTopicOverviewModel>>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
+    };
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter]
+    public string? Type { get; set; }
+
+    [Parameter, SupplyParameterFromQuery(Name = "page")]
+    public int CurrentPage { get; set; } = 1;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _response = ApiResponse<PageResponse<UserTopicOverviewModel>>.Loading();
+        CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
+
+        if (Enum.TryParse<EpochType>(Type, true, out var type))
+        {
+            _request = _request with { Epoch = type, Page = CurrentPage };
+            _response = await HistoryClient.Topic.GetAsync(_request);
+        }
+        else
+        {
+            var error = Error.Create(L["Error:NotFound"], 404);
+            _response = ApiResponse<PageResponse<UserTopicOverviewModel>>.Fail(error);
+        }
+    }
+
+    private async Task<bool> OnFavoriteClick(string topicId)
+    {
+        var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
+        return result.Status == ResponseStatus.Success && result.Data;
+    }
+
+    private void OnPagination(int page)
+    {
+        CurrentPage = page;
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", CurrentPage));
+    }
+
+}

@@ -1,0 +1,110 @@
+@using ApexCharts
+@using Education.Web.Gateways.Models.Statistics
+
+@implements IDisposable
+
+<ApexChart @ref="@_chart" TItem="TestStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
+    <ApexPointSeries
+        TItem="TestStatisticsModel.DailyProgress"
+        Items="@Progress"
+        Name="@L["TimeSpent:Min"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => (decimal)x.TimeSpent.Min.TotalMilliseconds)"/>
+
+    <ApexPointSeries
+        TItem="TestStatisticsModel.DailyProgress"
+        Items="@Progress"
+        Name="@L["TimeSpent:Average"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.DeepPurple.Default })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => (decimal)x.TimeSpent.Average.TotalMilliseconds)"/>
+
+    <ApexPointSeries
+        TItem="TestStatisticsModel.DailyProgress"
+        Items="@Progress"
+        Name="@L["TimeSpent:Max"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Default })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => (decimal)x.TimeSpent.Max.TotalMilliseconds)"/>
+
+</ApexChart>
+
+@code {
+    private ApexChart<TestStatisticsModel.DailyProgress> _chart = default!;
+    private ApexChartOptions<TestStatisticsModel.DailyProgress>? _options;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private ThemeService ThemeService { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public TestStatisticsModel.DailyProgress[] Progress { get; set; } = Array.Empty<TestStatisticsModel.DailyProgress>();
+
+    protected override void OnInitialized()
+    {
+        _options = new ApexChartOptions<TestStatisticsModel.DailyProgress>
+        {
+            Tooltip = new Tooltip
+            {
+                Y = new TooltipY
+                {
+                    Formatter = @"function(value, { series, seriesIndex, dataPointIndex, w }) {
+                                    var minutes = Math.floor(value / 60000);
+                                    var seconds = ((value % 60000) / 1000).toFixed(0);
+                                    return minutes + "":"" + (seconds < 10 ? '0' : '') + seconds;
+                                }"
+                }
+            },
+            Legend = new Legend
+            {
+                Show = false
+            },
+            Chart = new Chart
+            {
+                Toolbar = new Toolbar
+                {
+                    Show = false
+                },
+                Selection = new Selection
+                {
+                    Enabled = false
+                },
+                Zoom = new Zoom
+                {
+                    Enabled = false
+                },
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Grid = new Grid
+            {
+                BorderColor = "var(--mud-palette-divider)"
+            },
+            Theme = new Theme
+            {
+                Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light
+            }
+        };
+
+        ThemeService.OnChange += Update;
+    }
+
+    public void Dispose() => ThemeService.OnChange -= Update;
+
+    private void Update()
+    {
+        if (_options is null)
+            return;
+
+        _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
+        _chart.SetRerenderChart();
+        StateHasChanged();
+    }
+
+}

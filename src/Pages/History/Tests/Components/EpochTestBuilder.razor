@@ -1,0 +1,165 @@
+@using Education.Web.Gateways.History
+
+<section class="@Class">
+    <MudText Typo="Typo.h5" Class="mb-3">
+        @L["History:Epoch"]
+    </MudText>
+    <MudRadioGroup @bind-SelectedOption="@_epoch" Class="epoch-radio-group mb-3 mb-sm-6">
+        @foreach (var epoch in Epochs)
+        {
+            var name = epoch.ToFastString();
+            <MudRadio Option="@epoch" Color="Color.Primary" Class="radio">
+                <MudPaper Elevation="0" Class="d-flex align-center">
+                    <MudImage Class="radio-image" Alt="@L[$"History:{name}"]" Src="@($"/images/history/epochs/{name}.jpg")"/>
+                    <MudText Typo="Typo.subtitle1" Class="mx-3">
+                        @L[$"History:{name}"]
+                    </MudText>
+                </MudPaper>
+            </MudRadio>
+        }
+
+        <MudRadio Option="@EpochType.None" Color="Color.Primary" Class="radio">
+            <MudPaper Elevation="0" Class="d-flex align-center">
+                <MudImage Class="radio-image" Alt="@L["All"]" ObjectFit="ObjectFit.Cover" Src="@("/images/history/history.jpg")"/>
+                <MudText Typo="Typo.subtitle1" Class="mx-3">
+                    @L["Topics:Any"]
+                </MudText>
+            </MudPaper>
+        </MudRadio>
+    </MudRadioGroup>
+
+    <MudText Typo="Typo.h5" Class="mb-3">
+        @L["Tests"]
+    </MudText>
+    <MudRadioGroup @bind-SelectedOption="@_test" Class="test-radio-group mb-3 mb-sm-6">
+        <MudRadio Option="@EasyTest" Color="Color.Primary" Disabled="@(!AllowedEasyTest)" Class="radio">
+            <MudPaper Elevation="0" Class="d-flex align-center pa-3">
+                <MudAvatar Color="Color.Inherit" Class="@(AllowedEasyTest ? "blue lighten-1" : null)">
+                    <MudIcon Icon="@EducationIcons.Tests"/>
+                </MudAvatar>
+
+                <MudText Typo="Typo.subtitle1" Class="mx-3">
+                    @L["Test:Easy"]
+                </MudText>
+            </MudPaper>
+        </MudRadio>
+
+        <MudRadio Option="@HardTest" Color="Color.Primary" Disabled="@(!AllowedHardTest)" Class="radio">
+            <MudPaper Elevation="0" Class="d-flex align-center pa-3">
+                <MudAvatar Color="Color.Inherit" Class="@(AllowedHardTest ? "blue darken-2" : null)">
+                    <MudIcon Icon="@EducationIcons.Tests"/>
+                </MudAvatar>
+
+                <MudText Typo="Typo.subtitle1" Class="mx-3">
+                    @L["Test:Hard"]
+                </MudText>
+            </MudPaper>
+        </MudRadio>
+
+        <MudRadio Option="@MixedTest" Color="Color.Primary" Disabled="@(!AllowedMixedTest)" Class="radio">
+            <MudPaper Elevation="0" Class="d-flex align-center pa-3">
+                <MudAvatar Color="Color.Inherit" Class="@(AllowedMixedTest ? "indigo darken-1" : null)">
+                    <MudIcon Icon="@EducationIcons.Tests"/>
+                </MudAvatar>
+
+                <MudText Typo="Typo.subtitle1" Class="mx-3">
+                    @L["Test:Mixed"]
+                </MudText>
+            </MudPaper>
+        </MudRadio>
+    </MudRadioGroup>
+
+    <LoadingButton
+        DisableElevation="true"
+        Color="Color.Primary"
+        Variant="Variant.Filled"
+        Text="@L["Test:Pass"]"
+        LoadingText="@L["Loading"]"
+        IsLoading="@_isLoading"
+        Disabled="@(!_allowedAnyTest)"
+        OnClick="@CreateTestAsync"/>
+</section>
+
+@code {
+        private const byte EasyTest = 1;
+        private const byte HardTest = 2;
+        private const byte MixedTest = 3;
+
+    private static readonly EpochType[] Epochs =
+    {
+        EpochType.Prehistory,
+        EpochType.Ancient,
+        EpochType.MiddleAges,
+        EpochType.EarlyModern,
+        EpochType.Modern
+    };
+
+    private EpochType _epoch = EpochType.None;
+    private byte _test = 0;
+    private bool _isLoading;
+    private bool _allowedAnyTest;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool AllowedEasyTest { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool AllowedHardTest { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool AllowedMixedTest { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<EpochType> OnEasyTestCreate { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<EpochType> OnHardTestCreate { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<EpochType> OnMixedTestCreate { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (AllowedEasyTest)
+        {
+            _test = EasyTest;
+            _allowedAnyTest = true;
+        }
+        else if (AllowedHardTest)
+        {
+            _test = HardTest;
+            _allowedAnyTest = true;
+        }
+        else if (AllowedMixedTest)
+        {
+            _test = MixedTest;
+            _allowedAnyTest = true;
+        }
+    }
+
+    private async Task CreateTestAsync()
+    {
+        _isLoading = true;
+        switch (_test)
+        {
+            case EasyTest:
+                await OnEasyTestCreate.InvokeAsync(_epoch);
+                break;
+
+            case HardTest:
+                await OnHardTestCreate.InvokeAsync(_epoch);
+                break;
+
+            case MixedTest:
+                await OnMixedTestCreate.InvokeAsync(_epoch);
+                break;
+        }
+        _isLoading = false;
+    }
+
+}

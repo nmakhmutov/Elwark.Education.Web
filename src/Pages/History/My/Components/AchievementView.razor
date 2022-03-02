@@ -1,0 +1,128 @@
+@using Education.Web.Gateways.History.Users.Model
+<section class="grid">
+    @switch (Achievement)
+    {
+        case CompletedAchievementModel achievement:
+            <aside class="icon completed">
+                <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
+            </aside>
+            <header class="header">
+                <h6 class="title">
+                    @achievement.Title
+                </h6>
+                <MudText Typo="Typo.caption" Class="d-block">
+                    @L["Achievement:Completed"] @achievement.CompletedAt.ToSimpleFormat()
+                </MudText>
+            </header>
+            break;
+
+        case LadderAchievementModel achievement:
+            <aside class="icon @_background">
+                <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
+                <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
+                    @L["Achievement:Level"] @achievement.Level
+                </MudText>
+            </aside>
+            <header class="header">
+                <h6 class="title">
+                    @achievement.Title
+                </h6>
+            </header>
+            <footer class="progress">
+                <div class="d-flex flex-row mb-1">
+                    <HumanReadableText Value="@achievement.Score" Typo="Typo.subtitle2"/>
+                    <span>/</span>
+                    <HumanReadableText Value="@achievement.Goal" Typo="Typo.subtitle2"/>
+                </div>
+                <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
+                <div class="d-flex flex-row">
+                    @foreach (var reward in achievement.Rewards)
+                    {
+                        <InternalMoneyText Class="mr-3" Money="@reward"/>
+                    }
+                </div>
+            </footer>
+            break;
+            
+        case ProgressiveAchievementModel achievement:
+            <aside class="icon @_background">
+                <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
+            </aside>
+            <header class="header">
+                <h6 class="title">
+                    @achievement.Title
+                </h6>
+            </header>
+            <footer class="progress">
+                <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
+                <div class="d-flex flex-row">
+                    @foreach (var reward in achievement.Rewards)
+                    {
+                        <InternalMoneyText Class="mr-3" Money="@reward"/>
+                    }
+                </div>
+            </footer>
+            break;
+
+        default:
+            throw new ArgumentOutOfRangeException(nameof(Achievement));
+    }
+
+    <section class="description">
+        <MudText Typo="Typo.body2">
+            @Achievement.Description
+        </MudText>
+    </section>
+</section>
+
+@code {
+    private string _icon = EducationIcons.Achievements;
+    private string _background = "black white-text";
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public AchievementModel Achievement { get; set; } = default!;
+
+    protected override void OnParametersSet()
+    {
+        _background = Achievement.Category switch {
+            "EasyTest" => "green default white-text",
+            "HardTest" => "indigo default white-text",
+            "MixedTest" => "red accent-2 white-text",
+            "AllTest" => "light-blue darken-1 white-text",
+            "EventGuesser" => "amber darken-2 white-text",
+            _ => "black white-text"
+            };
+
+        _icon = Achievement switch {
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "Successful"} => 
+            EducationIcons.Tests,
+            
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "Score"} =>
+            EducationIcons.Score,
+            
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "UserExperience"} =>
+            EducationIcons.Experience,
+            
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "Silver"} =>
+            EducationIcons.Silver,
+            
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "CorrectAnswers"} => 
+            Icons.Outlined.QuestionAnswer,
+            
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "WithoutMistakes"} => 
+            Icons.Outlined.AddTask,
+            
+        {Category: "AllTest", Name: "CompleteOnceAllType" } =>
+            Icons.Outlined.DoneAll,
+            
+        {Category: "EventGuesser", Name: "Completed"} =>
+            Icons.Outlined.ManageSearch,
+            
+            _ => EducationIcons.Achievements
+            };
+    }
+
+}

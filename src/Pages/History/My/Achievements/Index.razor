@@ -1,0 +1,79 @@
+@page "/history/my/achievements"
+@layout HistoryLayout
+@attribute [Authorize]
+
+@using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Users.Model
+@using Education.Web.Pages.History.My.Components
+
+<PageTitle>@L["Achievements"]</PageTitle>
+
+<EduPage ShowFooter="@_response.IsLoaded">
+    <ApiViewer Response="@_response">
+        <Success Context="achievements">
+            <EduContainer>
+                <PageHeader Title="@L["Achievements"]" Breadcrumbs="@Breadcrumbs">
+                    <MudText Typo="Typo.h5">
+                        @achievements.Completed / @achievements.Total
+                    </MudText>
+                </PageHeader>
+
+                <MudGrid>
+                    @foreach (var category in achievements.Categories)
+                    {
+                        <MudItem xs="12" md="3" xl="2" Class="mt-6 mt-sm-16">
+                            <div class="sticky-info">
+                                <div class="d-flex align-end">
+                                    <MudText Typo="Typo.h5">
+                                        @category.Title
+                                    </MudText>
+                                    <MudText Typo="Typo.subtitle1" Class="ml-3">
+                                        @category.Completed/@category.Total
+                                    </MudText>
+                                </div>
+
+                                <MudText Typo="Typo.body1">
+                                    @category.Description
+                                </MudText>
+                            </div>
+                        </MudItem>
+
+                        <MudItem xs="12" md="9" xl="10" Class="mt-6 mt-sm-16">
+                            <div class="grid">
+                                @foreach (var achievement in category.Achievements)
+                                {
+                                    <MudCard Elevation="0">
+                                        <MudCardContent Class="pa-3 pa-sm-6">
+                                            <AchievementView Achievement="@achievement"/>
+                                        </MudCardContent>
+                                    </MudCard>
+                                }
+                            </div>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </EduContainer>
+        </Success>
+    </ApiViewer>
+</EduPage>
+
+@code {
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
+        new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
+    };
+
+    private ApiResponse<AchievementsDetailModel> _response = ApiResponse<AchievementsDetailModel>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient HistoryClient { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync() =>
+        _response = await HistoryClient.User.GetAchievementsAsync();
+
+}
