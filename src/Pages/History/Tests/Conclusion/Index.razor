@@ -9,15 +9,40 @@
 <EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Success Context="conclusion">
+            <MudAlert Class="mb-3 mb-sm-6" Severity="@GetColor(conclusion.Status)" Square="true" ContentAlignment="HorizontalAlignment.Center">
+                @L[$"ConclusionStatus:{conclusion.Status}"]
+            </MudAlert>
+
+            <div class="d-flex justify-center align-center">
+                @foreach (var (icon, color, style) in _stars)
+                {
+                    <MudIcon Icon="@icon" Color="@color" Style="@style"/>
+                }
+            </div>
+
+            <EduContainer MaxWidth="EduWidth.W1280">
+                <h2 class="rewards-title">
+                    <span>@L["Rewards"]</span>
+                </h2>
+                <div class="rewards">
+                    @foreach (var reward in conclusion.Rewards)
+                    {
+                        <MudPaper Elevation="0" Class="pa-3">
+                            <InternalMoneyText Money="@reward" IconSize="Size.Large" Typo="Typo.h5"/>
+                        </MudPaper>
+                    }
+                </div>
+            </EduContainer>
+
             @switch (conclusion)
             {
                 case EasyTestConclusionModel test:
-                    <PageTitle>@test.Topic.Title</PageTitle>
+                    <PageTitle>@L["Test:Easy"]: @test.Topic.Title</PageTitle>
                     <EasyTestView Conclusion="@test"/>
                     break;
 
                 case HardTestConclusionModel test:
-                    <PageTitle>@test.Topic.Title</PageTitle>
+                    <PageTitle>@L["Test:Hard"]: @test.Topic.Title</PageTitle>
                     <HardTestView Conclusion="@test"/>
                     break;
 
@@ -36,6 +61,7 @@
 
 @code {
     private ApiResponse<TestConclusionModel> _response = ApiResponse<TestConclusionModel>.Loading();
+    private readonly List<(string Icon, Color Color, string Style)> _stars = new();
 
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
@@ -43,10 +69,64 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
-    protected override async Task OnParametersSetAsync() =>
+    protected override async Task OnParametersSetAsync()
+    {
         _response = await HistoryClient.Test.GetConclusionAsync(Id);
+        if (!_response.IsSuccess)
+        {
+            if (_response.Error.IsTestNotFound())
+                Navigation.NavigateTo(Links.History.TopicTest.Builder());
+
+            return;
+        }
+
+        var progress = Math.Round((double)_response.Data.UserScore.Total / _response.Data.MaxScore.Total * 100);
+        _stars.Clear();
+
+        var first = StarFullness(progress, 0, 33);
+        _stars.Add((StarIcon(first), StarColor(first), "font-size: 5rem"));
+
+        var second = StarFullness(progress, 34, 66);
+        _stars.Add((StarIcon(second), StarColor(second), "font-size: 6rem"));
+
+        var third = StarFullness(progress, 67, 90);
+        _stars.Add((StarIcon(third),StarColor(third), "font-size: 5rem"));
+    }
+
+    private static short StarFullness(double progress, double min, double max)
+    {
+        if (progress <= min)
+            return 0;
+
+        if (progress >= max)
+            return 2;
+
+        return 1;
+    }
+
+    private static string StarIcon(short fullness) =>
+        fullness switch {
+            0 => Icons.Outlined.StarBorder,
+            1 => Icons.Outlined.StarHalf,
+            _ => Icons.Outlined.Star
+            };
+
+    private static Color StarColor(short fullness) =>
+        fullness == 0 ? Color.Default : Color.Warning;
+
+    private static Severity GetColor(ConclusionStatus status) =>
+        status switch {
+            ConclusionStatus.Succeeded => Severity.Success,
+            ConclusionStatus.Failed => Severity.Error,
+            ConclusionStatus.TimeExceeded => Severity.Warning,
+            ConclusionStatus.MistakesExceeded => Severity.Warning,
+            _ => Severity.Info
+            };
 
 }

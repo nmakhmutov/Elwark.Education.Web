@@ -5,6 +5,7 @@
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Tests.Model
 @using Education.Web.Gateways.Models.Inventory
+@using Education.Web.Pages.History.Tests.Components
 @using Education.Web.Pages.History.Tests.Test.Components
 
 <EduPage ShowFooter="@_response.IsLoaded">
@@ -38,11 +39,10 @@
                     </header>
 
                     <section class="test">
+                        <MudText Typo="Typo.h5" Class="mb-3">
+                            @_currentQuestion.Topic.Title
+                        </MudText>
                         <MudPaper Elevation="0" Class="d-flex flex-column align-center pa-3 pa-sm-6">
-                            <MudText Typo="Typo.subtitle1" Class="mb-3">
-                                @_currentQuestion.Topic.Title
-                            </MudText>
-
                             @if (_currentQuestion.Image is not null)
                             {
                                 <img src="@_currentQuestion.Image" alt="@_currentQuestion.Title" class="image mb-6"/>
@@ -107,16 +107,32 @@
                     </section>
 
                     <aside class="inventory">
-                        <MudText Typo="Typo.h5">
-                            Inventory
+                        <MudText Typo="Typo.h5" Class="mb-3">
+                            @L["Inventory"]
                         </MudText>
-
-                        @foreach (var inventory in _inventory)
-                        {
-                            <MudText Typo="Typo.subtitle1">
-                                @inventory.Title - @inventory.Count
-                            </MudText>
-                        }
+                        <InventoryGrid>
+                            @foreach (var item in _inventory.OrderByDescending(x => x.IsApplicable))
+                            {
+                                if (item.IsApplicable)
+                                {
+                                    <InventoryButtonCard
+                                        Id="@item.Id"
+                                        Count="@item.Count"
+                                        Title="@item.Title"
+                                        Overview="@item.Overview"
+                                        ButtonText="@L["Inventory:Use"]"
+                                        OnClick="@OnUseInventory"/>
+                                }
+                                else
+                                {
+                                    <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
+                                        <div class="d-flex justify-center">
+                                            <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
+                                        </div>
+                                    </InventoryInfoCard>
+                                }
+                            }
+                        </InventoryGrid>
                     </aside>
                 </section>
             </EduContainer>
@@ -173,9 +189,9 @@
             return;
         }
 
-        if (_response.Error.IsTestAlreadyCompleted(out _))
+        if (_response.Error.IsTestAlreadyCompleted())
             Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
-        else if (_response.Error.IsTestNotFound(out _))
+        else if (_response.Error.IsTestNotFound())
             Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
     }
 
@@ -255,5 +271,10 @@
 
     private void OnComplete() =>
         Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
+
+    private Task OnUseInventory(uint id)
+    {
+        return Task.Delay(3000);
+    }
 
 }

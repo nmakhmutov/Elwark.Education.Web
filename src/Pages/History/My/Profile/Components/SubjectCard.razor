@@ -15,18 +15,17 @@
             <MudIcon Icon="@EducationIcons.History" Color="Color.Inherit" Size="Size.Large"/>
         </MudAvatar>
     </div>
-    @if (Subscription == SubscriptionType.Free)
-    {
-        <MudSpacer/>
-        <div>
-            <MudText Typo="Typo.body1" Class="mb-3">
-                Need extra features?
-            </MudText>
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" DisableElevation="true" OnClick="@OnBuyClick">
-                @L["Subscription:Upgrade"]
-            </MudButton>
-        </div>
-    }
+    
+    <MudSpacer/>
+    
+    <div>
+        <MudText Typo="Typo.body1" Class="mb-3">
+            Need extra features?
+        </MudText>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" DisableElevation="true" OnClick="@OnBuyClick">
+            @L["Subscription:Upgrade"]
+        </MudButton>
+    </div>
 </section>
 
 @code {
@@ -40,9 +39,6 @@
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter, EditorRequired]
-    public SubscriptionType Subscription { get; set; }
-
     private void OnBuyClick()
     {
         var options = new DialogOptions
@@ -55,7 +51,7 @@
 
         var parameters = new DialogParameters
         {
-            // [nameof(SubscriptionModal.SubjectType)] = Subject
+    // [nameof(SubscriptionModal.SubjectType)] = Subject
         };
 
         Dialog.Show<SubscriptionModal>(null, parameters, options);

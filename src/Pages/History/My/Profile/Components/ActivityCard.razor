@@ -7,7 +7,7 @@
         <CardHeaderContent>
             <div class="d-flex align-center justify-space-between">
                 <MudText Typo="Typo.h5">
-                    @Title
+                    @L["Test:MyActivity"]
                 </MudText>
                 <MudLink Typo="Typo.subtitle1" Href="@Links.History.User.MyActivities">
                     @L["Details"]
@@ -43,9 +43,6 @@
 
     [Parameter]
     public string? Class { get; set; }
-
-    [Parameter, EditorRequired]
-    public string Title { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
     public HistoryUserProfileModel.TestActivity[] Activities { get; set; } = Array.Empty<HistoryUserProfileModel.TestActivity>();

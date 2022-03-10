@@ -5,9 +5,9 @@
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Users.Model
 
-<PageTitle>@L["Inventories"]</PageTitle>
+<PageTitle>@L["Inventory"]</PageTitle>
 
-<EduPage ShowFooter="true">
+<EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
         <Success Context="inventory">
             <EduContainer>
@@ -16,20 +16,31 @@
                         @inventory.Fullness / @inventory.Capacity
                     </MudText>
                 </PageHeader>
+                @* <InventoryGrid> *@
+                @*     @foreach (var item in inventory.Items) *@
+                @*     { *@
+                @*         <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview"> *@
+                @*             <div class="d-flex justify-center"> *@
+                @*                 <HumanReadableText Typo="Typo.h6" Value="@item.Count"/> *@
+                @*             </div> *@
+                @*         </InventoryInfoCard> *@
+                @*     } *@
+                @* </InventoryGrid> *@
             </EduContainer>
         </Success>
     </ApiViewer>
 </EduPage>
 
 @code {
+
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
         new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
     };
-    
+
     private ApiResponse<InventoryModel> _response = ApiResponse<InventoryModel>.Loading();
-    
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 

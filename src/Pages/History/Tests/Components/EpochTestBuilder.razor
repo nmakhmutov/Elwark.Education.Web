@@ -31,7 +31,7 @@
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["Tests"]
     </MudText>
-    <MudRadioGroup @bind-SelectedOption="@_test" Class="test-radio-group mb-3 mb-sm-6">
+    <MudRadioGroup @bind-SelectedOption="@_test" Class="test-radio-group mb-6">
         <MudRadio Option="@EasyTest" Color="Color.Primary" Disabled="@(!AllowedEasyTest)" Class="radio">
             <MudPaper Elevation="0" Class="d-flex align-center pa-3">
                 <MudAvatar Color="Color.Inherit" Class="@(AllowedEasyTest ? "blue lighten-1" : null)">
@@ -69,15 +69,18 @@
         </MudRadio>
     </MudRadioGroup>
 
-    <LoadingButton
-        DisableElevation="true"
-        Color="Color.Primary"
-        Variant="Variant.Filled"
-        Text="@L["Test:Pass"]"
-        LoadingText="@L["Loading"]"
-        IsLoading="@_isLoading"
-        Disabled="@(!_allowedAnyTest)"
-        OnClick="@CreateTestAsync"/>
+    <div class="d-flex justify-center">
+        <LoadingButton
+            DisableElevation="true"
+            Size="Size.Large"
+            Color="Color.Primary"
+            Variant="Variant.Filled"
+            Text="@L["Test:Pass"]"
+            LoadingText="@L["Loading"]"
+            IsLoading="@_isLoading"
+            Disabled="@(!_allowedAnyTest)"
+            OnClick="@CreateTestAsync"/>
+    </div>
 </section>
 
 @code {

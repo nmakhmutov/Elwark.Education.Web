@@ -28,7 +28,7 @@ public sealed record EasyTestConclusionModel(
     EasyTestConclusionModel.Question[] Questions
 ) : TestConclusionModel(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
 {
-    public sealed record Question(string Id, string Title, bool IsAnswered, uint Correct, uint Incorrect);
+    public sealed record Question(string Title, bool IsAnswered, uint Correct, uint Incorrect);
 }
 
 public sealed record HardTestConclusionModel(
@@ -44,7 +44,7 @@ public sealed record HardTestConclusionModel(
     HardTestConclusionModel.Question[] Questions
 ) : TestConclusionModel(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
 {
-    public sealed record Question(string Id, string Title, bool IsAnswered, bool IsCorrect);
+    public sealed record Question(string Title, bool IsAnswered, bool IsCorrect);
 }
 
 public sealed record MixedTestConclusionModel(
@@ -59,5 +59,5 @@ public sealed record MixedTestConclusionModel(
     MixedTestConclusionModel.Question[] Questions
 ) : TestConclusionModel(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
 {
-    public sealed record Question(string Id, string Title, bool IsAnswered, bool IsCorrect, TopicTitleModel Topic);
+    public sealed record Question(string Title, bool IsAnswered, bool IsCorrect, TopicTitleModel Topic);
 }

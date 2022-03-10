@@ -26,8 +26,11 @@
 
     @if (IsLoading)
     {
-        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-        <MudText Typo="Typo.button" Class="ms-2">@LoadingText</MudText>
+        <MudProgressCircular Size="Size.Small" Indeterminate="true"/>
+        @if (!string.IsNullOrEmpty(LoadingText))
+        {
+            <MudText Typo="Typo.button" Class="ms-2">@LoadingText</MudText>
+        }
     }
     else
     {
@@ -44,7 +47,7 @@
     [Parameter, EditorRequired]
     public string Text { get; set; } = string.Empty;
 
-    [Parameter, EditorRequired]
-    public string LoadingText { get; set; } = string.Empty;
+    [Parameter]
+    public string? LoadingText { get; set; }
 
 }

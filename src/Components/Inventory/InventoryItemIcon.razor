@@ -1,0 +1,55 @@
+@using MudBlazor.Utilities
+
+@switch (Id)
+{
+    case 101:
+        <MudIcon Icon="@EducationIcons.Tests" Color="Color.Inherit" Style="@_style" Class="blue-text text-lighten-1"/>
+        break;
+
+    case 102:
+        <MudIcon Icon="@EducationIcons.Tests" Color="Color.Inherit" Style="@_style" Class="blue-text text-darken-2"/>
+        break;
+
+    case 103:
+        <MudIcon Icon="@EducationIcons.Tests" Color="Color.Inherit" Style="@_style" Class="indigo-text text-darken-1"/>
+        break;
+
+    case 104:
+        <MudIcon Icon="@EducationIcons.EventGuesser" Color="Color.Inherit" Style="@_style" Class="deep-orange-text"/>
+        break;
+
+    case 201:
+        <MudIcon Icon="@Icons.Outlined.FavoriteBorder" Color="Color.Inherit" Style="@_style" Class="pink-text text-darken-2"/>
+        break;
+
+    case 202:
+    case 203:
+    case 204:
+        <MudIcon Icon="@Icons.Outlined.Timer" Color="Color.Inherit" Style="@_style" Class="teal-text text-darken-1"/>
+        break;
+
+    default:
+        <MudIcon Icon="@Icons.Outlined.HourglassEmpty" Style="@_style" Color="Color.Primary"/>
+        break;
+}
+
+@code {
+
+    private string? _style;
+
+    [Parameter, EditorRequired]
+    public uint Id { get; set; }
+
+    [Parameter]
+    public int Width { get; set; } = 64;
+
+    [Parameter]
+    public int Height { get; set; } = 64;
+
+    protected override void OnParametersSet() =>
+        _style = StyleBuilder
+            .Default("width", $"{Width}px")
+            .AddStyle("height", $"{Height}px")
+            .Build();
+
+}

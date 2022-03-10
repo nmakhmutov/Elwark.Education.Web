@@ -3,6 +3,7 @@ using Blazored.LocalStorage;
 using Education.Web;
 using Education.Web.Gateways.Customers;
 using Education.Web.Gateways.History;
+using Education.Web.Hubs.Notification;
 using Education.Web.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -32,8 +33,16 @@ builder.Services
 
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway");
 var policy = builder.HostEnvironment.IsDevelopment()
-    ? HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(1, _ => TimeSpan.Zero)
-    : HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
+    ? HttpPolicyExtensions.HandleTransientHttpError()
+        .WaitAndRetryAsync(1, _ => TimeSpan.Zero)
+    : HttpPolicyExtensions.HandleTransientHttpError()
+        .WaitAndRetryAsync(new[]
+        {
+            TimeSpan.Zero,
+            TimeSpan.FromSeconds(1),
+            TimeSpan.FromSeconds(3),
+            TimeSpan.FromSeconds(5)
+        });
 
 builder.Services
     .AddLocalization(options => options.ResourcesPath = "Resources")
@@ -47,14 +56,14 @@ builder.Services
     {
         var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
         var stateProvider = provider.GetRequiredService<AuthenticationStateProvider>();
-        
-        return new NotificationService(gatewayUrl, tokenProvider, stateProvider);
+
+        return new NotificationHub(builder.Configuration.GetValue<Uri>("Urls:Hub"), tokenProvider, stateProvider);
     })
     .AddScoped<AuthorizationMessageHandler>(provider =>
     {
         var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
         var navigation = provider.GetRequiredService<NavigationManager>();
-        
+
         return new AuthorizationMessageHandler(tokenProvider, navigation)
             .ConfigureHandler(new[] { gatewayUrl.ToString() });
     });

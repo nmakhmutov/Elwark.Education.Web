@@ -12,8 +12,8 @@
             </MudCardHeader>
             <MudCardContent>
                 <div class="d-flex flex-row flex-wrap justify-center align-end mw-xs mx-auto pb-6 pb-sm-12">
-                    <MudSelect Label="@L["History:Epoch"]" @bind-Value="@_epoch" Margin="Margin.Dense" Variant="Variant.Text">
-                        <MudSelectItem Value="@EpochType.None">@L["All"]</MudSelectItem>
+                    <MudSelect @bind-Value="@_epoch" Margin="Margin.Dense" Variant="Variant.Text">
+                        <MudSelectItem Value="@EpochType.None">@L["Topics:Any"]</MudSelectItem>
                         @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
                         {
                             <MudSelectItem Value="@period">

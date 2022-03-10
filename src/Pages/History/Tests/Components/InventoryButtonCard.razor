@@ -1,0 +1,46 @@
+<InventoryInfoCard Id="@Id" Title="@Title" Overview="@Overview" Outlined="@Outlined">
+        <div class="d-flex flex-column align-center">
+            <HumanReadableText Typo="Typo.h6" Value="@Count" Class="mb-1"/>
+    
+            <LoadingButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                IsLoading="@_isLoading"
+                Text="@ButtonText"
+                FullWidth="true"
+                OnClick="@OnClickHandler"/>
+        </div>
+</InventoryInfoCard>
+
+@code {
+    private bool _isLoading;
+
+    [Parameter, EditorRequired]
+    public uint Id { get; set; }
+
+    [Parameter, EditorRequired]
+    public uint Count { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Overview { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool Outlined { get; set; }
+
+    [Parameter]
+    public string? ButtonText { get; set; }
+    
+    [Parameter]
+    public EventCallback<uint> OnClick { get; set; }
+
+    private async Task OnClickHandler()
+    {
+        _isLoading = true;
+        await OnClick.InvokeAsync(Id);
+        _isLoading = false;
+    }
+
+}

@@ -3,20 +3,9 @@
 <div class="card">
     <div class="pricing">
         <div class="pricing-icon">
-            @switch (Type)
-            {
-                case SubscriptionType.Basic:
-                    <MudIcon Icon="@EducationIcons.SubscriptionBasic" Size="Size.Large" ViewBox="0 -17 512.00046 512"/>
-                    break;
-
-                case SubscriptionType.Advanced:
-                    <MudIcon Icon="@EducationIcons.SubscriptionAdvanced" Size="Size.Large" ViewBox="0 -17 512.00046 512"/>
-                    break;
-
-                default:
-                    <MudIcon Icon="@EducationIcons.SubscriptionFree" Size="Size.Large" ViewBox="0 -17 512.00046 512"/>
-                    break;
-            }
+            <MudIcon Icon="@EducationIcons.SubscriptionBasic" Size="Size.Large" ViewBox="0 -17 512.00046 512"/>
+            <MudIcon Icon="@EducationIcons.SubscriptionAdvanced" Size="Size.Large" ViewBox="0 -17 512.00046 512"/>
+            <MudIcon Icon="@EducationIcons.SubscriptionFree" Size="Size.Large" ViewBox="0 -17 512.00046 512"/>
         </div>
         <div class="price">
             <h6 class="price-symbol">
@@ -30,7 +19,7 @@
             </h6>
         </div>
         <h6 class="pricing-title">
-            @L[$"Subscription:{Type}"]
+            @* @L[$"Subscription:{Type}"] *@
         </h6>
         <p class="pricing-description">
             @* @string.Join(",", Subjects.Select(x => L[$"Subject:{x}"])) *@
@@ -84,9 +73,6 @@
 
     [Parameter, EditorRequired]
     public string Id { get; set; } = default!;
-
-    [Parameter, EditorRequired]
-    public SubscriptionType Type { get; set; }
 
     [Parameter, EditorRequired]
     public decimal Price { get; set; }

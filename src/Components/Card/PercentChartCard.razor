@@ -10,11 +10,7 @@
         </div>
 
         <div>
-            <MudChart
-                ChartType="ChartType.Donut"
-                Width="100%"
-                ChartOptions="@ChartOptions"
-                InputData="@(new[] { Percentage, 100 - Percentage })"/>
+            <MudChart ChartType="ChartType.Donut" Width="100%" ChartOptions="@ChartOptions" InputData="@_inputData"/>
             <MudText Typo="Typo.h4" Align="Align.Center">
                 @Percentage.ToReadable()%
             </MudText>
@@ -23,6 +19,17 @@
 </MudCard>
 
 @code {
+    private double[] _inputData = new double[2];
+
+    private static readonly ChartOptions ChartOptions = new()
+    {
+        ChartPalette = new[]
+        {
+            Colors.Green.Accent4,
+            Colors.Grey.Lighten1
+        },
+        DisableLegend = true
+    };
 
     [Parameter]
     public string Title { get; set; } = string.Empty;
@@ -33,14 +40,10 @@
     [Parameter]
     public double Percentage { get; set; }
 
-    private static readonly ChartOptions ChartOptions = new()
+    protected override void OnParametersSet()
     {
-        ChartPalette = new[]
-        {
-            Colors.Green.Accent4,
-            Colors.Grey.Lighten2
-        },
-        DisableLegend = true
-    };
+        _inputData[0] = Percentage;
+        _inputData[1] = 100 - Percentage;
+    }
 
 }

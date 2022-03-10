@@ -43,16 +43,20 @@
                         <MudText Typo="Typo.h5" Class="mb-3">
                             @L["Inventory"]
                         </MudText>
-                        @foreach (var item in builder.Inventory)
-                        {
-                            <MudText>
-                                @item.Title @item.Count
-                            </MudText>
-                        }
+                        <InventoryGrid>
+                            @foreach (var item in builder.Inventory)
+                            {
+                                <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
+                                    <div class="d-flex justify-center">
+                                        <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
+                                    </div> 
+                                </InventoryInfoCard>
+                            }
+                        </InventoryGrid>
                     </section>
 
                     <footer class="rule">
-                        <MudText Typo="Typo.h6" Class="mb-3 mt-6">
+                        <MudText Typo="Typo.h6" Class="mb-3">
                             @builder.Rule.Title
                         </MudText>
                         <SimpleMarkdown Text="@builder.Rule.Content"/>

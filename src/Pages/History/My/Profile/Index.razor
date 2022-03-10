@@ -4,7 +4,6 @@
 
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Users.Model
-@using Education.Web.Gateways.Models.User
 @using Education.Web.Pages.History.My.Components
 @using Education.Web.Pages.History.My.Profile.Components
 
@@ -26,19 +25,13 @@
                         </Authorized>
                     </AuthorizeView>
 
-                    <SubjectCard Class="subject" Subscription="@SubscriptionType.Free"/>
+                    <SubjectCard Class="subject"/>
 
-                    <LevelCard
-                        Class="level"
-                        Level="@profile.Level"/>
+                    <LevelCard Class="level" Level="@profile.Level"/>
 
-                    <InventoryCard
-                        Class="inventory"
-                        Inventory="@profile.Inventory"/>
+                    <InventoryCard Class="inventory" Inventory="@profile.Inventory"/>
 
-                    <WalletCard
-                        Class="wallet"
-                        Silver="@profile.Silver"/>
+                    <WalletCard Class="wallet" Silver="@profile.Silver"/>
 
                     <DailyRewardCard
                         Class="daily-reward"
@@ -86,14 +79,9 @@
                             Bonus="@profile.EventGuesser.Bonus"/>
                     </StatisticsCard>
 
-                    <ActivityCard
-                        Class="activity"
-                        Title="@L["Test:MyActivity"]"
-                        Activities="@profile.Activity"/>
+                    <ActivityCard Class="activity" Activities="@profile.Activity"/>
 
-                    <AchievementsCard
-                        Class="achievements"
-                        Achievements="@profile.Achievements"/>
+                    <AchievementsCard Class="achievements" Achievements="@profile.Achievements"/>
                 </div>
             </EduContainer>
         </Success>

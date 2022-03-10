@@ -1,17 +1,16 @@
-using Education.Web.Gateways.Customers.Model;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Education.Web.Services;
+namespace Education.Web.Hubs.Notification;
 
-internal sealed class NotificationService : IAsyncDisposable
+internal sealed class NotificationHub : IAsyncDisposable
 {
     private readonly AuthenticationStateProvider _stateProvider;
     private readonly HubConnection _connection;
     private List<NotificationModel> _notifications;
 
-    public NotificationService(Uri host, IAccessTokenProvider tokenProvider, AuthenticationStateProvider stateProvider)
+    public NotificationHub(Uri host, IAccessTokenProvider tokenProvider, AuthenticationStateProvider stateProvider)
     {
         _stateProvider = stateProvider;
         _notifications = new List<NotificationModel>();

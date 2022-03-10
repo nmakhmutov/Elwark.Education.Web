@@ -16,6 +16,8 @@ else
 }
 
 @code {
+    private string _value = string.Empty;
+    private string? _tooltip;
 
     [Parameter, EditorRequired]
     public TValue Value { get; set; } = default!;
@@ -34,10 +36,6 @@ else
 
     [Parameter]
     public Placement Placement { get; set; } = Placement.Bottom;
-
-    private string _value = string.Empty;
-
-    private string? _tooltip;
 
     protected override void OnParametersSet() =>
         (_value, _tooltip) = Value switch {

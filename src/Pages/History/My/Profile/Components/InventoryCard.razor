@@ -1,4 +1,6 @@
 @using Education.Web.Gateways.History.Users.Model
+@using Education.Web.Gateways.Models.Inventory
+
 <MudCard Class="@($"{Class} d-flex flex-column")" Elevation="0">
     <MudCardHeader Class="pa-3 pa-sm-6">
         <CardHeaderContent>
@@ -13,14 +15,33 @@
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent Class="flex-grow-1 pa-0 px-3 px-sm-6 mb-3 mb-sm-6">
-        <section class="grid">
+        <div class="grid">
             @foreach (var item in Inventory.Items)
             {
-                <div>
-                    @item.Id: @item.Count
+                <div class="card rounded-lg pa-3">
+                    <div class="d-flex justify-space-between align-top mb-1">
+                        <InventoryItemIcon Id="@item.Id" Width="48" Height="48"/>
+                        <div>
+                            <MudTooltip Text="@item.Overview" Arrow="true" Placement="Placement.Left">
+                                <ChildContent>
+                                    <MudIconButton Class="ma-0" Size="Size.Small" Icon="@Icons.Material.Outlined.Info"/>
+                                </ChildContent>
+                                <TooltipContent>
+                                    <div class="d-flex flex-column align-start">
+                                        <MudText Typo="Typo.subtitle1" Color="Color.Info" Class="mb-1">@item.Title</MudText>
+                                        <MudText Typo="Typo.body2">@item.Overview</MudText>
+                                    </div>
+                                </TooltipContent>
+                            </MudTooltip>
+                        </div>
+                    </div>
+                    <MudText Typo="Typo.subtitle1" Class="title">
+                        @item.Title
+                    </MudText>
+                    <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
                 </div>
             }
-        </section>
+        </div>
     </MudCardContent>
 
     <MudDivider/>

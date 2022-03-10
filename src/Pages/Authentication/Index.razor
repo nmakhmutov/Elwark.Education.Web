@@ -1,16 +1,19 @@
 ﻿@page "/authentication/{action}"
+@layout MainLayout
 
-<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnSuccessCallback">
-    <LoggingIn>
-        <PageSpinner/>
-    </LoggingIn>
-    <CompletingLoggingIn>
-        <PageSpinner/>
-    </CompletingLoggingIn>
-    <LogOut>
-        <PageSpinner/>
-    </LogOut>
-</RemoteAuthenticatorView>
+<EduPage ShowFooter="true">
+    <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnSuccessCallback">
+        <LoggingIn>
+            <PageSpinner/>
+        </LoggingIn>
+        <CompletingLoggingIn>
+            <PageSpinner/>
+        </CompletingLoggingIn>
+        <LogOut>
+            <PageSpinner/>
+        </LogOut>
+    </RemoteAuthenticatorView>
+</EduPage>
 
 @code{
 

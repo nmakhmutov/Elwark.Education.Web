@@ -1,3 +1,5 @@
+@using Education.Web.Hubs
+@using Education.Web.Hubs.Notification
 @implements IDisposable
 
 <MudBadge Color="Color.Secondary" Dot="true" Overlap="true" Visible="Notification.HasNotifications">
@@ -58,7 +60,7 @@
 @code {
 
     [Inject]
-    private NotificationService Notification { get; set; } = default!;
+    private NotificationHub Notification { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

@@ -18,13 +18,9 @@
         else
         {
             <div class="d-flex flex-row align-center justify-center pa-3 pa-sm-6">
-                @for (var i = 0; i < Reward.Rewards.Length; i++)
+                @foreach (var reward in Reward.Rewards)
                 {
-                    <InternalMoneyText
-                        Class="@(i + 1 == Reward.Rewards.Length ? null : "mr-3")"
-                        Typo="Typo.h4"
-                        IconSize="Size.Medium"
-                        Money="@Reward.Rewards[i]"/>
+                    <InternalMoneyText Typo="Typo.h4" IconSize="Size.Medium" Money="@reward" Class="mx-3" Horizontal="true"/>
                 }
             </div>
             

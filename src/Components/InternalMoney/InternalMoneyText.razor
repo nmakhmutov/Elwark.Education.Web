@@ -1,0 +1,59 @@
+@using MudBlazor.Utilities
+
+<div class="@_blockClass">
+    <MudIcon Size="@IconSize" Class="@_iconClass" Icon="@_icon"/>
+    <MudText Typo="@Typo">
+        @_amount
+    </MudText>
+</div>
+
+@code {
+    private int _amount;
+    private string? _icon;
+    private string? _blockClass;
+    private string? _iconClass;
+
+    [Parameter, EditorRequired]
+    public IInternalMoney Money { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body1;
+
+    [Parameter]
+    public Size IconSize { get; set; } = Size.Small;
+
+    [Parameter]
+    public bool Horizontal { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        var blockClass = CssBuilder.Default("d-flex align-center");
+        blockClass.AddClass(Horizontal ? "flex-row" : "flex-column");
+        blockClass.AddClass(Class);
+        _blockClass = blockClass.Build();
+
+        var iconClass = CssBuilder.Empty();
+        iconClass.AddClass(Horizontal ? "mr-1" : "mb-1");
+
+        switch (Money)
+        {
+            case Experience experience:
+                iconClass.AddClass("experience");
+                _icon = EducationIcons.Experience;
+                _amount = experience.Amount;
+                break;
+
+            case Silver silver:
+                iconClass.AddClass("silver");
+                _icon = EducationIcons.Silver;
+                _amount = silver.Amount;
+                break;
+        }
+
+        _iconClass = iconClass.Build();
+    }
+
+}
