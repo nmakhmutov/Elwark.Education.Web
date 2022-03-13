@@ -1,87 +1,77 @@
-.image {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+.grid {
+    display: grid;
+    grid-template-areas: 
+        "image"
+        "content"
+        "characteristics";
 }
 
-.portrait {
-    max-width: 600px;
-    min-height: 400px;
+.image {
+    grid-area: image;
+}
+
+.image ::deep img {
     max-height: 70vh;
+    margin: 0 auto;
+    display: block;
 }
 
 .content {
-    display: grid;
-    grid-auto-rows: min-content;
-    grid-gap: 12px;
-    padding: 12px;
+    grid-area: content;
 }
 
-.lifetime {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, auto));
-    grid-gap: 12px;
+.content .title {
+    font-size: var(--mud-typography-h4-size);
+    font-family: var(--mud-typography-h4-family);
+    font-weight: var(--mud-typography-h4-weight);
+    line-height: var(--mud-typography-h4-lineheight);
+    letter-spacing: var(--mud-typography-h4-letterspacing);
+    text-transform: var(--mud-typography-h4-text-transform);
 }
 
 .characteristics {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    grid-auto-rows: max-content;
-    grid-gap: 12px;
-    padding: 12px;
+    grid-area: characteristics;
     font-size: var(--mud-typography-subtitle1-size);
 }
 
-.characteristic ::deep .title {
+.characteristics ::deep .title {
     color: var(--mud-palette-grey-dark);
 }
 
-.characteristic ::deep p {
+.characteristics ::deep p {
     font-weight: 500;
     font-size: inherit;
 }
 
-@media (min-width: 600px) {
-    .content {
-        padding: 24px;
-        grid-gap: 24px;
-    }
-
-    .lifetime {
-        grid-gap: 24px;
-    }
-
-    .characteristics {
-        grid-gap: 24px;
-        padding: 24px;
-    }
-}
-
 @media (min-width: 960px) {
     .grid {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        grid-template-rows: 1fr auto;
+        grid-template-columns: minmax(240px, 480px) 1fr;
+        grid-template-areas: 
+            "image content"
+            "characteristics characteristics";
     }
 
-    .characteristics {
-        grid-column: 1/-1;
-        padding: 24px 24px 0;
+    .content .title {
+        font-size: var(--mud-typography-h2-size);
+        font-family: var(--mud-typography-h2-family);
+        font-weight: var(--mud-typography-h2-weight);
+        line-height: var(--mud-typography-h2-lineheight);
+        letter-spacing: var(--mud-typography-h2-letterspacing);
+        text-transform: var(--mud-typography-h2-text-transform);
+    }
+
+    .image ::deep img {
+        max-height: none;
+        display: inline;
     }
 }
 
 @media (min-width: 1280px) {
     .grid {
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto 1fr;
-    }
-
-    .image {
-        grid-row: 1/-1;
-    }
-
-    .characteristics {
-        grid-column: span 1;
-        padding: 0 24px;
+        grid-template-columns: minmax(300px, 600px) 1fr;
+        grid-template-areas: 
+            "image content"
+            "image characteristics"
+            "image .";
     }
 }

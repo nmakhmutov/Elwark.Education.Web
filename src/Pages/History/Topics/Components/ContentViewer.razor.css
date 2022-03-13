@@ -1,14 +1,50 @@
+.grid {
+    display: grid;
+    grid-gap: 12px;
+    grid-template-areas: 
+        "index"
+        "toolbar"
+        "chapters"
+        "test"
+        "rating";
+}
+
+.chapters {
+    grid-area: chapters;
+}
+
+.toolbar {
+    grid-area: toolbar;
+}
+
+.index {
+    grid-area: index;
+}
+
+.test {
+    grid-area: test;
+}
+
+.rating {
+    grid-area: rating;
+}
+
 .chapter {
     padding: 12px;
+    margin-bottom: 12px;
+}
+
+.chapter:last-child {
+    margin-bottom: 0;
 }
 
 .chapter .title {
     text-align: center;
     font-size: var(--mud-typography-h5-size);
-    font-family: var(--mud-typography-h4-family);
-    font-weight: var(--mud-typography-h4-weight);
-    line-height: var(--mud-typography-h4-lineheight);
-    letter-spacing: var(--mud-typography-h4-letterspacing);
+    font-family: var(--mud-typography-h5-family);
+    font-weight: var(--mud-typography-h5-weight);
+    line-height: var(--mud-typography-h5-lineheight);
+    letter-spacing: var(--mud-typography-h5-letterspacing);
     margin-bottom: 12px;
 }
 
@@ -35,23 +71,13 @@
     max-width: 200px;
 }
 
-.toolbar {
-    display: grid;
-    grid-gap: 12px;
-    padding: 12px;
-}
-
 @media (min-width: 600px) {
-    .toolbar {
-        grid-template-columns: 1fr auto auto;
-        padding: 24px;
+    .grid {
+        grid-gap: 24px;
     }
 
     .chapter {
         padding: 24px;
-    }
-
-    .chapter .title {
         margin-bottom: 24px;
     }
 
@@ -66,17 +92,24 @@
 }
 
 @media (min-width: 960px) {
-    .chapter .title {
-        font-size: var(--mud-typography-h4-size);
-    }
-
-    .toolbar {
-        grid-template-columns: 1fr auto auto auto;
+    .grid {
+        grid-template-areas: 
+            "index index"
+            "toolbar toolbar"
+            "chapters chapters"
+            "test rating"
+            "test .";
     }
 }
 
-@media (min-width: 1600px) {
-    .d-lg-plus-block {
-        display: block !important;
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: 3fr 1fr;
+        grid-template-areas: 
+            "chapters toolbar"
+            "chapters index"
+            "chapters test"
+            "chapters rating"
+            "chapters .";
     }
 }

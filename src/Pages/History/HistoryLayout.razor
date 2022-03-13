@@ -67,6 +67,9 @@
             <MudNavLink Match="NavLinkMatch.Prefix" Href="@Links.History.User.MyProfile" Icon="@EducationIcons.MyProfile">
                 @L["Profile"]
             </MudNavLink>
+            <MudNavLink Match="NavLinkMatch.Prefix" Href="@Links.History.User.MyInventories" Icon="@EducationIcons.MyInventory">
+                @L["Inventory"]
+            </MudNavLink>
             <MudNavLink Match="NavLinkMatch.Prefix" Href="@Links.History.User.MyFavorites" Icon="@EducationIcons.MyTopics">
                 @L["Favorites"]
             </MudNavLink>
@@ -112,4 +115,5 @@
         Navigation.NavigateTo(Links.History.Content.Topic(entry.Id));
         return _searchAutocomplete.Clear();
     }
+
 }

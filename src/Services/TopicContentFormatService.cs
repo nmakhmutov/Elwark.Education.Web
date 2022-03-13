@@ -21,9 +21,7 @@ public sealed class TopicContentFormatService
         _isInitialized = false;
         TextAlign = Align.Left;
         FontSize = MinTextSize;
-        Width = Width.False;
         TextStyles = string.Empty;
-        WidthStyles = string.Empty;
         UpdateStyles();
     }
 
@@ -31,11 +29,7 @@ public sealed class TopicContentFormatService
 
     public double FontSize { get; private set; }
 
-    public Width Width { get; private set; }
-
     public string TextStyles { get; private set; }
-
-    public string WidthStyles { get; private set; }
 
     public event Action OnChange = () => { };
 
@@ -51,7 +45,6 @@ public sealed class TopicContentFormatService
             return;
 
         TextAlign = result.TextAlign;
-        Width = result.Width;
         FontSize = result.FontSize switch
         {
             < MinTextSize => MinTextSize,
@@ -109,28 +102,9 @@ public sealed class TopicContentFormatService
         return Update();
     }
 
-    public Task SetWidthMdAsync()
-    {
-        Width = Width.md;
-        return Update();
-    }
-
-    public Task SetWidthLgAsync()
-    {
-        Width = Width.lg;
-        return Update();
-    }
-
-    public Task SetWidthFalseAsync()
-    {
-        Width = Width.False;
-        return Update();
-    }
-
     private ValueTask SaveStateAsync() =>
         _storage.SetItemAsync(StorageKey, new State
         {
-            Width = Width,
             FontSize = Math.Round(FontSize, 2),
             TextAlign = TextAlign
         });
@@ -140,17 +114,6 @@ public sealed class TopicContentFormatService
         TextStyles = StyleBuilder.Empty()
             .AddStyle("font-size", FontSize.ToString("0.0", CultureInfo.InvariantCulture) + "rem")
             .AddStyle("text-align", TextAlign.ToString().ToLowerInvariant())
-            .Build();
-
-        WidthStyles = StyleBuilder.Empty()
-            .AddStyle("margin-left", "auto")
-            .AddStyle("margin-right", "auto")
-            .AddStyle("max-width", Width switch
-            {
-                Width.md => "960px",
-                Width.lg => "1280px",
-                _ => "100%"
-            })
             .Build();
     }
 
@@ -168,8 +131,5 @@ public sealed class TopicContentFormatService
 
         [JsonPropertyName("fs")]
         public double FontSize { get; init;  }
-
-        [JsonPropertyName("w")]
-        public Width Width { get; init; }
     }
 }

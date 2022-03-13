@@ -68,7 +68,7 @@ internal sealed class ThemeService
     public bool IsDarkMode { get; private set; }
 
     public string Icon =>
-        IsDarkMode ? Icons.Outlined.DarkMode : Icons.Outlined.LightMode;
+        IsDarkMode ? Icons.Outlined.LightMode : Icons.Outlined.DarkMode;
 
     public event Action OnChange = () => { };
 

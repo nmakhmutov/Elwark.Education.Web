@@ -1,48 +1,33 @@
 @using Education.Web.Gateways.Models.Content
+@using Education.Web.Gateways.History
 @implements IDisposable
 
-<div class="toolbar">
-    <div class="toolbar-contents">
-        @if (Chapters.Length > 2)
+<div class="grid">
+    <section class="chapters">
+        @foreach (var (id, title, subtitle, content) in Chapters)
         {
-            <MudMenu Label="@L["Topic:Contents"]" Variant="Variant.Outlined" EndIcon="@Icons.Outlined.KeyboardArrowDown">
-                @foreach (var chapter in Chapters)
+            <article class="chapter mud-paper">
+                <h2 class="title" id="@ChapterId(id)">
+                    @title
+                </h2>
+
+                @if (!string.IsNullOrEmpty(subtitle))
                 {
-                    <MudMenuItem OnClick="@(() => Scroll.ScrollToFragmentAsync(ChapterId(chapter.Id), ScrollBehavior.Smooth))">
-                        @chapter.Title
-                    </MudMenuItem>
+                    <SimpleMarkdown Text="@subtitle" Class="subtitle"/>
                 }
-            </MudMenu>
+
+                <MudDivider Class="divider"/>
+
+                <TopicMarkdown Text="@content" Style="@FormatService.TextStyles"/>
+            </article>
         }
-    </div>
-
-    <div class="toolbar-width d-none d-lg-block">
-        <div class="d-flex flex-column align-sm-center">
-            <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
-                <MudIconButton
-                    Disabled="@(FormatService.Width == Width.False)"
-                    Icon="@Icons.Material.Filled.CropFree"
-                    OnClick="@FormatService.SetWidthFalseAsync"/>
-                <div class="d-none d-lg-plus-block">
-                    <MudIconButton
-                        Disabled="@(FormatService.Width == Width.lg)"
-                        Icon="@Icons.Material.Filled.CropDin"
-                        OnClick="@FormatService.SetWidthLgAsync"/>
-                </div>
-                <MudIconButton
-                    Disabled="@(FormatService.Width == Width.md)"
-                    Icon="@Icons.Material.Filled.CropPortrait"
-                    OnClick="@FormatService.SetWidthMdAsync"/>
-            </MudButtonGroup>
-            <MudText Typo="Typo.body2" Class="subtitle">
-                @L["TopicFormatting:ContentWidth"]
+    </section>
+    <section class="toolbar mud-paper pa-3 pa-sm-6">
+        <div class="d-flex justify-space-between align-center mb-3 mb-sm-6">
+            <MudText Typo="Typo.body2" Class="mr-3">
+                @L["TopicFormatting:TextAlignment"]
             </MudText>
-        </div>
-    </div>
-
-    <div class="toolbar-align">
-        <div class="d-flex flex-column align-sm-center">
-            <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+            <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined">
                 <MudIconButton
                     Disabled="@(FormatService.TextAlign == Align.Left)"
                     Icon="@Icons.Material.Filled.FormatAlignLeft"
@@ -60,15 +45,13 @@
                     Icon="@Icons.Material.Filled.FormatAlignJustify"
                     OnClick="@FormatService.AlignTextJustifyAsync"/>
             </MudButtonGroup>
-            <MudText Typo="Typo.body2" Class="subtitle">
-                @L["TopicFormatting:TextAlignment"]
-            </MudText>
         </div>
-    </div>
 
-    <div class="toolbar-font-size">
-        <div class="d-flex flex-column align-sm-center">
-            <MudButtonGroup Size="Size.Medium" Variant="Variant.Outlined">
+        <div class="d-flex justify-space-between align-center">
+            <MudText Typo="Typo.body2" Class="mr-3">
+                @L["TopicFormatting:FontSize"]
+            </MudText>
+            <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined">
                 <MudIconButton
                     Disabled="@(!FormatService.CanDecreaseFontSize())"
                     Icon="@Icons.Material.Filled.Remove"
@@ -78,32 +61,81 @@
                     Icon="@Icons.Material.Filled.Add"
                     OnClick="@FormatService.IncreaseFontSizeAsync"/>
             </MudButtonGroup>
-            <MudText Typo="Typo.body2" Class="subtitle">
-                @L["TopicFormatting:FontSize"]
-            </MudText>
         </div>
-    </div>
-</div>
+    </section>
 
-@foreach (var (id, title, subtitle, content) in Chapters)
-{
-    <section class="chapter" style="@FormatService.WidthStyles">
-        <h2 class="title" id="@ChapterId(id)">
-            @title
-        </h2>
+    <section class="index mud-paper pa-3">
+        <MudText Typo="Typo.subtitle2" Class="pt-sm-3 px-sm-3">
+            @L["Topic:Contents"]
+        </MudText>
+        <MudList Clickable="true" Dense="true">
+            @foreach (var (id, title, _, _) in Chapters)
+            {
+                <MudListItem Class="px-3" Text="@title" OnClick="@(() => Scroll.ScrollToFragmentAsync(ChapterId(id), ScrollBehavior.Smooth))"/>
+            }
+        </MudList>
+    </section>
 
-        @if (!string.IsNullOrEmpty(subtitle))
+    <section class="test mud-paper pa-3 pa-sm-6">
+        @if (IsTestAvailable && UserActivity.PassedTests > 0)
         {
-            <SimpleMarkdown Text="@subtitle" Class="subtitle"/>
+            <MudLink Typo="Typo.subtitle2" Href="@Links.History.User.MyTopic(TopicId)">
+                @L["Test:MyProgress"]
+            </MudLink>
+        }
+        else
+        {
+            <MudText Typo="Typo.subtitle2">
+                @L["Test:MyProgress"]
+            </MudText>
         }
 
-        <MudDivider Class="divider"/>
+        <TopicProgressView PassedTests="@UserActivity.PassedTests" TimeSpent="@UserActivity.TimeSpent" Class="pt-3 pb-3 pb-sm-6"/>
 
-        <TopicMarkdown Text="@content" Style="@FormatService.TextStyles"/>
+        @if (IsTestAvailable)
+        {
+            <MudButton FullWidth="true" Variant="Variant.Filled" Color="Color.Primary" Link="@Links.History.TopicTest.Builder(TopicId)">
+                @L["Test:Pass"]
+            </MudButton>
+        }
     </section>
-}
+
+    <section class="rating mud-paper pa-3">
+        <MudToolBar Dense="true" DisableGutters="true" Class="d-flex justify-center mb-3">
+            <MudTooltip Text="@L["Topic:ILikeThis"]">
+                <MudIconButton
+                    Icon="@Icons.Filled.ThumbUp"
+                    OnClick="@OnLike"
+                    Color="@(_isLiked == true ? Color.Primary : Color.Default)"/>
+            </MudTooltip>
+
+            <MudTooltip Text="@L["Topic:IDislikeThis"]">
+                <MudIconButton
+                    Icon="@Icons.Filled.ThumbDown"
+                    OnClick="@OnDislike"
+                    Color="@(_isLiked == false ? Color.Primary : Color.Default)"/>
+            </MudTooltip>
+
+            <MudTooltip Text="@(_isFavorite ? L["Favorite:Remove"] : L["Favorite:Add"])">
+                <MudToggleIconButton
+                    Toggled="@_isFavorite"
+                    ToggledChanged="@OnFavoriteChanged"
+                    Icon="@Icons.Filled.FavoriteBorder"
+                    Color="Color.Default"
+                    Size="Size.Medium"
+                    ToggledIcon="@Icons.Filled.Favorite"
+                    ToggledColor="Color.Error"
+                    ToggledSize="Size.Medium"/>
+            </MudTooltip>
+        </MudToolBar>
+
+        <RatingStars Rating="@Rating" ShowDetails="true" Class="d-flex align-center justify-center"/>
+    </section>
+</div>
 
 @code {
+    private bool? _isLiked;
+    private bool _isFavorite;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -115,16 +147,64 @@
     private TopicContentFormatService FormatService { get; set; } = default!;
 
     [Parameter, EditorRequired]
+    public string TopicId { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
     public ChapterModel[] Chapters { get; set; } = Array.Empty<ChapterModel>();
+
+    [Parameter, EditorRequired]
+    public bool IsTestAvailable { get; set; }
+
+    [Parameter, EditorRequired]
+    public UserActivityOverviewModel UserActivity { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ContentRatingModel Rating { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
 
     protected override async Task OnInitializedAsync()
     {
+        _isFavorite = UserActivity.IsFavorite;
+        _isLiked = UserActivity.IsLiked;
         await FormatService.InitAsync();
         FormatService.OnChange += StateHasChanged;
     }
 
-    private static string ChapterId(uint id) => $"chapter-{id}";
+    private async Task OnLike()
+    {
+        if (_isLiked == true)
+            return;
 
-    public void Dispose() => FormatService.OnChange -= StateHasChanged;
+        if (await OnLikeClick())
+            _isLiked = true;
+    }
+
+    private async Task OnDislike()
+    {
+        if (_isLiked == false)
+            return;
+
+        if (await OnDislikeClick())
+            _isLiked = false;
+    }
+
+    private async Task OnFavoriteChanged(bool toggled)
+    {
+        _isFavorite = await OnFavoriteClick.Invoke(TopicId);
+    }
+
+    private static string ChapterId(uint id) =>
+        $"chapter-{id}";
+
+    public void Dispose() =>
+        FormatService.OnChange -= StateHasChanged;
 
 }

@@ -2,24 +2,25 @@
 @using Education.Web.Gateways.Models.Content
 @using Education.Web.Pages.History.Components
 
-<EduContainer MaxWidth="EduWidth.W1920" Class="@Class">
+<EduContainer MaxWidth="EduWidth.W1920" Class="pa-0">
     <div class="grid">
         <div class="image">
-            <img src="@Image" class="portrait" alt="@Title" loading="lazy"/>
+            <MudImage Src="@Image" Fluid="true" Alt="@Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
         </div>
+
         <div class="content">
-            <MudText Typo="Typo.h2">
+            <h1 class="title pa-3 px-sm-6">
                 @Title
-            </MudText>
-            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
-            <div class="lifetime">
+            </h1>
+            <Breadcrumbs Items="@Breadcrumbs" Class="pa-3 px-sm-6"/>
+            <div class="d-flex flex-wrap">
                 @if (Born is not null)
                 {
-                    <div>
+                    <div class="pa-3 px-sm-6">
                         <MudText Typo="Typo.caption" Color="Color.Surface">
                             @L["History:Born"]
                         </MudText>
-                        <HistoryDate Date="@Born" Typo="Typo.h5" Color="Color.Info"/>
+                        <HistoryDate Date="@Born" Typo="Typo.h5"/>
                         <MudText Typo="Typo.body1">
                             @Born.Place
                         </MudText>
@@ -27,11 +28,11 @@
                 }
                 @if (Died is not null)
                 {
-                    <div>
+                    <div class="pa-3 px-sm-6">
                         <MudText Typo="Typo.caption" Color="Color.Surface">
                             @L["History:Died"]
                         </MudText>
-                        <HistoryDate Date="@Died" Typo="Typo.h5" Color="Color.Info"/>
+                        <HistoryDate Date="@Died" Typo="Typo.h5"/>
                         <MudText Typo="Typo.body1">
                             @Died.Place
                         </MudText>
@@ -39,14 +40,15 @@
                 }
             </div>
 
-            <MudText Typo="Typo.subtitle1" Class="mw-sm">
+            <MudText Typo="Typo.subtitle1" Class="mw-sm pa-3 px-sm-6">
                 @Description
             </MudText>
         </div>
-        <div class="characteristics">
+
+        <div class="characteristics d-flex flex-wrap">
             @foreach (var (title, text) in Characteristics)
             {
-                <div class="characteristic">
+                <div class="pa-3 px-sm-6">
                     <MudText Class="title" Typo="Typo.subtitle1">
                         @title
                     </MudText>
@@ -82,8 +84,5 @@
 
     [Parameter, EditorRequired]
     public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
-
-    [Parameter]
-    public string? Class { get; set; }
 
 }
