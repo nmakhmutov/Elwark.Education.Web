@@ -161,9 +161,12 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+    
     [Parameter]
     public string Id { get; set; } = string.Empty;
-
+    
     private double Progress =>
         (double)_test.CompletedQuestions / _test.TotalQuestions * 100;
 
@@ -173,7 +176,6 @@
     protected override async Task OnParametersSetAsync()
     {
         _response = await HistoryClient.Test.GetAsync(Id);
-
         if (_response.IsSuccess)
         {
             _test = _response.Data.Overview;
@@ -183,13 +185,10 @@
                 EasyTestOverviewModel => L["Test:Easy"],
                 HardTestOverviewModel => L["Test:Hard"],
                 MixedTestOverviewModel => L["Test:Mixed"],
-                _ => throw new ArgumentOutOfRangeException(nameof(_test), _test, null)
+                _ => string.Empty
                 };
-
-            return;
         }
-
-        if (_response.Error.IsTestAlreadyCompleted())
+        else if (_response.Error.IsTestAlreadyCompleted())
             Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
         else if (_response.Error.IsTestNotFound())
             Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
@@ -213,7 +212,7 @@
         if (result.IsSuccess)
             UpdateState(result.Data);
         else
-            _response = ApiResponse<TestModel>.Fail(result.Error);
+            Snackbar.Add(result.Error.Detail, Severity.Error);
 
         _isAnswering = false;
     }
@@ -227,7 +226,7 @@
         if (result.IsSuccess)
             UpdateState(result.Data);
         else
-            _response = ApiResponse<TestModel>.Fail(result.Error);
+            Snackbar.Add(result.Error.Detail, Severity.Error);
 
         _isAnswering = false;
     }
@@ -241,7 +240,7 @@
         if (result.IsSuccess)
             UpdateState(result.Data);
         else
-            _response = ApiResponse<TestModel>.Fail(result.Error);
+            Snackbar.Add(result.Error.Detail, Severity.Error);
 
         _isAnswering = false;
     }
@@ -272,9 +271,25 @@
     private void OnComplete() =>
         Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
 
-    private Task OnUseInventory(uint id)
+    private async Task OnUseInventory(uint id)
     {
-        return Task.Delay(3000);
+        var test = await HistoryClient.Test.ApplyInventoryAsync(_test.Id, id);
+        if (test.IsSuccess)
+        {
+            if(test.Data.Question is null)
+            {
+                Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
+                return;
+            }
+            
+            _test = test.Data.Overview;
+            _currentQuestion = test.Data.Question;
+            _inventory = test.Data.Inventory;
+        }
+        else
+        {
+            Snackbar.Add(test.Error.Detail, Severity.Error);
+        }
     }
 
 }

@@ -83,13 +83,13 @@
 
     public void Dispose() => ThemeService.OnChange -= Update;
 
-    private void Update()
+    private async Task Update()
     {
         if (_options is null)
             return;
 
         _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
-        _chart.SetRerenderChart();
+        await _chart.Render();
         StateHasChanged();
     }
 

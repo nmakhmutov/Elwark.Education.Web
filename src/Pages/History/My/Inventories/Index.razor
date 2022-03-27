@@ -13,7 +13,7 @@
             <EduContainer>
                 <PageHeader Title="@L["Inventory"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs">
                     <MudText Typo="Typo.h5">
-                        @inventory.Fullness / @inventory.Capacity
+                        @inventory.Inventory.Fullness / @inventory.Inventory.Capacity
                     </MudText>
                 </PageHeader>
                 @* <InventoryGrid> *@
@@ -39,11 +39,11 @@
         new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
     };
 
-    private ApiResponse<InventoryModel> _response = ApiResponse<InventoryModel>.Loading();
+    private ApiResponse<InventoryCompositionModel> _response = ApiResponse<InventoryCompositionModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-
+    
     [Inject]
     private IHistoryClient Client { get; set; } = default!;
 

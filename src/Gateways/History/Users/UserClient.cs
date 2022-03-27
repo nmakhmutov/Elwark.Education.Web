@@ -21,8 +21,8 @@ internal sealed class UserClient : GatewayClient
     public Task<ApiResponse<AchievementsDetailModel>> GetAchievementsAsync() =>
         ExecuteAsync<AchievementsDetailModel>(ct => _client.GetAsync("history/users/me/achievements", ct));
     
-    public Task<ApiResponse<InventoryModel>> GetInventoryAsync() =>
-        ExecuteAsync<InventoryModel>(ct => _client.GetAsync("history/users/me/inventories", ct));
+    public Task<ApiResponse<InventoryCompositionModel>> GetInventoryAsync() =>
+        ExecuteAsync<InventoryCompositionModel>(ct => _client.GetAsync("history/users/me/inventories", ct));
 
     public Task<ApiResponse<Unit>> CollectDailyReward() =>
         ExecuteAsync<Unit>(ct => _client.PostAsync("history/users/me/rewards/daily", EmptyContent, ct));

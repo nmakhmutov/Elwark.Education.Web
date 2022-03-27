@@ -70,17 +70,17 @@ internal sealed class ThemeService
     public string Icon =>
         IsDarkMode ? Icons.Outlined.LightMode : Icons.Outlined.DarkMode;
 
-    public event Action OnChange = () => { };
+    public event Func<Task> OnChange = () => Task.CompletedTask;
 
     public async Task ToggleAsync()
     {
         await _storage.SetItemAsync(StorageKey, IsDarkMode = !IsDarkMode);
-        OnChange();
+        await OnChange();
     }
 
     public async Task InitAsync()
     {
         IsDarkMode = await _storage.GetItemAsync<bool>(StorageKey);
-        OnChange();
+        await OnChange();
     }
 }

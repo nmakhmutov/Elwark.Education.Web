@@ -104,7 +104,7 @@
     public void Dispose() =>
         ThemeService.OnChange -= BackgroundChanger;
 
-    private void BackgroundChanger()
+    private Task BackgroundChanger()
     {
         var overlay = $"--mud-palette-overlay-{(ThemeService.IsDarkMode ? "dark" : "light")}";
 
@@ -116,6 +116,8 @@
             .Build();
 
         StateHasChanged();
+
+        return Task.CompletedTask;
     }
 
 }

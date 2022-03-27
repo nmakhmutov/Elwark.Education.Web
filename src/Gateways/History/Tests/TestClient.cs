@@ -25,6 +25,9 @@ internal sealed class TestClient : GatewayClient
     public Task<ApiResponse<TestAnswerModel>> CheckAsync(string testId, string questionId, ShortAnswerToQuestionModel answer) =>
         ExecuteAsync<TestAnswerModel>(ct => _client.PostAsync($"history/tests/{testId}/questions/{questionId}", CreateJson(answer), ct));
 
+    public Task<ApiResponse<InventoryAppliedModel>> ApplyInventoryAsync(string testId, uint inventoryId)=>
+        ExecuteAsync<InventoryAppliedModel>(ct => _client.PostAsync($"history/tests/{testId}/inventories/{inventoryId}", EmptyContent, ct));
+    
     public Task<ApiResponse<TestConclusionModel>> GetConclusionAsync(string id) =>
         ExecuteAsync<TestConclusionModel>(ct => _client.GetAsync($"history/tests/{id}/conclusion", ct));
 
