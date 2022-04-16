@@ -79,13 +79,13 @@
     public bool IsLoading { get; set; }
 
     [Parameter, EditorRequired]
-    public ShortAnswerToQuestionModel UserAnswer { get; set; } = default!;
+    public ShortAnswerModel UserAnswer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public ShortAnswerResultModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback<ShortAnswerToQuestionModel> OnAnswer { get; set; }
+    public EventCallback<ShortAnswerModel> OnAnswer { get; set; }
 
     [Parameter, EditorRequired]
     public EventCallback OnNext { get; set; }
@@ -99,7 +99,7 @@
     private Task OnValidSubmit() =>
         OnAnswer.InvokeAsync(UserAnswer);
 
-    public sealed class Validator : AbstractValidator<ShortAnswerToQuestionModel>
+    public sealed class Validator : AbstractValidator<ShortAnswerModel>
     {
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.ShortAnswer)

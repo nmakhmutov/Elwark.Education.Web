@@ -1,4 +1,4 @@
-@page "/history/event-guessers/conclusion"
+@page "/history/event-guessers/{id}/conclusion"
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -30,9 +30,6 @@
                     <div class="header-time-spent">
                         <MudText Typo="Typo.subtitle1" Align="Align.End">
                             @L["EventGuesser:TimeSpent"]
-                        </MudText>
-                        <MudText Typo="Typo.subtitle1" Align="Align.End">
-                            @conclusion.TimeSpent.ToSimpleFormat()
                         </MudText>
                     </div>
                 </div>
@@ -82,7 +79,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index),
-        new BreadcrumbItem(L["EventGuesser"].Value, Links.History.EventGuesser.Builder),
+        new BreadcrumbItem(L["EventGuesser"].Value, Links.History.EventGuesser.Builder)
     };
 
     [Inject]
@@ -91,7 +88,10 @@
     [Inject]
     private IHistoryClient Client { get; set; } = default!;
 
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+    
     protected override async Task OnInitializedAsync() => 
-        _response = await Client.EventGuesser.GetConclusionAsync();
+        _response = await Client.EventGuesser.GetConclusionAsync(Id);
 
 }

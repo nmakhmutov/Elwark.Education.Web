@@ -8,7 +8,6 @@
         "level"
         "wallet"
         "daily-reward"
-        "inventory"
         "achievements"
         "easy-test"
         "hard-test"
@@ -27,10 +26,6 @@
 
 .grid ::deep .achievements {
     grid-area: achievements;
-}
-
-.grid ::deep .inventory {
-    grid-area: inventory;
 }
 
 .grid ::deep .level {
@@ -73,7 +68,6 @@
             "header header"
             "subject level"
             "wallet daily-reward"
-            "inventory inventory"
             "achievements achievements"
             "easy-test hard-test"
             "mixed-test event-guesser"
@@ -81,41 +75,13 @@
     }
 }
 
-@media (min-width: 960px) {
-    .grid {
-        grid-template-columns: repeat(3, minmax(180px, 1fr));
-        grid-template-areas:
-            "header header header"
-            "subject subject level"
-            "inventory inventory wallet"
-            "inventory inventory daily-reward"
-            "achievements achievements achievements"
-            "easy-test hard-test mixed-test"
-            "event-guesser activity activity";
-    }
-}
-
 @media (min-width: 1280px) {
     .grid {
-        grid-template-columns: repeat(3, minmax(180px, 1fr));
-        grid-template-areas:
-            "header header header"
-            "subject level wallet"
-            "inventory inventory daily-reward"
-            "achievements achievements achievements"
-            "easy-test hard-test mixed-test"
-            "event-guesser activity activity";
-    }
-}
-
-@media (min-width: 1600px) {
-    .grid {
-        grid-template-columns: repeat(4, minmax(180px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         grid-template-areas:
             "header header header header"
-            "subject inventory inventory level"
-            "achievements achievements achievements wallet"
-            "achievements achievements achievements daily-reward"
+            "subject level wallet daily-reward"
+            "achievements achievements achievements achievements"
             "easy-test hard-test mixed-test event-guesser"
             "activity activity activity activity";
     }

@@ -5,8 +5,8 @@
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Tests.Model
 @using Education.Web.Gateways.Models.Inventory
-@using Education.Web.Pages.History.Tests.Components
 @using Education.Web.Pages.History.Tests.Test.Components
+@using Education.Web.Pages.History.Components
 
 <EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
@@ -56,7 +56,7 @@
                             {
                                 case MultipleAnswerQuestionModel question:
                                 {
-                                    var answer = _userAnswer as MultipleAnswerToQuestionModel ?? new MultipleAnswerToQuestionModel();
+                                    var answer = _userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel();
 
                                     <MultipleAnswerForm
                                         IsLoading="@_isAnswering"
@@ -72,7 +72,7 @@
 
                                 case ShortAnswerQuestionModel:
                                 {
-                                    var answer = _userAnswer as ShortAnswerToQuestionModel ?? new ShortAnswerToQuestionModel();
+                                    var answer = _userAnswer as ShortAnswerModel ?? new ShortAnswerModel();
                                     <ShortAnswerForm
                                         IsLoading="@_isAnswering"
                                         IsTestCompleted="@IsCompleted"
@@ -86,7 +86,7 @@
 
                                 case SingleAnswerQuestionModel question:
                                 {
-                                    var answer = _userAnswer as SingleAnswerToQuestionModel ?? new SingleAnswerToQuestionModel();
+                                    var answer = _userAnswer as SingleAnswerModel ?? new SingleAnswerModel();
 
                                     <SingleAnswerForm
                                         IsLoading="@_isAnswering"
@@ -203,7 +203,7 @@
             Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
     }
 
-    private async Task OnShortAnswer(ShortAnswerToQuestionModel answer)
+    private async Task OnShortAnswer(ShortAnswerModel answer)
     {
         _isAnswering = true;
         _userAnswer = answer;
@@ -217,7 +217,7 @@
         _isAnswering = false;
     }
 
-    private async Task OnSingleAnswer(SingleAnswerToQuestionModel answer)
+    private async Task OnSingleAnswer(SingleAnswerModel answer)
     {
         _isAnswering = true;
         _userAnswer = answer;
@@ -231,7 +231,7 @@
         _isAnswering = false;
     }
 
-    private async Task OnMultiplyAnswer(MultipleAnswerToQuestionModel answer)
+    private async Task OnMultiplyAnswer(MultipleAnswerModel answer)
     {
         _isAnswering = true;
         _userAnswer = answer;

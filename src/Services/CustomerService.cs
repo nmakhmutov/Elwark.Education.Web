@@ -1,7 +1,5 @@
 using Blazored.LocalStorage;
 using Education.Web.Gateways.Customers;
-using Education.Web.Pages;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Education.Web.Services;
@@ -10,17 +8,15 @@ public sealed class CustomerService
 {
     private const string StorageKey = "cs";
     private readonly AuthenticationStateProvider _authenticationStateProvider;
-    private readonly ICustomerClient _customerClient;
-    private readonly NavigationManager _navigation;
+    private readonly ICustomerClient _customer;
     private readonly ILocalStorageService _storage;
 
-    public CustomerService(ICustomerClient customerClient, ILocalStorageService storage,
-        AuthenticationStateProvider authenticationStateProvider, NavigationManager navigation)
+    public CustomerService(ICustomerClient customer, ILocalStorageService storage,
+        AuthenticationStateProvider authenticationStateProvider)
     {
-        _customerClient = customerClient;
+        _customer = customer;
         _storage = storage;
         _authenticationStateProvider = authenticationStateProvider;
-        _navigation = navigation;
     }
 
     public async Task InitAsync()
@@ -29,16 +25,11 @@ public sealed class CustomerService
             return;
 
         var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        if (state.User.Identity?.IsAuthenticated == true)
-            _navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(_navigation.Uri)));
-    }
-
-    public async Task CreateAsync()
-    {
-        if (await _storage.ContainKeyAsync(StorageKey))
+        if (state.User.Identity?.IsAuthenticated == false)
             return;
 
-        await _customerClient.CreateAsync();
+        await _customer.CreateAsync();
         await _storage.SetItemAsync(StorageKey, Guid.NewGuid());
+        // _navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(_navigation.Uri)));
     }
 }

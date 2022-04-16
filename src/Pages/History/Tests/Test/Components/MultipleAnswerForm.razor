@@ -107,7 +107,7 @@
     public bool IsLoading { get; set; }
 
     [Parameter, EditorRequired]
-    public MultipleAnswerToQuestionModel UserAnswer { get; set; } = default!;
+    public MultipleAnswerModel UserAnswer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public MultipleAnswersResultModel? CorrectAnswer { get; set; }
@@ -116,7 +116,7 @@
     public AnswerOptionModel[] Options { get; set; } = Array.Empty<AnswerOptionModel>();
 
     [Parameter, EditorRequired]
-    public EventCallback<MultipleAnswerToQuestionModel> OnAnswer { get; set; }
+    public EventCallback<MultipleAnswerModel> OnAnswer { get; set; }
 
     [Parameter, EditorRequired]
     public EventCallback OnNext { get; set; }
@@ -149,7 +149,7 @@
             _ => (Icon: null, Color: Color.Default)
             };
 
-    public sealed class Validator : AbstractValidator<MultipleAnswerToQuestionModel>
+    public sealed class Validator : AbstractValidator<MultipleAnswerModel>
     {
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.MultipleAnswer)

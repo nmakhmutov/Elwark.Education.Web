@@ -5,6 +5,7 @@
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.EventGuesser.Model
 @using Education.Web.Gateways.History.EventGuesser.Request
+@using Education.Web.Pages.History.Components
 
 <PageTitle>@L["EventGuesser"]</PageTitle>
 
@@ -13,55 +14,54 @@
         <ApiViewer Response="@_response">
             <Success Context="builder">
                 <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+
                 <section class="grid">
-                    <section>
-                        <EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
-                            <MudSelect Label="@L["History:Epoch"]" @bind-Value="@_model.Epoch" Class="mb-3">
-                                <MudSelectItem Value="@EpochType.None">@L["All"]</MudSelectItem>
-                                @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
-                                {
-                                    <MudSelectItem Value="@period">
-                                        @L[$"History:{period}"]
-                                    </MudSelectItem>
-                                }
-                            </MudSelect>
+                    <section class="builder">
+                        <MudText Typo="Typo.h5" Class="mb-3">
+                            @L["History:Epoch"]
+                        </MudText>
+                        <EpochRadioGroup @bind-SelectedEpoch="@_epoch" Class="mb-3 mb-sm-6"/>
 
-                            <MudSlider @bind-Value="@_model.Questions" Min="3" Max="13" Color="Color.Primary" Class="mb-3">
-                                @L["EventGuesser:NumberOfDates", _model.Questions]
-                            </MudSlider>
+                        <MudSlider @bind-Value="@_questions" Min="3" Max="13" Color="Color.Primary" Class="mb-3">
+                            @L["EventGuesser:NumberOfDates", _questions]
+                        </MudSlider>
 
-                            <div class="d-flex justify-space-between mb-3">
-                                <MudText Typo="Typo.subtitle1">
-                                    @L["Subscription:EventGuesserCreation"]
-                                </MudText>
-                            </div>
-
-                            <div class="d-flex flex-row justify-end">
-                                @if (builder.IsExistCurrent)
-                                {
-                                    <MudButton
-                                        Class="mr-3"
-                                        Variant="Variant.Filled"
-                                        Color="Color.Primary"
-                                        Link="@Links.History.EventGuesser.Test">
-                                        @L["Test:Continue"]
-                                    </MudButton>
-                                }
-
-                                <LoadingButton
-                                    ButtonType="ButtonType.Submit"
-                                    Text="@L["Test:Create"]"
-                                    LoadingText="@L["Test:Creating"]"
-                                    IsLoading="@_isCreating"/>
-
-                            </div>
-                        </EditForm>
+                        <div class="d-flex justify-center">
+                            <LoadingButton
+                                DisableElevation="true"
+                                Size="Size.Large"
+                                Color="Color.Primary"
+                                Variant="Variant.Filled"
+                                Text="@L["Test:Pass"]"
+                                LoadingText="@L["Loading"]"
+                                IsLoading="@_isLoading"
+                                Disabled="@(!_allowed)"
+                                OnClick="@CreateTestAsync"/>
+                        </div>
                     </section>
 
-                    <aside>
-                        <MudText Typo="Typo.h5" Class="mb-3">@builder.Rule.Title</MudText>
+                    <section class="inventory">
+                        <MudText Typo="Typo.h5" Class="mb-3">
+                            @L["Inventory"]
+                        </MudText>
+                        <InventoryGrid>
+                            @foreach (var item in builder.Inventory)
+                            {
+                                <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
+                                    <div class="d-flex justify-center">
+                                        <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
+                                    </div>
+                                </InventoryInfoCard>
+                            }
+                        </InventoryGrid>
+                    </section>
+
+                    <footer class="rule">
+                        <MudText Typo="Typo.h6" Class="mb-3">
+                            @builder.Rule.Title
+                        </MudText>
                         <SimpleMarkdown Text="@builder.Rule.Content"/>
-                    </aside>
+                    </footer>
                 </section>
             </Success>
         </ApiViewer>
@@ -69,9 +69,12 @@
 </EduPage>
 
 @code {
-    private bool _isCreating;
-    private readonly Model _model = new();
+    private bool _isLoading;
+    private bool _allowed;
+    private EpochType _epoch = EpochType.None;
+    private int _questions = 4;
     private ApiResponse<TestBuilderModel> _response = ApiResponse<TestBuilderModel>.Loading();
+
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
@@ -89,27 +92,27 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() =>
-        _response = await Client.EventGuesser.GetBuilderAsync();
-
-    private async Task OnValidSubmit()
+    protected override async Task OnInitializedAsync()
     {
-        _isCreating = true;
+        _response = await Client.EventGuesser.GetAsync();
 
-        var response = await Client.EventGuesser.CreateAsync(new CreateRequest(_model.Questions, _model.Epoch));
+        if (_response.IsSuccess)
+            _allowed = _response.Data.Inventory.Any(x => x.Id == 104 && x.Count > 0);
+        else if (_response.Error.IsTestAlreadyCreated(out var id))
+            Navigation.NavigateTo(Links.History.EventGuesser.Test(id));
+    }
+
+    private async Task CreateTestAsync()
+    {
+        _isLoading = true;
+
+        var response = await Client.EventGuesser.CreateAsync(new CreateRequest(_questions, _epoch));
         if (response.IsSuccess)
-            Navigation.NavigateTo(Links.History.EventGuesser.Test);
+            Navigation.NavigateTo(Links.History.EventGuesser.Test(response.Data.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
 
-        _isCreating = false;
-    }
-
-    internal sealed record Model
-    {
-        public EpochType Epoch { get; set; } = EpochType.None;
-
-        public int Questions { get; set; } = 4;
+        _isLoading = false;
     }
 
 }

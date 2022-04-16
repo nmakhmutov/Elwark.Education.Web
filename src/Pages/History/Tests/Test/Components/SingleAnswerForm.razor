@@ -102,7 +102,7 @@
     public bool IsLoading { get; set; }
 
     [Parameter, EditorRequired]
-    public SingleAnswerToQuestionModel UserAnswer { get; set; } = default!;
+    public SingleAnswerModel UserAnswer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public SingleAnswerResultModel? CorrectAnswer { get; set; }
@@ -111,7 +111,7 @@
     public AnswerOptionModel[] Options { get; set; } = Array.Empty<AnswerOptionModel>();
 
     [Parameter, EditorRequired]
-    public EventCallback<SingleAnswerToQuestionModel> OnAnswer { get; set; }
+    public EventCallback<SingleAnswerModel> OnAnswer { get; set; }
 
     [Parameter, EditorRequired]
     public EventCallback OnNext { get; set; }
@@ -136,7 +136,7 @@
             _ => (Icon: null, Color: Color.Default)
             };
 
-    public sealed class Validator : AbstractValidator<SingleAnswerToQuestionModel>
+    public sealed class Validator : AbstractValidator<SingleAnswerModel>
     {
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.SingleAnswer)

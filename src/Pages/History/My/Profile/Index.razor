@@ -29,8 +29,6 @@
 
                     <LevelCard Class="level" Level="@profile.Level"/>
 
-                    <InventoryCard Class="inventory" Inventory="@profile.Inventory"/>
-
                     <WalletCard Class="wallet" Silver="@profile.Silver"/>
 
                     <DailyRewardCard
@@ -40,6 +38,8 @@
                         OnReject="@RejectDailyReward"
                         OnReached="@OnInitializedAsync"/>
 
+                    <AchievementsCard Class="achievements" Achievements="@profile.Achievements"/>
+                    
                     <StatisticsCard
                         Class="easy-test"
                         Title="@L["Tests:Easy"]"
@@ -80,8 +80,6 @@
                     </StatisticsCard>
 
                     <ActivityCard Class="activity" Activities="@profile.Activity"/>
-
-                    <AchievementsCard Class="achievements" Achievements="@profile.Achievements"/>
                 </div>
             </EduContainer>
         </Success>

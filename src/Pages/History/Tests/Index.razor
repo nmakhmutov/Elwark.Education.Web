@@ -5,6 +5,7 @@
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Tests.Model
 @using Education.Web.Pages.History.Tests.Components
+@using Education.Web.Pages.History.Components
 
 <PageTitle>@L["Tests"]</PageTitle>
 
@@ -100,17 +101,15 @@
 
         if (_response.IsSuccess)
             foreach (var item in _response.Data.Inventory)
-                switch (item.Id)
+                switch (item.Id, item.Count)
                 {
-                    case 101:
+                    case (101, > 0):
                         _allowedEasyTest = true;
                         break;
-
-                    case 102:
+                    case (102, > 0):
                         _allowedHardTest = true;
                         break;
-
-                    case 103:
+                    case (103, > 0):
                         _allowedMixedTest = true;
                         break;
                 }

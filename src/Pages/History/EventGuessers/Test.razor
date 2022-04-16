@@ -1,6 +1,7 @@
-@page "/history/event-guessers/test"
+@page "/history/event-guessers/{id}"
 @layout HistoryLayout
 @attribute [Authorize]
+
 @using FluentValidation
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.EventGuesser.Model
@@ -9,7 +10,7 @@
 
 <EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response">
-        <Success Context="test">
+        <Success Context="_">
             <EduContainer>
                 <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
             </EduContainer>
@@ -45,13 +46,13 @@
 
                     <div class="header-questions">
                         <MudText Typo="Typo.subtitle1">
-                            @L["Questions"] @(_questionIndex + 1) / @test.Questions.Length
+                            @L["Questions"]  @_completedQuestions / @_totalQuestions 
                         </MudText>
                     </div>
 
                     <div class="header-title">
                         <MudText Typo="Typo.h5" Align="Align.Center">
-                            @test.Questions[_questionIndex].Title
+                            @_question.Title
                         </MudText>
                     </div>
                 </div>
@@ -69,42 +70,12 @@
                             AutoFocus="true"/>
 
                         <MudSelect T="uint?" @bind-Value="@_model.Month" For="@(() => _model.Month)" Label="@L["EventGuesser:Month"]" Clearable="true">
-                            <MudSelectItem Value="@(1u)" T="uint?">
-                                @L["Month:January"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(2u)" T="uint?">
-                                @L["Month:February"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(3u)" T="uint?">
-                                @L["Month:March"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(4u)" T="uint?">
-                                @L["Month:April"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(5u)" T="uint?">
-                                @L["Month:May"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(6u)" T="uint?">
-                                @L["Month:June"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(7u)" T="uint?">
-                                @L["Month:July"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(8u)" T="uint?">
-                                @L["Month:August"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(9u)" T="uint?">
-                                @L["Month:September"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(10u)" T="uint?">
-                                @L["Month:October"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(11u)" T="uint?">
-                                @L["Month:November"]
-                            </MudSelectItem>
-                            <MudSelectItem Value="@(12u)" T="uint?">
-                                @L["Month:December"]
-                            </MudSelectItem>
+                            @foreach (var month in Months)
+                            {
+                                <MudSelectItem Value="@month.Key" T="uint?">
+                                    @month.Value
+                                </MudSelectItem>    
+                            }
                         </MudSelect>
 
                         <MudSelect T="uint?" @bind-Value="@_model.Day" For="@(() => _model.Day)" Label="@L["EventGuesser:Day"]" Clearable="true">
@@ -142,15 +113,37 @@
 @code {
 
     private ApiResponse<TestModel> _response = ApiResponse<TestModel>.Loading();
+    private Model _model = new();
     private uint _score;
     private DateTime _x2BonusUntil;
+    private uint _totalQuestions;
+    private uint _completedQuestions;
+    private bool _isLoading;
+    private TestModel.QuestionModel _question = default!;
+    
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index),
-        new BreadcrumbItem(L["EventGuesser"].Value, Links.History.EventGuesser.Builder),
+        new BreadcrumbItem(L["EventGuesser"].Value, Links.History.EventGuesser.Builder)
     };
 
-    [Inject]
+    private Dictionary<uint, string> Months => new()
+    {
+        [1] = L["Month:January"],
+        [2] = L["Month:February"],
+        [3] = L["Month:March"],
+        [4] = L["Month:April"],
+        [5] = L["Month:May"],
+        [6] = L["Month:June"],
+        [7] = L["Month:July"],
+        [8] = L["Month:August"],
+        [9] = L["Month:September"],
+        [10] = L["Month:October"],
+        [11] = L["Month:November"],
+        [12] = L["Month:December"]
+    };
+
+    [Inject]    
     public IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
@@ -162,40 +155,30 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
-    private Model _model = new();
-    private int _questionIndex;
-    private bool _isLoading;
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await Client.EventGuesser.GetAsync();
+        _response = await Client.EventGuesser.GetAsync(Id);
         if (!_response.IsSuccess)
             return;
-        
+
         _score = _response.Data.Score;
         _x2BonusUntil = _response.Data.X2BonusUntil;
-        
-        for (var i = 0; i < _response.Data.Questions.Length; i++)
-        {
-            if (_response.Data.Questions[i].IsAnswered)
-                continue;
-
-            _questionIndex = i;
-            break;
-        }
+        _completedQuestions = _response.Data.CompletedQuestions;
+        _totalQuestions = _response.Data.TotalQuestions;
+        _question = _response.Data.Question!;
     }
 
     private async Task OnValidSubmit()
     {
         _isLoading = true;
-        var request = new CheckRequest(
-            _response.Data.Questions[_questionIndex].Id,
-            _model.IsBc ? -_model.Year.GetValueOrDefault(0) : _model.Year.GetValueOrDefault(0),
-            _model.Month,
-            _model.Day
-            );
 
-        var result = await Client.EventGuesser.CheckAsync(request);
+        var year = _model.Year.GetValueOrDefault();
+        var request = new CheckRequest(_model.IsBc ? -year : year, _model.Month, _model.Day);
+
+        var result = await Client.EventGuesser.CheckAsync(Id, _question.Id, request);
         if (!result.IsSuccess)
         {
             Snackbar.Add(result.Error.Detail, Severity.Error);
@@ -203,20 +186,18 @@
             return;
         }
 
-        _score = _response.Data.Score;
-        _x2BonusUntil = _response.Data.X2BonusUntil;
-        
-        if (result.Data.IsComplete)
+        if (result.Data.Question is null)
         {
-            Navigation.NavigateTo(Links.History.EventGuesser.Conclusion);
+            Navigation.NavigateTo(Links.History.EventGuesser.Conclusion(Id));
             return;
         }
         
-        if (_questionIndex == _response.Data.Questions.Length - 1)
-            return;
-
+        _score = result.Data.Score;
+        _x2BonusUntil = result.Data.X2BonusUntil;
+        _question = result.Data.Question;
+        _completedQuestions = result.Data.CompletedQuestions;
+        _totalQuestions = result.Data.TotalQuestions;
         _model = new Model();
-        _questionIndex++;
         _isLoading = false;
     }
 

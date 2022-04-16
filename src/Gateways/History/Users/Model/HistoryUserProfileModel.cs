@@ -11,7 +11,6 @@ public sealed record HistoryUserProfileModel(
     HistoryUserProfileModel.TestOverview HardTest,
     HistoryUserProfileModel.TestOverview MixedTest,
     HistoryUserProfileModel.EventGuesserOverview EventGuesser,
-    InventoryOverviewModel Inventory,
     AchievementsOverviewModel Achievements,
     HistoryUserProfileModel.TestActivity[] Activity
 )

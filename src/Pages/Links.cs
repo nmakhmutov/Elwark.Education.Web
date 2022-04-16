@@ -55,9 +55,11 @@ public static class Links
         {
             public const string Builder = $"{Index}/event-guessers";
 
-            public const string Test = $"{Index}/event-guessers/test";
-
-            public const string Conclusion = $"{Index}/event-guessers/conclusion";
+            public static string Test(string testId) =>
+                $"{Index}/event-guessers/{testId}";
+            
+            public static string Conclusion(string testId) =>
+                $"{Index}/event-guessers/{testId}/conclusion";
         }
 
         public static class User

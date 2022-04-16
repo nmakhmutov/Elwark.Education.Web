@@ -1,32 +1,11 @@
 @using Education.Web.Gateways.History
+@using Education.Web.Pages.History.Components
 
 <section class="@Class">
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["History:Epoch"]
     </MudText>
-    <MudRadioGroup @bind-SelectedOption="@_epoch" Class="epoch-radio-group mb-3 mb-sm-6">
-        @foreach (var epoch in Epochs)
-        {
-            var name = epoch.ToFastString();
-            <MudRadio Option="@epoch" Color="Color.Primary" Class="radio">
-                <MudPaper Elevation="0" Class="d-flex align-center">
-                    <MudImage Class="radio-image" Alt="@L[$"History:{name}"]" Src="@($"/images/history/epochs/{name}.jpg")"/>
-                    <MudText Typo="Typo.subtitle1" Class="mx-3">
-                        @L[$"History:{name}"]
-                    </MudText>
-                </MudPaper>
-            </MudRadio>
-        }
-
-        <MudRadio Option="@EpochType.None" Color="Color.Primary" Class="radio">
-            <MudPaper Elevation="0" Class="d-flex align-center">
-                <MudImage Class="radio-image" Alt="@L["All"]" ObjectFit="ObjectFit.Cover" Src="@("/images/history/history.jpg")"/>
-                <MudText Typo="Typo.subtitle1" Class="mx-3">
-                    @L["Topics:Any"]
-                </MudText>
-            </MudPaper>
-        </MudRadio>
-    </MudRadioGroup>
+    <EpochRadioGroup @bind-SelectedEpoch="@_epoch" Class="mb-3 mb-sm-6"/>
 
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["Tests"]

@@ -2,7 +2,7 @@
 @layout MainLayout
 
 <EduPage ShowFooter="true">
-    <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnSuccessCallback">
+    <RemoteAuthenticatorView Action="@Action">
         <LoggingIn>
             <PageSpinner/>
         </LoggingIn>
@@ -17,13 +17,7 @@
 
 @code{
 
-    [Inject]
-    private CustomerService CustomerService { get; set; } = default!;
-
     [Parameter]
     public string? Action { get; set; }
-
-    private Task OnSuccessCallback() =>
-        CustomerService.CreateAsync();
 
 }

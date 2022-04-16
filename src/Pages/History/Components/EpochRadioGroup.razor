@@ -1,0 +1,58 @@
+@using Education.Web.Gateways.History
+@using MudBlazor.Utilities
+
+<div class="@_class">
+    <MudRadioGroup SelectedOption="@SelectedEpoch" SelectedOptionChanged="@SelectedEpochChanged" Class="radio-group">
+        @foreach (var epoch in Epochs)
+        {
+            <MudRadio Option="@epoch.Key" Color="Color.Primary" Class="radio">
+                <MudPaper Elevation="0" Class="d-flex align-center">
+                    <MudImage Class="radio-image" Alt="@epoch.Value" Src="@($"/images/history/epochs/{epoch.Key.ToFastString()}.jpg")"/>
+                    <MudText Typo="Typo.subtitle1" Class="mx-3">
+                        @epoch.Value
+                    </MudText>
+                </MudPaper>
+            </MudRadio>
+        }
+
+        <MudRadio Option="@EpochType.None" Color="Color.Primary" Class="radio">
+            <MudPaper Elevation="0" Class="d-flex align-center">
+                <MudImage Class="radio-image" Alt="@L["Topics:Any"]" ObjectFit="ObjectFit.Cover" Src="@("/images/history/history.jpg")"/>
+                <MudText Typo="Typo.subtitle1" Class="mx-3">
+                    @L["Topics:Any"]
+                </MudText>
+            </MudPaper>
+        </MudRadio>
+    </MudRadioGroup>
+</div>
+
+@code {
+    private string? _class;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    private IDictionary<EpochType, string> Epochs => new Dictionary<EpochType, string>
+    {
+        [EpochType.Prehistory] = L["History:Prehistory"],
+        [EpochType.Ancient] = L["History:Ancient"],
+        [EpochType.MiddleAges] = L["History:MiddleAges"],
+        [EpochType.EarlyModern] = L["History:EarlyModern"],
+        [EpochType.Modern] = L["History:Modern"]
+    };
+
+    [Parameter]
+    public EpochType SelectedEpoch { get; set; }
+
+    [Parameter]
+    public EventCallback<EpochType> SelectedEpochChanged { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnParametersSet() =>
+        _class = CssBuilder.Default("container")
+            .AddClass(Class, () => Class is not null)
+            .Build();
+
+}

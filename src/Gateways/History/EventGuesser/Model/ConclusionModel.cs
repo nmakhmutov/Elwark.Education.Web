@@ -1,10 +1,11 @@
+using Education.Web.Gateways.Models;
 using Education.Web.Gateways.Models.Content;
 
 namespace Education.Web.Gateways.History.EventGuesser.Model;
 
 public sealed record ConclusionModel(
     uint Score,
-    TimeSpan TimeSpent,
+    IInternalMoney[] Rewards,
     QuestionModel[] Questions
 );
 

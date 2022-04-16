@@ -33,7 +33,7 @@
 
 @code {
     private ApexChart<HistoryUserProfileModel.TestActivity> _chart = default!;
-    private ApexChartOptions<HistoryUserProfileModel.TestActivity>? _options;
+    private ApexChartOptions<HistoryUserProfileModel.TestActivity> _options = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -81,15 +81,13 @@
         ThemeService.OnChange += Update;
     }
 
-    public void Dispose() => ThemeService.OnChange -= Update;
+    public void Dispose() => 
+        ThemeService.OnChange -= Update;
 
     private async Task Update()
     {
-        if (_options is null)
-            return;
-
         _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
-        await _chart.Render();
+        await _chart.RenderAsync();
         StateHasChanged();
     }
 

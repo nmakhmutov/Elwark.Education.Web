@@ -6,43 +6,77 @@ namespace Education.Web.Gateways.History.Tests;
 internal sealed class TestClient : GatewayClient
 {
     private readonly HttpClient _client;
+    private const string Route = "history/tests";
 
     public TestClient(HttpClient client) =>
         _client = client;
 
-    public Task<ApiResponse<TestBuilderModel>> GetTestBuilderAsync(string? topicId) =>
-        ExecuteAsync<TestBuilderModel>(ct => _client.GetAsync($"history/tests?topicId={topicId}", ct));
+    public Task<ApiResponse<TestBuilderModel>> GetTestBuilderAsync(string? topicId)
+    {
+        var url = topicId is { Length: > 0 } ? $"{Route}?topicId={topicId}" : Route;
+        return ExecuteAsync<TestBuilderModel>(ct => _client.GetAsync(url, ct));
+    }
 
     public Task<ApiResponse<TestModel>> GetAsync(string id) =>
-        ExecuteAsync<TestModel>(ct => _client.GetAsync($"history/tests/{id}", ct));
+        ExecuteAsync<TestModel>(ct => _client.GetAsync($"{Route}/{id}", ct));
 
-    public Task<ApiResponse<TestAnswerModel>> CheckAsync(string testId, string questionId, MultipleAnswerToQuestionModel answer) =>
-        ExecuteAsync<TestAnswerModel>(ct => _client.PostAsync($"history/tests/{testId}/questions/{questionId}", CreateJson(answer), ct));
+    public Task<ApiResponse<TestAnswerModel>> CheckAsync(string testId, string questionId, MultipleAnswerModel answer)
+    {
+        var url = $"{Route}/{testId}/questions/{questionId}";
+        return ExecuteAsync<TestAnswerModel>(ct => _client.PostAsync(url, CreateJson(answer), ct));
+    }
 
-    public Task<ApiResponse<TestAnswerModel>> CheckAsync(string testId, string questionId, SingleAnswerToQuestionModel answer) =>
-        ExecuteAsync<TestAnswerModel>(ct => _client.PostAsync($"history/tests/{testId}/questions/{questionId}", CreateJson(answer), ct));
+    public Task<ApiResponse<TestAnswerModel>> CheckAsync(string testId, string questionId, SingleAnswerModel answer)
+    {
+        var url = $"{Route}/{testId}/questions/{questionId}";
+        return ExecuteAsync<TestAnswerModel>(ct => _client.PostAsync(url, CreateJson(answer), ct));
+    }
 
-    public Task<ApiResponse<TestAnswerModel>> CheckAsync(string testId, string questionId, ShortAnswerToQuestionModel answer) =>
-        ExecuteAsync<TestAnswerModel>(ct => _client.PostAsync($"history/tests/{testId}/questions/{questionId}", CreateJson(answer), ct));
+    public Task<ApiResponse<TestAnswerModel>> CheckAsync(string testId, string questionId, ShortAnswerModel answer)
+    {
+        var url = $"{Route}/{testId}/questions/{questionId}";
+        return ExecuteAsync<TestAnswerModel>(ct => _client.PostAsync(url, CreateJson(answer), ct));
+    }
 
-    public Task<ApiResponse<InventoryAppliedModel>> ApplyInventoryAsync(string testId, uint inventoryId)=>
-        ExecuteAsync<InventoryAppliedModel>(ct => _client.PostAsync($"history/tests/{testId}/inventories/{inventoryId}", EmptyContent, ct));
-    
-    public Task<ApiResponse<TestConclusionModel>> GetConclusionAsync(string id) =>
-        ExecuteAsync<TestConclusionModel>(ct => _client.GetAsync($"history/tests/{id}/conclusion", ct));
+    public Task<ApiResponse<InventoryAppliedModel>> ApplyInventoryAsync(string testId, uint inventoryId)
+    {
+        var url = $"{Route}/{testId}/inventories/{inventoryId}";
+        return ExecuteAsync<InventoryAppliedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+    }
 
-    public Task<ApiResponse<TestCreatedModel>> CreateEasyTestAsync(string topicId) =>
-        ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync($"history/tests/easy/topics/{topicId}", EmptyContent, ct));
-    
-    public Task<ApiResponse<TestCreatedModel>> CreateEasyTestAsync(EpochType epoch) =>
-        ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync($"history/tests/easy/epochs/{epoch.ToFastString()}", EmptyContent, ct));
-    
-    public Task<ApiResponse<TestCreatedModel>> CreateHardTestAsync(string topicId) =>
-        ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync($"history/tests/hard/topics/{topicId}", EmptyContent, ct));
-    
-    public Task<ApiResponse<TestCreatedModel>> CreateHardTestAsync(EpochType epoch) =>
-        ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync($"history/tests/hard/epochs/{epoch.ToFastString()}", EmptyContent, ct));
+    public Task<ApiResponse<TestConclusionModel>> GetConclusionAsync(string id)
+    {
+        var url = $"{Route}/{id}/conclusion";
+        return ExecuteAsync<TestConclusionModel>(ct => _client.GetAsync(url, ct));
+    }
 
-    public Task<ApiResponse<TestCreatedModel>> CreateMixedTestAsync(EpochType epoch) =>
-        ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync($"history/tests/mixed/epochs/{epoch.ToFastString()}", EmptyContent, ct));
+    public Task<ApiResponse<TestCreatedModel>> CreateEasyTestAsync(string topicId)
+    {
+        var url = $"{Route}/easy/topics/{topicId}";
+        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+    }
+
+    public Task<ApiResponse<TestCreatedModel>> CreateEasyTestAsync(EpochType epoch)
+    {
+        var url = $"{Route}/easy/epochs/{epoch.ToFastString()}";
+        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+    }
+
+    public Task<ApiResponse<TestCreatedModel>> CreateHardTestAsync(string topicId)
+    {
+        var url = $"{Route}/hard/topics/{topicId}";
+        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+    }
+
+    public Task<ApiResponse<TestCreatedModel>> CreateHardTestAsync(EpochType epoch)
+    {
+        var url = $"{Route}/hard/epochs/{epoch.ToFastString()}";
+        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+    }
+
+    public Task<ApiResponse<TestCreatedModel>> CreateMixedTestAsync(EpochType epoch)
+    {
+        var url = $"{Route}/mixed/epochs/{epoch.ToFastString()}";
+        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+    }
 }

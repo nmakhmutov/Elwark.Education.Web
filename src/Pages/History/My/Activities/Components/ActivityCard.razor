@@ -64,7 +64,7 @@
 
 @code {
     private ApexChart<ProgressStatisticsModel.Progress> _chart = default!;
-    private ApexChartOptions<ProgressStatisticsModel.Progress>? _options;
+    private ApexChartOptions<ProgressStatisticsModel.Progress> _options = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -115,11 +115,8 @@
 
     private async Task Update()
     {
-        if (_options is null)
-            return;
-
         _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
-        await _chart.Render();
+        await _chart.RenderAsync();
         StateHasChanged();
     }
 
