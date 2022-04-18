@@ -102,8 +102,8 @@
         if (_response.Status == ResponseStatus.Success)
             _breadcrumbs = new List<BreadcrumbItem>
             {
-                new(L["Subject:History"], Links.History.Index),
-                new(L[$"History:{_response.Data.Topic.Epoch}"], Links.History.Content.Epoch(_response.Data.Topic.Epoch))
+                new(L["Subject:History"], HistoryLinks.Root),
+                new(L[$"History:{_response.Data.Topic.Epoch}"], HistoryLinks.Content.Epoch(_response.Data.Topic.Epoch))
             };
     }
 

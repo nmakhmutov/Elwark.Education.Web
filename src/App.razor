@@ -9,7 +9,7 @@
                 <NotAuthorized>
                     @if (!context.User.Identity?.IsAuthenticated ?? false)
                     {
-                        <RedirectTo Url="@Links.Root.Index"/>
+                        <RedirectTo Url="@CommonLinks.Root"/>
                     }
                     else
                     {

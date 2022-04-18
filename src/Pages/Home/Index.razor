@@ -1,13 +1,14 @@
 ﻿@page "/"
 @layout BaseLayout
 @using Education.Web.Pages.Home.Components
+@using Education.Web.Pages.History
 
 <PageTitle>Elwark education</PageTitle>
 
 <EduPage ShowFooter="false">
     <AuthorizeView>
         <Authorized>
-            <RedirectTo Url="@Links.History.Index"/>
+            <RedirectTo Url="@HistoryLinks.Root"/>
             <NonAuthorizedLanding/>
         </Authorized>
 

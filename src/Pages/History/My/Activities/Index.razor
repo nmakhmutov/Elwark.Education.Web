@@ -19,7 +19,7 @@
                         Icon="@EducationIcons.Tests"
                         IconClass="blue-text text-lighten-1"
                         Title="@L["Tests:Easy"]"
-                        Href="@Links.History.User.MyEasyTests"
+                        Href="@HistoryLinks.User.MyEasyTests"
                         Value="@activity.EasyTests"/>
 
                     <TestCard
@@ -27,7 +27,7 @@
                         Icon="@EducationIcons.Tests"
                         IconClass="blue-text text-darken-2"
                         Title="@L["Tests:Hard"]"
-                        Href="@Links.History.User.MyHardTests"
+                        Href="@HistoryLinks.User.MyHardTests"
                         Value="@activity.HardTests"/>
 
                     <TestCard
@@ -35,7 +35,7 @@
                         Icon="@EducationIcons.Tests"
                         IconClass="indigo-text text-darken-1"
                         Title="@L["Tests:Mixed"]"
-                        Href="@Links.History.User.MyMixedTests"
+                        Href="@HistoryLinks.User.MyMixedTests"
                         Value="@activity.MixedTests"/>
 
                     <TestCard
@@ -43,7 +43,7 @@
                         Icon="@EducationIcons.EventGuesser"
                         IconClass="deep-orange-text"
                         Title="@L["EventGuesser"]"
-                        Href="@Links.History.User.MyEventGuessers"
+                        Href="@HistoryLinks.User.MyEventGuessers"
                         Value="@activity.EventGuessers"/>
 
                     <ActivityCard
@@ -70,8 +70,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
-        new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
+        new BreadcrumbItem(L["Account"].Value, CommonLinks.Account),
+        new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 
     private ApiResponse<ProgressStatisticsModel> _response = ApiResponse<ProgressStatisticsModel>.Loading();

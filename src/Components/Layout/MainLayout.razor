@@ -7,7 +7,7 @@
 
 <MudLayout>
     <MudAppBar Elevation="0">
-        <MudLink Href="@Links.Root.Index" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+        <MudLink Href="@CommonLinks.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
             Education <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
         </MudLink>
         <MudSpacer/>
@@ -37,6 +37,6 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     private void OnLogin() =>
-        Navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(Navigation.Uri)));
+        Navigation.NavigateTo(CommonLinks.LogIn(Navigation.Uri));
 
 }

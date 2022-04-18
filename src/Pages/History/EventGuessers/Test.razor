@@ -123,8 +123,8 @@
     
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index),
-        new BreadcrumbItem(L["EventGuesser"].Value, Links.History.EventGuesser.Builder)
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryLinks.Root),
+        new BreadcrumbItem(L["EventGuesser"].Value, HistoryLinks.EventGuesser.Index)
     };
 
     private Dictionary<uint, string> Months => new()
@@ -188,7 +188,7 @@
 
         if (result.Data.Question is null)
         {
-            Navigation.NavigateTo(Links.History.EventGuesser.Conclusion(Id));
+            Navigation.NavigateTo(HistoryLinks.EventGuesser.Conclusion(Id));
             return;
         }
         

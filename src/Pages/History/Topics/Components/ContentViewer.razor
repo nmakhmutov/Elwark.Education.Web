@@ -79,7 +79,7 @@
     <section class="test mud-paper pa-3 pa-sm-6">
         @if (IsTestAvailable && UserActivity.PassedTests > 0)
         {
-            <MudLink Typo="Typo.subtitle2" Href="@Links.History.User.MyTopic(TopicId)">
+            <MudLink Typo="Typo.subtitle2" Href="@HistoryLinks.User.MyTopic(TopicId)">
                 @L["Test:MyProgress"]
             </MudLink>
         }
@@ -94,7 +94,7 @@
 
         @if (IsTestAvailable)
         {
-            <MudButton FullWidth="true" Variant="Variant.Filled" Color="Color.Primary" Link="@Links.History.TopicTest.Builder(TopicId)">
+            <MudButton FullWidth="true" Variant="Variant.Filled" Color="Color.Primary" Link="@HistoryLinks.TopicTest.Index(TopicId)">
                 @L["Test:Pass"]
             </MudButton>
         }

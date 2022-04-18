@@ -61,8 +61,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, Links.Account.Index),
-        new BreadcrumbItem(L["Profile"].Value, Links.History.User.MyProfile)
+        new BreadcrumbItem(L["Account"].Value, CommonLinks.Account),
+        new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 
     private ApiResponse<AchievementsDetailModel> _response = ApiResponse<AchievementsDetailModel>.Loading();

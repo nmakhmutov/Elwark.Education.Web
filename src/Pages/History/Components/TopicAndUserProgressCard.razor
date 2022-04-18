@@ -2,7 +2,7 @@
 
 <section class="card">
     <header class="card-header">
-        <a href="@Links.History.Content.Topic(Topic.Id)">
+        <a href="@HistoryLinks.Content.Topic(Topic.Id)">
             <img src="@Topic.Image" alt="@Topic.Title" loading="lazy"/>
         </a>
         <div class="rating-container">
@@ -10,7 +10,7 @@
         </div>
     </header>
     <aside class="d-flex align-center justify-space-between px-3">
-        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@Links.History.Content.Epoch(Topic.Epoch)">
+        <MudChip Label="true" Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@HistoryLinks.Content.Epoch(Topic.Epoch)">
             @L[$"History:{Topic.Epoch}"]
         </MudChip>
 
@@ -21,7 +21,7 @@
     </aside>
 
     <article class="px-3">
-        <MudLink Href="@Links.History.Content.Topic(Topic.Id)" Typo="Typo.h6">
+        <MudLink Href="@HistoryLinks.Content.Topic(Topic.Id)" Typo="Typo.h6">
             @Topic.Title
         </MudLink>
         <MudText Typo="Typo.body2" Class="pt-3">

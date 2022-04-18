@@ -77,7 +77,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index)
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryLinks.Root)
     };
 
     [Inject]
@@ -114,7 +114,7 @@
                         break;
                 }
         else if (_response.Error.IsTestAlreadyCreated(out var id))
-            Navigation.NavigateTo(Links.History.TopicTest.Test(id));
+            Navigation.NavigateTo(HistoryLinks.TopicTest.Test(id));
     }
 
     private async Task CreateEasyTest(string topicId)
@@ -150,7 +150,7 @@
     private void HandleCreateResponse(ApiResponse<TestCreatedModel> response)
     {
         if (response.IsSuccess)
-            Navigation.NavigateTo(Links.History.TopicTest.Test(response.Data.Id));
+            Navigation.NavigateTo(HistoryLinks.TopicTest.Test(response.Data.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
     }

@@ -50,7 +50,7 @@
                     </HeaderContent>
                     <RowTemplate>
                         <MudTd DataLabel="@L["Topic"]">
-                            <MudLink Href="@Links.History.Content.Topic(context.Topic.Id)">
+                            <MudLink Href="@HistoryLinks.Content.Topic(context.Topic.Id)">
                                 @context.Topic.Title
                             </MudLink>
                         </MudTd>
@@ -78,8 +78,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, Links.History.Index),
-        new BreadcrumbItem(L["EventGuesser"].Value, Links.History.EventGuesser.Builder)
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryLinks.Root),
+        new BreadcrumbItem(L["EventGuesser"].Value, HistoryLinks.EventGuesser.Index)
     };
 
     [Inject]

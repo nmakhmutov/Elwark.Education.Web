@@ -189,9 +189,9 @@
                 };
         }
         else if (_response.Error.IsTestAlreadyCompleted())
-            Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
+            Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
         else if (_response.Error.IsTestNotFound())
-            Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
+            Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
     }
 
     private async Task OnExpired()
@@ -200,7 +200,7 @@
         _response = await HistoryClient.Test.GetAsync(Id);
 
         if (_response.Status == ResponseStatus.Fail)
-            Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
+            Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
     }
 
     private async Task OnShortAnswer(ShortAnswerModel answer)
@@ -269,7 +269,7 @@
     }
 
     private void OnComplete() =>
-        Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
+        Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
 
     private async Task OnUseInventory(uint id)
     {
@@ -278,7 +278,7 @@
         {
             if(test.Data.Question is null)
             {
-                Navigation.NavigateTo(Links.History.TopicTest.Conclusion(Id));
+                Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
                 return;
             }
             

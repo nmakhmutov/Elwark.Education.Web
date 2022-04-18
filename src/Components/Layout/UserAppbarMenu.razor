@@ -19,7 +19,7 @@
                 </MudCard>
 
                 <MudDivider Class="mb-2"/>
-                <MudListItem Text="@L["Account"]" Icon="@Icons.Material.Outlined.Person" Href="@Links.Account.Index"/>
+                <MudListItem Text="@L["Account"]" Icon="@Icons.Material.Outlined.Person" Href="@CommonLinks.Account"/>
                 <MudListItem Text="@L["Logout"]" Icon="@Icons.Material.Outlined.Login" OnClick="@OnLogout"/>
             </ChildContent>
         </MudMenu>
@@ -44,11 +44,11 @@
     private NavigationManager Navigation { get; set; } = default!;
 
     private void OnLogin() =>
-        Navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(Navigation.Uri)));
+        Navigation.NavigateTo(CommonLinks.LogIn(Navigation.Uri));
         
     private async Task OnLogout(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo(Links.Authentication.LogOut);
+        Navigation.NavigateTo(CommonLinks.LogOut);
     }
 }

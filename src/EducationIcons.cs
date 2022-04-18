@@ -35,6 +35,8 @@ public static class EducationIcons
 
     public static readonly string EventGuesser = Icons.Outlined.EventAvailable;
 
+    public static readonly string Leaderboard = Icons.Outlined.Leaderboard;
+
     public static readonly string MyProfile = Icons.Outlined.CardMembership;
     
     public static readonly string MyInventory = Icons.Outlined.Inventory2;
