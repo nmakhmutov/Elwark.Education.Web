@@ -12,7 +12,7 @@
 <EduPage ShowFooter="false">
     <div class="background d-flex flex-column pa-3 pa-sm-6 h-100">
         <ApiViewer Response="@_response">
-            <Success Context="builder">
+            <Success Context="context">
                 <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 
                 <section class="grid">
@@ -45,7 +45,7 @@
                             @L["Inventory"]
                         </MudText>
                         <InventoryGrid>
-                            @foreach (var item in builder.Inventory)
+                            @foreach (var item in context.Inventory)
                             {
                                 <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
                                     <div class="d-flex justify-center">
@@ -58,9 +58,9 @@
 
                     <footer class="rule">
                         <MudText Typo="Typo.h6" Class="mb-3">
-                            @builder.Rule.Title
+                            @context.Rule.Title
                         </MudText>
-                        <SimpleMarkdown Text="@builder.Rule.Content"/>
+                        <SimpleMarkdown Text="@context.Rule.Content"/>
                     </footer>
                 </section>
             </Success>

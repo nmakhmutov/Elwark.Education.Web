@@ -12,11 +12,11 @@
 <EduPage ShowFooter="false">
     <div class="background d-flex flex-column pa-3 pa-sm-6 h-100">
         <ApiViewer Response="@_response">
-            <Success Context="builder">
+            <Success Context="context">
                 <PageHeader Title="@L["Tests"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 
                 <section class="grid">
-                    @if (builder.Topic is null)
+                    @if (context.Topic is null)
                     {
                         <EpochTestBuilder
                             Class="builder"
@@ -31,10 +31,10 @@
                     {
                         <TopicTestBuilder
                             Class="builder"
-                            Topic="@builder.Topic"
-                            AvailableEasyTest="@builder.Topic.HasEasyTest"
+                            Topic="@context.Topic"
+                            AvailableEasyTest="@context.Topic.HasEasyTest"
                             AllowedEasyTest="@_allowedEasyTest"
-                            AvailableHardTest="@builder.Topic.HasHardTest"
+                            AvailableHardTest="@context.Topic.HasHardTest"
                             AllowedHardTest="@_allowedHardTest"
                             OnEasyTestCreate="@CreateEasyTest"
                             OnHardTestCreate="@CreateHardTest"/>
@@ -45,7 +45,7 @@
                             @L["Inventory"]
                         </MudText>
                         <InventoryGrid>
-                            @foreach (var item in builder.Inventory)
+                            @foreach (var item in context.Inventory)
                             {
                                 <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
                                     <div class="d-flex justify-center">
@@ -58,9 +58,9 @@
 
                     <footer class="rule">
                         <MudText Typo="Typo.h6" Class="mb-3">
-                            @builder.Rule.Title
+                            @context.Rule.Title
                         </MudText>
-                        <SimpleMarkdown Text="@builder.Rule.Content"/>
+                        <SimpleMarkdown Text="@context.Rule.Content"/>
                     </footer>
                 </section>
             </Success>
