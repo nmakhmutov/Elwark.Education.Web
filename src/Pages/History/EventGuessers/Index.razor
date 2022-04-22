@@ -3,19 +3,21 @@
 @attribute [Authorize]
 
 @using Education.Web.Gateways.History
-@using Education.Web.Gateways.History.EventGuesser.Model
-@using Education.Web.Gateways.History.EventGuesser.Request
+@using Education.Web.Gateways.History.EventGuessers.Model
+@using Education.Web.Gateways.History.EventGuessers.Request
 @using Education.Web.Pages.History.Components
 
 <PageTitle>@L["EventGuesser"]</PageTitle>
 
 <EduPage ShowFooter="false">
-    <div class="background d-flex flex-column pa-3 pa-sm-6 h-100">
+    <div class="background d-flex flex-column h-100">
+        <EduContainer Class="pb-0">
+            <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+        </EduContainer>
         <ApiViewer Response="@_response">
             <Success Context="context">
-                <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 
-                <section class="grid">
+                <section class="grid pa-3 pa-sm-6">
                     <section class="builder">
                         <MudText Typo="Typo.h5" Class="mb-3">
                             @L["History:Epoch"]

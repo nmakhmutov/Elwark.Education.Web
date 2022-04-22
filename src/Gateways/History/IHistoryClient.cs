@@ -1,6 +1,7 @@
 using Education.Web.Gateways.History.Empires;
-using Education.Web.Gateways.History.EventGuesser;
+using Education.Web.Gateways.History.EventGuessers;
 using Education.Web.Gateways.History.Home;
+using Education.Web.Gateways.History.Leaderboards;
 using Education.Web.Gateways.History.Tests;
 using Education.Web.Gateways.History.Topics;
 using Education.Web.Gateways.History.Users;
@@ -15,6 +16,8 @@ internal interface IHistoryClient
 
     public HomeClient Home { get; }
 
+    public LeaderboardClient Leaderboard { get; }
+    
     public UserClient User { get; }
 
     public TestClient Test { get; }
@@ -29,6 +32,7 @@ internal sealed class HistoryClient : GatewayClient, IHistoryClient
         Empire = new EmpireClient(client);
         EventGuesser = new EventGuesserClient(client);
         Home = new HomeClient(client);
+        Leaderboard = new LeaderboardClient(client);
         User = new UserClient(client);
         Test = new TestClient(client);
         Topic = new TopicClient(client);
@@ -39,6 +43,8 @@ internal sealed class HistoryClient : GatewayClient, IHistoryClient
     public EventGuesserClient EventGuesser { get; }
 
     public HomeClient Home { get; }
+    
+    public LeaderboardClient Leaderboard { get; }
 
     public UserClient User { get; }
 

@@ -9,14 +9,16 @@
 <PageTitle>@L["Inventory"]</PageTitle>
 
 <EduPage ShowFooter="@_response.IsLoaded">
+    <EduContainer Class="pb-0">
+        <PageHeader Title="@L["Inventory"]" Breadcrumbs="@Breadcrumbs">
+            <MudText Typo="Typo.h5">
+                @_capacity
+            </MudText>
+        </PageHeader>
+    </EduContainer>
     <ApiViewer Response="@_response">
         <Success Context="data">
             <EduContainer>
-                <PageHeader Title="@L["Inventory"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs">
-                    <MudText Typo="Typo.h5">
-                        @data.Inventory.Fullness / @data.Inventory.Capacity
-                    </MudText>
-                </PageHeader>
                 <InventoryGrid>
                     @foreach (var item in data.Inventory.Items)
                     {
@@ -33,7 +35,8 @@
 </EduPage>
 
 @code {
-
+    private string? _capacity;
+    
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Account"].Value, CommonLinks.Account),
@@ -44,11 +47,15 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Inject]
     private IHistoryClient Client { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() =>
+    protected override async Task OnInitializedAsync()
+    {
         _response = await Client.User.GetInventoryAsync();
+        if (_response.IsSuccess)
+            _capacity = $"{_response.Data.Inventory.Fullness} / {_response.Data.Inventory.Capacity}";
+    }
 
 }

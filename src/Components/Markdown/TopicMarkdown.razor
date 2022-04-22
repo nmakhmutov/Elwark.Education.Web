@@ -1,9 +1,17 @@
 @using Markdig
-<div class="markdown @Class" style="@Style">
-    @((MarkupString)Markdown.ToHtml(Text, _pipeline))
+@using MudBlazor.Utilities
+<div class="@_class" style="@Style">
+    @((MarkupString)Markdown.ToHtml(Text, Pipeline))
 </div>
 
 @code {
+
+    private static readonly MarkdownPipeline Pipeline =
+        new MarkdownPipelineBuilder()
+            .UseAdvancedExtensions()
+            .Build();
+
+    private string? _class;
 
     [Parameter]
     public string? Class { get; set; }
@@ -14,11 +22,9 @@
     [Parameter]
     public string Text { get; set; } = string.Empty;
 
-    private MarkdownPipeline? _pipeline;
-
-    protected override void OnInitialized() =>
-        _pipeline = new MarkdownPipelineBuilder()
-            .UseAdvancedExtensions()
-            .Build();
+    protected override void OnParametersSet() => 
+        _class = CssBuilder.Default("markdown")
+        .AddClass(Class, Class is not null)
+        .Build();
 
 }

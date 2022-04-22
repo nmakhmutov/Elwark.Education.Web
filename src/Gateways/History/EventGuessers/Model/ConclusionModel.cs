@@ -1,7 +1,7 @@
 using Education.Web.Gateways.Models;
 using Education.Web.Gateways.Models.Content;
 
-namespace Education.Web.Gateways.History.EventGuesser.Model;
+namespace Education.Web.Gateways.History.EventGuessers.Model;
 
 public sealed record ConclusionModel(
     uint Score,

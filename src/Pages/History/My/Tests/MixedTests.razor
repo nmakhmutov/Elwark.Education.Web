@@ -10,10 +10,12 @@
 <PageTitle>@L["Tests:Mixed"]</PageTitle>
 
 <EduPage ShowFooter="@_response.IsLoaded">
+    <EduContainer Class="pb-0">
+        <PageHeader Title="@L["Tests:Mixed"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
     <ApiViewer Response="@_response">
         <Success Context="result">
             <EduContainer>
-                <PageHeader Title="@L["Tests:Mixed"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 
                 <TestPageGrid>
                     <StatisticDetailsCard Title="@L["Tests"]" Value="@result.NumberOfTests.Total">

@@ -9,10 +9,12 @@
 <PageTitle>@L["Test:MyActivity"]</PageTitle>
 
 <EduPage ShowFooter="@_response.IsLoaded">
+    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
+        <PageHeader Title="@L["Test:MyActivity"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
     <ApiViewer Response="@_response">
         <Success Context="activity">
             <EduContainer MaxWidth="EduWidth.W1920">
-                <PageHeader Title="@L["Test:MyActivity"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
                 <div class="grid">
                     <TestCard
                         Class="easy-test"

@@ -10,12 +10,13 @@
 <PageTitle>@L["Tests"]</PageTitle>
 
 <EduPage ShowFooter="false">
-    <div class="background d-flex flex-column pa-3 pa-sm-6 h-100">
+    <div class="background d-flex flex-column h-100">
+        <EduContainer Class="pb-0">
+            <PageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs"/>
+        </EduContainer>
         <ApiViewer Response="@_response">
             <Success Context="context">
-                <PageHeader Title="@L["Tests"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-
-                <section class="grid">
+                <section class="grid pa-3 pa-sm-6">
                     @if (context.Topic is null)
                     {
                         <EpochTestBuilder
@@ -50,7 +51,7 @@
                                 <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
                                     <div class="d-flex justify-center">
                                         <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
-                                    </div> 
+                                    </div>
                                 </InventoryInfoCard>
                             }
                         </InventoryGrid>

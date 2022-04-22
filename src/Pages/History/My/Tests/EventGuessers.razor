@@ -9,13 +9,12 @@
 <PageTitle>@L["EventGuesser"]</PageTitle>
 
 <EduPage ShowFooter="@_response.IsLoaded">
+    <EduContainer Class="pb-0">
+        <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
     <ApiViewer Response="@_response">
-        <Loading>
-            <PageSpinner/>
-        </Loading>
         <Success Context="result">
             <EduContainer>
-                <PageHeader Title="@L["EventGuesser"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
 
                 <TestPageGrid>
                     <StatisticDetailsCard Title="@L["Tests"]" Value="@result.Tests">
@@ -37,9 +36,9 @@
                     <StatisticDetailsCard Title="@L["EventGuesser:Questions"]" Value="@result.Questions">
                         <TotalContent>
                             <Subheader Title="@L["EventGuesser:Questions"]" Subtitle="@L["ForAllTime"]"/>
-                            <EventGuesserQuestionChart 
-                                Correct="@result.Correct" 
-                                Incorrect="@result.Incorrect" 
+                            <EventGuesserQuestionChart
+                                Correct="@result.Correct"
+                                Incorrect="@result.Incorrect"
                                 Questions="@result.Questions"/>
                         </TotalContent>
                         <ProgressContent>

@@ -1,7 +1,7 @@
-using Education.Web.Gateways.History.EventGuesser.Model;
-using Education.Web.Gateways.History.EventGuesser.Request;
+using Education.Web.Gateways.History.EventGuessers.Model;
+using Education.Web.Gateways.History.EventGuessers.Request;
 
-namespace Education.Web.Gateways.History.EventGuesser;
+namespace Education.Web.Gateways.History.EventGuessers;
 
 internal sealed class EventGuesserClient : GatewayClient
 {

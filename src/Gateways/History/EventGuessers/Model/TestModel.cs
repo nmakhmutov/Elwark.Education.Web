@@ -1,6 +1,6 @@
 using Education.Web.Gateways.Models.Inventory;
 
-namespace Education.Web.Gateways.History.EventGuesser.Model;
+namespace Education.Web.Gateways.History.EventGuessers.Model;
 
 public sealed record TestModel(
     string Id,
