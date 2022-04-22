@@ -7,27 +7,22 @@
 @using Education.Web.Gateways.Customers
 
 <EduPage ShowFooter="true">
-    <ApiViewer Response="@_customer">
-        <Loading>
-            <PageSpinner/>
-        </Loading>
-        <Success Context="customer">
-            <EduContainer>
-                <PageTitle>@customer.Name</PageTitle>
-                <div class="wrapper">
-                    <div class="account">
-                        <AccountCard
-                            Image="@customer.Image"
-                            Language="@customer.Language"
-                            Name="@customer.Name"
-                            Timezone="@customer.Timezone"
-                            FirstDayOfWeek="@customer.FirstDayOfWeek"/>
-                    </div>
-                    <div class="subjects">
-                    </div>
+    <ApiViewer Response="@_customer" Context="customer">
+        <EduContainer>
+            <PageTitle>@customer.Name</PageTitle>
+            <div class="wrapper">
+                <div class="account">
+                    <AccountCard
+                        Image="@customer.Image"
+                        Language="@customer.Language"
+                        Name="@customer.Name"
+                        Timezone="@customer.Timezone"
+                        FirstDayOfWeek="@customer.FirstDayOfWeek"/>
                 </div>
-            </EduContainer>
-        </Success>
+                <div class="subjects">
+                </div>
+            </div>
+        </EduContainer>
     </ApiViewer>
 </EduPage>
 

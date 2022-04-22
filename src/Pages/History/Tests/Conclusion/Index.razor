@@ -7,55 +7,52 @@
 @using Education.Web.Pages.History.Tests.Conclusion.Components
 
 <EduPage ShowFooter="@_response.IsLoaded">
-    <ApiViewer Response="@_response">
-        <Success Context="conclusion">
-            <MudAlert Class="mb-6 mb-sm-12" Severity="@GetColor(conclusion.Status)" Square="true" ContentAlignment="HorizontalAlignment.Center">
-                @L[$"ConclusionStatus:{conclusion.Status}"]
-            </MudAlert>
+    <ApiViewer Response="@_response" Context="conclusion">
+        <MudAlert Class="mb-6 mb-sm-12" Severity="@GetColor(conclusion.Status)" Square="true" ContentAlignment="HorizontalAlignment.Center">
+            @L[$"ConclusionStatus:{conclusion.Status}"]
+        </MudAlert>
 
-            <div class="d-flex justify-center align-center mb-6">
-                @foreach (var (icon, color, style) in _stars)
+        <div class="d-flex justify-center align-center mb-6">
+            @foreach (var (icon, color, style) in _stars)
+            {
+                <MudIcon Icon="@icon" Color="@color" Style="@style"/>
+            }
+        </div>
+
+        <EduContainer MaxWidth="EduWidth.W1280">
+            <h2 class="rewards-title">
+                <span>@L["Rewards"]</span>
+            </h2>
+            <div class="rewards">
+                @foreach (var reward in conclusion.Rewards)
                 {
-                    <MudIcon Icon="@icon" Color="@color" Style="@style"/>
+                    <MudPaper Elevation="0" Class="pa-3">
+                        <InternalMoneyText Money="@reward" IconSize="Size.Large" Typo="Typo.h5"/>
+                    </MudPaper>
                 }
             </div>
+        </EduContainer>
 
-            <EduContainer MaxWidth="EduWidth.W1280">
-                <h2 class="rewards-title">
-                    <span>@L["Rewards"]</span>
-                </h2>
-                <div class="rewards">
-                    @foreach (var reward in conclusion.Rewards)
-                    {
-                        <MudPaper Elevation="0" Class="pa-3">
-                            <InternalMoneyText Money="@reward" IconSize="Size.Large" Typo="Typo.h5"/>
-                        </MudPaper>
-                    }
-                </div>
-            </EduContainer>
+        @switch (conclusion)
+        {
+            case EasyTestConclusionModel test:
+                <PageTitle>@L["Test:Easy"]: @test.Topic.Title</PageTitle>
+                <EasyTestView Conclusion="@test"/>
+                break;
 
-            @switch (conclusion)
-            {
-                case EasyTestConclusionModel test:
-                    <PageTitle>@L["Test:Easy"]: @test.Topic.Title</PageTitle>
-                    <EasyTestView Conclusion="@test"/>
-                    break;
+            case HardTestConclusionModel test:
+                <PageTitle>@L["Test:Hard"]: @test.Topic.Title</PageTitle>
+                <HardTestView Conclusion="@test"/>
+                break;
 
-                case HardTestConclusionModel test:
-                    <PageTitle>@L["Test:Hard"]: @test.Topic.Title</PageTitle>
-                    <HardTestView Conclusion="@test"/>
-                    break;
+            case MixedTestConclusionModel test:
+                <PageTitle>@L["Test:Mixed"]</PageTitle>
+                <MixedTestView Conclusion="@test"/>
+                break;
 
-                case MixedTestConclusionModel test:
-                    <PageTitle>@L["Test:Mixed"]</PageTitle>
-                    <MixedTestView Conclusion="@test"/>
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(conclusion));
-            }
-
-        </Success>
+            default:
+                throw new ArgumentOutOfRangeException(nameof(conclusion));
+        }
     </ApiViewer>
 </EduPage>
 

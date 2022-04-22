@@ -16,27 +16,25 @@
             </MudText>
         </PageHeader>
     </EduContainer>
-    <ApiViewer Response="@_response">
-        <Success Context="data">
-            <EduContainer>
-                <InventoryGrid>
-                    @foreach (var item in data.Inventory.Items)
-                    {
-                        <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
-                            <div class="d-flex justify-center">
-                                <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
-                            </div>
-                        </InventoryInfoCard>
-                    }
-                </InventoryGrid>
-            </EduContainer>
-        </Success>
+    <ApiViewer Response="@_response" Context="data">
+        <EduContainer>
+            <InventoryGrid>
+                @foreach (var item in data.Inventory.Items)
+                {
+                    <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
+                        <div class="d-flex justify-center">
+                            <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
+                        </div>
+                    </InventoryInfoCard>
+                }
+            </InventoryGrid>
+        </EduContainer>
     </ApiViewer>
 </EduPage>
 
 @code {
     private string? _capacity;
-    
+
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["Account"].Value, CommonLinks.Account),

@@ -11,23 +11,21 @@
     <EduContainer Class="pb-0">
         <PageHeader Title="@L[$"History:{_request.Epoch}"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Response="_response">
-        <Success Context="topics">
-            <EduContainer>
-                <EduFillGrid Class="mb-6 mb-sm-12">
-                    @foreach (var (topic, userActivity) in topics.Items)
-                    {
-                        <TopicAndUserProgressCard
-                            Topic="@topic"
-                            UserActivity="@userActivity"
-                            OnFavoriteClick="@OnFavoriteClick"/>
-                    }
-                </EduFillGrid>
-                <div class="d-flex justify-center">
-                    <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_response.Data.Pages)"/>
-                </div>
-            </EduContainer>
-        </Success>
+    <ApiViewer Response="_response" Context="topics">
+        <EduContainer>
+            <EduFillGrid Class="mb-6 mb-sm-12">
+                @foreach (var (topic, userActivity) in topics.Items)
+                {
+                    <TopicAndUserProgressCard
+                        Topic="@topic"
+                        UserActivity="@userActivity"
+                        OnFavoriteClick="@OnFavoriteClick"/>
+                }
+            </EduFillGrid>
+            <div class="d-flex justify-center">
+                <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_response.Data.Pages)"/>
+            </div>
+        </EduContainer>
     </ApiViewer>
 </EduPage>
 

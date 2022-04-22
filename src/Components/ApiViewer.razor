@@ -16,7 +16,7 @@
         break;
 
     case ResponseStatus.Success:
-        @Success(Response.Data)
+        @ChildContent(Response.Data)
         break;
 
     default:
@@ -29,7 +29,7 @@
     public ApiResponse<T> Response { get; set; } = ApiResponse<T>.Loading();
 
     [Parameter]
-    public RenderFragment<T> Success { get; set; } = default!;
+    public RenderFragment<T> ChildContent { get; set; } = default!;
 
     [Parameter]
     public RenderFragment? Loading { get; set; }

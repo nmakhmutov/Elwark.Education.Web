@@ -8,76 +8,74 @@
 @using Education.Web.Pages.History.Components
 
 <EduPage ShowFooter="@_response.IsLoaded">
-    <ApiViewer Response="@_response">
-        <Success Context="result">
-            <PageTitle>@result.Topic.Title</PageTitle>
+    <ApiViewer Response="@_response" Context="result">
+        <PageTitle>@result.Topic.Title</PageTitle>
 
-            @switch (result.Topic)
-            {
-                case EmpireTopicDetailModel topic:
-                    <EmpireDetail
-                        Title="@topic.Title"
-                        Description="@topic.Description"
-                        Image="@topic.Image"
-                        Founded="@topic.Founded"
-                        Dissolved="@topic.Dissolved"
-                        MaxArea="@topic.MaxArea"
-                        MaxPopulation="@topic.MaxPopulation"
-                        Breadcrumbs="@_breadcrumbs"/>
-                    break;
+        @switch (result.Topic)
+        {
+            case EmpireTopicDetailModel topic:
+                <EmpireDetail
+                    Title="@topic.Title"
+                    Description="@topic.Description"
+                    Image="@topic.Image"
+                    Founded="@topic.Founded"
+                    Dissolved="@topic.Dissolved"
+                    MaxArea="@topic.MaxArea"
+                    MaxPopulation="@topic.MaxPopulation"
+                    Breadcrumbs="@_breadcrumbs"/>
+                break;
 
-                case PersonTopicDetailModel topic:
-                    <PersonDetail
-                        Title="@topic.Title"
-                        Description="@topic.Description"
-                        Image="@topic.Image"
-                        Born="@topic.Born"
-                        Died="@topic.Died"
-                        Characteristics="@topic.Characteristics"
-                        Breadcrumbs="@_breadcrumbs"/>
-                    break;
+            case PersonTopicDetailModel topic:
+                <PersonDetail
+                    Title="@topic.Title"
+                    Description="@topic.Description"
+                    Image="@topic.Image"
+                    Born="@topic.Born"
+                    Died="@topic.Died"
+                    Characteristics="@topic.Characteristics"
+                    Breadcrumbs="@_breadcrumbs"/>
+                break;
 
-                case EventTopicDetailModel topic:
-                    <EventDetail
-                        Title="@topic.Title"
-                        Description="@topic.Description"
-                        Image="@topic.Image"
-                        Started="@topic.Started"
-                        Ended="@topic.Finished"
-                        Breadcrumbs="@_breadcrumbs"/>
-                    break;
-            }
+            case EventTopicDetailModel topic:
+                <EventDetail
+                    Title="@topic.Title"
+                    Description="@topic.Description"
+                    Image="@topic.Image"
+                    Started="@topic.Started"
+                    Ended="@topic.Finished"
+                    Breadcrumbs="@_breadcrumbs"/>
+                break;
+        }
 
-            <EduContainer MaxWidth="@EduWidth.W1440">
-                <ContentViewer
-                    Chapters="@result.Topic.Chapters"
-                    TopicId="@result.Topic.Id"
-                    Rating="@result.Rating"
-                    IsTestAvailable="@result.IsTestAvailable"
-                    UserActivity="@result.UserActivity"
-                    OnFavoriteClick="@ToggleFavoriteAsync"
-                    OnLikeClick="@LikeAsync"
-                    OnDislikeClick="@DislikeAsync"/>
+        <EduContainer MaxWidth="@EduWidth.W1440">
+            <ContentViewer
+                Chapters="@result.Topic.Chapters"
+                TopicId="@result.Topic.Id"
+                Rating="@result.Rating"
+                IsTestAvailable="@result.IsTestAvailable"
+                UserActivity="@result.UserActivity"
+                OnFavoriteClick="@ToggleFavoriteAsync"
+                OnLikeClick="@LikeAsync"
+                OnDislikeClick="@DislikeAsync"/>
+        </EduContainer>
+
+        @if (result.RelatedTopics.Length > 0)
+        {
+            <EduContainer MaxWidth="@EduWidth.W1440" Class="pt-0">
+                <MudText Typo="Typo.h5" Class="mb-3">
+                    @L["Topics:Related"]
+                </MudText>
+                <EduFillGrid>
+                    @foreach (var (topic, userActivity) in result.RelatedTopics)
+                    {
+                        <TopicAndUserProgressCard
+                            Topic="@topic"
+                            UserActivity="@userActivity"
+                            OnFavoriteClick="@ToggleFavoriteAsync"/>
+                    }
+                </EduFillGrid>
             </EduContainer>
-
-            @if (result.RelatedTopics.Length > 0)
-            {
-                <EduContainer MaxWidth="@EduWidth.W1440" Class="pt-0">
-                    <MudText Typo="Typo.h5" Class="mb-3">
-                        @L["Topics:Related"]
-                    </MudText>
-                    <EduFillGrid>
-                        @foreach (var (topic, userActivity) in result.RelatedTopics)
-                        {
-                            <TopicAndUserProgressCard
-                                Topic="@topic"
-                                UserActivity="@userActivity"
-                                OnFavoriteClick="@ToggleFavoriteAsync"/>
-                        }
-                    </EduFillGrid>
-                </EduContainer>
-            }
-        </Success>
+        }
     </ApiViewer>
 </EduPage>
 
@@ -118,7 +116,7 @@
         var response = await HistoryClient.Topic.DislikeAsync(Id);
         return response.Status == ResponseStatus.Success;
     }
-    
+
     private async Task<bool> ToggleFavoriteAsync(string id)
     {
         var result = await HistoryClient.Topic.ToggleFavoriteAsync(id);

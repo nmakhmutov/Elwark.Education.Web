@@ -1,0 +1,119 @@
+@using FluentValidation
+@using ApexCharts
+@using Color = MudBlazor.Color
+<EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
+    <FluentValidationValidator/>
+
+    <div class="form">
+        <MudNumericField
+            @bind-Value="@_model.Year"
+            For="@(() => _model.Year)"
+            Label="@L["EventGuesser:Year"]"
+            Variant="Variant.Text"
+            HideSpinButtons="true"
+            AutoFocus="true"/>
+
+        <MudSelect T="uint?" @bind-Value="@_model.Month" For="@(() => _model.Month)" Label="@L["EventGuesser:Month"]" Clearable="true">
+            @foreach (var month in Months)
+            {
+                <MudSelectItem Value="@month.Key" T="uint?">
+                    @month.Value
+                </MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudSelect T="uint?" @bind-Value="@_model.Day" For="@(() => _model.Day)" Label="@L["EventGuesser:Day"]" Clearable="true">
+            @foreach (var day in Enumerable.Range(1, 31))
+            {
+                <MudSelectItem Value="@((uint)day)" T="uint?">
+                    @day
+                </MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudRadioGroup @bind-SelectedOption="@_model.IsBc">
+            <MudRadio Option="false">
+                @L["HistoricalDate:Ad"]
+            </MudRadio>
+            <MudRadio Option="true">
+                @L["HistoricalDate:Bc"]
+            </MudRadio>
+        </MudRadioGroup>
+
+        <div class="submit">
+            <LoadingButton
+                ButtonType="ButtonType.Submit"
+                Color="Color.Primary"
+                Variant="Variant.Filled"
+                Text="@L["Test:Answer"]"
+                LoadingText="@L["Loading"]"
+                IsLoading="@_isLoading"/>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private bool _isLoading;
+    private Model _model = new();
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public EventCallback<Model> OnAnswer { get; set; }
+
+    private Dictionary<uint, string> Months => new()
+    {
+        [1] = L["Month:January"],
+        [2] = L["Month:February"],
+        [3] = L["Month:March"],
+        [4] = L["Month:April"],
+        [5] = L["Month:May"],
+        [6] = L["Month:June"],
+        [7] = L["Month:July"],
+        [8] = L["Month:August"],
+        [9] = L["Month:September"],
+        [10] = L["Month:October"],
+        [11] = L["Month:November"],
+        [12] = L["Month:December"]
+    };
+
+    public sealed record Model
+    {
+        public int? Year { get; set; }
+
+        public uint? Month { get; set; }
+
+        public uint? Day { get; set; }
+
+        public bool IsBc { get; set; }
+
+        public sealed class Validator : AbstractValidator<Model>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.Year)
+                    .NotNull()
+                    .GreaterThan(0)
+                    .LessThanOrEqualTo(9999);
+
+                RuleFor(x => x.Month)
+                    .GreaterThan(0u)
+                    .LessThanOrEqualTo(12u);
+
+                RuleFor(x => x.Day)
+                    .GreaterThan(0u)
+                    .LessThanOrEqualTo(31u);
+            }
+        }
+    }
+
+    private async Task OnValidSubmit()
+    {
+        _isLoading = true;
+        await OnAnswer.InvokeAsync(_model);
+        _model = new Model();
+        _isLoading = false;
+    }
+
+}

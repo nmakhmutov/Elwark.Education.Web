@@ -16,48 +16,46 @@
             </MudText>
         </PageHeader>
     </EduContainer>
-    <ApiViewer Response="@_response">
-        <Success Context="achievements">
-            <EduContainer>
-                <MudGrid>
-                    @for (var index = 0; index < achievements.Categories.Length; index++)
-                    {
-                        var category = achievements.Categories[index];
-                        var classes = index == 0 ? null : "mt-6 mt-sm-16";
+    <ApiViewer Response="@_response" Context="achievements">
+        <EduContainer>
+            <MudGrid>
+                @for (var index = 0; index < achievements.Categories.Length; index++)
+                {
+                    var category = achievements.Categories[index];
+                    var classes = index == 0 ? null : "mt-6 mt-sm-16";
 
-                        <MudItem xs="12" md="3" xl="2" Class="@classes">
-                            <div class="sticky-info">
-                                <div class="d-flex align-end">
-                                    <MudText Typo="@Typo.h5">
-                                        @category.Title
-                                    </MudText>
-                                    <MudText Typo="@Typo.subtitle1" Class="ml-3">
-                                        @category.Completed/@category.Total
-                                    </MudText>
-                                </div>
-
-                                <MudText Typo="@Typo.body1">
-                                    @category.Description
+                    <MudItem xs="12" md="3" xl="2" Class="@classes">
+                        <div class="sticky-info">
+                            <div class="d-flex align-end">
+                                <MudText Typo="@Typo.h5">
+                                    @category.Title
+                                </MudText>
+                                <MudText Typo="@Typo.subtitle1" Class="ml-3">
+                                    @category.Completed/@category.Total
                                 </MudText>
                             </div>
-                        </MudItem>
 
-                        <MudItem xs="12" md="9" xl="10" Class="@classes">
-                            <div class="grid">
-                                @foreach (var achievement in category.Achievements)
-                                {
-                                    <MudCard Elevation="0">
-                                        <MudCardContent Class="pa-3 pa-sm-6">
-                                            <AchievementView Achievement="@achievement"/>
-                                        </MudCardContent>
-                                    </MudCard>
-                                }
-                            </div>
-                        </MudItem>
-                    }
-                </MudGrid>
-            </EduContainer>
-        </Success>
+                            <MudText Typo="@Typo.body1">
+                                @category.Description
+                            </MudText>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" md="9" xl="10" Class="@classes">
+                        <div class="grid">
+                            @foreach (var achievement in category.Achievements)
+                            {
+                                <MudCard Elevation="0">
+                                    <MudCardContent Class="pa-3 pa-sm-6">
+                                        <AchievementView Achievement="@achievement"/>
+                                    </MudCardContent>
+                                </MudCard>
+                            }
+                        </div>
+                    </MudItem>
+                }
+            </MudGrid>
+        </EduContainer>
     </ApiViewer>
 </EduPage>
 

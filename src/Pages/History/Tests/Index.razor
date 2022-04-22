@@ -14,57 +14,55 @@
         <EduContainer Class="pb-0">
             <PageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs"/>
         </EduContainer>
-        <ApiViewer Response="@_response">
-            <Success Context="context">
-                <section class="grid pa-3 pa-sm-6">
-                    @if (context.Topic is null)
-                    {
-                        <EpochTestBuilder
-                            Class="builder"
-                            AllowedEasyTest="@_allowedEasyTest"
-                            AllowedHardTest="@_allowedHardTest"
-                            AllowedMixedTest="@_allowedMixedTest"
-                            OnEasyTestCreate="@CreateEasyTest"
-                            OnHardTestCreate="@CreateHardTest"
-                            OnMixedTestCreate="@CreateMixedTest"/>
-                    }
-                    else
-                    {
-                        <TopicTestBuilder
-                            Class="builder"
-                            Topic="@context.Topic"
-                            AvailableEasyTest="@context.Topic.HasEasyTest"
-                            AllowedEasyTest="@_allowedEasyTest"
-                            AvailableHardTest="@context.Topic.HasHardTest"
-                            AllowedHardTest="@_allowedHardTest"
-                            OnEasyTestCreate="@CreateEasyTest"
-                            OnHardTestCreate="@CreateHardTest"/>
-                    }
+        <ApiViewer Response="@_response" Context="context">
+            <section class="grid pa-3 pa-sm-6">
+                @if (context.Topic is null)
+                {
+                    <EpochTestBuilder
+                        Class="builder"
+                        AllowedEasyTest="@_allowedEasyTest"
+                        AllowedHardTest="@_allowedHardTest"
+                        AllowedMixedTest="@_allowedMixedTest"
+                        OnEasyTestCreate="@CreateEasyTest"
+                        OnHardTestCreate="@CreateHardTest"
+                        OnMixedTestCreate="@CreateMixedTest"/>
+                }
+                else
+                {
+                    <TopicTestBuilder
+                        Class="builder"
+                        Topic="@context.Topic"
+                        AvailableEasyTest="@context.Topic.HasEasyTest"
+                        AllowedEasyTest="@_allowedEasyTest"
+                        AvailableHardTest="@context.Topic.HasHardTest"
+                        AllowedHardTest="@_allowedHardTest"
+                        OnEasyTestCreate="@CreateEasyTest"
+                        OnHardTestCreate="@CreateHardTest"/>
+                }
 
-                    <section class="inventory">
-                        <MudText Typo="Typo.h5" Class="mb-3">
-                            @L["Inventory"]
-                        </MudText>
-                        <InventoryGrid>
-                            @foreach (var item in context.Inventory)
-                            {
-                                <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
-                                    <div class="d-flex justify-center">
-                                        <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
-                                    </div>
-                                </InventoryInfoCard>
-                            }
-                        </InventoryGrid>
-                    </section>
-
-                    <footer class="rule">
-                        <MudText Typo="Typo.h6" Class="mb-3">
-                            @context.Rule.Title
-                        </MudText>
-                        <SimpleMarkdown Text="@context.Rule.Content"/>
-                    </footer>
+                <section class="inventory">
+                    <MudText Typo="Typo.h5" Class="mb-3">
+                        @L["Inventory"]
+                    </MudText>
+                    <InventoryGrid>
+                        @foreach (var item in context.Inventory)
+                        {
+                            <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
+                                <div class="d-flex justify-center">
+                                    <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
+                                </div>
+                            </InventoryInfoCard>
+                        }
+                    </InventoryGrid>
                 </section>
-            </Success>
+
+                <footer class="rule">
+                    <MudText Typo="Typo.h6" Class="mb-3">
+                        @context.Rule.Title
+                    </MudText>
+                    <SimpleMarkdown Text="@context.Rule.Content"/>
+                </footer>
+            </section>
         </ApiViewer>
     </div>
 </EduPage>

@@ -12,43 +12,40 @@
     <EduContainer Class="pb-0">
         <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Response="@_response">
-        <Success Context="result">
-            <EduContainer>
-
-                <TestPageGrid>
-                    <StatisticDetailsCard Title="@L["Tests"]" Value="@result.Tests">
-                        <ProgressContent>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                            <ProgressList Items="@GetTest(result.RangeContrast)"/>
-                        </ProgressContent>
-                    </StatisticDetailsCard>
-                    <StatisticDetailsCard Title="@L["EventGuesser:Score"]" Value="@result.Score">
-                        <TotalContent>
-                            <Subheader Title="@L["EventGuesser:Score"]" Subtitle="@L["ForAllTime"]"/>
-                            <EventGuesserScoreChart Bonus="@result.Bonus" Points="@result.Points" Score="@result.Score"/>
-                        </TotalContent>
-                        <ProgressContent>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                            <ProgressList Items="@GetScore(result.RangeContrast)"/>
-                        </ProgressContent>
-                    </StatisticDetailsCard>
-                    <StatisticDetailsCard Title="@L["EventGuesser:Questions"]" Value="@result.Questions">
-                        <TotalContent>
-                            <Subheader Title="@L["EventGuesser:Questions"]" Subtitle="@L["ForAllTime"]"/>
-                            <EventGuesserQuestionChart
-                                Correct="@result.Correct"
-                                Incorrect="@result.Incorrect"
-                                Questions="@result.Questions"/>
-                        </TotalContent>
-                        <ProgressContent>
-                            <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                            <ProgressList Items="@GetQuestions(result.RangeContrast)"/>
-                        </ProgressContent>
-                    </StatisticDetailsCard>
-                </TestPageGrid>
-            </EduContainer>
-        </Success>
+    <ApiViewer Response="@_response" Context="result">
+        <EduContainer>
+            <TestPageGrid>
+                <StatisticDetailsCard Title="@L["Tests"]" Value="@result.Tests">
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@GetTest(result.RangeContrast)"/>
+                    </ProgressContent>
+                </StatisticDetailsCard>
+                <StatisticDetailsCard Title="@L["EventGuesser:Score"]" Value="@result.Score">
+                    <TotalContent>
+                        <Subheader Title="@L["EventGuesser:Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <EventGuesserScoreChart Bonus="@result.Bonus" Points="@result.Points" Score="@result.Score"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@GetScore(result.RangeContrast)"/>
+                    </ProgressContent>
+                </StatisticDetailsCard>
+                <StatisticDetailsCard Title="@L["EventGuesser:Questions"]" Value="@result.Questions">
+                    <TotalContent>
+                        <Subheader Title="@L["EventGuesser:Questions"]" Subtitle="@L["ForAllTime"]"/>
+                        <EventGuesserQuestionChart
+                            Correct="@result.Correct"
+                            Incorrect="@result.Incorrect"
+                            Questions="@result.Questions"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@GetQuestions(result.RangeContrast)"/>
+                    </ProgressContent>
+                </StatisticDetailsCard>
+            </TestPageGrid>
+        </EduContainer>
     </ApiViewer>
 </EduPage>
 

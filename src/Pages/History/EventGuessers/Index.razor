@@ -14,58 +14,55 @@
         <EduContainer Class="pb-0">
             <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
         </EduContainer>
-        <ApiViewer Response="@_response">
-            <Success Context="context">
+        <ApiViewer Response="@_response" Context="context">
+            <section class="grid pa-3 pa-sm-6">
+                <section class="builder">
+                    <MudText Typo="Typo.h5" Class="mb-3">
+                        @L["History:Epoch"]
+                    </MudText>
+                    <EpochRadioGroup @bind-SelectedEpoch="@_epoch" Class="mb-3 mb-sm-6"/>
 
-                <section class="grid pa-3 pa-sm-6">
-                    <section class="builder">
-                        <MudText Typo="Typo.h5" Class="mb-3">
-                            @L["History:Epoch"]
-                        </MudText>
-                        <EpochRadioGroup @bind-SelectedEpoch="@_epoch" Class="mb-3 mb-sm-6"/>
+                    <MudSlider @bind-Value="@_questions" Min="3" Max="13" Color="Color.Primary" Class="mb-3">
+                        @L["EventGuesser:NumberOfDates", _questions]
+                    </MudSlider>
 
-                        <MudSlider @bind-Value="@_questions" Min="3" Max="13" Color="Color.Primary" Class="mb-3">
-                            @L["EventGuesser:NumberOfDates", _questions]
-                        </MudSlider>
-
-                        <div class="d-flex justify-center">
-                            <LoadingButton
-                                DisableElevation="true"
-                                Size="Size.Large"
-                                Color="Color.Primary"
-                                Variant="Variant.Filled"
-                                Text="@L["Test:Pass"]"
-                                LoadingText="@L["Loading"]"
-                                IsLoading="@_isLoading"
-                                Disabled="@(!_allowed)"
-                                OnClick="@CreateTestAsync"/>
-                        </div>
-                    </section>
-
-                    <section class="inventory">
-                        <MudText Typo="Typo.h5" Class="mb-3">
-                            @L["Inventory"]
-                        </MudText>
-                        <InventoryGrid>
-                            @foreach (var item in context.Inventory)
-                            {
-                                <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
-                                    <div class="d-flex justify-center">
-                                        <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
-                                    </div>
-                                </InventoryInfoCard>
-                            }
-                        </InventoryGrid>
-                    </section>
-
-                    <footer class="rule">
-                        <MudText Typo="Typo.h6" Class="mb-3">
-                            @context.Rule.Title
-                        </MudText>
-                        <SimpleMarkdown Text="@context.Rule.Content"/>
-                    </footer>
+                    <div class="d-flex justify-center">
+                        <LoadingButton
+                            DisableElevation="true"
+                            Size="Size.Large"
+                            Color="Color.Primary"
+                            Variant="Variant.Filled"
+                            Text="@L["Test:Pass"]"
+                            LoadingText="@L["Loading"]"
+                            IsLoading="@_isLoading"
+                            Disabled="@(!_allowed)"
+                            OnClick="@CreateTestAsync"/>
+                    </div>
                 </section>
-            </Success>
+
+                <section class="inventory">
+                    <MudText Typo="Typo.h5" Class="mb-3">
+                        @L["Inventory"]
+                    </MudText>
+                    <InventoryGrid>
+                        @foreach (var item in context.Inventory)
+                        {
+                            <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
+                                <div class="d-flex justify-center">
+                                    <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
+                                </div>
+                            </InventoryInfoCard>
+                        }
+                    </InventoryGrid>
+                </section>
+
+                <footer class="rule">
+                    <MudText Typo="Typo.h6" Class="mb-3">
+                        @context.Rule.Title
+                    </MudText>
+                    <SimpleMarkdown Text="@context.Rule.Content"/>
+                </footer>
+            </section>
         </ApiViewer>
     </div>
 </EduPage>

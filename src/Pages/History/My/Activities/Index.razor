@@ -12,59 +12,57 @@
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
         <PageHeader Title="@L["Test:MyActivity"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Response="@_response">
-        <Success Context="activity">
-            <EduContainer MaxWidth="EduWidth.W1920">
-                <div class="grid">
-                    <TestCard
-                        Class="easy-test"
-                        Icon="@EducationIcons.Tests"
-                        IconClass="blue-text text-lighten-1"
-                        Title="@L["Tests:Easy"]"
-                        Href="@HistoryLinks.User.MyEasyTests"
-                        Value="@activity.EasyTests"/>
+    <ApiViewer Response="@_response" Context="activity">
+        <EduContainer MaxWidth="EduWidth.W1920">
+            <div class="grid">
+                <TestCard
+                    Class="easy-test"
+                    Icon="@EducationIcons.Tests"
+                    IconClass="blue-text text-lighten-1"
+                    Title="@L["Tests:Easy"]"
+                    Href="@HistoryLinks.User.MyEasyTests"
+                    Value="@activity.EasyTests"/>
 
-                    <TestCard
-                        Class="hard-test"
-                        Icon="@EducationIcons.Tests"
-                        IconClass="blue-text text-darken-2"
-                        Title="@L["Tests:Hard"]"
-                        Href="@HistoryLinks.User.MyHardTests"
-                        Value="@activity.HardTests"/>
+                <TestCard
+                    Class="hard-test"
+                    Icon="@EducationIcons.Tests"
+                    IconClass="blue-text text-darken-2"
+                    Title="@L["Tests:Hard"]"
+                    Href="@HistoryLinks.User.MyHardTests"
+                    Value="@activity.HardTests"/>
 
-                    <TestCard
-                        Class="mixed-test"
-                        Icon="@EducationIcons.Tests"
-                        IconClass="indigo-text text-darken-1"
-                        Title="@L["Tests:Mixed"]"
-                        Href="@HistoryLinks.User.MyMixedTests"
-                        Value="@activity.MixedTests"/>
+                <TestCard
+                    Class="mixed-test"
+                    Icon="@EducationIcons.Tests"
+                    IconClass="indigo-text text-darken-1"
+                    Title="@L["Tests:Mixed"]"
+                    Href="@HistoryLinks.User.MyMixedTests"
+                    Value="@activity.MixedTests"/>
 
-                    <TestCard
-                        Class="event-guesser"
-                        Icon="@EducationIcons.EventGuesser"
-                        IconClass="deep-orange-text"
-                        Title="@L["EventGuesser"]"
-                        Href="@HistoryLinks.User.MyEventGuessers"
-                        Value="@activity.EventGuessers"/>
+                <TestCard
+                    Class="event-guesser"
+                    Icon="@EducationIcons.EventGuesser"
+                    IconClass="deep-orange-text"
+                    Title="@L["EventGuesser"]"
+                    Href="@HistoryLinks.User.MyEventGuessers"
+                    Value="@activity.EventGuessers"/>
 
+                <ActivityCard
+                    Class="monthly"
+                    Title="@L["Statistics:Daily"]"
+                    Activities="@activity.Daily"
+                    DateFormat="dd MMM"/>
+
+                @if (activity.Monthly.Length > 1)
+                {
                     <ActivityCard
-                        Class="monthly"
-                        Title="@L["Statistics:Daily"]"
-                        Activities="@activity.Daily"
-                        DateFormat="dd MMM"/>
-
-                    @if (activity.Monthly.Length > 1)
-                    {
-                        <ActivityCard
-                            Class="annual"
-                            Title="@L["Statistics:Monthly"]"
-                            Activities="@activity.Monthly"
-                            DateFormat="MMM yyyy"/>
-                    }
-                </div>
-            </EduContainer>
-        </Success>
+                        Class="annual"
+                        Title="@L["Statistics:Monthly"]"
+                        Activities="@activity.Monthly"
+                        DateFormat="MMM yyyy"/>
+                }
+            </div>
+        </EduContainer>
     </ApiViewer>
 </EduPage>
 

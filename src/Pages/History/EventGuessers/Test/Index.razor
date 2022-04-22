@@ -1,0 +1,129 @@
+@page "/history/event-guessers/{id}"
+@layout HistoryLayout
+@attribute [Authorize]
+
+@using Education.Web.Gateways.History.EventGuessers.Model
+@using Education.Web.Gateways.History.EventGuessers.Request
+@using Education.Web.Pages.History.EventGuessers.Test.Components
+@using Education.Web.Gateways.History
+
+<EduPage ShowFooter="@_response.IsLoaded">
+    <EduContainer>
+        <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
+    <ApiViewer Response="@_response">
+        <EduContainer MaxWidth="EduWidth.W960">
+            <div class="header">
+                <div class="header-score">
+                    <div class="d-flex flex-row align-center">
+                        <MudIcon Icon="@EducationIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
+                        <MudText Typo="Typo.subtitle1">
+                            @_score
+                        </MudText>
+                    </div>
+                    <MudText Typo="Typo.caption">
+                        @L["EventGuesser:Score"]
+                    </MudText>
+                </div>
+
+                <div class="header-bonus">
+                    @if (_x2BonusUntil > DateTime.UtcNow)
+                    {
+                        <div class="d-flex flex-row justify-end align-center">
+                            <MudIcon Icon="@EducationIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
+                            <MudText Typo="Typo.subtitle1">
+                                @L["EventGuesser:Bonus"]
+                            </MudText>
+                        </div>
+                        <div class="d-flex flex-row justify-end">
+                            <CountdownTimer Typo="Typo.caption" Date="@_x2BonusUntil" OnComplete="@(StateHasChanged)"/>
+                        </div>
+                    }
+                </div>
+
+                <div class="header-questions">
+                    <MudText Typo="Typo.subtitle1">
+                        @L["Questions"] @_completedQuestions / @_totalQuestions
+                    </MudText>
+                </div>
+
+                <div class="header-title">
+                    <MudText Typo="Typo.h5" Align="Align.Center">
+                        @_question.Title
+                    </MudText>
+                </div>
+            </div>
+
+            <AnswerForm OnAnswer="@OnValidSubmit"/>
+        </EduContainer>
+    </ApiViewer>
+</EduPage>
+
+@code {
+
+    private ApiResponse<TestModel> _response = ApiResponse<TestModel>.Loading();
+    private uint _score;
+    private DateTime _x2BonusUntil;
+    private uint _totalQuestions;
+    private uint _completedQuestions;
+    private TestModel.QuestionModel _question = default!;
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryLinks.Root),
+        new BreadcrumbItem(L["EventGuesser"].Value, HistoryLinks.EventGuesser.Index)
+    };
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryClient Client { get; set; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _response = await Client.EventGuesser.GetAsync(Id);
+        if (!_response.IsSuccess)
+            return;
+
+        _score = _response.Data.Score;
+        _x2BonusUntil = _response.Data.X2BonusUntil;
+        _completedQuestions = _response.Data.CompletedQuestions;
+        _totalQuestions = _response.Data.TotalQuestions;
+        _question = _response.Data.Question!;
+    }
+
+    private async Task OnValidSubmit(AnswerForm.Model model)
+    {
+        var year = model.Year.GetValueOrDefault();
+        var request = new CheckRequest(model.IsBc ? -year : year, model.Month, model.Day);
+
+        var result = await Client.EventGuesser.CheckAsync(Id, _question.Id, request);
+        if (!result.IsSuccess)
+        {
+            Snackbar.Add(result.Error.Detail, Severity.Error);
+            return;
+        }
+
+        if (result.Data.Question is not null)
+        {
+            _score = result.Data.Score;
+            _x2BonusUntil = result.Data.X2BonusUntil;
+            _question = result.Data.Question;
+            _completedQuestions = result.Data.CompletedQuestions;
+            _totalQuestions = result.Data.TotalQuestions;
+        }
+
+        Navigation.NavigateTo(HistoryLinks.EventGuesser.Conclusion(Id));
+    }
+
+}

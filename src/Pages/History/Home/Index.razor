@@ -11,99 +11,97 @@
     @L["Subject:History"]
 </PageTitle>
 <EduPage ShowFooter="@_response.IsLoaded">
-    <ApiViewer Response="@_response">
-        <Success Context="result">
-            <SpotlightGrid Class="mb-3 mb-sm-6" Topics="@result.Trends.Take(8).ToArray()"/>
+    <ApiViewer Response="@_response" Context="result">
+        <SpotlightGrid Class="mb-3 mb-sm-6" Topics="@result.Trends.Take(8).ToArray()"/>
 
-            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
-                <div class="header">
-                    <h2>@L["Topics:Trending"]</h2>
-                </div>
-                <section class="four-column">
-                    @foreach (var item in result.Trends.Skip(8))
+        <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
+            <div class="header">
+                <h2>@L["Topics:Trending"]</h2>
+            </div>
+            <section class="four-column">
+                @foreach (var item in result.Trends.Skip(8))
+                {
+                    <TopicCard
+                        Epoch="@item.Epoch"
+                        Id="@item.Id"
+                        Overview="@item.Overview"
+                        Rating="@item.Rating"
+                        Title="@item.Title"
+                        Image="@item.Image"/>
+                }
+            </section>
+        </EduContainer>
+
+        <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
+            <DailyTopic Topic="@result.DailyTopic" Class="my-6 my-sm-12"/>
+        </EduContainer>
+
+        <EduContainer MaxWidth="@EduWidth.W1440" Class="pb-0">
+            <div class="two-column">
+                <section>
+                    <div class="header">
+                        <h2>@L["Topics:Recent"]</h2>
+                    </div>
+                    @for (var i = 0; i < result.Recent.Length; i++)
                     {
-                        <TopicCard
-                            Epoch="@item.Epoch"
-                            Id="@item.Id"
-                            Overview="@item.Overview"
-                            Rating="@item.Rating"
-                            Title="@item.Title"
-                            Image="@item.Image"/>
-                    }
-                </section>
-            </EduContainer>
+                        var item = result.Recent[i];
 
-            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12" Style="background-color: var(--mud-palette-black)">
-                <DailyTopic Topic="@result.DailyTopic" Class="my-6 my-sm-12"/>
-            </EduContainer>
-
-            <EduContainer MaxWidth="@EduWidth.W1440" Class="pb-0">
-                <div class="two-column">
-                    <section>
-                        <div class="header">
-                            <h2>@L["Topics:Recent"]</h2>
-                        </div>
-                        @for (var i = 0; i < result.Recent.Length; i++)
-                        {
-                            var item = result.Recent[i];
-
-                            <TopicCard
-                                Id="@item.Id"
-                                Epoch="@item.Epoch"
-                                Title="@item.Title"
-                                Image="@item.Image"
-                                Overview="@item.Overview"
-                                Rating="@item.Rating"
-                                Horizontal="true"
-                                Class="@(i == result.Recent.Length - 1 ? null : "mb-3 mb-sm-6")"/>
-                        }
-                    </section>
-
-                    <section>
-                        <div class="header">
-                            <h2>@L["Topics:TopFavorites"]</h2>
-                        </div>
-
-                        <EduFitGrid>
-                            @foreach (var item in result.TopFavorites)
-                            {
-                                <TopicCard
-                                    Id="@item.Id"
-                                    Epoch="@item.Epoch"
-                                    Title="@item.Title"
-                                    Image="@item.Image"
-                                    Overview="@item.Overview"
-                                    Rating="@item.Rating"/>
-                            }
-                        </EduFitGrid>
-                    </section>
-                </div>
-            </EduContainer>
-
-            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
-                <div class="header">
-                    <h2>@L["Topics:TopRatings"]</h2>
-                </div>
-
-                <section class="four-column">
-                    @foreach (var item in result.TopRatings)
-                    {
                         <TopicCard
                             Id="@item.Id"
                             Epoch="@item.Epoch"
                             Title="@item.Title"
                             Image="@item.Image"
                             Overview="@item.Overview"
-                            Rating="@item.Rating"/>
+                            Rating="@item.Rating"
+                            Horizontal="true"
+                            Class="@(i == result.Recent.Length - 1 ? null : "mb-3 mb-sm-6")"/>
                     }
                 </section>
-            </EduContainer>
 
-            <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
-                <RandomTopic Class="my-6 my-sm-12"/>
-            </EduContainer>
+                <section>
+                    <div class="header">
+                        <h2>@L["Topics:TopFavorites"]</h2>
+                    </div>
 
-        </Success>
+                    <EduFitGrid>
+                        @foreach (var item in result.TopFavorites)
+                        {
+                            <TopicCard
+                                Id="@item.Id"
+                                Epoch="@item.Epoch"
+                                Title="@item.Title"
+                                Image="@item.Image"
+                                Overview="@item.Overview"
+                                Rating="@item.Rating"/>
+                        }
+                    </EduFitGrid>
+                </section>
+            </div>
+        </EduContainer>
+
+        <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
+            <div class="header">
+                <h2>@L["Topics:TopRatings"]</h2>
+            </div>
+
+            <section class="four-column">
+                @foreach (var item in result.TopRatings)
+                {
+                    <TopicCard
+                        Id="@item.Id"
+                        Epoch="@item.Epoch"
+                        Title="@item.Title"
+                        Image="@item.Image"
+                        Overview="@item.Overview"
+                        Rating="@item.Rating"/>
+                }
+            </section>
+        </EduContainer>
+
+        <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
+            <RandomTopic Class="my-6 my-sm-12"/>
+        </EduContainer>
+
     </ApiViewer>
 </EduPage>
 
