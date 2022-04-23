@@ -8,11 +8,11 @@
 
 <EduPage ShowFooter="@_response.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <PageHeader Title="@L["Leaderboard"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
+        <PageHeader Title="@L["Leaderboard"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
 
     <ApiViewer Response="@_response" Context="items">
-        <EduContainer MaxWidth="EduWidth.W1920">
+        <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
             <EduFitGrid>
                 @foreach (var user in items[..3])
                 {
@@ -27,15 +27,7 @@
         </EduContainer>
 
         <EduContainer MaxWidth="EduWidth.W1920">
-            <Virtualize Items="@(items[3..])" Context="user">
-                <GlobalRankingRow
-                    Class="mb-3"
-                    Position="@user.Position"
-                    Name="@user.Name"
-                    Image="@user.Image"
-                    Level="@user.Level"
-                    Experience="@user.Experience"/>
-            </Virtualize>
+            <GlobalRankingTable Users="@(items[3..])"/>
         </EduContainer>
     </ApiViewer>
 </EduPage>

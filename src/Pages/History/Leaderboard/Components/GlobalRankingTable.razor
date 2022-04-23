@@ -1,0 +1,59 @@
+@using Education.Web.Gateways.History.Leaderboards.Model
+
+<section class="grid">
+    <div class="position">
+        <MudText Typo="Typo.subtitle2">
+            @L["Leaderboard:Position"]
+        </MudText>
+    </div>
+    <div class="name">
+        <MudText Typo="Typo.subtitle2">
+            @L["Leaderboard:UserName"]
+        </MudText>
+    </div>
+    <div class="level">
+        <MudText Typo="Typo.subtitle2">
+            @L["Leaderboard:UserLevel"]
+        </MudText>
+    </div>
+    <div class="experience">
+        <MudText Typo="Typo.subtitle2">
+            @L["Leaderboard:UserExperience"]
+        </MudText>
+    </div>
+</section>
+<Virtualize Items="@Users" Context="user">
+    <MudPaper Elevation="0" Class="mb-3">
+        <section class="grid">
+            <div class="position">
+                <MudText Typo="Typo.subtitle2">
+                    @user.Position
+                </MudText>
+            </div>
+            <div class="name">
+                <MudAvatar Image="@user.Image" Alt="@user.Name" Class="mr-3"/>
+                <MudText Typo="Typo.subtitle1">@user.Name</MudText>
+            </div>
+            <div class="level">
+                <MudIcon Class="mr-3" Style="@("color: " + Colors.Grey.Lighten1)" Icon="@Icons.Material.Outlined.BarChart"/>
+                <MudText Typo="Typo.h6">
+                    @user.Level
+                </MudText>
+            </div>
+            <div class="experience">
+                <MudIcon Class="mr-3" Size="Size.Small" Style="color: #FFCA28" Icon="@EducationIcons.Experience"/>
+                <HumanReadableText Value="@user.Experience" Typo="Typo.h6"/>
+            </div>
+        </section>
+    </MudPaper>
+</Virtualize>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public GlobalLeaderboardItem[] Users { get; set; } = Array.Empty<GlobalLeaderboardItem>();
+
+}

@@ -1,8 +1,12 @@
 .grid {
     display: grid;
-    grid-template-columns: 40px 3fr 1fr;
+    grid-template-columns: 60px 3fr 1fr;
     align-items: center;
     padding: 12px;
+}
+
+.position {
+    text-align: center;
 }
 
 .name, .level {
@@ -15,12 +19,16 @@
 }
 
 @media (min-width: 600px) {
+    .grid {
+        grid-template-columns: 80px auto 120px 120px;
+    }
+
+    .position {
+        text-align: left;
+    }
+
     .experience {
         display: flex;
         align-items: center;
-    }
-
-    .grid {
-        grid-template-columns: 40px auto 120px 120px;
     }
 }

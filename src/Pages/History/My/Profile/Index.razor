@@ -10,19 +10,19 @@
 <PageTitle>@L["Profile"]</PageTitle>
 
 <EduPage ShowFooter="@_response.IsLoaded">
+    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
+        <AuthorizeView>
+            <Authorized>
+                <ProfileHeader
+                    Image="@context.User.GetImage()"
+                    Name="@context.User.GetName()"
+                    Nickname="@context.User.GetNickname()"/>
+            </Authorized>
+        </AuthorizeView>
+    </EduContainer>
     <ApiViewer Response="@_response" Context="profile">
         <EduContainer MaxWidth="EduWidth.W1920">
             <div class="grid">
-                <AuthorizeView>
-                    <Authorized>
-                        <ProfileHeader
-                            Class="header"
-                            Image="@context.User.GetImage()"
-                            Name="@context.User.GetName()"
-                            Nickname="@context.User.GetNickname()"/>
-                    </Authorized>
-                </AuthorizeView>
-
                 <SubjectCard Class="subject"/>
 
                 <LevelCard Class="level" Level="@profile.Level"/>
