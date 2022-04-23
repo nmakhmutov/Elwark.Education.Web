@@ -22,9 +22,9 @@
     [Parameter]
     public string Text { get; set; } = string.Empty;
 
-    protected override void OnParametersSet() => 
+    protected override void OnParametersSet() =>
         _class = CssBuilder.Default("markdown")
-        .AddClass(Class, Class is not null)
-        .Build();
+            .AddClass(Class, Class is not null)
+            .Build();
 
 }

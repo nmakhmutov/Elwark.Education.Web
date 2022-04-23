@@ -10,13 +10,13 @@ internal sealed class TestQuestionModelConverter : JsonConverter<TestQuestionMod
     {
         using var document = JsonDocument.ParseValue(ref reader);
         var type = document.RootElement.GetProperty("type").GetString();
-        
+
         return type switch
         {
             "short" => document.Deserialize<ShortAnswerQuestionModel>(options),
             "single" => document.Deserialize<SingleAnswerQuestionModel>(options),
             "multiple" => document.Deserialize<MultipleAnswerQuestionModel>(options),
-            _ => throw new ArgumentOutOfRangeException(nameof(TestQuestionModel), type, @"Unknown test question")
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, @"Unknown test question")
         };
     }
 

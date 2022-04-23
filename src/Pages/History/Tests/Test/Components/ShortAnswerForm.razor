@@ -8,7 +8,7 @@
             Label="@L["Test:YourAnswer"]"
             For="@(() => UserAnswer.ShortAnswer)"
             Disabled="@(CorrectAnswer is not null)"/>
-        
+
         @if (CorrectAnswer is not null)
         {
             <MudText Typo="Typo.subtitle2" Color="@(CorrectAnswer.IsCorrect ? Color.Success : Color.Error)">

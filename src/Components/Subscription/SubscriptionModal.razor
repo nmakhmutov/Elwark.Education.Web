@@ -41,7 +41,7 @@
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;
-    
+
     private ApiResponse<Subscription[]> _response = ApiResponse<Subscription[]>.Loading();
 
     // protected override async Task OnInitializedAsync() =>
@@ -52,10 +52,11 @@
 
     private void OnBuyClick(string id)
     {
-        // var response = await Client.Basket.AddItemAsync(id);
-        // if (response.IsSuccess)
-            // Navigation.NavigateTo(Links.Store.Checkout);
+    // var response = await Client.Basket.AddItemAsync(id);
+    // if (response.IsSuccess)
+    // Navigation.NavigateTo(Links.Store.Checkout);
     }
-    
+
     public sealed record Subscription(string Id, string Type, uint Months, long Price);
+
 }

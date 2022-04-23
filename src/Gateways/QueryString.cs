@@ -18,7 +18,8 @@ public readonly struct QueryString : IEquatable<QueryString>
 
     public string? Value { get; }
 
-    public bool HasValue => !string.IsNullOrEmpty(Value);
+    public bool HasValue =>
+        !string.IsNullOrEmpty(Value);
 
     public override string ToString() =>
         string.IsNullOrEmpty(Value) ? string.Empty : Value.Replace("#", "%23");

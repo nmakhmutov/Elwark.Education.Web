@@ -5,8 +5,8 @@ namespace Education.Web.Gateways.History.Tests;
 
 internal sealed class TestClient : GatewayClient
 {
-    private readonly HttpClient _client;
     private const string Route = "history/tests";
+    private readonly HttpClient _client;
 
     public TestClient(HttpClient client) =>
         _client = client;

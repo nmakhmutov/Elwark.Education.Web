@@ -11,13 +11,13 @@ namespace Education.Web.Gateways.History;
 internal interface IHistoryClient
 {
     public EmpireClient Empire { get; }
-    
+
     public EventGuesserClient EventGuesser { get; }
 
     public HomeClient Home { get; }
 
     public LeaderboardClient Leaderboard { get; }
-    
+
     public UserClient User { get; }
 
     public TestClient Test { get; }
@@ -43,7 +43,7 @@ internal sealed class HistoryClient : GatewayClient, IHistoryClient
     public EventGuesserClient EventGuesser { get; }
 
     public HomeClient Home { get; }
-    
+
     public LeaderboardClient Leaderboard { get; }
 
     public UserClient User { get; }

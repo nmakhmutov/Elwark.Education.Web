@@ -1,5 +1,4 @@
 @using FluentValidation
-
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
@@ -119,10 +118,10 @@
     [Parameter, EditorRequired]
     public EventCallback OnComplete { get; set; }
 
-    protected override void OnInitialized() => 
+    protected override void OnInitialized() =>
         _validator = new Validator(L);
 
-    private Task OnValidSubmit() => 
+    private Task OnValidSubmit() =>
         OnAnswer.InvokeAsync(UserAnswer);
 
     private (string? Icon, Color Color) Get(AnswerOptionModel option) =>

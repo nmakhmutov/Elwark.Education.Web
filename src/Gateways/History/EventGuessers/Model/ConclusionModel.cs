@@ -19,5 +19,6 @@ public sealed record QuestionModel(
     HistoricalDateModel UserAnswer
 )
 {
-    public bool IsCorrect => CorrectAnswer == UserAnswer;
+    public bool IsCorrect =>
+        CorrectAnswer == UserAnswer;
 }

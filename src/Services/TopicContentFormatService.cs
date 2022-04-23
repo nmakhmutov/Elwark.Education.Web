@@ -55,7 +55,8 @@ public sealed class TopicContentFormatService
         UpdateStyles();
     }
 
-    public bool CanIncreaseFontSize() => FontSize < MaxTextSize;
+    public bool CanIncreaseFontSize() =>
+        FontSize < MaxTextSize;
 
     public async Task IncreaseFontSizeAsync()
     {
@@ -67,7 +68,8 @@ public sealed class TopicContentFormatService
         await Update();
     }
 
-    public bool CanDecreaseFontSize() => FontSize > MinTextSize;
+    public bool CanDecreaseFontSize() =>
+        FontSize > MinTextSize;
 
     public async Task DecreaseFontSizeAsync()
     {
@@ -109,13 +111,11 @@ public sealed class TopicContentFormatService
             TextAlign = TextAlign
         });
 
-    private void UpdateStyles()
-    {
+    private void UpdateStyles() =>
         TextStyles = StyleBuilder.Empty()
             .AddStyle("font-size", FontSize.ToString("0.0", CultureInfo.InvariantCulture) + "rem")
             .AddStyle("text-align", TextAlign.ToString().ToLowerInvariant())
             .Build();
-    }
 
     private async Task Update()
     {
@@ -130,6 +130,6 @@ public sealed class TopicContentFormatService
         public Align TextAlign { get; init; }
 
         [JsonPropertyName("fs")]
-        public double FontSize { get; init;  }
+        public double FontSize { get; init; }
     }
 }

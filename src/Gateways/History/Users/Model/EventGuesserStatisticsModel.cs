@@ -24,5 +24,4 @@ public sealed record EventGuesserStatisticsModel(
         ContrastModel<uint> Correct,
         ContrastModel<uint> Incorrect
     );
-    
 }

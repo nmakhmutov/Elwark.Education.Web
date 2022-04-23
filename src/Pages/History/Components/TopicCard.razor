@@ -1,7 +1,6 @@
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.Models.Content
 @using MudBlazor.Utilities
-
 <section class="@_class">
     <header class="card-header">
         <a href="@HistoryLinks.Content.Topic(Id)">
@@ -59,12 +58,9 @@
     [Parameter]
     public bool Horizontal { get; set; }
 
-    protected override void OnParametersSet()
-    {
-        _class = CssBuilder.Default("card")
-            .AddClass("horizontal", Horizontal)
-            .AddClass(Class, !string.IsNullOrEmpty(Class))
-            .Build();
-    }
+    protected override void OnParametersSet() => _class = CssBuilder.Default("card")
+        .AddClass("horizontal", Horizontal)
+        .AddClass(Class, !string.IsNullOrEmpty(Class))
+        .Build();
 
 }

@@ -196,10 +196,8 @@
             _isLiked = false;
     }
 
-    private async Task OnFavoriteChanged(bool toggled)
-    {
+    private async Task OnFavoriteChanged(bool toggled) =>
         _isFavorite = await OnFavoriteClick.Invoke(TopicId);
-    }
 
     private static string ChapterId(uint id) =>
         $"chapter-{id}";

@@ -5,8 +5,8 @@ namespace Education.Web.Gateways.History.EventGuessers;
 
 internal sealed class EventGuesserClient : GatewayClient
 {
-    private readonly HttpClient _client;
     private const string Route = "history/event-guessers";
+    private readonly HttpClient _client;
 
     public EventGuesserClient(HttpClient client) =>
         _client = client;

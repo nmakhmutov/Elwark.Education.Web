@@ -1,13 +1,11 @@
 @page "/history/empires"
 @layout HistoryLayout
 @attribute [Authorize]
-
-@using MudBlazor.Services
-@using Education.Web.Gateways.History
-@using Education.Web.Gateways.History.Empires.Model
 @using Education.Web.Gateways.History.Empires.Request
 @using Education.Web.Pages.History.Components
-
+@using MudBlazor.Services
+@using Education.Web.Gateways.History.Empires.Model
+@using Education.Web.Gateways.History
 @implements IDisposable
 
 <style>
@@ -142,7 +140,7 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() => 
+    protected override async Task OnInitializedAsync() =>
         _response = await HistoryClient.Empire.GetAsync(_request);
 
     private async Task LoadMoreAsync()

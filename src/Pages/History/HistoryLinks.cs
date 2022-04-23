@@ -37,7 +37,7 @@ public static class HistoryLinks
 
         public static string Test(string testId) =>
             $"{Root}/event-guessers/{testId}";
-            
+
         public static string Conclusion(string testId) =>
             $"{Root}/event-guessers/{testId}/conclusion";
     }
@@ -46,7 +46,7 @@ public static class HistoryLinks
     {
         public const string Index = $"{Root}/leaderboard";
     }
-        
+
     public static class User
     {
         public const string MyProfile = $"{Root}/my/profile";

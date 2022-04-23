@@ -45,10 +45,11 @@
 
     private void OnLogin() =>
         Navigation.NavigateTo(CommonLinks.LogIn(Navigation.Uri));
-        
+
     private async Task OnLogout(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo(CommonLinks.LogOut);
     }
+
 }

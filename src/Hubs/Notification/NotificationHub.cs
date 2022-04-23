@@ -6,8 +6,8 @@ namespace Education.Web.Hubs.Notification;
 
 internal sealed class NotificationHub : IAsyncDisposable
 {
-    private readonly AuthenticationStateProvider _stateProvider;
     private readonly HubConnection _connection;
+    private readonly AuthenticationStateProvider _stateProvider;
     private List<NotificationModel> _notifications;
 
     public NotificationHub(Uri host, IAccessTokenProvider tokenProvider, AuthenticationStateProvider stateProvider)
@@ -42,9 +42,6 @@ internal sealed class NotificationHub : IAsyncDisposable
         };
     }
 
-    // ReSharper disable once MemberInitializerValueIgnored
-    public event Action OnChange = () => { };
-
     public IEnumerable<NotificationModel> Messages =>
         _notifications.AsReadOnly();
 
@@ -54,11 +51,13 @@ internal sealed class NotificationHub : IAsyncDisposable
     public ValueTask DisposeAsync() =>
         _connection.DisposeAsync();
 
+    public event Action OnChange = () => { };
+
     public async Task StartAsync()
     {
         if (_connection.State == HubConnectionState.Connected)
             return;
-        
+
         var state = await _stateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated ?? false)
             await _connection.StartAsync();

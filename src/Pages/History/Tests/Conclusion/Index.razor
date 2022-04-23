@@ -1,10 +1,9 @@
 @page "/history/tests/{id}/conclusion"
-@layout HistoryLayout
-@attribute [Authorize]
-
-@using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Tests.Model
 @using Education.Web.Pages.History.Tests.Conclusion.Components
+@using Education.Web.Gateways.History
+@layout HistoryLayout
+@attribute [Authorize]
 
 <EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response" Context="conclusion">

@@ -1,15 +1,15 @@
 <InventoryInfoCard Id="@Id" Title="@Title" Overview="@Overview" Outlined="@Outlined">
-        <div class="d-flex flex-column align-center">
-            <HumanReadableText Typo="Typo.h6" Value="@Count" Class="mb-1"/>
-    
-            <LoadingButton
-                Variant="Variant.Filled"
-                Color="Color.Primary"
-                IsLoading="@_isLoading"
-                Text="@ButtonText"
-                FullWidth="true"
-                OnClick="@OnClickHandler"/>
-        </div>
+    <div class="d-flex flex-column align-center">
+        <HumanReadableText Typo="Typo.h6" Value="@Count" Class="mb-1"/>
+
+        <LoadingButton
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            IsLoading="@_isLoading"
+            Text="@ButtonText"
+            FullWidth="true"
+            OnClick="@OnClickHandler"/>
+    </div>
 </InventoryInfoCard>
 
 @code {
@@ -32,7 +32,7 @@
 
     [Parameter]
     public string? ButtonText { get; set; }
-    
+
     [Parameter]
     public EventCallback<uint> OnClick { get; set; }
 

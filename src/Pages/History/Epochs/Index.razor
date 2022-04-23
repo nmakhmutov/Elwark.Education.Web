@@ -1,10 +1,9 @@
 @page "/history/epochs/{type}"
-@layout HistoryLayout
-@attribute [Authorize]
-
-@using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Topics.Request
 @using Education.Web.Pages.History.Components
+@using Education.Web.Gateways.History
+@layout HistoryLayout
+@attribute [Authorize]
 
 <EduPage ShowFooter="@_response.IsLoaded">
     <PageTitle>@L[$"History:{_request.Epoch}"]</PageTitle>

@@ -11,18 +11,21 @@ public sealed class LanguageService
     public LanguageService(ILocalStorageService storage) =>
         _storage = storage;
 
-    public static Dictionary<string, string> Cultures => new(3, StringComparer.InvariantCultureIgnoreCase)
-    {
-        ["en-us"] = "English (US)",
-        ["en-gb"] = "English (UK)",
-        ["ru-ru"] = "Русский"
-    };
+    public static Dictionary<string, string> Cultures =>
+        new(3, StringComparer.InvariantCultureIgnoreCase)
+        {
+            ["en-us"] = "English (US)",
+            ["en-gb"] = "English (UK)",
+            ["ru-ru"] = "Русский"
+        };
 
-    public static string Language => CultureInfo.CurrentCulture.Name;
+    public static string Language =>
+        CultureInfo.CurrentCulture.Name;
 
-    public static string Name => Cultures.TryGetValue(CultureInfo.CurrentCulture.Name, out var language)
-        ? language
-        : Cultures.First().Value;
+    public static string Name =>
+        Cultures.TryGetValue(CultureInfo.CurrentCulture.Name, out var language)
+            ? language
+            : Cultures.First().Value;
 
     public async Task<bool> SetAsync(string language)
     {

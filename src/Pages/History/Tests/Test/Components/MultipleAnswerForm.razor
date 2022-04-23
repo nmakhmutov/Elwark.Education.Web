@@ -1,5 +1,4 @@
 @using FluentValidation
-
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
@@ -44,54 +43,54 @@
             </div>
         }
     </div>
-    
-        @if (CorrectAnswer is null)
-        {
-            <div class="d-flex flex-row justify-center">
-                <LoadingButton
-                    ButtonType="ButtonType.Submit"
-                    Variant="Variant.Filled"
-                    DisableElevation="true"
-                    Color="Color.Primary"
-                    IsLoading="@IsLoading"
-                    Text="@L["Test:Answer"]"
-                    LoadingText="@L["Loading"]"/>
-            </div>
 
-            <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error" Class="mt-3 mt-sm-6">
-                <ValidationSummary/>
+    @if (CorrectAnswer is null)
+    {
+        <div class="d-flex flex-row justify-center">
+            <LoadingButton
+                ButtonType="ButtonType.Submit"
+                Variant="Variant.Filled"
+                DisableElevation="true"
+                Color="Color.Primary"
+                IsLoading="@IsLoading"
+                Text="@L["Test:Answer"]"
+                LoadingText="@L["Loading"]"/>
+        </div>
+
+        <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error" Class="mt-3 mt-sm-6">
+            <ValidationSummary/>
+        </MudText>
+    }
+    else
+    {
+        <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
+            @if (IsTestCompleted)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnComplete" DisableElevation="true">
+                    @L["Test:Result"]
+                </MudButton>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnNext" DisableElevation="true">
+                    @L["Test:Next"]
+                </MudButton>
+            }
+        </div>
+
+        if (CorrectAnswer.IsCorrect)
+        {
+            <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
+                @L["Test:CorrectAnswer"]
             </MudText>
         }
         else
         {
-            <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
-                @if (IsTestCompleted)
-                {
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnComplete" DisableElevation="true">
-                        @L["Test:Result"]
-                    </MudButton>
-                }
-                else
-                {
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnNext" DisableElevation="true">
-                        @L["Test:Next"]
-                    </MudButton>
-                }
-            </div>
-
-            if (CorrectAnswer.IsCorrect)
-            {
-                <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
-                    @L["Test:CorrectAnswer"]
-                </MudText>
-            }
-            else
-            {
-                <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
-                    @L["Test:IncorrectAnswer"]
-                </MudText>
-            }
+            <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
+                @L["Test:IncorrectAnswer"]
+            </MudText>
         }
+    }
 </EditForm>
 
 @code {
@@ -124,10 +123,10 @@
     [Parameter, EditorRequired]
     public EventCallback OnComplete { get; set; }
 
-    protected override void OnInitialized() => 
+    protected override void OnInitialized() =>
         _validator = new Validator(L);
 
-    private Task OnValidSubmit() => 
+    private Task OnValidSubmit() =>
         OnAnswer.InvokeAsync(UserAnswer);
 
     private void OnChecked(bool isAdded, uint id)

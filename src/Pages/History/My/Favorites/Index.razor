@@ -1,10 +1,8 @@
 @page "/history/my/favorites"
-@layout HistoryLayout
-@attribute [Authorize]
-
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Users.Request
-@using Margin = MudBlazor.Margin
+@layout HistoryLayout
+@attribute [Authorize]
 
 <PageTitle>@L["Favorites"]</PageTitle>
 <EduPage ShowFooter="true">
@@ -70,8 +68,8 @@
                             TopicId="@context.Topic.Id"
                             OnFavoriteClick="@OnFavoriteClick"/>
                         <MudTooltip Text="@L["Details"]">
-                            <MudIconButton 
-                                Link="@HistoryLinks.User.MyTopic(context.Topic.Id)" 
+                            <MudIconButton
+                                Link="@HistoryLinks.User.MyTopic(context.Topic.Id)"
                                 Icon="@Icons.Material.Outlined.RemoveRedEye"/>
                         </MudTooltip>
                     </div>

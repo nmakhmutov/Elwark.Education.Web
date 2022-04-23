@@ -1,11 +1,10 @@
 @page "/history/topics/{id}"
-@layout HistoryLayout
-@attribute [Authorize]
-
-@using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Topics.Model
 @using Education.Web.Pages.History.Topics.Components
+@using Education.Web.Gateways.History
 @using Education.Web.Pages.History.Components
+@layout HistoryLayout
+@attribute [Authorize]
 
 <EduPage ShowFooter="@_response.IsLoaded">
     <ApiViewer Response="@_response" Context="result">

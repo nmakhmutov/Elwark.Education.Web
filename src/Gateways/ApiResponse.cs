@@ -14,10 +14,12 @@ public sealed class ApiResponse<T>
 
     public ResponseStatus Status { get; }
 
-    public bool IsSuccess => Status == ResponseStatus.Success;
+    public bool IsSuccess =>
+        Status == ResponseStatus.Success;
 
-    public bool IsLoaded => Status != ResponseStatus.Loading;
-    
+    public bool IsLoaded =>
+        Status != ResponseStatus.Loading;
+
     public T Data
     {
         get
@@ -40,11 +42,14 @@ public sealed class ApiResponse<T>
         }
     }
 
-    public static ApiResponse<T> Loading() => new(ResponseStatus.Loading, default);
+    public static ApiResponse<T> Loading() =>
+        new(ResponseStatus.Loading, default);
 
-    public static ApiResponse<T> Success(T data) => new(ResponseStatus.Success, data);
+    public static ApiResponse<T> Success(T data) =>
+        new(ResponseStatus.Success, data);
 
-    public static ApiResponse<T> Fail(Error error) => new(ResponseStatus.Fail, default, error);
+    public static ApiResponse<T> Fail(Error error) =>
+        new(ResponseStatus.Fail, default, error);
 }
 
 public enum ResponseStatus
