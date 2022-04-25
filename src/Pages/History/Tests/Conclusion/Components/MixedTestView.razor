@@ -12,7 +12,7 @@
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["Answers"]
     </MudText>
-    <MudTable Items="@Conclusion.Questions" Hover="true" Breakpoint="Breakpoint.Sm">
+    <MudTable Items="@Conclusion.Questions" Hover Breakpoint="Breakpoint.Sm">
         <HeaderContent>
             <MudTh>
                 @L["Topic"]
@@ -37,10 +37,10 @@
                 @context.Title
             </MudTd>
             <MudTd DataLabel="@L["Question:IsAnswered"]">
-                <MudCheckBox ReadOnly="true" Checked="@context.IsAnswered"/>
+                <MudCheckBox ReadOnly Checked="@context.IsAnswered"/>
             </MudTd>
             <MudTd DataLabel="@L["Question:IsCorrect"]">
-                <MudCheckBox ReadOnly="true" Checked="@context.IsCorrect"/>
+                <MudCheckBox ReadOnly Checked="@context.IsCorrect"/>
             </MudTd>
         </RowTemplate>
     </MudTable>

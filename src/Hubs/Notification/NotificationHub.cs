@@ -42,7 +42,7 @@ internal sealed class NotificationHub : IAsyncDisposable
         };
     }
 
-    public IEnumerable<NotificationModel> Messages =>
+    public IEnumerable<NotificationModel> Notifications =>
         _notifications.AsReadOnly();
 
     public bool HasNotifications =>

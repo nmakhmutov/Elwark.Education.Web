@@ -1,13 +1,13 @@
-@page "/history/leaderboard"
+@page "/history/leaderboards/global"
 @using Education.Web.Gateways.History.Leaderboards.Model
-@using Education.Web.Pages.History.Leaderboard.Components
+@using Education.Web.Pages.History.Leaderboards.Overall.Components
 @using Education.Web.Gateways.History
 @layout HistoryLayout
 @attribute [Authorize]
 
 <EduPage ShowFooter="@_response.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <PageHeader Title="@L["Leaderboard"]" Breadcrumbs="@Breadcrumbs"/>
+        <PageHeader Title="@L["Leaderboard:Overall:Name"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
 
     <ApiViewer Response="@_response" Context="items">
@@ -15,24 +15,24 @@
             <EduFitGrid>
                 @foreach (var user in items[..3])
                 {
-                    <GlobalRankingCard
-                        Position="@user.Position"
-                        Name="@user.Name"
-                        Image="@user.Image"
+                    <RankingCard
+                        Rank="@user.Rank"
                         Level="@user.Level"
-                        Experience="@user.Experience"/>
+                        Experience="@user.Experience"
+                        Name="@user.Name"
+                        Image="@user.Image"/>
                 }
             </EduFitGrid>
         </EduContainer>
 
         <EduContainer MaxWidth="EduWidth.W1920">
-            <GlobalRankingTable Users="@(items[3..])"/>
+            <RankingTable Users="@(items[3..])"/>
         </EduContainer>
     </ApiViewer>
 </EduPage>
 
 @code {
-    private ApiResponse<GlobalLeaderboardItem[]> _response = ApiResponse<GlobalLeaderboardItem[]>.Loading();
+    private ApiResponse<OverallRankingModel[]> _response = ApiResponse<OverallRankingModel[]>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -46,6 +46,6 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _response = await Client.Leaderboard.GetGlobalLeaderboardAsync();
+        _response = await Client.Leaderboard.GetOverallAsync();
 
 }

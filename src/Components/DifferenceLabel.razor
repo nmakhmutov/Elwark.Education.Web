@@ -2,20 +2,20 @@
     @switch (Difference)
     {
         case < 0:
-            <MudChip Color="Color.Error" Size="Size.Small" Label="true" Variant="Variant.Outlined">
+            <MudChip Color="Color.Error" Size="Size.Small" Label Variant="Variant.Outlined">
                 @Difference.ToReadable()%
             </MudChip>
             <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" Color="Color.Error"/>
             break;
 
         case 0:
-            <MudChip Color="Color.Surface" Size="Size.Small" Label="true" Variant="Variant.Outlined">
+            <MudChip Color="Color.Surface" Size="Size.Small" Label Variant="Variant.Outlined">
                 @Difference.ToReadable()%
             </MudChip>
             break;
 
         case > 0:
-            <MudChip Color="Color.Success" Size="Size.Small" Label="true" Variant="Variant.Outlined">
+            <MudChip Color="Color.Success" Size="Size.Small" Label Variant="Variant.Outlined">
                 +@Difference.ToReadable()%
             </MudChip>
             <MudIcon Icon="@Icons.Material.Filled.ArrowUpward" Color="Color.Success"/>

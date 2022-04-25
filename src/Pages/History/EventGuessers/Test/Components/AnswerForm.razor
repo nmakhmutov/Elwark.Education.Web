@@ -8,10 +8,10 @@
             For="@(() => _model.Year)"
             Label="@L["EventGuesser:Year"]"
             Variant="Variant.Text"
-            HideSpinButtons="true"
-            AutoFocus="true"/>
+            HideSpinButtons
+            AutoFocus/>
 
-        <MudSelect T="uint?" @bind-Value="@_model.Month" For="@(() => _model.Month)" Label="@L["EventGuesser:Month"]" Clearable="true">
+        <MudSelect T="uint?" @bind-Value="@_model.Month" For="@(() => _model.Month)" Label="@L["EventGuesser:Month"]" Clearable>
             @foreach (var month in Months)
             {
                 <MudSelectItem Value="@month.Key" T="uint?">
@@ -20,7 +20,7 @@
             }
         </MudSelect>
 
-        <MudSelect T="uint?" @bind-Value="@_model.Day" For="@(() => _model.Day)" Label="@L["EventGuesser:Day"]" Clearable="true">
+        <MudSelect T="uint?" @bind-Value="@_model.Day" For="@(() => _model.Day)" Label="@L["EventGuesser:Day"]" Clearable>
             @foreach (var day in Enumerable.Range(1, 31))
             {
                 <MudSelectItem Value="@((uint)day)" T="uint?">

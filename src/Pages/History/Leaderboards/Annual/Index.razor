@@ -1,0 +1,37 @@
+@page "/history/leaderboards/annual"
+@using Education.Web.Gateways.History.Leaderboards.Model
+@using Education.Web.Pages.History.Leaderboards.Components
+@using Education.Web.Gateways.History
+@layout HistoryLayout
+@attribute [Authorize]
+
+<EduPage ShowFooter="@_response.IsLoaded">
+    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
+        <PageHeader Title="@L["Leaderboard:Annual:Name"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
+
+    <ApiViewer Response="@_response" Context="leaderboard">
+        <EduContainer MaxWidth="EduWidth.W1920">
+            <RankingTable Users="@leaderboard.Users"/>
+        </EduContainer>
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private ApiResponse<AnnualLeaderboardModel> _response = ApiResponse<AnnualLeaderboardModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryLinks.Root)
+    };
+
+    [Inject]
+    private IHistoryClient Client { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() => 
+        _response = await Client.Leaderboard.GetAnnualAsync();
+
+}

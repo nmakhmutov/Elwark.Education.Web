@@ -20,27 +20,11 @@ public sealed class ApiResponse<T>
     public bool IsLoaded =>
         Status != ResponseStatus.Loading;
 
-    public T Data
-    {
-        get
-        {
-            if (_data == null)
-                throw new ArgumentNullException(nameof(Data));
+    public T Data =>
+        _data ?? throw new ArgumentNullException(nameof(Data));
 
-            return _data;
-        }
-    }
-
-    public Error Error
-    {
-        get
-        {
-            if (_error == null)
-                throw new ArgumentNullException(nameof(Error));
-
-            return _error;
-        }
-    }
+    public Error Error =>
+        _error ?? throw new ArgumentNullException(nameof(Error));
 
     public static ApiResponse<T> Loading() =>
         new(ResponseStatus.Loading, default);

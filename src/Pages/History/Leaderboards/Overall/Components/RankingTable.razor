@@ -1,8 +1,9 @@
 @using Education.Web.Gateways.History.Leaderboards.Model
+
 <section class="grid">
-    <div class="position">
+    <div class="rank">
         <MudText Typo="Typo.subtitle2">
-            @L["Leaderboard:Position"]
+            @L["Leaderboard:Rank"]
         </MudText>
     </div>
     <div class="name">
@@ -21,12 +22,13 @@
         </MudText>
     </div>
 </section>
+
 <Virtualize Items="@Users" Context="user">
     <MudPaper Elevation="0" Class="mb-3">
         <section class="grid">
-            <div class="position">
+            <div class="rank">
                 <MudText Typo="Typo.subtitle2">
-                    @user.Position
+                    @user.Rank
                 </MudText>
             </div>
             <div class="name">
@@ -53,6 +55,6 @@
     public IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public GlobalLeaderboardItem[] Users { get; set; } = Array.Empty<GlobalLeaderboardItem>();
+    public OverallRankingModel[] Users { get; set; } = Array.Empty<OverallRankingModel>();
 
 }

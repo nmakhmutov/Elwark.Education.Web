@@ -1,7 +1,7 @@
 @using Education.Web.Hubs.Notification
 @implements IDisposable
 
-<MudBadge Color="Color.Secondary" Dot="true" Overlap="true" Visible="Notification.HasNotifications">
+<MudBadge Color="Color.Secondary" Dot Overlap Visible="Notification.HasNotifications">
     <MudMenu
         Icon="@Icons.Outlined.Notifications"
         Color="Color.Inherit"
@@ -27,7 +27,7 @@
 
         @if (Notification.HasNotifications)
         {
-            @foreach (var notification in Notification.Messages)
+            @foreach (var notification in Notification.Notifications)
             {
                 <MudDivider/>
                 <MudMenuItem Class="px-3 py-2">

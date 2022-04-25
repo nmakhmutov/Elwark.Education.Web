@@ -3,12 +3,12 @@
     @if (ShowTooltip)
     {
         <MudTooltip Placement="Placement.Top" Text="@($"{L["Rating"]}: {Rating.Stars.ToString("F1")}")">
-            <MudRating MaxValue="5" Size="@Size" ReadOnly="true" SelectedValue="@((int)Math.Round(Rating.Stars))"/>
+            <MudRating MaxValue="5" Size="@Size" ReadOnly SelectedValue="@((int)Math.Round(Rating.Stars))"/>
         </MudTooltip>
     }
     else
     {
-        <MudRating MaxValue="5" Size="@Size" ReadOnly="true" SelectedValue="@((int)Math.Ceiling(Rating.Stars))"/>
+        <MudRating MaxValue="5" Size="@Size" ReadOnly SelectedValue="@((int)Math.Ceiling(Rating.Stars))"/>
     }
 
     @if (ShowDetails)

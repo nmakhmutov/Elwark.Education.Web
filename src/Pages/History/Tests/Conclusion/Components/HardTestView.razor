@@ -14,7 +14,7 @@
             @Conclusion.Topic.Title
         </MudLink>
     </div>
-    <MudTable Items="@Conclusion.Questions" Hover="true" Breakpoint="Breakpoint.Xs" Elevation="0">
+    <MudTable Items="@Conclusion.Questions" Hover Breakpoint="Breakpoint.Xs" Elevation="0">
         <HeaderContent>
             <MudTh>
                 @L["Question"]
@@ -31,10 +31,10 @@
                 @context.Title
             </MudTd>
             <MudTd DataLabel="@L["Question:IsAnswered"]">
-                <MudCheckBox ReadOnly="true" Checked="@context.IsAnswered"/>
+                <MudCheckBox ReadOnly Checked="@context.IsAnswered"/>
             </MudTd>
             <MudTd DataLabel="@L["Question:IsCorrect"]">
-                <MudCheckBox ReadOnly="true" Checked="@context.IsCorrect"/>
+                <MudCheckBox ReadOnly Checked="@context.IsCorrect"/>
             </MudTd>
         </RowTemplate>
     </MudTable>

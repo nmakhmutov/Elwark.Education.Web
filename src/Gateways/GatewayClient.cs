@@ -1,4 +1,3 @@
-using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -47,27 +46,28 @@ internal abstract class GatewayClient
         {
             using var message = await func(cts.Token);
 
-            return message.IsSuccessStatusCode
-                ? message.StatusCode == HttpStatusCode.NoContent
-                    ? ApiResponse<T>.Success(default!)
-                    : ApiResponse<T>.Success((await message.Content.ReadFromJsonAsync<T>(Serializer, cts.Token))!)
-                : ApiResponse<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(Serializer, cts.Token))!);
+            return (uint)message.StatusCode switch
+            {
+                204 => ApiResponse<T>.Success(default!),
+
+                > 199 and < 300 =>
+                    ApiResponse<T>.Success((await message.Content.ReadFromJsonAsync<T>(Serializer, cts.Token))!),
+
+                _ => ApiResponse<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(Serializer, cts.Token))!)
+            };
         }
         catch (AccessTokenNotAvailableException ex)
         {
             ex.Redirect();
-            var error = Error.Create("Unauthorized", 401);
-            return ApiResponse<T>.Fail(error);
+            return ApiResponse<T>.Fail(Error.Create("Unauthorized", 401));
         }
-        catch (HttpRequestException)
+        catch (HttpRequestException ex)
         {
-            var error = Error.Create("Unavailable", 503);
-            return ApiResponse<T>.Fail(error);
+            return ApiResponse<T>.Fail(Error.Create("Unavailable", 503, ex.Message));
         }
         catch (Exception ex)
         {
-            var error = Error.Create("Internal", 502, ex.Message);
-            return ApiResponse<T>.Fail(error);
+            return ApiResponse<T>.Fail(Error.Create("Internal", 502, ex.Message));
         }
     }
 }

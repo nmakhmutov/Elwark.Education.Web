@@ -23,8 +23,8 @@
 </style>
 <PageTitle>@L["History:Empires"]</PageTitle>
 <EduPage ShowFooter="false">
-    <MudTimeline TimelinePosition="@_timelinePosition" DisableModifiers="true" Class="fff">
-        <MudTimelineItem HideDot="true">
+    <MudTimeline TimelinePosition="@_timelinePosition" DisableModifiers Class="fff">
+        <MudTimelineItem HideDot>
             <div class="ma-3 ma-sm-6">
                 <h2 class="subtitle">
                     @L["History:EmpireSubtitle"]
@@ -35,7 +35,7 @@
                 <MudSelect
                     T="GetEmpiresRequest.SortType"
                     Label="@L["Sort:By"]"
-                    Dense="true"
+                    Dense
                     Variant="Variant.Text"
                     Value="@_request.Sort"
                     Style="max-width: 300px"
@@ -116,7 +116,7 @@
                     <div id="observerTarget" class="grid-full-row d-flex justify-center my-6">
                         @if (_request.Page < empires.Pages)
                         {
-                            <MudProgressCircular Indeterminate="true"/>
+                            <MudProgressCircular Indeterminate/>
                         }
                     </div>
                 </InfinityScroll>

@@ -2,7 +2,7 @@
     <MudCardContent Class="pa-3 pa-sm-6">
         <div class="d-flex justify-center mb-3">
             <div class="avatar">
-                <div class="badge position-@Position">@Position</div>
+                <div class="badge position-@Rank">@Rank</div>
                 <MudAvatar Style="width: 96px; height: 96px" Image="@Image" Alt="@Name"/>
             </div>
         </div>
@@ -11,13 +11,13 @@
         </MudText>
     </MudCardContent>
     <MudCardActions Class="d-flex justify-space-between pa-3 pa-sm-6">
-        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="0">
+        <MudStack Row AlignItems="AlignItems.Center" Spacing="0">
             <MudIcon Class="mr-3" Style="@("color: " + Colors.Grey.Lighten1)" Icon="@Icons.Material.Outlined.BarChart"/>
             <MudText Typo="Typo.h6">
                 @Level
             </MudText>
         </MudStack>
-        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="0">
+        <MudStack Row AlignItems="AlignItems.Center" Spacing="0">
             <MudIcon Class="mr-3" Size="Size.Small" Style="color: #FFCA28" Icon="@EducationIcons.Experience"/>
             <HumanReadableText Value="@Experience" Typo="Typo.h6"/>
         </MudStack>
@@ -30,7 +30,7 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public uint Position { get; set; }
+    public uint Rank { get; set; }
 
     [Parameter, EditorRequired]
     public string Name { get; set; } = string.Empty;

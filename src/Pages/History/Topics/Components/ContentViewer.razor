@@ -68,7 +68,7 @@
         <MudText Typo="Typo.subtitle2" Class="pt-sm-3 px-sm-3">
             @L["Topic:Contents"]
         </MudText>
-        <MudList Clickable="true" Dense="true">
+        <MudList Clickable Dense>
             @foreach (var (id, title, _, _) in Chapters)
             {
                 <MudListItem Class="px-3" Text="@title" OnClick="@(() => Scroll.ScrollToFragmentAsync(ChapterId(id), ScrollBehavior.Smooth))"/>
@@ -94,14 +94,14 @@
 
         @if (IsTestAvailable)
         {
-            <MudButton FullWidth="true" Variant="Variant.Filled" Color="Color.Primary" Link="@HistoryLinks.TopicTest.Index(TopicId)">
+            <MudButton FullWidth Variant="Variant.Filled" Color="Color.Primary" Link="@HistoryLinks.TopicTest.Index(TopicId)">
                 @L["Test:Pass"]
             </MudButton>
         }
     </section>
 
     <section class="rating mud-paper pa-3">
-        <MudToolBar Dense="true" DisableGutters="true" Class="d-flex justify-center mb-3">
+        <MudToolBar Dense DisableGutters Class="d-flex justify-center mb-3">
             <MudTooltip Text="@L["Topic:ILikeThis"]">
                 <MudIconButton
                     Icon="@Icons.Filled.ThumbUp"
@@ -129,7 +129,7 @@
             </MudTooltip>
         </MudToolBar>
 
-        <RatingStars Rating="@Rating" ShowDetails="true" Class="d-flex align-center justify-center"/>
+        <RatingStars Rating="@Rating" ShowDetails Class="d-flex align-center justify-center"/>
     </section>
 </div>
 

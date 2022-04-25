@@ -15,19 +15,21 @@
         <MudAutocomplete
             T="TopicOverviewModel"
             @ref="@_searchAutocomplete"
-            Dense="true"
+            Dense
             DebounceInterval="300"
             AdornmentIcon="@Icons.Outlined.Search"
             Placeholder="@L["Search"]"
             Variant="Variant.Outlined"
             Margin="Margin.Dense"
             SearchFunc="OnSearch"
-            CoerceValue="true"
-            ResetValueOnEmptyText="true"
+            Adornment="Adornment.Start"
+            IconSize="Size.Small"
+            CoerceValue
+            ResetValueOnEmptyText
             ValueChanged="OnSearchResult">
             <ItemTemplate Context="result">
                 <div class="d-flex align-center">
-                    <MudAvatar Image="@result.Image" Size="Size.Large" Square="true" Class="mr-4"/>
+                    <MudAvatar Image="@result.Image" Size="Size.Large" Square Class="mr-4"/>
                     <div>
                         <MudText>@result.Title</MudText>
                     </div>
@@ -41,7 +43,7 @@
     </MudAppBar>
 
     <MudDrawer Open="@SidebarService.IsOpen" OpenChanged="@SidebarService.SetAsync" ClipMode="DrawerClipMode.Docked" Breakpoint="Breakpoint.Lg" Elevation="0">
-        <MudNavMenu Color="Color.Primary" Dense="true" Margin="Margin.Dense" Rounded="true" Class="pa-2">
+        <MudNavMenu Color="Color.Primary" Dense Margin="Margin.Dense" Rounded="true" Class="pa-2">
             <MudNavLink Match="NavLinkMatch.All" Href="@HistoryLinks.Root" Icon="@EducationIcons.History">
                 @L["Page:Home"]
             </MudNavLink>
@@ -56,17 +58,29 @@
             <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.Content.Empires" Icon="@EducationIcons.Empires">
                 @L["History:Empires"]
             </MudNavLink>
+
             <MudDivider Class="my-2"/>
+
             <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.TopicTest.Index()" Icon="@EducationIcons.Tests">
                 @L["Tests"]
             </MudNavLink>
             <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.EventGuesser.Index" Icon="@EducationIcons.EventGuesser">
                 @L["EventGuesser"]
             </MudNavLink>
-            <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.Leaderboard.Index" Icon="@EducationIcons.Leaderboard">
-                @L["Leaderboard"]
-            </MudNavLink>
+            <MudNavGroup Title="@L["Leaderboards"]" Icon="@EducationIcons.Leaderboard">
+                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.Leaderboard.Global">
+                    @L["Leaderboard:Overall:Title"]
+                </MudNavLink>
+                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.Leaderboard.Monthly">
+                    @L["Leaderboard:Monthly:Title"]
+                </MudNavLink>
+                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.Leaderboard.Annual">
+                    @L["Leaderboard:Annual:Title"]
+                </MudNavLink>
+            </MudNavGroup>
+
             <MudDivider Class="my-2"/>
+
             <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.User.MyProfile" Icon="@EducationIcons.MyProfile">
                 @L["Profile"]
             </MudNavLink>

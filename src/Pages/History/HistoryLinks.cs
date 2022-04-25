@@ -44,7 +44,11 @@ public static class HistoryLinks
 
     public static class Leaderboard
     {
-        public const string Index = $"{Root}/leaderboard";
+        public const string Global = $"{Root}/leaderboards/global";
+        
+        public const string Monthly = $"{Root}/leaderboards/monthly";
+        
+        public const string Annual = $"{Root}/leaderboards/annual";
     }
 
     public static class User

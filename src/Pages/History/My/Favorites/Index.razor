@@ -5,7 +5,7 @@
 @attribute [Authorize]
 
 <PageTitle>@L["Favorites"]</PageTitle>
-<EduPage ShowFooter="true">
+<EduPage ShowFooter>
     <EduContainer MaxWidth="EduWidth.W1920">
         <PageHeader Title="@L["Favorites"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
         <div class="d-flex flex-wrap justify-sm-space-between align-center mb-3 mb-sm-6">
@@ -20,7 +20,7 @@
                 </MudSelect>
             </div>
             <div class="ml-3 ml-sm-6" style="align-self: end">
-                <MudCheckBox @bind-Checked="@_dense" Label="@L["CompactView"]" Color="Color.Primary" Dense="true"/>
+                <MudCheckBox @bind-Checked="@_dense" Label="@L["CompactView"]" Color="Color.Primary" Dense/>
             </div>
         </div>
         <MudTable
@@ -28,7 +28,7 @@
             Dense="@_dense"
             Loading="@_loading"
             Elevation="0"
-            Hover="true"
+            Hover
             RowsPerPage="@_request.Count"
             Breakpoint="Breakpoint.Sm"
             LoadingProgressColor="Color.Primary"
@@ -42,7 +42,7 @@
                 <MudTh/>
             </HeaderContent>
             <RowTemplate>
-                <MudTd HideSmall="true">
+                <MudTd HideSmall>
                     <MudAvatar Image="@context.Topic.Image"/>
                 </MudTd>
                 <MudTd DataLabel="@L["Title"]">
