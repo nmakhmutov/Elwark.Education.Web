@@ -22,8 +22,8 @@
     }
 </style>
 <PageTitle>@L["History:Empires"]</PageTitle>
-<EduPage ShowFooter="false">
-    <MudTimeline TimelinePosition="@_timelinePosition" DisableModifiers Class="fff">
+<EduPage>
+    <MudTimeline TimelinePosition="@_timelinePosition" DisableModifiers>
         <MudTimelineItem HideDot>
             <div class="ma-3 ma-sm-6">
                 <h2 class="subtitle">
@@ -50,78 +50,78 @@
             </div>
         </MudTimelineItem>
 
-        <ApiViewer Response="@_response">
-            <Loading>
-                @for (var i = 0; i < 4; i++)
-                {
-                    var align = i % 2 == 0 ? "d-flex flex-column align-end" : "d-flex flex-column align-start";
+        @if (_empires.Count == 0)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                var align = i % 2 == 0 ? "align-end" : "align-start";
 
-                    <MudTimelineItem Color="Color.Secondary" Size="Size.Large" Variant="Variant.Text">
-                        <ItemDot>
-                            <MudIcon Size="Size.Large" Icon="@Icons.Outlined.OutlinedFlag"/>
-                        </ItemDot>
-                        <ItemContent>
-                            <div class="ma-3 ma-sm-6 @align">
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="60%" Height="37px"/>
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="20%" Height="24px"/>
-                                <div class="my-3 @align w-100">
-                                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="70%" Height="24px"/>
-                                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="58%" Height="24px"/>
-                                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="65%" Height="24px"/>
-                                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="53%" Height="24px"/>
-                                </div>
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="38%" Height="24px"/>
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="38%" Height="24px"/>
+                <MudTimelineItem Color="Color.Secondary" Size="Size.Large" Variant="Variant.Text">
+                    <ItemDot>
+                        <MudIcon Size="Size.Large" Icon="@Icons.Outlined.OutlinedFlag"/>
+                    </ItemDot>
+                    <ItemContent>
+                        <div class="d-flex flex-column @align ma-3 ma-sm-6">
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="60%" Height="37px"/>
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="20%" Height="24px"/>
+                            <div class="d-flex flex-column @align my-3 w-100">
+                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="70%" Height="24px"/>
+                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="58%" Height="24px"/>
+                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="65%" Height="24px"/>
+                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="53%" Height="24px"/>
                             </div>
-                        </ItemContent>
-                    </MudTimelineItem>
-                }
-            </Loading>
-            <ChildContent Context="empires">
-                @for (var i = 0; i < empires.Items.Length; i++)
-                {
-                    var empire = empires.Items[i];
-                    var direction = i % 2 == 0 ? "end" : "start";
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="38%" Height="24px"/>
+                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="38%" Height="24px"/>
+                        </div>
+                    </ItemContent>
+                </MudTimelineItem>
+            }
+        }
+        else
+        {
+            for (var i = 0; i < _empires.Count; i++)
+            {
+                var empire = _empires[i];
+                var direction = i % 2 == 0 ? "end" : "start";
 
-                    <MudTimelineItem>
-                        <ItemDot>
-                            <MudAvatar Image="@empire.Image" Size="Size.Large"/>
-                        </ItemDot>
-                        <ItemContent>
-                            <div class="content-wrapper @direction">
-                                <div class="content">
-                                    <MudLink Typo="Typo.h5" Href="@HistoryLinks.Content.Topic(empire.Id)">
-                                        @empire.Title
-                                    </MudLink>
-                                    <div class="d-flex flex-row flex-wrap justify-md-@direction">
-                                        <HistoryDate Date="@empire.Founded"/>
-                                        <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
-                                        <HistoryDate Date="@empire.Dissolved"/>
-                                    </div>
-                                    <MudText Typo="Typo.body1" Class="my-3">
-                                        @empire.Overview
-                                    </MudText>
-                                    <MudText Typo="Typo.body2">
-                                        @L["History:EmpireMaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
-                                    </MudText>
-                                    <MudText Typo="Typo.body2">
-                                        @L["History:EmpireMaxPopulation"]: @empire.MaxPopulation.ToString("N0")
-                                    </MudText>
+                <MudTimelineItem Class="timeline-item">
+                    <ItemDot>
+                        <MudAvatar Image="@empire.Image" Size="Size.Large"/>
+                    </ItemDot>
+                    <ItemContent>
+                        <div class="content-wrapper @direction">
+                            <div class="content">
+                                <MudLink Typo="Typo.h5" Href="@HistoryLinks.Content.Topic(empire.Id)">
+                                    @empire.Title
+                                </MudLink>
+                                <div class="d-flex flex-wrap justify-md-@direction">
+                                    <HistoryDate Date="@empire.Founded"/>
+                                    <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
+                                    <HistoryDate Date="@empire.Dissolved"/>
                                 </div>
+                                <MudText Typo="Typo.body1" Class="my-3">
+                                    @empire.Overview
+                                </MudText>
+                                <MudText Typo="Typo.body2">
+                                    @L["History:EmpireMaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                                </MudText>
+                                <MudText Typo="Typo.body2">
+                                    @L["History:EmpireMaxPopulation"]: @empire.MaxPopulation.ToString("N0")
+                                </MudText>
                             </div>
-                        </ItemContent>
-                    </MudTimelineItem>
-                }
-                <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
-                    <div id="observerTarget" class="grid-full-row d-flex justify-center my-6">
-                        @if (_request.Page < empires.Pages)
-                        {
-                            <MudProgressCircular Indeterminate/>
-                        }
-                    </div>
-                </InfinityScroll>
-            </ChildContent>
-        </ApiViewer>
+                        </div>
+                    </ItemContent>
+                </MudTimelineItem>
+            }
+            <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
+                <div id="observerTarget" class="grid-full-row d-flex justify-center my-6">
+                    @if (_request.Page < _pages)
+                    {
+                        <MudProgressCircular Indeterminate/>
+                    }
+                </div>
+            </InfinityScroll>
+        }
     </MudTimeline>
 </EduPage>
 
@@ -129,7 +129,8 @@
 
     private TimelinePosition _timelinePosition = TimelinePosition.Start;
     private GetEmpiresRequest _request = new(GetEmpiresRequest.SortType.Area, 1, 20);
-    private ApiResponse<PageResponse<EmpireOverview>> _response = ApiResponse<PageResponse<EmpireOverview>>.Loading();
+    private readonly List<EmpireOverview> _empires = new();
+    private uint _pages;
 
     [Inject]
     private IResizeListenerService ResizeListener { get; set; } = default!;
@@ -140,33 +141,31 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() =>
-        _response = await HistoryClient.Empire.GetAsync(_request);
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await HistoryClient.Empire.GetAsync(_request);
+        if (response.IsFailed)
+            return;
+
+        _empires.AddRange(response.Data.Items);
+        _pages = response.Data.Pages;
+    }
 
     private async Task LoadMoreAsync()
     {
-        if (!_response.IsSuccess)
-            return;
-
-        if (_request.Page == _response.Data.Pages)
+        if (_request.Page == _pages)
             return;
 
         var response = await HistoryClient.Empire.GetAsync(_request = _request with {Page = _request.Page + 1});
-        _response = response.IsSuccess
-            ? ApiResponse<PageResponse<EmpireOverview>>.Success(
-                new PageResponse<EmpireOverview>(
-                    response.Data.Items.Union(response.Data.Items).ToArray(),
-                    response.Data.Pages,
-                    response.Data.Count
-                    )
-                )
-            : ApiResponse<PageResponse<EmpireOverview>>.Fail(response.Error);
+        if (response.IsSuccess)
+            _empires.AddRange(response.Data.Items);
     }
 
     private async Task SortChangedAsync(GetEmpiresRequest.SortType sort)
     {
-        _response = ApiResponse<PageResponse<EmpireOverview>>.Loading();
-        _response = await HistoryClient.Empire.GetAsync(_request = new GetEmpiresRequest(sort, 1, 20));
+        _empires.Clear();
+        _request = new GetEmpiresRequest(sort, 1, 20);
+        await OnInitializedAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -191,6 +190,7 @@
         InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose() => ResizeListener.OnBreakpointChanged -= OnBreakpointChanged;
+    public void Dispose() =>
+        ResizeListener.OnBreakpointChanged -= OnBreakpointChanged;
 
 }

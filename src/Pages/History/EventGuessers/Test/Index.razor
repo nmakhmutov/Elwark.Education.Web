@@ -91,7 +91,7 @@
     protected override async Task OnInitializedAsync()
     {
         _response = await Client.EventGuesser.GetAsync(Id);
-        if (!_response.IsSuccess)
+        if (_response.IsFailed)
             return;
 
         _score = _response.Data.Score;
@@ -107,7 +107,7 @@
         var request = new CheckRequest(model.IsBc ? -year : year, model.Month, model.Day);
 
         var result = await Client.EventGuesser.CheckAsync(Id, _question.Id, request);
-        if (!result.IsSuccess)
+        if (result.IsFailed)
         {
             Snackbar.Add(result.Error.Detail, Severity.Error);
             return;

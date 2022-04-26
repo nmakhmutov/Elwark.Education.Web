@@ -196,7 +196,7 @@
         _countdownColor = Color.Error;
         _response = await HistoryClient.Test.GetAsync(Id);
 
-        if (_response.Status == ResponseStatus.Fail)
+        if (_response.IsFailed)
             Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
     }
 

@@ -17,6 +17,9 @@ public sealed class ApiResponse<T>
     public bool IsSuccess =>
         Status == ResponseStatus.Success;
 
+    public bool IsFailed =>
+        Status == ResponseStatus.Fail;
+
     public bool IsLoaded =>
         Status != ResponseStatus.Loading;
 

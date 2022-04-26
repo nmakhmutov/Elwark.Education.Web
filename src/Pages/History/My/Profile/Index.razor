@@ -98,14 +98,14 @@
     private async Task CollectDailyReward()
     {
         var response = await HistoryClient.User.CollectDailyReward();
-        if (response.Status == ResponseStatus.Success)
+        if (response.IsSuccess)
             await OnInitializedAsync();
     }
 
     private async Task RejectDailyReward()
     {
         var response = await HistoryClient.User.RejectDailyReward();
-        if (response.Status == ResponseStatus.Success)
+        if (response.IsSuccess)
             await OnInitializedAsync();
     }
 

@@ -128,7 +128,7 @@
     private async Task<bool> OnFavoriteClick(string topicId)
     {
         var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
-        return result.Status == ResponseStatus.Success && result.Data;
+        return result.IsSuccess && result.Data;
     }
 
     private async Task Callback(FavoritesRequest.SortType arg)

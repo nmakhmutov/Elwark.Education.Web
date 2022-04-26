@@ -60,7 +60,7 @@
 
         _isLoading = true;
         var result = await Client.Topic.GetRandomAsync(_epoch);
-        if (result.Status == ResponseStatus.Success)
+        if (result.IsSuccess)
             Navigation.NavigateTo(HistoryLinks.Content.Topic(result.Data.Id));
 
         _isLoading = false;
