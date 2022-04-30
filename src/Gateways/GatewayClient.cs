@@ -59,15 +59,15 @@ internal abstract class GatewayClient
         catch (AccessTokenNotAvailableException ex)
         {
             ex.Redirect();
-            return ApiResponse<T>.Fail(Error.Create("Unauthorized", 401));
+            return ApiResponse<T>.Fail(Error.Create("You are not authorized", 401));
         }
-        catch (HttpRequestException ex)
+        catch (HttpRequestException)
         {
-            return ApiResponse<T>.Fail(Error.Create("Unavailable", 503, ex.Message));
+            return ApiResponse<T>.Fail(Error.Create("Server unavailable", 503));
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return ApiResponse<T>.Fail(Error.Create("Internal", 502, ex.Message));
+            return ApiResponse<T>.Fail(Error.Create("Internal error", 502));
         }
     }
 }

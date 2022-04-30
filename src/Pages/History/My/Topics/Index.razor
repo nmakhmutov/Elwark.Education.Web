@@ -50,7 +50,7 @@
                 <MudPaper Class="d-md-flex justify-space-between align-center pa-3 pa-sm-6 mb-3 mb-sm-6" Elevation="0">
                     <div class="d-flex flex-column flex-sm-row justify-center align-center mb-3 mb-sm-6 mb-md-0">
                         <div class="avatar">
-                            <img src="@result.Topic.Image" alt="@result.Topic.Title" loading="lazy"/>
+                            <img src="@result.Topic.ThumbnailUrl" alt="@result.Topic.Title" loading="lazy"/>
                         </div>
                         <div class="d-flex flex-column justify-space-between">
                             <MudLink Class="mt-3 mt-sm-0" Typo="Typo.h5" Href="@HistoryLinks.Content.Topic(result.Topic.Id)">
@@ -196,7 +196,7 @@
 </EduPage>
 
 @code {
-    private readonly List<BreadcrumbItem> _breadcrumbs = new(3);
+    private List<BreadcrumbItem> _breadcrumbs = new();
 
     private ApiResponse<TopicStatisticsModel> _response = ApiResponse<TopicStatisticsModel>.Loading();
 
@@ -214,12 +214,12 @@
         _response = await HistoryClient.User.GetTopicsAsync(Id);
 
         if (_response.IsSuccess)
-            _breadcrumbs.AddRange(new BreadcrumbItem[]
+            _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Profile"].Value, HistoryLinks.User.MyProfile),
                 new(L["Subject:History"].Value, HistoryLinks.Root),
                 new(L[$"History:{_response.Data.Topic.Epoch}"].Value, HistoryLinks.Content.Epoch(_response.Data.Topic.Epoch))
-            });
+            };
     }
 
     private RenderFragment RenderHeader(LocalizedString title, string link, LocalizedString tooltip, TimeSpan timeSpent) =>

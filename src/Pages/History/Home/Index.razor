@@ -4,7 +4,6 @@
 @using Education.Web.Pages.History.Home.Components
 @using Education.Web.Gateways.History
 @layout HistoryLayout
-@attribute [Authorize]
 
 <PageTitle>
     @L["Subject:History"]
@@ -26,7 +25,7 @@
                         Overview="@item.Overview"
                         Rating="@item.Rating"
                         Title="@item.Title"
-                        Image="@item.Image"/>
+                        Image="@item.ThumbnailUrl"/>
                 }
             </section>
         </EduContainer>
@@ -49,7 +48,7 @@
                             Id="@item.Id"
                             Epoch="@item.Epoch"
                             Title="@item.Title"
-                            Image="@item.Image"
+                            Image="@item.ThumbnailUrl"
                             Overview="@item.Overview"
                             Rating="@item.Rating"
                             Horizontal
@@ -69,7 +68,7 @@
                                 Id="@item.Id"
                                 Epoch="@item.Epoch"
                                 Title="@item.Title"
-                                Image="@item.Image"
+                                Image="@item.ThumbnailUrl"
                                 Overview="@item.Overview"
                                 Rating="@item.Rating"/>
                         }
@@ -90,7 +89,7 @@
                         Id="@item.Id"
                         Epoch="@item.Epoch"
                         Title="@item.Title"
-                        Image="@item.Image"
+                        Image="@item.ThumbnailUrl"
                         Overview="@item.Overview"
                         Rating="@item.Rating"/>
                 }

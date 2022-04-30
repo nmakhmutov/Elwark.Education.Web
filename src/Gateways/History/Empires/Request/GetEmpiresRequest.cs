@@ -8,7 +8,8 @@ public sealed record GetEmpiresRequest(GetEmpiresRequest.SortType Sort, int Page
     public enum SortType
     {
         Area = 0,
-        Population = 1
+        Population = 1,
+        Duration = 2
     }
 
     public override string ToQuery() =>

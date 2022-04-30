@@ -17,14 +17,14 @@
     </MudCardHeader>
     <MudCardContent Class="pa-3 pa-sm-6">
         <div style="max-height: 400px; height: 100%; position: relative">
-            <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.TestActivity" Options="_options" Height="@("400px")">
+            <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.DailyItem" Options="_options" Height="@("400px")">
                 <ApexPointSeries
-                    TItem="HistoryUserProfileModel.TestActivity"
+                    TItem="HistoryUserProfileModel.DailyItem"
                     Items="Activities"
                     Name="@L["NumberOfTests:Total"]"
                     Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
                     SeriesType="SeriesType.Area"
-                    XValue="@(e => e.Date.ToString("dd MMM"))"
+                    XValue="@(e => e.Day.ToString("dd MMM"))"
                     YValue="@(x => x.Total)"/>
             </ApexChart>
         </div>
@@ -32,8 +32,8 @@
 </MudCard>
 
 @code {
-    private ApexChart<HistoryUserProfileModel.TestActivity> _chart = default!;
-    private ApexChartOptions<HistoryUserProfileModel.TestActivity> _options = new();
+    private ApexChart<HistoryUserProfileModel.DailyItem> _chart = default!;
+    private ApexChartOptions<HistoryUserProfileModel.DailyItem> _options = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -45,11 +45,11 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public HistoryUserProfileModel.TestActivity[] Activities { get; set; } = Array.Empty<HistoryUserProfileModel.TestActivity>();
+    public HistoryUserProfileModel.DailyItem[] Activities { get; set; } = Array.Empty<HistoryUserProfileModel.DailyItem>();
 
     protected override void OnInitialized()
     {
-        _options = new ApexChartOptions<HistoryUserProfileModel.TestActivity>
+        _options = new ApexChartOptions<HistoryUserProfileModel.DailyItem>
         {
             Chart = new Chart
             {

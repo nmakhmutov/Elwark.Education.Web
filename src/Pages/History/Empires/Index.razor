@@ -20,6 +20,15 @@
         width: 96px !important;
         background-color: var(--mud-palette-secondary) !important;
     }
+    
+    @@media (min-width: 960px) {
+        .timeline-item:nth-child(even) .content-wrapper {
+                display: flex;
+                flex-direction: row;
+                justify-content: end;
+                text-align: end;
+        }
+    }
 </style>
 <PageTitle>@L["History:Empires"]</PageTitle>
 <EduPage>
@@ -45,6 +54,9 @@
                     </MudSelectItem>
                     <MudSelectItem Value="@GetEmpiresRequest.SortType.Population">
                         @L["History:EmpireMaxPopulation"]
+                    </MudSelectItem>
+                    <MudSelectItem Value="@GetEmpiresRequest.SortType.Duration">
+                        @L["History:EmpireMaxDuration"]
                     </MudSelectItem>
                 </MudSelect>
             </div>
@@ -79,22 +91,21 @@
         }
         else
         {
-            for (var i = 0; i < _empires.Count; i++)
-            {
-                var empire = _empires[i];
-                var direction = i % 2 == 0 ? "end" : "start";
-
+            <div></div>
+            <Virtualize Items="@_empires" Context="empire">
                 <MudTimelineItem Class="timeline-item">
                     <ItemDot>
-                        <MudAvatar Image="@empire.Image" Size="Size.Large"/>
+                        <MudAvatar Image="@empire.ThumbnailUrl" Size="Size.Large"/>
                     </ItemDot>
                     <ItemContent>
-                        <div class="content-wrapper @direction">
+                        <div class="content-wrapper">
                             <div class="content">
-                                <MudLink Typo="Typo.h5" Href="@HistoryLinks.Content.Topic(empire.Id)">
-                                    @empire.Title
-                                </MudLink>
-                                <div class="d-flex flex-wrap justify-md-@direction">
+                                <div>
+                                    <MudLink Typo="Typo.h5" Href="@HistoryLinks.Content.Topic(empire.Id)">
+                                        @empire.Title
+                                    </MudLink>
+                                </div>
+                                <div class="d-inline-flex align-center">
                                     <HistoryDate Date="@empire.Founded"/>
                                     <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
                                     <HistoryDate Date="@empire.Dissolved"/>
@@ -108,11 +119,22 @@
                                 <MudText Typo="Typo.body2">
                                     @L["History:EmpireMaxPopulation"]: @empire.MaxPopulation.ToString("N0")
                                 </MudText>
+                                <MudText Typo="Typo.body2">
+                                    @L["History:EmpireDuration"]:
+                                    @if (empire.Duration.HasValue)
+                                    {
+                                        @empire.Duration.Value.ToString("N0")<small>&nbsp;@L["History:Years"].Value.ToLowerInvariant()</small>
+                                    }
+                                    else
+                                    {
+                                        @L["History:Unknown"]
+                                    }
+                                </MudText>
                             </div>
                         </div>
                     </ItemContent>
                 </MudTimelineItem>
-            }
+            </Virtualize>
             <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
                 <div id="observerTarget" class="grid-full-row d-flex justify-center my-6">
                     @if (_request.Page < _pages)

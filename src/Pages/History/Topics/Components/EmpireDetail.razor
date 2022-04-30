@@ -18,9 +18,24 @@
             </div>
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                    @L["History:EmpireEnded"]
+                    @L["History:EmpireDissolved"]
                 </MudText>
                 <HistoryDate Date="@Dissolved" Typo="Typo.h6" Align="Align.Center"/>
+            </div>
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                    @L["History:EmpireDuration"]
+                </MudText>
+                <MudText Typo="Typo.h6" Align="Align.Center">
+                    @if (Duration.HasValue)
+                    {
+                        @Duration.Value.ToString("N0")<small>&nbsp;@L["History:Years"].Value.ToLowerInvariant()</small>
+                    }
+                    else
+                    {
+                        @L["History:Unknown"]
+                    }
+                </MudText>
             </div>
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
@@ -84,6 +99,9 @@
 
     [Parameter, EditorRequired]
     public HistoricalDateModel? Dissolved { get; set; }
+
+    [Parameter, EditorRequired]
+    public uint? Duration { get; set; }
 
     [Parameter, EditorRequired]
     public uint MaxArea { get; set; }

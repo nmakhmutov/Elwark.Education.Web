@@ -16,7 +16,7 @@ internal sealed class TestOverviewModelConverter : JsonConverter<TestOverviewMod
             "easy" => document.Deserialize<EasyTestOverviewModel>(options),
             "hard" => document.Deserialize<HardTestOverviewModel>(options),
             "mixed" => document.Deserialize<MixedTestOverviewModel>(options),
-            _ => throw new ArgumentOutOfRangeException(nameof(TestConclusionModel), type, @"Unknown test overview type")
+            _ => throw new ArgumentOutOfRangeException(nameof(TestConclusionModel), type, @"Unknown test overview")
         };
     }
 

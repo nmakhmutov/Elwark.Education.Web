@@ -15,6 +15,9 @@ using Polly;
 using Polly.Extensions.Http;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.Logging
+    .SetMinimumLevel(builder.HostEnvironment.IsDevelopment() ? LogLevel.Debug : LogLevel.Error);
+
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
@@ -34,15 +37,9 @@ builder.Services
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway");
 var policy = builder.HostEnvironment.IsDevelopment()
     ? HttpPolicyExtensions.HandleTransientHttpError()
-        .WaitAndRetryAsync(1, _ => TimeSpan.Zero)
+        .WaitAndRetryAsync(new[] { TimeSpan.Zero })
     : HttpPolicyExtensions.HandleTransientHttpError()
-        .WaitAndRetryAsync(new[]
-        {
-            TimeSpan.Zero,
-            TimeSpan.FromSeconds(1),
-            TimeSpan.FromSeconds(3),
-            TimeSpan.FromSeconds(5)
-        });
+        .WaitAndRetryAsync(new[] { TimeSpan.Zero, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(5) });
 
 builder.Services
     .AddLocalization(options => options.ResourcesPath = "Resources")
@@ -83,4 +80,6 @@ builder.Services
     .AddHttpMessageHandler<LocalizationHandler>()
     .AddPolicyHandler(policy);
 
-await builder.Build().RunAsync();
+var app = builder.Build();
+
+await app.RunAsync();

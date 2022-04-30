@@ -16,9 +16,10 @@
                 <EmpireDetail
                     Title="@topic.Title"
                     Description="@topic.Description"
-                    Image="@topic.Image"
+                    Image="@topic.ImageUrl"
                     Founded="@topic.Founded"
                     Dissolved="@topic.Dissolved"
+                    Duration="@topic.Duration"
                     MaxArea="@topic.MaxArea"
                     MaxPopulation="@topic.MaxPopulation"
                     Breadcrumbs="@_breadcrumbs"/>
@@ -28,7 +29,7 @@
                 <PersonDetail
                     Title="@topic.Title"
                     Description="@topic.Description"
-                    Image="@topic.Image"
+                    Image="@topic.ImageUrl"
                     Born="@topic.Born"
                     Died="@topic.Died"
                     Characteristics="@topic.Characteristics"
@@ -39,7 +40,7 @@
                 <EventDetail
                     Title="@topic.Title"
                     Description="@topic.Description"
-                    Image="@topic.Image"
+                    Image="@topic.ImageUrl"
                     Started="@topic.Started"
                     Ended="@topic.Finished"
                     Breadcrumbs="@_breadcrumbs"/>
@@ -79,7 +80,7 @@
 </EduPage>
 
 @code {
-    private readonly List<BreadcrumbItem> _breadcrumbs = new();
+    private List<BreadcrumbItem> _breadcrumbs = new();
     private ApiResponse<TopicDetailCompositionModel> _response = ApiResponse<TopicDetailCompositionModel>.Loading();
 
     [Inject]
@@ -97,11 +98,11 @@
         _response = await HistoryClient.Topic.GetAsync(Id);
 
         if (_response.IsSuccess)
-            _breadcrumbs.AddRange(new BreadcrumbItem[]
+            _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Subject:History"], HistoryLinks.Root),
                 new(L[$"History:{_response.Data.Topic.Epoch}"], HistoryLinks.Content.Epoch(_response.Data.Topic.Epoch))
-            });
+            };
     }
 
     private async Task<bool> LikeAsync()

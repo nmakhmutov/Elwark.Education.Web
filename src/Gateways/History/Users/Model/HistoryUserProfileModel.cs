@@ -12,12 +12,12 @@ public sealed record HistoryUserProfileModel(
     HistoryUserProfileModel.TestOverview MixedTest,
     HistoryUserProfileModel.EventGuesserOverview EventGuesser,
     AchievementsOverviewModel Achievements,
-    HistoryUserProfileModel.TestActivity[] Activity
+    HistoryUserProfileModel.DailyItem[] DailyProgress
 )
 {
     public sealed record TestOverview(NumberOfTestsModel NumberOfTests, ScoreModel Score);
 
     public sealed record EventGuesserOverview(uint Tests, uint Score, uint Points, uint Bonus);
 
-    public sealed record TestActivity(DateOnly Date, uint Total);
+    public sealed record DailyItem(DateOnly Day, uint Total);
 }

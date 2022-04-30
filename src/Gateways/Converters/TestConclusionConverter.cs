@@ -16,7 +16,7 @@ internal sealed class TestConclusionConverter : JsonConverter<TestConclusionMode
             "easy" => document.Deserialize<EasyTestConclusionModel>(options),
             "hard" => document.Deserialize<HardTestConclusionModel>(options),
             "mixed" => document.Deserialize<MixedTestConclusionModel>(options),
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, @"Unknown topic conclusion type")
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, @"Unknown test conclusion")
         };
     }
 
