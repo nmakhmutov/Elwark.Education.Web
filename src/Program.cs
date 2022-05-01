@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
 using Education.Web;
 using Education.Web.Gateways.Customers;
@@ -32,6 +33,7 @@ builder.Services
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     });
 
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway");

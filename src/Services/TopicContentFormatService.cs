@@ -22,6 +22,7 @@ public sealed class TopicContentFormatService
         TextAlign = Align.Left;
         FontSize = MinTextSize;
         TextStyles = string.Empty;
+
         UpdateStyles();
     }
 
@@ -104,26 +105,34 @@ public sealed class TopicContentFormatService
         return Update();
     }
 
-    private ValueTask SaveStateAsync() =>
-        _storage.SetItemAsync(StorageKey, new State
-        {
-            FontSize = Math.Round(FontSize, 2),
-            TextAlign = TextAlign
-        });
-
     private void UpdateStyles() =>
-        TextStyles = StyleBuilder.Empty()
-            .AddStyle("font-size", FontSize.ToString("0.0", CultureInfo.InvariantCulture) + "rem")
-            .AddStyle("text-align", TextAlign.ToString().ToLowerInvariant())
+        TextStyles = StyleBuilder
+            .Default("font-size", FontSize.ToString("0.0", CultureInfo.InvariantCulture) + "rem")
+            .AddStyle("text-align", TextAlign switch
+            {
+                Align.Left => "left",
+                Align.Center => "center",
+                Align.Right => "right",
+                Align.Justify => "justify",
+                Align.Start => "start",
+                Align.End => "end",
+                _ => "inherit"
+            })
             .Build();
 
     private async Task Update()
     {
         UpdateStyles();
-        OnChange();
-        await SaveStateAsync();
-    }
 
+        await _storage.SetItemAsync(StorageKey, new State
+        {
+            FontSize = Math.Round(FontSize, 2),
+            TextAlign = TextAlign
+        });
+
+        OnChange();
+    }
+    
     private sealed record State
     {
         [JsonPropertyName("ta")]

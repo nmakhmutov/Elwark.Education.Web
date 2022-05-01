@@ -13,7 +13,7 @@ public readonly struct QueryString : IEquatable<QueryString>
         if (!string.IsNullOrEmpty(value) && value[0] != '?')
             throw new ArgumentException(@"The leading '?' must be included for a non-empty query.", nameof(value));
 
-        Value = value;
+        Value = value?.Replace("#", "%23");
     }
 
     public string? Value { get; }
@@ -22,13 +22,10 @@ public readonly struct QueryString : IEquatable<QueryString>
         !string.IsNullOrEmpty(Value);
 
     public override string ToString() =>
-        string.IsNullOrEmpty(Value) ? string.Empty : Value.Replace("#", "%23");
+        Value ?? string.Empty;
 
     public static QueryString Create(string name, string value)
     {
-        if (name is null)
-            throw new ArgumentNullException(nameof(name));
-
         if (!string.IsNullOrEmpty(value))
             value = UrlEncoder.Default.Encode(value);
 
@@ -86,14 +83,12 @@ public readonly struct QueryString : IEquatable<QueryString>
 
     public QueryString Add(string name, string value)
     {
-        if (name is null)
-            throw new ArgumentNullException(nameof(name));
-
         if (!HasValue || Value!.Equals("?", StringComparison.Ordinal))
             return Create(name, value);
 
         var builder = new StringBuilder(Value);
         AppendKeyValuePair(builder, name, value, false);
+
         return new QueryString(builder.ToString());
     }
 
@@ -114,7 +109,7 @@ public readonly struct QueryString : IEquatable<QueryString>
     }
 
     public override int GetHashCode() =>
-        HasValue ? Value!.GetHashCode() : 0;
+        string.IsNullOrEmpty(Value) ? 0 : Value!.GetHashCode();
 
     public static bool operator ==(QueryString left, QueryString right) =>
         left.Equals(right);

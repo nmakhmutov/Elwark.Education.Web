@@ -59,11 +59,8 @@ internal sealed class ThemeService
         }
     };
 
-    public ThemeService(ILocalStorageService storage)
-    {
+    public ThemeService(ILocalStorageService storage) =>
         _storage = storage;
-        IsDarkMode = false;
-    }
 
     public bool IsDarkMode { get; private set; }
 

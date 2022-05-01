@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Education.Web.Gateways.Converters;
@@ -33,8 +32,6 @@ internal abstract class GatewayClient
         }
     };
 
-    protected static readonly StringContent EmptyContent = new(string.Empty, Encoding.UTF8, "application/json");
-
     protected static JsonContent CreateJson<T>(T value) =>
         JsonContent.Create(value, null, Serializer);
 
@@ -45,13 +42,16 @@ internal abstract class GatewayClient
         try
         {
             using var message = await func(cts.Token);
+            var hasContent = (message.Content.Headers.ContentLength ?? 0) > 0;
 
-            return (uint)message.StatusCode switch
+            return ((uint)message.StatusCode, hasContent) switch
             {
-                204 => ApiResponse<T>.Success(default!),
-
-                > 199 and < 300 =>
+                (>= 200 and < 300, true) =>
                     ApiResponse<T>.Success((await message.Content.ReadFromJsonAsync<T>(Serializer, cts.Token))!),
+
+                (>= 200 and < 300, false) => ApiResponse<T>.Success(default!),
+
+                (_, false) => ApiResponse<T>.Fail(Error.Create("Unknown server response", 500)),
 
                 _ => ApiResponse<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(Serializer, cts.Token))!)
             };

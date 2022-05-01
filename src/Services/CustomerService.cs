@@ -30,6 +30,5 @@ public sealed class CustomerService
 
         await _customer.CreateAsync();
         await _storage.SetItemAsync(StorageKey, Guid.NewGuid());
-        // _navigation.NavigateTo(Links.Authentication.LogIn(Uri.EscapeDataString(_navigation.Uri)));
     }
 }

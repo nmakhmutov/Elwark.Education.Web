@@ -11,6 +11,9 @@ internal sealed class EmpireClient : GatewayClient
     public EmpireClient(HttpClient client) =>
         _client = client;
 
-    public Task<ApiResponse<PageResponse<EmpireOverview>>> GetAsync(GetEmpiresRequest request) =>
-        ExecuteAsync<PageResponse<EmpireOverview>>(ct => _client.GetAsync($"history/empires{request.ToQuery()}", ct));
+    public Task<ApiResponse<PageResponse<EmpireOverview>>> GetAsync(GetEmpiresRequest request)
+    {
+        var url = $"history/empires{request.ToQueryString()}";
+        return ExecuteAsync<PageResponse<EmpireOverview>>(ct => _client.GetAsync(url, ct));
+    }
 }

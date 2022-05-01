@@ -41,7 +41,7 @@ internal sealed class TestClient : GatewayClient
     public Task<ApiResponse<InventoryAppliedModel>> ApplyInventoryAsync(string testId, uint inventoryId)
     {
         var url = $"{Route}/{testId}/inventories/{inventoryId}";
-        return ExecuteAsync<InventoryAppliedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+        return ExecuteAsync<InventoryAppliedModel>(ct => _client.PostAsync(url, null, ct));
     }
 
     public Task<ApiResponse<TestConclusionModel>> GetConclusionAsync(string id)
@@ -50,33 +50,30 @@ internal sealed class TestClient : GatewayClient
         return ExecuteAsync<TestConclusionModel>(ct => _client.GetAsync(url, ct));
     }
 
-    public Task<ApiResponse<TestCreatedModel>> CreateEasyTestAsync(string topicId)
-    {
-        var url = $"{Route}/easy/topics/{topicId}";
-        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
-    }
+    public Task<ApiResponse<TestCreatedModel>> CreateEasyTestAsync(string topicId) =>
+        ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync($"{Route}/easy/topics/{topicId}", null, ct));
 
     public Task<ApiResponse<TestCreatedModel>> CreateEasyTestAsync(EpochType epoch)
     {
         var url = $"{Route}/easy/epochs/{epoch.ToFastString()}";
-        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, null, ct));
     }
 
     public Task<ApiResponse<TestCreatedModel>> CreateHardTestAsync(string topicId)
     {
         var url = $"{Route}/hard/topics/{topicId}";
-        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, null, ct));
     }
 
     public Task<ApiResponse<TestCreatedModel>> CreateHardTestAsync(EpochType epoch)
     {
         var url = $"{Route}/hard/epochs/{epoch.ToFastString()}";
-        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, null, ct));
     }
 
     public Task<ApiResponse<TestCreatedModel>> CreateMixedTestAsync(EpochType epoch)
     {
         var url = $"{Route}/mixed/epochs/{epoch.ToFastString()}";
-        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, EmptyContent, ct));
+        return ExecuteAsync<TestCreatedModel>(ct => _client.PostAsync(url, null, ct));
     }
 }

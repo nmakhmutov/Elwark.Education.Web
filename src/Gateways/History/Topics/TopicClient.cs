@@ -12,22 +12,27 @@ internal sealed class TopicClient : GatewayClient
     public TopicClient(HttpClient client) =>
         _client = client;
 
-    public Task<ApiResponse<PageResponse<UserTopicOverviewModel>>> GetAsync(GetTopicsRequest request) =>
-        ExecuteAsync<PageResponse<UserTopicOverviewModel>>(ct =>
-            _client.GetAsync($"history/topics{request.ToQuery()}", ct));
+    public Task<ApiResponse<PageResponse<UserTopicOverviewModel>>> GetAsync(GetTopicsRequest request)
+    {
+        var url = $"history/topics{request.ToQueryString()}";
+        return ExecuteAsync<PageResponse<UserTopicOverviewModel>>(ct => _client.GetAsync(url, ct));
+    }
 
     public Task<ApiResponse<TopicDetailCompositionModel>> GetAsync(string id) =>
         ExecuteAsync<TopicDetailCompositionModel>(ct => _client.GetAsync($"history/topics/{id}", ct));
 
-    public Task<ApiResponse<RandomTopicIdModel>> GetRandomAsync(EpochType epoch) =>
-        ExecuteAsync<RandomTopicIdModel>(ct => _client.GetAsync($"history/topics/random?epoch={epoch}", ct));
+    public Task<ApiResponse<RandomTopicIdModel>> GetRandomAsync(EpochType epoch)
+    {
+        var url = $"history/topics/random?epoch={epoch.ToFastString()}";
+        return ExecuteAsync<RandomTopicIdModel>(ct => _client.GetAsync(url, ct));
+    }
 
     public Task<ApiResponse<bool>> ToggleFavoriteAsync(string id) =>
-        ExecuteAsync<bool>(ct => _client.PostAsync($"history/topics/{id}/favorites", EmptyContent, ct));
+        ExecuteAsync<bool>(ct => _client.PostAsync($"history/topics/{id}/favorites", null, ct));
 
     public Task<ApiResponse<Unit>> LikeAsync(string id) =>
-        ExecuteAsync<Unit>(ct => _client.PostAsync($"history/topics/{id}/likes", EmptyContent, ct));
+        ExecuteAsync<Unit>(ct => _client.PostAsync($"history/topics/{id}/likes", null, ct));
 
     public Task<ApiResponse<Unit>> DislikeAsync(string id) =>
-        ExecuteAsync<Unit>(ct => _client.PostAsync($"history/topics/{id}/dislikes", EmptyContent, ct));
+        ExecuteAsync<Unit>(ct => _client.PostAsync($"history/topics/{id}/dislikes", null, ct));
 }

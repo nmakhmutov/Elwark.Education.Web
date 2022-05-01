@@ -6,9 +6,9 @@
 @attribute [Authorize]
 
 <EduPage ShowFooter="@_response.IsLoaded">
-    <PageTitle>@L[$"History:{_request.Epoch}"]</PageTitle>
+    <PageTitle>@L[$"History:{_request.Epoch.ToFastString()}"]</PageTitle>
     <EduContainer Class="pb-0">
-        <PageHeader Title="@L[$"History:{_request.Epoch}"]" Breadcrumbs="@Breadcrumbs"/>
+        <PageHeader Title="@L[$"History:{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
     <ApiViewer Response="_response" Context="topics">
         <EduContainer>

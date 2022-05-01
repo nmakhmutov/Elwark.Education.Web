@@ -21,7 +21,7 @@ internal sealed class CustomerClient : GatewayClient, ICustomerClient
 
     public async Task CreateAsync()
     {
-        var response = await _client.PostAsync("customers", EmptyContent);
+        var response = await _client.PostAsync("customers", null);
         response.EnsureSuccessStatusCode();
     }
 }

@@ -6,7 +6,7 @@
 @using MudBlazor.Services
 @using Education.Web.Gateways.History.Empires.Model
 @using Education.Web.Gateways.History
-@implements IDisposable
+@implements IAsyncDisposable
 
 <style>
     .mud-timeline-position-start::before {
@@ -46,7 +46,7 @@
                     Label="@L["Sort:By"]"
                     Dense
                     Variant="Variant.Text"
-                    Value="@_request.Sort"
+                    Value="@_sort"
                     Style="max-width: 300px"
                     ValueChanged="@SortChangedAsync">
                     <MudSelectItem Value="@GetEmpiresRequest.SortType.Area">
@@ -62,97 +62,57 @@
             </div>
         </MudTimelineItem>
 
-        @if (_empires.Count == 0)
-        {
-            for (var i = 0; i < 4; i++)
-            {
-                var align = i % 2 == 0 ? "align-end" : "align-start";
-
-                <MudTimelineItem Color="Color.Secondary" Size="Size.Large" Variant="Variant.Text">
-                    <ItemDot>
-                        <MudIcon Size="Size.Large" Icon="@Icons.Outlined.OutlinedFlag"/>
-                    </ItemDot>
-                    <ItemContent>
-                        <div class="d-flex flex-column @align ma-3 ma-sm-6">
-                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="60%" Height="37px"/>
-                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="20%" Height="24px"/>
-                            <div class="d-flex flex-column @align my-3 w-100">
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="70%" Height="24px"/>
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="58%" Height="24px"/>
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="65%" Height="24px"/>
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Width="53%" Height="24px"/>
+        <Virtualize @ref="@_empireVirtualize" ItemsProvider="EmpiresProvider" ItemSize="240" Context="empire">
+            <MudTimelineItem Class="timeline-item">
+                <ItemDot>
+                    <MudAvatar Image="@empire.ThumbnailUrl" Size="Size.Large"/>
+                </ItemDot>
+                <ItemContent>
+                    <div class="content-wrapper">
+                        <div class="content">
+                            <div>
+                                <MudLink Typo="Typo.h5" Href="@HistoryLinks.Content.Topic(empire.Id)">
+                                    @empire.Title
+                                </MudLink>
                             </div>
-                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="38%" Height="24px"/>
-                            <MudSkeleton SkeletonType="SkeletonType.Text" Width="38%" Height="24px"/>
-                        </div>
-                    </ItemContent>
-                </MudTimelineItem>
-            }
-        }
-        else
-        {
-            <div></div>
-            <Virtualize Items="@_empires" Context="empire">
-                <MudTimelineItem Class="timeline-item">
-                    <ItemDot>
-                        <MudAvatar Image="@empire.ThumbnailUrl" Size="Size.Large"/>
-                    </ItemDot>
-                    <ItemContent>
-                        <div class="content-wrapper">
-                            <div class="content">
-                                <div>
-                                    <MudLink Typo="Typo.h5" Href="@HistoryLinks.Content.Topic(empire.Id)">
-                                        @empire.Title
-                                    </MudLink>
-                                </div>
-                                <div class="d-inline-flex align-center">
-                                    <HistoryDate Date="@empire.Founded"/>
-                                    <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
-                                    <HistoryDate Date="@empire.Dissolved"/>
-                                </div>
-                                <MudText Typo="Typo.body1" Class="my-3">
-                                    @empire.Overview
-                                </MudText>
-                                <MudText Typo="Typo.body2">
-                                    @L["History:EmpireMaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
-                                </MudText>
-                                <MudText Typo="Typo.body2">
-                                    @L["History:EmpireMaxPopulation"]: @empire.MaxPopulation.ToString("N0")
-                                </MudText>
-                                <MudText Typo="Typo.body2">
-                                    @L["History:EmpireDuration"]:
-                                    @if (empire.Duration.HasValue)
-                                    {
-                                        @empire.Duration.Value.ToString("N0")<small>&nbsp;@L["History:Years"].Value.ToLowerInvariant()</small>
-                                    }
-                                    else
-                                    {
-                                        @L["History:Unknown"]
-                                    }
-                                </MudText>
+                            <div class="d-inline-flex align-center">
+                                <HistoryDate Date="@empire.Founded"/>
+                                <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
+                                <HistoryDate Date="@empire.Dissolved"/>
                             </div>
+                            <MudText Typo="Typo.body1" Class="my-3">
+                                @empire.Overview
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @L["History:EmpireMaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @L["History:EmpireMaxPopulation"]: @empire.MaxPopulation.ToString("N0")
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @L["History:EmpireDuration"]:
+                                @if (empire.Duration.HasValue)
+                                {
+                                    @empire.Duration.Value.ToString("N0")<small>&nbsp;@L["History:Years"].Value.ToLowerInvariant()</small>
+                                }
+                                else
+                                {
+                                    @L["History:Unknown"]
+                                }
+                            </MudText>
                         </div>
-                    </ItemContent>
-                </MudTimelineItem>
-            </Virtualize>
-            <InfinityScroll ObserverTargetId="observerTarget" ObservableTargetReached="@LoadMoreAsync">
-                <div id="observerTarget" class="grid-full-row d-flex justify-center my-6">
-                    @if (_request.Page < _pages)
-                    {
-                        <MudProgressCircular Indeterminate/>
-                    }
-                </div>
-            </InfinityScroll>
-        }
+                    </div>
+                </ItemContent>
+            </MudTimelineItem>
+        </Virtualize>
     </MudTimeline>
 </EduPage>
 
 @code {
 
     private TimelinePosition _timelinePosition = TimelinePosition.Start;
-    private GetEmpiresRequest _request = new(GetEmpiresRequest.SortType.Area, 1, 20);
-    private readonly List<EmpireOverview> _empires = new();
-    private uint _pages;
+    private GetEmpiresRequest.SortType _sort = GetEmpiresRequest.SortType.Area;
+    private Virtualize<EmpireOverview> _empireVirtualize = default!;
 
     [Inject]
     private IResizeListenerService ResizeListener { get; set; } = default!;
@@ -163,32 +123,14 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
-        var response = await HistoryClient.Empire.GetAsync(_request);
-        if (response.IsFailed)
-            return;
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
 
-        _empires.AddRange(response.Data.Items);
-        _pages = response.Data.Pages;
-    }
+    [Parameter, SupplyParameterFromQuery(Name = "by")]
+    public string? Sort { get; set; }
 
-    private async Task LoadMoreAsync()
-    {
-        if (_request.Page == _pages)
-            return;
-
-        var response = await HistoryClient.Empire.GetAsync(_request = _request with {Page = _request.Page + 1});
-        if (response.IsSuccess)
-            _empires.AddRange(response.Data.Items);
-    }
-
-    private async Task SortChangedAsync(GetEmpiresRequest.SortType sort)
-    {
-        _empires.Clear();
-        _request = new GetEmpiresRequest(sort, 1, 20);
-        await OnInitializedAsync();
-    }
+    protected override void OnInitialized() =>
+        _sort = Map(Sort);
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -197,6 +139,13 @@
             ResizeListener.OnBreakpointChanged += OnBreakpointChanged;
             OnBreakpointChanged(null, await ResizeListener.GetBreakpoint());
         }
+    }
+
+    private async Task SortChangedAsync(GetEmpiresRequest.SortType sort)
+    {
+        _sort = sort;
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("by", Map(sort)));
+        await _empireVirtualize.RefreshDataAsync();
     }
 
     private void OnBreakpointChanged(object? sender, Breakpoint e)
@@ -212,7 +161,34 @@
         InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose() =>
+    private async ValueTask<ItemsProviderResult<EmpireOverview>> EmpiresProvider(ItemsProviderRequest request)
+    {
+        var response = await HistoryClient.Empire
+            .GetAsync(new GetEmpiresRequest(_sort, request.StartIndex + 1, request.Count));
+
+        return response.IsSuccess
+            ? new ItemsProviderResult<EmpireOverview>(response.Data.Items, (int)response.Data.Count)
+            : new ItemsProviderResult<EmpireOverview>();
+    }
+
+    private static GetEmpiresRequest.SortType Map(string? sort) =>
+        sort switch {
+            "duration" => GetEmpiresRequest.SortType.Duration,
+            "population" => GetEmpiresRequest.SortType.Population,
+            _ => GetEmpiresRequest.SortType.Area
+            };
+
+    private static string Map(GetEmpiresRequest.SortType sort) =>
+        sort switch {
+            GetEmpiresRequest.SortType.Duration => "duration",
+            GetEmpiresRequest.SortType.Population => "population",
+            _ => "area"
+            };
+
+    public async ValueTask DisposeAsync()
+    {
         ResizeListener.OnBreakpointChanged -= OnBreakpointChanged;
+        await _empireVirtualize.DisposeAsync();
+    }
 
 }

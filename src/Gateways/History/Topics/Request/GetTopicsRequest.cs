@@ -3,16 +3,17 @@ using Education.Web.Gateways.Models;
 namespace Education.Web.Gateways.History.Topics.Request;
 
 public sealed record GetTopicsRequest(EpochType Epoch, int Page, int Count)
-    : PageRequest(Page, Count)
+    : IQueryStringRequest
 {
-    public override string ToQuery() =>
-        QueryString.Create(
-                new Dictionary<string, string?>
-                {
-                    { nameof(Epoch), Epoch.ToString() },
-                    { nameof(Page), Page.ToString() },
-                    { nameof(Count), Count.ToString() }
-                }
-            )
-            .ToString();
+    public QueryString ToQueryString()
+    {
+        var values = new Dictionary<string, string?>
+        {
+            [nameof(Epoch)] = Epoch.ToFastString(),
+            [nameof(Page)] = Page.ToString(),
+            [nameof(Count)] = Count.ToString()
+        };
+
+        return QueryString.Create(values);
+    }
 }

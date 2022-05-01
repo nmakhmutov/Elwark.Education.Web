@@ -51,7 +51,7 @@
                 @foreach (var epoch in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
                 {
                     <MudNavLink Href="@HistoryLinks.Content.Epoch(epoch)">
-                        @L[$"History:{epoch}"]
+                        @L[$"History:{epoch.ToFastString()}"]
                     </MudNavLink>
                 }
             </MudNavGroup>

@@ -101,7 +101,7 @@
             _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Subject:History"], HistoryLinks.Root),
-                new(L[$"History:{_response.Data.Topic.Epoch}"], HistoryLinks.Content.Epoch(_response.Data.Topic.Epoch))
+                new(L[$"History:{_response.Data.Topic.Epoch.ToFastString()}"], HistoryLinks.Content.Epoch(_response.Data.Topic.Epoch))
             };
     }
 
