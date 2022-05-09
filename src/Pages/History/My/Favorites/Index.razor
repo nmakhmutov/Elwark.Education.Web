@@ -7,95 +7,123 @@
 <PageTitle>@L["Favorites"]</PageTitle>
 <EduPage ShowFooter>
     <EduContainer MaxWidth="EduWidth.W1920">
-        <PageHeader Title="@L["Favorites"]" Class="mb-3 mb-sm-6" Breadcrumbs="@Breadcrumbs"/>
-        <div class="d-flex flex-wrap justify-sm-space-between align-center mb-3 mb-sm-6">
-            <div>
-                <MudSelect T="FavoritesRequest.SortType" Value="@_request.Sort" ValueChanged="@Callback" Margin="Margin.Dense">
-                    @foreach (var sort in Enum.GetValues<FavoritesRequest.SortType>())
-                    {
-                        <MudSelectItem T="FavoritesRequest.SortType" Value="sort">
-                            @L[$"Sort:{sort}"]
-                        </MudSelectItem>
-                    }
-                </MudSelect>
-            </div>
-            <div class="ml-3 ml-sm-6" style="align-self: end">
-                <MudCheckBox @bind-Checked="@_dense" Label="@L["CompactView"]" Color="Color.Primary" Dense/>
-            </div>
-        </div>
-        <MudTable
-            ServerData="@ServerReload"
-            Dense="@_dense"
-            Loading="@_loading"
-            Elevation="0"
-            Hover
-            RowsPerPage="@_request.Count"
-            Breakpoint="Breakpoint.Sm"
-            LoadingProgressColor="Color.Primary"
-            @ref="@_table">
-            <HeaderContent>
-                <MudTh/>
-                <MudTh>@L["Topic"]</MudTh>
-                <MudTh>@L["History:Epoch"]</MudTh>
-                <MudTh>@L["NumberOfTests:TotalPassed"]</MudTh>
-                <MudTh>@L["TimeSpent:Total"]</MudTh>
-                <MudTh/>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd HideSmall>
-                    <MudAvatar Image="@context.Topic.ThumbnailUrl"/>
-                </MudTd>
-                <MudTd DataLabel="@L["Title"]">
-                    <MudLink Href="@HistoryLinks.Content.Topic(context.Topic.Id)">
-                        @context.Topic.Title
-                    </MudLink>
-                </MudTd>
-                <MudTd DataLabel="@L["History:Epoch"]">
-                    <MudLink Href="@HistoryLinks.Content.Epoch(context.Topic.Epoch)">
-                        @L[$"History:{context.Topic.Epoch.ToFastString()}"]
-                    </MudLink>
-                </MudTd>
-                <MudTd DataLabel="@L["NumberOfTests:TotalPassed"]">
-                    @context.UserActivity.PassedTests.ToReadable()
-                </MudTd>
-                <MudTd DataLabel="@L["TimeSpent:Total"]">
-                    @context.UserActivity.TimeSpent.ToSimpleFormat()
-                </MudTd>
-                <MudTd>
-                    <div class="d-flex flex-row justify-end">
-                        <FavoriteToggleButton
-                            IsFavorite="@context.UserActivity.IsFavorite"
-                            TopicId="@context.Topic.Id"
-                            OnFavoriteClick="@OnFavoriteClick"/>
-                        <MudTooltip Text="@L["Details"]">
-                            <MudIconButton
-                                Link="@HistoryLinks.User.MyTopic(context.Topic.Id)"
-                                Icon="@Icons.Material.Outlined.RemoveRedEye"/>
-                        </MudTooltip>
-                    </div>
-                </MudTd>
-            </RowTemplate>
-            <NoRecordsContent>
+        <PageHeader Title="@L["Favorites"]" Breadcrumbs="@Breadcrumbs">
+            @if (!_isEmpty)
+            {
+                <div>
+                    <MudSelect Label="@L["Favorites:Sort"]" T="FavoritesRequest.SortType" Value="@_request.Sort" ValueChanged="@OnSortChanged">
+                        @foreach (var sort in Enum.GetValues<FavoritesRequest.SortType>())
+                        {
+                            <MudSelectItem T="FavoritesRequest.SortType" Value="sort">
+                                @L[$"Favorites:{sort}"]
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </div>
+            }
+        </PageHeader>
+    </EduContainer>
+    @if (_isLoading)
+    {
+        <PageSpinner/>
+    }
+    else
+    {
+        <EduContainer MaxWidth="EduWidth.W1920">
+            @if (_isEmpty)
+            {
                 <EmptyResult
                     Class="grid-full-row"
-                    Title="@L["Empty:FavoritesTitle"]"
-                    Subtitle="@L["Empty:FavoritesSubtitle"]"/>
-            </NoRecordsContent>
-            <LoadingContent>
-                <MudText>@L["Loading"]</MudText>
-            </LoadingContent>
-            <PagerContent>
-                <MudTablePager RowsPerPageString="@L["RowsPerPage"]"/>
-            </PagerContent>
-        </MudTable>
-    </EduContainer>
+                    Title="@L["Favorites:EmptyTitle"]"
+                    Subtitle="@L["Favorites:EmptySubtitle"]"/>
+            }
+            else
+            {
+                <div class="grid px-3 px-sm-6 mb-3">
+                    <div class="image">
+
+                    </div>
+                    <div class="title">
+                        @L["Title"]
+                    </div>
+                    <div class="epoch">
+                        @L["History:Epoch"]
+                    </div>
+                    <div class="rating">
+                        @L["Rating"]
+                    </div>
+                    <div class="passed-test">
+                        @L["NumberOfTests:TotalPassed"]
+                    </div>
+                    <div class="time-spent">
+                        @L["TimeSpent:Total"]
+                    </div>
+                    <div class="actions">
+
+                    </div>
+                </div>
+                <Virtualize @ref="@_virtualize" ItemsProvider="FavoriteDataProvider" ItemSize="110" Context="item">
+                    <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
+                        <div class="image">
+                            <MudAvatar Size="Size.Large" Image="@item.Topic.ThumbnailUrl"/>
+                        </div>
+                        <div class="title">
+                            <MudLink Href="@HistoryLinks.Content.Topic(item.Topic.Id)">
+                                @item.Topic.Title
+                            </MudLink>
+                        </div>
+                        <div class="epoch">
+                            <MudChip Label Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@HistoryLinks.Content.Epoch(item.Topic.Epoch)">
+                                @L[$"History:{item.Topic.Epoch.ToFastString()}"]
+                            </MudChip>
+                        </div>
+                        <div class="rating">
+                            <RatingStars Rating="@item.Topic.Rating" ShowTooltip ShowDetails Class="d-inline-flex flex-column align-center"/>
+                        </div>
+                        <div class="passed-test">
+                            <div class="d-flex align-center">
+                                <MudIcon Icon="@EducationIcons.Tests" Size="Size.Small" Class="mr-1"/>
+                                <MudText Typo="Typo.body2">
+                                    @item.Activity.PassedTests.ToReadable()
+                                </MudText>
+                            </div>
+                        </div>
+                        <div class="time-spent">
+                            <div class="d-flex align-center">
+                                <MudIcon Icon="@EducationIcons.TimeSpent" Size="Size.Small" Class="mr-1"/>
+                                <MudText Typo="Typo.body2">
+                                    @item.Activity.TimeSpent.ToSimpleFormat()
+                                </MudText>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            @if (item.Activity.PassedTests > 0)
+                            {
+                                <MudTooltip Text="@L["Details"]">
+                                    <MudIconButton
+                                        Link="@HistoryLinks.User.MyTopic(item.Topic.Id)"
+                                        Icon="@Icons.Material.Outlined.RemoveRedEye"/>
+                                </MudTooltip>
+                            }
+                            <FavoriteToggleButton
+                                IsFavorite="@item.Activity.IsFavorite"
+                                TopicId="@item.Topic.Id"
+                                OnFavoriteClick="@OnFavoriteClick"/>
+                        </div>
+                    </div>
+
+                </Virtualize>
+            }
+        </EduContainer>
+    }
 </EduPage>
 
 @code {
-    private bool _loading = true;
-    private bool _dense;
-    private MudTable<UserTopicOverviewModel> _table = default!;
-    private FavoritesRequest _request = new(FavoritesRequest.SortType.DateAddedNewest, 1, 25);
+    private bool _isLoading = true;
+    private bool _isEmpty = true;
+    private Virtualize<UserTopicOverviewModel> _virtualize = default!;
+    private readonly List<UserTopicOverviewModel> _items = new();
+    private FavoritesRequest _request = new(FavoritesRequest.SortType.DateAddedNewest, null, 20);
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -109,20 +137,38 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    private async Task<TableData<UserTopicOverviewModel>> ServerReload(TableState state)
+    protected override async Task OnInitializedAsync()
     {
-        _loading = true;
-        _request = _request with { Page = state.Page + 1, Count = state.PageSize };
-
         var data = await HistoryClient.User.GetFavoritesAsync(_request);
-
-        _loading = false;
-
-        return new TableData<UserTopicOverviewModel>
+        if (data.IsSuccess)
         {
-            Items = data.Data.Items,
-            TotalItems = (int)data.Data.Count
-        };
+            _request = _request with { Token = data.Data.Next };
+            _items.AddRange(data.Data.Items);
+        }
+
+        _isEmpty = _items.Count == 0;
+        _isLoading = false;
+    }
+
+    private async ValueTask<ItemsProviderResult<UserTopicOverviewModel>> FavoriteDataProvider(ItemsProviderRequest request)
+    {
+        int GetLength() =>
+            _items.Count + (string.IsNullOrEmpty(_request.Token) ? 0 : 1);
+
+        var isRangeAvailable = _items.Count > (request.StartIndex + 1) * request.Count ||
+                               _items.Count > 0 && string.IsNullOrEmpty(_request.Token);
+
+        if (isRangeAvailable)
+            return new ItemsProviderResult<UserTopicOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
+
+        var data = await HistoryClient.User.GetFavoritesAsync(_request = _request with { Count = request.Count });
+        if (data.IsFailed)
+            return new ItemsProviderResult<UserTopicOverviewModel>(_items, GetLength());
+
+        _request = _request with { Token = data.Data.Next };
+        _items.AddRange(data.Data.Items);
+
+        return new ItemsProviderResult<UserTopicOverviewModel>(_items.Skip(request.StartIndex), GetLength());
     }
 
     private async Task<bool> OnFavoriteClick(string topicId)
@@ -131,10 +177,12 @@
         return result.IsSuccess && result.Data;
     }
 
-    private async Task Callback(FavoritesRequest.SortType arg)
+    private Task OnSortChanged(FavoritesRequest.SortType sort)
     {
-        _request = _request with { Sort = arg };
-        await _table.ReloadServerData();
+        _request = _request with { Sort = sort, Token = null };
+        _items.Clear();
+
+        return _virtualize.RefreshDataAsync();
     }
 
 }

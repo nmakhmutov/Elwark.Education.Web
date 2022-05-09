@@ -42,10 +42,10 @@ internal sealed class UserClient : GatewayClient
     public Task<ApiResponse<EventGuesserStatisticsModel>> GetEventGuesserStatisticsAsync() =>
         ExecuteAsync<EventGuesserStatisticsModel>(ct => _client.GetAsync("history/users/me/event-guessers", ct));
 
-    public Task<ApiResponse<PageResponse<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request)
+    public Task<ApiResponse<TokenPaginationResponse<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request)
     {
         var url = $"history/users/me/favorites{request.ToQueryString()}";
-        return ExecuteAsync<PageResponse<UserTopicOverviewModel>>(ct => _client.GetAsync(url, ct));
+        return ExecuteAsync<TokenPaginationResponse<UserTopicOverviewModel>>(ct => _client.GetAsync(url, ct));
     }
 
     public Task<ApiResponse<TopicStatisticsModel>> GetTopicsAsync(string topicId) =>

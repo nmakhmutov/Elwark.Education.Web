@@ -1,6 +1,7 @@
+@using MudBlazor.Utilities
 @typeparam TValue
 
-<MudCard Class="@(Class + "d-flex flex-column")" Elevation="0">
+<MudCard Class="@_class" Elevation="0">
     <MudCardHeader Class="pa-3 pa-sm-6">
         <CardHeaderContent>
             <div class="d-flex align-center justify-space-between">
@@ -36,6 +37,7 @@
 </MudCard>
 
 @code {
+    private string? _class;
 
     [Parameter]
     public string? Class { get; set; }
@@ -55,4 +57,8 @@
     [Parameter]
     public RenderFragment? ActivityContent { get; set; }
 
+    protected override void OnParametersSet() => 
+        _class = CssBuilder.Default("d-flex flex-column")
+        .AddClass(Class, Class is not null)
+        .Build();
 }

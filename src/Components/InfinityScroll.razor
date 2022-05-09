@@ -1,20 +1,19 @@
 @ChildContent
 
 @code {
-
+    private DotNetObjectReference<InfinityScroll>? _objectRef;
+    
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = default!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string ObserverTargetId { get; set; } = string.Empty;
 
     [Parameter]
     public EventCallback<bool> ObservableTargetReached { get; set; }
-
-    private DotNetObjectReference<InfinityScroll>? _objectRef;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -26,6 +25,7 @@
     }
 
     [JSInvokable]
-    public async Task OnIntersection() => await ObservableTargetReached.InvokeAsync(true);
+    public async Task OnIntersection() =>
+        await ObservableTargetReached.InvokeAsync(true);
 
 }

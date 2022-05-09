@@ -2,7 +2,7 @@ using Education.Web.Gateways.Models;
 
 namespace Education.Web.Gateways.History.Users.Request;
 
-public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, int Page, int Count)
+public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, string? Token, int Count)
     : IQueryStringRequest
 {
     public enum SortType
@@ -13,7 +13,7 @@ public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, int Page, 
 
     public QueryString ToQueryString()
     {
-        var values = new Dictionary<string, string?>
+        var values = new Dictionary<string, string?>(3)
         {
             [nameof(Sort)] = Sort switch
             {
@@ -21,9 +21,11 @@ public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, int Page, 
                 SortType.DateAddedOldest => nameof(SortType.DateAddedOldest),
                 _ => throw new ArgumentOutOfRangeException()
             },
-            [nameof(Page)] = Page.ToString(),
             [nameof(Count)] = Count.ToString()
         };
+        
+        if(Token is not null)
+            values.Add(nameof(Token), Token);
         
         return QueryString.Create(values);
     }

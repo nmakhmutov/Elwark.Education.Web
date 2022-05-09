@@ -12,14 +12,14 @@
                 <ApexChart TItem="Data" Options="@_options" Width="@("140px")" Height="@("120px")">
                     <ApexPointSeries
                         TItem="Data"
-                        Items="@(new[] { new Data(Silver.Flow.Income, "Income") })"
+                        Items="@_income"
                         XValue="@(e => e.Name)"
                         YValue="@(x => x.Value)"
                         SeriesType="SeriesType.Bar"/>
 
                     <ApexPointSeries
                         TItem="Data"
-                        Items="@(new[] { new Data(-Silver.Flow.Expense, "Expense") })"
+                        Items="@_expense"
                         XValue="@(e => e.Name)"
                         YValue="@(x => x.Value)"
                         SeriesType="SeriesType.Bar"/>
@@ -63,7 +63,9 @@
 </MudPaper>
 
 @code {
-
+    private Data[] _income = new Data[1];
+    private Data[] _expense = new Data[1];
+    
     private ApexChartOptions<Data> _options = new()
     {
         Tooltip = new Tooltip
@@ -110,6 +112,11 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private sealed record Data(int Value, string Name);
+    protected override void OnParametersSet()
+    {
+        _income[0] = new Data(Silver.Flow.Income, L["InternalMoney:Income"]);
+        _expense[0] = new Data(-Silver.Flow.Expense, L["InternalMoney:Expense"]);
+    }
 
+    private sealed record Data(int Value, string Name);
 }

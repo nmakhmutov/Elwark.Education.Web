@@ -5,6 +5,6 @@ public sealed record CustomerModel(
     string Name,
     Uri Image,
     string Timezone,
-    DayOfWeek FirstDayOfWeek,
+    DayOfWeek WeekStart,
     string Language
 );

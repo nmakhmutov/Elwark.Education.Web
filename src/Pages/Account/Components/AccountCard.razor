@@ -20,10 +20,10 @@
         </div>
         <div class="field">
             <MudText Typo="Typo.subtitle1">
-                @L["Customer:FirstDayOfWeek"]
+                @L["Customer:WeekStart"]
             </MudText>
             <MudText Typo="Typo.subtitle1">
-                @L[$"DayOfWeek:{FirstDayOfWeek}"]
+                @L[$"DayOfWeek:{WeekStart}"]
             </MudText>
         </div>
         <div class="field justify-end">
@@ -63,7 +63,7 @@
     public string Timezone { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public DayOfWeek FirstDayOfWeek { get; set; }
+    public DayOfWeek WeekStart { get; set; }
 
     [Parameter, EditorRequired]
     public string Language { get; set; } = string.Empty;

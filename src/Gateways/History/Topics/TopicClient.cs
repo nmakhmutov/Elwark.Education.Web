@@ -12,10 +12,10 @@ internal sealed class TopicClient : GatewayClient
     public TopicClient(HttpClient client) =>
         _client = client;
 
-    public Task<ApiResponse<PageResponse<UserTopicOverviewModel>>> GetAsync(GetTopicsRequest request)
+    public Task<ApiResponse<OffsetResponse<UserTopicOverviewModel>>> GetAsync(GetTopicsRequest request)
     {
         var url = $"history/topics{request.ToQueryString()}";
-        return ExecuteAsync<PageResponse<UserTopicOverviewModel>>(ct => _client.GetAsync(url, ct));
+        return ExecuteAsync<OffsetResponse<UserTopicOverviewModel>>(ct => _client.GetAsync(url, ct));
     }
 
     public Task<ApiResponse<TopicDetailCompositionModel>> GetAsync(string id) =>
