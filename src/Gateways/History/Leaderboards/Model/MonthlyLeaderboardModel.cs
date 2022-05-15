@@ -1,3 +1,5 @@
+using Education.Web.Gateways.Models;
+
 namespace Education.Web.Gateways.History.Leaderboards.Model;
 
-public sealed record MonthlyLeaderboardModel(DateOnly Month, UserRankingModel[] Users);
+public sealed record MonthlyLeaderboardModel(RangeModel<DateTime> Range, UserRankingModel[] Users);

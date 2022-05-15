@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
@@ -70,13 +71,23 @@ builder.Services
     .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
 
 builder.Services
-    .AddHttpClient<IHistoryClient, HistoryClient>(client => client.BaseAddress = gatewayUrl)
+    .AddHttpClient<IHistoryClient, HistoryClient>(client =>
+    {
+        client.BaseAddress = gatewayUrl;
+        client.DefaultRequestVersion = HttpVersion.Version20;
+        client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
+    })
     .AddHttpMessageHandler<AuthorizationMessageHandler>()
     .AddHttpMessageHandler<LocalizationHandler>()
     .AddPolicyHandler(policy);
 
 builder.Services
-    .AddHttpClient<ICustomerClient, CustomerClient>(client => client.BaseAddress = gatewayUrl)
+    .AddHttpClient<ICustomerClient, CustomerClient>(client =>
+    {
+        client.BaseAddress = gatewayUrl;
+        client.DefaultRequestVersion = HttpVersion.Version20;
+        client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
+    })
     .AddHttpMessageHandler<AuthorizationMessageHandler>()
     .AddHttpMessageHandler<LocalizationHandler>()
     .AddPolicyHandler(policy);

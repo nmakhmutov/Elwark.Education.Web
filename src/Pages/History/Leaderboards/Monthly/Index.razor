@@ -12,12 +12,16 @@
 
     <ApiViewer Response="@_response" Context="leaderboard">
         <EduContainer MaxWidth="EduWidth.W1920">
-            <RankingTable Users="@leaderboard.Users"/>
+            <MudText Typo="Typo.h6">
+                @leaderboard.Range.Starts.ToFullFormat() - @leaderboard.Range.Ends.ToFullFormat()
+            </MudText>
+            <RankingTable HighlightUser="@_highlightUser" Users="@leaderboard.Users"/>
         </EduContainer>
     </ApiViewer>
 </EduPage>
 
 @code {
+    private long _highlightUser;
     private ApiResponse<MonthlyLeaderboardModel> _response = ApiResponse<MonthlyLeaderboardModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -31,7 +35,15 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() => 
-        _response = await Client.Leaderboard.GetMonthlyAsync();
+    [Inject]
+    public AuthenticationStateProvider StateProvider { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _response = await Client.Leaderboard.GetCurrentMonthAsync();
+        var state = await StateProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated ?? false)
+            _highlightUser = state.User.GetId();
+    }
 
 }

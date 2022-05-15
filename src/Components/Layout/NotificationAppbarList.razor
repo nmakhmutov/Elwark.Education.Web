@@ -66,8 +66,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Notification.StartAsync();
         Notification.OnChange += StateHasChanged;
+        await Notification.StartAsync();
     }
 
     public void Dispose() =>

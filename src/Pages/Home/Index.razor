@@ -1,21 +1,18 @@
 ﻿@page "/"
 @using Education.Web.Pages.History
 @using Education.Web.Pages.Home.Components
-@layout BaseLayout
+@layout MainLayout
 
 <PageTitle>Elwark education</PageTitle>
 
-<EduPage ShowFooter="false">
-    <AuthorizeView>
-        <Authorized>
-            <RedirectTo Url="@HistoryLinks.Root"/>
-            <NonAuthorizedLanding/>
-        </Authorized>
+<AuthorizeView>
+    <Authorized>
+        <RedirectTo Url="@HistoryLinks.Root"/>
+    </Authorized>
 
-        <NotAuthorized>
-            <MudText Typo="Typo.h1" Align="Align.Center">
-                Welcome
-            </MudText>
-        </NotAuthorized>
-    </AuthorizeView>
-</EduPage>
+    <NotAuthorized>
+        <EduPage ShowFooter>
+            <Landing/>
+        </EduPage>
+    </NotAuthorized>
+</AuthorizeView>

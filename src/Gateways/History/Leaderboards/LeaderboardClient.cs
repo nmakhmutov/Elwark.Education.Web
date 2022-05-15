@@ -9,12 +9,12 @@ internal sealed class LeaderboardClient : GatewayClient
     public LeaderboardClient(HttpClient client) =>
         _client = client;
 
-    public Task<ApiResponse<OverallRankingModel[]>> GetOverallAsync() =>
-        ExecuteAsync<OverallRankingModel[]>(ct => _client.GetAsync("history/leaderboards/overall", ct));
+    public Task<ApiResponse<GlobalRankingModel[]>> GetGlobalAsync() =>
+        ExecuteAsync<GlobalRankingModel[]>(ct => _client.GetAsync("history/leaderboards/global", ct));
     
-    public Task<ApiResponse<MonthlyLeaderboardModel>> GetMonthlyAsync() =>
-        ExecuteAsync<MonthlyLeaderboardModel>(ct => _client.GetAsync("history/leaderboards/monthly", ct));
-    
-    public Task<ApiResponse<AnnualLeaderboardModel>> GetAnnualAsync() =>
-        ExecuteAsync<AnnualLeaderboardModel>(ct => _client.GetAsync("history/leaderboards/annual", ct));
+    public Task<ApiResponse<AnnualLeaderboardModel>> GetCurrentYearAsync() =>
+        ExecuteAsync<AnnualLeaderboardModel>(ct => _client.GetAsync("history/leaderboards/current/year", ct));
+
+    public Task<ApiResponse<MonthlyLeaderboardModel>> GetCurrentMonthAsync() =>
+        ExecuteAsync<MonthlyLeaderboardModel>(ct => _client.GetAsync("history/leaderboards/current/month", ct));
 }

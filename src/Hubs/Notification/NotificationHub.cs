@@ -28,10 +28,7 @@ internal sealed class NotificationHub : IAsyncDisposable
 
         _connection.On("Notify", (NotificationModel notification) =>
         {
-            _notifications = _notifications.Prepend(notification)
-                .Take(5)
-                .ToList();
-
+            _notifications = _notifications.Prepend(notification).Take(5).ToList();
             OnChange.Invoke();
         });
 

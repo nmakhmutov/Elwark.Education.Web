@@ -14,6 +14,13 @@ public static class DateTimeExtensions
             : local.ToLongTimeString();
     }
 
+    public static string ToFullFormat(this DateTime date)
+    {
+        var local = TimeZoneInfo.ConvertTimeFromUtc(date, TimeZoneInfo.Local);
+
+        return local.ToString("f");
+    }
+
     public static string ToSimpleFormat(this TimeSpan span, bool hideSeconds = false)
     {
         var format = span switch

@@ -1,15 +1,15 @@
 @page "/history/leaderboards/global"
 @using Education.Web.Gateways.History.Leaderboards.Model
-@using Education.Web.Pages.History.Leaderboards.Overall.Components
+@using Education.Web.Pages.History.Leaderboards.Global.Components
 @using Education.Web.Gateways.History
 @layout HistoryLayout
 @attribute [Authorize]
 
 <EduPage ShowFooter="@_response.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <PageHeader Title="@L["Leaderboard:Overall:Name"]" Breadcrumbs="@Breadcrumbs"/>
+        <PageHeader Title="@L["Leaderboard:Global:Name"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-
+    
     <ApiViewer Response="@_response" Context="items">
         <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
             <EduFitGrid>
@@ -26,13 +26,14 @@
         </EduContainer>
 
         <EduContainer MaxWidth="EduWidth.W1920">
-            <RankingTable Users="@(items[3..])"/>
+            <RankingTable HighlightUser="@_highlightUser" Users="@(items[3..])"/>
         </EduContainer>
     </ApiViewer>
 </EduPage>
 
 @code {
-    private ApiResponse<OverallRankingModel[]> _response = ApiResponse<OverallRankingModel[]>.Loading();
+    private long _highlightUser;
+    private ApiResponse<GlobalRankingModel[]> _response = ApiResponse<GlobalRankingModel[]>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -45,7 +46,15 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() =>
-        _response = await Client.Leaderboard.GetOverallAsync();
+    [Inject]
+    public AuthenticationStateProvider StateProvider { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _response = await Client.Leaderboard.GetGlobalAsync();
+        var state = await StateProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated ?? false)
+            _highlightUser = state.User.GetId();
+    }
 
 }
