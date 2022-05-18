@@ -15,17 +15,17 @@
         <MudAutocomplete
             T="TopicOverviewModel"
             @ref="@_searchAutocomplete"
-            Dense
             DebounceInterval="300"
             AdornmentIcon="@Icons.Outlined.Search"
             Placeholder="@L["Search"]"
-            Variant="Variant.Outlined"
-            Margin="Margin.Dense"
-            SearchFunc="OnSearch"
-            Adornment="Adornment.Start"
             IconSize="Size.Small"
+            Margin="Margin.Dense"
+            Variant="Variant.Outlined"
+            Adornment="Adornment.Start"
+            Dense
             CoerceValue
             ResetValueOnEmptyText
+            SearchFunc="OnSearch"
             ValueChanged="OnSearchResult">
             <ItemTemplate Context="result">
                 <div class="d-flex align-center">
@@ -70,9 +70,6 @@
             <MudNavGroup Title="@L["Leaderboards"]" Icon="@EducationIcons.Leaderboard">
                 <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.Leaderboard.Global">
                     @L["Leaderboard:Global:Title"]
-                </MudNavLink>
-                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.Leaderboard.Annual">
-                    @L["Leaderboard:Annual:Title"]
                 </MudNavLink>
                 <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryLinks.Leaderboard.Monthly">
                     @L["Leaderboard:Monthly:Title"]

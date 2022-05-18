@@ -13,8 +13,8 @@ internal sealed class LeaderboardClient : GatewayClient
         ExecuteAsync<GlobalRankingModel[]>(ct => _client.GetAsync("history/leaderboards/global", ct));
     
     public Task<ApiResponse<AnnualLeaderboardModel>> GetCurrentYearAsync() =>
-        ExecuteAsync<AnnualLeaderboardModel>(ct => _client.GetAsync("history/leaderboards/current/year", ct));
+        ExecuteAsync<AnnualLeaderboardModel>(ct => _client.GetAsync("history/leaderboards/annual", ct));
 
-    public Task<ApiResponse<MonthlyLeaderboardModel>> GetCurrentMonthAsync() =>
-        ExecuteAsync<MonthlyLeaderboardModel>(ct => _client.GetAsync("history/leaderboards/current/month", ct));
+    public Task<ApiResponse<MonthlyLeaderboardModel>> GetCurrentMonthAsync(uint count) =>
+        ExecuteAsync<MonthlyLeaderboardModel>(ct => _client.GetAsync($"history/leaderboards/top/{count}/month", ct));
 }

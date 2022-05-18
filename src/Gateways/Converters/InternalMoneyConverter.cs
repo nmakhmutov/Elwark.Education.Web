@@ -13,8 +13,8 @@ internal sealed class InternalMoneyConverter : JsonConverter<IInternalMoney?>
 
         return name switch
         {
-            "experience" => document.Deserialize<Experience>(options),
-            "silver" => document.Deserialize<Silver>(options),
+            "Experience" => document.Deserialize<Experience>(options),
+            "Silver" => document.Deserialize<Silver>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(IInternalMoney), name, @"Unknown internal money")
         };
     }

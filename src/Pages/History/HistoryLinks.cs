@@ -46,8 +46,6 @@ public static class HistoryLinks
     {
         public const string Global = $"{Root}/leaderboards/global";
         
-        public const string Annual = $"{Root}/leaderboards/annual";
-        
         public const string Monthly = $"{Root}/leaderboards/monthly";
     }
 
