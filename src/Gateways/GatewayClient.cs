@@ -51,6 +51,8 @@ internal abstract class GatewayClient
 
                 (>= 200 and < 300, false) => ApiResponse<T>.Success(default!),
 
+                (404, false) => ApiResponse<T>.Fail(Error.Create("Resource not found", 404)),
+                
                 (_, false) => ApiResponse<T>.Fail(Error.Create("Unknown server response", 500)),
 
                 _ => ApiResponse<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(Serializer, cts.Token))!)
