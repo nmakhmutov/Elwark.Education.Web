@@ -5,6 +5,7 @@ namespace Education.Web.Gateways.History.EventGuessers.Model;
 
 public sealed record ConclusionModel(
     uint Score,
+    uint MaxScore,
     IInternalMoney[] Rewards,
     QuestionModel[] Questions
 );

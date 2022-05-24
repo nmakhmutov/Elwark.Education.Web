@@ -20,14 +20,12 @@
             }
         </MudSelect>
 
-        <MudSelect T="uint?" @bind-Value="@_model.Day" For="@(() => _model.Day)" Label="@L["EventGuesser:Day"]" Clearable>
-            @foreach (var day in Enumerable.Range(1, 31))
-            {
-                <MudSelectItem Value="@((uint)day)" T="uint?">
-                    @day
-                </MudSelectItem>
-            }
-        </MudSelect>
+        <MudNumericField
+            @bind-Value="@_model.Day"
+            For="@(() => _model.Day)"
+            Label="@L["EventGuesser:Day"]"
+            Variant="Variant.Text"
+            HideSpinButtons/>
 
         <MudRadioGroup @bind-SelectedOption="@_model.IsBc">
             <MudRadio Option="false">

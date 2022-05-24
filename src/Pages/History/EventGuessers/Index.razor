@@ -21,10 +21,6 @@
                     </MudText>
                     <EpochRadioGroup @bind-SelectedEpoch="@_epoch" Class="mb-3 mb-sm-6"/>
 
-                    <MudSlider @bind-Value="@_questions" Min="3" Max="13" Color="Color.Primary" Class="mb-3">
-                        @L["EventGuesser:NumberOfDates", _questions]
-                    </MudSlider>
-
                     <div class="d-flex justify-center">
                         <LoadingButton
                             DisableElevation
@@ -70,7 +66,6 @@
     private bool _isLoading;
     private bool _allowed;
     private EpochType _epoch = EpochType.None;
-    private int _questions = 4;
     private ApiResponse<TestBuilderModel> _response = ApiResponse<TestBuilderModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -104,7 +99,7 @@
     {
         _isLoading = true;
 
-        var response = await Client.EventGuesser.CreateAsync(new CreateRequest(_questions, _epoch));
+        var response = await Client.EventGuesser.CreateAsync(new CreateRequest(_epoch));
         if (response.IsSuccess)
             Navigation.NavigateTo(HistoryLinks.EventGuesser.Test(response.Data.Id));
         else

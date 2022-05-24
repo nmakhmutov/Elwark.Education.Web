@@ -92,7 +92,12 @@
     {
         _response = await Client.EventGuesser.GetAsync(Id);
         if (_response.IsFailed)
+        {
+            if (_response.Error.IsEventGuesserNotFound())
+                Navigation.NavigateTo(HistoryLinks.EventGuesser.Conclusion(Id));
+
             return;
+        }
 
         _score = _response.Data.Score;
         _x2BonusUntil = _response.Data.X2BonusUntil;
@@ -113,16 +118,17 @@
             return;
         }
 
-        if (result.Data.Question is not null)
+        if (result.Data.Question is null)
         {
-            _score = result.Data.Score;
-            _x2BonusUntil = result.Data.X2BonusUntil;
-            _question = result.Data.Question;
-            _completedQuestions = result.Data.CompletedQuestions;
-            _totalQuestions = result.Data.TotalQuestions;
+            Navigation.NavigateTo(HistoryLinks.EventGuesser.Conclusion(Id));
+            return;
         }
 
-        Navigation.NavigateTo(HistoryLinks.EventGuesser.Conclusion(Id));
+        _score = result.Data.Score;
+        _x2BonusUntil = result.Data.X2BonusUntil;
+        _question = result.Data.Question;
+        _completedQuestions = result.Data.CompletedQuestions;
+        _totalQuestions = result.Data.TotalQuestions;
     }
 
 }

@@ -1,0 +1,29 @@
+<EduContainer MaxWidth="@MaxWidth" Class="@Class">
+    <h2 class="rewards-title">
+        <span>@L["Rewards"]</span>
+    </h2>
+    <div class="rewards">
+        @foreach (var reward in Rewards)
+        {
+            <MudPaper Elevation="0" Class="pa-3">
+                <InternalMoneyText Money="@reward" IconSize="Size.Large" Typo="Typo.h5"/>
+            </MudPaper>
+        }
+    </div>
+</EduContainer>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public EduWidth MaxWidth { get; set; } = EduWidth.None;
+
+    [Parameter, EditorRequired]
+    public IInternalMoney[] Rewards { get; set; } = Array.Empty<IInternalMoney>();
+
+}
