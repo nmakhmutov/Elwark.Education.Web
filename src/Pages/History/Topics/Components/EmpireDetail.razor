@@ -6,10 +6,21 @@
 <header class="background" style="@_style">
     <section class="d-flex flex-column justify-center align-center h-100">
         <Breadcrumbs Items="@Breadcrumbs" Typo="Typo.subtitle1"/>
+        @if (FlagUrl is not null)
+        {
+            <div class="d-flex justify-center align-center mb-3">
+                <MudImage
+                    Src="@FlagUrl"
+                    Width="160"
+                    Height="90"
+                    ObjectFit="ObjectFit.Contain"
+                    ObjectPosition="ObjectPosition.Center"/>
+            </div>
+        }
         <h1 class="title mb-3">
             @Title
         </h1>
-        <section class="d-flex flex-wrap justify-center">
+        <section class="d-flex flex-wrap justify-center align-center">
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
                     @L["Empire:Founded"]
@@ -69,7 +80,7 @@
             </div>
         </section>
         <EduContainer MaxWidth="EduWidth.W1280">
-            <MudText Typo="Typo.subtitle1">
+            <MudText Typo="Typo.subtitle1" Class="mb-3 mb-sm-6">
                 @Description
             </MudText>
         </EduContainer>
@@ -108,6 +119,12 @@
 
     [Parameter, EditorRequired]
     public uint MaxPopulation { get; set; }
+
+    [Parameter]
+    public string? MapUrl { get; set; }
+
+    [Parameter]
+    public string? FlagUrl { get; set; }
 
     [Parameter, EditorRequired]
     public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();

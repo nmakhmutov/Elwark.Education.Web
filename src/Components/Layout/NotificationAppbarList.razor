@@ -1,7 +1,7 @@
 @using Education.Web.Hubs.Notification
 @implements IDisposable
 
-<MudBadge Color="Color.Secondary" Dot Overlap Visible="Notification.HasNotifications">
+<MudBadge Color="Color.Secondary" Dot Overlap Visible="Notification.HasMessages">
     <MudMenu
         Icon="@Icons.Outlined.Notifications"
         Color="Color.Inherit"
@@ -15,7 +15,7 @@
             </MudText>
             <MudButton
                 Style="text-transform: none"
-                Disabled="@(!Notification.HasNotifications)"
+                Disabled="@(!Notification.HasMessages)"
                 OnClick="Notification.MarkAllAsReadAsync"
                 StartIcon="@Icons.Filled.DoneAll"
                 Variant="Variant.Text"
@@ -25,9 +25,9 @@
             </MudButton>
         </div>
 
-        @if (Notification.HasNotifications)
+        @if (Notification.HasMessages)
         {
-            @foreach (var notification in Notification.Notifications)
+            @foreach (var notification in Notification.Messages)
             {
                 <MudDivider/>
                 <MudMenuItem Class="px-3 py-2">

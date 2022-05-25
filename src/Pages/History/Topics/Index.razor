@@ -22,6 +22,8 @@
                     Duration="@empire.Duration"
                     MaxArea="@empire.MaxArea"
                     MaxPopulation="@empire.MaxPopulation"
+                    MapUrl="@empire.MapUrl"
+                    FlagUrl="@empire.FlagUrl"
                     Breadcrumbs="@_breadcrumbs"/>
                 break;
 
@@ -122,5 +124,4 @@
         var result = await HistoryClient.Topic.ToggleFavoriteAsync(id);
         return result.IsSuccess && result.Data;
     }
-
 }

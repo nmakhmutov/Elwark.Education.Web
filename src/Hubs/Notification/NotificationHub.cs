@@ -8,12 +8,12 @@ internal sealed class NotificationHub : IAsyncDisposable
 {
     private readonly HubConnection _connection;
     private readonly AuthenticationStateProvider _stateProvider;
-    private List<NotificationModel> _notifications;
+    private List<NotificationModel> _messages;
 
     public NotificationHub(Uri host, IAccessTokenProvider tokenProvider, AuthenticationStateProvider stateProvider)
     {
         _stateProvider = stateProvider;
-        _notifications = new List<NotificationModel>();
+        _messages = new List<NotificationModel>();
         _connection = new HubConnectionBuilder()
             .WithUrl(new Uri(host, "/hubs/notification"), options =>
             {
@@ -28,22 +28,22 @@ internal sealed class NotificationHub : IAsyncDisposable
 
         _connection.On("Notify", (NotificationModel notification) =>
         {
-            _notifications = _notifications.Prepend(notification).Take(5).ToList();
+            _messages = _messages.Prepend(notification).Take(5).ToList();
             OnChange.Invoke();
         });
 
         _connection.Reconnected += _ =>
         {
-            _notifications.Clear();
+            _messages.Clear();
             return Task.CompletedTask;
         };
     }
 
-    public IReadOnlyCollection<NotificationModel> Notifications =>
-        _notifications.AsReadOnly();
+    public IReadOnlyCollection<NotificationModel> Messages =>
+        _messages.AsReadOnly();
 
-    public bool HasNotifications =>
-        _notifications.Count > 0;
+    public bool HasMessages =>
+        _messages.Count > 0;
 
     public ValueTask DisposeAsync() =>
         _connection.DisposeAsync();
@@ -62,7 +62,7 @@ internal sealed class NotificationHub : IAsyncDisposable
 
     public async Task MarkAllAsReadAsync()
     {
-        _notifications.Clear();
+        _messages.Clear();
 
         if (_connection.State == HubConnectionState.Connected)
             await _connection.SendAsync("MarkAllAsRead");
