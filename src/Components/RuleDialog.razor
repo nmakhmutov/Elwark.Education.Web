@@ -1,0 +1,17 @@
+<MudDialog DisableSidePadding>
+    <DialogContent>
+        <MudContainer Style="max-height: 85vh; overflow-y: scroll">
+            <SimpleMarkdown Text="@Content"/>
+        </MudContainer>
+    </DialogContent>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Content { get; set; } = string.Empty;
+
+}

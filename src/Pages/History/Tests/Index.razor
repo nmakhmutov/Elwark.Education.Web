@@ -11,7 +11,18 @@
 <EduPage ShowFooter="false">
     <div class="background d-flex flex-column h-100">
         <EduContainer Class="pb-0">
-            <PageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs"/>
+            <PageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs">
+                <div>
+                    <MudButton
+                        Variant="Variant.Text"
+                        Color="Color.Primary"
+                        EndIcon="@Icons.Material.Outlined.Info"
+                        Disabled="@(!_response.IsSuccess)"
+                        OnClick="@OpenRule">
+                        @L["Tests:Rules"]
+                    </MudButton>
+                </div>
+            </PageHeader>
         </EduContainer>
         <ApiViewer Response="@_response" Context="context">
             <section class="grid pa-3 pa-sm-6">
@@ -54,13 +65,6 @@
                         }
                     </InventoryGrid>
                 </section>
-
-                <footer class="rule">
-                    <MudText Typo="Typo.h6" Class="mb-3">
-                        @context.Rule.Title
-                    </MudText>
-                    <SimpleMarkdown Text="@context.Rule.Content"/>
-                </footer>
             </section>
         </ApiViewer>
     </div>
@@ -89,6 +93,9 @@
 
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
+
+    [Inject]
+    private IDialogService DialogService { get; set; } = default!;
 
     [Parameter, SupplyParameterFromQuery(Name = "topic")]
     public string? TopicId { get; set; }
@@ -151,6 +158,14 @@
             Navigation.NavigateTo(HistoryLinks.TopicTest.Test(response.Data.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
+    }
+
+    private void OpenRule()
+    {
+        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = _response.Data.Rule.Content };
+        var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Large, CloseOnEscapeKey = true, CloseButton = true };
+
+        DialogService.Show<RuleDialog>(_response.Data.Rule.Title, parameters, options);
     }
 
 }
