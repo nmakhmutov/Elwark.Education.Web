@@ -1,13 +1,14 @@
+@implements IDisposable
 <MudPaper Class="pa-3" Elevation="0">
     <div class="list">
         <div class="image">
             <div class="image-wrapper">
-                <img src="@Image" alt="@Name" loading="lazy">
+                <img src="@Customer.Image" alt="@Customer.Name" loading="lazy">
             </div>
         </div>
         <div class="d-flex justify-center justify-sm-start justify-lg-center mb-lg-6">
             <MudText Typo="Typo.h5">
-                @Name
+                @Customer.Name
             </MudText>
         </div>
         <div class="field">
@@ -15,7 +16,7 @@
                 @L["Customer:Timezone"]
             </MudText>
             <MudText Typo="Typo.subtitle1">
-                @Timezone
+                @Customer.Timezone
             </MudText>
         </div>
         <div class="field">
@@ -23,7 +24,7 @@
                 @L["Customer:WeekStart"]
             </MudText>
             <MudText Typo="Typo.subtitle1">
-                @L[$"DayOfWeek:{WeekStart}"]
+                @L[$"DayOfWeek:{Customer.WeekStart}"]
             </MudText>
         </div>
         <div class="field justify-end">
@@ -42,6 +43,9 @@
 @code {
 
     [Inject]
+    private CustomerService Customer { get; set; } = default!;
+
+    [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
@@ -53,25 +57,16 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
-    [Parameter, EditorRequired]
-    public string Name { get; set; } = string.Empty;
-
-    [Parameter, EditorRequired]
-    public Uri Image { get; set; } = default!;
-
-    [Parameter, EditorRequired]
-    public string Timezone { get; set; } = string.Empty;
-
-    [Parameter, EditorRequired]
-    public DayOfWeek WeekStart { get; set; }
-
-    [Parameter, EditorRequired]
-    public string Language { get; set; } = string.Empty;
+    protected override void OnInitialized() =>
+        Customer.OnChanged += StateHasChanged;
 
     private async Task BeginSignOut(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo(CommonLinks.LogOut);
     }
+
+    public void Dispose() => 
+        Customer.OnChanged += StateHasChanged;
 
 }

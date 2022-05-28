@@ -12,16 +12,7 @@
         </MudLink>
         <MudSpacer/>
         <MudIconButton Icon="@ThemeService.Icon" Color="Color.Inherit" OnClick="@ThemeService.ToggleAsync" Class="mr-3"/>
-        <AuthorizeView>
-            <Authorized>
-                <UserAppbarMenu/>
-            </Authorized>
-            <NotAuthorized>
-                <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@OnLogin">
-                    @L["SignIn"]
-                </MudButton>
-            </NotAuthorized>
-        </AuthorizeView>
+        <AppbarUserMenu/>
     </MudAppBar>
 
     @Body
@@ -32,14 +23,5 @@
 
     [Inject]
     private ThemeService ThemeService { get; set; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    private void OnLogin() =>
-        Navigation.NavigateTo(CommonLinks.LogIn(Navigation.Uri));
 
 }

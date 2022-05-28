@@ -1,25 +1,27 @@
 @using Education.Web.Pages
+@implements IDisposable
+
 <AuthorizeView>
     <Authorized>
         <MudMenu Direction="Direction.Left" OffsetX Dense Class="mt-1 ml-3">
             <ActivatorContent>
-                <MudAvatar Image="@context.User.GetImage()"/>
+                <MudAvatar Image="@Customer.Image"/>
             </ActivatorContent>
             <ChildContent>
 
                 <MudCard Elevation="0" Class="mt-n3" Style="width: 240px">
                     <MudCardHeader>
                         <CardHeaderAvatar>
-                            <MudAvatar Image="@context.User.GetImage()"/>
+                            <MudAvatar Image="@Customer.Image"/>
                         </CardHeaderAvatar>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.body1">@context.User.GetName()</MudText>
+                            <MudText Typo="Typo.body1">@Customer.Name</MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                 </MudCard>
 
                 <MudDivider Class="mb-2"/>
-                
+
                 <MudListItem Text="@L["Account"]" Icon="@Icons.Material.Outlined.Person" Href="@CommonLinks.Account"/>
                 <MudListItem Text="@L["Logout"]" Icon="@Icons.Material.Outlined.Login" OnClick="@OnLogout"/>
             </ChildContent>
@@ -44,6 +46,12 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
+    [Inject]
+    private CustomerService Customer { get; set; } = default!;
+
+    protected override void OnInitialized() =>
+        Customer.OnChanged += StateHasChanged;
+
     private void OnLogin() =>
         Navigation.NavigateTo(CommonLinks.LogIn(Navigation.Uri));
 
@@ -52,5 +60,8 @@
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo(CommonLinks.LogOut);
     }
+
+    public void Dispose() =>
+        Customer.OnChanged -= StateHasChanged;
 
 }

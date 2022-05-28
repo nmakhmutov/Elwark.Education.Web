@@ -1,12 +1,13 @@
+@implements IDisposable
 <MudPaper Elevation="0" Class="@Class">
     <div class="d-flex flex-column flex-sm-row align-center justify-space-between pa-3 px-sm-6">
         <div class="d-flex flex-row align-center mb-3 mb-sm-0">
             <div class="mr-3">
-                <MudAvatar Size="Size.Large" Image="@Image"/>
+                <MudAvatar Size="Size.Large" Image="@Customer.Image"/>
             </div>
             <div>
-                <MudText Typo="Typo.h6">@Name</MudText>
-                <MudText Typo="Typo.body2">@Nickname</MudText>
+                <MudText Typo="Typo.h6">@Customer.Name</MudText>
+                @* <MudText Typo="Typo.body2">@Nickname</MudText> *@
             </div>
         </div>
         <div>
@@ -26,16 +27,16 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [Inject]
+    private CustomerService Customer { get; set; } = default!;
+
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter, EditorRequired]
-    public string Name { get; set; } = string.Empty;
+    protected override void OnInitialized() => 
+        Customer.OnChanged += StateHasChanged;
 
-    [Parameter, EditorRequired]
-    public string Nickname { get; set; } = string.Empty;
-
-    [Parameter, EditorRequired]
-    public string Image { get; set; } = string.Empty;
+    public void Dispose() => 
+        Customer.OnChanged -= StateHasChanged;
 
 }

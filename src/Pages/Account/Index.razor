@@ -1,57 +1,24 @@
 @page "/account"
-@using Education.Web.Gateways.Customers.Model
 @using Education.Web.Pages.Account.Components
-@using Education.Web.Gateways.Customers
 @layout MainLayout
 @attribute [Authorize]
 
 <EduPage ShowFooter>
-    <ApiViewer Response="@_customer" Context="customer">
-        <EduContainer>
-            <PageTitle>@customer.Name</PageTitle>
-            <div class="wrapper">
-                <div class="account">
-                    <AccountCard
-                        Image="@customer.Image"
-                        Language="@customer.Language"
-                        Name="@customer.Name"
-                        Timezone="@customer.Timezone"
-                        WeekStart="@customer.WeekStart"/>
-                </div>
-                <div class="subjects">
-                </div>
+    <EduContainer>
+        <PageTitle>@L["Account"]</PageTitle>
+        <div class="wrapper">
+            <div class="account">
+                <AccountCard/>
             </div>
-        </EduContainer>
-    </ApiViewer>
+            <div class="subjects">
+            </div>
+        </div>
+    </EduContainer>
 </EduPage>
 
 @code {
-    private ApiResponse<CustomerModel> _customer = ApiResponse<CustomerModel>.Loading();
 
     [Inject]
-    private ICustomerClient CustomerClient { get; set; } = default!;
+    private IStringLocalizer<App> L { get; set; } = default!;
 
-    // [Inject]
-    // private IDialogService Dialog { get; set; } = default!;
-
-    protected override async Task OnInitializedAsync() =>
-        _customer = await CustomerClient.GetAsync();
-
-    // private void OnBuyClick(SubjectType type)
-    // {
-    //     var options = new DialogOptions
-    //     {
-    //         MaxWidth = MaxWidth.Medium,
-    //         NoHeader = true,
-    //         CloseButton = false,
-    //         FullWidth = true
-    //     };
-    //
-    //     var parameters = new DialogParameters
-    //     {
-    //         [nameof(SubscriptionModal.SubjectType)] = type
-    //     };
-    //
-    //     Dialog.Show<SubscriptionModal>(null, parameters, options);
-    // }
 }

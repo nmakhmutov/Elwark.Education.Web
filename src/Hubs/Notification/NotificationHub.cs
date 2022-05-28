@@ -1,3 +1,4 @@
+using Education.Web.Gateways.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -8,12 +9,10 @@ internal sealed class NotificationHub : IAsyncDisposable
 {
     private readonly HubConnection _connection;
     private readonly AuthenticationStateProvider _stateProvider;
-    private List<NotificationModel> _messages;
 
     public NotificationHub(Uri host, IAccessTokenProvider tokenProvider, AuthenticationStateProvider stateProvider)
     {
         _stateProvider = stateProvider;
-        _messages = new List<NotificationModel>();
         _connection = new HubConnectionBuilder()
             .WithUrl(new Uri(host, "/hubs/notification"), options =>
             {
@@ -26,31 +25,17 @@ internal sealed class NotificationHub : IAsyncDisposable
             .WithAutomaticReconnect()
             .Build();
 
-        _connection.On("Notify", (NotificationModel notification) =>
-        {
-            _messages = _messages.Prepend(notification).Take(5).ToList();
-            OnChange.Invoke();
-        });
-
-        _connection.Reconnected += _ =>
-        {
-            _messages.Clear();
-            return Task.CompletedTask;
-        };
+        _connection.On("Notify", (MessageEvent notification) => OnMessageReceived.Invoke(notification));
     }
-
-    public IReadOnlyCollection<NotificationModel> Messages =>
-        _messages.AsReadOnly();
-
-    public bool HasMessages =>
-        _messages.Count > 0;
 
     public ValueTask DisposeAsync() =>
         _connection.DisposeAsync();
 
-    public event Action OnChange = () => { };
+    public event Action<MessageEvent> OnMessageReceived = _ => { };
 
-    public async Task StartAsync()
+    public event Action OnMarkedAllAsRead = () => { };
+
+    public async Task InitAsync()
     {
         if (_connection.State == HubConnectionState.Connected)
             return;
@@ -60,11 +45,15 @@ internal sealed class NotificationHub : IAsyncDisposable
             await _connection.StartAsync();
     }
 
+    public Task<TokenPaginationResponse<MessageModel>> GetAsync(int count, string? token) =>
+        _connection.InvokeAsync<TokenPaginationResponse<MessageModel>>("Get", count, token);
+
+    public Task MarkAsReadAsync(string id) =>
+        _connection.InvokeAsync("MarkAsRead", id);
+
     public async Task MarkAllAsReadAsync()
     {
-        _messages.Clear();
-
-        if (_connection.State == HubConnectionState.Connected)
-            await _connection.SendAsync("MarkAllAsRead");
+        await _connection.InvokeAsync("MarkAllAsRead");
+        OnMarkedAllAsRead.Invoke();
     }
 }

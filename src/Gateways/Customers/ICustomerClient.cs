@@ -6,7 +6,7 @@ public interface ICustomerClient
 {
     Task<ApiResponse<CustomerModel>> GetAsync();
 
-    Task CreateAsync();
+    Task<ApiResponse<CustomerModel>> CreateAsync();
 }
 
 internal sealed class CustomerClient : GatewayClient, ICustomerClient
@@ -19,9 +19,6 @@ internal sealed class CustomerClient : GatewayClient, ICustomerClient
     public Task<ApiResponse<CustomerModel>> GetAsync() =>
         ExecuteAsync<CustomerModel>(ct => _client.GetAsync("customers/me", ct));
 
-    public async Task CreateAsync()
-    {
-        var response = await _client.PostAsync("customers", null);
-        response.EnsureSuccessStatusCode();
-    }
+    public Task<ApiResponse<CustomerModel>> CreateAsync() =>
+        ExecuteAsync<CustomerModel>(ct => _client.PostAsync("customers", null, ct));
 }

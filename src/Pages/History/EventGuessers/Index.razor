@@ -11,7 +11,18 @@
 <EduPage ShowFooter="false">
     <div class="background d-flex flex-column h-100">
         <EduContainer Class="pb-0">
-            <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+            <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs">
+                <div>
+                    <MudButton
+                        Variant="Variant.Text"
+                        Color="Color.Primary"
+                        EndIcon="@Icons.Material.Outlined.Info"
+                        Disabled="@(!_response.IsSuccess)"
+                        OnClick="@OpenRule">
+                        @L["EventGuesser:Rules"]
+                    </MudButton>
+                </div>
+            </PageHeader>
         </EduContainer>
         <ApiViewer Response="@_response" Context="context">
             <section class="grid pa-3 pa-sm-6">
@@ -50,13 +61,6 @@
                         }
                     </InventoryGrid>
                 </section>
-
-                <footer class="rule">
-                    <MudText Typo="Typo.h6" Class="mb-3">
-                        @context.Rule.Title
-                    </MudText>
-                    <SimpleMarkdown Text="@context.Rule.Content"/>
-                </footer>
             </section>
         </ApiViewer>
     </div>
@@ -85,6 +89,9 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
+    [Inject]
+    private IDialogService DialogService { get; set; } = default!;
+
     protected override async Task OnInitializedAsync()
     {
         _response = await Client.EventGuesser.GetAsync();
@@ -106,6 +113,14 @@
             Snackbar.Add(response.Error.Detail, Severity.Error);
 
         _isLoading = false;
+    }
+
+    private void OpenRule()
+    {
+        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = _response.Data.Rule.Content };
+        var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Large, CloseOnEscapeKey = true, CloseButton = true };
+
+        DialogService.Show<RuleDialog>(_response.Data.Rule.Title, parameters, options);
     }
 
 }

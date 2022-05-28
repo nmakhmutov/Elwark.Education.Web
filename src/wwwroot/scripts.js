@@ -6,7 +6,9 @@
             ? window.navigator.language
             : 'en-GB';
 
-    await Blazor.start({applicationCulture: language});
+    await Blazor.start({
+        applicationCulture: language
+    });
 })();
 
 window.Observer = {

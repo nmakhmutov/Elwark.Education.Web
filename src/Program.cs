@@ -68,7 +68,11 @@ builder.Services
     });
 
 builder.Services
-    .AddOidcAuthentication(options => builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions));
+    .AddOidcAuthentication(options =>
+    {
+        options.ProviderOptions.DefaultScopes.Clear();
+        builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions);
+    });
 
 builder.Services
     .AddHttpClient<IHistoryClient, HistoryClient>(client =>

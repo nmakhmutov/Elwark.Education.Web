@@ -10,14 +10,7 @@
 
 <EduPage ShowFooter="@_response.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <AuthorizeView>
-            <Authorized>
-                <ProfileHeader
-                    Image="@context.User.GetImage()"
-                    Name="@context.User.GetName()"
-                    Nickname="@context.User.GetNickname()"/>
-            </Authorized>
-        </AuthorizeView>
+        <ProfileHeader/>
     </EduContainer>
     <ApiViewer Response="@_response" Context="profile">
         <EduContainer MaxWidth="EduWidth.W1920">

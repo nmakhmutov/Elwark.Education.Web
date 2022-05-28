@@ -1,7 +1,8 @@
 @using Education.Web.Hubs.Notification
+@using Education.Web.Pages
 @implements IDisposable
 
-<MudBadge Color="Color.Secondary" Dot Overlap Visible="Notification.HasMessages">
+<MudBadge Color="Color.Secondary" Dot Overlap Visible="Customer.HasNotifications">
     <MudMenu
         Icon="@Icons.Outlined.Notifications"
         Color="Color.Inherit"
@@ -9,15 +10,15 @@
         TransformOrigin="Origin.TopLeft"
         ListClass="pa-0">
 
-        <div class="d-flex justify-space-between align-center px-3 py-1">
-            <MudText Typo="Typo.subtitle2" Class="pr-12">
+        <div class="d-flex justify-space-between align-center px-3 pt-3 pb-1">
+            <MudText Typo="Typo.subtitle1" Class="pr-16">
                 @L["Notifications"]
             </MudText>
             <MudButton
                 Style="text-transform: none"
-                Disabled="@(!Notification.HasMessages)"
-                OnClick="Notification.MarkAllAsReadAsync"
-                StartIcon="@Icons.Filled.DoneAll"
+                Disabled="@(!Customer.HasNotifications)"
+                OnClick="NotificationHub.MarkAllAsReadAsync"
+                StartIcon="@Icons.Outlined.DoneAll"
                 Variant="Variant.Text"
                 Size="Size.Small"
                 Color="Color.Primary">
@@ -25,14 +26,14 @@
             </MudButton>
         </div>
 
-        @if (Notification.HasMessages)
+        @if (Customer.HasNotifications)
         {
-            @foreach (var notification in Notification.Messages)
+            @foreach (var notification in Customer.Notifications)
             {
                 <MudDivider/>
                 <MudMenuItem Class="px-3 py-2">
                     <MudText Typo="Typo.subtitle2">
-                        @notification.Message
+                        @notification.Content
                     </MudText>
                     <div class="d-flex justify-space-between">
                         <MudText Typo="Typo.body2">
@@ -43,6 +44,15 @@
                         </MudText>
                     </div>
                 </MudMenuItem>
+            }
+            @if (Customer.HasMoreNotifications)
+            {
+                <MudDivider/>
+                <div class="d-flex justify-center py-3">
+                    <MudLink Href="@CommonLinks.Notifications" Typo="Typo.button" Style="text-transform: none">
+                        @L["Notifications:All"]
+                    </MudLink>
+                </div>
             }
         }
         else
@@ -59,18 +69,18 @@
 @code {
 
     [Inject]
-    private NotificationHub Notification { get; set; } = default!;
+    private CustomerService Customer { get; set; } = default!;
+
+    [Inject]
+    private NotificationHub NotificationHub { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
-        Notification.OnChange += StateHasChanged;
-        await Notification.StartAsync();
-    }
+    protected override void OnInitialized() =>
+        Customer.OnChanged += StateHasChanged;
 
     public void Dispose() =>
-        Notification.OnChange -= StateHasChanged;
+        Customer.OnChanged -= StateHasChanged;
 
 }
