@@ -1,4 +1,3 @@
-using Education.Web.Gateways.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -25,15 +24,13 @@ internal sealed class NotificationHub : IAsyncDisposable
             .WithAutomaticReconnect()
             .Build();
 
-        _connection.On("Notify", (MessageEvent notification) => OnMessageReceived.Invoke(notification));
+        _connection.On("Notifications", (NotificationMessage notification) => OnNotificationReceived.Invoke(notification));
     }
 
     public ValueTask DisposeAsync() =>
         _connection.DisposeAsync();
 
-    public event Action<MessageEvent> OnMessageReceived = _ => { };
-
-    public event Action OnMarkedAllAsRead = () => { };
+    public event Action<NotificationMessage> OnNotificationReceived = _ => { };
 
     public async Task InitAsync()
     {
@@ -43,17 +40,5 @@ internal sealed class NotificationHub : IAsyncDisposable
         var state = await _stateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated ?? false)
             await _connection.StartAsync();
-    }
-
-    public Task<TokenPaginationResponse<MessageModel>> GetAsync(int count, string? token) =>
-        _connection.InvokeAsync<TokenPaginationResponse<MessageModel>>("Get", count, token);
-
-    public Task MarkAsReadAsync(string id) =>
-        _connection.InvokeAsync("MarkAsRead", id);
-
-    public async Task MarkAllAsReadAsync()
-    {
-        await _connection.InvokeAsync("MarkAllAsRead");
-        OnMarkedAllAsRead.Invoke();
     }
 }

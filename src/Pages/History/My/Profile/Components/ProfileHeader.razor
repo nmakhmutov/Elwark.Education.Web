@@ -1,20 +1,16 @@
-@implements IDisposable
+@using Education.Web.Pages.Account
 <MudPaper Elevation="0" Class="@Class">
-    <div class="d-flex flex-column flex-sm-row align-center justify-space-between pa-3 px-sm-6">
+    <div class="d-flex flex-column flex-sm-row align-center pa-3 px-sm-6">
         <div class="d-flex flex-row align-center mb-3 mb-sm-0">
-            <div class="mr-3">
-                <MudAvatar Size="Size.Large" Image="@Customer.Image"/>
-            </div>
-            <div>
-                <MudText Typo="Typo.h6">@Customer.Name</MudText>
-                @* <MudText Typo="Typo.body2">@Nickname</MudText> *@
-            </div>
+            <MudAvatar Size="Size.Large" Class="mr-3" Image="@Customer.Image"/>
+            <MudText Typo="Typo.h6">@Customer.Name</MudText>
         </div>
+        <MudSpacer/>
         <div>
             <MudButton
                 Color="Color.Primary"
                 Variant="Variant.Outlined"
-                Link="@CommonLinks.Account"
+                Link="@AccountLinks.Root"
                 EndIcon="@Icons.Material.Outlined.Person">
                 @L["Account"]
             </MudButton>
@@ -27,16 +23,10 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [Inject]
-    private CustomerService Customer { get; set; } = default!;
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
-
-    protected override void OnInitialized() => 
-        Customer.OnChanged += StateHasChanged;
-
-    public void Dispose() => 
-        Customer.OnChanged -= StateHasChanged;
 
 }

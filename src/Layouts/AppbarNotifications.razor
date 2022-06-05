@@ -1,8 +1,9 @@
 @using Education.Web.Hubs.Notification
 @using Education.Web.Pages
+@using Education.Web.Pages.Account
 @implements IDisposable
 
-<MudBadge Color="Color.Secondary" Dot Overlap Visible="Customer.HasNotifications">
+<MudBadge Color="Color.Secondary" Dot Overlap Visible="NotificationService.HasNotifications">
     <MudMenu
         Icon="@Icons.Outlined.Notifications"
         Color="Color.Inherit"
@@ -16,8 +17,8 @@
             </MudText>
             <MudButton
                 Style="text-transform: none"
-                Disabled="@(!Customer.HasNotifications)"
-                OnClick="NotificationHub.MarkAllAsReadAsync"
+                Disabled="@(!NotificationService.HasNotifications)"
+                OnClick="NotificationService.MarkAsReadAsync"
                 StartIcon="@Icons.Outlined.DoneAll"
                 Variant="Variant.Text"
                 Size="Size.Small"
@@ -26,9 +27,9 @@
             </MudButton>
         </div>
 
-        @if (Customer.HasNotifications)
+        @if (NotificationService.HasNotifications)
         {
-            @foreach (var notification in Customer.Notifications)
+            @foreach (var notification in NotificationService.Notifications)
             {
                 <MudDivider/>
                 <MudMenuItem Class="px-3 py-2">
@@ -45,15 +46,12 @@
                     </div>
                 </MudMenuItem>
             }
-            @if (Customer.HasMoreNotifications)
-            {
-                <MudDivider/>
-                <div class="d-flex justify-center py-3">
-                    <MudLink Href="@CommonLinks.Notifications" Typo="Typo.button" Style="text-transform: none">
-                        @L["Notifications:All"]
-                    </MudLink>
-                </div>
-            }
+            <MudDivider/>
+            <div class="d-flex justify-center py-3">
+                <MudLink Href="@AccountLinks.Notifications" Typo="Typo.button" Style="text-transform: none">
+                    @L["Notifications:All"]
+                </MudLink>
+            </div>
         }
         else
         {
@@ -69,18 +67,15 @@
 @code {
 
     [Inject]
-    private CustomerService Customer { get; set; } = default!;
-
-    [Inject]
-    private NotificationHub NotificationHub { get; set; } = default!;
+    private NotificationService NotificationService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     protected override void OnInitialized() =>
-        Customer.OnChanged += StateHasChanged;
+        NotificationService.OnChanged += StateHasChanged;
 
     public void Dispose() =>
-        Customer.OnChanged -= StateHasChanged;
+        NotificationService.OnChanged -= StateHasChanged;
 
 }

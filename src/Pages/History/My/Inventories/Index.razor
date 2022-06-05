@@ -2,6 +2,7 @@
 @using Education.Web.Gateways.History.Users.Model
 @using Education.Web.Pages.History.Components
 @using Education.Web.Gateways.History
+@using Education.Web.Pages.Account
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -20,7 +21,7 @@
             <InventoryGrid>
                 @foreach (var item in data.Inventory.Items)
                 {
-                    <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
+                    <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
                         <div class="d-flex justify-center">
                             <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
                         </div>
@@ -36,7 +37,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, CommonLinks.Account),
+        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root),
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 

@@ -1,6 +1,5 @@
 @using Education.Web.Gateways.History
 @using Education.Web.Pages.History.Components
-
 <section class="@Class">
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["Topic"]
@@ -15,42 +14,12 @@
         Horizontal
         Class="mb-3 mb-sm-6"/>
 
-    @if (_availableAnyTest)
+    <MudText Typo="Typo.h5" Class="mb-3">
+        @L["Tests"]
+    </MudText>
+    @if (Tests.Any(x => x.IsAllowed))
     {
-        <MudText Typo="Typo.h5" Class="mb-3">
-            @L["Tests"]
-        </MudText>
-        <MudRadioGroup @bind-SelectedOption="@_test" Class="test-radio-group mb-6">
-            @if (AvailableEasyTest)
-            {
-                <MudRadio Option="@EasyTest" Color="Color.Primary" Disabled="@(!AllowedEasyTest)" Class="radio">
-                    <MudPaper Elevation="0" Class="d-flex align-center pa-3">
-                        <MudAvatar Color="Color.Inherit" Class="@(AllowedEasyTest ? "blue lighten-1" : null)">
-                            <MudIcon Icon="@EducationIcons.Tests"/>
-                        </MudAvatar>
-
-                        <MudText Typo="Typo.subtitle1" Class="mx-3">
-                            @L["Test:Easy"]
-                        </MudText>
-                    </MudPaper>
-                </MudRadio>
-            }
-
-            @if (AvailableHardTest)
-            {
-                <MudRadio Option="@HardTest" Color="Color.Primary" Disabled="@(!AllowedHardTest)" Class="radio">
-                    <MudPaper Elevation="0" Class="d-flex align-center pa-3">
-                        <MudAvatar Color="Color.Inherit" Class="@(AllowedHardTest ? "blue darken-2" : null)">
-                            <MudIcon Icon="@EducationIcons.Tests"/>
-                        </MudAvatar>
-
-                        <MudText Typo="Typo.subtitle1" Class="mx-3">
-                            @L["Test:Hard"]
-                        </MudText>
-                    </MudPaper>
-                </MudRadio>
-            }
-        </MudRadioGroup>
+        <TestRadioGroup @bind-SelectedTest="@_test" Tests="@Tests" Class="mb-6"/>
 
         <div class="d-flex justify-center">
             <LoadingButton
@@ -61,26 +30,20 @@
                 Text="@L["Test:Pass"]"
                 LoadingText="@L["Loading"]"
                 IsLoading="@_isLoading"
-                Disabled="@(!_allowedAnyTest)"
                 OnClick="@CreateTestAsync"/>
         </div>
     }
     else
     {
-        <MudText Typo="Typo.subtitle1" Color="Color.Info">
+        <MudText Typo="Typo.subtitle1">
             @L["Test:NotAvailableForTopic", Topic.Title]
         </MudText>
     }
 </section>
 
 @code {
-        private const byte EasyTest = 1;
-        private const byte HardTest = 2;
-
-    private byte _test = 0;
+    private string? _test;
     private bool _isLoading;
-    private bool _availableAnyTest;
-    private bool _allowedAnyTest;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -92,52 +55,18 @@
     public TopicOverviewModel Topic { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public bool AvailableEasyTest { get; set; }
+    public TestInformation[] Tests { get; set; } = Array.Empty<TestInformation>();
 
     [Parameter, EditorRequired]
-    public bool AllowedEasyTest { get; set; }
+    public EventCallback<(string Test, string Id)> OnCreate { get; set; }
 
-    [Parameter, EditorRequired]
-    public bool AvailableHardTest { get; set; }
-
-    [Parameter, EditorRequired]
-    public bool AllowedHardTest { get; set; }
-
-    [Parameter, EditorRequired]
-    public EventCallback<string> OnEasyTestCreate { get; set; }
-
-    [Parameter, EditorRequired]
-    public EventCallback<string> OnHardTestCreate { get; set; }
-
-    protected override void OnInitialized()
-    {
-        if (AllowedEasyTest && AvailableEasyTest)
-        {
-            _test = EasyTest;
-            _allowedAnyTest = true;
-            _availableAnyTest = true;
-        }
-        else if (AllowedHardTest && AvailableHardTest)
-        {
-            _test = HardTest;
-            _allowedAnyTest = true;
-            _availableAnyTest = true;
-        }
-    }
+    protected override void OnInitialized() => 
+        _test = Tests.FirstOrDefault(x => x.IsAllowed)?.Name;
 
     private async Task CreateTestAsync()
     {
         _isLoading = true;
-        switch (_test)
-        {
-            case EasyTest:
-                await OnEasyTestCreate.InvokeAsync(Topic.Id);
-                break;
-
-            case HardTest:
-                await OnHardTestCreate.InvokeAsync(Topic.Id);
-                break;
-        }
+        await OnCreate.InvokeAsync((_test!, Topic.Id));
         _isLoading = false;
     }
 

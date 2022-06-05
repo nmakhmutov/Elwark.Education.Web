@@ -1,33 +1,35 @@
 @using Education.Web.Pages
 
 <CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(BaseLayout)">
-                <Authorizing>
-                    <PageSpinner/>
-                </Authorizing>
-                <NotAuthorized>
-                    @if (!context.User.Identity?.IsAuthenticated ?? false)
-                    {
-                        <RedirectTo Url="@CommonLinks.Root"/>
-                    }
-                    else
-                    {
-                        <p>You are not authorized to access this resource.</p>
-                    }
-                </NotAuthorized>
-            </AuthorizeRouteView>
-        </Found>
-        <NotFound>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <PageTitle>@L["Error:NotFound"]</PageTitle>
-                <EduPage>
-                    <ErrorContainer Error="@(Error.Create(L["Error:NotFound"], 404))"/>
-                </EduPage>
-            </LayoutView>
-        </NotFound>
-    </Router>
+    <CascadingCustomerState>
+        <Router AppAssembly="@typeof(App).Assembly">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(BaseLayout)">
+                    <Authorizing>
+                        <PageSpinner/>
+                    </Authorizing>
+                    <NotAuthorized>
+                        @if (!context.User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <RedirectTo Url="@CommonLinks.Root"/>
+                        }
+                        else
+                        {
+                            <p>You are not authorized to access this resource.</p>
+                        }
+                    </NotAuthorized>
+                </AuthorizeRouteView>
+            </Found>
+            <NotFound>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <PageTitle>@L["Error:NotFound"]</PageTitle>
+                    <EduPage>
+                        <ErrorContainer Error="@(Error.Create(L["Error:NotFound"], 404))"/>
+                    </EduPage>
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </CascadingCustomerState>
 </CascadingAuthenticationState>
 
 @code
@@ -42,12 +44,12 @@
     private SidebarService SidebarService { get; set; } = default!;
 
     [Inject]
-    private CustomerService CustomerService { get; set; } = default!;
+    private NotificationService NotificationService { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
         await ThemeService.InitAsync();
         await SidebarService.InitAsync();
-        await CustomerService.InitAsync();
+        await NotificationService.InitAsync();
     }
 }

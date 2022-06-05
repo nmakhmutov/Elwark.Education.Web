@@ -32,6 +32,11 @@
                     </MudText>
                     <EpochRadioGroup @bind-SelectedEpoch="@_epoch" Class="mb-3 mb-sm-6"/>
 
+                    <MudText Typo="Typo.h5" Class="mb-3">
+                        @L["Tests"]
+                    </MudText>
+                    <TestRadioGroup @bind-SelectedTest="_test" Tests="@context.Tests" Class="mb-6"/>
+
                     <div class="d-flex justify-center">
                         <LoadingButton
                             DisableElevation
@@ -41,7 +46,7 @@
                             Text="@L["Test:Pass"]"
                             LoadingText="@L["Loading"]"
                             IsLoading="@_isLoading"
-                            Disabled="@(!_allowed)"
+                            Disabled="@(context.Tests.All(x => !x.IsAllowed))"
                             OnClick="@CreateTestAsync"/>
                     </div>
                 </section>
@@ -50,16 +55,23 @@
                     <MudText Typo="Typo.h5" Class="mb-3">
                         @L["Inventory"]
                     </MudText>
-                    <InventoryGrid>
-                        @foreach (var item in context.Inventory)
-                        {
-                            <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
-                                <div class="d-flex justify-center">
-                                    <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
-                                </div>
-                            </InventoryInfoCard>
-                        }
-                    </InventoryGrid>
+                    @if (context.Inventory.Length > 0)
+                    {
+                        <InventoryGrid>
+                            @foreach (var item in context.Inventory)
+                            {
+                                <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
+                                    <div class="d-flex justify-center">
+                                        <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
+                                    </div>
+                                </InventoryInfoCard>
+                            }
+                        </InventoryGrid>
+                    }
+                    else
+                    {
+                        <EmptyResult Title="@L["Inventory:EmptyTitle"]"/>
+                    }
                 </section>
             </section>
         </ApiViewer>
@@ -68,8 +80,8 @@
 
 @code {
     private bool _isLoading;
-    private bool _allowed;
     private EpochType _epoch = EpochType.None;
+    private string _test = string.Empty;
     private ApiResponse<TestBuilderModel> _response = ApiResponse<TestBuilderModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -95,10 +107,10 @@
     protected override async Task OnInitializedAsync()
     {
         _response = await Client.EventGuesser.GetAsync();
-
         if (_response.IsSuccess)
-            _allowed = _response.Data.Inventory.Any(x => x.Id == 104 && x.Count > 0);
-        else if (_response.Error.IsTestAlreadyCreated(out var id))
+            _test = _response.Data.Tests.FirstOrDefault(x => x.IsAllowed)?.Name ?? string.Empty;
+
+        if (_response.IsFailed && _response.Error.IsTestAlreadyCreated(out var id))
             Navigation.NavigateTo(HistoryLinks.EventGuesser.Test(id));
     }
 
@@ -106,7 +118,7 @@
     {
         _isLoading = true;
 
-        var response = await Client.EventGuesser.CreateAsync(new CreateRequest(_epoch));
+        var response = await Client.EventGuesser.CreateAsync(new CreateRequest(_test, _epoch));
         if (response.IsSuccess)
             Navigation.NavigateTo(HistoryLinks.EventGuesser.Test(response.Data.Id));
         else

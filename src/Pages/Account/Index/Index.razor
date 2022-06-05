@@ -3,9 +3,13 @@
 @layout MainLayout
 @attribute [Authorize]
 
+<PageTitle>@L["Account"]</PageTitle>
 <EduPage ShowFooter>
-    <EduContainer>
-        <PageTitle>@L["Account"]</PageTitle>
+    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
+        <PageHeader Title="@L["Account"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
+    
+    <EduContainer MaxWidth="EduWidth.W1920">
         <div class="wrapper">
             <div class="account">
                 <AccountCard/>
@@ -17,7 +21,11 @@
 </EduPage>
 
 @code {
-
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root)
+    };
+    
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 

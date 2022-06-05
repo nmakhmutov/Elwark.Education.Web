@@ -10,43 +10,7 @@
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["Tests"]
     </MudText>
-    <MudRadioGroup @bind-SelectedOption="@_test" Class="test-radio-group mb-6">
-        <MudRadio Option="@EasyTest" Color="Color.Primary" Disabled="@(!AllowedEasyTest)" Class="radio">
-            <MudPaper Elevation="0" Class="d-flex align-center pa-3">
-                <MudAvatar Color="Color.Inherit" Class="@(AllowedEasyTest ? "blue lighten-1" : null)">
-                    <MudIcon Icon="@EducationIcons.Tests"/>
-                </MudAvatar>
-
-                <MudText Typo="Typo.subtitle1" Class="mx-3">
-                    @L["Test:Easy"]
-                </MudText>
-            </MudPaper>
-        </MudRadio>
-
-        <MudRadio Option="@HardTest" Color="Color.Primary" Disabled="@(!AllowedHardTest)" Class="radio">
-            <MudPaper Elevation="0" Class="d-flex align-center pa-3">
-                <MudAvatar Color="Color.Inherit" Class="@(AllowedHardTest ? "blue darken-2" : null)">
-                    <MudIcon Icon="@EducationIcons.Tests"/>
-                </MudAvatar>
-
-                <MudText Typo="Typo.subtitle1" Class="mx-3">
-                    @L["Test:Hard"]
-                </MudText>
-            </MudPaper>
-        </MudRadio>
-
-        <MudRadio Option="@MixedTest" Color="Color.Primary" Disabled="@(!AllowedMixedTest)" Class="radio">
-            <MudPaper Elevation="0" Class="d-flex align-center pa-3">
-                <MudAvatar Color="Color.Inherit" Class="@(AllowedMixedTest ? "indigo darken-1" : null)">
-                    <MudIcon Icon="@EducationIcons.Tests"/>
-                </MudAvatar>
-
-                <MudText Typo="Typo.subtitle1" Class="mx-3">
-                    @L["Test:Mixed"]
-                </MudText>
-            </MudPaper>
-        </MudRadio>
-    </MudRadioGroup>
+    <TestRadioGroup @bind-SelectedTest="_test" Tests="@Tests" Class="mb-6"/>
 
     <div class="d-flex justify-center">
         <LoadingButton
@@ -57,29 +21,15 @@
             Text="@L["Test:Pass"]"
             LoadingText="@L["Loading"]"
             IsLoading="@_isLoading"
-            Disabled="@(!_allowedAnyTest)"
+            Disabled="@(Tests.All(x => !x.IsAllowed))"
             OnClick="@CreateTestAsync"/>
     </div>
 </section>
 
 @code {
-        private const byte EasyTest = 1;
-        private const byte HardTest = 2;
-        private const byte MixedTest = 3;
-
-    private static readonly EpochType[] Epochs =
-    {
-        EpochType.Prehistory,
-        EpochType.Ancient,
-        EpochType.MiddleAges,
-        EpochType.EarlyModern,
-        EpochType.Modern
-    };
-
     private EpochType _epoch = EpochType.None;
-    private byte _test = 0;
+    private string _test = string.Empty;
     private bool _isLoading;
-    private bool _allowedAnyTest;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -88,59 +38,18 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public bool AllowedEasyTest { get; set; }
+    public TestInformation[] Tests { get; set; } = Array.Empty<TestInformation>();
 
     [Parameter, EditorRequired]
-    public bool AllowedHardTest { get; set; }
+    public EventCallback<(string Test, EpochType Epoch)> OnCreate { get; set; }
 
-    [Parameter, EditorRequired]
-    public bool AllowedMixedTest { get; set; }
-
-    [Parameter, EditorRequired]
-    public EventCallback<EpochType> OnEasyTestCreate { get; set; }
-
-    [Parameter, EditorRequired]
-    public EventCallback<EpochType> OnHardTestCreate { get; set; }
-
-    [Parameter, EditorRequired]
-    public EventCallback<EpochType> OnMixedTestCreate { get; set; }
-
-    protected override void OnInitialized()
-    {
-        if (AllowedEasyTest)
-        {
-            _test = EasyTest;
-            _allowedAnyTest = true;
-        }
-        else if (AllowedHardTest)
-        {
-            _test = HardTest;
-            _allowedAnyTest = true;
-        }
-        else if (AllowedMixedTest)
-        {
-            _test = MixedTest;
-            _allowedAnyTest = true;
-        }
-    }
+    protected override void OnInitialized() =>
+        _test = Tests.FirstOrDefault(x => x.IsAllowed)?.Name ?? string.Empty;
 
     private async Task CreateTestAsync()
     {
         _isLoading = true;
-        switch (_test)
-        {
-            case EasyTest:
-                await OnEasyTestCreate.InvokeAsync(_epoch);
-                break;
-
-            case HardTest:
-                await OnHardTestCreate.InvokeAsync(_epoch);
-                break;
-
-            case MixedTest:
-                await OnMixedTestCreate.InvokeAsync(_epoch);
-                break;
-        }
+        await OnCreate.InvokeAsync((_test, _epoch));
         _isLoading = false;
     }
 

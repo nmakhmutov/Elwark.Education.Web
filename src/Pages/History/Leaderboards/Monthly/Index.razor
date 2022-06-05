@@ -26,10 +26,20 @@
 
     <ApiViewer Response="@_response" Context="leaderboard">
         <EduContainer MaxWidth="EduWidth.W1920">
-            <MudText Typo="Typo.h6" Align="Align.Center">
+            <MudText Typo="Typo.subtitle1" Align="Align.Center">
                 @leaderboard.StartsAt.ToFullFormat() — @leaderboard.EndsAt.ToFullFormat()
             </MudText>
-            <RankingTable HighlightUser="@_highlightUser" Users="@leaderboard.Users"/>
+            @if (leaderboard.Users.Length > 0)
+            {
+                <RankingTable HighlightUser="@_highlightUser" Users="@leaderboard.Users"/>
+            }
+            else
+            {
+                <EmptyResult
+                    Class="mt-3 mt-sm-6"
+                    Title="@L["Leaderboard:EmptyContestantsTitle"]"
+                    Subtitle="@L["Leaderboard:EmptyContestantsSubtitle"]"/>
+            }
         </EduContainer>
     </ApiViewer>
 </EduPage>

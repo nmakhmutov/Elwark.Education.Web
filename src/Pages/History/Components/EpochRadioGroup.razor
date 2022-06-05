@@ -4,24 +4,15 @@
     <MudRadioGroup SelectedOption="@SelectedEpoch" SelectedOptionChanged="@SelectedEpochChanged" Class="radio-group">
         @foreach (var epoch in Epochs)
         {
-            <MudRadio Option="@epoch.Key" Color="Color.Primary" Class="radio">
-                <MudPaper Elevation="0" Class="d-flex align-center">
-                    <MudImage Class="radio-image" Alt="@epoch.Value" Src="@($"/images/history/epochs/{epoch.Key.ToFastString()}.jpg")"/>
-                    <MudText Typo="Typo.subtitle1" Class="mx-3">
-                        @epoch.Value
+            <MudRadio Option="@epoch.Type" Color="Color.Primary" Class="radio">
+                <MudPaper Elevation="0">
+                    <MudImage Class="radio-image rounded-t" Alt="@epoch.Title" Src="@epoch.Image"/>
+                    <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                        @epoch.Title
                     </MudText>
                 </MudPaper>
             </MudRadio>
         }
-
-        <MudRadio Option="@EpochType.None" Color="Color.Primary" Class="radio">
-            <MudPaper Elevation="0" Class="d-flex align-center">
-                <MudImage Class="radio-image" Alt="@L["Topics:Any"]" ObjectFit="ObjectFit.Cover" Src="@("/images/history/history.jpg")"/>
-                <MudText Typo="Typo.subtitle1" Class="mx-3">
-                    @L["Topics:Any"]
-                </MudText>
-            </MudPaper>
-        </MudRadio>
     </MudRadioGroup>
 </div>
 
@@ -30,14 +21,15 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-
-    private IDictionary<EpochType, string> Epochs => new Dictionary<EpochType, string>
+    
+    private (EpochType Type, LocalizedString Title, string Image)[] Epochs => new[]
     {
-        [EpochType.Prehistory] = L["History:Prehistory"],
-        [EpochType.Ancient] = L["History:Ancient"],
-        [EpochType.MiddleAges] = L["History:MiddleAges"],
-        [EpochType.EarlyModern] = L["History:EarlyModern"],
-        [EpochType.Modern] = L["History:Modern"]
+        (EpochType.Prehistory, L["History:Prehistory"], $"/images/history/epochs/{EpochType.Prehistory.ToFastString()}.jpg"),
+        (EpochType.Ancient, L["History:Ancient"], $"/images/history/epochs/{EpochType.Ancient.ToFastString()}.jpg"),
+        (EpochType.MiddleAges, L["History:MiddleAges"], $"/images/history/epochs/{EpochType.MiddleAges.ToFastString()}.jpg"),
+        (EpochType.EarlyModern, L["History:EarlyModern"], $"/images/history/epochs/{EpochType.EarlyModern.ToFastString()}.jpg"),
+        (EpochType.Modern, L["History:Modern"], $"/images/history/epochs/{EpochType.Modern.ToFastString()}.jpg"),
+        (EpochType.None, L["Topics:Any"], "/images/history/history.jpg")
     };
 
     [Parameter]

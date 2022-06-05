@@ -1,7 +1,7 @@
 <MudPaper Elevation="0" Outlined="@Outlined" Class="d-flex flex-column pa-3" MaxWidth="220px">
-    <div class="rounded-lg inventory-icon-cover mb-3">
+    <div class="rounded-lg mud-background mb-3">
         <div class="d-flex justify-center align-center relative pa-6">
-            <InventoryItemIcon Id="@Id"/>
+            <MudImage Src="@IconUrl" Width="32" Height="32"/>
         </div>
     </div>
     <div class="d-flex justify-space-between align-top mb-1">
@@ -28,14 +28,14 @@
 @code {
 
     [Parameter, EditorRequired]
-    public uint Id { get; set; }
-
-    [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
     public string Overview { get; set; } = string.Empty;
 
+    [Parameter, EditorRequired]
+    public string IconUrl { get; set; } = string.Empty;
+    
     [Parameter]
     public bool Outlined { get; set; }
 

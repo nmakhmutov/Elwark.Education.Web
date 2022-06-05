@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
 using Education.Web;
+using Education.Web.Components.Customer;
 using Education.Web.Gateways.Customers;
 using Education.Web.Gateways.History;
 using Education.Web.Hubs.Notification;
@@ -49,7 +50,8 @@ builder.Services
     .AddScoped<SidebarService>()
     .AddScoped<LanguageService>()
     .AddScoped<TopicContentFormatService>()
-    .AddScoped<CustomerService>()
+    .AddScoped<NotificationService>()
+    .AddScoped<CustomerStateProvider>()
     .AddScoped<LocalizationHandler>()
     .AddScoped(provider =>
     {

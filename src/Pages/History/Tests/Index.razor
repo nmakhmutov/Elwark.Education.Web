@@ -1,7 +1,8 @@
 @page "/history/tests"
 @using Education.Web.Gateways.History.Tests.Model
-@using Education.Web.Pages.History.Tests.Components
 @using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Tests.Requests
+@using Education.Web.Pages.History.Tests.Components
 @using Education.Web.Pages.History.Components
 @layout HistoryLayout
 @attribute [Authorize]
@@ -28,42 +29,34 @@
             <section class="grid pa-3 pa-sm-6">
                 @if (context.Topic is null)
                 {
-                    <EpochTestBuilder
-                        Class="builder"
-                        AllowedEasyTest="@_allowedEasyTest"
-                        AllowedHardTest="@_allowedHardTest"
-                        AllowedMixedTest="@_allowedMixedTest"
-                        OnEasyTestCreate="@CreateEasyTest"
-                        OnHardTestCreate="@CreateHardTest"
-                        OnMixedTestCreate="@CreateMixedTest"/>
+                    <EpochTestBuilder Class="builder" Tests="@context.Tests" OnCreate="@OnCreateTestAsync"/>
                 }
                 else
                 {
-                    <TopicTestBuilder
-                        Class="builder"
-                        Topic="@context.Topic"
-                        AvailableEasyTest="@context.Topic.HasEasyTest"
-                        AllowedEasyTest="@_allowedEasyTest"
-                        AvailableHardTest="@context.Topic.HasHardTest"
-                        AllowedHardTest="@_allowedHardTest"
-                        OnEasyTestCreate="@CreateEasyTest"
-                        OnHardTestCreate="@CreateHardTest"/>
+                    <TopicTestBuilder Class="builder" Topic="@context.Topic" Tests="@context.Tests" OnCreate="@OnCreateTestAsync"/>
                 }
 
                 <section class="inventory">
                     <MudText Typo="Typo.h5" Class="mb-3">
                         @L["Inventory"]
                     </MudText>
-                    <InventoryGrid>
-                        @foreach (var item in context.Inventory)
-                        {
-                            <InventoryInfoCard Id="@item.Id" Title="@item.Title" Overview="@item.Overview">
-                                <div class="d-flex justify-center">
-                                    <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
-                                </div>
-                            </InventoryInfoCard>
-                        }
-                    </InventoryGrid>
+                    @if (context.Inventories.Length > 0)
+                    {
+                        <InventoryGrid>
+                            @foreach (var item in context.Inventories)
+                            {
+                                <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
+                                    <div class="d-flex justify-center">
+                                        <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
+                                    </div>
+                                </InventoryInfoCard>
+                            }
+                        </InventoryGrid>
+                    }
+                    else
+                    {
+                        <EmptyResult Title="@L["Inventory:EmptyTitle"]"/>
+                    }
                 </section>
             </section>
         </ApiViewer>
@@ -71,10 +64,6 @@
 </EduPage>
 
 @code {
-    private bool _allowedEasyTest;
-    private bool _allowedHardTest;
-    private bool _allowedMixedTest;
-
     private ApiResponse<TestBuilderModel> _response = ApiResponse<TestBuilderModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -104,56 +93,20 @@
     {
         _response = await Client.Test.GetTestBuilderAsync(TopicId);
 
-        if (_response.IsSuccess)
-            foreach (var item in _response.Data.Inventory)
-                switch (item.Id, item.Count)
-                {
-                    case (101, > 0):
-                        _allowedEasyTest = true;
-                        break;
-                    case (102, > 0):
-                        _allowedHardTest = true;
-                        break;
-                    case (103, > 0):
-                        _allowedMixedTest = true;
-                        break;
-                }
-        else if (_response.Error.IsTestAlreadyCreated(out var id))
+        if (_response.IsFailed && _response.Error.IsTestAlreadyCreated(out var id))
             Navigation.NavigateTo(HistoryLinks.TopicTest.Test(id));
     }
 
-    private async Task CreateEasyTest(string topicId)
-    {
-        var result = await Client.Test.CreateEasyTestAsync(topicId);
-        HandleCreateResponse(result);
-    }
+    private Task OnCreateTestAsync((string Test, EpochType Epoch) arg) =>
+        CreateTestAsync(() => Client.Test.CreateAsync(new CreateEpochTestRequest(arg.Test, arg.Epoch)));
 
-    private async Task CreateEasyTest(EpochType epoch)
-    {
-        var result = await Client.Test.CreateEasyTestAsync(epoch);
-        HandleCreateResponse(result);
-    }
+    private Task OnCreateTestAsync((string Test, string Id) arg) =>
+        CreateTestAsync(() => Client.Test.CreateAsync(new CreateTopicTestRequest(arg.Test, arg.Id)));
 
-    private async Task CreateHardTest(string topicId)
+    private async Task CreateTestAsync(Func<Task<ApiResponse<TestModel>>> call)
     {
-        var result = await Client.Test.CreateHardTestAsync(topicId);
-        HandleCreateResponse(result);
-    }
+        var response = await call();
 
-    private async Task CreateHardTest(EpochType epoch)
-    {
-        var result = await Client.Test.CreateHardTestAsync(epoch);
-        HandleCreateResponse(result);
-    }
-
-    private async Task CreateMixedTest(EpochType epoch)
-    {
-        var result = await Client.Test.CreateMixedTestAsync(epoch);
-        HandleCreateResponse(result);
-    }
-
-    private void HandleCreateResponse(ApiResponse<TestCreatedModel> response)
-    {
         if (response.IsSuccess)
             Navigation.NavigateTo(HistoryLinks.TopicTest.Test(response.Data.Id));
         else

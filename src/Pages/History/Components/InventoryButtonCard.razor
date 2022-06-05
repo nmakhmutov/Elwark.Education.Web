@@ -1,4 +1,4 @@
-<InventoryInfoCard Id="@Id" Title="@Title" Overview="@Overview" Outlined="@Outlined">
+<InventoryInfoCard Title="@Title" Overview="@Overview" Outlined="@Outlined" IconUrl="@IconUrl">
     <div class="d-flex flex-column align-center">
         <HumanReadableText Typo="Typo.h6" Value="@Count" Class="mb-1"/>
 
@@ -26,6 +26,9 @@
 
     [Parameter, EditorRequired]
     public string Overview { get; set; } = string.Empty;
+    
+    [Parameter, EditorRequired]
+    public string IconUrl { get; set; } = string.Empty;
 
     [Parameter]
     public bool Outlined { get; set; }
@@ -35,7 +38,7 @@
 
     [Parameter]
     public EventCallback<uint> OnClick { get; set; }
-
+    
     private async Task OnClickHandler()
     {
         _isLoading = true;

@@ -1,0 +1,36 @@
+<div class="@Class">
+    <MudRadioGroup SelectedOption="@SelectedTest" SelectedOptionChanged="@SelectedTestChanged" Class="radio-group">
+        @foreach (var service in Tests)
+        {
+            <MudRadio Option="@service.Name" Color="Color.Primary" Disabled="@(!service.IsAllowed)" Class="radio">
+                <MudPaper Elevation="0" Class="d-flex align-center pa-3">
+                    <div class="rounded-circle mud-background">
+                        <div class="d-flex justify-center align-center relative pa-2">
+                            <MudImage Src="@service.IconUrl" Width="32" Height="32"/>
+                        </div>
+                    </div>
+
+                    <MudText Typo="Typo.subtitle1" Class="mx-3">
+                        @service.Title
+                    </MudText>
+                </MudPaper>
+            </MudRadio>
+        }
+    </MudRadioGroup>
+</div>
+
+@code {
+
+    [Parameter]
+    public string? SelectedTest { get; set; }
+
+    [Parameter]
+    public EventCallback<string> SelectedTestChanged { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public TestInformation[] Tests { get; set; } = Array.Empty<TestInformation>();
+
+}

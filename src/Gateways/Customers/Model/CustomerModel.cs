@@ -2,9 +2,11 @@ namespace Education.Web.Gateways.Customers.Model;
 
 public sealed record CustomerModel(
     long Id,
-    string Name,
+    string FullName,
     string Image,
-    string Timezone,
+    string TimeZone,
     DayOfWeek WeekStart,
-    string Language
+    string Language,
+    string DateFormat,
+    string TimeFormat
 );

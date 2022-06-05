@@ -1,5 +1,5 @@
 @using Education.Web.Pages
-@implements IDisposable
+@using Education.Web.Pages.Account
 
 <AuthorizeView>
     <Authorized>
@@ -22,7 +22,7 @@
 
                 <MudDivider Class="mb-2"/>
 
-                <MudListItem Text="@L["Account"]" Icon="@Icons.Material.Outlined.Person" Href="@CommonLinks.Account"/>
+                <MudListItem Text="@L["Account"]" Icon="@Icons.Material.Outlined.Person" Href="@AccountLinks.Root"/>
                 <MudListItem Text="@L["Logout"]" Icon="@Icons.Material.Outlined.Login" OnClick="@OnLogout"/>
             </ChildContent>
         </MudMenu>
@@ -46,11 +46,8 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
-    [Inject]
-    private CustomerService Customer { get; set; } = default!;
-
-    protected override void OnInitialized() =>
-        Customer.OnChanged += StateHasChanged;
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     private void OnLogin() =>
         Navigation.NavigateTo(CommonLinks.LogIn(Navigation.Uri));
@@ -60,8 +57,4 @@
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo(CommonLinks.LogOut);
     }
-
-    public void Dispose() =>
-        Customer.OnChanged -= StateHasChanged;
-
 }

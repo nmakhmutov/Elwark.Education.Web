@@ -1,7 +1,7 @@
 .container ::deep .radio-group {
     display: grid;
     grid-row-gap: 12px;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
 .container ::deep .radio {
@@ -13,21 +13,12 @@
 }
 
 .container ::deep .radio-image {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    width: 100px;
-    height: 60px;
+    width: 100%;
+    aspect-ratio: 16/9;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 760px) {
     .container ::deep .radio-group {
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    }
-}
-
-@media (min-width: 960px) {
-    .container ::deep .radio-image {
-        width: 140px;
-        height: 80px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
 }

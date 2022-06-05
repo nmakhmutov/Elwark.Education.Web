@@ -1,49 +1,65 @@
-@implements IDisposable
 <MudPaper Class="pa-3" Elevation="0">
-    <div class="list">
-        <div class="image">
-            <div class="image-wrapper">
-                <img src="@Customer.Image" alt="@Customer.Name" loading="lazy">
-            </div>
-        </div>
-        <div class="d-flex justify-center justify-sm-start justify-lg-center mb-lg-6">
-            <MudText Typo="Typo.h5">
-                @Customer.Name
-            </MudText>
-        </div>
-        <div class="field">
-            <MudText Typo="Typo.subtitle1">
-                @L["Customer:Timezone"]
-            </MudText>
-            <MudText Typo="Typo.subtitle1">
-                @Customer.Timezone
-            </MudText>
-        </div>
-        <div class="field">
-            <MudText Typo="Typo.subtitle1">
-                @L["Customer:WeekStart"]
-            </MudText>
-            <MudText Typo="Typo.subtitle1">
-                @L[$"DayOfWeek:{Customer.WeekStart}"]
-            </MudText>
-        </div>
-        <div class="field justify-end">
-            <MudButton Color="Color.Primary" Variant="Variant.Text" Size="Size.Small" EndIcon="@Icons.Filled.OpenInNew" Link="@Configuration["Urls:Account"]" Target="_blank">
-                @L["ElwarkAccount"]
-            </MudButton>
-        </div>
-        <div class="d-flex justify-end">
-            <MudButton Color="Color.Default" Variant="Variant.Text" Size="Size.Small" EndIcon="@Icons.Filled.Logout" OnClick="@BeginSignOut">
-                @L["Logout"]
-            </MudButton>
-        </div>
+    <div class="d-flex justify-center mb-3">
+        <MudImage
+            Src="@Customer.Image"
+            Alt="@Customer.Name"
+            Width="140"
+            Class="rounded"
+            ObjectPosition="ObjectPosition.Center"
+            ObjectFit="ObjectFit.Cover"/>
+    </div>
+    <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3" Style="font-weight: normal">
+        @Customer.Name
+    </MudText>
+    <div class="d-flex flex-wrap justify-space-between">
+        <MudText Typo="Typo.subtitle1">
+            @L["Customer:Timezone"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @Customer.TimeZone
+        </MudText>
+    </div>
+    <MudDivider Class="mb-3"/>
+    <div class="d-flex flex-wrap justify-space-between">
+        <MudText Typo="Typo.subtitle1">
+            @L["Customer:WeekStart"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @L[$"DayOfWeek:{Customer.WeekStart}"]
+        </MudText>
+    </div>
+    <MudDivider Class="mb-3"/>
+    <div class="d-flex flex-wrap justify-space-between">
+        <MudText Typo="Typo.subtitle1">
+            @L["Customer:DateFormat"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @_dateTime.ToString(Customer.DateFormat)
+        </MudText>
+    </div>
+    <MudDivider Class="mb-3"/>
+    <div class="d-flex flex-wrap justify-space-between">
+        <MudText Typo="Typo.subtitle1">
+            @L["Customer:TimeFormat"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @_dateTime.ToString(Customer.TimeFormat)
+        </MudText>
+    </div>
+    <MudDivider Class="mb-3"/>
+    <div class="d-flex justify-end">
+        <MudButton Color="Color.Primary" Variant="Variant.Text" Size="Size.Small" EndIcon="@Icons.Filled.OpenInNew" Link="@Configuration["Urls:Account"]" Target="_blank">
+            @L["ElwarkAccount"]
+        </MudButton>
     </div>
 </MudPaper>
 
 @code {
 
-    [Inject]
-    private CustomerService Customer { get; set; } = default!;
+    private static DateTime _dateTime = DateTime.Now;
+    
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -52,21 +68,6 @@
     private IConfiguration Configuration { get; set; } = default!;
 
     [Inject]
-    private SignOutSessionStateManager SignOutManager { get; set; } = default!;
-
-    [Inject]
     private NavigationManager Navigation { get; set; } = default!;
-
-    protected override void OnInitialized() =>
-        Customer.OnChanged += StateHasChanged;
-
-    private async Task BeginSignOut(MouseEventArgs args)
-    {
-        await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo(CommonLinks.LogOut);
-    }
-
-    public void Dispose() => 
-        Customer.OnChanged += StateHasChanged;
 
 }

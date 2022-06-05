@@ -24,4 +24,7 @@ internal static class ErrorExtensions
 
     public static bool IsEventGuesserNotFound(this Error error) =>
         error.Type == "EventGuesserException:NotFound";
+
+    public static bool IsUserNotFound(this Error error) =>
+        error.Type == "UserException:NotFound";
 }

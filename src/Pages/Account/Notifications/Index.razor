@@ -1,0 +1,129 @@
+@page "/account/my/notifications"
+@using Education.Web.Gateways.Customers.Model
+@using Education.Web.Pages.History
+@using Education.Web.Pages.Account.Components
+@using Education.Web.Gateways.Customers
+@using Education.Web.Gateways.Customers.Requests
+@using System.Diagnostics.CodeAnalysis
+@layout MainLayout
+@attribute [Authorize]
+
+<PageTitle>@L["Notifications"]</PageTitle>
+<EduPage ShowFooter="@_response.IsLoaded">
+
+    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
+        <PageHeader Title="@L["Notifications"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
+
+    <EduContainer MaxWidth="EduWidth.W1920">
+        <section class="grid">
+            <section class="notifications">
+                <ApiViewer Response="_response">
+                    <Virtualize Items="@_notifications" Context="item">
+                        <MudPaper Elevation="0" Class="pa-3 mb-3">
+                            <section class="d-flex justify-space-between">
+                                <div>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @item.Content
+                                    </MudText>
+                                    <div class="d-flex align-center">
+                                        <MudText Typo="Typo.caption" Class="mr-3">
+                                            @item.CreatedAt.ToSimpleFormat()
+                                        </MudText>
+                                        @if (TryGetLink(item.Subject, out var link))
+                                        {
+                                            <MudLink Typo="Typo.caption" Href="@link">
+                                                @L[item.Subject]
+                                            </MudLink>
+                                        }
+                                    </div>
+                                </div>
+                                <MudIconButton
+                                    Icon="@Icons.Material.Outlined.MarkEmailRead"
+                                    OnClick="@(() => MarkAsReadAsync(item.Id))"/>
+                            </section>
+                        </MudPaper>
+                    </Virtualize>
+                    @if (_request.Token is not null)
+                    {
+                        <div class="d-flex justify-center">
+                            <LoadingButton
+                                Variant="Variant.Filled"
+                                Color="Color.Primary"
+                                Text="@L["ShowMore"]"
+                                IsLoading="@_isMoreLoading"
+                                OnClick="@LoadMore"/>
+                        </div>
+                    }
+                </ApiViewer>
+            </section>
+            <section class="account">
+                <AccountCard/>
+            </section>
+        </section>
+    </EduContainer>
+</EduPage>
+
+@code {
+    private NotificationsRequest _request = new(null, 10);
+    private ApiResponse<TokenPaginationResponse<NotificationModel>> _response = ApiResponse<TokenPaginationResponse<NotificationModel>>.Loading();
+    private readonly List<NotificationModel> _notifications = new();
+    private bool _isMoreLoading;
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private NotificationService Notification { get; set; } = default!;
+
+    [Inject]
+    private ICustomerClient Customer { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _response = await Customer.GetAsync(_request);
+        if (_response.IsSuccess)
+        {
+            _notifications.AddRange(_response.Data.Items);
+            _request = _request with { Token = _response.Data.Next };
+        }
+    }
+
+    private async Task LoadMore()
+    {
+        if (_request.Token is null)
+            return;
+
+        _isMoreLoading = true;
+        var response = await Customer.GetAsync(_request);
+        if (response.IsFailed)
+            _response = response;
+
+        _notifications.AddRange(response.Data.Items);
+        _request = _request with { Token = response.Data.Next };
+        _isMoreLoading = false;
+    }
+
+    private Task MarkAsReadAsync(string id)
+    {
+        _notifications.RemoveAll(x => x.Id == id);
+        Notification.Update(_notifications);
+        return Customer.MarkNotificationAsReadAsync(id);
+    }
+
+    private static bool TryGetLink(string subject, [MaybeNullWhen(false)] out string link)
+    {
+        link = subject switch {
+            "History" => HistoryLinks.Root,
+            _ => null
+            };
+
+        return !string.IsNullOrEmpty(link);
+    }
+
+}

@@ -2,6 +2,7 @@
 @using Education.Web.Gateways.History.Users.Model
 @using Education.Web.Pages.History.My.Tests.Components
 @using Education.Web.Gateways.History
+@using Education.Web.Pages.Account
 @using Education.Web.Pages.History.My.Components
 @layout HistoryLayout
 @attribute [Authorize]
@@ -15,12 +16,6 @@
     <ApiViewer Response="@_response" Context="result">
         <EduContainer>
             <TestPageGrid>
-                <StatisticDetailsCard Title="@L["Tests"]" Value="@result.Tests">
-                    <ProgressContent>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                        <ProgressList Items="@GetTest(result.RangeContrast)"/>
-                    </ProgressContent>
-                </StatisticDetailsCard>
                 <StatisticDetailsCard Title="@L["EventGuesser:Score"]" Value="@result.Score">
                     <TotalContent>
                         <Subheader Title="@L["EventGuesser:Score"]" Subtitle="@L["ForAllTime"]"/>
@@ -44,6 +39,12 @@
                         <ProgressList Items="@GetQuestions(result.RangeContrast)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
+                <StatisticDetailsCard Title="@L["Tests"]" Value="@result.Tests">
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@GetTest(result.RangeContrast)"/>
+                    </ProgressContent>
+                </StatisticDetailsCard>
             </TestPageGrid>
         </EduContainer>
     </ApiViewer>
@@ -53,7 +54,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, CommonLinks.Account),
+        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root),
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 
