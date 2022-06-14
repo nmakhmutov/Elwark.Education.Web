@@ -26,8 +26,8 @@
 
     <ApiViewer Response="@_response" Context="leaderboard">
         <EduContainer MaxWidth="EduWidth.W1920">
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                @leaderboard.StartsAt.ToFullFormat() — @leaderboard.EndsAt.ToFullFormat()
+            <MudText Typo="Typo.h6" Align="Align.Center" Style="font-weight: normal">
+                @leaderboard.StartsAt.ToFullCustomerFormat(Customer.DateTimeInfo) — @leaderboard.EndsAt.ToFullCustomerFormat(Customer.DateTimeInfo)
             </MudText>
             @if (leaderboard.Users.Length > 0)
             {
@@ -64,6 +64,9 @@
     [Inject]
     public AuthenticationStateProvider StateProvider { get; set; } = default!;
 
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+    
     protected override async Task OnInitializedAsync()
     {
         _response = await Client.Leaderboard.GetMonthAsync();

@@ -1,34 +1,23 @@
-.wrapper {
-    display: grid;
-    grid-gap: 12px;
-    grid-template-areas:
-        "account"
-        "subjects";
+.grid {
+    display: block;
 }
 
-.account {
-    grid-area: account;
-}
-
-.subjects {
-    grid-area: subjects;
-}
-
-@media (min-width: 600px) {
-    .wrapper {
+@media (min-width: 960px) {
+    .grid {
+        display: grid;
         grid-gap: 24px;
+        grid-template-columns: 1fr 2fr;
     }
 }
 
 @media (min-width: 1280px) {
-    .wrapper {
-        grid-template-columns: 3fr 1fr;
-        grid-template-areas: "subjects account";
+    .grid {
+        grid-template-columns: 1fr 3fr;
     }
 }
 
 @media (min-width: 1920px) {
-    .wrapper {
-        grid-template-columns: 4fr 1fr;
+    .grid {
+        grid-template-columns: 1fr 4fr;
     }
 }

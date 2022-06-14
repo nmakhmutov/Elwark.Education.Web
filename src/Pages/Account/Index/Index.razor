@@ -1,31 +1,33 @@
 @page "/account"
+
 @using Education.Web.Pages.Account.Components
+@using Education.Web.Pages.Account.Index.Components
+@using Education.Web.Pages.History
 @layout MainLayout
+
 @attribute [Authorize]
 
-<PageTitle>@L["Account"]</PageTitle>
+<PageTitle>
+    @L["Account"]
+</PageTitle>
+
 <EduPage ShowFooter>
-    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <PageHeader Title="@L["Account"]" Breadcrumbs="@Breadcrumbs"/>
-    </EduContainer>
-    
     <EduContainer MaxWidth="EduWidth.W1920">
-        <div class="wrapper">
-            <div class="account">
-                <AccountCard/>
-            </div>
+        <div class="grid">
+            <AccountCard Class="account"/>
             <div class="subjects">
+                <SubjectCard
+                    Title="@L["Subject:History"]"
+                    Href="@HistoryLinks.User.MyProfile"
+                    Icon="@EducationIcons.History"
+                    Background="/images/history/bg-640x360.svg"/>
             </div>
         </div>
     </EduContainer>
 </EduPage>
 
 @code {
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root)
-    };
-    
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 

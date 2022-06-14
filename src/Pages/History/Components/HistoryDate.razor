@@ -1,19 +1,18 @@
 @using Education.Web.Gateways.History
+@using System.Text
+
 <MudText Typo="@Typo" Color="@Color" Align="Align" Class="@Class">
-    @if (Date is null)
-    {
-        @L["History:Unknown"]
-    }
-    else
-    {
-        @ToString(Date)
-    }
+    @_date
 </MudText>
 
 @code {
+    private string? _date;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter]
     public HistoricalDateModel? Date { get; set; }
@@ -30,23 +29,38 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private string ToString(HistoricalDateModel date)
+    protected override void OnInitialized() =>
+        _date = Date is null ? L["History:Unknown"] : Format(Date);
+
+    private string Format(HistoricalDateModel date)
     {
         var (year, month, day) = date;
+        var sb = new StringBuilder(15);
+
         if (month.HasValue && day.HasValue)
         {
-            return year < 0
-                ? $"{new DateTime(-year, (int)month.Value, (int)day.Value).ToShortDateString()} {L["HistoricalDate:Bc"]}"
-                : $"{new DateTime(year, (int)month.Value, (int)day.Value).ToShortDateString()}";
+            sb.Append(new DateTime(Math.Abs(year), (int)month.Value, (int)day.Value).ToString(Customer.DateTimeInfo.DateFormat));
+
+            if (year < 0)
+                sb.Append(L["HistoricalDate:Bc"]);
+
+            return sb.ToString();
         }
 
-        var name = month.HasValue
-            ? CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName((int)month.Value)
-            : null;
+        if (day.HasValue)
+            sb.Append(day.Value)
+                .Append(' ');
 
-        return year < 0
-            ? $"{day} {name} {-year} {L["HistoricalDate:Bc"]}"
-            : $"{day} {name} {year}";
+        if (month.HasValue)
+            sb.Append(L[$"Month:{CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName((int)month.Value)}"])
+                .Append(' ');
+
+        sb.Append(Math.Abs(year));
+
+        if (year < 0)
+            sb.Append(' ').Append(L["HistoricalDate:Bc"]);
+
+        return sb.ToString();
     }
 
 }

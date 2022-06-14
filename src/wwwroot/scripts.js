@@ -1,16 +1,3 @@
-(async function () {
-    const store = localStorage['ls'];
-    const language = store
-        ? JSON.parse(store)
-        : window.navigator.language.startsWith('en-')
-            ? window.navigator.language
-            : 'en-GB';
-
-    await Blazor.start({
-        applicationCulture: language
-    });
-})();
-
 window.Observer = {
     observer: null,
     Initialize: function (component, observerTargetId) {

@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace Education.Web.Components.Customer;
 
-internal sealed class CustomerState
+internal sealed record CustomerState
 {
     private const string AnonymousImage =
         "https://res.cloudinary.com/elwark/image/upload/v1610430646/People/default_j21xml.png";
@@ -10,49 +10,46 @@ internal sealed class CustomerState
     public static CustomerState Anonymous =>
         new(
             false,
-            0,
             string.Empty,
             AnonymousImage,
             TimeZoneInfo.Local.Id,
-            DayOfWeek.Monday,
+            CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek,
             CultureInfo.CurrentCulture.TwoLetterISOLanguageName,
-            "yyyy-MM-dd",
-            "HH:mm"
+            CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern,
+            CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern
         );
 
-    public static CustomerState Authenticated(long id, string name, string image, string timezone, DayOfWeek weekStart,
+    public static CustomerState Authenticated(string name, string image, string timezone, DayOfWeek weekStart,
         string language, string dateFormat, string timeFormat) =>
-        new(true, id, name, image, timezone, weekStart, language, dateFormat, timeFormat);
+        new(true, name, image, timezone, weekStart, language, dateFormat, timeFormat);
 
-    private CustomerState(bool isAuthenticated, long id, string name, string image, string timeZone,
+    private CustomerState(bool isAuthenticated, string name, string image, string timeZone,
         DayOfWeek weekStart, string language, string dateFormat, string timeFormat)
     {
         IsAuthenticated = isAuthenticated;
-        Id = id;
         Name = name;
         Image = image;
-        TimeZone = timeZone;
         WeekStart = weekStart;
         Language = language;
-        DateFormat = dateFormat;
-        TimeFormat = timeFormat;
+        DateTimeInfo = new DateTimeInfo(
+            TimeZoneInfo.FindSystemTimeZoneById(timeZone),
+            dateFormat,
+            timeFormat,
+            $"{dateFormat} {timeFormat}"
+        );
     }
 
     public bool IsAuthenticated { get; }
-
-    public long Id { get; }
 
     public string Name { get; }
 
     public string Image { get; }
 
-    public string TimeZone { get; }
-
     public DayOfWeek WeekStart { get; }
 
     public string Language { get; }
 
-    public string DateFormat { get; }
-
-    public string TimeFormat { get; }
+    public DateTimeInfo DateTimeInfo { get; }
 }
+
+public sealed record DateTimeInfo(TimeZoneInfo TimeZone, string DateFormat, string TimeFormat, string DateTimeFormat);

@@ -35,9 +35,10 @@ builder.Services
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-    });
+    })
+    .AddLocalization(options => options.ResourcesPath = "Resources");
 
-var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway");
+var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway")!;
 var policy = builder.HostEnvironment.IsDevelopment()
     ? HttpPolicyExtensions.HandleTransientHttpError()
         .WaitAndRetryAsync(new[] { TimeSpan.Zero })
@@ -45,7 +46,6 @@ var policy = builder.HostEnvironment.IsDevelopment()
         .WaitAndRetryAsync(new[] { TimeSpan.Zero, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(5) });
 
 builder.Services
-    .AddLocalization(options => options.ResourcesPath = "Resources")
     .AddScoped<ThemeService>()
     .AddScoped<SidebarService>()
     .AddScoped<LanguageService>()
@@ -58,7 +58,7 @@ builder.Services
         var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
         var stateProvider = provider.GetRequiredService<AuthenticationStateProvider>();
 
-        return new NotificationHub(builder.Configuration.GetValue<Uri>("Urls:Hub"), tokenProvider, stateProvider);
+        return new NotificationHub(builder.Configuration.GetValue<Uri>("Urls:Hub")!, tokenProvider, stateProvider);
     })
     .AddScoped<AuthorizationMessageHandler>(provider =>
     {

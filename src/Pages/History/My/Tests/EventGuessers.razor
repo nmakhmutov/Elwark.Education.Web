@@ -26,6 +26,7 @@
                         <ProgressList Items="@GetScore(result.RangeContrast)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
+
                 <StatisticDetailsCard Title="@L["EventGuesser:Questions"]" Value="@result.Questions">
                     <TotalContent>
                         <Subheader Title="@L["EventGuesser:Questions"]" Subtitle="@L["ForAllTime"]"/>
@@ -39,12 +40,19 @@
                         <ProgressList Items="@GetQuestions(result.RangeContrast)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
-                <StatisticDetailsCard Title="@L["Tests"]" Value="@result.Tests">
-                    <ProgressContent>
+
+                <MudPaper Elevation="0" Class="pa-3 pa-sm-6">
+                    <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-3 mb-sm-6">
+                        <MudText Typo="Typo.h5">
+                            @L["Tests"]
+                        </MudText>
+                        <HumanReadableNumber Value="@result.Tests" Typo="Typo.h5"/>
+                    </MudStack>
+                    <section>
                         <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
                         <ProgressList Items="@GetTest(result.RangeContrast)"/>
-                    </ProgressContent>
-                </StatisticDetailsCard>
+                    </section>
+                </MudPaper>
             </TestPageGrid>
         </EduContainer>
     </ApiViewer>

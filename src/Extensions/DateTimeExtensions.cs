@@ -1,22 +1,19 @@
+using Education.Web.Components.Customer;
+
 namespace Education.Web.Extensions;
 
 public static class DateTimeExtensions
 {
-    public static string ToSimpleFormat(this DateTime date)
+    public static string ToCustomerFormat(this DateTime date, DateTimeInfo info)
     {
-        var local = TimeZoneInfo.ConvertTimeFromUtc(date, TimeZoneInfo.Local);
+        var local = TimeZoneInfo.ConvertTimeFromUtc(date, info.TimeZone);
+        var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, info.TimeZone);
 
-        if (local.Date != DateTime.Today)
-            return local.ToShortDateString();
-
-        return local.Second == 0
-            ? local.ToShortTimeString()
-            : local.ToLongTimeString();
+        return local.ToString(local.Date == now.Date ? info.TimeFormat : info.DateTimeFormat);
     }
 
-    public static string ToFullFormat(this DateTime date) =>
-        TimeZoneInfo.ConvertTimeFromUtc(date, TimeZoneInfo.Local)
-            .ToString("f");
+    public static string ToFullCustomerFormat(this DateTime date, DateTimeInfo info) =>
+        TimeZoneInfo.ConvertTimeFromUtc(date, info.TimeZone).ToString(info.DateTimeFormat);
 
     public static string ToSimpleFormat(this TimeSpan span, bool hideSeconds = false)
     {

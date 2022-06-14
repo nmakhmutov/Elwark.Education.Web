@@ -91,16 +91,17 @@
             }
         };
 
-        ThemeService.OnChange += Update;
+        ThemeService.OnChanged += Update;
     }
 
-    public void Dispose() => ThemeService.OnChange -= Update;
+    public void Dispose() => ThemeService.OnChanged -= Update;
 
-    private async Task Update()
-    {
-        _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
-        await _chart.RenderAsync();
-        StateHasChanged();
-    }
+    private void Update() =>
+        _ = InvokeAsync(async () =>
+        {
+            _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
+            await _chart.RenderAsync();
+            StateHasChanged();
+        });
 
 }

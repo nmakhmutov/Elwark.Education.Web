@@ -13,13 +13,13 @@
 
     protected override Task OnInitializedAsync()
     {
-        CustomerStateProvider.CustomerStateChanged += OnCustomerStateChanged;
+        CustomerStateProvider.StateChanged += OnStateChanged;
         _state = CustomerStateProvider.GetCurrentState();
 
         return CustomerStateProvider.InitAsync();
     }
 
-    private void OnCustomerStateChanged(CustomerState state) =>
+    private void OnStateChanged(CustomerState state) =>
         _ = InvokeAsync(() =>
         {
             _state = state;
@@ -27,6 +27,6 @@
         });
 
     public void Dispose() =>
-        CustomerStateProvider.CustomerStateChanged -= OnCustomerStateChanged;
+        CustomerStateProvider.StateChanged -= OnStateChanged;
 
 }

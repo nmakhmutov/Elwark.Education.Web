@@ -11,7 +11,7 @@
                     @achievement.Title
                 </h6>
                 <MudText Typo="Typo.caption" Class="d-block">
-                    @L["Achievement:Completed"] @achievement.CompletedAt.ToSimpleFormat()
+                    @L["Achievement:Completed"] @achievement.CompletedAt.ToCustomerFormat(Customer.DateTimeInfo)
                 </MudText>
             </header>
             break;
@@ -30,9 +30,9 @@
             </header>
             <footer class="progress">
                 <div class="d-flex flex-row mb-1">
-                    <HumanReadableText Value="@achievement.Score" Typo="Typo.subtitle2"/>
+                    <HumanReadableNumber Value="@achievement.Score" Typo="Typo.subtitle2"/>
                     <span>/</span>
-                    <HumanReadableText Value="@achievement.Goal" Typo="Typo.subtitle2"/>
+                    <HumanReadableNumber Value="@achievement.Goal" Typo="Typo.subtitle2"/>
                 </div>
                 <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
                 <div class="d-flex flex-row">
@@ -82,6 +82,9 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+    
     [Parameter, EditorRequired]
     public AchievementModel Achievement { get; set; } = default!;
 

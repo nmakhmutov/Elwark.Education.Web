@@ -17,6 +17,9 @@
 
     <EduContainer MaxWidth="EduWidth.W1920">
         <section class="grid">
+            <section class="account">
+                <AccountCard/>
+            </section>
             <section class="notifications">
                 <ApiViewer Response="_response">
                     <Virtualize Items="@_notifications" Context="item">
@@ -28,7 +31,7 @@
                                     </MudText>
                                     <div class="d-flex align-center">
                                         <MudText Typo="Typo.caption" Class="mr-3">
-                                            @item.CreatedAt.ToSimpleFormat()
+                                            @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
                                         </MudText>
                                         @if (TryGetLink(item.Subject, out var link))
                                         {
@@ -50,15 +53,12 @@
                             <LoadingButton
                                 Variant="Variant.Filled"
                                 Color="Color.Primary"
-                                Text="@L["ShowMore"]"
+                                Text="@L["Button:ShowMore"]"
                                 IsLoading="@_isMoreLoading"
                                 OnClick="@LoadMore"/>
                         </div>
                     }
                 </ApiViewer>
-            </section>
-            <section class="account">
-                <AccountCard/>
             </section>
         </section>
     </EduContainer>
@@ -79,14 +79,17 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private NotificationService Notification { get; set; } = default!;
+    private NotificationService NotificationService { get; set; } = default!;
 
     [Inject]
-    private ICustomerClient Customer { get; set; } = default!;
+    private ICustomerClient CustomerClient { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await Customer.GetAsync(_request);
+        _response = await CustomerClient.GetAsync(_request);
         if (_response.IsSuccess)
         {
             _notifications.AddRange(_response.Data.Items);
@@ -100,7 +103,7 @@
             return;
 
         _isMoreLoading = true;
-        var response = await Customer.GetAsync(_request);
+        var response = await CustomerClient.GetAsync(_request);
         if (response.IsFailed)
             _response = response;
 
@@ -112,8 +115,8 @@
     private Task MarkAsReadAsync(string id)
     {
         _notifications.RemoveAll(x => x.Id == id);
-        Notification.Update(_notifications);
-        return Customer.MarkNotificationAsReadAsync(id);
+        NotificationService.Update(_notifications);
+        return CustomerClient.MarkNotificationAsReadAsync(id);
     }
 
     private static bool TryGetLink(string subject, [MaybeNullWhen(false)] out string link)

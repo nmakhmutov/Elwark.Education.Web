@@ -15,7 +15,9 @@
                             <MudAvatar Image="@Customer.Image"/>
                         </CardHeaderAvatar>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.body1">@Customer.Name</MudText>
+                            <p class="mud-typography mud-typography-body1 name">
+                                @Customer.Name
+                            </p>
                         </CardHeaderContent>
                     </MudCardHeader>
                 </MudCard>
@@ -23,14 +25,14 @@
                 <MudDivider Class="mb-2"/>
 
                 <MudListItem Text="@L["Account"]" Icon="@Icons.Material.Outlined.Person" Href="@AccountLinks.Root"/>
-                <MudListItem Text="@L["Logout"]" Icon="@Icons.Material.Outlined.Login" OnClick="@OnLogout"/>
+                <MudListItem Text="@L["Account:Logout"]" Icon="@Icons.Material.Outlined.Login" OnClick="@OnLogout"/>
             </ChildContent>
         </MudMenu>
     </Authorized>
 
     <NotAuthorized>
         <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@OnLogin" Class="ml-3">
-            @L["SignIn"]
+            @L["Account:SignIn"]
         </MudButton>
     </NotAuthorized>
 </AuthorizeView>

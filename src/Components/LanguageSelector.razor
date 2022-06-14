@@ -1,9 +1,4 @@
-<MudMenu
-    Label="@LanguageService.Name"
-    StartIcon="@Icons.Filled.Translate"
-    Color="Color.Inherit"
-    OffsetY
-    Direction="Direction.Top">
+<MudMenu Icon="@Icons.Outlined.Translate" Color="Color.Inherit" OffsetY Direction="Direction.Top">
     @foreach (var (culture, name) in LanguageService.Cultures)
     {
         <MudMenuItem OnClick="@(() => Set(culture))">

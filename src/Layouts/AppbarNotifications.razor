@@ -38,7 +38,7 @@
                     </MudText>
                     <div class="d-flex justify-space-between">
                         <MudText Typo="Typo.body2">
-                            @notification.CreatedAt.ToSimpleFormat()
+                            @notification.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
                         </MudText>
                         <MudText Typo="Typo.body2">
                             @L[$"Subject:{notification.Subject}"]
@@ -72,6 +72,9 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+    
     protected override void OnInitialized() =>
         NotificationService.OnChanged += StateHasChanged;
 

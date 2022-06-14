@@ -14,7 +14,7 @@
         <div>
             <div class="d-flex justify-center mb-2">
                 <div class="d-flex align-center">
-                    <MudIcon Style="color: #FFCA28" Icon="@EducationIcons.Experience" Class="mr-2" Size="Size.Small"/>
+                    <MudIcon Style="color: #FFCA28" Icon="@EducationIcons.Experience" Class="mr-2"/>
                     <MudText Typo="Typo.body2">
                         @L["Experience:PointsToNextLevel", (Level.NextLevelExperience - Level.Experience).ToString("N0")]
                     </MudText>
@@ -25,10 +25,10 @@
 
             <div class="d-flex justify-space-between align-center">
                 <div class="d-flex align-center">
-                    <MudIcon Style="color: #FFCA28; font-size: 0.9rem" Icon="@EducationIcons.Experience" Class="mr-1"/>
-                    <HumanReadableText Value="@Level.Experience" Typo="Typo.body2"/>
+                    <MudIcon Style="color: #FFCA28; font-size: 1rem" Icon="@EducationIcons.Experience" Class="mr-1"/>
+                    <HumanReadableNumber Value="@Level.Experience" Typo="Typo.body2"/>
                     <div>&nbsp;/&nbsp;</div>
-                    <HumanReadableText Value="@Level.NextLevelExperience" Typo="Typo.body2"/>
+                    <HumanReadableNumber Value="@Level.NextLevelExperience" Typo="Typo.body2"/>
                 </div>
                 <MudText Typo="Typo.body2">
                     @(((double)Level.Experience / Level.NextLevelExperience * 100).ToReadable())%

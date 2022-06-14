@@ -1,63 +1,47 @@
-<MudPaper Class="pa-3" Elevation="0">
-    <div class="d-flex justify-center mb-3">
+@using MudBlazor.Utilities
+
+<MudPaper Class="@_class" Elevation="0">
+    <MudStack Row Justify="Justify.Center" Class="mb-3">
         <MudImage
             Src="@Customer.Image"
             Alt="@Customer.Name"
-            Width="140"
+            Width="120"
             Class="rounded"
             ObjectPosition="ObjectPosition.Center"
             ObjectFit="ObjectFit.Cover"/>
-    </div>
+    </MudStack>
     <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3" Style="font-weight: normal">
         @Customer.Name
     </MudText>
-    <div class="d-flex flex-wrap justify-space-between">
-        <MudText Typo="Typo.subtitle1">
-            @L["Customer:Timezone"]
-        </MudText>
-        <MudText Typo="Typo.subtitle1">
-            @Customer.TimeZone
-        </MudText>
-    </div>
+
+    <MudText Typo="Typo.h6" Class="mb-3">
+        @L["Customer:Details"]
+    </MudText>
     <MudDivider Class="mb-3"/>
-    <div class="d-flex flex-wrap justify-space-between">
-        <MudText Typo="Typo.subtitle1">
-            @L["Customer:WeekStart"]
-        </MudText>
-        <MudText Typo="Typo.subtitle1">
-            @L[$"DayOfWeek:{Customer.WeekStart}"]
-        </MudText>
-    </div>
-    <MudDivider Class="mb-3"/>
-    <div class="d-flex flex-wrap justify-space-between">
-        <MudText Typo="Typo.subtitle1">
-            @L["Customer:DateFormat"]
-        </MudText>
-        <MudText Typo="Typo.subtitle1">
-            @_dateTime.ToString(Customer.DateFormat)
-        </MudText>
-    </div>
-    <MudDivider Class="mb-3"/>
-    <div class="d-flex flex-wrap justify-space-between">
-        <MudText Typo="Typo.subtitle1">
-            @L["Customer:TimeFormat"]
-        </MudText>
-        <MudText Typo="Typo.subtitle1">
-            @_dateTime.ToString(Customer.TimeFormat)
-        </MudText>
-    </div>
-    <MudDivider Class="mb-3"/>
-    <div class="d-flex justify-end">
-        <MudButton Color="Color.Primary" Variant="Variant.Text" Size="Size.Small" EndIcon="@Icons.Filled.OpenInNew" Link="@Configuration["Urls:Account"]" Target="_blank">
-            @L["ElwarkAccount"]
+
+    @foreach (var item in _items)
+    {
+        <MudStack Row Spacing="1" AlignItems="AlignItems.Center" Class="mb-3">
+            <MudText Typo="Typo.body2" Style="font-weight: bold">
+                @item.Key:
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                @item.Value
+            </MudText>
+        </MudStack>
+    }
+
+    <MudStack Row Justify="Justify.Center" Class="mt-6">
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" EndIcon="@Icons.Filled.OpenInNew" Link="@Configuration["Urls:Account"]" Target="_blank">
+            @L["Account:Elwark"]
         </MudButton>
-    </div>
+    </MudStack>
 </MudPaper>
 
 @code {
+    private string? _class;
+    private IDictionary<string, string> _items = new Dictionary<string, string>();
 
-    private static DateTime _dateTime = DateTime.Now;
-    
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
 
@@ -69,5 +53,24 @@
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+    
+    protected override void OnParametersSet()
+    {
+        var now = DateTime.Now;
+        _class = CssBuilder.Default("pa-3 pa-sm-6")
+            .AddClass(Class, Class is not null)
+            .Build();
+
+        _items = new Dictionary<string, string>
+        {
+            [L["Customer:TimeZone"]] = Customer.DateTimeInfo.TimeZone.Id,
+            [L["Customer:WeekStart"]] = L[$"DayOfWeek:{Customer.WeekStart}"],
+            [L["Customer:DateFormat"]] = $"{now.ToString(Customer.DateTimeInfo.DateFormat)} ({Customer.DateTimeInfo.DateFormat})",
+            [L["Customer:TimeFormat"]] = $"{now.ToString(Customer.DateTimeInfo.TimeFormat)} ({Customer.DateTimeInfo.TimeFormat})"
+        };
+    }
 
 }

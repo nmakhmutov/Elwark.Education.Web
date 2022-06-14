@@ -6,7 +6,12 @@
         {
             <MudRadio Option="@epoch.Type" Color="Color.Primary" Class="radio">
                 <MudPaper Elevation="0">
-                    <MudImage Class="radio-image rounded-t" Alt="@epoch.Title" Src="@epoch.Image"/>
+                    <MudImage
+                        Src="@epoch.Image"
+                        Class="radio-image rounded-t"
+                        ObjectFit="ObjectFit.Cover"
+                        ObjectPosition="ObjectPosition.Center"
+                        Alt="@epoch.Title"/>
                     <MudText Typo="Typo.subtitle1" Align="Align.Center">
                         @epoch.Title
                     </MudText>
@@ -21,7 +26,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     private (EpochType Type, LocalizedString Title, string Image)[] Epochs => new[]
     {
         (EpochType.Prehistory, L["History:Prehistory"], $"/images/history/epochs/{EpochType.Prehistory.ToFastString()}.jpg"),

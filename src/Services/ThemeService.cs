@@ -47,6 +47,7 @@ internal sealed class ThemeService
             AppbarBackground = "#090a0c",
             AppbarText = "rgba(255,255,255, 0.70)",
             Divider = "rgba(255, 255, 255, 0.1)",
+            LinesDefault = "rgba(255, 255, 255, 0.1)",
             TableLines = "rgba(255, 255, 255, 0.1)",
             TextPrimary = "rgba(255,255,255, 0.70)",
             TextSecondary = "rgba(255,255,255, 0.50)",
@@ -67,17 +68,17 @@ internal sealed class ThemeService
     public string Icon =>
         IsDarkMode ? Icons.Outlined.LightMode : Icons.Outlined.DarkMode;
 
-    public event Func<Task> OnChange = () => Task.CompletedTask;
+    public event Action OnChanged = () => { };
 
     public async Task ToggleAsync()
     {
         await _storage.SetItemAsync(StorageKey, IsDarkMode = !IsDarkMode);
-        await OnChange();
+        OnChanged();
     }
 
     public async Task InitAsync()
     {
         IsDarkMode = await _storage.GetItemAsync<bool>(StorageKey);
-        await OnChange();
+        OnChanged();
     }
 }

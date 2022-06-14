@@ -107,17 +107,20 @@
             }
         };
 
-        ThemeService.OnChange += Update;
+        ThemeService.OnChanged += Update;
     }
 
     public void Dispose() =>
-        ThemeService.OnChange -= Update;
+        ThemeService.OnChanged -= Update;
 
-    private async Task Update()
+    private void Update()
     {
-        _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
-        await _chart.RenderAsync();
-        StateHasChanged();
+        _ = InvokeAsync(async () =>
+        {
+            _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
+            await _chart.RenderAsync();
+            StateHasChanged();
+        });
     }
 
 }

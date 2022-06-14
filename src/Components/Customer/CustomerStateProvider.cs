@@ -19,7 +19,7 @@ internal sealed class CustomerStateProvider
         _state = CustomerState.Anonymous;
     }
 
-    public event Action<CustomerState> CustomerStateChanged = _ => { };
+    public event Action<CustomerState> StateChanged = _ => { };
 
     public async Task InitAsync()
     {
@@ -35,7 +35,6 @@ internal sealed class CustomerStateProvider
             return;
 
         _state = CustomerState.Authenticated(
-            customer.Id,
             customer.FullName,
             customer.Image,
             customer.TimeZone,
@@ -46,7 +45,7 @@ internal sealed class CustomerStateProvider
         );
 
         _isInitialized = true;
-        CustomerStateChanged.Invoke(_state);
+        StateChanged.Invoke(_state);
     }
 
     public CustomerState GetCurrentState() =>

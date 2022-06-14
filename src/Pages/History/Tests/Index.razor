@@ -33,7 +33,7 @@
                 }
                 else
                 {
-                    <TopicTestBuilder Class="builder" Topic="@context.Topic" Tests="@context.Tests" OnCreate="@OnCreateTestAsync"/>
+                    <TopicTestBuilder Class="builder" Tests="@context.Tests" Topic="@context.Topic" OnCreate="@OnCreateTestAsync"/>
                 }
 
                 <section class="inventory">
@@ -47,7 +47,7 @@
                             {
                                 <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
                                     <div class="d-flex justify-center">
-                                        <HumanReadableText Typo="Typo.h6" Value="@item.Count"/>
+                                        <HumanReadableNumber Typo="Typo.h6" Value="@item.Count"/>
                                     </div>
                                 </InventoryInfoCard>
                             }
@@ -97,11 +97,11 @@
             Navigation.NavigateTo(HistoryLinks.TopicTest.Test(id));
     }
 
-    private Task OnCreateTestAsync((string Test, EpochType Epoch) arg) =>
-        CreateTestAsync(() => Client.Test.CreateAsync(new CreateEpochTestRequest(arg.Test, arg.Epoch)));
+    private Task OnCreateTestAsync(CreateEpochTestRequest request) =>
+        CreateTestAsync(() => Client.Test.CreateAsync(request));
 
-    private Task OnCreateTestAsync((string Test, string Id) arg) =>
-        CreateTestAsync(() => Client.Test.CreateAsync(new CreateTopicTestRequest(arg.Test, arg.Id)));
+    private Task OnCreateTestAsync(CreateTopicTestRequest request) =>
+        CreateTestAsync(() => Client.Test.CreateAsync(request));
 
     private async Task CreateTestAsync(Func<Task<ApiResponse<TestModel>>> call)
     {

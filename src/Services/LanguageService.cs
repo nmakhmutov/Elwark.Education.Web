@@ -3,7 +3,7 @@ using Blazored.LocalStorage;
 
 namespace Education.Web.Services;
 
-public sealed class LanguageService
+internal sealed class LanguageService
 {
     private const string StorageKey = "ls";
     private readonly ILocalStorageService _storage;
@@ -12,20 +12,11 @@ public sealed class LanguageService
         _storage = storage;
 
     public static Dictionary<string, string> Cultures =>
-        new(3, StringComparer.InvariantCultureIgnoreCase)
+        new(2, StringComparer.InvariantCultureIgnoreCase)
         {
-            ["en-us"] = "English (US)",
-            ["en-gb"] = "English (UK)",
-            ["ru-ru"] = "Русский"
+            ["en"] = "English",
+            ["ru"] = "Русский"
         };
-
-    public static string Language =>
-        CultureInfo.CurrentCulture.Name;
-
-    public static string Name =>
-        Cultures.TryGetValue(CultureInfo.CurrentCulture.Name, out var language)
-            ? language
-            : Cultures.First().Value;
 
     public async Task<bool> SetAsync(string language)
     {
@@ -33,6 +24,16 @@ public sealed class LanguageService
             return false;
 
         await _storage.SetItemAsync(StorageKey, language);
+
         return true;
+    }
+
+    public async Task InitAsync()
+    {
+        var language = await _storage.GetItemAsync<string>(StorageKey) ?? Cultures.First().Key;
+        var culture = new CultureInfo(language);
+
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
     }
 }

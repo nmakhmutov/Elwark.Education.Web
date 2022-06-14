@@ -132,7 +132,7 @@
                                 <TitleContent>
                                     <div class="d-flex">
                                         <MudText Typo="Typo.subtitle1" Class="mr-3">
-                                            @conclusion.CompletedAt.ToSimpleFormat()
+                                            @conclusion.CompletedAt.ToCustomerFormat(Customer.DateTimeInfo)
                                         </MudText>
                                         <MudText Typo="@Typo.subtitle1" Color="@conclusion.Status.GetColor()">
                                             @L[$"ConclusionStatus:{conclusion.Status}"]
@@ -173,7 +173,7 @@
                                 <TitleContent>
                                     <div class="d-flex">
                                         <MudText Typo="Typo.subtitle1" Class="mr-3">
-                                            @conclusion.CompletedAt.ToSimpleFormat()
+                                            @conclusion.CompletedAt.ToCustomerFormat(Customer.DateTimeInfo)
                                         </MudText>
                                         <MudText Typo="@Typo.subtitle1" Color="@conclusion.Status.GetColor()">
                                             @L[$"ConclusionStatus:{conclusion.Status}"]
@@ -205,6 +205,9 @@
 
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
     
     [Parameter]
     public string Id { get; set; } = string.Empty;

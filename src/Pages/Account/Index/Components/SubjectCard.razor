@@ -1,0 +1,42 @@
+<section class="card" style="background-image: url('@Background')">
+    <div class="d-flex flex-column justify-space-between pa-3 h-100">
+        <header class="d-flex align-center justify-space-between">
+            <div class="white-text">
+                <MudText Typo="Typo.subtitle1" Color="Color.Inherit">
+                    @L["Subject"]
+                </MudText>
+                <MudText Typo="Typo.h4" Color="Color.Inherit">
+                    @Title
+                </MudText>
+            </div>
+            <MudAvatar Size="Size.Large" Elevation="0" Class="white-text" Style="background-color: rgba(255,255,255, 0.4)">
+                <MudIcon Icon="@EducationIcons.History" Color="Color.Inherit" Size="Size.Large"/>
+            </MudAvatar>
+        </header>
+
+        <footer class="d-flex align-center justify-end">
+            <MudButton Href="@Href" DisableElevation Variant="Variant.Filled" Color="Color.Primary">
+                @L["Profile"]
+            </MudButton>
+        </footer>
+    </div>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Href { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Icon { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Background { get; set; } = string.Empty;
+
+}

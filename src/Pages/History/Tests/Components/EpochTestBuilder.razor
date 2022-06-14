@@ -1,4 +1,5 @@
 @using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Tests.Requests
 @using Education.Web.Pages.History.Components
 
 <section class="@Class">
@@ -41,7 +42,7 @@
     public TestInformation[] Tests { get; set; } = Array.Empty<TestInformation>();
 
     [Parameter, EditorRequired]
-    public EventCallback<(string Test, EpochType Epoch)> OnCreate { get; set; }
+    public EventCallback<CreateEpochTestRequest> OnCreate { get; set; }
 
     protected override void OnInitialized() =>
         _test = Tests.FirstOrDefault(x => x.IsAllowed)?.Name ?? string.Empty;
@@ -49,7 +50,7 @@
     private async Task CreateTestAsync()
     {
         _isLoading = true;
-        await OnCreate.InvokeAsync((_test, _epoch));
+        await OnCreate.InvokeAsync(new CreateEpochTestRequest(_test, _epoch));
         _isLoading = false;
     }
 

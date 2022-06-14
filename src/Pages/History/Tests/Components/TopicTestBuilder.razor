@@ -1,4 +1,5 @@
 @using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Tests.Requests
 @using Education.Web.Pages.History.Components
 <section class="@Class">
     <MudText Typo="Typo.h5" Class="mb-3">
@@ -58,15 +59,15 @@
     public TestInformation[] Tests { get; set; } = Array.Empty<TestInformation>();
 
     [Parameter, EditorRequired]
-    public EventCallback<(string Test, string Id)> OnCreate { get; set; }
+    public EventCallback<CreateTopicTestRequest> OnCreate { get; set; }
 
-    protected override void OnInitialized() => 
+    protected override void OnInitialized() =>
         _test = Tests.FirstOrDefault(x => x.IsAllowed)?.Name;
 
     private async Task CreateTestAsync()
     {
         _isLoading = true;
-        await OnCreate.InvokeAsync((_test!, Topic.Id));
+        await OnCreate.InvokeAsync(new CreateTopicTestRequest(_test!, Topic.Id));
         _isLoading = false;
     }
 
