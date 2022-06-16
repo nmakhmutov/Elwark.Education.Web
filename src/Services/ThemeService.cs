@@ -13,8 +13,8 @@ internal sealed class ThemeService
         Palette = new Palette
         {
             Primary = "#5569FF",
-            Secondary = "#584BB0",
-            Tertiary = "#8560C7",
+            Secondary = "#6E7FFF",
+            Tertiary = "#2939B3",
             Info = "#33C2FF",
             Success = "#44D600",
             Warning = "#FFA319",
@@ -22,8 +22,8 @@ internal sealed class ThemeService
             Black = "#272C34",
             Background = "#F6F6F6",
             BackgroundGrey = "#E3E5E7",
-            AppbarBackground = Colors.Shades.White,
-            AppbarText = Colors.Grey.Darken3,
+            AppbarBackground = "#FFFFFF",
+            AppbarText = "#424242",
             Divider = "#E8E8E8",
             DividerLight = "#ECECEC",
             TableLines = "#E8E8E8",
@@ -31,32 +31,36 @@ internal sealed class ThemeService
         },
         PaletteDark = new Palette
         {
-            Primary = "#5569ff",
-            Secondary = "#584bb0",
-            Tertiary = "#8560c7",
-            Info = "#33c2ff",
-            Success = "#44d600",
-            Warning = "#ffa319",
-            Error = "#ff1943",
-            Black = "#27272f",
-            Background = "#1c1c1c",
-            BackgroundGrey = "#27272f",
+            Primary = "#5569FF",
+            Secondary = "#6E7FFF",
+            Tertiary = "#2939B3",
+            Info = "#33C2FF",
+            Success = "#44D600",
+            Warning = "#FFA319",
+            Error = "#FF1943",
+            Black = "#27272F",
+            Background = "#1C1C1C",
+            BackgroundGrey = "#27272F",
             Surface = "#252525",
-            DrawerBackground = "#090a0c",
+            DrawerBackground = "#090A0C",
             DrawerText = "rgba(255,255,255, 0.50)",
-            AppbarBackground = "#090a0c",
+            AppbarBackground = "#090A0C",
             AppbarText = "rgba(255,255,255, 0.70)",
             Divider = "rgba(255, 255, 255, 0.1)",
             LinesDefault = "rgba(255, 255, 255, 0.1)",
             TableLines = "rgba(255, 255, 255, 0.1)",
             TextPrimary = "rgba(255,255,255, 0.70)",
             TextSecondary = "rgba(255,255,255, 0.50)",
-            ActionDefault = "#adadb1",
+            ActionDefault = "#ADADB1",
             ActionDisabled = "rgba(255,255,255, 0.26)",
             ActionDisabledBackground = "rgba(255,255,255, 0.12)",
             DrawerIcon = "rgba(255,255,255, 0.50)",
             HoverOpacity = 0.2,
             OverlayDark = "rgba(33, 33, 33, 0.7)"
+        },
+        Typography = new Typography
+        {
+            H6 = new H6 { FontWeight = 400 }
         }
     };
 

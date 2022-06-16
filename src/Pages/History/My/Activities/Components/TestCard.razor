@@ -2,16 +2,13 @@
 @typeparam T
 
 <MudPaper Class="@($"{Class} pa-3")" Elevation="0">
-    <MudLink Href="@Href" Typo="Typo.subtitle1">
+    <MudLink Href="@Href" Typo="Typo.h6">
         @Title
     </MudLink>
     <div class="d-flex flex-wrap justify-space-between mt-3">
-        <div class="d-flex flex-wrap align-center">
-            <MudIcon Icon="@Icon" Class="@IconClass" Style="width:54px; height:54px;"/>
-            <MudText Typo="Typo.h5" Class="ml-3">
-                @Value.Current
-            </MudText>
-        </div>
+        <MudText Typo="Typo.h5">
+            @Value.Current
+        </MudText>
         <DifferenceLabel Difference="@Value.Difference"/>
     </div>
 </MudPaper>
@@ -23,12 +20,6 @@
 
     [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;
-
-    [Parameter, EditorRequired]
-    public string Icon { get; set; } = Icons.Material.Outlined.Circle;
-
-    [Parameter]
-    public string? IconClass { get; set; }
 
     [Parameter, EditorRequired]
     public ContrastModel<T> Value { get; set; } = default!;

@@ -7,7 +7,7 @@
 
 <MudLayout>
     <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@SidebarService.ToggleAsync"/>
+        <MudIconButton Icon="@Icons.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@SidebarService.ToggleAsync"/>
         <MudLink Href="@HistoryLinks.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None" Class="d-none d-sm-block">
             @L["Subject:History"] <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
         </MudLink>
@@ -48,10 +48,10 @@
                 @L["Page:Home"]
             </MudNavLink>
             <MudNavGroup Title="@L["History:Epochs"]" Icon="@EducationIcons.Epochs">
-                @foreach (var epoch in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
+                @foreach (var epoch in EpochTypeExtensions.List[1..])
                 {
                     <MudNavLink Href="@HistoryLinks.Content.Epoch(epoch)">
-                        @L[$"History:{epoch.ToFastString()}"]
+                        @L[$"Epoch:{epoch.ToFastString()}"]
                     </MudNavLink>
                 }
             </MudNavGroup>

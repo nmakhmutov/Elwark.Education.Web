@@ -1,16 +1,22 @@
 @page "/history/my/profile"
 @using Education.Web.Gateways.History.Users.Model
+@using Education.Web.Pages.Account
 @using Education.Web.Pages.History.My.Components
 @using Education.Web.Pages.History.My.Profile.Components
 @using Education.Web.Gateways.History
 @layout HistoryLayout
+
 @attribute [Authorize]
 
-<PageTitle>@L["Profile"]</PageTitle>
+<PageTitle>
+    @Customer.Name
+</PageTitle>
 
 <EduPage ShowFooter="@_response.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <ProfileHeader/>
+        <PageHeader Title="@(string.IsNullOrEmpty(Customer.Name) ? L["Profile"] : Customer.Name)" Breadcrumbs="@Breadcrumbs">
+            <MudAvatar Image="@Customer.Image" Size="Size.Large"/>
+        </PageHeader>
     </EduContainer>
     <ApiViewer Response="@_response" Context="profile">
         <EduContainer MaxWidth="EduWidth.W1920">
@@ -76,14 +82,21 @@
 </EduPage>
 
 @code {
-
     private ApiResponse<HistoryUserProfileModel> _response = ApiResponse<HistoryUserProfileModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root)
+    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
     private IHistoryClient HistoryClient { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
         _response = await HistoryClient.User.GetOverviewAsync();

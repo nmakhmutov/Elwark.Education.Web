@@ -7,11 +7,23 @@ public enum EpochType
     Ancient = 2,
     MiddleAges = 3,
     EarlyModern = 4,
-    Modern = 5
+    LateModern = 5,
+    Contemporary = 6
 }
 
 public static class EpochTypeExtensions
 {
+    public static readonly EpochType[] List =
+    {
+        EpochType.None,
+        EpochType.Prehistory,
+        EpochType.Ancient,
+        EpochType.MiddleAges,
+        EpochType.EarlyModern,
+        EpochType.LateModern,
+        EpochType.Contemporary
+    };
+
     public static string ToFastString(this EpochType type) =>
         type switch
         {
@@ -20,7 +32,8 @@ public static class EpochTypeExtensions
             EpochType.Ancient => nameof(EpochType.Ancient),
             EpochType.MiddleAges => nameof(EpochType.MiddleAges),
             EpochType.EarlyModern => nameof(EpochType.EarlyModern),
-            EpochType.Modern => nameof(EpochType.Modern),
+            EpochType.LateModern => nameof(EpochType.LateModern),
+            EpochType.Contemporary => nameof(EpochType.Contemporary),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 }

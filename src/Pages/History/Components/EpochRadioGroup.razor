@@ -1,8 +1,9 @@
 @using Education.Web.Gateways.History
 @using MudBlazor.Utilities
+
 <div class="@_class">
     <MudRadioGroup SelectedOption="@SelectedEpoch" SelectedOptionChanged="@SelectedEpochChanged" Class="radio-group">
-        @foreach (var epoch in Epochs)
+        @foreach (var epoch in GetEpochs())
         {
             <MudRadio Option="@epoch.Type" Color="Color.Primary" Class="radio">
                 <MudPaper Elevation="0">
@@ -27,15 +28,16 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    private (EpochType Type, LocalizedString Title, string Image)[] Epochs => new[]
+    private IEnumerable<Epoch> GetEpochs()
     {
-        (EpochType.Prehistory, L["History:Prehistory"], $"/images/history/epochs/{EpochType.Prehistory.ToFastString()}.jpg"),
-        (EpochType.Ancient, L["History:Ancient"], $"/images/history/epochs/{EpochType.Ancient.ToFastString()}.jpg"),
-        (EpochType.MiddleAges, L["History:MiddleAges"], $"/images/history/epochs/{EpochType.MiddleAges.ToFastString()}.jpg"),
-        (EpochType.EarlyModern, L["History:EarlyModern"], $"/images/history/epochs/{EpochType.EarlyModern.ToFastString()}.jpg"),
-        (EpochType.Modern, L["History:Modern"], $"/images/history/epochs/{EpochType.Modern.ToFastString()}.jpg"),
-        (EpochType.None, L["Topics:Any"], "/images/history/history.jpg")
-    };
+        foreach (var epoch in EpochTypeExtensions.List[1..])
+        {
+            var str = epoch.ToFastString();
+            yield return new Epoch(epoch, L[$"Epoch:{str}"], $"/images/history/epochs/{str}.jpg");
+        }
+
+        yield return new Epoch(EpochType.None, L["Topics:Any"], "/images/history/history.jpg");
+    }
 
     [Parameter]
     public EpochType SelectedEpoch { get; set; }
@@ -51,4 +53,5 @@
             .AddClass(Class, () => Class is not null)
             .Build();
 
+    private sealed record Epoch(EpochType Type, string Title, string Image);
 }

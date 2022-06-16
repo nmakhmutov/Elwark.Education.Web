@@ -30,19 +30,19 @@
             <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined">
                 <MudIconButton
                     Disabled="@(FormatService.TextAlign == Align.Left)"
-                    Icon="@Icons.Material.Filled.FormatAlignLeft"
+                    Icon="@Icons.Outlined.FormatAlignLeft"
                     OnClick="@FormatService.AlignTextLeftAsync"/>
                 <MudIconButton
                     Disabled="@(FormatService.TextAlign == Align.Center)"
-                    Icon="@Icons.Material.Filled.FormatAlignCenter"
+                    Icon="@Icons.Outlined.FormatAlignCenter"
                     OnClick="@FormatService.AlignTextCenterAsync"/>
                 <MudIconButton
                     Disabled="@(FormatService.TextAlign == Align.Right)"
-                    Icon="@Icons.Material.Filled.FormatAlignRight"
+                    Icon="@Icons.Outlined.FormatAlignRight"
                     OnClick="@FormatService.AlignTextRightAsync"/>
                 <MudIconButton
                     Disabled="@(FormatService.TextAlign == Align.Justify)"
-                    Icon="@Icons.Material.Filled.FormatAlignJustify"
+                    Icon="@Icons.Outlined.FormatAlignJustify"
                     OnClick="@FormatService.AlignTextJustifyAsync"/>
             </MudButtonGroup>
         </div>
@@ -57,11 +57,11 @@
             <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined">
                 <MudIconButton
                     Disabled="@(!FormatService.CanDecreaseFontSize())"
-                    Icon="@Icons.Material.Filled.Remove"
+                    Icon="@Icons.Outlined.Remove"
                     OnClick="@FormatService.DecreaseFontSizeAsync"/>
                 <MudIconButton
                     Disabled="@(!FormatService.CanIncreaseFontSize())"
-                    Icon="@Icons.Material.Filled.Add"
+                    Icon="@Icons.Outlined.Add"
                     OnClick="@FormatService.IncreaseFontSizeAsync"/>
             </MudButtonGroup>
         </div>
@@ -107,14 +107,14 @@
         <MudToolBar Dense DisableGutters Class="d-flex justify-center mb-3">
             <MudTooltip Text="@L["Topic:ILikeThis"]">
                 <MudIconButton
-                    Icon="@Icons.Filled.ThumbUp"
+                    Icon="@Icons.Rounded.ThumbUp"
                     OnClick="@OnLike"
                     Color="@(_isLiked == true ? Color.Primary : Color.Default)"/>
             </MudTooltip>
 
             <MudTooltip Text="@L["Topic:IDislikeThis"]">
                 <MudIconButton
-                    Icon="@Icons.Filled.ThumbDown"
+                    Icon="@Icons.Rounded.ThumbDown"
                     OnClick="@OnDislike"
                     Color="@(_isLiked == false ? Color.Primary : Color.Default)"/>
             </MudTooltip>
@@ -123,10 +123,10 @@
                 <MudToggleIconButton
                     Toggled="@_isFavorite"
                     ToggledChanged="@OnFavoriteChanged"
-                    Icon="@Icons.Filled.FavoriteBorder"
+                    Icon="@Icons.Outlined.FavoriteBorder"
                     Color="Color.Default"
                     Size="Size.Medium"
-                    ToggledIcon="@Icons.Filled.Favorite"
+                    ToggledIcon="@Icons.Outlined.Favorite"
                     ToggledColor="Color.Error"
                     ToggledSize="Size.Medium"/>
             </MudTooltip>

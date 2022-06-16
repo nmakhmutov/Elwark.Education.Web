@@ -21,14 +21,12 @@ internal abstract class GatewayClient
             new AchievementModelConverter(),
             new AnswerOptionModelConverter(),
             new AnswerResultModelConverter(),
-            new DateOnlyConverter(),
             new HistoryTopicDetailModelConverter(),
             new InternalMoneyConverter(),
             new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
             new TestConclusionConverter(),
             new TestOverviewModelConverter(),
-            new TestQuestionModelConverter(),
-            new TimeOnlyConverter()
+            new TestQuestionModelConverter()
         }
     };
 

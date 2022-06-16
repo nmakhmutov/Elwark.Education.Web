@@ -221,7 +221,7 @@
             {
                 new(L["Profile"].Value, HistoryLinks.User.MyProfile),
                 new(L["Subject:History"].Value, HistoryLinks.Root),
-                new(L[$"History:{_response.Data.Topic.Epoch}"].Value, HistoryLinks.Content.Epoch(_response.Data.Topic.Epoch))
+                new(L[$"Epoch:{_response.Data.Topic.Epoch.ToFastString()}"].Value, HistoryLinks.Content.Epoch(_response.Data.Topic.Epoch))
             };
     }
 

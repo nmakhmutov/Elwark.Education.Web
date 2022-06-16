@@ -57,10 +57,10 @@
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["TimeSpent:Min"], Value.Min, Colors.Green.Accent4),
-        new ChartList.Item(L["TimeSpent:Average"], Value.Average, Colors.DeepPurple.Default),
-        new ChartList.Item(L["TimeSpent:Max"], Value.Max, Colors.Blue.Default),
-        new ChartList.Item(L["TimeSpent:Total"], Value.Total, null)
+        new ChartList.Item(L["TimeSpent:Min"], Value.Min.ToSimpleFormat(), Colors.Green.Accent4),
+        new ChartList.Item(L["TimeSpent:Average"], Value.Average.ToSimpleFormat(), Colors.DeepPurple.Default),
+        new ChartList.Item(L["TimeSpent:Max"], Value.Max.ToSimpleFormat(), Colors.Blue.Default),
+        new ChartList.Item(L["TimeSpent:Total"], Value.Total.ToSimpleFormat(), null)
     };
 
     private Data[] Series => new[]

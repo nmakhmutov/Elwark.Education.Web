@@ -13,10 +13,10 @@
                 <div class="d-flex flex-row flex-wrap justify-center align-end mw-xs mx-auto pb-6 pb-sm-12">
                     <MudSelect @bind-Value="@_epoch" Margin="Margin.Dense" Variant="Variant.Text">
                         <MudSelectItem Value="@EpochType.None">@L["Topics:Any"]</MudSelectItem>
-                        @foreach (var period in Enum.GetValues<EpochType>().Where(x => x != EpochType.None))
+                        @foreach (var epoch in EpochTypeExtensions.List[1..])
                         {
-                            <MudSelectItem Value="@period">
-                                @L[$"History:{period}"]
+                            <MudSelectItem Value="@epoch">
+                                @L[$"Epoch:{epoch.ToFastString()}"]
                             </MudSelectItem>
                         }
                     </MudSelect>

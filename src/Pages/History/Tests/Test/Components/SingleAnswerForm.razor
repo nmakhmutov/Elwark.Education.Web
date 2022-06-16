@@ -127,10 +127,10 @@
     private (string? Icon, Color Color) Get(AnswerOptionModel option) =>
         CorrectAnswer switch {
         { } x when option.Id == x.Answer =>
-            (Icon: Icons.Filled.Check , Color: Color.Success),
+            (Icon: Icons.Outlined.Check , Color: Color.Success),
 
         {IsCorrect: false} when option.Id == UserAnswer.SingleAnswer =>
-            (Icon: Icons.Filled.Clear , Color: Color.Error),
+            (Icon: Icons.Outlined.Clear , Color: Color.Error),
 
             _ => (Icon: null, Color: Color.Default)
             };
