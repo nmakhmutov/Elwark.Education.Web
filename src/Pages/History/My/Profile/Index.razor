@@ -1,6 +1,5 @@
 @page "/history/my/profile"
 @using Education.Web.Gateways.History.Users.Model
-@using Education.Web.Pages.Account
 @using Education.Web.Pages.History.My.Components
 @using Education.Web.Pages.History.My.Profile.Components
 @using Education.Web.Gateways.History
@@ -13,19 +12,10 @@
 </PageTitle>
 
 <EduPage ShowFooter="@_response.IsLoaded">
-    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <PageHeader Title="@(string.IsNullOrEmpty(Customer.Name) ? L["Profile"] : Customer.Name)" Breadcrumbs="@Breadcrumbs">
-            <MudAvatar Image="@Customer.Image" Size="Size.Large"/>
-        </PageHeader>
-    </EduContainer>
     <ApiViewer Response="@_response" Context="profile">
         <EduContainer MaxWidth="EduWidth.W1920">
             <div class="grid">
-                <SubjectCard Class="subject"/>
-
-                <LevelCard Class="level" Level="@profile.Level"/>
-
-                <WalletCard Class="wallet" Silver="@profile.Silver"/>
+                <ProfileCard Class="profile" Customer="Customer" Level="@profile.Level" />
 
                 <DailyRewardCard
                     Class="daily-reward"
@@ -33,6 +23,8 @@
                     OnCollect="@CollectDailyReward"
                     OnReject="@RejectDailyReward"
                     OnReached="@OnInitializedAsync"/>
+                
+                <WalletCard Class="wallet" Silver="@profile.Silver"/>
 
                 <AchievementsCard Class="achievements" Achievements="@profile.Achievements"/>
 
@@ -83,11 +75,6 @@
 
 @code {
     private ApiResponse<HistoryUserProfileModel> _response = ApiResponse<HistoryUserProfileModel>.Loading();
-
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root)
-    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

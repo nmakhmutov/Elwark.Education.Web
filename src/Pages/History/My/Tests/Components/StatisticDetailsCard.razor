@@ -1,13 +1,6 @@
 @using MudBlazor.Utilities
-@typeparam TValue
 
 <MudPaper Class="@_class" Elevation="0">
-    <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-3 mb-sm-6">
-        <MudText Typo="Typo.h5">
-            @Title
-        </MudText>
-        <HumanReadableNumber Value="@Value" Typo="Typo.h5"/>
-    </MudStack>
     <div class="grid">
         @if (TotalContent is not null)
         {
@@ -34,15 +27,6 @@
     private string? _class;
 
     [Parameter]
-    public string? Class { get; set; }
-
-    [Parameter, EditorRequired]
-    public string Title { get; set; } = string.Empty;
-
-    [Parameter, EditorRequired]
-    public TValue Value { get; set; } = default!;
-
-    [Parameter]
     public RenderFragment? TotalContent { get; set; }
 
     [Parameter]
@@ -51,6 +35,9 @@
     [Parameter]
     public RenderFragment? ActivityContent { get; set; }
 
+    [Parameter]
+    public string? Class { get; set; }
+    
     protected override void OnParametersSet() =>
         _class = CssBuilder.Default("pa-3 pa-sm-6")
             .AddClass(Class, Class is not null)

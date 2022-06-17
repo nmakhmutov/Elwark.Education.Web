@@ -1,9 +1,10 @@
 @page "/history/my/inventories"
+@layout HistoryLayout
+
 @using Education.Web.Gateways.History.Users.Model
 @using Education.Web.Pages.History.Components
 @using Education.Web.Gateways.History
-@using Education.Web.Pages.Account
-@layout HistoryLayout
+
 @attribute [Authorize]
 
 <PageTitle>@L["Inventory"]</PageTitle>
@@ -37,7 +38,6 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root),
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 

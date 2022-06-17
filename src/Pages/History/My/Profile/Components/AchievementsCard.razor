@@ -1,37 +1,35 @@
 @using Education.Web.Gateways.History.Users.Model
 @using Education.Web.Pages.History.My.Components
-<MudCard Class="@($"{Class} d-flex flex-column")" Elevation="0">
-    <MudCardHeader Class="pa-3 pa-sm-6">
-        <CardHeaderContent>
-            <div class="d-flex align-center justify-space-between">
-                <MudText Typo="Typo.h5">
-                    @L["Achievements"]
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    @Achievements.Completed / @Achievements.Total
-                </MudText>
-            </div>
-        </CardHeaderContent>
-    </MudCardHeader>
-    <MudCardContent Class="flex-grow-1 pa-0 px-3 px-sm-6 mb-3 mb-sm-6">
-        <section class="grid">
+@using MudBlazor.Utilities
+@using ApexCharts
+@using Color = MudBlazor.Color
+
+<MudPaper Elevation="0" Class="@_class">
+    <header class="d-flex align-center justify-space-between pt-3 pt-sm-6 px-3 px-sm-6">
+        <MudText Typo="Typo.h5">
+            @L["Achievements"]
+        </MudText>
+        <MudText Typo="Typo.h5">
+            @Achievements.Completed / @Achievements.Total
+        </MudText>
+    </header>
+    <section class="pa-3 pa-sm-6 flex-grow-1">
+        <div class="grid">
             @foreach (var achievement in Achievements.Items)
             {
                 <AchievementView Achievement="@achievement"/>
             }
-        </section>
-    </MudCardContent>
-
-    <MudDivider/>
-
-    <MudCardActions Class="d-flex justify-center pa-3">
-        <MudLink Typo="Typo.subtitle1" Href="@HistoryLinks.User.MyAchievements">
+        </div>
+    </section>
+    <footer class="pb-3 pb-sm-6 px-3 px-sm-6">
+        <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@HistoryLinks.User.MyAchievements">
             @L["Button:Details"]
-        </MudLink>
-    </MudCardActions>
-</MudCard>
+        </MudButton>
+    </footer>
+</MudPaper>
 
 @code {
+    private string? _class;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -41,5 +39,10 @@
 
     [Parameter, EditorRequired]
     public AchievementsOverviewModel Achievements { get; set; } = default!;
+
+    protected override void OnParametersSet() =>
+        _class = CssBuilder.Default("d-flex flex-column")
+            .AddClass(Class, Class is not null)
+            .Build();
 
 }

@@ -1,8 +1,9 @@
 @page "/history/my/favorites"
+@layout HistoryLayout
+
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Users.Request
-@using Education.Web.Pages.Account
-@layout HistoryLayout
+
 @attribute [Authorize]
 
 <PageTitle>@L["Favorites"]</PageTitle>
@@ -128,7 +129,6 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root),
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 

@@ -2,7 +2,6 @@
 @using Education.Web.Gateways.History.Users.Model
 @using Education.Web.Pages.History.My.Components
 @using Education.Web.Gateways.History
-@using Education.Web.Pages.Account
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -64,7 +63,6 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root),
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 

@@ -1,31 +1,28 @@
+@using MudBlazor.Utilities
 @typeparam TValue
 
-<MudCard Class="@($"{Class} d-flex flex-column")" Elevation="0">
-    <MudCardHeader Class="pa-3 pa-sm-6">
-        <CardHeaderContent>
-            <div class="d-flex align-center justify-space-between">
-                <MudText Typo="Typo.h5">
-                    @Title
-                </MudText>
-                <HumanReadableNumber Value="@Value" Typo="Typo.h5"/>
-            </div>
-        </CardHeaderContent>
-    </MudCardHeader>
-    <MudCardContent Class="flex-grow-1 pa-0 px-3 px-sm-6 mb-3 mb-sm-6">
+<MudPaper Elevation="0" Class="@_class">
+    <header class="d-flex align-center justify-space-between pt-3 pt-sm-6 px-3 px-sm-6">
+        <MudText Typo="Typo.h5">
+            @Title
+        </MudText>
+        <HumanReadableNumber Value="@Value" Typo="Typo.h5"/>
+    </header>
+    <section class="pa-3 pa-sm-6 flex-grow-1">
         @ChildContent
-    </MudCardContent>
+    </section>
     @if (Href is not null)
     {
-        <MudDivider/>
-        <MudCardActions Class="d-flex justify-center pa-3">
-            <MudLink Typo="Typo.subtitle1" Href="@Href">
+        <footer class="pb-3 pb-sm-6 px-3 px-sm-6">
+            <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@Href">
                 @L["Button:Details"]
-            </MudLink>
-        </MudCardActions>
+            </MudButton>
+        </footer>
     }
-</MudCard>
+</MudPaper>
 
 @code {
+    private string? _class;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -44,5 +41,10 @@
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
+
+    protected override void OnParametersSet() => 
+        _class = CssBuilder.Default("d-flex flex-column")
+        .AddClass(Class, Class is not null)
+        .Build();
 
 }

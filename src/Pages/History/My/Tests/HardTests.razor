@@ -2,7 +2,6 @@
 @using Education.Web.Gateways.Models.Statistics
 @using Education.Web.Pages.History.My.Tests.Components
 @using Education.Web.Gateways.History
-@using Education.Web.Pages.Account
 @using Education.Web.Pages.History.My.Components
 @layout HistoryLayout
 @attribute [Authorize]
@@ -16,7 +15,7 @@
     <ApiViewer Response="@_response" Context="result">
         <EduContainer>
             <TestPageGrid>
-                <StatisticDetailsCard Title="@L["Tests"]" Value="@result.NumberOfTests.Total">
+                <StatisticDetailsCard>
                     <TotalContent>
                         <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
                         <NumberOfTestChart Value="@result.NumberOfTests"/>
@@ -30,7 +29,7 @@
                         <NumberOfTestDailyProgressChart Progress="@result.Progress"/>
                     </ActivityContent>
                 </StatisticDetailsCard>
-                <StatisticDetailsCard Title="@L["Score"]" Value="@result.Score.Total">
+                <StatisticDetailsCard>
                     <TotalContent>
                         <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
                         <ScoreChart Value="@result.Score"/>
@@ -44,7 +43,7 @@
                         <ScoreDailyProgressChart Progress="@result.Progress"/>
                     </ActivityContent>
                 </StatisticDetailsCard>
-                <StatisticDetailsCard Title="@L["Questions"]" Value="@result.AnswerRatio.Questions">
+                <StatisticDetailsCard>
                     <TotalContent>
                         <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
                         <AnswerRatioChart Value="@result.AnswerRatio"/>
@@ -58,7 +57,7 @@
                         <AnswerRatioDailyProgressChart Progress="@result.Progress"/>
                     </ActivityContent>
                 </StatisticDetailsCard>
-                <StatisticDetailsCard Title="@L["TimeSpent"]" Value="@result.TimeSpent.Total.ToSimpleFormat()">
+                <StatisticDetailsCard>
                     <TotalContent>
                         <Subheader Title="@L["TimeSpent"]" Subtitle="@L["ForAllTime"]"/>
                         <TimeSpentChart Value="@result.TimeSpent"/>
@@ -81,7 +80,6 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root),
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 

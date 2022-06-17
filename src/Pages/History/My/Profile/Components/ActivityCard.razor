@@ -1,5 +1,6 @@
 @using Education.Web.Gateways.History.Users.Model
 @using ApexCharts
+@using Color = MudBlazor.Color
 @implements IDisposable
 
 <MudCard Class="@Class" Elevation="0">
@@ -9,9 +10,9 @@
                 <MudText Typo="Typo.h5">
                     @L["Test:MyActivity"]
                 </MudText>
-                <MudLink Typo="Typo.subtitle1" Href="@HistoryLinks.User.MyActivities">
+                <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@HistoryLinks.User.MyActivities">
                     @L["Button:Details"]
-                </MudLink>
+                </MudButton>
             </div>
         </CardHeaderContent>
     </MudCardHeader>

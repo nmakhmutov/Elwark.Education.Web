@@ -91,12 +91,12 @@
     protected override void OnParametersSet()
     {
         _background = Achievement.Category switch {
-            "EasyTest" => "green default white-text",
-            "HardTest" => "indigo default white-text",
-            "MixedTest" => "red accent-2 white-text",
-            "AllTest" => "light-blue darken-1 white-text",
-            "EventGuesser" => "amber darken-2 white-text",
-            _ => "black white-text"
+            "AllTest" => "blue darken-1 white-text",
+            "EasyTest" => "indigo accent-2 white-text",
+            "HardTest" => "indigo darken-1 white-text",
+            "MixedTest" => "indigo darken-4 white-text",
+            "EventGuesser" => "teal default white-text",
+            _ => "orange accent-4 white-text"
             };
 
         _icon = Achievement switch {
@@ -123,6 +123,15 @@
             
         {Category: "EventGuesser", Name: "Completed"} =>
             Icons.Outlined.ManageSearch,
+            
+        {Category: "EventGuesser", Name: "Points"} =>
+            EducationIcons.Score,
+            
+        {Category: "EventGuesser", Name: "Bonus"} =>
+            Icons.Outlined.AccessTimeFilled,
+            
+        {Category: "EventGuesser", Name: "WithoutMistakes"} =>
+            Icons.Outlined.AddTask,
             
             _ => EducationIcons.Achievements
             };

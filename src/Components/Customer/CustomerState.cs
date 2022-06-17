@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace Education.Web.Components.Customer;
 
-internal sealed record CustomerState
+public sealed record CustomerState
 {
     private const string AnonymousImage =
         "https://res.cloudinary.com/elwark/image/upload/v1610430646/People/default_j21xml.png";

@@ -1,0 +1,140 @@
+@using Education.Web.Gateways.Models.User
+@using MudBlazor.Utilities
+<MudPaper Class="@_class" Elevation="0">
+    <header class="header">
+        <section class="background">
+            <section class="d-flex align-center justify-space-between white-text pa-3">
+                <MudText Typo="Typo.h4" Color="Color.Inherit">
+                    @L["Subject:History"]
+                </MudText>
+                <MudIcon Icon="@EducationIcons.History" Color="Color.Inherit" Size="Size.Large" Title="@L["Subject:History"]"/>
+            </section>
+            <div class="avatar">
+                <MudAvatar Image="@Customer.Image" Style="width: 100px; height: 100px"/>
+            </div>
+        </section>
+    </header>
+
+    <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-3 mb-sm-6">
+        @Customer.Name
+    </MudText>
+
+    <section class="px-3 px-sm-6 mb-3 mb-sm-6">
+        <div class="d-flex justify-center mb-3">
+            <div class="d-flex align-center">
+                <MudIcon Icon="@EducationIcons.Level" Class="green-text text-darken-1 mr-1" Size="Size.Medium"/>
+                <MudText Typo="Typo.h5">
+                    @L["Experience:Level"] @Level.Value
+                </MudText>
+            </div>
+        </div>
+
+        <MudProgressLinear 
+            Rounded 
+            Min="0"
+            Max="@Level.NextLevelExperience" 
+            Value="@Level.Experience" 
+            Color="Color.Primary" 
+            Size="Size.Medium" 
+            Class="mb-1"/>
+
+        <div class="d-flex justify-space-between align-start">
+            <div class="d-flex align-center">
+                <MudIcon Icon="@EducationIcons.Experience" Class="cyan-text text-accent-4 mr-1" Size="Size.Small"/>
+                <HumanReadableNumber Value="@Level.Experience" Typo="Typo.body2"/>
+                <div>&nbsp;/&nbsp;</div>
+                <HumanReadableNumber Value="@Level.NextLevelExperience" Typo="Typo.body2"/>
+            </div>
+            <MudText Typo="Typo.body2">
+                @(((double)Level.Experience / Level.NextLevelExperience * 100).ToReadable())%
+            </MudText>
+        </div>
+    </section>
+
+    <MudDivider Class="mb-3"/>
+    
+    <MudStack Row Class="px-3 px-sm-6 mb-3 mb-sm-6">
+        <MudButton
+            FullWidth
+            Href="@HistoryLinks.User.MyInventories"
+            Variant="Variant.Text"
+            Color="Color.Primary"
+            StartIcon="@EducationIcons.MyInventory">
+            @L["Inventory"]
+        </MudButton>
+        <MudButton
+            FullWidth
+            Href="@HistoryLinks.User.MyFavorites"
+            Variant="Variant.Text"
+            Color="Color.Primary"
+            StartIcon="@EducationIcons.MyFavorites"
+            IconColor="Color.Error">
+            @L["Favorites"]
+        </MudButton>
+    </MudStack>
+    
+    <section class="px-3 px-sm-6 mb-3 mb-sm-6 flex-grow-1">
+        @foreach (var item in _items)
+        {
+            <MudStack Row Spacing="1" AlignItems="AlignItems.Center" Class="mb-3">
+                <MudText Typo="Typo.body2" Style="font-weight: bold">
+                    @item.Key:
+                </MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                    @item.Value
+                </MudText>
+            </MudStack>
+        }
+    </section>
+
+    <div class="px-3 px-sm-6 mb-3 mb-sm-6">
+        <MudButton
+            FullWidth
+            DisableElevation
+            Variant="Variant.Text"
+            Color="Color.Primary"
+            EndIcon="@Icons.Outlined.OpenInNew"
+            Link="@Configuration["Urls:Account"]"
+            Target="_blank">
+            @L["Account:Elwark"]
+        </MudButton>
+    </div>
+</MudPaper>
+
+@code {
+    private string? _class;
+    private IDictionary<string, string> _items = new Dictionary<string, string>();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IConfiguration Configuration { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public CustomerState Customer { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public LevelModel Level { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        var now = DateTime.Now;
+        
+        _class = CssBuilder.Default("d-flex flex-column")
+            .AddClass(Class, Class is not null)
+            .Build();
+        
+        _items = new Dictionary<string, string>
+        {
+            [L["Customer:TimeZone"]] = Customer.DateTimeInfo.TimeZone.Id,
+            [L["Customer:WeekStart"]] = L[$"DayOfWeek:{Customer.WeekStart}"],
+            [L["Customer:DateFormat"]] = $"{now.ToString(Customer.DateTimeInfo.DateFormat)} ({Customer.DateTimeInfo.DateFormat})",
+            [L["Customer:TimeFormat"]] = $"{now.ToString(Customer.DateTimeInfo.TimeFormat)} ({Customer.DateTimeInfo.TimeFormat})"
+        };
+    }
+
+}

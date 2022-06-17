@@ -1,15 +1,15 @@
 <EduContainer MaxWidth="@MaxWidth" Class="@Class">
-    <h2 class="rewards-title">
+    <h2 class="title">
         <span>@L["Rewards"]</span>
     </h2>
-    <div class="rewards">
+    <MudStack Row Justify="Justify.Center">
         @foreach (var reward in Rewards)
         {
-            <MudPaper Elevation="0" Class="pa-3">
-                <InternalMoneyText Money="@reward" IconSize="Size.Large" Typo="Typo.h5"/>
+            <MudPaper Elevation="0" Class="d-flex align-center justify-center" Style="width: 120px; height: 120px">
+                <InternalMoneyText Money="@reward" IconSize="Size.Large" Typo="Typo.h4"/>
             </MudPaper>
         }
-    </div>
+    </MudStack>
 </EduContainer>
 
 @code {

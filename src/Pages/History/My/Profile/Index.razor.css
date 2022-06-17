@@ -3,10 +3,9 @@
     grid-gap: 12px;
     grid-template-columns: minmax(100px, 1fr);
     grid-template-areas: 
-        "subject"
-        "level"
-        "wallet"
+        "profile"
         "daily-reward"
+        "wallet"
         "achievements"
         "easy-test"
         "hard-test"
@@ -15,24 +14,20 @@
         "activity";
 }
 
-.grid ::deep .subject {
-    grid-area: subject;
+.grid ::deep .profile {
+    grid-area: profile;
 }
 
-.grid ::deep .achievements {
-    grid-area: achievements;
-}
-
-.grid ::deep .level {
-    grid-area: level;
+.grid ::deep .daily-reward {
+    grid-area: daily-reward;
 }
 
 .grid ::deep .wallet {
     grid-area: wallet;
 }
 
-.grid ::deep .daily-reward {
-    grid-area: daily-reward;
+.grid ::deep .achievements {
+    grid-area: achievements;
 }
 
 .grid ::deep .easy-test {
@@ -60,7 +55,7 @@
         grid-gap: 24px;
         grid-template-columns: repeat(2, minmax(160px, 1fr));
         grid-template-areas:
-            "subject level"
+            "profile profile"
             "wallet daily-reward"
             "achievements achievements"
             "easy-test hard-test"
@@ -69,13 +64,57 @@
     }
 }
 
+@media (min-width: 960px) {
+    .grid {
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+        grid-template-areas:
+            "profile profile daily-reward"
+            "profile profile wallet"
+            "achievements achievements achievements"
+            "easy-test hard-test mixed-test"
+            "event-guesser activity activity";
+    }
+}
+
 @media (min-width: 1280px) {
     .grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: repeat(4, minmax(180px, 1fr));
         grid-template-areas:
-            "subject level wallet daily-reward"
-            "achievements achievements achievements achievements"
+            "profile profile achievements achievements"
+            "daily-reward wallet achievements achievements"
             "easy-test hard-test mixed-test event-guesser"
             "activity activity activity activity";
+    }
+}
+
+@media (min-width: 1440px) {
+    .grid {
+        grid-template-areas:
+            "profile profile achievements achievements"
+            "daily-reward wallet achievements achievements"
+            ". . achievements achievements"
+            "easy-test hard-test mixed-test event-guesser"
+            "activity activity activity activity";
+    }
+}
+
+@media (min-width: 1600px) {
+    .grid {
+        grid-template-areas:
+            "profile daily-reward achievements achievements"
+            "profile wallet achievements achievements"
+            "easy-test hard-test mixed-test event-guesser"
+            "activity activity activity activity";
+    }
+}
+
+@media (min-width: 1760px) {
+    .grid {
+        grid-template-columns: repeat(5, minmax(220px, 1fr));
+        grid-template-areas:
+            "profile daily-reward achievements achievements achievements"
+            "profile wallet achievements achievements achievements"
+            "easy-test hard-test mixed-test event-guesser ."
+            "activity activity activity activity activity";
     }
 }
