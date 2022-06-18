@@ -1,72 +1,72 @@
-@using ApexCharts
 @using Education.Web.Gateways.Models.User
+@using ApexCharts
+@using Color = MudBlazor.Color
 @using Align = MudBlazor.Align
-<MudPaper Class="@Class" Elevation="0">
-    <div class="d-flex flex-column justify-space-between h-100 pa-3 pa-sm-6">
-        <MudText Typo="Typo.h5" Class="mb-3">
-            @L["InternalMoney:Balance"]
-        </MudText>
-
-        <div class="d-flex justify-space-between align-start">
-            <div class="flex-grow-0 flex-shrink-0">
-                <ApexChart TItem="Data" Options="@_options" Width="@("140px")" Height="@("120px")">
-                    <ApexPointSeries
-                        TItem="Data"
-                        Items="@_income"
-                        XValue="@(e => e.Name)"
-                        YValue="@(x => x.Value)"
-                        SeriesType="SeriesType.Bar"/>
-
-                    <ApexPointSeries
-                        TItem="Data"
-                        Items="@_expense"
-                        XValue="@(e => e.Name)"
-                        YValue="@(x => x.Value)"
-                        SeriesType="SeriesType.Bar"/>
-                </ApexChart>
-                <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-1">
-                    @Silver.Flow.Month.ToString("MMM yyyy")
-                </MudText>
-            </div>
-            <div class="flex-grow-1 flex-shrink-0">
-                <div class="d-flex flex-column align-end mb-3">
-                    <MudText Typo="Typo.body2">@L["InternalMoney:Income"]</MudText>
-                    <div class="d-flex flex-row align-center">
-                        <HumanReadableNumber Value="@Silver.Flow.Income" Typo="Typo.subtitle1" Style="font-weight: 500"/>
-                        <MudIcon Size="Size.Small" Style="color: #C0C0C0" Class="ml-2" Icon="@EducationIcons.Silver"/>
-                    </div>
-                </div>
-
-                <div class="d-flex flex-column align-end">
-                    <MudText Typo="Typo.body2">@L["InternalMoney:Expense"]</MudText>
-                    <div class="d-flex flex-row align-center">
-                        <HumanReadableNumber Value="@Silver.Flow.Expense" Typo="Typo.subtitle1" Style="font-weight: 500"/>
-                        <MudIcon Size="Size.Small" Style="color: #C0C0C0" Class="ml-2" Icon="@EducationIcons.Silver"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <MudDivider Class="my-3"/>
-
-        <div class="d-flex flex-column align-end">
-            <MudText Typo="Typo.body2">
-                @L["InternalMoney:Silver"]
+<MudPaper Class="@($"d-flex flex-column justify-space-between h-100 pa-3 {Class}")" Elevation="0">
+    <section class="mud-primary white-text rounded pa-3">
+        <div class="d-flex align-center justify-space-between">
+            <MudText Typo="Typo.subtitle1">
+                @L["InternalMoney:Balance"]
             </MudText>
-            <div class="d-flex flex-row align-center">
-                <HumanReadableNumber Value="@Silver.Balance" Typo="Typo.subtitle1" Style="font-weight: 500"/>
-                <MudIcon Size="Size.Small" Style="color: #C0C0C0" Class="ml-2" Icon="@EducationIcons.Silver"/>
-            </div>
+            <MudChip
+                Label
+                Icon="@(_tending > 0 ? Icons.Outlined.TrendingUp : Icons.Outlined.TrendingDown)"
+                Class="white-text"
+                Text="@($"{_tending:F1}%")"/>
         </div>
+        <div class="d-flex align-center justify-space-between">
+            <div class="d-flex align-center">
+                <MudIcon Icon="@EducationIcons.Silver" Class="grey-text text-lighten-1 mr-1" Size="Size.Medium"/>
+                <HumanReadableNumber Value="@Silver.Balance" Typo="Typo.h4" Class="white-text"/>
+            </div>
+            <ApexChart TItem="SilverWalletModel.CashFlow" Options="@_options" Width="@("80px")" Height="@("30px")">
+                <ApexPointSeries
+                    TItem="SilverWalletModel.CashFlow"
+                    Items="@Silver.Flow"
+                    Name="Gross Value"
+                    SeriesType="SeriesType.Line"
+                    XValue="@(x => x.Month.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc))"
+                    YValue="@(x => x.Balance)"
+                    OrderBy="@(x => x.X)"/>
+            </ApexChart>
+        </div>
+    </section>
 
-    </div>
+    <section>
+        @foreach (var item in Silver.Flow[..3])
+        {
+            <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="mt-3">
+                <MudStack Row AlignItems="AlignItems.Center">
+                    <MudAvatar Size="Size.Medium" Color="Color.Primary" Class="rounded white-text">
+                        <MudIcon Icon="@Icons.Outlined.CalendarMonth" Size="Size.Medium"/>
+                    </MudAvatar>
+                    <MudText Typo="Typo.subtitle2" Align="Align.Start">
+                        @L[$"Month:{CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(item.Month.Month)}"]
+                    </MudText>
+                </MudStack>
+                <MudStack Row AlignItems="AlignItems.Center">
+                    <div>
+                        <InternalMoneyText Horizontal IconSize="Size.Small" Money="@(new Silver(item.Income))"/>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                            @L["InternalMoney:Income"]
+                        </MudText>
+                    </div>
+                    <div>
+                        <InternalMoneyText Horizontal IconSize="Size.Small" Money="@(new Silver(item.Expense))"/>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                            @L["InternalMoney:Expense"]
+                        </MudText>
+                    </div>
+                </MudStack>
+            </MudStack>
+        }
+    </section>
 </MudPaper>
 
 @code {
-    private Data[] _income = new Data[1];
-    private Data[] _expense = new Data[1];
-    
-    private ApexChartOptions<Data> _options = new()
+    private double _tending;
+
+    private ApexChartOptions<SilverWalletModel.CashFlow> _options = new()
     {
         Tooltip = new Tooltip
         {
@@ -81,25 +81,14 @@
                 Enabled = true
             }
         },
-        PlotOptions = new PlotOptions
-        {
-            Bar = new PlotOptionsBar
-            {
-                ColumnWidth = "90px"
-            }
-        },
         Stroke = new Stroke
         {
             Colors = new List<string>
             {
-                "transparent"
+                "#FFFFFF"
             },
-            Width = 10
-        },
-        Colors = new List<string>
-        {
-            Colors.Green.Accent4,
-            Colors.Blue.Default
+            Curve = Curve.Smooth,
+            Width = 3
         }
     };
 
@@ -112,11 +101,7 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override void OnParametersSet()
-    {
-        _income[0] = new Data(Silver.Flow.Income, L["InternalMoney:Income"]);
-        _expense[0] = new Data(-Silver.Flow.Expense, L["InternalMoney:Expense"]);
-    }
+    protected override void OnParametersSet() => 
+        _tending = (Silver.Flow[0].Income + Silver.Flow[0].Expense) * 100.0 / (Silver.Flow[1].Income + Silver.Flow[1].Expense);
 
-    private sealed record Data(int Value, string Name);
 }

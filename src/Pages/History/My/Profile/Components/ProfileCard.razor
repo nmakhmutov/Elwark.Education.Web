@@ -29,13 +29,13 @@
             </div>
         </div>
 
-        <MudProgressLinear 
-            Rounded 
+        <MudProgressLinear
+            Rounded
             Min="0"
-            Max="@Level.NextLevelExperience" 
-            Value="@Level.Experience" 
-            Color="Color.Primary" 
-            Size="Size.Medium" 
+            Max="@Level.NextLevelExperience"
+            Value="@Level.Experience"
+            Color="Color.Primary"
+            Size="Size.Medium"
             Class="mb-1"/>
 
         <div class="d-flex justify-space-between align-start">
@@ -52,7 +52,7 @@
     </section>
 
     <MudDivider Class="mb-3"/>
-    
+
     <MudStack Row Class="px-3 px-sm-6 mb-3 mb-sm-6">
         <MudButton
             FullWidth
@@ -72,11 +72,11 @@
             @L["Favorites"]
         </MudButton>
     </MudStack>
-    
-    <section class="px-3 px-sm-6 mb-3 mb-sm-6 flex-grow-1">
+
+    <section class="profile-info px-3 px-sm-6 mb-3 mb-sm-6">
         @foreach (var item in _items)
         {
-            <MudStack Row Spacing="1" AlignItems="AlignItems.Center" Class="mb-3">
+            <MudStack Row Spacing="1" AlignItems="AlignItems.Center">
                 <MudText Typo="Typo.body2" Style="font-weight: bold">
                     @item.Key:
                 </MudText>
@@ -86,12 +86,13 @@
             </MudStack>
         }
     </section>
-
-    <div class="px-3 px-sm-6 mb-3 mb-sm-6">
+    
+    <MudSpacer/>
+    
+    <div class="d-flex justify-center px-3 px-sm-6 mb-3 mb-sm-6">
         <MudButton
-            FullWidth
             DisableElevation
-            Variant="Variant.Text"
+            Variant="Variant.Filled"
             Color="Color.Primary"
             EndIcon="@Icons.Outlined.OpenInNew"
             Link="@Configuration["Urls:Account"]"
@@ -123,11 +124,11 @@
     protected override void OnParametersSet()
     {
         var now = DateTime.Now;
-        
+
         _class = CssBuilder.Default("d-flex flex-column")
             .AddClass(Class, Class is not null)
             .Build();
-        
+
         _items = new Dictionary<string, string>
         {
             [L["Customer:TimeZone"]] = Customer.DateTimeInfo.TimeZone.Id,

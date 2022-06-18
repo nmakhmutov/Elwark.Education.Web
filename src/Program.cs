@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
@@ -28,7 +29,9 @@ builder.Services
     {
         configuration.SnackbarConfiguration.PreventDuplicates = false;
         configuration.SnackbarConfiguration.NewestOnTop = true;
-        configuration.SnackbarConfiguration.MaxDisplayedSnackbars = 3;
+        configuration.SnackbarConfiguration.ShowCloseIcon = true;
+        configuration.SnackbarConfiguration.MaxDisplayedSnackbars = 4;
+        configuration.SnackbarConfiguration.SnackbarVariant = Variant.Text;
     })
     .AddBlazoredLocalStorage(options =>
     {

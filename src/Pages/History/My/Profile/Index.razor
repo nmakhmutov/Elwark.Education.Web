@@ -15,7 +15,7 @@
     <ApiViewer Response="@_response" Context="profile">
         <EduContainer MaxWidth="EduWidth.W1920">
             <div class="grid">
-                <ProfileCard Class="profile" Customer="Customer" Level="@profile.Level" />
+                <ProfileCard Class="profile" Customer="Customer" Level="@profile.Level"/>
 
                 <DailyRewardCard
                     Class="daily-reward"
@@ -23,7 +23,7 @@
                     OnCollect="@CollectDailyReward"
                     OnReject="@RejectDailyReward"
                     OnReached="@OnInitializedAsync"/>
-                
+
                 <WalletCard Class="wallet" Silver="@profile.Silver"/>
 
                 <AchievementsCard Class="achievements" Achievements="@profile.Achievements"/>
@@ -101,5 +101,4 @@
         if (response.IsSuccess)
             await OnInitializedAsync();
     }
-
 }

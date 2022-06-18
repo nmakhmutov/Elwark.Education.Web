@@ -1,98 +1,77 @@
 @using Education.Web.Gateways.History.Users.Model
 @using ApexCharts
 @using Color = MudBlazor.Color
-@implements IDisposable
 
-<MudCard Class="@Class" Elevation="0">
-    <MudCardHeader Class="pa-3 pa-sm-6">
+<MudCard Class="@($"d-flex flex-column {Class}")" Elevation="0">
+    <MudCardHeader Class="pa-3">
         <CardHeaderContent>
             <div class="d-flex align-center justify-space-between">
                 <MudText Typo="Typo.h5">
                     @L["Test:MyActivity"]
                 </MudText>
-                <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@HistoryLinks.User.MyActivities">
+                <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" Href="@HistoryLinks.User.MyActivities">
                     @L["Button:Details"]
                 </MudButton>
             </div>
         </CardHeaderContent>
     </MudCardHeader>
-    <MudCardContent Class="pa-3 pa-sm-6">
-        <div style="max-height: 400px; height: 100%; position: relative">
-            <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.DailyItem" Options="_options" Height="@("400px")">
-                <ApexPointSeries
-                    TItem="HistoryUserProfileModel.DailyItem"
-                    Items="Activities"
-                    Name="@L["NumberOfTests:Total"]"
-                    Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
-                    SeriesType="SeriesType.Area"
-                    XValue="@(e => e.Day.ToString("dd MMM"))"
-                    YValue="@(x => x.Total)"/>
-            </ApexChart>
-        </div>
+    <MudCardContent Class="pa-0 h-100">
+        <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.DailyItem" Options="_options" Height="@("100%")">
+            <ApexPointSeries
+                TItem="HistoryUserProfileModel.DailyItem"
+                Items="Activities"
+                Name="@L["NumberOfTests:Total"]"
+                Stroke="@(new SeriesStroke { Width = 3, Color = "#5569FF" })"
+                SeriesType="SeriesType.Area"
+                XValue="@(e => e.Day)"
+                YValue="@(x => x.Total)"/>
+        </ApexChart>
     </MudCardContent>
 </MudCard>
 
 @code {
     private ApexChart<HistoryUserProfileModel.DailyItem> _chart = default!;
-    private ApexChartOptions<HistoryUserProfileModel.DailyItem> _options = new();
+
+    private ApexChartOptions<HistoryUserProfileModel.DailyItem> _options = new()
+    {
+        Tooltip = new Tooltip
+        {
+            Enabled = false
+        },
+        Chart = new Chart
+        {
+            Toolbar = new Toolbar
+            {
+                Show = false
+            },
+            Selection = new Selection
+            {
+                Enabled = false
+            },
+            Zoom = new Zoom
+            {
+                Enabled = false
+            },
+            Sparkline = new ChartSparkline
+            {
+                Enabled = true
+            },
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)",
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)",
+        }
+    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private ThemeService ThemeService { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
     public HistoryUserProfileModel.DailyItem[] Activities { get; set; } = Array.Empty<HistoryUserProfileModel.DailyItem>();
-
-    protected override void OnInitialized()
-    {
-        _options = new ApexChartOptions<HistoryUserProfileModel.DailyItem>
-        {
-            Chart = new Chart
-            {
-                Toolbar = new Toolbar
-                {
-                    Show = false
-                },
-                Selection = new Selection
-                {
-                    Enabled = false
-                },
-                Zoom = new Zoom
-                {
-                    Enabled = false
-                },
-                Background = "transparent",
-                ForeColor = "var(--mud-palette-text-primary)"
-            },
-            Grid = new Grid
-            {
-                BorderColor = "var(--mud-palette-divider)"
-            },
-            Theme = new Theme
-            {
-                Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light
-            }
-        };
-
-        ThemeService.OnChanged += Update;
-    }
-
-    public void Dispose() =>
-        ThemeService.OnChanged -= Update;
-
-    private void Update()
-    {
-        _ = InvokeAsync(async () =>
-        {
-            _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
-            await _chart.RenderAsync();
-            StateHasChanged();
-        });
-    }
 
 }

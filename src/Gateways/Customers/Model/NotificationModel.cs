@@ -1,3 +1,3 @@
 namespace Education.Web.Gateways.Customers.Model;
 
-public sealed record NotificationModel(string Id, string Content, string Subject, DateTime CreatedAt);
+public sealed record NotificationModel(string Id, string Subject, string Title, string? Message, DateTime CreatedAt);

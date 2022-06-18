@@ -1,3 +1,4 @@
+using System.Text;
 using Education.Web.Gateways.Customers;
 using Education.Web.Gateways.Customers.Model;
 using Education.Web.Gateways.Customers.Requests;
@@ -47,7 +48,7 @@ internal sealed class NotificationService : IDisposable
         if (result.IsSuccess)
         {
             _notifications = result.Data.Items
-                .Select(x => new NotificationMessage(x.Content, x.Subject, x.CreatedAt))
+                .Select(x => new NotificationMessage(x.Subject, x.Title, x.Message, x.CreatedAt))
                 .ToList();
 
             _isInitialized = true;
@@ -59,12 +60,12 @@ internal sealed class NotificationService : IDisposable
     {
         _notifications = notifications
             .Take(MaxNotifications)
-            .Select(x => new NotificationMessage(x.Content, x.Subject, x.CreatedAt))
+            .Select(x => new NotificationMessage(x.Subject, x.Title, x.Message, x.CreatedAt))
             .ToList();
-        
+
         OnChanged.Invoke();
     }
-    
+
     public async Task MarkAsReadAsync()
     {
         await _customer.MarkAllNotificationsAsReadAsync();
@@ -76,7 +77,16 @@ internal sealed class NotificationService : IDisposable
     private void ReceivedNotification(NotificationMessage notification)
     {
         _notifications = _notifications.Prepend(notification).Take(MaxNotifications).ToList();
-        _snackbar.Add($@"<ul><li>{notification.Content}</li><li>{notification.Subject}</li></ul>");
+        
+        var sb = new StringBuilder("<div class='d-flex align-center justify-space-between'>");
+        sb.Append($"<h6 class='mud-typography mud-typography-subtitle1 mr-6'>{notification.Title}</h6>");
+        sb.Append($"<p class='mud-typography mud-typography-body2'><i>{notification.Subject}</i></p>");
+        sb.Append("</div>");
+
+        if (!string.IsNullOrEmpty(notification.Message))
+            sb.Append($"<p class='mud-typography mud-typography-body2'>{notification.Message}</p>");
+
+        _snackbar.Add(sb.ToString());
 
         OnChanged.Invoke();
     }

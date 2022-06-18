@@ -24,22 +24,25 @@
                 <ApiViewer Response="_response">
                     <Virtualize Items="@_notifications" Context="item">
                         <MudPaper Elevation="0" Class="pa-3 mb-3">
+                            <section class="d-flex align-center">
+                                <MudText Typo="Typo.caption" Class="mr-3">
+                                    @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                                </MudText>
+                                @if (TryGetLink(item.Subject, out var link))
+                                {
+                                    <MudLink Typo="Typo.caption" Href="@link">
+                                        @L[item.Subject]
+                                    </MudLink>
+                                }
+                            </section>
                             <section class="d-flex justify-space-between">
                                 <div>
                                     <MudText Typo="Typo.subtitle1">
-                                        @item.Content
+                                        @item.Title
                                     </MudText>
-                                    <div class="d-flex align-center">
-                                        <MudText Typo="Typo.caption" Class="mr-3">
-                                            @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
-                                        </MudText>
-                                        @if (TryGetLink(item.Subject, out var link))
-                                        {
-                                            <MudLink Typo="Typo.caption" Href="@link">
-                                                @L[item.Subject]
-                                            </MudLink>
-                                        }
-                                    </div>
+                                    <MudText Typo="Typo.body2">
+                                        @item.Message
+                                    </MudText>
                                 </div>
                                 <MudIconButton
                                     Icon="@Icons.Outlined.MarkEmailRead"

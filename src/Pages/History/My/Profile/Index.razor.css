@@ -4,26 +4,30 @@
     grid-template-columns: minmax(100px, 1fr);
     grid-template-areas: 
         "profile"
-        "daily-reward"
         "wallet"
+        "activity"
+        "daily-reward"
         "achievements"
         "easy-test"
         "hard-test"
         "mixed-test"
-        "event-guesser"
-        "activity";
+        "event-guesser";
 }
 
 .grid ::deep .profile {
     grid-area: profile;
 }
 
-.grid ::deep .daily-reward {
-    grid-area: daily-reward;
-}
-
 .grid ::deep .wallet {
     grid-area: wallet;
+}
+
+.grid ::deep .activity {
+    grid-area: activity;
+}
+
+.grid ::deep .daily-reward {
+    grid-area: daily-reward;
 }
 
 .grid ::deep .achievements {
@@ -46,33 +50,30 @@
     grid-area: event-guesser;
 }
 
-.grid ::deep .activity {
-    grid-area: activity;
-}
-
 @media (min-width: 600px) {
     .grid {
         grid-gap: 24px;
         grid-template-columns: repeat(2, minmax(160px, 1fr));
         grid-template-areas:
             "profile profile"
-            "wallet daily-reward"
+            "wallet wallet"
+            "activity daily-reward"
             "achievements achievements"
             "easy-test hard-test"
-            "mixed-test event-guesser"
-            "activity activity";
+            "mixed-test event-guesser";
     }
 }
 
 @media (min-width: 960px) {
     .grid {
-        grid-template-columns: repeat(3, minmax(180px, 1fr));
+        grid-template-columns: repeat(6, minmax(120px, 1fr));
         grid-template-areas:
-            "profile profile daily-reward"
-            "profile profile wallet"
-            "achievements achievements achievements"
-            "easy-test hard-test mixed-test"
-            "event-guesser activity activity";
+            "profile profile profile wallet wallet wallet"
+            "profile profile profile daily-reward daily-reward daily-reward"
+            "activity activity activity activity activity activity"
+            "achievements achievements achievements achievements achievements achievements"
+            "easy-test easy-test hard-test hard-test mixed-test mixed-test"
+            "event-guesser event-guesser . . . .";
     }
 }
 
@@ -80,41 +81,18 @@
     .grid {
         grid-template-columns: repeat(4, minmax(180px, 1fr));
         grid-template-areas:
-            "profile profile achievements achievements"
-            "daily-reward wallet achievements achievements"
-            "easy-test hard-test mixed-test event-guesser"
-            "activity activity activity activity";
-    }
-}
-
-@media (min-width: 1440px) {
-    .grid {
-        grid-template-areas:
-            "profile profile achievements achievements"
-            "daily-reward wallet achievements achievements"
-            ". . achievements achievements"
-            "easy-test hard-test mixed-test event-guesser"
-            "activity activity activity activity";
+            "profile profile wallet daily-reward"
+            "profile profile activity activity"
+            "achievements achievements achievements achievements"
+            "easy-test hard-test mixed-test event-guesser";
     }
 }
 
 @media (min-width: 1600px) {
     .grid {
         grid-template-areas:
-            "profile daily-reward achievements achievements"
-            "profile wallet achievements achievements"
-            "easy-test hard-test mixed-test event-guesser"
-            "activity activity activity activity";
-    }
-}
-
-@media (min-width: 1760px) {
-    .grid {
-        grid-template-columns: repeat(5, minmax(220px, 1fr));
-        grid-template-areas:
-            "profile daily-reward achievements achievements achievements"
-            "profile wallet achievements achievements achievements"
-            "easy-test hard-test mixed-test event-guesser ."
-            "activity activity activity activity activity";
+            "profile wallet activity daily-reward"
+            "profile achievements achievements achievements"
+            "easy-test hard-test mixed-test event-guesser";
     }
 }

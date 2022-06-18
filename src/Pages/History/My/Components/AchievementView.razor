@@ -84,19 +84,19 @@
 
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
-    
+
     [Parameter, EditorRequired]
     public AchievementModel Achievement { get; set; } = default!;
 
     protected override void OnParametersSet()
     {
         _background = Achievement.Category switch {
-            "AllTest" => "blue darken-1 white-text",
-            "EasyTest" => "indigo accent-2 white-text",
-            "HardTest" => "indigo darken-1 white-text",
-            "MixedTest" => "indigo darken-4 white-text",
+            "AllTest" => "deep-orange accent-2 white-text",
+            "EasyTest" => "orange accent-2 white-text",
+            "HardTest" => "orange accent-3 white-text",
+            "MixedTest" => "orange accent-4 white-text",
             "EventGuesser" => "teal default white-text",
-            _ => "orange accent-4 white-text"
+            _ => "green accent-4 white-text"
             };
 
         _icon = Achievement switch {
