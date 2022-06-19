@@ -7,7 +7,7 @@
         TItem="TestStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions:Answered"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Default })"
+        Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => x.AnswerRatio.Answered)"/>
@@ -16,7 +16,7 @@
         TItem="TestStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions:NotAnswered"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.DeepPurple.Default })"
+        Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => x.AnswerRatio.NotAnswered)"/>
@@ -25,7 +25,7 @@
         TItem="TestStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions:Correct"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
+        Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => x.AnswerRatio.Correct)"/>
@@ -34,7 +34,7 @@
         TItem="TestStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions:Incorrect"]"
-        Stroke="@(new SeriesStroke { Width = 1, Color = Colors.Red.Default })"
+        Stroke="@(new SeriesStroke { Color = Colors.Red.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => x.AnswerRatio.Incorrect)"/>
@@ -93,14 +93,11 @@
 
     public void Dispose() => ThemeService.OnChanged -= Update;
 
-    private void Update()
+    private void Update() => _ = InvokeAsync(async () =>
     {
-        _ = InvokeAsync(async () =>
-        {
-            _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
-            await _chart.RenderAsync();
-            StateHasChanged();
-        });
-    }
+        _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
+        await _chart.RenderAsync();
+        StateHasChanged();
+    });
 
 }

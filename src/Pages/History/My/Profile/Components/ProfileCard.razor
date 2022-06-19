@@ -1,5 +1,6 @@
 @using Education.Web.Gateways.Models.User
 @using MudBlazor.Utilities
+
 <MudPaper Class="@_class" Elevation="0">
     <header class="header">
         <section class="background">
@@ -56,23 +57,27 @@
     <MudStack Row Class="px-3 px-sm-6 mb-3 mb-sm-6">
         <MudButton
             FullWidth
-            Href="@HistoryLinks.User.MyInventories"
+            DisableElevation
             Variant="Variant.Text"
             Color="Color.Primary"
-            StartIcon="@EducationIcons.MyInventory">
+            StartIcon="@EducationIcons.MyInventory"
+            Href="@HistoryLinks.User.MyInventories">
             @L["Inventory"]
         </MudButton>
         <MudButton
             FullWidth
-            Href="@HistoryLinks.User.MyFavorites"
+            DisableElevation
             Variant="Variant.Text"
             Color="Color.Primary"
             StartIcon="@EducationIcons.MyFavorites"
-            IconColor="Color.Error">
+            IconColor="Color.Error"
+            Href="@HistoryLinks.User.MyFavorites">
             @L["Favorites"]
         </MudButton>
     </MudStack>
 
+    <MudSpacer/>
+    
     <section class="profile-info px-3 px-sm-6 mb-3 mb-sm-6">
         @foreach (var item in _items)
         {
@@ -86,8 +91,6 @@
             </MudStack>
         }
     </section>
-    
-    <MudSpacer/>
     
     <div class="d-flex justify-center px-3 px-sm-6 mb-3 mb-sm-6">
         <MudButton

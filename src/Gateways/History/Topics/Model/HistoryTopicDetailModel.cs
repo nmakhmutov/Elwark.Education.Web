@@ -12,31 +12,6 @@ internal abstract record HistoryTopicDetailModel(
     ChapterModel[] Chapters
 );
 
-internal sealed record PersonTopicDetailModel(
-    string Id,
-    string Title,
-    string Description,
-    string ImageUrl,
-    EpochType Epoch,
-    PersonBirthdayModel? Born,
-    PersonBirthdayModel? Died,
-    string[] Tags,
-    ChapterModel[] Chapters,
-    CharacteristicModel[] Characteristics
-) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
-
-internal sealed record EventTopicDetailModel(
-    string Id,
-    string Title,
-    string Description,
-    string ImageUrl,
-    EpochType Epoch,
-    HistoricalDateModel? Started,
-    HistoricalDateModel? Finished,
-    string[] Tags,
-    ChapterModel[] Chapters
-) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
-
 internal sealed record EmpireTopicDetailModel(
     string Id,
     string Title,
@@ -53,3 +28,29 @@ internal sealed record EmpireTopicDetailModel(
     string[] Tags,
     ChapterModel[] Chapters
 ) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
+
+internal sealed record EventTopicDetailModel(
+    string Id,
+    string Title,
+    string Description,
+    string ImageUrl,
+    EpochType Epoch,
+    HistoricalDateModel? Started,
+    HistoricalDateModel? Finished,
+    string[] Tags,
+    ChapterModel[] Chapters
+) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
+
+internal sealed record PersonTopicDetailModel(
+    string Id,
+    string Title,
+    string Description,
+    string ImageUrl,
+    EpochType Epoch,
+    PersonBirthdayModel? Born,
+    PersonBirthdayModel? Died,
+    string[] Tags,
+    ChapterModel[] Chapters,
+    CharacteristicModel[] Characteristics
+) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
+

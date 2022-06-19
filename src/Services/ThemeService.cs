@@ -19,7 +19,7 @@ internal sealed class ThemeService
             Success = "#44D600",
             Warning = "#FFA319",
             Error = "#FF1943",
-            Black = "#272C34",
+            Black = "#27272F",
             Background = "#F6F6F6",
             BackgroundGrey = "#E3E5E7",
             AppbarBackground = "#FFFFFF",

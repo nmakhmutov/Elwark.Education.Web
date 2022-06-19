@@ -26,24 +26,24 @@
 
                 <LoadingButton
                     Class="mr-3"
+                    DisableElevation
                     Variant="Variant.Filled"
                     Color="Color.Primary"
-                    OnClick="@CollectAsync"
                     Text="@L["Experience:CollectDailyReward"]"
                     LoadingText="@L["Loading"]"
-                    DisableElevation
                     Disabled="@(_loading != Loading.None)"
-                    IsLoading="@(_loading == Loading.Collect)"/>
+                    IsLoading="@(_loading == Loading.Collect)"
+                    OnClick="@CollectAsync"/>
 
                 <LoadingButton
+                    DisableElevation
                     Variant="Variant.Filled"
                     Color="Color.Dark"
-                    OnClick="@RejectAsync"
                     Text="@L["Experience:RejectDailyReward"]"
                     LoadingText="@L["Loading"]"
-                    DisableElevation
                     Disabled="@(_loading != Loading.None)"
-                    IsLoading="@(_loading == Loading.Reject)"/>
+                    IsLoading="@(_loading == Loading.Reject)"
+                    OnClick="@RejectAsync"/>
 
             </div>
         }

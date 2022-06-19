@@ -17,14 +17,16 @@
             <div class="grid">
                 <ProfileCard Class="profile" Customer="Customer" Level="@profile.Level"/>
 
+                <WalletCard Class="wallet" Silver="@profile.Silver"/>
+
+                <ActivityCard Class="activity" Activities="@profile.DailyProgress"/>
+
                 <DailyRewardCard
                     Class="daily-reward"
                     Reward="@profile.DailyReward"
                     OnCollect="@CollectDailyReward"
                     OnReject="@RejectDailyReward"
                     OnReached="@OnInitializedAsync"/>
-
-                <WalletCard Class="wallet" Silver="@profile.Silver"/>
 
                 <AchievementsCard Class="achievements" Achievements="@profile.Achievements"/>
 
@@ -67,7 +69,6 @@
                         Bonus="@profile.EventGuesser.Bonus"/>
                 </StatisticsCard>
 
-                <ActivityCard Class="activity" Activities="@profile.DailyProgress"/>
             </div>
         </EduContainer>
     </ApiViewer>
@@ -101,4 +102,5 @@
         if (response.IsSuccess)
             await OnInitializedAsync();
     }
+
 }

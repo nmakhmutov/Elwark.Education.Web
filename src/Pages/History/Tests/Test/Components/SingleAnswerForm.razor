@@ -42,13 +42,13 @@
         {
             <div class="d-flex flex-row justify-center">
                 <LoadingButton
-                    ButtonType="ButtonType.Submit"
-                    Variant="Variant.Filled"
                     DisableElevation
+                    Variant="Variant.Filled"
                     Color="Color.Primary"
                     IsLoading="@IsLoading"
                     Text="@L["Test:Answer"]"
-                    LoadingText="@L["Loading"]"/>
+                    LoadingText="@L["Loading"]"
+                    ButtonType="ButtonType.Submit"/>
             </div>
 
             <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error" Class="mt-3 mt-sm-6">
@@ -60,13 +60,21 @@
             <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
                 @if (IsTestCompleted)
                 {
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnComplete" DisableElevation>
+                    <MudButton 
+                        DisableElevation
+                        Variant="Variant.Filled" 
+                        Color="Color.Primary" 
+                        OnClick="@OnComplete">
                         @L["Test:Result"]
                     </MudButton>
                 }
                 else
                 {
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnNext" DisableElevation>
+                    <MudButton 
+                        DisableElevation
+                        Variant="Variant.Filled" 
+                        Color="Color.Primary" 
+                        OnClick="@OnNext">
                         @L["Test:Next"]
                     </MudButton>
                 }

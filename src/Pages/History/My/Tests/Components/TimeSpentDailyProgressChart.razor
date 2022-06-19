@@ -7,8 +7,8 @@
         TItem="TestStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["TimeSpent:Min"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
-        SeriesType="SeriesType.Area"
+        Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
+        SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => (decimal)x.TimeSpent.Min.TotalMilliseconds)"/>
 
@@ -16,8 +16,8 @@
         TItem="TestStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["TimeSpent:Average"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.DeepPurple.Default })"
-        SeriesType="SeriesType.Area"
+        Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
+        SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => (decimal)x.TimeSpent.Average.TotalMilliseconds)"/>
 
@@ -25,8 +25,8 @@
         TItem="TestStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["TimeSpent:Max"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Default })"
-        SeriesType="SeriesType.Area"
+        Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
+        SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => (decimal)x.TimeSpent.Max.TotalMilliseconds)"/>
 
@@ -47,17 +47,29 @@
 
     protected override void OnInitialized()
     {
+        const string formatter = @"
+function(value) {
+    var minutes = Math.floor(value / 60000);
+    var seconds = ((value % 60000) / 1000).toFixed(0);
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}";
         _options = new ApexChartOptions<TestStatisticsModel.DailyProgress>
         {
+            Yaxis = new List<YAxis>
+            {
+                new()
+                {
+                    Labels = new YAxisLabels
+                    {
+                        Formatter = formatter
+                    }
+                }
+            },
             Tooltip = new Tooltip
             {
                 Y = new TooltipY
                 {
-                    Formatter = @"function(value, { series, seriesIndex, dataPointIndex, w }) {
-                                    var minutes = Math.floor(value / 60000);
-                                    var seconds = ((value % 60000) / 1000).toFixed(0);
-                                    return minutes + "":"" + (seconds < 10 ? '0' : '') + seconds;
-                                }"
+                    Formatter = formatter
                 }
             },
             Legend = new Legend

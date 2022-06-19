@@ -16,13 +16,13 @@
                 @L["Notifications"]
             </MudText>
             <MudButton
-                Style="text-transform: none"
-                Disabled="@(!NotificationService.HasNotifications)"
-                OnClick="NotificationService.MarkAsReadAsync"
-                StartIcon="@Icons.Outlined.DoneAll"
                 Variant="Variant.Text"
+                Color="Color.Primary"
                 Size="Size.Small"
-                Color="Color.Primary">
+                Style="text-transform: none"
+                StartIcon="@Icons.Outlined.DoneAll"
+                Disabled="@(!NotificationService.HasNotifications)"
+                OnClick="NotificationService.MarkAsReadAsync">
                 @L["Notifications:MarkAsRead"]
             </MudButton>
         </div>

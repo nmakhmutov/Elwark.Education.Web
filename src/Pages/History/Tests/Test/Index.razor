@@ -207,10 +207,7 @@
         _userAnswer = answer;
 
         var result = await HistoryClient.Test.CheckAsync(_test.Id, _currentQuestion.Id, answer);
-        if (result.IsSuccess)
-            UpdateState(result.Data);
-        else
-            Snackbar.Add(result.Error.Detail, Severity.Error);
+        UpdateState(result);
 
         _isAnswering = false;
     }
@@ -221,10 +218,7 @@
         _userAnswer = answer;
 
         var result = await HistoryClient.Test.CheckAsync(_test.Id, _currentQuestion.Id, answer);
-        if (result.IsSuccess)
-            UpdateState(result.Data);
-        else
-            Snackbar.Add(result.Error.Detail, Severity.Error);
+        UpdateState(result);
 
         _isAnswering = false;
     }
@@ -235,20 +229,27 @@
         _userAnswer = answer;
 
         var result = await HistoryClient.Test.CheckAsync(_test.Id, _currentQuestion.Id, answer);
-        if (result.IsSuccess)
-            UpdateState(result.Data);
-        else
-            Snackbar.Add(result.Error.Detail, Severity.Error);
+        UpdateState(result);
 
         _isAnswering = false;
     }
 
-    private void UpdateState(TestAnswerModel result)
+    private void UpdateState(ApiResponse<TestAnswerModel> result)
     {
-        _test = result.Overview;
-        _inventory = result.Inventory;
-        _nextQuestion = result.NextQuestion;
-        _correctAnswer = result.Answer;
+        if (result.IsFailed)
+        {
+            if (result.Error.IsTestAlreadyCompleted())
+                Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
+            else
+                Snackbar.Add(result.Error.Detail, Severity.Error);
+            
+            return;
+        }
+
+        _test = result.Data.Overview;
+        _inventory = result.Data.Inventory;
+        _nextQuestion = result.Data.NextQuestion;
+        _correctAnswer = result.Data.Answer;
 
         StateHasChanged();
     }

@@ -7,7 +7,8 @@
                 TItem="Data"
                 Items="@Series"
                 XValue="@(x => x.Name)"
-                YValue="@(x => x.Value)"/>
+                YValue="@(x => x.Value)"
+                PointColor="@(x => x.Color)"/>
         </ApexChart>
     }
 
@@ -58,25 +59,25 @@
 
     private List<Data> Series => new()
     {
-        new Data(L["Questions:Answered"], 0),
-        new Data(L["Questions:Answered"], Value.Answered),
-        new Data(L["Questions:NotAnswered"], 0),
-        new Data(L["Questions:NotAnswered"], Value.NotAnswered),
-        new Data(L["Questions:Correct"], 0),
-        new Data(L["Questions:Correct"], Value.Correct),
-        new Data(L["Questions:Incorrect"], 0),
-        new Data(L["Questions:Incorrect"], Value.Incorrect)
+        new Data(L["Questions:Correct"], 0, Colors.Green.Accent4),
+        new Data(L["Questions:Correct"], Value.Correct, Colors.Green.Accent4),
+        new Data(L["Questions:Incorrect"], 0, Colors.Red.Default),
+        new Data(L["Questions:Incorrect"], Value.Incorrect, Colors.Red.Default),
+        new Data(L["Questions:Answered"], 0, Colors.Blue.Default),
+        new Data(L["Questions:Answered"], Value.Answered, Colors.Blue.Default),
+        new Data(L["Questions:NotAnswered"], 0, Colors.DeepPurple.Default),
+        new Data(L["Questions:NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default)
     };
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["Questions:Answered"], Value.Answered, Colors.Blue.Default),
-        new ChartList.Item(L["Questions:NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default),
         new ChartList.Item(L["Questions:Correct"], Value.Correct, Colors.Green.Accent4),
         new ChartList.Item(L["Questions:Incorrect"], Value.Incorrect, Colors.Red.Default),
+        new ChartList.Item(L["Questions:Answered"], Value.Answered, Colors.Blue.Default),
+        new ChartList.Item(L["Questions:NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default),
         new ChartList.Item(L["Questions:Total"], Value.Questions, null)
     };
 
-    private sealed record Data(string Name, uint Value);
+    private sealed record Data(string Name, uint Value, string Color);
 
 }

@@ -27,20 +27,24 @@
             <MudText Typo="Typo.body2" Class="mr-3">
                 @L["Topic:TextAlignment"]
             </MudText>
-            <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined">
+            <MudButtonGroup DisableElevation Size="Size.Small" Variant="Variant.Outlined">
                 <MudIconButton
+                    DisableElevation
                     Disabled="@(FormatService.TextAlign == Align.Left)"
                     Icon="@Icons.Outlined.FormatAlignLeft"
                     OnClick="@FormatService.AlignTextLeftAsync"/>
                 <MudIconButton
+                    DisableElevation
                     Disabled="@(FormatService.TextAlign == Align.Center)"
                     Icon="@Icons.Outlined.FormatAlignCenter"
                     OnClick="@FormatService.AlignTextCenterAsync"/>
                 <MudIconButton
+                    DisableElevation
                     Disabled="@(FormatService.TextAlign == Align.Right)"
                     Icon="@Icons.Outlined.FormatAlignRight"
                     OnClick="@FormatService.AlignTextRightAsync"/>
                 <MudIconButton
+                    DisableElevation
                     Disabled="@(FormatService.TextAlign == Align.Justify)"
                     Icon="@Icons.Outlined.FormatAlignJustify"
                     OnClick="@FormatService.AlignTextJustifyAsync"/>
@@ -54,12 +58,14 @@
                     @($"x{FormatService.FontSize:N1}")
                 </MudText>
             </MudText>
-            <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined">
+            <MudButtonGroup DisableElevation Size="Size.Small" Variant="Variant.Outlined">
                 <MudIconButton
+                    DisableElevation
                     Disabled="@(!FormatService.CanDecreaseFontSize())"
                     Icon="@Icons.Outlined.Remove"
                     OnClick="@FormatService.DecreaseFontSizeAsync"/>
                 <MudIconButton
+                    DisableElevation
                     Disabled="@(!FormatService.CanIncreaseFontSize())"
                     Icon="@Icons.Outlined.Add"
                     OnClick="@FormatService.IncreaseFontSizeAsync"/>
@@ -97,7 +103,12 @@
 
         @if (IsTestAvailable)
         {
-            <MudButton FullWidth Variant="Variant.Filled" Color="Color.Primary" Link="@HistoryLinks.TopicTest.Index(TopicId)">
+            <MudButton 
+                FullWidth 
+                DisableElevation
+                Variant="Variant.Filled" 
+                Color="Color.Primary" 
+                Link="@HistoryLinks.TopicTest.Index(TopicId)">
                 @L["Test:Pass"]
             </MudButton>
         }

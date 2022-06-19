@@ -2,32 +2,30 @@
 @using ApexCharts
 @using Color = MudBlazor.Color
 
-<MudCard Class="@($"d-flex flex-column {Class}")" Elevation="0">
-    <MudCardHeader Class="pa-3">
-        <CardHeaderContent>
-            <div class="d-flex align-center justify-space-between">
-                <MudText Typo="Typo.h5">
-                    @L["Test:MyActivity"]
-                </MudText>
-                <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" Href="@HistoryLinks.User.MyActivities">
-                    @L["Button:Details"]
-                </MudButton>
-            </div>
-        </CardHeaderContent>
-    </MudCardHeader>
-    <MudCardContent Class="pa-0 h-100">
-        <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.DailyItem" Options="_options" Height="@("100%")">
-            <ApexPointSeries
-                TItem="HistoryUserProfileModel.DailyItem"
-                Items="Activities"
-                Name="@L["NumberOfTests:Total"]"
-                Stroke="@(new SeriesStroke { Width = 3, Color = "#5569FF" })"
-                SeriesType="SeriesType.Area"
-                XValue="@(e => e.Day)"
-                YValue="@(x => x.Total)"/>
-        </ApexChart>
-    </MudCardContent>
-</MudCard>
+<MudPaper Class="@($"d-flex flex-column justify-space-between {Class}")" Elevation="0">
+    <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="pa-3">
+        <MudText Typo="Typo.h5">
+            @L["Test:MyActivity"]
+        </MudText>
+        <MudButton 
+            DisableElevation 
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            Href="@HistoryLinks.User.MyActivities">
+            @L["Button:Details"]
+        </MudButton>
+    </MudStack>
+    <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.DailyItem" Options="_options" Height="@("240px")">
+        <ApexPointSeries
+            TItem="HistoryUserProfileModel.DailyItem"
+            Items="Activities"
+            Name="@L["NumberOfTests:Total"]"
+            Stroke="@(new SeriesStroke { Width = 5, Color = "#5569FF" })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Day)"
+            YValue="@(x => x.Total)"/>
+    </ApexChart>
+</MudPaper>
 
 @code {
     private ApexChart<HistoryUserProfileModel.DailyItem> _chart = default!;

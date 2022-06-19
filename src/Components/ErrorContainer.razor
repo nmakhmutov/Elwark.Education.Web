@@ -15,7 +15,7 @@
 
     @if (Error.Errors.Count > 0)
     {
-        <MudPaper Class="mb-6">
+        <MudPaper Elevation="0" Class="mb-6">
             <MudList>
                 @foreach (var (field, errors) in Error.Errors)
                 {
@@ -32,19 +32,25 @@
         </MudPaper>
     }
 
-    <div class="d-flex justify-center">
-        <MudButton Link="@CommonLinks.Root" Color="Color.Primary" Variant="Variant.Outlined">
+    <MudStack Row Justify="Justify.Center">
+        <MudButton
+            DisableElevation
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            Link="@CommonLinks.Root">
             @L["Page:GoToHome"]
         </MudButton>
         @if (Error.Status > 499)
         {
             <MudButton
-                OnClick="@(() => Navigation.NavigateTo(Navigation.Uri, true))"
-                Color="Color.Primary" Variant="Variant.Filled" Class="ml-6">
+                DisableElevation
+                Variant="Variant.Outlined"
+                Color="Color.Primary"
+                OnClick="@(() => Navigation.NavigateTo(Navigation.Uri, true))">
                 @L["Page:Reload"]
             </MudButton>
         }
-    </div>
+    </MudStack>
 </EduContainer>
 
 @code {
