@@ -12,6 +12,22 @@ internal abstract record HistoryTopicDetailModel(
     ChapterModel[] Chapters
 );
 
+internal sealed record BattleTopicDetailModel(
+    string Id,
+    string Title,
+    string Description,
+    string ImageUrl,
+    EpochType Epoch,
+    string Location,
+    string Result,
+    string? MapUrl,
+    HistoricalDateModel? Started,
+    HistoricalDateModel? Finished,
+    string[] Tags,
+    ChapterModel[] Chapters,
+    ConflictPartyModel[] ConflictParties
+) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
+
 internal sealed record EmpireTopicDetailModel(
     string Id,
     string Title,
@@ -29,14 +45,12 @@ internal sealed record EmpireTopicDetailModel(
     ChapterModel[] Chapters
 ) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
 
-internal sealed record EventTopicDetailModel(
+internal sealed record GeneralTopicDetailModel(
     string Id,
     string Title,
     string Description,
     string ImageUrl,
     EpochType Epoch,
-    HistoricalDateModel? Started,
-    HistoricalDateModel? Finished,
     string[] Tags,
     ChapterModel[] Chapters
 ) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
@@ -51,6 +65,6 @@ internal sealed record PersonTopicDetailModel(
     PersonBirthdayModel? Died,
     string[] Tags,
     ChapterModel[] Chapters,
-    CharacteristicModel[] Characteristics
+    PersonalDetailModel[] Details
 ) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
 

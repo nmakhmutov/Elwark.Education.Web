@@ -4,6 +4,7 @@
 @using Education.Web.Pages.History.Topics.Components
 @using Education.Web.Pages.History.Components
 @layout HistoryLayout
+
 @attribute [Authorize]
 
 <EduPage ShowFooter="@_response.IsLoaded">
@@ -12,6 +13,20 @@
 
         @switch (result.Topic)
         {
+            case BattleTopicDetailModel battle:
+                <BattleDetail
+                    Title="@battle.Title"
+                    Description="@battle.Description"
+                    Image="@battle.ImageUrl"
+                    Started="@battle.Started"
+                    Finished="@battle.Finished"
+                    Location="@battle.Location"
+                    Result="@battle.Result"
+                    Map="@battle.MapUrl"
+                    ConflictParties="@battle.ConflictParties"
+                    Breadcrumbs="@_breadcrumbs"/>
+                break;
+
             case EmpireTopicDetailModel empire:
                 <EmpireDetail
                     Title="@empire.Title"
@@ -27,6 +42,14 @@
                     Breadcrumbs="@_breadcrumbs"/>
                 break;
 
+            case GeneralTopicDetailModel topic:
+                <GeneralDetail
+                    Title="@topic.Title"
+                    Description="@topic.Description"
+                    Image="@topic.ImageUrl"
+                    Breadcrumbs="@_breadcrumbs"/>
+                break;
+
             case PersonTopicDetailModel person:
                 <PersonDetail
                     Title="@person.Title"
@@ -34,17 +57,7 @@
                     Image="@person.ImageUrl"
                     Born="@person.Born"
                     Died="@person.Died"
-                    Characteristics="@person.Characteristics"
-                    Breadcrumbs="@_breadcrumbs"/>
-                break;
-
-            case EventTopicDetailModel topic:
-                <EventDetail
-                    Title="@topic.Title"
-                    Description="@topic.Description"
-                    Image="@topic.ImageUrl"
-                    Started="@topic.Started"
-                    Ended="@topic.Finished"
+                    Details="@person.Details"
                     Breadcrumbs="@_breadcrumbs"/>
                 break;
         }

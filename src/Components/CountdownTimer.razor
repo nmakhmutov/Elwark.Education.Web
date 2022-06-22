@@ -1,4 +1,3 @@
-@using System.Timers
 @implements IDisposable
 
 <MudText Typo="Typo" Align="Align" Class="@Class" Color="@Color">
@@ -6,13 +5,8 @@
 </MudText>
 
 @code {
-    private TimeSpan _timeLeft = TimeSpan.FromSeconds(0);
-
-    private Timer _timer = new()
-    {
-        Enabled = true,
-        Interval = 1000
-    };
+    private TimeSpan _timeLeft = TimeSpan.Zero;
+    private readonly PeriodicTimer _timer = new(TimeSpan.FromSeconds(1));
 
     [Parameter]
     public DateTime Date { get; set; }
@@ -33,30 +27,29 @@
     public string? Class { get; set; }
 
     protected override void OnParametersSet() =>
-        _timeLeft = Date - DateTime.UtcNow;
-
-    protected override void OnInitialized() =>
-        _timer.Elapsed += (_, _) =>
+        InvokeAsync(async () =>
         {
             _timeLeft = Date - DateTime.UtcNow;
+            
+            while (await _timer.WaitForNextTickAsync())
+            {
+                _timeLeft = Date - DateTime.UtcNow;
+                if (TimeSpan.Zero >= _timeLeft)
+                    break;
+                
+                StateHasChanged();
+            }
 
-            StateHasChanged();
-
-            if (_timeLeft > TimeSpan.Zero)
-                return;
-
-            _timer.Stop();
-            _timer.Dispose();
             _timeLeft = TimeSpan.Zero;
+            _timer.Dispose();
 
             if (OnComplete.HasDelegate)
-                OnComplete.InvokeAsync();
-        };
+                await OnComplete.InvokeAsync();
+            
+            StateHasChanged();
+        });
 
-    public void Dispose()
-    {
-        _timer.Stop();
+    public void Dispose() =>
         _timer.Dispose();
-    }
 
 }

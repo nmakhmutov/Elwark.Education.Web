@@ -1,0 +1,125 @@
+@using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Topics.Model
+@using System.Reflection.Metadata
+
+<EduContainer MaxWidth="EduWidth.W1920">
+    <section class="grid">
+        <header class="content d-flex flex-column align-center">
+            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
+            <h1 class="title">
+                @Title
+            </h1>
+            <MudText Typo="Typo.body1" Class="mw-sm" Align="Align.Center">
+                @Description
+            </MudText>
+        </header>
+
+        <aside class="preview image-wrapper">
+            <MudImage Class="image" Src="@Image" Alt="@Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
+        </aside>
+
+        <section class="@(Map is null ? "comparison-center" : "comparison")">
+            <div class="d-flex flex-wrap justify-space-between">
+                <div class="flex-sm-1">
+                    <div class="mb-3 mb-sm-6">
+                        <MudText Typo="Typo.h6">
+                            @L["Battle:Location"]
+                        </MudText>
+                        <SimpleMarkdown Text="@Location"/>
+                    </div>
+                    <div>
+                        <MudText Typo="Typo.h6">
+                            @L["Battle:Result"]
+                        </MudText>
+                        <SimpleMarkdown Text="@Result"/>
+                    </div>
+                </div>
+
+                <MudDivider Vertical FlexItem DividerType="DividerType.Middle" Class="d-none d-md-block"/>
+
+                <div class="flex-sm-1">
+                    @foreach (var item in _conflictParties)
+                    {
+                        <div class="mb-3 mb-sm-6">
+                            <MudText Typo="Typo.h6" Align="Align.Center">
+                                @L[$"Battle:{item.Key}"]
+                            </MudText>
+                            <div class="d-flex justify-space-between gap-3">
+                                @foreach (var value in item.Value)
+                                {
+                                    <SimpleMarkdown Class="flex-sm-1" Text="@value"/>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+            </div>
+        </section>
+
+        @if (Map is not null)
+        {
+            <aside class="map image-wrapper">
+                <MudImage Class="image" Src="@Map" Alt="@Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
+            </aside>
+        }
+    </section>
+</EduContainer>
+
+@code {
+    private Dictionary<string, List<string>> _conflictParties = new();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Description { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public HistoricalDateModel? Started { get; set; }
+
+    [Parameter, EditorRequired]
+    public HistoricalDateModel? Finished { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Location { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Result { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string? Map { get; set; }
+
+    [Parameter, EditorRequired]
+    public ConflictPartyModel[] ConflictParties { get; set; } = Array.Empty<ConflictPartyModel>();
+
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+
+    protected override void OnParametersSet()
+    {
+        _conflictParties = new Dictionary<string, List<string>>
+        {
+            { nameof(ConflictPartyModel.Belligerents), new List<string> { ConflictParties[0].Belligerents } },
+            { nameof(ConflictPartyModel.Commanders), new List<string> { ConflictParties[0].Commanders } },
+            { nameof(ConflictPartyModel.Strength), new List<string> { ConflictParties[0].Strength } },
+            { nameof(ConflictPartyModel.Losses), new List<string> { ConflictParties[0].Losses } }
+        };
+
+        for (var i = 1; i < ConflictParties.Length; i++)
+        {
+            _conflictParties[nameof(ConflictPartyModel.Belligerents)].Add(ConflictParties[i].Belligerents);
+            _conflictParties[nameof(ConflictPartyModel.Commanders)].Add(ConflictParties[i].Commanders);
+            _conflictParties[nameof(ConflictPartyModel.Strength)].Add(ConflictParties[i].Strength);
+            _conflictParties[nameof(ConflictPartyModel.Losses)].Add(ConflictParties[i].Losses);
+        }
+    }
+
+}

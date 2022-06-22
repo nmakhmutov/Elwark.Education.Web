@@ -1,0 +1,35 @@
+@using Education.Web.Gateways.History
+@using Education.Web.Pages.History.Components
+
+<EduContainer MaxWidth="EduWidth.W1920">
+    <header class="header my-3 my-sm-6">
+        <h1 class="title">
+            @Title
+        </h1>
+        <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
+    </header>
+    <article class="d-flex justify-center mb-3 mb-sm-6">
+        <MudText Typo="Typo.body1" Class="mw-md" Align="Align.Center">
+            @Description
+        </MudText>
+    </article>
+    <section class="image-wrapper">
+        <MudImage Class="image" Src="@Image" Alt="@Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
+    </section>
+</EduContainer>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Description { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+
+}

@@ -13,9 +13,10 @@ internal sealed class HistoryTopicDetailModelConverter : JsonConverter<HistoryTo
 
         return type switch
         {
-            "person" => document.Deserialize<PersonTopicDetailModel>(options),
-            "event" => document.Deserialize<EventTopicDetailModel>(options),
+            "battle" => document.Deserialize<BattleTopicDetailModel>(options),
             "empire" => document.Deserialize<EmpireTopicDetailModel>(options),
+            "general" => document.Deserialize<GeneralTopicDetailModel>(options),
+            "person" => document.Deserialize<PersonTopicDetailModel>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, @"Unknown topic detail type")
         };
     }

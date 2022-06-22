@@ -1,4 +1,5 @@
 @using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Topics.Model
 @using Education.Web.Gateways.Models.Content
 @using Education.Web.Pages.History.Components
 
@@ -46,8 +47,8 @@
         </div>
     </div>
 
-    <div class="characteristics">
-        @foreach (var (title, text) in Characteristics)
+    <div class="details">
+        @foreach (var (title, text) in Details)
         {
             <div class="pa-3 px-sm-6">
                 <MudText Class="title" Typo="Typo.subtitle1" Color="Color.Tertiary">
@@ -80,7 +81,7 @@
     public PersonBirthdayModel? Died { get; set; }
 
     [Parameter, EditorRequired]
-    public CharacteristicModel[] Characteristics { get; set; } = Array.Empty<CharacteristicModel>();
+    public PersonalDetailModel[] Details { get; set; } = Array.Empty<PersonalDetailModel>();
 
     [Parameter, EditorRequired]
     public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
