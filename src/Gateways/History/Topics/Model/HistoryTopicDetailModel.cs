@@ -18,11 +18,11 @@ internal sealed record BattleTopicDetailModel(
     string Description,
     string ImageUrl,
     EpochType Epoch,
+    HistoricalDateModel? Started,
+    HistoricalDateModel? Finished,
     string Location,
     string Result,
     string? MapUrl,
-    HistoricalDateModel? Started,
-    HistoricalDateModel? Finished,
     string[] Tags,
     ChapterModel[] Chapters,
     ConflictPartyModel[] ConflictParties

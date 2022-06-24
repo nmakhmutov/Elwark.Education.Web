@@ -1,5 +1,6 @@
 @using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Topics.Model
+@using Education.Web.Pages.History.Components
 @using System.Reflection.Metadata
 
 <EduContainer MaxWidth="EduWidth.W1920">
@@ -21,6 +22,23 @@
         <section class="@(Map is null ? "comparison-center" : "comparison")">
             <div class="d-flex flex-wrap justify-space-between">
                 <div class="flex-sm-1">
+                    <div class="mb-3 mb-sm-6">
+                        <MudText Typo="Typo.h6">
+                            @L["Battle:Date"]
+                        </MudText>
+                        @if (Started == Finished)
+                        {
+                            <HistoryDate Date="@Started" Typo="Typo.body1"/>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-center">
+                                <HistoryDate Date="@Started" Typo="Typo.body1"/>
+                                &nbsp;—&nbsp;
+                                <HistoryDate Date="@Finished" Typo="Typo.body1"/>
+                            </div>
+                        }
+                    </div>
                     <div class="mb-3 mb-sm-6">
                         <MudText Typo="Typo.h6">
                             @L["Battle:Location"]
