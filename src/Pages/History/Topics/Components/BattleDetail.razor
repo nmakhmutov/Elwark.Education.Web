@@ -3,23 +3,52 @@
 @using Education.Web.Pages.History.Components
 @using System.Reflection.Metadata
 
-<EduContainer MaxWidth="EduWidth.W1920">
+<EduContainer MaxWidth="EduWidth.W1440">
     <section class="grid">
-        <header class="content d-flex flex-column align-center">
-            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
+        <header class="content">
+            <div class="d-flex justify-center">
+                <Breadcrumbs Class="pa-0" Items="@Breadcrumbs"/>
+            </div>
             <h1 class="title">
                 @Title
             </h1>
-            <MudText Typo="Typo.body1" Class="mw-sm" Align="Align.Center">
+            <div class="d-flex justify-center mb-6">
+                @if (Started == Finished)
+                {
+                    <HistoryDate Date="@Started" Typo="Typo.subtitle1"/>
+                }
+                else
+                {
+                    <div class="d-flex align-center">
+                        <HistoryDate Date="@Started" Typo="Typo.subtitle1"/>
+                        <MudText Typo="Typo.subtitle1" Class="mx-3">&#8212;</MudText>
+                        <HistoryDate Date="@Finished" Typo="Typo.subtitle1"/>
+                    </div>
+                }
+            </div>
+            <MudText Class="mb-3 mb-sm-6" Typo="Typo.body1" Align="Align.Center">
                 @Description
             </MudText>
+            @if (Map is not null)
+            {
+                <div class="image-wrapper">
+                    <MudImage Class="image mb-3 mb-sm-6 mx-auto" Src="@Map" Alt="@Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
+                </div>
+            }
+            <MudText Typo="Typo.h6">
+                @L["Battle:Location"]
+            </MudText>
+            <SimpleMarkdown Class="mb-3 mb-sm-6" Text="@Location"/>
+            <MudText Typo="Typo.h6">
+                @L["Battle:Result"]
+            </MudText>
+            <SimpleMarkdown Text="@Result"/>
         </header>
 
-        <aside class="preview image-wrapper">
-            <MudImage Class="image" Src="@Image" Alt="@Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
-        </aside>
-
-        <section class="comparison">
+        <aside class="comparison">
+            <div class="image-wrapper mb-3 mb-sm-6">
+                <MudImage Class="image mx-auto" Src="@Image" Alt="@Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
+            </div>
             @foreach (var item in _conflictParties)
             {
                 <div class="mb-3 mb-sm-6">
@@ -36,46 +65,6 @@
                             }
                         }
                     </div>
-                </div>
-            }
-        </section>
-
-        <aside class="map">
-            <div class="d-flex flex-column flex-sm-row flex-sm-wrap justify-sm-space-between gap-3 gap-sm-6">
-                <div class="flex-lg-1 mb-3 mb-sm-6">
-                    <MudText Typo="Typo.h6">
-                        @L["Battle:Date"]
-                    </MudText>
-                    @if (Started == Finished)
-                    {
-                        <HistoryDate Date="@Started" Typo="Typo.body1"/>
-                    }
-                    else
-                    {
-                        <div class="d-flex align-center">
-                            <HistoryDate Date="@Started" Typo="Typo.body1"/>
-                            <MudText Typo="Typo.body1" Class="mx-3">&#8212;</MudText>
-                            <HistoryDate Date="@Finished" Typo="Typo.body1"/>
-                        </div>
-                    }
-                </div>
-                <div class="flex-lg-1 mb-3 mb-sm-6">
-                    <MudText Typo="Typo.h6">
-                        @L["Battle:Location"]
-                    </MudText>
-                    <SimpleMarkdown Text="@Location"/>
-                </div>
-                <div class="flex-lg-1 mb-3 mb-sm-6">
-                    <MudText Typo="Typo.h6">
-                        @L["Battle:Result"]
-                    </MudText>
-                    <SimpleMarkdown Text="@Result"/>
-                </div>
-            </div>
-            @if (Map is not null)
-            {
-                <div class="image-wrapper">
-                    <MudImage Class="image" Src="@Map" Alt="@Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
                 </div>
             }
         </aside>
