@@ -8,7 +8,7 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @Customer.Name
+    @(string.IsNullOrEmpty(Customer.Name) ? L["Profile"] : Customer.Name)
 </PageTitle>
 
 <EduPage ShowFooter="@_response.IsLoaded">

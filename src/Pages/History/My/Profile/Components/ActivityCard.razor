@@ -1,12 +1,18 @@
 @using Education.Web.Gateways.History.Users.Model
 @using ApexCharts
 @using Color = MudBlazor.Color
+@using Align = MudBlazor.Align
 
 <MudPaper Class="@($"d-flex flex-column justify-space-between {Class}")" Elevation="0">
-    <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="pa-3">
-        <MudText Typo="Typo.h5">
-            @L["Test:MyActivity"]
-        </MudText>
+    <MudStack Row AlignItems="AlignItems.Start" Justify="Justify.SpaceBetween" Class="pa-3">
+        <div>
+            <MudText Typo="Typo.h5">
+                @L["Test:MyActivity"]
+            </MudText>
+            <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                @L["Activity:ByLast7Days"]
+            </MudText>
+        </div>
         <MudButton
             DisableElevation
             Variant="Variant.Filled"
@@ -16,16 +22,32 @@
             @L["Button:Details"]
         </MudButton>
     </MudStack>
-    <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.DailyItem" Options="_options" Height="@("240px")">
-        <ApexPointSeries
-            TItem="HistoryUserProfileModel.DailyItem"
-            Items="Activities"
-            Name="@L["NumberOfTests:Total"]"
-            Stroke="@(new SeriesStroke { Width = 5, Color = "#5569FF" })"
-            SeriesType="SeriesType.Area"
-            XValue="@(e => e.Day)"
-            YValue="@(x => x.Total)"/>
-    </ApexChart>
+    @if (Activities.Length > 0)
+    {
+        <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.DailyItem" Options="_options" Height="@("240px")">
+            <ApexPointSeries
+                TItem="HistoryUserProfileModel.DailyItem"
+                Items="Activities"
+                Name="@L["NumberOfTests:Total"]"
+                Stroke="@(new SeriesStroke { Width = 5, Color = "#5569FF" })"
+                SeriesType="SeriesType.Area"
+                XValue="@(e => e.Day)"
+                YValue="@(x => x.Total)"/>
+        </ApexChart>
+    }
+    else
+    {
+        <MudText Typo="Typo.subtitle1" Align="Align.Center">
+            @L["Activity:NoActivity"]
+        </MudText>
+
+        <MudImage
+            Src="/images/illustration/no-activity.svg"
+            Alt="@L["Activity:NoActivity"]"
+            Height="200"
+            ObjectFit="ObjectFit.Contain"
+            ObjectPosition="ObjectPosition.Bottom"/>
+    }
 </MudPaper>
 
 @code {
