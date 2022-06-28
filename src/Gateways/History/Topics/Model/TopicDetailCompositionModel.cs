@@ -6,6 +6,6 @@ internal sealed record TopicDetailCompositionModel(
     HistoryTopicDetailModel Topic,
     ContentRatingModel Rating,
     UserActivityOverviewModel UserActivity,
-    bool IsTestAvailable,
+    bool HasTest,
     UserTopicOverviewModel[] RelatedTopics
 );

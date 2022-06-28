@@ -1,9 +1,15 @@
 @using Education.Web.Gateways.Models.User
-<section class="card @Class">
-    <div class="d-flex flex-column h-100 justify-space-between white-text">
-        <MudText Typo="Typo.h5" Align="Align.Center" Class="pa-3 pa-sm-6">
-            @L["Experience:DailyReward"]
-        </MudText>
+<MudPaper Class="@Class" Elevation="0">
+    <div class="d-flex flex-column h-100 justify-space-between">
+        <header class="header">
+            <MudText Typo="Typo.h5" Align="Align.Center" Class="white-text pt-3">
+                @L["Experience:DailyReward"]
+            </MudText>
+            <div class="gift">
+                <MudImage Src="/images/history/gift-box.png" Class="gift-image"/>
+            </div>
+        </header>
+
         @if (Reward.NextTimeAt.HasValue)
         {
             <div class="d-flex flex-column align-center pa-3 pa-sm-6">
@@ -15,21 +21,22 @@
         }
         else
         {
-            <div class="d-flex flex-row align-center justify-center pa-3 pa-sm-6">
+            <div class="d-flex flex-row align-center justify-center gap-3 px-3 px-sm-6">
                 @foreach (var reward in Reward.Rewards)
                 {
-                    <InternalMoneyText Typo="Typo.h4" IconSize="Size.Medium" Money="@reward" Class="mx-3" Horizontal/>
+                    <InternalMoneyText Money="@reward" Typo="Typo.h5" IconSize="Size.Large" Horizontal/>
                 }
             </div>
 
-            <div class="d-flex justify-center pa-3 pa-sm-6">
+            <div class="d-flex justify-center px-3 pb-3 px-sm-6 pb-sm-6">
 
                 <LoadingButton
                     Class="mr-3"
+                    FullWidth
                     DisableElevation
                     Variant="Variant.Filled"
                     Color="Color.Primary"
-                    Text="@L["Experience:CollectDailyReward"]"
+                    Text="@L["Experience:ClaimDailyReward"]"
                     LoadingText="@L["Loading"]"
                     Disabled="@(_loading != Loading.None)"
                     IsLoading="@(_loading == Loading.Collect)"
@@ -38,7 +45,7 @@
                 <LoadingButton
                     DisableElevation
                     Variant="Variant.Filled"
-                    Color="Color.Dark"
+                    Color="Color.Default"
                     Text="@L["Experience:RejectDailyReward"]"
                     LoadingText="@L["Loading"]"
                     Disabled="@(_loading != Loading.None)"
@@ -48,7 +55,7 @@
             </div>
         }
     </div>
-</section>
+</MudPaper>
 
 @code {
     private Loading _loading = Loading.None;

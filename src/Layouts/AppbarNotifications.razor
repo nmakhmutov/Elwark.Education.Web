@@ -33,15 +33,20 @@
             {
                 <MudDivider/>
                 <MudMenuItem Class="px-3 py-2">
-                    <MudText Typo="Typo.subtitle2">
-                        @notification.Title
-                    </MudText>
-                    <div class="d-flex justify-space-between">
+                    <div class="d-flex justify-space-between gap-3">
+                        <MudText Typo="Typo.subtitle2">
+                            @notification.Title
+                        </MudText>
+                        <MudText Typo="Typo.subtitle2">
+                            @L[$"Subject:{notification.Subject}"]
+                        </MudText>
+                    </div>
+                    <div class="d-flex justify-space-between gap-3">
                         <MudText Typo="Typo.body2">
-                            @notification.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                            @notification.Message
                         </MudText>
                         <MudText Typo="Typo.body2">
-                            @L[$"Subject:{notification.Subject}"]
+                            @notification.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
                         </MudText>
                     </div>
                 </MudMenuItem>
@@ -74,7 +79,7 @@
 
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
-    
+
     protected override void OnInitialized() =>
         NotificationService.OnChanged += StateHasChanged;
 

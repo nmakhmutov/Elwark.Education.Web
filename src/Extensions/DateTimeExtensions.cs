@@ -9,7 +9,7 @@ public static class DateTimeExtensions
         var local = TimeZoneInfo.ConvertTimeFromUtc(date, info.TimeZone);
         var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, info.TimeZone);
 
-        return local.ToString(local.Date == now.Date ? info.TimeFormat : info.DateTimeFormat);
+        return local.ToString(local.Date == now.Date ? info.TimeFormat : info.DateFormat);
     }
 
     public static string ToFullCustomerFormat(this DateTime date, DateTimeInfo info) =>

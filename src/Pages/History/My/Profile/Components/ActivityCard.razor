@@ -4,7 +4,7 @@
 @using Align = MudBlazor.Align
 
 <MudPaper Class="@($"d-flex flex-column justify-space-between {Class}")" Elevation="0">
-    <MudStack Row AlignItems="AlignItems.Start" Justify="Justify.SpaceBetween" Class="pa-3">
+    <MudStack Row AlignItems="AlignItems.Start" Justify="Justify.SpaceBetween" Class="pt-3 px-3 pt-sm-6 px-sm-6">
         <div>
             <MudText Typo="Typo.h5">
                 @L["Test:MyActivity"]
@@ -15,9 +15,11 @@
         </div>
         <MudButton
             DisableElevation
-            Variant="Variant.Filled"
+            Variant="Variant.Text"
             Color="Color.Primary"
-            Size="Size.Small"
+            Size="Size.Medium"
+            Style="text-transform: none"
+            EndIcon="@Icons.Outlined.ChevronRight"
             Href="@HistoryLinks.User.MyActivities">
             @L["Button:Details"]
         </MudButton>

@@ -31,7 +31,7 @@ public static class NumberExtensions
             >= 1_000 => $"{result / 1_000:0.#}K",
             _ => result.ToString("#,0")
         };
-
-        return $"{(number < 0 ? "-" : "")}{formatted}";
+        
+        return number >= 0 ? formatted : $"-{formatted}";
     }
 }

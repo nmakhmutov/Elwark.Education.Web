@@ -8,7 +8,5 @@ public sealed record TopicOverviewModel(
     string Overview,
     string ThumbnailUrl,
     EpochType Epoch,
-    ContentRatingModel Rating,
-    bool HasEasyTest,
-    bool HasHardTest
+    ContentRatingModel Rating
 );

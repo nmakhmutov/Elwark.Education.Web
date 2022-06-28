@@ -86,7 +86,7 @@
     </section>
 
     <section class="test mud-paper pa-3 pa-sm-6">
-        @if (IsTestAvailable && UserActivity.PassedTests > 0)
+        @if (HasTest && UserActivity.PassedTests > 0)
         {
             <MudLink Typo="Typo.subtitle2" Href="@HistoryLinks.User.MyTopic(TopicId)">
                 @L["Test:MyProgress"]
@@ -101,7 +101,7 @@
 
         <TopicProgressView PassedTests="@UserActivity.PassedTests" TimeSpent="@UserActivity.TimeSpent" Class="pt-3 pb-3 pb-sm-6"/>
 
-        @if (IsTestAvailable)
+        @if (HasTest)
         {
             <MudButton 
                 FullWidth 
@@ -167,7 +167,7 @@
     public ChapterModel[] Chapters { get; set; } = Array.Empty<ChapterModel>();
 
     [Parameter, EditorRequired]
-    public bool IsTestAvailable { get; set; }
+    public bool HasTest { get; set; }
 
     [Parameter, EditorRequired]
     public UserActivityOverviewModel UserActivity { get; set; } = default!;
