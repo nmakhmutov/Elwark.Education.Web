@@ -8,11 +8,11 @@
 
 <PageTitle>@L["Tests:Hard"]</PageTitle>
 
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer Class="pb-0">
         <PageHeader Title="@L["Tests:Hard"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Response="@_response" Context="result">
+    <ApiViewer Result="@_result" Context="result">
         <EduContainer>
             <TestPageGrid>
                 <StatisticDetailsCard>
@@ -83,7 +83,7 @@
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 
-    private ApiResponse<TestStatisticsModel> _response = ApiResponse<TestStatisticsModel>.Loading();
+    private ApiResult<TestStatisticsModel> _result = ApiResult<TestStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -92,6 +92,6 @@
     private IHistoryClient HistoryClient { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync() =>
-        _response = await HistoryClient.User.GetHardTestStatisticsAsync();
+        _result = await HistoryClient.User.GetHardTestStatisticsAsync();
 
 }

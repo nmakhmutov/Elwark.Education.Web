@@ -9,11 +9,11 @@
 
 <PageTitle>@L["Tests:Easy"]</PageTitle>
 
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer Class="pb-0">
         <PageHeader Title="@L["Tests:Easy"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Response="@_response" Context="result">
+    <ApiViewer Result="@_result" Context="result">
         <EduContainer>
             <TestPageGrid>
                 <StatisticDetailsCard>
@@ -82,7 +82,7 @@
 
 @code {
 
-    private ApiResponse<TestStatisticsModel> _response = ApiResponse<TestStatisticsModel>.Loading();
+    private ApiResult<TestStatisticsModel> _result = ApiResult<TestStatisticsModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -96,6 +96,6 @@
     private IHistoryClient HistoryClient { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync() =>
-        _response = await HistoryClient.User.GetEasyTestStatisticsAsync();
+        _result = await HistoryClient.User.GetEasyTestStatisticsAsync();
 
 }

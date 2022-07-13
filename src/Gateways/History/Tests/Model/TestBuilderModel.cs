@@ -7,6 +7,6 @@ namespace Education.Web.Gateways.History.Tests.Model;
 public sealed record TestBuilderModel(
     TestRuleModel Rule,
     TopicOverviewModel? Topic,
-    TestInformation[] Tests,
-    DescribedInventoryItemModel[] Inventories
+    TestInformationModel[] Tests,
+    UserInventoryItemModel[] Inventories
 );

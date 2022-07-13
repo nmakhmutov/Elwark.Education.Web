@@ -1,8 +1,9 @@
 @using Markdig
+@using Markdig.Extensions.AutoIdentifiers
 @using MudBlazor.Utilities
 
 <div class="@_class" style="@Style">
-    @((MarkupString)Markdown.ToHtml(Text, Pipeline))
+    @((MarkupString)Markdown.ToHtml(Content, Pipeline))
 </div>
 
 @code {
@@ -21,11 +22,15 @@
     public string? Style { get; set; }
 
     [Parameter]
-    public string Text { get; set; } = string.Empty;
+    public bool DisableParagraphIndent { get; set; }
+
+    [Parameter]
+    public string Content { get; set; } = string.Empty;
 
     protected override void OnParametersSet() =>
         _class = CssBuilder.Default("markdown")
             .AddClass(Class, Class is not null)
+            .AddClass("text-indent", !DisableParagraphIndent)
             .Build();
 
 }

@@ -7,7 +7,7 @@
 
 <PageTitle>@L["Achievements"]</PageTitle>
 
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer Class="pb-0">
         <PageHeader Title="@L["Achievements"]" Breadcrumbs="@Breadcrumbs">
             <MudText Typo="Typo.h5">
@@ -15,7 +15,7 @@
             </MudText>
         </PageHeader>
     </EduContainer>
-    <ApiViewer Response="@_response" Context="achievements">
+    <ApiViewer Result="@_result" Context="achievements">
         <EduContainer>
             <MudGrid>
                 @for (var index = 0; index < achievements.Categories.Length; index++)
@@ -66,7 +66,7 @@
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 
-    private ApiResponse<AchievementsDetailModel> _response = ApiResponse<AchievementsDetailModel>.Loading();
+    private ApiResult<AchievementsDetailModel> _result = ApiResult<AchievementsDetailModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -76,9 +76,9 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _response = await HistoryClient.User.GetAchievementsAsync();
-        if (_response.IsSuccess)
-            _subtitle = $"{_response.Data.Completed} / {_response.Data.Total}";
+        _result = await HistoryClient.User.GetAchievementsAsync();
+        if (_result.IsSuccess)
+            _subtitle = $"{_result.Data.Completed} / {_result.Data.Total}";
     }
 
 }

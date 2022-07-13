@@ -1,46 +1,39 @@
 @using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Topics.Model
+@using Education.Web.Gateways.Models.Content
 @using Education.Web.Pages.History.Components
 @using MudBlazor.Utilities
+@using ApexCharts
+@using Align = MudBlazor.Align
 @implements IDisposable
 
 <header class="background" style="@_style">
     <section class="d-flex flex-column justify-center align-center h-100">
         <Breadcrumbs Items="@Breadcrumbs" Typo="Typo.subtitle1"/>
-        @if (FlagUrl is not null)
-        {
-            <div class="d-flex justify-center align-center mb-3">
-                <MudImage
-                    Src="@FlagUrl"
-                    Width="160"
-                    Height="90"
-                    ObjectFit="ObjectFit.Contain"
-                    ObjectPosition="ObjectPosition.Center"/>
-            </div>
-        }
         <h1 class="title mb-3">
-            @Title
+            @Empire.Title
         </h1>
         <section class="d-flex flex-wrap justify-center align-center">
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
                     @L["Empire:Founded"]
                 </MudText>
-                <HistoryDate Date="@Founded" Typo="Typo.h6" Align="Align.Center"/>
+                <HistoryDate Date="@Empire.Founded" Typo="Typo.h6" Align="Align.Center"/>
             </div>
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
                     @L["Empire:Dissolved"]
                 </MudText>
-                <HistoryDate Date="@Dissolved" Typo="Typo.h6" Align="Align.Center"/>
+                <HistoryDate Date="@Empire.Dissolved" Typo="Typo.h6" Align="Align.Center"/>
             </div>
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
                     @L["Empire:Duration"]
                 </MudText>
                 <MudText Typo="Typo.h6" Align="Align.Center">
-                    @if (Duration.HasValue)
+                    @if (Empire.Duration.HasValue)
                     {
-                        @Duration.Value.ToString("N0")<small>&nbsp;@L["History:Years"].Value.ToLowerInvariant()</small>
+                        @Empire.Duration.Value.ToString("N0")<small>&nbsp;@L["History:Years"].Value.ToLowerInvariant()</small>
                     }
                     else
                     {
@@ -53,9 +46,9 @@
                     @L["Empire:MaxArea"]
                 </MudText>
                 <MudText Typo="Typo.h6" Align="Align.Center">
-                    @if (MaxArea > 0)
+                    @if (Empire.MaxArea > 0)
                     {
-                        @MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                        @Empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
                     }
                     else
                     {
@@ -68,9 +61,9 @@
                     @L["Empire:MaxPopulation"]
                 </MudText>
                 <MudText Typo="Typo.h6" Align="Align.Center">
-                    @if (MaxPopulation > 0)
+                    @if (Empire.MaxPopulation > 0)
                     {
-                        @MaxPopulation.ToString("N0")
+                        @Empire.MaxPopulation.ToString("N0")
                     }
                     else
                     {
@@ -81,11 +74,88 @@
         </section>
         <EduContainer MaxWidth="EduWidth.W1280">
             <MudText Typo="Typo.subtitle1" Align="Align.Justify">
-                @Description
+                @Empire.Description
             </MudText>
         </EduContainer>
     </section>
 </header>
+
+<EduContainer MaxWidth="EduWidth.W1440">
+    <section class="grid">
+        @if (Empire.Flag is not null)
+        {
+            <section class="flag mud-paper pa-3 pa-sm-6">
+                <MudText Class="mb-3" Typo="Typo.subtitle2">
+                    @L["Empire:Flag"]
+                </MudText>
+                <div class="d-flex flex-column align-center gap-3">
+                    <MudImage
+                        Src="@Empire.Flag.Source"
+                        Alt="@Empire.Flag.Overview"
+                        Style="width: 100%; max-width: 260px"
+                        ObjectFit="ObjectFit.Contain"
+                        ObjectPosition="ObjectPosition.Center"/>
+
+                    <MudText Typo="Typo.body2">
+                        @Empire.Flag.Overview
+                    </MudText>
+                </div>
+            </section>
+        }
+
+        @if (Empire.Map is not null)
+        {
+            <section class="map mud-paper pa-3 pa-sm-6">
+                <MudText Class="mb-3" Typo="Typo.subtitle2">
+                    @L["Empire:Map"]
+                </MudText>
+                <a href="@Empire.Map.Source" target="_blank">
+                    <MudImage
+                        Src="@Empire.Map.Source"
+                        Alt="@Empire.Map.Overview"
+                        Style="width: 100%;"
+                        ObjectFit="ObjectFit.Contain"
+                        ObjectPosition="ObjectPosition.Center"/>
+                </a>
+
+                <MudText Typo="Typo.body2" Align="Align.Center">
+                    @Empire.Map.Overview
+                </MudText>
+            </section>
+        }
+
+        <TopicFormatToolbar Class="toolbar"/>
+
+        <TopicContent Class="content" Content="@Empire.Content"/>
+
+        <TopicTest Class="test" TopicId="@Empire.Id" HasTest="@HasTest" UserActivity="@UserActivity"/>
+
+        <TopicRating
+            Class="rating"
+            TopicId="@Empire.Id"
+            Rating="@Rating"
+            UserActivity="@UserActivity"
+            OnFavoriteClick="@OnFavoriteClick"
+            OnLikeClick="@OnLikeClick"
+            OnDislikeClick="@OnDislikeClick"/>
+    </section>
+
+    @if (RelatedTopics.Length > 0)
+    {
+        <MudText Typo="Typo.h5" Class="mt-3 mt-sm-6 mb-3">
+            @L["Topics:Related"]
+        </MudText>
+        <EduFillGrid>
+            @foreach (var (topic, userActivity) in RelatedTopics)
+            {
+                <TopicAndUserProgressCard
+                    Topic="@topic"
+                    UserActivity="@userActivity"
+                    OnFavoriteClick="@OnFavoriteClick"/>
+            }
+        </EduFillGrid>
+    }
+</EduContainer>
 
 @code {
     private string? _style;
@@ -97,37 +167,31 @@
     private ThemeService ThemeService { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public string Title { get; set; } = string.Empty;
+    public EmpireTopicDetailModel Empire { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public string Description { get; set; } = string.Empty;
+    public ContentRatingModel Rating { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public string Image { get; set; } = string.Empty;
+    public UserActivityOverviewModel UserActivity { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public HistoricalDateModel? Founded { get; set; }
+    public bool HasTest { get; set; }
 
     [Parameter, EditorRequired]
-    public HistoricalDateModel? Dissolved { get; set; }
+    public UserTopicOverviewModel[] RelatedTopics { get; set; } = Array.Empty<UserTopicOverviewModel>();
 
     [Parameter, EditorRequired]
-    public uint? Duration { get; set; }
+    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
 
     [Parameter, EditorRequired]
-    public uint MaxArea { get; set; }
+    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
 
     [Parameter, EditorRequired]
-    public uint MaxPopulation { get; set; }
-
-    [Parameter]
-    public string? MapUrl { get; set; }
-
-    [Parameter]
-    public string? FlagUrl { get; set; }
+    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
 
     [Parameter, EditorRequired]
-    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
 
     protected override void OnParametersSet() =>
         BackgroundChanger();
@@ -143,7 +207,7 @@
         var overlay = $"--mud-palette-overlay-{(ThemeService.IsDarkMode ? "dark" : "light")}";
 
         _style = StyleBuilder
-            .Default("background", $"linear-gradient(0deg, var(--mud-palette-background) 5%, var({overlay}) 100%), url('{Image}')")
+            .Default("background", $"linear-gradient(0deg, var(--mud-palette-background) 5%, var({overlay}) 100%), url('{Empire.ImageUrl}')")
             .AddStyle("background-size", "cover")
             .AddStyle("background-repeat", "no-repeat")
             .AddStyle("background-position", "top center")

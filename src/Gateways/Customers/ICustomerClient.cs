@@ -6,15 +6,15 @@ namespace Education.Web.Gateways.Customers;
 
 internal interface ICustomerClient
 {
-    Task<ApiResponse<CustomerModel>> GetAsync();
+    Task<ApiResult<CustomerModel>> GetAsync();
 
-    Task<ApiResponse<CustomerModel>> CreateAsync();
+    Task<ApiResult<CustomerModel>> CreateAsync();
 
-    Task<ApiResponse<TokenPaginationResponse<NotificationModel>>> GetAsync(NotificationsRequest request);
+    Task<ApiResult<TokenPaginationResponse<NotificationModel>>> GetAsync(NotificationsRequest request);
 
-    Task<ApiResponse<Unit>> MarkAllNotificationsAsReadAsync();
+    Task<ApiResult<Unit>> MarkAllNotificationsAsReadAsync();
 
-    Task<ApiResponse<Unit>> MarkNotificationAsReadAsync(string id);
+    Task<ApiResult<Unit>> MarkNotificationAsReadAsync(string id);
 }
 
 internal sealed class CustomerClient : GatewayClient, ICustomerClient
@@ -24,21 +24,21 @@ internal sealed class CustomerClient : GatewayClient, ICustomerClient
     public CustomerClient(HttpClient client) =>
         _client = client;
 
-    public Task<ApiResponse<CustomerModel>> GetAsync() =>
+    public Task<ApiResult<CustomerModel>> GetAsync() =>
         ExecuteAsync<CustomerModel>(ct => _client.GetAsync("customers/me", ct));
 
-    public Task<ApiResponse<CustomerModel>> CreateAsync() =>
+    public Task<ApiResult<CustomerModel>> CreateAsync() =>
         ExecuteAsync<CustomerModel>(ct => _client.PostAsync("customers/me", null, ct));
 
-    public Task<ApiResponse<TokenPaginationResponse<NotificationModel>>> GetAsync(NotificationsRequest request)
+    public Task<ApiResult<TokenPaginationResponse<NotificationModel>>> GetAsync(NotificationsRequest request)
     {
         var url = $"customers/me/notifications{request.ToQueryString()}";
         return ExecuteAsync<TokenPaginationResponse<NotificationModel>>(ct => _client.GetAsync(url, ct));
     }
 
-    public Task<ApiResponse<Unit>> MarkAllNotificationsAsReadAsync() =>
+    public Task<ApiResult<Unit>> MarkAllNotificationsAsReadAsync() =>
         ExecuteAsync<Unit>(ct => _client.DeleteAsync("customers/me/notifications", ct));
 
-    public Task<ApiResponse<Unit>> MarkNotificationAsReadAsync(string id) =>
+    public Task<ApiResult<Unit>> MarkNotificationAsReadAsync(string id) =>
         ExecuteAsync<Unit>(ct => _client.DeleteAsync($"customers/me/notifications/{id}", ct));
 }

@@ -9,8 +9,8 @@
 <PageTitle>
     @L["Subject:History"]
 </PageTitle>
-<EduPage ShowFooter="@_response.IsLoaded">
-    <ApiViewer Response="@_response" Context="result">
+<EduPage ShowFooter="@_result.IsLoaded">
+    <ApiViewer Result="@_result" Context="result">
         <SpotlightGrid Class="mb-3 mb-sm-6" Topics="@result.Trends.Take(8).ToArray()"/>
 
         <EduContainer MaxWidth="@EduWidth.W1440" Class="mb-6 mb-sm-12">
@@ -106,7 +106,7 @@
 
 @code {
 
-    private ApiResponse<HistoryOverviewModel> _response = ApiResponse<HistoryOverviewModel>.Loading();
+    private ApiResult<HistoryOverviewModel> _result = ApiResult<HistoryOverviewModel>.Loading();
 
     [Inject]
     private IHistoryClient Client { get; set; } = default!;
@@ -115,6 +115,6 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _response = await Client.Home.GetAsync();
+        _result = await Client.Home.GetAsync();
 
 }

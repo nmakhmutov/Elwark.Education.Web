@@ -1,35 +1,89 @@
 @using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Topics.Model
+@using Education.Web.Gateways.Models.Content
 @using Education.Web.Pages.History.Components
+@using ApexCharts
+@using Align = MudBlazor.Align
 
-<EduContainer MaxWidth="EduWidth.W1920">
-    <header class="header my-3 my-sm-6">
+<EduContainer MaxWidth="EduWidth.W1440">
+    <header class="d-flex flex-column align-center mb-3 mb-sm-6">
         <h1 class="title">
-            @Title
+            @Topic.Title
         </h1>
-        <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
-    </header>
-    <article class="d-flex justify-center mb-3 mb-sm-6">
-        <MudText Typo="Typo.body1" Class="mw-md" Align="Align.Center">
-            @Description
+        <Breadcrumbs Items="@Breadcrumbs" Class="pa-3"/>
+        <MudText Typo="Typo.body1" Class="mw-sm" Align="Align.Center">
+            @Topic.Description
         </MudText>
-    </article>
-    <section class="image-wrapper mx-auto">
-        <MudImage Class="image" Src="@Image" Alt="@Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
+    </header>
+
+    <aside class="image-wrapper mx-auto mb-3 mb-sm-6">
+        <MudImage Class="image" Src="@Topic.ImageUrl" Alt="@Topic.Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
+    </aside>
+
+    <section class="grid">
+        <TopicFormatToolbar Class="toolbar"/>
+        
+        <TopicContent Class="content" Content="@Topic.Content"/>
+
+        <TopicTest Class="test" TopicId="@Topic.Id" HasTest="@HasTest" UserActivity="@UserActivity"/>
+
+        <TopicRating
+            Class="rating"
+            TopicId="@Topic.Id"
+            Rating="@Rating"
+            UserActivity="@UserActivity"
+            OnFavoriteClick="@OnFavoriteClick"
+            OnLikeClick="@OnLikeClick"
+            OnDislikeClick="@OnDislikeClick"/>
     </section>
+
+    @if (RelatedTopics.Length > 0)
+    {
+        <MudText Typo="Typo.h5" Class="mt-3 mt-sm-6 mb-3">
+            @L["Topics:Related"]
+        </MudText>
+        <EduFillGrid>
+            @foreach (var (topic, userActivity) in RelatedTopics)
+            {
+                <TopicAndUserProgressCard
+                    Topic="@topic"
+                    UserActivity="@userActivity"
+                    OnFavoriteClick="@OnFavoriteClick"/>
+            }
+        </EduFillGrid>
+    }
 </EduContainer>
 
 @code {
 
-    [Parameter, EditorRequired]
-    public string Title { get; set; } = string.Empty;
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public string Description { get; set; } = string.Empty;
+    public GeneralTopicDetailModel Topic { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public string Image { get; set; } = string.Empty;
+    public ContentRatingModel Rating { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public List<BreadcrumbItem> Breadcrumbs { get; init; } = new();
+    public UserActivityOverviewModel UserActivity { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public bool HasTest { get; set; }
+
+    [Parameter, EditorRequired]
+    public UserTopicOverviewModel[] RelatedTopics { get; set; } = Array.Empty<UserTopicOverviewModel>();
+
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
 
 }

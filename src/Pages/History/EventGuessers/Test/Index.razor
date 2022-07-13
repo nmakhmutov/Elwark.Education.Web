@@ -6,11 +6,11 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer>
         <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Response="@_response">
+    <ApiViewer Result="@_result">
         <EduContainer MaxWidth="EduWidth.W960">
             <div class="header">
                 <div class="header-score">
@@ -60,7 +60,7 @@
 
 @code {
 
-    private ApiResponse<TestModel> _response = ApiResponse<TestModel>.Loading();
+    private ApiResult<TestModel> _result = ApiResult<TestModel>.Loading();
     private uint _score;
     private DateTime _x2BonusUntil;
     private uint _totalQuestions;
@@ -90,20 +90,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await Client.EventGuesser.GetAsync(Id);
-        if (_response.IsFailed)
+        _result = await Client.EventGuesser.GetAsync(Id);
+        if (_result.IsFailed)
         {
-            if (_response.Error.IsEventGuesserNotFound())
+            if (_result.Error.IsEventGuesserNotFound())
                 Navigation.NavigateTo(HistoryLinks.EventGuesser.Conclusion(Id));
 
             return;
         }
 
-        _score = _response.Data.Score;
-        _x2BonusUntil = _response.Data.X2BonusUntil;
-        _completedQuestions = _response.Data.CompletedQuestions;
-        _totalQuestions = _response.Data.TotalQuestions;
-        _question = _response.Data.Question!;
+        _score = _result.Data.Score;
+        _x2BonusUntil = _result.Data.X2BonusUntil;
+        _completedQuestions = _result.Data.CompletedQuestions;
+        _totalQuestions = _result.Data.TotalQuestions;
+        _question = _result.Data.Question!;
     }
 
     private async Task OnValidSubmit(AnswerForm.Model model)

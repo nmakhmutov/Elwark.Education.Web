@@ -46,7 +46,7 @@ var policy = builder.HostEnvironment.IsDevelopment()
     ? HttpPolicyExtensions.HandleTransientHttpError()
         .WaitAndRetryAsync(new[] { TimeSpan.Zero })
     : HttpPolicyExtensions.HandleTransientHttpError()
-        .WaitAndRetryAsync(new[] { TimeSpan.Zero, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(5) });
+        .WaitAndRetryAsync(5, i => TimeSpan.FromSeconds(i));
 
 builder.Services
     .AddScoped<ThemeService>()

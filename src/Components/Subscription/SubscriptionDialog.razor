@@ -9,7 +9,7 @@
                     Start with premium subscription today.
                 </MudText>
             </div>
-            <ApiViewer Response="@_response">
+            <ApiViewer Result="@_result">
                 <Loading>
                     <div class="pricing-grid">
                         <SkeletonCard/>
@@ -42,13 +42,13 @@
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;
 
-    private ApiResponse<Subscription[]> _response = ApiResponse<Subscription[]>.Loading();
+    private ApiResult<Subscription[]> _result = ApiResult<Subscription[]>.Loading();
 
     // protected override async Task OnInitializedAsync() =>
     // _response = await Client.Catalog.GetSubscriptions(SubjectType);
 
     protected override void OnInitialized() =>
-        _response = ApiResponse<Subscription[]>.Fail(new Error());
+        _result = ApiResult<Subscription[]>.Fail(new Error());
 
     private void OnBuyClick(string id)
     {

@@ -1,22 +1,22 @@
 @typeparam T
 
-@switch (Response.Status)
+@switch (Result.Status)
 {
-    case ResponseStatus.Loading when Loading is null:
+    case Status.Loading when Loading is null:
         <PageSpinner/>
         break;
 
-    case ResponseStatus.Loading when Loading is not null:
+    case Status.Loading when Loading is not null:
         @Loading
         break;
 
-    case ResponseStatus.Fail:
-        <PageTitle>@Response.Error.Title</PageTitle>
-        <ErrorContainer Error="Response.Error"/>
+    case Status.Fail:
+        <PageTitle>@Result.Error.Title</PageTitle>
+        <ErrorContainer Error="Result.Error"/>
         break;
 
-    case ResponseStatus.Success:
-        @ChildContent(Response.Data)
+    case Status.Success:
+        @ChildContent(Result.Data)
         break;
 
     default:
@@ -26,7 +26,7 @@
 @code {
 
     [Parameter, EditorRequired]
-    public ApiResponse<T> Response { get; set; } = ApiResponse<T>.Loading();
+    public ApiResult<T> Result { get; set; } = ApiResult<T>.Loading();
 
     [Parameter]
     public RenderFragment<T> ChildContent { get; set; } = default!;

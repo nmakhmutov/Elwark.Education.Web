@@ -9,7 +9,7 @@
 
 <PageTitle>@L["Inventory"]</PageTitle>
 
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer Class="pb-0">
         <PageHeader Title="@L["Inventory"]" Breadcrumbs="@Breadcrumbs">
             <MudText Typo="Typo.h5">
@@ -17,7 +17,7 @@
             </MudText>
         </PageHeader>
     </EduContainer>
-    <ApiViewer Response="@_response" Context="data">
+    <ApiViewer Result="@_result" Context="data">
         <EduContainer>
             <InventoryGrid>
                 @foreach (var item in data.Inventory.Items)
@@ -41,7 +41,7 @@
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 
-    private ApiResponse<InventoryCompositionModel> _response = ApiResponse<InventoryCompositionModel>.Loading();
+    private ApiResult<InventoryCompositionModel> _result = ApiResult<InventoryCompositionModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -51,9 +51,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await Client.User.GetInventoryAsync();
-        if (_response.IsSuccess)
-            _capacity = $"{_response.Data.Inventory.Fullness} / {_response.Data.Inventory.Capacity}";
+        _result = await Client.User.GetInventoryAsync();
+        if (_result.IsSuccess)
+            _capacity = $"{_result.Data.Inventory.Fullness} / {_result.Data.Inventory.Capacity}";
     }
 
 }

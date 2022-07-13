@@ -2,17 +2,14 @@
 @using ApexCharts
 @using Color = MudBlazor.Color
 @using Align = MudBlazor.Align
+
 <MudPaper Class="@($"d-flex flex-column justify-space-between h-100 pa-3 {Class}")" Elevation="0">
     <section class="mud-primary white-text rounded pa-3">
         <div class="d-flex align-center justify-space-between">
             <MudText Typo="Typo.subtitle1">
                 @L["InternalMoney:Balance"]
             </MudText>
-            <MudChip
-                Label
-                Icon="@(_tending > 0 ? Icons.Outlined.TrendingUp : Icons.Outlined.TrendingDown)"
-                Class="white-text"
-                Text="@($"{_tending:F1}%")"/>
+            <MudChip Label Icon="@_tendingIcon" Class="white-text" Text="@($"{_tendingValue:F1}%")"/>
         </div>
         <div class="d-flex align-center justify-space-between">
             <div class="d-flex align-center">
@@ -64,7 +61,8 @@
 </MudPaper>
 
 @code {
-    private double _tending;
+    private double _tendingValue;
+    private string? _tendingIcon;
 
     private ApexChartOptions<SilverWalletModel.CashFlow> _options = new()
     {
@@ -101,7 +99,18 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override void OnParametersSet() => 
-        _tending = (Silver.Flow[0].Income + Silver.Flow[0].Expense) * 100.0 / (Silver.Flow[1].Income + Silver.Flow[1].Expense);
+    protected override void OnParametersSet()
+    {
+        _tendingValue = (Silver.Flow[0].Income + Silver.Flow[0].Expense) * 100.0 / (Silver.Flow[1].Income + Silver.Flow[1].Expense);
+        if (double.IsNaN(_tendingValue))
+            _tendingValue = 0;
+
+        _tendingIcon = _tendingValue switch
+        {
+            > 0 => Icons.Outlined.TrendingUp,
+            < 0 => Icons.Outlined.TrendingDown,
+            _ => Icons.Outlined.TrendingFlat
+            };
+    }
 
 }

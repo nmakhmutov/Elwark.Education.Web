@@ -5,9 +5,9 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1280">
-        <ApiViewer Response="@_response">
+        <ApiViewer Result="@_result">
             <Loading>
                 <MudPaper Class="d-md-flex justify-space-between align-center pa-3 pa-sm-6 mb-3 mb-sm-6" Elevation="0">
                     <div class="d-flex flex-column flex-sm-row justify-center align-center mb-3 mb-sm-6 mb-md-0">
@@ -198,7 +198,7 @@
 @code {
     private List<BreadcrumbItem> _breadcrumbs = new();
 
-    private ApiResponse<TopicStatisticsModel> _response = ApiResponse<TopicStatisticsModel>.Loading();
+    private ApiResult<TopicStatisticsModel> _result = ApiResult<TopicStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -214,14 +214,14 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _response = await HistoryClient.User.GetTopicsAsync(Id);
+        _result = await HistoryClient.User.GetTopicsAsync(Id);
 
-        if (_response.IsSuccess)
+        if (_result.IsSuccess)
             _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Profile"].Value, HistoryLinks.User.MyProfile),
                 new(L["Subject:History"].Value, HistoryLinks.Root),
-                new(L[$"Epoch:{_response.Data.Topic.Epoch.ToFastString()}"].Value, HistoryLinks.Content.Epoch(_response.Data.Topic.Epoch))
+                new(L[$"Epoch:{_result.Data.Topic.Epoch.ToFastString()}"].Value, HistoryLinks.Content.Epoch(_result.Data.Topic.Epoch))
             };
     }
 

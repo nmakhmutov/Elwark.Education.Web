@@ -7,11 +7,11 @@
 
 <PageTitle>@L["Test:MyActivity"]</PageTitle>
 
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
         <PageHeader Title="@L["Test:MyActivity"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Response="@_response" Context="activity">
+    <ApiViewer Result="@_result" Context="activity">
         <EduContainer MaxWidth="EduWidth.W1920">
             <div class="grid">
                 <TestCard
@@ -64,7 +64,7 @@
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 
-    private ApiResponse<ProgressStatisticsModel> _response = ApiResponse<ProgressStatisticsModel>.Loading();
+    private ApiResult<ProgressStatisticsModel> _result = ApiResult<ProgressStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -73,6 +73,6 @@
     private IHistoryClient HistoryClient { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync() =>
-        _response = await HistoryClient.User.GetProgressAsync();
+        _result = await HistoryClient.User.GetProgressAsync();
 
 }

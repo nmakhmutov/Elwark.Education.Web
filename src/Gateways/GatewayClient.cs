@@ -33,7 +33,7 @@ internal abstract class GatewayClient
     protected static JsonContent CreateJson<T>(T value) =>
         JsonContent.Create(value, null, Serializer);
 
-    protected static async Task<ApiResponse<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> func)
+    protected static async Task<ApiResult<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> func)
     {
         using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1));
 
@@ -45,29 +45,29 @@ internal abstract class GatewayClient
             return ((uint)message.StatusCode, hasContent) switch
             {
                 (>= 200 and < 300, true) =>
-                    ApiResponse<T>.Success((await message.Content.ReadFromJsonAsync<T>(Serializer, cts.Token))!),
+                    ApiResult<T>.Success((await message.Content.ReadFromJsonAsync<T>(Serializer, cts.Token))!),
 
-                (>= 200 and < 300, false) => ApiResponse<T>.Success(default!),
+                (>= 200 and < 300, false) => ApiResult<T>.Success(default!),
 
-                (404, false) => ApiResponse<T>.Fail(Error.Create("Resource not found", 404)),
+                (404, false) => ApiResult<T>.Fail(Error.Create("Resource not found", 404)),
                 
-                (_, false) => ApiResponse<T>.Fail(Error.Create("Unknown server response", 500)),
+                (_, false) => ApiResult<T>.Fail(Error.Create("Unknown server response", 500)),
 
-                _ => ApiResponse<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(Serializer, cts.Token))!)
+                _ => ApiResult<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(Serializer, cts.Token))!)
             };
         }
         catch (AccessTokenNotAvailableException ex)
         {
             ex.Redirect();
-            return ApiResponse<T>.Fail(Error.Create("You are not authorized", 401));
+            return ApiResult<T>.Fail(Error.Create("You are not authorized", 401));
         }
         catch (HttpRequestException)
         {
-            return ApiResponse<T>.Fail(Error.Create("Server unavailable", 503));
+            return ApiResult<T>.Fail(Error.Create("Server unavailable", 503));
         }
         catch (Exception)
         {
-            return ApiResponse<T>.Fail(Error.Create("Internal error", 502));
+            return ApiResult<T>.Fail(Error.Create("Internal error", 502));
         }
     }
 }

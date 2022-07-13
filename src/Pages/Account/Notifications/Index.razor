@@ -9,7 +9,7 @@
 @attribute [Authorize]
 
 <PageTitle>@L["Notifications"]</PageTitle>
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
 
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
         <PageHeader Title="@L["Notifications"]" Breadcrumbs="@Breadcrumbs"/>
@@ -21,7 +21,7 @@
                 <AccountCard/>
             </section>
             <section class="notifications">
-                <ApiViewer Response="_response">
+                <ApiViewer Result="_result">
                     <Virtualize Items="@_notifications" Context="item">
                         <MudPaper Elevation="0" Class="pa-3 mb-3">
                             <section class="d-flex align-center">
@@ -70,7 +70,7 @@
 
 @code {
     private NotificationsRequest _request = new(null, 10);
-    private ApiResponse<TokenPaginationResponse<NotificationModel>> _response = ApiResponse<TokenPaginationResponse<NotificationModel>>.Loading();
+    private ApiResult<TokenPaginationResponse<NotificationModel>> _result = ApiResult<TokenPaginationResponse<NotificationModel>>.Loading();
     private readonly List<NotificationModel> _notifications = new();
     private bool _isMoreLoading;
 
@@ -93,11 +93,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await CustomerClient.GetAsync(_request);
-        if (_response.IsSuccess)
+        _result = await CustomerClient.GetAsync(_request);
+        if (_result.IsSuccess)
         {
-            _notifications.AddRange(_response.Data.Items);
-            _request = _request with { Token = _response.Data.Next };
+            _notifications.AddRange(_result.Data.Items);
+            _request = _request with { Token = _result.Data.Next };
         }
     }
 
@@ -109,7 +109,7 @@
         _isMoreLoading = true;
         var response = await CustomerClient.GetAsync(_request);
         if (response.IsFailed)
-            _response = response;
+            _result = response;
 
         _notifications.AddRange(response.Data.Items);
         _request = _request with { Token = response.Data.Next };

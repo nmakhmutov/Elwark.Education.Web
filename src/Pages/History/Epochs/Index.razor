@@ -3,16 +3,17 @@
 @using Education.Web.Pages.History.Components
 @using Education.Web.Gateways.History
 @layout HistoryLayout
+
 @attribute [Authorize]
 
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
     <PageTitle>
         @L[$"Epoch:{_request.Epoch.ToFastString()}"]
     </PageTitle>
     <EduContainer Class="pb-0">
         <PageHeader Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Response="_response" Context="topics">
+    <ApiViewer Result="_result" Context="topics">
         <EduContainer>
             <EduFillGrid Class="mb-6 mb-sm-12">
                 @foreach (var (topic, userActivity) in topics.Items)
@@ -23,16 +24,21 @@
                         OnFavoriteClick="@OnFavoriteClick"/>
                 }
             </EduFillGrid>
-            <div class="d-flex justify-center">
-                <MudPagination Selected="@CurrentPage" SelectedChanged="@OnPagination" Count="@((int)_response.Data.Pages)"/>
-            </div>
+            <MudStack Row Justify="Justify.Center">
+                <MudPagination
+                    DisableElevation
+                    Rectangular
+                    Selected="@CurrentPage"
+                    SelectedChanged="@OnPagination"
+                    Count="@((int)_result.Data.Pages)"/>
+            </MudStack>
         </EduContainer>
     </ApiViewer>
 </EduPage>
 
 @code {
     private GetTopicsRequest _request = new(EpochType.Prehistory, 1, 20);
-    private ApiResponse<OffsetResponse<UserTopicOverviewModel>> _response = ApiResponse<OffsetResponse<UserTopicOverviewModel>>.Loading();
+    private ApiResult<OffsetResponse<UserTopicOverviewModel>> _result = ApiResult<OffsetResponse<UserTopicOverviewModel>>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -56,18 +62,18 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _response = ApiResponse<OffsetResponse<UserTopicOverviewModel>>.Loading();
+        _result = ApiResult<OffsetResponse<UserTopicOverviewModel>>.Loading();
         CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
         {
             _request = _request with { Epoch = type, Page = CurrentPage };
-            _response = await HistoryClient.Topic.GetAsync(_request);
+            _result = await HistoryClient.Topic.GetAsync(_request);
         }
         else
         {
             var error = Error.Create(L["Error:NotFound"], 404);
-            _response = ApiResponse<OffsetResponse<UserTopicOverviewModel>>.Fail(error);
+            _result = ApiResult<OffsetResponse<UserTopicOverviewModel>>.Fail(error);
         }
     }
 

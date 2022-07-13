@@ -5,12 +5,12 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
         <PageHeader Title="@L["Leaderboard:Global:Name"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
     
-    <ApiViewer Response="@_response" Context="items">
+    <ApiViewer Result="@_result" Context="items">
         <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
             <EduFitGrid>
                 @foreach (var user in items[..3])
@@ -33,7 +33,7 @@
 
 @code {
     private long _highlightUser;
-    private ApiResponse<GlobalRankingModel[]> _response = ApiResponse<GlobalRankingModel[]>.Loading();
+    private ApiResult<GlobalRankingModel[]> _result = ApiResult<GlobalRankingModel[]>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -51,7 +51,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await Client.Leaderboard.GetGlobalAsync();
+        _result = await Client.Leaderboard.GetGlobalAsync();
         var state = await StateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated ?? false)
             _highlightUser = state.User.GetId();

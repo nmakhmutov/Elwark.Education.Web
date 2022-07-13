@@ -8,13 +8,13 @@ public sealed record Error
 
     public int Status { get; init; } = 400;
 
-    public string Detail { get; init; } = string.Empty;
+    public string? Detail { get; init; }
+    
+    public IDictionary<string, string[]> Errors { get; init; } = new Dictionary<string, string[]>();
 
     public IDictionary<string, object> Extensions { get; init; } = new Dictionary<string, object>();
 
-    public IDictionary<string, string[]> Errors { get; init; } = new Dictionary<string, string[]>();
-
-    public static Error Create(string title, int status, string detail = "") =>
+    public static Error Create(string title, int status, string? detail = null) =>
         new()
         {
             Title = title,

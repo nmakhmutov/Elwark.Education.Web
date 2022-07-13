@@ -1,70 +1,69 @@
-using Education.Web.Gateways.Models.Content;
+using Education.Web.Gateways.Models;
 
 namespace Education.Web.Gateways.History.Topics.Model;
 
-internal abstract record HistoryTopicDetailModel(
+public abstract record HistoryTopicDetailModel(
     string Id,
     string Title,
     string Description,
+    string Content,
     string ImageUrl,
     EpochType Epoch,
-    string[] Tags,
-    ChapterModel[] Chapters
+    string[] Tags
 );
 
-internal sealed record BattleTopicDetailModel(
+public sealed record BattleTopicDetailModel(
     string Id,
     string Title,
     string Description,
+    string Content,
     string ImageUrl,
     EpochType Epoch,
     HistoricalDateModel? Started,
     HistoricalDateModel? Finished,
     string Location,
     string Result,
-    string? MapUrl,
+    ImageModel? Map,
     string[] Tags,
-    ChapterModel[] Chapters,
     ConflictPartyModel[] ConflictParties
-) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
+) : HistoryTopicDetailModel(Id, Title, Description, Content, ImageUrl, Epoch, Tags);
 
-internal sealed record EmpireTopicDetailModel(
+public sealed record EmpireTopicDetailModel(
     string Id,
     string Title,
     string Description,
+    string Content,
     string ImageUrl,
-    string? FlagUrl,
-    string? MapUrl,
+    ImageModel? Flag,
+    ImageModel? Map,
     EpochType Epoch,
     HistoricalDateModel? Founded,
     HistoricalDateModel? Dissolved,
     uint? Duration,
     uint MaxArea,
     uint MaxPopulation,
-    string[] Tags,
-    ChapterModel[] Chapters
-) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
+    string[] Tags
+) : HistoryTopicDetailModel(Id, Title, Description, Content, ImageUrl, Epoch, Tags);
 
-internal sealed record GeneralTopicDetailModel(
+public sealed record GeneralTopicDetailModel(
     string Id,
     string Title,
     string Description,
+    string Content,
     string ImageUrl,
     EpochType Epoch,
-    string[] Tags,
-    ChapterModel[] Chapters
-) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
+    string[] Tags
+) : HistoryTopicDetailModel(Id, Title, Description, Content, ImageUrl, Epoch, Tags);
 
-internal sealed record PersonTopicDetailModel(
+public sealed record PersonTopicDetailModel(
     string Id,
     string Title,
     string Description,
+    string Content,
     string ImageUrl,
     EpochType Epoch,
     PersonBirthdayModel? Born,
     PersonBirthdayModel? Died,
     string[] Tags,
-    ChapterModel[] Chapters,
     PersonalDetailModel[] Details
-) : HistoryTopicDetailModel(Id, Title, Description, ImageUrl, Epoch, Tags, Chapters);
-
+) : HistoryTopicDetailModel(Id, Title, Description, Content, ImageUrl, Epoch, Tags);

@@ -1,4 +1,8 @@
 ::deep .radio-group {
+    width: 100%
+}
+
+::deep .radio-group > div > div {
     display: grid;
     grid-row-gap: 12px;
     grid-template-columns: 1fr;
@@ -13,7 +17,7 @@
 }
 
 @media (min-width: 600px) {
-    ::deep .radio-group {
+    ::deep .radio-group > div > div {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
 }

@@ -12,12 +12,12 @@
     text-align: center;
 }
 
-.image-wrapper {
+.battle-image {
     max-width: 1280px;
     max-height: 720px;
 }
 
-.image-wrapper ::deep .image {
+.battle-image ::deep .image {
     display: block;
     max-width: 100%;
     max-height: 100%;
@@ -39,20 +39,51 @@
 
 @media (min-width: 960px) {
     .grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(6, auto) 1fr;
+    }
+
+    .grid ::deep .header {
+        grid-column: span 8;
+    }
+
+    .grid ::deep .battle-image {
+        grid-column: span 4;
+        align-self: center;
+    }
+    
+    .grid ::deep .content {
+        grid-column: span 8;
+        grid-row: 2/-1;
+    }
+
+    .grid ::deep .toolbar,
+    .grid ::deep .map,
+    .grid ::deep .conflict-parties,
+    .grid ::deep .test,
+    .grid ::deep .rating {
+        grid-column: span 4;
     }
 }
 
 @media (min-width: 1280px) {
-    .grid {
-        grid-template-columns: repeat(6, 1fr);
+    .grid ::deep .header {
+        grid-column: span 7;
     }
 
-    .content {
-        grid-column: span 4;
+    .grid ::deep .battle-image {
+        grid-column: span 5;
+    }
+    
+    .grid ::deep .content {
+        grid-column: span 9;
     }
 
-    .comparison {
-        grid-column: span 2;
+    .grid ::deep .toolbar,
+    .grid ::deep .map,
+    .grid ::deep .conflict-parties,
+    .grid ::deep .test,
+    .grid ::deep .rating {
+        grid-column: span 3;
     }
 }

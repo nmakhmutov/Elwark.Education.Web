@@ -10,10 +10,10 @@ internal sealed class LeaderboardClient : GatewayClient
     public LeaderboardClient(HttpClient client) =>
         _client = client;
 
-    public Task<ApiResponse<GlobalRankingModel[]>> GetGlobalAsync() =>
+    public Task<ApiResult<GlobalRankingModel[]>> GetGlobalAsync() =>
         ExecuteAsync<GlobalRankingModel[]>(ct => _client.GetAsync("history/leaderboards/global", ct));
 
-    public Task<ApiResponse<MonthlyLeaderboardModel>> GetMonthAsync(DateOnly? date = null)
+    public Task<ApiResult<MonthlyLeaderboardModel>> GetMonthAsync(DateOnly? date = null)
     {
         var url = new StringBuilder("history/leaderboards/monthly");
         if (date.HasValue)

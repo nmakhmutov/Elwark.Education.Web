@@ -7,8 +7,8 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage ShowFooter="@_response.IsLoaded">
-    <ApiViewer Response="@_response">
+<EduPage ShowFooter="@_result.IsLoaded">
+    <ApiViewer Result="@_result">
         <PageTitle>
             @_title
         </PageTitle>
@@ -139,7 +139,7 @@
 </EduPage>
 
 @code {
-    private ApiResponse<TestModel> _response = ApiResponse<TestModel>.Loading();
+    private ApiResult<TestModel> _result = ApiResult<TestModel>.Loading();
     private TestInventoryItemModel[] _inventory = Array.Empty<TestInventoryItemModel>();
     private Color _countdownColor = Color.Default;
     private TestOverviewModel _test = default!;
@@ -173,12 +173,12 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _response = await HistoryClient.Test.GetAsync(Id);
-        if (_response.IsSuccess)
+        _result = await HistoryClient.Test.GetAsync(Id);
+        if (_result.IsSuccess)
         {
-            _test = _response.Data.Overview;
-            _currentQuestion = _response.Data.Question;
-            _inventory = _response.Data.Inventory;
+            _test = _result.Data.Overview;
+            _currentQuestion = _result.Data.Question;
+            _inventory = _result.Data.Inventory;
             _title = _test switch {
                 EasyTestOverviewModel => L["Test:Easy"],
                 HardTestOverviewModel => L["Test:Hard"],
@@ -186,18 +186,18 @@
                 _ => string.Empty
                 };
         }
-        else if (_response.Error.IsTestAlreadyCompleted())
+        else if (_result.Error.IsTestAlreadyCompleted())
             Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
-        else if (_response.Error.IsTestNotFound())
+        else if (_result.Error.IsTestNotFound())
             Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
     }
 
     private async Task OnExpired()
     {
         _countdownColor = Color.Error;
-        _response = await HistoryClient.Test.GetAsync(Id);
+        _result = await HistoryClient.Test.GetAsync(Id);
 
-        if (_response.IsFailed)
+        if (_result.IsFailed)
             Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
     }
 
@@ -234,7 +234,7 @@
         _isAnswering = false;
     }
 
-    private void UpdateState(ApiResponse<TestAnswerModel> result)
+    private void UpdateState(ApiResult<TestAnswerModel> result)
     {
         if (result.IsFailed)
         {

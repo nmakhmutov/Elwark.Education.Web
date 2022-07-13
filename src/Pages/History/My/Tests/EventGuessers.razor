@@ -9,11 +9,11 @@
 
 <PageTitle>@L["EventGuesser"]</PageTitle>
 
-<EduPage ShowFooter="@_response.IsLoaded">
+<EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer Class="pb-0">
         <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Response="@_response" Context="result">
+    <ApiViewer Result="@_result" Context="result">
         <EduContainer>
             <TestPageGrid>
                 <StatisticDetailsCard>
@@ -65,7 +65,7 @@
         new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
     };
 
-    private ApiResponse<EventGuesserStatisticsModel> _response = ApiResponse<EventGuesserStatisticsModel>.Loading();
+    private ApiResult<EventGuesserStatisticsModel> _result = ApiResult<EventGuesserStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -74,7 +74,7 @@
     private IHistoryClient HistoryClient { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _response = await HistoryClient.User.GetEventGuesserStatisticsAsync();
+        _result = await HistoryClient.User.GetEventGuesserStatisticsAsync();
 
     private ProgressList.Item[] GetTest(EventGuesserStatisticsModel.Contrast progress) =>
         new ProgressList.Item[]

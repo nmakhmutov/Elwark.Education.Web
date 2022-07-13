@@ -13,7 +13,7 @@
 
     @if (ShowDetails)
     {
-        <MudText Typo="Typo.caption">
+        <MudText Typo="Typo.caption" Class="ml-1">
             @Rating.Stars.ToString("F1")/@Rating.Votes.ToReadable()
         </MudText>
     }
@@ -24,11 +24,11 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [Parameter, EditorRequired]
-    public ContentRatingModel Rating { get; set; } = default!;
-
     [Parameter]
     public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public ContentRatingModel Rating { get; set; } = default!;
 
     [Parameter]
     public Size Size { get; set; } = Size.Medium;

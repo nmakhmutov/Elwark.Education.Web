@@ -11,8 +11,8 @@
     @(string.IsNullOrEmpty(Customer.Name) ? L["Profile"] : Customer.Name)
 </PageTitle>
 
-<EduPage ShowFooter="@_response.IsLoaded">
-    <ApiViewer Response="@_response" Context="profile">
+<EduPage ShowFooter="@_result.IsLoaded">
+    <ApiViewer Result="@_result" Context="profile">
         <EduContainer MaxWidth="EduWidth.W1920">
             <div class="grid">
                 <ProfileCard Class="profile" Customer="Customer" Level="@profile.Level"/>
@@ -75,7 +75,7 @@
 </EduPage>
 
 @code {
-    private ApiResponse<HistoryUserProfileModel> _response = ApiResponse<HistoryUserProfileModel>.Loading();
+    private ApiResult<HistoryUserProfileModel> _result = ApiResult<HistoryUserProfileModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -87,7 +87,7 @@
     private CustomerState Customer { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _response = await HistoryClient.User.GetOverviewAsync();
+        _result = await HistoryClient.User.GetOverviewAsync();
 
     private async Task CollectDailyReward()
     {
