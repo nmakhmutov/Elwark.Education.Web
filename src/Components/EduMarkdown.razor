@@ -29,8 +29,8 @@
 
     protected override void OnParametersSet() =>
         _class = CssBuilder.Default("markdown")
-            .AddClass(Class, Class is not null)
             .AddClass("text-indent", !DisableParagraphIndent)
+            .AddClass(Class, Class is not null)
             .Build();
 
 }
