@@ -15,7 +15,7 @@
     <ApiViewer Result="@_result" Context="result">
         <EduContainer>
             <TestPageGrid>
-                <StatisticDetailsCard>
+                <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                     <TotalContent>
                         <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
                         <NumberOfTestChart Value="@result.NumberOfTests"/>
@@ -29,7 +29,8 @@
                         <NumberOfTestDailyProgressChart Progress="@result.Progress"/>
                     </ActivityContent>
                 </StatisticDetailsCard>
-                <StatisticDetailsCard>
+                
+                <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                     <TotalContent>
                         <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
                         <ScoreChart Value="@result.Score"/>
@@ -43,7 +44,8 @@
                         <ScoreDailyProgressChart Progress="@result.Progress"/>
                     </ActivityContent>
                 </StatisticDetailsCard>
-                <StatisticDetailsCard>
+                
+                <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                     <TotalContent>
                         <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
                         <AnswerRatioChart Value="@result.AnswerRatio"/>
@@ -57,7 +59,8 @@
                         <AnswerRatioDailyProgressChart Progress="@result.Progress"/>
                     </ActivityContent>
                 </StatisticDetailsCard>
-                <StatisticDetailsCard>
+                
+                <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                     <TotalContent>
                         <Subheader Title="@L["TimeSpent"]" Subtitle="@L["ForAllTime"]"/>
                         <TimeSpentChart Value="@result.TimeSpent"/>

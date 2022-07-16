@@ -27,29 +27,17 @@
 
     protected override void OnParametersSet()
     {
-        var blockClass = CssBuilder.Default("d-flex align-center");
-        blockClass.AddClass(Horizontal ? "flex-row" : "flex-column");
-        blockClass.AddClass(Class);
+        _iconClass = Horizontal ? "mr-1" : "mb-1";
+        _blockClass = CssBuilder.Default("d-flex align-center")
+            .AddClass(Horizontal ? "flex-row" : "flex-column")
+            .AddClass(Class)
+            .Build();
         
-        var iconClass = CssBuilder.Default(Horizontal ? "mr-1" : "mb-1");
-
-        switch (Money)
-        {
-            case Experience experience:
-                iconClass.AddClass("cyan-text text-accent-4");
-                _icon = EducationIcons.Experience;
-                _amount = experience.Amount;
-                break;
-
-            case Silver silver:
-                iconClass.AddClass("grey-text text-lighten-1");
-                _icon = EducationIcons.Silver;
-                _amount = silver.Amount;
-                break;
-        }
-
-        _blockClass = blockClass.Build();
-        _iconClass = iconClass.Build();
+        (_icon, _amount) = Money switch {
+            Experience x => (EducationIcons.Experience,x.Amount),
+            Silver x => (EducationIcons.Silver,x.Amount),
+            _ => (Icons.Outlined.Money,0)
+            };
     }
 
 }

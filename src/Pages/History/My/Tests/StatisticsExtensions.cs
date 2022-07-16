@@ -17,13 +17,10 @@ public static class StatisticsExtensions
     public static ProgressList.Item[] GetProgress(this NumberOfTestsContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
-            new(l["NumberOfTests:Successful"], contrast.Successful.Current.ToReadable(),
-                contrast.Successful.Difference),
+            new(l["NumberOfTests:Successful"], contrast.Successful.Current.ToReadable(), contrast.Successful.Difference),
             new(l["NumberOfTests:Failed"], contrast.Failed.Current.ToReadable(), contrast.Failed.Difference),
-            new(l["NumberOfTests:MistakesExceeded"], contrast.MistakesExceeded.Current.ToReadable(),
-                contrast.MistakesExceeded.Difference),
-            new(l["NumberOfTests:TimeExceeded"], contrast.TimeExceeded.Current.ToReadable(),
-                contrast.TimeExceeded.Difference),
+            new(l["NumberOfTests:MistakesExceeded"], contrast.MistakesExceeded.Current.ToReadable(), contrast.MistakesExceeded.Difference),
+            new(l["NumberOfTests:TimeExceeded"], contrast.TimeExceeded.Current.ToReadable(), contrast.TimeExceeded.Difference),
             new(l["NumberOfTests:Total"], contrast.Total.Current.ToReadable(), contrast.Total.Difference)
         };
 

@@ -6,10 +6,10 @@
 
 @attribute [Authorize]
 
+<PageTitle>
+    @L[$"Epoch:{_request.Epoch.ToFastString()}"]
+</PageTitle>
 <EduPage ShowFooter="@_result.IsLoaded">
-    <PageTitle>
-        @L[$"Epoch:{_request.Epoch.ToFastString()}"]
-    </PageTitle>
     <EduContainer Class="pb-0">
         <PageHeader Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
@@ -63,7 +63,7 @@
     protected override async Task OnParametersSetAsync()
     {
         _result = ApiResult<OffsetResponse<UserTopicOverviewModel>>.Loading();
-        CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
+        CurrentPage = Math.Max(1, CurrentPage);
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
         {

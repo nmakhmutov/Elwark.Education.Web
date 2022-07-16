@@ -2,19 +2,13 @@
 
 <MudPaper Class="@_class" Elevation="0">
     <div class="grid">
-        @if (TotalContent is not null)
-        {
-            <div class="total">
-                @TotalContent
-            </div>
-        }
-        @if (ProgressContent is not null)
-        {
-            <div class="progress">
-                @ProgressContent
-            </div>
-        }
-        @if (ActivityContent is not null)
+        <div class="total">
+            @TotalContent
+        </div>
+        <div class="progress">
+            @ProgressContent
+        </div>
+        @if (!DisableActivity && ActivityContent is not null)
         {
             <div class="activity">
                 @ActivityContent
@@ -36,8 +30,11 @@
     public RenderFragment? ActivityContent { get; set; }
 
     [Parameter]
-    public string? Class { get; set; }
+    public bool DisableActivity { get; set; }
     
+    [Parameter]
+    public string? Class { get; set; }
+
     protected override void OnParametersSet() =>
         _class = CssBuilder.Default("pa-3 pa-sm-6")
             .AddClass(Class, Class is not null)
