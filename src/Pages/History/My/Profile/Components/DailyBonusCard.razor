@@ -3,26 +3,26 @@
     <div class="d-flex flex-column h-100 justify-space-between">
         <header class="header">
             <MudText Typo="Typo.h5" Align="Align.Center" Class="white-text pt-3">
-                @L["Experience:DailyReward"]
+                @L["DailyBonus"]
             </MudText>
             <div class="gift">
                 <MudImage Src="/images/history/gift-box.png" Class="gift-image"/>
             </div>
         </header>
 
-        @if (Reward.NextTimeAt.HasValue)
+        @if (Bonus.NextTimeAt.HasValue)
         {
             <div class="d-flex flex-column align-center pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle2">
-                    @L["Experience:DailyRewardUnlockedAt"]
+                    @L["DailyBonus:UnlockedAt"]
                 </MudText>
-                <CountdownTimer Date="@Reward.NextTimeAt.Value" Typo="Typo.h3" OnComplete="@OnReached"/>
+                <CountdownTimer Date="@Bonus.NextTimeAt.Value" Typo="Typo.h3" OnComplete="@OnReached"/>
             </div>
         }
         else
         {
             <div class="d-flex flex-row align-center justify-center gap-3 px-3 px-sm-6">
-                @foreach (var reward in Reward.Rewards)
+                @foreach (var reward in Bonus.Rewards)
                 {
                     <InternalMoneyText Money="@reward" Typo="Typo.h5" IconSize="Size.Large" Horizontal/>
                 }
@@ -36,7 +36,7 @@
                     DisableElevation
                     Variant="Variant.Filled"
                     Color="Color.Primary"
-                    Text="@L["Experience:ClaimDailyReward"]"
+                    Text="@L["DailyBonus:Claim"]"
                     LoadingText="@L["Loading"]"
                     Disabled="@(_loading != Loading.None)"
                     IsLoading="@(_loading == Loading.Collect)"
@@ -46,7 +46,7 @@
                     DisableElevation
                     Variant="Variant.Filled"
                     Color="Color.Default"
-                    Text="@L["Experience:RejectDailyReward"]"
+                    Text="@L["DailyBonus:Reject"]"
                     LoadingText="@L["Loading"]"
                     Disabled="@(_loading != Loading.None)"
                     IsLoading="@(_loading == Loading.Reject)"
@@ -64,7 +64,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
-    public DailyRewardModel Reward { get; set; } = default!;
+    public DailyBonusModel Bonus { get; set; } = default!;
 
     [Parameter]
     public EventCallback OnCollect { get; set; }

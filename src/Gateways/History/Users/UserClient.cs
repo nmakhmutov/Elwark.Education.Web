@@ -24,11 +24,11 @@ internal sealed class UserClient : GatewayClient
     public Task<ApiResult<InventoryCompositionModel>> GetInventoryAsync() =>
         ExecuteAsync<InventoryCompositionModel>(ct => _client.GetAsync("history/users/me/inventories", ct));
 
-    public Task<ApiResult<Unit>> CollectDailyReward() =>
-        ExecuteAsync<Unit>(ct => _client.PostAsync("history/users/me/rewards/daily", null, ct));
+    public Task<ApiResult<Unit>> CollectDailyBonusAsync() =>
+        ExecuteAsync<Unit>(ct => _client.PostAsync("history/users/me/bonus/daily", null, ct));
 
-    public Task<ApiResult<Unit>> RejectDailyReward() =>
-        ExecuteAsync<Unit>(ct => _client.DeleteAsync("history/users/me/rewards/daily", ct));
+    public Task<ApiResult<Unit>> RejectDailyBonusAsync() =>
+        ExecuteAsync<Unit>(ct => _client.DeleteAsync("history/users/me/bonus/daily", ct));
 
     public Task<ApiResult<TestStatisticsModel>> GetEasyTestStatisticsAsync() =>
         ExecuteAsync<TestStatisticsModel>(ct => _client.GetAsync("history/users/me/tests/easy", ct));

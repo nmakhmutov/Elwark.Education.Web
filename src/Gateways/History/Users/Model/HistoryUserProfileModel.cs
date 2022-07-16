@@ -6,7 +6,7 @@ namespace Education.Web.Gateways.History.Users.Model;
 public sealed record HistoryUserProfileModel(
     LevelModel Level,
     SilverWalletModel Silver,
-    DailyRewardModel DailyReward,
+    DailyBonusModel DailyBonus,
     HistoryUserProfileModel.TestOverview EasyTest,
     HistoryUserProfileModel.TestOverview HardTest,
     HistoryUserProfileModel.TestOverview MixedTest,
