@@ -1,19 +1,22 @@
 @page "/history/leaderboards/global"
-@using Education.Web.Gateways.History.Leaderboards.Model
-@using Education.Web.Pages.History.Leaderboards.Global.Components
-@using Education.Web.Gateways.History
 @layout HistoryLayout
+
+@using Education.Web.Gateways.History
+@using Education.Web.Gateways.History.Leaderboards.Model
+@using Education.Web.Pages.History.Leaderboards.Components
+@using Education.Web.Pages.History.Leaderboards.Global.Components
+
 @attribute [Authorize]
 
 <EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <PageHeader Title="@L["Leaderboard:Global:Name"]" Breadcrumbs="@Breadcrumbs"/>
+        <PageHeader Title="@L["GlobalLeaderboard:Name"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    
+
     <ApiViewer Result="@_result" Context="items">
         <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
             <EduFitGrid>
-                @foreach (var user in items[..3])
+                @foreach (var user in items.Take(3))
                 {
                     <RankingCard
                         Rank="@user.Rank"
@@ -26,7 +29,44 @@
         </EduContainer>
 
         <EduContainer MaxWidth="EduWidth.W1920">
-            <RankingTable HighlightUser="@_highlightUser" Users="@(items[3..])"/>
+            <RegularRanking DisableHover>
+                <Rank>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:Rank"]</MudText>
+                </Rank>
+                <Name>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:UserName"]</MudText>
+                </Name>
+                <Level>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:UserLevel"]</MudText>
+                </Level>
+                <Experience>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:UserExperience"]</MudText>
+                </Experience>
+            </RegularRanking>
+
+            <Virtualize Items="@items[3..]" ItemSize="64" Context="user">
+                <RegularRanking
+                    Class="mb-3"
+                    Background="@(user.Id == _highlightUser ? RegularRanking.BackgroundColor.Highlight : RegularRanking.BackgroundColor.Paper)">
+                    <Rank>
+                        <MudAvatar Color="Color.Primary">@user.Rank</MudAvatar>
+                    </Rank>
+                    <Name>
+                        <MudAvatar Image="@user.Image" Alt="@user.FullName" Class="mr-3"/>
+                        <MudText Typo="Typo.subtitle1">@user.FullName</MudText>
+                    </Name>
+                    <Level>
+                        <MudIcon Icon="@EducationIcons.Level" Class="green-text text-darken-1 mr-3"/>
+                        <MudText Typo="Typo.h6">
+                            @user.Level
+                        </MudText>
+                    </Level>
+                    <Experience>
+                        <MudIcon Icon="@EducationIcons.Experience" Class="mr-3"/>
+                        <HumanReadableNumber Value="@user.Experience" Typo="Typo.h6"/>
+                    </Experience>
+                </RegularRanking>
+            </Virtualize>
         </EduContainer>
     </ApiViewer>
 </EduPage>

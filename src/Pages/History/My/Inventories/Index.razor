@@ -1,46 +1,40 @@
 @page "/history/my/inventories"
 @layout HistoryLayout
 
+@using Education.Web.Gateways.History
 @using Education.Web.Gateways.History.Users.Model
 @using Education.Web.Pages.History.Components
-@using Education.Web.Gateways.History
 
 @attribute [Authorize]
 
 <PageTitle>@L["Inventory"]</PageTitle>
 
 <EduPage ShowFooter="@_result.IsLoaded">
-    <EduContainer Class="pb-0">
-        <PageHeader Title="@L["Inventory"]" Breadcrumbs="@Breadcrumbs">
-            <MudText Typo="Typo.h5">
-                @_capacity
-            </MudText>
-        </PageHeader>
+    <EduContainer Class="h-100" MaxWidth="EduWidth.W1920">
+        <div class="grid">
+            <section class="inventory">
+                <ApiViewer Result="@_result" Context="data">
+                    <ChildContent>
+                        <InventoryGrid>
+                            @foreach (var item in data.Inventory.Items)
+                            {
+                                <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
+                                    <div class="d-flex justify-center">
+                                        <HumanReadableNumber Typo="Typo.h6" Value="@item.Count"/>
+                                    </div>
+                                </InventoryInfoCard>
+                            }
+                        </InventoryGrid>
+                    </ChildContent>
+                </ApiViewer>
+            </section>
+
+            <section class="shop"></section>
+        </div>
     </EduContainer>
-    <ApiViewer Result="@_result" Context="data">
-        <EduContainer>
-            <InventoryGrid>
-                @foreach (var item in data.Inventory.Items)
-                {
-                    <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
-                        <div class="d-flex justify-center">
-                            <HumanReadableNumber Typo="Typo.h6" Value="@item.Count"/>
-                        </div>
-                    </InventoryInfoCard>
-                }
-            </InventoryGrid>
-        </EduContainer>
-    </ApiViewer>
 </EduPage>
 
 @code {
-    private string? _capacity;
-
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
-    };
-
     private ApiResult<InventoryCompositionModel> _result = ApiResult<InventoryCompositionModel>.Loading();
 
     [Inject]
@@ -52,8 +46,6 @@
     protected override async Task OnInitializedAsync()
     {
         _result = await Client.User.GetInventoryAsync();
-        if (_result.IsSuccess)
-            _capacity = $"{_result.Data.Inventory.Fullness} / {_result.Data.Inventory.Capacity}";
     }
 
 }

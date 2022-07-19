@@ -36,4 +36,7 @@ public static class EpochTypeExtensions
             EpochType.Contemporary => nameof(EpochType.Contemporary),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
+
+    public static string Image(this EpochType type) =>
+        $"/images/history/epochs/{type.ToFastString()}.jpg";
 }

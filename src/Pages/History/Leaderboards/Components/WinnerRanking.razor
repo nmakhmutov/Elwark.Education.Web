@@ -1,0 +1,73 @@
+@using MudBlazor.Utilities
+
+<div class="@_class">
+    <MudAvatar Class="icon mr-3 mr-sm-6" Size="Size.Large" Rounded>
+        <MudIcon Icon="@_icon" Size="Size.Large"/>
+    </MudAvatar>
+
+    <MudDivider Class="mr-3 mr-sm-6" Vertical FlexItem/>
+
+    <div class="d-flex align-center flex-grow-1 mr-3 mr-sm-6">
+        <MudAvatar Image="@Image" Alt="@FullName" Class="mr-3"/>
+        <div>
+            <MudText Class="rank-title" Typo="Typo.body2">@_place</MudText>
+            <MudText Class="username" Typo="Typo.h6">@FullName</MudText>
+        </div>
+    </div>
+
+    <div class="d-flex align-center">
+        <HumanReadableNumber Value="@Experience" Typo="Typo.h5"/>
+        <MudIcon Icon="@EducationIcons.Experience" Class="ml-1"/>
+    </div>
+</div>
+
+@code {
+    private string? _class;
+    private string? _icon;
+    private string? _place;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public uint Rank { get; set; }
+
+    [Parameter, EditorRequired]
+    public long Id { get; set; }
+
+    [Parameter, EditorRequired]
+    public string FullName { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public uint Experience { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _class = CssBuilder.Default("card pa-3 pa-sm-6")
+            .AddClass(Class, !string.IsNullOrEmpty(Class))
+            .AddClass($"rank rank-{Rank}")
+            .AddClass(Rank % 2 == 0 ? "even" : "odd")
+            .Build();
+
+        _icon = Rank switch {
+            1 => Icons.Outlined.EmojiEvents,
+            2 => Icons.Outlined.Diamond,
+            3 => Icons.Outlined.MilitaryTech,
+            _ => Icons.Outlined.Architecture
+            };
+
+        _place = Rank switch {
+            1 => L["Leaderboard:FirstPlace"].Value,
+            2 => L["Leaderboard:SecondPlace"].Value,
+            3 => L["Leaderboard:ThirdPlace"].Value,
+            _ => null
+            };
+    }
+
+}

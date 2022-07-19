@@ -25,13 +25,13 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services
-    .AddMudServices(configuration =>
+    .AddMudServices(options =>
     {
-        configuration.SnackbarConfiguration.PreventDuplicates = false;
-        configuration.SnackbarConfiguration.NewestOnTop = true;
-        configuration.SnackbarConfiguration.ShowCloseIcon = true;
-        configuration.SnackbarConfiguration.MaxDisplayedSnackbars = 4;
-        configuration.SnackbarConfiguration.SnackbarVariant = Variant.Text;
+        options.SnackbarConfiguration.PreventDuplicates = false;
+        options.SnackbarConfiguration.NewestOnTop = true;
+        options.SnackbarConfiguration.ShowCloseIcon = true;
+        options.SnackbarConfiguration.MaxDisplayedSnackbars = 4;
+        options.SnackbarConfiguration.SnackbarVariant = Variant.Text;
     })
     .AddBlazoredLocalStorage(options =>
     {

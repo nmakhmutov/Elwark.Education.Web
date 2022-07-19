@@ -36,7 +36,7 @@
 
     .grid ::deep .toolbar,
     .grid ::deep .content {
-        grid-column: 1/-1;
+        grid-column: 1 / -1;
     }
 }
 
@@ -51,26 +51,30 @@
     }
 
     .grid ::deep .content {
-        grid-column: span 8;
-        grid-row: 1/-1;
+        grid-column: 1 / 9;
+        grid-row: 1 / -1;
+    }
+
+    .grid ::deep .toolbar {
+        grid-column: 9 / 13;
+        grid-row: 1;
     }
 
     .grid ::deep .flag,
     .grid ::deep .map,
-    .grid ::deep .toolbar,
     .grid ::deep .test,
     .grid ::deep .rating {
-        grid-column: span 4;
+        grid-column: 9 / 13;
     }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1440px) {
     .header {
         grid-template-columns: minmax(300px, 600px) 1fr;
     }
 
     .grid ::deep .content {
-        grid-column: span 9;
+        grid-column: 1 / 10;
     }
 
     .grid ::deep .flag,
@@ -78,7 +82,7 @@
     .grid ::deep .toolbar,
     .grid ::deep .test,
     .grid ::deep .rating {
-        grid-column: span 3;
+        grid-column: 10 / 13;
     }
 }
 

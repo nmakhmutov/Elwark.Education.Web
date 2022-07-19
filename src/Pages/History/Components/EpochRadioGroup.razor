@@ -31,10 +31,7 @@
     private IEnumerable<Epoch> GetEpochs()
     {
         foreach (var epoch in EpochTypeExtensions.List[1..])
-        {
-            var str = epoch.ToFastString();
-            yield return new Epoch(epoch, L[$"Epoch:{str}"], $"/images/history/epochs/{str}.jpg");
-        }
+            yield return new Epoch(epoch, L[$"Epoch:{epoch.ToFastString()}"], epoch.Image());
 
         yield return new Epoch(EpochType.None, L["Topics:Any"], "/images/history/history.jpg");
     }

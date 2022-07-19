@@ -1,0 +1,68 @@
+@implements IDisposable
+
+<div class="d-flex gap-3 gap-sm-6 @Class">
+    @if (_timeLeft.Days > 0)
+    {
+        <div class="mud-paper rounded pa-6 pa-lg-9">
+            <MudText Typo="Typo.h2" Align="Align.Center">@_timeLeft.Days.ToString("00")</MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center">@L["Countdown:Days"]</MudText>
+        </div>
+    }
+    <div class="mud-paper rounded pa-6 pa-lg-9">
+        <MudText Typo="Typo.h2" Align="Align.Center">@_timeLeft.Hours.ToString("00")</MudText>
+        <MudText Typo="Typo.h6" Align="Align.Center">@L["Countdown:Hours"]</MudText>
+    </div>
+    <div class="mud-paper rounded pa-6 pa-lg-9">
+        <MudText Typo="Typo.h2" Align="Align.Center">@_timeLeft.Minutes.ToString("00")</MudText>
+        <MudText Typo="Typo.h6" Align="Align.Center">@L["Countdown:Minutes"]</MudText>
+    </div>
+    @if (_timeLeft.Days == 0)
+    {
+        <div class="mud-paper rounded pa-6 pa-lg-9">
+            <MudText Typo="Typo.h2" Align="Align.Center">@_timeLeft.Seconds.ToString("00")</MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center">@L["Countdown:Seconds"]</MudText>
+        </div>
+    }
+</div>
+
+@code {
+    private TimeSpan _timeLeft = TimeSpan.Zero;
+    private readonly PeriodicTimer _timer = new(TimeSpan.FromSeconds(1));
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public DateTime Date { get; set; }
+
+    protected override void OnParametersSet() =>
+        InvokeAsync(async () =>
+        {
+            _timeLeft = Date - DateTime.UtcNow;
+            var lastMinute = _timeLeft.Minutes;
+
+            while (await _timer.WaitForNextTickAsync())
+            {
+                _timeLeft = Date - DateTime.UtcNow;
+                if (TimeSpan.Zero >= _timeLeft)
+                    break;
+
+                if (_timeLeft.Days > 0 && lastMinute == _timeLeft.Minutes)
+                    continue;
+
+                lastMinute = _timeLeft.Minutes;
+                StateHasChanged();
+            }
+
+            _timeLeft = TimeSpan.Zero;
+
+            StateHasChanged();
+        });
+
+    public void Dispose() =>
+        _timer.Dispose();
+
+}

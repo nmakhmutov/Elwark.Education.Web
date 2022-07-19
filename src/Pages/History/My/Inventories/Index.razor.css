@@ -1,0 +1,25 @@
+.grid {
+    display: grid;
+    gap: 12px;
+    height: 100%;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        gap: 24px;
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        grid-template-columns: repeat(12, 1fr);
+    }
+
+    .inventory {
+        grid-column: 1 / 5;
+    }
+
+    .shop {
+        grid-column: 5 / 13;
+    }
+}

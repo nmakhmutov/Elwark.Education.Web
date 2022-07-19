@@ -1,6 +1,6 @@
 @using MudBlazor.Utilities
 @using Education.Web.Gateways.History
-<div class="@($"{_css}")">
+<div class="@_class">
     @foreach (var topic in Topics)
     {
         <article class="card">
@@ -28,7 +28,7 @@
 
 @code {
 
-    private CssBuilder _css = CssBuilder.Empty();
+    private CssBuilder _class = CssBuilder.Empty();
 
     [Inject]
     public IStringLocalizer<App> L { get; set; } = default!;
@@ -44,13 +44,13 @@
 
     protected override void OnParametersSet()
     {
-        _css = CssBuilder.Default("grid");
+        _class = CssBuilder.Default("grid");
 
         if (!string.IsNullOrEmpty(Class))
-            _css.AddClass(Class);
+            _class.AddClass(Class);
 
         if (Gap)
-            _css.AddClass("gap");
+            _class.AddClass("gap");
     }
 
 }

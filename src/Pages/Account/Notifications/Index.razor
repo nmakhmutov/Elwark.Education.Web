@@ -25,25 +25,34 @@
                     <Virtualize Items="@_notifications" Context="item">
                         <MudPaper Elevation="0" Class="pa-3 mb-3">
                             <section class="d-flex align-center">
-                                <MudText Typo="Typo.caption" Class="mr-3">
+                                <MudText Typo="Typo.body2" Class="mr-3">
                                     @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
                                 </MudText>
                                 @if (TryGetLink(item.Subject, out var link))
                                 {
-                                    <MudLink Typo="Typo.caption" Href="@link">
+                                    <MudLink Typo="Typo.body2" Href="@link">
                                         @L[item.Subject]
                                     </MudLink>
                                 }
                             </section>
-                            <section class="d-flex justify-space-between">
-                                <div>
+                            <section class="d-flex align-center justify-space-between">
+                                @if (string.IsNullOrEmpty(item.Message))
+                                {
                                     <MudText Typo="Typo.subtitle1">
                                         @item.Title
                                     </MudText>
-                                    <MudText Typo="Typo.body2">
-                                        @item.Message
-                                    </MudText>
-                                </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        <MudText Typo="Typo.subtitle1">
+                                            @item.Title
+                                        </MudText>
+                                        <MudText Typo="Typo.body2">
+                                            @item.Message
+                                        </MudText>
+                                    </div>
+                                }
                                 <MudIconButton
                                     Icon="@Icons.Outlined.MarkEmailRead"
                                     OnClick="@(() => MarkAsReadAsync(item.Id))"/>
