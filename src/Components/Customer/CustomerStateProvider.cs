@@ -19,7 +19,7 @@ internal sealed class CustomerStateProvider
         _state = CustomerState.Anonymous;
     }
 
-    public event Action<CustomerState> StateChanged = _ => { };
+    public event Action<CustomerState> OnChanged = _ => { };
 
     public async ValueTask InitAsync()
     {
@@ -45,7 +45,7 @@ internal sealed class CustomerStateProvider
         );
 
         _isInitialized = true;
-        StateChanged.Invoke(_state);
+        OnChanged.Invoke(_state);
     }
 
     public CustomerState GetCurrentState() =>
