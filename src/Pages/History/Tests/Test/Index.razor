@@ -15,30 +15,28 @@
 
         <EduContainer MaxWidth="EduWidth.W1280">
             <section class="grid">
-                <header class="header">
-                    <MudPaper Elevation="0" Class="pa-3 px-sm-6 d-sm-flex justify-sm-space-between align-sm-center">
-                        <MudText Typo="Typo.h5">
-                            @_title
-                        </MudText>
-                        <div class="progress">
-                            <div class="mb-1">
-                                <MudText Typo="Typo.subtitle1">
-                                    @L["Questions"] @_test.CompletedQuestions / @_test.TotalQuestions
-                                </MudText>
-                                <MudProgressLinear Min="0" Max="100" Value="@(Progress)" Color="Color.Primary"/>
-                            </div>
-                            <CountdownTimer
-                                Typo="Typo.body1"
-                                Date="@_test.ExpiredAt"
-                                Color="@_countdownColor"
-                                OnComplete="@OnExpired"/>
+                <header class="header d-sm-flex justify-sm-space-between align-sm-center">
+                    <MudText Typo="Typo.h5">
+                        @_currentQuestion.Topic.Title
+                    </MudText>
+                    <div class="progress">
+                        <div class="mb-1">
+                            <MudText Typo="Typo.subtitle1">
+                                @L["Questions"] @_test.CompletedQuestions / @_test.TotalQuestions
+                            </MudText>
+                            <MudProgressLinear Min="0" Max="100" Value="@(Progress)" Color="Color.Primary"/>
                         </div>
-                    </MudPaper>
+                        <CountdownTimer
+                            Typo="Typo.body1"
+                            Date="@_test.ExpiredAt"
+                            Color="@_countdownColor"
+                            OnComplete="@OnExpired"/>
+                    </div>
                 </header>
 
                 <section class="test">
-                    <MudText Typo="Typo.h5" Class="mb-3">
-                        @_currentQuestion.Topic.Title
+                    <MudText Typo="Typo.h6" Class="mb-3">
+                        @_title
                     </MudText>
                     <MudPaper Elevation="0" Class="d-flex flex-column align-center pa-3 pa-sm-6">
                         @if (_currentQuestion.Image is not null)
@@ -105,7 +103,7 @@
                 </section>
 
                 <aside class="inventory">
-                    <MudText Typo="Typo.h5" Class="mb-3">
+                    <MudText Typo="Typo.h6" Class="mb-3">
                         @L["Inventory"]
                     </MudText>
                     <InventoryGrid>
@@ -242,7 +240,7 @@
                 Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
             else
                 Snackbar.Add(result.Error.Detail, Severity.Error);
-            
+
             return;
         }
 

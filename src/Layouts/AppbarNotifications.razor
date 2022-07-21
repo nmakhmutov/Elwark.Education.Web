@@ -10,62 +10,65 @@
         AnchorOrigin="Origin.BottomLeft"
         TransformOrigin="Origin.TopLeft"
         ListClass="pa-0">
-
-        <div class="d-flex justify-space-between align-center px-3 pt-3 pb-1">
-            <MudText Typo="Typo.subtitle1" Class="pr-16">
-                @L["Notifications"]
-            </MudText>
-            <MudButton
-                Variant="Variant.Text"
-                Color="Color.Primary"
-                Size="Size.Small"
-                Style="text-transform: none"
-                StartIcon="@Icons.Outlined.DoneAll"
-                Disabled="@(!NotificationService.HasNotifications)"
-                OnClick="NotificationService.MarkAsReadAsync">
-                @L["Notifications:MarkAsRead"]
-            </MudButton>
-        </div>
-
-        @if (NotificationService.HasNotifications)
-        {
-            @foreach (var notification in NotificationService.Notifications)
-            {
-                <MudDivider/>
-                <MudMenuItem Class="px-3 py-2">
-                    <div class="d-flex justify-space-between gap-3">
-                        <MudText Typo="Typo.subtitle2">
-                            @notification.Title
-                        </MudText>
-                        <MudText Typo="Typo.subtitle2">
-                            @L[$"Subject:{notification.Subject}"]
-                        </MudText>
-                    </div>
-                    <div class="d-flex justify-space-between gap-3">
-                        <MudText Typo="Typo.body2">
-                            @notification.Message
-                        </MudText>
-                        <MudText Typo="Typo.body2">
-                            @notification.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
-                        </MudText>
-                    </div>
-                </MudMenuItem>
-            }
-            <MudDivider/>
-            <div class="d-flex justify-center py-3">
-                <MudLink Href="@AccountLinks.Notifications" Typo="Typo.button" Style="text-transform: none">
-                    @L["Notifications:All"]
-                </MudLink>
-            </div>
-        }
-        else
-        {
-            <div class="d-flex justify-center align-center py-6">
-                <MudText Class="mud-text-secondary my-12">
-                    @L["Notifications:NothingNew"]
+        <section class="wrapper">
+            <header class="d-flex justify-space-between align-center pa-3">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Notifications"]
                 </MudText>
-            </div>
-        }
+                <MudButton
+                    Class="mark-as-read"
+                    Variant="Variant.Text"
+                    Color="Color.Primary"
+                    Size="Size.Small"
+                    StartIcon="@Icons.Outlined.DoneAll"
+                    Disabled="@(!NotificationService.HasNotifications)"
+                    OnClick="NotificationService.MarkAsReadAsync">
+                    @L["Notifications:MarkAsRead"]
+                </MudButton>
+            </header>
+
+            @if (NotificationService.HasNotifications)
+            {
+                @foreach (var notification in NotificationService.Notifications)
+                {
+                    <MudDivider/>
+                    <MudMenuItem Class="px-3 py-2">
+                        <div class="d-flex justify-space-between gap-3">
+                            <MudText Typo="Typo.subtitle2">
+                                @notification.Title
+                            </MudText>
+                            <MudText Typo="Typo.subtitle2">
+                                @L[$"Subject:{notification.Subject}"]
+                            </MudText>
+                        </div>
+                        <div class="d-flex justify-space-between gap-3">
+                            <MudText Typo="Typo.body2">
+                                @notification.Message
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @notification.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                            </MudText>
+                        </div>
+                    </MudMenuItem>
+                }
+
+                <MudDivider/>
+
+                <footer class="d-flex justify-center py-3">
+                    <MudLink Href="@AccountLinks.Notifications" Typo="Typo.button" Style="text-transform: none">
+                        @L["Notifications:All"]
+                    </MudLink>
+                </footer>
+            }
+            else
+            {
+                <section class="d-flex justify-center align-center py-6">
+                    <MudText Class="mud-text-secondary my-12">
+                        @L["Notifications:NothingNew"]
+                    </MudText>
+                </section>
+            }
+        </section>
     </MudMenu>
 </MudBadge>
 

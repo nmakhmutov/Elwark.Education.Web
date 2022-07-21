@@ -21,7 +21,7 @@ internal sealed class CustomerStateProvider
 
     public event Action<CustomerState> StateChanged = _ => { };
 
-    public async Task InitAsync()
+    public async ValueTask InitAsync()
     {
         if (_isInitialized)
             return;

@@ -1,8 +1,8 @@
 ﻿@page "/authentication/{action}"
 @layout MainLayout
 
-<EduPage ShowFooter>
-    <RemoteAuthenticatorView Action="@Action">
+<EduPage>
+    <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnLogInSucceeded">
         <LoggingIn>
             <PageSpinner/>
         </LoggingIn>
@@ -17,7 +17,13 @@
 
 @code{
 
+    [Inject]
+    private CustomerStateProvider CustomerStateProvider { get; set; } = default!;
+
     [Parameter]
     public string? Action { get; set; }
+
+    private async Task OnLogInSucceeded() => 
+        await CustomerStateProvider.InitAsync();
 
 }

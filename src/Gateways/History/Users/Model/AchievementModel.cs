@@ -19,7 +19,7 @@ public sealed record LadderAchievementModel(
     string Description,
     uint Level,
     uint Score,
-    uint Goal,
+    uint Threshold,
     uint Completeness,
     IInternalMoney[] Rewards
 ) : AchievementModel(Category, Name, Title, Description);

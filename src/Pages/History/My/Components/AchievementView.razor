@@ -32,7 +32,7 @@
                 <div class="d-flex flex-row mb-1">
                     <HumanReadableNumber Value="@achievement.Score" Typo="Typo.subtitle2"/>
                     <span>/</span>
-                    <HumanReadableNumber Value="@achievement.Goal" Typo="Typo.subtitle2"/>
+                    <HumanReadableNumber Value="@achievement.Threshold" Typo="Typo.subtitle2"/>
                 </div>
                 <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
                 <div class="d-flex flex-row">
@@ -91,7 +91,7 @@
     protected override void OnParametersSet()
     {
         _background = Achievement.Category switch {
-            "AllTest" => "deep-orange accent-2 white-text",
+            "AllTests" => "deep-orange accent-2 white-text",
             "EasyTest" => "orange accent-2 white-text",
             "HardTest" => "orange accent-3 white-text",
             "MixedTest" => "orange accent-4 white-text",
@@ -100,28 +100,28 @@
             };
 
         _icon = Achievement switch {
-        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "Successful"} => 
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTests", Name: "Successful"} => 
             EducationIcons.Tests,
             
-        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "Score"} =>
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTests", Name: "Score"} =>
             EducationIcons.Score,
             
-        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "Experience"} =>
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTests", Name: "Experience"} =>
             Icons.Outlined.VerifiedUser,
             
-        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "Silver"} =>
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTests", Name: "Silver"} =>
             Icons.Outlined.Money,
             
-        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "CorrectAnswers"} => 
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTests", Name: "CorrectAnswer"} => 
             Icons.Outlined.QuestionAnswer,
             
-        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTest", Name: "WithoutMistakes"} => 
+        {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTests", Name: "WithoutMistake"} => 
             Icons.Outlined.AddTask,
             
-        {Category: "AllTest", Name: "CompleteOnceAllType" } =>
+        {Category: "AllTests", Name: "CompleteOnce" } =>
             Icons.Outlined.DoneAll,
             
-        {Category: "EventGuesser", Name: "Completed"} =>
+        {Category: "EventGuesser", Name: "Successful"} =>
             Icons.Outlined.ManageSearch,
             
         {Category: "EventGuesser", Name: "Points"} =>
@@ -130,7 +130,7 @@
         {Category: "EventGuesser", Name: "Bonus"} =>
             Icons.Outlined.AccessTimeFilled,
             
-        {Category: "EventGuesser", Name: "WithoutMistakes"} =>
+        {Category: "EventGuesser", Name: "WithoutMistake"} =>
             Icons.Outlined.AddTask,
             
             _ => EducationIcons.Achievements

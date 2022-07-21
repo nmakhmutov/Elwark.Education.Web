@@ -13,7 +13,10 @@
 
         <CompletedStars Progress="@_progress" Class="mb-6"/>
 
-        <RewardsContainer MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
+        @if (conclusion.Rewards.Length > 0)
+        {
+            <RewardsContainer MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
+        }
 
         @switch (conclusion)
         {
