@@ -1,6 +1,4 @@
-using Education.Web.Services.Api;
-
-namespace Education.Web.Services.Model;
+namespace Education.Web.Services.Api;
 
 public interface IQueryStringRequest
 {

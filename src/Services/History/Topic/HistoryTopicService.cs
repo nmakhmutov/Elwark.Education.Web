@@ -12,15 +12,14 @@ internal sealed class HistoryTopicService : IHistoryTopicService
     public HistoryTopicService(ApiClient api) =>
         _api = api;
 
-    public Task<ApiResult<OffsetResponse<UserTopicOverviewModel>>> GetAsync(GetTopicsRequest request) =>
-        _api.GetAsync<OffsetResponse<UserTopicOverviewModel>>($"history/topics{request.ToQueryString()}");
+    public Task<ApiResult<PagingOffsetModel<UserTopicOverviewModel>>> GetAsync(GetTopicsRequest request) =>
+        _api.GetAsync<PagingOffsetModel<UserTopicOverviewModel>>($"history/topics", request);
 
-    public Task<ApiResult<OffsetResponse<EmpireOverview>>> GetAsync(GetEmpiresRequest request) =>
-        _api.GetAsync<OffsetResponse<EmpireOverview>>($"history/empires{request.ToQueryString()}");
+    public Task<ApiResult<PagingOffsetModel<EmpireOverview>>> GetAsync(GetEmpiresRequest request) =>
+        _api.GetAsync<PagingOffsetModel<EmpireOverview>>($"history/empires", request);
 
     public Task<ApiResult<TopicDetailCompositionModel>> GetAsync(string id) =>
         _api.GetAsync<TopicDetailCompositionModel>($"history/topics/{id}");
-
 
     public Task<ApiResult<string>> GetRandomAsync(EpochType epoch) =>
         _api.GetAsync<string>($"history/topics/random?epoch={epoch.ToFastString()}");

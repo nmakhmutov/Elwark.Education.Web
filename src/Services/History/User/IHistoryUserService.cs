@@ -28,7 +28,7 @@ public interface IHistoryUserService
 
     Task<ApiResult<EventGuesserStatisticsModel>> GetEventGuesserStatisticsAsync();
 
-    Task<ApiResult<TokenPaginationResponse<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request);
+    Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request);
 
     Task<ApiResult<TopicStatisticsModel>> GetTopicsAsync(string topicId);
 }

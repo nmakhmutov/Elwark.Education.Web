@@ -43,8 +43,8 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<EventGuesserStatisticsModel>> GetEventGuesserStatisticsAsync() =>
         _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers");
 
-    public Task<ApiResult<TokenPaginationResponse<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request) =>
-        _api.GetAsync<TokenPaginationResponse<UserTopicOverviewModel>>($"history/users/me/favorites{request.ToQueryString()}");
+    public Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request) =>
+        _api.GetAsync<PagingTokenModel<UserTopicOverviewModel>>($"history/users/me/favorites", request);
 
     public Task<ApiResult<TopicStatisticsModel>> GetTopicsAsync(string topicId) =>
         _api.GetAsync<TopicStatisticsModel>($"history/users/me/topics/{topicId}");

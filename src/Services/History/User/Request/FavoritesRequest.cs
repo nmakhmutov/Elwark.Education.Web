@@ -1,5 +1,4 @@
 using Education.Web.Services.Api;
-using Education.Web.Services.Model;
 
 namespace Education.Web.Services.History.User.Request;
 

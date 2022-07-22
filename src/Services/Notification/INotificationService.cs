@@ -13,7 +13,7 @@ public interface INotificationService : IDisposable
 
     public IReadOnlyCollection<NotificationMessage> LastNotifications { get; }
 
-    Task<ApiResult<TokenPaginationResponse<NotificationModel>>> GetAsync(NotificationsRequest request);
+    Task<ApiResult<PagingTokenModel<NotificationModel>>> GetAsync(NotificationsRequest request);
 
     Task<ApiResult<Unit>> MarkAllAsReadAsync();
 

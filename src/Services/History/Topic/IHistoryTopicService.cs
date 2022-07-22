@@ -7,9 +7,9 @@ namespace Education.Web.Services.History.Topic;
 
 public interface IHistoryTopicService
 {
-    Task<ApiResult<OffsetResponse<UserTopicOverviewModel>>> GetAsync(GetTopicsRequest request);
+    Task<ApiResult<PagingOffsetModel<UserTopicOverviewModel>>> GetAsync(GetTopicsRequest request);
 
-    Task<ApiResult<OffsetResponse<EmpireOverview>>> GetAsync(GetEmpiresRequest request);
+    Task<ApiResult<PagingOffsetModel<EmpireOverview>>> GetAsync(GetEmpiresRequest request);
 
     Task<ApiResult<TopicDetailCompositionModel>> GetAsync(string id);
 

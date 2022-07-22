@@ -29,9 +29,8 @@ internal sealed class NotificationService : INotificationService
         _stateProvider = stateProvider;
     }
 
-    public Task<ApiResult<TokenPaginationResponse<NotificationModel>>> GetAsync(NotificationsRequest request) =>
-        _api.GetAsync<TokenPaginationResponse<NotificationModel>>(
-            $"customers/me/notifications{request.ToQueryString()}");
+    public Task<ApiResult<PagingTokenModel<NotificationModel>>> GetAsync(NotificationsRequest request) =>
+        _api.GetAsync<PagingTokenModel<NotificationModel>>("customers/me/notifications", request);
 
     public async Task<ApiResult<Unit>> MarkAllAsReadAsync()
     {

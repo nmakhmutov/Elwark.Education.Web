@@ -44,13 +44,13 @@ internal sealed class ApiClient
         _provider = provider;
     }
 
-    public async Task<ApiResult<T>> GetAsync<T>(string uri)
+    public async Task<ApiResult<T>> GetAsync<T>(string uri, IQueryStringRequest? request = null)
     {
         var state = await _provider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated == false)
-            return await ExecuteAsync<T>(ct => _anonymous.GetAsync(uri, ct));
+            return await ExecuteAsync<T>(ct => _anonymous.GetAsync($"{uri}{request?.ToQueryString()}", ct));
 
-        return await ExecuteAsync<T>(ct => _authenticated.GetAsync(uri, ct));
+        return await ExecuteAsync<T>(ct => _authenticated.GetAsync($"{uri}{request?.ToQueryString()}", ct));
     }
 
     public Task<ApiResult<T>> PostAsync<T>(string uri) =>
