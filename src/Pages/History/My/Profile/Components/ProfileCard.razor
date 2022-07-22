@@ -19,7 +19,7 @@
             <MudText Typo="Typo.h5">
                 @L["Experience:Level"] @Level.Value
             </MudText>
-            <MudIcon Icon="@EducationIcons.Level" Class="green-text text-darken-1" Size="Size.Medium"/>
+            <MudIcon Icon="@EduIcons.Level" Class="green-text text-darken-1" Size="Size.Medium"/>
         </header>
         
         <MudProgressLinear
@@ -36,10 +36,10 @@
                 @(((double)Level.Experience / Level.NextLevelExperience * 100).ToReadable())%
             </MudText>
             <div class="d-flex align-center">
-                <HumanReadableNumber Value="@Level.Experience" Typo="Typo.body2"/>
+                <ReadableNumber Value="@Level.Experience" Typo="Typo.body2"/>
                 <div>&nbsp;/&nbsp;</div>
-                <HumanReadableNumber Value="@Level.NextLevelExperience" Typo="Typo.body2"/>
-                <MudIcon Icon="@EducationIcons.Experience" Class="ml-1" Size="Size.Small"/>
+                <ReadableNumber Value="@Level.NextLevelExperience" Typo="Typo.body2"/>
+                <MudIcon Icon="@EduIcons.Experience" Class="ml-1" Size="Size.Small"/>
             </div>
         </div>
     </section>
@@ -50,8 +50,8 @@
             DisableElevation
             Variant="Variant.Filled"
             Color="Color.Primary"
-            StartIcon="@EducationIcons.MyInventory"
-            Href="@HistoryLinks.User.MyInventories">
+            StartIcon="@EduIcons.MyInventory"
+            Href="@HistoryUrl.User.MyInventories">
             @L["Inventory"]
         </MudButton>
         <MudButton
@@ -59,9 +59,9 @@
             DisableElevation
             Variant="Variant.Outlined"
             Color="Color.Primary"
-            StartIcon="@EducationIcons.MyFavorites"
+            StartIcon="@EduIcons.MyFavorites"
             IconColor="Color.Error"
-            Href="@HistoryLinks.User.MyFavorites">
+            Href="@HistoryUrl.User.MyFavorites">
             @L["Favorites"]
         </MudButton>
     </section>

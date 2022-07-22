@@ -1,27 +1,27 @@
 @using Education.Web.Services.History
 <section class="card">
     <header class="card-header">
-        <a href="@HistoryLinks.Content.Topic(Topic.Id)">
+        <a href="@HistoryUrl.Content.Topic(Topic.Id)">
             <img src="@Topic.ThumbnailUrl" alt="@Topic.Title" loading="lazy"/>
         </a>
         <div class="rating-container">
-            <RatingStars Rating="@Topic.Rating" ShowTooltip/>
+            <TopicRating Rating="@Topic.Rating" ShowTooltip/>
         </div>
     </header>
 
     <aside class="d-flex align-center justify-space-between px-3">
-        <MudChip Label Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@HistoryLinks.Content.Epoch(Topic.Epoch)">
+        <MudChip Label Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(Topic.Epoch)">
             @L[$"Epoch:{Topic.Epoch.ToFastString()}"]
         </MudChip>
 
-        <FavoriteToggleButton
+        <FavoriteButton
             IsFavorite="@UserActivity.IsFavorite"
             TopicId="@Topic.Id"
             OnFavoriteClick="@OnFavoriteClick"/>
     </aside>
 
     <article class="px-3">
-        <MudLink Href="@HistoryLinks.Content.Topic(Topic.Id)" Typo="Typo.h6">
+        <MudLink Href="@HistoryUrl.Content.Topic(Topic.Id)" Typo="Typo.h6">
             @Topic.Title
         </MudLink>
         <MudText Typo="Typo.body2" Class="pt-3">

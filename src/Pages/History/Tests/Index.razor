@@ -14,7 +14,7 @@
 <EduPage ShowFooter="false">
     <div class="background d-flex flex-column h-100">
         <EduContainer Class="pb-0">
-            <PageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs">
+            <EduPageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs">
                 <div>
                     <MudButton
                         DisableElevation
@@ -26,7 +26,7 @@
                         @L["Tests:Rules"]
                     </MudButton>
                 </div>
-            </PageHeader>
+            </EduPageHeader>
         </EduContainer>
         <ApiViewer Result="@_result" Context="context">
             <section class="grid pa-3 pa-sm-6">
@@ -50,7 +50,7 @@
                             {
                                 <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
                                     <div class="d-flex justify-center">
-                                        <HumanReadableNumber Typo="Typo.h6" Value="@item.Count"/>
+                                        <ReadableNumber Typo="Typo.h6" Value="@item.Count"/>
                                     </div>
                                 </InventoryInfoCard>
                             }
@@ -58,7 +58,7 @@
                     }
                     else
                     {
-                        <EmptyResult Title="@L["Inventory:EmptyTitle"]"/>
+                        <EduEmpty Title="@L["Inventory:EmptyTitle"]"/>
                     }
                 </section>
             </section>
@@ -71,7 +71,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, HistoryLinks.Root)
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
     };
 
     [Inject]
@@ -97,7 +97,7 @@
         _result = await TestService.GetTestBuilderAsync(TopicId);
 
         if (_result.IsFailed && _result.Error.IsTestAlreadyCreated(out var id))
-            Navigation.NavigateTo(HistoryLinks.TopicTest.Test(id));
+            Navigation.NavigateTo(HistoryUrl.TopicTest.Test(id));
     }
 
     private Task OnCreateTestAsync(CreateEpochTestRequest request) =>
@@ -111,7 +111,7 @@
         var response = await call();
 
         if (response.IsSuccess)
-            Navigation.NavigateTo(HistoryLinks.TopicTest.Test(response.Data.Id));
+            Navigation.NavigateTo(HistoryUrl.TopicTest.Test(response.Data.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
     }

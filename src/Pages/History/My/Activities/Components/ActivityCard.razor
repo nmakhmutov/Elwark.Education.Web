@@ -1,6 +1,5 @@
 @using ApexCharts
 @using Education.Web.Services.History.User.Model
-@implements IDisposable
 
 <MudCard Class="@Class" Elevation="0">
     <MudCardHeader Class="pb-0 px-3 pt-3 px-sm-6 pt-sm-6">
@@ -63,14 +62,14 @@
 </MudCard>
 
 @code {
-    private ApexChart<ProgressStatisticsModel.Progress> _chart = default!;
+    private ApexChart<ProgressStatisticsModel.Progress>? _chart;
     private ApexChartOptions<ProgressStatisticsModel.Progress> _options = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [Inject]
-    private ThemeService ThemeService { get; set; } = default!;
+    [CascadingParameter]
+    private EduThemeProvider? ThemeProvider { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
@@ -103,24 +102,11 @@
             },
             Theme = new Theme
             {
-                Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light
+                Mode = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light
             }
         };
 
-        ThemeService.OnChanged += Update;
-    }
-
-    public void Dispose() =>
-        ThemeService.OnChanged -= Update;
-
-    private void Update()
-    {
-        _ = InvokeAsync(async () =>
-        {
-            _options.Theme.Mode = ThemeService.IsDarkMode ? Mode.Dark : Mode.Light;
-            await _chart.RenderAsync();
-            StateHasChanged();
-        });
+        InvokeAsync(() => _chart?.RenderAsync() ?? Task.CompletedTask);
     }
 
 }

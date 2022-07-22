@@ -1,7 +1,7 @@
 @using Education.Web.Services.History.Test.Model
 <EduContainer MaxWidth="EduWidth.W1280">
     <div class="mb-3">
-        <MudLink Href="@HistoryLinks.User.MyMixedTests" Typo="Typo.h5">
+        <MudLink Href="@HistoryUrl.User.MyMixedTests" Typo="Typo.h5">
             @L["Statistics"]
         </MudLink>
     </div>
@@ -21,7 +21,7 @@
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="@L["Topic"]">
-                <MudLink Href="@HistoryLinks.Content.Topic(context.Topic.Id)">
+                <MudLink Href="@HistoryUrl.Content.Topic(context.Topic.Id)">
                     @context.Topic.Title
                 </MudLink>
             </MudTd>

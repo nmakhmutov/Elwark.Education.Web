@@ -5,7 +5,6 @@
 @using Education.Web.Services.History.Topic.Model
 @using Education.Web.Services.Model.Content
 @using Align = MudBlazor.Align
-@implements IDisposable
 
 <header class="background" style="@_style">
     <section class="d-flex flex-column justify-center align-center h-100">
@@ -163,8 +162,8 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [Inject]
-    private ThemeService ThemeService { get; set; } = default!;
+    [CascadingParameter]
+    private EduThemeProvider? ThemeProvider { get; set; }
 
     [Parameter, EditorRequired]
     public EmpireTopicDetailModel Empire { get; set; } = default!;
@@ -195,16 +194,10 @@
 
     protected override void OnParametersSet() =>
         BackgroundChanger();
-
-    protected override void OnInitialized() =>
-        ThemeService.OnChanged += BackgroundChanger;
-
-    public void Dispose() =>
-        ThemeService.OnChanged -= BackgroundChanger;
-
+    
     private void BackgroundChanger()
     {
-        var overlay = $"--mud-palette-overlay-{(ThemeService.IsDarkMode ? "dark" : "light")}";
+        var overlay = $"--mud-palette-overlay-{(ThemeProvider?.IsDarkMode == true ? "dark" : "light")}";
 
         _style = StyleBuilder
             .Default("background", $"linear-gradient(0deg, var(--mud-palette-background) 5%, var({overlay}) 100%), url('{Empire.ImageUrl}')")

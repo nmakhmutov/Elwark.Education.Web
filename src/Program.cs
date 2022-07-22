@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
 using Education.Web;
 using Education.Web.Components.Customer;
-using Education.Web.Hubs.Notification;
 using Education.Web.Services;
 using Education.Web.Services.Api;
 using Education.Web.Services.Customer;
@@ -13,6 +12,7 @@ using Education.Web.Services.History.Leaderboard;
 using Education.Web.Services.History.Test;
 using Education.Web.Services.History.Topic;
 using Education.Web.Services.History.User;
+using Education.Web.Services.Notification;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -70,28 +70,27 @@ builder.Services
 builder.Services
     .AddScoped<ApiClient>()
     .AddScoped<ICustomerService, CustomerService>()
+    .AddScoped<INotificationService, NotificationService>()
     .AddScoped<IHistoryEventGuesserService, HistoryEventGuesserService>()
     .AddScoped<IHistoryService, HistoryService>()
     .AddScoped<IHistoryLeaderboardService, HistoryLeaderboardService>()
     .AddScoped<IHistoryTestService, HistoryTestService>()
     .AddScoped<IHistoryTopicService, HistoryTopicService>()
-    .AddScoped<IHistoryUserService, HistoryUserService>();
-
-builder.Services
-    .AddScoped<ThemeService>()
-    .AddScoped<SidebarService>()
-    .AddScoped<LanguageService>()
-    .AddScoped<TopicContentFormatService>()
-    .AddScoped<NotificationService>()
-    .AddScoped<CustomerStateProvider>()
-    .AddScoped<LocalizationHandler>()
+    .AddScoped<IHistoryUserService, HistoryUserService>()
     .AddScoped(provider =>
     {
         var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
         var stateProvider = provider.GetRequiredService<AuthenticationStateProvider>();
 
-        return new NotificationHub(builder.Configuration.GetValue<Uri>("Urls:Hub")!, tokenProvider, stateProvider);
-    })
+        return new CustomerHab(builder.Configuration.GetValue<Uri>("Urls:Hub")!, tokenProvider, stateProvider);
+    });
+
+builder.Services
+    .AddScoped<SidebarService>()
+    .AddScoped<LanguageService>()
+    .AddScoped<TopicContentFormatService>()
+    .AddScoped<CustomerStateProvider>()
+    .AddScoped<LocalizationHandler>()
     .AddScoped<AuthorizationMessageHandler>(provider =>
     {
         var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();

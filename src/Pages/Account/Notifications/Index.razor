@@ -1,9 +1,9 @@
 @using Education.Web.Pages.History
 @using Education.Web.Pages.Account.Components
 @using System.Diagnostics.CodeAnalysis
-@using Education.Web.Services.Customer
-@using Education.Web.Services.Customer.Model
-@using Education.Web.Services.Customer.Request
+@using Education.Web.Services.Notification
+@using Education.Web.Services.Notification.Model
+@using Education.Web.Services.Notification.Request
 
 @page "/account/my/notifications"
 @layout MainLayout
@@ -13,7 +13,7 @@
 <EduPage ShowFooter="@_result.IsLoaded">
 
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <PageHeader Title="@L["Notifications"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Title="@L["Notifications"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
 
     <EduContainer MaxWidth="EduWidth.W1920">
@@ -86,24 +86,21 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, AccountLinks.Root)
+        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root)
     };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private NotificationService NotificationService { get; set; } = default!;
-
-    [Inject]
-    private ICustomerService CustomerService { get; set; } = default!;
+    private INotificationService NotificationService { get; set; } = default!;
 
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await CustomerService.GetAsync(_request);
+        _result = await NotificationService.GetAsync(_request);
         if (_result.IsSuccess)
         {
             _notifications.AddRange(_result.Data.Items);
@@ -117,7 +114,7 @@
             return;
 
         _isMoreLoading = true;
-        var response = await CustomerService.GetAsync(_request);
+        var response = await NotificationService.GetAsync(_request);
         if (response.IsFailed)
             _result = response;
 
@@ -129,14 +126,13 @@
     private Task MarkAsReadAsync(string id)
     {
         _notifications.RemoveAll(x => x.Id == id);
-        NotificationService.Update(_notifications);
-        return CustomerService.MarkNotificationAsReadAsync(id);
+        return NotificationService.MarkAsReadAsync(id);
     }
 
     private static bool TryGetLink(string subject, [MaybeNullWhen(false)] out string link)
     {
         link = subject switch {
-            "History" => HistoryLinks.Root,
+            "History" => HistoryUrl.Root,
             _ => null
             };
 

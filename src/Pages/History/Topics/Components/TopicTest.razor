@@ -2,7 +2,7 @@
 <section class="@Class mud-paper pa-3 pa-sm-6">
     @if (HasTest && UserActivity.PassedTests > 0)
     {
-        <MudLink Typo="Typo.subtitle2" Href="@HistoryLinks.User.MyTopic(TopicId)">
+        <MudLink Typo="Typo.subtitle2" Href="@HistoryUrl.User.MyTopic(TopicId)">
             @L["Test:MyProgress"]
         </MudLink>
     }
@@ -13,7 +13,10 @@
         </MudText>
     }
 
-    <TopicProgressView PassedTests="@UserActivity.PassedTests" TimeSpent="@UserActivity.TimeSpent" Class="pt-3 pb-3 pb-sm-6"/>
+    <TopicProgressView
+        PassedTests="@UserActivity.PassedTests"
+        TimeSpent="@UserActivity.TimeSpent"
+        Class="pt-3 pb-3 pb-sm-6"/>
 
     @if (HasTest)
     {
@@ -22,7 +25,7 @@
             DisableElevation
             Variant="Variant.Filled"
             Color="Color.Primary"
-            Link="@HistoryLinks.TopicTest.Index(TopicId)">
+            Link="@HistoryUrl.TopicTest.Index(TopicId)">
             @L["Test:Pass"]
         </MudButton>
     }
@@ -32,16 +35,17 @@
 
     [Inject]
     public IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
     public string TopicId { get; set; } = default!;
-    
+
     [Parameter, EditorRequired]
     public UserActivityOverviewModel UserActivity { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public bool HasTest { get; set; }
+
 }

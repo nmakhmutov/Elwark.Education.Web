@@ -78,8 +78,8 @@
                                     <MudText Typo="Typo.subtitle1">@result.User.FullName</MudText>
                                 </Name>
                                 <Experience>
-                                    <MudIcon Icon="@EducationIcons.Experience" Class="mr-3"/>
-                                    <HumanReadableNumber Value="@result.User.Experience" Typo="Typo.h6"/>
+                                    <MudIcon Icon="@EduIcons.Experience" Class="mr-3"/>
+                                    <ReadableNumber Value="@result.User.Experience" Typo="Typo.h6"/>
                                 </Experience>
                             </RegularRanking>
                         }
@@ -128,15 +128,15 @@
                             <MudText Typo="Typo.subtitle1">@user.FullName</MudText>
                         </Name>
                         <Experience>
-                            <MudIcon Icon="@EducationIcons.Experience" Class="mr-3"/>
-                            <HumanReadableNumber Value="@user.Experience" Typo="Typo.h6"/>
+                            <MudIcon Icon="@EduIcons.Experience" Class="mr-3"/>
+                            <ReadableNumber Value="@user.Experience" Typo="Typo.h6"/>
                         </Experience>
                     </RegularRanking>
                 </Virtualize>
             }
             else
             {
-                <EmptyResult
+                <EduEmpty
                     Title="@L["Leaderboard:EmptyContestantsTitle"]"
                     Subtitle="@L["Leaderboard:EmptyContestantsSubtitle"]"/>
             }

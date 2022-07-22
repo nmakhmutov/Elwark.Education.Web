@@ -1,0 +1,29 @@
+<ul class="@Class">
+    @foreach (var (title, value, color) in Items)
+    {
+        <li class="row">
+            @if (!string.IsNullOrEmpty(color))
+            {
+                <span class="dot" style="background-color: @color"></span>
+            }
+            <MudText Typo="Typo.subtitle1">
+                @title
+            </MudText>
+            <div class="ml-auto">
+                <ReadableNumber Value="@value"/>
+            </div>
+        </li>
+    }
+</ul>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public Item[] Items { get; set; } = Array.Empty<Item>();
+
+    public sealed record Item(string Title, object Value, string? Color);
+
+}

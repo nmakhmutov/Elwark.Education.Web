@@ -17,10 +17,13 @@ public static class StatisticsExtensions
     public static ProgressList.Item[] GetProgress(this NumberOfTestsContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
-            new(l["NumberOfTests:Successful"], contrast.Successful.Current.ToReadable(), contrast.Successful.Difference),
+            new(l["NumberOfTests:Successful"], contrast.Successful.Current.ToReadable(),
+                contrast.Successful.Difference),
             new(l["NumberOfTests:Failed"], contrast.Failed.Current.ToReadable(), contrast.Failed.Difference),
-            new(l["NumberOfTests:MistakesExceeded"], contrast.MistakesExceeded.Current.ToReadable(), contrast.MistakesExceeded.Difference),
-            new(l["NumberOfTests:TimeExceeded"], contrast.TimeExceeded.Current.ToReadable(), contrast.TimeExceeded.Difference),
+            new(l["NumberOfTests:MistakesExceeded"], contrast.MistakesExceeded.Current.ToReadable(),
+                contrast.MistakesExceeded.Difference),
+            new(l["NumberOfTests:TimeExceeded"], contrast.TimeExceeded.Current.ToReadable(),
+                contrast.TimeExceeded.Difference),
             new(l["NumberOfTests:Total"], contrast.Total.Current.ToReadable(), contrast.Total.Difference)
         };
 
@@ -51,7 +54,7 @@ public static class StatisticsExtensions
             new(l["TimeSpent:Average"], contrast.Average.Current.ToSimpleFormat(), contrast.Average.Difference),
             new(l["TimeSpent:Total"], contrast.Total.Current.ToSimpleFormat(), contrast.Total.Difference)
         };
-
+    
     private static string RangeTitle(DateOnly starts, DateOnly ends) =>
         $"{starts:dd MMM} ― {ends:dd MMM}";
 }

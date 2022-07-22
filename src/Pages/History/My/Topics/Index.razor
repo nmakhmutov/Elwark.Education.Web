@@ -33,7 +33,7 @@
                     </div>
                 </MudPaper>
 
-                @RenderHeader(L["Tests:Easy"], HistoryLinks.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero)
+                @RenderHeader(L["Tests:Easy"], HistoryUrl.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero)
                 <EduFitGrid>
                     <SkeletonCard/>
                     <SkeletonCard/>
@@ -41,7 +41,7 @@
                 </EduFitGrid>
 
                 <div class="py-6"></div>
-                @RenderHeader(L["Tests:Hard"], HistoryLinks.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero)
+                @RenderHeader(L["Tests:Hard"], HistoryUrl.User.MyEasyTests, L["TimeSpent"], TimeSpan.Zero)
                 <EduFitGrid>
                     <SkeletonCard/>
                     <SkeletonCard/>
@@ -57,7 +57,7 @@
                             <img src="@result.Topic.ThumbnailUrl" alt="@result.Topic.Title" loading="lazy"/>
                         </div>
                         <div class="d-flex flex-column justify-space-between">
-                            <MudLink Class="mt-3 mt-sm-0" Typo="Typo.h5" Href="@HistoryLinks.Content.Topic(result.Topic.Id)">
+                            <MudLink Class="mt-3 mt-sm-0" Typo="Typo.h5" Href="@HistoryUrl.Content.Topic(result.Topic.Id)">
                                 @result.Topic.Title
                             </MudLink>
                             <Breadcrumbs Items="@_breadcrumbs" Class="pa-0 mt-3"/>
@@ -69,7 +69,7 @@
                     <div>
                         <div class="d-flex justify-space-between mb-3">
                             <div class="d-flex align-center mr-3">
-                                <MudIcon Icon="@EducationIcons.Tests" Size="Size.Small" Class="mr-3"/>
+                                <MudIcon Icon="@EduIcons.Tests" Size="Size.Small" Class="mr-3"/>
                                 <MudText Typo="Typo.body2">
                                     @L["NumberOfTests:TotalPassed"]
                                 </MudText>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="d-flex justify-space-between mb-3">
                             <div class="d-flex align-center mr-3">
-                                <MudIcon Icon="@EducationIcons.Score" Size="Size.Small" Class="mr-3"/>
+                                <MudIcon Icon="@EduIcons.Score" Size="Size.Small" Class="mr-3"/>
                                 <MudText Typo="Typo.body2">
                                     @L["Score:Total"]
                                 </MudText>
@@ -91,7 +91,7 @@
                         </div>
                         <div class="d-flex justify-space-between mb-3">
                             <div class="d-flex align-center mr-3">
-                                <MudIcon Icon="@EducationIcons.Questions" Size="Size.Small" Class="mr-3"/>
+                                <MudIcon Icon="@EduIcons.Questions" Size="Size.Small" Class="mr-3"/>
                                 <MudText Typo="Typo.body2">
                                     @L["Questions:Total"]
                                 </MudText>
@@ -102,7 +102,7 @@
                         </div>
                         <div class="d-flex justify-space-between mb-3">
                             <div class="d-flex align-center mr-3">
-                                <MudIcon Icon="@EducationIcons.TimeSpent" Size="Size.Small" Class="mr-3"/>
+                                <MudIcon Icon="@EduIcons.TimeSpent" Size="Size.Small" Class="mr-3"/>
                                 <MudText Typo="Typo.body2">
                                     @L["TimeSpent:Total"]
                                 </MudText>
@@ -114,7 +114,7 @@
                     </div>
                 </MudPaper>
 
-                @RenderHeader(L["Tests:Easy"], HistoryLinks.User.MyEasyTests, L["TimeSpent"], result.EasyTest.TimeSpent)
+                @RenderHeader(L["Tests:Easy"], HistoryUrl.User.MyEasyTests, L["TimeSpent"], result.EasyTest.TimeSpent)
                 <EduFitGrid Class="mb-3 mb-sm-6">
                     <StatisticsCard Title="@L["Tests"]" Value="@result.EasyTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.EasyTest.NumberOfTests"/>
@@ -155,7 +155,7 @@
                 }
 
                 <div class="py-6"></div>
-                @RenderHeader(L["Tests:Hard"], HistoryLinks.User.MyHardTests, L["TimeSpent"], result.HardTest.TimeSpent)
+                @RenderHeader(L["Tests:Hard"], HistoryUrl.User.MyHardTests, L["TimeSpent"], result.HardTest.TimeSpent)
                 <EduFitGrid Class="mb-3 mb-sm-6">
                     <StatisticsCard Title="@L["Tests"]" Value="@result.HardTest.NumberOfTests.Total">
                         <NumberOfTestChart Value="@result.HardTest.NumberOfTests"/>
@@ -223,8 +223,8 @@
         if (_result.IsSuccess)
             _breadcrumbs = new List<BreadcrumbItem>
             {
-                new(L["Subject:History"].Value, HistoryLinks.Root),
-                new(L[$"Epoch:{_result.Data.Topic.Epoch.ToFastString()}"].Value, HistoryLinks.Content.Epoch(_result.Data.Topic.Epoch))
+                new(L["Subject:History"].Value, HistoryUrl.Root),
+                new(L[$"Epoch:{_result.Data.Topic.Epoch.ToFastString()}"].Value, HistoryUrl.Content.Epoch(_result.Data.Topic.Epoch))
             };
     }
 
@@ -240,7 +240,7 @@
                     </MudText>
                 </MudTooltip>
                 <MudAvatar Color="Color.Primary" Size="Size.Medium">
-                    <MudIcon Icon="@EducationIcons.TimeSpent" Size="Size.Medium"/>
+                    <MudIcon Icon="@EduIcons.TimeSpent" Size="Size.Medium"/>
                 </MudAvatar>
             </div>
         </div>;

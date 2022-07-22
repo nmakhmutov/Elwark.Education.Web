@@ -36,7 +36,7 @@
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="@L["Topic"]">
-                        <MudLink Href="@HistoryLinks.Content.Topic(context.Topic.Id)">
+                        <MudLink Href="@HistoryUrl.Content.Topic(context.Topic.Id)">
                             @context.Topic.Title
                         </MudLink>
                     </MudTd>
@@ -64,7 +64,7 @@
                         <MudText Typo="Typo.subtitle1">
                             @L["EventGuesser:TotalScore"]: @conclusion.Score
                         </MudText>
-                        <MudIcon Icon="@EducationIcons.Score" Class="ml-1" Size="Size.Small" Color="Color.Primary"/>
+                        <MudIcon Icon="@EduIcons.Score" Class="ml-1" Size="Size.Small" Color="Color.Primary"/>
                     </div>
                 </PagerContent>
             </MudTable>
@@ -94,7 +94,7 @@
         if (_result.IsFailed)
         {
             if (_result.Error.IsEventGuesserNotFound())
-                Navigation.NavigateTo(HistoryLinks.EventGuesser.Index);
+                Navigation.NavigateTo(HistoryUrl.EventGuesser.Index);
             
             return;
         }

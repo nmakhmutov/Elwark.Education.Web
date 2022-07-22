@@ -67,7 +67,7 @@
             _progress = Math.Round((double)_result.Data.UserScore.Total / _result.Data.MaxScore.Total * 100);
 
         if (_result.IsFailed && _result.Error.IsTestNotFound())
-            Navigation.NavigateTo(HistoryLinks.TopicTest.Index());
+            Navigation.NavigateTo(HistoryUrl.TopicTest.Index());
     }
 
     private static Severity GetColor(ConclusionStatus status) =>

@@ -30,15 +30,15 @@
             </header>
             <footer class="progress">
                 <div class="d-flex flex-row mb-1">
-                    <HumanReadableNumber Value="@achievement.Score" Typo="Typo.subtitle2"/>
+                    <ReadableNumber Value="@achievement.Score" Typo="Typo.subtitle2"/>
                     <span>/</span>
-                    <HumanReadableNumber Value="@achievement.Threshold" Typo="Typo.subtitle2"/>
+                    <ReadableNumber Value="@achievement.Threshold" Typo="Typo.subtitle2"/>
                 </div>
                 <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
                 <div class="d-flex flex-row">
                     @foreach (var reward in achievement.Rewards)
                     {
-                        <InternalMoneyText Class="mr-3" Money="@reward" Horizontal/>
+                        <InternalMoney Class="mr-3" Money="@reward" Horizontal/>
                     }
                 </div>
             </footer>
@@ -58,7 +58,7 @@
                 <div class="d-flex flex-row">
                     @foreach (var reward in achievement.Rewards)
                     {
-                        <InternalMoneyText Class="mr-3" Money="@reward" Horizontal/>
+                        <InternalMoney Class="mr-3" Money="@reward" Horizontal/>
                     }
                 </div>
             </footer>
@@ -76,7 +76,7 @@
 </section>
 
 @code {
-    private string _icon = EducationIcons.Achievements;
+    private string _icon = EduIcons.Achievements;
     private string _background = "black white-text";
 
     [Inject]
@@ -101,10 +101,10 @@
 
         _icon = Achievement switch {
         {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTests", Name: "Successful"} => 
-            EducationIcons.Tests,
+            EduIcons.Tests,
             
         {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTests", Name: "Score"} =>
-            EducationIcons.Score,
+            EduIcons.Score,
             
         {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTests", Name: "Experience"} =>
             Icons.Outlined.VerifiedUser,
@@ -125,7 +125,7 @@
             Icons.Outlined.ManageSearch,
             
         {Category: "EventGuesser", Name: "Points"} =>
-            EducationIcons.Score,
+            EduIcons.Score,
             
         {Category: "EventGuesser", Name: "Bonus"} =>
             Icons.Outlined.AccessTimeFilled,
@@ -133,7 +133,7 @@
         {Category: "EventGuesser", Name: "WithoutMistake"} =>
             Icons.Outlined.AddTask,
             
-            _ => EducationIcons.Achievements
+            _ => EduIcons.Achievements
             };
     }
 

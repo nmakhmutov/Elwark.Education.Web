@@ -11,7 +11,7 @@
 
 <EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <PageHeader Title="@L["Test:MyActivity"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Title="@L["Test:MyActivity"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
     <ApiViewer Result="@_result" Context="activity">
         <EduContainer MaxWidth="EduWidth.W1920">
@@ -19,25 +19,25 @@
                 <TestCard
                     Class="easy-test"
                     Title="@L["Tests:Easy"]"
-                    Href="@HistoryLinks.User.MyEasyTests"
+                    Href="@HistoryUrl.User.MyEasyTests"
                     Value="@activity.EasyTests"/>
 
                 <TestCard
                     Class="hard-test"
                     Title="@L["Tests:Hard"]"
-                    Href="@HistoryLinks.User.MyHardTests"
+                    Href="@HistoryUrl.User.MyHardTests"
                     Value="@activity.HardTests"/>
 
                 <TestCard
                     Class="mixed-test"
                     Title="@L["Tests:Mixed"]"
-                    Href="@HistoryLinks.User.MyMixedTests"
+                    Href="@HistoryUrl.User.MyMixedTests"
                     Value="@activity.MixedTests"/>
 
                 <TestCard
                     Class="event-guesser"
                     Title="@L["EventGuesser"]"
-                    Href="@HistoryLinks.User.MyEventGuessers"
+                    Href="@HistoryUrl.User.MyEventGuessers"
                     Value="@activity.EventGuessers"/>
 
                 <ActivityCard
@@ -63,7 +63,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile)
     };
 
     private ApiResult<ProgressStatisticsModel> _result = ApiResult<ProgressStatisticsModel>.Loading();

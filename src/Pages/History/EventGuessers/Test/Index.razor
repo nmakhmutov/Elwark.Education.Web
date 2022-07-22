@@ -10,14 +10,14 @@
 
 <EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer>
-        <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
     <ApiViewer Result="@_result">
         <EduContainer MaxWidth="EduWidth.W960">
             <div class="header">
                 <div class="header-score">
                     <div class="d-flex flex-row align-center">
-                        <MudIcon Icon="@EducationIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
+                        <MudIcon Icon="@EduIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
                         <MudText Typo="Typo.subtitle1">
                             @_score
                         </MudText>
@@ -31,7 +31,7 @@
                     @if (_x2BonusUntil > DateTime.UtcNow)
                     {
                         <div class="d-flex flex-row justify-end align-center">
-                            <MudIcon Icon="@EducationIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
+                            <MudIcon Icon="@EduIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
                             <MudText Typo="Typo.subtitle1">
                                 @L["EventGuesser:Bonus"]
                             </MudText>
@@ -71,8 +71,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, HistoryLinks.Root),
-        new BreadcrumbItem(L["EventGuesser"].Value, HistoryLinks.EventGuesser.Index)
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["EventGuesser"].Value, HistoryUrl.EventGuesser.Index)
     };
 
     [Inject]
@@ -96,7 +96,7 @@
         if (_result.IsFailed)
         {
             if (_result.Error.IsEventGuesserNotFound())
-                Navigation.NavigateTo(HistoryLinks.EventGuesser.Conclusion(Id));
+                Navigation.NavigateTo(HistoryUrl.EventGuesser.Conclusion(Id));
 
             return;
         }
@@ -122,7 +122,7 @@
 
         if (result.Data.Question is null)
         {
-            Navigation.NavigateTo(HistoryLinks.EventGuesser.Conclusion(Id));
+            Navigation.NavigateTo(HistoryUrl.EventGuesser.Conclusion(Id));
             return;
         }
 

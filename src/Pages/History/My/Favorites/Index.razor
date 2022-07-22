@@ -11,7 +11,7 @@
 <PageTitle>@L["Favorites"]</PageTitle>
 <EduPage ShowFooter>
     <EduContainer MaxWidth="EduWidth.W1920">
-        <PageHeader Title="@L["Favorites"]" Breadcrumbs="@Breadcrumbs">
+        <EduPageHeader Title="@L["Favorites"]" Breadcrumbs="@Breadcrumbs">
             @if (!_isEmpty)
             {
                 <div>
@@ -25,18 +25,18 @@
                     </MudSelect>
                 </div>
             }
-        </PageHeader>
+        </EduPageHeader>
     </EduContainer>
     @if (_isLoading)
     {
-        <PageSpinner/>
+        <Spinner/>
     }
     else
     {
         <EduContainer MaxWidth="EduWidth.W1920">
             @if (_isEmpty)
             {
-                <EmptyResult
+                <EduEmpty
                     Class="grid-full-row"
                     Title="@L["Favorites:EmptyTitle"]"
                     Subtitle="@L["Favorites:EmptySubtitle"]"/>
@@ -72,21 +72,21 @@
                             <MudAvatar Size="Size.Large" Image="@item.Topic.ThumbnailUrl"/>
                         </div>
                         <div class="title">
-                            <MudLink Href="@HistoryLinks.Content.Topic(item.Topic.Id)">
+                            <MudLink Href="@HistoryUrl.Content.Topic(item.Topic.Id)">
                                 @item.Topic.Title
                             </MudLink>
                         </div>
                         <div class="epoch">
-                            <MudChip Label Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@HistoryLinks.Content.Epoch(item.Topic.Epoch)">
+                            <MudChip Label Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(item.Topic.Epoch)">
                                 @L[$"Epoch:{item.Topic.Epoch.ToFastString()}"]
                             </MudChip>
                         </div>
                         <div class="rating">
-                            <RatingStars Rating="@item.Topic.Rating" ShowDetails Class="d-inline-flex flex-column align-center"/>
+                            <TopicRating Rating="@item.Topic.Rating" ShowDetails Class="d-inline-flex flex-column align-center"/>
                         </div>
                         <div class="passed-test">
                             <div class="d-flex align-center">
-                                <MudIcon Icon="@EducationIcons.Tests" Size="Size.Small" Class="mr-1"/>
+                                <MudIcon Icon="@EduIcons.Tests" Size="Size.Small" Class="mr-1"/>
                                 <MudText Typo="Typo.body2">
                                     @item.Activity.PassedTests.ToReadable()
                                 </MudText>
@@ -94,7 +94,7 @@
                         </div>
                         <div class="time-spent">
                             <div class="d-flex align-center">
-                                <MudIcon Icon="@EducationIcons.TimeSpent" Size="Size.Small" Class="mr-1"/>
+                                <MudIcon Icon="@EduIcons.TimeSpent" Size="Size.Small" Class="mr-1"/>
                                 <MudText Typo="Typo.body2">
                                     @item.Activity.TimeSpent.ToSimpleFormat()
                                 </MudText>
@@ -105,11 +105,11 @@
                             {
                                 <MudTooltip Text="@L["Button:Details"]">
                                     <MudIconButton
-                                        Link="@HistoryLinks.User.MyTopic(item.Topic.Id)"
+                                        Link="@HistoryUrl.User.MyTopic(item.Topic.Id)"
                                         Icon="@Icons.Outlined.RemoveRedEye"/>
                                 </MudTooltip>
                             }
-                            <FavoriteToggleButton
+                            <FavoriteButton
                                 IsFavorite="@item.Activity.IsFavorite"
                                 TopicId="@item.Topic.Id"
                                 OnFavoriteClick="@OnFavoriteClick"/>
@@ -131,7 +131,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile)
     };
 
     [Inject]

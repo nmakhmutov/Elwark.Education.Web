@@ -3,21 +3,21 @@
 @using MudBlazor.Utilities
 <section class="@_class">
     <header class="card-header">
-        <a href="@HistoryLinks.Content.Topic(Id)">
+        <a href="@HistoryUrl.Content.Topic(Id)">
             <img src="@Image" alt="@Title" loading="lazy"/>
         </a>
         <div class="rating-container">
-            <RatingStars Rating="@Rating" ShowTooltip/>
+            <TopicRating Rating="@Rating" ShowTooltip/>
         </div>
     </header>
 
     <article class="pa-3">
         <div class="mb-3">
-            <MudLink Href="@HistoryLinks.Content.Topic(Id)" Typo="Typo.h6">
+            <MudLink Href="@HistoryUrl.Content.Topic(Id)" Typo="Typo.h6">
                 @Title
             </MudLink>
         </div>
-        <MudChip Label Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@HistoryLinks.Content.Epoch(Epoch)">
+        <MudChip Label Class="ma-0" Size="Size.Small" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(Epoch)">
             @L[$"Epoch:{Epoch.ToFastString()}"]
         </MudChip>
 

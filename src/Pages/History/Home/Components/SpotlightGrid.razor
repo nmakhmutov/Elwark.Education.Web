@@ -4,20 +4,20 @@
     @foreach (var topic in Topics)
     {
         <article class="card">
-            <a href="@HistoryLinks.Content.Topic(topic.Id)" class="card-link"></a>
+            <a href="@HistoryUrl.Content.Topic(topic.Id)" class="card-link"></a>
             <img src="@topic.ThumbnailUrl" alt="@topic.Title" loading="lazy" class="image">
             <div class="text-wrapper">
                 <h2 class="title">@topic.Title</h2>
                 <p class="overview">@topic.Overview</p>
                 <div class="d-flex flex-wrap justify-space-between align-center">
-                    <RatingStars Rating="@topic.Rating"/>
+                    <TopicRating Rating="@topic.Rating"/>
                     <MudChip
                         Label
                         DisableRipple="false"
                         Class="chip"
                         Color="Color.Primary"
                         Size="Size.Small"
-                        Link="@HistoryLinks.Content.Epoch(topic.Epoch)">
+                        Link="@HistoryUrl.Content.Epoch(topic.Epoch)">
                         @L[$"Epoch:{topic.Epoch.ToFastString()}"]
                     </MudChip>
                 </div>

@@ -14,18 +14,16 @@
         <div class="grid">
             <section class="inventory">
                 <ApiViewer Result="@_result" Context="data">
-                    <ChildContent>
-                        <InventoryGrid>
-                            @foreach (var item in data.Inventory.Items)
-                            {
-                                <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
-                                    <div class="d-flex justify-center">
-                                        <HumanReadableNumber Typo="Typo.h6" Value="@item.Count"/>
-                                    </div>
-                                </InventoryInfoCard>
-                            }
-                        </InventoryGrid>
-                    </ChildContent>
+                    <InventoryGrid>
+                        @foreach (var item in data.Inventory.Items)
+                        {
+                            <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
+                                <div class="d-flex justify-center">
+                                    <ReadableNumber Typo="Typo.h6" Value="@item.Count"/>
+                                </div>
+                            </InventoryInfoCard>
+                        }
+                    </InventoryGrid>
                 </ApiViewer>
             </section>
 
@@ -43,7 +41,7 @@
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() => 
+    protected override async Task OnInitializedAsync() =>
         _result = await UserService.GetInventoryAsync();
 
 }

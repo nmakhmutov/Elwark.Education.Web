@@ -12,7 +12,7 @@
 
 <EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer Class="pb-0">
-        <PageHeader Title="@L["Tests:Easy"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Title="@L["Tests:Easy"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
     <ApiViewer Result="@_result" Context="result">
         <EduContainer>
@@ -87,7 +87,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile)
     };
 
     [Inject]

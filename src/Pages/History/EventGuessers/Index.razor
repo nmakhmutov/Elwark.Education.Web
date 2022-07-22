@@ -14,7 +14,7 @@
 <EduPage ShowFooter="false">
     <div class="background d-flex flex-column h-100">
         <EduContainer Class="pb-0">
-            <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs">
+            <EduPageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs">
                 <div>
                     <MudButton
                         DisableElevation
@@ -26,7 +26,7 @@
                         @L["EventGuesser:Rules"]
                     </MudButton>
                 </div>
-            </PageHeader>
+            </EduPageHeader>
         </EduContainer>
         <ApiViewer Result="@_result" Context="context">
             <section class="grid pa-3 pa-sm-6">
@@ -66,7 +66,7 @@
                             {
                                 <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
                                     <div class="d-flex justify-center">
-                                        <HumanReadableNumber Typo="Typo.h6" Value="@item.Count"/>
+                                        <ReadableNumber Typo="Typo.h6" Value="@item.Count"/>
                                     </div>
                                 </InventoryInfoCard>
                             }
@@ -74,7 +74,7 @@
                     }
                     else
                     {
-                        <EmptyResult Title="@L["Inventory:EmptyTitle"]"/>
+                        <EduEmpty Title="@L["Inventory:EmptyTitle"]"/>
                     }
                 </section>
             </section>
@@ -90,7 +90,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, HistoryLinks.Root)
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
     };
 
     [Inject]
@@ -115,7 +115,7 @@
             _test = _result.Data.Tests.FirstOrDefault(x => x.IsAllowed)?.Name ?? string.Empty;
 
         if (_result.IsFailed && _result.Error.IsTestAlreadyCreated(out var id))
-            Navigation.NavigateTo(HistoryLinks.EventGuesser.Test(id));
+            Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(id));
     }
 
     private async Task CreateTestAsync()
@@ -124,7 +124,7 @@
 
         var response = await EventGuesserService.CreateAsync(new CreateRequest(_test, _epoch));
         if (response.IsSuccess)
-            Navigation.NavigateTo(HistoryLinks.EventGuesser.Test(response.Data.Id));
+            Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(response.Data.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
 

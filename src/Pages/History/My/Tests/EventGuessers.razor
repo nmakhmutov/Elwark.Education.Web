@@ -12,7 +12,7 @@
 
 <EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer Class="pb-0">
-        <PageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
     <ApiViewer Result="@_result" Context="result">
         <EduContainer>
@@ -47,7 +47,7 @@
                         <MudText Typo="Typo.h5">
                             @L["Tests"]
                         </MudText>
-                        <HumanReadableNumber Value="@result.Tests" Typo="Typo.h5"/>
+                        <ReadableNumber Value="@result.Tests" Typo="Typo.h5"/>
                     </MudStack>
                     <section>
                         <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
@@ -63,7 +63,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Profile"].Value, HistoryLinks.User.MyProfile)
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile)
     };
 
     private ApiResult<EventGuesserStatisticsModel> _result = ApiResult<EventGuesserStatisticsModel>.Loading();

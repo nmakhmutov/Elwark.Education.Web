@@ -15,7 +15,7 @@
             @Topic.Title
         </MudText>
 
-        <RatingStars Rating="@Topic.Rating" ShowDetails Class="d-flex align-center my-3"/>
+        <TopicRating Rating="@Topic.Rating" ShowDetails Class="d-flex align-center my-3"/>
 
         <MudText Typo="Typo.subtitle1" Class="mb-6">
             @Topic.Overview
@@ -25,7 +25,7 @@
             DisableElevation
             Variant="Variant.Filled" 
             Color="Color.Primary"
-            Link="@HistoryLinks.Content.Topic(Topic.Id)">
+            Link="@HistoryUrl.Content.Topic(Topic.Id)">
             @L["Button:Read"]
         </MudButton>
     </article>

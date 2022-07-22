@@ -64,7 +64,7 @@
         _isLoading = true;
         var result = await TopicService.GetRandomAsync(_epoch);
         if (result.IsSuccess)
-            Navigation.NavigateTo(HistoryLinks.Content.Topic(result.Data));
+            Navigation.NavigateTo(HistoryUrl.Content.Topic(result.Data));
 
         _isLoading = false;
     }

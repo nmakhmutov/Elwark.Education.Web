@@ -13,7 +13,7 @@
 </PageTitle>
 <EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer Class="pb-0">
-        <PageHeader Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
     <ApiViewer Result="_result" Context="topics">
         <EduContainer>
@@ -44,7 +44,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, HistoryLinks.Root)
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
     };
 
     [Inject]

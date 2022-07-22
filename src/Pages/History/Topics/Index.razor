@@ -93,8 +93,8 @@
             var epoch = _result.Data.Topic.Epoch;
             _breadcrumbs = new List<BreadcrumbItem>
             {
-                new(L["Subject:History"], HistoryLinks.Root),
-                new(L[$"Epoch:{epoch.ToFastString()}"], HistoryLinks.Content.Epoch(epoch))
+                new(L["Subject:History"], HistoryUrl.Root),
+                new(L[$"Epoch:{epoch.ToFastString()}"], HistoryUrl.Content.Epoch(epoch))
             };
         }
     }

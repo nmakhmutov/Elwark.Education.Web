@@ -10,7 +10,7 @@
 
 <EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <PageHeader Title="@L["GlobalLeaderboard:Name"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Title="@L["GlobalLeaderboard:Name"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
 
     <ApiViewer Result="@_result" Context="items">
@@ -56,14 +56,14 @@
                         <MudText Typo="Typo.subtitle1">@user.FullName</MudText>
                     </Name>
                     <Level>
-                        <MudIcon Icon="@EducationIcons.Level" Class="green-text text-darken-1 mr-3"/>
+                        <MudIcon Icon="@EduIcons.Level" Class="green-text text-darken-1 mr-3"/>
                         <MudText Typo="Typo.h6">
                             @user.Level
                         </MudText>
                     </Level>
                     <Experience>
-                        <MudIcon Icon="@EducationIcons.Experience" Class="mr-3"/>
-                        <HumanReadableNumber Value="@user.Experience" Typo="Typo.h6"/>
+                        <MudIcon Icon="@EduIcons.Experience" Class="mr-3"/>
+                        <ReadableNumber Value="@user.Experience" Typo="Typo.h6"/>
                     </Experience>
                 </RegularRanking>
             </Virtualize>
@@ -77,7 +77,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, HistoryLinks.Root)
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
     };
 
     [Inject]
