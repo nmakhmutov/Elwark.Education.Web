@@ -4,14 +4,14 @@
     <CascadingCustomerState>
         <Router AppAssembly="@typeof(App).Assembly">
             <Found Context="routeData">
-                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(BaseLayout)">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                     <Authorizing>
                         <PageSpinner/>
                     </Authorizing>
                     <NotAuthorized>
                         @if (!context.User.Identity?.IsAuthenticated ?? false)
                         {
-                            <RedirectTo Url="@CommonLinks.Root"/>
+                            <RedirectTo Url="@CommonLinks.LogIn(Navigation.Uri)"/>
                         }
                         else
                         {
@@ -37,6 +37,9 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+    
     [Inject]
     private ThemeService ThemeService { get; set; } = default!;
 

@@ -1,4 +1,6 @@
-@using Education.Web.Gateways.History
+@using Education.Web.Services.History.Topic
+@using Education.Web.Services.History
+
 <div class="background pa-6 pa-sm-16">
     <EduContainer MaxWidth="EduWidth.W960">
         <MudCard Elevation="0" Square>
@@ -44,7 +46,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryClient Client { get; set; } = default!;
+    private IHistoryTopicService TopicService { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
@@ -60,9 +62,9 @@
             return;
 
         _isLoading = true;
-        var result = await Client.Topic.GetRandomAsync(_epoch);
+        var result = await TopicService.GetRandomAsync(_epoch);
         if (result.IsSuccess)
-            Navigation.NavigateTo(HistoryLinks.Content.Topic(result.Data.Id));
+            Navigation.NavigateTo(HistoryLinks.Content.Topic(result.Data));
 
         _isLoading = false;
     }

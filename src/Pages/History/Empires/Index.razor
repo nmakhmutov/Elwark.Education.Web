@@ -1,12 +1,13 @@
+@using Education.Web.Pages.History.Components
+@using Education.Web.Services.History.Topic
+@using Education.Web.Services.History.Topic.Model
+@using Education.Web.Services.History.Topic.Request
+@using MudBlazor.Services
+
 @page "/history/empires"
 @layout HistoryLayout
-@attribute [Authorize]
-@using Education.Web.Gateways.History.Empires.Request
-@using Education.Web.Pages.History.Components
-@using MudBlazor.Services
-@using Education.Web.Gateways.History.Empires.Model
-@using Education.Web.Gateways.History
 @implements IAsyncDisposable
+@attribute [Authorize]
 
 <style>
     .mud-timeline-position-start::before {
@@ -119,7 +120,7 @@
     private IResizeListenerService ResizeListener { get; set; } = default!;
 
     [Inject]
-    private IHistoryClient HistoryClient { get; set; } = default!;
+    private IHistoryTopicService TopicService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -164,8 +165,7 @@
 
     private async ValueTask<ItemsProviderResult<EmpireOverview>> EmpiresProvider(ItemsProviderRequest request)
     {
-        var response = await HistoryClient.Empire
-            .GetAsync(new GetEmpiresRequest(_sort, request.StartIndex + 1, request.Count));
+        var response = await TopicService.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex + 1, request.Count));
 
         return response.IsSuccess
             ? new ItemsProviderResult<EmpireOverview>(response.Data.Items, (int)response.Data.Count)

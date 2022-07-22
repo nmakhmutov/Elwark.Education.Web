@@ -1,7 +1,7 @@
 using Education.Web.Extensions;
-using Education.Web.Gateways.History.Users.Model;
-using Education.Web.Gateways.Models.Statistics;
 using Education.Web.Pages.History.My.Tests.Components;
+using Education.Web.Services.History.User.Model;
+using Education.Web.Services.Model.Statistics;
 using Microsoft.Extensions.Localization;
 
 namespace Education.Web.Pages.History.My.Tests;

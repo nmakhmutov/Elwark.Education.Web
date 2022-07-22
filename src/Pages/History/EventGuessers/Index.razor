@@ -1,9 +1,12 @@
 @page "/history/event-guessers"
-@using Education.Web.Gateways.History
-@using Education.Web.Gateways.History.EventGuessers.Model
-@using Education.Web.Gateways.History.EventGuessers.Request
-@using Education.Web.Pages.History.Components
 @layout HistoryLayout
+
+@using Education.Web.Pages.History.Components
+@using Education.Web.Services.History
+@using Education.Web.Services.History.EventGuesser
+@using Education.Web.Services.History.EventGuesser.Model
+@using Education.Web.Services.History.EventGuesser.Request
+
 @attribute [Authorize]
 
 <PageTitle>@L["EventGuesser"]</PageTitle>
@@ -94,7 +97,7 @@
     public IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryClient Client { get; set; } = default!;
+    private IHistoryEventGuesserService EventGuesserService { get; set; } = default!;
 
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
@@ -107,7 +110,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await Client.EventGuesser.GetAsync();
+        _result = await EventGuesserService.GetAsync();
         if (_result.IsSuccess)
             _test = _result.Data.Tests.FirstOrDefault(x => x.IsAllowed)?.Name ?? string.Empty;
 
@@ -119,7 +122,7 @@
     {
         _isLoading = true;
 
-        var response = await Client.EventGuesser.CreateAsync(new CreateRequest(_test, _epoch));
+        var response = await EventGuesserService.CreateAsync(new CreateRequest(_test, _epoch));
         if (response.IsSuccess)
             Navigation.NavigateTo(HistoryLinks.EventGuesser.Test(response.Data.Id));
         else

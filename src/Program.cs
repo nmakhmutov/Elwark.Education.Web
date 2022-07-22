@@ -1,13 +1,18 @@
-using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
 using Education.Web;
 using Education.Web.Components.Customer;
-using Education.Web.Gateways.Customers;
-using Education.Web.Gateways.History;
 using Education.Web.Hubs.Notification;
 using Education.Web.Services;
+using Education.Web.Services.Api;
+using Education.Web.Services.Customer;
+using Education.Web.Services.History.EventGuesser;
+using Education.Web.Services.History.Home;
+using Education.Web.Services.History.Leaderboard;
+using Education.Web.Services.History.Test;
+using Education.Web.Services.History.Topic;
+using Education.Web.Services.History.User;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -39,14 +44,38 @@ builder.Services
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     })
-    .AddLocalization(options => options.ResourcesPath = "Resources");
+    .AddLocalization(options => options.ResourcesPath = "Resources")
+    .AddOidcAuthentication(options =>
+    {
+        options.ProviderOptions.DefaultScopes.Clear();
+        builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions);
+    });
 
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway")!;
 var policy = builder.HostEnvironment.IsDevelopment()
-    ? HttpPolicyExtensions.HandleTransientHttpError()
-        .WaitAndRetryAsync(new[] { TimeSpan.Zero })
-    : HttpPolicyExtensions.HandleTransientHttpError()
-        .WaitAndRetryAsync(5, i => TimeSpan.FromSeconds(i));
+    ? HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(new[] { TimeSpan.Zero })
+    : HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(5, i => TimeSpan.FromSeconds(i));
+
+builder.Services
+    .AddHttpClient<ApiAnonymousClient>(client => client.BaseAddress = gatewayUrl)
+    .AddHttpMessageHandler<LocalizationHandler>()
+    .AddPolicyHandler(policy);
+
+builder.Services
+    .AddHttpClient<ApiAuthenticatedClient>(client => client.BaseAddress = gatewayUrl)
+    .AddHttpMessageHandler<LocalizationHandler>()
+    .AddHttpMessageHandler<AuthorizationMessageHandler>()
+    .AddPolicyHandler(policy);
+
+builder.Services
+    .AddScoped<ApiClient>()
+    .AddScoped<ICustomerService, CustomerService>()
+    .AddScoped<IHistoryEventGuesserService, HistoryEventGuesserService>()
+    .AddScoped<IHistoryService, HistoryService>()
+    .AddScoped<IHistoryLeaderboardService, HistoryLeaderboardService>()
+    .AddScoped<IHistoryTestService, HistoryTestService>()
+    .AddScoped<IHistoryTopicService, HistoryTopicService>()
+    .AddScoped<IHistoryUserService, HistoryUserService>();
 
 builder.Services
     .AddScoped<ThemeService>()
@@ -71,35 +100,6 @@ builder.Services
         return new AuthorizationMessageHandler(tokenProvider, navigation)
             .ConfigureHandler(new[] { gatewayUrl.ToString() });
     });
-
-builder.Services
-    .AddOidcAuthentication(options =>
-    {
-        options.ProviderOptions.DefaultScopes.Clear();
-        builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions);
-    });
-
-builder.Services
-    .AddHttpClient<IHistoryClient, HistoryClient>(client =>
-    {
-        client.BaseAddress = gatewayUrl;
-        client.DefaultRequestVersion = HttpVersion.Version20;
-        client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
-    })
-    .AddHttpMessageHandler<AuthorizationMessageHandler>()
-    .AddHttpMessageHandler<LocalizationHandler>()
-    .AddPolicyHandler(policy);
-
-builder.Services
-    .AddHttpClient<ICustomerClient, CustomerClient>(client =>
-    {
-        client.BaseAddress = gatewayUrl;
-        client.DefaultRequestVersion = HttpVersion.Version20;
-        client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
-    })
-    .AddHttpMessageHandler<AuthorizationMessageHandler>()
-    .AddHttpMessageHandler<LocalizationHandler>()
-    .AddPolicyHandler(policy);
 
 var app = builder.Build();
 

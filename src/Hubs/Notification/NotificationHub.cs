@@ -24,7 +24,7 @@ internal sealed class NotificationHub : IAsyncDisposable
             .WithAutomaticReconnect()
             .Build();
 
-        _connection.On("Notifications", (NotificationMessage notification) => OnNotificationReceived.Invoke(notification));
+        _connection.On<NotificationMessage>("Notifications", message => OnNotificationReceived.Invoke(message));
     }
 
     public ValueTask DisposeAsync() =>

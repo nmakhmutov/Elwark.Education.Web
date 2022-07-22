@@ -1,8 +1,11 @@
 @page "/history/tests/{id}/conclusion"
-@using Education.Web.Gateways.History.Tests.Model
-@using Education.Web.Pages.History.Tests.Conclusion.Components
-@using Education.Web.Gateways.History
 @layout HistoryLayout
+
+@using Education.Web.Pages.History.Tests.Conclusion.Components
+@using Education.Web.Services.History.Test
+@using Education.Web.Services.History.Test.Model
+@using Education.Web.Services.Model.Test
+
 @attribute [Authorize]
 
 <EduPage ShowFooter="@_result.IsLoaded">
@@ -46,7 +49,7 @@
     private double _progress;
 
     [Inject]
-    private IHistoryClient HistoryClient { get; set; } = default!;
+    private IHistoryTestService TestService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -59,7 +62,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = await HistoryClient.Test.GetConclusionAsync(Id);
+        _result = await TestService.GetConclusionAsync(Id);
         if (_result.IsSuccess)
             _progress = Math.Round((double)_result.Data.UserScore.Total / _result.Data.MaxScore.Total * 100);
 

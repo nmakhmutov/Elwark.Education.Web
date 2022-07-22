@@ -1,10 +1,12 @@
 @page "/history/tests"
-@using Education.Web.Gateways.History.Tests.Model
-@using Education.Web.Gateways.History
-@using Education.Web.Gateways.History.Tests.Requests
+@layout HistoryLayout
+
 @using Education.Web.Pages.History.Tests.Components
 @using Education.Web.Pages.History.Components
-@layout HistoryLayout
+@using Education.Web.Services.History.Test
+@using Education.Web.Services.History.Test.Model
+@using Education.Web.Services.History.Test.Request
+
 @attribute [Authorize]
 
 <PageTitle>@L["Tests"]</PageTitle>
@@ -76,7 +78,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryClient Client { get; set; } = default!;
+    private IHistoryTestService TestService { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
@@ -92,17 +94,17 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = await Client.Test.GetTestBuilderAsync(TopicId);
+        _result = await TestService.GetTestBuilderAsync(TopicId);
 
         if (_result.IsFailed && _result.Error.IsTestAlreadyCreated(out var id))
             Navigation.NavigateTo(HistoryLinks.TopicTest.Test(id));
     }
 
     private Task OnCreateTestAsync(CreateEpochTestRequest request) =>
-        CreateTestAsync(() => Client.Test.CreateAsync(request));
+        CreateTestAsync(() => TestService.CreateAsync(request));
 
     private Task OnCreateTestAsync(CreateTopicTestRequest request) =>
-        CreateTestAsync(() => Client.Test.CreateAsync(request));
+        CreateTestAsync(() => TestService.CreateAsync(request));
 
     private async Task CreateTestAsync(Func<Task<ApiResult<TestModel>>> call)
     {

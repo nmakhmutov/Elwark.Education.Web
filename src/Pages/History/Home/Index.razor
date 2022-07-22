@@ -1,10 +1,10 @@
 @page "/history"
-@using Education.Web.Gateways.History.Home.Model
+@layout HistoryLayout
+
 @using Education.Web.Pages.History.Components
 @using Education.Web.Pages.History.Home.Components
-@using Education.Web.Gateways.History
-@layout HistoryLayout
-@attribute [Authorize]
+@using Education.Web.Services.History.Home
+@using Education.Web.Services.History.Home.Model
 
 <PageTitle>
     @L["Subject:History"]
@@ -19,7 +19,7 @@
             </div>
             <EpochSlider/>
         </EduContainer>
-        
+
         <EduContainer MaxWidth="@EduWidth.W1600">
             <div class="header">
                 <h2>@L["Topics:Trending"]</h2>
@@ -112,16 +112,14 @@
 </EduPage>
 
 @code {
-
     private ApiResult<HistoryOverviewModel> _result = ApiResult<HistoryOverviewModel>.Loading();
 
     [Inject]
-    private IHistoryClient Client { get; set; } = default!;
+    private IHistoryService HistoryService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _result = await Client.Home.GetAsync();
-
+        _result = await HistoryService.GetAsync();
 }

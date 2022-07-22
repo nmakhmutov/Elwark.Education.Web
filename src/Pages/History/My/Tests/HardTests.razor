@@ -1,9 +1,11 @@
 @page "/history/my/tests/hard"
-@using Education.Web.Gateways.Models.Statistics
-@using Education.Web.Pages.History.My.Tests.Components
-@using Education.Web.Gateways.History
-@using Education.Web.Pages.History.My.Components
 @layout HistoryLayout
+
+@using Education.Web.Pages.History.My.Tests.Components
+@using Education.Web.Pages.History.My.Components
+@using Education.Web.Services.History.User
+@using Education.Web.Services.Model.Statistics
+
 @attribute [Authorize]
 
 <PageTitle>@L["Tests:Hard"]</PageTitle>
@@ -92,9 +94,9 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryClient HistoryClient { get; set; } = default!;
+    private IHistoryUserService UserService { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync() =>
-        _result = await HistoryClient.User.GetHardTestStatisticsAsync();
+        _result = await UserService.GetHardTestStatisticsAsync();
 
 }

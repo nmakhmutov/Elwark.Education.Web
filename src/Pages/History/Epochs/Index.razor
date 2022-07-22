@@ -1,7 +1,9 @@
-@page "/history/epochs/{type}"
-@using Education.Web.Gateways.History.Topics.Request
 @using Education.Web.Pages.History.Components
-@using Education.Web.Gateways.History
+@using Education.Web.Services.History
+@using Education.Web.Services.History.Topic
+@using Education.Web.Services.History.Topic.Request
+
+@page "/history/epochs/{type}"
 @layout HistoryLayout
 
 @attribute [Authorize]
@@ -46,7 +48,7 @@
     };
 
     [Inject]
-    private IHistoryClient HistoryClient { get; set; } = default!;
+    private IHistoryTopicService TopicService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -68,7 +70,7 @@
         if (Enum.TryParse<EpochType>(Type, true, out var type))
         {
             _request = _request with { Epoch = type, Page = CurrentPage };
-            _result = await HistoryClient.Topic.GetAsync(_request);
+            _result = await TopicService.GetAsync(_request);
         }
         else
         {
@@ -79,7 +81,7 @@
 
     private async Task<bool> OnFavoriteClick(string topicId)
     {
-        var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
+        var result = await TopicService.ToggleFavoriteAsync(topicId);
         return result.IsSuccess && result.Data;
     }
 

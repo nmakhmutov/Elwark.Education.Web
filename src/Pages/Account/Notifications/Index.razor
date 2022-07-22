@@ -1,10 +1,11 @@
-@page "/account/my/notifications"
-@using Education.Web.Gateways.Customers.Model
 @using Education.Web.Pages.History
 @using Education.Web.Pages.Account.Components
-@using Education.Web.Gateways.Customers
-@using Education.Web.Gateways.Customers.Requests
 @using System.Diagnostics.CodeAnalysis
+@using Education.Web.Services.Customer
+@using Education.Web.Services.Customer.Model
+@using Education.Web.Services.Customer.Request
+
+@page "/account/my/notifications"
 @layout MainLayout
 @attribute [Authorize]
 
@@ -95,14 +96,14 @@
     private NotificationService NotificationService { get; set; } = default!;
 
     [Inject]
-    private ICustomerClient CustomerClient { get; set; } = default!;
+    private ICustomerService CustomerService { get; set; } = default!;
 
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await CustomerClient.GetAsync(_request);
+        _result = await CustomerService.GetAsync(_request);
         if (_result.IsSuccess)
         {
             _notifications.AddRange(_result.Data.Items);
@@ -116,7 +117,7 @@
             return;
 
         _isMoreLoading = true;
-        var response = await CustomerClient.GetAsync(_request);
+        var response = await CustomerService.GetAsync(_request);
         if (response.IsFailed)
             _result = response;
 
@@ -129,7 +130,7 @@
     {
         _notifications.RemoveAll(x => x.Id == id);
         NotificationService.Update(_notifications);
-        return CustomerClient.MarkNotificationAsReadAsync(id);
+        return CustomerService.MarkNotificationAsReadAsync(id);
     }
 
     private static bool TryGetLink(string subject, [MaybeNullWhen(false)] out string link)

@@ -1,12 +1,13 @@
 @page "/history/my/achievements"
-@using Education.Web.Gateways.History.Users.Model
-@using Education.Web.Pages.History.My.Components
-@using Education.Web.Gateways.History
 @layout HistoryLayout
+
+@using Education.Web.Pages.History.My.Components
+@using Education.Web.Services.History.User
+@using Education.Web.Services.History.User.Model
+
 @attribute [Authorize]
 
 <PageTitle>@L["Achievements"]</PageTitle>
-
 <EduPage ShowFooter="@_result.IsLoaded">
     <EduContainer Class="pb-0">
         <PageHeader Title="@L["Achievements"]" Breadcrumbs="@Breadcrumbs">
@@ -72,11 +73,11 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryClient HistoryClient { get; set; } = default!;
+    private IHistoryUserService UserService { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = await HistoryClient.User.GetAchievementsAsync();
+        _result = await UserService.GetAchievementsAsync();
         if (_result.IsSuccess)
             _subtitle = $"{_result.Data.Completed} / {_result.Data.Total}";
     }

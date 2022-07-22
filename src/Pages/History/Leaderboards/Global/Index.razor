@@ -1,10 +1,10 @@
 @page "/history/leaderboards/global"
 @layout HistoryLayout
 
-@using Education.Web.Gateways.History
-@using Education.Web.Gateways.History.Leaderboards.Model
 @using Education.Web.Pages.History.Leaderboards.Components
 @using Education.Web.Pages.History.Leaderboards.Global.Components
+@using Education.Web.Services.History.Leaderboard
+@using Education.Web.Services.History.Leaderboard.Model
 
 @attribute [Authorize]
 
@@ -81,7 +81,7 @@
     };
 
     [Inject]
-    private IHistoryClient Client { get; set; } = default!;
+    private IHistoryLeaderboardService LeaderboardService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -91,7 +91,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await Client.Leaderboard.GetGlobalAsync();
+        _result = await LeaderboardService.GetGlobalAsync();
         var state = await StateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated ?? false)
             _highlightUser = state.User.GetId();

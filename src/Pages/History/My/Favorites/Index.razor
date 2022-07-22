@@ -1,8 +1,10 @@
 @page "/history/my/favorites"
 @layout HistoryLayout
 
-@using Education.Web.Gateways.History
-@using Education.Web.Gateways.History.Users.Request
+@using Education.Web.Services.History.Topic
+@using Education.Web.Services.History.User.Request
+@using Education.Web.Services.History
+@using Education.Web.Services.History.User
 
 @attribute [Authorize]
 
@@ -133,14 +135,17 @@
     };
 
     [Inject]
-    private IHistoryClient HistoryClient { get; set; } = default!;
+    private IHistoryUserService UserService { get; set; } = default!;
 
+    [Inject]
+    private IHistoryTopicService TopicService { get; set; } = default!;
+    
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        var data = await HistoryClient.User.GetFavoritesAsync(_request);
+        var data = await UserService.GetFavoritesAsync(_request);
         if (data.IsSuccess)
         {
             _request = _request with { Token = data.Data.Next };
@@ -162,7 +167,7 @@
         if (isRangeAvailable)
             return new ItemsProviderResult<UserTopicOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
 
-        var data = await HistoryClient.User.GetFavoritesAsync(_request = _request with { Count = request.Count });
+        var data = await UserService.GetFavoritesAsync(_request = _request with { Count = request.Count });
         if (data.IsFailed)
             return new ItemsProviderResult<UserTopicOverviewModel>(_items, GetLength());
 
@@ -174,7 +179,7 @@
 
     private async Task<bool> OnFavoriteClick(string topicId)
     {
-        var result = await HistoryClient.Topic.ToggleFavoriteAsync(topicId);
+        var result = await TopicService.ToggleFavoriteAsync(topicId);
         return result.IsSuccess && result.Data;
     }
 

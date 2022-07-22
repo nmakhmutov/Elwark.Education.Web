@@ -1,9 +1,9 @@
 @page "/history/leaderboards/monthly"
 @layout HistoryLayout
 
-@using Education.Web.Gateways.History.Leaderboards.Model
 @using Education.Web.Pages.History.Leaderboards.Components
-@using Education.Web.Gateways.History
+@using Education.Web.Services.History.Leaderboard
+@using Education.Web.Services.History.Leaderboard.Model
 
 @attribute [Authorize]
 
@@ -149,7 +149,7 @@
     private ApiResult<MonthlyLeaderboardModel> _result = ApiResult<MonthlyLeaderboardModel>.Loading();
 
     [Inject]
-    private IHistoryClient Client { get; set; } = default!;
+    private IHistoryLeaderboardService LeaderboardService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -159,7 +159,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await Client.Leaderboard.GetMonthAsync();
+        _result = await LeaderboardService.GetMonthAsync();
 
         var state = await StateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated ?? false)
@@ -167,6 +167,6 @@
     }
 
     private async Task OnMonthChanged(DateOnly month) =>
-        _result = await Client.Leaderboard.GetMonthAsync(month);
+        _result = await LeaderboardService.GetMonthAsync(month);
 
 }

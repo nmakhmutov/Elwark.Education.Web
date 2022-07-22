@@ -1,20 +1,20 @@
-using Education.Web.Gateways;
-using Education.Web.Gateways.Customers;
-using Education.Web.Gateways.Customers.Model;
+using Education.Web.Services.Api;
+using Education.Web.Services.Customer;
+using Education.Web.Services.Customer.Model;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Education.Web.Components.Customer;
 
 internal sealed class CustomerStateProvider
 {
-    private readonly ICustomerClient _customerClient;
+    private readonly ICustomerService _service;
     private readonly AuthenticationStateProvider _stateProvider;
     private bool _isInitialized;
     private CustomerState _state;
 
-    public CustomerStateProvider(ICustomerClient customerClient, AuthenticationStateProvider stateProvider)
+    public CustomerStateProvider(ICustomerService service, AuthenticationStateProvider stateProvider)
     {
-        _customerClient = customerClient;
+        _service = service;
         _stateProvider = stateProvider;
         _state = CustomerState.Anonymous;
     }
@@ -53,14 +53,14 @@ internal sealed class CustomerStateProvider
 
     private async Task<CustomerModel?> GetOrCreateCustomerAsync()
     {
-        var customer = await _customerClient.GetAsync();
+        var customer = await _service.GetAsync();
         if (customer.IsSuccess)
             return customer.Data;
 
         if (!customer.Error.IsUserNotFound())
             return null;
 
-        var result = await _customerClient.CreateAsync();
+        var result = await _service.CreateAsync();
         return result.IsSuccess ? result.Data : null;
     }
 }

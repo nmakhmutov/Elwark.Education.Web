@@ -1,9 +1,10 @@
-@page "/history/topics/{id}"
-@using Education.Web.Gateways.History
-@using Education.Web.Gateways.History.Topics.Model
 @using Education.Web.Pages.History.Topics.Components
-@layout HistoryLayout
+@using Education.Web.Services.History
+@using Education.Web.Services.History.Topic
+@using Education.Web.Services.History.Topic.Model
 
+@page "/history/topics/{id}"
+@layout HistoryLayout
 @attribute [Authorize]
 
 <EduPage ShowFooter="@_result.IsLoaded">
@@ -71,21 +72,21 @@
     private ApiResult<TopicDetailCompositionModel> _result = ApiResult<TopicDetailCompositionModel>.Loading();
 
     [Inject]
-    private IHistoryClient HistoryClient { get; set; } = default!;
+    private IHistoryTopicService TopicService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
     private TopicContentFormatService FormatService { get; set; } = default!;
-    
+
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
     protected override async Task OnParametersSetAsync()
     {
         _result = ApiResult<TopicDetailCompositionModel>.Loading();
-        _result = await HistoryClient.Topic.GetAsync(Id);
+        _result = await TopicService.GetAsync(Id);
 
         if (_result.IsSuccess)
         {
@@ -98,24 +99,24 @@
         }
     }
 
-    protected override async Task OnInitializedAsync() => 
+    protected override async Task OnInitializedAsync() =>
         await FormatService.InitAsync();
 
     private async Task<bool> LikeAsync()
     {
-        var response = await HistoryClient.Topic.LikeAsync(Id);
+        var response = await TopicService.LikeAsync(Id);
         return response.IsSuccess;
     }
 
     private async Task<bool> DislikeAsync()
     {
-        var response = await HistoryClient.Topic.DislikeAsync(Id);
+        var response = await TopicService.DislikeAsync(Id);
         return response.IsSuccess;
     }
 
     private async Task<bool> ToggleFavoriteAsync(string id)
     {
-        var result = await HistoryClient.Topic.ToggleFavoriteAsync(id);
+        var result = await TopicService.ToggleFavoriteAsync(id);
         return result.IsSuccess && result.Data;
     }
 

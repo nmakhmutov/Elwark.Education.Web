@@ -1,4 +1,4 @@
-using Education.Web.Gateways.History;
+using Education.Web.Services.History;
 
 namespace Education.Web.Pages.History;
 

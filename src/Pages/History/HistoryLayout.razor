@@ -1,4 +1,5 @@
-@using Education.Web.Gateways.History
+@using Education.Web.Services.History
+@using Education.Web.Services.History.Home
 @inherits LayoutComponentBase
 
 <MudThemeProvider Theme="@ThemeService.Theme" IsDarkMode="@ThemeService.IsDarkMode"/>
@@ -110,7 +111,7 @@
     private SidebarService SidebarService { get; set; } = default!;
 
     [Inject]
-    private IHistoryClient Client { get; set; } = default!;
+    private IHistoryService HistoryService { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
@@ -120,7 +121,7 @@
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
             return Array.Empty<TopicOverviewModel>();
 
-        var result = await Client.Home.SearchAsync(text);
+        var result = await HistoryService.SearchAsync(text);
         return result.IsSuccess ? result.Data : Array.Empty<TopicOverviewModel>();
     }
 

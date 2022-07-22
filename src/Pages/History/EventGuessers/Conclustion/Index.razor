@@ -1,8 +1,10 @@
 @page "/history/event-guessers/{id}/conclusion"
-@using Education.Web.Gateways.History.EventGuessers.Model
-@using Education.Web.Pages.History.Components
-@using Education.Web.Gateways.History
 @layout HistoryLayout
+
+@using Education.Web.Pages.History.Components
+@using Education.Web.Services.History.EventGuesser
+@using Education.Web.Services.History.EventGuesser.Model
+
 @attribute [Authorize]
 
 <EduPage ShowFooter="@_result.IsLoaded">
@@ -78,7 +80,7 @@
     public IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryClient Client { get; set; } = default!;
+    private IHistoryEventGuesserService EventGuesserService { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
@@ -88,7 +90,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await Client.EventGuesser.GetConclusionAsync(Id);
+        _result = await EventGuesserService.GetConclusionAsync(Id);
         if (_result.IsFailed)
         {
             if (_result.Error.IsEventGuesserNotFound())

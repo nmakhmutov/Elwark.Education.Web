@@ -1,9 +1,11 @@
 @page "/history/event-guessers/{id}"
-@using Education.Web.Gateways.History.EventGuessers.Model
-@using Education.Web.Gateways.History.EventGuessers.Request
-@using Education.Web.Pages.History.EventGuessers.Test.Components
-@using Education.Web.Gateways.History
 @layout HistoryLayout
+
+@using Education.Web.Pages.History.EventGuessers.Test.Components
+@using Education.Web.Services.History.EventGuesser
+@using Education.Web.Services.History.EventGuesser.Model
+@using Education.Web.Services.History.EventGuesser.Request
+
 @attribute [Authorize]
 
 <EduPage ShowFooter="@_result.IsLoaded">
@@ -77,7 +79,7 @@
     public IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryClient Client { get; set; } = default!;
+    private IHistoryEventGuesserService EventGuesserService { get; set; } = default!;
 
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
@@ -90,7 +92,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await Client.EventGuesser.GetAsync(Id);
+        _result = await EventGuesserService.GetAsync(Id);
         if (_result.IsFailed)
         {
             if (_result.Error.IsEventGuesserNotFound())
@@ -111,7 +113,7 @@
         var year = model.Year.GetValueOrDefault();
         var request = new CheckRequest(model.IsBc ? -year : year, model.Month, model.Day);
 
-        var result = await Client.EventGuesser.CheckAsync(Id, _question.Id, request);
+        var result = await EventGuesserService.CheckAsync(Id, _question.Id, request);
         if (result.IsFailed)
         {
             Snackbar.Add(result.Error.Detail, Severity.Error);

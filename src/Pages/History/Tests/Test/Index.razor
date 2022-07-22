@@ -1,10 +1,13 @@
 @page "/history/tests/{id}"
-@using Education.Web.Gateways.History.Tests.Model
-@using Education.Web.Gateways.Models.Inventory
+@layout HistoryLayout
+
 @using Education.Web.Pages.History.Components
 @using Education.Web.Pages.History.Tests.Test.Components
-@using Education.Web.Gateways.History
-@layout HistoryLayout
+@using Education.Web.Services.History.Test
+@using Education.Web.Services.History.Test.Model
+@using Education.Web.Services.Model.Inventory
+@using Education.Web.Services.Model.Test
+
 @attribute [Authorize]
 
 <EduPage ShowFooter="@_result.IsLoaded">
@@ -152,7 +155,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryClient HistoryClient { get; set; } = default!;
+    private IHistoryTestService TestService { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
@@ -171,7 +174,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = await HistoryClient.Test.GetAsync(Id);
+        _result = await TestService.GetAsync(Id);
         if (_result.IsSuccess)
         {
             _test = _result.Data.Overview;
@@ -193,7 +196,7 @@
     private async Task OnExpired()
     {
         _countdownColor = Color.Error;
-        _result = await HistoryClient.Test.GetAsync(Id);
+        _result = await TestService.GetAsync(Id);
 
         if (_result.IsFailed)
             Navigation.NavigateTo(HistoryLinks.TopicTest.Conclusion(Id));
@@ -204,7 +207,7 @@
         _isAnswering = true;
         _userAnswer = answer;
 
-        var result = await HistoryClient.Test.CheckAsync(_test.Id, _currentQuestion.Id, answer);
+        var result = await TestService.CheckAsync(_test.Id, _currentQuestion.Id, answer);
         UpdateState(result);
 
         _isAnswering = false;
@@ -215,7 +218,7 @@
         _isAnswering = true;
         _userAnswer = answer;
 
-        var result = await HistoryClient.Test.CheckAsync(_test.Id, _currentQuestion.Id, answer);
+        var result = await TestService.CheckAsync(_test.Id, _currentQuestion.Id, answer);
         UpdateState(result);
 
         _isAnswering = false;
@@ -226,7 +229,7 @@
         _isAnswering = true;
         _userAnswer = answer;
 
-        var result = await HistoryClient.Test.CheckAsync(_test.Id, _currentQuestion.Id, answer);
+        var result = await TestService.CheckAsync(_test.Id, _currentQuestion.Id, answer);
         UpdateState(result);
 
         _isAnswering = false;
@@ -270,7 +273,7 @@
 
     private async Task OnUseInventory(uint id)
     {
-        var test = await HistoryClient.Test.ApplyInventoryAsync(_test.Id, id);
+        var test = await TestService.ApplyInventoryAsync(_test.Id, id);
         if (test.IsSuccess)
         {
             if (test.Data.Question is null)
