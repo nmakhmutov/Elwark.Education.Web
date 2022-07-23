@@ -2,44 +2,45 @@
 @using Education.Web.Pages.Authentication
 
 <AuthorizeView>
-    <Authorized>
-        <MudMenu Direction="Direction.Left" OffsetX Dense Class="mt-1 ml-3">
-            <ActivatorContent>
-                <MudAvatar Image="@Customer.Image"/>
-            </ActivatorContent>
-            <ChildContent>
-
-                <MudCard Elevation="0" Class="mt-n3" Style="width: 240px">
-                    <MudCardHeader>
-                        <CardHeaderAvatar>
-                            <MudAvatar Image="@Customer.Image"/>
-                        </CardHeaderAvatar>
-                        <CardHeaderContent>
-                            <p class="mud-typography mud-typography-body1 name">
-                                @Customer.Name
-                            </p>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                </MudCard>
-
-                <MudDivider Class="mb-2"/>
-
-                <MudListItem Text="@L["Account"]" Icon="@Icons.Outlined.Person" Href="@AccountUrl.Root"/>
-                <MudListItem Text="@L["Account:Logout"]" Icon="@Icons.Outlined.Login" OnClick="@OnLogout"/>
-            </ChildContent>
-        </MudMenu>
-    </Authorized>
-
     <NotAuthorized>
         <MudButton
+            Class="ml-3"
             DisableElevation
             Variant="Variant.Filled"
             Color="Color.Primary"
             Size="Size.Small"
-            OnClick="@OnLogin" Class="ml-3">
+            OnClick="@OnLogin">
             @L["Account:SignIn"]
         </MudButton>
     </NotAuthorized>
+
+    <Authorizing>
+        <MudSkeleton Class="ml-3" SkeletonType="SkeletonType.Circle" Width="40px" Height="40px"/>
+    </Authorizing>
+
+    <Authorized>
+        <MudMenu Class="ml-3" OffsetX Dense Direction="Direction.Left">
+            <ActivatorContent>
+                <MudAvatar Image="@Customer.Image"/>
+            </ActivatorContent>
+
+            <ChildContent>
+                <section class="mud-paper pa-3 mt-n2">
+                    <header class="customer">
+                        <MudAvatar Class="mr-3" Image="@Customer.Image"/>
+                        <MudText Class="one-line-text" Typo="Typo.body1">
+                            @Customer.Name
+                        </MudText>
+                    </header>
+                </section>
+
+                <MudDivider Class="mb-3"/>
+
+                <MudListItem Class="px-3" Text="@L["Account"]" Icon="@Icons.Outlined.Person" Href="@AccountUrl.Root"/>
+                <MudListItem Class="px-3 mb-n2" Text="@L["Account:Logout"]" Icon="@Icons.Outlined.Login" OnClick="@OnLogout"/>
+            </ChildContent>
+        </MudMenu>
+    </Authorized>
 </AuthorizeView>
 
 @code {
@@ -64,4 +65,5 @@
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo(AuthenticationUrl.LogOut);
     }
+
 }

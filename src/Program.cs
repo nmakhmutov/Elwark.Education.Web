@@ -86,8 +86,6 @@ builder.Services
     });
 
 builder.Services
-    .AddScoped<SidebarService>()
-    .AddScoped<LanguageService>()
     .AddScoped<TopicContentFormatService>()
     .AddScoped<CustomerStateProvider>()
     .AddScoped<LocalizationHandler>()

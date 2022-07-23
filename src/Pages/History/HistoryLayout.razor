@@ -1,11 +1,12 @@
 @using Education.Web.Services.History
 @using Education.Web.Services.History.Home
+@using Blazored.LocalStorage
 @inherits LayoutComponentBase
 
 <EduThemeProvider>
     <MudLayout>
         <MudAppBar Elevation="0">
-            <MudIconButton Icon="@Icons.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@SidebarService.ToggleAsync"/>
+            <MudIconButton Icon="@Icons.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleAsync"/>
             <MudLink Href="@HistoryUrl.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None" Class="d-none d-sm-block">
                 @L["Subject:History"] <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
             </MudLink>
@@ -28,8 +29,13 @@
                 <ItemTemplate Context="result">
                     <div class="d-flex align-center">
                         <MudAvatar Image="@result.ThumbnailUrl" Size="Size.Large" Square Class="mr-4"/>
-                        <div>
-                            <MudText>@result.Title</MudText>
+                        <div class="one-line-text">
+                            <MudText Typo="Typo.subtitle1">
+                                @result.Title
+                            </MudText>
+                            <MudText Typo="Typo.caption">
+                                @result.Overview
+                            </MudText>
                         </div>
                     </div>
                 </ItemTemplate>
@@ -40,7 +46,7 @@
             <AppbarUserMenu/>
         </MudAppBar>
 
-        <MudDrawer Open="@SidebarService.IsOpen" OpenChanged="@SidebarService.SetAsync" ClipMode="DrawerClipMode.Docked" Breakpoint="Breakpoint.Lg" Elevation="0">
+        <MudDrawer @bind-Open="_isOpen" ClipMode="DrawerClipMode.Docked" Breakpoint="Breakpoint.Lg" Elevation="0">
             <MudNavMenu Color="Color.Primary" Dense Margin="Margin.Dense" Rounded="true" Class="pa-2">
                 <MudNavLink Match="NavLinkMatch.All" Href="@HistoryUrl.Root" Icon="@EduIcons.History">
                     @L["Page:Home"]
@@ -97,13 +103,14 @@
 </EduThemeProvider>
 
 @code {
+    private bool _isOpen;
     private MudAutocomplete<TopicOverviewModel> _searchAutocomplete = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private SidebarService SidebarService { get; set; } = default!;
+    private ILocalStorageService Storage { get; set; } = default!;
 
     [Inject]
     private IHistoryService HistoryService { get; set; } = default!;
@@ -111,6 +118,12 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
+    protected override async Task OnInitializedAsync()=>
+        _isOpen = await Storage.GetItemAsync<bool>("sbs");
+    
+    private async Task ToggleAsync() =>
+        await Storage.SetItemAsync("sbs", _isOpen = !_isOpen);
+    
     private async Task<IEnumerable<TopicOverviewModel>> OnSearch(string text)
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)

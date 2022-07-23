@@ -32,6 +32,12 @@ public sealed class TopicContentFormatService
 
     public string TextStyles { get; private set; }
 
+    public bool CanIncreaseFont =>
+        FontSize < MaxTextSize;
+
+    public bool CanDecreaseFont =>
+        FontSize > MinTextSize;
+
     public event Action OnChange = () => { };
 
     public async ValueTask InitAsync()
@@ -56,66 +62,55 @@ public sealed class TopicContentFormatService
         UpdateStyles();
     }
 
-    public bool CanIncreaseFontSize() =>
-        FontSize < MaxTextSize;
-
-    public async Task IncreaseFontSizeAsync()
+    public Task IncreaseFontAsync()
     {
-        if (!CanIncreaseFontSize())
-            return;
+        if (!CanIncreaseFont)
+            return Task.CompletedTask;
 
         FontSize += 0.1;
 
-        await Update();
+        return Update();
     }
 
-    public bool CanDecreaseFontSize() =>
-        FontSize > MinTextSize;
-
-    public async Task DecreaseFontSizeAsync()
+    public Task DecreaseFontAsync()
     {
-        if (!CanDecreaseFontSize())
-            return;
+        if (!CanDecreaseFont)
+            return Task.CompletedTask;
 
         FontSize -= 0.1;
-        await Update();
-    }
 
-    public Task AlignTextLeftAsync()
-    {
-        TextAlign = Align.Left;
         return Update();
     }
 
-    public Task AlignTextRightAsync()
-    {
-        TextAlign = Align.Right;
-        return Update();
-    }
+    public Task AlignTextLeftAsync() =>
+        AlignTextAsync(Align.Left);
 
-    public Task AlignTextCenterAsync()
-    {
-        TextAlign = Align.Center;
-        return Update();
-    }
+    public Task AlignTextRightAsync() =>
+        AlignTextAsync(Align.Right);
 
-    public Task AlignTextJustifyAsync()
+    public Task AlignTextCenterAsync() =>
+        AlignTextAsync(Align.Center);
+
+    public Task AlignTextJustifyAsync() =>
+        AlignTextAsync(Align.Justify);
+
+    private Task AlignTextAsync(Align align)
     {
-        TextAlign = Align.Justify;
+        TextAlign = align;
         return Update();
     }
 
     private void UpdateStyles() =>
         TextStyles = StyleBuilder
-            .Default("font-size", FontSize.ToString("0.0", CultureInfo.InvariantCulture) + "rem")
+            .Default("font-size", $"{FontSize.ToString("0.0", CultureInfo.InvariantCulture)}rem")
             .AddStyle("text-align", TextAlign switch
             {
                 Align.Left => "left",
-                Align.Center => "center",
+                Align.Start => "left",
                 Align.Right => "right",
+                Align.End => "right",
+                Align.Center => "center",
                 Align.Justify => "justify",
-                Align.Start => "start",
-                Align.End => "end",
                 _ => "inherit"
             })
             .Build();
@@ -132,7 +127,7 @@ public sealed class TopicContentFormatService
 
         OnChange();
     }
-    
+
     private sealed record State
     {
         [JsonPropertyName("ta")]

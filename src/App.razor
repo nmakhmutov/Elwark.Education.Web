@@ -1,4 +1,3 @@
-@using Education.Web.Services.Notification
 <CascadingAuthenticationState>
     <CascadingCustomerState>
         <Router AppAssembly="@typeof(App).Assembly">
@@ -27,18 +26,3 @@
         </Router>
     </CascadingCustomerState>
 </CascadingAuthenticationState>
-
-@code
-{
-    [Inject]
-    private SidebarService SidebarService { get; set; } = default!;
-
-    [Inject]
-    private INotificationService NotificationService { get; set; } = default!;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await SidebarService.InitAsync();
-        await NotificationService.InitAsync();
-    }
-}

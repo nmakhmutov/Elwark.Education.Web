@@ -80,8 +80,11 @@
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
 
-    protected override void OnInitialized() =>
+    protected override async Task OnInitializedAsync()
+    {
         NotificationService.OnChanged += StateHasChanged;
+        await NotificationService.InitAsync();
+    }
 
     public void Dispose() =>
         NotificationService.OnChanged -= StateHasChanged;
