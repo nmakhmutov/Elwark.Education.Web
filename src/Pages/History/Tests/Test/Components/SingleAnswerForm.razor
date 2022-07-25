@@ -3,7 +3,7 @@
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
-    <MudRadioGroup @bind-SelectedOption="@UserAnswer.SingleAnswer">
+    <MudRadioGroup @bind-SelectedOption="@UserAnswer.Answer">
         <div class="grid mb-3 mb-sm-6">
             @foreach (var option in Options)
             {
@@ -138,7 +138,7 @@
         { } x when option.Id == x.Answer =>
             (Icon: Icons.Outlined.Check , Color: Color.Success),
 
-        {IsCorrect: false} when option.Id == UserAnswer.SingleAnswer =>
+        {IsCorrect: false} when option.Id == UserAnswer.Answer =>
             (Icon: Icons.Outlined.Clear , Color: Color.Error),
 
             _ => (Icon: null, Color: Color.Default)
@@ -147,7 +147,7 @@
     public sealed class Validator : AbstractValidator<SingleAnswerModel>
     {
         public Validator(IStringLocalizer<App> localizer) =>
-            RuleFor(x => x.SingleAnswer)
+            RuleFor(x => x.Answer)
                 .NotEmpty()
                 .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
     }

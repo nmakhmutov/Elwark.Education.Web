@@ -6,14 +6,8 @@ internal static class ErrorExtensions
 {
     public static bool IsTestAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string id)
     {
-        if (error.Type == "TestException:AlreadyCreated" && error.Extensions.TryGetValue("id", out var value))
-        {
-            id = value.ToString()!;
-            return true;
-        }
-
-        id = null;
-        return false;
+        id = error.Id;
+        return error.Type == "TestException:AlreadyCreated" && !string.IsNullOrEmpty(error.Id);
     }
 
     public static bool IsTestAlreadyCompleted(this Error error) =>

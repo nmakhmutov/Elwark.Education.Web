@@ -5,9 +5,9 @@
 
     <div class="d-flex flex-column mb-3 mb-sm-6">
         <MudTextField
-            @bind-Value="@UserAnswer.ShortAnswer"
+            @bind-Value="@UserAnswer.Answer"
             Label="@L["Test:YourAnswer"]"
-            For="@(() => UserAnswer.ShortAnswer)"
+            For="@(() => UserAnswer.Answer)"
             Disabled="@(CorrectAnswer is not null)"/>
 
         @if (CorrectAnswer is not null)
@@ -111,7 +111,7 @@
     public sealed class Validator : AbstractValidator<ShortAnswerModel>
     {
         public Validator(IStringLocalizer<App> localizer) =>
-            RuleFor(x => x.ShortAnswer)
+            RuleFor(x => x.Answer)
                 .NotEmpty()
                 .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
     }

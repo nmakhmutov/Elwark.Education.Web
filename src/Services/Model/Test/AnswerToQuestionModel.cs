@@ -1,18 +1,18 @@
 namespace Education.Web.Services.Model.Test;
 
-public abstract record AnswerToQuestionModel;
+public abstract record AnswerToQuestionModel(string Type);
 
-public sealed record ShortAnswerModel : AnswerToQuestionModel
+public sealed record ShortAnswerModel() : AnswerToQuestionModel("short")
 {
-    public string ShortAnswer { get; set; } = string.Empty;
+    public string Answer { get; set; } = string.Empty;
 }
 
-public sealed record SingleAnswerModel : AnswerToQuestionModel
+public sealed record SingleAnswerModel() : AnswerToQuestionModel("single")
 {
-    public uint SingleAnswer { get; set; }
+    public uint Answer { get; set; }
 }
 
-public sealed record MultipleAnswerModel : AnswerToQuestionModel
+public sealed record MultipleAnswerModel() : AnswerToQuestionModel("multiple")
 {
-    public List<uint> MultipleAnswer { get; set; } = new();
+    public List<uint> Answer { get; set; } = new();
 }

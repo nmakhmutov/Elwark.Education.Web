@@ -15,8 +15,8 @@ internal sealed class HistoryTopicService : IHistoryTopicService
     public Task<ApiResult<PagingOffsetModel<UserTopicOverviewModel>>> GetAsync(GetTopicsRequest request) =>
         _api.GetAsync<PagingOffsetModel<UserTopicOverviewModel>>($"history/topics", request);
 
-    public Task<ApiResult<PagingOffsetModel<EmpireOverview>>> GetAsync(GetEmpiresRequest request) =>
-        _api.GetAsync<PagingOffsetModel<EmpireOverview>>($"history/empires", request);
+    public Task<ApiResult<PagingOffsetModel<EmpireOverviewModel>>> GetAsync(GetEmpiresRequest request) =>
+        _api.GetAsync<PagingOffsetModel<EmpireOverviewModel>>($"history/empires", request);
 
     public Task<ApiResult<TopicDetailCompositionModel>> GetAsync(string id) =>
         _api.GetAsync<TopicDetailCompositionModel>($"history/topics/{id}");

@@ -103,9 +103,8 @@ internal sealed class ApiClient
         {
             return ApiResult<T>.Fail(Error.Create("Server unavailable", 503));
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine(ex);
             return ApiResult<T>.Fail(Error.Create("Internal error", 502));
         }
     }

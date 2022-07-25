@@ -3,8 +3,10 @@ version: '3.9'
 services:
 
   education.web:
-    container_name: "education_web"
     image: elwark/education/web:${TAG:-latest}
+    container_name: "education_web"
+    mem_limit: 64M
+    mem_reservation: 32M
     build:
       context: .
       dockerfile: src/Dockerfile

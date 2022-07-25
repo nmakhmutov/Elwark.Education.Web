@@ -1,6 +1,6 @@
 namespace Education.Web.Services.History.Topic.Model;
 
-public sealed record EmpireOverview(
+public sealed record EmpireOverviewModel(
     string Id,
     string Title,
     string Overview,

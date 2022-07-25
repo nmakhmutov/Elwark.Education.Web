@@ -10,9 +10,9 @@ public sealed record Error
 
     public string? Detail { get; init; }
     
+    public string? Id { get; init; }
+    
     public IDictionary<string, string[]> Errors { get; init; } = new Dictionary<string, string[]>();
-
-    public IDictionary<string, object> Extensions { get; init; } = new Dictionary<string, object>();
 
     public static Error Create(string title, int status, string? detail = null) =>
         new()

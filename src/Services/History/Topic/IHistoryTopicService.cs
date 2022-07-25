@@ -9,7 +9,7 @@ public interface IHistoryTopicService
 {
     Task<ApiResult<PagingOffsetModel<UserTopicOverviewModel>>> GetAsync(GetTopicsRequest request);
 
-    Task<ApiResult<PagingOffsetModel<EmpireOverview>>> GetAsync(GetEmpiresRequest request);
+    Task<ApiResult<PagingOffsetModel<EmpireOverviewModel>>> GetAsync(GetEmpiresRequest request);
 
     Task<ApiResult<TopicDetailCompositionModel>> GetAsync(string id);
 

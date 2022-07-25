@@ -114,7 +114,7 @@
 
     private TimelinePosition _timelinePosition = TimelinePosition.Start;
     private GetEmpiresRequest.SortType _sort = GetEmpiresRequest.SortType.Area;
-    private Virtualize<EmpireOverview> _empireVirtualize = default!;
+    private Virtualize<EmpireOverviewModel> _empireVirtualize = default!;
 
     [Inject]
     private IResizeListenerService ResizeListener { get; set; } = default!;
@@ -163,13 +163,13 @@
         InvokeAsync(StateHasChanged);
     }
 
-    private async ValueTask<ItemsProviderResult<EmpireOverview>> EmpiresProvider(ItemsProviderRequest request)
+    private async ValueTask<ItemsProviderResult<EmpireOverviewModel>> EmpiresProvider(ItemsProviderRequest request)
     {
         var response = await TopicService.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex + 1, request.Count));
 
         return response.IsSuccess
-            ? new ItemsProviderResult<EmpireOverview>(response.Data.Items, (int)response.Data.Count)
-            : new ItemsProviderResult<EmpireOverview>();
+            ? new ItemsProviderResult<EmpireOverviewModel>(response.Data.Items, (int)response.Data.Count)
+            : new ItemsProviderResult<EmpireOverviewModel>();
     }
 
     private static GetEmpiresRequest.SortType Map(string? sort) =>

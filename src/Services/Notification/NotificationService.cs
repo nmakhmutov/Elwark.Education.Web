@@ -30,11 +30,11 @@ internal sealed class NotificationService : INotificationService
     }
 
     public Task<ApiResult<PagingTokenModel<NotificationModel>>> GetAsync(NotificationsRequest request) =>
-        _api.GetAsync<PagingTokenModel<NotificationModel>>("customers/me/notifications", request);
+        _api.GetAsync<PagingTokenModel<NotificationModel>>("notifications", request);
 
     public async Task<ApiResult<Unit>> MarkAllAsReadAsync()
     {
-        var result = await _api.DeleteAsync("customers/me/notifications");
+        var result = await _api.DeleteAsync("notifications");
         if (result.IsFailed)
             return result;
 
@@ -45,7 +45,7 @@ internal sealed class NotificationService : INotificationService
     }
 
     public Task<ApiResult<Unit>> MarkAsReadAsync(string id) =>
-        _api.DeleteAsync($"customers/me/notifications/{id}");
+        _api.DeleteAsync($"notifications/{id}");
 
     public IReadOnlyCollection<NotificationMessage> LastNotifications =>
         _lastNotifications.AsReadOnly();

@@ -19,7 +19,7 @@
                 }
 
                 <MudCheckBox
-                    Checked="@(UserAnswer.MultipleAnswer.Contains(option.Id))"
+                    Checked="@(UserAnswer.Answer.Contains(option.Id))"
                     CheckedChanged="@((bool b) => OnChecked(b, option.Id))"
                     Disabled="@(CorrectAnswer != null)"
                     Color="Color.Primary">
@@ -141,9 +141,9 @@
     private void OnChecked(bool isAdded, uint id)
     {
         if (isAdded)
-            UserAnswer.MultipleAnswer.Add(id);
+            UserAnswer.Answer.Add(id);
         else
-            UserAnswer.MultipleAnswer.Remove(id);
+            UserAnswer.Answer.Remove(id);
     }
 
     private (string? Icon, Color Color) Get(AnswerOptionModel option) =>
@@ -151,7 +151,7 @@
         { } x when x.Answer.Contains(option.Id) => 
             (Icon: Icons.Outlined.Check , Color: Color.Success),
                                                 
-        {IsCorrect:false} when UserAnswer.MultipleAnswer.Contains(option.Id) => 
+        {IsCorrect:false} when UserAnswer.Answer.Contains(option.Id) => 
             (Icon: Icons.Outlined.Clear , Color: Color.Error),
                 
             _ => (Icon: null, Color: Color.Default)
@@ -160,7 +160,7 @@
     public sealed class Validator : AbstractValidator<MultipleAnswerModel>
     {
         public Validator(IStringLocalizer<App> localizer) =>
-            RuleFor(x => x.MultipleAnswer)
+            RuleFor(x => x.Answer)
                 .NotEmpty()
                 .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
     }
