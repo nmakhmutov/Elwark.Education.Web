@@ -33,7 +33,7 @@
                     <MudDivider/>
                     <MudMenuItem Class="px-3 py-2">
                         <div class="d-flex">
-                            @NotificationIcon(notification.Subject)
+                            <NotificationIcon Class="mr-3" Subject="@notification.Subject"/>
                             <div>
                                 <MudText Typo="Typo.subtitle2">
                                     @notification.Title
@@ -88,17 +88,5 @@
 
     public void Dispose() =>
         NotificationService.OnChanged -= StateHasChanged;
-
-    private RenderFragment NotificationIcon(string subject)
-    {
-        var (icon, color) = subject switch {
-            "History" => (EduIcons.History, Color.Primary),
-            _=> (Icons.Outlined.Message, Color.Default)
-            };
-
-        return @<MudAvatar Class="mr-3" Color="@color">
-                   <MudIcon Icon="@icon"/>
-               </MudAvatar>;
-    }
 
 }

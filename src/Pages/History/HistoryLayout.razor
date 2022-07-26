@@ -80,17 +80,21 @@
                     </MudNavLink>
                 </MudNavGroup>
 
-                <MudDivider Class="my-2"/>
+                <AuthorizeView>
+                    <Authorized>
+                        <MudDivider Class="my-2"/>
 
-                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyProfile" Icon="@EduIcons.MyProfile">
-                    @L["Profile"]
-                </MudNavLink>
-                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyInventories" Icon="@EduIcons.MyInventory">
-                    @L["Inventory"]
-                </MudNavLink>
-                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyFavorites" Icon="@EduIcons.MyFavorites">
-                    @L["Favorites"]
-                </MudNavLink>
+                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyProfile" Icon="@EduIcons.MyProfile">
+                            @L["Profile"]
+                        </MudNavLink>
+                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyInventories" Icon="@EduIcons.MyInventory">
+                            @L["Inventory"]
+                        </MudNavLink>
+                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyFavorites" Icon="@EduIcons.MyFavorites">
+                            @L["Favorites"]
+                        </MudNavLink>
+                    </Authorized>
+                </AuthorizeView>
             </MudNavMenu>
         </MudDrawer>
 
@@ -118,12 +122,12 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()=>
+    protected override async Task OnInitializedAsync() =>
         _isOpen = await Storage.GetItemAsync<bool>("sbs");
-    
+
     private async Task ToggleAsync() =>
         await Storage.SetItemAsync("sbs", _isOpen = !_isOpen);
-    
+
     private async Task<IEnumerable<TopicOverviewModel>> OnSearch(string text)
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)

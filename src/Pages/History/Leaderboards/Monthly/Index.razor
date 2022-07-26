@@ -26,17 +26,17 @@
 
                     @if (result.Leaderboard.IsActive)
                     {
-                        <MudChip Icon="@Icons.Outlined.Equalizer" Variant="Variant.Text" Label Color="Color.Primary" Class="ma-0">
+                        <MudChip Class="ma-0" Label Icon="@Icons.Outlined.Equalizer" Variant="Variant.Text" Color="Color.Primary">
                             @L["Leaderboard:InProgress"]
                         </MudChip>
                     }
                     else
                     {
-                        <MudChip Icon="@Icons.Outlined.EmojiEvents" Variant="Variant.Text" Label Color="Color.Success" Class="ma-0">
+                        <MudChip Class="ma-0" Label Icon="@Icons.Outlined.EmojiEvents" Variant="Variant.Text"  Color="Color.Success">
                             @L["Leaderboard:Completed"]
                         </MudChip>
                     }
-                    <div class="mt-3" style="max-width: 180px; width: 100%">
+                    <div class="month-wrapper mt-3">
                         <MudSelect T="DateOnly" Label="@L["Month"]" Value="@result.Leaderboard.Month" ValueChanged="@OnMonthChanged">
                             @foreach (var month in result.Months)
                             {
@@ -73,11 +73,11 @@
                                     <MudAvatar Color="Color.Primary">@result.User.Rank</MudAvatar>
                                 </Rank>
                                 <Name>
-                                    <MudAvatar Image="@result.User.Image" Alt="@result.User.FullName" Class="mr-3"/>
+                                    <MudAvatar Class="mr-3" Image="@result.User.Image" Alt="@result.User.FullName"/>
                                     <MudText Typo="Typo.subtitle1">@result.User.FullName</MudText>
                                 </Name>
                                 <Experience>
-                                    <MudIcon Icon="@EduIcons.Experience" Class="mr-3"/>
+                                    <MudIcon Class="mr-3" Icon="@EduIcons.Experience"/>
                                     <ReadableNumber Value="@result.User.Experience" Typo="Typo.h6"/>
                                 </Experience>
                             </RegularRanking>
@@ -123,11 +123,11 @@
                             <MudAvatar Color="Color.Primary">@user.Rank</MudAvatar>
                         </Rank>
                         <Name>
-                            <MudAvatar Image="@user.Image" Alt="@user.FullName" Class="mr-3"/>
+                            <MudAvatar Class="mr-3" Image="@user.Image" Alt="@user.FullName"/>
                             <MudText Typo="Typo.subtitle1">@user.FullName</MudText>
                         </Name>
                         <Experience>
-                            <MudIcon Icon="@EduIcons.Experience" Class="mr-3"/>
+                            <MudIcon Class="mr-3" Icon="@EduIcons.Experience"/>
                             <ReadableNumber Value="@user.Experience" Typo="Typo.h6"/>
                         </Experience>
                     </RegularRanking>

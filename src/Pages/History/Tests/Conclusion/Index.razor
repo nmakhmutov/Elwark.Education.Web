@@ -9,11 +9,11 @@
 
 <EduPage ShowFooter="@_result.IsLoaded">
     <ApiViewer Result="@_result" Context="conclusion">
-        <MudAlert Class="mb-6 mb-sm-12" Severity="@GetColor(conclusion.Status)" Square ContentAlignment="HorizontalAlignment.Center">
+        <MudAlert Class="mb-6 mb-sm-12" Square Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center">
             @L[$"ConclusionStatus:{conclusion.Status}"]
         </MudAlert>
 
-        <CompletedStars Progress="@_progress" Class="mb-6"/>
+        <CompletedStars Class="mb-6" Progress="@_progress"/>
 
         @if (conclusion.Rewards.Length > 0)
         {

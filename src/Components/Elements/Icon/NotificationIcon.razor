@@ -1,0 +1,23 @@
+<MudAvatar Class="@Class" Color="@_color" Size="@Size">
+    <MudIcon Icon="@_icon" Size="@Size"/>
+</MudAvatar>
+
+@code {
+    private Color _color;
+    private string? _icon;
+
+    [Parameter, EditorRequired]
+    public string Subject { get; set; } = string.Empty;
+
+    [Parameter]
+    public Size Size { get; set; } = Size.Medium;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnInitialized() =>
+        (_icon, _color) = Subject switch {
+            "History" => (EduIcons.History, Color.Primary),
+            _=> (Icons.Outlined.Message, Color.Default)
+        };
+}
