@@ -3,6 +3,7 @@ using Education.Web.Services.History.User.Model;
 using Education.Web.Services.History.User.Request;
 using Education.Web.Services.Model;
 using Education.Web.Services.Model.Statistics;
+using Education.Web.Services.Model.User;
 
 namespace Education.Web.Services.History.User;
 
@@ -25,11 +26,11 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<InventoryCompositionModel>> GetInventoryAsync() =>
         _api.GetAsync<InventoryCompositionModel>("history/users/me/inventories");
 
-    public Task<ApiResult<Unit>> CollectDailyBonusAsync() =>
-        _api.PostAsync<Unit>("history/users/me/bonus/daily");
+    public Task<ApiResult<DailyBonusModel>> CollectDailyBonusAsync() =>
+        _api.PostAsync<DailyBonusModel>("history/users/me/bonus/daily");
 
-    public Task<ApiResult<Unit>> RejectDailyBonusAsync() =>
-        _api.DeleteAsync("history/users/me/bonus/daily");
+    public Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync() =>
+        _api.DeleteAsync<DailyBonusModel>("history/users/me/bonus/daily");
 
     public Task<ApiResult<TestStatisticsModel>> GetEasyTestStatisticsAsync() =>
         _api.GetAsync<TestStatisticsModel>("history/users/me/tests/easy");

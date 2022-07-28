@@ -3,6 +3,7 @@ using Education.Web.Services.History.User.Model;
 using Education.Web.Services.History.User.Request;
 using Education.Web.Services.Model;
 using Education.Web.Services.Model.Statistics;
+using Education.Web.Services.Model.User;
 
 namespace Education.Web.Services.History.User;
 
@@ -16,9 +17,9 @@ public interface IHistoryUserService
 
     Task<ApiResult<InventoryCompositionModel>> GetInventoryAsync();
 
-    Task<ApiResult<Unit>> CollectDailyBonusAsync();
+    Task<ApiResult<DailyBonusModel>> CollectDailyBonusAsync();
 
-    Task<ApiResult<Unit>> RejectDailyBonusAsync();
+    Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync();
 
     Task<ApiResult<TestStatisticsModel>> GetEasyTestStatisticsAsync();
 

@@ -24,18 +24,30 @@
                         <section class="mud-paper d-flex pa-3 mb-3">
                             <NotificationIcon Class="mr-3" Subject="@item.Subject"/>
                             <article class="flex-1">
-                                <header class="d-flex align-center mud-text-secondary">
-                                    <MudText Typo="Typo.body2">
-                                        @item.Title
-                                    </MudText>
-                                    <MudIcon Class="dot mx-1" Icon="@Icons.Outlined.NoiseControlOff"/>
-                                    <MudText Typo="Typo.body2">
+                                @if (string.IsNullOrEmpty(item.Message))
+                                {
+                                    <MudText Class="mud-text-secondary" Typo="Typo.body2">
                                         @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
                                     </MudText>
-                                </header>
-                                <MudText Typo="Typo.body1">
-                                    @item.Message
-                                </MudText>
+                                    <MudText Typo="Typo.body1">
+                                        @item.Title
+                                    </MudText>
+                                }
+                                else
+                                {
+                                    <header class="d-flex align-center mud-text-secondary">
+                                        <MudText Typo="Typo.body2">
+                                            @item.Title
+                                        </MudText>
+                                        <MudIcon Class="dot mx-1" Icon="@Icons.Outlined.NoiseControlOff"/>
+                                        <MudText Typo="Typo.body2">
+                                            @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                                        </MudText>
+                                    </header>
+                                    <MudText Typo="Typo.body1">
+                                        @item.Message
+                                    </MudText>
+                                }
                             </article>
                             <aside>
                                 <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="@(() => MarkAsReadAsync(item.Id))"/>
@@ -61,7 +73,7 @@
 </EduPage>
 
 @code {
-    private NotificationsRequest _request = new(null, 10);
+    private NotificationsRequest _request = new(null, 15);
     private ApiResult<PagingTokenModel<NotificationModel>> _result = ApiResult<PagingTokenModel<NotificationModel>>.Loading();
     private readonly List<NotificationModel> _notifications = new();
     private bool _isMoreLoading;
@@ -86,7 +98,7 @@
         if (_result.IsSuccess)
         {
             _notifications.AddRange(_result.Data.Items);
-            _request = _request with { Token = _result.Data.Next };
+            _request = new NotificationsRequest(_result.Data.Next, 10);
         }
     }
 

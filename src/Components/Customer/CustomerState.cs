@@ -19,17 +19,17 @@ public sealed record CustomerState
             CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern
         );
 
-    public static CustomerState Authenticated(string name, string image, string timezone, DayOfWeek weekStart,
+    public static CustomerState Authenticated(string name, string image, string timezone, DayOfWeek startOfWeek,
         string language, string dateFormat, string timeFormat) =>
-        new(true, name, image, timezone, weekStart, language, dateFormat, timeFormat);
+        new(true, name, image, timezone, startOfWeek, language, dateFormat, timeFormat);
 
     private CustomerState(bool isAuthenticated, string name, string image, string timeZone,
-        DayOfWeek weekStart, string language, string dateFormat, string timeFormat)
+        DayOfWeek startOfWeek, string language, string dateFormat, string timeFormat)
     {
         IsAuthenticated = isAuthenticated;
         Name = name;
         Image = image;
-        WeekStart = weekStart;
+        StartOfWeek = startOfWeek;
         Language = language;
         DateTimeInfo = new DateTimeInfo(
             TimeZoneInfo.FindSystemTimeZoneById(timeZone),
@@ -45,7 +45,7 @@ public sealed record CustomerState
 
     public string Image { get; }
 
-    public DayOfWeek WeekStart { get; }
+    public DayOfWeek StartOfWeek { get; }
 
     public string Language { get; }
 

@@ -93,14 +93,14 @@
     {
         var response = await UserService.CollectDailyBonusAsync();
         if (response.IsSuccess)
-            _result = await UserService.GetOverviewAsync();
+            _result = ApiResult<HistoryUserProfileModel>.Success(_result.Data with { DailyBonus = response.Data });
     }
 
     private async Task RejectDailyBonusAsync()
     {
         var response = await UserService.RejectDailyBonusAsync();
         if (response.IsSuccess)
-            _result = await UserService.GetOverviewAsync();
+            _result = ApiResult<HistoryUserProfileModel>.Success(_result.Data with { DailyBonus = response.Data });
     }
 
 }

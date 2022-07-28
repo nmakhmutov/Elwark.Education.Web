@@ -2,9 +2,9 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Education.Web.Services.Api.Converters;
-using Education.Web.Services.Model;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.Extensions.Localization;
 
 namespace Education.Web.Services.Api;
 
@@ -35,13 +35,15 @@ internal sealed class ApiClient
     private readonly ApiAnonymousClient _anonymous;
     private readonly ApiAuthenticatedClient _authenticated;
     private readonly AuthenticationStateProvider _provider;
-
+    private readonly IStringLocalizer<App> _localizer;
+    
     public ApiClient(ApiAnonymousClient anonymous, ApiAuthenticatedClient authenticated,
-        AuthenticationStateProvider provider)
+        AuthenticationStateProvider provider, IStringLocalizer<App> localizer)
     {
         _anonymous = anonymous;
         _authenticated = authenticated;
         _provider = provider;
+        _localizer = localizer;
     }
 
     public async Task<ApiResult<T>> GetAsync<T>(string uri, IQueryStringRequest? request = null)
@@ -65,13 +67,13 @@ internal sealed class ApiClient
     public Task<ApiResult<T>> PutAsync<T, V>(string uri, V data) =>
         ExecuteAsync<T>(ct => _authenticated.PutAsync(uri, CreateJson(data), ct));
 
-    public Task<ApiResult<Unit>> DeleteAsync(string uri) =>
-        ExecuteAsync<Unit>(ct => _authenticated.DeleteAsync(uri, ct));
+    public Task<ApiResult<T>> DeleteAsync<T>(string uri) =>
+        ExecuteAsync<T>(ct => _authenticated.DeleteAsync(uri, ct));
 
     private static JsonContent CreateJson<T>(T value) =>
         JsonContent.Create(value, null, Options);
 
-    private static async Task<ApiResult<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> func)
+    private async Task<ApiResult<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> func)
     {
         using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1));
 
@@ -87,9 +89,9 @@ internal sealed class ApiClient
 
                 (>= 200 and < 300, false) => ApiResult<T>.Success(default!),
 
-                (404, false) => ApiResult<T>.Fail(Error.Create("Resource not found", 404)),
+                (404, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:NotFound"], 404)),
 
-                (_, false) => ApiResult<T>.Fail(Error.Create("Unknown server response", 500)),
+                (_, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:InternalServerError"], 500)),
 
                 _ => ApiResult<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(Options, cts.Token))!)
             };
@@ -97,15 +99,19 @@ internal sealed class ApiClient
         catch (AccessTokenNotAvailableException ex)
         {
             ex.Redirect();
-            return ApiResult<T>.Fail(Error.Create("You are not authorized", 401));
+            return ApiResult<T>.Fail(Error.Create(_localizer["Error:AccessDenied"], 403));
         }
         catch (HttpRequestException)
         {
-            return ApiResult<T>.Fail(Error.Create("Server unavailable", 503));
+            return ApiResult<T>.Fail(Error.Create(_localizer["Error:ServiceUnavailable"], 503));
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResult<T>.Fail(Error.Create(_localizer["Error:RequestTimeout"], 408));
         }
         catch (Exception)
         {
-            return ApiResult<T>.Fail(Error.Create("Internal error", 502));
+            return ApiResult<T>.Fail(Error.Create(_localizer["Error:BadGateway"], 502));
         }
     }
 }

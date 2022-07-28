@@ -34,7 +34,7 @@ internal sealed class NotificationService : INotificationService
 
     public async Task<ApiResult<Unit>> MarkAllAsReadAsync()
     {
-        var result = await _api.DeleteAsync("notifications");
+        var result = await _api.DeleteAsync<Unit>("notifications");
         if (result.IsFailed)
             return result;
 
@@ -45,7 +45,7 @@ internal sealed class NotificationService : INotificationService
     }
 
     public Task<ApiResult<Unit>> MarkAsReadAsync(string id) =>
-        _api.DeleteAsync($"notifications/{id}");
+        _api.DeleteAsync<Unit>($"notifications/{id}");
 
     public IReadOnlyCollection<NotificationMessage> LastNotifications =>
         _lastNotifications.AsReadOnly();

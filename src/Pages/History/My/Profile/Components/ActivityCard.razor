@@ -4,7 +4,7 @@
 @using Align = MudBlazor.Align
 
 <MudPaper Class="@($"d-flex flex-column justify-space-between {Class}")" Elevation="0">
-    <MudStack Row AlignItems="AlignItems.Start" Justify="Justify.SpaceBetween" Class="pt-3 px-3 pt-sm-6 px-sm-6">
+    <MudStack Row AlignItems="AlignItems.Start" Justify="Justify.SpaceBetween" Class="pa-3 pa-sm-6">
         <div>
             <MudText Typo="Typo.h5">
                 @L["Test:MyActivity"]
@@ -26,12 +26,12 @@
     </MudStack>
     @if (Activities.Length > 0)
     {
-        <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.DailyItem" Options="_options" Height="@("240px")">
+        <ApexChart @ref="@_chart" TItem="HistoryUserProfileModel.DailyItem" Options="_options" Height="@("200px")">
             <ApexPointSeries
                 TItem="HistoryUserProfileModel.DailyItem"
                 Items="Activities"
                 Name="@L["NumberOfTests:Total"]"
-                Stroke="@(new SeriesStroke { Width = 5, Color = "#5569FF" })"
+                Stroke="@(new SeriesStroke { Width = 3, Color = "#5569FF" })"
                 SeriesType="SeriesType.Area"
                 XValue="@(e => e.Day)"
                 YValue="@(x => x.Total)"/>

@@ -1,16 +1,13 @@
 ﻿@page "/"
 @layout MainLayout
 
-@using Education.Web.Pages.History
 @using Education.Web.Pages.Home.Components
 
 <PageTitle>Elwark education</PageTitle>
 
 <AuthorizeView>
     <Authorized>
-        <EduPage ShowFooter>
-            <MudLink Href="@HistoryUrl.Root">History</MudLink>
-        </EduPage>
+        <RedirectToAccount/>
     </Authorized>
 
     <NotAuthorized>
