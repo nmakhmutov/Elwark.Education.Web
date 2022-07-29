@@ -1,7 +1,7 @@
 @using MudBlazor.Utilities
 @using Education.Web.Services.Model.User
 
-<MudPaper Class="@_class" Elevation="0">
+<section class="@($"mud-paper d-flex flex-column {Class}")">
     <header class="header">
         <section class="background">
             <div class="avatar">
@@ -44,7 +44,7 @@
         </div>
     </section>
 
-    <section class="profile-info px-3 px-sm-6 mb-3 mb-sm-6">
+    <section class="d-flex gap-3 px-3 px-sm-6 mb-3 mb-sm-6">
         <MudButton
             FullWidth
             DisableElevation
@@ -66,7 +66,7 @@
         </MudButton>
     </section>
 
-    <section class="profile-info px-3 px-sm-6 mb-3 mb-sm-6">
+    <article class="profile-info px-3 px-sm-6 mb-3 mb-sm-6">
         @foreach (var item in _items)
         {
             <MudStack Row Spacing="1" AlignItems="AlignItems.Center">
@@ -78,11 +78,11 @@
                 </MudText>
             </MudStack>
         }
-    </section>
+    </article>
 
-    <MudSpacer/>
+    <div class="flex-grow-1"></div>
 
-    <section class="d-flex justify-center px-3 px-sm-6 mb-3 mb-sm-6">
+    <footer class="d-flex justify-center px-3 px-sm-6 mb-3 mb-sm-6">
         <MudButton
             DisableElevation
             Variant="Variant.Outlined"
@@ -92,11 +92,10 @@
             Target="_blank">
             @L["Account:Elwark"]
         </MudButton>
-    </section>
-</MudPaper>
+    </footer>
+</section>
 
 @code {
-    private string? _class;
     private IDictionary<string, string> _items = new Dictionary<string, string>();
 
     [Inject]
@@ -117,10 +116,6 @@
     protected override void OnParametersSet()
     {
         var now = DateTime.Now;
-
-        _class = CssBuilder.Default("d-flex flex-column")
-            .AddClass(Class, Class is not null)
-            .Build();
 
         _items = new Dictionary<string, string>
         {

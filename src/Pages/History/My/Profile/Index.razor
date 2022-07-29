@@ -15,11 +15,18 @@
     <ApiViewer Result="@_result" Context="profile">
         <EduContainer MaxWidth="EduWidth.W1920">
             <div class="grid">
-                <ProfileCard Class="profile" Customer="Customer" Level="@profile.Level"/>
+                <ProfileCard
+                    Class="profile"
+                    Customer="Customer"
+                    Level="@profile.Level"/>
 
-                <WalletCard Class="wallet" Silver="@profile.Silver"/>
+                <WalletCard
+                    Class="wallet"
+                    Silver="@profile.Silver"/>
 
-                <ActivityCard Class="activity" Activities="@profile.DailyProgress"/>
+                <ActivityCard
+                    Class="activity"
+                    Activities="@profile.DailyProgress"/>
 
                 <DailyTasksCard
                     Class="daily-tasks"
@@ -32,7 +39,11 @@
                     OnReject="@RejectDailyBonusAsync"
                     OnReached="@OnInitializedAsync"/>
 
-                <AchievementsCard Class="achievements" Achievements="@profile.Achievements"/>
+                <AchievementsCard
+                    Class="achievements"
+                    Total="@profile.Achievements.Total"
+                    Completed="@profile.Achievements.Completed"
+                    Achievements="@profile.Achievements.Items"/>
 
                 <StatisticsCard
                     Class="easy-test"
@@ -72,7 +83,6 @@
                         Points="@profile.EventGuesser.Points"
                         Bonus="@profile.EventGuesser.Bonus"/>
                 </StatisticsCard>
-
             </div>
         </EduContainer>
     </ApiViewer>

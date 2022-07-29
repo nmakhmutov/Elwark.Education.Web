@@ -1,11 +1,11 @@
 <MudContainer MaxWidth="MaxWidth.Small" Class="@Class">
     <img src="/images/illustration/no-data.svg" alt="no data" loading="lazy" class="image">
-    <MudText Typo="Typo.h6" Align="Align.Center" Class="mt-3">
+    <MudText Typo="@TitleTypo" Align="Align.Center" Class="mt-3">
         @Title
     </MudText>
     @if (Subtitle is not null)
     {
-        <MudText Typo="Typo.body1" Align="Align.Center">
+        <MudText Typo="@SubtitleTypo" Align="Align.Center">
             @Subtitle
         </MudText>
     }
@@ -17,8 +17,14 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
+    public Typo TitleTypo { get; set; } = Typo.h6;
+
+    [Parameter]
     public string? Subtitle { get; set; }
 
+    [Parameter]
+    public Typo SubtitleTypo { get; set; } = Typo.body1;
+    
     [Parameter]
     public string? Class { get; set; }
 

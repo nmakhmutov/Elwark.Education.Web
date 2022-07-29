@@ -1,105 +1,91 @@
 .grid {
     display: grid;
-    gap: 12px;
-    grid-template-columns: minmax(100px, 1fr);
-    grid-template-areas: 
-        "profile"
-        "wallet"
-        "activity"
-        "daily-bonus"
-        "daily-tasks"
-        "achievements"
-        "easy-test"
-        "hard-test"
-        "mixed-test"
-        "event-guesser";
-}
-
-.grid ::deep .profile {
-    grid-area: profile;
-}
-
-.grid ::deep .wallet {
-    grid-area: wallet;
-}
-
-.grid ::deep .activity {
-    grid-area: activity;
-}
-
-.grid ::deep .daily-bonus {
-    grid-area: daily-bonus;
-}
-
-.grid ::deep .daily-tasks {
-    grid-area: daily-tasks;
-}
-
-.grid ::deep .achievements {
-    grid-area: achievements;
-}
-
-.grid ::deep .easy-test {
-    grid-area: easy-test;
-}
-
-.grid ::deep .hard-test {
-    grid-area: hard-test;
-}
-
-.grid ::deep .mixed-test {
-    grid-area: mixed-test;
-}
-
-.grid ::deep .event-guesser {
-    grid-area: event-guesser;
+    row-gap: 12px;
+    grid-template-columns: 1fr;
 }
 
 @media (min-width: 600px) {
     .grid {
         gap: 24px;
         grid-template-columns: repeat(2, minmax(160px, 1fr));
-        grid-template-areas:
-            "profile profile"
-            "wallet wallet"
-            "activity activity"
-            "daily-tasks daily-bonus"
-            "achievements achievements"
-            "easy-test hard-test"
-            "mixed-test event-guesser";
+    }
+
+    .grid ::deep .profile,
+    .grid ::deep .achievements {
+        grid-column: span 2;
     }
 }
 
 @media (min-width: 960px) {
     .grid {
-        grid-template-columns: repeat(6, minmax(120px, 1fr));
-        grid-template-areas:
-            "profile profile profile wallet wallet wallet"
-            "profile profile profile activity activity activity"
-            "daily-tasks daily-tasks daily-tasks daily-bonus daily-bonus daily-bonus"
-            "achievements achievements achievements achievements achievements achievements"
-            "easy-test easy-test hard-test hard-test mixed-test mixed-test"
-            "event-guesser event-guesser . . . .";
+        grid-template-columns: repeat(12, 1fr);
+    }
+
+    .grid ::deep .profile {
+        grid-column: span 5;
+        grid-row: span 2;
+    }
+
+    .grid ::deep .wallet,
+    .grid ::deep .activity {
+        grid-column: span 7;
+    }
+
+    .grid ::deep .daily-bonus,
+    .grid ::deep .daily-tasks {
+        grid-column: span 6;
+    }
+
+    .grid ::deep .achievements {
+        grid-column: 1/-1;
+    }
+
+    .grid ::deep .easy-test,
+    .grid ::deep .hard-test,
+    .grid ::deep .mixed-test,
+    .grid ::deep .event-guesser {
+        grid-column: span 4
     }
 }
 
 @media (min-width: 1280px) {
-    .grid {
-        grid-template-columns: repeat(4, minmax(180px, 1fr));
-        grid-template-areas:
-            "profile profile wallet activity"
-            "profile profile daily-tasks daily-bonus"
-            "achievements achievements achievements achievements"
-            "easy-test hard-test mixed-test event-guesser";
+    .grid ::deep .profile {
+        grid-column: span 4;
+    }
+
+    .grid ::deep .wallet,
+    .grid ::deep .activity {
+        grid-column: span 4;
+    }
+
+    .grid ::deep .daily-bonus,
+    .grid ::deep .daily-tasks {
+        grid-column: span 4;
+    }
+
+    .grid ::deep .easy-test,
+    .grid ::deep .hard-test,
+    .grid ::deep .mixed-test,
+    .grid ::deep .event-guesser {
+        grid-column: span 3
     }
 }
 
 @media (min-width: 1600px) {
-    .grid {
-        grid-template-areas:
-            "profile wallet daily-tasks daily-bonus"
-            "profile achievements achievements achievements"
-            "activity achievements achievements achievements"
-            "easy-test hard-test mixed-test event-guesser";
+    .grid ::deep .profile,
+    .grid ::deep .wallet,
+    .grid ::deep .daily-tasks,
+    .grid ::deep .daily-bonus {
+        grid-column: span 3;
+    }
+
+    .grid ::deep .activity {
+        grid-column: span 3;
+        grid-row: 3;
+    }
+
+    .grid ::deep .achievements {
+        grid-column: 4 / 13;
+        grid-row: 2 / 4;
     }
 }

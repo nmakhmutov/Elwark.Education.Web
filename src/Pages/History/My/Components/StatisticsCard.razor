@@ -1,7 +1,7 @@
 @using MudBlazor.Utilities
 @typeparam TValue
 
-<MudPaper Elevation="0" Class="@_class">
+<section class="@($"mud-paper d-flex flex-column {Class}")">
     <header class="d-flex align-center justify-space-between pt-3 pt-sm-6 px-3 px-sm-6">
         <MudText Typo="Typo.h5">
             @Title
@@ -19,10 +19,9 @@
             </MudButton>
         </footer>
     }
-</MudPaper>
+</section>
 
 @code {
-    private string? _class;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -41,10 +40,5 @@
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
-
-    protected override void OnParametersSet() => 
-        _class = CssBuilder.Default("d-flex flex-column")
-        .AddClass(Class, Class is not null)
-        .Build();
 
 }

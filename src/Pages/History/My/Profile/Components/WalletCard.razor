@@ -4,8 +4,8 @@
 @using Color = MudBlazor.Color
 @using Align = MudBlazor.Align
 
-<MudPaper Class="@($"d-flex flex-column justify-space-between h-100 pa-3 {Class}")" Elevation="0">
-    <section class="mud-primary white-text rounded pa-3">
+<section class="@($"mud-paper d-flex flex-column pa-3 {Class}")">
+    <header class="mud-primary white-text rounded pa-3">
         <div class="d-flex align-center justify-space-between">
             <MudText Typo="Typo.subtitle1">
                 @L["InternalMoney:Balance"]
@@ -21,17 +21,17 @@
                 <ApexPointSeries
                     TItem="SilverWalletModel.CashFlow"
                     Items="@Silver.Flow"
-                    Name="Gross Value"
                     SeriesType="SeriesType.Line"
                     XValue="@(x => x.Month.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc))"
                     YValue="@(x => x.Balance)"
                     OrderBy="@(x => x.X)"/>
             </ApexChart>
         </div>
-    </section>
+    </header>
 
-    <section>
-        @foreach (var item in Silver.Flow[..3])
+    @if (_flows.Length > 0)
+    {
+        foreach (var item in _flows)
         {
             <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="mt-3">
                 <MudStack Row AlignItems="AlignItems.Center">
@@ -58,12 +58,21 @@
                 </MudStack>
             </MudStack>
         }
-    </section>
-</MudPaper>
+    }
+    else
+    {
+        <EduEmpty
+            Class="empty-flow"
+            Title="@L["InternalMoney:EmptyFlow"]"
+            TitleTypo="Typo.subtitle1"/>
+    }
+
+</section>
 
 @code {
     private double _tendingValue;
     private string? _tendingIcon;
+    private SilverWalletModel.CashFlow[] _flows = Array.Empty<SilverWalletModel.CashFlow>();
 
     private ApexChartOptions<SilverWalletModel.CashFlow> _options = new()
     {
@@ -102,7 +111,13 @@
 
     protected override void OnParametersSet()
     {
-        _tendingValue = ((Silver.Flow[0].Income + Silver.Flow[0].Expense) * 100.0 / (Silver.Flow[1].Income + Silver.Flow[1].Expense)) switch {
+        _flows = Silver.Flow.Where(x => x.Balance > 0).Take(3).ToArray();
+
+        var current = Silver.Flow[0].Income + Silver.Flow[0].Expense;
+        var last = Silver.Flow[1].Income + Silver.Flow[1].Expense;
+
+        _tendingValue = (current * 100.0 / last) switch
+        {
             double.NaN => 0,
             double.PositiveInfinity => 100,
             double.NegativeInfinity => -100,

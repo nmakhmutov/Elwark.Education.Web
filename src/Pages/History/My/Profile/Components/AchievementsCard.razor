@@ -4,36 +4,35 @@
 @using Education.Web.Services.History.User.Model
 @using Color = MudBlazor.Color
 
-<MudPaper Elevation="0" Class="@_class">
+<section class="@($"mud-paper d-flex flex-column {Class}")">
     <header class="d-flex align-center justify-space-between pt-3 pt-sm-6 px-3 px-sm-6">
         <MudText Typo="Typo.h5">
             @L["Achievements"]
         </MudText>
         <MudText Typo="Typo.h5">
-            @Achievements.Completed / @Achievements.Total
+            @Completed / @Total
         </MudText>
     </header>
     <section class="pa-3 pa-sm-6 flex-grow-1">
         <div class="grid">
-            @foreach (var achievement in Achievements.Items)
+            @foreach (var achievement in Achievements)
             {
                 <AchievementView Achievement="@achievement"/>
             }
         </div>
     </section>
     <footer class="pb-3 pb-sm-6 px-3 px-sm-6">
-        <MudButton 
+        <MudButton
             DisableElevation
             Variant="Variant.Outlined"
-            Color="Color.Primary" 
+            Color="Color.Primary"
             Href="@HistoryUrl.User.MyAchievements">
             @L["Button:Details"]
         </MudButton>
     </footer>
-</MudPaper>
+</section>
 
 @code {
-    private string? _class;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -42,11 +41,12 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public AchievementsOverviewModel Achievements { get; set; } = default!;
+    public uint Total { get; set; }
+    
+    [Parameter, EditorRequired]
+    public uint Completed { get; set; }
 
-    protected override void OnParametersSet() =>
-        _class = CssBuilder.Default("d-flex flex-column")
-            .AddClass(Class, Class is not null)
-            .Build();
+    [Parameter, EditorRequired]
+    public AchievementModel[] Achievements { get; set; } = Array.Empty<AchievementModel>();
 
 }
