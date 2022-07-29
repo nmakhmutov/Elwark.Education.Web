@@ -1,0 +1,14 @@
+@using Education.Web.Services.Model.User
+
+<MudPaper Class="@Class" Elevation="0">
+    Daily tasks @Tasks.Status
+</MudPaper>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public DailyTasksModel Tasks { get; set; } = default!;
+    
+    [Parameter]
+    public string? Class { get; set; }
+}

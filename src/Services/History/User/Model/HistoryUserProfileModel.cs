@@ -7,6 +7,7 @@ public sealed record HistoryUserProfileModel(
     LevelModel Level,
     SilverWalletModel Silver,
     DailyBonusModel DailyBonus,
+    DailyTasksModel DailyTasks,
     HistoryUserProfileModel.TestOverview EasyTest,
     HistoryUserProfileModel.TestOverview HardTest,
     HistoryUserProfileModel.TestOverview MixedTest,

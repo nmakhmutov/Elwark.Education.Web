@@ -7,6 +7,7 @@
         "wallet"
         "activity"
         "daily-bonus"
+        "daily-tasks"
         "achievements"
         "easy-test"
         "hard-test"
@@ -28,6 +29,10 @@
 
 .grid ::deep .daily-bonus {
     grid-area: daily-bonus;
+}
+
+.grid ::deep .daily-tasks {
+    grid-area: daily-tasks;
 }
 
 .grid ::deep .achievements {
@@ -57,7 +62,8 @@
         grid-template-areas:
             "profile profile"
             "wallet wallet"
-            "activity daily-bonus"
+            "activity activity"
+            "daily-tasks daily-bonus"
             "achievements achievements"
             "easy-test hard-test"
             "mixed-test event-guesser";
@@ -69,8 +75,8 @@
         grid-template-columns: repeat(6, minmax(120px, 1fr));
         grid-template-areas:
             "profile profile profile wallet wallet wallet"
-            "profile profile profile daily-bonus daily-bonus daily-bonus"
-            "activity activity activity activity activity activity"
+            "profile profile profile activity activity activity"
+            "daily-tasks daily-tasks daily-tasks daily-bonus daily-bonus daily-bonus"
             "achievements achievements achievements achievements achievements achievements"
             "easy-test easy-test hard-test hard-test mixed-test mixed-test"
             "event-guesser event-guesser . . . .";
@@ -81,8 +87,8 @@
     .grid {
         grid-template-columns: repeat(4, minmax(180px, 1fr));
         grid-template-areas:
-            "profile profile wallet daily-bonus"
-            "profile profile activity activity"
+            "profile profile wallet activity"
+            "profile profile daily-tasks daily-bonus"
             "achievements achievements achievements achievements"
             "easy-test hard-test mixed-test event-guesser";
     }
@@ -91,10 +97,9 @@
 @media (min-width: 1600px) {
     .grid {
         grid-template-areas:
-            "profile wallet activity daily-bonus"
+            "profile wallet daily-tasks daily-bonus"
             "profile achievements achievements achievements"
-            ". achievements achievements achievements"
-            ". achievements achievements achievements"
+            "activity achievements achievements achievements"
             "easy-test hard-test mixed-test event-guesser";
     }
 }
