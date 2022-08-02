@@ -1,19 +1,19 @@
 @using MudBlazor.Utilities
 @typeparam TValue
 
-<section class="@($"mud-paper d-flex flex-column {Class}")">
-    <header class="d-flex align-center justify-space-between pt-3 pt-sm-6 px-3 px-sm-6">
+<section class="@($"mud-paper d-flex flex-column gap-3 pa-3 pa-sm-6 {Class}")">
+    <header class="d-flex align-center justify-space-between">
         <MudText Typo="Typo.h5">
             @Title
         </MudText>
         <ReadableNumber Value="@Value" Typo="Typo.h5"/>
     </header>
-    <section class="pa-3 pa-sm-6 flex-grow-1">
+    <section class="flex-grow-1">
         @ChildContent
     </section>
     @if (Href is not null)
     {
-        <footer class="pb-3 pb-sm-6 px-3 px-sm-6">
+        <footer>
             <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary" Href="@Href">
                 @L["Button:Details"]
             </MudButton>

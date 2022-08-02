@@ -26,12 +26,18 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<InventoryCompositionModel>> GetInventoryAsync() =>
         _api.GetAsync<InventoryCompositionModel>("history/users/me/inventories");
 
-    public Task<ApiResult<DailyBonusModel>> CollectDailyBonusAsync() =>
-        _api.PostAsync<DailyBonusModel>("history/users/me/bonus/daily");
+    public Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync() =>
+        _api.PutAsync<DailyBonusModel>("history/users/me/bonus/daily");
 
     public Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync() =>
         _api.DeleteAsync<DailyBonusModel>("history/users/me/bonus/daily");
 
+    public Task<ApiResult<DailyTasksModel>> StartDailyTasksAsync() =>
+        _api.PostAsync<DailyTasksModel>("history/users/me/tasks/daily");
+
+    public Task<ApiResult<DailyTasksModel>> CollectDailyTasksAsync() =>
+        _api.PutAsync<DailyTasksModel>("history/users/me/tasks/daily");
+    
     public Task<ApiResult<TestStatisticsModel>> GetEasyTestStatisticsAsync() =>
         _api.GetAsync<TestStatisticsModel>("history/users/me/tests/easy");
 

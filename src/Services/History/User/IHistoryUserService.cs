@@ -17,9 +17,13 @@ public interface IHistoryUserService
 
     Task<ApiResult<InventoryCompositionModel>> GetInventoryAsync();
 
-    Task<ApiResult<DailyBonusModel>> CollectDailyBonusAsync();
+    Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync();
 
     Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync();
+
+    Task<ApiResult<DailyTasksModel>> StartDailyTasksAsync();
+
+    Task<ApiResult<DailyTasksModel>> CollectDailyTasksAsync();
 
     Task<ApiResult<TestStatisticsModel>> GetEasyTestStatisticsAsync();
 

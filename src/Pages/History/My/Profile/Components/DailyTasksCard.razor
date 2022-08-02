@@ -1,14 +1,116 @@
 @using Education.Web.Services.Model.User
 
-<section Class="@($"mud-paper d-flex flex-column {Class}")">
-    Daily tasks @Tasks.Status
+<section class="@($"mud-paper d-flex flex-column gap-3 pa-3 pa-sm-6 {Class}")">
+    <MudText Typo="Typo.h5">
+        @L["DailyTasks"]
+    </MudText>
+
+    @foreach (var item in Tasks.Items)
+    {
+        <section class="d-flex align-center gap-3">
+            <MudAvatar Class="rounded white-text" Color="@(item.IsCompleted ? Color.Success : Color.Default)" Size="Size.Medium">
+                <MudIcon Icon="@Icons.Outlined.Check" Size="Size.Medium"/>
+            </MudAvatar>
+            <div>
+                <MudText Typo="Typo.subtitle1">
+                    @item.Title
+                </MudText>
+
+                <MudProgressLinear
+                    Class="mb-1"
+                    Min="0"
+                    Max="@item.Threshold"
+                    Value="@item.Score"
+                    Color="@(item.IsCompleted ? Color.Success : Color.Primary)"
+                    Size="Size.Small"/>
+
+                <div class="d-flex justify-space-between align-start">
+                    <MudText Typo="Typo.body2">
+                        @(((double)item.Score / item.Threshold * 100).ToReadable())%
+                    </MudText>
+                    <div class="d-flex align-center">
+                        <ReadableNumber Value="@item.Score" Typo="Typo.body2"/>
+                        <div>&nbsp;/&nbsp;</div>
+                        <ReadableNumber Value="@item.Threshold" Typo="Typo.body2"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+
+    <div class="flex-grow-1"></div>
+
+    <section class="d-flex flex-row align-center justify-space-between gap-3">
+        <div class="d-flex flex-row align-center gap-3">
+            @foreach (var reward in Tasks.Rewards)
+            {
+                <InternalMoney Money="@reward" Typo="Typo.h5" IconSize="Size.Large" Horizontal/>
+            }
+        </div>
+
+        @switch (Tasks.Status)
+        {
+            case DailyTasksModel.DailyTasksStatus.Completed:
+                <LoadingButton
+                    DisableElevation
+                    Variant="@Variant.Outlined"
+                    Color="@Color.Primary"
+                    Text="@L["DailyTasks:Collect"]"
+                    LoadingText="@L["Loading"]"
+                    IsLoading="@_loading"
+                    OnClick="@CollectAsync"/>
+                break;
+
+            case DailyTasksModel.DailyTasksStatus.Collected:
+                <MudText Typo="@Typo.body2">
+                    Already collected
+                </MudText>
+                break;
+
+            case DailyTasksModel.DailyTasksStatus.Expired:
+                <LoadingButton
+                    DisableElevation
+                    Variant="@Variant.Outlined"
+                    Color="@Color.Primary"
+                    Text="@L["DailyTasks:Start"]"
+                    LoadingText="@L["Loading"]"
+                    IsLoading="@_loading"
+                    OnClick="@StartAsync"/>
+                break;
+        }
+    </section>
 </section>
 
 @code {
+    private bool _loading;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public DailyTasksModel Tasks { get; set; } = default!;
-    
+
+    [Parameter]
+    public EventCallback OnCollect { get; set; }
+
+    [Parameter]
+    public EventCallback OnStart { get; set; }
+
     [Parameter]
     public string? Class { get; set; }
+
+    private async Task StartAsync()
+    {
+        _loading = true;
+        await OnStart.InvokeAsync();
+        _loading = false;
+    }
+
+    private async Task CollectAsync()
+    {
+        _loading = true;
+        await OnCollect.InvokeAsync();
+        _loading = false;
+    }
+
 }

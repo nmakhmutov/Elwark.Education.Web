@@ -4,8 +4,8 @@
 @using Education.Web.Services.History.User.Model
 @using Color = MudBlazor.Color
 
-<section class="@($"mud-paper d-flex flex-column {Class}")">
-    <header class="d-flex align-center justify-space-between pt-3 pt-sm-6 px-3 px-sm-6">
+<section class="@($"mud-paper d-flex flex-column gap-3 pa-3 pa-sm-6 {Class}")">
+    <header class="d-flex align-center justify-space-between">
         <MudText Typo="Typo.h5">
             @L["Achievements"]
         </MudText>
@@ -13,7 +13,7 @@
             @Completed / @Total
         </MudText>
     </header>
-    <section class="pa-3 pa-sm-6 flex-grow-1">
+    <section class="flex-grow-1">
         <div class="grid">
             @foreach (var achievement in Achievements)
             {
@@ -21,7 +21,7 @@
             }
         </div>
     </section>
-    <footer class="pb-3 pb-sm-6 px-3 px-sm-6">
+    <footer>
         <MudButton
             DisableElevation
             Variant="Variant.Outlined"
@@ -42,7 +42,7 @@
 
     [Parameter, EditorRequired]
     public uint Total { get; set; }
-    
+
     [Parameter, EditorRequired]
     public uint Completed { get; set; }
 

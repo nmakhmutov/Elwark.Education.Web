@@ -30,12 +30,14 @@
 
                 <DailyTasksCard
                     Class="daily-tasks"
-                    Tasks="@profile.DailyTasks"/>
+                    Tasks="@profile.DailyTasks"
+                    OnCollect="@CollectDailyTasksAsync"
+                    OnStart="@StartDailyTasksAsync"/>
 
                 <DailyBonusCard
                     Class="daily-bonus"
                     Bonus="@profile.DailyBonus"
-                    OnCollect="@CollectDailyBonusAsync"
+                    OnClaim="@ClaimDailyBonusAsync"
                     OnReject="@RejectDailyBonusAsync"
                     OnReached="@OnInitializedAsync"/>
 
@@ -103,9 +105,9 @@
     protected override async Task OnInitializedAsync() =>
         _result = await UserService.GetOverviewAsync();
 
-    private async Task CollectDailyBonusAsync()
+    private async Task ClaimDailyBonusAsync()
     {
-        var response = await UserService.CollectDailyBonusAsync();
+        var response = await UserService.ClaimDailyBonusAsync();
         if (response.IsSuccess)
             _result = ApiResult<HistoryUserProfileModel>.Success(_result.Data with { DailyBonus = response.Data });
     }
@@ -117,4 +119,17 @@
             _result = ApiResult<HistoryUserProfileModel>.Success(_result.Data with { DailyBonus = response.Data });
     }
 
+    private async Task StartDailyTasksAsync()
+    {
+        var response = await UserService.StartDailyTasksAsync();
+        if (response.IsSuccess)
+            _result = ApiResult<HistoryUserProfileModel>.Success(_result.Data with { DailyTasks = response.Data });
+    }
+
+    private async Task CollectDailyTasksAsync()
+    {
+        var response = await UserService.CollectDailyTasksAsync();
+        if (response.IsSuccess)
+            _result = ApiResult<HistoryUserProfileModel>.Success(_result.Data with { DailyTasks = response.Data });
+    }
 }

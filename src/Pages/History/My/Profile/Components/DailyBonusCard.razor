@@ -40,7 +40,7 @@
                 LoadingText="@L["Loading"]"
                 Disabled="@(_loading != Loading.None)"
                 IsLoading="@(_loading == Loading.Collect)"
-                OnClick="@CollectAsync"/>
+                OnClick="@ClaimAsync"/>
 
             <LoadingButton
                 DisableElevation
@@ -66,7 +66,7 @@
     public DailyBonusModel Bonus { get; set; } = default!;
 
     [Parameter]
-    public EventCallback OnCollect { get; set; }
+    public EventCallback OnClaim { get; set; }
 
     [Parameter]
     public EventCallback OnReject { get; set; }
@@ -77,10 +77,10 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private async Task CollectAsync()
+    private async Task ClaimAsync()
     {
         _loading = Loading.Collect;
-        await OnCollect.InvokeAsync();
+        await OnClaim.InvokeAsync();
         _loading = Loading.None;
     }
 

@@ -10,12 +10,12 @@
             <MudText Typo="Typo.subtitle1">
                 @L["InternalMoney:Balance"]
             </MudText>
-            <MudChip Label Icon="@_tendingIcon" Class="white-text" Text="@($"{_tendingValue:F1}%")"/>
+            <MudChip Class="white-text" Label Icon="@_tendingIcon" Text="@($"{_tendingValue:F1}%")"/>
         </div>
         <div class="d-flex align-center justify-space-between">
             <div class="d-flex align-center">
-                <MudIcon Icon="@EduIcons.Silver" Class="mr-1" Size="Size.Medium"/>
-                <ReadableNumber Value="@Silver.Balance" Typo="Typo.h4" Class="white-text"/>
+                <MudIcon Class="mr-1" Icon="@EduIcons.Silver" Size="Size.Medium"/>
+                <ReadableNumber Class="white-text" Value="@Silver.Balance" Typo="Typo.h4"/>
             </div>
             <ApexChart TItem="SilverWalletModel.CashFlow" Options="@_options" Width="@("80px")" Height="@("30px")">
                 <ApexPointSeries
@@ -29,42 +29,32 @@
         </div>
     </header>
 
-    @if (_flows.Length > 0)
+    @foreach (var item in Silver.Flow.Take(3))
     {
-        foreach (var item in _flows)
-        {
-            <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="mt-3">
-                <MudStack Row AlignItems="AlignItems.Center">
-                    <MudAvatar Size="Size.Medium" Color="Color.Primary" Class="rounded white-text">
-                        <MudIcon Icon="@Icons.Outlined.CalendarMonth" Size="Size.Medium"/>
-                    </MudAvatar>
-                    <MudText Typo="Typo.subtitle2" Align="Align.Start">
-                        @L[$"Month:{CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(item.Month.Month)}"]
-                    </MudText>
-                </MudStack>
-                <MudStack Row AlignItems="AlignItems.Center">
-                    <div>
-                        <InternalMoney Horizontal IconSize="Size.Small" Money="@(new Silver(item.Income))"/>
-                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                            @L["InternalMoney:Income"]
-                        </MudText>
-                    </div>
-                    <div>
-                        <InternalMoney Horizontal IconSize="Size.Small" Money="@(new Silver(item.Expense))"/>
-                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                            @L["InternalMoney:Expense"]
-                        </MudText>
-                    </div>
-                </MudStack>
+        <MudStack Class="mt-3" Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+            <MudStack Row AlignItems="AlignItems.Center">
+                <MudAvatar Class="rounded white-text" Color="@(item.Balance == 0 ? Color.Default : Color.Primary)" Size="Size.Medium">
+                    <MudIcon Icon="@Icons.Outlined.CalendarMonth" Size="Size.Medium"/>
+                </MudAvatar>
+                <MudText Typo="Typo.subtitle2" Align="Align.Start">
+                    @L[$"Month:{CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(item.Month.Month)}"]
+                </MudText>
             </MudStack>
-        }
-    }
-    else
-    {
-        <EduEmpty
-            Class="empty-flow"
-            Title="@L["InternalMoney:EmptyFlow"]"
-            TitleTypo="Typo.subtitle1"/>
+            <MudStack Row AlignItems="AlignItems.Center">
+                <div>
+                    <InternalMoney Horizontal IconSize="Size.Small" Money="@(new Silver(item.Income))"/>
+                    <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                        @L["InternalMoney:Income"]
+                    </MudText>
+                </div>
+                <div>
+                    <InternalMoney Horizontal IconSize="Size.Small" Money="@(new Silver(item.Expense))"/>
+                    <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                        @L["InternalMoney:Expense"]
+                    </MudText>
+                </div>
+            </MudStack>
+        </MudStack>
     }
 
 </section>
@@ -72,7 +62,6 @@
 @code {
     private double _tendingValue;
     private string? _tendingIcon;
-    private SilverWalletModel.CashFlow[] _flows = Array.Empty<SilverWalletModel.CashFlow>();
 
     private ApexChartOptions<SilverWalletModel.CashFlow> _options = new()
     {
@@ -111,8 +100,6 @@
 
     protected override void OnParametersSet()
     {
-        _flows = Silver.Flow.Where(x => x.Balance > 0).Take(3).ToArray();
-
         var current = Silver.Flow[0].Income + Silver.Flow[0].Expense;
         var last = Silver.Flow[1].Income + Silver.Flow[1].Expense;
 
