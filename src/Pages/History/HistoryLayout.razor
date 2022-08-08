@@ -1,6 +1,7 @@
 @using Education.Web.Services.History
 @using Education.Web.Services.History.Home
 @using Blazored.LocalStorage
+
 @inherits LayoutComponentBase
 
 <EduThemeProvider>
@@ -84,11 +85,17 @@
                     <Authorized>
                         <MudDivider Class="my-2"/>
 
-                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyProfile" Icon="@EduIcons.MyProfile">
-                            @L["Profile"]
-                        </MudNavLink>
                         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyInventories" Icon="@EduIcons.MyInventory">
                             @L["Inventory"]
+                        </MudNavLink>
+                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyQuests" Icon="@EduIcons.MyQuests">
+                            @L["Quests"]
+                        </MudNavLink>
+                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyStatistics" Icon="@EduIcons.MyStatistics">
+                            @L["Statistics"]
+                        </MudNavLink>
+                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyAchievements" Icon="@EduIcons.Achievements">
+                            @L["Achievements"]
                         </MudNavLink>
                         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyFavorites" Icon="@EduIcons.MyFavorites">
                             @L["Favorites"]
@@ -125,8 +132,11 @@
     protected override async Task OnInitializedAsync() =>
         _isOpen = await Storage.GetItemAsync<bool>("sbs");
 
-    private async Task ToggleAsync() =>
-        await Storage.SetItemAsync("sbs", _isOpen = !_isOpen);
+    private Task ToggleAsync()
+    {
+        _isOpen = !_isOpen;
+        return InvokeAsync(() => Storage.SetItemAsync("sbs", _isOpen));
+    }
 
     private async Task<IEnumerable<TopicOverviewModel>> OnSearch(string text)
     {

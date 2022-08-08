@@ -16,21 +16,23 @@ public sealed record CustomerState
             CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek,
             CultureInfo.CurrentCulture.TwoLetterISOLanguageName,
             CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern,
-            CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern
+            CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern,
+            DateOnly.FromDateTime(DateTime.UnixEpoch)
         );
 
     public static CustomerState Authenticated(string name, string image, string timezone, DayOfWeek startOfWeek,
-        string language, string dateFormat, string timeFormat) =>
-        new(true, name, image, timezone, startOfWeek, language, dateFormat, timeFormat);
+        string language, string dateFormat, string timeFormat, DateOnly createdAt) =>
+        new(true, name, image, timezone, startOfWeek, language, dateFormat, timeFormat, createdAt);
 
-    private CustomerState(bool isAuthenticated, string name, string image, string timeZone,
-        DayOfWeek startOfWeek, string language, string dateFormat, string timeFormat)
+    private CustomerState(bool isAuthenticated, string name, string image, string timeZone, DayOfWeek startOfWeek,
+        string language, string dateFormat, string timeFormat, DateOnly createdAt)
     {
         IsAuthenticated = isAuthenticated;
         Name = name;
         Image = image;
         StartOfWeek = startOfWeek;
         Language = language;
+        CreatedAt = createdAt;
         DateTimeInfo = new DateTimeInfo(
             TimeZoneInfo.FindSystemTimeZoneById(timeZone),
             dateFormat,
@@ -50,6 +52,8 @@ public sealed record CustomerState
     public string Language { get; }
 
     public DateTimeInfo DateTimeInfo { get; }
+
+    public DateOnly CreatedAt { get; }
 }
 
 public sealed record DateTimeInfo(TimeZoneInfo TimeZone, string DateFormat, string TimeFormat, string DateTimeFormat);

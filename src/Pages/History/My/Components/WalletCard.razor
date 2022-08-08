@@ -1,5 +1,4 @@
 @using ApexCharts
-@using Education.Web.Services.Model
 @using Education.Web.Services.Model.User
 @using Color = MudBlazor.Color
 @using Align = MudBlazor.Align
@@ -63,7 +62,7 @@
     private double _tendingValue;
     private string? _tendingIcon;
 
-    private ApexChartOptions<SilverWalletModel.CashFlow> _options = new()
+    private readonly ApexChartOptions<SilverWalletModel.CashFlow> _options = new()
     {
         Tooltip = new Tooltip
         {

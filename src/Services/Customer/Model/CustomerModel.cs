@@ -8,5 +8,6 @@ public sealed record CustomerModel(
     DayOfWeek StartOfWeek,
     string Language,
     string DateFormat,
-    string TimeFormat
+    string TimeFormat,
+    DateOnly CreatedAt
 );

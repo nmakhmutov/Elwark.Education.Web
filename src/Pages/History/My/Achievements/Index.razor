@@ -1,13 +1,14 @@
 @using Education.Web.Pages.History.My.Components
 @using Education.Web.Services.History.User
 @using Education.Web.Services.History.User.Model
+@using Education.Web.Pages.Account
 
 @page "/history/my/achievements"
 @layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>@L["Achievements"]</PageTitle>
-<EduPage ShowFooter="@_result.IsLoaded">
+<EduPage ShowFooter>
     <EduContainer Class="pb-0">
         <EduPageHeader Title="@L["Achievements"]" Breadcrumbs="@Breadcrumbs">
             <MudText Typo="Typo.h5">
@@ -63,7 +64,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile)
+        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root),
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root)
     };
 
     private ApiResult<AchievementsDetailModel> _result = ApiResult<AchievementsDetailModel>.Loading();

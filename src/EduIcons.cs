@@ -43,7 +43,9 @@ public static class EduIcons
 
     public const string Leaderboard = Icons.Outlined.Leaderboard;
 
-    public const string MyProfile = Icons.Outlined.CardMembership;
+    public const string MyQuests = Icons.Outlined.TaskAlt;
+    
+    public const string MyStatistics = Icons.Outlined.QueryStats;
 
     public const string MyInventory = Icons.Outlined.Inventory2;
 

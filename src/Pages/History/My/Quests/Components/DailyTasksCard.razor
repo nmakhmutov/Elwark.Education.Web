@@ -1,11 +1,11 @@
-@using Education.Web.Services.Model.User
+@using Education.Web.Services.Model.Quest
 
 <section class="@($"mud-paper d-flex flex-column gap-3 pa-3 pa-sm-6 {Class}")">
     <MudText Typo="Typo.h5">
-        @L["DailyTasks"]
+        @L["Tasks:Daily"]
     </MudText>
 
-    @foreach (var item in Tasks.Items)
+    @foreach (var item in Quest.Quests)
     {
         <section class="d-flex align-center gap-3">
             <MudAvatar Class="rounded white-text" Color="@(item.IsCompleted ? Color.Success : Color.Default)" Size="Size.Medium">
@@ -42,37 +42,37 @@
 
     <section class="d-flex flex-row align-center justify-space-between gap-3">
         <div class="d-flex flex-row align-center gap-3">
-            @foreach (var reward in Tasks.Rewards)
+            @foreach (var reward in Quest.Rewards)
             {
                 <InternalMoney Money="@reward" Typo="Typo.h5" IconSize="Size.Large" Horizontal/>
             }
         </div>
 
-        @switch (Tasks.Status)
+        @switch (Quest.Status)
         {
-            case DailyTasksModel.DailyTasksStatus.Completed:
+            case QuestStatus.Completed:
                 <LoadingButton
                     DisableElevation
                     Variant="@Variant.Outlined"
                     Color="@Color.Primary"
-                    Text="@L["DailyTasks:Collect"]"
+                    Text="@L["Tasks:DailyCollect"]"
                     LoadingText="@L["Loading"]"
                     IsLoading="@_loading"
                     OnClick="@CollectAsync"/>
                 break;
 
-            case DailyTasksModel.DailyTasksStatus.Collected:
+            case QuestStatus.Collected:
                 <MudText Typo="@Typo.body2">
                     Already collected
                 </MudText>
                 break;
 
-            case DailyTasksModel.DailyTasksStatus.Expired:
+            case QuestStatus.Expired:
                 <LoadingButton
                     DisableElevation
                     Variant="@Variant.Outlined"
                     Color="@Color.Primary"
-                    Text="@L["DailyTasks:Start"]"
+                    Text="@L["Tasks:DailyStart"]"
                     LoadingText="@L["Loading"]"
                     IsLoading="@_loading"
                     OnClick="@StartAsync"/>
@@ -88,7 +88,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public DailyTasksModel Tasks { get; set; } = default!;
+    public DailyQuestModel Quest { get; set; } = default!;
 
     [Parameter]
     public EventCallback OnCollect { get; set; }

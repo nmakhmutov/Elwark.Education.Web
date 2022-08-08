@@ -41,7 +41,8 @@ internal sealed class CustomerStateProvider
             customer.StartOfWeek,
             customer.Language,
             customer.DateFormat,
-            customer.TimeFormat
+            customer.TimeFormat,
+            customer.CreatedAt
         );
 
         _isInitialized = true;

@@ -32,8 +32,63 @@
 </ApexChart>
 
 @code {
+
+        private const string Formatter = @"
+function(value) {
+    var minutes = Math.floor(value / 60000);
+    var seconds = ((value % 60000) / 1000).toFixed(0);
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}
+";
+
     private ApexChart<TestStatisticsModel.DailyProgress>? _chart;
-    private ApexChartOptions<TestStatisticsModel.DailyProgress> _options = new();
+
+    private ApexChartOptions<TestStatisticsModel.DailyProgress> _options = new()
+    {
+        Yaxis = new List<YAxis>
+        {
+            new()
+            {
+                Labels = new YAxisLabels
+                {
+                    Formatter = Formatter
+                }
+            }
+        },
+        Tooltip = new Tooltip
+        {
+            Y = new TooltipY
+            {
+                Formatter = Formatter
+            }
+        },
+        Legend = new Legend
+        {
+            Show = false
+        },
+        Chart = new Chart
+        {
+            Toolbar = new Toolbar
+            {
+                Show = false
+            },
+            Selection = new Selection
+            {
+                Enabled = false
+            },
+            Zoom = new Zoom
+            {
+                Enabled = false
+            },
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)"
+        },
+        Theme = new Theme()
+    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -44,64 +99,14 @@
     [Parameter, EditorRequired]
     public TestStatisticsModel.DailyProgress[] Progress { get; set; } = Array.Empty<TestStatisticsModel.DailyProgress>();
 
-    protected override void OnInitialized()
+    protected override Task OnParametersSetAsync()
     {
-        const string formatter = @"
-function(value) {
-    var minutes = Math.floor(value / 60000);
-    var seconds = ((value % 60000) / 1000).toFixed(0);
-    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-}";
-        _options = new ApexChartOptions<TestStatisticsModel.DailyProgress>
-        {
-            Yaxis = new List<YAxis>
-            {
-                new()
-                {
-                    Labels = new YAxisLabels
-                    {
-                        Formatter = formatter
-                    }
-                }
-            },
-            Tooltip = new Tooltip
-            {
-                Y = new TooltipY
-                {
-                    Formatter = formatter
-                }
-            },
-            Legend = new Legend
-            {
-                Show = false
-            },
-            Chart = new Chart
-            {
-                Toolbar = new Toolbar
-                {
-                    Show = false
-                },
-                Selection = new Selection
-                {
-                    Enabled = false
-                },
-                Zoom = new Zoom
-                {
-                    Enabled = false
-                },
-                Background = "transparent",
-                ForeColor = "var(--mud-palette-text-primary)"
-            },
-            Grid = new Grid
-            {
-                BorderColor = "var(--mud-palette-divider)"
-            },
-            Theme = new Theme
-            {
-                Mode = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light
-            }
-        };
-        
-        InvokeAsync(() => _chart?.RenderAsync() ?? Task.CompletedTask);
+        var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
     }
+
 }

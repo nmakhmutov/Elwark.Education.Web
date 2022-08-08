@@ -1,4 +1,4 @@
-using Education.Web.Services.Model;
+using Education.Web.Services.Model.Content;
 
 namespace Education.Web.Services.History.Topic.Model;
 

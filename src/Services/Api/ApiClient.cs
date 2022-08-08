@@ -36,7 +36,7 @@ internal sealed class ApiClient
     private readonly ApiAuthenticatedClient _authenticated;
     private readonly AuthenticationStateProvider _provider;
     private readonly IStringLocalizer<App> _localizer;
-    
+
     public ApiClient(ApiAnonymousClient anonymous, ApiAuthenticatedClient authenticated,
         AuthenticationStateProvider provider, IStringLocalizer<App> localizer)
     {
@@ -48,11 +48,13 @@ internal sealed class ApiClient
 
     public async Task<ApiResult<T>> GetAsync<T>(string uri, IQueryStringRequest? request = null)
     {
+        var url = request is null ? uri : $"{uri}{request.ToQueryString()}";
         var state = await _provider.GetAuthenticationStateAsync();
-        if (state.User.Identity?.IsAuthenticated == false)
-            return await ExecuteAsync<T>(ct => _anonymous.GetAsync($"{uri}{request?.ToQueryString()}", ct));
 
-        return await ExecuteAsync<T>(ct => _authenticated.GetAsync($"{uri}{request?.ToQueryString()}", ct));
+        if (state.User.Identity?.IsAuthenticated == false)
+            return await ExecuteAsync<T>(ct => _anonymous.GetAsync(url, ct));
+
+        return await ExecuteAsync<T>(ct => _authenticated.GetAsync(url, ct));
     }
 
     public Task<ApiResult<T>> PostAsync<T>(string uri) =>

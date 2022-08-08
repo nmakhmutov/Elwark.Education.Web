@@ -41,7 +41,37 @@
 
 @code {
     private ApexChart<TestStatisticsModel.DailyProgress>? _chart;
-    private ApexChartOptions<TestStatisticsModel.DailyProgress> _options = new();
+
+    private ApexChartOptions<TestStatisticsModel.DailyProgress> _options = new()
+    {
+        Legend = new Legend
+        {
+            Show = false
+        },
+        Chart = new Chart
+        {
+            Stacked = true,
+            Toolbar = new Toolbar
+            {
+                Show = false
+            },
+            Selection = new Selection
+            {
+                Enabled = false
+            },
+            Zoom = new Zoom
+            {
+                Enabled = false
+            },
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)"
+        },
+        Theme = new Theme()
+    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -52,43 +82,14 @@
     [Parameter, EditorRequired]
     public TestStatisticsModel.DailyProgress[] Progress { get; set; } = Array.Empty<TestStatisticsModel.DailyProgress>();
 
-    protected override void OnInitialized()
+    protected override Task OnParametersSetAsync()
     {
-        _options = new ApexChartOptions<TestStatisticsModel.DailyProgress>
-        {
-            Legend = new Legend
-            {
-                Show = false
-            },
-            Chart = new Chart
-            {
-                Stacked = true,
-                Toolbar = new Toolbar
-                {
-                    Show = false
-                },
-                Selection = new Selection
-                {
-                    Enabled = false
-                },
-                Zoom = new Zoom
-                {
-                    Enabled = false
-                },
-                Background = "transparent",
-                ForeColor = "var(--mud-palette-text-primary)"
-            },
-            Grid = new Grid
-            {
-                BorderColor = "var(--mud-palette-divider)"
-            },
-            Theme = new Theme
-            {
-                Mode = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light
-            }
-        };
-        
-        InvokeAsync(() => _chart?.RenderAsync() ?? Task.CompletedTask);
+        var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
     }
 
 }

@@ -1,6 +1,6 @@
 @using MudBlazor.Utilities
 
-<MudPaper Class="@_class" Elevation="0">
+<section class="mud-paper pa-3 pa-sm-6 @Class">
     <div class="grid">
         <div class="total">
             @TotalContent
@@ -15,10 +15,9 @@
             </div>
         }
     </div>
-</MudPaper>
+</section>
 
 @code {
-    private string? _class;
 
     [Parameter]
     public RenderFragment? TotalContent { get; set; }
@@ -31,13 +30,8 @@
 
     [Parameter]
     public bool DisableActivity { get; set; }
-    
+
     [Parameter]
     public string? Class { get; set; }
-
-    protected override void OnParametersSet() =>
-        _class = CssBuilder.Default("pa-3 pa-sm-6")
-            .AddClass(Class, Class is not null)
-            .Build();
 
 }

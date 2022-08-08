@@ -8,4 +8,6 @@ internal interface ICustomerService
     Task<ApiResult<CustomerModel>> GetAsync();
 
     Task<ApiResult<CustomerModel>> CreateAsync();
+
+    Task<ApiResult<SubjectModel[]>> GetSubjectsAsync();
 }

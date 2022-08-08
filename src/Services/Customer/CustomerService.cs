@@ -15,4 +15,7 @@ internal sealed class CustomerService : ICustomerService
 
     public Task<ApiResult<CustomerModel>> CreateAsync() =>
         _api.PostAsync<CustomerModel>("customers/me");
+
+    public Task<ApiResult<SubjectModel[]>> GetSubjectsAsync() =>
+        _api.GetAsync<SubjectModel[]>("customers/me/subjects");
 }

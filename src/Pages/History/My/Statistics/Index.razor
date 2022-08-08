@@ -1,0 +1,97 @@
+@using Education.Web.Pages.History.My.Components
+@using Education.Web.Pages.History.My.Statistics.Components
+@using Education.Web.Services.History.User
+@using Education.Web.Services.History.User.Model
+@using Education.Web.Pages.Account
+
+@page "/history/my/statistics"
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>@L["Statistics"]</PageTitle>
+
+<EduPage ShowFooter>
+    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
+        <EduPageHeader Title="@L["Statistics"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
+
+    <ApiViewer Result="@_result" Context="profile">
+        <EduContainer MaxWidth="EduWidth.W1920">
+            <div class="grid">
+                <StatisticsCard
+                    Class="easy-test"
+                    Title="@L["Tests:Easy"]"
+                    Value="@profile.EasyTest.NumberOfTests.Total"
+                    Href="@HistoryUrl.User.MyEasyTests">
+                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                    <ScoreChart Value="@profile.EasyTest.Score"/>
+                </StatisticsCard>
+
+                <StatisticsCard
+                    Class="hard-test"
+                    Title="@L["Tests:Hard"]"
+                    Value="@profile.HardTest.NumberOfTests.Total"
+                    Href="@HistoryUrl.User.MyHardTests">
+                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                    <ScoreChart Value="@profile.HardTest.Score"/>
+                </StatisticsCard>
+
+                <StatisticsCard
+                    Class="mixed-test"
+                    Title="@L["Tests:Mixed"]"
+                    Value="@profile.MixedTest.NumberOfTests.Total"
+                    Href="@HistoryUrl.User.MyMixedTests">
+                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                    <ScoreChart Value="@profile.MixedTest.Score"/>
+                </StatisticsCard>
+
+                <StatisticsCard
+                    Class="event-guesser"
+                    Title="@L["EventGuesser"]"
+                    Value="@profile.EventGuesser.Tests"
+                    Href="@HistoryUrl.User.MyEventGuessers">
+                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                    <EventGuesserScoreChart
+                        Score="@profile.EventGuesser.Score"
+                        Points="@profile.EventGuesser.Points"
+                        Bonus="@profile.EventGuesser.Bonus"/>
+                </StatisticsCard>
+
+                <ActivityCard
+                    Class="daily"
+                    Title="@L["Statistics:Daily"]"
+                    Activities="@profile.Daily"
+                    DateFormat="dd MMM"/>
+
+                @if (profile.Monthly.Length > 1)
+                {
+                    <ActivityCard
+                        Class="monthly"
+                        Title="@L["Statistics:Monthly"]"
+                        Activities="@profile.Monthly"
+                        DateFormat="MMM yyyy"/>
+                }
+            </div>
+        </EduContainer>
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private ApiResult<HistoryUserStatisticsModel> _result = ApiResult<HistoryUserStatisticsModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root),
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await UserService.GetStatisticsAsync();
+
+}

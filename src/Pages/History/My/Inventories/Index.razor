@@ -1,6 +1,8 @@
 @using Education.Web.Services.History.User.Model
 @using Education.Web.Services.History.User
 @using Education.Web.Pages.History.Components
+@using Education.Web.Pages.History.My.Components
+@using Education.Web.Pages.Account
 
 @page "/history/my/inventories"
 @layout HistoryLayout
@@ -8,11 +10,20 @@
 
 <PageTitle>@L["Inventory"]</PageTitle>
 
-<EduPage ShowFooter="@_result.IsLoaded">
-    <EduContainer Class="h-100" MaxWidth="EduWidth.W1920">
-        <div class="grid">
-            <section class="inventory">
-                <ApiViewer Result="@_result" Context="data">
+<EduPage ShowFooter>
+    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
+        <EduPageHeader Title="@L["Inventory"]" Breadcrumbs="@Breadcrumbs">
+            <MudText Typo="Typo.h5">@_capacity</MudText>
+        </EduPageHeader>
+    </EduContainer>
+
+    <ApiViewer Result="@_result" Context="data">
+        <EduContainer MaxWidth="EduWidth.W1920">
+            <div class="grid">
+                <div class="wallet">
+                    <WalletCard Silver="@data.Silver"/>
+                </div>
+                <div class="inventory">
                     <InventoryGrid>
                         @foreach (var item in data.Inventory.Items)
                         {
@@ -23,16 +34,21 @@
                             </InventoryInfoCard>
                         }
                     </InventoryGrid>
-                </ApiViewer>
-            </section>
-
-            <section class="shop"></section>
-        </div>
-    </EduContainer>
+                </div>
+            </div>
+        </EduContainer>
+    </ApiViewer>
 </EduPage>
 
 @code {
     private ApiResult<InventoryCompositionModel> _result = ApiResult<InventoryCompositionModel>.Loading();
+    private string? _capacity;
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root),
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root)
+    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -40,7 +56,11 @@
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() =>
+    protected override async Task OnInitializedAsync()
+    {
         _result = await UserService.GetInventoryAsync();
+        if (_result.IsSuccess)
+            _capacity = $"{_result.Data.Inventory.Fullness} / {_result.Data.Inventory.Capacity}";
+    }
 
 }

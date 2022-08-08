@@ -1,0 +1,101 @@
+@using Education.Web.Services.History.User.Model
+@using Education.Web.Pages.Account
+@using Education.Web.Pages.History.My.Quests.Components
+@using Education.Web.Services.History.User
+
+@page "/history/my/quests"
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>@L["Quests"]</PageTitle>
+
+<EduPage ShowFooter>
+    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
+        <EduPageHeader Title="@L["Quests"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
+
+    <ApiViewer Result="@_result" Context="data">
+        <EduContainer MaxWidth="EduWidth.W1920">
+            <div class="grid">
+                <MudTabs Class="nav" Rounded @bind-ActivePanelIndex="@_index">
+                    <MudTabPanel Text="Daily"/>
+                    <MudTabPanel Text="Weekly"/>
+                </MudTabs>
+                @switch (_index)
+                {
+                    case 0:
+                        <div class="quests">
+                            @foreach (var quest in data.DailyQuest.Quests)
+                            {
+                                <QuestProgressCard Quest="@quest"/>
+                            }
+                        </div>
+                        <QuestRewardsCard
+                            Class="rewards"
+                            Title="@L["Rewards"]"
+                            Subtitle="Complete all daily missions"
+                            ExpiresAt="@data.DailyQuest.ExpiresAt"
+                            Rewards="@data.DailyQuest.Rewards"/>
+                        break;
+                }
+
+                <div class="bonus">
+                    <DailyBonusCard
+                        Bonus="@data.DailyBonus"
+                        OnClaim="@ClaimDailyBonusAsync"
+                        OnReject="@RejectDailyBonusAsync"
+                        OnReached="@OnInitializedAsync"/>
+                </div>
+            </div>
+        </EduContainer>
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private int _index;
+    private ApiResult<HistoryQuestModel> _result = ApiResult<HistoryQuestModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root),
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await UserService.GetQuestAsync();
+
+    private async Task ClaimDailyBonusAsync()
+    {
+        var response = await UserService.ClaimDailyBonusAsync();
+        if (response.IsSuccess)
+            _result = ApiResult<HistoryQuestModel>.Success(_result.Data with { DailyBonus = response.Data });
+    }
+
+    private async Task RejectDailyBonusAsync()
+    {
+        var response = await UserService.RejectDailyBonusAsync();
+        if (response.IsSuccess)
+            _result = ApiResult<HistoryQuestModel>.Success(_result.Data with { DailyBonus = response.Data });
+    }
+
+    private async Task StartDailyQuestsAsync()
+    {
+        var response = await UserService.StartDailyQuestAsync();
+        if (response.IsSuccess)
+            _result = ApiResult<HistoryQuestModel>.Success(_result.Data with { DailyQuest = response.Data });
+    }
+
+    private async Task CollectDailyQuestsAsync()
+    {
+        var response = await UserService.CollectDailyQuestAsync();
+        if (response.IsSuccess)
+            _result = ApiResult<HistoryQuestModel>.Success(_result.Data with { DailyQuest = response.Data });
+    }
+
+}

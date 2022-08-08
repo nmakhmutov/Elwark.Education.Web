@@ -67,9 +67,6 @@ internal sealed class NotificationService : INotificationService
         if (state.User.Identity?.IsAuthenticated == false)
             return;
 
-        _hab.OnNotificationReceived += ReceivedNotification;
-        await _hab.InitAsync();
-
         var result = await GetAsync(new NotificationsRequest(null, MaxNotifications));
         if (result.IsSuccess)
         {
@@ -78,13 +75,20 @@ internal sealed class NotificationService : INotificationService
                 .ToList();
 
             _isInitialized = true;
-            OnChanged.Invoke();
         }
+
+        await _hab.InitAsync();
+        _hab.OnNotificationReceived += ReceivedNotification;
+        
+        OnChanged.Invoke();
     }
 
     private void ReceivedNotification(NotificationMessage notification)
     {
-        _lastNotifications = _lastNotifications.Prepend(notification).Take(MaxNotifications).ToList();
+        _lastNotifications = _lastNotifications
+            .Prepend(notification)
+            .Take(MaxNotifications)
+            .ToList();
 
         var sb = new StringBuilder("<div class='d-flex align-center justify-space-between'>");
         sb.Append($"<h6 class='mud-typography mud-typography-subtitle1 mr-6'>{notification.Title}</h6>");

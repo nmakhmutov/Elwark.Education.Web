@@ -1,10 +1,11 @@
 @using FluentValidation
 @using Education.Web.Services.Model.Test
+
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
     <MudRadioGroup @bind-SelectedOption="@UserAnswer.Answer">
-        <div class="grid mb-3 mb-sm-6">
+        <div class="d-flex flex-wrap align-center justify-center gap-3 gap-sm-6 mb-3 mb-sm-6">
             @foreach (var option in Options)
             {
                 var (icon, color) = Get(option);
@@ -22,9 +23,9 @@
                     <MudRadio Disabled="@(CorrectAnswer != null)" Color="Color.Primary" Option="@option.Id">
                         @switch (option)
                         {
-                            case ImageAnswerOptionModel(var id, var image):
+                            case ImageAnswerOptionModel x:
                                 <div class="image">
-                                    <img src="@image" alt="@id"/>
+                                    <img src="@x.Image" alt="@x.Id"/>
                                 </div>
                                 break;
 

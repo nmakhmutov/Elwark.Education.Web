@@ -1,30 +1,26 @@
 <div class="@Class">
     @foreach (var item in Items)
     {
-        <div class="item">
-            <div class="header">
-                <div class="header-content">
-                    <MudText Typo="Typo.subtitle1">
-                        @item.Title
-                    </MudText>
-                </div>
+        <section class="item">
+            <header class="header">
+                <MudText Typo="Typo.subtitle1">
+                    @item.Title
+                </MudText>
                 @if (item.Description is not null)
                 {
-                    <div class="header-action">
-                        <MudTooltip Text="@item.Description" Placement="Placement.Start">
-                            <MudIcon Icon="@Icons.Outlined.HelpOutline" Size="Size.Small"/>
-                        </MudTooltip>
-                    </div>
+                    <MudTooltip Text="@item.Description" Placement="Placement.Start">
+                        <MudIcon Icon="@Icons.Outlined.HelpOutline" Size="Size.Small"/>
+                    </MudTooltip>
                 }
-            </div>
-            <div class="content">
+            </header>
+            <article class="d-flex align-center justify-space-between">
                 <MudText Typo="Typo.h5">
                     @item.Value
                 </MudText>
 
                 <DifferenceLabel Difference="@item.Diff"/>
-            </div>
-        </div>
+            </article>
+        </section>
     }
 </div>
 

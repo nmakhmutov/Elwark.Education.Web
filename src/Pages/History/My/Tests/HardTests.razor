@@ -2,6 +2,7 @@
 @using Education.Web.Pages.History.My.Components
 @using Education.Web.Services.History.User
 @using Education.Web.Services.Model.Statistics
+@using Education.Web.Pages.Account
 
 @page "/history/my/tests/hard"
 @layout HistoryLayout
@@ -9,7 +10,7 @@
 
 <PageTitle>@L["Tests:Hard"]</PageTitle>
 
-<EduPage ShowFooter="@_result.IsLoaded">
+<EduPage ShowFooter>
     <EduContainer Class="pb-0">
         <EduPageHeader Title="@L["Tests:Hard"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
@@ -84,7 +85,9 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile)
+        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root),
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Statistics"].Value, HistoryUrl.User.MyStatistics)
     };
 
     private ApiResult<TestStatisticsModel> _result = ApiResult<TestStatisticsModel>.Loading();
