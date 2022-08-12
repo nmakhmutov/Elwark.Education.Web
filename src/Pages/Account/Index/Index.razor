@@ -9,9 +9,7 @@
 @layout MainLayout
 @attribute [Authorize]
 
-<PageTitle>
-    @L["Account"]
-</PageTitle>
+<PageTitle>@L["Account"]</PageTitle>
 
 <EduPage ShowFooter>
     <EduContainer MaxWidth="EduWidth.W1920">
@@ -23,12 +21,13 @@
                     @foreach (var subject in subjects)
                     {
                         <SubjectCard
-                            Title="@subject.Title"
-                            Href="@subject.Href"
-                            Icon="@subject.Icon"
-                            Background="@subject.Background"
                             Level="@subject.Level"
-                            Silver="@subject.Silver"/>
+                            Silver="@subject.Silver"
+                            Title="@subject.Title"
+                            HomeHref="@subject.HomeHref"
+                            ProfileHref="@subject.ProfileHref"
+                            Icon="@subject.Icon"
+                            Background="@subject.Background"/>
                     }
                 </ApiViewer>
             </div>
@@ -61,14 +60,23 @@
             new SubjectEnhancedModel(
                 L["Subject:History"],
                 HistoryUrl.Root,
+                HistoryUrl.User.MyProfile,
                 EduIcons.History,
-                "/images/history/bg-640x360.svg",
+                "/images/history/history.jpg",
                 model.Level,
                 model.Silver
                 ),
             _ => null
             };
 
-    private sealed record SubjectEnhancedModel(string Title, string Href, string Icon, string Background, LevelModel Level, long Silver);
+    private sealed record SubjectEnhancedModel(
+        string Title,
+        string HomeHref,
+        string ProfileHref,
+        string Icon,
+        string Background,
+        LevelModel Level,
+        long Silver
+    );
 
 }

@@ -14,17 +14,15 @@
     <div class="background d-flex flex-column h-100">
         <EduContainer Class="pb-0">
             <EduPageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs">
-                <div>
-                    <MudButton
-                        DisableElevation
-                        Variant="Variant.Text"
-                        Color="Color.Primary"
-                        EndIcon="@Icons.Outlined.Info"
-                        Disabled="@(!_result.IsSuccess)"
-                        OnClick="@OpenRule">
-                        @L["EventGuesser:Rules"]
-                    </MudButton>
-                </div>
+                <MudButton
+                    DisableElevation
+                    Variant="Variant.Text"
+                    Color="Color.Primary"
+                    EndIcon="@Icons.Outlined.Info"
+                    Disabled="@(!_result.IsSuccess)"
+                    OnClick="@OpenRule">
+                    @L["EventGuesser:Rules"]
+                </MudButton>
             </EduPageHeader>
         </EduContainer>
         <ApiViewer Result="@_result" Context="context">

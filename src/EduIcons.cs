@@ -43,11 +43,11 @@ public static class EduIcons
 
     public const string Leaderboard = Icons.Outlined.Leaderboard;
 
-    public const string MyQuests = Icons.Outlined.TaskAlt;
-    
-    public const string MyStatistics = Icons.Outlined.QueryStats;
+    public const string MyProfile = Icons.Outlined.Dashboard;
 
-    public const string MyInventory = Icons.Outlined.Inventory2;
+    public const string MyQuests = Icons.Outlined.TaskAlt;
+
+    public const string MyStatistics = Icons.Outlined.QueryStats;
 
     public const string MyFavorites = Icons.Outlined.Favorite;
 }

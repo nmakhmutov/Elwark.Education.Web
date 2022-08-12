@@ -1,50 +1,43 @@
 @using Education.Web.Services.Model.User
-<section class="card mud-paper">
-    <header class="card-header pa-3 py-sm-6 white-text" style="background-image: url('@Background')">
-        <div class="d-flex align-center">
-            <MudAvatar Class="mr-3" Elevation="0" Style="background-color: rgba(255, 255, 255, 0.4)">
-                <MudIcon Icon="@EduIcons.History" Color="Color.Inherit"/>
-            </MudAvatar>
-            <MudLink Href="@Href" Underline="Underline.Always" Typo="Typo.h5" Color="Color.Inherit">
-                @Title
-            </MudLink>
-        </div>
-        <div class="d-flex align-center">
-            <MudIcon Class="mr-1" Icon="@EduIcons.Silver" Size="Size.Medium"/>
-            <ReadableNumber Class="white-text" Value="@Silver" Typo="Typo.h5"/>
-        </div>
-    </header>
 
-    <section class="pa-3">
-        <header class="d-flex align-center justify-space-between">
-            <MudText Typo="Typo.h6">
-                @L["Experience:Level"] @Level.Value
-            </MudText>
-            <MudIcon Icon="@EduIcons.Level" Class="green-text text-darken-1" Size="Size.Medium"/>
-        </header>
+<section class="card @Class">
+    <header class="card-header" style="background-image: url('@Background')"></header>
 
-        <MudProgressLinear
-            Class="mb-1"
-            Rounded
-            Min="0"
-            Max="@Level.NextLevelExperience"
-            Value="@Level.Experience"
+    <MudAvatar Class="avatar" Style="background: linear-gradient(45deg, #ffa726 10%, #ef6c00 90%);">
+        <MudIcon Class="icon" Icon="@Icon"/>
+    </MudAvatar>
+
+    <MudText Typo="Typo.h5" Align="Align.Center">
+        @Title
+    </MudText>
+
+    <UserLevelProgress
+        Class="px-3 px-sm-6 mb-3 mb-sm-6"
+        Level="@Level.Value"
+        Experience="@Level.Experience"
+        NextLevelExperience="@Level.NextLevelExperience"/>
+
+    <section class="d-flex justify-center gap-3 px-3 px-sm-6 mb-3 mb-sm-6">
+        <MudButton
+            DisableElevation
+            FullWidth
+            StartIcon="@Icon"
+            Variant="Variant.Filled"
             Color="Color.Primary"
-            Size="Size.Medium"/>
+            Href="@HomeHref">
+            @L["Home"]
+        </MudButton>
 
-        <div class="d-flex justify-space-between align-start">
-            <MudText Typo="Typo.body2">
-                @(((double)Level.Experience / Level.NextLevelExperience * 100).ToReadable())%
-            </MudText>
-            <div class="d-flex align-center">
-                <ReadableNumber Value="@Level.Experience" Typo="Typo.body2"/>
-                <div>&nbsp;/&nbsp;</div>
-                <ReadableNumber Value="@Level.NextLevelExperience" Typo="Typo.body2"/>
-                <MudIcon Icon="@EduIcons.Experience" Class="ml-1" Size="Size.Small"/>
-            </div>
-        </div>
+        <MudButton
+            DisableElevation
+            FullWidth
+            StartIcon="@EduIcons.MyProfile"
+            Variant="Variant.Outlined"
+            Color="Color.Primary"
+            Href="@ProfileHref">
+            @L["Profile"]
+        </MudButton>
     </section>
-
 </section>
 
 @code {
@@ -56,7 +49,10 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public string Href { get; set; } = string.Empty;
+    public string HomeHref { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string ProfileHref { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
     public string Icon { get; set; } = string.Empty;
@@ -69,5 +65,8 @@
 
     [Parameter, EditorRequired]
     public long Silver { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
 
 }

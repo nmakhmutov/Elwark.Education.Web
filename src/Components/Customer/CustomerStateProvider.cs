@@ -39,7 +39,6 @@ internal sealed class CustomerStateProvider
             customer.Image,
             customer.TimeZone,
             customer.StartOfWeek,
-            customer.Language,
             customer.DateFormat,
             customer.TimeFormat,
             customer.CreatedAt

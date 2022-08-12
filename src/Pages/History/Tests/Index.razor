@@ -14,17 +14,15 @@
     <div class="background d-flex flex-column h-100">
         <EduContainer Class="pb-0">
             <EduPageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs">
-                <div>
-                    <MudButton
-                        DisableElevation
-                        Variant="Variant.Text"
-                        Color="Color.Primary"
-                        EndIcon="@Icons.Outlined.Info"
-                        Disabled="@(!_result.IsSuccess)"
-                        OnClick="@OpenRule">
-                        @L["Tests:Rules"]
-                    </MudButton>
-                </div>
+                <MudButton
+                    DisableElevation
+                    Variant="Variant.Text"
+                    Color="Color.Primary"
+                    EndIcon="@Icons.Outlined.Info"
+                    Disabled="@(!_result.IsSuccess)"
+                    OnClick="@OpenRule">
+                    @L["Tests:Rules"]
+                </MudButton>
             </EduPageHeader>
         </EduContainer>
         <ApiViewer Result="@_result" Context="context">

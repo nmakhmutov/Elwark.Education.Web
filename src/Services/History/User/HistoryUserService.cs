@@ -14,11 +14,11 @@ internal sealed class HistoryUserService : IHistoryUserService
     public HistoryUserService(ApiClient api) =>
         _api = api;
 
+    public Task<ApiResult<HistoryProfileModel>> GetProfileAsync() =>
+        _api.GetAsync<HistoryProfileModel>("history/users/me");
+
     public Task<ApiResult<AchievementsDetailModel>> GetAchievementsAsync() =>
         _api.GetAsync<AchievementsDetailModel>("history/users/me/achievements");
-
-    public Task<ApiResult<InventoryCompositionModel>> GetInventoryAsync() =>
-        _api.GetAsync<InventoryCompositionModel>("history/users/me/inventories");
 
     public Task<ApiResult<HistoryQuestModel>> GetQuestAsync() =>
         _api.GetAsync<HistoryQuestModel>("history/users/me/quests");
@@ -28,7 +28,7 @@ internal sealed class HistoryUserService : IHistoryUserService
 
     public Task<ApiResult<DailyQuestModel>> CollectDailyQuestAsync() =>
         _api.PutAsync<DailyQuestModel>("history/users/me/quests/daily");
-    
+
     public Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync() =>
         _api.PutAsync<DailyBonusModel>("history/users/me/bonus/daily");
 

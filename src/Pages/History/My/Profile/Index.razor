@@ -1,29 +1,31 @@
 @using Education.Web.Services.History.User.Model
 @using Education.Web.Services.History.User
 @using Education.Web.Pages.History.Components
-@using Education.Web.Pages.History.My.Components
-@using Education.Web.Pages.Account
+@using Education.Web.Pages.History.My.Profile.Components
 
-@page "/history/my/inventories"
+@page "/history/my/profile"
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@L["Inventory"]</PageTitle>
+<PageTitle>@L["Profile"]</PageTitle>
 
 <EduPage ShowFooter>
-    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
-        <EduPageHeader Title="@L["Inventory"]" Breadcrumbs="@Breadcrumbs">
-            <MudText Typo="Typo.h5">@_capacity</MudText>
-        </EduPageHeader>
-    </EduContainer>
-
     <ApiViewer Result="@_result" Context="data">
         <EduContainer MaxWidth="EduWidth.W1920">
             <div class="grid">
                 <div class="wallet">
+                    <ProfileCard Class="mb-3 mb-sm-6" Level="@data.Level"/>
                     <WalletCard Silver="@data.Silver"/>
                 </div>
                 <div class="inventory">
+                    <header class="d-flex align-center justify-space-between mb-3 mb-sm-6">
+                        <MudText Typo="Typo.h5">
+                            @L["Inventory"]
+                        </MudText>
+                        <MudText Typo="Typo.h5">
+                            @_capacity
+                        </MudText>
+                    </header>
                     <InventoryGrid>
                         @foreach (var item in data.Inventory.Items)
                         {
@@ -41,14 +43,8 @@
 </EduPage>
 
 @code {
-    private ApiResult<InventoryCompositionModel> _result = ApiResult<InventoryCompositionModel>.Loading();
+    private ApiResult<HistoryProfileModel> _result = ApiResult<HistoryProfileModel>.Loading();
     private string? _capacity;
-
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root),
-        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root)
-    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -58,7 +54,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await UserService.GetInventoryAsync();
+        _result = await UserService.GetProfileAsync();
         if (_result.IsSuccess)
             _capacity = $"{_result.Data.Inventory.Fullness} / {_result.Data.Inventory.Capacity}";
     }

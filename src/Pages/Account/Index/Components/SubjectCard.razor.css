@@ -1,9 +1,9 @@
 .card {
     width: 380px;
-    height: 214px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    color: var(--mud-palette-text-primary);
+    background-color: var(--mud-palette-surface);
     border-radius: var(--mud-default-borderradius);
     transition: box-shadow 300ms cubic-bezier(.4, 0, .2, 1) 0ms;
 }
@@ -11,6 +11,24 @@
 .card-header {
     display: flex;
     justify-content: space-between;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: grayscale(40%);
     border-top-left-radius: var(--mud-default-borderradius);
     border-top-right-radius: var(--mud-default-borderradius);
+    height: 140px;
+}
+
+::deep .avatar {
+    width: 100px;
+    height: 100px;
+    margin-top: -60px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+::deep .icon{
+    width: 60px;
+    height: 60px;
 }

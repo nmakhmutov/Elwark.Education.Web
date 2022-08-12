@@ -24,12 +24,15 @@
                 @switch (_index)
                 {
                     case 0:
-                        <div class="quests">
-                            @foreach (var quest in data.DailyQuest.Quests)
-                            {
-                                <QuestProgressCard Quest="@quest"/>
-                            }
-                        </div>
+                        if (data.DailyQuest.Quests.Length > 0)
+                        {
+                            <div class="quests">
+                                @foreach (var quest in data.DailyQuest.Quests)
+                                {
+                                    <QuestProgressCard Quest="@quest"/>
+                                }
+                            </div>
+                        }
                         <QuestRewardsCard
                             Class="rewards"
                             Title="@L["Rewards"]"

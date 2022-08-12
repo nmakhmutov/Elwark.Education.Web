@@ -51,6 +51,8 @@ public static class HistoryUrl
 
     public static class User
     {
+        public const string MyProfile = $"{Root}/my/profile";
+
         public const string MyEasyTests = $"{Root}/my/tests/easy";
 
         public const string MyHardTests = $"{Root}/my/tests/hard";
@@ -62,10 +64,8 @@ public static class HistoryUrl
         public const string MyAchievements = $"{Root}/my/achievements";
 
         public const string MyQuests = $"{Root}/my/quests";
-        
+
         public const string MyStatistics = $"{Root}/my/statistics";
-        
-        public const string MyInventories = $"{Root}/my/inventories";
 
         public const string MyFavorites = $"{Root}/my/favorites";
 

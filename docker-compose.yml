@@ -5,10 +5,12 @@ services:
   education.web:
     image: elwark/education/web:${TAG:-latest}
     container_name: "education_web"
-    mem_limit: 64M
-    mem_reservation: 32M
     build:
       context: .
       dockerfile: src/Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     ports:
       - "5010:80"

@@ -5,33 +5,29 @@ namespace Education.Web.Components.Customer;
 public sealed record CustomerState
 {
     private const string AnonymousImage =
-        "https://res.cloudinary.com/elwark/image/upload/v1610430646/People/default_j21xml.png";
+        "https://res.cloudinary.com/elwark/image/upload/v1660058875/People/default_nhpke4.svg";
 
     public static CustomerState Anonymous =>
         new(
-            false,
             string.Empty,
             AnonymousImage,
             TimeZoneInfo.Local.Id,
             CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek,
-            CultureInfo.CurrentCulture.TwoLetterISOLanguageName,
             CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern,
             CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern,
             DateOnly.FromDateTime(DateTime.UnixEpoch)
         );
 
     public static CustomerState Authenticated(string name, string image, string timezone, DayOfWeek startOfWeek,
-        string language, string dateFormat, string timeFormat, DateOnly createdAt) =>
-        new(true, name, image, timezone, startOfWeek, language, dateFormat, timeFormat, createdAt);
+        string dateFormat, string timeFormat, DateOnly createdAt) =>
+        new(name, image, timezone, startOfWeek, dateFormat, timeFormat, createdAt);
 
-    private CustomerState(bool isAuthenticated, string name, string image, string timeZone, DayOfWeek startOfWeek,
-        string language, string dateFormat, string timeFormat, DateOnly createdAt)
+    private CustomerState(string name, string image, string timeZone, DayOfWeek startOfWeek, string dateFormat,
+        string timeFormat, DateOnly createdAt)
     {
-        IsAuthenticated = isAuthenticated;
         Name = name;
         Image = image;
         StartOfWeek = startOfWeek;
-        Language = language;
         CreatedAt = createdAt;
         DateTimeInfo = new DateTimeInfo(
             TimeZoneInfo.FindSystemTimeZoneById(timeZone),
@@ -41,15 +37,11 @@ public sealed record CustomerState
         );
     }
 
-    public bool IsAuthenticated { get; }
-
     public string Name { get; }
 
     public string Image { get; }
 
     public DayOfWeek StartOfWeek { get; }
-
-    public string Language { get; }
 
     public DateTimeInfo DateTimeInfo { get; }
 

@@ -9,17 +9,17 @@ namespace Education.Web.Services.History.User;
 
 public interface IHistoryUserService
 {
+    Task<ApiResult<HistoryProfileModel>> GetProfileAsync();
+
     Task<ApiResult<HistoryQuestModel>> GetQuestAsync();
-    
+
     Task<ApiResult<DailyQuestModel>> StartDailyQuestAsync();
 
     Task<ApiResult<DailyQuestModel>> CollectDailyQuestAsync();
-    
-    Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync();
-    
-    Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync();
 
-    Task<ApiResult<InventoryCompositionModel>> GetInventoryAsync();
+    Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync();
+
+    Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync();
 
     Task<ApiResult<HistoryUserStatisticsModel>> GetStatisticsAsync();
 
@@ -32,7 +32,7 @@ public interface IHistoryUserService
     Task<ApiResult<EventGuesserStatisticsModel>> GetEventGuesserStatisticsAsync();
 
     Task<ApiResult<AchievementsDetailModel>> GetAchievementsAsync();
-    
+
     Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request);
 
     Task<ApiResult<TopicStatisticsModel>> GetTopicsAsync(string topicId);
