@@ -11,13 +11,7 @@
                 <p class="overview">@topic.Overview</p>
                 <div class="d-flex flex-wrap justify-space-between align-center">
                     <TopicRating Rating="@topic.Rating"/>
-                    <MudChip
-                        Label
-                        DisableRipple="false"
-                        Class="chip"
-                        Color="Color.Primary"
-                        Size="Size.Small"
-                        Link="@HistoryUrl.Content.Epoch(topic.Epoch)">
+                    <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Filled" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(topic.Epoch)">
                         @L[$"Epoch:{topic.Epoch.ToFastString()}"]
                     </MudChip>
                 </div>

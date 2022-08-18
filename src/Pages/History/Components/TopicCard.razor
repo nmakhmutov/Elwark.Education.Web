@@ -13,10 +13,14 @@
     </header>
 
     <article class="d-flex flex-column pa-3">
-        <div class="mb-3">
+        <div class="d-flex flex-wrap align-center justify-space-between gap-3 mb-3">
             <MudLink Href="@HistoryUrl.Content.Topic(Id)" Typo="Typo.h6">
                 @Title
             </MudLink>
+            
+            <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Text" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(Epoch)">
+                @L[$"Epoch:{Epoch.ToFastString()}"]
+            </MudChip>
         </div>
 
         <MudText Class="mb-3" Typo="Typo.body2">
@@ -25,12 +29,9 @@
 
         <div class="flex-grow-1"></div>
 
-        <div class="d-flex justify-space-between">
-            <MudChip Class="mx-0" Label Size="Size.Small" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(Epoch)">
-                @L[$"Epoch:{Epoch.ToFastString()}"]
-            </MudChip>
+        <div class="d-flex justify-end">
             <MudButton
-                Variant="Variant.Outlined"
+                Variant="Variant.Text"
                 Color="Color.Primary"
                 Href="@HistoryUrl.Content.Topic(Id)">
                 @L["Button:Read"]
@@ -70,9 +71,10 @@
     [Parameter]
     public bool Horizontal { get; set; }
 
-    protected override void OnParametersSet() => _class = CssBuilder.Default("card")
-        .AddClass("horizontal", Horizontal)
-        .AddClass(Class, !string.IsNullOrEmpty(Class))
-        .Build();
+    protected override void OnParametersSet() =>
+        _class = CssBuilder.Default("card")
+            .AddClass("horizontal", Horizontal)
+            .AddClass(Class, !string.IsNullOrEmpty(Class))
+            .Build();
 
 }

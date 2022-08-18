@@ -2,7 +2,6 @@
 @using Education.Web.Pages.History.My.Tests.Components
 @using Education.Web.Services.History.User
 @using Education.Web.Services.Model.Statistics
-@using Education.Web.Pages.Account
 
 @page "/history/my/tests/easy"
 @layout HistoryLayout
@@ -87,8 +86,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root),
         new BreadcrumbItem(L["History"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile),
         new BreadcrumbItem(L["Statistics"].Value, HistoryUrl.User.MyStatistics)
     };
 

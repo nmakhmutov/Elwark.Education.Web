@@ -1,5 +1,6 @@
 @using Education.Web.Services.History.User.Model
-<section class="grid">
+
+<section class="grid @Class">
     @switch (Achievement)
     {
         case CompletedAchievementModel achievement:
@@ -88,6 +89,9 @@
     [Parameter, EditorRequired]
     public AchievementModel Achievement { get; set; } = default!;
 
+    [Parameter]
+    public string? Class { get; set; }
+    
     protected override void OnParametersSet()
     {
         _background = Achievement.Category switch {
@@ -97,7 +101,7 @@
             "MixedTest" => "orange accent-4 white-text",
             "EventGuesser" => "teal default white-text",
             _ => "green accent-4 white-text"
-            };
+        };
 
         _icon = Achievement switch {
         {Category: "EasyTest" or "HardTest" or "MixedTest" or "AllTests", Name: "Successful"} => 

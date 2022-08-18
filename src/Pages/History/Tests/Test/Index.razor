@@ -9,105 +9,120 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage ShowFooter="@_result.IsLoaded">
+<EduPage ShowFooter>
     <ApiViewer Result="@_result">
         <PageTitle>
-            @_title
+            @_title: @_currentQuestion.Topic.Title
         </PageTitle>
 
         <EduContainer MaxWidth="EduWidth.W1280">
             <section class="grid">
-                <header class="header d-sm-flex justify-sm-space-between align-sm-center">
-                    <MudText Typo="Typo.h5">
-                        @_currentQuestion.Topic.Title
-                    </MudText>
-                    <div class="progress">
-                        <div class="mb-1">
-                            <MudText Typo="Typo.subtitle1">
-                                @L["Questions"] @_test.Completed / @_test.Questions
-                            </MudText>
-                            <MudProgressLinear Min="0" Max="100" Value="@(Progress)" Color="Color.Primary"/>
-                        </div>
-                        <CountdownTimer
-                            Typo="Typo.body1"
-                            Date="@_test.ExpiredAt"
-                            Color="@_countdownColor"
-                            OnComplete="@OnExpired"/>
-                    </div>
-                </header>
+                @* <header class="header d-sm-flex justify-sm-space-between align-sm-center"> *@
+                @*     <MudText Typo="Typo.h5"> *@
+                @*         @_currentQuestion.Topic.Title *@
+                @*     </MudText> *@
+                @*     <div class="progress"> *@
+                @*         <div class="mb-1"> *@
+                @*             <MudText Typo="Typo.subtitle1"> *@
+                @*                 @L["Questions"] @_test.Completed / @_test.Questions *@
+                @*             </MudText> *@
+                @*             <MudProgressLinear Min="0" Max="100" Value="@(Progress)" Color="Color.Primary"/> *@
+                @*         </div> *@
+                @*         <CountdownTimer *@
+                @*             Typo="Typo.body1" *@
+                @*             Date="@_test.ExpiredAt" *@
+                @*             Color="@_countdownColor" *@
+                @*             OnComplete="@OnExpired"/> *@
+                @*     </div> *@
+                @* </header> *@
 
-                <section class="test">
-                    <MudText Class="mb-3" Typo="Typo.h6">
+                <section class="mud-paper d-flex flex-column align-center pa-3 pa-sm-6">
+                    <MudText Class="mud-text-secondary" Typo="Typo.caption">
                         @_title
                     </MudText>
-                    <div class="mud-paper d-flex flex-column align-center pa-3 pa-sm-6">
-                        @if (_currentQuestion.Image is not null)
+                    <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Style="font-weight: 500">
+                        @_currentQuestion.Topic.Title
+                    </MudText>
+
+                    @if (_currentQuestion.Image is not null)
+                    {
+                        <img class="image mb-3 mb-sm-6" src="@_currentQuestion.Image" alt="@_currentQuestion.Title"/>
+                    }
+
+                    <MudText Class="mb-6" Typo="Typo.subtitle1">
+                        @_currentQuestion.Title
+                    </MudText>
+
+                    @switch (_currentQuestion)
+                    {
+                        case MultipleAnswerQuestionModel question:
                         {
-                            <img class="image mb-6" src="@_currentQuestion.Image" alt="@_currentQuestion.Title"/>
+                            <MultipleAnswerForm
+                                IsLoading="@_checking"
+                                IsTestCompleted="@IsCompleted"
+                                CorrectAnswer="@(_correctAnswer as MultipleAnswersResultModel)"
+                                UserAnswer="@(_userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel())"
+                                Options="@question.Options"
+                                OnAnswer="@OnMultiplyAnswer"
+                                OnNext="@OnNext"
+                                OnComplete="@OnComplete"/>
+                            break;
                         }
 
-                        <MudText Class="mb-6" Typo="Typo.h6">
-                            @_currentQuestion.Title
-                        </MudText>
-
-                        @switch (_currentQuestion)
+                        case ShortAnswerQuestionModel:
                         {
-                            case MultipleAnswerQuestionModel question:
-                            {
-                                var answer = _userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel();
-
-                                <MultipleAnswerForm
-                                    IsLoading="@_checking"
-                                    IsTestCompleted="@IsCompleted"
-                                    CorrectAnswer="@(_correctAnswer as MultipleAnswersResultModel)"
-                                    UserAnswer="@answer"
-                                    Options="@question.Options"
-                                    OnAnswer="@OnMultiplyAnswer"
-                                    OnNext="@OnNext"
-                                    OnComplete="@OnComplete"/>
-                                break;
-                            }
-
-                            case ShortAnswerQuestionModel:
-                            {
-                                var answer = _userAnswer as ShortAnswerModel ?? new ShortAnswerModel();
-                                <ShortAnswerForm
-                                    IsLoading="@_checking"
-                                    IsTestCompleted="@IsCompleted"
-                                    CorrectAnswer="@(_correctAnswer as ShortAnswerResultModel)"
-                                    UserAnswer="@answer"
-                                    OnAnswer="@OnShortAnswer"
-                                    OnNext="@OnNext"
-                                    OnComplete="@OnComplete"/>
-                                break;
-                            }
-
-                            case SingleAnswerQuestionModel question:
-                            {
-                                var answer = _userAnswer as SingleAnswerModel ?? new SingleAnswerModel();
-
-                                <SingleAnswerForm
-                                    IsLoading="@_checking"
-                                    IsTestCompleted="@IsCompleted"
-                                    CorrectAnswer="@(_correctAnswer as SingleAnswerResultModel)"
-                                    UserAnswer="@answer"
-                                    Options="@question.Options"
-                                    OnAnswer="@OnSingleAnswer"
-                                    OnNext="@OnNext"
-                                    OnComplete="@OnComplete"/>
-                                break;
-                            }
-
-                            default:
-                                throw new ArgumentOutOfRangeException(nameof(_currentQuestion));
+                            <ShortAnswerForm
+                                IsLoading="@_checking"
+                                IsTestCompleted="@IsCompleted"
+                                CorrectAnswer="@(_correctAnswer as ShortAnswerResultModel)"
+                                UserAnswer="@(_userAnswer as ShortAnswerModel ?? new ShortAnswerModel())"
+                                OnAnswer="@OnShortAnswer"
+                                OnNext="@OnNext"
+                                OnComplete="@OnComplete"/>
+                            break;
                         }
+
+                        case SingleAnswerQuestionModel question:
+                        {
+                            <SingleAnswerForm
+                                IsLoading="@_checking"
+                                IsTestCompleted="@IsCompleted"
+                                CorrectAnswer="@(_correctAnswer as SingleAnswerResultModel)"
+                                UserAnswer="@(_userAnswer as SingleAnswerModel ?? new SingleAnswerModel())"
+                                Options="@question.Options"
+                                OnAnswer="@OnSingleAnswer"
+                                OnNext="@OnNext"
+                                OnComplete="@OnComplete"/>
+                            break;
+                        }
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(_currentQuestion));
+                    }
+
+                    <div class="progress mt-16">
+                        <MudProgressLinear
+                            Class="mb-2"
+                            Rounded
+                            Min="0"
+                            Max="100"
+                            Value="@Progress"
+                            Color="Color.Primary"
+                            Size="Size.Medium"/>
+                        <div class="d-flex justify-space-between">
+                            <MudText Typo="Typo.subtitle1">
+                                @L["Test:QuestionOutOf", _test.Completed + 1, _test.Questions]
+                            </MudText>
+                            <CountdownTimer
+                                Typo="Typo.subtitle1"
+                                Date="@_test.ExpiredAt"
+                                Color="@_countdownColor"
+                                OnComplete="@OnExpired"/>
+                        </div>
                     </div>
                 </section>
 
                 <aside class="inventory">
-                    <MudText Class="mb-3" Typo="Typo.h6">
-                        @L["Inventory"]
-                    </MudText>
                     <InventoryGrid>
                         @foreach (var item in _inventory.OrderByDescending(x => x.IsApplicable))
                         {
@@ -124,11 +139,11 @@
                             }
                             else
                             {
-                                <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
-                                    <div class="d-flex justify-center">
-                                        <ReadableNumber Typo="Typo.h6" Value="@item.Count"/>
-                                    </div>
-                                </InventoryInfoCard>
+                                <InventoryInfoCard
+                                    Title="@item.Title"
+                                    Overview="@item.Overview"
+                                    Count="@item.Count"
+                                    IconUrl="@item.IconUrl"/>
                             }
                         }
                     </InventoryGrid>

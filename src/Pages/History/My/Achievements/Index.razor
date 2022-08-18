@@ -1,7 +1,6 @@
 @using Education.Web.Pages.History.My.Components
 @using Education.Web.Services.History.User
 @using Education.Web.Services.History.User.Model
-@using Education.Web.Pages.Account
 
 @page "/history/my/achievements"
 @layout HistoryLayout
@@ -42,16 +41,12 @@
                     </MudItem>
 
                     <MudItem xs="12" md="9" xl="10" Class="@classes">
-                        <div class="grid">
+                        <EduFillGrid>
                             @foreach (var achievement in category.Achievements)
                             {
-                                <MudCard Elevation="0">
-                                    <MudCardContent Class="pa-3 pa-sm-6">
-                                        <AchievementView Achievement="@achievement"/>
-                                    </MudCardContent>
-                                </MudCard>
+                                <AchievementView Class="mud-paper pa-3 pa-sm-6" Achievement="@achievement"/>
                             }
-                        </div>
+                        </EduFillGrid>
                     </MudItem>
                 }
             </MudGrid>
@@ -64,8 +59,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root),
-        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root)
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile)
     };
 
     private ApiResult<AchievementsDetailModel> _result = ApiResult<AchievementsDetailModel>.Loading();

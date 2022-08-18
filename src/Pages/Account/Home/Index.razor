@@ -3,7 +3,7 @@
 @using Education.Web.Services.Model.User
 @using Education.Web.Pages.History
 @using Education.Web.Pages.Account.Components
-@using Education.Web.Pages.Account.Index.Components
+@using Education.Web.Pages.Account.Home.Components
 
 @page "/account"
 @layout MainLayout
@@ -13,25 +13,22 @@
 
 <EduPage ShowFooter>
     <EduContainer MaxWidth="EduWidth.W1920">
-        <div class="grid">
+        <EduFillGrid>
             <AccountCard Class="account"/>
-
-            <div class="subjects">
-                <ApiViewer Result="@_response" Context="subjects">
-                    @foreach (var subject in subjects)
-                    {
-                        <SubjectCard
-                            Level="@subject.Level"
-                            Silver="@subject.Silver"
-                            Title="@subject.Title"
-                            HomeHref="@subject.HomeHref"
-                            ProfileHref="@subject.ProfileHref"
-                            Icon="@subject.Icon"
-                            Background="@subject.Background"/>
-                    }
-                </ApiViewer>
-            </div>
-        </div>
+            <ApiViewer Result="@_response" Context="subjects">
+                @foreach (var subject in subjects)
+                {
+                    <SubjectCard
+                        Level="@subject.Level"
+                        Silver="@subject.Silver"
+                        Title="@subject.Title"
+                        HomeHref="@subject.HomeHref"
+                        ProfileHref="@subject.ProfileHref"
+                        Icon="@subject.Icon"
+                        Background="@subject.Background"/>
+                }
+            </ApiViewer>
+        </EduFillGrid>
     </EduContainer>
 </EduPage>
 
@@ -77,6 +74,6 @@
         string Background,
         LevelModel Level,
         long Silver
-    );
+        );
 
 }

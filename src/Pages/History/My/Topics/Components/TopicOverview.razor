@@ -1,0 +1,92 @@
+@using Education.Web.Services.History
+@using Education.Web.Services.History.User.Model
+
+<section class="grid @Class">
+    <div class="image">
+        <MudImage
+            Class="rounded"
+            Src="@Topic.ThumbnailUrl"
+            Alt="@Topic.Title"
+            Width="140"
+            Height="140"
+            ObjectFit="ObjectFit.Cover"
+            ObjectPosition="ObjectPosition.Center"/>
+    </div>
+
+    <article class="content">
+        <div class="breadcrumbs">
+            <Breadcrumbs Class="pa-0 mb-3" Items="@Breadcrumbs"/>
+        </div>
+        <MudLink Typo="Typo.h5" Href="@HistoryUrl.Content.Topic(Topic.Id)">
+            @Topic.Title
+        </MudLink>
+        <MudText Class="mw-xs" Typo="Typo.body2">
+            @Topic.Overview
+        </MudText>
+    </article>
+
+    <aside class="statistics">
+        <div class="d-flex justify-space-between mb-3">
+            <div class="d-flex align-center mr-3">
+                <MudIcon Icon="@EduIcons.Tests" Size="Size.Small" Class="mr-3"/>
+                <MudText Typo="Typo.body2">
+                    @L["NumberOfTests:TotalPassed"]
+                </MudText>
+            </div>
+            <MudText Typo="Typo.body2">
+                @Total.Tests.ToReadable()
+            </MudText>
+        </div>
+        <div class="d-flex justify-space-between mb-3">
+            <div class="d-flex align-center mr-3">
+                <MudIcon Icon="@EduIcons.Score" Size="Size.Small" Class="mr-3"/>
+                <MudText Typo="Typo.body2">
+                    @L["Score:Total"]
+                </MudText>
+            </div>
+            <MudText Typo="Typo.body2">
+                @Total.Score.ToReadable()
+            </MudText>
+        </div>
+        <div class="d-flex justify-space-between mb-3">
+            <div class="d-flex align-center mr-3">
+                <MudIcon Icon="@EduIcons.Questions" Size="Size.Small" Class="mr-3"/>
+                <MudText Typo="Typo.body2">
+                    @L["Questions:Total"]
+                </MudText>
+            </div>
+            <MudText Typo="Typo.body2">
+                @Total.Questions.ToReadable()
+            </MudText>
+        </div>
+        <div class="d-flex justify-space-between mb-3">
+            <div class="d-flex align-center mr-3">
+                <MudIcon Icon="@EduIcons.TimeSpent" Size="Size.Small" Class="mr-3"/>
+                <MudText Typo="Typo.body2">
+                    @L["TimeSpent:Total"]
+                </MudText>
+            </div>
+            <MudText Typo="Typo.body2">
+                @Total.TimeSpent.ToSimpleFormat()
+            </MudText>
+        </div>
+    </aside>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public TopicOverviewModel Topic { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public TopicStatisticsModel.TotalStatistics Total { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
+
+    [Parameter]
+    public  string? Class { get; set; }
+}

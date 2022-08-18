@@ -45,11 +45,11 @@
                         <InventoryGrid>
                             @foreach (var item in context.Inventories)
                             {
-                                <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" IconUrl="@item.IconUrl">
-                                    <div class="d-flex justify-center">
-                                        <ReadableNumber Typo="Typo.h6" Value="@item.Count"/>
-                                    </div>
-                                </InventoryInfoCard>
+                                <InventoryInfoCard 
+                                    Title="@item.Title"
+                                    Overview="@item.Overview"
+                                    Count="@item.Count"
+                                    IconUrl="@item.IconUrl"/>
                             }
                         </InventoryGrid>
                     }

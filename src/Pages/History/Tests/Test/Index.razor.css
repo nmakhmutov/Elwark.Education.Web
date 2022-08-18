@@ -1,27 +1,11 @@
 .grid {
     display: grid;
+    grid-template-columns: minmax(100px, 1fr);
     gap: 12px;
-    grid-template-columns: 1fr;
-    grid-template-areas: 
-        "header"
-        "test"
-        "inventory";
-}
-
-.grid .header {
-    grid-area: header;
-}
-
-.grid .test {
-    grid-area: test;
-}
-
-.grid .inventory {
-    grid-area: inventory;
 }
 
 .progress {
-    text-align: right;
+    min-width: 100%;
 }
 
 .image {
@@ -37,15 +21,12 @@
     }
 
     .progress {
-        min-width: 200px;
+        min-width: 300px;
     }
 }
 
 @media (min-width: 1280px) {
     .grid {
         grid-template-columns: 3fr 1fr;
-        grid-template-areas:
-            "header header"
-            "test inventory";
     }
 }

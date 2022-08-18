@@ -2,7 +2,6 @@
 @using Education.Web.Pages.History.My.Statistics.Components
 @using Education.Web.Services.History.User
 @using Education.Web.Services.History.User.Model
-@using Education.Web.Pages.Account
 
 @page "/history/my/statistics"
 @layout HistoryLayout
@@ -81,8 +80,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root),
-        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root)
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile)
     };
 
     [Inject]

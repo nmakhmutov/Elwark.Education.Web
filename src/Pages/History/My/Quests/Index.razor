@@ -1,5 +1,4 @@
 @using Education.Web.Services.History.User.Model
-@using Education.Web.Pages.Account
 @using Education.Web.Pages.History.My.Quests.Components
 @using Education.Web.Services.History.User
 
@@ -17,7 +16,7 @@
     <ApiViewer Result="@_result" Context="data">
         <EduContainer MaxWidth="EduWidth.W1920">
             <div class="grid">
-                <MudTabs Class="nav" Rounded @bind-ActivePanelIndex="@_index">
+                <MudTabs @bind-ActivePanelIndex="@_index" Class="nav" Rounded>
                     <MudTabPanel Text="Daily"/>
                     <MudTabPanel Text="Weekly"/>
                 </MudTabs>
@@ -60,8 +59,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root),
-        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root)
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile)
     };
 
     [Inject]
