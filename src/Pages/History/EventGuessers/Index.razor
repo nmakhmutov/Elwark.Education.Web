@@ -25,7 +25,7 @@
                 </MudButton>
             </EduPageHeader>
         </EduContainer>
-        <ApiViewer Result="@_result" Context="context">
+        <ApiViewer Result="@_result" Context="model">
             <section class="grid pa-3 pa-sm-6">
                 <section class="builder">
                     <MudText Typo="Typo.h5" Class="mb-3">
@@ -36,7 +36,7 @@
                     <MudText Typo="Typo.h5" Class="mb-3">
                         @L["Tests"]
                     </MudText>
-                    <TestRadioGroup @bind-SelectedTest="_test" Tests="@context.Tests" Class="mb-6"/>
+                    <TestRadioGroup @bind-SelectedTest="_test" Tests="@model.Tests" Class="mb-6"/>
 
                     <div class="d-flex justify-center">
                         <LoadingButton
@@ -47,7 +47,7 @@
                             Text="@L["Test:Pass"]"
                             LoadingText="@L["Loading"]"
                             IsLoading="@_isLoading"
-                            Disabled="@(context.Tests.All(x => !x.IsAllowed))"
+                            Disabled="@(model.Tests.All(x => !x.IsAllowed))"
                             OnClick="@CreateTestAsync"/>
                     </div>
                 </section>
@@ -56,17 +56,14 @@
                     <MudText Typo="Typo.h5" Class="mb-3">
                         @L["Inventory"]
                     </MudText>
-                    @if (context.Inventory.Length > 0)
+                    @if (model.Inventory.Length > 0)
                     {
-                        <InventoryGrid>
-                            @foreach (var item in context.Inventory)
-                            {
-                                <InventoryInfoCard 
-                                    Title="@item.Title" 
-                                    Overview="@item.Overview"
-                                    Count="@item.Count"
-                                    IconUrl="@item.IconUrl"/>
-                            }
+                        <InventoryGrid Inventory="@model.Inventory" Context="item">
+                            <InventoryInfoCard
+                                Title="@item.Title"
+                                Overview="@item.Overview"
+                                Count="@item.Count"
+                                IconUrl="@item.IconUrl"/>
                         </InventoryGrid>
                     }
                     else

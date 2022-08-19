@@ -10,12 +10,12 @@
 <PageTitle>@L["Profile"]</PageTitle>
 
 <EduPage ShowFooter>
-    <ApiViewer Result="@_result" Context="data">
+    <ApiViewer Result="@_result" Context="model">
         <EduContainer MaxWidth="EduWidth.W1920">
             <div class="grid">
                 <div class="wallet">
-                    <ProfileCard Class="mb-3 mb-sm-6" Level="@data.Level"/>
-                    <WalletCard Silver="@data.Silver"/>
+                    <ProfileCard Class="mb-3 mb-sm-6" Level="@model.Level"/>
+                    <WalletCard Silver="@model.Silver"/>
                 </div>
                 <div class="inventory">
                     <header class="d-flex align-center justify-space-between mb-3 mb-sm-6">
@@ -26,15 +26,12 @@
                             @_capacity
                         </MudText>
                     </header>
-                    <InventoryGrid>
-                        @foreach (var item in data.Inventory.Items)
-                        {
-                            <InventoryInfoCard 
-                                Title="@item.Title" 
-                                Overview="@item.Overview" 
-                                Count="@item.Count"
-                                IconUrl="@item.IconUrl"/>
-                        }
+                    <InventoryGrid Inventory="@model.Inventory.Items" Context="item">
+                        <InventoryInfoCard
+                            Title="@item.Title"
+                            Overview="@item.Overview"
+                            Count="@item.Count"
+                            IconUrl="@item.IconUrl"/>
                     </InventoryGrid>
                 </div>
             </div>

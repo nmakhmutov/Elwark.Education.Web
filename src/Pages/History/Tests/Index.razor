@@ -25,32 +25,29 @@
                 </MudButton>
             </EduPageHeader>
         </EduContainer>
-        <ApiViewer Result="@_result" Context="context">
+        <ApiViewer Result="@_result" Context="model">
             <section class="grid pa-3 pa-sm-6">
-                @if (context.Topic is null)
+                @if (model.Topic is null)
                 {
-                    <EpochTestBuilder Class="builder" Tests="@context.Tests" OnCreate="@OnCreateTestAsync"/>
+                    <EpochTestBuilder Class="builder" Tests="@model.Tests" OnCreate="@OnCreateTestAsync"/>
                 }
                 else
                 {
-                    <TopicTestBuilder Class="builder" Tests="@context.Tests" Topic="@context.Topic" OnCreate="@OnCreateTestAsync"/>
+                    <TopicTestBuilder Class="builder" Tests="@model.Tests" Topic="@model.Topic" OnCreate="@OnCreateTestAsync"/>
                 }
 
                 <section class="inventory">
                     <MudText Typo="Typo.h5" Class="mb-3">
                         @L["Inventory"]
                     </MudText>
-                    @if (context.Inventories.Length > 0)
+                    @if (model.Inventories.Length > 0)
                     {
-                        <InventoryGrid>
-                            @foreach (var item in context.Inventories)
-                            {
-                                <InventoryInfoCard 
-                                    Title="@item.Title"
-                                    Overview="@item.Overview"
-                                    Count="@item.Count"
-                                    IconUrl="@item.IconUrl"/>
-                            }
+                        <InventoryGrid Inventory="@model.Inventories" Context="item">
+                            <InventoryInfoCard
+                                Title="@item.Title"
+                                Overview="@item.Overview"
+                                Count="@item.Count"
+                                IconUrl="@item.IconUrl"/>
                         </InventoryGrid>
                     }
                     else

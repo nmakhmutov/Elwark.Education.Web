@@ -1,11 +1,19 @@
+@typeparam T
+
 <section class="grid @Class">
-    @ChildContent
+    @foreach (var inventory in Inventory)
+    {
+        @ChildContent(inventory)    
+    }
 </section>
 
 @code {
 
+    [Parameter, EditorRequired]
+    public IEnumerable<T> Inventory { get; set; } = Enumerable.Empty<T>();
+
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public RenderFragment<T> ChildContent { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
