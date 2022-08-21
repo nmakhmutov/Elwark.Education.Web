@@ -1,4 +1,9 @@
 <MudBreadcrumbs Items="@Items" Class="@Class">
+    <SeparatorTemplate>
+        <div class="d-flex">
+            <MudIcon Icon="@Separator" Size="@SeparatorSize" Class="mud-text-secondary"/>
+        </div>
+    </SeparatorTemplate>
     <ItemTemplate Context="item">
         <MudLink Typo="Typo" Disabled="@item.Disabled" Href="@item.Href">
             @if (!string.IsNullOrEmpty(item.Icon))

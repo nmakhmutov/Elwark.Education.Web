@@ -7,7 +7,7 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage ShowFooter="@_result.IsLoaded">
+<EduPage>
     <ApiViewer Result="@_result" Context="conclusion">
         <MudAlert Class="mb-6 mb-sm-12" Square Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center">
             @L[$"ConclusionStatus:{conclusion.Status}"]

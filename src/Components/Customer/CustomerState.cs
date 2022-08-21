@@ -15,7 +15,7 @@ public sealed record CustomerState
             CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek,
             CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern,
             CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern,
-            DateOnly.FromDateTime(DateTime.UnixEpoch)
+            DateOnly.FromDateTime(DateTime.MinValue)
         );
 
     public static CustomerState Authenticated(string name, string image, string timezone, DayOfWeek startOfWeek,

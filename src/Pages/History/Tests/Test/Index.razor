@@ -9,7 +9,7 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage ShowFooter>
+<EduPage>
     @switch (_result.Status)
     {
         case Status.Loading:
@@ -98,7 +98,7 @@
                         <section class="mb-6">
                             <header class="d-flex justify-space-between">
                                 <MudText Typo="Typo.subtitle1">
-                                    @L["Test:QuestionOutOf", _test.Completed + 1, _test.Questions]
+                                    @L["Test:QuestionOutOf", _test.Completed, _test.Questions]
                                 </MudText>
                                 <CountdownTimer Date="@_test.ExpiredAt" Color="@_countdownColor" OnComplete="@OnExpired"/>
                             </header>
