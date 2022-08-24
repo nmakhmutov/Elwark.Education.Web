@@ -1,37 +1,19 @@
 @using Education.Web.Pages
 
-<EduContainer MaxWidth="EduWidth.W600" Class="align-center h-100">
-    <div class="title">
-        <MudText Typo="Typo.h4" Inline Style="vertical-align: middle">
-            @Error.Status&nbsp;
+<EduContainer Class="align-center h-100" MaxWidth="EduWidth.W600">
+    <div class="d-flex gap-3 align-center justify-center">
+        <MudText Typo="Typo.h4">
+            @Error.Status
         </MudText>
-        <MudText Typo="Typo.h5" Inline Style="vertical-align: middle">
+
+        <MudText Typo="Typo.h5">
             @Error.Title
         </MudText>
     </div>
 
-    <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="mb-6">
+    <MudText Class="mb-6" Typo="Typo.subtitle1" Align="Align.Center">
         @Error.Detail
     </MudText>
-
-    @if (Error.Errors.Count > 0)
-    {
-        <MudPaper Elevation="0" Class="mb-6">
-            <MudList>
-                @foreach (var (field, errors) in Error.Errors)
-                {
-                    <MudListItem Text="@field">
-                        <NestedList>
-                            @foreach (var value in errors)
-                            {
-                                <MudListItem Text="@value"/>
-                            }
-                        </NestedList>
-                    </MudListItem>
-                }
-            </MudList>
-        </MudPaper>
-    }
 
     <MudStack Row Justify="Justify.Center">
         <MudButton

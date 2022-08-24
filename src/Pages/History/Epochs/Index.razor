@@ -5,11 +5,8 @@
 
 @page "/history/epochs/{type}"
 @layout HistoryLayout
-@attribute [Authorize]
 
-<PageTitle>
-    @L[$"Epoch:{_request.Epoch.ToFastString()}"]
-</PageTitle>
+<PageTitle>@L[$"Epoch:{_request.Epoch.ToFastString()}"]</PageTitle>
 <EduPage>
     <EduContainer Class="pb-0">
         <EduPageHeader Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>

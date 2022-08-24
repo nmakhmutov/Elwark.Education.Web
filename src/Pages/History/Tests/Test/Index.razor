@@ -15,15 +15,13 @@
         case Status.Loading:
             <Spinner/>
             break;
-            
+
         case Status.Fail:
             <EduError Error="@_result.Error"/>
             break;
-            
+
         case Status.Success:
-            <PageTitle>
-                @_testType: @_currentQuestion.Topic.Title
-            </PageTitle>
+            <PageTitle>@_testType: @_currentQuestion.Topic.Title</PageTitle>
 
             <EduContainer MaxWidth="EduWidth.W1280">
                 <section class="grid">
@@ -174,22 +172,26 @@
     protected override async Task OnParametersSetAsync()
     {
         _result = await TestService.GetAsync(Id);
-        if (_result.IsSuccess)
+        if (_result.IsFailed)
         {
-            _test = _result.Data.Overview;
-            _currentQuestion = _result.Data.Question;
-            _inventory = _result.Data.Inventory;
-            _testType = _test switch {
-                EasyTestOverviewModel => L["Test:Easy"],
-                HardTestOverviewModel => L["Test:Hard"],
-                MixedTestOverviewModel => L["Test:Mixed"],
-                _ => string.Empty
-                };
+            if (_result.Error.IsTestAlreadyCompleted())
+                Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
+
+            if (_result.Error.IsTestNotFound())
+                Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
+
+            return;
         }
-        else if (_result.Error.IsTestAlreadyCompleted())
-            Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
-        else if (_result.Error.IsTestNotFound())
-            Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
+
+        _test = _result.Data.Overview;
+        _currentQuestion = _result.Data.Question;
+        _inventory = _result.Data.Inventory;
+        _testType = _test switch {
+            EasyTestOverviewModel => L["Test:Easy"],
+            HardTestOverviewModel => L["Test:Hard"],
+            MixedTestOverviewModel => L["Test:Mixed"],
+            _ => string.Empty
+            };
     }
 
     private async Task OnExpired()
