@@ -23,21 +23,29 @@
                 @switch (_index)
                 {
                     case 0:
-                        if (data.DailyQuest.Quests.Length > 0)
-                        {
-                            <div class="quests">
-                                @foreach (var quest in data.DailyQuest.Quests)
+                        <div class="quests">
+                            @if (data.DailyQuest.Quests.Length > 0)
+                            {
+                                foreach (var quest in data.DailyQuest.Quests)
                                 {
                                     <QuestProgressCard Quest="@quest"/>
                                 }
-                            </div>
-                        }
-                        <QuestRewardsCard
-                            Class="rewards"
-                            Title="@L["Rewards"]"
-                            Subtitle="Complete all daily missions"
-                            ExpiresAt="@data.DailyQuest.ExpiresAt"
-                            Rewards="@data.DailyQuest.Rewards"/>
+                            }
+                            else
+                            {
+                                <EduEmpty Title="Empty"/>
+                            }
+                        </div>
+                        <div class="rewards">
+                            <QuestRewardsCard
+                                Title="@L["Rewards"]"
+                                Subtitle="Complete all daily missions"
+                                Status="@data.DailyQuest.Status"
+                                ExpiresAt="@data.DailyQuest.ExpiresAt"
+                                Rewards="@data.DailyQuest.Rewards"
+                                Start="@StartDailyQuestsAsync"
+                                Collect="@CollectDailyQuestsAsync"/>
+                        </div>
                         break;
                 }
 

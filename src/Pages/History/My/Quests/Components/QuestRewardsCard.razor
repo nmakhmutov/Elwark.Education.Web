@@ -1,10 +1,13 @@
+@using Education.Web.Services.Model.Quest
 <div class="@Class mud-paper pa-3 pa-sm-6">
     <MudText Typo="Typo.h6" Align="Align.Center">
         @Title
     </MudText>
+
     <MudText Class="mb-3 mb-sm-6" Typo="Typo.body1" Align="Align.Center">
         @Subtitle
     </MudText>
+
     @if (Rewards.Length > 0)
     {
         <div class="d-flex flex-row align-center justify-center gap-3 mb-3 mb-sm-6">
@@ -14,22 +17,47 @@
             }
         </div>
     }
+
     @if (ExpiresAt.HasValue)
     {
-        <div class="d-flex align-center justify-center mb-3 mb-sm-6">
-            <MudIcon Class="mr-1" Icon="@Icons.Outlined.Timer"/>
-            <CountdownTimer Date="@ExpiresAt.Value"/>
+        <div class="d-flex align-center justify-space-around gap-3">
+
+            <div class="d-flex align-center justify-center">
+                <MudIcon Class="mr-1" Icon="@Icons.Outlined.Timer"/>
+                <CountdownTimer Date="@ExpiresAt.Value"/>
+            </div>
+
+            <div>
+                <LoadingButton
+                    DisableElevation
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    Text="@L["Quests:Collect"]"
+                    IsLoading="@_isLoading"
+                    Disabled="@(Status != QuestStatus.Completed)"
+                    OnClick="@CollectAsync"/>
+            </div>
         </div>
     }
-    <MudButton Variant="Variant.Outlined" Color="Color.Primary">
-        Claim
-    </MudButton>
+    else
+    {
+        <div class="d-flex align-center justify-center">
+            <LoadingButton
+                DisableElevation
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                Text="@L["Quests:Start"]"
+                IsLoading="@_isLoading"
+                OnClick="@StartAsync"/>
+        </div>
+    }
 </div>
 
 @code {
+    private bool _isLoading;
 
-    [Parameter]
-    public string? Class { get; set; }
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;
@@ -38,8 +66,50 @@
     public string Subtitle { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
+    public QuestStatus Status { get; set; }
+
+    [Parameter, EditorRequired]
     public IInternalMoney[] Rewards { get; set; } = Array.Empty<IInternalMoney>();
-    
+
     [Parameter, EditorRequired]
     public DateTime? ExpiresAt { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback Start { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback Collect { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+    
+    private async Task StartAsync()
+    {
+        _isLoading = true;
+
+        try
+        {
+            await Start.InvokeAsync();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task CollectAsync()
+    {
+        _isLoading = true;
+
+        try
+        {
+            await Collect.InvokeAsync();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
 }
+

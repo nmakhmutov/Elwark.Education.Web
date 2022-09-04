@@ -1,10 +1,20 @@
 @using Education.Web.Services.History
 @using Education.Web.Services.Model.Content
 
-<section class="@Class mud-paper pa-3">
-    <TopicRating Rating="@Rating" ShowDetails Class="d-flex align-center justify-center mb-3"/>
-    
+<section class="@Class mud-paper d-flex justify-space-between pa-3">
     <MudToolBar Dense DisableGutters Class="d-flex justify-center">
+        <MudTooltip Text="@(_isFavorite ? L["Favorite:Remove"] : L["Favorite:Add"])">
+            <MudToggleIconButton
+                Toggled="@_isFavorite"
+                ToggledChanged="@OnFavoriteChanged"
+                Icon="@Icons.Outlined.FavoriteBorder"
+                Color="Color.Default"
+                Size="Size.Medium"
+                ToggledIcon="@Icons.Outlined.Favorite"
+                ToggledColor="Color.Error"
+                ToggledSize="Size.Medium"/>
+        </MudTooltip>
+        
         <MudTooltip Text="@L["Topic:ILikeThis"]">
             <MudIconButton
                 Icon="@Icons.Rounded.ThumbUp"
@@ -18,19 +28,9 @@
                 OnClick="@OnDislike"
                 Color="@(_isLiked == false ? Color.Primary : Color.Default)"/>
         </MudTooltip>
-
-        <MudTooltip Text="@(_isFavorite ? L["Favorite:Remove"] : L["Favorite:Add"])">
-            <MudToggleIconButton
-                Toggled="@_isFavorite"
-                ToggledChanged="@OnFavoriteChanged"
-                Icon="@Icons.Outlined.FavoriteBorder"
-                Color="Color.Default"
-                Size="Size.Medium"
-                ToggledIcon="@Icons.Outlined.Favorite"
-                ToggledColor="Color.Error"
-                ToggledSize="Size.Medium"/>
-        </MudTooltip>
     </MudToolBar>
+    
+    <TopicRating Rating="@Rating" ShowDetails Class="d-flex flex-column align-center justify-center"/>
 </section>
 
 @code {

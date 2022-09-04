@@ -68,8 +68,15 @@
     private async Task CreateTestAsync()
     {
         _isLoading = true;
-        await OnCreate.InvokeAsync(new CreateTopicTestRequest(_test!, Topic.Id));
-        _isLoading = false;
+        
+        try
+        {
+            await OnCreate.InvokeAsync(new CreateTopicTestRequest(_test!, Topic.Id));
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
 }
