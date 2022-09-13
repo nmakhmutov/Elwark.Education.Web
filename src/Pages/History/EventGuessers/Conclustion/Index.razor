@@ -15,7 +15,7 @@
         <CompletedStars Class="mb-6" Progress="@_progress"/>
 
         <RewardsContainer MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
-        
+
         <EduContainer MaxWidth="EduWidth.W1280">
             <MudTable
                 Items="@conclusion.Questions"
@@ -94,10 +94,10 @@
         {
             if (_result.Error.IsEventGuesserNotFound())
                 Navigation.NavigateTo(HistoryUrl.EventGuesser.Index);
-            
+
             return;
         }
-        
+
         _progress = Math.Round((double)_result.Data.Score / _result.Data.MaxScore * 100);
     }
 

@@ -18,38 +18,49 @@
         </div>
     }
 
-    @if (ExpiresAt.HasValue)
+    @switch(Status, ExpiresAt)
     {
-        <div class="d-flex align-center justify-space-around gap-3">
-
+        case (QuestStatus.Expired,_):
             <div class="d-flex align-center justify-center">
-                <MudIcon Class="mr-1" Icon="@Icons.Outlined.Timer"/>
-                <CountdownTimer Date="@ExpiresAt.Value"/>
-            </div>
-
-            <div>
                 <LoadingButton
                     DisableElevation
                     Variant="Variant.Filled"
                     Color="Color.Primary"
-                    Text="@L["Quests:Collect"]"
+                    Text="@L["Quests:Start"]"
                     IsLoading="@_isLoading"
-                    Disabled="@(Status != QuestStatus.Completed)"
-                    OnClick="@CollectAsync"/>
+                    OnClick="@StartAsync"/>
             </div>
-        </div>
-    }
-    else
-    {
-        <div class="d-flex align-center justify-center">
-            <LoadingButton
-                DisableElevation
-                Variant="Variant.Filled"
-                Color="Color.Primary"
-                Text="@L["Quests:Start"]"
-                IsLoading="@_isLoading"
-                OnClick="@StartAsync"/>
-        </div>
+            break;
+
+        case (QuestStatus.InProgress or QuestStatus.Completed, {}):
+            <div class="d-flex align-center justify-space-around gap-3">
+
+                <div class="d-flex align-center justify-center">
+                    <MudIcon Class="mr-1" Icon="@Icons.Outlined.Timer"/>
+                    <CountdownTimer Date="@ExpiresAt.Value" OnComplete="@ExpiredAsync"/>
+                </div>
+
+                <div>
+                    <LoadingButton
+                        DisableElevation
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        Text="@L["Quests:Collect"]"
+                        IsLoading="@_isLoading"
+                        Disabled="@(Status != QuestStatus.Completed)"
+                        OnClick="@CollectAsync"/>
+                </div>
+            </div>
+            break;
+
+        case (QuestStatus.Collected, _):
+            <div class="d-flex align-center justify-center">
+                <MudIcon Class="mr-1" Icon="@Icons.Outlined.CheckCircle" Color="Color.Success"/>
+                <MudText Typo="Typo.subtitle1">
+                    @L["Quests:Collected"]
+                </MudText>
+            </div>
+            break;
     }
 </div>
 
@@ -75,21 +86,24 @@
     public DateTime? ExpiresAt { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback Start { get; set; }
+    public EventCallback OnStart { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback Collect { get; set; }
+    public EventCallback OnCollect { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnExpired { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
-    
+
     private async Task StartAsync()
     {
         _isLoading = true;
 
         try
         {
-            await Start.InvokeAsync();
+            await OnStart.InvokeAsync();
         }
         finally
         {
@@ -103,7 +117,7 @@
 
         try
         {
-            await Collect.InvokeAsync();
+            await OnCollect.InvokeAsync();
         }
         finally
         {
@@ -111,5 +125,7 @@
         }
     }
 
-}
+    private Task ExpiredAsync() =>
+        OnExpired.InvokeAsync();
 
+}

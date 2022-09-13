@@ -1,42 +1,34 @@
 @using Education.Web.Services.History.Topic
 @using Education.Web.Services.History
 
-<div class="background pa-6 pa-sm-16">
-    <EduContainer MaxWidth="EduWidth.W960">
-        <MudCard Elevation="0" Square>
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h4" Align="Align.Center" Class="py-3 py-sm-6">
-                        @L["Topic:Random"]
-                    </MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <div class="d-flex flex-row flex-wrap justify-center align-end mw-xs mx-auto pb-6 pb-sm-12">
-                    <MudSelect @bind-Value="@_epoch" Margin="Margin.Dense" Variant="Variant.Text">
-                        <MudSelectItem Value="@EpochType.None">@L["Topics:Any"]</MudSelectItem>
-                        @foreach (var epoch in EpochTypeExtensions.List[1..])
-                        {
-                            <MudSelectItem Value="@epoch">
-                                @L[$"Epoch:{epoch.ToFastString()}"]
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
-                    <div class="ml-3">
-                        <LoadingButton
-                            DisableElevation
-                            Variant="Variant.Filled"
-                            Color="Color.Primary"
-                            IsLoading="@_isLoading"
-                            Text="@L["Search"]"
-                            LoadingText="@L["Loading"]"
-                            OnClick="@OnClick"/>
-                    </div>
-                </div>
-            </MudCardContent>
-        </MudCard>
-    </EduContainer>
-</div>
+<section class="background rounded pa-16">
+    <section class="mud-paper rounded pa-16">
+        <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-3 mb-sm-6">
+            @L["Topic:Random"]
+        </MudText>
+        <div class="search">
+            <MudSelect @bind-Value="@_epoch" Margin="Margin.Dense" Variant="Variant.Text">
+                <MudSelectItem Value="@EpochType.None">@L["Topics:Any"]</MudSelectItem>
+                @foreach (var epoch in EpochTypeExtensions.List[1..])
+                {
+                    <MudSelectItem Value="@epoch">
+                        @L[$"Epoch:{epoch.ToFastString()}"]
+                    </MudSelectItem>
+                }
+            </MudSelect>
+            <div class="ml-3">
+                <LoadingButton
+                    DisableElevation
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    IsLoading="@_isLoading"
+                    Text="@L["Search"]"
+                    LoadingText="@L["Loading"]"
+                    OnClick="@OnClick"/>
+            </div>
+        </div>
+    </section>
+</section>
 
 @code {
 

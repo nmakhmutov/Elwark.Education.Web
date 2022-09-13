@@ -17,6 +17,10 @@ public interface IHistoryUserService
 
     Task<ApiResult<DailyQuestModel>> CollectDailyQuestAsync();
 
+    Task<ApiResult<WeeklyQuestModel>> StartWeeklyQuestAsync();
+
+    Task<ApiResult<WeeklyQuestModel>> CollectWeeklyQuestAsync();
+
     Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync();
 
     Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync();
