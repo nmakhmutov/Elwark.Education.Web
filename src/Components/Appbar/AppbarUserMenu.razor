@@ -63,21 +63,15 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private SignOutSessionStateManager SignOutManager { get; set; } = default!;
-
-    [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
 
     private void OnLogin() =>
-        Navigation.NavigateTo(AuthenticationUrl.LogIn(Navigation.Uri));
+        Navigation.NavigateToLogin(AuthenticationUrl.LogIn(Navigation.Uri));
 
-    private async Task OnLogout(MouseEventArgs args)
-    {
-        await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo(AuthenticationUrl.LogOut);
-    }
+    private void OnLogout() =>
+        Navigation.NavigateToLogout(AuthenticationUrl.LogOut);
 
 }

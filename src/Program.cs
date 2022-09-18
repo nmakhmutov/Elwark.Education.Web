@@ -47,8 +47,10 @@ builder.Services
     .AddLocalization(options => options.ResourcesPath = "Resources")
     .AddOidcAuthentication(options =>
     {
-        options.ProviderOptions.DefaultScopes.Clear();
         builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions);
+        
+        options.ProviderOptions.DefaultScopes.Add("elwark.education.web");
+        options.ProviderOptions.DefaultScopes.Add("elwark.education.hub");
     });
 
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway")!;

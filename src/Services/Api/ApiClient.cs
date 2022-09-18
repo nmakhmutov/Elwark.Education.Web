@@ -60,13 +60,13 @@ internal sealed class ApiClient
     public Task<ApiResult<T>> PostAsync<T>(string uri) =>
         ExecuteAsync<T>(ct => _authenticated.PostAsync(uri, null, ct));
 
-    public Task<ApiResult<T>> PostAsync<T, V>(string uri, V data) =>
+    public Task<ApiResult<T>> PostAsync<T, K>(string uri, K data) =>
         ExecuteAsync<T>(ct => _authenticated.PostAsync(uri, CreateJson(data), ct));
 
     public Task<ApiResult<T>> PutAsync<T>(string uri) =>
         ExecuteAsync<T>(ct => _authenticated.PutAsync(uri, null, ct));
 
-    public Task<ApiResult<T>> PutAsync<T, V>(string uri, V data) =>
+    public Task<ApiResult<T>> PutAsync<T, K>(string uri, K data) =>
         ExecuteAsync<T>(ct => _authenticated.PutAsync(uri, CreateJson(data), ct));
 
     public Task<ApiResult<T>> DeleteAsync<T>(string uri) =>
