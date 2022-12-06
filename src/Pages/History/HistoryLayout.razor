@@ -1,6 +1,6 @@
 @using Education.Web.Services.History
-@using Education.Web.Services.History.Home
 @using Blazored.LocalStorage
+@using Education.Web.Services.History.Search
 
 @inherits LayoutComponentBase
 
@@ -124,7 +124,7 @@
     private ILocalStorageService Storage { get; set; } = default!;
 
     [Inject]
-    private IHistoryService HistoryService { get; set; } = default!;
+    private IHistorySearchService HistorySearchService { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
@@ -143,7 +143,7 @@
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
             return Array.Empty<TopicOverviewModel>();
 
-        var result = await HistoryService.SearchAsync(text);
+        var result = await HistorySearchService.SearchAsync(text);
         return result.IsSuccess ? result.Data : Array.Empty<TopicOverviewModel>();
     }
 

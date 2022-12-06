@@ -1,4 +1,4 @@
-namespace Education.Web.Services.History.Home.Model;
+namespace Education.Web.Services.History.Trend.Model;
 
 internal sealed record HistoryOverviewModel(
     TopicOverviewModel DailyTopic,

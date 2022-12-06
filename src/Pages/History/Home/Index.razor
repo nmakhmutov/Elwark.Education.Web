@@ -1,7 +1,7 @@
 @using Education.Web.Pages.History.Components
 @using Education.Web.Pages.History.Home.Components
-@using Education.Web.Services.History.Home
-@using Education.Web.Services.History.Home.Model
+@using Education.Web.Services.History.Trend
+@using Education.Web.Services.History.Trend.Model
 
 @page "/history"
 @layout HistoryLayout
@@ -113,11 +113,11 @@
     private ApiResult<HistoryOverviewModel> _result = ApiResult<HistoryOverviewModel>.Loading();
 
     [Inject]
-    private IHistoryService HistoryService { get; set; } = default!;
+    private IHistoryTrendService HistoryTrendService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _result = await HistoryService.GetAsync();
+        _result = await HistoryTrendService.GetAsync();
 }

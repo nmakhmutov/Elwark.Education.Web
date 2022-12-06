@@ -7,10 +7,11 @@ using Education.Web.Services;
 using Education.Web.Services.Api;
 using Education.Web.Services.Customer;
 using Education.Web.Services.History.EventGuesser;
-using Education.Web.Services.History.Home;
 using Education.Web.Services.History.Leaderboard;
+using Education.Web.Services.History.Search;
 using Education.Web.Services.History.Test;
 using Education.Web.Services.History.Topic;
+using Education.Web.Services.History.Trend;
 using Education.Web.Services.History.User;
 using Education.Web.Services.Notification;
 using Microsoft.AspNetCore.Components;
@@ -74,10 +75,11 @@ builder.Services
     .AddScoped<ICustomerService, CustomerService>()
     .AddScoped<INotificationService, NotificationService>()
     .AddScoped<IHistoryEventGuesserService, HistoryEventGuesserService>()
-    .AddScoped<IHistoryService, HistoryService>()
     .AddScoped<IHistoryLeaderboardService, HistoryLeaderboardService>()
+    .AddScoped<IHistorySearchService, HistorySearchService>()
     .AddScoped<IHistoryTestService, HistoryTestService>()
     .AddScoped<IHistoryTopicService, HistoryTopicService>()
+    .AddScoped<IHistoryTrendService, HistoryTrendService>()
     .AddScoped<IHistoryUserService, HistoryUserService>()
     .AddScoped(provider =>
     {
