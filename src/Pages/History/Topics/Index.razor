@@ -2,6 +2,7 @@
 @using Education.Web.Services.History
 @using Education.Web.Services.History.Topic
 @using Education.Web.Services.History.Topic.Model
+@using Education.Web.Services.Settings
 
 @page "/history/topics/{id}"
 @layout HistoryLayout
@@ -77,7 +78,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private TopicContentFormatService FormatService { get; set; } = default!;
+    private TopicContentSettings Settings { get; set; } = default!;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
@@ -99,7 +100,7 @@
     }
 
     protected override async Task OnInitializedAsync() =>
-        await FormatService.InitAsync();
+        await Settings.InitAsync();
 
     private async Task<bool> LikeAsync()
     {

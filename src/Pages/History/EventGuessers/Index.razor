@@ -1,8 +1,8 @@
 @using Education.Web.Pages.History.Components
-@using Education.Web.Services.History
 @using Education.Web.Services.History.EventGuesser
 @using Education.Web.Services.History.EventGuesser.Model
 @using Education.Web.Services.History.EventGuesser.Request
+@using Education.Web.Components.Settings
 
 @page "/history/event-guessers"
 @layout HistoryLayout
@@ -31,12 +31,19 @@
                     <MudText Typo="Typo.h5" Class="mb-3">
                         @L["History:Epoch"]
                     </MudText>
-                    <EpochRadioGroup @bind-SelectedEpoch="@_epoch" Class="mb-3 mb-sm-6"/>
+                    <EpochRadioGroup
+                        SelectedEpoch="@HistorySettings.EventGuesserEpoch"
+                        SelectedEpochChanged="@HistorySettings.ChangeEventGuesserEpochAsync"
+                        Class="mb-3 mb-sm-6"/>
 
                     <MudText Typo="Typo.h5" Class="mb-3">
                         @L["Tests"]
                     </MudText>
-                    <TestRadioGroup @bind-SelectedTest="_test" Tests="@model.Tests" Class="mb-6"/>
+                    <TestRadioGroup
+                        SelectedTest="@HistorySettings.EventGuesserType"
+                        SelectedTestChanged="@HistorySettings.ChangeEventGuesserTypeAsync"
+                        Tests="@model.Tests"
+                        Class="mb-6"/>
 
                     <div class="d-flex justify-center">
                         <LoadingButton
@@ -78,8 +85,6 @@
 
 @code {
     private bool _isLoading;
-    private EpochType _epoch = EpochType.None;
-    private string _test = string.Empty;
     private ApiResult<TestBuilderModel> _result = ApiResult<TestBuilderModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -102,11 +107,19 @@
     [Inject]
     private IDialogService DialogService { get; set; } = default!;
 
+    [CascadingParameter]
+    private HistorySettingsProvider HistorySettings { get; set; } = default!;
+
     protected override async Task OnInitializedAsync()
     {
         _result = await EventGuesserService.GetAsync();
         if (_result.IsSuccess)
-            _test = _result.Data.Tests.FirstOrDefault(x => x.IsAllowed)?.Name ?? string.Empty;
+        {
+            if (!_result.Data.Tests.Any(x => x.IsAllowed && x.Name == HistorySettings.TestType))
+                await HistorySettings.ChangeEventGuesserTypeAsync(_result.Data.Tests.FirstOrDefault(x => x.IsAllowed)?.Name);
+            
+            return;
+        }
 
         if (_result.IsFailed && _result.Error.IsTestAlreadyCreated(out var id))
             Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(id));
@@ -114,9 +127,13 @@
 
     private async Task CreateTestAsync()
     {
+        if (string.IsNullOrEmpty(HistorySettings.EventGuesserType))
+            return;
+        
         _isLoading = true;
 
-        var response = await EventGuesserService.CreateAsync(new CreateRequest(_test, _epoch));
+        var request = new CreateRequest(HistorySettings.EventGuesserType, HistorySettings.EventGuesserEpoch);
+        var response = await EventGuesserService.CreateAsync(request);
         if (response.IsSuccess)
             Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(response.Data.Id));
         else

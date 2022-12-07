@@ -1,3 +1,4 @@
+@using Education.Web.Services.Settings
 @implements IDisposable
 
 <section class="@Class mud-paper pa-3 pa-sm-6">
@@ -8,24 +9,24 @@
         <MudButtonGroup DisableElevation Size="Size.Small" Variant="Variant.Outlined">
             <MudIconButton
                 DisableElevation
-                Disabled="@(FormatService.TextAlign == Align.Left)"
+                Disabled="@(Settings.TextAlign == Align.Left)"
                 Icon="@Icons.Outlined.FormatAlignLeft"
-                OnClick="@FormatService.AlignTextLeftAsync"/>
+                OnClick="@Settings.AlignTextLeftAsync"/>
             <MudIconButton
                 DisableElevation
-                Disabled="@(FormatService.TextAlign == Align.Center)"
+                Disabled="@(Settings.TextAlign == Align.Center)"
                 Icon="@Icons.Outlined.FormatAlignCenter"
-                OnClick="@FormatService.AlignTextCenterAsync"/>
+                OnClick="@Settings.AlignTextCenterAsync"/>
             <MudIconButton
                 DisableElevation
-                Disabled="@(FormatService.TextAlign == Align.Right)"
+                Disabled="@(Settings.TextAlign == Align.Right)"
                 Icon="@Icons.Outlined.FormatAlignRight"
-                OnClick="@FormatService.AlignTextRightAsync"/>
+                OnClick="@Settings.AlignTextRightAsync"/>
             <MudIconButton
                 DisableElevation
-                Disabled="@(FormatService.TextAlign == Align.Justify)"
+                Disabled="@(Settings.TextAlign == Align.Justify)"
                 Icon="@Icons.Outlined.FormatAlignJustify"
-                OnClick="@FormatService.AlignTextJustifyAsync"/>
+                OnClick="@Settings.AlignTextJustifyAsync"/>
         </MudButtonGroup>
     </div>
 
@@ -33,20 +34,20 @@
         <MudText Typo="Typo.body2" Class="mr-3">
             @L["Topic:FontSize"]
             <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                @($"x{FormatService.FontSize:N1}")
+                @($"x{Settings.FontSize:N1}")
             </MudText>
         </MudText>
         <MudButtonGroup DisableElevation Size="Size.Small" Variant="Variant.Outlined">
             <MudIconButton
                 DisableElevation
-                Disabled="@(!FormatService.CanDecreaseFont)"
+                Disabled="@(!Settings.CanDecreaseFont)"
                 Icon="@Icons.Outlined.Remove"
-                OnClick="@FormatService.DecreaseFontAsync"/>
+                OnClick="@Settings.DecreaseFontAsync"/>
             <MudIconButton
                 DisableElevation
-                Disabled="@(!FormatService.CanIncreaseFont)"
+                Disabled="@(!Settings.CanIncreaseFont)"
                 Icon="@Icons.Outlined.Add"
-                OnClick="@FormatService.IncreaseFontAsync"/>
+                OnClick="@Settings.IncreaseFontAsync"/>
         </MudButtonGroup>
     </div>
 </section>
@@ -57,15 +58,15 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private TopicContentFormatService FormatService { get; set; } = default!;
+    private TopicContentSettings Settings { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
 
-    protected override void OnInitialized() => 
-        FormatService.OnChange += StateHasChanged;
+    protected override void OnInitialized() =>
+        Settings.OnChange += StateHasChanged;
 
-    public void Dispose() => 
-        FormatService.OnChange -= StateHasChanged;
+    public void Dispose() =>
+        Settings.OnChange -= StateHasChanged;
 
 }

@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
 using Education.Web;
 using Education.Web.Components.Customer;
-using Education.Web.Services;
 using Education.Web.Services.Api;
 using Education.Web.Services.Customer;
 using Education.Web.Services.History.EventGuesser;
@@ -14,6 +13,7 @@ using Education.Web.Services.History.Topic;
 using Education.Web.Services.History.Trend;
 using Education.Web.Services.History.User;
 using Education.Web.Services.Notification;
+using Education.Web.Services.Settings;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -90,7 +90,7 @@ builder.Services
     });
 
 builder.Services
-    .AddScoped<TopicContentFormatService>()
+    .AddScoped<TopicContentSettings>()
     .AddScoped<CustomerStateProvider>()
     .AddScoped<LocalizationHandler>()
     .AddScoped<AuthorizationMessageHandler>(provider =>

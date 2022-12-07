@@ -1,10 +1,11 @@
 @using Education.Web.Services.History
 @using Blazored.LocalStorage
 @using Education.Web.Services.History.Search
+@using Education.Web.Components.Settings
 
 @inherits LayoutComponentBase
 
-<EduThemeProvider>
+<HistorySettingsProvider>
     <MudLayout>
         <MudAppBar Elevation="0">
             <MudIconButton Icon="@Icons.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleAsync"/>
@@ -111,7 +112,7 @@
             <MudFab Icon="@Icons.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
         </MudScrollToTop>
     </MudLayout>
-</EduThemeProvider>
+</HistorySettingsProvider>
 
 @code {
     private bool _isOpen;

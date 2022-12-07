@@ -1,6 +1,8 @@
 @using Education.Web.Pages.History.Components
 @using Education.Web.Services.History
 @using Education.Web.Services.History.Test.Request
+@using Education.Web.Services.Settings
+@using Education.Web.Components.Settings
 
 <section class="@Class">
     <MudText Typo="Typo.h5" Class="mb-3">
@@ -21,7 +23,10 @@
     </MudText>
     @if (Tests.Any(x => x.IsAllowed))
     {
-        <TestRadioGroup @bind-SelectedTest="@_test" Tests="@Tests" Class="mb-6"/>
+        <TestRadioGroup
+            SelectedTest="@HistorySettings.TestType"
+            SelectedTestChanged="@HistorySettings.ChangeTestTypeAsync"
+            Tests="@Tests" Class="mb-6"/>
 
         <div class="d-flex justify-center">
             <LoadingButton
@@ -44,11 +49,13 @@
 </section>
 
 @code {
-    private string? _test;
     private bool _isLoading;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private HistorySettingsProvider HistorySettings { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
@@ -62,21 +69,21 @@
     [Parameter, EditorRequired]
     public EventCallback<CreateTopicTestRequest> OnCreate { get; set; }
 
-    protected override void OnInitialized() =>
-        _test = Tests.FirstOrDefault(x => x.IsAllowed)?.Name;
+    protected override async Task OnInitializedAsync()
+    {
+        if (Tests.Any(x => x.IsAllowed && x.Name == HistorySettings.TestType))
+            return;
+
+        await HistorySettings.ChangeTestTypeAsync(Tests.FirstOrDefault(x => x.IsAllowed)?.Name);
+    }
 
     private async Task CreateTestAsync()
     {
-        _isLoading = true;
+        if(string.IsNullOrEmpty(HistorySettings.TestType))
+            return;
         
-        try
-        {
-            await OnCreate.InvokeAsync(new CreateTopicTestRequest(_test!, Topic.Id));
-        }
-        finally
-        {
-            _isLoading = false;
-        }
+        _isLoading = true;
+        await OnCreate.InvokeAsync(new CreateTopicTestRequest(HistorySettings.TestType, Topic.Id));
+        _isLoading = false;
     }
-
 }

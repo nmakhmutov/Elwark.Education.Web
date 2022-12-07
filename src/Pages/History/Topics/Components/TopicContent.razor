@@ -1,7 +1,8 @@
+@using Education.Web.Services.Settings
 @implements IDisposable
 
 <article class="@Class mud-paper pa-3 pa-sm-6">
-    <EduMarkdown Content="@Content" Style="@FormatService.TextStyles"/>
+    <EduMarkdown Content="@Content" Style="@Settings.TextStyles"/>
 </article>
 
 @code {
@@ -10,7 +11,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private TopicContentFormatService FormatService { get; set; } = default!;
+    private TopicContentSettings Settings { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
@@ -19,9 +20,9 @@
     public string Content { get; set; } = string.Empty;
 
     protected override void OnInitialized() =>
-        FormatService.OnChange += StateHasChanged;
+        Settings.OnChange += StateHasChanged;
 
     public void Dispose() => 
-        FormatService.OnChange -= StateHasChanged;
+        Settings.OnChange -= StateHasChanged;
 
 }
