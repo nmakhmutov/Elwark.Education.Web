@@ -6,12 +6,5 @@ public sealed record UserInventoryItemModel(
     string Title,
     string Overview,
     string IconUrl,
-    Category Category
+    InventoryCategoryModel Category
 );
-
-public enum Category
-{
-    Profile = 0,
-    Test = 1,
-    EventGuesser = 2,
-}

@@ -78,7 +78,7 @@
     private async Task<bool> OnFavoriteClick(string topicId)
     {
         var result = await TopicService.ToggleFavoriteAsync(topicId);
-        return result.IsSuccess && result.Data;
+        return result is { IsSuccess: true, Data: true };
     }
 
     private void OnPagination(int page)

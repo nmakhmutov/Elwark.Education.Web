@@ -2,7 +2,6 @@
 @using Education.Web.Services.History
 @using Education.Web.Services.History.Topic
 @using Education.Web.Services.History.Topic.Model
-@using Education.Web.Services.Settings
 
 @page "/history/topics/{id}"
 @layout HistoryLayout
@@ -77,9 +76,6 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [Inject]
-    private TopicContentSettings Settings { get; set; } = default!;
-
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
@@ -99,9 +95,6 @@
         }
     }
 
-    protected override async Task OnInitializedAsync() =>
-        await Settings.InitAsync();
-
     private async Task<bool> LikeAsync()
     {
         var response = await TopicService.LikeAsync(Id);
@@ -117,7 +110,7 @@
     private async Task<bool> ToggleFavoriteAsync(string id)
     {
         var result = await TopicService.ToggleFavoriteAsync(id);
-        return result.IsSuccess && result.Data;
+        return result is { IsSuccess: true, Data: true };
     }
 
 }

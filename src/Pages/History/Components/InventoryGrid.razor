@@ -3,8 +3,9 @@
 <section class="grid @Class">
     @foreach (var inventory in Inventory)
     {
-        @ChildContent(inventory)    
+        @ChildContent(inventory)
     }
+    @LastItem
 </section>
 
 @code {
@@ -16,5 +17,9 @@
     public RenderFragment<T> ChildContent { get; set; } = default!;
 
     [Parameter]
+    public RenderFragment? LastItem { get; set; }
+
+    [Parameter]
     public string? Class { get; set; }
+
 }

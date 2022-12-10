@@ -1,6 +1,3 @@
-@using Education.Web.Services.Settings
-@implements IDisposable
-
 <section class="@Class mud-paper pa-3 pa-sm-6">
     <div class="d-flex justify-space-between align-center mb-3 mb-sm-6">
         <MudText Typo="Typo.body2" Class="mr-3">
@@ -9,24 +6,24 @@
         <MudButtonGroup DisableElevation Size="Size.Small" Variant="Variant.Outlined">
             <MudIconButton
                 DisableElevation
-                Disabled="@(Settings.TextAlign == Align.Left)"
+                Disabled="@(AppSettings.TextAlign == Align.Left)"
                 Icon="@Icons.Outlined.FormatAlignLeft"
-                OnClick="@Settings.AlignTextLeftAsync"/>
+                OnClick="@AppSettings.AlignTextLeftAsync"/>
             <MudIconButton
                 DisableElevation
-                Disabled="@(Settings.TextAlign == Align.Center)"
+                Disabled="@(AppSettings.TextAlign == Align.Center)"
                 Icon="@Icons.Outlined.FormatAlignCenter"
-                OnClick="@Settings.AlignTextCenterAsync"/>
+                OnClick="@AppSettings.AlignTextCenterAsync"/>
             <MudIconButton
                 DisableElevation
-                Disabled="@(Settings.TextAlign == Align.Right)"
+                Disabled="@(AppSettings.TextAlign == Align.Right)"
                 Icon="@Icons.Outlined.FormatAlignRight"
-                OnClick="@Settings.AlignTextRightAsync"/>
+                OnClick="@AppSettings.AlignTextRightAsync"/>
             <MudIconButton
                 DisableElevation
-                Disabled="@(Settings.TextAlign == Align.Justify)"
+                Disabled="@(AppSettings.TextAlign == Align.Justify)"
                 Icon="@Icons.Outlined.FormatAlignJustify"
-                OnClick="@Settings.AlignTextJustifyAsync"/>
+                OnClick="@AppSettings.AlignTextJustifyAsync"/>
         </MudButtonGroup>
     </div>
 
@@ -34,20 +31,20 @@
         <MudText Typo="Typo.body2" Class="mr-3">
             @L["Topic:FontSize"]
             <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                @($"x{Settings.FontSize:N1}")
+                @($"x{AppSettings.FontSize:N1}")
             </MudText>
         </MudText>
         <MudButtonGroup DisableElevation Size="Size.Small" Variant="Variant.Outlined">
             <MudIconButton
                 DisableElevation
-                Disabled="@(!Settings.CanDecreaseFont)"
+                Disabled="@(!AppSettings.CanDecreaseFont)"
                 Icon="@Icons.Outlined.Remove"
-                OnClick="@Settings.DecreaseFontAsync"/>
+                OnClick="@AppSettings.DecreaseFontAsync"/>
             <MudIconButton
                 DisableElevation
-                Disabled="@(!Settings.CanIncreaseFont)"
+                Disabled="@(!AppSettings.CanIncreaseFont)"
                 Icon="@Icons.Outlined.Add"
-                OnClick="@Settings.IncreaseFontAsync"/>
+                OnClick="@AppSettings.IncreaseFontAsync"/>
         </MudButtonGroup>
     </div>
 </section>
@@ -57,16 +54,10 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [Inject]
-    private TopicContentSettings Settings { get; set; } = default!;
+    [CascadingParameter]
+    private AppSettingsProvider AppSettings { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
-
-    protected override void OnInitialized() =>
-        Settings.OnChange += StateHasChanged;
-
-    public void Dispose() =>
-        Settings.OnChange -= StateHasChanged;
 
 }

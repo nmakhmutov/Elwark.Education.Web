@@ -4,6 +4,15 @@
     height: 100%;
 }
 
+.buy-inventory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 4px dashed var(--mud-palette-background-grey);
+    /*background-color: var(--mud-palette-secondary-lighten);*/
+}
+
 @media (min-width: 600px) {
     .grid {
         gap: 24px;
@@ -15,21 +24,21 @@
         grid-template-columns: repeat(12, 1fr);
     }
 
-    .wallet {
+    .grid .sidebar {
         grid-column: 1 / 5;
     }
 
-    .inventory {
+    .grid .content {
         grid-column: 5 / 13;
     }
 }
 
 @media (min-width: 1600px) {
-    .wallet {
+    .grid .sidebar {
         grid-column: 1 / 4;
     }
 
-    .inventory {
+    .grid .content {
         grid-column: 4 / 13;
     }
 }
@@ -38,12 +47,12 @@
     .grid {
         grid-template-columns: repeat(20, 1fr);
     }
-    
-    .wallet {
+
+    .grid .sidebar {
         grid-column: 1 / 5;
     }
 
-    .inventory {
+    .grid .content {
         grid-column: 5 / -1;
     }
 }

@@ -12,29 +12,59 @@
 <EduPage>
     <ApiViewer Result="@_result" Context="model">
         <EduContainer MaxWidth="EduWidth.W1920">
-            <div class="grid">
-                <div class="wallet">
+            <section class="grid">
+                <aside class="sidebar">
                     <ProfileCard Class="mb-3 mb-sm-6" Level="@model.Level"/>
-                    <WalletCard Silver="@model.Silver"/>
-                </div>
-                <div class="inventory">
-                    <header class="d-flex align-center justify-space-between mb-3 mb-sm-6">
-                        <MudText Typo="Typo.h5">
-                            @L["Inventory"]
+                    <WalletCard Class="wallet" Silver="@model.Silver"/>
+                </aside>
+
+                <section class="content">
+                    <div class="mb-3 mb-sm-6">
+                        <header class="d-flex align-center justify-space-between mb-3 mb-sm-6">
+                            <MudText Typo="Typo.h5">
+                                @L["Inventory"]
+                            </MudText>
+                            <MudText Typo="Typo.h5">
+                                @_capacity
+                            </MudText>
+                        </header>
+                        <InventoryGrid Inventory="@model.Inventory.Items">
+                            <ChildContent Context="item">
+                                <InventoryInfoCard
+                                    Title="@item.Title"
+                                    Subtitle="@item.Category.Title"
+                                    Overview="@item.Overview"
+                                    Count="@item.Count"
+                                    IconUrl="@item.IconUrl"/>
+                            </ChildContent>
+                            <LastItem>
+                                <div class="buy-inventory rounded pa-3">
+                                    <MudFab
+                                        Label="@L["Inventory:Store"]"
+                                        StartIcon="@Icons.Outlined.Store"
+                                        Color="Color.Primary"
+                                        Size="Size.Large"
+                                        DisableElevation/>
+                                </div>
+                            </LastItem>
+                        </InventoryGrid>
+                    </div>
+
+                    <div class="topics">
+                        <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
+                            Recent topics
                         </MudText>
-                        <MudText Typo="Typo.h5">
-                            @_capacity
-                        </MudText>
-                    </header>
-                    <InventoryGrid Inventory="@model.Inventory.Items" Context="item">
-                        <InventoryInfoCard
-                            Title="@item.Title"
-                            Overview="@item.Overview"
-                            Count="@item.Count"
-                            IconUrl="@item.IconUrl"/>
-                    </InventoryGrid>
-                </div>
-            </div>
+                        <EduFillGrid>
+                            @foreach (var item in model.RecentTopics)
+                            {
+                                <TopicAndUserProgressCard
+                                    Topic="@item.Topic"
+                                    UserActivity="@item.Activity"/>
+                            }
+                        </EduFillGrid>
+                    </div>
+                </section>
+            </section>
         </EduContainer>
     </ApiViewer>
 </EduPage>

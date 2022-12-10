@@ -11,6 +11,12 @@ public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, string? To
         DateAddedOldest = 1
     }
 
+    public static Dictionary<SortType, string> SortTypes = new()
+    {
+        [SortType.DateAddedNewest] = nameof(SortType.DateAddedNewest),
+        [SortType.DateAddedOldest] = nameof(SortType.DateAddedOldest)
+    };
+
     public QueryString ToQueryString()
     {
         var values = new Dictionary<string, string?>(3)
@@ -23,10 +29,10 @@ public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, string? To
             },
             [nameof(Count)] = Count.ToString()
         };
-        
-        if(Token is not null)
+
+        if (Token is not null)
             values.Add(nameof(Token), Token);
-        
+
         return QueryString.Create(values);
     }
 }

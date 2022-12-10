@@ -2,7 +2,6 @@
 @using Education.Web.Services.History.EventGuesser
 @using Education.Web.Services.History.EventGuesser.Model
 @using Education.Web.Services.History.EventGuesser.Request
-@using Education.Web.Components.Settings
 
 @page "/history/event-guessers"
 @layout HistoryLayout
@@ -115,7 +114,7 @@
         _result = await EventGuesserService.GetAsync();
         if (_result.IsSuccess)
         {
-            if (!_result.Data.Tests.Any(x => x.IsAllowed && x.Name == HistorySettings.TestType))
+            if (!_result.Data.Tests.Any(x => x.IsAllowed && x.Name == HistorySettings.EventGuesserType))
                 await HistorySettings.ChangeEventGuesserTypeAsync(_result.Data.Tests.FirstOrDefault(x => x.IsAllowed)?.Name);
             
             return;

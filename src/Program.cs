@@ -13,7 +13,6 @@ using Education.Web.Services.History.Topic;
 using Education.Web.Services.History.Trend;
 using Education.Web.Services.History.User;
 using Education.Web.Services.Notification;
-using Education.Web.Services.Settings;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -49,7 +48,9 @@ builder.Services
     .AddOidcAuthentication(options =>
     {
         builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions);
-        
+
+        options.ProviderOptions.DefaultScopes.Clear();
+        options.ProviderOptions.DefaultScopes.Add("openid");
         options.ProviderOptions.DefaultScopes.Add("elwark.education.web");
         options.ProviderOptions.DefaultScopes.Add("elwark.education.hub");
     });
@@ -90,7 +91,6 @@ builder.Services
     });
 
 builder.Services
-    .AddScoped<TopicContentSettings>()
     .AddScoped<CustomerStateProvider>()
     .AddScoped<LocalizationHandler>()
     .AddScoped<AuthorizationMessageHandler>(provider =>

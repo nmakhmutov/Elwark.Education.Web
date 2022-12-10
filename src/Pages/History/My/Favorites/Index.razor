@@ -15,10 +15,10 @@
             {
                 <div>
                     <MudSelect Label="@L["Favorites:Sort"]" T="FavoritesRequest.SortType" Value="@_request.Sort" ValueChanged="@OnSortChanged">
-                        @foreach (var sort in Enum.GetValues<FavoritesRequest.SortType>())
+                        @foreach (var sort in FavoritesRequest.SortTypes)
                         {
-                            <MudSelectItem T="FavoritesRequest.SortType" Value="sort">
-                                @L[$"Favorites:{sort}"]
+                            <MudSelectItem T="FavoritesRequest.SortType" Value="sort.Key">
+                                @L[$"Favorites:{sort.Value}"]
                             </MudSelectItem>
                         }
                     </MudSelect>
@@ -166,7 +166,7 @@
     private async Task<bool> OnFavoriteClick(string topicId)
     {
         var result = await TopicService.ToggleFavoriteAsync(topicId);
-        return result.IsSuccess && result.Data;
+        return result is { IsSuccess: true, Data: true };
     }
 
     private Task OnSortChanged(FavoritesRequest.SortType sort)

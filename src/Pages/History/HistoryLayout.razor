@@ -1,7 +1,5 @@
 @using Education.Web.Services.History
-@using Blazored.LocalStorage
 @using Education.Web.Services.History.Search
-@using Education.Web.Components.Settings
 
 @inherits LayoutComponentBase
 
@@ -89,6 +87,9 @@
                         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyProfile" Icon="@EduIcons.MyProfile">
                             @L["Profile"]
                         </MudNavLink>
+                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyFavorites" Icon="@EduIcons.MyFavorites">
+                            @L["Favorites"]
+                        </MudNavLink>
                         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyQuests" Icon="@EduIcons.MyQuests">
                             @L["Quests"]
                         </MudNavLink>
@@ -97,9 +98,6 @@
                         </MudNavLink>
                         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyAchievements" Icon="@EduIcons.Achievements">
                             @L["Achievements"]
-                        </MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyFavorites" Icon="@EduIcons.MyFavorites">
-                            @L["Favorites"]
                         </MudNavLink>
                     </Authorized>
                 </AuthorizeView>
@@ -115,14 +113,13 @@
 </HistorySettingsProvider>
 
 @code {
+
     private bool _isOpen;
+
     private MudAutocomplete<TopicOverviewModel> _searchAutocomplete = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private ILocalStorageService Storage { get; set; } = default!;
 
     [Inject]
     private IHistorySearchService HistorySearchService { get; set; } = default!;
@@ -130,13 +127,16 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() =>
-        _isOpen = await Storage.GetItemAsync<bool>("sbs");
+    [CascadingParameter]
+    private AppSettingsProvider AppSettings { get; set; } = default!;
 
-    private Task ToggleAsync()
+    protected override void OnInitialized() =>
+        _isOpen = AppSettings.IsSidebarOpen;
+
+    private ValueTask ToggleAsync()
     {
         _isOpen = !_isOpen;
-        return InvokeAsync(() => Storage.SetItemAsync("sbs", _isOpen));
+        return AppSettings.ToggleSidebarAsync(_isOpen);
     }
 
     private async Task<IEnumerable<TopicOverviewModel>> OnSearch(string text)

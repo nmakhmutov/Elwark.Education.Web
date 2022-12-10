@@ -91,6 +91,8 @@ internal sealed class ApiClient
 
                 (>= 200 and < 300, false) => ApiResult<T>.Success(default!),
 
+                (403, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:AccessDenied"], 403)),
+                
                 (404, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:NotFound"], 404)),
 
                 (_, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:InternalServerError"], 500)),

@@ -23,25 +23,32 @@
         @Title
     </MudText>
 
+    @if (!string.IsNullOrEmpty(Subtitle))
+    {
+        <MudText Class="subtitle" Typo="Typo.subtitle2">
+            @Subtitle
+        </MudText>
+    }
+
     @ChildContent
 </section>
 
 @code {
 
     [Parameter, EditorRequired]
-    public string Title { get; set; } = string.Empty;
+    public string? Title { get; set; }
+
+    [Parameter]
+    public string? Subtitle { get; set; }
 
     [Parameter, EditorRequired]
-    public string Overview { get; set; } = string.Empty;
+    public string? Overview { get; set; }
 
     [Parameter, EditorRequired]
-    public string IconUrl { get; set; } = string.Empty;
+    public string? IconUrl { get; set; }
 
     [Parameter, EditorRequired]
     public uint Count { get; set; }
-
-    [Parameter]
-    public bool Outlined { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }

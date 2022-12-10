@@ -1,18 +1,21 @@
-@using Blazored.LocalStorage
-@using Education.Web.Services.History
+using System.Text.Json.Serialization;
+using Blazored.LocalStorage;
+using Education.Web.Services.History;
+using Microsoft.AspNetCore.Components;
 
-<CascadingValue TValue="HistorySettingsProvider" Value="@this" ChildContent="@ChildContent"/>
+namespace Education.Web.Pages.History;
 
-@code {
-        private const string StorageKey = "set.hst";
+public sealed partial class HistorySettingsProvider
+{
+    private const string StorageKey = "set.hst";
 
     private HistorySettings _settings = new()
     {
         SearchRandomEpoch = EpochType.None,
-        
+
         TestEpoch = EpochType.None,
         TestType = null,
-        
+
         EventGuesserEpoch = EpochType.None,
         EventGuesserType = null
     };
@@ -61,12 +64,30 @@
 
     public ValueTask ChangeEventGuesserTypeAsync(string? type) =>
         UpdateStateAsync(_settings with { EventGuesserType = type });
-    
-    private async ValueTask UpdateStateAsync(HistorySettings settings)
+
+    private ValueTask UpdateStateAsync(HistorySettings settings)
     {
         _settings = settings;
-        await Storage.SetItemAsync(StorageKey, _settings);
         StateHasChanged();
+
+        return Storage.SetItemAsync(StorageKey, _settings);
     }
 
+    private sealed record HistorySettings
+    {
+        [JsonPropertyName("sre")]
+        public required EpochType SearchRandomEpoch { get; init; }
+
+        [JsonPropertyName("te")]
+        public required EpochType TestEpoch { get; init; }
+
+        [JsonPropertyName("tt")]
+        public required string? TestType { get; init; }
+
+        [JsonPropertyName("ege")]
+        public required EpochType EventGuesserEpoch { get; init; }
+
+        [JsonPropertyName("egt")]
+        public required string? EventGuesserType { get; init; }
+    }
 }
