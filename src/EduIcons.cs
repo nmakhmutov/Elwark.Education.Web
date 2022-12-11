@@ -42,6 +42,8 @@ public static class EduIcons
     public const string EventGuesser = Icons.Outlined.EventAvailable;
 
     public const string Leaderboard = Icons.Outlined.Leaderboard;
+    
+    public const string InventoryStore = Icons.Outlined.Storefront;
 
     public const string MyProfile = Icons.Outlined.Dashboard;
 

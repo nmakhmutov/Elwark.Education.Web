@@ -48,6 +48,11 @@ public static class HistoryUrl
 
         public const string Monthly = $"{Root}/leaderboards/monthly";
     }
+    
+    public static class Store
+    {
+        public const string Index = $"{Root}/store";
+    }
 
     public static class User
     {
