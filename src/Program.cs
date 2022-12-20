@@ -60,9 +60,8 @@ builder.Services
     });
 
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway")!;
-var policy = builder.HostEnvironment.IsDevelopment()
-    ? HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(new[] { TimeSpan.Zero })
-    : HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(5, i => TimeSpan.FromSeconds(i));
+var policy = HttpPolicyExtensions.HandleTransientHttpError()
+    .WaitAndRetryAsync(builder.HostEnvironment.IsDevelopment() ? 0 : 5, i => TimeSpan.FromSeconds(i));
 
 builder.Services
     .AddScoped<LocalizationHandler>()
@@ -109,5 +108,8 @@ builder.Services
     .AddScoped<CustomerStateProvider>();
 
 var app = builder.Build();
+
+await app.Services.GetRequiredService<CustomerHab>()
+    .InitAsync();
 
 await app.RunAsync();

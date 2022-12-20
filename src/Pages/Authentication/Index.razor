@@ -2,7 +2,7 @@
 @layout MainLayout
 
 <EduPage>
-    <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnLogInSucceeded">
+    <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@CustomerStateProvider.InitAsync">
         <LoggingIn>
             <Spinner/>
         </LoggingIn>
@@ -15,15 +15,12 @@
     </RemoteAuthenticatorView>
 </EduPage>
 
-@code{
+@code {
 
     [Inject]
     private CustomerStateProvider CustomerStateProvider { get; set; } = default!;
 
     [Parameter]
     public string? Action { get; set; }
-
-    private async Task OnLogInSucceeded() =>
-        await CustomerStateProvider.InitAsync();
 
 }

@@ -2,7 +2,7 @@ using Education.Web.Services.Api;
 
 namespace Education.Web.Services.History.User.Request;
 
-public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, string? Token, int Count)
+public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, int Count, string? Token = null)
     : IQueryStringRequest
 {
     public enum SortType
@@ -11,7 +11,7 @@ public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, string? To
         DateAddedOldest = 1
     }
 
-    public static Dictionary<SortType, string> SortTypes = new()
+    public static readonly Dictionary<SortType, string> SortTypes = new(2)
     {
         [SortType.DateAddedNewest] = nameof(SortType.DateAddedNewest),
         [SortType.DateAddedOldest] = nameof(SortType.DateAddedOldest)

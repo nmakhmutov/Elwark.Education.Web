@@ -27,6 +27,8 @@ internal sealed class NotificationService : INotificationService
         _hab = hab;
         _snackbar = snackbar;
         _stateProvider = stateProvider;
+        
+        _hab.OnNotificationReceived += ReceivedNotification;
     }
 
     public Task<ApiResult<PagingTokenModel<NotificationModel>>> GetAsync(NotificationsRequest request) =>
@@ -67,19 +69,14 @@ internal sealed class NotificationService : INotificationService
         if (state.User.Identity?.IsAuthenticated == false)
             return;
 
-        var result = await GetAsync(new NotificationsRequest(null, MaxNotifications));
+        var result = await GetAsync(new NotificationsRequest(MaxNotifications));
         if (result.IsSuccess)
-        {
             _lastNotifications = result.Data.Items
                 .Select(x => new NotificationMessage(x.Subject, x.Title, x.Message, x.CreatedAt))
                 .ToList();
 
-            _isInitialized = true;
-        }
+        _isInitialized = true;
 
-        await _hab.InitAsync();
-        _hab.OnNotificationReceived += ReceivedNotification;
-        
         OnChanged.Invoke();
     }
 

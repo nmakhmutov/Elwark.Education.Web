@@ -77,7 +77,7 @@ internal sealed class ApiClient
 
     private async Task<ApiResult<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> func)
     {
-        using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1));
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
         try
         {

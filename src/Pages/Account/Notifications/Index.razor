@@ -88,7 +88,7 @@
 </EduPage>
 
 @code {
-    private NotificationsRequest _request = new(null, 15);
+    private NotificationsRequest _request = new(15);
     private ApiResult<PagingTokenModel<NotificationModel>> _result = ApiResult<PagingTokenModel<NotificationModel>>.Loading();
     private readonly List<NotificationModel> _notifications = new();
     private bool _isMoreLoading;
@@ -114,7 +114,7 @@
             return;
 
         _notifications.AddRange(_result.Data.Items);
-        _request = new NotificationsRequest(_result.Data.Next, 10);
+        _request = new NotificationsRequest(10, _result.Data.Next);
     }
 
     private async Task LoadMore()
