@@ -13,8 +13,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        CustomerStateProvider.OnChanged += OnStateChanged;
         _state = CustomerStateProvider.GetCurrentState();
+        CustomerStateProvider.OnChanged += OnStateChanged;
 
         await CustomerStateProvider.InitAsync();
     }

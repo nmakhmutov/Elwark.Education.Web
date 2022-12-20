@@ -10,7 +10,7 @@
 
     <div class="d-flex justify-space-between align-start">
         <MudText Typo="Typo.body2">
-            @(((double)Experience / NextLevelExperience * 100).ToReadable())%
+            @(_percentage.ToReadable())%
         </MudText>
         <div class="d-flex align-center">
             <ReadableNumber Value="@Experience" Typo="Typo.body2"/>
@@ -22,6 +22,7 @@
 </section>
 
 @code {
+    private double _percentage = 0;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -37,5 +38,8 @@
 
     [Parameter, EditorRequired]
     public ulong NextLevelExperience { get; set; }
+
+    protected override void OnParametersSet() =>
+        _percentage = 100.0 * Experience / NextLevelExperience;
 
 }

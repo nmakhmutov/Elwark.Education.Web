@@ -12,10 +12,10 @@
 <PageTitle>@L["Account"]</PageTitle>
 
 <EduPage>
-    <EduContainer MaxWidth="EduWidth.W1920">
-        <EduFillGrid>
-            <AccountCard Class="account"/>
-            <ApiViewer Result="@_response" Context="subjects">
+    <ApiViewer Result="@_response" Context="subjects">
+        <EduContainer MaxWidth="EduWidth.W1920">
+            <EduFillGrid>
+                <AccountCard Class="account"/>
                 @foreach (var subject in subjects)
                 {
                     <SubjectCard
@@ -27,9 +27,9 @@
                         Icon="@subject.Icon"
                         Background="@subject.Background"/>
                 }
-            </ApiViewer>
-        </EduFillGrid>
-    </EduContainer>
+            </EduFillGrid>
+        </EduContainer>
+    </ApiViewer>
 </EduPage>
 
 @code {

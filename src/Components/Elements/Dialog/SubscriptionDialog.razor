@@ -48,7 +48,7 @@
     // _response = await Client.Catalog.GetSubscriptions(SubjectType);
 
     protected override void OnInitialized() =>
-        _result = ApiResult<Subscription[]>.Fail(new Error());
+        _result = ApiResult<Subscription[]>.Success(Array.Empty<Subscription>());
 
     private void OnBuyClick(string id)
     {

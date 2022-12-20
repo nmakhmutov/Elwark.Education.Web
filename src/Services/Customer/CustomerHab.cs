@@ -35,7 +35,7 @@ internal sealed class CustomerHab : IAsyncDisposable
 
     public async ValueTask InitAsync()
     {
-        if (_connection.State == HubConnectionState.Connected)
+        if (_connection.State != HubConnectionState.Disconnected)
             return;
 
         var state = await _stateProvider.GetAuthenticationStateAsync();

@@ -24,7 +24,9 @@ using Polly;
 using Polly.Extensions.Http;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.Logging.ClearProviders();
+
+if (builder.HostEnvironment.IsProduction())
+    builder.Logging.ClearProviders();
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
@@ -44,7 +46,9 @@ builder.Services
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     })
-    .AddLocalization(options => options.ResourcesPath = "Resources")
+    .AddLocalization(options => options.ResourcesPath = "Resources");
+
+builder.Services
     .AddOidcAuthentication(options =>
     {
         builder.Configuration.Bind("OpenIdConnect", options.ProviderOptions);
@@ -59,6 +63,17 @@ var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway")!;
 var policy = builder.HostEnvironment.IsDevelopment()
     ? HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(new[] { TimeSpan.Zero })
     : HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(5, i => TimeSpan.FromSeconds(i));
+
+builder.Services
+    .AddScoped<LocalizationHandler>()
+    .AddScoped<AuthorizationMessageHandler>(provider =>
+    {
+        var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
+        var navigation = provider.GetRequiredService<NavigationManager>();
+
+        return new AuthorizationMessageHandler(tokenProvider, navigation)
+            .ConfigureHandler(new[] { gatewayUrl.ToString() });
+    });
 
 builder.Services
     .AddHttpClient<ApiAnonymousClient>(client => client.BaseAddress = gatewayUrl)
@@ -91,16 +106,7 @@ builder.Services
     });
 
 builder.Services
-    .AddScoped<CustomerStateProvider>()
-    .AddScoped<LocalizationHandler>()
-    .AddScoped<AuthorizationMessageHandler>(provider =>
-    {
-        var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
-        var navigation = provider.GetRequiredService<NavigationManager>();
-
-        return new AuthorizationMessageHandler(tokenProvider, navigation)
-            .ConfigureHandler(new[] { gatewayUrl.ToString() });
-    });
+    .AddScoped<CustomerStateProvider>();
 
 var app = builder.Build();
 

@@ -1,7 +1,7 @@
 @using MudBlazor.Utilities
 
-<div class="@_class">
-    <div class="mr-sm-6">
+<div class="d-flex flex-wrap justify-space-between align-center w-100 @Class">
+    <div class="mr-sm-3">
         <MudText Typo="Typo.h5" Class="mb-1">
             @Title
         </MudText>
@@ -12,7 +12,6 @@
 </div>
 
 @code {
-    private string? _class;
 
     [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;
@@ -25,11 +24,5 @@
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-    protected override void OnParametersSet() =>
-        _class = CssBuilder
-            .Default("d-flex flex-wrap justify-space-between align-center w-100")
-            .AddClass(Class, Class is not null)
-            .Build();
 
 }
