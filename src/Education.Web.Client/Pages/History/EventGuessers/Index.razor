@@ -1,0 +1,152 @@
+@using Education.Web.Client.Pages.History.Components
+@using Education.Web.Client.Services.History.EventGuesser.Model
+@using Education.Web.Client.Services.History.EventGuesser.Request
+@using Education.Web.Client.Services.History.EventGuesser
+
+@page "/history/event-guessers"
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>@L["EventGuesser"]</PageTitle>
+
+<EduPage HideFooter>
+    <div class="background d-flex flex-column h-100">
+        <EduContainer Class="pb-0">
+            <EduPageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs">
+                <MudButton
+                    DisableElevation
+                    Variant="Variant.Text"
+                    Color="Color.Primary"
+                    EndIcon="@Icons.Outlined.Info"
+                    Disabled="@(!_result.IsSuccess)"
+                    OnClick="@OpenRule">
+                    @L["EventGuesser:Rules"]
+                </MudButton>
+            </EduPageHeader>
+        </EduContainer>
+        <ApiViewer Result="@_result" Context="model">
+            <section class="grid pa-3 pa-sm-6">
+                <section class="builder">
+                    <MudText Typo="Typo.h5" Class="mb-3">
+                        @L["History:Epoch"]
+                    </MudText>
+                    <EpochRadioGroup
+                        SelectedEpoch="@HistorySettings.EventGuesserEpoch"
+                        SelectedEpochChanged="@HistorySettings.ChangeEventGuesserEpochAsync"
+                        Class="mb-3 mb-sm-6"/>
+
+                    <MudText Typo="Typo.h5" Class="mb-3">
+                        @L["Tests"]
+                    </MudText>
+                    <TestRadioGroup
+                        SelectedTest="@HistorySettings.EventGuesserType"
+                        SelectedTestChanged="@HistorySettings.ChangeEventGuesserTypeAsync"
+                        Tests="@model.Tests"
+                        Class="mb-6"/>
+
+                    <div class="d-flex justify-center">
+                        <LoadingButton
+                            DisableElevation
+                            Size="Size.Large"
+                            Color="Color.Primary"
+                            Variant="Variant.Filled"
+                            Text="@L["Test:Pass"]"
+                            LoadingText="@L["Loading"]"
+                            IsLoading="@_isLoading"
+                            Disabled="@(model.Tests.All(x => !x.IsAllowed))"
+                            OnClick="@CreateTestAsync"/>
+                    </div>
+                </section>
+
+                <section class="inventory">
+                    <MudText Typo="Typo.h5" Class="mb-3">
+                        @L["Inventory"]
+                    </MudText>
+                    @if (model.Inventory.Length > 0)
+                    {
+                        <InventoryGrid Inventory="@model.Inventory" Context="item">
+                            <InventoryInfoCard
+                                Title="@item.Title"
+                                Overview="@item.Overview"
+                                Count="@item.Count"
+                                IconUrl="@item.IconUrl"/>
+                        </InventoryGrid>
+                    }
+                    else
+                    {
+                        <EduEmpty Title="@L["Inventory:EmptyTitle"]"/>
+                    }
+                </section>
+            </section>
+        </ApiViewer>
+    </div>
+</EduPage>
+
+@code {
+    private bool _isLoading;
+    private ApiResult<TestBuilderModel> _result = ApiResult<TestBuilderModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
+    };
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryEventGuesserService EventGuesserService { get; set; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Inject]
+    private IDialogService DialogService { get; set; } = default!;
+
+    [CascadingParameter]
+    private HistorySettingsProvider HistorySettings { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _result = await EventGuesserService.GetAsync();
+        if (_result.IsSuccess)
+        {
+            if (!_result.Data.Tests.Any(x => x.IsAllowed && x.Name == HistorySettings.EventGuesserType))
+                await HistorySettings.ChangeEventGuesserTypeAsync(_result.Data.Tests.FirstOrDefault(x => x.IsAllowed)?.Name);
+            
+            return;
+        }
+
+        if (_result.IsFailed && _result.Error.IsTestAlreadyCreated(out var id))
+            Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(id));
+    }
+
+    private async Task CreateTestAsync()
+    {
+        if (string.IsNullOrEmpty(HistorySettings.EventGuesserType))
+            return;
+        
+        _isLoading = true;
+
+        var request = new CreateRequest(HistorySettings.EventGuesserType, HistorySettings.EventGuesserEpoch);
+        var response = await EventGuesserService.CreateAsync(request);
+        if (response.IsSuccess)
+            Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(response.Data.Id));
+        else
+            Snackbar.Add(response.Error.Detail, Severity.Error);
+
+        _isLoading = false;
+    }
+
+    private void OpenRule()
+    {
+        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = _result.Data.Rule.Content };
+        var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Large, CloseOnEscapeKey = true, CloseButton = true };
+
+        DialogService.Show<RuleDialog>(_result.Data.Rule.Title, parameters, options);
+    }
+
+}

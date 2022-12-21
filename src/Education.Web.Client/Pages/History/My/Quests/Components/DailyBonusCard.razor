@@ -1,0 +1,101 @@
+@using Education.Web.Client.Services.Model.Quest
+<section class="mud-paper d-flex flex-column @Class">
+    <header class="header">
+        <MudText Typo="Typo.h5" Align="Align.Center" Class="white-text pt-3">
+            @L["DailyBonus"]
+        </MudText>
+        <div class="gift">
+            <MudImage Src="/images/history/gift-box.png" Class="gift-image"/>
+        </div>
+    </header>
+
+    <div class="flex-grow-1"></div>
+
+    @if (Bonus.NextTimeAt.HasValue)
+    {
+        <div class="d-flex flex-column align-center pa-3 pa-sm-6">
+            <MudText Typo="Typo.subtitle2">
+                @L["DailyBonus:UnlockedAt"]
+            </MudText>
+            <CountdownTimer Date="@Bonus.NextTimeAt.Value" Typo="Typo.h3" OnComplete="@OnReached"/>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex flex-row align-center justify-center gap-3 pa-6">
+            @foreach (var reward in Bonus.Rewards)
+            {
+                <InternalMoney Money="@reward" Typo="Typo.h5" IconSize="Size.Large" Horizontal/>
+            }
+        </div>
+
+        <div class="d-flex justify-center px-3 pb-3 px-sm-6 pb-sm-6">
+            <LoadingButton
+                Class="mr-3"
+                FullWidth
+                DisableElevation
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                Text="@L["DailyBonus:Claim"]"
+                LoadingText="@L["Loading"]"
+                Disabled="@(_loading != Loading.None)"
+                IsLoading="@(_loading == Loading.Collect)"
+                OnClick="@ClaimAsync"/>
+
+            <LoadingButton
+                DisableElevation
+                Variant="Variant.Outlined"
+                Color="Color.Default"
+                Text="@L["DailyBonus:Reject"]"
+                LoadingText="@L["Loading"]"
+                Disabled="@(_loading != Loading.None)"
+                IsLoading="@(_loading == Loading.Reject)"
+                OnClick="@RejectAsync"/>
+
+        </div>
+    }
+</section>
+
+@code {
+    private Loading _loading = Loading.None;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public DailyBonusModel Bonus { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnClaim { get; set; }
+
+    [Parameter]
+    public EventCallback OnReject { get; set; }
+
+    [Parameter]
+    public EventCallback OnReached { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task ClaimAsync()
+    {
+        _loading = Loading.Collect;
+        await OnClaim.InvokeAsync();
+        _loading = Loading.None;
+    }
+
+    private async Task RejectAsync()
+    {
+        _loading = Loading.Reject;
+        await OnReject.InvokeAsync();
+        _loading = Loading.None;
+    }
+
+    private enum Loading
+    {
+        None,
+        Collect,
+        Reject
+    }
+
+}

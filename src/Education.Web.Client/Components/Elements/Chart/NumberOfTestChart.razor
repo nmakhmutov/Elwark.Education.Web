@@ -1,0 +1,69 @@
+@using ApexCharts
+@using Education.Web.Client.Services.Model.Test
+<div class="@Class">
+    @if (Value.Total > 0)
+    {
+        <ApexChart TItem="Data" Options="@Options">
+            <ApexPointSeries
+                TItem="Data"
+                Items="@Series"
+                SeriesType="SeriesType.Donut"
+                XValue="@(x => x.Name)"
+                YAggregate="@(x => x.Sum(e => e.Value))"/>
+        </ApexChart>
+    }
+
+    <ChartList Items="@Items"/>
+</div>
+
+@code {
+
+    private ApexChartOptions<Data> Options => new()
+    {
+        Chart = new Chart
+        {
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Legend = new Legend
+        {
+            Show = false
+        },
+        Colors = new List<string>
+        {
+            Colors.Green.Accent4,
+            Colors.Red.Default,
+            Colors.Blue.Default,
+            Colors.DeepPurple.Default
+        }
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public NumberOfTestsModel Value { get; set; } = default!;
+
+    private ChartList.Item[] Items => new[]
+    {
+        new ChartList.Item(L["NumberOfTests:Successful"], Value.Succeeded, Colors.Green.Accent4),
+        new ChartList.Item(L["NumberOfTests:Failed"], Value.Failed, Colors.Red.Default),
+        new ChartList.Item(L["NumberOfTests:MistakesExceeded"], Value.MistakesExceeded, Colors.Blue.Default),
+        new ChartList.Item(L["NumberOfTests:TimeExceeded"], Value.TimeExceeded, Colors.DeepPurple.Default),
+        new ChartList.Item(L["NumberOfTests:Total"], Value.Total, null)
+    };
+
+    private Data[] Series => new[]
+    {
+        new Data(L["NumberOfTests:Successful"], Value.Succeeded),
+        new Data(L["NumberOfTests:Failed"], Value.Failed),
+        new Data(L["NumberOfTests:MistakesExceeded"], Value.MistakesExceeded),
+        new Data(L["NumberOfTests:TimeExceeded"], Value.TimeExceeded)
+    };
+
+    private sealed record Data(string Name, decimal Value);
+
+}

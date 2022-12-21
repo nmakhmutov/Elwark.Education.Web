@@ -1,0 +1,20 @@
+﻿@using Education.Web.Client.Pages
+@inherits LayoutComponentBase
+
+<MudLayout>
+    <MudAppBar Elevation="0">
+        <MudLink Href="@EduUrl.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+            Education <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
+        </MudLink>
+        <MudSpacer/>
+        <AppbarThemeButton/>
+        <AppbarNotifications/>
+        <AppbarUserMenu/>
+    </MudAppBar>
+
+    @Body
+
+    <MudScrollToTop TopOffset="400" Style="z-index:2000;">
+        <MudFab Icon="@Icons.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
+    </MudScrollToTop>
+</MudLayout>

@@ -1,0 +1,49 @@
+@using Education.Web.Client.Services.History.Test.Model
+<EduContainer MaxWidth="EduWidth.W1280">
+    <div class="mb-3">
+        <MudLink Href="@HistoryUrl.User.MyTopic(Conclusion.Topic.Id)" Typo="Typo.h5">
+            @L["Statistics"]
+        </MudLink>
+    </div>
+    <ConclusionCharts Conclusion="@Conclusion"/>
+</EduContainer>
+
+<EduContainer MaxWidth="EduWidth.W1280">
+    <div class="mb-3">
+        <MudLink Href="@HistoryUrl.Content.Topic(Conclusion.Topic.Id)" Typo="Typo.h5">
+            @Conclusion.Topic.Title
+        </MudLink>
+    </div>
+    <MudTable Items="@Conclusion.Questions" Hover Breakpoint="Breakpoint.Xs" Elevation="0">
+        <HeaderContent>
+            <MudTh>@L["Question"]</MudTh>
+            <MudTh>@L["Question:IsAnswered"]</MudTh>
+            <MudTh>@L["Question:Correct"]</MudTh>
+            <MudTh>@L["Question:Incorrect"]</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="@L["Question"]">
+                @context.Title
+            </MudTd>
+            <MudTd DataLabel="@L["Question:IsAnswered"]">
+                <MudCheckBox ReadOnly Checked="@context.IsAnswered"/>
+            </MudTd>
+            <MudTd DataLabel="@L["Question:Correct"]">
+                @context.Correct
+            </MudTd>
+            <MudTd DataLabel="@L["Question:Incorrect"]">
+                @context.Incorrect
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</EduContainer>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public EasyTestConclusionModel Conclusion { get; set; } = default!;
+
+}

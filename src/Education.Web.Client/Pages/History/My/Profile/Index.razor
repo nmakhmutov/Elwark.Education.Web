@@ -1,0 +1,90 @@
+@using Education.Web.Client.Pages.History.Components
+@using Education.Web.Client.Pages.History.My.Profile.Components
+@using Education.Web.Client.Services.History.User.Model
+@using Education.Web.Client.Services.History.User
+
+@page "/history/my/profile"
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>@L["Profile"]</PageTitle>
+
+<EduPage>
+    <ApiViewer Result="@_result" Context="model">
+        <EduContainer MaxWidth="EduWidth.W1920">
+            <section class="grid">
+                <aside class="sidebar">
+                    <ProfileCard Class="mb-3 mb-sm-6" Level="@model.Level"/>
+                    <WalletCard Class="wallet" Silver="@model.Silver"/>
+                </aside>
+
+                <section class="content">
+                    <div class="mb-3 mb-sm-6">
+                        <header class="d-flex align-center justify-space-between mb-3 mb-sm-6">
+                            <MudText Typo="Typo.h5">
+                                @L["Inventory"]
+                            </MudText>
+                            <MudText Typo="Typo.h5">
+                                @_capacity
+                            </MudText>
+                        </header>
+                        <InventoryGrid Inventory="@model.Inventory.Items">
+                            <ChildContent Context="item">
+                                <InventoryInfoCard
+                                    Title="@item.Title"
+                                    Subtitle="@item.Category.Title"
+                                    Overview="@item.Overview"
+                                    Count="@item.Count"
+                                    IconUrl="@item.IconUrl"/>
+                            </ChildContent>
+                            <LastItem>
+                                <div class="buy-inventory rounded pa-3">
+                                    <MudFab
+                                        Label="@L["Inventory:Store"]"
+                                        Href="@HistoryUrl.Store.Index"
+                                        StartIcon="@EduIcons.InventoryStore"
+                                        Color="Color.Primary"
+                                        Size="Size.Large"
+                                        DisableElevation/>
+                                </div>
+                            </LastItem>
+                        </InventoryGrid>
+                    </div>
+
+                    <div class="topics">
+                        <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
+                            Recent topics
+                        </MudText>
+                        <EduFillGrid>
+                            @foreach (var item in model.RecentTopics)
+                            {
+                                <TopicAndUserProgressCard
+                                    Topic="@item.Topic"
+                                    UserActivity="@item.Activity"/>
+                            }
+                        </EduFillGrid>
+                    </div>
+                </section>
+            </section>
+        </EduContainer>
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private ApiResult<HistoryProfileModel> _result = ApiResult<HistoryProfileModel>.Loading();
+    private string? _capacity;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _result = await UserService.GetProfileAsync();
+        if (_result.IsSuccess)
+            _capacity = $"{_result.Data.Inventory.Fullness} / {_result.Data.Inventory.Capacity}";
+    }
+
+}

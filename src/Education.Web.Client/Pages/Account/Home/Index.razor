@@ -1,0 +1,79 @@
+@using Education.Web.Client.Pages.Account.Components
+@using Education.Web.Client.Pages.Account.Home.Components
+@using Education.Web.Client.Services.Customer
+@using Education.Web.Client.Services.Customer.Model
+@using Education.Web.Client.Services.Model.User
+@using Education.Web.Client.Pages.History
+
+@page "/account"
+@layout MainLayout
+@attribute [Authorize]
+
+<PageTitle>@L["Account"]</PageTitle>
+
+<EduPage>
+    <ApiViewer Result="@_response" Context="subjects">
+        <EduContainer MaxWidth="EduWidth.W1920">
+            <EduFillGrid>
+                <AccountCard Class="account"/>
+                @foreach (var subject in subjects)
+                {
+                    <SubjectCard
+                        Level="@subject.Level"
+                        Silver="@subject.Silver"
+                        Title="@subject.Title"
+                        HomeHref="@subject.HomeHref"
+                        ProfileHref="@subject.ProfileHref"
+                        Icon="@subject.Icon"
+                        Background="@subject.Background"/>
+                }
+            </EduFillGrid>
+        </EduContainer>
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private ApiResult<SubjectEnhancedModel[]> _response = ApiResult<SubjectEnhancedModel[]>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private ICustomerService CustomerService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await CustomerService.GetSubjectsAsync();
+        _response = response.IsSuccess
+            ? ApiResult<SubjectEnhancedModel[]>.Success(
+                response.Data.Select(Enhance).Where(x => x is not null).ToArray()!
+                )
+            : ApiResult<SubjectEnhancedModel[]>.Fail(response.Error);
+    }
+
+    private SubjectEnhancedModel? Enhance(SubjectModel model) =>
+        model switch {
+        {Name: "History"} =>
+            new SubjectEnhancedModel(
+                L["Subject:History"],
+                HistoryUrl.Root,
+                HistoryUrl.User.MyProfile,
+                EduIcons.History,
+                "/images/history/history.jpg",
+                model.Level,
+                model.Silver
+                ),
+            _ => null
+            };
+
+    private sealed record SubjectEnhancedModel(
+        string Title,
+        string HomeHref,
+        string ProfileHref,
+        string Icon,
+        string Background,
+        LevelModel Level,
+        long Silver
+        );
+
+}

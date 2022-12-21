@@ -1,0 +1,147 @@
+@using Education.Web.Client.Pages.Account.Components
+@using Education.Web.Client.Services.Notification.Request
+@using Education.Web.Client.Services.Notification.Model
+@using Education.Web.Client.Services.Notification
+
+@page "/account/my/notifications"
+@layout MainLayout
+@attribute [Authorize]
+
+<PageTitle>@L["Notifications"]</PageTitle>
+<EduPage>
+    <EduContainer MaxWidth="EduWidth.W1920">
+        <section class="grid">
+            <section class="account">
+                <AccountCard/>
+            </section>
+            <section class="notifications">
+                <EduPageHeader Class="mb-3 mb-sm-6" Title="@L["Notifications"]" Breadcrumbs="@Breadcrumbs">
+                    <MudButton
+                        Style="text-transform: none"
+                        Variant="Variant.Outlined"
+                        Color="Color.Primary"
+                        Size="Size.Medium"
+                        StartIcon="@Icons.Outlined.DoneAll"
+                        Disabled="@(!NotificationService.HasNotifications)"
+                        OnClick="MarkAllAsReadAsync">
+                        @L["Notifications:MarkAsRead"]
+                    </MudButton>
+                </EduPageHeader>
+
+                <ApiViewer Result="_result">
+                    @if (_notifications.Count == 0)
+                    {
+                        <EduEmpty Title="@L["Notifications:NothingNew"]"/>
+                    }
+
+                    <Virtualize Items="@_notifications" Context="item">
+                        <section class="mud-paper d-flex pa-3 mb-3">
+                            <NotificationIcon Class="mr-3" Subject="@item.Subject"/>
+                            <article class="flex-1">
+                                @if (string.IsNullOrEmpty(item.Message))
+                                {
+                                    <MudText Class="mud-text-secondary" Typo="Typo.body2">
+                                        @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                                    </MudText>
+                                    <MudText Typo="Typo.body1">
+                                        @item.Title
+                                    </MudText>
+                                }
+                                else
+                                {
+                                    <header class="d-flex align-center mud-text-secondary">
+                                        <MudText Typo="Typo.body2">
+                                            @item.Title
+                                        </MudText>
+                                        <MudIcon Class="dot mx-1" Icon="@Icons.Outlined.NoiseControlOff"/>
+                                        <MudText Typo="Typo.body2">
+                                            @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                                        </MudText>
+                                    </header>
+                                    <MudText Typo="Typo.body1">
+                                        @item.Message
+                                    </MudText>
+                                }
+                            </article>
+                            <aside>
+                                <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="@(() => MarkAsReadAsync(item.Id))"/>
+                            </aside>
+                        </section>
+                    </Virtualize>
+
+                    @if (!string.IsNullOrEmpty(_request.Token))
+                    {
+                        <asside class="d-flex justify-center">
+                            <LoadingButton
+                                DisableElevation
+                                Variant="Variant.Filled"
+                                Color="Color.Primary"
+                                Text="@L["Button:ShowMore"]"
+                                IsLoading="@_isMoreLoading"
+                                OnClick="@LoadMore"/>
+                        </asside>
+                    }
+                </ApiViewer>
+            </section>
+        </section>
+    </EduContainer>
+</EduPage>
+
+@code {
+    private NotificationsRequest _request = new(15);
+    private ApiResult<PagingTokenModel<NotificationModel>> _result = ApiResult<PagingTokenModel<NotificationModel>>.Loading();
+    private readonly List<NotificationModel> _notifications = new();
+    private bool _isMoreLoading;
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Account"].Value, AccountUrl.Root)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private INotificationService NotificationService { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _result = await NotificationService.GetAsync(_request);
+        if (_result.IsFailed)
+            return;
+
+        _notifications.AddRange(_result.Data.Items);
+        _request = new NotificationsRequest(10, _result.Data.Next);
+    }
+
+    private async Task LoadMore()
+    {
+        if (_request.Token is null)
+            return;
+
+        _isMoreLoading = true;
+        var response = await NotificationService.GetAsync(_request);
+        if (response.IsFailed)
+            _result = response;
+
+        _notifications.AddRange(response.Data.Items);
+        _request = _request with { Token = response.Data.Next };
+        _isMoreLoading = false;
+    }
+
+    private Task MarkAsReadAsync(string id)
+    {
+        _notifications.RemoveAll(x => x.Id == id);
+        return NotificationService.MarkAsReadAsync(id);
+    }
+
+    private Task MarkAllAsReadAsync()
+    {
+        _notifications.Clear();
+        return NotificationService.MarkAllAsReadAsync();
+    }
+
+}

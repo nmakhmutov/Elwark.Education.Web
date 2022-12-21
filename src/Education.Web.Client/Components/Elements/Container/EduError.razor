@@ -1,0 +1,49 @@
+@using Education.Web.Client.Pages
+<EduContainer Class="align-center h-100" MaxWidth="EduWidth.W600">
+    <div class="d-flex gap-3 align-center justify-center">
+        <MudText Typo="Typo.h4">
+            @Error.Status
+        </MudText>
+
+        <MudText Typo="Typo.h5">
+            @Error.Title
+        </MudText>
+    </div>
+
+    <MudText Class="mb-6" Typo="Typo.subtitle1" Align="Align.Center">
+        @Error.Detail
+    </MudText>
+
+    <MudStack Row Justify="Justify.Center">
+        <MudButton
+            DisableElevation
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            Link="@EduUrl.Root">
+            @L["Page:GoToHome"]
+        </MudButton>
+        @if (Error.Status > 499)
+        {
+            <MudButton
+                DisableElevation
+                Variant="Variant.Outlined"
+                Color="Color.Primary"
+                OnClick="@(() => Navigation.NavigateTo(Navigation.Uri, true))">
+                @L["Page:Reload"]
+            </MudButton>
+        }
+    </MudStack>
+</EduContainer>
+
+@code {
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public Error Error { get; set; } = default!;
+
+}

@@ -1,0 +1,10 @@
+@using Education.Web.Client.Pages.Account
+@code {
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    protected override void OnInitialized() =>
+        Navigation.NavigateTo(AccountUrl.Root);
+
+}

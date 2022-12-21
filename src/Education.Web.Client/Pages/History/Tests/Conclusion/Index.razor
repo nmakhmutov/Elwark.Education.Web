@@ -1,0 +1,81 @@
+@using Education.Web.Client.Pages.History.Tests.Conclusion.Components
+@using Education.Web.Client.Services.History.Test.Model
+@using Education.Web.Client.Services.Model.Test
+@using Education.Web.Client.Services.History.Test
+
+@page "/history/tests/{id}/conclusion"
+@layout HistoryLayout
+@attribute [Authorize]
+
+<EduPage>
+    <ApiViewer Result="@_result" Context="conclusion">
+        <MudAlert Class="mb-6 mb-sm-12" Square Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center">
+            @L[$"ConclusionStatus:{conclusion.Status}"]
+        </MudAlert>
+
+        <CompletedStars Class="mb-6" Progress="@_progress"/>
+
+        @if (conclusion.Rewards.Length > 0)
+        {
+            <RewardsContainer MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
+        }
+
+        @switch (conclusion)
+        {
+            case EasyTestConclusionModel test:
+                <PageTitle>@L["Test:Easy"]: @test.Topic.Title</PageTitle>
+                <EasyTestView Conclusion="@test"/>
+                break;
+
+            case HardTestConclusionModel test:
+                <PageTitle>@L["Test:Hard"]: @test.Topic.Title</PageTitle>
+                <HardTestView Conclusion="@test"/>
+                break;
+
+            case MixedTestConclusionModel test:
+                <PageTitle>@L["Test:Mixed"]</PageTitle>
+                <MixedTestView Conclusion="@test"/>
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(conclusion));
+        }
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private ApiResult<TestConclusionModel> _result = ApiResult<TestConclusionModel>.Loading();
+    private double _progress;
+
+    [Inject]
+    private IHistoryTestService TestService { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _result = await TestService.GetConclusionAsync(Id);
+        if (_result.IsSuccess)
+            _progress = Math.Round((double)_result.Data.UserScore.Total / _result.Data.MaxScore.Total * 100);
+
+        if (_result.IsFailed && _result.Error.IsTestNotFound())
+            Navigation.NavigateTo(HistoryUrl.TopicTest.Index());
+    }
+
+    private static Severity GetColor(ConclusionStatus status) =>
+        status switch {
+            ConclusionStatus.Succeeded => Severity.Success,
+            ConclusionStatus.Failed => Severity.Error,
+            ConclusionStatus.TimeExceeded => Severity.Warning,
+            ConclusionStatus.MistakesExceeded => Severity.Warning,
+            _ => Severity.Info
+            };
+
+}

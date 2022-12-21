@@ -1,0 +1,10 @@
+@using Education.Web.Client.Pages.Authentication
+@code {
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    protected override void OnInitialized() =>
+        Navigation.NavigateTo(AuthenticationUrl.LogIn(Navigation.Uri));
+
+}

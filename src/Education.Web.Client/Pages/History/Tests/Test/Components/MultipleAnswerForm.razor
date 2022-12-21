@@ -1,0 +1,170 @@
+@using FluentValidation
+@using Education.Web.Client.Services.Model.Test
+
+<EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
+    <FluentValidationValidator Validator="@_validator"/>
+
+    <div class="d-flex flex-wrap align-center justify-center gap-3 mb-3 mb-sm-6">
+        @foreach (var option in Options)
+        {
+            var (icon, color) = Get(option);
+
+            <div class="d-flex flex-row align-center">
+                @if (icon is null)
+                {
+                    <span style="width: 24px">&nbsp;</span>
+                }
+                else
+                {
+                    <MudIcon Icon="@icon" Color="@color"/>
+                }
+
+                <MudCheckBox
+                    Checked="@(UserAnswer.Answer.Contains(option.Id))"
+                    CheckedChanged="@((bool b) => OnChecked(b, option.Id))"
+                    Disabled="@(CorrectAnswer != null)"
+                    Color="Color.Primary">
+                    @switch (option)
+                    {
+                        case ImageAnswerOptionModel x:
+                            <div class="image">
+                                <img src="@x.Image" alt="@x.Id"/>
+                            </div>
+                            break;
+
+                        case TextAnswerOptionModel x:
+                            <MudText Typo="Typo.body1">
+                                @x.Text
+                            </MudText>
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(option));
+                    }
+                </MudCheckBox>
+            </div>
+        }
+    </div>
+
+    @if (CorrectAnswer is null)
+    {
+        <div class="d-flex flex-row justify-center">
+            <LoadingButton
+                DisableElevation
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                IsLoading="@IsLoading"
+                Text="@L["Test:Answer"]"
+                ButtonType="ButtonType.Submit"
+                LoadingText="@L["Loading"]"/>
+        </div>
+
+        <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error" Class="mt-3 mt-sm-6">
+            <ValidationSummary/>
+        </MudText>
+    }
+    else
+    {
+        <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
+            @if (IsTestCompleted)
+            {
+                <MudButton
+                    DisableElevation
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    OnClick="@OnComplete">
+                    @L["Test:Result"]
+                </MudButton>
+            }
+            else
+            {
+                <MudButton
+                    DisableElevation
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    OnClick="@OnNext">
+                    @L["Test:Next"]
+                </MudButton>
+            }
+        </div>
+
+        if (CorrectAnswer.IsCorrect)
+        {
+            <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
+                @L["Test:CorrectAnswer"]
+            </MudText>
+        }
+        else
+        {
+            <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
+                @L["Test:IncorrectAnswer"]
+            </MudText>
+        }
+    }
+</EditForm>
+
+@code {
+    private Validator _validator = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public bool IsTestCompleted { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool IsLoading { get; set; }
+
+    [Parameter, EditorRequired]
+    public MultipleAnswerModel UserAnswer { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public MultipleAnswersResultModel? CorrectAnswer { get; set; }
+
+    [Parameter, EditorRequired]
+    public AnswerOptionModel[] Options { get; set; } = Array.Empty<AnswerOptionModel>();
+
+    [Parameter, EditorRequired]
+    public EventCallback<MultipleAnswerModel> OnAnswer { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnNext { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnComplete { get; set; }
+
+    protected override void OnInitialized() =>
+        _validator = new Validator(L);
+
+    private Task OnValidSubmit() =>
+        OnAnswer.InvokeAsync(UserAnswer);
+
+    private void OnChecked(bool isAdded, uint id)
+    {
+        if (isAdded)
+            UserAnswer.Answer.Add(id);
+        else
+            UserAnswer.Answer.Remove(id);
+    }
+
+    private (string? Icon, Color Color) Get(AnswerOptionModel option) =>
+        CorrectAnswer switch
+        {
+            { } x when x.Answer.Contains(option.Id) => 
+                (Icon: Icons.Outlined.Check , Color: Color.Success),
+                                                
+            {IsCorrect:false} when UserAnswer.Answer.Contains(option.Id) => 
+                (Icon: Icons.Outlined.Clear , Color: Color.Error),
+                
+            _ => (Icon: null, Color: Color.Default)
+        };
+
+    public sealed class Validator : AbstractValidator<MultipleAnswerModel>
+    {
+        public Validator(IStringLocalizer<App> localizer) =>
+            RuleFor(x => x.Answer)
+                .NotEmpty()
+                .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
+    }
+
+}

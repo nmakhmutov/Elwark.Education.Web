@@ -1,0 +1,103 @@
+@using Education.Web.Client.Pages.History.My.Tests.Components
+@using Education.Web.Client.Pages.History.My.Components
+@using Education.Web.Client.Services.Model.Statistics
+@using Education.Web.Client.Services.History.User
+
+@page "/history/my/tests/mixed"
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>@L["Tests:Mixed"]</PageTitle>
+
+<EduPage>
+    <EduContainer Class="pb-0">
+        <EduPageHeader Title="@L["Tests:Mixed"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
+    <ApiViewer Result="@_result" Context="result">
+        <EduContainer>
+            <TestPageGrid>
+                <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
+                    <TotalContent>
+                        <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
+                        <NumberOfTestChart Value="@result.NumberOfTests"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.NumberOfTests.GetProgress(L)"/>
+                    </ProgressContent>
+                    <ActivityContent>
+                        <Subheader Title="@L["Test:MyActivity"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <NumberOfTestDailyProgressChart Progress="@result.Progress"/>
+                    </ActivityContent>
+                </StatisticDetailsCard>
+
+                <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
+                    <TotalContent>
+                        <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <ScoreChart Value="@result.Score"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.Score.GetProgress(L)"/>
+                    </ProgressContent>
+                    <ActivityContent>
+                        <Subheader Title="@L["Test:MyActivity"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ScoreDailyProgressChart Progress="@result.Progress"/>
+                    </ActivityContent>
+                </StatisticDetailsCard>
+
+                <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
+                    <TotalContent>
+                        <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
+                        <AnswerRatioChart Value="@result.AnswerRatio"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.AnswerRatio.GetProgress(L)"/>
+                    </ProgressContent>
+                    <ActivityContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <AnswerRatioDailyProgressChart Progress="@result.Progress"/>
+                    </ActivityContent>
+                </StatisticDetailsCard>
+
+                <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
+                    <TotalContent>
+                        <Subheader Title="@L["TimeSpent"]" Subtitle="@L["ForAllTime"]"/>
+                        <TimeSpentChart Value="@result.TimeSpent"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.TimeSpent.GetProgress(L)"/>
+                    </ProgressContent>
+                    <ActivityContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <TimeSpentDailyProgressChart Progress="@result.Progress"/>
+                    </ActivityContent>
+                </StatisticDetailsCard>
+            </TestPageGrid>
+        </EduContainer>
+    </ApiViewer>
+</EduPage>
+
+@code {
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["Statistics"].Value, HistoryUrl.User.MyStatistics)
+    };
+
+    private ApiResult<TestStatisticsModel> _result = ApiResult<TestStatisticsModel>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync() =>
+        _result = await UserService.GetMixedTestStatisticsAsync();
+
+}

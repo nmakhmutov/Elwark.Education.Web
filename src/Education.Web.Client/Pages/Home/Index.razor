@@ -1,0 +1,19 @@
+﻿@using Education.Web.Client.Pages.Home.Components
+
+@page "/"
+@layout MainLayout
+
+
+<PageTitle>Elwark education</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <RedirectToAccount/>
+    </Authorized>
+
+    <NotAuthorized>
+        <EduPage>
+            <Landing/>
+        </EduPage>
+    </NotAuthorized>
+</AuthorizeView>

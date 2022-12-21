@@ -1,0 +1,88 @@
+@using Education.Web.Client.Pages.History.Components
+@using Education.Web.Client.Services.History
+@using Education.Web.Client.Services.History.Topic.Model
+@using Education.Web.Client.Services.Model.Content
+@using Align = MudBlazor.Align
+
+<EduContainer MaxWidth="EduWidth.W1440">
+    <header class="d-flex flex-column align-center mb-3 mb-sm-6">
+        <h1 class="title">
+            @Topic.Title
+        </h1>
+        <Breadcrumbs Items="@Breadcrumbs" Class="pa-3"/>
+        <MudText Typo="Typo.body1" Class="mw-sm" Align="Align.Center">
+            @Topic.Description
+        </MudText>
+    </header>
+
+    <aside class="image-wrapper mx-auto mb-3 mb-sm-6">
+        <MudImage Class="image" Src="@Topic.ImageUrl" Alt="@Topic.Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
+    </aside>
+
+    <section class="grid">
+        <TopicFormatToolbar Class="toolbar"/>
+        
+        <TopicContent Class="content" Content="@Topic.Content"/>
+
+        <TopicTest Class="test" TopicId="@Topic.Id" HasTest="@HasTest" UserActivity="@UserActivity"/>
+
+        <TopicUserButtons
+            Class="rating"
+            TopicId="@Topic.Id"
+            Rating="@Rating"
+            UserActivity="@UserActivity"
+            OnFavoriteClick="@OnFavoriteClick"
+            OnLikeClick="@OnLikeClick"
+            OnDislikeClick="@OnDislikeClick"/>
+    </section>
+
+    @if (RelatedTopics.Length > 0)
+    {
+        <MudText Typo="Typo.h5" Class="mt-3 mt-sm-6 mb-3">
+            @L["Topics:Related"]
+        </MudText>
+        <EduFillGrid>
+            @foreach (var (topic, userActivity) in RelatedTopics)
+            {
+                <TopicAndUserProgressCard
+                    Topic="@topic"
+                    UserActivity="@userActivity"
+                    OnFavoriteClick="@OnFavoriteClick"/>
+            }
+        </EduFillGrid>
+    }
+</EduContainer>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public GeneralTopicDetailModel Topic { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ContentRatingModel Rating { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public UserActivityOverviewModel UserActivity { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public bool HasTest { get; set; }
+
+    [Parameter, EditorRequired]
+    public UserTopicOverviewModel[] RelatedTopics { get; set; } = Array.Empty<UserTopicOverviewModel>();
+
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+
+}

@@ -1,0 +1,98 @@
+@using Education.Web.Client.Pages.History.Leaderboards.Components
+@using Education.Web.Client.Pages.History.Leaderboards.Global.Components
+@using Education.Web.Client.Services.History.Leaderboard.Model
+@using Education.Web.Client.Services.History.Leaderboard
+
+@page "/history/leaderboards/global"
+@layout HistoryLayout
+
+<EduPage>
+    <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
+        <EduPageHeader Title="@L["GlobalLeaderboard:Name"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
+
+    <ApiViewer Result="@_result" Context="items">
+        <EduContainer MaxWidth="EduWidth.W1920" Class="pb-0">
+            <EduFitGrid>
+                @foreach (var user in items.Take(3))
+                {
+                    <RankingCard
+                        Rank="@user.Rank"
+                        Level="@user.Level"
+                        Experience="@user.Experience"
+                        Name="@user.FullName"
+                        Image="@user.Image"/>
+                }
+            </EduFitGrid>
+        </EduContainer>
+
+        <EduContainer MaxWidth="EduWidth.W1920">
+            <RegularRanking DisableHover>
+                <Rank>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:Rank"]</MudText>
+                </Rank>
+                <Name>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:UserName"]</MudText>
+                </Name>
+                <Level>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:UserLevel"]</MudText>
+                </Level>
+                <Experience>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:UserExperience"]</MudText>
+                </Experience>
+            </RegularRanking>
+
+            <Virtualize Items="@items[3..]" ItemSize="64" Context="user">
+                <RegularRanking
+                    Class="mb-3"
+                    Background="@(user.Id == _highlightUser ? RegularRanking.BackgroundColor.Highlight : RegularRanking.BackgroundColor.Paper)">
+                    <Rank>
+                        <MudAvatar Color="Color.Primary">@user.Rank</MudAvatar>
+                    </Rank>
+                    <Name>
+                        <MudAvatar Image="@user.Image" Alt="@user.FullName" Class="mr-3"/>
+                        <MudText Typo="Typo.subtitle1">@user.FullName</MudText>
+                    </Name>
+                    <Level>
+                        <MudIcon Icon="@EduIcons.Level" Class="green-text text-darken-1 mr-3"/>
+                        <MudText Typo="Typo.h6">
+                            @user.Level
+                        </MudText>
+                    </Level>
+                    <Experience>
+                        <MudIcon Icon="@EduIcons.Experience" Class="mr-3"/>
+                        <ReadableNumber Value="@user.Experience" Typo="Typo.h6"/>
+                    </Experience>
+                </RegularRanking>
+            </Virtualize>
+        </EduContainer>
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private long _highlightUser;
+    private ApiResult<GlobalRankingModel[]> _result = ApiResult<GlobalRankingModel[]>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
+    };
+
+    [Inject]
+    private IHistoryLeaderboardService LeaderboardService { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    public AuthenticationStateProvider StateProvider { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _result = await LeaderboardService.GetGlobalAsync();
+        var state = await StateProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated ?? false)
+            _highlightUser = state.User.GetId();
+    }
+
+}

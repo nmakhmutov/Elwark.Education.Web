@@ -1,0 +1,92 @@
+@using Education.Web.Client.Services.Notification
+@using Education.Web.Client.Pages.Account
+@implements IDisposable
+
+<MudBadge Dot Overlap Color="Color.Secondary" Visible="NotificationService.HasNotifications">
+    <MudMenu
+        Icon="@(NotificationService.HasNotifications ? Icons.Outlined.NotificationsActive : Icons.Outlined.NotificationsNone)"
+        Color="Color.Inherit"
+        AnchorOrigin="Origin.BottomLeft"
+        TransformOrigin="Origin.TopLeft"
+        ListClass="pa-0">
+        <section class="wrapper">
+            <header class="d-flex justify-space-between align-center pa-3">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Notifications"]
+                </MudText>
+                <MudButton
+                    Class="no-transform"
+                    Variant="Variant.Text"
+                    Color="Color.Primary"
+                    Size="Size.Small"
+                    StartIcon="@Icons.Outlined.DoneAll"
+                    Disabled="@(!NotificationService.HasNotifications)"
+                    OnClick="NotificationService.MarkAllAsReadAsync">
+                    @L["Notifications:MarkAsRead"]
+                </MudButton>
+            </header>
+
+            @if (NotificationService.HasNotifications)
+            {
+                foreach (var notification in NotificationService.LastNotifications)
+                {
+                    <MudDivider/>
+                    <MudMenuItem Class="px-3 py-2">
+                        <div class="d-flex">
+                            <NotificationIcon Class="mr-3" Subject="@notification.Subject"/>
+                            <div>
+                                <MudText Typo="Typo.subtitle2">
+                                    @notification.Title
+                                </MudText>
+                                <MudText Typo="Typo.body2">
+                                    @notification.Message
+                                </MudText>
+                                <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                                    @notification.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                                </MudText>
+                            </div>
+                        </div>
+                    </MudMenuItem>
+                }
+
+                <MudDivider/>
+
+                <footer class="d-flex justify-center py-3">
+                    <MudLink Class="no-transform" Href="@AccountUrl.Notifications" Typo="Typo.button">
+                        @L["Notifications:All"]
+                    </MudLink>
+                </footer>
+            }
+            else
+            {
+                <section class="d-flex justify-center align-center py-6">
+                    <MudText Class="mud-text-secondary my-12">
+                        @L["Notifications:NothingNew"]
+                    </MudText>
+                </section>
+            }
+        </section>
+    </MudMenu>
+</MudBadge>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private INotificationService NotificationService { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        NotificationService.OnChanged += StateHasChanged;
+        await NotificationService.InitAsync();
+    }
+
+    public void Dispose() =>
+        NotificationService.OnChanged -= StateHasChanged;
+
+}

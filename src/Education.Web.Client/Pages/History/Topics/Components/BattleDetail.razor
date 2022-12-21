@@ -1,0 +1,176 @@
+@using Education.Web.Client.Pages.History.Components
+@using Education.Web.Client.Services.History
+@using Education.Web.Client.Services.History.Topic.Model
+@using Education.Web.Client.Services.Model.Content
+
+<EduContainer MaxWidth="EduWidth.W1440">
+    <section class="grid">
+        <header class="header">
+            <div class="d-flex justify-center">
+                <Breadcrumbs Class="pa-0" Items="@Breadcrumbs"/>
+            </div>
+            <h1 class="title">
+                @Battle.Title
+            </h1>
+            <div class="d-flex justify-center mb-6">
+                @if (Battle.Started == Battle.Finished)
+                {
+                    <HistoryDate Date="@Battle.Started" Typo="Typo.subtitle1"/>
+                }
+                else
+                {
+                    <div class="d-flex align-center">
+                        <HistoryDate Date="@Battle.Started" Typo="Typo.subtitle1"/>
+                        <MudText Typo="Typo.subtitle1" Class="mx-3">&#8212;</MudText>
+                        <HistoryDate Date="@Battle.Finished" Typo="Typo.subtitle1"/>
+                    </div>
+                }
+            </div>
+            <MudText Class="mb-3 mb-sm-6" Typo="Typo.body1" Align="Align.Center">
+                @Battle.Description
+            </MudText>
+        </header>
+
+        <section class="battle-image">
+            <MudImage
+                Class="image mx-auto"
+                Src="@Battle.ImageUrl"
+                Alt="@Battle.Title"
+                ObjectFit="ObjectFit.Cover"
+                ObjectPosition="ObjectPosition.Center"/>
+        </section>
+
+        <section class="map mud-paper pa-3 pa-sm-6">
+            @if (Battle.Map?.Source is not null)
+            {
+                <a href="@Battle.Map.Source" target="_blank">
+                    <MudImage
+                        Src="@Battle.Map.Source"
+                        Alt="@Battle.Map.Overview"
+                        Style="width: 100%;"
+                        ObjectFit="ObjectFit.Contain"
+                        ObjectPosition="ObjectPosition.Center"/>
+                </a>
+
+                <MudText Class="mb-3 mb-sm-6" Typo="Typo.body2" Align="Align.Center">
+                    @Battle.Map.Overview
+                </MudText>
+            }
+            
+            <MudText Typo="Typo.h6">
+                @L["Battle:Location"]
+            </MudText>
+            <EduMarkdown Class="mb-3 mb-sm-6" Content="@Battle.Location" DisableParagraphIndent/>
+            <MudText Typo="Typo.h6">
+                @L["Battle:Result"]
+            </MudText>
+            <EduMarkdown Content="@Battle.Result" DisableParagraphIndent/>
+        </section>
+
+        <section class="conflict-parties mud-paper pa-3 pa-sm-6">
+            @foreach (var item in _conflictParties)
+            {
+                <div class="mb-3 mb-sm-6">
+                    <MudText Class="mb-3" Typo="Typo.h6" Align="Align.Center">
+                        @L[$"Battle:{item.Key}"]
+                    </MudText>
+                    <div class="d-flex justify-space-around gap-3">
+                        @for (var i = 0; i < item.Value.Count; i++)
+                        {
+                            <EduMarkdown Class="flex-1" Content="@item.Value[i]" DisableParagraphIndent/>
+                            @if (i < item.Value.Count - 1)
+                            {
+                                <MudDivider Class="flex-0" Vertical FlexItem/>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        </section>
+
+        <TopicFormatToolbar Class="toolbar"/>
+        
+        <TopicContent Class="content" Content="@Battle.Content"/>
+
+        <TopicTest Class="test" TopicId="@Battle.Id" HasTest="@HasTest" UserActivity="@UserActivity"/>
+
+        <TopicUserButtons
+            Class="rating"
+            TopicId="@Battle.Id"
+            Rating="@Rating"
+            UserActivity="@UserActivity"
+            OnFavoriteClick="@OnFavoriteClick"
+            OnLikeClick="@OnLikeClick"
+            OnDislikeClick="@OnDislikeClick"/>
+    </section>
+
+    @if (RelatedTopics.Length > 0)
+    {
+        <MudText Typo="Typo.h5" Class="mt-3 mt-sm-6 mb-3">
+            @L["Topics:Related"]
+        </MudText>
+        <EduFillGrid>
+            @foreach (var (topic, userActivity) in RelatedTopics)
+            {
+                <TopicAndUserProgressCard
+                    Topic="@topic"
+                    UserActivity="@userActivity"
+                    OnFavoriteClick="@OnFavoriteClick"/>
+            }
+        </EduFillGrid>
+    }
+</EduContainer>
+
+@code {
+    private Dictionary<string, List<string>> _conflictParties = new();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public BattleTopicDetailModel Battle { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ContentRatingModel Rating { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public UserActivityOverviewModel UserActivity { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public bool HasTest { get; set; }
+
+    [Parameter, EditorRequired]
+    public UserTopicOverviewModel[] RelatedTopics { get; set; } = Array.Empty<UserTopicOverviewModel>();
+
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+
+    protected override void OnParametersSet()
+    {
+        _conflictParties = new Dictionary<string, List<string>>
+        {
+            { nameof(ConflictPartyModel.Belligerents), new List<string> { Battle.ConflictParties[0].Belligerents } },
+            { nameof(ConflictPartyModel.Commanders), new List<string> { Battle.ConflictParties[0].Commanders } },
+            { nameof(ConflictPartyModel.Strength), new List<string> { Battle.ConflictParties[0].Strength } },
+            { nameof(ConflictPartyModel.Losses), new List<string> { Battle.ConflictParties[0].Losses } }
+        };
+
+        for (var i = 1; i < Battle.ConflictParties.Length; i++)
+        {
+            _conflictParties[nameof(ConflictPartyModel.Belligerents)].Add(Battle.ConflictParties[i].Belligerents);
+            _conflictParties[nameof(ConflictPartyModel.Commanders)].Add(Battle.ConflictParties[i].Commanders);
+            _conflictParties[nameof(ConflictPartyModel.Strength)].Add(Battle.ConflictParties[i].Strength);
+            _conflictParties[nameof(ConflictPartyModel.Losses)].Add(Battle.ConflictParties[i].Losses);
+        }
+    }
+
+}

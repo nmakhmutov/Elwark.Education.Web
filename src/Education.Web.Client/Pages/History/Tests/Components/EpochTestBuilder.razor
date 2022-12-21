@@ -1,0 +1,72 @@
+@using Education.Web.Client.Pages.History.Components
+@using Education.Web.Client.Services.History.Test.Request
+
+<section class="@Class">
+    <MudText Typo="Typo.h5" Class="mb-3">
+        @L["History:Epoch"]
+    </MudText>
+    <EpochRadioGroup 
+        SelectedEpoch="@HistorySettings.TestEpoch" 
+        SelectedEpochChanged="@HistorySettings.ChangeTestEpochAsync" 
+        Class="mb-3 mb-sm-6"/>
+
+    <MudText Typo="Typo.h5" Class="mb-3">
+        @L["Tests"]
+    </MudText>
+    <TestRadioGroup 
+        SelectedTest="@HistorySettings.TestType" 
+        SelectedTestChanged="@HistorySettings.ChangeTestTypeAsync"
+        Tests="@Tests" 
+        Class="mb-6"/>
+
+    <div class="d-flex justify-center">
+        <LoadingButton
+            DisableElevation
+            Color="Color.Primary"
+            Variant="Variant.Filled"
+            Size="Size.Large"
+            Text="@L["Test:Pass"]"
+            LoadingText="@L["Loading"]"
+            IsLoading="@_isLoading"
+            Disabled="@(Tests.All(x => !x.IsAllowed))"
+            OnClick="@CreateTestAsync"/>
+    </div>
+</section>
+
+@code {
+    private bool _isLoading;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private HistorySettingsProvider HistorySettings { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public TestInformationModel[] Tests { get; set; } = Array.Empty<TestInformationModel>();
+
+    [Parameter, EditorRequired]
+    public EventCallback<CreateEpochTestRequest> OnCreate { get; set; }
+    
+    [Parameter]
+    public string? Class { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if (Tests.Any(x => x.IsAllowed && x.Name == HistorySettings.TestType))
+            return;
+
+        await HistorySettings.ChangeTestTypeAsync(Tests.FirstOrDefault(x => x.IsAllowed)?.Name);
+    }
+
+    private async Task CreateTestAsync()
+    {
+        if(string.IsNullOrEmpty(HistorySettings.TestType))
+            return;
+        
+        _isLoading = true;
+        await OnCreate.InvokeAsync(new CreateEpochTestRequest(HistorySettings.TestType, HistorySettings.TestEpoch));
+        _isLoading = false;
+    }
+
+}

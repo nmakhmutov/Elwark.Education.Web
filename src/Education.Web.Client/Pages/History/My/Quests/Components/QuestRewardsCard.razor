@@ -1,0 +1,131 @@
+@using Education.Web.Client.Services.Model.Quest
+<div class="mud-paper pa-3 pa-sm-6 @Class">
+    <MudText Typo="Typo.h6" Align="Align.Center">
+        @Title
+    </MudText>
+
+    <MudText Class="mb-3 mb-sm-6" Typo="Typo.body1" Align="Align.Center">
+        @Subtitle
+    </MudText>
+
+    @if (Rewards.Length > 0)
+    {
+        <div class="d-flex flex-row align-center justify-center gap-3 mb-3 mb-sm-6">
+            @foreach (var reward in Rewards)
+            {
+                <InternalMoney Money="@reward" Typo="Typo.h5" IconSize="Size.Large" Horizontal/>
+            }
+        </div>
+    }
+
+    @switch(Status, ExpiresAt)
+    {
+        case (QuestStatus.Expired,_):
+            <div class="d-flex align-center justify-center">
+                <LoadingButton
+                    DisableElevation
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    Text="@L["Quests:Start"]"
+                    IsLoading="@_isLoading"
+                    OnClick="@StartAsync"/>
+            </div>
+            break;
+
+        case (QuestStatus.InProgress or QuestStatus.Completed, {}):
+            <div class="d-flex align-center justify-space-around gap-3">
+
+                <div class="d-flex align-center justify-center">
+                    <MudIcon Class="mr-1" Icon="@Icons.Outlined.Timer"/>
+                    <CountdownTimer Date="@ExpiresAt.Value" OnComplete="@ExpiredAsync"/>
+                </div>
+
+                <div>
+                    <LoadingButton
+                        DisableElevation
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        Text="@L["Quests:Collect"]"
+                        IsLoading="@_isLoading"
+                        Disabled="@(Status != QuestStatus.Completed)"
+                        OnClick="@CollectAsync"/>
+                </div>
+            </div>
+            break;
+
+        case (QuestStatus.Collected, _):
+            <div class="d-flex align-center justify-center">
+                <MudIcon Class="mr-1" Icon="@Icons.Outlined.CheckCircle" Color="Color.Success"/>
+                <MudText Typo="Typo.subtitle1">
+                    @L["Quests:Collected"]
+                </MudText>
+            </div>
+            break;
+    }
+</div>
+
+@code {
+    private bool _isLoading;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Subtitle { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public QuestStatus Status { get; set; }
+
+    [Parameter, EditorRequired]
+    public IInternalMoney[] Rewards { get; set; } = Array.Empty<IInternalMoney>();
+
+    [Parameter, EditorRequired]
+    public DateTime? ExpiresAt { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnStart { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnCollect { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnExpired { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task StartAsync()
+    {
+        _isLoading = true;
+
+        try
+        {
+            await OnStart.InvokeAsync();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task CollectAsync()
+    {
+        _isLoading = true;
+
+        try
+        {
+            await OnCollect.InvokeAsync();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private Task ExpiredAsync() =>
+        OnExpired.InvokeAsync();
+
+}
