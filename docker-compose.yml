@@ -2,12 +2,12 @@ version: '3.9'
 
 services:
 
-  education.web:
+  education.web.server:
     image: elwark/education/web:${TAG:-latest}
     container_name: "education_web"
     build:
       context: .
-      dockerfile: src/Education.Web.Client/Dockerfile
+      dockerfile: src/Education.Web.Server/Dockerfile
     deploy:
       resources:
         limits:

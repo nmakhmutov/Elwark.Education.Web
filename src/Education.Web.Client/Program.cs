@@ -16,7 +16,6 @@ using Education.Web.Client.Services.History.User;
 using Education.Web.Client.Services.Notification;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
@@ -29,8 +28,8 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 if (builder.HostEnvironment.IsProduction())
     builder.Logging.ClearProviders();
 
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
+// builder.RootComponents.Add<App>("#app");
+// builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services
     .AddMudServices(options =>
