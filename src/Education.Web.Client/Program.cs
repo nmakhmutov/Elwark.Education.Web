@@ -8,6 +8,7 @@ using Education.Web.Client.Services.Customer;
 using Education.Web.Client.Services.History.EventGuesser;
 using Education.Web.Client.Services.History.Leaderboard;
 using Education.Web.Client.Services.History.Search;
+using Education.Web.Client.Services.History.Store;
 using Education.Web.Client.Services.History.Test;
 using Education.Web.Client.Services.History.Topic;
 using Education.Web.Client.Services.History.Trend;
@@ -92,6 +93,7 @@ builder.Services
     .AddScoped<IHistoryEventGuesserService, HistoryEventGuesserService>()
     .AddScoped<IHistoryLeaderboardService, HistoryLeaderboardService>()
     .AddScoped<IHistorySearchService, HistorySearchService>()
+    .AddScoped<IHistoryStoreService, HistoryStoreService>()
     .AddScoped<IHistoryTestService, HistoryTestService>()
     .AddScoped<IHistoryTopicService, HistoryTopicService>()
     .AddScoped<IHistoryTrendService, HistoryTrendService>()

@@ -8,5 +8,5 @@ public sealed record TestBuilderModel(
     TestRuleModel Rule,
     TopicOverviewModel? Topic,
     TestInformationModel[] Tests,
-    UserInventoryItemModel[] Inventories
+    UserInventoryModel[] Inventories
 );

@@ -9,7 +9,7 @@ public sealed record TestModel(
     uint CompletedQuestions,
     uint TotalQuestions,
     TestModel.QuestionModel? Question,
-    TestInventoryItemModel[] Inventory
+    TestInventoryModel[] Inventory
 )
 {
     public sealed record QuestionModel(string Id, string Title);

@@ -1,16 +1,46 @@
 @page "/history/store"
+@using Education.Web.Client.Services.History.Store
+@using Education.Web.Client.Services.History.Store.Model
 @layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>@L["Inventory:Store"]</PageTitle>
 
 <EduPage>
-    @L["Inventory:Store"]
+    <ApiViewer Result="@_response" Context="storefront">
+        <EduContainer>
+            <EduFillGrid>
+                @foreach (var item in storefront.Inventories)
+                {
+                    <MudCard Elevation="0">
+                        <MudCardContent>
+                            <MudText>@item.Title</MudText>
+                            <MudText Typo="Typo.body2">@item.Overview</MudText>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Class="mr-3" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth>
+                                <InternalMoney Money="@item.TotalPrice" IconSize="Size.Small" Horizontal/>
+                            </MudButton>
+                            <MudIconButton Icon="@Icons.Outlined.Info" Variant="Variant.Filled" DisableElevation/>
+                        </MudCardActions>
+                    </MudCard>
+                }
+            </EduFillGrid>
+        </EduContainer>
+    </ApiViewer>
 </EduPage>
 
 @code {
+    private ApiResult<StorefrontModel> _response = ApiResult<StorefrontModel>.Loading();
+
+    [Inject]
+    private IHistoryStoreService Store { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        _response = await Store.GetAsync();
+
 
 }

@@ -40,4 +40,12 @@ public interface IHistoryUserService
     Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request);
 
     Task<ApiResult<TopicStatisticsModel>> GetTopicsAsync(string topicId);
+
+    Task<ApiResult<bool>> ToggleFavoriteAsync(string topicId);
+
+    Task<ApiResult<Unit>> LikeAsync(string topicId);
+
+    Task<ApiResult<Unit>> DislikeAsync(string topicId);
+
+    Task<ApiResult<Unit>> RemoveInventoryAsync(string inventoryId);
 }

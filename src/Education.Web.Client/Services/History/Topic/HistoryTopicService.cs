@@ -23,13 +23,4 @@ internal sealed class HistoryTopicService : IHistoryTopicService
 
     public Task<ApiResult<string>> GetRandomAsync(EpochType epoch) =>
         _api.GetAsync<string>($"history/topics/random?epoch={epoch.ToFastString()}");
-
-    public Task<ApiResult<bool>> ToggleFavoriteAsync(string id) =>
-        _api.PostAsync<bool>($"history/topics/{id}/favorites");
-
-    public Task<ApiResult<Unit>> LikeAsync(string id) =>
-        _api.PostAsync<Unit>($"history/topics/{id}/likes");
-
-    public Task<ApiResult<Unit>> DislikeAsync(string id) =>
-        _api.PostAsync<Unit>($"history/topics/{id}/dislikes");
 }

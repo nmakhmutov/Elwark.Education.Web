@@ -132,7 +132,7 @@
     [CascadingParameter]
     private AppSettingsProvider AppSettings { get; set; } = default!;
 
-    protected override void OnInitialized() =>
+    protected override void OnParametersSet() =>
         _isOpen = AppSettings.IsSidebarOpen;
 
     private ValueTask ToggleAsync()

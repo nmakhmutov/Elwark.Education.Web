@@ -1,7 +1,6 @@
 @page "/history/my/favorites"
 @using Education.Web.Client.Services.History.User.Request
 @using Education.Web.Client.Services.History
-@using Education.Web.Client.Services.History.Topic
 @using Education.Web.Client.Services.History.User
 @layout HistoryLayout
 @attribute [Authorize]
@@ -123,9 +122,6 @@
     private IHistoryUserService UserService { get; set; } = default!;
 
     [Inject]
-    private IHistoryTopicService TopicService { get; set; } = default!;
-    
-    [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
@@ -164,7 +160,7 @@
 
     private async Task<bool> OnFavoriteClick(string topicId)
     {
-        var result = await TopicService.ToggleFavoriteAsync(topicId);
+        var result = await UserService.ToggleFavoriteAsync(topicId);
         return result is { IsSuccess: true, Data: true };
     }
 

@@ -14,10 +14,4 @@ public interface IHistoryTopicService
     Task<ApiResult<TopicDetailCompositionModel>> GetAsync(string id);
 
     Task<ApiResult<string>> GetRandomAsync(EpochType epoch);
-
-    Task<ApiResult<bool>> ToggleFavoriteAsync(string id);
-
-    Task<ApiResult<Unit>> LikeAsync(string id);
-
-    Task<ApiResult<Unit>> DislikeAsync(string id);
 }

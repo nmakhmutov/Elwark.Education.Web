@@ -28,7 +28,7 @@ internal sealed class HistoryUserService : IHistoryUserService
 
     public Task<ApiResult<DailyQuestModel>> CollectDailyQuestAsync() =>
         _api.PostAsync<DailyQuestModel, object>("history/users/me/quests/daily", new { Status = "Collect" });
-    
+
     public Task<ApiResult<WeeklyQuestModel>> StartWeeklyQuestAsync() =>
         _api.PostAsync<WeeklyQuestModel, object>("history/users/me/quests/weekly", new { Status = "Start" });
 
@@ -61,4 +61,16 @@ internal sealed class HistoryUserService : IHistoryUserService
 
     public Task<ApiResult<TopicStatisticsModel>> GetTopicsAsync(string topicId) =>
         _api.GetAsync<TopicStatisticsModel>($"history/users/me/topics/{topicId}");
+
+    public Task<ApiResult<bool>> ToggleFavoriteAsync(string topicId) =>
+        _api.PostAsync<bool>($"history/users/me/topics/{topicId}/favorites");
+
+    public Task<ApiResult<Unit>> LikeAsync(string topicId) =>
+        _api.PostAsync<Unit>($"history/users/me/topics/{topicId}/likes");
+
+    public Task<ApiResult<Unit>> DislikeAsync(string topicId) =>
+        _api.PostAsync<Unit>($"history/users/me/topics/{topicId}/dislikes");
+
+    public Task<ApiResult<Unit>> RemoveInventoryAsync(string inventoryId) =>
+        _api.DeleteAsync<Unit>($"history/users/me/inventories/{inventoryId}");
 }

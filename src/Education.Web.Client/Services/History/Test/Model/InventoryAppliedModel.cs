@@ -6,5 +6,5 @@ namespace Education.Web.Client.Services.History.Test.Model;
 public sealed record InventoryAppliedModel(
     TestOverviewModel Overview,
     TestQuestionModel? Question,
-    TestInventoryItemModel[] Inventory
+    TestInventoryModel[] Inventory
 );

@@ -7,5 +7,5 @@ public sealed record TestModel(
     string Id,
     TestOverviewModel Overview,
     TestQuestionModel Question,
-    TestInventoryItemModel[] Inventory
+    TestInventoryModel[] Inventory
 );

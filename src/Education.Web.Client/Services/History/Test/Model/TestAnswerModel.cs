@@ -7,5 +7,5 @@ public sealed record TestAnswerModel(
     TestOverviewModel Overview,
     AnswerResultModel Answer,
     TestQuestionModel? NextQuestion,
-    TestInventoryItemModel[] Inventory
+    TestInventoryModel[] Inventory
 );
