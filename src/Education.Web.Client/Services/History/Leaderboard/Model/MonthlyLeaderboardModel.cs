@@ -1,8 +1,8 @@
 namespace Education.Web.Client.Services.History.Leaderboard.Model;
 
 public sealed record MonthlyLeaderboardModel(
-    MonthlyLeaderboardModel.LeaderboardModel Leaderboard,
     DateOnly[] Months,
+    MonthlyLeaderboardModel.LeaderboardModel Leaderboard,
     UserRankingModel? User,
     UserRankingModel[] Users
 )

@@ -7,11 +7,9 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage>
+<EduPage Title="@_title">
     <ApiViewer Result="@_result" Context="result">
         <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
-            <PageTitle>@result.Topic.Title</PageTitle>
-
             <TopicOverview Class="mb-3 mb-sm-6" Topic="@result.Topic" Total="@result.Total" Breadcrumbs="@_breadcrumbs"/>
 
             <TestOverview Title="@L["Tests:Easy"]" Href="@HistoryUrl.User.MyEasyTests" Test="@result.EasyTest"/>
@@ -24,6 +22,7 @@
 </EduPage>
 
 @code {
+    private string? _title;
     private List<BreadcrumbItem> _breadcrumbs = new();
 
     private ApiResult<TopicStatisticsModel> _result = ApiResult<TopicStatisticsModel>.Loading();
@@ -42,11 +41,14 @@
         _result = await UserService.GetTopicsAsync(Id);
 
         if (_result.IsSuccess)
+        {
+            _title = _result.Data.Topic.Title;
             _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Subject:History"].Value, HistoryUrl.Root),
                 new(L[$"Epoch:{_result.Data.Topic.Epoch.ToFastString()}"].Value, HistoryUrl.Content.Epoch(_result.Data.Topic.Epoch))
             };
+        }
     }
 
 }

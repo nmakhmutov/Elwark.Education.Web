@@ -1,12 +1,12 @@
-@page "/history/my/favorites"
 @using Education.Web.Client.Services.History.User.Request
 @using Education.Web.Client.Services.History
 @using Education.Web.Client.Services.History.User
+
+@page "/history/my/favorites"
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@L["Favorites"]</PageTitle>
-<EduPage>
+<EduPage Title="@L["Favorites"]">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <EduPageHeader Title="@L["Favorites"]" Breadcrumbs="@Breadcrumbs">
             @if (!_isEmpty)

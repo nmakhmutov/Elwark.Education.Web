@@ -7,7 +7,7 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage>
+<EduPage Title="@_title">
     <ApiViewer Result="@_result" Context="conclusion">
         <MudAlert Class="mb-6 mb-sm-12" Square Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center">
             @L[$"ConclusionStatus:{conclusion.Status}"]
@@ -23,17 +23,14 @@
         @switch (conclusion)
         {
             case EasyTestConclusionModel test:
-                <PageTitle>@L["Test:Easy"]: @test.Topic.Title</PageTitle>
                 <EasyTestView Conclusion="@test"/>
                 break;
 
             case HardTestConclusionModel test:
-                <PageTitle>@L["Test:Hard"]: @test.Topic.Title</PageTitle>
                 <HardTestView Conclusion="@test"/>
                 break;
 
             case MixedTestConclusionModel test:
-                <PageTitle>@L["Test:Mixed"]</PageTitle>
                 <MixedTestView Conclusion="@test"/>
                 break;
 
@@ -44,8 +41,9 @@
 </EduPage>
 
 @code {
-    private ApiResult<TestConclusionModel> _result = ApiResult<TestConclusionModel>.Loading();
+    private string? _title;
     private double _progress;
+    private ApiResult<TestConclusionModel> _result = ApiResult<TestConclusionModel>.Loading();
 
     [Inject]
     private IHistoryTestService TestService { get; set; } = default!;
@@ -63,7 +61,16 @@
     {
         _result = await TestService.GetConclusionAsync(Id);
         if (_result.IsSuccess)
+        {
+            _title = _result.Data switch {
+                EasyTestConclusionModel x => $"{L["Test:Easy"]}: {x.Topic.Title}",
+                HardTestConclusionModel x => $"{L["Test:Hard"]}: {x.Topic.Title}",
+                MixedTestConclusionModel x => $"{L["Test:Mixed"]}: {string.Join(", ", x.Questions.Select(q => q.Topic.Title))}",
+                _ => L[$"ConclusionStatus:{_result.Data.Status}"]
+                };
+
             _progress = Math.Round((double)_result.Data.UserScore.Total / _result.Data.MaxScore.Total * 100);
+        }
 
         if (_result.IsFailed && _result.Error.IsTestNotFound())
             Navigation.NavigateTo(HistoryUrl.TopicTest.Index());

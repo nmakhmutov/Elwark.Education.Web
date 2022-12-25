@@ -7,6 +7,8 @@ public class HostModel : PageModel
     public IReadOnlyDictionary<uint, string> Images =>
         new Dictionary<uint, string>
         {
+            [16] = "https://res.cloudinary.com/elwark/image/upload/v1613019538/Elwark/primary/16x16_egtpch.png",
+            [32] = "https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/32x32_efuau3.png",
             [60] = "https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/60x60_eonbge.png",
             [152] = "https://res.cloudinary.com/elwark/image/upload/v1613019538/Elwark/primary/152x152_bmtbvw.png",
             [180] = "https://res.cloudinary.com/elwark/image/upload/v1613019538/Elwark/primary/180x180_hqniub.png",

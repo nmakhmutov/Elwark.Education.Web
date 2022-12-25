@@ -1,10 +1,11 @@
-<PageTitle>@L["Error:NotFound"]</PageTitle>
-
-<EduPage>
-    <EduError Error="@(Error.Create(L["Error:NotFound"], 404))"/>
+<EduPage Title="@Error.Title">
+    <EduError Error="@Error"/>
 </EduPage>
 
 @code {
+
+    private Error Error =>
+        Error.Create(L["Error:NotFound"], 404);
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

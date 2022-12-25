@@ -9,7 +9,7 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage>
+<EduPage Title="@(_result.IsSuccess ? $"{_testType}: {_currentQuestion.Topic.Title}" : L["Tests"])">
     @switch (_result.Status)
     {
         case Status.Loading:
@@ -21,8 +21,6 @@
             break;
 
         case Status.Success:
-            <PageTitle>@_testType: @_currentQuestion.Topic.Title</PageTitle>
-
             <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
                 <section class="grid">
                     <div>

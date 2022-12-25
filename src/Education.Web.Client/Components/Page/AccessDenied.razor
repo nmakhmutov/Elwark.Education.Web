@@ -1,10 +1,11 @@
-<PageTitle>@L["Error:AccessDenied"]</PageTitle>
-
-<EduPage>
-    <EduError Error="@(Error.Create(L["Error:AccessDenied"], 403))"/>
+<EduPage Title="@Error.Title">
+    <EduError Error="@Error"/>
 </EduPage>
 
 @code {
+
+    private Error Error =>
+        Error.Create(L["Error:AccessDenied"], 403);
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

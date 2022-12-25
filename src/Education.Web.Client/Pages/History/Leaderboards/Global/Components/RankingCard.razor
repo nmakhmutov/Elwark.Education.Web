@@ -1,30 +1,49 @@
-<MudCard Elevation="0" Class="d-flex flex-column justify-space-between">
-    <MudCardContent Class="pa-3 pa-sm-6">
-        <div class="d-flex justify-center mb-3">
-            <div class="avatar">
-                <div class="badge position-@Rank">@Rank</div>
-                <MudAvatar Style="width: 96px; height: 96px" Image="@Image" Alt="@Name"/>
+<section class="card mud-paper">
+    <header class="cover-photo rank-@Rank">
+        <h2 class="rank">
+            @Rank<sup>@L[$"Leaderboard:{Rank}PlaceEnding"]</sup>
+        </h2>
+        <img class="profile" src="@Image" alt="@Name">
+    </header>
+    <div class="profile-badges">
+        <div class="badge rank-@Rank">@Rank</div>
+    </div>
+    <div class="ma-3 mt-6 ma-sm-6">
+        <MudText Typo="Typo.h6">@Name</MudText>
+    </div>
+    <footer class="d-flex gap-3 gap-sm-6 ma-3 ma-sm-6">
+        <div>
+            <div class="d-flex align-center">
+                <MudIcon Icon="@EduIcons.Level" Size="Size.Medium"/>
+                <MudText Class="ml-1" Typo="Typo.h6">
+                    @Level
+                </MudText>
             </div>
-        </div>
-        <MudText Typo="Typo.h6" Align="Align.Center">
-            @Name
-        </MudText>
-    </MudCardContent>
-    <MudCardActions Class="d-flex justify-space-between pa-3 pa-sm-6">
-        <MudStack Row AlignItems="AlignItems.Center" Spacing="0">
-            <MudIcon Icon="@EduIcons.Level" Class="green-text text-darken-1 mr-3"/>
-            <MudText Typo="Typo.h6">
-                @Level
+            <MudText Class="mud-text-secondary" Typo="Typo.body1">
+                @L["Leaderboard:UserLevel"]
             </MudText>
-        </MudStack>
-        <MudStack Row AlignItems="AlignItems.Center" Spacing="0">
-            <MudIcon Icon="@EduIcons.Experience" Class="mr-3"/>
-            <ReadableNumber Value="@Experience" Typo="Typo.h6"/>
-        </MudStack>
-    </MudCardActions>
-</MudCard>
+        </div>
+
+        <MudDivider Vertical FlexItem/>
+
+        <div>
+            <div class="d-flex align-center">
+                <MudIcon Icon="@EduIcons.Experience" Size="Size.Medium"/>
+                <MudText Class="ml-1" Typo="Typo.h6">
+                    @Experience.ToReadable()
+                </MudText>
+            </div>
+            <MudText Class="mud-text-secondary" Typo="Typo.body1">
+                @L["Leaderboard:UserExperience"]
+            </MudText>
+        </div>
+    </footer>
+</section>
 
 @code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

@@ -1,3 +1,7 @@
+<PageTitle>
+    @(Title ?? "Elwark education")
+</PageTitle>
+
 <MudMainContent Class="d-flex flex-column h-100">
     <main class="d-flex flex-column flex-grow-1">
         @ChildContent
@@ -6,7 +10,7 @@
     @if (!HideFooter)
     {
         <MudDivider/>
-        
+
         <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
             <footer class="d-flex flex-wrap align-center justify-space-between gap-3">
                 <MudText Typo="Typo.subtitle1">
@@ -25,9 +29,13 @@
 
 @code {
 
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    [Parameter, EditorRequired]
+    public string? Title { get; set; }
 
     [Parameter]
     public bool HideFooter { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
 }

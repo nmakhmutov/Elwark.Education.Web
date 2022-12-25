@@ -1,0 +1,23 @@
+@using Education.Web.Client.Services.History.Leaderboard.Model
+
+<section class="grid @Class">
+    @foreach (var user in Users)
+    {
+        <RankingCard
+            Rank="@user.Rank"
+            Level="@user.Level"
+            Experience="@user.Experience"
+            Name="@user.FullName"
+            Image="@user.Image"/>
+    }
+</section>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public GlobalRankingModel[] Users { get; set; } = Array.Empty<GlobalRankingModel>();
+    
+    [Parameter]
+    public string? Class { get; set; }
+    
+}
