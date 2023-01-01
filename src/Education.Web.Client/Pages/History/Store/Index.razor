@@ -1,6 +1,5 @@
 @using Education.Web.Client.Services.History.Store
 @using Education.Web.Client.Services.History.Store.Model
-@using Education.Web.Client.Pages.History.Components
 
 @page "/history/store"
 @layout HistoryLayout
@@ -10,19 +9,18 @@
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <EduPageHeader Title="@L["Inventory:Store"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Result="@_response" Context="storefront">
+    <ApiViewer Result="@_response" Context="products">
         <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
             <EduFillGrid>
-                @foreach (var item in storefront.Bundles)
+                @foreach (var item in products)
                 {
                     <MudCard Elevation="0">
                         <MudCardContent>
                             <MudText>@item.Title</MudText>
-                            <MudText Typo="Typo.body2">@item.Overview</MudText>
                         </MudCardContent>
                         <MudCardActions>
                             <MudButton Class="mr-3" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth>
-                                <InternalMoney Money="@item.Price" IconSize="Size.Small" Horizontal/>
+                                <InternalMoney Money="@item.Selling.Total" IconSize="Size.Small" Horizontal/>
                             </MudButton>
                             <MudIconButton Icon="@Icons.Outlined.Info" Variant="Variant.Filled" DisableElevation/>
                         </MudCardActions>
@@ -30,21 +28,11 @@
                 }
             </EduFillGrid>
         </EduContainer>
-
-        <EduContainer MaxWidth="EduWidth.W1920">
-            <InventoryGrid Inventory="@storefront.Inventories" Context="item">
-                <InventoryInfoCard Title="@item.Title" Overview="@item.Overview" Count="@item.Count" IconUrl="@item.IconUrl">
-                    <MudButton Class="mt-3" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" DisableElevation>
-                        <InternalMoney Money="@item.TotalPrice" IconSize="Size.Small" Horizontal/>
-                    </MudButton>
-                </InventoryInfoCard>
-            </InventoryGrid>
-        </EduContainer>
     </ApiViewer>
 </EduPage>
 
 @code {
-    private ApiResult<StorefrontModel> _response = ApiResult<StorefrontModel>.Loading();
+    private ApiResult<ProductModel[]> _response = ApiResult<ProductModel[]>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {

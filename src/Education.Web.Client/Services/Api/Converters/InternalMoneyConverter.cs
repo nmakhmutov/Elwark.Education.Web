@@ -9,7 +9,7 @@ internal sealed class InternalMoneyConverter : JsonConverter<IInternalMoney?>
     public override IInternalMoney? Read(ref Utf8JsonReader reader, Type _, JsonSerializerOptions options)
     {
         using var document = JsonDocument.ParseValue(ref reader);
-        var name = document.RootElement.GetProperty("name").GetString();
+        var name = document.RootElement.GetProperty("currency").GetString();
 
         return name switch
         {

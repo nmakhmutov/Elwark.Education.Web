@@ -10,6 +10,6 @@ internal sealed class HistoryStoreService : IHistoryStoreService
     public HistoryStoreService(ApiClient api) =>
         _api = api;
 
-    public Task<ApiResult<StorefrontModel>> GetAsync() =>
-        _api.GetAsync<StorefrontModel>("history/store");
+    public Task<ApiResult<ProductModel[]>> GetAsync() =>
+        _api.GetAsync<ProductModel[]>("history/store");
 }

@@ -23,7 +23,7 @@
                         @L["MonthlyLeaderboard:Description"]
                     </MudText>
 
-                    @if (result.Leaderboard.IsActive)
+                    @if (result.IsActive)
                     {
                         <MudChip Class="ma-0" Label Icon="@Icons.Outlined.Equalizer" Variant="Variant.Text" Color="Color.Primary">
                             @L["Leaderboard:InProgress"]
@@ -36,7 +36,7 @@
                         </MudChip>
                     }
                     <div class="month-wrapper mt-3">
-                        <MudSelect T="DateOnly" Label="@L["Month"]" Value="@result.Leaderboard.Month" ValueChanged="@OnMonthChanged">
+                        <MudSelect T="DateOnly" Label="@L["Month"]" Value="@result.Month" ValueChanged="@OnMonthChanged">
                             @foreach (var month in result.Months)
                             {
                                 <MudSelectItem Value="@month">
@@ -49,10 +49,10 @@
 
                 <div class="d-none d-md-block flex-grow-1"></div>
 
-                @if (result.Leaderboard.IsActive)
+                @if (result.IsActive)
                 {
                     <section>
-                        <CardCountdown Class="justify-center mb-3 mb-sm-6" Date="@result.Leaderboard.EndsAt"/>
+                        <CardCountdown Class="justify-center mb-3 mb-sm-6" Date="@result.EndsAt"/>
 
                         @if (result.User is null)
                         {
@@ -114,7 +114,7 @@
                     </Experience>
                 </RegularRanking>
 
-                <Virtualize Items="@(result.Leaderboard.IsActive ? result.Users : result.Users[3..])" ItemSize="64" Context="user">
+                <Virtualize Items="@(result.IsActive ? result.Users : result.Users[3..])" ItemSize="64" Context="user">
                     <RegularRanking
                         Class="mb-3"
                         Background="@(user.Id == _highlightUser ? RegularRanking.BackgroundColor.Highlight : RegularRanking.BackgroundColor.Paper)">

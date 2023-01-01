@@ -3,11 +3,14 @@ using Education.Web.Client.Services.Model.Inventory;
 
 namespace Education.Web.Client.Services.History.Store.Model;
 
-public sealed record StoreBundleModel(
+public sealed record ProductModel(
     uint Id,
     string Title,
-    string Overview,
     string ImageUrl,
-    IInternalMoney Price,
+    ProductModel.PriceModel Selling,
+    ProductModel.PriceModel Purchasing,
     UserInventoryModel[] Inventories
-);
+)
+{
+    public sealed record PriceModel(IInternalMoney Original, IInternalMoney Total);    
+}
