@@ -42,11 +42,11 @@
 
         if (_result.IsSuccess)
         {
-            _title = _result.Data.Topic.Title;
+            _title = _result.Value.Topic.Title;
             _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Subject:History"].Value, HistoryUrl.Root),
-                new(L[$"Epoch:{_result.Data.Topic.Epoch.ToFastString()}"].Value, HistoryUrl.Content.Epoch(_result.Data.Topic.Epoch))
+                new(L[$"Epoch:{_result.Value.Topic.Epoch.ToFastString()}"].Value, HistoryUrl.Content.Epoch(_result.Value.Topic.Epoch))
             };
         }
     }

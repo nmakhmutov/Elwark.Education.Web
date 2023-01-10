@@ -3,23 +3,38 @@
 <section class="grid @Class">
     @foreach (var inventory in Inventory)
     {
-        @ChildContent(inventory)
+        @ChildContent?.Invoke(inventory)
     }
-    @LastItem
+    
+    @if (!string.IsNullOrEmpty(StoreHref))
+    {
+        <div class="store rounded pa-3">
+            <MudFab
+                Label="@L["Inventory:Store"]"
+                Href="@StoreHref"
+                StartIcon="@EduIcons.InventoryStore"
+                Color="Color.Primary"
+                Size="Size.Large"
+                DisableElevation/>
+        </div>
+    }
 </section>
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter, EditorRequired]
     public IEnumerable<T> Inventory { get; set; } = Enumerable.Empty<T>();
 
     [Parameter]
-    public RenderFragment<T> ChildContent { get; set; } = default!;
-
-    [Parameter]
-    public RenderFragment? LastItem { get; set; }
+    public RenderFragment<T>? ChildContent { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
+
+    [Parameter]
+    public string? StoreHref { get; set; }
 
 }

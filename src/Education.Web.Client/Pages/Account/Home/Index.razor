@@ -10,11 +10,11 @@
 @attribute [Authorize]
 
 <EduPage Title="@L["Account"]">
-    <ApiViewer Result="@_response" Context="subjects">
+    <ApiViewer Result="@_response">
         <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
             <EduFillGrid>
                 <AccountCard Class="account"/>
-                @foreach (var subject in subjects)
+                @foreach (var subject in _subjects)
                 {
                     <SubjectCard
                         Level="@subject.Level"
@@ -31,7 +31,8 @@
 </EduPage>
 
 @code {
-    private ApiResult<SubjectEnhancedModel[]> _response = ApiResult<SubjectEnhancedModel[]>.Loading();
+    private ApiResult<SubjectModel[]> _response = ApiResult<SubjectModel[]>.Loading();
+    private readonly List<SubjectEnhancedModel> _subjects = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -41,12 +42,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await CustomerService.GetSubjectsAsync();
-        _response = response.IsSuccess
-            ? ApiResult<SubjectEnhancedModel[]>.Success(
-                response.Data.Select(Enhance).Where(x => x is not null).ToArray()!
-                )
-            : ApiResult<SubjectEnhancedModel[]>.Fail(response.Error);
+        _response = await CustomerService.GetSubjectsAsync();
+        if (_response.IsFailed)
+            return;
+
+        foreach (var subject in _response.Value)
+            if (Enhance(subject) is {} item)
+                _subjects.Add(item);
     }
 
     private SubjectEnhancedModel? Enhance(SubjectModel model) =>

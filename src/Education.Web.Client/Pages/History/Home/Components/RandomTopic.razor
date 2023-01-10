@@ -61,7 +61,7 @@
 
         var result = await TopicService.GetRandomAsync(HistorySettings.SearchRandomEpoch);
         if (result.IsSuccess)
-            Navigation.NavigateTo(HistoryUrl.Content.Topic(result.Data));
+            Navigation.NavigateTo(HistoryUrl.Content.Topic(result.Value));
 
         _isLoading = false;
     }

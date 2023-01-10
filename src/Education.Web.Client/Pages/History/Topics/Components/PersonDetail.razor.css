@@ -4,7 +4,6 @@
 }
 
 .image ::deep img {
-    max-height: 70vh;
     margin: 0 auto;
     display: block;
 }
@@ -50,7 +49,7 @@
 
 @media (min-width: 960px) {
     .header {
-        grid-template-columns: minmax(240px, 480px) 1fr;
+        grid-template-columns: minmax(240px, auto) 1fr;
     }
 
     .content .title {
@@ -63,7 +62,6 @@
     }
 
     .image ::deep img {
-        max-height: none;
         display: inline;
     }
 
@@ -85,10 +83,6 @@
 }
 
 @media (min-width: 1280px) {
-    .header {
-        grid-template-columns: minmax(300px, 600px) 1fr;
-    }
-
     .grid ::deep .content {
         grid-column: span 9;
     }

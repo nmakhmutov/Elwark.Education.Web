@@ -16,10 +16,10 @@
                 <MudIcon Class="mr-1" Icon="@EduIcons.Silver" Size="Size.Medium"/>
                 <ReadableNumber Class="white-text" Value="@Silver.Balance" Typo="Typo.h4"/>
             </div>
-            <ApexChart TItem="SilverWalletModel.CashFlow" Options="@_options" Width="@("80px")" Height="@("30px")">
+            <ApexChart TItem="BudgetModel" Options="@_options" Width="@("80px")" Height="@("30px")">
                 <ApexPointSeries
-                    TItem="SilverWalletModel.CashFlow"
-                    Items="@Silver.Flow"
+                    TItem="BudgetModel"
+                    Items="@Silver.Accounting"
                     SeriesType="SeriesType.Line"
                     XValue="@(x => x.Month.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc))"
                     YValue="@(x => x.Balance)"
@@ -28,7 +28,7 @@
         </div>
     </header>
 
-    @foreach (var item in Silver.Flow.Take(3))
+    @foreach (var item in Silver.Accounting.Take(3))
     {
         <MudStack Class="mt-3" Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
             <MudStack Row AlignItems="AlignItems.Center">
@@ -62,7 +62,7 @@
     private double _tendingValue;
     private string? _tendingIcon;
 
-    private readonly ApexChartOptions<SilverWalletModel.CashFlow> _options = new()
+    private readonly ApexChartOptions<BudgetModel> _options = new()
     {
         Tooltip = new Tooltip
         {
@@ -99,8 +99,8 @@
 
     protected override void OnParametersSet()
     {
-        var current = Silver.Flow[0].Income + Silver.Flow[0].Expense;
-        var last = Silver.Flow[1].Income + Silver.Flow[1].Expense;
+        var current = Silver.Accounting[0].Balance;
+        var last = Silver.Accounting[1].Balance;
 
         _tendingValue = (current * 100.0 / last) switch
         {

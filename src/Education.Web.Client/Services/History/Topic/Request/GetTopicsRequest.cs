@@ -2,7 +2,7 @@ using Education.Web.Client.Services.Api;
 
 namespace Education.Web.Client.Services.History.Topic.Request;
 
-public sealed record GetTopicsRequest(EpochType Epoch, int Page, int Count)
+public sealed record GetTopicsRequest(EpochType Epoch, int Offset, int Limit)
     : IQueryStringRequest
 {
     public QueryString ToQueryString()
@@ -10,8 +10,8 @@ public sealed record GetTopicsRequest(EpochType Epoch, int Page, int Count)
         var values = new Dictionary<string, string?>
         {
             [nameof(Epoch)] = Epoch.ToFastString(),
-            [nameof(Page)] = Page.ToString(),
-            [nameof(Count)] = Count.ToString()
+            [nameof(Offset)] = Offset.ToString(),
+            [nameof(Limit)] = Limit.ToString()
         };
 
         return QueryString.Create(values);

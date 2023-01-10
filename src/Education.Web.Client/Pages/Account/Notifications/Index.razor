@@ -112,8 +112,8 @@
         if (_result.IsFailed)
             return;
 
-        _notifications.AddRange(_result.Data.Items);
-        _request = new NotificationsRequest(10, _result.Data.Next);
+        _notifications.AddRange(_result.Value.Items);
+        _request = new NotificationsRequest(10, _result.Value.Next);
     }
 
     private async Task LoadMore()
@@ -126,8 +126,8 @@
         if (response.IsFailed)
             _result = response;
 
-        _notifications.AddRange(response.Data.Items);
-        _request = _request with { Token = response.Data.Next };
+        _notifications.AddRange(response.Value.Items);
+        _request = _request with { Token = response.Value.Next };
         _isMoreLoading = false;
     }
 

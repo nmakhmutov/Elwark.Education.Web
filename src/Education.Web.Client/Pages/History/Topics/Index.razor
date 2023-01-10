@@ -90,8 +90,8 @@
 
         if (_result.IsSuccess)
         {
-            var epoch = _result.Data.Topic.Epoch;
-            _title = _result.Data.Topic.Title;
+            var epoch = _result.Value.Topic.Epoch;
+            _title = _result.Value.Topic.Title;
             _breadcrumbs = new List<BreadcrumbItem>
             {
                 new(L["Subject:History"], HistoryUrl.Root),
@@ -115,7 +115,7 @@
     private async Task<bool> ToggleFavoriteAsync(string id)
     {
         var result = await UserService.ToggleFavoriteAsync(id);
-        return result is { IsSuccess: true, Data: true };
+        return result is { IsSuccess: true, Value: true };
     }
 
 }

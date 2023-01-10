@@ -100,11 +100,11 @@
             return;
         }
 
-        _score = _result.Data.Score;
-        _x2BonusUntil = _result.Data.X2BonusUntil;
-        _completedQuestions = _result.Data.CompletedQuestions;
-        _totalQuestions = _result.Data.TotalQuestions;
-        _question = _result.Data.Question!;
+        _score = _result.Value.Score;
+        _x2BonusUntil = _result.Value.X2BonusUntil;
+        _completedQuestions = _result.Value.CompletedQuestions;
+        _totalQuestions = _result.Value.TotalQuestions;
+        _question = _result.Value.Question!;
     }
 
     private async Task OnValidSubmit(AnswerForm.Model model)
@@ -119,17 +119,17 @@
             return;
         }
 
-        if (result.Data.Question is null)
+        if (result.Value.Question is null)
         {
             Navigation.NavigateTo(HistoryUrl.EventGuesser.Conclusion(Id));
             return;
         }
 
-        _score = result.Data.Score;
-        _x2BonusUntil = result.Data.X2BonusUntil;
-        _question = result.Data.Question;
-        _completedQuestions = result.Data.CompletedQuestions;
-        _totalQuestions = result.Data.TotalQuestions;
+        _score = result.Value.Score;
+        _x2BonusUntil = result.Value.X2BonusUntil;
+        _question = result.Value.Question;
+        _completedQuestions = result.Value.CompletedQuestions;
+        _totalQuestions = result.Value.TotalQuestions;
     }
 
 }

@@ -26,26 +26,13 @@
                                 @_capacity
                             </MudText>
                         </header>
-                        <InventoryGrid Inventory="@model.Inventory.Items">
-                            <ChildContent Context="item">
-                                <InventoryInfoCard
-                                    Title="@item.Title"
-                                    Subtitle="@item.Category.Title"
-                                    Overview="@item.Overview"
-                                    Quantity="@item.Quantity"
-                                    IconUrl="@item.IconUrl"/>
-                            </ChildContent>
-                            <LastItem>
-                                <div class="buy-inventory rounded pa-3">
-                                    <MudFab
-                                        Label="@L["Inventory:Store"]"
-                                        Href="@HistoryUrl.Store.Index"
-                                        StartIcon="@EduIcons.InventoryStore"
-                                        Color="Color.Primary"
-                                        Size="Size.Large"
-                                        DisableElevation/>
-                                </div>
-                            </LastItem>
+                        <InventoryGrid Inventory="@model.Inventory.Items" StoreHref="@HistoryUrl.Store.Index" Context="item">
+                            <InventoryInfoCard
+                                Title="@item.Title"
+                                Subtitle="@item.Category.Title"
+                                Overview="@item.Overview"
+                                Quantity="@item.Quantity"
+                                IconUrl="@item.IconUrl"/>
                         </InventoryGrid>
                     </div>
 
@@ -82,7 +69,7 @@
     {
         _result = await UserService.GetProfileAsync();
         if (_result.IsSuccess)
-            _capacity = $"{_result.Data.Inventory.Fullness} / {_result.Data.Inventory.Capacity}";
+            _capacity = $"{_result.Value.Inventory.Fullness} / {_result.Value.Inventory.Capacity}";
     }
 
 }

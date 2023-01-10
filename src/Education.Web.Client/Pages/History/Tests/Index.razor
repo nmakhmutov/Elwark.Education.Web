@@ -38,20 +38,13 @@
                     <MudText Typo="Typo.h5" Class="mb-3">
                         @L["Inventory"]
                     </MudText>
-                    @if (model.Inventories.Length > 0)
-                    {
-                        <InventoryGrid Inventory="@model.Inventories" Context="item">
-                            <InventoryInfoCard
-                                Title="@item.Title"
-                                Overview="@item.Overview"
-                                Quantity="@item.Quantity"
-                                IconUrl="@item.IconUrl"/>
-                        </InventoryGrid>
-                    }
-                    else
-                    {
-                        <EduEmpty Title="@L["Inventory:EmptyTitle"]"/>
-                    }
+                    <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index" Context="item">
+                        <InventoryInfoCard
+                            Title="@item.Title"
+                            Overview="@item.Overview"
+                            Quantity="@item.Quantity"
+                            IconUrl="@item.IconUrl"/>
+                    </InventoryGrid>
                 </section>
             </section>
         </ApiViewer>
@@ -103,17 +96,17 @@
         var response = await call();
 
         if (response.IsSuccess)
-            Navigation.NavigateTo(HistoryUrl.TopicTest.Test(response.Data.Id));
+            Navigation.NavigateTo(HistoryUrl.TopicTest.Test(response.Value.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
     }
 
     private void OpenRule()
     {
-        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = _result.Data.Rule.Content };
+        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = _result.Value.Rule.Content };
         var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Large, CloseOnEscapeKey = true, CloseButton = true };
 
-        DialogService.Show<RuleDialog>(_result.Data.Rule.Title, parameters, options);
+        DialogService.Show<RuleDialog>(_result.Value.Rule.Title, parameters, options);
     }
 
 }

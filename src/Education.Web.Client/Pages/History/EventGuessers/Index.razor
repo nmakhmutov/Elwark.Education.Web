@@ -60,20 +60,13 @@
                     <MudText Typo="Typo.h5" Class="mb-3">
                         @L["Inventory"]
                     </MudText>
-                    @if (model.Inventory.Length > 0)
-                    {
-                        <InventoryGrid Inventory="@model.Inventory" Context="item">
-                            <InventoryInfoCard
-                                Title="@item.Title"
-                                Overview="@item.Overview"
-                                Quantity="@item.Quantity"
-                                IconUrl="@item.IconUrl"/>
-                        </InventoryGrid>
-                    }
-                    else
-                    {
-                        <EduEmpty Title="@L["Inventory:EmptyTitle"]"/>
-                    }
+                    <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index" Context="item">
+                        <InventoryInfoCard
+                            Title="@item.Title"
+                            Overview="@item.Overview"
+                            Quantity="@item.Quantity"
+                            IconUrl="@item.IconUrl"/>
+                    </InventoryGrid>
                 </section>
             </section>
         </ApiViewer>
@@ -112,9 +105,9 @@
         _result = await EventGuesserService.GetAsync();
         if (_result.IsSuccess)
         {
-            if (!_result.Data.Tests.Any(x => x.IsAllowed && x.Name == HistorySettings.EventGuesserType))
-                await HistorySettings.ChangeEventGuesserTypeAsync(_result.Data.Tests.FirstOrDefault(x => x.IsAllowed)?.Name);
-            
+            if (!_result.Value.Tests.Any(x => x.IsAllowed && x.Name == HistorySettings.EventGuesserType))
+                await HistorySettings.ChangeEventGuesserTypeAsync(_result.Value.Tests.FirstOrDefault(x => x.IsAllowed)?.Name);
+
             return;
         }
 
@@ -126,13 +119,13 @@
     {
         if (string.IsNullOrEmpty(HistorySettings.EventGuesserType))
             return;
-        
+
         _isLoading = true;
 
         var request = new CreateRequest(HistorySettings.EventGuesserType, HistorySettings.EventGuesserEpoch);
         var response = await EventGuesserService.CreateAsync(request);
         if (response.IsSuccess)
-            Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(response.Data.Id));
+            Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(response.Value.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
 
@@ -141,10 +134,10 @@
 
     private void OpenRule()
     {
-        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = _result.Data.Rule.Content };
+        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = _result.Value.Rule.Content };
         var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Large, CloseOnEscapeKey = true, CloseButton = true };
 
-        DialogService.Show<RuleDialog>(_result.Data.Rule.Title, parameters, options);
+        DialogService.Show<RuleDialog>(_result.Value.Rule.Title, parameters, options);
     }
 
 }

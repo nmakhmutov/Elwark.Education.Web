@@ -1,9 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
-using Education.Web.Client;
 using Education.Web.Client.Components.Customer;
 using Education.Web.Client.Services.Api;
+using Education.Web.Client.Services.Api.Handlers;
 using Education.Web.Client.Services.Customer;
 using Education.Web.Client.Services.History.EventGuesser;
 using Education.Web.Client.Services.History.Leaderboard;
@@ -65,6 +65,7 @@ var policy = HttpPolicyExtensions.HandleTransientHttpError()
 
 builder.Services
     .AddScoped<LocalizationHandler>()
+    .AddScoped<CorrelationHandler>()
     .AddScoped<AuthorizationMessageHandler>(provider =>
     {
         var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
@@ -77,11 +78,13 @@ builder.Services
 builder.Services
     .AddHttpClient<ApiAnonymousClient>(client => client.BaseAddress = gatewayUrl)
     .AddHttpMessageHandler<LocalizationHandler>()
+    .AddHttpMessageHandler<CorrelationHandler>()
     .AddPolicyHandler(policy);
 
 builder.Services
     .AddHttpClient<ApiAuthenticatedClient>(client => client.BaseAddress = gatewayUrl)
     .AddHttpMessageHandler<LocalizationHandler>()
+    .AddHttpMessageHandler<CorrelationHandler>()
     .AddHttpMessageHandler<AuthorizationMessageHandler>()
     .AddPolicyHandler(policy);
 

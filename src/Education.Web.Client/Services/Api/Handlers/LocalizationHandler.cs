@@ -1,6 +1,6 @@
-namespace Education.Web.Client;
+namespace Education.Web.Client.Services.Api.Handlers;
 
-public sealed class LocalizationHandler : DelegatingHandler
+internal sealed class LocalizationHandler : DelegatingHandler
 {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
     {

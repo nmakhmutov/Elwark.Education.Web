@@ -62,14 +62,14 @@
         _result = await TestService.GetConclusionAsync(Id);
         if (_result.IsSuccess)
         {
-            _title = _result.Data switch {
+            _title = _result.Value switch {
                 EasyTestConclusionModel x => $"{L["Test:Easy"]}: {x.Topic.Title}",
                 HardTestConclusionModel x => $"{L["Test:Hard"]}: {x.Topic.Title}",
                 MixedTestConclusionModel x => $"{L["Test:Mixed"]}: {string.Join(", ", x.Questions.Select(q => q.Topic.Title))}",
-                _ => L[$"ConclusionStatus:{_result.Data.Status}"]
+                _ => L[$"ConclusionStatus:{_result.Value.Status}"]
                 };
 
-            _progress = Math.Round((double)_result.Data.UserScore.Total / _result.Data.MaxScore.Total * 100);
+            _progress = Math.Round((double)_result.Value.UserScore.Total / _result.Value.MaxScore.Total * 100);
         }
 
         if (_result.IsFailed && _result.Error.IsTestNotFound())

@@ -104,41 +104,41 @@
     {
         var response = await UserService.ClaimDailyBonusAsync();
         if (response.IsSuccess)
-            _result = ApiResult<HistoryQuestModel>.Success(_result.Data with { DailyBonus = response.Data });
+            _result = ApiResult<HistoryQuestModel>.Success(_result.Value with { DailyBonus = response.Value });
     }
 
     private async Task RejectDailyBonusAsync()
     {
         var response = await UserService.RejectDailyBonusAsync();
         if (response.IsSuccess)
-            _result = ApiResult<HistoryQuestModel>.Success(_result.Data with { DailyBonus = response.Data });
+            _result = ApiResult<HistoryQuestModel>.Success(_result.Value with { DailyBonus = response.Value });
     }
 
     private async Task StartDailyQuestsAsync()
     {
         var response = await UserService.StartDailyQuestAsync();
         if (response.IsSuccess)
-            _result = ApiResult<HistoryQuestModel>.Success(_result.Data with { DailyQuest = response.Data });
+            _result = ApiResult<HistoryQuestModel>.Success(_result.Value with { DailyQuest = response.Value });
     }
 
     private async Task CollectDailyQuestsAsync()
     {
         var response = await UserService.CollectDailyQuestAsync();
         if (response.IsSuccess)
-            _result = ApiResult<HistoryQuestModel>.Success(_result.Data with { DailyQuest = response.Data });
+            _result = ApiResult<HistoryQuestModel>.Success(_result.Value with { DailyQuest = response.Value });
     }
 
     private async Task StartWeeklyQuestsAsync()
     {
         var response = await UserService.StartWeeklyQuestAsync();
         if (response.IsSuccess)
-            _result = ApiResult<HistoryQuestModel>.Success(_result.Data with { WeeklyQuest = response.Data });
+            _result = ApiResult<HistoryQuestModel>.Success(_result.Value with { WeeklyQuest = response.Value });
     }
 
     private async Task CollectWeeklyQuestsAsync()
     {
         var response = await UserService.CollectWeeklyQuestAsync();
         if (response.IsSuccess)
-            _result = ApiResult<HistoryQuestModel>.Success(_result.Data with { WeeklyQuest = response.Data });
+            _result = ApiResult<HistoryQuestModel>.Success(_result.Value with { WeeklyQuest = response.Value });
     }
 }

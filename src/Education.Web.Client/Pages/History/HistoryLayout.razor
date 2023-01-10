@@ -147,7 +147,7 @@
             return Array.Empty<TopicOverviewModel>();
 
         var result = await HistorySearchService.SearchAsync(text);
-        return result.IsSuccess ? result.Data : Array.Empty<TopicOverviewModel>();
+        return result.IsSuccess ? result.Value : Array.Empty<TopicOverviewModel>();
     }
 
     private Task OnSearchResult(TopicOverviewModel entry)

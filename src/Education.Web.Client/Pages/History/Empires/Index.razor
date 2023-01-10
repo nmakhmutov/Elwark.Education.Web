@@ -163,10 +163,10 @@
 
     private async ValueTask<ItemsProviderResult<EmpireOverviewModel>> EmpiresProvider(ItemsProviderRequest request)
     {
-        var response = await TopicService.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex + 1, request.Count));
+        var response = await TopicService.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex, request.Count));
 
         return response.IsSuccess
-            ? new ItemsProviderResult<EmpireOverviewModel>(response.Data.Items, (int)response.Data.Count)
+            ? new ItemsProviderResult<EmpireOverviewModel>(response.Value.Items, (int)response.Value.Count)
             : new ItemsProviderResult<EmpireOverviewModel>();
     }
 

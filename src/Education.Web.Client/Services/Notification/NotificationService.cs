@@ -71,7 +71,7 @@ internal sealed class NotificationService : INotificationService
 
         var result = await GetAsync(new NotificationsRequest(MaxNotifications));
         if (result.IsSuccess)
-            _lastNotifications = result.Data.Items
+            _lastNotifications = result.Value.Items
                 .Select(x => new NotificationMessage(x.Subject, x.Title, x.Message, x.CreatedAt))
                 .ToList();
 

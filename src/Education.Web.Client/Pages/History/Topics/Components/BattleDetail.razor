@@ -122,7 +122,7 @@
 </EduContainer>
 
 @code {
-    private Dictionary<string, List<string>> _conflictParties = new();
+    private Dictionary<string, List<MarkupString>> _conflictParties = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -156,12 +156,12 @@
 
     protected override void OnParametersSet()
     {
-        _conflictParties = new Dictionary<string, List<string>>
+        _conflictParties = new Dictionary<string, List<MarkupString>>
         {
-            { nameof(ConflictPartyModel.Belligerents), new List<string> { Battle.ConflictParties[0].Belligerents } },
-            { nameof(ConflictPartyModel.Commanders), new List<string> { Battle.ConflictParties[0].Commanders } },
-            { nameof(ConflictPartyModel.Strength), new List<string> { Battle.ConflictParties[0].Strength } },
-            { nameof(ConflictPartyModel.Losses), new List<string> { Battle.ConflictParties[0].Losses } }
+            { nameof(ConflictPartyModel.Belligerents), new List<MarkupString> { Battle.ConflictParties[0].Belligerents } },
+            { nameof(ConflictPartyModel.Commanders), new List<MarkupString> { Battle.ConflictParties[0].Commanders } },
+            { nameof(ConflictPartyModel.Strength), new List<MarkupString> { Battle.ConflictParties[0].Strength } },
+            { nameof(ConflictPartyModel.Losses), new List<MarkupString> { Battle.ConflictParties[0].Losses } }
         };
 
         for (var i = 1; i < Battle.ConflictParties.Length; i++)

@@ -25,6 +25,7 @@ internal sealed class ApiClient
             new AnswerResultModelConverter(),
             new HistoryTopicDetailModelConverter(),
             new InternalMoneyConverter(),
+            new MarkupStringConverter(),
             new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
             new TestConclusionConverter(),
             new TestOverviewModelConverter(),

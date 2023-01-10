@@ -1,4 +1,5 @@
 using Education.Web.Client.Services.Model.Content;
+using Microsoft.AspNetCore.Components;
 
 namespace Education.Web.Client.Services.History.Topic.Model;
 
@@ -6,7 +7,7 @@ public abstract record HistoryTopicDetailModel(
     string Id,
     string Title,
     string Description,
-    string Content,
+    MarkupString Content,
     string ImageUrl,
     EpochType Epoch,
     string[] Tags
@@ -16,13 +17,13 @@ public sealed record BattleTopicDetailModel(
     string Id,
     string Title,
     string Description,
-    string Content,
+    MarkupString Content,
     string ImageUrl,
     EpochType Epoch,
     HistoricalDateModel? Started,
     HistoricalDateModel? Finished,
-    string Location,
-    string Result,
+    MarkupString Location,
+    MarkupString Result,
     ImageModel? Map,
     string[] Tags,
     ConflictPartyModel[] ConflictParties
@@ -32,7 +33,7 @@ public sealed record EmpireTopicDetailModel(
     string Id,
     string Title,
     string Description,
-    string Content,
+    MarkupString Content,
     string ImageUrl,
     ImageModel? Flag,
     ImageModel? Map,
@@ -49,7 +50,7 @@ public sealed record GeneralTopicDetailModel(
     string Id,
     string Title,
     string Description,
-    string Content,
+    MarkupString Content,
     string ImageUrl,
     EpochType Epoch,
     string[] Tags
@@ -59,7 +60,7 @@ public sealed record PersonTopicDetailModel(
     string Id,
     string Title,
     string Description,
-    string Content,
+    MarkupString Content,
     string ImageUrl,
     EpochType Epoch,
     PersonBirthdayModel? Born,

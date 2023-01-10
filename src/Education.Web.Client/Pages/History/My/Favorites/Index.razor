@@ -129,8 +129,8 @@
         var data = await UserService.GetFavoritesAsync(_request);
         if (data.IsSuccess)
         {
-            _request = _request with { Token = data.Data.Next };
-            _items.AddRange(data.Data.Items);
+            _request = _request with { Token = data.Value.Next };
+            _items.AddRange(data.Value.Items);
         }
 
         _isEmpty = _items.Count == 0;
@@ -152,8 +152,8 @@
         if (data.IsFailed)
             return new ItemsProviderResult<UserTopicOverviewModel>(_items, GetLength());
 
-        _request = _request with { Token = data.Data.Next };
-        _items.AddRange(data.Data.Items);
+        _request = _request with { Token = data.Value.Next };
+        _items.AddRange(data.Value.Items);
 
         return new ItemsProviderResult<UserTopicOverviewModel>(_items.Skip(request.StartIndex), GetLength());
     }
@@ -161,7 +161,7 @@
     private async Task<bool> OnFavoriteClick(string topicId)
     {
         var result = await UserService.ToggleFavoriteAsync(topicId);
-        return result is { IsSuccess: true, Data: true };
+        return result is { IsSuccess: true, Value: true };
     }
 
     private Task OnSortChanged(FavoritesRequest.SortType sort)

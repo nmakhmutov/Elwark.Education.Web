@@ -5,7 +5,7 @@
 </div>
 
 @code {
-    private int _amount;
+    private uint _amount;
     private string? _icon;
     private string? _blockClass;
     private string? _iconClass;
@@ -36,7 +36,7 @@
         (_icon, _amount) = Money switch {
             Experience x => (EduIcons.Experience,x.Amount),
             Silver x => (EduIcons.Silver,x.Amount),
-            _ => (Icons.Outlined.Money,0)
+            _ => (Icons.Outlined.Money,0u)
             };
     }
 

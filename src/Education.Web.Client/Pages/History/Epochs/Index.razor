@@ -22,14 +22,13 @@
                         OnFavoriteClick="@OnFavoriteClick"/>
                 }
             </EduFillGrid>
-            <MudStack Row Justify="Justify.Center">
-                <MudPagination
-                    DisableElevation
-                    Rectangular
-                    Selected="@CurrentPage"
-                    SelectedChanged="@OnPagination"
-                    Count="@((int)_result.Data.Pages)"/>
-            </MudStack>
+            <MudPagination
+                Class="d-flex justify-center py-3 py-sm-6"
+                Rectangular
+                DisableElevation
+                Selected="@CurrentPage"
+                SelectedChanged="@OnPagination"
+                Count="@TotalPages"/>
         </EduContainer>
     </ApiViewer>
 </EduPage>
@@ -48,7 +47,7 @@
 
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
-    
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -61,6 +60,10 @@
     [Parameter, SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; } = 1;
 
+    private int TotalPages => _result.IsSuccess 
+        ? (int)double.Ceiling((double)_result.Value.Count / _request.Limit) 
+        : 1;
+
     protected override async Task OnParametersSetAsync()
     {
         _result = ApiResult<PagingOffsetModel<UserTopicOverviewModel>>.Loading();
@@ -68,7 +71,7 @@
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
         {
-            _request = _request with { Epoch = type, Page = CurrentPage };
+            _request = _request with { Epoch = type, Offset = (CurrentPage - 1) * _request.Limit };
             _result = await TopicService.GetAsync(_request);
         }
         else
@@ -81,7 +84,7 @@
     private async Task<bool> OnFavoriteClick(string topicId)
     {
         var result = await UserService.ToggleFavoriteAsync(topicId);
-        return result is { IsSuccess: true, Data: true };
+        return result is { IsSuccess: true, Value: true };
     }
 
     private void OnPagination(int page)

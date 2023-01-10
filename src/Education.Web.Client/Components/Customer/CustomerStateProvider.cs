@@ -55,12 +55,12 @@ internal sealed class CustomerStateProvider
     {
         var customer = await _service.GetAsync();
         if (customer.IsSuccess)
-            return customer.Data;
+            return customer.Value;
 
         if (!customer.Error.IsUserNotFound())
             return null;
 
         var result = await _service.CreateAsync();
-        return result.IsSuccess ? result.Data : null;
+        return result.IsSuccess ? result.Value : null;
     }
 }

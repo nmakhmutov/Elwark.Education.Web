@@ -23,8 +23,8 @@ public sealed class ApiResult<T>
     public bool IsLoaded =>
         Status != Status.Loading;
 
-    public T Data =>
-        _data ?? throw new ArgumentNullException(nameof(Data));
+    public T Value =>
+        _data ?? throw new ArgumentNullException(nameof(Value));
 
     public Error Error =>
         _error ?? throw new ArgumentNullException(nameof(Error));
@@ -42,6 +42,6 @@ public sealed class ApiResult<T>
 public enum Status
 {
     Loading,
-    Fail,
-    Success
+    Success,
+    Fail
 }

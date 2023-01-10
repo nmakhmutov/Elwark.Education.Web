@@ -3,7 +3,7 @@
 @using Education.Web.Client.Services.Model.Content
 @using Education.Web.Client.Services.History
 
-<EduContainer Class="pa-0" MaxWidth="EduWidth.W1920">
+<EduContainer Class="pa-0 pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
     <div class="header">
         <div class="image">
             <MudImage Src="@Person.ImageUrl" Fluid Alt="@Person.Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
@@ -44,23 +44,26 @@
         </div>
     </div>
 
-    <div class="details">
-        @foreach (var (title, text) in Person.Details)
-        {
-            <div class="pa-3 px-sm-6">
-                <MudText Class="title" Typo="Typo.subtitle1" Color="Color.Tertiary">
-                    @title
-                </MudText>
-                <EduMarkdown Content="@text"/>
-            </div>
-        }
-    </div>
+    @if (Person.Details.Length > 0)
+    {
+        <div class="details pt-6 pb-sm-3">
+            @foreach (var (title, text) in Person.Details)
+            {
+                <div class="pa-3 px-sm-6">
+                    <MudText Class="title" Typo="Typo.subtitle1" Color="Color.Tertiary">
+                        @title
+                    </MudText>
+                    <EduMarkdown Content="@text" DisableParagraphIndent/>
+                </div>
+            }
+        </div>
+    }
 </EduContainer>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
+<EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1440">
     <section class="grid">
         <TopicFormatToolbar Class="toolbar"/>
-        
+
         <TopicContent Class="content" Content="@Person.Content"/>
 
         <TopicTest Class="test" TopicId="@Person.Id" HasTest="@HasTest" UserActivity="@UserActivity"/>

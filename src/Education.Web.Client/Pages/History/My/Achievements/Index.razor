@@ -74,7 +74,7 @@
     {
         _result = await UserService.GetAchievementsAsync();
         if (_result.IsSuccess)
-            _subtitle = $"{_result.Data.Completed} / {_result.Data.Total}";
+            _subtitle = $"{_result.Value.Completed} / {_result.Value.Total}";
     }
 
 }

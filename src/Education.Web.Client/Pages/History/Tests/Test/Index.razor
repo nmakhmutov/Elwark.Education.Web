@@ -181,9 +181,9 @@
             return;
         }
 
-        _test = _result.Data.Overview;
-        _currentQuestion = _result.Data.Question;
-        _inventory = _result.Data.Inventory;
+        _test = _result.Value.Overview;
+        _currentQuestion = _result.Value.Question;
+        _inventory = _result.Value.Inventory;
         _testType = _test switch {
             EasyTestOverviewModel => L["Test:Easy"],
             HardTestOverviewModel => L["Test:Hard"],
@@ -248,10 +248,10 @@
             return;
         }
 
-        _test = result.Data.Overview;
-        _inventory = result.Data.Inventory;
-        _nextQuestion = result.Data.NextQuestion;
-        _correctAnswer = result.Data.Answer;
+        _test = result.Value.Overview;
+        _inventory = result.Value.Inventory;
+        _nextQuestion = result.Value.NextQuestion;
+        _correctAnswer = result.Value.Answer;
 
         StateHasChanged();
     }
@@ -281,15 +281,15 @@
             return;
         }
 
-        if (test.Data.Question is null)
+        if (test.Value.Question is null)
         {
             Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
             return;
         }
 
-        _test = test.Data.Overview;
-        _currentQuestion = test.Data.Question;
-        _inventory = test.Data.Inventory;
+        _test = test.Value.Overview;
+        _currentQuestion = test.Value.Question;
+        _inventory = test.Value.Inventory;
     }
 
 }

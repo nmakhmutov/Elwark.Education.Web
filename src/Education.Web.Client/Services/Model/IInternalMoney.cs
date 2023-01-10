@@ -2,9 +2,9 @@ namespace Education.Web.Client.Services.Model;
 
 public interface IInternalMoney
 {
-    public int Amount { get; }
+    public uint Amount { get; }
 }
 
-public sealed record Experience(int Amount) : IInternalMoney;
+public sealed record Experience(uint Amount) : IInternalMoney;
 
-public sealed record Silver(int Amount) : IInternalMoney;
+public sealed record Silver(uint Amount) : IInternalMoney;
