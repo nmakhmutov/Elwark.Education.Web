@@ -13,9 +13,9 @@ internal sealed class AnswerResultModelConverter : JsonConverter<AnswerResultMod
 
         return type switch
         {
-            "short" => document.Deserialize<ShortAnswerResultModel>(options),
-            "single" => document.Deserialize<SingleAnswerResultModel>(options),
-            "multiple" => document.Deserialize<MultipleAnswersResultModel>(options),
+            "short" => document.Deserialize<AnswerResultModel.ShortAnswerResultModel>(options),
+            "single" => document.Deserialize<AnswerResultModel.SingleAnswerResultModel>(options),
+            "multiple" => document.Deserialize<AnswerResultModel.MultipleAnswersResultModel>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(AnswerResultModel), type, @"Unknown answer result")
         };
     }

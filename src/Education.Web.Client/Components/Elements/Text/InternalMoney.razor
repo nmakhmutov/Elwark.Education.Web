@@ -1,4 +1,5 @@
 @using MudBlazor.Utilities
+
 <div class="@_blockClass">
     <MudIcon Size="@IconSize" Class="@_iconClass" Icon="@_icon"/>
     <ReadableNumber Value="@_amount" Typo="@Typo"/>
@@ -28,6 +29,7 @@
     protected override void OnParametersSet()
     {
         _iconClass = Horizontal ? "mr-1" : "mb-1";
+
         _blockClass = CssBuilder.Default("d-flex align-center")
             .AddClass(Horizontal ? "flex-row" : "flex-column")
             .AddClass(Class)

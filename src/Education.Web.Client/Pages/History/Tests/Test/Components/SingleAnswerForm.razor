@@ -23,13 +23,13 @@
                     <MudRadio Disabled="@(CorrectAnswer != null)" Color="Color.Primary" Option="@option.Id">
                         @switch (option)
                         {
-                            case ImageAnswerOptionModel x:
+                            case AnswerOptionModel.ImageAnswerOptionModel x:
                                 <div class="image">
                                     <img src="@x.Image" alt="@x.Id"/>
                                 </div>
                                 break;
 
-                            case TextAnswerOptionModel x:
+                            case AnswerOptionModel.TextAnswerOptionModel x:
                                 <MudText Typo="Typo.body1">
                                     @x.Text
                                 </MudText>
@@ -114,7 +114,7 @@
     public SingleAnswerModel UserAnswer { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public SingleAnswerResultModel? CorrectAnswer { get; set; }
+    public AnswerResultModel.SingleAnswerResultModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
     public AnswerOptionModel[] Options { get; set; } = Array.Empty<AnswerOptionModel>();

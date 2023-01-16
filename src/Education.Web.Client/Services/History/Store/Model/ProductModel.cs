@@ -7,6 +7,7 @@ public sealed record ProductModel(
     uint Id,
     string Title,
     string ImageUrl,
+    uint InventoryWeight,
     ProductModel.PriceModel Selling,
     ProductModel.PriceModel Purchasing,
     UserInventoryModel[] Inventories

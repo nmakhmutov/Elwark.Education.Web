@@ -43,12 +43,12 @@
 
                             @switch (_currentQuestion)
                             {
-                                case MultipleAnswerQuestionModel question:
+                                case TestQuestionModel.MultipleAnswerQuestionModel question:
                                 {
                                     <MultipleAnswerForm
                                         IsLoading="@_checking"
                                         IsTestCompleted="@IsCompleted"
-                                        CorrectAnswer="@(_correctAnswer as MultipleAnswersResultModel)"
+                                        CorrectAnswer="@(_correctAnswer as AnswerResultModel.MultipleAnswersResultModel)"
                                         UserAnswer="@(_userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel())"
                                         Options="@question.Options"
                                         OnAnswer="@OnMultiplyAnswer"
@@ -57,12 +57,12 @@
                                     break;
                                 }
 
-                                case ShortAnswerQuestionModel:
+                                case TestQuestionModel.ShortAnswerQuestionModel:
                                 {
                                     <ShortAnswerForm
                                         IsLoading="@_checking"
                                         IsTestCompleted="@IsCompleted"
-                                        CorrectAnswer="@(_correctAnswer as ShortAnswerResultModel)"
+                                        CorrectAnswer="@(_correctAnswer as AnswerResultModel.ShortAnswerResultModel)"
                                         UserAnswer="@(_userAnswer as ShortAnswerModel ?? new ShortAnswerModel())"
                                         OnAnswer="@OnShortAnswer"
                                         OnNext="@OnNext"
@@ -70,12 +70,12 @@
                                     break;
                                 }
 
-                                case SingleAnswerQuestionModel question:
+                                case TestQuestionModel.SingleAnswerQuestionModel question:
                                 {
                                     <SingleAnswerForm
                                         IsLoading="@_checking"
                                         IsTestCompleted="@IsCompleted"
-                                        CorrectAnswer="@(_correctAnswer as SingleAnswerResultModel)"
+                                        CorrectAnswer="@(_correctAnswer as AnswerResultModel.SingleAnswerResultModel)"
                                         UserAnswer="@(_userAnswer as SingleAnswerModel ?? new SingleAnswerModel())"
                                         Options="@question.Options"
                                         OnAnswer="@OnSingleAnswer"
@@ -185,9 +185,9 @@
         _currentQuestion = _result.Value.Question;
         _inventory = _result.Value.Inventory;
         _testType = _test switch {
-            EasyTestOverviewModel => L["Test:Easy"],
-            HardTestOverviewModel => L["Test:Hard"],
-            MixedTestOverviewModel => L["Test:Mixed"],
+            TestOverviewModel.EasyTestOverviewModel => L["Test:Easy"],
+            TestOverviewModel.HardTestOverviewModel => L["Test:Hard"],
+            TestOverviewModel.MixedTestOverviewModel => L["Test:Mixed"],
             _ => string.Empty
             };
     }

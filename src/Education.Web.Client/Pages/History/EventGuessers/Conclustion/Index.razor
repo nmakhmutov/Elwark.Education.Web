@@ -49,13 +49,13 @@
                         <HistoryDate Typo="Typo.body2" Date="@context.UserAnswer" Color="@(context.IsCorrect ? Color.Success : Color.Error)"/>
                     </MudTd>
                     <MudTd DataLabel="@L["EventGuesser:Points"]">
-                        @context.Points
+                        @context.Score.Points
                     </MudTd>
                     <MudTd DataLabel="@L["EventGuesser:Bonus"]">
-                        @context.Bonus
+                        @context.Score.Bonus
                     </MudTd>
                     <MudTd DataLabel="@L["EventGuesser:Score"]">
-                        @context.Score
+                        @context.Score.Total
                     </MudTd>
                 </RowTemplate>
                 <PagerContent>
@@ -98,7 +98,7 @@
             return;
         }
 
-        _progress = Math.Round((double)_result.Value.Score / _result.Value.MaxScore * 100);
+        _progress = Math.Round((double)_result.Value.Score.Total / _result.Value.MaxScore * 100);
     }
 
 }

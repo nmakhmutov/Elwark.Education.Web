@@ -35,16 +35,18 @@ internal sealed class ApiClient
 
     private readonly ApiAnonymousClient _anonymous;
     private readonly ApiAuthenticatedClient _authenticated;
-    private readonly AuthenticationStateProvider _provider;
     private readonly IStringLocalizer<App> _localizer;
+    private readonly ILogger<ApiClient> _logger;
+    private readonly AuthenticationStateProvider _provider;
 
     public ApiClient(ApiAnonymousClient anonymous, ApiAuthenticatedClient authenticated,
-        AuthenticationStateProvider provider, IStringLocalizer<App> localizer)
+        IStringLocalizer<App> localizer, ILogger<ApiClient> logger, AuthenticationStateProvider provider)
     {
         _anonymous = anonymous;
         _authenticated = authenticated;
-        _provider = provider;
         _localizer = localizer;
+        _logger = logger;
+        _provider = provider;
     }
 
     public async Task<ApiResult<T>> GetAsync<T>(string uri, IQueryStringRequest? request = null)
@@ -93,7 +95,7 @@ internal sealed class ApiClient
                 (>= 200 and < 300, false) => ApiResult<T>.Success(default!),
 
                 (403, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:AccessDenied"], 403)),
-                
+
                 (404, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:NotFound"], 404)),
 
                 (_, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:InternalServerError"], 500)),
@@ -114,8 +116,9 @@ internal sealed class ApiClient
         {
             return ApiResult<T>.Fail(Error.Create(_localizer["Error:RequestTimeout"], 408));
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogCritical(ex, "Api error occured");
             return ApiResult<T>.Fail(Error.Create(_localizer["Error:BadGateway"], 502));
         }
     }

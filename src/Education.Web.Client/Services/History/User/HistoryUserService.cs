@@ -1,9 +1,10 @@
 using Education.Web.Client.Services.Api;
 using Education.Web.Client.Services.History.User.Model;
+using Education.Web.Client.Services.History.User.Model.EventGuesser;
+using Education.Web.Client.Services.History.User.Model.Test;
 using Education.Web.Client.Services.History.User.Request;
 using Education.Web.Client.Services.Model;
 using Education.Web.Client.Services.Model.Quest;
-using Education.Web.Client.Services.Model.Statistics;
 
 namespace Education.Web.Client.Services.History.User;
 
@@ -53,8 +54,14 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<TestStatisticsModel>> GetMixedTestStatisticsAsync() =>
         _api.GetAsync<TestStatisticsModel>("history/users/me/tests/mixed");
 
-    public Task<ApiResult<EventGuesserStatisticsModel>> GetEventGuesserStatisticsAsync() =>
-        _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers");
+    public Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync() =>
+        _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers/small");
+
+    public Task<ApiResult<EventGuesserStatisticsModel>> GetMediumEventGuesserStatisticsAsync() =>
+        _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers/medium");
+
+    public Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync() =>
+        _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers/large");
 
     public Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request) =>
         _api.GetAsync<PagingTokenModel<UserTopicOverviewModel>>("history/users/me/favorites", request);

@@ -6,7 +6,7 @@
         <MudIcon Icon="@EduIcons.Level" Size="Size.Small"/>
     </header>
 
-    <MudProgressLinear Class="mb-1" Rounded Color="Color.Primary" Size="Size.Medium" Max="@NextLevelExperience" Value="@Experience"/>
+    <MudProgressLinear Class="mb-1" Rounded Color="Color.Primary" Size="Size.Medium" Max="@Threshold" Value="@Experience"/>
 
     <div class="d-flex justify-space-between align-start">
         <MudText Typo="Typo.body2">
@@ -15,7 +15,7 @@
         <div class="d-flex align-center">
             <ReadableNumber Value="@Experience" Typo="Typo.body2"/>
             <div>&nbsp;/&nbsp;</div>
-            <ReadableNumber Value="@NextLevelExperience" Typo="Typo.body2"/>
+            <ReadableNumber Value="@Threshold" Typo="Typo.body2"/>
             <MudIcon Icon="@EduIcons.Experience" Class="ml-1" Size="Size.Small"/>
         </div>
     </div>
@@ -37,9 +37,9 @@
     public ulong Experience { get; set; }
 
     [Parameter, EditorRequired]
-    public ulong NextLevelExperience { get; set; }
+    public ulong Threshold { get; set; }
 
     protected override void OnParametersSet() =>
-        _percentage = 100.0 * Experience / NextLevelExperience;
+        _percentage = 100.0 * Experience / Threshold;
 
 }

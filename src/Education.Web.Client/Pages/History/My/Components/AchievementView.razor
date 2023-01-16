@@ -1,8 +1,9 @@
 @using Education.Web.Client.Services.History.User.Model
+
 <section class="grid @Class">
     @switch (Achievement)
     {
-        case CompletedAchievementModel achievement:
+        case AchievementModel.CompletedModel achievement:
             <aside class="icon completed">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
@@ -16,7 +17,7 @@
             </header>
             break;
 
-        case LadderAchievementModel achievement:
+        case AchievementModel.LadderModel achievement:
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
                 <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
@@ -44,7 +45,7 @@
             </footer>
             break;
 
-        case ProgressiveAchievementModel achievement:
+        case AchievementModel.ProgressiveModel achievement:
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
@@ -98,7 +99,7 @@
             "EasyTest" => "orange accent-2 white-text",
             "HardTest" => "orange accent-3 white-text",
             "MixedTest" => "orange accent-4 white-text",
-            "EventGuesser" => "teal default white-text",
+            "AllEventGuesser" => "teal default white-text",
             _ => "green accent-4 white-text"
         };
 

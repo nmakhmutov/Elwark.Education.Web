@@ -13,9 +13,9 @@ internal sealed class AchievementModelConverter : JsonConverter<AchievementModel
 
         return type switch
         {
-            "completed" => document.Deserialize<CompletedAchievementModel>(options),
-            "ladder" => document.Deserialize<LadderAchievementModel>(options),
-            "progressive" => document.Deserialize<ProgressiveAchievementModel>(options),
+            "completed" => document.Deserialize<AchievementModel.CompletedModel>(options),
+            "ladder" => document.Deserialize<AchievementModel.LadderModel>(options),
+            "progressive" => document.Deserialize<AchievementModel.ProgressiveModel>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(AchievementModel), type, @"Unknown achievement type")
         };
     }

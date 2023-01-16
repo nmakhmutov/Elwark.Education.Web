@@ -48,7 +48,7 @@ public static class HistoryUrl
 
         public const string Monthly = $"{Root}/leaderboards/monthly";
     }
-    
+
     public static class Store
     {
         public const string Index = $"{Root}/store";
@@ -64,7 +64,11 @@ public static class HistoryUrl
 
         public const string MyMixedTests = $"{Root}/my/tests/mixed";
 
-        public const string MyEventGuessers = $"{Root}/my/event-guessers";
+        public const string MySmallEventGuessers = $"{Root}/my/event-guessers/small";
+        
+        public const string MyMediumEventGuessers = $"{Root}/my/event-guessers/medium";
+        
+        public const string MyLargeEventGuessers = $"{Root}/my/event-guessers/large";
 
         public const string MyAchievements = $"{Root}/my/achievements";
 

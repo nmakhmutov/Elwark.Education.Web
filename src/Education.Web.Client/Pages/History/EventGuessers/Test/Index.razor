@@ -18,7 +18,7 @@
                     <div class="d-flex flex-row align-center">
                         <MudIcon Icon="@EduIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
                         <MudText Typo="Typo.subtitle1">
-                            @_score
+                            @_score.Total
                         </MudText>
                     </div>
                     <MudText Typo="Typo.caption">
@@ -62,7 +62,7 @@
 @code {
 
     private ApiResult<TestModel> _result = ApiResult<TestModel>.Loading();
-    private uint _score;
+    private ScoreModel _score = new (0, 0, 0);
     private DateTime _x2BonusUntil;
     private uint _totalQuestions;
     private uint _completedQuestions;

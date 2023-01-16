@@ -1,0 +1,75 @@
+@using Education.Web.Client.Pages.History.My.Components
+@using Education.Web.Client.Pages.History.My.EventGuessers.Components
+@using Education.Web.Client.Services.History.User
+@using Education.Web.Client.Services.History.User.Model.EventGuesser
+
+@page "/history/my/event-guessers/large"
+@layout HistoryLayout
+@attribute [Authorize]
+
+<EduPage Title="@L["EventGuessers:Large"]">
+    <EduContainer Class="py-3 py-sm-6">
+        <EduPageHeader Title="@L["EventGuessers:Large"]" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
+    <ApiViewer Result="@_result" Context="result">
+        <EduContainer Class="pb-3 pb-sm-6">
+            <StatisticDetailsGrid>
+                <StatisticDetailsCard>
+                    <TotalContent>
+                        <Subheader Title="@L["EventGuesser:Score"]" Subtitle="@L["ForAllTime"]"/>
+                        <EventGuesserScoreChart Score="@result.Score"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
+                    </ProgressContent>
+                </StatisticDetailsCard>
+
+                <StatisticDetailsCard>
+                    <TotalContent>
+                        <Subheader Title="@L["EventGuesser:Questions"]" Subtitle="@L["ForAllTime"]"/>
+                        <EventGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
+                    </TotalContent>
+                    <ProgressContent>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
+                    </ProgressContent>
+                </StatisticDetailsCard>
+
+                <MudPaper Elevation="0" Class="pa-3 pa-sm-6">
+                    <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-3 mb-sm-6">
+                        <MudText Typo="Typo.h5">
+                            @L["Tests"]
+                        </MudText>
+                        <ReadableNumber Value="@result.Tests" Typo="Typo.h5"/>
+                    </MudStack>
+                    <section>
+                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                        <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
+                    </section>
+                </MudPaper>
+            </StatisticDetailsGrid>
+        </EduContainer>
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private ApiResult<EventGuesserStatisticsModel> _result = ApiResult<EventGuesserStatisticsModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["Statistics"].Value, HistoryUrl.User.MyStatistics)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await UserService.GetMediumEventGuesserStatisticsAsync();
+
+}

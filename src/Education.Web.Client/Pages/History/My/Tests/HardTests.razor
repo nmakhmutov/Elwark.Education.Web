@@ -1,7 +1,7 @@
 @using Education.Web.Client.Pages.History.My.Tests.Components
 @using Education.Web.Client.Pages.History.My.Components
-@using Education.Web.Client.Services.Model.Statistics
 @using Education.Web.Client.Services.History.User
+@using Education.Web.Client.Services.History.User.Model.Test
 
 @page "/history/my/tests/hard"
 @layout HistoryLayout
@@ -13,7 +13,7 @@
     </EduContainer>
     <ApiViewer Result="@_result" Context="result">
         <EduContainer Class="pb-3 pb-sm-6">
-            <TestPageGrid>
+            <StatisticDetailsGrid>
                 <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                     <TotalContent>
                         <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
@@ -73,7 +73,7 @@
                         <TimeSpentDailyProgressChart Progress="@result.Progress"/>
                     </ActivityContent>
                 </StatisticDetailsCard>
-            </TestPageGrid>
+            </StatisticDetailsGrid>
         </EduContainer>
     </ApiViewer>
 </EduPage>

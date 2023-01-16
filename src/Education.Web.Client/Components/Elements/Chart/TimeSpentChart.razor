@@ -1,4 +1,6 @@
 @using ApexCharts
+@using Education.Web.Client.Services.History.User.Model
+@using Education.Web.Client.Services.History.User.Model.Test
 @using Education.Web.Client.Services.Model.Test
 <div class="@Class">
     @if (Value.Total > TimeSpan.Zero)
@@ -61,7 +63,7 @@ function(value) {
     public string? Class { get; set; }
 
     [Parameter]
-    public TimeSpentModel Value { get; set; } = default!;
+    public TestStatisticsModel.TimeSpentModel Value { get; set; } = default!;
 
     private ChartList.Item[] Items => new[]
     {

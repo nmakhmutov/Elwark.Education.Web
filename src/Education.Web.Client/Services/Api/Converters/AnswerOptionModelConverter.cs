@@ -13,8 +13,8 @@ internal sealed class AnswerOptionModelConverter : JsonConverter<AnswerOptionMod
 
         return type switch
         {
-            "text" => document.Deserialize<TextAnswerOptionModel>(options),
-            "image" => document.Deserialize<ImageAnswerOptionModel>(options),
+            "text" => document.Deserialize<AnswerOptionModel.TextAnswerOptionModel>(options),
+            "image" => document.Deserialize<AnswerOptionModel.ImageAnswerOptionModel>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(AnswerOptionModel), type, @"Unknown answer option")
         };
     }

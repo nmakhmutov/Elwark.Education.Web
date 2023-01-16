@@ -26,13 +26,13 @@
                     Color="Color.Primary">
                     @switch (option)
                     {
-                        case ImageAnswerOptionModel x:
+                        case AnswerOptionModel.ImageAnswerOptionModel x:
                             <div class="image">
                                 <img src="@x.Image" alt="@x.Id"/>
                             </div>
                             break;
 
-                        case TextAnswerOptionModel x:
+                        case AnswerOptionModel.TextAnswerOptionModel x:
                             <MudText Typo="Typo.body1">
                                 @x.Text
                             </MudText>
@@ -119,7 +119,7 @@
     public MultipleAnswerModel UserAnswer { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public MultipleAnswersResultModel? CorrectAnswer { get; set; }
+    public AnswerResultModel.MultipleAnswersResultModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
     public AnswerOptionModel[] Options { get; set; } = Array.Empty<AnswerOptionModel>();

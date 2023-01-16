@@ -1,9 +1,10 @@
 using Education.Web.Client.Services.Api;
 using Education.Web.Client.Services.History.User.Model;
+using Education.Web.Client.Services.History.User.Model.EventGuesser;
+using Education.Web.Client.Services.History.User.Model.Test;
 using Education.Web.Client.Services.History.User.Request;
 using Education.Web.Client.Services.Model;
 using Education.Web.Client.Services.Model.Quest;
-using Education.Web.Client.Services.Model.Statistics;
 
 namespace Education.Web.Client.Services.History.User;
 
@@ -33,7 +34,11 @@ public interface IHistoryUserService
 
     Task<ApiResult<TestStatisticsModel>> GetMixedTestStatisticsAsync();
 
-    Task<ApiResult<EventGuesserStatisticsModel>> GetEventGuesserStatisticsAsync();
+    Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync();
+    
+    Task<ApiResult<EventGuesserStatisticsModel>> GetMediumEventGuesserStatisticsAsync();
+    
+    Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync();
 
     Task<ApiResult<AchievementsDetailModel>> GetAchievementsAsync();
 

@@ -4,8 +4,8 @@ using Education.Web.Client.Services.Model.Content;
 namespace Education.Web.Client.Services.History.EventGuesser.Model;
 
 public sealed record ConclusionModel(
-    uint Score,
     uint MaxScore,
+    ScoreModel Score,
     IInternalMoney[] Rewards,
     QuestionModel[] Questions
 );
@@ -13,9 +13,7 @@ public sealed record ConclusionModel(
 public sealed record QuestionModel(
     TopicTitleModel Topic,
     string Title,
-    uint Points,
-    uint Bonus,
-    uint Score,
+    ScoreModel Score,
     HistoricalDateModel CorrectAnswer,
     HistoricalDateModel UserAnswer
 )

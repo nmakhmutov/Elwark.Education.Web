@@ -1,4 +1,4 @@
-namespace Education.Web.Client.Services.Model.Test;
+namespace Education.Web.Client.Services.History.User.Model.Test;
 
 public sealed record NumberOfTestsModel(
     uint Succeeded,

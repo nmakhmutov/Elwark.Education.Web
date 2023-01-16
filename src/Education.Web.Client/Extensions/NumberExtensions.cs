@@ -2,6 +2,8 @@ namespace Education.Web.Client.Extensions;
 
 public static class NumberExtensions
 {
+    private static readonly char[] Prefixes = { ' ', 'K', 'M', 'B', 'T', 'Q' };
+
     public static string ToReadable(this int number) =>
         ToReadable((double)number);
 
@@ -14,24 +16,12 @@ public static class NumberExtensions
     public static string ToReadable(this ulong number) =>
         ToReadable((double)number);
 
-    public static string ToReadable(this double number) =>
-        ToReadable((decimal)number);
-
-    public static string ToReadable(this decimal number)
+    public static string ToReadable(this double number)
     {
-        var value = Math.Abs(number);
-        var i = (long)Math.Pow(10, (int)Math.Max(0, Math.Log10(decimal.ToDouble(value)) - 2));
-        var result = value / i * i;
+        var degree = (int)Math.Floor(Math.Log10(Math.Abs(number)) / 3);
+        var scaled = number * Math.Pow(1000, -degree);
+        var prefix = Prefixes[int.Max(0, degree)];
 
-        var formatted = Math.Abs(result) switch
-        {
-            >= 1_000_000_000_000 => $"{result / 1_000_000_000_000:0.#}T",
-            >= 1_000_000_000 => $"{result / 1_000_000_000:0.#}B",
-            >= 1_000_000 => $"{result / 1_000_000:0.#}M",
-            >= 1_000 => $"{result / 1_000:0.#}K",
-            _ => result.ToString("#,0")
-        };
-        
-        return number >= 0 ? formatted : $"-{formatted}";
+        return $"{Math.Round(scaled, 1)}{prefix}";
     }
 }

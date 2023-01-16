@@ -4,52 +4,70 @@
     <MudText Typo="Typo.h5">
         @Title
     </MudText>
-        <ApexChart @ref="@_chart" TItem="HistoryUserStatisticsModel.Progress" Options="_options">
-            <ApexPointSeries
-                TItem="HistoryUserStatisticsModel.Progress"
-                Items="Activities"
-                Name="@L["NumberOfTests:Total"]"
-                Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
-                SeriesType="SeriesType.Area"
-                XValue="@(e => e.Date.ToString(DateFormat))"
-                YValue="@(x => x.Total)"/>
+    <ApexChart @ref="@_chart" TItem="HistoryUserStatisticsModel.Progress" Options="_options">
+        <ApexPointSeries
+            TItem="HistoryUserStatisticsModel.Progress"
+            Items="Activities"
+            Name="@L["NumberOfTests:Total"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.Total)"/>
 
-            <ApexPointSeries
-                TItem="HistoryUserStatisticsModel.Progress"
-                Items="Activities"
-                Name="@L["Tests:Easy"]"
-                Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten1 })"
-                SeriesType="SeriesType.Area"
-                XValue="@(e => e.Date.ToString(DateFormat))"
-                YValue="@(x => x.EasyTests)"/>
+        <ApexPointSeries
+            TItem="HistoryUserStatisticsModel.Progress"
+            Items="Activities"
+            Name="@L["Tests:Easy"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten1 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.EasyTests)"/>
 
-            <ApexPointSeries
-                TItem="HistoryUserStatisticsModel.Progress"
-                Items="Activities"
-                Name="@L["Tests:Hard"]"
-                Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Darken2 })"
-                SeriesType="SeriesType.Area"
-                XValue="@(e => e.Date.ToString(DateFormat))"
-                YValue="@(x => x.HardTests)"/>
+        <ApexPointSeries
+            TItem="HistoryUserStatisticsModel.Progress"
+            Items="Activities"
+            Name="@L["Tests:Hard"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Darken2 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.HardTests)"/>
 
-            <ApexPointSeries
-                TItem="HistoryUserStatisticsModel.Progress"
-                Items="Activities"
-                Name="@L["Tests:Mixed"]"
-                Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Indigo.Darken1 })"
-                SeriesType="SeriesType.Area"
-                XValue="@(e => e.Date.ToString(DateFormat))"
-                YValue="@(x => x.MixedTests)"/>
+        <ApexPointSeries
+            TItem="HistoryUserStatisticsModel.Progress"
+            Items="Activities"
+            Name="@L["Tests:Mixed"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Indigo.Darken1 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.MixedTests)"/>
 
-            <ApexPointSeries
-                TItem="HistoryUserStatisticsModel.Progress"
-                Items="Activities"
-                Name="@L["EventGuesser"]"
-                Stroke="@(new SeriesStroke { Width = 3, Color = Colors.DeepOrange.Default })"
-                SeriesType="SeriesType.Area"
-                XValue="@(e => e.Date.ToString(DateFormat))"
-                YValue="@(x => x.EventGuessers)"/>
-        </ApexChart>
+        <ApexPointSeries
+            TItem="HistoryUserStatisticsModel.Progress"
+            Items="Activities"
+            Name="@L["EventGuessers:Small"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Teal.Lighten2 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.SmallEventGuessers)"/>
+
+        <ApexPointSeries
+            TItem="HistoryUserStatisticsModel.Progress"
+            Items="Activities"
+            Name="@L["EventGuessers:Medium"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Teal.Darken1 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.MediumEventGuessers)"/>
+
+        <ApexPointSeries
+            TItem="HistoryUserStatisticsModel.Progress"
+            Items="Activities"
+            Name="@L["EventGuessers:Large"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Teal.Darken3 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.LargeEventGuessers)"/>
+    </ApexChart>
 </section>
 
 @code {
@@ -102,4 +120,5 @@
         _options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
     }
+
 }

@@ -44,7 +44,6 @@ else
             long i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
             ulong i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
             double i => (i.ToReadable(), i > 999 ? i.ToString("N2") : null),
-            decimal i => (i.ToReadable(), i > 999 ? i.ToString("N2") : null),
             string s => (s, null),
             _ => (Value?.ToString() ?? string.Empty, null)
             };

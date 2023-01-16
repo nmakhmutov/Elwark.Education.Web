@@ -13,9 +13,9 @@ internal sealed class TestConclusionConverter : JsonConverter<TestConclusionMode
 
         return type switch
         {
-            "easy" => document.Deserialize<EasyTestConclusionModel>(options),
-            "hard" => document.Deserialize<HardTestConclusionModel>(options),
-            "mixed" => document.Deserialize<MixedTestConclusionModel>(options),
+            "easy" => document.Deserialize<TestConclusionModel.EasyTestConclusionModel>(options),
+            "hard" => document.Deserialize<TestConclusionModel.HardTestConclusionModel>(options),
+            "mixed" => document.Deserialize<TestConclusionModel.MixedTestConclusionModel>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, @"Unknown test conclusion")
         };
     }

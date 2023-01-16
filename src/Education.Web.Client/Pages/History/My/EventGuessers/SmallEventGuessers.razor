@@ -1,41 +1,38 @@
-@using Education.Web.Client.Pages.History.My.Tests.Components
 @using Education.Web.Client.Pages.History.My.Components
-@using Education.Web.Client.Services.History.User.Model
+@using Education.Web.Client.Pages.History.My.EventGuessers.Components
 @using Education.Web.Client.Services.History.User
+@using Education.Web.Client.Services.History.User.Model.EventGuesser
 
-@page "/history/my/event-guessers"
+@page "/history/my/event-guessers/small"
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@L["EventGuesser"]">
+<EduPage Title="@L["EventGuessers:Small"]">
     <EduContainer Class="py-3 py-sm-6">
-        <EduPageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Title="@L["EventGuessers:Small"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
     <ApiViewer Result="@_result" Context="result">
         <EduContainer Class="pb-3 pb-sm-6">
-            <TestPageGrid>
+            <StatisticDetailsGrid>
                 <StatisticDetailsCard>
                     <TotalContent>
                         <Subheader Title="@L["EventGuesser:Score"]" Subtitle="@L["ForAllTime"]"/>
-                        <EventGuesserScoreChart Bonus="@result.Bonus" Points="@result.Points" Score="@result.Score"/>
+                        <EventGuesserScoreChart Score="@result.Score"/>
                     </TotalContent>
                     <ProgressContent>
                         <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                        <ProgressList Items="@GetScore(result.RangeContrast)"/>
+                        <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
 
                 <StatisticDetailsCard>
                     <TotalContent>
                         <Subheader Title="@L["EventGuesser:Questions"]" Subtitle="@L["ForAllTime"]"/>
-                        <EventGuesserQuestionChart
-                            Correct="@result.Correct"
-                            Incorrect="@result.Incorrect"
-                            Questions="@result.Questions"/>
+                        <EventGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
                     </TotalContent>
                     <ProgressContent>
                         <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                        <ProgressList Items="@GetQuestions(result.RangeContrast)"/>
+                        <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
                     </ProgressContent>
                 </StatisticDetailsCard>
 
@@ -48,15 +45,16 @@
                     </MudStack>
                     <section>
                         <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                        <ProgressList Items="@GetTest(result.RangeContrast)"/>
+                        <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
                     </section>
                 </MudPaper>
-            </TestPageGrid>
+            </StatisticDetailsGrid>
         </EduContainer>
     </ApiViewer>
 </EduPage>
 
 @code {
+    private ApiResult<EventGuesserStatisticsModel> _result = ApiResult<EventGuesserStatisticsModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -65,8 +63,6 @@
         new BreadcrumbItem(L["Statistics"].Value, HistoryUrl.User.MyStatistics)
     };
 
-    private ApiResult<EventGuesserStatisticsModel> _result = ApiResult<EventGuesserStatisticsModel>.Loading();
-
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -74,28 +70,6 @@
     private IHistoryUserService UserService { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _result = await UserService.GetEventGuesserStatisticsAsync();
-
-    private ProgressList.Item[] GetTest(EventGuesserStatisticsModel.Contrast progress) =>
-        new ProgressList.Item[]
-        {
-            new(L["Tests"], progress.Tests.Current.ToReadable(), progress.Tests.Difference)
-        };
-
-    private ProgressList.Item[] GetScore(EventGuesserStatisticsModel.Contrast progress) =>
-        new ProgressList.Item[]
-        {
-            new(L["EventGuesser:Score"], progress.Score.Current.ToReadable(), progress.Score.Difference),
-            new(L["EventGuesser:Points"], progress.Points.Current.ToReadable(), progress.Points.Difference),
-            new(L["EventGuesser:Bonus"], progress.Bonus.Current.ToReadable(), progress.Bonus.Difference)
-        };
-
-    private ProgressList.Item[] GetQuestions(EventGuesserStatisticsModel.Contrast progress) =>
-        new ProgressList.Item[]
-        {
-            new(L["EventGuesser:Questions"], progress.Questions.Current.ToReadable(), progress.Questions.Difference),
-            new(L["EventGuesser:Correct"], progress.Correct.Current.ToReadable(), progress.Correct.Difference),
-            new(L["EventGuesser:Incorrect"], progress.Incorrect.Current.ToReadable(), progress.Incorrect.Difference)
-        };
+        _result = await UserService.GetSmallEventGuesserStatisticsAsync();
 
 }

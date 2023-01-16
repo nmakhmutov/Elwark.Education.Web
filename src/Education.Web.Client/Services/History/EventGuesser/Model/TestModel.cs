@@ -5,7 +5,7 @@ namespace Education.Web.Client.Services.History.EventGuesser.Model;
 public sealed record TestModel(
     string Id,
     DateTime X2BonusUntil,
-    uint Score,
+    ScoreModel Score,
     uint CompletedQuestions,
     uint TotalQuestions,
     TestModel.QuestionModel? Question,

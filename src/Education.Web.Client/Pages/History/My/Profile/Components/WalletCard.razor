@@ -99,23 +99,23 @@
 
     protected override void OnParametersSet()
     {
-        var current = Silver.Accounting[0].Balance;
-        var last = Silver.Accounting[1].Balance;
+        var start = (double)Silver.Accounting[0].Balance;
+        var end = (double)Silver.Accounting[1].Balance;
 
-        _tendingValue = (current * 100.0 / last) switch
+        _tendingValue = ((start - end) / end * 100) switch
         {
             double.NaN => 0,
             double.PositiveInfinity => 100,
             double.NegativeInfinity => -100,
-            var x => Math.Round(x, 1)
-            };
+            var x => start > end ? Math.Abs(x) : -Math.Abs(x)
+        };
 
         _tendingIcon = _tendingValue switch
         {
             > 0 => Icons.Outlined.TrendingUp,
             < 0 => Icons.Outlined.TrendingDown,
             _ => Icons.Outlined.TrendingFlat
-            };
+        };
     }
 
 }
