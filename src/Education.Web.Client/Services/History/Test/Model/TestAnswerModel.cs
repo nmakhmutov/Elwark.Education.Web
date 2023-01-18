@@ -4,8 +4,8 @@ using Education.Web.Client.Services.Model.Test;
 namespace Education.Web.Client.Services.History.Test.Model;
 
 public sealed record TestAnswerModel(
-    TestOverviewModel Overview,
-    AnswerResultModel Answer,
-    TestQuestionModel? NextQuestion,
+    TestOverview Overview,
+    AnswerResult Answer,
+    TestQuestion? NextQuestion,
     TestInventoryModel[] Inventory
 );

@@ -43,12 +43,12 @@
 
                             @switch (_currentQuestion)
                             {
-                                case TestQuestionModel.MultipleAnswerQuestionModel question:
+                                case TestQuestion.MultipleModel question:
                                 {
                                     <MultipleAnswerForm
                                         IsLoading="@_checking"
                                         IsTestCompleted="@IsCompleted"
-                                        CorrectAnswer="@(_correctAnswer as AnswerResultModel.MultipleAnswersResultModel)"
+                                        CorrectAnswer="@(_correctAnswer as AnswerResult.MultipleModel)"
                                         UserAnswer="@(_userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel())"
                                         Options="@question.Options"
                                         OnAnswer="@OnMultiplyAnswer"
@@ -57,12 +57,12 @@
                                     break;
                                 }
 
-                                case TestQuestionModel.ShortAnswerQuestionModel:
+                                case TestQuestion.ShortModel:
                                 {
                                     <ShortAnswerForm
                                         IsLoading="@_checking"
                                         IsTestCompleted="@IsCompleted"
-                                        CorrectAnswer="@(_correctAnswer as AnswerResultModel.ShortAnswerResultModel)"
+                                        CorrectAnswer="@(_correctAnswer as AnswerResult.ShortModel)"
                                         UserAnswer="@(_userAnswer as ShortAnswerModel ?? new ShortAnswerModel())"
                                         OnAnswer="@OnShortAnswer"
                                         OnNext="@OnNext"
@@ -70,12 +70,12 @@
                                     break;
                                 }
 
-                                case TestQuestionModel.SingleAnswerQuestionModel question:
+                                case TestQuestion.SingleModel question:
                                 {
                                     <SingleAnswerForm
                                         IsLoading="@_checking"
                                         IsTestCompleted="@IsCompleted"
-                                        CorrectAnswer="@(_correctAnswer as AnswerResultModel.SingleAnswerResultModel)"
+                                        CorrectAnswer="@(_correctAnswer as AnswerResult.SingleModel)"
                                         UserAnswer="@(_userAnswer as SingleAnswerModel ?? new SingleAnswerModel())"
                                         Options="@question.Options"
                                         OnAnswer="@OnSingleAnswer"
@@ -138,11 +138,11 @@
     private ApiResult<TestModel> _result = ApiResult<TestModel>.Loading();
     private TestInventoryModel[] _inventory = Array.Empty<TestInventoryModel>();
     private Color _countdownColor = Color.Default;
-    private TestOverviewModel _test = default!;
-    private TestQuestionModel _currentQuestion = default!;
-    private TestQuestionModel? _nextQuestion;
+    private TestOverview _test = default!;
+    private TestQuestion _currentQuestion = default!;
+    private TestQuestion? _nextQuestion;
     private AnswerToQuestionModel? _userAnswer;
-    private AnswerResultModel? _correctAnswer;
+    private AnswerResult? _correctAnswer;
     private bool _checking;
     private string _testType = string.Empty;
 
@@ -185,9 +185,9 @@
         _currentQuestion = _result.Value.Question;
         _inventory = _result.Value.Inventory;
         _testType = _test switch {
-            TestOverviewModel.EasyTestOverviewModel => L["Test:Easy"],
-            TestOverviewModel.HardTestOverviewModel => L["Test:Hard"],
-            TestOverviewModel.MixedTestOverviewModel => L["Test:Mixed"],
+            TestOverview.EasyTestModel => L["Test:Easy"],
+            TestOverview.HardTestModel => L["Test:Hard"],
+            TestOverview.MixedTestModel => L["Test:Mixed"],
             _ => string.Empty
             };
     }

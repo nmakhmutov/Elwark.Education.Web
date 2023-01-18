@@ -3,7 +3,7 @@
 <section class="grid @Class">
     @switch (Achievement)
     {
-        case AchievementModel.CompletedModel achievement:
+        case Achievement.CompletedModel achievement:
             <aside class="icon completed">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
@@ -17,7 +17,7 @@
             </header>
             break;
 
-        case AchievementModel.LadderModel achievement:
+        case Achievement.LadderModel achievement:
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
                 <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
@@ -45,7 +45,7 @@
             </footer>
             break;
 
-        case AchievementModel.ProgressiveModel achievement:
+        case Achievement.ProgressiveModel achievement:
             <aside class="icon @_background">
                 <MudIcon Icon="@_icon" Size="Size.Large" Color="Color.Inherit"/>
             </aside>
@@ -87,7 +87,7 @@
     private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public AchievementModel Achievement { get; set; } = default!;
+    public Achievement Achievement { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

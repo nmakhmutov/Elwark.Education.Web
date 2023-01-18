@@ -23,5 +23,5 @@ public interface IHistoryTestService
     
     Task<ApiResult<InventoryAppliedModel>> ApplyInventoryAsync(string testId, uint inventoryId);
     
-    Task<ApiResult<TestConclusionModel>> GetConclusionAsync(string id);
+    Task<ApiResult<TestConclusion>> GetConclusionAsync(string id);
 }

@@ -96,7 +96,7 @@
         var response = await call();
 
         if (response.IsSuccess)
-            Navigation.NavigateTo(HistoryUrl.TopicTest.Test(response.Value.Id));
+            Navigation.NavigateTo(HistoryUrl.TopicTest.Test(response.Value.Overview.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
     }

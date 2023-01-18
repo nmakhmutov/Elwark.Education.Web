@@ -4,7 +4,7 @@ using Education.Web.Client.Services.Model.Test;
 
 namespace Education.Web.Client.Services.History.Test.Model;
 
-public abstract record TestConclusionModel(
+public abstract record TestConclusion(
     string TestId,
     ConclusionStatus Status,
     ScoreModel MaxScore,
@@ -15,7 +15,7 @@ public abstract record TestConclusionModel(
     DateTime CompletedAt
 )
 {
-    public sealed record EasyTestConclusionModel(
+    public sealed record EasyTestModel(
         string TestId,
         TopicTitleModel Topic,
         ConclusionStatus Status,
@@ -25,13 +25,13 @@ public abstract record TestConclusionModel(
         TimeSpan TimeSpent,
         DateTime CompletedAt,
         IInternalMoney[] Rewards,
-        EasyTestConclusionModel.Question[] Questions
-    ) : TestConclusionModel(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
+        EasyTestModel.Question[] Questions
+    ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
     {
         public sealed record Question(string Title, bool IsAnswered, uint Correct, uint Incorrect);
     }
 
-    public sealed record HardTestConclusionModel(
+    public sealed record HardTestModel(
         string TestId,
         TopicTitleModel Topic,
         ConclusionStatus Status,
@@ -41,13 +41,13 @@ public abstract record TestConclusionModel(
         TimeSpan TimeSpent,
         DateTime CompletedAt,
         IInternalMoney[] Rewards,
-        HardTestConclusionModel.Question[] Questions
-    ) : TestConclusionModel(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
+        HardTestModel.Question[] Questions
+    ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
     {
         public sealed record Question(string Title, bool IsAnswered, bool IsCorrect);
     }
 
-    public sealed record MixedTestConclusionModel(
+    public sealed record MixedTestModel(
         string TestId,
         ConclusionStatus Status,
         ScoreModel MaxScore,
@@ -56,8 +56,8 @@ public abstract record TestConclusionModel(
         TimeSpan TimeSpent,
         DateTime CompletedAt,
         IInternalMoney[] Rewards,
-        MixedTestConclusionModel.Question[] Questions
-    ) : TestConclusionModel(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
+        MixedTestModel.Question[] Questions
+    ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
     {
         public sealed record Question(string Title, bool IsAnswered, bool IsCorrect, TopicTitleModel Topic);
     }

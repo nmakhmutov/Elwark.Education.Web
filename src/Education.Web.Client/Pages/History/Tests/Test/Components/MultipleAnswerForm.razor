@@ -26,13 +26,13 @@
                     Color="Color.Primary">
                     @switch (option)
                     {
-                        case AnswerOptionModel.ImageAnswerOptionModel x:
+                        case AnswerOption.ImageModel x:
                             <div class="image">
                                 <img src="@x.Image" alt="@x.Id"/>
                             </div>
                             break;
 
-                        case AnswerOptionModel.TextAnswerOptionModel x:
+                        case AnswerOption.TextModel x:
                             <MudText Typo="Typo.body1">
                                 @x.Text
                             </MudText>
@@ -119,10 +119,10 @@
     public MultipleAnswerModel UserAnswer { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public AnswerResultModel.MultipleAnswersResultModel? CorrectAnswer { get; set; }
+    public AnswerResult.MultipleModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
-    public AnswerOptionModel[] Options { get; set; } = Array.Empty<AnswerOptionModel>();
+    public AnswerOption[] Options { get; set; } = Array.Empty<AnswerOption>();
 
     [Parameter, EditorRequired]
     public EventCallback<MultipleAnswerModel> OnAnswer { get; set; }
@@ -147,7 +147,7 @@
             UserAnswer.Answer.Remove(id);
     }
 
-    private (string? Icon, Color Color) Get(AnswerOptionModel option) =>
+    private (string? Icon, Color Color) Get(AnswerOption option) =>
         CorrectAnswer switch
         {
             { } x when x.Answer.Contains(option.Id) => 

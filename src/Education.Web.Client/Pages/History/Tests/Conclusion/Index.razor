@@ -22,15 +22,15 @@
 
         @switch (conclusion)
         {
-            case TestConclusionModel.EasyTestConclusionModel test:
+            case TestConclusion.EasyTestModel test:
                 <EasyTestView Conclusion="@test"/>
                 break;
 
-            case TestConclusionModel.HardTestConclusionModel test:
+            case TestConclusion.HardTestModel test:
                 <HardTestView Conclusion="@test"/>
                 break;
 
-            case TestConclusionModel.MixedTestConclusionModel test:
+            case TestConclusion.MixedTestModel test:
                 <MixedTestView Conclusion="@test"/>
                 break;
 
@@ -43,7 +43,7 @@
 @code {
     private string? _title;
     private double _progress;
-    private ApiResult<TestConclusionModel> _result = ApiResult<TestConclusionModel>.Loading();
+    private ApiResult<TestConclusion> _result = ApiResult<TestConclusion>.Loading();
 
     [Inject]
     private IHistoryTestService TestService { get; set; } = default!;
@@ -63,9 +63,9 @@
         if (_result.IsSuccess)
         {
             _title = _result.Value switch {
-                TestConclusionModel.EasyTestConclusionModel x => $"{L["Test:Easy"]}: {x.Topic.Title}",
-                TestConclusionModel.HardTestConclusionModel x => $"{L["Test:Hard"]}: {x.Topic.Title}",
-                TestConclusionModel.MixedTestConclusionModel x => $"{L["Test:Mixed"]}: {string.Join(", ", x.Questions.Select(q => q.Topic.Title))}",
+                TestConclusion.EasyTestModel x => $"{L["Test:Easy"]}: {x.Topic.Title}",
+                TestConclusion.HardTestModel x => $"{L["Test:Hard"]}: {x.Topic.Title}",
+                TestConclusion.MixedTestModel x => $"{L["Test:Mixed"]}: {string.Join(", ", x.Questions.Select(q => q.Topic.Title))}",
                 _ => L[$"ConclusionStatus:{_result.Value.Status}"]
                 };
 

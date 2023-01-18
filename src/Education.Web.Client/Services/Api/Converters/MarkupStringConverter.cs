@@ -7,9 +7,7 @@ namespace Education.Web.Client.Services.Api.Converters;
 internal sealed class MarkupStringConverter : JsonConverter<MarkupString>
 {
     public override MarkupString Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-        JsonDocument.ParseValue(ref reader).RootElement.GetString() is { Length: > 0 } value
-            ? new MarkupString(value)
-            : new MarkupString();
+        reader.GetString() is { Length: > 0 } markup ? new MarkupString(markup) : new MarkupString();
 
     public override void Write(Utf8JsonWriter writer, MarkupString value, JsonSerializerOptions options) =>
         JsonSerializer.Serialize(writer, value, options);

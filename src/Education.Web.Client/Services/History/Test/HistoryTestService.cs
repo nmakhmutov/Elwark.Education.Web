@@ -38,6 +38,6 @@ internal sealed class HistoryTestService : IHistoryTestService
     public Task<ApiResult<InventoryAppliedModel>> ApplyInventoryAsync(string testId, uint inventoryId) =>
         _api.PostAsync<InventoryAppliedModel>($"history/tests/{testId}/inventories/{inventoryId}");
 
-    public Task<ApiResult<TestConclusionModel>> GetConclusionAsync(string id) =>
-        _api.GetAsync<TestConclusionModel>($"history/tests/{id}/conclusion");
+    public Task<ApiResult<TestConclusion>> GetConclusionAsync(string id) =>
+        _api.GetAsync<TestConclusion>($"history/tests/{id}/conclusion");
 }

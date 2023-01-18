@@ -23,13 +23,13 @@
                     <MudRadio Disabled="@(CorrectAnswer != null)" Color="Color.Primary" Option="@option.Id">
                         @switch (option)
                         {
-                            case AnswerOptionModel.ImageAnswerOptionModel x:
+                            case AnswerOption.ImageModel x:
                                 <div class="image">
                                     <img src="@x.Image" alt="@x.Id"/>
                                 </div>
                                 break;
 
-                            case AnswerOptionModel.TextAnswerOptionModel x:
+                            case AnswerOption.TextModel x:
                                 <MudText Typo="Typo.body1">
                                     @x.Text
                                 </MudText>
@@ -114,10 +114,10 @@
     public SingleAnswerModel UserAnswer { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public AnswerResultModel.SingleAnswerResultModel? CorrectAnswer { get; set; }
+    public AnswerResult.SingleModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
-    public AnswerOptionModel[] Options { get; set; } = Array.Empty<AnswerOptionModel>();
+    public AnswerOption[] Options { get; set; } = Array.Empty<AnswerOption>();
 
     [Parameter, EditorRequired]
     public EventCallback<SingleAnswerModel> OnAnswer { get; set; }
@@ -134,7 +134,7 @@
     private Task OnValidSubmit() =>
         OnAnswer.InvokeAsync(UserAnswer);
 
-    private (string? Icon, Color Color) Get(AnswerOptionModel option) =>
+    private (string? Icon, Color Color) Get(AnswerOption option) =>
         CorrectAnswer switch {
         { } x when option.Id == x.Answer =>
             (Icon: Icons.Outlined.Check , Color: Color.Success),

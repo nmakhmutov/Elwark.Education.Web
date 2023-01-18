@@ -20,16 +20,16 @@ internal sealed class ApiClient
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
         Converters =
         {
-            new AchievementModelConverter(),
-            new AnswerOptionModelConverter(),
-            new AnswerResultModelConverter(),
-            new HistoryTopicDetailModelConverter(),
+            new AchievementConverter(),
+            new AnswerOptionConverter(),
+            new AnswerResultConverter(),
+            new HistoryTopicDetailConverter(),
             new InternalMoneyConverter(),
             new MarkupStringConverter(),
             new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
             new TestConclusionConverter(),
-            new TestOverviewModelConverter(),
-            new TestQuestionModelConverter()
+            new TestOverviewConverter(),
+            new TestQuestionConverter()
         }
     };
 

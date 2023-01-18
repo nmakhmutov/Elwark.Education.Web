@@ -12,6 +12,6 @@ public sealed record AchievementsDetailModel(
         string Description,
         uint Total,
         uint Completed,
-        AchievementModel[] Achievements
+        Achievement[] Achievements
     );
 }

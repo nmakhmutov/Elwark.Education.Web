@@ -11,7 +11,7 @@
     <ApiViewer Result="@_result" Context="result">
         @switch (result.Topic)
         {
-            case BattleTopicDetailModel battle:
+            case HistoryTopicDetail.BattleModel battle:
                 <BattleDetail
                     Battle="@battle"
                     Rating="@result.Rating"
@@ -24,7 +24,7 @@
                     Breadcrumbs="@_breadcrumbs"/>
                 break;
 
-            case EmpireTopicDetailModel empire:
+            case HistoryTopicDetail.EmpireModel empire:
                 <EmpireDetail
                     Empire="@empire"
                     Rating="@result.Rating"
@@ -37,7 +37,7 @@
                     Breadcrumbs="@_breadcrumbs"/>
                 break;
 
-            case GeneralTopicDetailModel topic:
+            case HistoryTopicDetail.GeneralModel topic:
                 <GeneralDetail
                     Topic="@topic"
                     Rating="@result.Rating"
@@ -50,7 +50,7 @@
                     Breadcrumbs="@_breadcrumbs"/>
                 break;
 
-            case PersonTopicDetailModel person:
+            case HistoryTopicDetail.PersonModel person:
                 <PersonDetail
                     Person="@person"
                     Rating="@result.Rating"
