@@ -58,14 +58,26 @@
                         @context.Score.Total
                     </MudTd>
                 </RowTemplate>
-                <PagerContent>
-                    <div class="d-flex justify-end align-center pa-3">
-                        <MudText Typo="Typo.subtitle1">
-                            @L["EventGuesser:TotalScore"]: @conclusion.Score
-                        </MudText>
-                        <MudIcon Icon="@EduIcons.Score" Class="ml-1" Size="Size.Small" Color="Color.Primary"/>
-                    </div>
-                </PagerContent>
+                <FooterContent>
+                    <MudTh/>
+                    <MudTh/>
+                    <MudTh/>
+                    <MudTh/>
+                    <MudTh>
+                        @conclusion.Score.Points
+                    </MudTh>
+                    <MudTh>
+                        @conclusion.Score.Bonus
+                    </MudTh>
+                    <MudTh>
+                        <div class="d-flex align-center">
+                            <MudText Typo="Typo.subtitle1">
+                                @conclusion.Score.Total
+                            </MudText>
+                            <MudIcon Icon="@EduIcons.Score" Class="ml-1" Size="Size.Small" Color="Color.Primary"/>
+                        </div>
+                    </MudTh>
+                </FooterContent>
             </MudTable>
         </EduContainer>
     </ApiViewer>

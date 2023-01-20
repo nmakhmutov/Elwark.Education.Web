@@ -36,16 +36,14 @@ internal sealed class ApiClient
     private readonly ApiAnonymousClient _anonymous;
     private readonly ApiAuthenticatedClient _authenticated;
     private readonly IStringLocalizer<App> _localizer;
-    private readonly ILogger<ApiClient> _logger;
     private readonly AuthenticationStateProvider _provider;
 
     public ApiClient(ApiAnonymousClient anonymous, ApiAuthenticatedClient authenticated,
-        IStringLocalizer<App> localizer, ILogger<ApiClient> logger, AuthenticationStateProvider provider)
+        IStringLocalizer<App> localizer, AuthenticationStateProvider provider)
     {
         _anonymous = anonymous;
         _authenticated = authenticated;
         _localizer = localizer;
-        _logger = logger;
         _provider = provider;
     }
 
@@ -118,8 +116,7 @@ internal sealed class ApiClient
         }
         catch (Exception ex)
         {
-            _logger.LogCritical(ex, "Api error occured");
-            return ApiResult<T>.Fail(Error.Create(_localizer["Error:BadGateway"], 502));
+            return ApiResult<T>.Fail(Error.Create(_localizer["Error:BadGateway"], 502, ex.Message));
         }
     }
 }

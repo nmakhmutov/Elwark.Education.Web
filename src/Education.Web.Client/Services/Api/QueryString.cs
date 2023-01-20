@@ -45,30 +45,6 @@ public readonly struct QueryString : IEquatable<QueryString>
         return new QueryString(builder.ToString());
     }
 
-    public static QueryString Create(IEnumerable<KeyValuePair<string, StringValues>> parameters)
-    {
-        var builder = new StringBuilder();
-        var first = true;
-
-        foreach (var (key, values) in parameters)
-        {
-            if (StringValues.IsNullOrEmpty(values))
-            {
-                AppendKeyValuePair(builder, key, null, first);
-                first = false;
-                continue;
-            }
-
-            foreach (var value in values)
-            {
-                AppendKeyValuePair(builder, key, value, first);
-                first = false;
-            }
-        }
-
-        return new QueryString(builder.ToString());
-    }
-
     public QueryString Add(QueryString other)
     {
         if (!HasValue || Value!.Equals("?", StringComparison.Ordinal))

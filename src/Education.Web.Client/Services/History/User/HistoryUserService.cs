@@ -28,13 +28,13 @@ internal sealed class HistoryUserService : IHistoryUserService
         _api.PostAsync<DailyQuestModel, object>("history/users/me/quests/daily", new { Status = "Start" });
 
     public Task<ApiResult<DailyQuestModel>> CollectDailyQuestAsync() =>
-        _api.PostAsync<DailyQuestModel, object>("history/users/me/quests/daily", new { Status = "Collect" });
+        _api.PostAsync<DailyQuestModel, object>("history/users/me/quests/daily", new { Status = "Claim" });
 
     public Task<ApiResult<WeeklyQuestModel>> StartWeeklyQuestAsync() =>
         _api.PostAsync<WeeklyQuestModel, object>("history/users/me/quests/weekly", new { Status = "Start" });
 
     public Task<ApiResult<WeeklyQuestModel>> CollectWeeklyQuestAsync() =>
-        _api.PostAsync<WeeklyQuestModel, object>("history/users/me/quests/weekly", new { Status = "Collect" });
+        _api.PostAsync<WeeklyQuestModel, object>("history/users/me/quests/weekly", new { Status = "Claim" });
 
     public Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync() =>
         _api.PutAsync<DailyBonusModel>("history/users/me/bonus/daily");

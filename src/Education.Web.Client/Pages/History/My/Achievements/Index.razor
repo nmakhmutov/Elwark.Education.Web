@@ -20,6 +20,7 @@
                 @for (var index = 0; index < achievements.Categories.Length; index++)
                 {
                     var category = achievements.Categories[index];
+                    var background = GetIconBackground(category.Name);
                     var classes = index == 0 ? null : "mt-6 mt-sm-16";
 
                     <MudItem xs="12" md="3" xl="2" Class="@classes">
@@ -43,7 +44,10 @@
                         <EduFillGrid>
                             @foreach (var achievement in category.Achievements)
                             {
-                                <AchievementView Class="mud-paper pa-3 pa-sm-6" Achievement="@achievement"/>
+                                <AchievementView 
+                                    Class="mud-paper pa-3 pa-sm-6" 
+                                    IconClass="@background" 
+                                    Achievement="@achievement"/>
                             }
                         </EduFillGrid>
                     </MudItem>
@@ -76,5 +80,18 @@
         if (_result.IsSuccess)
             _subtitle = $"{_result.Value.Completed} / {_result.Value.Total}";
     }
+
+    private static string GetIconBackground(string category) =>
+        category switch {
+            "EasyTest" => "blue lighten-3 white-text",
+            "HardTest" => "blue lighten-1 white-text",
+            "MixedTest" => "blue darken-2 white-text",
+            "Tests" => "blue darken-4 white-text",
+            "EventGuessers" => "orange darken-4 white-text",
+            "Earning" => "green accent-2 white-text",
+            "Level" => "green accent-3 white-text",
+            "Quests" => "green accent-4 white-text",
+            _ => "pink accent-4 white-text"
+            };
 
 }

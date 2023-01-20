@@ -1,5 +1,4 @@
 @using Education.Web.Client.Pages.History.Topics.Components
-@using Education.Web.Client.Services.History
 @using Education.Web.Client.Services.History.Topic.Model
 @using Education.Web.Client.Services.History.Topic
 @using Education.Web.Client.Services.History.User
@@ -20,8 +19,7 @@
                     RelatedTopics="@result.RelatedTopics"
                     OnLikeClick="LikeAsync"
                     OnDislikeClick="DislikeAsync"
-                    OnFavoriteClick="@ToggleFavoriteAsync"
-                    Breadcrumbs="@_breadcrumbs"/>
+                    OnFavoriteClick="@ToggleFavoriteAsync"/>
                 break;
 
             case HistoryTopicDetail.EmpireModel empire:
@@ -33,8 +31,7 @@
                     RelatedTopics="@result.RelatedTopics"
                     OnLikeClick="LikeAsync"
                     OnDislikeClick="DislikeAsync"
-                    OnFavoriteClick="@ToggleFavoriteAsync"
-                    Breadcrumbs="@_breadcrumbs"/>
+                    OnFavoriteClick="@ToggleFavoriteAsync"/>
                 break;
 
             case HistoryTopicDetail.GeneralModel topic:
@@ -46,8 +43,7 @@
                     RelatedTopics="@result.RelatedTopics"
                     OnLikeClick="LikeAsync"
                     OnDislikeClick="DislikeAsync"
-                    OnFavoriteClick="@ToggleFavoriteAsync"
-                    Breadcrumbs="@_breadcrumbs"/>
+                    OnFavoriteClick="@ToggleFavoriteAsync"/>
                 break;
 
             case HistoryTopicDetail.PersonModel person:
@@ -59,8 +55,7 @@
                     RelatedTopics="@result.RelatedTopics"
                     OnLikeClick="LikeAsync"
                     OnDislikeClick="DislikeAsync"
-                    OnFavoriteClick="@ToggleFavoriteAsync"
-                    Breadcrumbs="@_breadcrumbs"/>
+                    OnFavoriteClick="@ToggleFavoriteAsync"/>
                 break;
         }
     </ApiViewer>
@@ -68,7 +63,6 @@
 
 @code {
     private string? _title;
-    private List<BreadcrumbItem> _breadcrumbs = new();
     private ApiResult<TopicDetailCompositionModel> _result = ApiResult<TopicDetailCompositionModel>.Loading();
 
     [Inject]
@@ -76,9 +70,6 @@
 
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
@@ -90,13 +81,7 @@
 
         if (_result.IsSuccess)
         {
-            var epoch = _result.Value.Topic.Epoch;
             _title = _result.Value.Topic.Title;
-            _breadcrumbs = new List<BreadcrumbItem>
-            {
-                new(L["Subject:History"], HistoryUrl.Root),
-                new(L[$"Epoch:{epoch.ToFastString()}"], HistoryUrl.Content.Epoch(epoch))
-            };
         }
     }
 

@@ -14,7 +14,7 @@
                 @Person.Title
             </h1>
 
-            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0 mb-3"/>
+            <Breadcrumbs Items="@_breadcrumbs" Class="pa-0 mb-3"/>
 
             <div class="d-flex flex-wrap">
                 <div class="mr-3 mr-sm-6 mb-3">
@@ -96,6 +96,7 @@
 </EduContainer>
 
 @code {
+    private List<BreadcrumbItem> _breadcrumbs = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -116,9 +117,6 @@
     public UserTopicOverviewModel[] RelatedTopics { get; set; } = Array.Empty<UserTopicOverviewModel>();
 
     [Parameter, EditorRequired]
-    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
-
-    [Parameter, EditorRequired]
     public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
 
     [Parameter, EditorRequired]
@@ -126,5 +124,14 @@
 
     [Parameter, EditorRequired]
     public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+
+    protected override void OnParametersSet()
+    {
+        _breadcrumbs = new List<BreadcrumbItem>
+        {
+            new(L["Subject:History"], HistoryUrl.Root),
+            new(L[$"Epoch:{Person.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Person.Epoch))
+        };
+    }
 
 }

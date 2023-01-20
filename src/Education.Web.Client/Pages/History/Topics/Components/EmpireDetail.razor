@@ -7,7 +7,7 @@
 
 <header class="background" style="@_style">
     <section class="d-flex flex-column justify-center align-center h-100">
-        <Breadcrumbs Items="@Breadcrumbs" Typo="Typo.subtitle1"/>
+        <Breadcrumbs Items="@_breadcrumbs" Typo="Typo.subtitle1"/>
         <h1 class="title mb-3">
             @Empire.Title
         </h1>
@@ -157,6 +157,7 @@
 
 @code {
     private string? _style;
+    private List<BreadcrumbItem> _breadcrumbs = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -180,9 +181,6 @@
     public UserTopicOverviewModel[] RelatedTopics { get; set; } = Array.Empty<UserTopicOverviewModel>();
 
     [Parameter, EditorRequired]
-    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
-
-    [Parameter, EditorRequired]
     public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
 
     [Parameter, EditorRequired]
@@ -191,9 +189,17 @@
     [Parameter, EditorRequired]
     public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
 
-    protected override void OnParametersSet() =>
+    protected override void OnParametersSet()
+    {
+        _breadcrumbs = new List<BreadcrumbItem>
+        {
+            new(L["Subject:History"], HistoryUrl.Root),
+            new(L[$"Epoch:{Empire.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Empire.Epoch))
+        };
+
         BackgroundChanger();
-    
+    }
+
     private void BackgroundChanger()
     {
         var overlay = $"--mud-palette-overlay-{(ThemeProvider?.IsDarkMode == true ? "dark" : "light")}";
