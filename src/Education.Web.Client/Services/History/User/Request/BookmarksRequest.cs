@@ -2,7 +2,7 @@ using Education.Web.Client.Services.Api;
 
 namespace Education.Web.Client.Services.History.User.Request;
 
-public sealed record FavoritesRequest(FavoritesRequest.SortType Sort, int Count, string? Token = null)
+public sealed record BookmarksRequest(BookmarksRequest.SortType Sort, int Count, string? Token = null)
     : IQueryStringRequest
 {
     public enum SortType

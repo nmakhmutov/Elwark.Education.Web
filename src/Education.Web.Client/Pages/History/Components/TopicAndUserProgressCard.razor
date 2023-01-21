@@ -14,10 +14,10 @@
             @L[$"Epoch:{Topic.Epoch.ToFastString()}"]
         </MudChip>
 
-        <FavoriteButton
-            IsFavorite="@UserActivity.IsFavorite"
+        <BookmarkButton
+            IsBookmarked="@UserActivity.IsBookmarked"
             TopicId="@Topic.Id"
-            OnFavoriteClick="@OnFavoriteClick"/>
+            OnBookmarkClick="@OnBookmarkClick"/>
     </aside>
 
     <article class="px-3">
@@ -46,6 +46,6 @@
     public UserActivityOverviewModel UserActivity { get; set; } = default!;
 
     [Parameter]
-    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
 
 }

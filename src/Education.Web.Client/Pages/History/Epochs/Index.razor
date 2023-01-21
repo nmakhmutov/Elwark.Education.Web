@@ -19,7 +19,7 @@
                     <TopicAndUserProgressCard
                         Topic="@topic"
                         UserActivity="@userActivity"
-                        OnFavoriteClick="@OnFavoriteClick"/>
+                        OnBookmarkClick="@OnBookmarkClick"/>
                 }
             </EduFillGrid>
             <MudPagination
@@ -81,9 +81,9 @@
         }
     }
 
-    private async Task<bool> OnFavoriteClick(string topicId)
+    private async Task<bool> OnBookmarkClick(string topicId)
     {
-        var result = await UserService.ToggleFavoriteAsync(topicId);
+        var result = await UserService.ToggleBookmarkAsync(topicId);
         return result is { IsSuccess: true, Value: true };
     }
 

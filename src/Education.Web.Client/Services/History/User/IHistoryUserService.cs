@@ -42,11 +42,11 @@ public interface IHistoryUserService
 
     Task<ApiResult<AchievementsDetailModel>> GetAchievementsAsync();
 
-    Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request);
+    Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetBookmarksAsync(BookmarksRequest request);
 
     Task<ApiResult<TopicStatisticsModel>> GetTopicsAsync(string topicId);
 
-    Task<ApiResult<bool>> ToggleFavoriteAsync(string topicId);
+    Task<ApiResult<bool>> ToggleBookmarkAsync(string topicId);
 
     Task<ApiResult<Unit>> LikeAsync(string topicId);
 

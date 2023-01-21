@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Encodings.Web;
-using Microsoft.Extensions.Primitives;
 
 namespace Education.Web.Client.Services.Api;
 

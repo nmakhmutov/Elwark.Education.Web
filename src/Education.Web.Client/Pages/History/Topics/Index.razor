@@ -17,9 +17,9 @@
                     HasTest="@result.HasTest"
                     UserActivity="@result.UserActivity"
                     RelatedTopics="@result.RelatedTopics"
-                    OnLikeClick="LikeAsync"
-                    OnDislikeClick="DislikeAsync"
-                    OnFavoriteClick="@ToggleFavoriteAsync"/>
+                    OnLikeClick="@LikeAsync"
+                    OnDislikeClick="@DislikeAsync"
+                    OnBookmarkClick="@ToggleBookmarkAsync"/>
                 break;
 
             case HistoryTopicDetail.EmpireModel empire:
@@ -29,9 +29,9 @@
                     HasTest="@result.HasTest"
                     UserActivity="@result.UserActivity"
                     RelatedTopics="@result.RelatedTopics"
-                    OnLikeClick="LikeAsync"
-                    OnDislikeClick="DislikeAsync"
-                    OnFavoriteClick="@ToggleFavoriteAsync"/>
+                    OnLikeClick="@LikeAsync"
+                    OnDislikeClick="@DislikeAsync"
+                    OnBookmarkClick="@ToggleBookmarkAsync"/>
                 break;
 
             case HistoryTopicDetail.GeneralModel topic:
@@ -41,9 +41,9 @@
                     HasTest="@result.HasTest"
                     UserActivity="@result.UserActivity"
                     RelatedTopics="@result.RelatedTopics"
-                    OnLikeClick="LikeAsync"
-                    OnDislikeClick="DislikeAsync"
-                    OnFavoriteClick="@ToggleFavoriteAsync"/>
+                    OnLikeClick="@LikeAsync"
+                    OnDislikeClick="@DislikeAsync"
+                    OnBookmarkClick="@ToggleBookmarkAsync"/>
                 break;
 
             case HistoryTopicDetail.PersonModel person:
@@ -53,9 +53,9 @@
                     HasTest="@result.HasTest"
                     UserActivity="@result.UserActivity"
                     RelatedTopics="@result.RelatedTopics"
-                    OnLikeClick="LikeAsync"
-                    OnDislikeClick="DislikeAsync"
-                    OnFavoriteClick="@ToggleFavoriteAsync"/>
+                    OnLikeClick="@LikeAsync"
+                    OnDislikeClick="@DislikeAsync"
+                    OnBookmarkClick="@ToggleBookmarkAsync"/>
                 break;
         }
     </ApiViewer>
@@ -97,9 +97,9 @@
         return response.IsSuccess;
     }
 
-    private async Task<bool> ToggleFavoriteAsync(string id)
+    private async Task<bool> ToggleBookmarkAsync(string id)
     {
-        var result = await UserService.ToggleFavoriteAsync(id);
+        var result = await UserService.ToggleBookmarkAsync(id);
         return result is { IsSuccess: true, Value: true };
     }
 

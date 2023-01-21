@@ -1,0 +1,32 @@
+<MudTooltip Text="@(IsBookmarked ? L["Bookmark:Remove"] : L["Bookmark:Add"])">
+    <MudToggleIconButton
+        Class="@Class"
+        Toggled="@IsBookmarked"
+        ToggledChanged="@OnBookmarkChanged"
+        Icon="@Icons.Outlined.BookmarkBorder"
+        Color="Color.Default"
+        ToggledIcon="@Icons.Outlined.Bookmark"
+        ToggledColor="Color.Error"/>
+</MudTooltip>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string TopicId { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public bool IsBookmarked { get; set; }
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task OnBookmarkChanged(bool toggled) =>
+        IsBookmarked = await OnBookmarkClick.Invoke(TopicId);
+
+}

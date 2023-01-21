@@ -31,7 +31,7 @@
             TopicId="@Topic.Id"
             Rating="@Rating"
             UserActivity="@UserActivity"
-            OnFavoriteClick="@OnFavoriteClick"
+            OnBookmarkClick="@OnBookmarkClick"
             OnLikeClick="@OnLikeClick"
             OnDislikeClick="@OnDislikeClick"/>
     </section>
@@ -47,7 +47,7 @@
                 <TopicAndUserProgressCard
                     Topic="@topic"
                     UserActivity="@userActivity"
-                    OnFavoriteClick="@OnFavoriteClick"/>
+                    OnBookmarkClick="@OnBookmarkClick"/>
             }
         </EduFillGrid>
     }
@@ -81,7 +81,7 @@
     public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
 
     [Parameter, EditorRequired]
-    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
 
     protected override void OnParametersSet()
     {

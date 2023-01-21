@@ -63,14 +63,14 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync() =>
         _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers/large");
 
-    public Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetFavoritesAsync(FavoritesRequest request) =>
-        _api.GetAsync<PagingTokenModel<UserTopicOverviewModel>>("history/users/me/favorites", request);
+    public Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetBookmarksAsync(BookmarksRequest request) =>
+        _api.GetAsync<PagingTokenModel<UserTopicOverviewModel>>("history/users/me/bookmarks", request);
 
     public Task<ApiResult<TopicStatisticsModel>> GetTopicsAsync(string topicId) =>
         _api.GetAsync<TopicStatisticsModel>($"history/users/me/topics/{topicId}");
 
-    public Task<ApiResult<bool>> ToggleFavoriteAsync(string topicId) =>
-        _api.PostAsync<bool>($"history/users/me/topics/{topicId}/favorites");
+    public Task<ApiResult<bool>> ToggleBookmarkAsync(string topicId) =>
+        _api.PostAsync<bool>($"history/users/me/topics/{topicId}/bookmarks");
 
     public Task<ApiResult<Unit>> LikeAsync(string topicId) =>
         _api.PostAsync<Unit>($"history/users/me/topics/{topicId}/likes");

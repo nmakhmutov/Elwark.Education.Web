@@ -2,18 +2,11 @@
 @using Education.Web.Client.Services.History
 <section class="@Class mud-paper d-flex justify-space-between pa-3">
     <MudToolBar Dense DisableGutters Class="d-flex justify-center">
-        <MudTooltip Text="@(_isFavorite ? L["Favorite:Remove"] : L["Favorite:Add"])">
-            <MudToggleIconButton
-                Toggled="@_isFavorite"
-                ToggledChanged="@OnFavoriteChanged"
-                Icon="@Icons.Outlined.FavoriteBorder"
-                Color="Color.Default"
-                Size="Size.Medium"
-                ToggledIcon="@Icons.Outlined.Favorite"
-                ToggledColor="Color.Error"
-                ToggledSize="Size.Medium"/>
-        </MudTooltip>
-        
+        <BookmarkButton
+            IsBookmarked="@UserActivity.IsBookmarked"
+            TopicId="@TopicId"
+            OnBookmarkClick="@OnBookmarkClick"/>
+
         <MudTooltip Text="@L["Topic:ILikeThis"]">
             <MudIconButton
                 Icon="@Icons.Rounded.ThumbUp"
@@ -28,13 +21,12 @@
                 Color="@(_isLiked == false ? Color.Primary : Color.Default)"/>
         </MudTooltip>
     </MudToolBar>
-    
+
     <TopicRating Rating="@Rating" ShowDetails Class="d-flex flex-column align-center justify-center"/>
 </section>
 
 @code {
     private bool? _isLiked;
-    private bool _isFavorite;
 
     [Inject]
     public IStringLocalizer<App> L { get; set; } = default!;
@@ -44,7 +36,7 @@
 
     [Parameter, EditorRequired]
     public string TopicId { get; set; } = default!;
-    
+
     [Parameter, EditorRequired]
     public ContentRatingModel Rating { get; set; } = default!;
 
@@ -58,13 +50,9 @@
     public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
 
     [Parameter, EditorRequired]
-    public Func<string, Task<bool>> OnFavoriteClick { get; set; } = _ => Task.FromResult(false);
+    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
 
-    protected override void OnParametersSet()
-    {
-        _isFavorite = UserActivity.IsFavorite;
-        _isLiked = UserActivity.IsLiked;
-    }
+    protected override void OnParametersSet() => _isLiked = UserActivity.IsLiked;
 
     private async Task OnLike()
     {
@@ -83,8 +71,5 @@
         if (await OnDislikeClick())
             _isLiked = false;
     }
-
-    private async Task OnFavoriteChanged(bool toggled) =>
-        _isFavorite = await OnFavoriteClick.Invoke(TopicId);
 
 }

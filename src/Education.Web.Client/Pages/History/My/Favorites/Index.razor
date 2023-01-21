@@ -2,21 +2,21 @@
 @using Education.Web.Client.Services.History
 @using Education.Web.Client.Services.History.User
 
-@page "/history/my/favorites"
+@page "/history/my/bookmarks"
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@L["Favorites"]">
+<EduPage Title="@L["Bookmarks"]">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-        <EduPageHeader Title="@L["Favorites"]" Breadcrumbs="@Breadcrumbs">
+        <EduPageHeader Title="@L["Bookmarks"]" Breadcrumbs="@Breadcrumbs">
             @if (!_isEmpty)
             {
                 <div>
-                    <MudSelect Label="@L["Favorites:Sort"]" T="FavoritesRequest.SortType" Value="@_request.Sort" ValueChanged="@OnSortChanged">
-                        @foreach (var sort in FavoritesRequest.SortTypes)
+                    <MudSelect Label="@L["Bookmarks:Sort"]" T="BookmarksRequest.SortType" Value="@_request.Sort" ValueChanged="@OnSortChanged">
+                        @foreach (var sort in BookmarksRequest.SortTypes)
                         {
-                            <MudSelectItem T="FavoritesRequest.SortType" Value="sort.Key">
-                                @L[$"Favorites:{sort.Value}"]
+                            <MudSelectItem T="BookmarksRequest.SortType" Value="sort.Key">
+                                @L[$"Bookmarks:{sort.Value}"]
                             </MudSelectItem>
                         }
                     </MudSelect>
@@ -35,8 +35,8 @@
             {
                 <EduEmpty
                     Class="grid-full-row"
-                    Title="@L["Favorites:EmptyTitle"]"
-                    Subtitle="@L["Favorites:EmptySubtitle"]"/>
+                    Title="@L["Bookmarks:EmptyTitle"]"
+                    Subtitle="@L["Bookmarks:EmptySubtitle"]"/>
             }
             else
             {
@@ -92,10 +92,10 @@
                                         Icon="@Icons.Outlined.RemoveRedEye"/>
                                 </MudTooltip>
                             }
-                            <FavoriteButton
-                                IsFavorite="@item.Activity.IsFavorite"
+                            <BookmarkButton
+                                IsBookmarked="@item.Activity.IsBookmarked"
                                 TopicId="@item.Topic.Id"
-                                OnFavoriteClick="@OnFavoriteClick"/>
+                                OnBookmarkClick="@OnBookmarkClick"/>
                         </div>
                     </div>
 
@@ -110,7 +110,7 @@
     private bool _isEmpty = true;
     private Virtualize<UserTopicOverviewModel> _virtualize = default!;
     private readonly List<UserTopicOverviewModel> _items = new();
-    private FavoritesRequest _request = new(FavoritesRequest.SortType.DateAddedNewest, 20);
+    private BookmarksRequest _request = new(BookmarksRequest.SortType.DateAddedNewest, 20);
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -126,7 +126,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var data = await UserService.GetFavoritesAsync(_request);
+        var data = await UserService.GetBookmarksAsync(_request);
         if (data.IsSuccess)
         {
             _request = _request with { Token = data.Value.Next };
@@ -148,7 +148,7 @@
         if (isRangeAvailable)
             return new ItemsProviderResult<UserTopicOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
 
-        var data = await UserService.GetFavoritesAsync(_request = _request with { Count = request.Count });
+        var data = await UserService.GetBookmarksAsync(_request = _request with { Count = request.Count });
         if (data.IsFailed)
             return new ItemsProviderResult<UserTopicOverviewModel>(_items, GetLength());
 
@@ -158,13 +158,13 @@
         return new ItemsProviderResult<UserTopicOverviewModel>(_items.Skip(request.StartIndex), GetLength());
     }
 
-    private async Task<bool> OnFavoriteClick(string topicId)
+    private async Task<bool> OnBookmarkClick(string topicId)
     {
-        var result = await UserService.ToggleFavoriteAsync(topicId);
+        var result = await UserService.ToggleBookmarkAsync(topicId);
         return result is { IsSuccess: true, Value: true };
     }
 
-    private Task OnSortChanged(FavoritesRequest.SortType sort)
+    private Task OnSortChanged(BookmarksRequest.SortType sort)
     {
         _request = _request with { Sort = sort, Token = null };
         _items.Clear();

@@ -51,5 +51,5 @@ public static class EduIcons
 
     public const string MyStatistics = Icons.Outlined.QueryStats;
 
-    public const string MyFavorites = Icons.Outlined.FavoriteBorder;
+    public const string MyBookmarks = Icons.Outlined.Bookmarks;
 }

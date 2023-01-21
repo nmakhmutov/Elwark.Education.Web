@@ -76,7 +76,7 @@ public static class HistoryUrl
 
         public const string MyStatistics = $"{Root}/my/statistics";
 
-        public const string MyFavorites = $"{Root}/my/favorites";
+        public const string MyBookmarks = $"{Root}/my/bookmarks";
 
         public static string MyTopic(string topicId) =>
             $"{Root}/my/topics/{topicId}";
