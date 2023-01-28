@@ -3,14 +3,14 @@
 @if (_tooltip is null)
 {
     <MudText Typo="Typo" Class="@Class" Style="@Style" Color="@Color">
-        @_value
+        @_value@EndIcon
     </MudText>
 }
 else
 {
     <MudTooltip Text="@_tooltip" Placement="@Placement">
         <MudText Typo="@Typo" Class="@Class" Style="@Style" Color="@Color">
-            @_value
+            @_value@EndIcon
         </MudText>
     </MudTooltip>
 }
@@ -34,6 +34,9 @@ else
     [Parameter]
     public Color Color { get; set; } = Color.Inherit;
 
+    [Parameter]
+    public string? EndIcon { get; set; }
+    
     [Parameter]
     public Placement Placement { get; set; } = Placement.Bottom;
 

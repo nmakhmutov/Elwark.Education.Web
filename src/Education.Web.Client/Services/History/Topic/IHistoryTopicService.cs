@@ -11,7 +11,9 @@ public interface IHistoryTopicService
 
     Task<ApiResult<PagingOffsetModel<EmpireOverviewModel>>> GetAsync(GetEmpiresRequest request);
 
-    Task<ApiResult<TopicDetailCompositionModel>> GetAsync(string id);
+    Task<ApiResult<TopicCompositionModel>> GetAsync(string id);
 
+    Task<ApiResult<SpotlightModel>> GetSpotlightAsync();
+    
     Task<ApiResult<string>> GetRandomAsync(EpochType epoch);
 }

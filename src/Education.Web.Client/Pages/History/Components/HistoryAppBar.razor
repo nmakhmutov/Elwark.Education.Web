@@ -1,0 +1,76 @@
+@using Education.Web.Client.Services.History
+@using Education.Web.Client.Services.History.Search
+@using Microsoft.AspNetCore.Components
+
+<MudAppBar Elevation="0">
+    <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggleCallback"/>
+    <MudLink Href="@HistoryUrl.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None" Class="d-none d-sm-block">
+        @L["Subject:History"] <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
+    </MudLink>
+    <MudSpacer/>
+    <MudAutocomplete
+        T="TopicOverviewModel"
+        @ref="@_searchAutocomplete"
+        DebounceInterval="300"
+        AdornmentIcon="@Icons.Material.Outlined.Search"
+        Placeholder="@L["Search"]"
+        IconSize="Size.Small"
+        Margin="Margin.Dense"
+        Variant="Variant.Outlined"
+        Adornment="Adornment.Start"
+        Dense
+        CoerceValue
+        ResetValueOnEmptyText
+        SearchFunc="OnSearch"
+        ValueChanged="OnSearchResult">
+        <ItemTemplate Context="result">
+            <div class="d-flex align-center">
+                <MudAvatar Image="@result.ThumbnailUrl" Size="Size.Large" Square Class="mr-4"/>
+                <div class="one-line-text">
+                    <MudText Typo="Typo.subtitle1">
+                        @result.Title
+                    </MudText>
+                    <MudText Typo="Typo.caption">
+                        @result.Overview
+                    </MudText>
+                </div>
+            </div>
+        </ItemTemplate>
+    </MudAutocomplete>
+    <MudSpacer/>
+    <AppbarThemeButton/>
+    <AppbarNotifications/>
+    <AppbarUserMenu/>
+</MudAppBar>
+
+@code {
+    private MudAutocomplete<TopicOverviewModel> _searchAutocomplete = default!;
+
+    [Inject]
+    private IHistorySearchService HistorySearchService { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public EventCallback<MouseEventArgs> DrawerToggleCallback { get; set; }
+    
+    private async Task<IEnumerable<TopicOverviewModel>> OnSearch(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
+            return Array.Empty<TopicOverviewModel>();
+
+        var result = await HistorySearchService.SearchAsync(text);
+        return result.IsSuccess ? result.Value : Array.Empty<TopicOverviewModel>();
+    }
+
+    private Task OnSearchResult(TopicOverviewModel entry)
+    {
+        Navigation.NavigateTo(HistoryUrl.Content.Topic(entry.Id));
+        return _searchAutocomplete.Clear();
+    }
+
+}

@@ -3,8 +3,33 @@ html, body {
     min-height: 100vh;
 }
 
-.grid-full-row {
-    grid-column: 1/-1;
+.spinner {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+@keyframes spinner-border {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner-border {
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.43;
+    display: inline-block;
+    width: 5rem;
+    height: 5rem;
+    vertical-align: text-bottom;
+    border: .25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spinner-border .75s linear infinite;
+    animation: spinner-border .75s linear infinite;
 }
 
 .h-100 {
@@ -35,4 +60,42 @@ html, body {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.grid-column-full {
+    grid-column: 1 / -1;
+}
+
+.grid-column-span-2 {
+    grid-column: span 2;
+}
+
+@media (min-width: 600px) {
+    .grid-column-sm-full {
+        grid-column: 1 / -1;
+    }
+
+    .grid-column-span-sm-2 {
+        grid-column: span 2;
+    }
+}
+
+@media (min-width: 960px) {
+    .grid-column-md-full {
+        grid-column: 1 / -1;
+    }
+
+    .grid-column-span-md-2 {
+        grid-column: span 2;
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid-column-lg-full {
+        grid-column: 1 / -1;
+    }
+
+    .grid-column-span-lg-2 {
+        grid-column: span 2;
+    }
 }

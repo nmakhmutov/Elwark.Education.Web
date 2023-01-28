@@ -6,14 +6,30 @@
 @page "/history/leaderboards/global"
 @layout HistoryLayout
 
-<EduPage Title="@L["GlobalLeaderboard:Name"]">
-    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-        <EduPageHeader Title="@L["GlobalLeaderboard:Name"]" Breadcrumbs="@Breadcrumbs"/>
-    </EduContainer>
-
+<EduPage Title="@L["LeaderboardGlobal:Name"]">
     <ApiViewer Result="@_result" Context="items">
-        <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W960">
-            <TopUsers Users="@items[..3]"/>
+        <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
+            <header class="header">
+                <section class="title">
+                    <div class="d-flex align-center">
+                        <div class="d-flex align-center justify-center mud-primary white-text rounded mr-3 mr-sm-6">
+                            <MudIcon Icon="@Icons.Material.Outlined.StarOutline" Size="Size.Large" Class="ma-6"/>
+                        </div>
+                        <MudText Typo="Typo.h4">
+                            @L["Leaderboard:GlobalName"]
+                        </MudText>
+                    </div>
+                </section>
+                @foreach (var user in items[..3])
+                {
+                    <RankingCard
+                        Rank="@user.Rank"
+                        Level="@user.Level"
+                        Experience="@user.Experience"
+                        Name="@user.FullName"
+                        Image="@user.Image"/>
+                }
+            </header>
         </EduContainer>
 
         <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
@@ -62,11 +78,6 @@
 @code {
     private long _highlightUser;
     private ApiResult<GlobalRankingModel[]> _result = ApiResult<GlobalRankingModel[]>.Loading();
-
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
-    };
 
     [Inject]
     private IHistoryLeaderboardService LeaderboardService { get; set; } = default!;

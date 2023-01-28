@@ -30,22 +30,18 @@
         InvokeAsync(async () =>
         {
             _timeLeft = Date - DateTime.UtcNow;
-            
+
             while (await _timer.WaitForNextTickAsync())
             {
                 _timeLeft = Date - DateTime.UtcNow;
                 if (TimeSpan.Zero >= _timeLeft)
                     break;
-                
+
                 StateHasChanged();
             }
 
-            _timeLeft = TimeSpan.Zero;
-
-            if (OnComplete.HasDelegate)
+            if (_timeLeft == TimeSpan.Zero && OnComplete.HasDelegate)
                 await OnComplete.InvokeAsync();
-            
-            StateHasChanged();
         });
 
     public void Dispose() =>

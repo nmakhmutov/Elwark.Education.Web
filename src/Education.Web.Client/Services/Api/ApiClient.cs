@@ -49,7 +49,7 @@ internal sealed class ApiClient
 
     public async Task<ApiResult<T>> GetAsync<T>(string uri, IQueryStringRequest? request = null)
     {
-        var url = request is null ? uri : $"{uri}{request.ToQueryString()}";
+        var url = GetRequestUrl(uri, request);
         var state = await _provider.GetAuthenticationStateAsync();
 
         if (state.User.Identity?.IsAuthenticated == false)
@@ -118,5 +118,14 @@ internal sealed class ApiClient
         {
             return ApiResult<T>.Fail(Error.Create(_localizer["Error:BadGateway"], 502, ex.Message));
         }
+    }
+
+    private static string GetRequestUrl(string uri, IQueryStringRequest? request)
+    {
+        if (request is null)
+            return uri;
+
+        var query = request.ToQueryString();
+        return query.HasValue ? $"{uri}{query}" : uri;
     }
 }

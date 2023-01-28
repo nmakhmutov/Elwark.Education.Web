@@ -20,7 +20,7 @@
                         Variant="Variant.Outlined"
                         Color="Color.Primary"
                         Size="Size.Medium"
-                        StartIcon="@Icons.Outlined.DoneAll"
+                        StartIcon="@Icons.Material.Outlined.DoneAll"
                         Disabled="@(!NotificationService.HasNotifications)"
                         OnClick="MarkAllAsReadAsync">
                         @L["Notifications:MarkAsRead"]
@@ -52,7 +52,7 @@
                                         <MudText Typo="Typo.body2">
                                             @item.Title
                                         </MudText>
-                                        <MudIcon Class="dot mx-1" Icon="@Icons.Outlined.NoiseControlOff"/>
+                                        <MudIcon Class="dot mx-1" Icon="@Icons.Material.Outlined.NoiseControlOff"/>
                                         <MudText Typo="Typo.body2">
                                             @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
                                         </MudText>
@@ -63,7 +63,7 @@
                                 }
                             </article>
                             <aside>
-                                <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="@(() => MarkAsReadAsync(item.Id))"/>
+                                <MudIconButton Icon="@Icons.Material.Outlined.MarkEmailRead" OnClick="@(() => MarkAsReadAsync(item.Id))"/>
                             </aside>
                         </section>
                     </Virtualize>

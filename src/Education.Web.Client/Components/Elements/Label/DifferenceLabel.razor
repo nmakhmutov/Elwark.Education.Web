@@ -4,31 +4,3 @@
     </MudChip>
     <MudIcon Icon="@_icon" Color="@_color"/>
 </div>
-
-@code {
-    private string? _value;
-    private string? _icon;
-    private Color _color;
-    
-    [Parameter, EditorRequired]
-    public double Difference { get; set; }
-    
-    protected override void OnParametersSet()
-    {
-        switch (Difference)
-        {
-            case < 0:
-                (_value, _icon, _color) = ($"{Difference.ToReadable()}%",Icons.Outlined.ArrowDownward, Color.Error);
-                break;
-            
-            case > 0:
-                (_value, _icon, _color) = ($"+{Difference.ToReadable()}%",Icons.Outlined.ArrowUpward, Color.Success);
-                break;
-                
-            default:
-                (_value, _icon, _color) = ($"{Difference.ToReadable()}%",Icons.Outlined.ArrowBack, Color.Surface);
-                break;
-        }
-    }
-    
-}

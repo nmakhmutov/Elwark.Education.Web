@@ -151,10 +151,10 @@
         CorrectAnswer switch
         {
             { } x when x.Answer.Contains(option.Id) => 
-                (Icon: Icons.Outlined.Check , Color: Color.Success),
+                (Icon: Icons.Material.Outlined.Check , Color: Color.Success),
                                                 
             {IsCorrect:false} when UserAnswer.Answer.Contains(option.Id) => 
-                (Icon: Icons.Outlined.Clear , Color: Color.Error),
+                (Icon: Icons.Material.Outlined.Clear , Color: Color.Error),
                 
             _ => (Icon: null, Color: Color.Default)
         };

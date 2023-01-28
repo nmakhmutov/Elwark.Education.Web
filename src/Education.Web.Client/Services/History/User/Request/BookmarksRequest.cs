@@ -21,12 +21,7 @@ public sealed record BookmarksRequest(BookmarksRequest.SortType Sort, int Count,
     {
         var values = new Dictionary<string, string?>(3)
         {
-            [nameof(Sort)] = Sort switch
-            {
-                SortType.DateAddedNewest => nameof(SortType.DateAddedNewest),
-                SortType.DateAddedOldest => nameof(SortType.DateAddedOldest),
-                _ => throw new ArgumentOutOfRangeException()
-            },
+            [nameof(Sort)] = SortTypes[Sort],
             [nameof(Count)] = Count.ToString()
         };
 

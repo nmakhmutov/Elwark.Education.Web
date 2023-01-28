@@ -1,7 +1,7 @@
 @using Education.Web.Client.Pages.History.Components
 @using Education.Web.Client.Pages.History.Home.Components
-@using Education.Web.Client.Services.History.Trend.Model
-@using Education.Web.Client.Services.History.Trend
+@using Education.Web.Client.Services.History.Topic
+@using Education.Web.Client.Services.History.Topic.Model
 
 @page "/history"
 @layout HistoryLayout
@@ -109,15 +109,15 @@
 </EduPage>
 
 @code {
-    private ApiResult<HistoryOverviewModel> _result = ApiResult<HistoryOverviewModel>.Loading();
+    private ApiResult<SpotlightModel> _result = ApiResult<SpotlightModel>.Loading();
 
     [Inject]
-    private IHistoryTrendService HistoryTrendService { get; set; } = default!;
+    private IHistoryTopicService HistoryTopicService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _result = await HistoryTrendService.GetAsync();
+        _result = await HistoryTopicService.GetSpotlightAsync();
 
 }

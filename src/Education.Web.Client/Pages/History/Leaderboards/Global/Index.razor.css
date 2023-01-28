@@ -1,0 +1,36 @@
+.header {
+    display: grid;
+    gap: 12px;
+}
+
+@media (min-width: 600px) {
+    .header {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 960px) {
+    .header {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .title {
+        grid-column: 1/-1;
+    }
+}
+
+@media (min-width: 1280px) {
+    .header {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .title {
+        grid-column: 1;
+    }
+}
+
+@media (min-width: 1440px) {
+    .header {
+        grid-template-columns: 2fr repeat(3, 1fr);
+    }
+}

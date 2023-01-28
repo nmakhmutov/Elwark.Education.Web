@@ -1,133 +1,22 @@
-@using Education.Web.Client.Services.History
-@using Education.Web.Client.Services.History.Search
+@using Education.Web.Client.Pages.History.Components
+
 @inherits LayoutComponentBase
 
 <HistorySettingsProvider>
     <MudLayout>
-        <MudAppBar Elevation="0">
-            <MudIconButton Icon="@Icons.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleAsync"/>
-            <MudLink Href="@HistoryUrl.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None" Class="d-none d-sm-block">
-                @L["Subject:History"] <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
-            </MudLink>
-            <MudSpacer/>
-            <MudAutocomplete
-                T="TopicOverviewModel"
-                @ref="@_searchAutocomplete"
-                DebounceInterval="300"
-                AdornmentIcon="@Icons.Outlined.Search"
-                Placeholder="@L["Search"]"
-                IconSize="Size.Small"
-                Margin="Margin.Dense"
-                Variant="Variant.Outlined"
-                Adornment="Adornment.Start"
-                Dense
-                CoerceValue
-                ResetValueOnEmptyText
-                SearchFunc="OnSearch"
-                ValueChanged="OnSearchResult">
-                <ItemTemplate Context="result">
-                    <div class="d-flex align-center">
-                        <MudAvatar Image="@result.ThumbnailUrl" Size="Size.Large" Square Class="mr-4"/>
-                        <div class="one-line-text">
-                            <MudText Typo="Typo.subtitle1">
-                                @result.Title
-                            </MudText>
-                            <MudText Typo="Typo.caption">
-                                @result.Overview
-                            </MudText>
-                        </div>
-                    </div>
-                </ItemTemplate>
-            </MudAutocomplete>
-            <MudSpacer/>
-            <AppbarThemeButton/>
-            <AppbarNotifications/>
-            <AppbarUserMenu/>
-        </MudAppBar>
-
-        <MudDrawer @bind-Open="_isOpen" ClipMode="DrawerClipMode.Docked" Breakpoint="Breakpoint.Lg" Elevation="0">
-            <MudNavMenu Color="Color.Primary" Dense Margin="Margin.Dense" Rounded="true" Class="pa-2">
-                <MudNavLink Match="NavLinkMatch.All" Href="@HistoryUrl.Root" Icon="@Icons.Outlined.Home">
-                    @L["Page:Home"]
-                </MudNavLink>
-                <MudNavGroup Title="@L["History:Epochs"]" Icon="@EduIcons.Epochs">
-                    @foreach (var epoch in EpochTypeExtensions.List[1..])
-                    {
-                        <MudNavLink Href="@HistoryUrl.Content.Epoch(epoch)">
-                            @L[$"Epoch:{epoch.ToFastString()}"]
-                        </MudNavLink>
-                    }
-                </MudNavGroup>
-                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Content.Empires" Icon="@EduIcons.Empires">
-                    @L["History:Empires"]
-                </MudNavLink>
-
-                <MudDivider Class="my-2"/>
-
-                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.TopicTest.Index()" Icon="@EduIcons.Tests">
-                    @L["Tests"]
-                </MudNavLink>
-                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.EventGuesser.Index" Icon="@EduIcons.EventGuesser">
-                    @L["EventGuesser"]
-                </MudNavLink>
-                <MudNavGroup Title="@L["Leaderboards"]" Icon="@EduIcons.Leaderboard">
-                    <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Leaderboard.Global">
-                        @L["GlobalLeaderboard:Title"]
-                    </MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Leaderboard.Monthly">
-                        @L["MonthlyLeaderboard:Title"]
-                    </MudNavLink>
-                </MudNavGroup>
-                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Store.Index" Icon="@EduIcons.InventoryStore">
-                    @L["Inventory:Store"]
-                </MudNavLink>
-
-                <AuthorizeView>
-                    <Authorized>
-                        <MudDivider Class="my-2"/>
-
-                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyProfile" Icon="@EduIcons.MyProfile">
-                            @L["Profile"]
-                        </MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyBookmarks" Icon="@EduIcons.MyBookmarks">
-                            @L["Bookmarks"]
-                        </MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyQuests" Icon="@EduIcons.MyQuests">
-                            @L["Quests"]
-                        </MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyStatistics" Icon="@EduIcons.MyStatistics">
-                            @L["Statistics"]
-                        </MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyAchievements" Icon="@EduIcons.Achievements">
-                            @L["Achievements"]
-                        </MudNavLink>
-                    </Authorized>
-                </AuthorizeView>
-            </MudNavMenu>
-        </MudDrawer>
+        <HistoryAppBar DrawerToggleCallback="@ToggleDrawerAsync"/>
+        <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged" />
 
         @Body
 
         <MudScrollToTop TopOffset="400">
-            <MudFab Icon="@Icons.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
+            <MudFab Icon="@Icons.Material.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
         </MudScrollToTop>
     </MudLayout>
 </HistorySettingsProvider>
 
 @code {
-
     private bool _isOpen;
-
-    private MudAutocomplete<TopicOverviewModel> _searchAutocomplete = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistorySearchService HistorySearchService { get; set; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
 
     [CascadingParameter]
     private AppSettingsProvider AppSettings { get; set; } = default!;
@@ -135,25 +24,9 @@
     protected override void OnParametersSet() =>
         _isOpen = AppSettings.IsSidebarOpen;
 
-    private ValueTask ToggleAsync()
-    {
-        _isOpen = !_isOpen;
-        return AppSettings.ToggleSidebarAsync(_isOpen);
-    }
+    private ValueTask ToggleDrawerAsync() => 
+        OnDrawerOpenChanged(!_isOpen);
 
-    private async Task<IEnumerable<TopicOverviewModel>> OnSearch(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
-            return Array.Empty<TopicOverviewModel>();
-
-        var result = await HistorySearchService.SearchAsync(text);
-        return result.IsSuccess ? result.Value : Array.Empty<TopicOverviewModel>();
-    }
-
-    private Task OnSearchResult(TopicOverviewModel entry)
-    {
-        Navigation.NavigateTo(HistoryUrl.Content.Topic(entry.Id));
-        return _searchAutocomplete.Clear();
-    }
-
+    private ValueTask OnDrawerOpenChanged(bool value) => 
+        AppSettings.ToggleSidebarAsync(_isOpen = value);
 }

@@ -12,4 +12,7 @@ internal sealed class HistoryStoreService : IHistoryStoreService
 
     public Task<ApiResult<ProductModel[]>> GetAsync() =>
         _api.GetAsync<ProductModel[]>("history/store");
+
+    public Task<ApiResult<Guid>> CheckoutAsync(CheckoutRequest request) =>
+        _api.PostAsync<Guid, CheckoutRequest>("history/store/checkout", request);
 }

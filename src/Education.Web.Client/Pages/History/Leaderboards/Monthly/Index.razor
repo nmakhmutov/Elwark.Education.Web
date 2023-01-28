@@ -5,33 +5,33 @@
 @page "/history/leaderboards/monthly"
 @layout HistoryLayout
 
-<EduPage Title="@L["MonthlyLeaderboard:Name"]">
+<EduPage Title="@L["Leaderboard:MonthlyName"]">
     <ApiViewer Result="@_result" Context="result">
         <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
             <div class="d-flex flex-column flex-md-row gap-3 mb-sm-6">
                 <section>
                     <div class="d-flex align-center">
                         <div class="d-flex align-center justify-center mud-primary white-text rounded mr-3 mr-sm-6">
-                            <MudIcon Icon="@Icons.Outlined.StarOutline" Size="Size.Large" Class="ma-6"/>
+                            <MudIcon Icon="@Icons.Material.Outlined.StarOutline" Size="Size.Large" Class="ma-6"/>
                         </div>
                         <MudText Typo="Typo.h4">
-                            @L["MonthlyLeaderboard:Name"]
+                            @L["Leaderboard:MonthlyName"]
                         </MudText>
                     </div>
 
                     <MudText Class="mw-xs my-3 my-sm-6" Typo="Typo.subtitle1">
-                        @L["MonthlyLeaderboard:Description"]
+                        @L["Leaderboard:MonthlyDescription"]
                     </MudText>
 
                     @if (result.IsActive)
                     {
-                        <MudChip Class="ma-0" Label Icon="@Icons.Outlined.Equalizer" Variant="Variant.Text" Color="Color.Primary">
+                        <MudChip Class="ma-0" Label Icon="@Icons.Material.Outlined.Equalizer" Variant="Variant.Text" Color="Color.Primary">
                             @L["Leaderboard:InProgress"]
                         </MudChip>
                     }
                     else
                     {
-                        <MudChip Class="ma-0" Label Icon="@Icons.Outlined.EmojiEvents" Variant="Variant.Text" Color="Color.Success">
+                        <MudChip Class="ma-0" Label Icon="@Icons.Material.Outlined.EmojiEvents" Variant="Variant.Text" Color="Color.Success">
                             @L["Leaderboard:Completed"]
                         </MudChip>
                     }

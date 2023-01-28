@@ -72,7 +72,7 @@
     public bool IsDarkMode { get; private set; }
     
     public string Icon =>
-        IsDarkMode ? Icons.Outlined.LightMode : Icons.Outlined.DarkMode;
+        IsDarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode;
 
     protected override async Task OnInitializedAsync() =>
         IsDarkMode = await Storage.GetItemAsync<bool>("ts");

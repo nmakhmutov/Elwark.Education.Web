@@ -2,29 +2,21 @@
     @(Title ?? "Elwark education")
 </PageTitle>
 
-<MudMainContent Class="d-flex flex-column h-100">
-    <main class="d-flex flex-column flex-grow-1">
+<main class="mud-main-content d-flex flex-column h-100">
+    <article class="flex-grow-1">
         @ChildContent
-    </main>
+    </article>
 
     @if (!HideFooter)
     {
-        <MudDivider/>
-
-        <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
-            <footer class="d-flex flex-wrap align-center justify-space-between gap-3">
-                <MudText Typo="Typo.subtitle1">
-                    &copy; @DateTime.Now.Year Elwark
-                </MudText>
-                <MudImage
-                    Src="https://res.cloudinary.com/elwark/image/upload/v1613019539/Elwark/primary/60x60_eonbge.png"
-                    Alt="Elwark logo"
-                    Width="40"
-                    Height="40"/>
-            </footer>
-        </EduContainer>
+        <footer class="d-flex align-center justify-space-between mud-divider gpa-3 pa-3 pa-sm-6">
+            <MudText Typo="Typo.subtitle1">
+                &copy; @DateTime.Now.Year Elwark
+            </MudText>
+            <MudImage Src="@ElwarkIcons.Primary60X60" Alt="Elwark logo" Width="40" Height="40"/>
+        </footer>
     }
-</MudMainContent>
+</main>
 
 
 @code {

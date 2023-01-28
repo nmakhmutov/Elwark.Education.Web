@@ -1,0 +1,79 @@
+@using Education.Web.Client.Services.History.User.Model
+@using ApexCharts
+
+<section class="mud-paper pa-3 pa-sm-6 @Class">
+    <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
+        @Title
+    </MudText>
+    <div class="d-md-flex flex-wrap align-center justify-space-around gap-3 gap-sm-6">
+        <div class="d-flex justify-center">
+            <div class="wrapper">
+                <ApexChart TItem="ProfitModel" Options="@_options">
+                    <ApexPointSeries
+                        TItem="ProfitModel"
+                        Items="@Profit"
+                        SeriesType="SeriesType.Donut"
+                        XValue="@(x => x.Source)"
+                        YAggregate="@(x => x.Sum(e => e.Amount))"/>
+                </ApexChart>
+            </div>
+        </div>
+        <ChartList Items="@_chartItems" EndIcon="%"/>
+    </div>
+</section>
+
+@code {
+    private ChartList.Item[] _chartItems = Array.Empty<ChartList.Item>();
+
+    private ApexChartOptions<ProfitModel> _options = new()
+    {
+        Chart = new Chart
+        {
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Legend = new Legend
+        {
+            Show = false
+        },
+        Colors = new List<string>
+        {
+            Colors.Blue.Default,
+            Colors.DeepPurple.Default,
+            Colors.Green.Accent4,
+            Colors.Red.Default,
+            Colors.Indigo.Default,
+            Colors.Cyan.Default,
+            Colors.Teal.Default,
+            Colors.LightBlue.Default,
+            Colors.Purple.Default,
+            Colors.LightGreen.Default,
+            Colors.Pink.Default,
+            Colors.Lime.Default,
+            Colors.Yellow.Default,
+            Colors.Amber.Default,
+            Colors.Orange.Default,
+            Colors.DeepOrange.Default
+        }
+    };
+
+    [Parameter, EditorRequired]
+    public string? Title { get; set; }
+
+    [Parameter, EditorRequired]
+    public ProfitModel[] Profit { get; set; } = Array.Empty<ProfitModel>();
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnParametersSet() =>
+        _chartItems = Profit
+            .Select((x, i) => new ChartList.Item(x.Source, x.Percent, GetColor(i)))
+            .ToArray();
+
+    private string GetColor(int i) =>
+        _options.Colors.Count > i
+            ? _options.Colors[i]
+            : GetColor(i - _options.Colors.Count);
+
+}

@@ -1,0 +1,112 @@
+@using Education.Web.Client.Pages.History.Tests.Components
+@using Education.Web.Client.Pages.History.Components
+@using Education.Web.Client.Services.History.Test.Model
+@using Education.Web.Client.Services.History.Test.Request
+@using Education.Web.Client.Services.History.Test
+
+@page "/history/tests"
+@layout HistoryLayout
+@attribute [Authorize]
+
+<EduPage Title="@L["Tests"]" HideFooter>
+    <div class="background d-flex flex-column h-100">
+        <EduContainer Class="pt-3 pt-sm-6">
+            <EduPageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs">
+                <MudButton
+                    DisableElevation
+                    Variant="Variant.Text"
+                    Color="Color.Primary"
+                    EndIcon="@Icons.Material.Outlined.Info"
+                    Disabled="@(!_result.IsSuccess)"
+                    OnClick="@OpenRule">
+                    @L["Tests:Rules"]
+                </MudButton>
+            </EduPageHeader>
+        </EduContainer>
+        <ApiViewer Result="@_result" Context="model">
+            <section class="grid pa-3 pa-sm-6">
+                @if (model.Topic is null)
+                {
+                    <EpochTestBuilder Class="builder" Tests="@model.Tests" OnCreate="@OnCreateTestAsync"/>
+                }
+                else
+                {
+                    <TopicTestBuilder Class="builder" Tests="@model.Tests" Topic="@model.Topic" OnCreate="@OnCreateTestAsync"/>
+                }
+
+                <section class="inventory">
+                    <MudText Typo="Typo.h5" Class="mb-3">
+                        @L["Inventory"]
+                    </MudText>
+                    <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index" Context="item">
+                        <InventoryInfoCard
+                            Title="@item.Title"
+                            Overview="@item.Overview"
+                            Quantity="@item.Quantity"
+                            IconUrl="@item.IconUrl"/>
+                    </InventoryGrid>
+                </section>
+            </section>
+        </ApiViewer>
+    </div>
+</EduPage>
+
+@code {
+    private ApiResult<TestBuilderModel> _result = ApiResult<TestBuilderModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryTestService TestService { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
+    [Inject]
+    private IDialogService DialogService { get; set; } = default!;
+
+    [Parameter, SupplyParameterFromQuery(Name = "topic")]
+    public string? TopicId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _result = await TestService.GetTestBuilderAsync(TopicId);
+
+        if (_result.IsFailed && _result.Error.IsTestAlreadyCreated(out var id))
+            Navigation.NavigateTo(HistoryUrl.TopicTest.Test(id));
+    }
+
+    private Task OnCreateTestAsync(CreateEpochTestRequest request) =>
+        CreateTestAsync(() => TestService.CreateAsync(request));
+
+    private Task OnCreateTestAsync(CreateTopicTestRequest request) =>
+        CreateTestAsync(() => TestService.CreateAsync(request));
+
+    private async Task CreateTestAsync(Func<Task<ApiResult<TestModel>>> call)
+    {
+        var response = await call();
+
+        if (response.IsSuccess)
+            Navigation.NavigateTo(HistoryUrl.TopicTest.Test(response.Value.Overview.Id));
+        else
+            Snackbar.Add(response.Error.Detail, Severity.Error);
+    }
+
+    private void OpenRule()
+    {
+        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = _result.Value.Rule.Content };
+        var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Large, CloseOnEscapeKey = true, CloseButton = true };
+
+        DialogService.Show<RuleDialog>(_result.Value.Rule.Title, parameters, options);
+    }
+
+}

@@ -137,10 +137,10 @@
     private (string? Icon, Color Color) Get(AnswerOption option) =>
         CorrectAnswer switch {
         { } x when option.Id == x.Answer =>
-            (Icon: Icons.Outlined.Check , Color: Color.Success),
+            (Icon: Icons.Material.Outlined.Check , Color: Color.Success),
 
         {IsCorrect: false} when option.Id == UserAnswer.Answer =>
-            (Icon: Icons.Outlined.Clear , Color: Color.Error),
+            (Icon: Icons.Material.Outlined.Clear , Color: Color.Error),
 
             _ => (Icon: null, Color: Color.Default)
             };

@@ -58,6 +58,8 @@ public static class HistoryUrl
     {
         public const string MyProfile = $"{Root}/my/profile";
 
+        public const string MyInventories = $"{Root}/my/inventories";
+
         public const string MyEasyTests = $"{Root}/my/tests/easy";
 
         public const string MyHardTests = $"{Root}/my/tests/hard";
@@ -65,11 +67,13 @@ public static class HistoryUrl
         public const string MyMixedTests = $"{Root}/my/tests/mixed";
 
         public const string MySmallEventGuessers = $"{Root}/my/event-guessers/small";
-        
+
         public const string MyMediumEventGuessers = $"{Root}/my/event-guessers/medium";
-        
+
         public const string MyLargeEventGuessers = $"{Root}/my/event-guessers/large";
 
+        public const string MySilver = $"{Root}/my/monies/silver";
+        
         public const string MyAchievements = $"{Root}/my/achievements";
 
         public const string MyQuests = $"{Root}/my/quests";

@@ -4,7 +4,7 @@
 
 <MudBadge Dot Overlap Color="Color.Secondary" Visible="NotificationService.HasNotifications">
     <MudMenu
-        Icon="@(NotificationService.HasNotifications ? Icons.Outlined.NotificationsActive : Icons.Outlined.NotificationsNone)"
+        Icon="@(NotificationService.HasNotifications ? Icons.Material.Outlined.NotificationsActive : Icons.Material.Outlined.NotificationsNone)"
         Color="Color.Inherit"
         AnchorOrigin="Origin.BottomLeft"
         TransformOrigin="Origin.TopLeft"
@@ -19,7 +19,7 @@
                     Variant="Variant.Text"
                     Color="Color.Primary"
                     Size="Size.Small"
-                    StartIcon="@Icons.Outlined.DoneAll"
+                    StartIcon="@Icons.Material.Outlined.DoneAll"
                     Disabled="@(!NotificationService.HasNotifications)"
                     OnClick="NotificationService.MarkAllAsReadAsync">
                     @L["Notifications:MarkAsRead"]

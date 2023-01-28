@@ -1,11 +1,10 @@
-@using Education.Web.Client.Pages.History.Components
-@using MudBlazor.Services
-@using Education.Web.Client.Services.History.Topic.Request
-@using Education.Web.Client.Services.History.Topic.Model
-@using Education.Web.Client.Services.History.Topic
-
 @page "/history/empires"
 @layout HistoryLayout
+@using Education.Web.Client.Services.History.Topic.Request
+@using MudBlazor.Services
+@using Education.Web.Client.Services.History.Topic.Model
+@using Education.Web.Client.Services.History.Topic
+@using Education.Web.Client.Pages.History.Components
 @implements IAsyncDisposable
 
 <style>
@@ -109,13 +108,10 @@
 </EduPage>
 
 @code {
-
+    private Guid _subscriptionId;
     private TimelinePosition _timelinePosition = TimelinePosition.Start;
     private GetEmpiresRequest.SortType _sort = GetEmpiresRequest.SortType.Area;
     private Virtualize<EmpireOverviewModel> _empireVirtualize = default!;
-
-    [Inject]
-    private IResizeListenerService ResizeListener { get; set; } = default!;
 
     [Inject]
     private IHistoryTopicService TopicService { get; set; } = default!;
@@ -125,6 +121,9 @@
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
+
+    [Inject]
+    private IBreakpointService BreakpointService { get; set; } = default!;
 
     [Parameter, SupplyParameterFromQuery(Name = "by")]
     public string? Sort { get; set; }
@@ -136,9 +135,13 @@
     {
         if (firstRender)
         {
-            ResizeListener.OnBreakpointChanged += OnBreakpointChanged;
-            OnBreakpointChanged(null, await ResizeListener.GetBreakpoint());
+            var options = new ResizeOptions { NotifyOnBreakpointOnly = true, SuppressInitEvent = false };
+            var result = await BreakpointService.Subscribe(x => OnBreakpointChanged(x), options);
+
+            _subscriptionId = result.SubscriptionId;
         }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task SortChangedAsync(GetEmpiresRequest.SortType sort)
@@ -148,7 +151,7 @@
         await _empireVirtualize.RefreshDataAsync();
     }
 
-    private void OnBreakpointChanged(object? sender, Breakpoint e)
+    private void OnBreakpointChanged(Breakpoint e)
     {
         var position = e is Breakpoint.Xs or Breakpoint.Sm
             ? TimelinePosition.Start
@@ -184,10 +187,7 @@
             _ => "area"
             };
 
-    public async ValueTask DisposeAsync()
-    {
-        ResizeListener.OnBreakpointChanged -= OnBreakpointChanged;
-        await _empireVirtualize.DisposeAsync();
-    }
+    public async ValueTask DisposeAsync() => 
+        await BreakpointService.Unsubscribe(_subscriptionId);
 
 }

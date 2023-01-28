@@ -5,6 +5,7 @@ using Education.Web.Client.Services.History.User.Model.Test;
 using Education.Web.Client.Services.History.User.Request;
 using Education.Web.Client.Services.Model;
 using Education.Web.Client.Services.Model.Quest;
+using QuestModel = Education.Web.Client.Services.History.User.Model.QuestModel;
 
 namespace Education.Web.Client.Services.History.User;
 
@@ -15,14 +16,17 @@ internal sealed class HistoryUserService : IHistoryUserService
     public HistoryUserService(ApiClient api) =>
         _api = api;
 
-    public Task<ApiResult<HistoryProfileModel>> GetProfileAsync() =>
-        _api.GetAsync<HistoryProfileModel>("history/users/me");
+    public Task<ApiResult<ProfileModel>> GetProfileAsync() =>
+        _api.GetAsync<ProfileModel>("history/users/me/profile");
 
-    public Task<ApiResult<AchievementsDetailModel>> GetAchievementsAsync() =>
-        _api.GetAsync<AchievementsDetailModel>("history/users/me/achievements");
+    public Task<ApiResult<WalletModel>> GetWalletAsync() =>
+        _api.GetAsync<WalletModel>("history/users/me/wallet");
 
-    public Task<ApiResult<HistoryQuestModel>> GetQuestAsync() =>
-        _api.GetAsync<HistoryQuestModel>("history/users/me/quests");
+    public Task<ApiResult<InventoriesModel>> GetInventoriesAsync() =>
+        _api.GetAsync<InventoriesModel>("history/users/me/inventories");
+
+    public Task<ApiResult<QuestModel>> GetQuestAsync() =>
+        _api.GetAsync<QuestModel>("history/users/me/quests");
 
     public Task<ApiResult<DailyQuestModel>> StartDailyQuestAsync() =>
         _api.PostAsync<DailyQuestModel, object>("history/users/me/quests/daily", new { Status = "Start" });
@@ -42,8 +46,8 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync() =>
         _api.DeleteAsync<DailyBonusModel>("history/users/me/bonus/daily");
 
-    public Task<ApiResult<HistoryUserStatisticsModel>> GetStatisticsAsync() =>
-        _api.GetAsync<HistoryUserStatisticsModel>("history/users/me/statistics");
+    public Task<ApiResult<StatisticsModel>> GetStatisticsAsync() =>
+        _api.GetAsync<StatisticsModel>("history/users/me/statistics");
 
     public Task<ApiResult<TestStatisticsModel>> GetEasyTestStatisticsAsync() =>
         _api.GetAsync<TestStatisticsModel>("history/users/me/tests/easy");
@@ -63,6 +67,12 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync() =>
         _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers/large");
 
+    public Task<ApiResult<MoneyStatisticsModel>> GetSilverStatisticsAsync() =>
+        _api.GetAsync<MoneyStatisticsModel>("history/users/me/monies/silver");
+
+    public Task<ApiResult<AchievementsModel>> GetAchievementsAsync() =>
+        _api.GetAsync<AchievementsModel>("history/users/me/achievements");
+
     public Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetBookmarksAsync(BookmarksRequest request) =>
         _api.GetAsync<PagingTokenModel<UserTopicOverviewModel>>("history/users/me/bookmarks", request);
 
@@ -77,7 +87,4 @@ internal sealed class HistoryUserService : IHistoryUserService
 
     public Task<ApiResult<Unit>> DislikeAsync(string topicId) =>
         _api.PostAsync<Unit>($"history/users/me/topics/{topicId}/dislikes");
-
-    public Task<ApiResult<Unit>> RemoveInventoryAsync(string inventoryId) =>
-        _api.DeleteAsync<Unit>($"history/users/me/inventories/{inventoryId}");
 }

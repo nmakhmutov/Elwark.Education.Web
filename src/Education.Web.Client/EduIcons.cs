@@ -25,31 +25,33 @@ public static class EduIcons
     public const string Experience =
         "<path d=\"M 12 23.625 C 5.578125 23.625 0.375 18.421875 0.375 12 C 0.375 5.578125 5.578125 0.375 12 0.375 C 18.421875 0.375 23.625 5.578125 23.625 12 C 23.617188 18.417969 18.417969 23.617188 12 23.625 Z M 12 23.625\" style=\"fill:rgb(85,105,255);\"/><path d=\"M 12 0.75 C 18.214844 0.75 23.25 5.785156 23.25 12 C 23.25 18.214844 18.214844 23.25 12 23.25 C 5.785156 23.25 0.75 18.214844 0.75 12 C 0.757812 5.789062 5.789062 0.757812 12 0.75 M 12 0 C 5.371094 0 0 5.371094 0 12 C 0 18.628906 5.371094 24 12 24 C 18.628906 24 24 18.628906 24 12 C 24 5.371094 18.628906 0 12 0 Z M 12 0\" style=\"fill:rgb(34,64,255);\"/><path d=\"M 12 2.253906 C 17.382812 2.253906 21.746094 6.617188 21.746094 12 C 21.746094 17.382812 17.382812 21.746094 12 21.746094 C 6.617188 21.746094 2.253906 17.382812 2.253906 12 C 2.261719 6.621094 6.621094 2.261719 12 2.253906 M 12 1.878906 C 6.410156 1.878906 1.878906 6.410156 1.878906 12 C 1.878906 17.589844 6.410156 22.121094 12 22.121094 C 17.589844 22.121094 22.121094 17.589844 22.121094 12 C 22.121094 6.410156 17.589844 1.878906 12 1.878906 Z M 12 1.878906\" style=\"fill:white;\" /><path d=\"M 7.753906 11.972656 L 5.019531 7.578125 L 6.316406 7.578125 L 8.128906 10.605469 L 8.453125 11.207031 L 8.765625 10.605469 L 10.695312 7.578125 L 11.890625 7.578125 L 9.050781 11.886719 L 12.019531 16.523438 L 10.761719 16.523438 L 8.726562 13.316406 L 8.375 12.675781 L 8.039062 13.316406 L 5.964844 16.523438 L 4.761719 16.523438 Z M 7.753906 11.972656 \" style=\"fill:white;\"/><path d=\"M 13.574219 7.667969 C 13.902344 7.589844 14.257812 7.539062 14.636719 7.511719 C 15.019531 7.488281 15.394531 7.476562 15.765625 7.476562 C 16.164062 7.476562 16.566406 7.511719 16.976562 7.589844 C 17.386719 7.667969 17.761719 7.808594 18.097656 8.011719 C 18.4375 8.214844 18.710938 8.496094 18.921875 8.855469 C 19.132812 9.214844 19.238281 9.667969 19.238281 10.222656 C 19.238281 10.769531 19.140625 11.230469 18.941406 11.605469 C 18.742188 11.980469 18.480469 12.285156 18.152344 12.519531 C 17.824219 12.753906 17.445312 12.921875 17.023438 13.023438 C 16.601562 13.125 16.164062 13.175781 15.714844 13.175781 L 15.5 13.175781 C 15.402344 13.175781 15.296875 13.171875 15.1875 13.167969 C 15.082031 13.164062 14.976562 13.160156 14.871094 13.148438 C 14.769531 13.140625 14.695312 13.132812 14.652344 13.125 L 14.652344 16.523438 L 13.574219 16.523438 Z M 15.792969 8.394531 C 15.566406 8.394531 15.351562 8.398438 15.144531 8.410156 C 14.9375 8.417969 14.773438 8.4375 14.652344 8.472656 L 14.652344 12.179688 C 14.695312 12.195312 14.761719 12.207031 14.859375 12.210938 C 14.953125 12.214844 15.054688 12.21875 15.15625 12.222656 C 15.261719 12.226562 15.359375 12.230469 15.453125 12.230469 L 15.664062 12.230469 C 15.957031 12.230469 16.246094 12.203125 16.539062 12.148438 C 16.828125 12.089844 17.089844 11.992188 17.320312 11.847656 C 17.554688 11.703125 17.742188 11.496094 17.886719 11.234375 C 18.027344 10.96875 18.097656 10.632812 18.097656 10.222656 C 18.097656 9.875 18.03125 9.582031 17.898438 9.347656 C 17.765625 9.113281 17.585938 8.925781 17.367188 8.785156 C 17.148438 8.644531 16.898438 8.542969 16.621094 8.484375 C 16.34375 8.425781 16.070312 8.394531 15.792969 8.394531 Z M 15.792969 8.394531\" style=\"fill:white;\"/>";
 
-    public const string History = Icons.Outlined.HistoryEdu;
+    public const string History = Icons.Material.Outlined.HistoryEdu;
 
-    public const string Epochs = Icons.Outlined.HistoryToggleOff;
+    public const string Epochs = Icons.Material.Outlined.HistoryToggleOff;
 
-    public const string Empires = Icons.Outlined.Foundation;
+    public const string Empires = Icons.Material.Outlined.Foundation;
 
-    public const string Tests = Icons.Outlined.School;
+    public const string Tests = Icons.Material.Outlined.School;
 
-    public const string Score = Icons.Outlined.PendingActions;
+    public const string Score = Icons.Material.Outlined.PendingActions;
 
-    public const string Questions = Icons.Outlined.HelpOutline;
+    public const string Questions = Icons.Material.Outlined.HelpOutline;
 
-    public const string TimeSpent = Icons.Outlined.Timer;
+    public const string TimeSpent = Icons.Material.Outlined.Timer;
 
-    public const string EventGuesser = Icons.Outlined.EventAvailable;
+    public const string EventGuesser = Icons.Material.Outlined.EventAvailable;
 
-    public const string Leaderboard = Icons.Outlined.Leaderboard;
-    
-    public const string InventoryStore = Icons.Outlined.Storefront;
+    public const string Leaderboard = Icons.Material.Outlined.Leaderboard;
 
-    public const string MyProfile = Icons.Outlined.Dashboard;
+    public const string InventoryStore = Icons.Material.Outlined.Storefront;
 
-    public const string MyQuests = Icons.Outlined.TaskAlt;
+    public const string MyProfile = Icons.Material.Outlined.Dashboard;
 
-    public const string MyStatistics = Icons.Outlined.QueryStats;
+    public const string MyQuests = Icons.Material.Outlined.TaskAlt;
 
-    public const string MyBookmarks = Icons.Outlined.Bookmarks;
+    public const string MyStatistics = Icons.Material.Outlined.QueryStats;
+
+    public const string MyBookmarks = Icons.Material.Outlined.Bookmarks;
+
+    public const string MyInventories = Icons.Material.Outlined.Inventory2;
 }

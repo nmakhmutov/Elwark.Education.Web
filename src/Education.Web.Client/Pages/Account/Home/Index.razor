@@ -2,7 +2,6 @@
 @using Education.Web.Client.Pages.Account.Home.Components
 @using Education.Web.Client.Services.Customer
 @using Education.Web.Client.Services.Customer.Model
-@using Education.Web.Client.Services.Model.User
 @using Education.Web.Client.Pages.History
 
 @page "/account"
@@ -18,7 +17,8 @@
                 {
                     <SubjectCard
                         Level="@subject.Level"
-                        Silver="@subject.Silver"
+                        Experience="@subject.Experience"
+                        Threshold="@subject.Threshold"
                         Title="@subject.Title"
                         HomeHref="@subject.HomeHref"
                         ProfileHref="@subject.ProfileHref"
@@ -61,7 +61,8 @@
                 EduIcons.History,
                 "/images/history/history.jpg",
                 model.Level,
-                model.Silver
+                model.Experience,
+                model.Threshold
                 ),
             _ => null
             };
@@ -72,8 +73,9 @@
         string ProfileHref,
         string Icon,
         string Background,
-        LevelModel Level,
-        long Silver
+        uint Level,
+        ulong Experience,
+        ulong Threshold
         );
 
 }

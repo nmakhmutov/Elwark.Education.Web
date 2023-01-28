@@ -5,7 +5,7 @@ namespace Education.Web.Client.Components.Customer;
 public sealed record CustomerState
 {
     private const string AnonymousImage =
-        "https://res.cloudinary.com/elwark/image/upload/v1660058875/People/default_nhpke4.svg";
+        "https://res.cloudinary.com/elwark/image/upload/v1660058875/People/default.svg";
 
     private CustomerState(string name, string image, string timeZone, DayOfWeek startOfWeek, string dateFormat,
         string timeFormat, DateOnly createdAt)

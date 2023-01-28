@@ -5,14 +5,19 @@ using Education.Web.Client.Services.History.User.Model.Test;
 using Education.Web.Client.Services.History.User.Request;
 using Education.Web.Client.Services.Model;
 using Education.Web.Client.Services.Model.Quest;
+using QuestModel = Education.Web.Client.Services.History.User.Model.QuestModel;
 
 namespace Education.Web.Client.Services.History.User;
 
 public interface IHistoryUserService
 {
-    Task<ApiResult<HistoryProfileModel>> GetProfileAsync();
+    Task<ApiResult<ProfileModel>> GetProfileAsync();
 
-    Task<ApiResult<HistoryQuestModel>> GetQuestAsync();
+    Task<ApiResult<WalletModel>> GetWalletAsync();
+
+    Task<ApiResult<InventoriesModel>> GetInventoriesAsync();
+
+    Task<ApiResult<QuestModel>> GetQuestAsync();
 
     Task<ApiResult<DailyQuestModel>> StartDailyQuestAsync();
 
@@ -26,7 +31,7 @@ public interface IHistoryUserService
 
     Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync();
 
-    Task<ApiResult<HistoryUserStatisticsModel>> GetStatisticsAsync();
+    Task<ApiResult<StatisticsModel>> GetStatisticsAsync();
 
     Task<ApiResult<TestStatisticsModel>> GetEasyTestStatisticsAsync();
 
@@ -35,12 +40,14 @@ public interface IHistoryUserService
     Task<ApiResult<TestStatisticsModel>> GetMixedTestStatisticsAsync();
 
     Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync();
-    
-    Task<ApiResult<EventGuesserStatisticsModel>> GetMediumEventGuesserStatisticsAsync();
-    
-    Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync();
 
-    Task<ApiResult<AchievementsDetailModel>> GetAchievementsAsync();
+    Task<ApiResult<EventGuesserStatisticsModel>> GetMediumEventGuesserStatisticsAsync();
+
+    Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync();
+    
+    Task<ApiResult<MoneyStatisticsModel>> GetSilverStatisticsAsync();
+
+    Task<ApiResult<AchievementsModel>> GetAchievementsAsync();
 
     Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetBookmarksAsync(BookmarksRequest request);
 
@@ -51,6 +58,4 @@ public interface IHistoryUserService
     Task<ApiResult<Unit>> LikeAsync(string topicId);
 
     Task<ApiResult<Unit>> DislikeAsync(string topicId);
-
-    Task<ApiResult<Unit>> RemoveInventoryAsync(string inventoryId);
 }

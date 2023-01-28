@@ -1,4 +1,3 @@
-@using Education.Web.Client.Services.Model.User
 <section class="card @Class">
     <header class="card-header" style="background-image: url('@Background')"></header>
 
@@ -15,7 +14,7 @@
         <MudButton
             DisableElevation
             FullWidth
-            StartIcon="@Icons.Outlined.Home"
+            StartIcon="@Icons.Material.Outlined.Home"
             Variant="Variant.Filled"
             Color="Color.Primary"
             Href="@HomeHref">
@@ -37,9 +36,9 @@
     
     <UserLevelProgress
         Class="pa-3 pa-sm-6"
-        Level="@Level.Rank"
-        Experience="@Level.Experience"
-        Threshold="@Level.Threshold"/>
+        Level="@Level"
+        Experience="@Experience"
+        Threshold="@Threshold"/>
 </section>
 
 @code {
@@ -63,10 +62,13 @@
     public string Background { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public LevelModel Level { get; set; } = default!;
+    public uint Level { get; set; }
 
     [Parameter, EditorRequired]
-    public long Silver { get; set; }
+    public ulong Experience { get; set; }
+
+    [Parameter, EditorRequired]
+    public ulong Threshold { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
