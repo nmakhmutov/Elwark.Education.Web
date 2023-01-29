@@ -1,22 +1,21 @@
 @using Education.Web.Client.Pages.History.Components
 @using Education.Web.Client.Services.History.Test.Request
-
 <section class="@Class">
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["History:Epoch"]
     </MudText>
-    <EpochRadioGroup 
-        SelectedEpoch="@HistorySettings.TestEpoch" 
-        SelectedEpochChanged="@HistorySettings.ChangeTestEpochAsync" 
+    <EpochRadioGroup
+        SelectedEpoch="@HistorySettings.TestEpoch"
+        SelectedEpochChanged="@HistorySettings.ChangeTestEpochAsync"
         Class="mb-3 mb-sm-6"/>
 
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["Tests"]
     </MudText>
-    <TestRadioGroup 
-        SelectedTest="@HistorySettings.TestType" 
+    <TestRadioGroup
+        SelectedTest="@HistorySettings.TestType"
         SelectedTestChanged="@HistorySettings.ChangeTestTypeAsync"
-        Tests="@Tests" 
+        Tests="@Tests"
         Class="mb-6"/>
 
     <div class="d-flex justify-center">
@@ -47,10 +46,10 @@
 
     [Parameter, EditorRequired]
     public EventCallback<CreateEpochTestRequest> OnCreate { get; set; }
-    
+
     [Parameter]
     public string? Class { get; set; }
-    
+
     protected override async Task OnInitializedAsync()
     {
         if (Tests.Any(x => x.IsAllowed && x.Name == HistorySettings.TestType))
@@ -61,9 +60,9 @@
 
     private async Task CreateTestAsync()
     {
-        if(string.IsNullOrEmpty(HistorySettings.TestType))
+        if (string.IsNullOrEmpty(HistorySettings.TestType))
             return;
-        
+
         _isLoading = true;
         await OnCreate.InvokeAsync(new CreateEpochTestRequest(HistorySettings.TestType, HistorySettings.TestEpoch));
         _isLoading = false;

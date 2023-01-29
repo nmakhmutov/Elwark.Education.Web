@@ -6,7 +6,7 @@ namespace Education.Web.Client.Services.History.Test.Model;
 
 public sealed record TestBuilderModel(
     TestRuleModel Rule,
-    TopicOverviewModel? Topic,
+    ArticleOverviewModel? Article,
     TestInformationModel[] Tests,
     UserInventoryModel[] Inventories
 );

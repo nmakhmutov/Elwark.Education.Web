@@ -11,7 +11,7 @@ public sealed record ConclusionModel(
 );
 
 public sealed record QuestionModel(
-    TopicTitleModel Topic,
+    ArticleTitleModel Article,
     string Title,
     ScoreModel Score,
     HistoricalDateModel CorrectAnswer,

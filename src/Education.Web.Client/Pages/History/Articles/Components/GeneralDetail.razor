@@ -1,0 +1,91 @@
+@using Education.Web.Client.Pages.History.Components
+@using Education.Web.Client.Services.History
+@using Education.Web.Client.Services.History.Article.Model
+@using Education.Web.Client.Services.Model.Content
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
+    <header class="d-flex flex-column align-center mb-3 mb-sm-6">
+        <h1 class="title">
+            @Article.Title
+        </h1>
+        <Breadcrumbs Items="@_breadcrumbs" Class="pa-3"/>
+        <MudText Typo="Typo.body1" Class="mw-sm" Align="Align.Center">
+            @Article.Description
+        </MudText>
+    </header>
+
+    <aside class="image-wrapper mx-auto mb-3 mb-sm-6">
+        <MudImage Class="image" Src="@Article.ImageUrl" Alt="@Article.Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
+    </aside>
+
+    <section class="grid">
+        <ArticleFormatToolbar Class="toolbar"/>
+
+        <ArticleContent Class="content" Content="@Article.Content"/>
+
+        <ArticleTest Class="test" ArticleId="@Article.Id" HasTest="@HasTest" UserActivity="@UserActivity"/>
+
+        <ArticleUserButtons
+            Class="rating"
+            ArticleId="@Article.Id"
+            Rating="@Rating"
+            UserActivity="@UserActivity"
+            OnBookmarkClick="@OnBookmarkClick"
+            OnLikeClick="@OnLikeClick"
+            OnDislikeClick="@OnDislikeClick"/>
+    </section>
+
+    @if (RelatedArticles.Length > 0)
+    {
+        <MudText Typo="Typo.h5" Class="mt-3 mt-sm-6 mb-3">
+            @L["Articles:Related"]
+        </MudText>
+        <EduFillGrid>
+            @foreach (var (article, activity) in RelatedArticles)
+            {
+                <ArticleAndUserProgressCard
+                    Article="@article"
+                    UserActivity="@activity"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            }
+        </EduFillGrid>
+    }
+</EduContainer>
+
+@code {
+    private List<BreadcrumbItem> _breadcrumbs = new();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ArticleDetail.GeneralModel Article { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ContentRatingModel Rating { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public UserActivityOverviewModel UserActivity { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public bool HasTest { get; set; }
+
+    [Parameter, EditorRequired]
+    public UserArticleOverviewModel[] RelatedArticles { get; set; } = Array.Empty<UserArticleOverviewModel>();
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+
+    protected override void OnParametersSet() =>
+        _breadcrumbs = new List<BreadcrumbItem>
+        {
+            new(L["Subject:History"], HistoryUrl.Root),
+            new(L[$"Epoch:{Article.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Article.Epoch))
+        };
+
+}

@@ -6,9 +6,9 @@ namespace Education.Web.Client.Components.Elements.Label;
 
 public sealed partial class DifferenceLabel
 {
-    private string? _value;
-    private string? _icon;
     private Color _color;
+    private string? _icon;
+    private string? _value;
 
     [Parameter, EditorRequired]
     public double Difference { get; set; }

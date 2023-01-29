@@ -1,9 +1,8 @@
-@using Education.Web.Client.Pages.History.EventGuessers.Test.Components
+@page "/history/event-guessers/{id}"
 @using Education.Web.Client.Services.History.EventGuesser.Model
 @using Education.Web.Client.Services.History.EventGuesser.Request
 @using Education.Web.Client.Services.History.EventGuesser
-
-@page "/history/event-guessers/{id}"
+@using Education.Web.Client.Pages.History.EventGuessers.Test.Components
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -62,7 +61,7 @@
 @code {
 
     private ApiResult<TestModel> _result = ApiResult<TestModel>.Loading();
-    private ScoreModel _score = new (0, 0, 0);
+    private ScoreModel _score = new(0, 0, 0);
     private DateTime _x2BonusUntil;
     private uint _totalQuestions;
     private uint _completedQuestions;

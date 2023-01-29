@@ -1,8 +1,7 @@
-@using Education.Web.Client.Services.History.User.Request
+@page "/history/my/bookmarks"
 @using Education.Web.Client.Services.History
 @using Education.Web.Client.Services.History.User
-
-@page "/history/my/bookmarks"
+@using Education.Web.Client.Services.History.User.Request
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -42,7 +41,7 @@
             {
                 <div class="grid px-3 px-sm-6 mb-3">
                     <div class="image"></div>
-                    <div class="title">@L["Topic:Title"]</div>
+                    <div class="title">@L["Article:Title"]</div>
                     <div class="epoch">@L["History:Epoch"]</div>
                     <div class="rating">@L["Rating"]</div>
                     <div class="passed-test">@L["NumberOfTests:Passed"]</div>
@@ -52,20 +51,20 @@
                 <Virtualize @ref="@_virtualize" ItemsProvider="FavoriteDataProvider" ItemSize="110" Context="item">
                     <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
                         <div class="image">
-                            <MudAvatar Size="Size.Large" Image="@item.Topic.ThumbnailUrl"/>
+                            <MudAvatar Size="Size.Large" Image="@item.Article.ThumbnailUrl"/>
                         </div>
                         <div class="title">
-                            <MudLink Href="@HistoryUrl.Content.Topic(item.Topic.Id)">
-                                @item.Topic.Title
+                            <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)">
+                                @item.Article.Title
                             </MudLink>
                         </div>
                         <div class="epoch">
-                            <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Text" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(item.Topic.Epoch)">
-                                @L[$"Epoch:{item.Topic.Epoch.ToFastString()}"]
+                            <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Text" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(item.Article.Epoch)">
+                                @L[$"Epoch:{item.Article.Epoch.ToFastString()}"]
                             </MudChip>
                         </div>
                         <div class="rating">
-                            <TopicRating Rating="@item.Topic.Rating" ShowDetails Class="d-inline-flex flex-column align-center"/>
+                            <ArticleRating Rating="@item.Article.Rating" ShowDetails Class="d-inline-flex flex-column align-center"/>
                         </div>
                         <div class="passed-test">
                             <div class="d-flex align-center">
@@ -88,13 +87,13 @@
                             {
                                 <MudTooltip Text="@L["Button:Details"]">
                                     <MudIconButton
-                                        Link="@HistoryUrl.User.MyTopic(item.Topic.Id)"
+                                        Link="@HistoryUrl.User.MyArticles(item.Article.Id)"
                                         Icon="@Icons.Material.Outlined.RemoveRedEye"/>
                                 </MudTooltip>
                             }
                             <BookmarkButton
                                 IsBookmarked="@item.Activity.IsBookmarked"
-                                TopicId="@item.Topic.Id"
+                                ArticleId="@item.Article.Id"
                                 OnBookmarkClick="@OnBookmarkClick"/>
                         </div>
                     </div>
@@ -108,8 +107,8 @@
 @code {
     private bool _isLoading = true;
     private bool _isEmpty = true;
-    private Virtualize<UserTopicOverviewModel> _virtualize = default!;
-    private readonly List<UserTopicOverviewModel> _items = new();
+    private Virtualize<UserArticleOverviewModel> _virtualize = default!;
+    private readonly List<UserArticleOverviewModel> _items = new();
     private BookmarksRequest _request = new(BookmarksRequest.SortType.DateAddedNewest, 20);
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -137,30 +136,30 @@
         _isLoading = false;
     }
 
-    private async ValueTask<ItemsProviderResult<UserTopicOverviewModel>> FavoriteDataProvider(ItemsProviderRequest request)
+    private async ValueTask<ItemsProviderResult<UserArticleOverviewModel>> FavoriteDataProvider(ItemsProviderRequest request)
     {
         int GetLength() =>
             _items.Count + (string.IsNullOrEmpty(_request.Token) ? 0 : 1);
 
         var isRangeAvailable = _items.Count > (request.StartIndex + 1) * request.Count ||
-                               _items.Count > 0 && string.IsNullOrEmpty(_request.Token);
+                               (_items.Count > 0 && string.IsNullOrEmpty(_request.Token));
 
         if (isRangeAvailable)
-            return new ItemsProviderResult<UserTopicOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
+            return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
 
         var data = await UserService.GetBookmarksAsync(_request = _request with { Count = request.Count });
         if (data.IsFailed)
-            return new ItemsProviderResult<UserTopicOverviewModel>(_items, GetLength());
+            return new ItemsProviderResult<UserArticleOverviewModel>(_items, GetLength());
 
         _request = _request with { Token = data.Value.Next };
         _items.AddRange(data.Value.Items);
 
-        return new ItemsProviderResult<UserTopicOverviewModel>(_items.Skip(request.StartIndex), GetLength());
+        return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex), GetLength());
     }
 
-    private async Task<bool> OnBookmarkClick(string topicId)
+    private async Task<bool> OnBookmarkClick(string articleId)
     {
-        var result = await UserService.ToggleBookmarkAsync(topicId);
+        var result = await UserService.ToggleBookmarkAsync(articleId);
         return result is { IsSuccess: true, Value: true };
     }
 

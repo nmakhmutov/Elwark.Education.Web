@@ -14,7 +14,7 @@ public sealed record CustomerState
         Image = image;
         StartOfWeek = startOfWeek;
         CreatedAt = createdAt;
-        DateTimeInfo =  DateTimeInfo.Create(timeZone, dateFormat, timeFormat);
+        DateTimeInfo = DateTimeInfo.Create(timeZone, dateFormat, timeFormat);
     }
 
     public static CustomerState Anonymous =>
@@ -64,4 +64,3 @@ public sealed record DateTimeInfo
     public static DateTimeInfo Create(string timeZone, string dateFormat, string timeFormat) =>
         new(TimeZoneInfo.FindSystemTimeZoneById(timeZone), dateFormat, timeFormat, $"{dateFormat} {timeFormat}");
 }
-

@@ -1,0 +1,105 @@
+@page "/history/articles/{id}"
+@using Education.Web.Client.Services.History.Article.Model
+@using Education.Web.Client.Services.History.User
+@using Education.Web.Client.Services.History.Article
+@using Education.Web.Client.Pages.History.Articles.Components
+@layout HistoryLayout
+
+<EduPage Title="@_title">
+    <ApiViewer Result="@_result" Context="result">
+        @switch (result.Article)
+        {
+            case ArticleDetail.BattleModel battle:
+                <BattleDetail
+                    Battle="@battle"
+                    Rating="@result.Rating"
+                    HasTest="@result.HasTest"
+                    UserActivity="@result.UserActivity"
+                    RelatedArticles="@result.RelatedArticles"
+                    OnLikeClick="@LikeAsync"
+                    OnDislikeClick="@DislikeAsync"
+                    OnBookmarkClick="@ToggleBookmarkAsync"/>
+                break;
+
+            case ArticleDetail.EmpireModel empire:
+                <EmpireDetail
+                    Empire="@empire"
+                    Rating="@result.Rating"
+                    HasTest="@result.HasTest"
+                    UserActivity="@result.UserActivity"
+                    RelatedArticles="@result.RelatedArticles"
+                    OnLikeClick="@LikeAsync"
+                    OnDislikeClick="@DislikeAsync"
+                    OnBookmarkClick="@ToggleBookmarkAsync"/>
+                break;
+
+            case ArticleDetail.GeneralModel article:
+                <GeneralDetail
+                    Article="@article"
+                    Rating="@result.Rating"
+                    HasTest="@result.HasTest"
+                    UserActivity="@result.UserActivity"
+                    RelatedArticles="@result.RelatedArticles"
+                    OnLikeClick="@LikeAsync"
+                    OnDislikeClick="@DislikeAsync"
+                    OnBookmarkClick="@ToggleBookmarkAsync"/>
+                break;
+
+            case ArticleDetail.PersonModel person:
+                <PersonDetail
+                    Person="@person"
+                    Rating="@result.Rating"
+                    HasTest="@result.HasTest"
+                    UserActivity="@result.UserActivity"
+                    RelatedArticles="@result.RelatedArticles"
+                    OnLikeClick="@LikeAsync"
+                    OnDislikeClick="@DislikeAsync"
+                    OnBookmarkClick="@ToggleBookmarkAsync"/>
+                break;
+        }
+    </ApiViewer>
+</EduPage>
+
+@code {
+    private string? _title;
+    private ApiResult<ArticleCompositionModel> _result = ApiResult<ArticleCompositionModel>.Loading();
+
+    [Inject]
+    private IHistoryArticleService ArticleService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _result = ApiResult<ArticleCompositionModel>.Loading();
+        _result = await ArticleService.GetAsync(Id);
+
+        if (_result.IsSuccess)
+        {
+            _title = _result.Value.Article.Title;
+        }
+    }
+
+    private async Task<bool> LikeAsync()
+    {
+        var response = await UserService.LikeAsync(Id);
+        return response.IsSuccess;
+    }
+
+    private async Task<bool> DislikeAsync()
+    {
+        var response = await UserService.DislikeAsync(Id);
+        return response.IsSuccess;
+    }
+
+    private async Task<bool> ToggleBookmarkAsync(string id)
+    {
+        var result = await UserService.ToggleBookmarkAsync(id);
+        return result is { IsSuccess: true, Value: true };
+    }
+
+}

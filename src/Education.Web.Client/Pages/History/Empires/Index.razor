@@ -1,9 +1,9 @@
 @page "/history/empires"
 @layout HistoryLayout
-@using Education.Web.Client.Services.History.Topic.Request
+@using Education.Web.Client.Services.History.Article.Request
 @using MudBlazor.Services
-@using Education.Web.Client.Services.History.Topic.Model
-@using Education.Web.Client.Services.History.Topic
+@using Education.Web.Client.Services.History.Article.Model
+@using Education.Web.Client.Services.History.Article
 @using Education.Web.Client.Pages.History.Components
 @implements IAsyncDisposable
 
@@ -70,7 +70,7 @@
                     <div class="content-wrapper">
                         <div class="content">
                             <div>
-                                <MudLink Typo="Typo.h5" Href="@HistoryUrl.Content.Topic(empire.Id)">
+                                <MudLink Typo="Typo.h5" Href="@HistoryUrl.Content.Article(empire.Id)">
                                     @empire.Title
                                 </MudLink>
                             </div>
@@ -114,7 +114,7 @@
     private Virtualize<EmpireOverviewModel> _empireVirtualize = default!;
 
     [Inject]
-    private IHistoryTopicService TopicService { get; set; } = default!;
+    private IHistoryArticleService ArticleService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -166,7 +166,7 @@
 
     private async ValueTask<ItemsProviderResult<EmpireOverviewModel>> EmpiresProvider(ItemsProviderRequest request)
     {
-        var response = await TopicService.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex, request.Count));
+        var response = await ArticleService.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex, request.Count));
 
         return response.IsSuccess
             ? new ItemsProviderResult<EmpireOverviewModel>(response.Value.Items, (int)response.Value.Count)
@@ -187,7 +187,7 @@
             _ => "area"
             };
 
-    public async ValueTask DisposeAsync() => 
+    public async ValueTask DisposeAsync() =>
         await BreakpointService.Unsubscribe(_subscriptionId);
 
 }

@@ -1,18 +1,18 @@
-@using MudBlazor.Utilities
 @using Education.Web.Client.Services.History
+@using MudBlazor.Utilities
 <div class="@_class">
-    @foreach (var topic in Topics)
+    @foreach (var article in Articles)
     {
         <article class="card">
-            <a href="@HistoryUrl.Content.Topic(topic.Id)" class="card-link"></a>
-            <img src="@topic.ThumbnailUrl" alt="@topic.Title" loading="lazy" class="image">
+            <a href="@HistoryUrl.Content.Article(article.Id)" class="card-link"></a>
+            <img src="@article.ThumbnailUrl" alt="@article.Title" loading="lazy" class="image">
             <div class="text-wrapper">
-                <h2 class="title">@topic.Title</h2>
-                <p class="overview">@topic.Overview</p>
+                <h2 class="title">@article.Title</h2>
+                <p class="overview">@article.Overview</p>
                 <div class="d-flex flex-wrap justify-space-between align-center">
-                    <TopicRating Rating="@topic.Rating"/>
-                    <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Filled" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(topic.Epoch)">
-                        @L[$"Epoch:{topic.Epoch.ToFastString()}"]
+                    <ArticleRating Rating="@article.Rating"/>
+                    <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Filled" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(article.Epoch)">
+                        @L[$"Epoch:{article.Epoch.ToFastString()}"]
                     </MudChip>
                 </div>
             </div>
@@ -34,7 +34,7 @@
     public bool Gap { get; set; }
 
     [Parameter, EditorRequired]
-    public TopicOverviewModel[] Topics { get; set; } = Array.Empty<TopicOverviewModel>();
+    public ArticleOverviewModel[] Articles { get; set; } = Array.Empty<ArticleOverviewModel>();
 
     protected override void OnParametersSet()
     {

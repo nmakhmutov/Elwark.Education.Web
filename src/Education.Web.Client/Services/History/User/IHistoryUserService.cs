@@ -44,18 +44,18 @@ public interface IHistoryUserService
     Task<ApiResult<EventGuesserStatisticsModel>> GetMediumEventGuesserStatisticsAsync();
 
     Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync();
-    
+
     Task<ApiResult<MoneyStatisticsModel>> GetSilverStatisticsAsync();
 
     Task<ApiResult<AchievementsModel>> GetAchievementsAsync();
 
-    Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetBookmarksAsync(BookmarksRequest request);
+    Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetBookmarksAsync(BookmarksRequest request);
 
-    Task<ApiResult<TopicStatisticsModel>> GetTopicsAsync(string topicId);
+    Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId);
 
-    Task<ApiResult<bool>> ToggleBookmarkAsync(string topicId);
+    Task<ApiResult<bool>> ToggleBookmarkAsync(string articleId);
 
-    Task<ApiResult<Unit>> LikeAsync(string topicId);
+    Task<ApiResult<Unit>> LikeAsync(string articleId);
 
-    Task<ApiResult<Unit>> DislikeAsync(string topicId);
+    Task<ApiResult<Unit>> DislikeAsync(string articleId);
 }

@@ -1,6 +1,5 @@
 @using FluentValidation
 @using Education.Web.Client.Services.Model.Test
-
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
@@ -150,14 +149,14 @@
     private (string? Icon, Color Color) Get(AnswerOption option) =>
         CorrectAnswer switch
         {
-            { } x when x.Answer.Contains(option.Id) => 
-                (Icon: Icons.Material.Outlined.Check , Color: Color.Success),
+        { } x when x.Answer.Contains(option.Id) => 
+            (Icon: Icons.Material.Outlined.Check , Color: Color.Success),
                                                 
-            {IsCorrect:false} when UserAnswer.Answer.Contains(option.Id) => 
-                (Icon: Icons.Material.Outlined.Clear , Color: Color.Error),
+        {IsCorrect:false} when UserAnswer.Answer.Contains(option.Id) => 
+            (Icon: Icons.Material.Outlined.Clear , Color: Color.Error),
                 
             _ => (Icon: null, Color: Color.Default)
-        };
+            };
 
     public sealed class Validator : AbstractValidator<MultipleAnswerModel>
     {

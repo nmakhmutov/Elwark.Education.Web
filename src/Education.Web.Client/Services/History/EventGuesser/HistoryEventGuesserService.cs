@@ -24,5 +24,5 @@ internal sealed class HistoryEventGuesserService : IHistoryEventGuesserService
         _api.PostAsync<TestModel, CreateRequest>("history/event-guessers", request);
 
     public Task<ApiResult<TestModel>> CheckAsync(string testId, string questionId, CheckRequest request) =>
-        _api.PostAsync<TestModel,CheckRequest>($"history/event-guessers/{testId}/questions/{questionId}", request);
+        _api.PostAsync<TestModel, CheckRequest>($"history/event-guessers/{testId}/questions/{questionId}", request);
 }

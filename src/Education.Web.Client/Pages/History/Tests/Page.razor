@@ -1,10 +1,9 @@
-@using Education.Web.Client.Pages.History.Tests.Components
-@using Education.Web.Client.Pages.History.Components
+@page "/history/tests"
 @using Education.Web.Client.Services.History.Test.Model
 @using Education.Web.Client.Services.History.Test.Request
 @using Education.Web.Client.Services.History.Test
-
-@page "/history/tests"
+@using Education.Web.Client.Pages.History.Tests.Components
+@using Education.Web.Client.Pages.History.Components
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -25,13 +24,13 @@
         </EduContainer>
         <ApiViewer Result="@_result" Context="model">
             <section class="grid pa-3 pa-sm-6">
-                @if (model.Topic is null)
+                @if (model.Article is null)
                 {
                     <EpochTestBuilder Class="builder" Tests="@model.Tests" OnCreate="@OnCreateTestAsync"/>
                 }
                 else
                 {
-                    <TopicTestBuilder Class="builder" Tests="@model.Tests" Topic="@model.Topic" OnCreate="@OnCreateTestAsync"/>
+                    <ArticleTestBuilder Class="builder" Tests="@model.Tests" Article="@model.Article" OnCreate="@OnCreateTestAsync"/>
                 }
 
                 <section class="inventory">
@@ -74,21 +73,21 @@
     [Inject]
     private IDialogService DialogService { get; set; } = default!;
 
-    [Parameter, SupplyParameterFromQuery(Name = "topic")]
-    public string? TopicId { get; set; }
+    [Parameter, SupplyParameterFromQuery(Name = "article")]
+    public string? ArticleId { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = await TestService.GetTestBuilderAsync(TopicId);
+        _result = await TestService.GetTestBuilderAsync(ArticleId);
 
         if (_result.IsFailed && _result.Error.IsTestAlreadyCreated(out var id))
-            Navigation.NavigateTo(HistoryUrl.TopicTest.Test(id));
+            Navigation.NavigateTo(HistoryUrl.ArticleTest.Test(id));
     }
 
     private Task OnCreateTestAsync(CreateEpochTestRequest request) =>
         CreateTestAsync(() => TestService.CreateAsync(request));
 
-    private Task OnCreateTestAsync(CreateTopicTestRequest request) =>
+    private Task OnCreateTestAsync(CreateArticleTestRequest request) =>
         CreateTestAsync(() => TestService.CreateAsync(request));
 
     private async Task CreateTestAsync(Func<Task<ApiResult<TestModel>>> call)
@@ -96,7 +95,7 @@
         var response = await call();
 
         if (response.IsSuccess)
-            Navigation.NavigateTo(HistoryUrl.TopicTest.Test(response.Value.Overview.Id));
+            Navigation.NavigateTo(HistoryUrl.ArticleTest.Test(response.Value.Overview.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
     }

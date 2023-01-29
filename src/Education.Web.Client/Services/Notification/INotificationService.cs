@@ -18,6 +18,6 @@ public interface INotificationService : IDisposable
     Task<ApiResult<Unit>> MarkAllAsReadAsync();
 
     Task<ApiResult<Unit>> MarkAsReadAsync(string id);
-    
+
     ValueTask InitAsync();
 }

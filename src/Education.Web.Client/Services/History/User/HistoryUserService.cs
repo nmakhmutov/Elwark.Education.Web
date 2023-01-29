@@ -73,18 +73,18 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<AchievementsModel>> GetAchievementsAsync() =>
         _api.GetAsync<AchievementsModel>("history/users/me/achievements");
 
-    public Task<ApiResult<PagingTokenModel<UserTopicOverviewModel>>> GetBookmarksAsync(BookmarksRequest request) =>
-        _api.GetAsync<PagingTokenModel<UserTopicOverviewModel>>("history/users/me/bookmarks", request);
+    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetBookmarksAsync(BookmarksRequest request) =>
+        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/users/me/bookmarks", request);
 
-    public Task<ApiResult<TopicStatisticsModel>> GetTopicsAsync(string topicId) =>
-        _api.GetAsync<TopicStatisticsModel>($"history/users/me/topics/{topicId}");
+    public Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId) =>
+        _api.GetAsync<ArticleStatisticsModel>($"history/users/me/articles/{articleId}");
 
-    public Task<ApiResult<bool>> ToggleBookmarkAsync(string topicId) =>
-        _api.PostAsync<bool>($"history/users/me/topics/{topicId}/bookmarks");
+    public Task<ApiResult<bool>> ToggleBookmarkAsync(string articleId) =>
+        _api.PostAsync<bool>($"history/users/me/articles/{articleId}/bookmarks");
 
-    public Task<ApiResult<Unit>> LikeAsync(string topicId) =>
-        _api.PostAsync<Unit>($"history/users/me/topics/{topicId}/likes");
+    public Task<ApiResult<Unit>> LikeAsync(string articleId) =>
+        _api.PostAsync<Unit>($"history/users/me/articles/{articleId}/likes");
 
-    public Task<ApiResult<Unit>> DislikeAsync(string topicId) =>
-        _api.PostAsync<Unit>($"history/users/me/topics/{topicId}/dislikes");
+    public Task<ApiResult<Unit>> DislikeAsync(string articleId) =>
+        _api.PostAsync<Unit>($"history/users/me/articles/{articleId}/dislikes");
 }

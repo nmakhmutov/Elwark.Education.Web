@@ -13,16 +13,16 @@ public static class HistoryUrl
         public static string Epoch(EpochType epoch) =>
             $"{Root}/epochs/{epoch.ToFastString().ToLowerInvariant()}";
 
-        public static string Topic(string topicId) =>
-            $"{Root}/topics/{topicId}";
+        public static string Article(string articleId) =>
+            $"{Root}/articles/{articleId}";
     }
 
-    public static class TopicTest
+    public static class ArticleTest
     {
-        public static string Index(string? topicId = null) =>
-            string.IsNullOrEmpty(topicId)
+        public static string Index(string? articleId = null) =>
+            string.IsNullOrEmpty(articleId)
                 ? $"{Root}/tests"
-                : $"{Root}/tests?topic={topicId}";
+                : $"{Root}/tests?article={articleId}";
 
         public static string Test(string testId) =>
             $"{Root}/tests/{testId}";
@@ -73,7 +73,7 @@ public static class HistoryUrl
         public const string MyLargeEventGuessers = $"{Root}/my/event-guessers/large";
 
         public const string MySilver = $"{Root}/my/monies/silver";
-        
+
         public const string MyAchievements = $"{Root}/my/achievements";
 
         public const string MyQuests = $"{Root}/my/quests";
@@ -82,7 +82,7 @@ public static class HistoryUrl
 
         public const string MyBookmarks = $"{Root}/my/bookmarks";
 
-        public static string MyTopic(string topicId) =>
-            $"{Root}/my/topics/{topicId}";
+        public static string MyArticles(string articleId) =>
+            $"{Root}/my/articles/{articleId}";
     }
 }

@@ -1,14 +1,13 @@
-@using Education.Web.Client.Pages.History.Components
-@using Education.Web.Client.Pages.History.Home.Components
-@using Education.Web.Client.Services.History.Topic
-@using Education.Web.Client.Services.History.Topic.Model
-
 @page "/history"
+@using Education.Web.Client.Services.History.Article.Model
+@using Education.Web.Client.Services.History.Article
+@using Education.Web.Client.Pages.History.Home.Components
+@using Education.Web.Client.Pages.History.Components
 @layout HistoryLayout
 
 <EduPage Title="@L["Subject:History"]">
     <ApiViewer Result="@_result" Context="result">
-        <SpotlightGrid Class="mb-3 mb-sm-6" Topics="@result.Trends.Take(8).ToArray()"/>
+        <SpotlightGrid Class="mb-3 mb-sm-6" Articles="@result.Trends.Take(8).ToArray()"/>
 
         <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
             <div class="header">
@@ -19,12 +18,12 @@
 
         <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
             <div class="header">
-                <h2>@L["Topics:Trending"]</h2>
+                <h2>@L["Articles:Trending"]</h2>
             </div>
             <section class="four-column">
                 @foreach (var item in result.Trends.Skip(8))
                 {
-                    <TopicCard
+                    <ArticleCard
                         Epoch="@item.Epoch"
                         Id="@item.Id"
                         Overview="@item.Overview"
@@ -36,20 +35,20 @@
         </EduContainer>
 
         <EduContainer Class="mb-3 mb-sm-6 grey darken-4" MaxWidth="@EduWidth.W1280">
-            <DailyTopic Topic="@result.DailyTopic" Class="my-6 my-sm-12"/>
+            <DailyArticle Article="@result.DailyArticle" Class="my-6 my-sm-12"/>
         </EduContainer>
 
         <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
             <div class="two-column">
                 <section>
                     <div class="header">
-                        <h2>@L["Topics:Recent"]</h2>
+                        <h2>@L["Articles:Recent"]</h2>
                     </div>
                     @for (var i = 0; i < result.Recent.Length; i++)
                     {
                         var item = result.Recent[i];
 
-                        <TopicCard
+                        <ArticleCard
                             Id="@item.Id"
                             Epoch="@item.Epoch"
                             Title="@item.Title"
@@ -63,13 +62,13 @@
 
                 <section>
                     <div class="header">
-                        <h2>@L["Topics:TopBookmarked"]</h2>
+                        <h2>@L["Articles:TopBookmarked"]</h2>
                     </div>
 
                     <EduFitGrid>
                         @foreach (var item in result.TopBookmarked)
                         {
-                            <TopicCard
+                            <ArticleCard
                                 Id="@item.Id"
                                 Epoch="@item.Epoch"
                                 Title="@item.Title"
@@ -84,13 +83,13 @@
 
         <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
             <div class="header">
-                <h2>@L["Topics:TopRatings"]</h2>
+                <h2>@L["Articles:TopRatings"]</h2>
             </div>
 
             <section class="four-column">
                 @foreach (var item in result.TopRatings)
                 {
-                    <TopicCard
+                    <ArticleCard
                         Id="@item.Id"
                         Epoch="@item.Epoch"
                         Title="@item.Title"
@@ -102,7 +101,7 @@
         </EduContainer>
 
         <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-            <RandomTopic Class="my-6 my-sm-12"/>
+            <RandomArticle Class="my-6 my-sm-12"/>
         </EduContainer>
 
     </ApiViewer>
@@ -112,12 +111,12 @@
     private ApiResult<SpotlightModel> _result = ApiResult<SpotlightModel>.Loading();
 
     [Inject]
-    private IHistoryTopicService HistoryTopicService { get; set; } = default!;
+    private IHistoryArticleService HistoryArticleService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _result = await HistoryTopicService.GetSpotlightAsync();
+        _result = await HistoryArticleService.GetSpotlightAsync();
 
 }

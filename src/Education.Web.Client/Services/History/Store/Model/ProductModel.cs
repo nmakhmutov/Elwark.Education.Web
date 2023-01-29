@@ -13,5 +13,5 @@ public sealed record ProductModel(
     UserInventoryModel[] Inventories
 )
 {
-    public sealed record PriceModel(IInternalMoney Original, IInternalMoney Total);    
+    public sealed record PriceModel(IInternalMoney Original, IInternalMoney Total);
 }

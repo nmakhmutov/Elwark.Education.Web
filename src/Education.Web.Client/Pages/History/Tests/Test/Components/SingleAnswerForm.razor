@@ -1,6 +1,5 @@
 @using FluentValidation
 @using Education.Web.Client.Services.Model.Test
-
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
@@ -62,20 +61,20 @@
             <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
                 @if (IsTestCompleted)
                 {
-                    <MudButton 
+                    <MudButton
                         DisableElevation
-                        Variant="Variant.Filled" 
-                        Color="Color.Primary" 
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
                         OnClick="@OnComplete">
                         @L["Test:Result"]
                     </MudButton>
                 }
                 else
                 {
-                    <MudButton 
+                    <MudButton
                         DisableElevation
-                        Variant="Variant.Filled" 
-                        Color="Color.Primary" 
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
                         OnClick="@OnNext">
                         @L["Test:Next"]
                     </MudButton>

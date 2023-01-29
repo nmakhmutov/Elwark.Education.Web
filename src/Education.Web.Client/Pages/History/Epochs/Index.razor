@@ -1,24 +1,23 @@
-@using Education.Web.Client.Pages.History.Components
-@using Education.Web.Client.Services.History.Topic.Request
-@using Education.Web.Client.Services.History
-@using Education.Web.Client.Services.History.Topic
-@using Education.Web.Client.Services.History.User
-
 @page "/history/epochs/{type}"
+@using Education.Web.Client.Services.History
+@using Education.Web.Client.Services.History.Article
+@using Education.Web.Client.Services.History.Article.Request
+@using Education.Web.Client.Services.History.User
+@using Education.Web.Client.Pages.History.Components
 @layout HistoryLayout
 
 <EduPage Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]">
     <EduContainer Class="py-3 py-sm-6">
         <EduPageHeader Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>
     </EduContainer>
-    <ApiViewer Result="_result" Context="topics">
+    <ApiViewer Result="_result" Context="result">
         <EduContainer>
             <EduFillGrid Class="mb-6 mb-sm-12">
-                @foreach (var (topic, userActivity) in topics.Items)
+                @foreach (var (article, activity) in result.Items)
                 {
-                    <TopicAndUserProgressCard
-                        Topic="@topic"
-                        UserActivity="@userActivity"
+                    <ArticleAndUserProgressCard
+                        Article="@article"
+                        UserActivity="@activity"
                         OnBookmarkClick="@OnBookmarkClick"/>
                 }
             </EduFillGrid>
@@ -34,8 +33,8 @@
 </EduPage>
 
 @code {
-    private GetTopicsRequest _request = new(EpochType.Prehistory, 1, 20);
-    private ApiResult<PagingOffsetModel<UserTopicOverviewModel>> _result = ApiResult<PagingOffsetModel<UserTopicOverviewModel>>.Loading();
+    private GetArticlesRequest _request = new(EpochType.Prehistory, 1, 20);
+    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -43,7 +42,7 @@
     };
 
     [Inject]
-    private IHistoryTopicService TopicService { get; set; } = default!;
+    private IHistoryArticleService ArticleService { get; set; } = default!;
 
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
@@ -60,30 +59,30 @@
     [Parameter, SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; } = 1;
 
-    private int TotalPages => _result.IsSuccess 
-        ? (int)double.Ceiling((double)_result.Value.Count / _request.Limit) 
+    private int TotalPages => _result.IsSuccess
+        ? (int)double.Ceiling((double)_result.Value.Count / _request.Limit)
         : 1;
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = ApiResult<PagingOffsetModel<UserTopicOverviewModel>>.Loading();
+        _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
         CurrentPage = Math.Max(1, CurrentPage);
 
         if (Enum.TryParse<EpochType>(Type, true, out var type))
         {
             _request = _request with { Epoch = type, Offset = (CurrentPage - 1) * _request.Limit };
-            _result = await TopicService.GetAsync(_request);
+            _result = await ArticleService.GetAsync(_request);
         }
         else
         {
             var error = Error.Create(L["Error:NotFound"], 404);
-            _result = ApiResult<PagingOffsetModel<UserTopicOverviewModel>>.Fail(error);
+            _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Fail(error);
         }
     }
 
-    private async Task<bool> OnBookmarkClick(string topicId)
+    private async Task<bool> OnBookmarkClick(string articleId)
     {
-        var result = await UserService.ToggleBookmarkAsync(topicId);
+        var result = await UserService.ToggleBookmarkAsync(articleId);
         return result is { IsSuccess: true, Value: true };
     }
 

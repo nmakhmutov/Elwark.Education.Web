@@ -1,6 +1,6 @@
 @using Education.Web.Client.Services.History
 @using Education.Web.Client.Services.History.Search
-@using Microsoft.AspNetCore.Components
+@* @using Microsoft.AspNetCore.Components *@
 
 <MudAppBar Elevation="0">
     <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggleCallback"/>
@@ -9,7 +9,7 @@
     </MudLink>
     <MudSpacer/>
     <MudAutocomplete
-        T="TopicOverviewModel"
+        T="ArticleOverviewModel"
         @ref="@_searchAutocomplete"
         DebounceInterval="300"
         AdornmentIcon="@Icons.Material.Outlined.Search"
@@ -44,7 +44,7 @@
 </MudAppBar>
 
 @code {
-    private MudAutocomplete<TopicOverviewModel> _searchAutocomplete = default!;
+    private MudAutocomplete<ArticleOverviewModel> _searchAutocomplete = default!;
 
     [Inject]
     private IHistorySearchService HistorySearchService { get; set; } = default!;
@@ -57,19 +57,19 @@
 
     [Parameter, EditorRequired]
     public EventCallback<MouseEventArgs> DrawerToggleCallback { get; set; }
-    
-    private async Task<IEnumerable<TopicOverviewModel>> OnSearch(string text)
+
+    private async Task<IEnumerable<ArticleOverviewModel>> OnSearch(string text)
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
-            return Array.Empty<TopicOverviewModel>();
+            return Array.Empty<ArticleOverviewModel>();
 
         var result = await HistorySearchService.SearchAsync(text);
-        return result.IsSuccess ? result.Value : Array.Empty<TopicOverviewModel>();
+        return result.IsSuccess ? result.Value : Array.Empty<ArticleOverviewModel>();
     }
 
-    private Task OnSearchResult(TopicOverviewModel entry)
+    private Task OnSearchResult(ArticleOverviewModel entry)
     {
-        Navigation.NavigateTo(HistoryUrl.Content.Topic(entry.Id));
+        Navigation.NavigateTo(HistoryUrl.Content.Article(entry.Id));
         return _searchAutocomplete.Clear();
     }
 

@@ -1,9 +1,7 @@
 @using ApexCharts
 @using Education.Web.Client.Services.History.User.Model
-@using Microsoft.VisualBasic
 @using Color = MudBlazor.Color
 @using Align = MudBlazor.Align
-
 <section class="mud-paper d-flex flex-column @Class">
     <header class="mud-primary white-text rounded ma-3 pa-3">
         <div class="d-flex align-center justify-space-between">
@@ -182,9 +180,10 @@
             };
 
         _budgetItemClass = string.IsNullOrEmpty(Href)
-            ? "d-flex align-center gap-3 gap-sm-6 py-3 px-3" 
+            ? "d-flex align-center gap-3 gap-sm-6 py-3 px-3"
             : "d-flex align-center gap-3 gap-sm-6 py-3 px-3 px-sm-6";
     }
 
     private sealed record ApexData(DateTime Month, long Balance);
+
 }

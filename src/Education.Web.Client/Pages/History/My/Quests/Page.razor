@@ -1,8 +1,7 @@
-@using Education.Web.Client.Pages.History.My.Quests.Components
+@page "/history/my/quests"
 @using Education.Web.Client.Services.History.User.Model
 @using Education.Web.Client.Services.History.User
-
-@page "/history/my/quests"
+@using Education.Web.Client.Pages.History.My.Quests.Components
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -141,4 +140,5 @@
         if (response.IsSuccess)
             _result = ApiResult<QuestModel>.Success(_result.Value with { WeeklyQuest = response.Value });
     }
+
 }

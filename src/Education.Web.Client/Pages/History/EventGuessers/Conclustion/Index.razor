@@ -1,8 +1,7 @@
-@using Education.Web.Client.Pages.History.Components
+@page "/history/event-guessers/{id}/conclusion"
 @using Education.Web.Client.Services.History.EventGuesser.Model
 @using Education.Web.Client.Services.History.EventGuesser
-
-@page "/history/event-guessers/{id}/conclusion"
+@using Education.Web.Client.Pages.History.Components
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -25,7 +24,7 @@
                 Elevation="0"
                 Hover>
                 <HeaderContent>
-                    <MudTh>@L["Topic"]</MudTh>
+                    <MudTh>@L["Article"]</MudTh>
                     <MudTh>@L["Question"]</MudTh>
                     <MudTh>@L["EventGuesser:CorrectAnswer"]</MudTh>
                     <MudTh>@L["EventGuesser:UserAnswer"]</MudTh>
@@ -34,9 +33,9 @@
                     <MudTh>@L["EventGuesser:Score"]</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd DataLabel="@L["Topic"]">
-                        <MudLink Href="@HistoryUrl.Content.Topic(context.Topic.Id)">
-                            @context.Topic.Title
+                    <MudTd DataLabel="@L["Article"]">
+                        <MudLink Href="@HistoryUrl.Content.Article(context.Article.Id)">
+                            @context.Article.Title
                         </MudLink>
                     </MudTd>
                     <MudTd DataLabel="@L["Question"]">

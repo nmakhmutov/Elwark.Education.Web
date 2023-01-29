@@ -1,6 +1,4 @@
-@using Microsoft.AspNetCore.Components
 @using Education.Web.Client.Services.History
-
 <MudDrawer Open="@DrawerOpen" OpenChanged="OnDrawerOpenChanged" ClipMode="DrawerClipMode.Docked" Breakpoint="Breakpoint.Lg" Elevation="0">
     <MudNavMenu Color="Color.Primary" Dense Margin="Margin.Dense" Rounded="true" Class="pa-2">
         <MudNavLink Match="NavLinkMatch.All" Href="@HistoryUrl.Root" Icon="@Icons.Material.Outlined.Home">
@@ -20,7 +18,7 @@
 
         <MudDivider Class="my-2"/>
 
-        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.TopicTest.Index()" Icon="@EduIcons.Tests">
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.ArticleTest.Index()" Icon="@EduIcons.Tests">
             @L["Tests"]
         </MudNavLink>
         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.EventGuesser.Index" Icon="@EduIcons.EventGuesser">
@@ -66,6 +64,7 @@
 </MudDrawer>
 
 @code {
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -74,5 +73,5 @@
 
     [Parameter]
     public EventCallback<bool> OnDrawerOpenChanged { get; set; }
-    
+
 }

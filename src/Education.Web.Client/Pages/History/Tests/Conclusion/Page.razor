@@ -1,9 +1,8 @@
-@using Education.Web.Client.Pages.History.Tests.Conclusion.Components
+@page "/history/tests/{id}/conclusion"
 @using Education.Web.Client.Services.History.Test.Model
 @using Education.Web.Client.Services.Model.Test
 @using Education.Web.Client.Services.History.Test
-
-@page "/history/tests/{id}/conclusion"
+@using Education.Web.Client.Pages.History.Tests.Conclusion.Components
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -63,9 +62,9 @@
         if (_result.IsSuccess)
         {
             _title = _result.Value switch {
-                TestConclusion.EasyTestModel x => $"{L["Test:Easy"]}: {x.Topic.Title}",
-                TestConclusion.HardTestModel x => $"{L["Test:Hard"]}: {x.Topic.Title}",
-                TestConclusion.MixedTestModel x => $"{L["Test:Mixed"]}: {string.Join(", ", x.Questions.Select(q => q.Topic.Title))}",
+                TestConclusion.EasyTestModel x => $"{L["Test:Easy"]}: {x.Article.Title}",
+                TestConclusion.HardTestModel x => $"{L["Test:Hard"]}: {x.Article.Title}",
+                TestConclusion.MixedTestModel x => $"{L["Test:Mixed"]}: {string.Join(", ", x.Questions.Select(q => q.Article.Title))}",
                 _ => L[$"ConclusionStatus:{_result.Value.Status}"]
                 };
 
@@ -73,7 +72,7 @@
         }
 
         if (_result.IsFailed && _result.Error.IsTestNotFound())
-            Navigation.NavigateTo(HistoryUrl.TopicTest.Index());
+            Navigation.NavigateTo(HistoryUrl.ArticleTest.Index());
     }
 
     private static Severity GetColor(ConclusionStatus status) =>

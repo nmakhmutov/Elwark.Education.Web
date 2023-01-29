@@ -27,7 +27,7 @@ internal sealed class NotificationService : INotificationService
         _hab = hab;
         _snackbar = snackbar;
         _stateProvider = stateProvider;
-        
+
         _hab.OnNotificationReceived += ReceivedNotification;
     }
 

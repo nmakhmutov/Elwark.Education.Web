@@ -1,11 +1,10 @@
 @using Education.Web.Client.Pages.History.Components
-
 @inherits LayoutComponentBase
 
 <HistorySettingsProvider>
     <MudLayout>
         <HistoryAppBar DrawerToggleCallback="@ToggleDrawerAsync"/>
-        <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged" />
+        <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged"/>
 
         @Body
 
@@ -24,9 +23,10 @@
     protected override void OnParametersSet() =>
         _isOpen = AppSettings.IsSidebarOpen;
 
-    private ValueTask ToggleDrawerAsync() => 
+    private ValueTask ToggleDrawerAsync() =>
         OnDrawerOpenChanged(!_isOpen);
 
-    private ValueTask OnDrawerOpenChanged(bool value) => 
+    private ValueTask OnDrawerOpenChanged(bool value) =>
         AppSettings.ToggleSidebarAsync(_isOpen = value);
+
 }

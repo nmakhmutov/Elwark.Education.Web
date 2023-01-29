@@ -14,15 +14,15 @@
     </MudText>
     <MudTable Items="@Conclusion.Questions" Hover Breakpoint="Breakpoint.Sm">
         <HeaderContent>
-            <MudTh>@L["Topic"]</MudTh>
+            <MudTh>@L["Article"]</MudTh>
             <MudTh>@L["Question"]</MudTh>
             <MudTh>@L["Question:IsAnswered"]</MudTh>
             <MudTh>@L["Question:IsCorrect"]</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="@L["Topic"]">
-                <MudLink Href="@HistoryUrl.Content.Topic(context.Topic.Id)">
-                    @context.Topic.Title
+            <MudTd DataLabel="@L["Article"]">
+                <MudLink Href="@HistoryUrl.Content.Article(context.Article.Id)">
+                    @context.Article.Title
                 </MudLink>
             </MudTd>
             <MudTd DataLabel="@L["Question"]">

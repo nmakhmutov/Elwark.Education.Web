@@ -1,0 +1,51 @@
+@using Education.Web.Client.Services.History
+<section class="card">
+    <header class="card-header">
+        <a href="@HistoryUrl.Content.Article(Article.Id)">
+            <img src="@Article.ThumbnailUrl" alt="@Article.Title" loading="lazy"/>
+        </a>
+        <div class="rating-container">
+            <ArticleRating Rating="@Article.Rating" ShowTooltip/>
+        </div>
+    </header>
+
+    <aside class="d-flex align-center justify-space-between px-3">
+        <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Text" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(Article.Epoch)">
+            @L[$"Epoch:{Article.Epoch.ToFastString()}"]
+        </MudChip>
+
+        <BookmarkButton
+            IsBookmarked="@UserActivity.IsBookmarked"
+            ArticleId="@Article.Id"
+            OnBookmarkClick="@OnBookmarkClick"/>
+    </aside>
+
+    <article class="px-3">
+        <MudLink Href="@HistoryUrl.Content.Article(Article.Id)" Typo="Typo.h6">
+            @Article.Title
+        </MudLink>
+        <MudText Typo="Typo.body2" Class="pt-3">
+            @Article.Overview
+        </MudText>
+    </article>
+
+    <section class="progress">
+        <ArticleProgressView PassedTests="@UserActivity.PassedTests" TimeSpent="@UserActivity.TimeSpent" Class="px-3"/>
+    </section>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ArticleOverviewModel Article { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public UserActivityOverviewModel UserActivity { get; set; } = default!;
+
+    [Parameter]
+    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+
+}

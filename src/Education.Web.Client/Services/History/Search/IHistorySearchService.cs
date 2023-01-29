@@ -4,5 +4,5 @@ namespace Education.Web.Client.Services.History.Search;
 
 internal interface IHistorySearchService
 {
-    Task<ApiResult<TopicOverviewModel[]>> SearchAsync(string query);
+    Task<ApiResult<ArticleOverviewModel[]>> SearchAsync(string query);
 }

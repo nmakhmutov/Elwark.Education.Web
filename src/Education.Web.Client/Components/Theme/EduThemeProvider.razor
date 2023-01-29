@@ -1,12 +1,12 @@
 @using Blazored.LocalStorage
-
 <MudThemeProvider Theme="@_theme" IsDarkMode="@IsDarkMode"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<CascadingValue TValue="EduThemeProvider" Value="@this" ChildContent="@ChildContent"/>
+<CascadingValue TValue="EduThemeProvider" Value="@(this)" ChildContent="@ChildContent"/>
 
 @code {
+
     private readonly MudTheme _theme = new()
     {
         Palette = new Palette
@@ -68,9 +68,9 @@
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-    
+
     public bool IsDarkMode { get; private set; }
-    
+
     public string Icon =>
         IsDarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode;
 

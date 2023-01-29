@@ -17,7 +17,7 @@ public abstract record TestConclusion(
 {
     public sealed record EasyTestModel(
         string TestId,
-        TopicTitleModel Topic,
+        ArticleTitleModel Article,
         ConclusionStatus Status,
         ScoreModel MaxScore,
         TimeSpan TestDuration,
@@ -33,7 +33,7 @@ public abstract record TestConclusion(
 
     public sealed record HardTestModel(
         string TestId,
-        TopicTitleModel Topic,
+        ArticleTitleModel Article,
         ConclusionStatus Status,
         ScoreModel MaxScore,
         TimeSpan TestDuration,
@@ -59,6 +59,6 @@ public abstract record TestConclusion(
         MixedTestModel.Question[] Questions
     ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
     {
-        public sealed record Question(string Title, bool IsAnswered, bool IsCorrect, TopicTitleModel Topic);
+        public sealed record Question(string Title, bool IsAnswered, bool IsCorrect, ArticleTitleModel Article);
     }
 }

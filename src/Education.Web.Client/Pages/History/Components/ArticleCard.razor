@@ -1,0 +1,79 @@
+@using Education.Web.Client.Services.History
+@using Education.Web.Client.Services.Model.Content
+@using MudBlazor.Utilities
+<section class="@_class">
+    <header class="card-header">
+        <a href="@HistoryUrl.Content.Article(Id)">
+            <img src="@Image" alt="@Title" loading="lazy"/>
+        </a>
+        <div class="rating-container">
+            <ArticleRating Rating="@Rating" ShowTooltip/>
+        </div>
+    </header>
+
+    <article class="d-flex flex-column pa-3">
+        <div class="d-flex flex-wrap align-center justify-space-between gap-3 mb-3">
+            <MudLink Href="@HistoryUrl.Content.Article(Id)" Typo="Typo.h6">
+                @Title
+            </MudLink>
+
+            <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Text" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(Epoch)">
+                @L[$"Epoch:{Epoch.ToFastString()}"]
+            </MudChip>
+        </div>
+
+        <MudText Class="mb-3" Typo="Typo.body2">
+            @Overview
+        </MudText>
+
+        <div class="flex-grow-1"></div>
+
+        <div class="d-flex justify-end">
+            <MudButton
+                Variant="Variant.Text"
+                Color="Color.Primary"
+                Href="@HistoryUrl.Content.Article(Id)">
+                @L["Button:Read"]
+            </MudButton>
+        </div>
+    </article>
+</section>
+
+@code {
+
+    private string _class = string.Empty;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Id { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public EpochType Epoch { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string? Overview { get; set; }
+
+    [Parameter, EditorRequired]
+    public ContentRatingModel Rating { get; set; } = default!;
+
+    [Parameter]
+    public bool Horizontal { get; set; }
+
+    protected override void OnParametersSet() =>
+        _class = CssBuilder.Default("card")
+            .AddClass("horizontal", Horizontal)
+            .AddClass(Class, !string.IsNullOrEmpty(Class))
+            .Build();
+
+}

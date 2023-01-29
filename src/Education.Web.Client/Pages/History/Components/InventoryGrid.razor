@@ -5,7 +5,7 @@
     {
         @ChildContent?.Invoke(inventory)
     }
-    
+
     @if (!string.IsNullOrEmpty(StoreHref))
     {
         <div class="store rounded pa-3">
@@ -24,7 +24,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Parameter, EditorRequired]
     public IEnumerable<T> Inventory { get; set; } = Enumerable.Empty<T>();
 

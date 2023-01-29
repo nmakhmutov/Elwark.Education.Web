@@ -16,9 +16,9 @@ public sealed record StatisticsModel(
 )
 {
     public sealed record TestModel(NumberOfTestsModel NumberOfTests, ScoreModel Score);
-    
+
     public sealed record EventGuesserModel(uint Tests, History.EventGuesser.Model.ScoreModel Score);
-    
+
     public sealed record ProgressModel(
         DateOnly Date,
         uint Total,

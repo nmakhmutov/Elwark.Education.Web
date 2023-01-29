@@ -1,15 +1,14 @@
-@using Education.Web.Client.Pages.History.Components
-@using Education.Web.Client.Pages.History.Tests.Test.Components
-@using Education.Web.Client.Services.Model.Test
+@page "/history/tests/{id}"
 @using Education.Web.Client.Services.History.Test.Model
 @using Education.Web.Client.Services.Model.Inventory
+@using Education.Web.Client.Services.Model.Test
 @using Education.Web.Client.Services.History.Test
-
-@page "/history/tests/{id}"
+@using Education.Web.Client.Pages.History.Tests.Test.Components
+@using Education.Web.Client.Pages.History.Components
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@(_result.IsSuccess ? $"{_testType}: {_currentQuestion.Topic.Title}" : L["Tests"])">
+<EduPage Title="@(_result.IsSuccess ? $"{_testType}: {_currentQuestion.Article.Title}" : L["Tests"])">
     @switch (_result.Status)
     {
         case Status.Loading:
@@ -29,7 +28,7 @@
                                 @_testType
                             </MudText>
                             <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center" Style="font-weight: 500">
-                                @_currentQuestion.Topic.Title
+                                @_currentQuestion.Article.Title
                             </MudText>
 
                             @if (_currentQuestion.Image is not null)
@@ -173,10 +172,10 @@
         if (_result.IsFailed)
         {
             if (_result.Error.IsTestAlreadyCompleted())
-                Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
+                Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
 
             if (_result.Error.IsTestNotFound())
-                Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
+                Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
 
             return;
         }
@@ -198,7 +197,7 @@
         _result = await TestService.GetAsync(Id);
 
         if (_result.IsFailed)
-            Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
+            Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
     }
 
     private async Task OnShortAnswer(ShortAnswerModel answer)
@@ -240,7 +239,7 @@
         {
             if (result.Error.IsTestAlreadyCompleted())
             {
-                Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
+                Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
                 return;
             }
 
@@ -270,7 +269,7 @@
     }
 
     private void OnComplete() =>
-        Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
+        Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
 
     private async Task OnUseInventory(uint id)
     {
@@ -283,7 +282,7 @@
 
         if (test.Value.Question is null)
         {
-            Navigation.NavigateTo(HistoryUrl.TopicTest.Conclusion(Id));
+            Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
             return;
         }
 

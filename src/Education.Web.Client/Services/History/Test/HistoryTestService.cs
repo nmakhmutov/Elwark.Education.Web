@@ -12,13 +12,13 @@ internal sealed class HistoryTestService : IHistoryTestService
     public HistoryTestService(ApiClient api) =>
         _api = api;
 
-    public Task<ApiResult<TestBuilderModel>> GetTestBuilderAsync(string? topicId) =>
-        _api.GetAsync<TestBuilderModel>(topicId is { Length: > 0 }
-            ? $"history/tests?topicId={topicId}"
+    public Task<ApiResult<TestBuilderModel>> GetTestBuilderAsync(string? articleId) =>
+        _api.GetAsync<TestBuilderModel>(articleId is { Length: > 0 }
+            ? $"history/tests?articleId={articleId}"
             : "history/tests");
 
-    public Task<ApiResult<TestModel>> CreateAsync(CreateTopicTestRequest request) =>
-        _api.PostAsync<TestModel, CreateTopicTestRequest>("history/tests", request);
+    public Task<ApiResult<TestModel>> CreateAsync(CreateArticleTestRequest request) =>
+        _api.PostAsync<TestModel, CreateArticleTestRequest>("history/tests", request);
 
     public Task<ApiResult<TestModel>> CreateAsync(CreateEpochTestRequest request) =>
         _api.PostAsync<TestModel, CreateEpochTestRequest>("history/tests", request);

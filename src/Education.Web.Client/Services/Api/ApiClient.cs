@@ -23,7 +23,7 @@ internal sealed class ApiClient
             new AchievementConverter(),
             new AnswerOptionConverter(),
             new AnswerResultConverter(),
-            new HistoryTopicDetailConverter(),
+            new HistoryArticleDetailConverter(),
             new InternalMoneyConverter(),
             new MarkupStringConverter(),
             new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),

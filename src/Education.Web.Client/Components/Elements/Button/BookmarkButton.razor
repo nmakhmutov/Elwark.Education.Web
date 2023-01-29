@@ -15,7 +15,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public string TopicId { get; set; } = string.Empty;
+    public string ArticleId { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
     public bool IsBookmarked { get; set; }
@@ -27,6 +27,6 @@
     public string? Class { get; set; }
 
     private async Task OnBookmarkChanged(bool toggled) =>
-        IsBookmarked = await OnBookmarkClick.Invoke(TopicId);
+        IsBookmarked = await OnBookmarkClick.Invoke(ArticleId);
 
 }
