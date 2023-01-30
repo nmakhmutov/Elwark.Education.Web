@@ -1,10 +1,25 @@
 @using Education.Web.Client.Services.History
 @using Education.Web.Client.Services.History.Article.Model
 @using Education.Web.Client.Services.Model.Content
+@using Education.Web.Client.Pages.History.Components
+
 <EduContainer Class="pa-0 pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
     <div class="header">
-        <div class="image">
-            <MudImage Src="@Person.ImageUrl" Fluid Alt="@Person.Title" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"/>
+        <div class="preamble">
+            <div class="image">
+                <MudImage
+                    Class="mb-3"
+                    Src="@Person.ImageUrl"
+                    Alt="@Person.Title"
+                    ObjectFit="ObjectFit.Cover"
+                    ObjectPosition="ObjectPosition.Center"
+                    Fluid/>
+
+                @if (Person.Born is not null || Person.Died is not null)
+                {
+                    <PersonLivespan Born="@Person.Born" Died="@Person.Died"/>
+                }
+            </div>
         </div>
 
         <div class="content pa-3 pa-sm-6">
@@ -12,50 +27,28 @@
                 @Person.Title
             </h1>
 
-            <Breadcrumbs Items="@_breadcrumbs" Class="pa-0 mb-3"/>
+            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0 mb-3"/>
 
-            <div class="d-flex flex-wrap">
-                <div class="mr-3 mr-sm-6 mb-3">
-                    <MudText Typo="Typo.subtitle1">
-                        @L["History:Born"]
-                    </MudText>
-                    <HistoryDate Date="@Person.Born" Typo="Typo.h5"/>
-                    <MudText Typo="Typo.body2">
-                        @Person.Born?.Place
-                    </MudText>
-                </div>
-
-                <div class="mb-3">
-                    <MudText Typo="Typo.subtitle1">
-                        @L["History:Died"]
-                    </MudText>
-                    <HistoryDate Date="@Person.Died" Typo="Typo.h5"/>
-                    <MudText Typo="Typo.body2">
-                        @Person.Died?.Place
-                    </MudText>
-                </div>
-            </div>
-
-            <MudText Typo="Typo.subtitle1" Class="mw-sm">
+            <MudText Typo="Typo.subtitle1" Class="mw-sm mb-3">
                 @Person.Description
             </MudText>
-        </div>
-    </div>
 
-    @if (Person.Details.Length > 0)
-    {
-        <div class="details pt-6 pb-sm-3">
-            @foreach (var (title, text) in Person.Details)
+            @if (Person.Details.Length > 0)
             {
-                <div class="pa-3 px-sm-6">
-                    <MudText Class="title" Typo="Typo.subtitle1" Color="Color.Tertiary">
-                        @title
-                    </MudText>
-                    <StyledMarkupString Content="@text" DisableParagraphIndent/>
+                <div class="details">
+                    @foreach (var (title, text) in Person.Details)
+                    {
+                        <div>
+                            <MudText Class="title" Typo="Typo.subtitle1" Color="Color.Tertiary">
+                                @title
+                            </MudText>
+                            <StyledMarkupString Content="@text" DisableParagraphIndent/>
+                        </div>
+                    }
                 </div>
             }
         </div>
-    }
+    </div>
 </EduContainer>
 
 <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1440">
@@ -84,9 +77,9 @@
         <EduFillGrid>
             @foreach (var (article, activity) in RelatedArticles)
             {
-                <ArticleAndUserProgressCard
+                <ArticleCard
                     Article="@article"
-                    UserActivity="@activity"
+                    Activity="@activity"
                     OnBookmarkClick="@OnBookmarkClick"/>
             }
         </EduFillGrid>
@@ -94,7 +87,12 @@
 </EduContainer>
 
 @code {
-    private List<BreadcrumbItem> _breadcrumbs = new();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"], HistoryUrl.Root),
+        new BreadcrumbItem(L[$"Epoch:{Person.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Person.Epoch))
+    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -122,12 +120,5 @@
 
     [Parameter, EditorRequired]
     public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
-
-    protected override void OnParametersSet() =>
-        _breadcrumbs = new List<BreadcrumbItem>
-        {
-            new(L["Subject:History"], HistoryUrl.Root),
-            new(L[$"Epoch:{Person.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Person.Epoch))
-        };
 
 }

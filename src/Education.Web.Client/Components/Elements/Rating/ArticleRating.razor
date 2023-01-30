@@ -2,24 +2,36 @@
 <div class="@Class">
     @if (ShowTooltip)
     {
-        <MudTooltip Placement="Placement.Top" Text="@($"{L["Rating"]}: {Rating.Stars.ToString("F1")}")">
-            <MudRating MaxValue="5" Size="@Size" ReadOnly SelectedValue="@((int)Math.Round(Rating.Stars))"/>
+        <MudTooltip RootClass="d-flex" Placement="Placement.Bottom" Text="@($"{L["Rating"]}: {Rating.Stars:F1}")">
+            <MudRating
+                Class="@_ratingClass"
+                MaxValue="5"
+                Size="@Size"
+                SelectedValue="@_selectedStart"
+                ReadOnly/>
         </MudTooltip>
     }
     else
     {
-        <MudRating MaxValue="5" Size="@Size" ReadOnly SelectedValue="@((int)Math.Ceiling(Rating.Stars))"/>
+        <MudRating
+            Class="@_ratingClass"
+            MaxValue="5"
+            Size="@Size"
+            SelectedValue="@_selectedStart"
+            ReadOnly/>
     }
 
     @if (ShowDetails)
     {
         <MudText Typo="Typo.caption" Class="ml-1">
-            @Rating.Stars.ToString("F1")/@Rating.Votes.ToReadable()
+            @($"{Rating.Stars:F1} / {Rating.Votes.ToReadable()}")
         </MudText>
     }
 </div>
 
 @code {
+    private string? _ratingClass;
+    private int _selectedStart;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -38,5 +50,17 @@
 
     [Parameter]
     public bool ShowDetails { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _selectedStart = (int)Math.Round(Rating.Stars);
+        _ratingClass = Size switch{
+            Size.Small => "rating small",
+            Size.Medium => "rating medium",
+            Size.Large => "rating large",
+            _ => "rating"
+            };
+    }
+
 
 }

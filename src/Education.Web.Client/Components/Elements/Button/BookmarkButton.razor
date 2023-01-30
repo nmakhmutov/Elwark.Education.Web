@@ -3,9 +3,11 @@
         Class="@Class"
         Toggled="@IsBookmarked"
         ToggledChanged="@OnBookmarkChanged"
-        Icon="@Icons.Material.Outlined.BookmarkBorder"
+        Icon="@Icons.Material.Outlined.BookmarkAdd"
         Color="Color.Default"
-        ToggledIcon="@Icons.Material.Outlined.Bookmark"
+        Size="@Size"
+        ToggledSize="@Size"
+        ToggledIcon="@Icons.Material.Outlined.BookmarkAdded"
         ToggledColor="Color.Error"/>
 </MudTooltip>
 
@@ -23,6 +25,9 @@
     [Parameter, EditorRequired]
     public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
 
+    [Parameter]
+    public Size Size { get; set; } = Size.Medium;
+    
     [Parameter]
     public string? Class { get; set; }
 

@@ -1,12 +1,13 @@
 @using Education.Web.Client.Services.History.User.Model
 @using ApexCharts
+
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
         @Title
     </MudText>
-    <div class="d-md-flex flex-wrap align-center justify-space-around gap-3 gap-sm-6">
+    <div class="d-flex flex-column flex-md-row gap-3 gap-sm-6">
         <div class="d-flex justify-center">
-            <div class="wrapper">
+            <div class="d-flex align-center wrapper">
                 <ApexChart TItem="ProfitModel" Options="@_options">
                     <ApexPointSeries
                         TItem="ProfitModel"
@@ -17,7 +18,7 @@
                 </ApexChart>
             </div>
         </div>
-        <ChartList Items="@_chartItems" EndIcon="%"/>
+        <ChartList Class="w-100" Items="@_chartItems" EndIcon="%"/>
     </div>
 </section>
 

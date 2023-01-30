@@ -10,10 +10,16 @@
                 <h2 class="title">@article.Title</h2>
                 <p class="overview">@article.Overview</p>
                 <div class="d-flex flex-wrap justify-space-between align-center">
-                    <ArticleRating Rating="@article.Rating"/>
-                    <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Filled" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(article.Epoch)">
-                        @L[$"Epoch:{article.Epoch.ToFastString()}"]
-                    </MudChip>
+                    <ArticleRating Rating="@article.Rating" Size="Size.Small"/>
+                    <MudChip
+                        Class="ma-0"
+                        Size="Size.Small"
+                        Color="Color.Primary"
+                        Variant="Variant.Filled"
+                        Text="@L[$"Epoch:{article.Epoch.ToFastString()}"]"
+                        Link="@HistoryUrl.Content.Epoch(article.Epoch)"
+                        DisableRipple
+                        Label/>
                 </div>
             </div>
         </article>
@@ -34,7 +40,7 @@
     public bool Gap { get; set; }
 
     [Parameter, EditorRequired]
-    public ArticleOverviewModel[] Articles { get; set; } = Array.Empty<ArticleOverviewModel>();
+    public IEnumerable<ArticleOverviewModel> Articles { get; set; } = Enumerable.Empty<ArticleOverviewModel>();
 
     protected override void OnParametersSet()
     {

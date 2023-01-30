@@ -6,7 +6,7 @@
     <section class="grid">
         <header class="header">
             <div class="d-flex justify-center">
-                <Breadcrumbs Class="pa-0" Items="@_breadcrumbs"/>
+                <Breadcrumbs Class="pa-0" Items="@Breadcrumbs"/>
             </div>
             <h1 class="title">
                 @Battle.Title
@@ -111,9 +111,9 @@
         <EduFillGrid>
             @foreach (var (article, activity) in RelatedArticles)
             {
-                <ArticleAndUserProgressCard
+                <ArticleCard
                     Article="@article"
-                    UserActivity="@activity"
+                    Activity="@activity"
                     OnBookmarkClick="@OnBookmarkClick"/>
             }
         </EduFillGrid>
@@ -121,8 +121,13 @@
 </EduContainer>
 
 @code {
-    private List<BreadcrumbItem> _breadcrumbs = new();
     private Dictionary<string, List<MarkupString>> _conflictParties = new();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"], HistoryUrl.Root),
+        new BreadcrumbItem(L[$"Epoch:{Battle.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Battle.Epoch))
+    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -153,12 +158,6 @@
 
     protected override void OnParametersSet()
     {
-        _breadcrumbs = new List<BreadcrumbItem>
-        {
-            new(L["Subject:History"], HistoryUrl.Root),
-            new(L[$"Epoch:{Battle.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Battle.Epoch))
-        };
-
         _conflictParties = new Dictionary<string, List<MarkupString>>
         {
             { nameof(ConflictPartyModel.Belligerents), new List<MarkupString> { Battle.ConflictParties[0].Belligerents } },

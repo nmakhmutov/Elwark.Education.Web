@@ -5,15 +5,13 @@
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["Article"]
     </MudText>
+
     <ArticleCard
-        Id="@Article.Id"
-        Epoch="@Article.Epoch"
-        Title="@Article.Title"
-        Image="@Article.ThumbnailUrl"
-        Overview="@Article.Overview"
-        Rating="@Article.Rating"
-        Horizontal
-        Class="mb-3 mb-sm-6"/>
+        Class="mb-3 mb-sm-6"
+        Article="@Article"
+        Activity="@Activity"
+        OnBookmarkClick="@OnBookmarkClick"
+        Horizontal/>
 
     <MudText Typo="Typo.h5" Class="mb-3">
         @L["Tests"]
@@ -54,17 +52,23 @@
     [CascadingParameter]
     private HistorySettingsProvider HistorySettings { get; set; } = default!;
 
-    [Parameter]
-    public string? Class { get; set; }
-
     [Parameter, EditorRequired]
     public ArticleOverviewModel Article { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public UserActivityOverviewModel Activity { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public TestInformationModel[] Tests { get; set; } = Array.Empty<TestInformationModel>();
 
     [Parameter, EditorRequired]
-    public EventCallback<CreateArticleTestRequest> OnCreate { get; set; }
+    public EventCallback<CreateArticleTestRequest> OnCreateClick { get; set; }
+
+    [Parameter]
+    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+
+    [Parameter]
+    public string? Class { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -80,7 +84,7 @@
             return;
 
         _isLoading = true;
-        await OnCreate.InvokeAsync(new CreateArticleTestRequest(HistorySettings.TestType, Article.Id));
+        await OnCreateClick.InvokeAsync(new CreateArticleTestRequest(HistorySettings.TestType, Article.Id));
         _isLoading = false;
     }
 

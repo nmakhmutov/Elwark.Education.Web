@@ -4,6 +4,7 @@
 @using Education.Web.Client.Services.History.Test
 @using Education.Web.Client.Pages.History.Tests.Components
 @using Education.Web.Client.Pages.History.Components
+@using Education.Web.Client.Services.History.User
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -26,11 +27,20 @@
             <section class="grid pa-3 pa-sm-6">
                 @if (model.Article is null)
                 {
-                    <EpochTestBuilder Class="builder" Tests="@model.Tests" OnCreate="@OnCreateTestAsync"/>
+                    <EpochTestBuilder
+                        Class="builder"
+                        Tests="@model.Tests"
+                        OnCreateClick="@OnCreateTestAsync"/>
                 }
                 else
                 {
-                    <ArticleTestBuilder Class="builder" Tests="@model.Tests" Article="@model.Article" OnCreate="@OnCreateTestAsync"/>
+                    <ArticleTestBuilder
+                        Class="builder"
+                        Tests="@model.Tests"
+                        Article="@model.Article.Article"
+                        Activity="@model.Article.Activity"
+                        OnCreateClick="@OnCreateTestAsync"
+                        OnBookmarkClick="@ToggleBookmarkAsync"/>
                 }
 
                 <section class="inventory">
@@ -63,6 +73,9 @@
 
     [Inject]
     private IHistoryTestService TestService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
@@ -98,6 +111,12 @@
             Navigation.NavigateTo(HistoryUrl.ArticleTest.Test(response.Value.Overview.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
+    }
+
+    private async Task<bool> ToggleBookmarkAsync(string id)
+    {
+        var result = await UserService.ToggleBookmarkAsync(id);
+        return result is { IsSuccess: true, Value: true };
     }
 
     private void OpenRule()

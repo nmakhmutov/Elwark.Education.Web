@@ -45,7 +45,7 @@
     public TestInformationModel[] Tests { get; set; } = Array.Empty<TestInformationModel>();
 
     [Parameter, EditorRequired]
-    public EventCallback<CreateEpochTestRequest> OnCreate { get; set; }
+    public EventCallback<CreateEpochTestRequest> OnCreateClick { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
@@ -64,7 +64,7 @@
             return;
 
         _isLoading = true;
-        await OnCreate.InvokeAsync(new CreateEpochTestRequest(HistorySettings.TestType, HistorySettings.TestEpoch));
+        await OnCreateClick.InvokeAsync(new CreateEpochTestRequest(HistorySettings.TestType, HistorySettings.TestEpoch));
         _isLoading = false;
     }
 

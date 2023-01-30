@@ -19,8 +19,9 @@
 
 .details {
     display: flex;
+    gap: 12px;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     font-size: var(--mud-typography-subtitle1-size);
 }
 
@@ -43,6 +44,10 @@
         display: grid;
     }
 
+    .image ::deep img {
+        max-height: 60vh;
+    }
+
     .grid {
         gap: 24px;
     }
@@ -50,7 +55,7 @@
 
 @media (min-width: 960px) {
     .header {
-        grid-template-columns: minmax(240px, auto) 1fr;
+        grid-template-columns: minmax(240px, auto) 2fr;
     }
 
     .content .title {
@@ -64,6 +69,7 @@
 
     .image ::deep img {
         display: inline;
+        max-height: 70vh;
     }
 
     .grid {
