@@ -1,9 +1,9 @@
-using Education.Web.Client.Services.Api;
+using Education.Http;
+using Education.Web.Client.Services.Customer.Notification.Model;
+using Education.Web.Client.Services.Customer.Notification.Request;
 using Education.Web.Client.Services.Model;
-using Education.Web.Client.Services.Notification.Model;
-using Education.Web.Client.Services.Notification.Request;
 
-namespace Education.Web.Client.Services.Notification;
+namespace Education.Web.Client.Services.Customer.Notification;
 
 public interface INotificationService : IDisposable
 {

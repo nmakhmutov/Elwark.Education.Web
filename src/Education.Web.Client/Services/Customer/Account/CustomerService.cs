@@ -1,13 +1,13 @@
-using Education.Web.Client.Services.Api;
-using Education.Web.Client.Services.Customer.Model;
+using Education.Http;
+using Education.Web.Client.Services.Customer.Account.Model;
 
-namespace Education.Web.Client.Services.Customer;
+namespace Education.Web.Client.Services.Customer.Account;
 
 internal sealed class CustomerService : ICustomerService
 {
-    private readonly ApiClient _api;
+    private readonly CustomerApiClient _api;
 
-    public CustomerService(ApiClient api) =>
+    public CustomerService(CustomerApiClient api) =>
         _api = api;
 
     public Task<ApiResult<CustomerModel>> GetAsync() =>

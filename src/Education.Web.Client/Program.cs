@@ -1,10 +1,13 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
+using Education.Http;
 using Education.Web.Client.Components.Customer;
-using Education.Web.Client.Services.Api;
 using Education.Web.Client.Services.Api.Handlers;
 using Education.Web.Client.Services.Customer;
+using Education.Web.Client.Services.Customer.Account;
+using Education.Web.Client.Services.Customer.Notification;
+using Education.Web.Client.Services.History;
 using Education.Web.Client.Services.History.Article;
 using Education.Web.Client.Services.History.EventGuesser;
 using Education.Web.Client.Services.History.Leaderboard;
@@ -13,7 +16,6 @@ using Education.Web.Client.Services.History.Search;
 using Education.Web.Client.Services.History.Store;
 using Education.Web.Client.Services.History.Test;
 using Education.Web.Client.Services.History.User;
-using Education.Web.Client.Services.Notification;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -89,7 +91,8 @@ builder.Services
     .AddPolicyHandler(policy);
 
 builder.Services
-    .AddScoped<ApiClient>()
+    .AddScoped<CustomerApiClient>()
+    .AddScoped<HistoryApiClient>()
     .AddScoped<ICustomerService, CustomerService>()
     .AddScoped<INotificationService, NotificationService>()
     .AddScoped<IHistoryEventGuesserService, HistoryEventGuesserService>()

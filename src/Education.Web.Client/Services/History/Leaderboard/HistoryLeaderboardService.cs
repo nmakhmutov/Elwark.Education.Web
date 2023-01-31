@@ -1,13 +1,13 @@
-using Education.Web.Client.Services.Api;
+using Education.Http;
 using Education.Web.Client.Services.History.Leaderboard.Model;
 
 namespace Education.Web.Client.Services.History.Leaderboard;
 
 internal sealed class HistoryLeaderboardService : IHistoryLeaderboardService
 {
-    private readonly ApiClient _api;
+    private readonly HistoryApiClient _api;
 
-    public HistoryLeaderboardService(ApiClient api) =>
+    public HistoryLeaderboardService(HistoryApiClient api) =>
         _api = api;
 
     public Task<ApiResult<GlobalRankingModel[]>> GetGlobalAsync() =>

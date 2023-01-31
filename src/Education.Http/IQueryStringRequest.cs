@@ -1,4 +1,4 @@
-namespace Education.Web.Client.Services.Api;
+namespace Education.Http;
 
 public interface IQueryStringRequest
 {

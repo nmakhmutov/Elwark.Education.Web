@@ -1,4 +1,4 @@
-using Education.Web.Client.Services.Api;
+using Education.Http;
 
 namespace Education.Web.Client.Services.History.User.Request;
 

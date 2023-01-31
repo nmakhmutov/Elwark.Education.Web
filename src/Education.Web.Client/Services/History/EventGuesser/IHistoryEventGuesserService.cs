@@ -1,4 +1,4 @@
-using Education.Web.Client.Services.Api;
+using Education.Http;
 using Education.Web.Client.Services.History.EventGuesser.Model;
 using Education.Web.Client.Services.History.EventGuesser.Request;
 

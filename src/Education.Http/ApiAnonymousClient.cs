@@ -1,6 +1,6 @@
-namespace Education.Web.Client.Services.Api;
+namespace Education.Http;
 
-internal sealed class ApiAnonymousClient
+public sealed class ApiAnonymousClient
 {
     private readonly HttpClient _httpClient;
 

@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Encodings.Web;
 
-namespace Education.Web.Client.Services.Api;
+namespace Education.Http;
 
 public readonly struct QueryString : IEquatable<QueryString>
 {

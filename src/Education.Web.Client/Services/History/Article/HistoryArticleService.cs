@@ -1,4 +1,4 @@
-using Education.Web.Client.Services.Api;
+using Education.Http;
 using Education.Web.Client.Services.History.Article.Model;
 using Education.Web.Client.Services.History.Article.Request;
 using Education.Web.Client.Services.Model;
@@ -7,9 +7,9 @@ namespace Education.Web.Client.Services.History.Article;
 
 internal sealed class HistoryArticleService : IHistoryArticleService
 {
-    private readonly ApiClient _api;
+    private readonly HistoryApiClient _api;
 
-    public HistoryArticleService(ApiClient api) =>
+    public HistoryArticleService(HistoryApiClient api) =>
         _api = api;
 
     public Task<ApiResult<PagingOffsetModel<UserArticleOverviewModel>>> GetAsync(GetArticlesRequest request) =>

@@ -1,4 +1,4 @@
-using Education.Web.Client.Services.Api;
+using Education.Http;
 using Education.Web.Client.Services.History.User.Model;
 using Education.Web.Client.Services.History.User.Model.EventGuesser;
 using Education.Web.Client.Services.History.User.Model.Test;
@@ -11,9 +11,9 @@ namespace Education.Web.Client.Services.History.User;
 
 internal sealed class HistoryUserService : IHistoryUserService
 {
-    private readonly ApiClient _api;
+    private readonly HistoryApiClient _api;
 
-    public HistoryUserService(ApiClient api) =>
+    public HistoryUserService(HistoryApiClient api) =>
         _api = api;
 
     public Task<ApiResult<ProfileModel>> GetProfileAsync() =>

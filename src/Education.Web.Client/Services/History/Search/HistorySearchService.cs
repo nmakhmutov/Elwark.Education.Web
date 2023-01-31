@@ -1,12 +1,12 @@
-using Education.Web.Client.Services.Api;
+using Education.Http;
 
 namespace Education.Web.Client.Services.History.Search;
 
 internal sealed class HistorySearchService : IHistorySearchService
 {
-    private readonly ApiClient _api;
+    private readonly HistoryApiClient _api;
 
-    public HistorySearchService(ApiClient api) =>
+    public HistorySearchService(HistoryApiClient api) =>
         _api = api;
 
     public Task<ApiResult<ArticleOverviewModel[]>> SearchAsync(string query) =>

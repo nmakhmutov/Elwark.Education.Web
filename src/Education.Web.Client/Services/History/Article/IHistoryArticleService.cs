@@ -1,4 +1,4 @@
-using Education.Web.Client.Services.Api;
+using Education.Http;
 using Education.Web.Client.Services.History.Article.Model;
 using Education.Web.Client.Services.History.Article.Request;
 using Education.Web.Client.Services.Model;

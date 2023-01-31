@@ -1,13 +1,13 @@
-using Education.Web.Client.Services.Api;
+using Education.Http;
 using Education.Web.Client.Services.History.Store.Model;
 
 namespace Education.Web.Client.Services.History.Store;
 
 internal sealed class HistoryStoreService : IHistoryStoreService
 {
-    private readonly ApiClient _api;
+    private readonly HistoryApiClient _api;
 
-    public HistoryStoreService(ApiClient api) =>
+    public HistoryStoreService(HistoryApiClient api) =>
         _api = api;
 
     public Task<ApiResult<ProductModel[]>> GetAsync() =>
