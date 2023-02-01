@@ -1,44 +1,43 @@
 @page "/history/tests/{id}/conclusion"
 @using Education.Web.Client.Services.History.Test.Model
-@using Education.Web.Client.Services.Model.Test
 @using Education.Web.Client.Services.History.Test
 @using Education.Web.Client.Pages.History.Tests.Conclusion.Components
-@using Education.Http
+@using Education.Web.Client.Models.Test
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@_title">
-    <ApiViewer Result="@_result" Context="conclusion">
-        <MudAlert Class="mb-6 mb-sm-12" Square Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center">
-            @L[$"ConclusionStatus:{conclusion.Status}"]
-        </MudAlert>
+<PageTitle>@_title</PageTitle>
 
-        <CompletedStars Class="mb-6" Progress="@_progress"/>
+<ApiViewer Result="@_result" Context="conclusion">
+    <MudAlert Class="mb-6 mb-sm-12" Square Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center">
+        @L[$"ConclusionStatus:{conclusion.Status}"]
+    </MudAlert>
 
-        @if (conclusion.Rewards.Length > 0)
-        {
-            <RewardsContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
-        }
+    <CompletedStars Class="mb-6" Progress="@_progress"/>
 
-        @switch (conclusion)
-        {
-            case TestConclusion.EasyTestModel test:
-                <EasyTestView Conclusion="@test"/>
-                break;
+    @if (conclusion.Rewards.Length > 0)
+    {
+        <RewardsContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
+    }
 
-            case TestConclusion.HardTestModel test:
-                <HardTestView Conclusion="@test"/>
-                break;
+    @switch (conclusion)
+    {
+        case TestConclusion.EasyTestModel test:
+            <EasyTestView Conclusion="@test"/>
+            break;
 
-            case TestConclusion.MixedTestModel test:
-                <MixedTestView Conclusion="@test"/>
-                break;
+        case TestConclusion.HardTestModel test:
+            <HardTestView Conclusion="@test"/>
+            break;
 
-            default:
-                throw new ArgumentOutOfRangeException(nameof(conclusion));
-        }
-    </ApiViewer>
-</EduPage>
+        case TestConclusion.MixedTestModel test:
+            <MixedTestView Conclusion="@test"/>
+            break;
+
+        default:
+            throw new ArgumentOutOfRangeException(nameof(conclusion));
+    }
+</ApiViewer>
 
 @code {
     private string? _title;

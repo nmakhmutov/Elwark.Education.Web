@@ -1,5 +1,5 @@
+using Education.Web.Client.Models.Statistics;
 using Education.Web.Client.Services.History.EventGuesser.Model;
-using Education.Web.Client.Services.Model.Statistics;
 
 namespace Education.Web.Client.Services.History.User.Model.EventGuesser;
 

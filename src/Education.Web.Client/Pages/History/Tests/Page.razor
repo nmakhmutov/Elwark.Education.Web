@@ -9,57 +9,56 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@L["Tests"]" HideFooter>
-    <div class="background d-flex flex-column h-100">
-        <EduContainer Class="pt-3 pt-sm-6">
-            <EduPageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs">
-                <MudButton
-                    DisableElevation
-                    Variant="Variant.Text"
-                    Color="Color.Primary"
-                    EndIcon="@Icons.Material.Outlined.Info"
-                    Disabled="@(!_result.IsSuccess)"
-                    OnClick="@OpenRule">
-                    @L["Tests:Rules"]
-                </MudButton>
-            </EduPageHeader>
-        </EduContainer>
-        <ApiViewer Result="@_result" Context="model">
-            <section class="grid pa-3 pa-sm-6">
-                @if (model.Article is null)
-                {
-                    <EpochTestBuilder
-                        Class="builder"
-                        Tests="@model.Tests"
-                        OnCreateClick="@OnCreateTestAsync"/>
-                }
-                else
-                {
-                    <ArticleTestBuilder
-                        Class="builder"
-                        Tests="@model.Tests"
-                        Article="@model.Article.Article"
-                        Activity="@model.Article.Activity"
-                        OnCreateClick="@OnCreateTestAsync"
-                        OnBookmarkClick="@ToggleBookmarkAsync"/>
-                }
+<PageTitle>@L["Tests"]</PageTitle>
+<div class="background d-flex flex-column h-100">
+    <EduContainer Class="pt-3 pt-sm-6">
+        <EduPageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs">
+            <MudButton
+                DisableElevation
+                Variant="Variant.Text"
+                Color="Color.Primary"
+                EndIcon="@Icons.Material.Outlined.Info"
+                Disabled="@(!_result.IsSuccess)"
+                OnClick="@OpenRule">
+                @L["Tests:Rules"]
+            </MudButton>
+        </EduPageHeader>
+    </EduContainer>
+    <ApiViewer Result="@_result" Context="model">
+        <section class="grid pa-3 pa-sm-6">
+            @if (model.Article is null)
+            {
+                <EpochTestBuilder
+                    Class="builder"
+                    Tests="@model.Tests"
+                    OnCreateClick="@OnCreateTestAsync"/>
+            }
+            else
+            {
+                <ArticleTestBuilder
+                    Class="builder"
+                    Tests="@model.Tests"
+                    Article="@model.Article.Article"
+                    Activity="@model.Article.Activity"
+                    OnCreateClick="@OnCreateTestAsync"
+                    OnBookmarkClick="@ToggleBookmarkAsync"/>
+            }
 
-                <section class="inventory">
-                    <MudText Typo="Typo.h5" Class="mb-3">
-                        @L["Inventory"]
-                    </MudText>
-                    <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index" Context="item">
-                        <InventoryInfoCard
-                            Title="@item.Title"
-                            Overview="@item.Overview"
-                            Quantity="@item.Quantity"
-                            IconUrl="@item.IconUrl"/>
-                    </InventoryGrid>
-                </section>
+            <section class="inventory">
+                <MudText Typo="Typo.h5" Class="mb-3">
+                    @L["Inventory"]
+                </MudText>
+                <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index" Context="item">
+                    <InventoryInfoCard
+                        Title="@item.Title"
+                        Overview="@item.Overview"
+                        Quantity="@item.Quantity"
+                        IconUrl="@item.IconUrl"/>
+                </InventoryGrid>
             </section>
-        </ApiViewer>
-    </div>
-</EduPage>
+        </section>
+    </ApiViewer>
+</div>
 
 @code {
     private ApiResult<TestBuilderModel> _result = ApiResult<TestBuilderModel>.Loading();

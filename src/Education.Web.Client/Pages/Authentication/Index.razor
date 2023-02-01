@@ -1,19 +1,18 @@
 ﻿@page "/authentication/{action}"
 @layout MainLayout
 
-<EduPage Title="Authentication">
-    <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@CustomerStateProvider.InitAsync">
-        <LoggingIn>
-            <Spinner/>
-        </LoggingIn>
-        <CompletingLoggingIn>
-            <Spinner/>
-        </CompletingLoggingIn>
-        <LogOut>
-            <Spinner/>
-        </LogOut>
-    </RemoteAuthenticatorView>
-</EduPage>
+<PageTitle>Authentication</PageTitle>
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@CustomerStateProvider.InitAsync">
+    <LoggingIn>
+        <Spinner/>
+    </LoggingIn>
+    <CompletingLoggingIn>
+        <Spinner/>
+    </CompletingLoggingIn>
+    <LogOut>
+        <Spinner/>
+    </LogOut>
+</RemoteAuthenticatorView>
 
 @code {
 

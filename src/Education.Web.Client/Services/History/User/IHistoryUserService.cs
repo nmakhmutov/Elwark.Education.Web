@@ -1,10 +1,10 @@
-using Education.Http;
+using Education.Web.Client.Models;
+using Education.Web.Client.Models.Quest;
+using Education.Web.Client.Services.Api;
 using Education.Web.Client.Services.History.User.Model;
 using Education.Web.Client.Services.History.User.Model.EventGuesser;
 using Education.Web.Client.Services.History.User.Model.Test;
 using Education.Web.Client.Services.History.User.Request;
-using Education.Web.Client.Services.Model;
-using Education.Web.Client.Services.Model.Quest;
 using QuestModel = Education.Web.Client.Services.History.User.Model.QuestModel;
 
 namespace Education.Web.Client.Services.History.User;

@@ -1,4 +1,4 @@
-using Education.Web.Client.Services.Model;
+using Education.Web.Client.Models;
 
 namespace Education.Web.Client.Services.History.User.Model;
 

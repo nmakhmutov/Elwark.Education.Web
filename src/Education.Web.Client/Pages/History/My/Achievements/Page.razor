@@ -6,56 +6,55 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@L["Achievements"]">
-    <EduContainer Class="py-3 py-sm-6">
-        <EduPageHeader Title="@L["Achievements"]" Breadcrumbs="@Breadcrumbs">
-            <MudText Typo="Typo.h5">
-                @_subtitle
-            </MudText>
-        </EduPageHeader>
-    </EduContainer>
-    <ApiViewer Result="@_result" Context="achievements">
-        <EduContainer Class="pb-3 pb-sm-6">
-            <MudGrid>
-                @for (var index = 0; index < achievements.Categories.Length; index++)
-                {
-                    var category = achievements.Categories[index];
-                    var background = GetIconBackground(category.Name);
-                    var classes = index == 0 ? null : "mt-6 mt-sm-16";
+<PageTitle>@L["Achievements"]</PageTitle>
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@L["Achievements"]" Breadcrumbs="@Breadcrumbs">
+        <MudText Typo="Typo.h5">
+            @_subtitle
+        </MudText>
+    </EduPageHeader>
+</EduContainer>
+<ApiViewer Result="@_result" Context="achievements">
+    <EduContainer Class="pb-3 pb-sm-6">
+        <MudGrid>
+            @for (var index = 0; index < achievements.Categories.Length; index++)
+            {
+                var category = achievements.Categories[index];
+                var background = GetIconBackground(category.Name);
+                var classes = index == 0 ? null : "mt-6 mt-sm-16";
 
-                    <MudItem xs="12" md="3" xl="2" Class="@classes">
-                        <div class="sticky-info">
-                            <div class="d-flex align-end">
-                                <MudText Typo="@Typo.h5">
-                                    @category.Title
-                                </MudText>
-                                <MudText Typo="@Typo.subtitle1" Class="ml-3">
-                                    @category.Completed/@category.Total
-                                </MudText>
-                            </div>
-
-                            <MudText Typo="@Typo.body1">
-                                @category.Description
+                <MudItem xs="12" md="3" xl="2" Class="@classes">
+                    <div class="sticky-info">
+                        <div class="d-flex align-end">
+                            <MudText Typo="@Typo.h5">
+                                @category.Title
+                            </MudText>
+                            <MudText Typo="@Typo.subtitle1" Class="ml-3">
+                                @category.Completed/@category.Total
                             </MudText>
                         </div>
-                    </MudItem>
 
-                    <MudItem xs="12" md="9" xl="10" Class="@classes">
-                        <EduFillGrid>
-                            @foreach (var achievement in category.Achievements)
-                            {
-                                <AchievementView
-                                    Class="mud-paper pa-3 pa-sm-6"
-                                    IconClass="@background"
-                                    Achievement="@achievement"/>
-                            }
-                        </EduFillGrid>
-                    </MudItem>
-                }
-            </MudGrid>
-        </EduContainer>
-    </ApiViewer>
-</EduPage>
+                        <MudText Typo="@Typo.body1">
+                            @category.Description
+                        </MudText>
+                    </div>
+                </MudItem>
+
+                <MudItem xs="12" md="9" xl="10" Class="@classes">
+                    <EduFillGrid>
+                        @foreach (var achievement in category.Achievements)
+                        {
+                            <AchievementView
+                                Class="mud-paper pa-3 pa-sm-6"
+                                IconClass="@background"
+                                Achievement="@achievement"/>
+                        }
+                    </EduFillGrid>
+                </MudItem>
+            }
+        </MudGrid>
+    </EduContainer>
+</ApiViewer>
 
 @code {
     private string? _subtitle;

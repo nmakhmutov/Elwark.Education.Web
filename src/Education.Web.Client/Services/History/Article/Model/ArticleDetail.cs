@@ -1,4 +1,4 @@
-using Education.Web.Client.Services.Model.Content;
+using Education.Web.Client.Models.Content;
 using Microsoft.AspNetCore.Components;
 
 namespace Education.Web.Client.Services.History.Article.Model;

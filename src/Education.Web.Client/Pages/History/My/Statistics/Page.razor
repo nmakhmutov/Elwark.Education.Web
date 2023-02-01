@@ -7,86 +7,86 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@L["Statistics"]">
-    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-        <EduPageHeader Title="@L["Statistics"]" Breadcrumbs="@Breadcrumbs"/>
-    </EduContainer>
+<PageTitle>@L["Statistics"]</PageTitle>
 
-    <ApiViewer Result="@_result" Context="profile">
-        <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-            <EduFillGrid>
-                <StatisticsCard
-                    Title="@L["Tests:Easy"]"
-                    Value="@profile.EasyTest.NumberOfTests.Total"
-                    Href="@HistoryUrl.User.MyEasyTests">
-                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <ScoreChart Value="@profile.EasyTest.Score"/>
-                </StatisticsCard>
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+    <EduPageHeader Title="@L["Statistics"]" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
 
-                <StatisticsCard
-                    Title="@L["Tests:Hard"]"
-                    Value="@profile.HardTest.NumberOfTests.Total"
-                    Href="@HistoryUrl.User.MyHardTests">
-                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <ScoreChart Value="@profile.HardTest.Score"/>
-                </StatisticsCard>
+<ApiViewer Result="@_result" Context="profile">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <EduFillGrid>
+            <StatisticsCard
+                Title="@L["Tests:Easy"]"
+                Value="@profile.EasyTest.NumberOfTests.Total"
+                Href="@HistoryUrl.User.MyEasyTests">
+                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <ScoreChart Value="@profile.EasyTest.Score"/>
+            </StatisticsCard>
 
-                <StatisticsCard
-                    Title="@L["Tests:Mixed"]"
-                    Value="@profile.MixedTest.NumberOfTests.Total"
-                    Href="@HistoryUrl.User.MyMixedTests">
-                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <ScoreChart Value="@profile.MixedTest.Score"/>
-                </StatisticsCard>
+            <StatisticsCard
+                Title="@L["Tests:Hard"]"
+                Value="@profile.HardTest.NumberOfTests.Total"
+                Href="@HistoryUrl.User.MyHardTests">
+                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <ScoreChart Value="@profile.HardTest.Score"/>
+            </StatisticsCard>
 
-                <StatisticsCard
-                    Title="@L["EventGuessers:Small"]"
-                    Value="@profile.SmallEventGuesser.Tests"
-                    Href="@HistoryUrl.User.MySmallEventGuessers">
-                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <EventGuesserScoreChart Score="@profile.SmallEventGuesser.Score"/>
-                </StatisticsCard>
+            <StatisticsCard
+                Title="@L["Tests:Mixed"]"
+                Value="@profile.MixedTest.NumberOfTests.Total"
+                Href="@HistoryUrl.User.MyMixedTests">
+                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <ScoreChart Value="@profile.MixedTest.Score"/>
+            </StatisticsCard>
 
-                <StatisticsCard
-                    Title="@L["EventGuessers:Medium"]"
-                    Value="@profile.MediumEventGuesser.Tests"
-                    Href="@HistoryUrl.User.MyMediumEventGuessers">
-                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <EventGuesserScoreChart Score="@profile.MediumEventGuesser.Score"/>
-                </StatisticsCard>
+            <StatisticsCard
+                Title="@L["EventGuessers:Small"]"
+                Value="@profile.SmallEventGuesser.Tests"
+                Href="@HistoryUrl.User.MySmallEventGuessers">
+                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <EventGuesserScoreChart Score="@profile.SmallEventGuesser.Score"/>
+            </StatisticsCard>
 
-                <StatisticsCard
-                    Title="@L["EventGuessers:Large"]"
-                    Value="@profile.LargeEventGuesser.Tests"
-                    Href="@HistoryUrl.User.MyLargeEventGuessers">
-                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
-                    <EventGuesserScoreChart Score="@profile.LargeEventGuesser.Score"/>
-                </StatisticsCard>
+            <StatisticsCard
+                Title="@L["EventGuessers:Medium"]"
+                Value="@profile.MediumEventGuesser.Tests"
+                Href="@HistoryUrl.User.MyMediumEventGuessers">
+                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <EventGuesserScoreChart Score="@profile.MediumEventGuesser.Score"/>
+            </StatisticsCard>
 
-                <WalletCard
-                    Title="@L["InternalMoney:Silver"]"
-                    Icon="@EduIcons.Silver"
-                    Href="@HistoryUrl.User.MySilver"
-                    Budget="@profile.Silver"/>
+            <StatisticsCard
+                Title="@L["EventGuessers:Large"]"
+                Value="@profile.LargeEventGuesser.Tests"
+                Href="@HistoryUrl.User.MyLargeEventGuessers">
+                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <EventGuesserScoreChart Score="@profile.LargeEventGuesser.Score"/>
+            </StatisticsCard>
 
+            <WalletCard
+                Title="@L["InternalMoney:Silver"]"
+                Icon="@EduIcons.Silver"
+                Href="@HistoryUrl.User.MySilver"
+                Budget="@profile.Silver"/>
+
+            <ActivityCard
+                Class="grid-column-sm-full"
+                Title="@L["Statistics:Daily"]"
+                Activities="@profile.Daily"
+                DateFormat="dd MMM"/>
+
+            @if (profile.Monthly.Length > 1)
+            {
                 <ActivityCard
-                    Class="grid-column-sm-full"
-                    Title="@L["Statistics:Daily"]"
-                    Activities="@profile.Daily"
-                    DateFormat="dd MMM"/>
-
-                @if (profile.Monthly.Length > 1)
-                {
-                    <ActivityCard
-                        Class="grid-column-full"
-                        Title="@L["Statistics:Monthly"]"
-                        Activities="@profile.Monthly"
-                        DateFormat="MMM yyyy"/>
-                }
-            </EduFillGrid>
-        </EduContainer>
-    </ApiViewer>
-</EduPage>
+                    Class="grid-column-full"
+                    Title="@L["Statistics:Monthly"]"
+                    Activities="@profile.Monthly"
+                    DateFormat="MMM yyyy"/>
+            }
+        </EduFillGrid>
+    </EduContainer>
+</ApiViewer>
 
 @code {
     private ApiResult<StatisticsModel> _result = ApiResult<StatisticsModel>.Loading();

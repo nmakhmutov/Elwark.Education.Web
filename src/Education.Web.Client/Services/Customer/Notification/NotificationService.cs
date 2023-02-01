@@ -1,25 +1,26 @@
 using System.Text;
-using Education.Http;
-using Education.Web.Client.Services.Customer.Notification.Model;
-using Education.Web.Client.Services.Customer.Notification.Request;
-using Education.Web.Client.Services.Model;
+using Education.Web.Client.Models;
+using Education.Web.Client.Services.Api;
+using Education.Web.Client.Services.Customer;
+using Education.Web.Client.Services.Notification.Model;
+using Education.Web.Client.Services.Notification.Request;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 
-namespace Education.Web.Client.Services.Customer.Notification;
+namespace Education.Web.Client.Services.Notification;
 
 internal sealed class NotificationService : INotificationService
 {
     private const int MaxNotifications = 4;
 
-    private readonly CustomerApiClient _api;
+    private readonly ApiClient _api;
     private readonly CustomerHab _hab;
     private readonly ISnackbar _snackbar;
     private readonly AuthenticationStateProvider _stateProvider;
     private bool _isInitialized;
     private List<NotificationMessage> _lastNotifications = new();
 
-    public NotificationService(CustomerApiClient api, CustomerHab hab, ISnackbar snackbar,
+    public NotificationService(ApiClient api, CustomerHab hab, ISnackbar snackbar,
         AuthenticationStateProvider stateProvider)
     {
         _api = api;

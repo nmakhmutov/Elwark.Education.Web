@@ -1,4 +1,4 @@
-using Education.Web.Client.Services.Model.Inventory;
+using Education.Web.Client.Models.Inventory;
 
 namespace Education.Web.Client.Services.History.EventGuesser.Model;
 

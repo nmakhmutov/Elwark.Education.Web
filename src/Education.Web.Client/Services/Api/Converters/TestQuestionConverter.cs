@@ -1,6 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Education.Web.Client.Services.Model.Test;
+using Education.Web.Client.Models.Test;
 
 namespace Education.Web.Client.Services.Api.Converters;
 

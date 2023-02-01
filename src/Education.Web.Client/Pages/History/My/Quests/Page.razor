@@ -6,80 +6,80 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@L["Quests"]">
-    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-        <EduPageHeader Title="@L["Quests"]" Breadcrumbs="@Breadcrumbs"/>
-    </EduContainer>
+<PageTitle>@L["Quests"]</PageTitle>
 
-    <ApiViewer Result="@_result" Context="data">
-        <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-            <div class="grid">
-                <MudTabs Class="nav" @bind-ActivePanelIndex="@_index" Rounded Centered>
-                    <MudTabPanel Text="Daily"/>
-                    <MudTabPanel Text="Weekly"/>
-                </MudTabs>
-                @switch (_index)
-                {
-                    case 0:
-                        if (data.DailyQuest.Quests.Length > 0)
-                        {
-                            <div class="quests">
-                                @foreach (var quest in data.DailyQuest.Quests)
-                                {
-                                    <QuestProgressCard Class="mb-3" Quest="@quest"/>
-                                }
-                            </div>
-                        }
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+    <EduPageHeader Title="@L["Quests"]" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
 
-                        <div class="@(data.DailyQuest.Quests.Length == 0 ? "start" : "rewards")">
-                            <QuestRewardsCard
-                                Title="@L["Rewards"]"
-                                Subtitle="Complete all daily missions"
-                                Status="@data.DailyQuest.Status"
-                                ExpiresAt="@data.DailyQuest.ExpiresAt"
-                                Rewards="@data.DailyQuest.Rewards"
-                                OnStart="@StartDailyQuestsAsync"
-                                OnCollect="@CollectDailyQuestsAsync"
-                                OnExpired="@OnInitializedAsync"/>
+<ApiViewer Result="@_result" Context="data">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <div class="grid">
+            <MudTabs Class="nav" @bind-ActivePanelIndex="@_index" Rounded Centered>
+                <MudTabPanel Text="Daily"/>
+                <MudTabPanel Text="Weekly"/>
+            </MudTabs>
+            @switch (_index)
+            {
+                case 0:
+                    if (data.DailyQuest.Quests.Length > 0)
+                    {
+                        <div class="quests">
+                            @foreach (var quest in data.DailyQuest.Quests)
+                            {
+                                <QuestProgressCard Class="mb-3" Quest="@quest"/>
+                            }
                         </div>
-                        break;
+                    }
 
-                    case 1:
-                        if (data.WeeklyQuest.Quests.Length > 0)
-                        {
-                            <div class="quests">
-                                @foreach (var quest in data.WeeklyQuest.Quests)
-                                {
-                                    <QuestProgressCard Class="mb-3" Quest="@quest"/>
-                                }
-                            </div>
-                        }
+                    <div class="@(data.DailyQuest.Quests.Length == 0 ? "start" : "rewards")">
+                        <QuestRewardsCard
+                            Title="@L["Rewards"]"
+                            Subtitle="Complete all daily missions"
+                            Status="@data.DailyQuest.Status"
+                            ExpiresAt="@data.DailyQuest.ExpiresAt"
+                            Rewards="@data.DailyQuest.Rewards"
+                            OnStart="@StartDailyQuestsAsync"
+                            OnCollect="@CollectDailyQuestsAsync"
+                            OnExpired="@OnInitializedAsync"/>
+                    </div>
+                    break;
 
-                        <div class="@(data.WeeklyQuest.Quests.Length == 0 ? "start" : "rewards")">
-                            <QuestRewardsCard
-                                Title="@L["Rewards"]"
-                                Subtitle="Complete all weekly missions"
-                                Status="@data.WeeklyQuest.Status"
-                                ExpiresAt="@data.WeeklyQuest.ExpiresAt"
-                                Rewards="@data.WeeklyQuest.Rewards"
-                                OnStart="@StartWeeklyQuestsAsync"
-                                OnCollect="@CollectWeeklyQuestsAsync"
-                                OnExpired="@OnInitializedAsync"/>
+                case 1:
+                    if (data.WeeklyQuest.Quests.Length > 0)
+                    {
+                        <div class="quests">
+                            @foreach (var quest in data.WeeklyQuest.Quests)
+                            {
+                                <QuestProgressCard Class="mb-3" Quest="@quest"/>
+                            }
                         </div>
-                        break;
-                }
+                    }
 
-                <div class="bonus">
-                    <DailyBonusCard
-                        Bonus="@data.DailyBonus"
-                        OnClaim="@ClaimDailyBonusAsync"
-                        OnReject="@RejectDailyBonusAsync"
-                        OnReached="@OnInitializedAsync"/>
-                </div>
+                    <div class="@(data.WeeklyQuest.Quests.Length == 0 ? "start" : "rewards")">
+                        <QuestRewardsCard
+                            Title="@L["Rewards"]"
+                            Subtitle="Complete all weekly missions"
+                            Status="@data.WeeklyQuest.Status"
+                            ExpiresAt="@data.WeeklyQuest.ExpiresAt"
+                            Rewards="@data.WeeklyQuest.Rewards"
+                            OnStart="@StartWeeklyQuestsAsync"
+                            OnCollect="@CollectWeeklyQuestsAsync"
+                            OnExpired="@OnInitializedAsync"/>
+                    </div>
+                    break;
+            }
+
+            <div class="bonus">
+                <DailyBonusCard
+                    Bonus="@data.DailyBonus"
+                    OnClaim="@ClaimDailyBonusAsync"
+                    OnReject="@RejectDailyBonusAsync"
+                    OnReached="@OnInitializedAsync"/>
             </div>
-        </EduContainer>
-    </ApiViewer>
-</EduPage>
+        </div>
+    </EduContainer>
+</ApiViewer>
 
 @code {
     private int _index;

@@ -1,15 +1,15 @@
-using Education.Http;
+using Education.Web.Client.Models.Test;
+using Education.Web.Client.Services.Api;
 using Education.Web.Client.Services.History.Test.Model;
 using Education.Web.Client.Services.History.Test.Request;
-using Education.Web.Client.Services.Model.Test;
 
 namespace Education.Web.Client.Services.History.Test;
 
 internal sealed class HistoryTestService : IHistoryTestService
 {
-    private readonly HistoryApiClient _api;
+    private readonly ApiClient _api;
 
-    public HistoryTestService(HistoryApiClient api) =>
+    public HistoryTestService(ApiClient api) =>
         _api = api;
 
     public Task<ApiResult<TestBuilderModel>> GetTestBuilderAsync(string? articleId) =>

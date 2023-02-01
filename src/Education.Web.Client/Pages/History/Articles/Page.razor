@@ -6,60 +6,59 @@
 @using Education.Http
 @layout HistoryLayout
 
-<EduPage Title="@_title">
-    <ApiViewer Result="@_result" Context="result">
-        @switch (result.Article)
-        {
-            case ArticleDetail.BattleModel battle:
-                <BattleDetail
-                    Battle="@battle"
-                    Rating="@result.Rating"
-                    HasTest="@result.HasTest"
-                    UserActivity="@result.UserActivity"
-                    RelatedArticles="@result.RelatedArticles"
-                    OnLikeClick="@LikeAsync"
-                    OnDislikeClick="@DislikeAsync"
-                    OnBookmarkClick="@ToggleBookmarkAsync"/>
-                break;
+<PageTitle>@_title</PageTitle>
+<ApiViewer Result="@_result" Context="result">
+    @switch (result.Article)
+    {
+        case ArticleDetail.BattleModel battle:
+            <BattleDetail
+                Battle="@battle"
+                Rating="@result.Rating"
+                HasTest="@result.HasTest"
+                UserActivity="@result.UserActivity"
+                RelatedArticles="@result.RelatedArticles"
+                OnLikeClick="@LikeAsync"
+                OnDislikeClick="@DislikeAsync"
+                OnBookmarkClick="@ToggleBookmarkAsync"/>
+            break;
 
-            case ArticleDetail.EmpireModel empire:
-                <EmpireDetail
-                    Empire="@empire"
-                    Rating="@result.Rating"
-                    HasTest="@result.HasTest"
-                    UserActivity="@result.UserActivity"
-                    RelatedArticles="@result.RelatedArticles"
-                    OnLikeClick="@LikeAsync"
-                    OnDislikeClick="@DislikeAsync"
-                    OnBookmarkClick="@ToggleBookmarkAsync"/>
-                break;
+        case ArticleDetail.EmpireModel empire:
+            <EmpireDetail
+                Empire="@empire"
+                Rating="@result.Rating"
+                HasTest="@result.HasTest"
+                UserActivity="@result.UserActivity"
+                RelatedArticles="@result.RelatedArticles"
+                OnLikeClick="@LikeAsync"
+                OnDislikeClick="@DislikeAsync"
+                OnBookmarkClick="@ToggleBookmarkAsync"/>
+            break;
 
-            case ArticleDetail.GeneralModel article:
-                <GeneralDetail
-                    Article="@article"
-                    Rating="@result.Rating"
-                    HasTest="@result.HasTest"
-                    UserActivity="@result.UserActivity"
-                    RelatedArticles="@result.RelatedArticles"
-                    OnLikeClick="@LikeAsync"
-                    OnDislikeClick="@DislikeAsync"
-                    OnBookmarkClick="@ToggleBookmarkAsync"/>
-                break;
+        case ArticleDetail.GeneralModel article:
+            <GeneralDetail
+                Article="@article"
+                Rating="@result.Rating"
+                HasTest="@result.HasTest"
+                UserActivity="@result.UserActivity"
+                RelatedArticles="@result.RelatedArticles"
+                OnLikeClick="@LikeAsync"
+                OnDislikeClick="@DislikeAsync"
+                OnBookmarkClick="@ToggleBookmarkAsync"/>
+            break;
 
-            case ArticleDetail.PersonModel person:
-                <PersonDetail
-                    Person="@person"
-                    Rating="@result.Rating"
-                    HasTest="@result.HasTest"
-                    UserActivity="@result.UserActivity"
-                    RelatedArticles="@result.RelatedArticles"
-                    OnLikeClick="@LikeAsync"
-                    OnDislikeClick="@DislikeAsync"
-                    OnBookmarkClick="@ToggleBookmarkAsync"/>
-                break;
-        }
-    </ApiViewer>
-</EduPage>
+        case ArticleDetail.PersonModel person:
+            <PersonDetail
+                Person="@person"
+                Rating="@result.Rating"
+                HasTest="@result.HasTest"
+                UserActivity="@result.UserActivity"
+                RelatedArticles="@result.RelatedArticles"
+                OnLikeClick="@LikeAsync"
+                OnDislikeClick="@DislikeAsync"
+                OnBookmarkClick="@ToggleBookmarkAsync"/>
+            break;
+    }
+</ApiViewer>
 
 @code {
     private string? _title;

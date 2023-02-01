@@ -7,19 +7,18 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@_title">
-    <ApiViewer Result="@_result" Context="result">
-        <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
-            <ArticleOverview Class="mb-3 mb-sm-6" Article="@result.Article" Total="@result.Total" Breadcrumbs="@_breadcrumbs"/>
+<PageTitle>@_title</PageTitle>
+<ApiViewer Result="@_result" Context="result">
+    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
+        <ArticleOverview Class="mb-3 mb-sm-6" Article="@result.Article" Total="@result.Total" Breadcrumbs="@_breadcrumbs"/>
 
-            <TestOverview Title="@L["Tests:Easy"]" Href="@HistoryUrl.User.MyEasyTests" Test="@result.EasyTest"/>
+        <TestOverview Title="@L["Tests:Easy"]" Href="@HistoryUrl.User.MyEasyTests" Test="@result.EasyTest"/>
 
-            <div class="py-6"></div>
+        <div class="py-6"></div>
 
-            <TestOverview Title="@L["Tests:Hard"]" Href="@HistoryUrl.User.MyHardTests" Test="@result.HardTest"/>
-        </EduContainer>
-    </ApiViewer>
-</EduPage>
+        <TestOverview Title="@L["Tests:Hard"]" Href="@HistoryUrl.User.MyHardTests" Test="@result.HardTest"/>
+    </EduContainer>
+</ApiViewer>
 
 @code {
     private string? _title;

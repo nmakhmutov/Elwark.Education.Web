@@ -8,27 +8,26 @@
 @layout MainLayout
 @attribute [Authorize]
 
-<EduPage Title="@L["Account"]">
-    <ApiViewer Result="@_response">
-        <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
-            <EduFillGrid>
-                <AccountCard Class="account"/>
-                @foreach (var subject in _subjects)
-                {
-                    <SubjectCard
-                        Level="@subject.Level"
-                        Experience="@subject.Experience"
-                        Threshold="@subject.Threshold"
-                        Title="@subject.Title"
-                        HomeHref="@subject.HomeHref"
-                        ProfileHref="@subject.ProfileHref"
-                        Icon="@subject.Icon"
-                        Background="@subject.Background"/>
-                }
-            </EduFillGrid>
-        </EduContainer>
-    </ApiViewer>
-</EduPage>
+<PageTitle>@L["Account"]</PageTitle>
+<ApiViewer Result="@_response">
+    <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
+        <EduFillGrid>
+            <AccountCard Class="account"/>
+            @foreach (var subject in _subjects)
+            {
+                <SubjectCard
+                    Level="@subject.Level"
+                    Experience="@subject.Experience"
+                    Threshold="@subject.Threshold"
+                    Title="@subject.Title"
+                    HomeHref="@subject.HomeHref"
+                    ProfileHref="@subject.ProfileHref"
+                    Icon="@subject.Icon"
+                    Background="@subject.Background"/>
+            }
+        </EduFillGrid>
+    </EduContainer>
+</ApiViewer>
 
 @code {
     private ApiResult<SubjectModel[]> _response = ApiResult<SubjectModel[]>.Loading();

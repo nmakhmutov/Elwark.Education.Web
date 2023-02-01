@@ -7,19 +7,20 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@L["InternalMoney:Silver"]">
-    <EduContainer Class="py-3 py-sm-6">
-        <EduPageHeader Title="@L["InternalMoney:Silver"]" Breadcrumbs="@Breadcrumbs"/>
+<PageTitle>@L["InternalMoney:Silver"]</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@L["InternalMoney:Silver"]" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
+
+<ApiViewer Result="@_result" Context="result">
+    <EduContainer Class="pb-3 pb-sm-6">
+        <section class="grid">
+            <WalletCard Class="wallet" Title="@L["InternalMoney:Silver"]" Icon="@EduIcons.Silver" Budget="@result.Budget"/>
+            <ProfitCard Class="profit" Title="@L["InternalMoney:Earnings"]" Profit="@result.Earnings"/>
+        </section>
     </EduContainer>
-    <ApiViewer Result="@_result" Context="result">
-        <EduContainer Class="pb-3 pb-sm-6">
-            <section class="grid">
-                <WalletCard Class="wallet" Title="@L["InternalMoney:Silver"]" Icon="@EduIcons.Silver" Budget="@result.Budget"/>
-                <ProfitCard Class="profit" Title="@L["InternalMoney:Earnings"]" Profit="@result.Earnings"/>
-            </section>
-        </EduContainer>
-    </ApiViewer>
-</EduPage>
+</ApiViewer>
 
 @code {
 

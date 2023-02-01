@@ -7,51 +7,50 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@_title">
-    <EduContainer Class="py-3 py-sm-6">
-        <EduPageHeader Title="@_title" Breadcrumbs="@Breadcrumbs"/>
+<PageTitle>@_title</PageTitle>
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@_title" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
+<ApiViewer Result="@_result" Context="result">
+    <EduContainer Class="pb-3 pb-sm-6">
+        <StatisticDetailsGrid>
+            <StatisticDetailsCard>
+                <TotalContent>
+                    <Subheader Title="@L["EventGuesser:Score"]" Subtitle="@L["ForAllTime"]"/>
+                    <EventGuesserScoreChart Score="@result.Score"/>
+                </TotalContent>
+                <ProgressContent>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                    <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
+                </ProgressContent>
+            </StatisticDetailsCard>
+
+            <StatisticDetailsCard>
+                <TotalContent>
+                    <Subheader Title="@L["EventGuesser:Questions"]" Subtitle="@L["ForAllTime"]"/>
+                    <EventGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
+                </TotalContent>
+                <ProgressContent>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                    <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
+                </ProgressContent>
+            </StatisticDetailsCard>
+
+            <MudPaper Elevation="0" Class="pa-3 pa-sm-6">
+                <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-3 mb-sm-6">
+                    <MudText Typo="Typo.h5">
+                        @L["Tests"]
+                    </MudText>
+                    <ReadableNumber Value="@result.Tests" Typo="Typo.h5"/>
+                </MudStack>
+                <section>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                    <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
+                </section>
+            </MudPaper>
+        </StatisticDetailsGrid>
     </EduContainer>
-    <ApiViewer Result="@_result" Context="result">
-        <EduContainer Class="pb-3 pb-sm-6">
-            <StatisticDetailsGrid>
-                <StatisticDetailsCard>
-                    <TotalContent>
-                        <Subheader Title="@L["EventGuesser:Score"]" Subtitle="@L["ForAllTime"]"/>
-                        <EventGuesserScoreChart Score="@result.Score"/>
-                    </TotalContent>
-                    <ProgressContent>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                        <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
-                    </ProgressContent>
-                </StatisticDetailsCard>
-
-                <StatisticDetailsCard>
-                    <TotalContent>
-                        <Subheader Title="@L["EventGuesser:Questions"]" Subtitle="@L["ForAllTime"]"/>
-                        <EventGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
-                    </TotalContent>
-                    <ProgressContent>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                        <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
-                    </ProgressContent>
-                </StatisticDetailsCard>
-
-                <MudPaper Elevation="0" Class="pa-3 pa-sm-6">
-                    <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-3 mb-sm-6">
-                        <MudText Typo="Typo.h5">
-                            @L["Tests"]
-                        </MudText>
-                        <ReadableNumber Value="@result.Tests" Typo="Typo.h5"/>
-                    </MudStack>
-                    <section>
-                        <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                        <ProgressList Items="@result.RangeContrast.GetProgress(L)"/>
-                    </section>
-                </MudPaper>
-            </StatisticDetailsGrid>
-        </EduContainer>
-    </ApiViewer>
-</EduPage>
+</ApiViewer>
 
 @code {
     private string? _title;

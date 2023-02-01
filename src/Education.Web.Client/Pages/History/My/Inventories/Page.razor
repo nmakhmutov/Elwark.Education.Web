@@ -6,28 +6,28 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@L["Inventory"]">
-    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-        <EduPageHeader Title="@L["Inventory"]" Breadcrumbs="@Breadcrumbs">
-            <MudText Typo="Typo.h5">
-                @_capacity
-            </MudText>
-        </EduPageHeader>
-    </EduContainer>
+<PageTitle>@L["Inventory"]</PageTitle>
 
-    <ApiViewer Result="@_result" Context="model">
-        <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-            <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index" Context="item">
-                <InventoryInfoCard
-                    IconUrl="@item.IconUrl"
-                    Overview="@item.Overview"
-                    Quantity="@item.Quantity"
-                    Subtitle="@item.Category.Title"
-                    Title="@item.Title"/>
-            </InventoryGrid>
-        </EduContainer>
-    </ApiViewer>
-</EduPage>
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+    <EduPageHeader Title="@L["Inventory"]" Breadcrumbs="@Breadcrumbs">
+        <MudText Typo="Typo.h5">
+            @_capacity
+        </MudText>
+    </EduPageHeader>
+</EduContainer>
+
+<ApiViewer Result="@_result" Context="model">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index" Context="item">
+            <InventoryInfoCard
+                IconUrl="@item.IconUrl"
+                Overview="@item.Overview"
+                Quantity="@item.Quantity"
+                Subtitle="@item.Category.Title"
+                Title="@item.Title"/>
+        </InventoryGrid>
+    </EduContainer>
+</ApiViewer>
 
 @code {
     private ApiResult<InventoriesModel> _result = ApiResult<InventoriesModel>.Loading();

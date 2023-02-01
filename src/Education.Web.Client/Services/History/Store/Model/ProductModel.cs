@@ -1,5 +1,5 @@
-using Education.Web.Client.Services.Model;
-using Education.Web.Client.Services.Model.Inventory;
+using Education.Web.Client.Models;
+using Education.Web.Client.Models.Inventory;
 
 namespace Education.Web.Client.Services.History.Store.Model;
 

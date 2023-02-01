@@ -1,5 +1,5 @@
-using Education.Web.Client.Services.Model;
-using Education.Web.Client.Services.Model.Content;
+using Education.Web.Client.Models;
+using Education.Web.Client.Models.Content;
 
 namespace Education.Web.Client.Services.History.EventGuesser.Model;
 

@@ -5,33 +5,34 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<EduPage Title="@L["Inventory:Store"]">
-    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-        <EduPageHeader Title="@L["Inventory:Store"]" Breadcrumbs="@Breadcrumbs"/>
+<PageTitle>@L["Inventory:Store"]</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+    <EduPageHeader Title="@L["Inventory:Store"]" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
+
+<ApiViewer Result="@_response" Context="products">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <EduFillGrid>
+            @foreach (var item in products)
+            {
+                <MudCard Elevation="0">
+                    <MudCardContent>
+                        <MudText>@item.Title</MudText>
+                        <MudText>Product @item.Id</MudText>
+                        <MudText>Weight @item.InventoryWeight</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Class="mr-3" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth>
+                            <InternalMoney Money="@item.Selling.Total" IconSize="Size.Small" Horizontal/>
+                        </MudButton>
+                        <MudIconButton Icon="@Icons.Material.Outlined.Info" Variant="Variant.Filled" DisableElevation/>
+                    </MudCardActions>
+                </MudCard>
+            }
+        </EduFillGrid>
     </EduContainer>
-    <ApiViewer Result="@_response" Context="products">
-        <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-            <EduFillGrid>
-                @foreach (var item in products)
-                {
-                    <MudCard Elevation="0">
-                        <MudCardContent>
-                            <MudText>@item.Title</MudText>
-                            <MudText>Product @item.Id</MudText>
-                            <MudText>Weight @item.InventoryWeight</MudText>
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudButton Class="mr-3" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth>
-                                <InternalMoney Money="@item.Selling.Total" IconSize="Size.Small" Horizontal/>
-                            </MudButton>
-                            <MudIconButton Icon="@Icons.Material.Outlined.Info" Variant="Variant.Filled" DisableElevation/>
-                        </MudCardActions>
-                    </MudCard>
-                }
-            </EduFillGrid>
-        </EduContainer>
-    </ApiViewer>
-</EduPage>
+</ApiViewer>
 
 @code {
     private ApiResult<ProductModel[]> _response = ApiResult<ProductModel[]>.Loading();

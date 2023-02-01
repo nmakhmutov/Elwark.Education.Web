@@ -1,18 +1,27 @@
 @using Education.Web.Client.Pages.History.Components
 @inherits LayoutComponentBase
 
-<HistorySettingsProvider>
-    <MudLayout>
+<MudLayout Class="d-flex flex-column">
+    <HistorySettingsProvider>
         <HistoryAppBar DrawerToggleCallback="@ToggleDrawerAsync"/>
         <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged"/>
 
-        @Body
+        <main class="mud-main-content d-flex flex-column flex-grow-1">
+            @Body
+        </main>
+
+        <footer class="pa-3 pa-sm-6">
+            <MudText Typo="Typo.subtitle1">
+                &copy; @DateTime.Now.Year Elwark
+            </MudText>
+            <MudImage Src="@ElwarkIcons.Primary60X60" Alt="Elwark logo" Width="40" Height="40"/>
+        </footer>
 
         <MudScrollToTop TopOffset="400">
             <MudFab Icon="@Icons.Material.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
         </MudScrollToTop>
-    </MudLayout>
-</HistorySettingsProvider>
+    </HistorySettingsProvider>
+</MudLayout>
 
 @code {
     private bool _isOpen;

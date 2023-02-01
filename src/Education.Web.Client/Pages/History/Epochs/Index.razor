@@ -4,34 +4,33 @@
 @using Education.Web.Client.Services.History.Article.Request
 @using Education.Web.Client.Services.History.User
 @using Education.Web.Client.Pages.History.Components
-@using Education.Http
+@using Education.Web.Client.Models
 @layout HistoryLayout
 
-<EduPage Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]">
-    <EduContainer Class="py-3 py-sm-6">
-        <EduPageHeader Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>
+<PageTitle>@L[$"Epoch:{_request.Epoch.ToFastString()}"]</PageTitle>
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
+<ApiViewer Result="_result" Context="result">
+    <EduContainer>
+        <EduFillGrid Class="mb-6 mb-sm-12">
+            @foreach (var (article, activity) in result.Items)
+            {
+                <ArticleCard
+                    Article="@article"
+                    Activity="@activity"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            }
+        </EduFillGrid>
+        <MudPagination
+            Class="d-flex justify-center py-3 py-sm-6"
+            Rectangular
+            DisableElevation
+            Selected="@CurrentPage"
+            SelectedChanged="@OnPagination"
+            Count="@TotalPages"/>
     </EduContainer>
-    <ApiViewer Result="_result" Context="result">
-        <EduContainer>
-            <EduFillGrid Class="mb-6 mb-sm-12">
-                @foreach (var (article, activity) in result.Items)
-                {
-                    <ArticleCard
-                        Article="@article"
-                        Activity="@activity"
-                        OnBookmarkClick="@OnBookmarkClick"/>
-                }
-            </EduFillGrid>
-            <MudPagination
-                Class="d-flex justify-center py-3 py-sm-6"
-                Rectangular
-                DisableElevation
-                Selected="@CurrentPage"
-                SelectedChanged="@OnPagination"
-                Count="@TotalPages"/>
-        </EduContainer>
-    </ApiViewer>
-</EduPage>
+</ApiViewer>
 
 @code {
     private GetArticlesRequest _request = new(EpochType.Prehistory, 1, 20);

@@ -1,4 +1,4 @@
-using Education.Web.Client.Services.Model.Content;
+using Education.Web.Client.Models.Content;
 
 namespace Education.Web.Client.Services.History;
 

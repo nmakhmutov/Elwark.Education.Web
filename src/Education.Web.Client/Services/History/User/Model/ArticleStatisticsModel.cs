@@ -1,6 +1,6 @@
+using Education.Web.Client.Models.Test;
 using Education.Web.Client.Services.History.Test.Model;
 using Education.Web.Client.Services.History.User.Model.Test;
-using Education.Web.Client.Services.Model.Test;
 
 namespace Education.Web.Client.Services.History.User.Model;
 
