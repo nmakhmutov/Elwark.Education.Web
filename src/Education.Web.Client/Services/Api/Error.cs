@@ -1,4 +1,4 @@
-namespace Education.Http;
+namespace Education.Web.Client.Services.Api;
 
 public sealed record Error
 {

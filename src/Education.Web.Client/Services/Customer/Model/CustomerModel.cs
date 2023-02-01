@@ -1,4 +1,4 @@
-namespace Education.Web.Client.Services.Customer.Account.Model;
+namespace Education.Web.Client.Services.Customer.Model;
 
 public sealed record CustomerModel(
     long Id,

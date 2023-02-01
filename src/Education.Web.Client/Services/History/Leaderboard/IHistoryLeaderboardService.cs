@@ -1,4 +1,4 @@
-using Education.Http;
+using Education.Web.Client.Services.Api;
 using Education.Web.Client.Services.History.Leaderboard.Model;
 
 namespace Education.Web.Client.Services.History.Leaderboard;

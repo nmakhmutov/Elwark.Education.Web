@@ -1,4 +1,4 @@
-using Education.Web.Client.Services.Customer.Notification.Model;
+using Education.Web.Client.Services.Notification.Model;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.SignalR.Client;

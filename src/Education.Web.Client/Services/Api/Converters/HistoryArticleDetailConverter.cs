@@ -4,7 +4,7 @@ using Education.Web.Client.Services.History.Article.Model;
 
 namespace Education.Web.Client.Services.Api.Converters;
 
-internal sealed class ArticleDetailConverter : JsonConverter<ArticleDetail?>
+internal sealed class HistoryArticleDetailConverter : JsonConverter<ArticleDetail?>
 {
     public override ArticleDetail? Read(ref Utf8JsonReader reader, Type _, JsonSerializerOptions options)
     {

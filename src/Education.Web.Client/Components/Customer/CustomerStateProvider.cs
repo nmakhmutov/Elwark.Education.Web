@@ -1,6 +1,6 @@
 using Education.Web.Client.Services.Api;
-using Education.Web.Client.Services.Customer.Account;
-using Education.Web.Client.Services.Customer.Account.Model;
+using Education.Web.Client.Services.Customer;
+using Education.Web.Client.Services.Customer.Model;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Education.Web.Client.Components.Customer;

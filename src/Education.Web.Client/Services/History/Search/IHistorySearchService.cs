@@ -1,4 +1,4 @@
-using Education.Http;
+using Education.Web.Client.Services.Api;
 
 namespace Education.Web.Client.Services.History.Search;
 

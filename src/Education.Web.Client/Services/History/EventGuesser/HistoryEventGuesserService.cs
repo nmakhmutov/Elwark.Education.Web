@@ -1,4 +1,4 @@
-using Education.Http;
+using Education.Web.Client.Services.Api;
 using Education.Web.Client.Services.History.EventGuesser.Model;
 using Education.Web.Client.Services.History.EventGuesser.Request;
 
@@ -6,9 +6,9 @@ namespace Education.Web.Client.Services.History.EventGuesser;
 
 internal sealed class HistoryEventGuesserService : IHistoryEventGuesserService
 {
-    private readonly HistoryApiClient _api;
+    private readonly ApiClient _api;
 
-    public HistoryEventGuesserService(HistoryApiClient api) =>
+    public HistoryEventGuesserService(ApiClient api) =>
         _api = api;
 
     public Task<ApiResult<TestBuilderModel>> GetAsync() =>

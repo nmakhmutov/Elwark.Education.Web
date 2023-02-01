@@ -1,7 +1,7 @@
-using Education.Http;
-using Education.Web.Client.Services.Customer.Account.Model;
+using Education.Web.Client.Services.Api;
+using Education.Web.Client.Services.Customer.Model;
 
-namespace Education.Web.Client.Services.Customer.Account;
+namespace Education.Web.Client.Services.Customer;
 
 internal interface ICustomerService
 {

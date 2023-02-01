@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using Education.Http;
 
 namespace Education.Web.Client.Services.Api;
 
