@@ -1,0 +1,53 @@
+@page "/history/my/inventories"
+@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Services.User
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>@L["Inventory"]</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+    <EduPageHeader Title="@L["Inventory"]" Breadcrumbs="@Breadcrumbs">
+        <MudText Typo="Typo.h5">
+            @_capacity
+        </MudText>
+    </EduPageHeader>
+</EduContainer>
+
+<ApiViewer Result="@_result" Context="model">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index" Context="item">
+            <InventoryInfoCard
+                IconUrl="@item.IconUrl"
+                Overview="@item.Overview"
+                Quantity="@item.Quantity"
+                Subtitle="@item.Category.Title"
+                Title="@item.Title"/>
+        </InventoryGrid>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+    private ApiResult<InventoriesModel> _result = ApiResult<InventoriesModel>.Loading();
+    private string? _capacity;
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _result = await UserService.GetInventoriesAsync();
+        if (_result.IsSuccess)
+            _capacity = $"{_result.Value.Fullness} / {_result.Value.Capacity}";
+    }
+
+}

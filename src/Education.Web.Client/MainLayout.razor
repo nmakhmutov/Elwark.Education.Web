@@ -1,0 +1,15 @@
+﻿@inherits LayoutComponentBase
+
+<CascadingTheme>
+    <MudLayout Class="d-flex flex-column">
+        <AppBar Title="Education" Href="@EduUrl.Root"></AppBar>
+
+        <main class="mud-main-content d-flex flex-column flex-grow-1">
+            @Body
+        </main>
+
+        <MudScrollToTop TopOffset="400" Style="z-index:2000;">
+            <MudFab Icon="@Icons.Material.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
+        </MudScrollToTop>
+    </MudLayout>
+</CascadingTheme>

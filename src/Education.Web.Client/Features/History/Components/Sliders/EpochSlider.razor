@@ -1,0 +1,29 @@
+@using Education.Web.Client.Features.History.Services
+<div class="container">
+    @foreach (var epoch in EpochTypeExtensions.List[1..])
+    {
+        var title = L[$"Epoch:{epoch.ToFastString()}"];
+        <div class="card">
+            <MudImage
+                Class="image"
+                Src="@epoch.Image()"
+                Alt="@title"
+                ObjectFit="ObjectFit.Cover"
+                ObjectPosition="ObjectPosition.Center"/>
+            <a href="@HistoryUrl.Content.Epoch(epoch)">
+                <div class="body pa-3">
+                    <MudText Typo="Typo.h5" Color="Color.Inherit">
+                        @title
+                    </MudText>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+}

@@ -1,0 +1,113 @@
+@page "/history/event-guessers/{id}/conclusion"
+@using Education.Web.Client.Features.History.Services.EventGuesser.Model
+@using Education.Web.Client.Features.History.Services.EventGuesser
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>@L["EventGuesser:Completed"]</PageTitle>
+<ApiViewer Result="@_result" Context="conclusion">
+    <MudAlert Class="mb-6 mb-sm-12" Severity="Severity.Success" Square ContentAlignment="HorizontalAlignment.Center">
+        @L["EventGuesser:Completed"]
+    </MudAlert>
+
+    <CompletedStars Class="mb-6" Progress="@_progress"/>
+
+    <RewardsContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
+
+    <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
+        <MudTable
+            Items="@conclusion.Questions"
+            Breakpoint="Breakpoint.Sm"
+            Class="mb-3 mb-sm-6"
+            Bordered="false"
+            Elevation="0"
+            Hover>
+            <HeaderContent>
+                <MudTh>@L["Article"]</MudTh>
+                <MudTh>@L["Question"]</MudTh>
+                <MudTh>@L["EventGuesser:CorrectAnswer"]</MudTh>
+                <MudTh>@L["EventGuesser:UserAnswer"]</MudTh>
+                <MudTh>@L["EventGuesser:Points"]</MudTh>
+                <MudTh>@L["EventGuesser:Bonus"]</MudTh>
+                <MudTh>@L["EventGuesser:Score"]</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="@L["Article"]">
+                    <MudLink Href="@HistoryUrl.Content.Article(context.Article.Id)">
+                        @context.Article.Title
+                    </MudLink>
+                </MudTd>
+                <MudTd DataLabel="@L["Question"]">
+                    @context.Title
+                </MudTd>
+                <MudTd DataLabel="@L["EventGuesser:CorrectAnswer"]">
+                    <HistoryDate Typo="Typo.body2" Date="@context.CorrectAnswer"/>
+                </MudTd>
+                <MudTd DataLabel="@L["EventGuesser:UserAnswer"]">
+                    <HistoryDate Typo="Typo.body2" Date="@context.UserAnswer" Color="@(context.IsCorrect ? Color.Success : Color.Error)"/>
+                </MudTd>
+                <MudTd DataLabel="@L["EventGuesser:Points"]">
+                    @context.Score.Points
+                </MudTd>
+                <MudTd DataLabel="@L["EventGuesser:Bonus"]">
+                    @context.Score.Bonus
+                </MudTd>
+                <MudTd DataLabel="@L["EventGuesser:Score"]">
+                    @context.Score.Total
+                </MudTd>
+            </RowTemplate>
+            <FooterContent>
+                <MudTh/>
+                <MudTh/>
+                <MudTh/>
+                <MudTh/>
+                <MudTh>
+                    @conclusion.Score.Points
+                </MudTh>
+                <MudTh>
+                    @conclusion.Score.Bonus
+                </MudTh>
+                <MudTh>
+                    <div class="d-flex align-center">
+                        <MudText Typo="Typo.subtitle1">
+                            @conclusion.Score.Total
+                        </MudText>
+                        <MudIcon Icon="@EduIcons.Score" Class="ml-1" Size="Size.Small" Color="Color.Primary"/>
+                    </div>
+                </MudTh>
+            </FooterContent>
+        </MudTable>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+    private ApiResult<ConclusionModel> _result = ApiResult<ConclusionModel>.Loading();
+    private double _progress;
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryEventGuesserService EventGuesserService { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _result = await EventGuesserService.GetConclusionAsync(Id);
+        if (_result.IsFailed)
+        {
+            if (_result.Error.IsEventGuesserNotFound())
+                Navigation.NavigateTo(HistoryUrl.EventGuesser.Index);
+
+            return;
+        }
+
+        _progress = Math.Round((double)_result.Value.Score.Total / _result.Value.MaxScore * 100);
+    }
+
+}

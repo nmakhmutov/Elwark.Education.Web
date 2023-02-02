@@ -1,0 +1,42 @@
+@page "/history/my/monies/silver"
+@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Services.User
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>@L["InternalMoney:Silver"]</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@L["InternalMoney:Silver"]" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
+
+<ApiViewer Result="@_result" Context="result">
+    <EduContainer Class="pb-3 pb-sm-6">
+        <section class="grid">
+            <WalletCard Class="wallet" Title="@L["InternalMoney:Silver"]" Icon="@EduIcons.Silver" Budget="@result.Budget"/>
+            <ProfitCard Class="profit" Title="@L["InternalMoney:Earnings"]" Profit="@result.Earnings"/>
+        </section>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+
+    private ApiResult<MoneyStatisticsModel> _result = ApiResult<MoneyStatisticsModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Profile"].Value, HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["Statistics"].Value, HistoryUrl.User.MyStatistics)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync() =>
+        _result = await UserService.GetSilverStatisticsAsync();
+
+}

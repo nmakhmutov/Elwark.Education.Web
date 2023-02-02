@@ -1,0 +1,52 @@
+@page "/history/my/articles/{id}"
+@using Education.Web.Client.Features.History.Services
+@using Education.Web.Client.Features.History.Services.User
+@using Education.Web.Client.Features.History.Services.User.Model
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>@_title</PageTitle>
+
+<ApiViewer Result="@_result" Context="result">
+    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
+        <ArticleOverview Class="mb-3 mb-sm-6" Article="@result.Article" Total="@result.Total" Breadcrumbs="@_breadcrumbs"/>
+
+        <TestOverview Title="@L["Tests:Easy"]" Href="@HistoryUrl.User.MyEasyTests" Test="@result.EasyTest"/>
+
+        <div class="py-6"></div>
+
+        <TestOverview Title="@L["Tests:Hard"]" Href="@HistoryUrl.User.MyHardTests" Test="@result.HardTest"/>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+    private string? _title;
+    private List<BreadcrumbItem> _breadcrumbs = new();
+
+    private ApiResult<ArticleStatisticsModel> _result = ApiResult<ArticleStatisticsModel>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _result = await UserService.GetArticlesAsync(Id);
+
+        if (_result.IsSuccess)
+        {
+            _title = _result.Value.Article.Title;
+            _breadcrumbs = new List<BreadcrumbItem>
+            {
+                new(L["Subject:History"].Value, HistoryUrl.Root),
+                new(L[$"Epoch:{_result.Value.Article.Epoch.ToFastString()}"].Value, HistoryUrl.Content.Epoch(_result.Value.Article.Epoch))
+            };
+        }
+    }
+
+}

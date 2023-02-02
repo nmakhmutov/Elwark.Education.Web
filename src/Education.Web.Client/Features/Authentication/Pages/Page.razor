@@ -1,0 +1,25 @@
+﻿@page "/authentication/{action}"
+
+<PageTitle>Authentication</PageTitle>
+
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@CustomerStateProvider.InitAsync">
+    <LoggingIn>
+        <Spinner/>
+    </LoggingIn>
+    <CompletingLoggingIn>
+        <Spinner/>
+    </CompletingLoggingIn>
+    <LogOut>
+        <Spinner/>
+    </LogOut>
+</RemoteAuthenticatorView>
+
+@code {
+
+    [Inject]
+    private CustomerStateProvider CustomerStateProvider { get; set; } = default!;
+
+    [Parameter]
+    public string? Action { get; set; }
+
+}

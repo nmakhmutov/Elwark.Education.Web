@@ -1,0 +1,86 @@
+.card {
+    border-radius: var(--mud-default-borderradius);
+    user-select: none;
+}
+
+.cover-photo {
+    position: relative;
+    background-size: cover;
+    height: 140px;
+    border-top-left-radius: var(--mud-default-borderradius);
+    border-top-right-radius: var(--mud-default-borderradius);
+}
+
+.cover-photo .rank {
+    font-size: var(--mud-typography-h1-size);
+    font-family: var(--mud-typography-h1-family);
+    font-weight: bold;
+    line-height: var(--mud-typography-h1-lineheight);
+    letter-spacing: var(--mud-typography-h1-letterspacing);
+    text-transform: var(--mud-typography-h1-text-transform);
+    text-align: end;
+    padding-right: 12px;
+}
+
+.cover-photo .rank sup {
+    font-size: var(--mud-typography-h3-size);
+}
+
+.profile {
+    position: absolute;
+    width: 120px;
+    bottom: -60px;
+    left: 12px;
+    border-radius: 50%;
+    background: var(--mud-palette-surface);
+    border: 3px solid var(--mud-palette-surface);
+}
+
+.profile-badges {
+    margin-top: 12px;
+    margin-left: 132px;
+    margin-right: 12px;
+    display: flex;
+    justify-content: end;
+}
+
+.badge {
+    background: gray;
+    text-align: center;
+    border-radius: 50%;
+    color: white;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    font-weight: bold;
+    font-size: var(--mud-typography-subtitle1-size);
+}
+
+.rank-1 {
+    color: #dba05b;
+    background: rgb(255, 218, 139);
+    background: linear-gradient(30deg, rgba(255, 218, 139, 1) 0%, rgba(255, 235, 164, 1) 100%);
+}
+
+.rank-2 {
+    color: #818c93;
+    background: rgb(184, 195, 200);
+    background: linear-gradient(28deg, rgba(184, 195, 200, 1) 0%, rgba(222, 229, 231, 1) 100%);
+}
+
+.rank-3 {
+    color: #976d4b;
+    background: rgb(216, 167, 134);
+    background: linear-gradient(28deg, rgba(216, 167, 134, 1) 0%, rgba(240, 197, 164, 1) 100%);
+}
+
+@media (min-width: 600px) {
+    .profile {
+        left: 24px;
+    }
+
+    .profile-badges {
+        margin-left: 144px;
+        margin-right: 24px;
+    }
+}

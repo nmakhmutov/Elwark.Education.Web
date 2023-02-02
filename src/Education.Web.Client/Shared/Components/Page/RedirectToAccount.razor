@@ -1,0 +1,10 @@
+@using Education.Web.Client.Features.Customer
+@code {
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    protected override void OnInitialized() =>
+        Navigation.NavigateTo(CustomerUrl.Root);
+
+}

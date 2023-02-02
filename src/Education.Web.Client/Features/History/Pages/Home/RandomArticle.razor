@@ -1,0 +1,69 @@
+@using Education.Web.Client.Features.History.Services
+@using Education.Web.Client.Features.History.Services.Article
+<section class="background rounded pa-16">
+    <section class="mud-paper rounded pa-16">
+        <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-3 mb-sm-6">
+            @L["Article:Random"]
+        </MudText>
+        <div class="search">
+            <MudSelect
+                Value="@HistorySettings.SearchRandomEpoch"
+                ValueChanged="@((EpochType e) => HistorySettings.ChangeSearchRandomEpochAsync(e))"
+                Margin="Margin.Dense"
+                Variant="Variant.Text">
+                <MudSelectItem Value="@EpochType.None">@L["Articles:Any"]</MudSelectItem>
+                @foreach (var epoch in EpochTypeExtensions.List[1..])
+                {
+                    <MudSelectItem Value="@epoch">
+                        @L[$"Epoch:{epoch.ToFastString()}"]
+                    </MudSelectItem>
+                }
+            </MudSelect>
+            <div class="ml-3">
+                <LoadingButton
+                    DisableElevation
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    IsLoading="@_isLoading"
+                    Text="@L["Search"]"
+                    LoadingText="@L["Loading"]"
+                    OnClick="@OnClick"/>
+            </div>
+        </div>
+    </section>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryArticleService ArticleService { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [CascadingParameter]
+    private CascadingHistorySettings HistorySettings { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private bool _isLoading;
+
+    private async Task OnClick()
+    {
+        if (_isLoading)
+            return;
+
+        _isLoading = true;
+
+        var result = await ArticleService.GetRandomAsync(HistorySettings.SearchRandomEpoch);
+        if (result.IsSuccess)
+            Navigation.NavigateTo(HistoryUrl.Content.Article(result.Value));
+
+        _isLoading = false;
+    }
+
+}

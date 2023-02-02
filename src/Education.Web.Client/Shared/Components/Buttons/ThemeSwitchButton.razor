@@ -1,0 +1,11 @@
+@if (ThemeProvider is not null)
+{
+    <MudIconButton Icon="@ThemeProvider.Icon" Color="Color.Inherit" OnClick="@ThemeProvider.ToggleAsync"/>
+}
+
+@code {
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+}

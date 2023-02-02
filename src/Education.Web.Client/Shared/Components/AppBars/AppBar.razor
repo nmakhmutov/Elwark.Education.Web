@@ -1,0 +1,41 @@
+<MudAppBar Elevation="0">
+    @if (DrawerToggleCallback.HasDelegate)
+    {
+        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggleCallback"/>
+    }
+
+    <MudLink Href="@Href" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None" Class="d-none d-sm-block">
+        @Title <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
+    </MudLink>
+
+    <MudSpacer/>
+
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+
+        <MudSpacer/>
+    }
+
+    <ThemeSwitchButton/>
+
+    <AppbarNotifications/>
+
+    <AppbarUserMenu/>
+</MudAppBar>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Href { get; set; } = "#";
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> DrawerToggleCallback { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+}

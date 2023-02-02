@@ -1,0 +1,85 @@
+@using Education.Web.Client.Features.History.Services.User.Model.Test
+@using ApexCharts
+<ApexChart @ref="@_chart" TItem="TestStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
+    <ApexPointSeries
+        TItem="TestStatisticsModel.DailyProgress"
+        Items="@Progress"
+        Name="@L["Score:ByQuestions"]"
+        Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
+        SeriesType="SeriesType.Bar"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => x.Score.Questions)"/>
+
+    <ApexPointSeries
+        TItem="TestStatisticsModel.DailyProgress"
+        Items="@Progress"
+        Name="@L["Score:BySpeedBonus"]"
+        Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
+        SeriesType="SeriesType.Bar"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => x.Score.Speed)"/>
+
+    <ApexPointSeries
+        TItem="TestStatisticsModel.DailyProgress"
+        Items="@Progress"
+        Name="@L["Score:NoMistakesBonus"]"
+        Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
+        SeriesType="SeriesType.Bar"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => x.Score.NoMistakes)"/>
+</ApexChart>
+
+@code {
+    private ApexChart<TestStatisticsModel.DailyProgress>? _chart;
+
+    private ApexChartOptions<TestStatisticsModel.DailyProgress> _options = new()
+    {
+        Legend = new Legend
+        {
+            Show = false
+        },
+        Chart = new Chart
+        {
+            Stacked = true,
+            Toolbar = new Toolbar
+            {
+                Show = false
+            },
+            Selection = new Selection
+            {
+                Enabled = false
+            },
+            Zoom = new Zoom
+            {
+                Enabled = false
+            },
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)"
+        },
+        Theme = new Theme()
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [Parameter, EditorRequired]
+    public TestStatisticsModel.DailyProgress[] Progress { get; set; } = Array.Empty<TestStatisticsModel.DailyProgress>();
+
+    protected override Task OnParametersSetAsync()
+    {
+        var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
+    }
+
+}

@@ -1,0 +1,98 @@
+@using Education.Web.Client.Features.History.Services
+<section class="mud-paper card @(Horizontal ? "horizontal" : "vertical") @Class">
+    <header class="card-header">
+        <a href="@HistoryUrl.Content.Article(Article.Id)">
+            <img src="@Article.ThumbnailUrl" alt="@Article.Title" loading="lazy"/>
+        </a>
+    </header>
+
+    <article class="content">
+        <aside class="d-flex align-center justify-space-between px-3">
+            <ArticleRating Rating="@Article.Rating" Size="Size.Small" ShowTooltip/>
+
+            <BookmarkButton
+                ArticleId="@Article.Id"
+                IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                OnBookmarkClick="@OnBookmarkClick"/>
+        </aside>
+
+        <div class="px-3 pb-3">
+            <MudLink Href="@HistoryUrl.Content.Article(Article.Id)" Typo="Typo.h6">
+                @Article.Title
+            </MudLink>
+        </div>
+
+        <MudText Class="px-3 pb-3" Typo="Typo.body2">
+            @Article.Overview
+        </MudText>
+
+        <div class="d-flex align-center justify-space-between px-3 pb-3">
+            <MudChip
+                Class="ma-0"
+                Size="Size.Small"
+                Color="Color.Primary"
+                Variant="Variant.Text"
+                Text="@L[$"Epoch:{Article.Epoch.ToFastString()}"]"
+                Link="@HistoryUrl.Content.Epoch(Article.Epoch)"
+                DisableRipple
+                Label/>
+
+            @if (Activity is not null)
+            {
+                <div>
+                    <MudTooltip Text="@L["NumberOfTests:Passed"]">
+                        <MudChip
+                            Class="ma-0"
+                            Size="Size.Small"
+                            Color="Color.Tertiary"
+                            Variant="Variant.Text"
+                            Text="@Activity.PassedTests.ToString()"
+                            Link="@_href"
+                            Icon="@EduIcons.Tests"
+                            DisableRipple
+                            Label/>
+                    </MudTooltip>
+                    <MudTooltip Text="@L["TimeSpent:Total"]">
+                        <MudChip
+                            Class="ma-0"
+                            Size="Size.Small"
+                            Color="Color.Tertiary"
+                            Variant="Variant.Text"
+                            Text="@Activity.TimeSpent.ToSimpleFormat()"
+                            Link="@_href"
+                            Icon="@EduIcons.TimeSpent"
+                            DisableRipple
+                            Label/>
+                    </MudTooltip>
+                </div>
+            }
+        </div>
+
+    </article>
+</section>
+
+@code {
+    private string? _href;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ArticleOverviewModel Article { get; set; } = default!;
+
+    [Parameter]
+    public UserActivityOverviewModel? Activity { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public bool Horizontal { get; set; }
+
+    [Parameter]
+    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+
+    protected override void OnParametersSet() =>
+        _href = Activity?.PassedTests > 0 ? HistoryUrl.User.MyArticles(Article.Id) : null;
+
+}

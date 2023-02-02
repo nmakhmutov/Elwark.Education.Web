@@ -1,0 +1,111 @@
+@using Education.Web.Client.Features.History.Services.Test.Model
+@using Education.Web.Client.Features.History.Services.User.Model.Test
+<ul class="@Class">
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["TimeSpent"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @TimeSpent.ToSimpleFormat()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["Score:Total"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @Score.Total.ToReadable()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row">
+        <ul class="w-100 ml-6">
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Score:ByQuestions"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @Score.Questions.ToReadable()
+                </MudText>
+            </li>
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Score:BySpeedBonus"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @Score.Speed.ToReadable()
+                </MudText>
+            </li>
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Score:NoMistakesBonus"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @Score.NoMistakes.ToReadable()
+                </MudText>
+            </li>
+        </ul>
+    </li>
+    <li class="d-flex flex-row justify-space-between underline mb-1">
+        <MudText Typo="Typo.subtitle1">
+            @L["Questions:Total"]
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            @AnswerRatio.Questions.ToReadable()
+        </MudText>
+    </li>
+    <li class="d-flex flex-row">
+        <ul class="w-100 ml-6">
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Questions:Answered"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @AnswerRatio.Answered.ToReadable()
+                </MudText>
+            </li>
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Questions:NotAnswered"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @AnswerRatio.NotAnswered.ToReadable()
+                </MudText>
+            </li>
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Questions:Correct"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @AnswerRatio.Correct.ToReadable()
+                </MudText>
+            </li>
+            <li class="d-flex flex-row justify-space-between underline mb-1">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Questions:Incorrect"]
+                </MudText>
+                <MudText Typo="Typo.subtitle1">
+                    @AnswerRatio.Incorrect.ToReadable()
+                </MudText>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public ScoreModel Score { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public AnswerRatioModel AnswerRatio { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public TimeSpan TimeSpent { get; set; }
+
+}

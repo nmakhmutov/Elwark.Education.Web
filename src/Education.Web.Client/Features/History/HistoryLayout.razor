@@ -1,0 +1,100 @@
+@using Education.Web.Client.Features.History.Services
+@using Education.Web.Client.Features.History.Services.Search
+@inherits LayoutComponentBase
+
+<CascadingTheme>
+    <CascadingHistorySettings>
+        <MudLayout Class="d-flex flex-column">
+            <AppBar Title="@L["Subject:History"]" Href="@HistoryUrl.Root" DrawerToggleCallback="@ToggleDrawerAsync">
+                <MudAutocomplete
+                    T="ArticleOverviewModel"
+                    @ref="@_searchAutocomplete"
+                    DebounceInterval="300"
+                    AdornmentIcon="@Icons.Material.Outlined.Search"
+                    Placeholder="@L["Search"]"
+                    IconSize="Size.Small"
+                    Margin="Margin.Dense"
+                    Variant="Variant.Outlined"
+                    Adornment="Adornment.Start"
+                    SearchFunc="OnSearch"
+                    ValueChanged="OnSearchResult"
+                    Dense
+                    CoerceValue
+                    ResetValueOnEmptyText>
+                    <ItemTemplate Context="result">
+                        <div class="d-flex align-center">
+                            <MudAvatar Image="@result.ThumbnailUrl" Size="Size.Large" Square Class="mr-4"/>
+                            <div class="one-line-text">
+                                <MudText Typo="Typo.subtitle1">
+                                    @result.Title
+                                </MudText>
+                                <MudText Typo="Typo.caption">
+                                    @result.Overview
+                                </MudText>
+                            </div>
+                        </div>
+                    </ItemTemplate>
+                </MudAutocomplete>
+            </AppBar>
+
+            <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged"/>
+
+            <main class="mud-main-content d-flex flex-column flex-grow-1">
+                @Body
+            </main>
+
+            <footer class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1">
+                    &copy; @DateTime.Now.Year Elwark
+                </MudText>
+                <MudImage Src="@ElwarkIcons.Primary60X60" Alt="Elwark logo" Width="40" Height="40"/>
+            </footer>
+
+            <MudScrollToTop TopOffset="400">
+                <MudFab Icon="@Icons.Material.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
+            </MudScrollToTop>
+        </MudLayout>
+    </CascadingHistorySettings>
+</CascadingTheme>
+
+@code {
+    private bool _isOpen;
+    private MudAutocomplete<ArticleOverviewModel> _searchAutocomplete = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistorySearchService HistorySearchService { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [CascadingParameter]
+    private CascadingAppSettings AppSettings { get; set; } = default!;
+
+    protected override void OnParametersSet() =>
+        _isOpen = AppSettings.IsSidebarOpen;
+
+    private ValueTask ToggleDrawerAsync() =>
+        OnDrawerOpenChanged(!_isOpen);
+
+    private ValueTask OnDrawerOpenChanged(bool value) =>
+        AppSettings.ToggleSidebarAsync(_isOpen = value);
+
+    private async Task<IEnumerable<ArticleOverviewModel>> OnSearch(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
+            return Array.Empty<ArticleOverviewModel>();
+
+        var result = await HistorySearchService.SearchAsync(text);
+        return result.IsSuccess ? result.Value : Array.Empty<ArticleOverviewModel>();
+    }
+
+    private Task OnSearchResult(ArticleOverviewModel entry)
+    {
+        Navigation.NavigateTo(HistoryUrl.Content.Article(entry.Id));
+        return _searchAutocomplete.Clear();
+    }
+
+}

@@ -1,0 +1,40 @@
+@using Education.Web.Client.Features.History.Services
+<div class="d-flex justify-center justify-md-space-around align-center">
+    <div>
+        <MudText Class="text-transform-uppercase" Typo="Typo.body2">
+            @L["History:Born"]
+        </MudText>
+        <HistoryDate Class="date" Date="@Born" Typo="Typo.h4" Color="Color.Info"/>
+        <MudText Typo="Typo.body2">
+            @Born?.Place
+        </MudText>
+    </div>
+
+    @if (Born is not null && Died is not null)
+    {
+        <MudText Class="px-6 px-md-0" Typo="Typo.h2" Color="Color.Info">&#8212;</MudText>
+    }
+
+    <div>
+        <MudText Class="text-transform-uppercase" Typo="Typo.body2">
+            @L["History:Died"]
+        </MudText>
+        <HistoryDate Class="date" Date="@Died" Typo="Typo.h4" Color="Color.Info"/>
+        <MudText Typo="Typo.body2">
+            @Died?.Place
+        </MudText>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public PersonBirthdayModel? Born { get; set; }
+
+    [Parameter, EditorRequired]
+    public PersonBirthdayModel? Died { get; set; }
+
+}

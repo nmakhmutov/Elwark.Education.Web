@@ -1,0 +1,51 @@
+@using Education.Web.Client.Features.History.Services
+<section class="mud-paper pa-3 pa-sm-6 @Class">
+    @if (HasTest && UserActivity.PassedTests > 0)
+    {
+        <MudLink Typo="Typo.subtitle2" Href="@HistoryUrl.User.MyArticles(ArticleId)">
+            @L["Test:MyProgress"]
+        </MudLink>
+    }
+    else
+    {
+        <MudText Typo="Typo.subtitle2">
+            @L["Test:MyProgress"]
+        </MudText>
+    }
+
+    <ArticleProgressView
+        Class="pt-3 pb-3 pb-sm-6"
+        PassedTests="@UserActivity.PassedTests"
+        TimeSpent="@UserActivity.TimeSpent"/>
+
+    @if (HasTest)
+    {
+        <MudButton
+            FullWidth
+            DisableElevation
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            Link="@HistoryUrl.ArticleTest.Index(ArticleId)">
+            @L["Test:Pass"]
+        </MudButton>
+    }
+</section>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public string ArticleId { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public UserActivityOverviewModel UserActivity { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public bool HasTest { get; set; }
+
+}

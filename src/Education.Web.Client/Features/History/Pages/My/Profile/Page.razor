@@ -1,0 +1,43 @@
+@page "/history/my/profile"
+@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Services.User
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>@L["Profile"]</PageTitle>
+
+<ApiViewer Result="@_result" Context="model">
+    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+        <section class="grid">
+            <aside class="sidebar">
+                <ProfileCard Class="mb-3 mb-sm-6" Level="@model.Level"/>
+            </aside>
+
+            <section class="content">
+                <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
+                    Recent articles
+                </MudText>
+                <EduFillGrid>
+                    @foreach (var item in model.RecentArticles)
+                    {
+                        <ArticleCard Article="@item.Article" Activity="@item.Activity"/>
+                    }
+                </EduFillGrid>
+            </section>
+        </section>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+    private ApiResult<ProfileModel> _result = ApiResult<ProfileModel>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await UserService.GetProfileAsync();
+
+}

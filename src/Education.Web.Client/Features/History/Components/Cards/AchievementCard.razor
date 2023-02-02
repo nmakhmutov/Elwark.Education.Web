@@ -1,0 +1,95 @@
+@using Education.Web.Client.Features.History.Services.User.Model
+<section class="mud-paper grid pa-3 pa-sm-6 @Class">
+    @switch (Achievement)
+    {
+        case Achievement.CompletedModel achievement:
+            <aside class="icon @IconClass completed">
+                <MudImage Src="@achievement.IconUrl" Width="42" Height="42"/>
+            </aside>
+            <header class="header">
+                <h6 class="title">
+                    @achievement.Title
+                </h6>
+                <MudText Typo="Typo.caption" Class="d-block">
+                    @L["Achievement:Completed"] @achievement.CompletedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                </MudText>
+            </header>
+            break;
+
+        case Achievement.LadderModel achievement:
+            <aside class="icon @IconClass">
+                <MudImage Src="@achievement.IconUrl" Width="42" Height="42"/>
+                <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
+                    @L["Achievement:Level"] @achievement.Level
+                </MudText>
+            </aside>
+            <header class="header">
+                <h6 class="title">
+                    @achievement.Title
+                </h6>
+            </header>
+            <footer class="progress">
+                <div class="d-flex flex-row mb-1">
+                    <ReadableNumber Value="@achievement.Score" Typo="Typo.subtitle2"/>
+                    <span>/</span>
+                    <ReadableNumber Value="@achievement.Threshold" Typo="Typo.subtitle2"/>
+                </div>
+                <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
+                <div class="d-flex flex-row">
+                    @foreach (var reward in achievement.Rewards)
+                    {
+                        <InternalMoney Class="mr-3" Money="@reward" Horizontal/>
+                    }
+                </div>
+            </footer>
+            break;
+
+        case Achievement.ProgressiveModel achievement:
+            <aside class="icon @IconClass">
+                <MudImage Src="@achievement.IconUrl" Width="42" Height="42"/>
+            </aside>
+            <header class="header">
+                <h6 class="title">
+                    @achievement.Title
+                </h6>
+            </header>
+            <footer class="progress">
+                <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
+                <div class="d-flex flex-row">
+                    @foreach (var reward in achievement.Rewards)
+                    {
+                        <InternalMoney Class="mr-3" Money="@reward" Horizontal/>
+                    }
+                </div>
+            </footer>
+            break;
+
+        default:
+            throw new ArgumentOutOfRangeException(nameof(Achievement));
+    }
+
+    <section class="description">
+        <MudText Typo="Typo.body2">
+            @Achievement.Description
+        </MudText>
+    </section>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public Achievement Achievement { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? IconClass { get; set; } = "green accent-4";
+
+}

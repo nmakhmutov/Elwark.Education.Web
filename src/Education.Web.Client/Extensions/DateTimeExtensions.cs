@@ -1,4 +1,4 @@
-using Education.Web.Client.Components.Customer;
+using Education.Web.Client.Shared.State.Customer;
 
 namespace Education.Web.Client.Extensions;
 

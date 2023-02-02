@@ -1,0 +1,205 @@
+@using Education.Web.Client.Features.History.Services
+@using Education.Web.Client.Features.History.Services.Article.Model
+@using Education.Web.Client.Models.Content
+<header class="background" style="@_style">
+    <section class="d-flex flex-column justify-center align-center h-100">
+        <Breadcrumbs Items="@Breadcrumbs" Typo="Typo.subtitle1"/>
+        <h1 class="title mb-3">
+            @Empire.Title
+        </h1>
+        <section class="d-flex flex-wrap justify-center align-center">
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                    @L["Empire:Founded"]
+                </MudText>
+                <HistoryDate Date="@Empire.Founded" Typo="Typo.h6" Align="Align.Center"/>
+            </div>
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                    @L["Empire:Dissolved"]
+                </MudText>
+                <HistoryDate Date="@Empire.Dissolved" Typo="Typo.h6" Align="Align.Center"/>
+            </div>
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                    @L["Empire:Duration"]
+                </MudText>
+                <MudText Typo="Typo.h6" Align="Align.Center">
+                    @if (Empire.Duration.HasValue)
+                    {
+                        @Empire.Duration.Value.ToString("N0")<small>&nbsp;@L["History:Years"].Value.ToLowerInvariant()</small>
+                    }
+                    else
+                    {
+                        @L["History:Unknown"]
+                    }
+                </MudText>
+            </div>
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                    @L["Empire:MaxArea"]
+                </MudText>
+                <MudText Typo="Typo.h6" Align="Align.Center">
+                    @if (Empire.MaxArea > 0)
+                    {
+                        @Empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                    }
+                    else
+                    {
+                        @L["History:Unknown"]
+                    }
+                </MudText>
+            </div>
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                    @L["Empire:MaxPopulation"]
+                </MudText>
+                <MudText Typo="Typo.h6" Align="Align.Center">
+                    @if (Empire.MaxPopulation > 0)
+                    {
+                        @Empire.MaxPopulation.ToString("N0")
+                    }
+                    else
+                    {
+                        @L["History:Unknown"]
+                    }
+                </MudText>
+            </div>
+        </section>
+        <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
+            <MudText Typo="Typo.subtitle1" Align="Align.Justify">
+                @Empire.Description
+            </MudText>
+        </EduContainer>
+    </section>
+</header>
+
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
+    <section class="grid">
+        @if (Empire.Flag is not null)
+        {
+            <section class="flag mud-paper pa-3 pa-sm-6">
+                <MudText Class="mb-3" Typo="Typo.subtitle2">
+                    @L["Empire:Flag"]
+                </MudText>
+                <div class="d-flex flex-column align-center gap-3">
+                    <MudImage
+                        Src="@Empire.Flag.Source"
+                        Alt="@Empire.Flag.Overview"
+                        Style="width: 100%; max-width: 260px"
+                        ObjectFit="ObjectFit.Contain"
+                        ObjectPosition="ObjectPosition.Center"/>
+
+                    <MudText Typo="Typo.body2">
+                        @Empire.Flag.Overview
+                    </MudText>
+                </div>
+            </section>
+        }
+
+        @if (Empire.Map is not null)
+        {
+            <section class="map mud-paper pa-3 pa-sm-6">
+                <MudText Class="mb-3" Typo="Typo.subtitle2">
+                    @L["Empire:Map"]
+                </MudText>
+                <a href="@Empire.Map.Source" target="_blank">
+                    <MudImage
+                        Src="@Empire.Map.Source"
+                        Alt="@Empire.Map.Overview"
+                        Style="width: 100%;"
+                        ObjectFit="ObjectFit.Contain"
+                        ObjectPosition="ObjectPosition.Center"/>
+                </a>
+
+                <MudText Typo="Typo.body2" Align="Align.Center">
+                    @Empire.Map.Overview
+                </MudText>
+            </section>
+        }
+
+        <ArticleFormatingCard Class="toolbar"/>
+
+        <ArticleContentCard Class="content" Content="@Empire.Content"/>
+
+        <ArticleTestCard Class="test" ArticleId="@Empire.Id" HasTest="@HasTest" UserActivity="@UserActivity"/>
+
+        <ArticleUserCard
+            Class="rating"
+            ArticleId="@Empire.Id"
+            Rating="@Rating"
+            UserActivity="@UserActivity"
+            OnBookmarkClick="@OnBookmarkClick"
+            OnLikeClick="@OnLikeClick"
+            OnDislikeClick="@OnDislikeClick"/>
+    </section>
+
+    @if (RelatedArticles.Length > 0)
+    {
+        <MudText Typo="Typo.h5" Class="mt-3 mt-sm-6 mb-3">
+            @L["Articles:Related"]
+        </MudText>
+        <EduFillGrid>
+            @foreach (var (article, activity) in RelatedArticles)
+            {
+                <ArticleCard
+                    Article="@article"
+                    Activity="@activity"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            }
+        </EduFillGrid>
+    }
+</EduContainer>
+
+@code {
+    private string? _style;
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["Subject:History"], HistoryUrl.Root),
+        new BreadcrumbItem(L[$"Epoch:{Empire.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Empire.Epoch))
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [Parameter, EditorRequired]
+    public ArticleDetail.EmpireModel Empire { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ContentRatingModel Rating { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public UserActivityOverviewModel UserActivity { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public bool HasTest { get; set; }
+
+    [Parameter, EditorRequired]
+    public UserArticleOverviewModel[] RelatedArticles { get; set; } = Array.Empty<UserArticleOverviewModel>();
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+
+    protected override void OnParametersSet()
+    {
+        var overlay = $"--mud-palette-overlay-{(ThemeProvider?.IsDarkMode == true ? "dark" : "light")}";
+
+        _style = StyleBuilder
+            .Default("background", $"linear-gradient(0deg, var(--mud-palette-background) 5%, var({overlay}) 100%), url('{Empire.ImageUrl}')")
+            .AddStyle("background-size", "cover")
+            .AddStyle("background-repeat", "no-repeat")
+            .AddStyle("background-position", "top center")
+            .Build();
+    }
+
+}

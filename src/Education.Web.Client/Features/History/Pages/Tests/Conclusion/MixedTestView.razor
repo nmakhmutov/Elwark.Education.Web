@@ -1,0 +1,50 @@
+@using Education.Web.Client.Features.History.Services.Test.Model
+<EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
+    <div class="mb-3">
+        <MudLink Href="@HistoryUrl.User.MyMixedTests" Typo="Typo.h5">
+            @L["Statistics"]
+        </MudLink>
+    </div>
+    <ConclusionCharts Conclusion="@Conclusion"/>
+</EduContainer>
+
+<EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
+    <MudText Typo="Typo.h5" Class="mb-3">
+        @L["Answers"]
+    </MudText>
+    <MudTable Items="@Conclusion.Questions" Hover Breakpoint="Breakpoint.Sm">
+        <HeaderContent>
+            <MudTh>@L["Article"]</MudTh>
+            <MudTh>@L["Question"]</MudTh>
+            <MudTh>@L["Question:IsAnswered"]</MudTh>
+            <MudTh>@L["Question:IsCorrect"]</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="@L["Article"]">
+                <MudLink Href="@HistoryUrl.Content.Article(context.Article.Id)">
+                    @context.Article.Title
+                </MudLink>
+            </MudTd>
+            <MudTd DataLabel="@L["Question"]">
+                @context.Title
+            </MudTd>
+            <MudTd DataLabel="@L["Question:IsAnswered"]">
+                <MudCheckBox ReadOnly Checked="@context.IsAnswered"/>
+            </MudTd>
+            <MudTd DataLabel="@L["Question:IsCorrect"]">
+                <MudCheckBox ReadOnly Checked="@context.IsCorrect"/>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</EduContainer>
+
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public TestConclusion.MixedTestModel Conclusion { get; set; } = default!;
+
+}

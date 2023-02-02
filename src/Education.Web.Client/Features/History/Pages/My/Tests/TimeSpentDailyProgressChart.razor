@@ -1,0 +1,111 @@
+@using Education.Web.Client.Features.History.Services.User.Model.Test
+@using ApexCharts
+<ApexChart @ref="@_chart" TItem="TestStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
+    <ApexPointSeries
+        TItem="TestStatisticsModel.DailyProgress"
+        Items="@Progress"
+        Name="@L["TimeSpent:Min"]"
+        Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
+        SeriesType="SeriesType.Bar"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => (decimal)x.TimeSpent.Min.TotalMilliseconds)"/>
+
+    <ApexPointSeries
+        TItem="TestStatisticsModel.DailyProgress"
+        Items="@Progress"
+        Name="@L["TimeSpent:Average"]"
+        Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
+        SeriesType="SeriesType.Bar"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => (decimal)x.TimeSpent.Average.TotalMilliseconds)"/>
+
+    <ApexPointSeries
+        TItem="TestStatisticsModel.DailyProgress"
+        Items="@Progress"
+        Name="@L["TimeSpent:Max"]"
+        Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
+        SeriesType="SeriesType.Bar"
+        XValue="@(e => e.Date.ToString("dd MMM"))"
+        YValue="@(x => (decimal)x.TimeSpent.Max.TotalMilliseconds)"/>
+
+</ApexChart>
+
+@code {
+
+        private const string Formatter = @"
+function(value) {
+    var minutes = Math.floor(value / 60000);
+    var seconds = ((value % 60000) / 1000).toFixed(0);
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}
+";
+
+    private ApexChart<TestStatisticsModel.DailyProgress>? _chart;
+
+    private ApexChartOptions<TestStatisticsModel.DailyProgress> _options = new()
+    {
+        Yaxis = new List<YAxis>
+        {
+            new()
+            {
+                Labels = new YAxisLabels
+                {
+                    Formatter = Formatter
+                }
+            }
+        },
+        Tooltip = new Tooltip
+        {
+            Y = new TooltipY
+            {
+                Formatter = Formatter
+            }
+        },
+        Legend = new Legend
+        {
+            Show = false
+        },
+        Chart = new Chart
+        {
+            Toolbar = new Toolbar
+            {
+                Show = false
+            },
+            Selection = new Selection
+            {
+                Enabled = false
+            },
+            Zoom = new Zoom
+            {
+                Enabled = false
+            },
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)"
+        },
+        Theme = new Theme()
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [Parameter, EditorRequired]
+    public TestStatisticsModel.DailyProgress[] Progress { get; set; } = Array.Empty<TestStatisticsModel.DailyProgress>();
+
+    protected override Task OnParametersSetAsync()
+    {
+        var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
+    }
+
+}

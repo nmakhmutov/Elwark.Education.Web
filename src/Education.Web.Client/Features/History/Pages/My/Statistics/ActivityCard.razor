@@ -1,0 +1,124 @@
+@using ApexCharts
+@using Education.Web.Client.Features.History.Services.User.Model
+<section class="mud-paper pa-3 pa-sm-6 @Class">
+    <MudText Typo="Typo.h5">
+        @Title
+    </MudText>
+    <ApexChart @ref="@_chart" TItem="StatisticsModel.ProgressModel" Options="_options">
+        <ApexPointSeries
+            TItem="StatisticsModel.ProgressModel"
+            Items="Activities"
+            Name="@L["Statistics:Total"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.Total)"/>
+
+        <ApexPointSeries
+            TItem="StatisticsModel.ProgressModel"
+            Items="Activities"
+            Name="@L["Tests:Easy"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten3 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.Test.Easy)"/>
+
+        <ApexPointSeries
+            TItem="StatisticsModel.ProgressModel"
+            Items="Activities"
+            Name="@L["Tests:Hard"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten1 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.Test.Hard)"/>
+
+        <ApexPointSeries
+            TItem="StatisticsModel.ProgressModel"
+            Items="Activities"
+            Name="@L["Tests:Mixed"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Darken2 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.Test.Mixed)"/>
+
+        <ApexPointSeries
+            TItem="StatisticsModel.ProgressModel"
+            Items="Activities"
+            Name="@L["EventGuessers:Small"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten3 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.EventGuesser.Small)"/>
+
+        <ApexPointSeries
+            TItem="StatisticsModel.ProgressModel"
+            Items="Activities"
+            Name="@L["EventGuessers:Medium"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten1 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.EventGuesser.Medium)"/>
+
+        <ApexPointSeries
+            TItem="StatisticsModel.ProgressModel"
+            Items="Activities"
+            Name="@L["EventGuessers:Large"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Darken2 })"
+            SeriesType="SeriesType.Area"
+            XValue="@(e => e.Date.ToString(DateFormat))"
+            YValue="@(x => x.EventGuesser.Large)"/>
+    </ApexChart>
+</section>
+
+@code {
+    private ApexChart<StatisticsModel.ProgressModel>? _chart;
+
+    private ApexChartOptions<StatisticsModel.ProgressModel> _options = new()
+    {
+        Legend = new Legend
+        {
+            Position = LegendPosition.Top
+        },
+        Chart = new Chart
+        {
+            Width = "100%",
+            Height = "350px",
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)"
+        },
+        Theme = new Theme()
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public string DateFormat { get; set; } = "dd MMM";
+
+    [Parameter, EditorRequired]
+    public StatisticsModel.ProgressModel[] Activities { get; set; } = Array.Empty<StatisticsModel.ProgressModel>();
+
+    protected override Task OnParametersSetAsync()
+    {
+        var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
+    }
+
+}
