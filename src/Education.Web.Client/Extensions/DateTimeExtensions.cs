@@ -1,21 +1,16 @@
-using Education.Web.Client.Shared.State.Customer;
-
 namespace Education.Web.Client.Extensions;
 
 public static class DateTimeExtensions
 {
-    public static string ToCustomerFormat(this DateTime date, DateTimeInfo info)
+    public static string Humanize(this DateTime date, TimeZoneInfo timeZone, string dateFormat, string timeFormat)
     {
-        var local = TimeZoneInfo.ConvertTimeFromUtc(date, info.TimeZone);
-        var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, info.TimeZone);
+        var local = TimeZoneInfo.ConvertTimeFromUtc(date, timeZone);
+        var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone);
 
-        return local.ToString(local.Date == now.Date ? info.TimeFormat : info.DateFormat);
+        return local.ToString(local.Date == now.Date ? timeFormat : dateFormat);
     }
 
-    public static string ToFullCustomerFormat(this DateTime date, DateTimeInfo info) =>
-        TimeZoneInfo.ConvertTimeFromUtc(date, info.TimeZone).ToString(info.DateTimeFormat);
-
-    public static string ToSimpleFormat(this TimeSpan span, bool hideSeconds = false)
+    public static string Humanize(this TimeSpan span, bool hideSeconds = false)
     {
         var format = span switch
         {

@@ -39,7 +39,7 @@
                             @if (string.IsNullOrEmpty(item.Message))
                             {
                                 <MudText Class="mud-text-secondary" Typo="Typo.body2">
-                                    @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                                    @Customer.Humanize(item.CreatedAt)
                                 </MudText>
                                 <MudText Typo="Typo.body1">
                                     @item.Title
@@ -51,9 +51,9 @@
                                     <MudText Typo="Typo.body2">
                                         @item.Title
                                     </MudText>
-                                    <MudIcon Class="dot mx-1" Icon="@Icons.Material.Outlined.NoiseControlOff"/>
+                                    <MudIcon Class="dot mx-1" Icon="@Icons.Material.Outlined.Adjust"/>
                                     <MudText Typo="Typo.body2">
-                                        @item.CreatedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                                        @Customer.Humanize(item.CreatedAt)
                                     </MudText>
                                 </header>
                                 <MudText Typo="Typo.body1">

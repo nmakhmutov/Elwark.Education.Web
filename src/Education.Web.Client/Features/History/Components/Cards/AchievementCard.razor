@@ -11,7 +11,7 @@
                     @achievement.Title
                 </h6>
                 <MudText Typo="Typo.caption" Class="d-block">
-                    @L["Achievement:Completed"] @achievement.CompletedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                    @L["Achievement:Completed"] @Customer.Humanize(achievement.CompletedAt)
                 </MudText>
             </header>
             break;
@@ -30,9 +30,9 @@
             </header>
             <footer class="progress">
                 <div class="d-flex flex-row mb-1">
-                    <ReadableNumber Value="@achievement.Score" Typo="Typo.subtitle2"/>
+                    <MetricNumber Value="@achievement.Score" Typo="Typo.subtitle2"/>
                     <span>/</span>
-                    <ReadableNumber Value="@achievement.Threshold" Typo="Typo.subtitle2"/>
+                    <MetricNumber Value="@achievement.Threshold" Typo="Typo.subtitle2"/>
                 </div>
                 <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
                 <div class="d-flex flex-row">

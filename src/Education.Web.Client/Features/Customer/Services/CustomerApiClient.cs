@@ -20,6 +20,7 @@ internal sealed class CustomerApiClient : ApiClient
         Converters =
         {
             new MarkupStringConverter(),
+            new TimeZoneInfoConverter(),
             new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
         }
     };

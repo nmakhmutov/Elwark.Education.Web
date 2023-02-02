@@ -7,7 +7,7 @@
     <div class="d-flex align-center">
         <MudTooltip Text="@L["TimeSpent"]">
             <MudText Typo="Typo.h5" Class="mr-3">
-                @Test.TimeSpent.ToSimpleFormat()
+                @Test.TimeSpent.Humanize()
             </MudText>
         </MudTooltip>
         <MudAvatar Color="Color.Primary" Size="Size.Medium">
@@ -37,7 +37,7 @@
                 <TitleContent>
                     <div class="d-flex">
                         <MudText Typo="Typo.subtitle1" Class="mr-3">
-                            @conclusion.CompletedAt.ToCustomerFormat(Customer.DateTimeInfo)
+                            @Customer.Humanize(conclusion.CompletedAt)
                         </MudText>
                         <MudText Typo="@Typo.subtitle1" Color="@conclusion.Status.GetColor()">
                             @L[$"ConclusionStatus:{conclusion.Status}"]

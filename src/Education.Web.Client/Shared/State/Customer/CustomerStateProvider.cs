@@ -34,15 +34,7 @@ internal sealed class CustomerStateProvider
         if (customer is null)
             return;
 
-        _state = CustomerState.Authenticated(
-            customer.FullName,
-            customer.Image,
-            customer.TimeZone,
-            customer.StartOfWeek,
-            customer.DateFormat,
-            customer.TimeFormat,
-            customer.CreatedAt
-        );
+        _state = CustomerState.Map(customer);
 
         _isInitialized = true;
         OnChanged.Invoke(_state);

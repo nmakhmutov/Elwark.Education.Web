@@ -6,7 +6,7 @@
             @L["TimeSpent"]
         </MudText>
         <MudText Typo="Typo.subtitle1">
-            @TimeSpent.ToSimpleFormat()
+            @TimeSpent.Humanize()
         </MudText>
     </li>
     <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -14,7 +14,7 @@
             @L["Score:Total"]
         </MudText>
         <MudText Typo="Typo.subtitle1">
-            @Score.Total.ToReadable()
+            @Score.Total.ToMetric()
         </MudText>
     </li>
     <li class="d-flex flex-row">
@@ -24,7 +24,7 @@
                     @L["Score:ByQuestions"]
                 </MudText>
                 <MudText Typo="Typo.subtitle1">
-                    @Score.Questions.ToReadable()
+                    @Score.Questions.ToMetric()
                 </MudText>
             </li>
             <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -32,7 +32,7 @@
                     @L["Score:BySpeedBonus"]
                 </MudText>
                 <MudText Typo="Typo.subtitle1">
-                    @Score.Speed.ToReadable()
+                    @Score.Speed.ToMetric()
                 </MudText>
             </li>
             <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -40,7 +40,7 @@
                     @L["Score:NoMistakesBonus"]
                 </MudText>
                 <MudText Typo="Typo.subtitle1">
-                    @Score.NoMistakes.ToReadable()
+                    @Score.NoMistakes.ToMetric()
                 </MudText>
             </li>
         </ul>
@@ -50,7 +50,7 @@
             @L["Questions:Total"]
         </MudText>
         <MudText Typo="Typo.subtitle1">
-            @AnswerRatio.Questions.ToReadable()
+            @AnswerRatio.Questions.ToMetric()
         </MudText>
     </li>
     <li class="d-flex flex-row">
@@ -60,7 +60,7 @@
                     @L["Questions:Answered"]
                 </MudText>
                 <MudText Typo="Typo.subtitle1">
-                    @AnswerRatio.Answered.ToReadable()
+                    @AnswerRatio.Answered.ToMetric()
                 </MudText>
             </li>
             <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -68,7 +68,7 @@
                     @L["Questions:NotAnswered"]
                 </MudText>
                 <MudText Typo="Typo.subtitle1">
-                    @AnswerRatio.NotAnswered.ToReadable()
+                    @AnswerRatio.NotAnswered.ToMetric()
                 </MudText>
             </li>
             <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -76,7 +76,7 @@
                     @L["Questions:Correct"]
                 </MudText>
                 <MudText Typo="Typo.subtitle1">
-                    @AnswerRatio.Correct.ToReadable()
+                    @AnswerRatio.Correct.ToMetric()
                 </MudText>
             </li>
             <li class="d-flex flex-row justify-space-between underline mb-1">
@@ -84,7 +84,7 @@
                     @L["Questions:Incorrect"]
                 </MudText>
                 <MudText Typo="Typo.subtitle1">
-                    @AnswerRatio.Incorrect.ToReadable()
+                    @AnswerRatio.Incorrect.ToMetric()
                 </MudText>
             </li>
         </ul>

@@ -65,10 +65,10 @@ function(value) {
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["TimeSpent:Min"], Value.Min.ToSimpleFormat(), Colors.Green.Accent4),
-        new ChartList.Item(L["TimeSpent:Average"], Value.Average.ToSimpleFormat(), Colors.Blue.Default),
-        new ChartList.Item(L["TimeSpent:Max"], Value.Max.ToSimpleFormat(), Colors.DeepPurple.Default),
-        new ChartList.Item(L["TimeSpent:Total"], Value.Total.ToSimpleFormat(), null)
+        new ChartList.Item(L["TimeSpent:Min"], Value.Min.Humanize(), Colors.Green.Accent4),
+        new ChartList.Item(L["TimeSpent:Average"], Value.Average.Humanize(), Colors.Blue.Default),
+        new ChartList.Item(L["TimeSpent:Max"], Value.Max.Humanize(), Colors.DeepPurple.Default),
+        new ChartList.Item(L["TimeSpent:Total"], Value.Total.Humanize(), null)
     };
 
     private Data[] Series => new[]

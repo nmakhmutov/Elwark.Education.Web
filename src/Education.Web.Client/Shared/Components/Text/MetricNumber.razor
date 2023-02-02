@@ -2,14 +2,14 @@
 
 @if (_tooltip is null)
 {
-    <MudText Typo="Typo" Class="@Class" Style="@Style" Color="@Color">
+    <MudText Class="@Class" Typo="Typo" Color="@Color" Style="@Style">
         @_value@EndIcon
     </MudText>
 }
 else
 {
     <MudTooltip Text="@_tooltip" Placement="@Placement">
-        <MudText Typo="@Typo" Class="@Class" Style="@Style" Color="@Color">
+        <MudText Class="@Class" Typo="@Typo" Color="@Color" Style="@Style">
             @_value@EndIcon
         </MudText>
     </MudTooltip>
@@ -42,11 +42,11 @@ else
 
     protected override void OnParametersSet() =>
         (_value, _tooltip) = Value switch {
-            int i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
-            uint i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
-            long i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
-            ulong i => (i.ToReadable(), i > 999 ? i.ToString("N0") : null),
-            double i => (i.ToReadable(), i > 999 ? i.ToString("N2") : null),
+            int i => (i.ToMetric(), i > 999 ? i.ToString("N0") : null),
+            uint i => (i.ToMetric(), i > 999 ? i.ToString("N0") : null),
+            long i => (i.ToMetric(), i > 999 ? i.ToString("N0") : null),
+            ulong i => (i.ToMetric(), i > 999 ? i.ToString("N0") : null),
+            double i => (i.ToMetric(), i > 999 ? i.ToString("N2") : null),
             string s => (s, null),
             _ => (Value?.ToString() ?? string.Empty, null)
             };

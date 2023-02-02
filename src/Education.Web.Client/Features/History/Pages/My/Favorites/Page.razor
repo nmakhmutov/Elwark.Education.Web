@@ -71,7 +71,7 @@ else
                         <div class="d-flex align-center">
                             <MudIcon Icon="@EduIcons.Tests" Size="Size.Small" Class="mr-1"/>
                             <MudText Typo="Typo.body2">
-                                @item.Activity.PassedTests.ToReadable()
+                                @item.Activity.PassedTests.ToMetric()
                             </MudText>
                         </div>
                     </div>
@@ -79,7 +79,7 @@ else
                         <div class="d-flex align-center">
                             <MudIcon Icon="@EduIcons.TimeSpent" Size="Size.Small" Class="mr-1"/>
                             <MudText Typo="Typo.body2">
-                                @item.Activity.TimeSpent.ToSimpleFormat()
+                                @item.Activity.TimeSpent.Humanize()
                             </MudText>
                         </div>
                     </div>

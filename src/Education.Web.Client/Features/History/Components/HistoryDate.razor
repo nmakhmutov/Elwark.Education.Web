@@ -38,7 +38,7 @@
 
         if (month.HasValue && day.HasValue)
         {
-            sb.Append(new DateTime(Math.Abs(year), (int)month.Value, (int)day.Value).ToString(Customer.DateTimeInfo.DateFormat));
+            sb.Append(Customer.Humanize(new DateTime(Math.Abs(year), (int)month.Value, (int)day.Value)));
 
             if (year < 0)
                 sb.Append(L["HistoricalDate:Bc"]);

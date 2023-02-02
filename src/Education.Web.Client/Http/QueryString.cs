@@ -53,7 +53,7 @@ public readonly struct QueryString : IEquatable<QueryString>
             return this;
 
         // ?name1=value1 Add ?name2=value2 returns ?name1=value1&name2=value2
-        return new QueryString(string.Concat(Value, "&", other.Value.AsSpan(1)));
+        return new QueryString($"{Value}&{other.Value.AsSpan(1)}");
     }
 
     public QueryString Add(string name, string value)

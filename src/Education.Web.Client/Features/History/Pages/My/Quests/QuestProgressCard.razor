@@ -18,12 +18,12 @@
 
         <div class="d-flex justify-space-between align-start">
             <MudText Typo="Typo.body2">
-                @(((double)Quest.Score / Quest.Threshold * 100).ToReadable())%
+                @(((double)Quest.Score / Quest.Threshold * 100).ToMetric())%
             </MudText>
             <div class="d-flex align-center">
-                <ReadableNumber Value="@Quest.Score" Typo="Typo.body2"/>
+                <MetricNumber Value="@Quest.Score" Typo="Typo.body2"/>
                 <div>&nbsp;/&nbsp;</div>
-                <ReadableNumber Value="@Quest.Threshold" Typo="Typo.body2"/>
+                <MetricNumber Value="@Quest.Threshold" Typo="Typo.body2"/>
             </div>
         </div>
     </div>

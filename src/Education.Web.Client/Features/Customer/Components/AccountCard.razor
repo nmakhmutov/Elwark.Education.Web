@@ -15,7 +15,7 @@
             @if (Customer.CreatedAt > DateOnly.MinValue)
             {
                 <MudText Class="mud-text-secondary mb-3 mb-sm-6" Typo="Typo.body2">
-                    @L["Customer:MemberSince", Customer.CreatedAt.ToString(Customer.DateTimeInfo.DateFormat)]
+                    @L["Customer:MemberSince", Customer.Humanize(Customer.CreatedAt)]
                 </MudText>
             }
         </div>
@@ -80,10 +80,10 @@
 
         _items = new Dictionary<string, string>
         {
-            [L["Customer:TimeZone"]] = Customer.DateTimeInfo.TimeZone.Id,
+            [L["Customer:TimeZone"]] = Customer.TimeZone.Id,
             [L["Customer:StartOfWeek"]] = L[$"DayOfWeek:{Customer.StartOfWeek}"],
-            [L["Customer:DateFormat"]] = $"{Customer.DateTimeInfo.DateFormat} ({now.ToString(Customer.DateTimeInfo.DateFormat)})",
-            [L["Customer:TimeFormat"]] = $"{Customer.DateTimeInfo.TimeFormat} ({now.ToString(Customer.DateTimeInfo.TimeFormat)})"
+            [L["Customer:DateFormat"]] = $"{Customer.DateFormat} ({now.ToString(Customer.DateFormat)})",
+            [L["Customer:TimeFormat"]] = $"{Customer.TimeFormat} ({now.ToString(Customer.TimeFormat)})"
         };
     }
 

@@ -4,7 +4,7 @@ public sealed record CustomerModel(
     long Id,
     string FullName,
     string Image,
-    string TimeZone,
+    TimeZoneInfo TimeZone,
     DayOfWeek StartOfWeek,
     string Language,
     string DateFormat,
