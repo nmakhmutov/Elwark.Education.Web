@@ -25,7 +25,7 @@ public sealed record CustomerState(
             CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek,
             CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern,
             CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern,
-            DateOnly.FromDateTime(DateTime.MinValue)
+            DateOnly.MinValue
         );
 
     public static CustomerState Map(CustomerModel customer) =>

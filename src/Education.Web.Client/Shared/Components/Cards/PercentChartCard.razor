@@ -11,9 +11,7 @@
 
         <div class="mx-auto" style="max-width: 200px;">
             <MudChart ChartType="ChartType.Donut" Width="100%" ChartOptions="@ChartOptions" InputData="@_inputData"/>
-            <MudText Typo="Typo.h5" Align="Align.Center">
-                @Percentage.ToMetric()%
-            </MudText>
+            <MetricNumber Value="@Percentage" Typo="Typo.h5" EndIcon="%"/>
         </div>
     </MudCardContent>
 </MudCard>

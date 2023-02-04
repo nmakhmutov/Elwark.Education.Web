@@ -1,5 +1,6 @@
 @page "/history/store"
 @using Education.Web.Client.Features.History.Services.Store.Model
+@using Education.Web.Client.Features.History.Services.User
 @using Education.Web.Client.Features.History.Services.Store
 @layout HistoryLayout
 @attribute [Authorize]
@@ -7,34 +8,29 @@
 <PageTitle>@L["Inventory:Store"]</PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Inventory:Store"]" Breadcrumbs="@Breadcrumbs"/>
+    <EduPageHeader Title="@L["Inventory:Store"]" Breadcrumbs="@Breadcrumbs">
+        @if (_silver.HasValue)
+        {
+            <WalletCard Title="@L["InternalMoney:Balance"]" Icon="@EduIcons.Silver" Value="@_silver.Value"/>
+        }
+    </EduPageHeader>
 </EduContainer>
 
-<ApiViewer Result="@_response" Context="products">
+<ApiViewer Result="@_products" Context="products">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <EduFillGrid>
-            @foreach (var item in products)
+        <section class="grid">
+            @foreach (var product in products)
             {
-                <MudCard Elevation="0">
-                    <MudCardContent>
-                        <MudText>@item.Title</MudText>
-                        <MudText>Product @item.Id</MudText>
-                        <MudText>Weight @item.InventoryWeight</MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Class="mr-3" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth>
-                            <InternalMoney Money="@item.Selling.Total" IconSize="Size.Small" Horizontal/>
-                        </MudButton>
-                        <MudIconButton Icon="@Icons.Material.Outlined.Info" Variant="Variant.Filled" DisableElevation/>
-                    </MudCardActions>
-                </MudCard>
+                <ProductCard Product="@product" OnInformationClick="@OpenInformation" OnPurchaseClick="@Purchase"/>
             }
-        </EduFillGrid>
+        </section>
     </EduContainer>
 </ApiViewer>
 
 @code {
-    private ApiResult<ProductModel[]> _response = ApiResult<ProductModel[]>.Loading();
+    private long? _silver;
+    private uint _emptiness;
+    private ApiResult<ProductModel[]> _products = ApiResult<ProductModel[]>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -42,12 +38,61 @@
     };
 
     [Inject]
-    private IHistoryStoreService Store { get; set; } = default!;
-
-    [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync() =>
-        _response = await Store.GetAsync();
+    [Inject]
+    private IHistoryStoreService StoreService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    [Inject]
+    private IDialogService DialogService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var wallet = await UserService.GetWalletAsync();
+        if (wallet.IsSuccess)
+        {
+            _silver = wallet.Value.Silver;
+            _emptiness = wallet.Value.BackpackEmptiness;
+        }
+
+        _products = await StoreService.GetAsync();
+    }
+
+    private Error? GetStatusMessage(ProductModel product)
+    {
+        if (product.Selling.Total.Amount > _silver)
+            return new Error(L["Not enough silver"], L["Earn more silver to purchase"]);
+
+        if (product.InventoryWeight > _emptiness)
+            return new Error(L["Backpack is full!"], L["Upgrade your Backpack to increase its capacity"]);
+
+        return null;
+    }
+
+    private void OpenInformation(ProductModel product) => throw new NotImplementedException();
+
+    private Task Purchase(ProductModel product)
+    {
+        if (GetStatusMessage(product) is {} error)
+            return DialogService.ShowMessageBox(error.Title, error.Message);
+
+        var options = new DialogOptions
+        {
+            FullWidth = true,
+            MaxWidth = MaxWidth.Medium,
+            CloseButton = true,
+            CloseOnEscapeKey = false,
+            DisableBackdropClick = true
+        };
+
+        var parameters = new DialogParameters { [nameof(PurchaseDialog.Product)] = product };
+
+        return DialogService.ShowAsync<PurchaseDialog>(product.Title, parameters, options);
+    }
+
+    private sealed record Error(string Title, string Message);
 
 }

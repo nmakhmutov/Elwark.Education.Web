@@ -28,7 +28,7 @@
 </ApiViewer>
 
 @code {
-    private ApiResult<InventoriesModel> _result = ApiResult<InventoriesModel>.Loading();
+    private ApiResult<BackpackModel> _result = ApiResult<BackpackModel>.Loading();
     private string? _capacity;
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -45,7 +45,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await UserService.GetInventoriesAsync();
+        _result = await UserService.GetBackpackAsync();
         if (_result.IsSuccess)
             _capacity = $"{_result.Value.Fullness} / {_result.Value.Capacity}";
     }

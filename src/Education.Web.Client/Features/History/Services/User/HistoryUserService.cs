@@ -19,11 +19,11 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<ProfileModel>> GetProfileAsync() =>
         _api.GetAsync<ProfileModel>("history/users/me/profile");
 
+    public Task<ApiResult<BackpackModel>> GetBackpackAsync() =>
+        _api.GetAsync<BackpackModel>("history/users/me/backpack");
+    
     public Task<ApiResult<WalletModel>> GetWalletAsync() =>
         _api.GetAsync<WalletModel>("history/users/me/wallet");
-
-    public Task<ApiResult<InventoriesModel>> GetInventoriesAsync() =>
-        _api.GetAsync<InventoriesModel>("history/users/me/inventories");
 
     public Task<ApiResult<QuestModel>> GetQuestAsync() =>
         _api.GetAsync<QuestModel>("history/users/me/quests");

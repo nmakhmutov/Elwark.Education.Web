@@ -2,26 +2,29 @@ namespace Education.Web.Client.Extensions;
 
 public static class NumberExtensions
 {
-    private static readonly char[] Prefixes = { ' ', 'k', 'M', 'B', 'T', 'Q' };
+    private static readonly char[] Prefixes = { 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y' };
 
-    public static string ToMetric(this int number) =>
-        ToMetric((double)number);
+    public static string ToMetric(this int input) =>
+        ToMetric((double)input);
 
-    public static string ToMetric(this long number) =>
-        ToMetric((double)number);
+    public static string ToMetric(this long input) =>
+        ToMetric((double)input);
 
-    public static string ToMetric(this uint number) =>
-        ToMetric((double)number);
+    public static string ToMetric(this uint input) =>
+        ToMetric((double)input);
 
-    public static string ToMetric(this ulong number) =>
-        ToMetric((double)number);
+    public static string ToMetric(this ulong input) =>
+        ToMetric((double)input);
 
-    public static string ToMetric(this double number)
+    public static string ToMetric(this double input)
     {
-        var degree = (int)Math.Floor(Math.Log10(Math.Abs(number)) / 3);
-        var scaled = number * Math.Pow(1000, -degree);
-        var prefix = Prefixes[int.Max(0, degree)];
+        var exponent = (int)Math.Floor(Math.Log10(Math.Abs(input)) / 3);
+        if (exponent <= 0)
+            return Math.Round(input, 1).ToString("G");
 
-        return $"{Math.Round(scaled, 1)}{prefix}";
+        var number = input * Math.Pow(1000, -exponent);
+        var symbol = Prefixes[exponent - 1];
+
+        return $"{Math.Round(number, 1):G}{symbol}";
     }
 }

@@ -24,9 +24,7 @@
                     Size="Size.Small"/>
 
                 <div class="d-flex justify-space-between align-start">
-                    <MudText Typo="Typo.body2">
-                        @(((double)item.Score / item.Threshold * 100).ToMetric())%
-                    </MudText>
+                    <MetricNumber Value="@((double)item.Score / item.Threshold * 100)" Typo="Typo.body2"/>
                     <div class="d-flex align-center">
                         <MetricNumber Value="@item.Score" Typo="Typo.body2"/>
                         <div>&nbsp;/&nbsp;</div>

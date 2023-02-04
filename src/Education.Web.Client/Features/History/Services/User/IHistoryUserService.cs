@@ -13,9 +13,9 @@ public interface IHistoryUserService
 {
     Task<ApiResult<ProfileModel>> GetProfileAsync();
 
-    Task<ApiResult<WalletModel>> GetWalletAsync();
+    Task<ApiResult<BackpackModel>> GetBackpackAsync();
 
-    Task<ApiResult<InventoriesModel>> GetInventoriesAsync();
+    Task<ApiResult<WalletModel>> GetWalletAsync();
 
     Task<ApiResult<QuestModel>> GetQuestAsync();
 

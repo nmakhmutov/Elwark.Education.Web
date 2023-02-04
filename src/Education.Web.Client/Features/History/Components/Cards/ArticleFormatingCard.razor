@@ -5,25 +5,21 @@
         </MudText>
         <MudButtonGroup DisableElevation Size="Size.Small" Variant="Variant.Outlined">
             <MudIconButton
-                DisableElevation
-                Disabled="@(AppSettings.TextAlign == Align.Left)"
                 Icon="@Icons.Material.Outlined.FormatAlignLeft"
+                Disabled="@(AppSettings.TextAlign == Align.Left)"
                 OnClick="@AppSettings.AlignTextLeftAsync"/>
             <MudIconButton
-                DisableElevation
-                Disabled="@(AppSettings.TextAlign == Align.Center)"
+                Icon="@Icons.Material.Outlined.FormatAlignJustify"
+                Disabled="@(AppSettings.TextAlign == Align.Justify)"
+                OnClick="@AppSettings.AlignTextJustifyAsync"/>
+            <MudIconButton
                 Icon="@Icons.Material.Outlined.FormatAlignCenter"
+                Disabled="@(AppSettings.TextAlign == Align.Center)"
                 OnClick="@AppSettings.AlignTextCenterAsync"/>
             <MudIconButton
-                DisableElevation
-                Disabled="@(AppSettings.TextAlign == Align.Right)"
                 Icon="@Icons.Material.Outlined.FormatAlignRight"
+                Disabled="@(AppSettings.TextAlign == Align.Right)"
                 OnClick="@AppSettings.AlignTextRightAsync"/>
-            <MudIconButton
-                DisableElevation
-                Disabled="@(AppSettings.TextAlign == Align.Justify)"
-                Icon="@Icons.Material.Outlined.FormatAlignJustify"
-                OnClick="@AppSettings.AlignTextJustifyAsync"/>
         </MudButtonGroup>
     </div>
 

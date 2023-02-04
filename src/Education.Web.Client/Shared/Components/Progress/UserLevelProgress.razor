@@ -9,9 +9,7 @@
     <MudProgressLinear Class="mb-1" Rounded Color="Color.Primary" Size="Size.Medium" Max="@Threshold" Value="@Experience"/>
 
     <div class="d-flex justify-space-between align-start">
-        <MudText Typo="Typo.body2">
-            @(_percentage.ToMetric())%
-        </MudText>
+        <MetricNumber Value="@_percentage" Typo="Typo.body2" EndIcon="%"/>
         <div class="d-flex align-center">
             <MetricNumber Value="@Experience" Typo="Typo.body2"/>
             <div>&nbsp;/&nbsp;</div>
