@@ -56,33 +56,35 @@ public static class HistoryUrl
 
     public static class User
     {
-        public const string MyProfile = $"{Root}/my/profile";
+        private const string My = $"{Root}/my";
 
-        public const string MyInventories = $"{Root}/my/inventories";
+        public const string MyProfile = $"{My}/profile";
 
-        public const string MyEasyTests = $"{Root}/my/tests/easy";
+        public const string MyBackpack = $"{My}/backpack";
 
-        public const string MyHardTests = $"{Root}/my/tests/hard";
+        public const string MyEasyTests = $"{My}/tests/easy";
 
-        public const string MyMixedTests = $"{Root}/my/tests/mixed";
+        public const string MyHardTests = $"{My}/tests/hard";
 
-        public const string MySmallEventGuessers = $"{Root}/my/event-guessers/small";
+        public const string MyMixedTests = $"{My}/tests/mixed";
 
-        public const string MyMediumEventGuessers = $"{Root}/my/event-guessers/medium";
+        public const string MySmallEventGuessers = $"{My}/event-guessers/small";
 
-        public const string MyLargeEventGuessers = $"{Root}/my/event-guessers/large";
+        public const string MyMediumEventGuessers = $"{My}/event-guessers/medium";
 
-        public const string MySilver = $"{Root}/my/monies/silver";
+        public const string MyLargeEventGuessers = $"{My}/event-guessers/large";
 
-        public const string MyAchievements = $"{Root}/my/achievements";
+        public const string MySilver = $"{My}/monies/silver";
 
-        public const string MyQuests = $"{Root}/my/quests";
+        public const string MyAchievements = $"{My}/achievements";
 
-        public const string MyStatistics = $"{Root}/my/statistics";
+        public const string MyQuests = $"{My}/quests";
 
-        public const string MyBookmarks = $"{Root}/my/bookmarks";
+        public const string MyStatistics = $"{My}/statistics";
+
+        public const string MyBookmarks = $"{My}/bookmarks";
 
         public static string MyArticles(string articleId) =>
-            $"{Root}/my/articles/{articleId}";
+            $"{My}/articles/{articleId}";
     }
 }

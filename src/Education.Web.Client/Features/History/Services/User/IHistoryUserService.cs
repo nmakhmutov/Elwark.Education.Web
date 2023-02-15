@@ -5,7 +5,6 @@ using Education.Web.Client.Features.History.Services.User.Request;
 using Education.Web.Client.Http;
 using Education.Web.Client.Models;
 using Education.Web.Client.Models.Quest;
-using QuestModel = Education.Web.Client.Features.History.Services.User.Model.QuestModel;
 
 namespace Education.Web.Client.Features.History.Services.User;
 
@@ -17,15 +16,15 @@ public interface IHistoryUserService
 
     Task<ApiResult<WalletModel>> GetWalletAsync();
 
-    Task<ApiResult<QuestModel>> GetQuestAsync();
+    Task<ApiResult<UserQuestModel>> GetQuestAsync();
 
-    Task<ApiResult<DailyQuestModel>> StartDailyQuestAsync();
+    Task<ApiResult<QuestsModel>> StartDailyQuestAsync();
 
-    Task<ApiResult<DailyQuestModel>> CollectDailyQuestAsync();
+    Task<ApiResult<QuestsModel>> CollectDailyQuestAsync();
 
-    Task<ApiResult<WeeklyQuestModel>> StartWeeklyQuestAsync();
+    Task<ApiResult<QuestsModel>> StartWeeklyQuestAsync();
 
-    Task<ApiResult<WeeklyQuestModel>> CollectWeeklyQuestAsync();
+    Task<ApiResult<QuestsModel>> CollectWeeklyQuestAsync();
 
     Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync();
 

@@ -17,6 +17,9 @@ internal static class ErrorExtensions
     public static bool IsTestNotFound(this Error error) =>
         error.Type == "TestException:NotFound";
 
+    public static bool IsOrderNotFound(this Error error) =>
+        error.Type == "OrderingException:NotFound";
+
     public static bool IsEventGuesserNotFound(this Error error) =>
         error.Type == "EventGuesserException:NotFound";
 

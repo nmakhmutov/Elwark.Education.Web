@@ -1,13 +1,13 @@
-@page "/history/my/inventories"
+@page "/history/my/backpack"
 @using Education.Web.Client.Features.History.Services.User.Model
 @using Education.Web.Client.Features.History.Services.User
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@L["Inventory"]</PageTitle>
+<PageTitle>@L["Backpack"]</PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Inventory"]" Breadcrumbs="@Breadcrumbs">
+    <EduPageHeader Title="@L["Backpack"]" Breadcrumbs="@Breadcrumbs">
         <MudText Typo="Typo.h5">
             @_capacity
         </MudText>
@@ -16,13 +16,13 @@
 
 <ApiViewer Result="@_result" Context="model">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index" Context="item">
+        <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index" Context="inventory">
             <InventoryInfoCard
-                IconUrl="@item.IconUrl"
-                Overview="@item.Overview"
-                Quantity="@item.Quantity"
-                Subtitle="@item.Category.Title"
-                Title="@item.Title"/>
+                IconUrl="@inventory.IconUrl"
+                Overview="@inventory.Overview"
+                Quantity="@inventory.Quantity"
+                Subtitle="@inventory.Category.Title"
+                Title="@inventory.Title"/>
         </InventoryGrid>
     </EduContainer>
 </ApiViewer>

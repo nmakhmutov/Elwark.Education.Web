@@ -1,4 +1,6 @@
 @using Education.Web.Client.Features.History.Services.Store.Model
+@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Models
 
 <article class="mud-paper pa-3">
     <MudImage
@@ -9,39 +11,75 @@
         ObjectPosition="ObjectPosition.Center"
         Fluid/>
 
-    <MudText Class="one-line-text" Typo="Typo.subtitle1">@Product.Title</MudText>
+    <MudText Class="one-line-text" Typo="Typo.subtitle1">
+        @Product.Title
+    </MudText>
+    <MudText Class="one-line-text mud-text-secondary mb-3" Typo="Typo.subtitle2">
+        @_subtitle
+    </MudText>
 
-    <MudText Class="one-line-text mud-text-secondary mb-3" Typo="Typo.subtitle2">@Categories</MudText>
+    <footer class="d-flex justify-space-between align-center">
+        <div>
+            @if (Product.Selling.Discount > 0)
+            {
+                <div class="d-flex align-center">
+                    <MudIcon
+                        Class="mr-1"
+                        Color="Color.Error"
+                        Icon="@Icons.Material.Outlined.Discount"
+                        Style="width: 15px; height: 15px"/>
+                    <MudText Typo="Typo.caption">
+                        -@Product.Selling.Discount%
+                    </MudText>
+                </div>
+                <div class="d-flex align-center gap-1">
+                    <MudIcon Icon="@EduIcons.Silver" Style="width: 15px; height: 15px"/>
+                    <MudText Typo="Typo.body1">
+                        @Product.Selling.Total.Amount
+                    </MudText>
+                    <MudText Class="align-self-start mud-text-secondary" Typo="Typo.caption">
+                        <s>@Product.Selling.Original.Amount.ToMetric()</s>
+                    </MudText>
+                </div>
+            }
+            else
+            {
+                <InternalMoney Money="@Product.Selling.Total" Typo="Typo.h6" IconSize="Size.Medium" Horizontal/>
+            }
+        </div>
 
-    <footer class="d-flex align-center gap-3">
-        <MudIconButton
-            Variant="Variant.Outlined"
-            Color="Color.Default"
-            Icon="@Icons.Material.Outlined.Info"
-            OnClick="@(() => OnInformationClick.InvokeAsync(Product))"
-            DisableElevation/>
-
-        <MudButton
-            Variant="Variant.Filled"
-            Color="Color.Primary"
-            OnClick="@(() => OnPurchaseClick.InvokeAsync(Product))"
-            DisableElevation
-            FullWidth>
-            <InternalMoney Money="@Product.Selling.Total" IconSize="Size.Small" Horizontal/>
-        </MudButton>
+        <MudBadge Icon="@Icons.Material.Outlined.Lock" Color="@Color.Error" Visible="@ShowLockBadge" Bordered Overlap>
+            <MudButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                OnClick="@(() => OnPurchaseClick.InvokeAsync(Product))"
+                DisableElevation>
+                @L["Product:Buy"]
+            </MudButton>
+        </MudBadge>
     </footer>
 </article>
 
 @code {
-    private string Categories => string.Join(", ", Product.Inventories.Select(x => x.Category.Title).Distinct());
+    private string? _subtitle;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public ProductModel Product { get; set; } = default!;
 
-    [Parameter]
-    public EventCallback<ProductModel> OnInformationClick { get; set; }
+    [Parameter, EditorRequired]
+    public bool ShowLockBadge { get; set; }
 
     [Parameter]
     public EventCallback<ProductModel> OnPurchaseClick { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _subtitle = Product.Inventories.Length > 1
+            ? L["Product:InventoryCount", Product.Inventories.Length]
+            : Product.Inventories[0].Category.Title;
+    }
 
 }

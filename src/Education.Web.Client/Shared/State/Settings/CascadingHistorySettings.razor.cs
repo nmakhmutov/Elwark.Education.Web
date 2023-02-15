@@ -76,18 +76,18 @@ public sealed partial class CascadingHistorySettings
     private sealed record HistorySettings
     {
         [JsonPropertyName("sre")]
-        public required EpochType SearchRandomEpoch { get; init; }
+        public EpochType SearchRandomEpoch { get; init; }
 
         [JsonPropertyName("te")]
-        public required EpochType TestEpoch { get; init; }
+        public EpochType TestEpoch { get; init; }
 
         [JsonPropertyName("tt")]
-        public required string? TestType { get; init; }
+        public string? TestType { get; init; }
 
         [JsonPropertyName("ege")]
-        public required EpochType EventGuesserEpoch { get; init; }
+        public EpochType EventGuesserEpoch { get; init; }
 
         [JsonPropertyName("egt")]
-        public required string? EventGuesserType { get; init; }
+        public string? EventGuesserType { get; init; }
     }
 }

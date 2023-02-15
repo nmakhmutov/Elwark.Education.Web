@@ -63,11 +63,11 @@ builder.Services
 
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway")!;
 var policy = HttpPolicyExtensions.HandleTransientHttpError()
-    .WaitAndRetryAsync(builder.HostEnvironment.IsDevelopment() ? 0 : 5, i => TimeSpan.FromSeconds(i));
+    .WaitAndRetryAsync(builder.HostEnvironment.IsDevelopment() ? 1 : 5, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
 builder.Services
-    .AddScoped<LocalizationHandler>()
     .AddScoped<CorrelationHandler>()
+    .AddScoped<LocalizationHandler>()
     .AddScoped<AuthorizationMessageHandler>(provider =>
     {
         var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();

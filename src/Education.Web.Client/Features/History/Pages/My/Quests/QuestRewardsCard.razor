@@ -9,16 +9,6 @@
         @Subtitle
     </MudText>
 
-    @if (Rewards.Length > 0)
-    {
-        <div class="d-flex flex-row align-center justify-center gap-3 mb-3 mb-sm-6">
-            @foreach (var reward in Rewards)
-            {
-                <InternalMoney Money="@reward" Typo="Typo.h5" IconSize="Size.Large" Horizontal/>
-            }
-        </div>
-    }
-
     @switch(Status, ExpiresAt)
     {
         case (QuestStatus.Expired,_):
@@ -33,12 +23,12 @@
             </div>
             break;
 
-        case (QuestStatus.InProgress or QuestStatus.Completed, {}):
+        case (QuestStatus.InProgress or QuestStatus.Completed, _):
             <div class="d-flex align-center justify-space-around gap-3">
 
                 <div class="d-flex align-center justify-center">
                     <MudIcon Class="mr-1" Icon="@Icons.Material.Outlined.Timer"/>
-                    <CountdownTimer Date="@ExpiresAt.Value" OnComplete="@ExpiredAsync"/>
+                    <CountdownTimer Date="@ExpiresAt" OnComplete="@ExpiredAsync"/>
                 </div>
 
                 <div>
@@ -81,10 +71,7 @@
     public QuestStatus Status { get; set; }
 
     [Parameter, EditorRequired]
-    public IInternalMoney[] Rewards { get; set; } = Array.Empty<IInternalMoney>();
-
-    [Parameter, EditorRequired]
-    public DateTime? ExpiresAt { get; set; }
+    public DateTime ExpiresAt { get; set; }
 
     [Parameter, EditorRequired]
     public EventCallback OnStart { get; set; }

@@ -108,12 +108,12 @@ public sealed partial class CascadingAppSettings
     private sealed record AppSettings
     {
         [JsonPropertyName("ta")]
-        public required Align TextAlign { get; init; }
+        public Align TextAlign { get; init; }
 
         [JsonPropertyName("fs")]
-        public required double FontSize { get; init; }
+        public double FontSize { get; init; } = 1;
 
         [JsonPropertyName("iso")]
-        public required bool IsSidebarOpen { get; init; }
+        public bool IsSidebarOpen { get; init; }
     }
 }

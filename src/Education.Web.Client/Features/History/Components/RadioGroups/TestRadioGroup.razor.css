@@ -4,12 +4,14 @@
 
 ::deep .radio-group > div > div {
     display: grid;
-    grid-row-gap: 12px;
-    grid-template-columns: 1fr;
+    gap: 12px;
+    grid-template-columns: 100%;
 }
 
 ::deep .radio {
     display: flex;
+    margin-right: 0;
+    margin-inline-end: 0;
 }
 
 ::deep .radio .mud-radio-content {
@@ -18,6 +20,13 @@
 
 @media (min-width: 600px) {
     ::deep .radio-group > div > div {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 24px;
+    }
+}
+
+@media (min-width: 960px) {
+    ::deep .radio-group > div > div {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
 }

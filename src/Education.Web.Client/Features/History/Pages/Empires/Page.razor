@@ -60,48 +60,50 @@
         </div>
     </MudTimelineItem>
 
-    <Virtualize @ref="@_empireVirtualize" ItemsProvider="EmpiresProvider" ItemSize="240" Context="empire">
-        <MudTimelineItem Class="timeline-item">
-            <ItemDot>
-                <MudAvatar Image="@empire.ThumbnailUrl" Size="Size.Large"/>
-            </ItemDot>
-            <ItemContent>
-                <div class="content-wrapper">
-                    <div class="content">
-                        <div>
-                            <MudLink Typo="Typo.h5" Href="@HistoryUrl.Content.Article(empire.Id)">
-                                @empire.Title
-                            </MudLink>
+    <Virtualize @ref="@_empireVirtualize" ItemsProvider="EmpiresProvider" ItemSize="240">
+        <ItemContent Context="empire">
+            <MudTimelineItem Class="timeline-item">
+                <ItemDot>
+                    <MudAvatar Image="@empire.ThumbnailUrl" Size="Size.Large"/>
+                </ItemDot>
+                <ItemContent>
+                    <div class="content-wrapper">
+                        <div class="content">
+                            <div>
+                                <MudLink Typo="Typo.h5" Href="@HistoryUrl.Content.Article(empire.Id)">
+                                    @empire.Title
+                                </MudLink>
+                            </div>
+                            <div class="d-inline-flex align-center">
+                                <HistoryDate Date="@empire.Founded"/>
+                                <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
+                                <HistoryDate Date="@empire.Dissolved"/>
+                            </div>
+                            <MudText Typo="Typo.body1" Class="my-3">
+                                @empire.Overview
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @L["Empire:MaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @L["Empire:MaxPopulation"]: @empire.MaxPopulation.ToString("N0")
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @L["Empire:Duration"]:
+                                @if (empire.Duration.HasValue)
+                                {
+                                    @empire.Duration.Value.ToString("N0")<small>&nbsp;@L["History:Years"].Value.ToLowerInvariant()</small>
+                                }
+                                else
+                                {
+                                    @L["History:Unknown"]
+                                }
+                            </MudText>
                         </div>
-                        <div class="d-inline-flex align-center">
-                            <HistoryDate Date="@empire.Founded"/>
-                            <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
-                            <HistoryDate Date="@empire.Dissolved"/>
-                        </div>
-                        <MudText Typo="Typo.body1" Class="my-3">
-                            @empire.Overview
-                        </MudText>
-                        <MudText Typo="Typo.body2">
-                            @L["Empire:MaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
-                        </MudText>
-                        <MudText Typo="Typo.body2">
-                            @L["Empire:MaxPopulation"]: @empire.MaxPopulation.ToString("N0")
-                        </MudText>
-                        <MudText Typo="Typo.body2">
-                            @L["Empire:Duration"]:
-                            @if (empire.Duration.HasValue)
-                            {
-                                @empire.Duration.Value.ToString("N0")<small>&nbsp;@L["History:Years"].Value.ToLowerInvariant()</small>
-                            }
-                            else
-                            {
-                                @L["History:Unknown"]
-                            }
-                        </MudText>
                     </div>
-                </div>
-            </ItemContent>
-        </MudTimelineItem>
+                </ItemContent>
+            </MudTimelineItem>
+        </ItemContent>
     </Virtualize>
 </MudTimeline>
 

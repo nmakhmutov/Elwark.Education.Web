@@ -24,7 +24,7 @@
     <ApiViewer Result="@_result" Context="model">
         <section class="grid pa-3 pa-sm-6">
             <section class="builder">
-                <MudText Typo="Typo.h5" Class="mb-3">
+                <MudText Typo="Typo.h6" Class="mb-3">
                     @L["History:Epoch"]
                 </MudText>
                 <EpochRadioGroup
@@ -32,14 +32,14 @@
                     SelectedEpochChanged="@HistorySettings.ChangeEventGuesserEpochAsync"
                     Class="mb-3 mb-sm-6"/>
 
-                <MudText Typo="Typo.h5" Class="mb-3">
-                    @L["Tests"]
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @L["Test:Type"]
                 </MudText>
                 <TestRadioGroup
                     SelectedTest="@HistorySettings.EventGuesserType"
                     SelectedTestChanged="@HistorySettings.ChangeEventGuesserTypeAsync"
                     Tests="@model.Tests"
-                    Class="mb-6"/>
+                    Class="mb-3 mb-sm-6"/>
 
                 <div class="d-flex justify-center">
                     <LoadingButton
@@ -56,15 +56,15 @@
             </section>
 
             <section class="inventory">
-                <MudText Typo="Typo.h5" Class="mb-3">
-                    @L["Inventory"]
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @L["Equipment:EventGuesser"]
                 </MudText>
-                <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index" Context="item">
+                <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index" Context="inventory">
                     <InventoryInfoCard
-                        Title="@item.Title"
-                        Overview="@item.Overview"
-                        Quantity="@item.Quantity"
-                        IconUrl="@item.IconUrl"/>
+                        Title="@inventory.Title"
+                        Overview="@inventory.Overview"
+                        Quantity="@inventory.Quantity"
+                        IconUrl="@inventory.IconUrl"/>
                 </InventoryGrid>
             </section>
         </section>

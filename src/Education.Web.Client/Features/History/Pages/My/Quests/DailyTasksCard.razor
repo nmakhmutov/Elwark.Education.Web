@@ -38,13 +38,6 @@
     <div class="flex-grow-1"></div>
 
     <section class="d-flex flex-row align-center justify-space-between gap-3">
-        <div class="d-flex flex-row align-center gap-3">
-            @foreach (var reward in Quest.Rewards)
-            {
-                <InternalMoney Money="@reward" Typo="Typo.h5" IconSize="Size.Large" Horizontal/>
-            }
-        </div>
-
         @switch (Quest.Status)
         {
             case QuestStatus.Completed:
@@ -85,7 +78,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public DailyQuestModel Quest { get; set; } = default!;
+    public QuestsModel Quest { get; set; } = default!;
 
     [Parameter]
     public EventCallback OnCollect { get; set; }

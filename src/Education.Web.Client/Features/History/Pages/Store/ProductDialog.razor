@@ -1,0 +1,257 @@
+@using Education.Web.Client.Features.History.Services.Store.Model
+@using Education.Web.Client.Models
+@using Education.Web.Client.Features.History.Services.Store
+@using Education.Web.Client.Features.History.Services.Order
+@using Education.Web.Client.Features.History.Services.Order.Model
+@using Education.Web.Client.Features.History.Services.User.Model
+
+<MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
+    <DialogContent>
+        <header class="d-flex justify-space-between align-center mb-3 mb-sm-6">
+            <MudText Typo="Typo.h5">
+                @Product.Title
+            </MudText>
+
+            <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
+        </header>
+
+        <div class="mud-background rounded pa-3 mb-3 mb-sm-6">
+            <MudText Class="mb-3" Typo="Typo.subtitle1">
+                @L["Product:Inventories"]
+            </MudText>
+            <InventoryGrid Inventory="@Product.Inventories" Context="inventory">
+                <InventoryInfoCard
+                    IconUrl="@inventory.IconUrl"
+                    Overview="@inventory.Overview"
+                    Quantity="@inventory.Quantity"
+                    Subtitle="@inventory.Category.Title"
+                    Title="@inventory.Title"/>
+            </InventoryGrid>
+        </div>
+
+        @if (_status is null)
+        {
+            <div class="d-flex flex-column flex-sm-row justify-space-between align-sm-end gap-3">
+                @if (Product.Selling.Discount > 0)
+                {
+                    <div class="d-flex flex-column gap-1">
+                        <MudText Typo="Typo.caption">
+                            @L["Product:Discount"]
+                        </MudText>
+                        <div class="price d-flex align-center">
+                            <MudIcon
+                                Class="mr-1"
+                                Color="Color.Error"
+                                Icon="@Icons.Material.Outlined.Discount"
+                                Size="Size.Medium"/>
+                            <MudText Typo="Typo.h5">
+                                -@Product.Selling.Discount%
+                            </MudText>
+                        </div>
+                    </div>
+                }
+
+                <div class="d-flex flex-column gap-1">
+                    <MudText Typo="Typo.caption">
+                        @L["Product:TotalPrice"]
+                    </MudText>
+                    <div class="d-flex">
+                        <InternalMoney Class="price" Money="@TotalPrice" Typo="Typo.h5" IconSize="Size.Medium" Horizontal/>
+                        @if (Product.Selling.Discount > 0)
+                        {
+                            <MudText Class="mud-text-secondary align-self-start ml-1" Typo="Typo.subtitle1">
+                                <s>@OriginalPrice.Amount.ToMetric()</s>
+                            </MudText>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-1">
+                    <MudText Typo="Typo.caption">
+                        @L["Product:Quantity"]
+                    </MudText>
+
+                    <div class="d-flex align-center gap-3">
+                        <MudIconButton
+                            Variant="Variant.Outlined"
+                            Color="Color.Default"
+                            Icon="@Icons.Material.Outlined.Remove"
+                            Disabled="@(_quantity == Min)"
+                            OnClick="@OnRemoveQuantityClick"
+                            DisableElevation/>
+
+                        <MudNumericField
+                            Class="number-input"
+                            @bind-Value="@_quantity"
+                            Variant="Variant.Outlined"
+                            Margin="Margin.Dense"
+                            Min="@Min"
+                            Max="@Max"
+                            HideSpinButtons/>
+
+                        <MudIconButton
+                            Variant="Variant.Outlined"
+                            Color="Color.Default"
+                            Icon="@Icons.Material.Outlined.Add"
+                            Disabled="@(_quantity == Max)"
+                            OnClick="@OnAddQuantityClick"
+                            DisableElevation/>
+                    </div>
+                </div>
+
+                <LoadingButton
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    OnClick="@OnPurchaseClick"
+                    Text="@L["Product:Buy"]"
+                    IsLoading="@(_status is not null)"
+                    Disabled="@(_error is not null)"
+                    DisableElevation/>
+            </div>
+        }
+        else
+        {
+            <MudProgressLinear
+                Class="mb-3"
+                Color="Color.Primary"
+                Size="Size.Medium"
+                Value="@StatusProgress()"
+                Striped/>
+
+            <MudText Typo="Typo.subtitle1" Align="Align.Center">@_status.Title</MudText>
+        }
+
+        @if (_error is not null)
+        {
+            <div class="d-flex flex-column mt-3 mt-sm-6">
+                <MudText Typo="Typo.subtitle1" Color="Color.Error">@_error.Title</MudText>
+                <MudText Typo="Typo.subtitle2">@_error.Message</MudText>
+            </div>
+        }
+    </DialogContent>
+</MudDialog>
+
+@code {
+        private const byte Min = 1;
+        private const byte Max = 42;
+    private byte _quantity = 1;
+    private OrderStatusModel? _status;
+    private Error? _error;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryStoreService StoreService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryOrderService OrderService { get; set; } = default!;
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ProductModel Product { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public WalletModel Wallet { get; set; } = default!;
+
+    protected override void OnParametersSet() =>
+        UpdateErrorState();
+
+    private void OnAddQuantityClick()
+    {
+        _quantity++;
+        UpdateErrorState();
+    }
+
+    private void OnRemoveQuantityClick()
+    {
+        _quantity--;
+        UpdateErrorState();
+    }
+
+    private void OnCloseClick()
+    {
+        MudDialog.Close(_status is null ? DialogResult.Cancel() : DialogResult.Ok(true));
+    }
+
+    private async Task OnPurchaseClick()
+    {
+        UpdateErrorState();
+        if (_error is not null)
+            return;
+
+        _status = new OrderStatusModel("Creating", "");
+        await Task.Delay(5000);
+        var result = await StoreService.CheckoutAsync(new CheckoutRequest(Product.Id, _quantity));
+        if (result.IsFailed)
+        {
+            _error = new Error(result.Error.Title, result.Error.Detail);
+            return;
+        }
+
+        await InvokeAsync(async () =>
+        {
+            for (;;)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(1));
+
+                var status = await OrderService.GetStatus(result.Value);
+                if (status.IsFailed)
+                {
+                    if (status.Error.IsOrderNotFound())
+                        continue;
+
+                    _error = new Error(status.Error.Title, status.Error.Detail);
+                    return;
+                }
+
+                _status = status.Value;
+                StateHasChanged();
+
+                if (status.Value.Name != "ShippedConfirmed")
+                    continue;
+
+                MudDialog.Close(DialogResult.Ok(true));
+                return;
+            }
+        });
+
+        _status = null;
+    }
+
+    private Silver OriginalPrice =>
+        new(Product.Selling.Original.Amount * _quantity);
+
+    private Silver TotalPrice =>
+        new(Product.Selling.Total.Amount * _quantity);
+
+    private void UpdateErrorState() =>
+        _error = GetErrorMessage();
+
+    private Error? GetErrorMessage()
+    {
+        if (TotalPrice.Amount > Wallet.Silver)
+            return new Error(L["Silver:NotEnoughTitle"], L["Silver:NotEnoughDescription"]);
+
+        if (Product.InventoryWeight > Wallet.Backpack.Emptiness)
+            return new Error(L["Backpack:FullTitle"], L["Backpack:FullDescription"]);
+
+        return null;
+    }
+
+    private sealed record Error(string Title, string? Message);
+
+    private double StatusProgress() =>
+        _status?.Name switch
+        {
+            null => 0,
+            "Creating" => 20,
+            "Created" => 40,
+            "StockConfirmed" => 60,
+            "PaymentConfirmed" => 80,
+            _ => 100
+            };
+
+}

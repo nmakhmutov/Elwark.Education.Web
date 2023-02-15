@@ -86,10 +86,9 @@ internal sealed class NotificationService : INotificationService
             .Take(MaxNotifications)
             .ToList();
 
-        var sb = new StringBuilder("<div class='d-flex align-center justify-space-between'>");
-        sb.Append($"<h6 class='mud-typography mud-typography-subtitle1 mr-6'>{notification.Title}</h6>");
-        sb.Append($"<p class='mud-typography mud-typography-body2'><i>{notification.Subject}</i></p>");
-        sb.Append("</div>");
+        var sb = new StringBuilder();
+        sb.Append($"<p class='mud-typography mud-typography-caption'>{notification.Subject}</p>");
+        sb.Append($"<h6 class='mud-typography mud-typography-subtitle1'>{notification.Title}</h6>");
 
         if (!string.IsNullOrEmpty(notification.Message))
             sb.Append($"<p class='mud-typography mud-typography-body2'>{notification.Message}</p>");

@@ -1,3 +1,11 @@
 namespace Education.Web.Client.Models.Quest;
 
-public sealed record QuestModel(string Title, uint Score, uint Threshold, bool IsCompleted);
+public sealed record QuestModel(
+    string Title,
+    string Description,
+    string IconUrl,
+    uint Score,
+    uint Threshold,
+    bool IsCompleted,
+    IInternalMoney[] Rewards
+);

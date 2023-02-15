@@ -22,7 +22,7 @@ internal sealed class CustomerHab : IAsyncDisposable
                     return result.TryGetToken(out var token) ? token.Value : null;
                 };
             })
-            .WithAutomaticReconnect()
+            .WithAutomaticReconnect(new RetryPolicy())
             .Build();
 
         _connection.On<NotificationMessage>("Notifications", message => OnNotificationReceived.Invoke(message));
@@ -41,5 +41,19 @@ internal sealed class CustomerHab : IAsyncDisposable
         var state = await _stateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated ?? false)
             await _connection.StartAsync();
+    }
+
+    private sealed class RetryPolicy : IRetryPolicy
+    {
+        public TimeSpan? NextRetryDelay(RetryContext retryContext) =>
+            retryContext.PreviousRetryCount switch
+            {
+                0 => TimeSpan.Zero,
+                1 => TimeSpan.FromSeconds(2),
+                2 => TimeSpan.FromSeconds(10),
+                3 => TimeSpan.FromSeconds(30),
+                4 => TimeSpan.FromMinutes(1),
+                _ => TimeSpan.FromMinutes(5)
+            };
     }
 }

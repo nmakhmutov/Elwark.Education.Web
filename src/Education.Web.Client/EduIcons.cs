@@ -45,13 +45,13 @@ public static class EduIcons
 
     public const string InventoryStore = Icons.Material.Outlined.Storefront;
 
-    public const string MyProfile = Icons.Material.Outlined.Dashboard;
+    public const string Profile = Icons.Material.Outlined.Dashboard;
 
-    public const string MyQuests = Icons.Material.Outlined.TaskAlt;
+    public const string Quests = Icons.Material.Outlined.TaskAlt;
 
-    public const string MyStatistics = Icons.Material.Outlined.QueryStats;
+    public const string Statistics = Icons.Material.Outlined.QueryStats;
 
-    public const string MyBookmarks = Icons.Material.Outlined.Bookmarks;
+    public const string Bookmarks = Icons.Material.Outlined.Bookmarks;
 
-    public const string MyInventories = Icons.Material.Outlined.Inventory2;
+    public const string Backpack = Icons.Material.Outlined.Backpack;
 }

@@ -29,11 +29,11 @@
     protected override void OnParametersSet() =>
         InvokeAsync(async () =>
         {
-            _timeLeft = Date - DateTime.UtcNow;
+            _timeLeft = GetTimeLeft();
 
             while (await _timer.WaitForNextTickAsync())
             {
-                _timeLeft = Date - DateTime.UtcNow;
+                _timeLeft = GetTimeLeft();
                 if (TimeSpan.Zero >= _timeLeft)
                     break;
 
@@ -43,6 +43,9 @@
             if (_timeLeft == TimeSpan.Zero && OnComplete.HasDelegate)
                 await OnComplete.InvokeAsync();
         });
+
+    private TimeSpan GetTimeLeft() =>
+        new((Date - DateTime.UtcNow).Ticks / TimeSpan.TicksPerSecond * TimeSpan.TicksPerSecond);
 
     public void Dispose() =>
         _timer.Dispose();

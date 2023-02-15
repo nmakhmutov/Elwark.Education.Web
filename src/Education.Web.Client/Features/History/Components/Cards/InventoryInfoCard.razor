@@ -1,4 +1,4 @@
-<section class="mud-paper d-flex flex-column pa-3">
+<section class="mud-paper d-flex flex-column pa-3 @Class">
     <div class="mud-background rounded-lg relative mb-3">
         <div class="d-flex justify-center align-center px-6 pt-6 pb-3">
             <MudImage Src="@IconUrl" Width="42" Height="42"/>
@@ -50,6 +50,9 @@
     [Parameter, EditorRequired]
     public uint Quantity { get; set; }
 
+    [Parameter]
+    public  string? Class { get; set; }
+    
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 

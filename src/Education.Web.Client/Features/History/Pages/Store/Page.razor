@@ -1,4 +1,5 @@
 @page "/history/store"
+@using Education.Web.Client.Features.History.Services.User.Model
 @using Education.Web.Client.Features.History.Services.Store.Model
 @using Education.Web.Client.Features.History.Services.User
 @using Education.Web.Client.Features.History.Services.Store
@@ -9,9 +10,25 @@
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <EduPageHeader Title="@L["Inventory:Store"]" Breadcrumbs="@Breadcrumbs">
-        @if (_silver.HasValue)
+        @if (_wallet is not null)
         {
-            <WalletCard Title="@L["InternalMoney:Balance"]" Icon="@EduIcons.Silver" Value="@_silver.Value"/>
+            <section class="d-flex gap-3 gap-sm-6">
+                <section class="d-flex align-center ">
+                    <MudIcon Class="mr-1" Icon="@EduIcons.Silver" Size="Size.Small"/>
+                    <MetricNumber Typo="Typo.subtitle1" Value="@_wallet.Silver"/>
+                </section>
+                <section class="d-flex align-center ">
+                    <MudIcon Class="mr-1" Icon="@EduIcons.Backpack"/>
+                    <div class="d-flex align-center">
+                        <MetricNumber
+                            Color="@(_wallet.Backpack.Fullness > _wallet.Backpack.Capacity ? Color.Error : Color.Default)"
+                            Typo="Typo.subtitle1"
+                            Value="@_wallet.Backpack.Fullness"/>
+                        <MudText Typo="Typo.subtitle1">/</MudText>
+                        <MetricNumber Typo="Typo.subtitle1" Value="@_wallet.Backpack.Capacity"/>
+                    </div>
+                </section>
+            </section>
         }
     </EduPageHeader>
 </EduContainer>
@@ -21,15 +38,17 @@
         <section class="grid">
             @foreach (var product in products)
             {
-                <ProductCard Product="@product" OnInformationClick="@OpenInformation" OnPurchaseClick="@Purchase"/>
+                <ProductCard 
+                    Product="@product" 
+                    ShowLockBadge="@(!IsPossibleToBuy(product))" 
+                    OnPurchaseClick="@OpenPurchaseDialog"/>
             }
         </section>
     </EduContainer>
 </ApiViewer>
 
 @code {
-    private long? _silver;
-    private uint _emptiness;
+    private WalletModel? _wallet;
     private ApiResult<ProductModel[]> _products = ApiResult<ProductModel[]>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -51,48 +70,55 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var wallet = await UserService.GetWalletAsync();
-        if (wallet.IsSuccess)
-        {
-            _silver = wallet.Value.Silver;
-            _emptiness = wallet.Value.BackpackEmptiness;
-        }
-
+        await UpdateWallet();
         _products = await StoreService.GetAsync();
     }
 
-    private Error? GetStatusMessage(ProductModel product)
+    private async Task UpdateWallet()
     {
-        if (product.Selling.Total.Amount > _silver)
-            return new Error(L["Not enough silver"], L["Earn more silver to purchase"]);
-
-        if (product.InventoryWeight > _emptiness)
-            return new Error(L["Backpack is full!"], L["Upgrade your Backpack to increase its capacity"]);
-
-        return null;
+        var wallet = await UserService.GetWalletAsync();
+        if (wallet.IsSuccess)
+            _wallet = wallet.Value;
     }
 
-    private void OpenInformation(ProductModel product) => throw new NotImplementedException();
-
-    private Task Purchase(ProductModel product)
+    private async Task OpenPurchaseDialog(ProductModel product)
     {
-        if (GetStatusMessage(product) is {} error)
-            return DialogService.ShowMessageBox(error.Title, error.Message);
+        if(_wallet is null)
+            return;
 
         var options = new DialogOptions
         {
             FullWidth = true,
-            MaxWidth = MaxWidth.Medium,
-            CloseButton = true,
-            CloseOnEscapeKey = false,
-            DisableBackdropClick = true
+            MaxWidth = product.Inventories.Length > 3 ? MaxWidth.Medium : MaxWidth.Small,
+            CloseButton = false,
+            NoHeader = true
         };
 
-        var parameters = new DialogParameters { [nameof(PurchaseDialog.Product)] = product };
+        var parameters = new DialogParameters
+        {
+            [nameof(ProductDialog.Product)] = product,
+            [nameof(ProductDialog.Wallet)] = _wallet
+        };
 
-        return DialogService.ShowAsync<PurchaseDialog>(product.Title, parameters, options);
+        var dialog = await DialogService.ShowAsync<ProductDialog>(product.Title, parameters, options);
+        var result = await dialog.Result;
+        if (result.Canceled)
+            return;
+
+        await UpdateWallet();
     }
 
-    private sealed record Error(string Title, string Message);
+    private bool IsPossibleToBuy(ProductModel product)
+    {
+        if (_wallet is null) 
+            return false;
 
+        if (product.InventoryWeight > _wallet.Backpack.Emptiness)
+            return false;
+
+        if (product.Selling.Total.Amount > _wallet.Silver)
+            return false;
+
+        return true;
+    }
 }

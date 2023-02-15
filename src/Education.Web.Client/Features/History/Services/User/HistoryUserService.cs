@@ -5,7 +5,6 @@ using Education.Web.Client.Features.History.Services.User.Request;
 using Education.Web.Client.Http;
 using Education.Web.Client.Models;
 using Education.Web.Client.Models.Quest;
-using QuestModel = Education.Web.Client.Features.History.Services.User.Model.QuestModel;
 
 namespace Education.Web.Client.Features.History.Services.User;
 
@@ -25,20 +24,20 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<WalletModel>> GetWalletAsync() =>
         _api.GetAsync<WalletModel>("history/users/me/wallet");
 
-    public Task<ApiResult<QuestModel>> GetQuestAsync() =>
-        _api.GetAsync<QuestModel>("history/users/me/quests");
+    public Task<ApiResult<UserQuestModel>> GetQuestAsync() =>
+        _api.GetAsync<UserQuestModel>("history/users/me/quests");
 
-    public Task<ApiResult<DailyQuestModel>> StartDailyQuestAsync() =>
-        _api.PostAsync<DailyQuestModel, object>("history/users/me/quests/daily", new { Status = "Start" });
+    public Task<ApiResult<QuestsModel>> StartDailyQuestAsync() =>
+        _api.PostAsync<QuestsModel, object>("history/users/me/quests/daily", new { Status = "Start" });
 
-    public Task<ApiResult<DailyQuestModel>> CollectDailyQuestAsync() =>
-        _api.PostAsync<DailyQuestModel, object>("history/users/me/quests/daily", new { Status = "Claim" });
+    public Task<ApiResult<QuestsModel>> CollectDailyQuestAsync() =>
+        _api.PostAsync<QuestsModel, object>("history/users/me/quests/daily", new { Status = "Claim" });
 
-    public Task<ApiResult<WeeklyQuestModel>> StartWeeklyQuestAsync() =>
-        _api.PostAsync<WeeklyQuestModel, object>("history/users/me/quests/weekly", new { Status = "Start" });
+    public Task<ApiResult<QuestsModel>> StartWeeklyQuestAsync() =>
+        _api.PostAsync<QuestsModel, object>("history/users/me/quests/weekly", new { Status = "Start" });
 
-    public Task<ApiResult<WeeklyQuestModel>> CollectWeeklyQuestAsync() =>
-        _api.PostAsync<WeeklyQuestModel, object>("history/users/me/quests/weekly", new { Status = "Claim" });
+    public Task<ApiResult<QuestsModel>> CollectWeeklyQuestAsync() =>
+        _api.PostAsync<QuestsModel, object>("history/users/me/quests/weekly", new { Status = "Claim" });
 
     public Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync() =>
         _api.PutAsync<DailyBonusModel>("history/users/me/bonus/daily");
