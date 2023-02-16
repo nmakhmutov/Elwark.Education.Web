@@ -3,6 +3,7 @@
 @using Education.Web.Client.Features.History.Services.Store.Model
 @using Education.Web.Client.Features.History.Services.User
 @using Education.Web.Client.Features.History.Services.Store
+
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -33,23 +34,50 @@
     </EduPageHeader>
 </EduContainer>
 
-<ApiViewer Result="@_products" Context="products">
+<EduContainer Class="pb-3 pb-sm-6" Paper MaxWidth="EduWidth.W1920">
+    <div class="d-flex flex-wrap align-center gap-3 pa-3">
+        <MudCheckBox @bind-Checked="@_affordable" Label="Only affordable"/>
+        <MudCheckBox @bind-Checked="@_discountOnly" Label="Discount only"/>
+
+        <MudSpacer/>
+        <div class="sort">
+            <MudSelect @bind-Value="@_sort" Label="Sort">
+                <MudSelectItem Value="@Sort.PriceAsc">Price asc</MudSelectItem>
+                <MudSelectItem Value="@Sort.PriceDesc">Price desc</MudSelectItem>
+                <MudSelectItem Value="@Sort.DiscountAsc">Discount asc</MudSelectItem>
+                <MudSelectItem Value="@Sort.DiscountDesc">Discount desc</MudSelectItem>
+                <MudSelectItem Value="@Sort.NameAsc">Name asc</MudSelectItem>
+                <MudSelectItem Value="@Sort.NameDesc">Name desc</MudSelectItem>
+            </MudSelect>
+        </div>
+    </div>
+</EduContainer>
+
+<ApiViewer Result="@_response" Context="products">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
-            @foreach (var product in products)
+            @{ var filtered = Filter(products); }
+            @if (filtered.Count > 0)
             {
-                <ProductCard 
-                    Product="@product" 
-                    ShowLockBadge="@(!IsPossibleToBuy(product))" 
-                    OnPurchaseClick="@OpenPurchaseDialog"/>
+                foreach (var product in filtered)
+                {
+                    <ProductCard
+                        Product="@product.Product"
+                        ShowLockBadge="@(!product.IsAffordable)"
+                        OnPurchaseClick="@OpenPurchaseDialog"/>
+                }
             }
         </section>
     </EduContainer>
 </ApiViewer>
 
 @code {
+    private bool _affordable;
+    private bool _discountOnly;
+    private Sort _sort;
+
     private WalletModel? _wallet;
-    private ApiResult<ProductModel[]> _products = ApiResult<ProductModel[]>.Loading();
+    private ApiResult<IQueryable<ProductData>> _response = ApiResult<IQueryable<ProductData>>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -70,20 +98,38 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await UpdateWallet();
-        _products = await StoreService.GetAsync();
+        await LoadWalletAsync();
+        await LoadProductsAsync();
     }
 
-    private async Task UpdateWallet()
+    private async Task LoadWalletAsync()
     {
         var wallet = await UserService.GetWalletAsync();
-        if (wallet.IsSuccess)
-            _wallet = wallet.Value;
+        if (wallet.IsFailed)
+        {
+            _response = ApiResult<IQueryable<ProductData>>.Fail(wallet.Error);
+            return;
+        }
+
+        _wallet = wallet.Value;
+    }
+
+    private async Task LoadProductsAsync()
+    {
+        var products = await StoreService.GetAsync();
+        if (products.IsFailed)
+        {
+            _response = ApiResult<IQueryable<ProductData>>.Fail(products.Error);
+            return;
+        }
+
+        var data = products.Value.Select(x => new ProductData(x, IsAffordable(x)));
+        _response = ApiResult<IQueryable<ProductData>>.Success(new EnumerableQuery<ProductData>(data));
     }
 
     private async Task OpenPurchaseDialog(ProductModel product)
     {
-        if(_wallet is null)
+        if (_wallet is null)
             return;
 
         var options = new DialogOptions
@@ -105,12 +151,12 @@
         if (result.Canceled)
             return;
 
-        await UpdateWallet();
+        await OnInitializedAsync();
     }
 
-    private bool IsPossibleToBuy(ProductModel product)
+    private bool IsAffordable(ProductModel product)
     {
-        if (_wallet is null) 
+        if (_wallet is null)
             return false;
 
         if (product.InventoryWeight > _wallet.Backpack.Emptiness)
@@ -121,4 +167,38 @@
 
         return true;
     }
+
+    private ICollection<ProductData> Filter(IQueryable<ProductData> queryable)
+    {
+        if (_discountOnly)
+            queryable = queryable.Where(x => x.Product.Selling.Discount > 0);
+
+        if (_affordable)
+            queryable = queryable.Where(x => x.IsAffordable);
+
+        queryable = _sort switch {
+            Sort.PriceAsc => queryable.OrderBy(x => x.Product.Selling.Total.Amount),
+            Sort.PriceDesc => queryable.OrderByDescending(x => x.Product.Selling.Total.Amount),
+            Sort.DiscountAsc => queryable.OrderBy(x => x.Product.Selling.Discount),
+            Sort.DiscountDesc => queryable.OrderByDescending(x => x.Product.Selling.Discount),
+            Sort.NameAsc => queryable.OrderBy(x => x.Product.Title),
+            Sort.NameDesc => queryable.OrderByDescending(x => x.Product.Title),
+            _ => throw new ArgumentOutOfRangeException()
+            };
+
+        return queryable.ToArray();
+    }
+
+    private sealed record ProductData(ProductModel Product, bool IsAffordable);
+
+    private enum Sort
+    {
+        PriceAsc,
+        PriceDesc,
+        DiscountAsc,
+        DiscountDesc,
+        NameAsc,
+        NameDesc
+    }
+
 }
