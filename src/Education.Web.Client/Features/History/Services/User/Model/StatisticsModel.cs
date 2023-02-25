@@ -10,7 +10,7 @@ public sealed record StatisticsModel(
     StatisticsModel.EventGuesserModel SmallEventGuesser,
     StatisticsModel.EventGuesserModel MediumEventGuesser,
     StatisticsModel.EventGuesserModel LargeEventGuesser,
-    BudgetModel[] Silver,
+    StatisticsModel.AccountingModel[] Accounting,
     StatisticsModel.ProgressModel[] Daily,
     StatisticsModel.ProgressModel[] Monthly
 )
@@ -18,6 +18,8 @@ public sealed record StatisticsModel(
     public sealed record TestModel(NumberOfTestsModel NumberOfTests, ScoreModel Score);
 
     public sealed record EventGuesserModel(uint Tests, Services.EventGuesser.Model.ScoreModel Score);
+
+    public sealed record AccountingModel(string Currency, BudgetModel[] Finance);
 
     public sealed record ProgressModel(
         DateOnly Date,

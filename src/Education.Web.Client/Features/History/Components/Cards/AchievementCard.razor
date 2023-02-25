@@ -2,23 +2,9 @@
 <section class="mud-paper grid pa-3 pa-sm-6 @Class">
     @switch (Achievement)
     {
-        case Achievement.CompletedModel achievement:
-            <aside class="icon @IconClass completed">
-                <MudImage Src="@achievement.IconUrl" Width="42" Height="42"/>
-            </aside>
-            <header class="header">
-                <h6 class="title">
-                    @achievement.Title
-                </h6>
-                <MudText Typo="Typo.caption" Class="d-block">
-                    @L["Achievement:Completed"] @Customer.Humanize(achievement.CompletedAt)
-                </MudText>
-            </header>
-            break;
-
         case Achievement.LadderModel achievement:
             <aside class="icon @IconClass">
-                <MudImage Src="@achievement.IconUrl" Width="42" Height="42"/>
+                <img class="image" src="@achievement.IconUrl" alt="@Alt" loading="lazy"/>
                 <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
                     @L["Achievement:Level"] @achievement.Level
                 </MudText>
@@ -46,7 +32,7 @@
 
         case Achievement.ProgressiveModel achievement:
             <aside class="icon @IconClass">
-                <MudImage Src="@achievement.IconUrl" Width="42" Height="42"/>
+                <img class="image" src="@achievement.IconUrl" alt="@Alt" loading="lazy"/>
             </aside>
             <header class="header">
                 <h6 class="title">
@@ -64,8 +50,19 @@
             </footer>
             break;
 
-        default:
-            throw new ArgumentOutOfRangeException(nameof(Achievement));
+        case Achievement.CompletedModel achievement:
+            <aside class="icon @IconClass completed">
+                <img class="image" src="@achievement.IconUrl" alt="@Alt" loading="lazy"/>
+            </aside>
+            <header class="header">
+                <h6 class="title">
+                    @achievement.Title
+                </h6>
+                <MudText Typo="Typo.caption" Class="d-block">
+                    @L["Achievement:Completed"] @Customer.Humanize(achievement.CompletedAt)
+                </MudText>
+            </header>
+            break;
     }
 
     <section class="description">
@@ -92,4 +89,5 @@
     [Parameter]
     public string? IconClass { get; set; } = "green accent-4";
 
+    private string Alt => $"{L["Achievements"]}: {Achievement.Title}";
 }

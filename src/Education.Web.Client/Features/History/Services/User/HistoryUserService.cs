@@ -66,8 +66,8 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync() =>
         _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers/large");
 
-    public Task<ApiResult<MoneyStatisticsModel>> GetSilverStatisticsAsync() =>
-        _api.GetAsync<MoneyStatisticsModel>("history/users/me/monies/silver");
+    public Task<ApiResult<AccountingModel>> GetSilverAccountingAsync() =>
+        _api.GetAsync<AccountingModel>("history/users/me/accounting/silver");
 
     public Task<ApiResult<AchievementsModel>> GetAchievementsAsync() =>
         _api.GetAsync<AchievementsModel>("history/users/me/achievements");

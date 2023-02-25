@@ -20,27 +20,13 @@
     <Authorized>
         <MudMenu Class="ml-3" OffsetX Dense Direction="Direction.Left">
             <ActivatorContent>
-                <MudImage
-                    Class="rounded-circle"
-                    Src="@Customer.Image"
-                    Alt="@Customer.Name"
-                    Width="40"
-                    Height="40"
-                    ObjectFit="ObjectFit.Cover"
-                    ObjectPosition="ObjectPosition.Center"/>
+                <img class="image rounded-circle object-cover object-center" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
             </ActivatorContent>
 
             <ChildContent>
                 <section class="mud-paper pa-3 mt-n2">
                     <header class="customer">
-                        <MudImage
-                            Class="rounded-circle mr-3"
-                            Src="@Customer.Image"
-                            Alt="@Customer.Name"
-                            Width="40"
-                            Height="40"
-                            ObjectFit="ObjectFit.Cover"
-                            ObjectPosition="ObjectPosition.Center"/>
+                        <img class="image rounded-circle object-cover object-center mr-3" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
                         <MudText Class="one-line-text" Typo="Typo.body1">
                             @Customer.Name
                         </MudText>

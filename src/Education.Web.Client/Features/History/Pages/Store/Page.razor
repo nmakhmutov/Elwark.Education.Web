@@ -1,8 +1,8 @@
 @page "/history/store"
 @using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Services.Store
 @using Education.Web.Client.Features.History.Services.Store.Model
 @using Education.Web.Client.Features.History.Services.User
-@using Education.Web.Client.Features.History.Services.Store
 
 @layout HistoryLayout
 @attribute [Authorize]
@@ -10,79 +10,77 @@
 <PageTitle>@L["Inventory:Store"]</PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Inventory:Store"]" Breadcrumbs="@Breadcrumbs">
+    <section class="wallet">
         @if (_wallet is not null)
         {
-            <section class="d-flex gap-3 gap-sm-6">
-                <section class="d-flex align-center ">
+            foreach (var money in _wallet.Monies)
+            {
+                <section class="d-flex align-center">
                     <MudIcon Class="mr-1" Icon="@EduIcons.Silver" Size="Size.Small"/>
-                    <MetricNumber Typo="Typo.subtitle1" Value="@_wallet.Silver"/>
-                </section>
-                <section class="d-flex align-center ">
-                    <MudIcon Class="mr-1" Icon="@EduIcons.Backpack"/>
-                    <div class="d-flex align-center">
-                        <MetricNumber
-                            Color="@(_wallet.Backpack.Fullness > _wallet.Backpack.Capacity ? Color.Error : Color.Default)"
-                            Typo="Typo.subtitle1"
-                            Value="@_wallet.Backpack.Fullness"/>
-                        <MudText Typo="Typo.subtitle1">/</MudText>
-                        <MetricNumber Typo="Typo.subtitle1" Value="@_wallet.Backpack.Capacity"/>
-                    </div>
-                </section>
+                    <MetricNumber Typo="Typo.subtitle1" Value="@money.Value"/>
+                </section>    
+            }
+            
+            <section class="d-flex align-center">
+                <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="Size.Small"/>
+                <div class="d-flex align-center">
+                    <MetricNumber
+                        Color="@(_wallet.Backpack.Fullness > _wallet.Backpack.Capacity ? Color.Error : Color.Default)"
+                        Typo="Typo.subtitle1"
+                        Value="@_wallet.Backpack.Fullness"/>
+                    <MudText Typo="Typo.subtitle1">/</MudText>
+                    <MetricNumber Typo="Typo.subtitle1" Value="@_wallet.Backpack.Capacity"/>
+                </div>
             </section>
         }
-    </EduPageHeader>
+        else
+        {
+            <section class="d-flex align-center">
+                <MudSkeleton Class="mr-1" SkeletonType="SkeletonType.Circle" Width="20px" Height="20px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Text" Width="36px" Height="20px"/>
+            </section>
+        }
+    </section>
+
+    <ProductToolbar FilterChanged="@ApplyFilter"/>
 </EduContainer>
 
-<EduContainer Class="pb-3 pb-sm-6" Paper MaxWidth="EduWidth.W1920">
-    <div class="d-flex flex-wrap align-center gap-3 pa-3">
-        <MudCheckBox @bind-Checked="@_affordable" Label="Only affordable"/>
-        <MudCheckBox @bind-Checked="@_discountOnly" Label="Discount only"/>
-
-        <MudSpacer/>
-        <div class="sort">
-            <MudSelect @bind-Value="@_sort" Label="Sort">
-                <MudSelectItem Value="@Sort.PriceAsc">Price asc</MudSelectItem>
-                <MudSelectItem Value="@Sort.PriceDesc">Price desc</MudSelectItem>
-                <MudSelectItem Value="@Sort.DiscountAsc">Discount asc</MudSelectItem>
-                <MudSelectItem Value="@Sort.DiscountDesc">Discount desc</MudSelectItem>
-                <MudSelectItem Value="@Sort.NameAsc">Name asc</MudSelectItem>
-                <MudSelectItem Value="@Sort.NameDesc">Name desc</MudSelectItem>
-            </MudSelect>
-        </div>
-    </div>
-</EduContainer>
-
-<ApiViewer Result="@_response" Context="products">
+@if (_isLoading)
+{
+    <Spinner/>
+}
+else if (_error is not null)
+{
+    <EduError Error="@_error"/>
+}
+else
+{
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <section class="grid">
-            @{ var filtered = Filter(products); }
-            @if (filtered.Count > 0)
-            {
-                foreach (var product in filtered)
+        @if (_filtered.Count > 0)
+        {
+            <section class="products">
+                @foreach (var product in _filtered)
                 {
                     <ProductCard
                         Product="@product.Product"
                         ShowLockBadge="@(!product.IsAffordable)"
                         OnPurchaseClick="@OpenPurchaseDialog"/>
                 }
-            }
-        </section>
+            </section>
+        }
+        else
+        {
+            <EduEmpty Title="No products"/>
+        }
     </EduContainer>
-</ApiViewer>
+}
 
 @code {
-    private bool _affordable;
-    private bool _discountOnly;
-    private Sort _sort;
-
+    private bool _isLoading = true;
+    private Error? _error;
     private WalletModel? _wallet;
-    private ApiResult<IQueryable<ProductData>> _response = ApiResult<IQueryable<ProductData>>.Loading();
-
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
-    };
+    private IQueryable<ProductData> _source = new EnumerableQuery<ProductData>(Enumerable.Empty<ProductData>());
+    private IReadOnlyCollection<ProductData> _filtered = Array.Empty<ProductData>();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -98,33 +96,31 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadWalletAsync();
-        await LoadProductsAsync();
-    }
-
-    private async Task LoadWalletAsync()
-    {
         var wallet = await UserService.GetWalletAsync();
-        if (wallet.IsFailed)
+        if (wallet.IsSuccess)
         {
-            _response = ApiResult<IQueryable<ProductData>>.Fail(wallet.Error);
+            _wallet = wallet.Value;
+        }
+        else
+        {
+            _error = wallet.Error;
             return;
         }
 
-        _wallet = wallet.Value;
-    }
-
-    private async Task LoadProductsAsync()
-    {
         var products = await StoreService.GetAsync();
         if (products.IsFailed)
         {
-            _response = ApiResult<IQueryable<ProductData>>.Fail(products.Error);
+            _error = products.Error;
             return;
         }
 
-        var data = products.Value.Select(x => new ProductData(x, IsAffordable(x)));
-        _response = ApiResult<IQueryable<ProductData>>.Success(new EnumerableQuery<ProductData>(data));
+        _source = products.Value
+            .Select(x => new ProductData(x, IsAffordable(wallet.Value, x)))
+            .AsQueryable();
+
+        _filtered = _source.Apply(ProductsFilter.Empty);
+
+        _isLoading = false;
     }
 
     private async Task OpenPurchaseDialog(ProductModel product)
@@ -154,51 +150,20 @@
         await OnInitializedAsync();
     }
 
-    private bool IsAffordable(ProductModel product)
+    private void ApplyFilter(ProductsFilter filter)
     {
-        if (_wallet is null)
-            return false;
-
-        if (product.InventoryWeight > _wallet.Backpack.Emptiness)
-            return false;
-
-        if (product.Selling.Total.Amount > _wallet.Silver)
-            return false;
-
-        return true;
+        _filtered = _source.Apply(filter);
     }
 
-    private ICollection<ProductData> Filter(IQueryable<ProductData> queryable)
+    private static bool IsAffordable(WalletModel wallet, ProductModel product)
     {
-        if (_discountOnly)
-            queryable = queryable.Where(x => x.Product.Selling.Discount > 0);
+        if (product.InventoryWeight > wallet.Backpack.Emptiness)
+            return false;
 
-        if (_affordable)
-            queryable = queryable.Where(x => x.IsAffordable);
+        if (wallet.Monies.TryGetValue(product.Selling.Total.Currency, out var amount))
+            return amount >= product.Selling.Total.Amount;
 
-        queryable = _sort switch {
-            Sort.PriceAsc => queryable.OrderBy(x => x.Product.Selling.Total.Amount),
-            Sort.PriceDesc => queryable.OrderByDescending(x => x.Product.Selling.Total.Amount),
-            Sort.DiscountAsc => queryable.OrderBy(x => x.Product.Selling.Discount),
-            Sort.DiscountDesc => queryable.OrderByDescending(x => x.Product.Selling.Discount),
-            Sort.NameAsc => queryable.OrderBy(x => x.Product.Title),
-            Sort.NameDesc => queryable.OrderByDescending(x => x.Product.Title),
-            _ => throw new ArgumentOutOfRangeException()
-            };
-
-        return queryable.ToArray();
-    }
-
-    private sealed record ProductData(ProductModel Product, bool IsAffordable);
-
-    private enum Sort
-    {
-        PriceAsc,
-        PriceDesc,
-        DiscountAsc,
-        DiscountDesc,
-        NameAsc,
-        NameDesc
+        return false;
     }
 
 }

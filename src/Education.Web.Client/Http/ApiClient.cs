@@ -24,54 +24,73 @@ internal abstract class ApiClient
         _options = options;
     }
 
-    public async Task<ApiResult<T>> GetAsync<T>(string uri, IQueryStringRequest? request = null)
+    public async Task<ApiResult<T>> GetAsync<T>(string url, CancellationToken ct = default)
     {
-        var url = GetRequestUrl(uri, request);
         var state = await _provider.GetAuthenticationStateAsync();
 
         if (state.User.Identity?.IsAuthenticated == false)
-            return await ExecuteAsync<T>(ct => _anonymous.GetAsync(url, ct));
+            return await ExecuteAsync<T>(token => _anonymous.GetAsync(url, token), ct);
 
-        return await ExecuteAsync<T>(ct => _authenticated.GetAsync(url, ct));
+        return await ExecuteAsync<T>(token => _authenticated.GetAsync(url, token), ct);
     }
 
-    public Task<ApiResult<T>> PostAsync<T>(string uri) =>
-        ExecuteAsync<T>(ct => _authenticated.PostAsync(uri, null, ct));
-
-    public Task<ApiResult<T>> PostAsync<T, K>(string uri, K data) =>
-        ExecuteAsync<T>(ct => _authenticated.PostAsync(uri, CreateJson(data), ct));
-
-    public Task<ApiResult<T>> PutAsync<T>(string uri) =>
-        ExecuteAsync<T>(ct => _authenticated.PutAsync(uri, null, ct));
-
-    public Task<ApiResult<T>> PutAsync<T, K>(string uri, K data) =>
-        ExecuteAsync<T>(ct => _authenticated.PutAsync(uri, CreateJson(data), ct));
-
-    public Task<ApiResult<T>> DeleteAsync<T>(string uri) =>
-        ExecuteAsync<T>(ct => _authenticated.DeleteAsync(uri, ct));
-
-    private static string GetRequestUrl(string uri, IQueryStringRequest? request)
+    public Task<ApiResult<T>> GetAsync<T>(string url, IQueryStringRequest request, CancellationToken ct = default)
     {
-        if (request is null)
-            return uri;
+        if (request.ToQueryString() is { HasValue: true } query)
+            return GetAsync<T>($"{url}{query}", ct);
 
-        var query = request.ToQueryString();
-        return query.HasValue ? $"{uri}{query}" : uri;
+        return GetAsync<T>(url, ct);
     }
+
+    public async Task<ApiResult<T>> PostAsync<T>(string url, CancellationToken ct = default)
+    {
+        var state = await _provider.GetAuthenticationStateAsync();
+
+        if (state.User.Identity?.IsAuthenticated == false)
+            return await ExecuteAsync<T>(token => _anonymous.PostAsync(url, null, token), ct);
+
+        return await ExecuteAsync<T>(token => _authenticated.PostAsync(url, null, token), ct);
+    }
+
+    public async Task<ApiResult<T>> PostAsync<T, K>(string url, K data, CancellationToken ct = default)
+    {
+        var state = await _provider.GetAuthenticationStateAsync();
+        var content = CreateJson(data);
+
+        if (state.User.Identity?.IsAuthenticated == false)
+            return await ExecuteAsync<T>(token => _anonymous.PostAsync(url, content, token), ct);
+
+        return await ExecuteAsync<T>(token => _authenticated.PostAsync(url, content, token), ct);
+    }
+
+    public Task<ApiResult<T>> PutAsync<T>(string url, CancellationToken ct = default) =>
+        ExecuteAsync<T>(token => _authenticated.PutAsync(url, null, token), ct);
+
+    public Task<ApiResult<T>> PutAsync<T, K>(string url, K data, CancellationToken ct = default) =>
+        ExecuteAsync<T>(token => _authenticated.PutAsync(url, CreateJson(data), token), ct);
+
+    public Task<ApiResult<T>> DeleteAsync<T>(string url, CancellationToken ct = default) =>
+        ExecuteAsync<T>(token => _authenticated.DeleteAsync(url, token), ct);
 
     private JsonContent CreateJson<T>(T value) =>
         JsonContent.Create(value, null, _options);
 
-    private async Task<ApiResult<T>> ExecuteAsync<T>(Func<CancellationToken, Task<HttpResponseMessage>> func)
+    private async Task<ApiResult<T>> ExecuteAsync<T>(
+        Func<CancellationToken, Task<HttpResponseMessage>> action,
+        CancellationToken ct
+    )
     {
-        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct, timeout.Token);
 
         try
         {
-            using var message = await func(cts.Token);
+            using var message = await action(cts.Token).ConfigureAwait(false);
+
+            var status = (uint)message.StatusCode;
             var hasContent = (message.Content.Headers.ContentLength ?? 0) > 0;
 
-            return ((uint)message.StatusCode, hasContent) switch
+            return (status, hasContent) switch
             {
                 (>= 200 and < 300, true) =>
                     ApiResult<T>.Success((await message.Content.ReadFromJsonAsync<T>(_options, cts.Token))!),

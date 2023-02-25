@@ -44,7 +44,7 @@ public interface IHistoryUserService
 
     Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync();
 
-    Task<ApiResult<MoneyStatisticsModel>> GetSilverStatisticsAsync();
+    Task<ApiResult<AccountingModel>> GetSilverAccountingAsync();
 
     Task<ApiResult<AchievementsModel>> GetAchievementsAsync();
 

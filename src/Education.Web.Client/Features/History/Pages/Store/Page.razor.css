@@ -1,15 +1,36 @@
-.grid {
+.products {
     display: grid;
     gap: 12px;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.toolbar {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr 48px;
+    grid-template-rows: 1fr 1fr;
+    padding: 12px;
+}
+
+.wallet {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 12px;
 }
 
 @media (min-width: 600px) {
-    .grid {
+    .products {
         gap: 24px;
     }
 
-    .sort {
-        width: 200px;
+    .toolbar {
+        gap: 24px;
+        grid-template-columns: 1fr 200px 48px;
+        grid-template-rows: unset;
     }
+
+    .wallet {
+        grid-column: unset
+    }
+
 }

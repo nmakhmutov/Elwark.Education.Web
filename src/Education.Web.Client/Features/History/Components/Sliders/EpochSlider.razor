@@ -4,12 +4,7 @@
     {
         var title = L[$"Epoch:{epoch.ToFastString()}"];
         <div class="card">
-            <MudImage
-                Class="image"
-                Src="@epoch.Image()"
-                Alt="@title"
-                ObjectFit="ObjectFit.Cover"
-                ObjectPosition="ObjectPosition.Center"/>
+            <img class="image object-cover object-center" src="@epoch.Image()" alt="@title" loading="lazy"/>
             <a href="@HistoryUrl.Content.Epoch(epoch)">
                 <div class="body pa-3">
                     <MudText Typo="Typo.h5" Color="Color.Inherit">

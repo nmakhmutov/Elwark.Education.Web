@@ -10,8 +10,8 @@ public sealed record GetArticlesRequest(EpochType Epoch, int Offset, int Limit)
         var values = new Dictionary<string, string?>
         {
             [nameof(Epoch)] = Epoch.ToFastString(),
-            [nameof(Offset)] = Offset.ToString(),
-            [nameof(Limit)] = Limit.ToString()
+            [nameof(Limit)] = Limit.ToString(),
+            [nameof(Offset)] = Offset.ToString()
         };
 
         return QueryString.Create(values);

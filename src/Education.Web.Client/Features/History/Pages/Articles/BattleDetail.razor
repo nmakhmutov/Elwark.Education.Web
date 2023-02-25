@@ -30,24 +30,14 @@
         </header>
 
         <section class="battle-image">
-            <MudImage
-                Class="image mx-auto"
-                Src="@Battle.ImageUrl"
-                Alt="@Battle.Title"
-                ObjectFit="ObjectFit.Cover"
-                ObjectPosition="ObjectPosition.Center"/>
+            <img class="image object-cover object-center mx-auto" src="@Battle.ImageUrl" alt="@Battle.Title" loading="lazy"/>
         </section>
 
         <section class="map mud-paper pa-3 pa-sm-6">
             @if (Battle.Map?.Source is not null)
             {
                 <a href="@Battle.Map.Source" target="_blank">
-                    <MudImage
-                        Src="@Battle.Map.Source"
-                        Alt="@Battle.Map.Overview"
-                        Style="width: 100%;"
-                        ObjectFit="ObjectFit.Contain"
-                        ObjectPosition="ObjectPosition.Center"/>
+                    <img class="map-image object-contain object-center" src="@Battle.Map.Source" alt="@Battle.Map.Overview" loading="lazy"/>
                 </a>
 
                 <MudText Class="mb-3 mb-sm-6" Typo="Typo.body2" Align="Align.Center">

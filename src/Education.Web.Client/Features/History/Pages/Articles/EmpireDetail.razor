@@ -82,18 +82,13 @@
                 <MudText Class="mb-3" Typo="Typo.subtitle2">
                     @L["Empire:Flag"]
                 </MudText>
-                <div class="d-flex flex-column align-center gap-3">
-                    <MudImage
-                        Src="@Empire.Flag.Source"
-                        Alt="@Empire.Flag.Overview"
-                        Style="width: 100%; max-width: 260px"
-                        ObjectFit="ObjectFit.Contain"
-                        ObjectPosition="ObjectPosition.Center"/>
+                <a href="@Empire.Flag.Source" target="_blank">
+                    <img class="image object-contain object-center" src="@Empire.Flag.Source" alt="@Empire.Flag.Overview" loading="lazy"/>
+                </a>
 
-                    <MudText Typo="Typo.body2">
-                        @Empire.Flag.Overview
-                    </MudText>
-                </div>
+                <MudText Typo="Typo.body2" Align="Align.Center">
+                    @Empire.Flag.Overview
+                </MudText>
             </section>
         }
 
@@ -104,12 +99,7 @@
                     @L["Empire:Map"]
                 </MudText>
                 <a href="@Empire.Map.Source" target="_blank">
-                    <MudImage
-                        Src="@Empire.Map.Source"
-                        Alt="@Empire.Map.Overview"
-                        Style="width: 100%;"
-                        ObjectFit="ObjectFit.Contain"
-                        ObjectPosition="ObjectPosition.Center"/>
+                    <img class="image object-contain object-center" src="@Empire.Map.Source" alt="@Empire.Map.Overview" loading="lazy"/>
                 </a>
 
                 <MudText Typo="Typo.body2" Align="Align.Center">

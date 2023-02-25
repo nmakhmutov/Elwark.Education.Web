@@ -1,4 +1,5 @@
-@using Education.Web.Client.Features.History.Services
+@using Education.Web.Client.Features.History.Services.Search.Model
+@using Education.Web.Client.Features.History.Services.Search.Request
 @using Education.Web.Client.Features.History.Services.Search
 @inherits LayoutComponentBase
 
@@ -6,35 +7,47 @@
     <CascadingHistorySettings>
         <MudLayout Class="d-flex flex-column">
             <AppBar Title="@L["Subject:History"]" Href="@HistoryUrl.Root" DrawerToggleCallback="@ToggleDrawerAsync">
-                <MudAutocomplete
-                    T="ArticleOverviewModel"
-                    @ref="@_searchAutocomplete"
-                    DebounceInterval="300"
-                    AdornmentIcon="@Icons.Material.Outlined.Search"
-                    Placeholder="@L["Search"]"
-                    IconSize="Size.Small"
-                    Margin="Margin.Dense"
-                    Variant="Variant.Outlined"
-                    Adornment="Adornment.Start"
-                    SearchFunc="OnSearch"
-                    ValueChanged="OnSearchResult"
-                    Dense
-                    CoerceValue
-                    ResetValueOnEmptyText>
-                    <ItemTemplate Context="result">
-                        <div class="d-flex align-center">
-                            <MudAvatar Image="@result.ThumbnailUrl" Size="Size.Large" Square Class="mr-4"/>
-                            <div class="one-line-text">
-                                <MudText Typo="Typo.subtitle1">
-                                    @result.Title
-                                </MudText>
-                                <MudText Typo="Typo.caption">
-                                    @result.Overview
-                                </MudText>
+                <div class="w-sm-33 w-md-50">
+                    <MudAutocomplete
+                        T="SearchModel"
+                        @ref="@_searchAutocomplete"
+                        DebounceInterval="300"
+                        AdornmentIcon="@Icons.Material.Outlined.Search"
+                        Placeholder="@L["Search"]"
+                        IconSize="Size.Small"
+                        Margin="Margin.Dense"
+                        Variant="Variant.Outlined"
+                        Adornment="Adornment.Start"
+                        SearchFuncWithCancel="OnSearch"
+                        ValueChanged="OnSearchResult"
+                        TextChanged="OnTextChanged"
+                        ResetValueOnEmptyText
+                        ShowProgressIndicator
+                        Clearable
+                        Dense>
+                        <ItemTemplate Context="result">
+                            <div class="d-flex align-center">
+                                <MudAvatar Image="@result.ImageUrl" Size="Size.Large" Square Class="mr-4"/>
+                                <div class="one-line-text">
+                                    <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                                        @result.Category
+                                    </MudText>
+                                    <MudText Typo="Typo.body1">
+                                        @result.Title
+                                    </MudText>
+                                    <MudText Typo="Typo.caption">
+                                        @result.Overview
+                                    </MudText>
+                                </div>
                             </div>
-                        </div>
-                    </ItemTemplate>
-                </MudAutocomplete>
+                        </ItemTemplate>
+                        <MoreItemsTemplate>
+                            <MudLink Class="px-3" OnClick="@OnSearchMore">
+                                More results
+                            </MudLink>
+                        </MoreItemsTemplate>
+                    </MudAutocomplete>
+                </div>
             </AppBar>
 
             <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged"/>
@@ -47,7 +60,7 @@
                 <MudText Typo="Typo.subtitle1">
                     &copy; @DateTime.Now.Year Elwark
                 </MudText>
-                <MudImage Src="@ElwarkIcons.Primary60X60" Alt="Elwark logo" Width="40" Height="40"/>
+                <img class="image" src="@ElwarkIcons.Primary60X60" alt="Elwark logo" loading="lazy"/>
             </footer>
 
             <MudScrollToTop TopOffset="400">
@@ -59,7 +72,8 @@
 
 @code {
     private bool _isOpen;
-    private MudAutocomplete<ArticleOverviewModel> _searchAutocomplete = default!;
+    private string? _search;
+    private MudAutocomplete<SearchModel> _searchAutocomplete = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -82,19 +96,31 @@
     private ValueTask OnDrawerOpenChanged(bool value) =>
         AppSettings.ToggleSidebarAsync(_isOpen = value);
 
-    private async Task<IEnumerable<ArticleOverviewModel>> OnSearch(string text)
+    private async Task<IEnumerable<SearchModel>> OnSearch(string text, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
-            return Array.Empty<ArticleOverviewModel>();
+            return Array.Empty<SearchModel>();
 
-        var result = await HistorySearchService.SearchAsync(text);
-        return result.IsSuccess ? result.Value : Array.Empty<ArticleOverviewModel>();
+        var result = await HistorySearchService.SearchAsync(new SearchRequest(text, 0, 11), ct);
+        return result.IsSuccess ? result.Value.Hints : Array.Empty<SearchModel>();
     }
 
-    private Task OnSearchResult(ArticleOverviewModel entry)
+    private Task OnSearchResult(SearchModel? entry)
     {
-        Navigation.NavigateTo(HistoryUrl.Content.Article(entry.Id));
+        if (entry is null)
+            return Task.CompletedTask;
+
+        Navigation.NavigateTo(entry.Href);
         return _searchAutocomplete.Clear();
     }
+
+    private Task OnSearchMore()
+    {
+        Navigation.NavigateTo(HistoryUrl.Search(_search));
+        return _searchAutocomplete.Clear();
+    }
+
+    private void OnTextChanged(string value) =>
+        _search = value;
 
 }

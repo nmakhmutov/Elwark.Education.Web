@@ -27,8 +27,8 @@ using Polly.Extensions.Http;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-if (builder.HostEnvironment.IsProduction())
-    builder.Logging.ClearProviders();
+builder.Logging
+    .SetMinimumLevel(builder.HostEnvironment.IsDevelopment() ? LogLevel.Warning : LogLevel.Critical);
 
 // builder.RootComponents.Add<App>("#app");
 // builder.RootComponents.Add<HeadOutlet>("head::after");

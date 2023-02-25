@@ -1,15 +1,8 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.User.Model
 <section class="grid @Class">
-    <div class="image">
-        <MudImage
-            Class="rounded"
-            Src="@Article.ThumbnailUrl"
-            Alt="@Article.Title"
-            Width="140"
-            Height="140"
-            ObjectFit="ObjectFit.Cover"
-            ObjectPosition="ObjectPosition.Center"/>
+    <div class="image-wrapper">
+        <img class="image rounded object-cover object-center" src="@Article.ThumbnailUrl" alt="@Article.Title" loading="lazy"/>
     </div>
 
     <article class="content">

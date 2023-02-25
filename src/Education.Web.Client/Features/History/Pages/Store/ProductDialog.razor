@@ -113,13 +113,13 @@
         else
         {
             <MudProgressLinear
-                Class="mb-3"
-                Color="Color.Primary"
-                Size="Size.Medium"
-                Value="@StatusProgress()"
-                Striped/>
+                Color="@(_status.IsRejected ? Color.Error : Color.Primary)"
+                Value="@_status.Progress"
+                Striped="@(!_status.IsFinal)"/>
 
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">@_status.Title</MudText>
+            <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                @L[$"OrderStatus:{_status.Name}"]
+            </MudText>
         }
 
         @if (_error is not null)
@@ -183,8 +183,7 @@
         if (_error is not null)
             return;
 
-        _status = new OrderStatusModel("Creating", "");
-        await Task.Delay(5000);
+        _status = new OrderStatusModel(0, "Creating");
         var result = await StoreService.CheckoutAsync(new CheckoutRequest(Product.Id, _quantity));
         if (result.IsFailed)
         {
@@ -194,9 +193,9 @@
 
         await InvokeAsync(async () =>
         {
-            for (;;)
+            while (_status is { IsFinal:false })
             {
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(1.2));
 
                 var status = await OrderService.GetStatus(result.Value);
                 if (status.IsFailed)
@@ -211,11 +210,8 @@
                 _status = status.Value;
                 StateHasChanged();
 
-                if (status.Value.Name != "ShippedConfirmed")
-                    continue;
-
-                MudDialog.Close(DialogResult.Ok(true));
-                return;
+                if (status.Value is { IsFinal: true, IsRejected: false })
+                    MudDialog.Close(DialogResult.Ok(true));
             }
         });
 
@@ -233,8 +229,11 @@
 
     private Error? GetErrorMessage()
     {
-        if (TotalPrice.Amount > Wallet.Silver)
-            return new Error(L["Silver:NotEnoughTitle"], L["Silver:NotEnoughDescription"]);
+        if (!Wallet.Monies.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
+            return new Error(
+                L["InternalMoney:NotEnoughTitle", L[$"InternalMoney:{TotalPrice.Currency}"]],
+                L["InternalMoney:NotEnoughDescription", L[$"InternalMoney:{TotalPrice.Currency}"]]
+                );
 
         if (Product.InventoryWeight > Wallet.Backpack.Emptiness)
             return new Error(L["Backpack:FullTitle"], L["Backpack:FullDescription"]);
@@ -243,16 +242,5 @@
     }
 
     private sealed record Error(string Title, string? Message);
-
-    private double StatusProgress() =>
-        _status?.Name switch
-        {
-            null => 0,
-            "Creating" => 20,
-            "Created" => 40,
-            "StockConfirmed" => 60,
-            "PaymentConfirmed" => 80,
-            _ => 100
-            };
 
 }

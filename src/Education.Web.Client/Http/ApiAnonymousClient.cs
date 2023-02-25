@@ -9,4 +9,7 @@ internal sealed class ApiAnonymousClient
 
     public Task<HttpResponseMessage> GetAsync(string uri, CancellationToken ct) =>
         _httpClient.GetAsync(uri, ct);
+
+    public Task<HttpResponseMessage> PostAsync(string uri, HttpContent? content, CancellationToken ct) =>
+        _httpClient.PostAsync(uri, content, ct);
 }

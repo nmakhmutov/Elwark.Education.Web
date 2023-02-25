@@ -1,0 +1,37 @@
+@using Education.Web.Client.Models.Inventory
+
+<section class="d-flex flex-wrap gap-3 gap-sm-3 @Class">
+    <MudSelect T="CategoryType" Value="@Filter.Category" ValueChanged="@CategoryChanged" Label="Category" Margin="Margin.Dense" Dense>
+        <MudSelectItem Value="@CategoryType.None">All</MudSelectItem>
+        <MudSelectItem Value="@CategoryType.Profile">Profile</MudSelectItem>
+        <MudSelectItem Value="@CategoryType.Test">Test</MudSelectItem>
+        <MudSelectItem Value="@CategoryType.EventGuesser">Event guesser</MudSelectItem>
+    </MudSelect>
+
+    <MudSelect T="Sort" Value="@Filter.Sort" ValueChanged="@SortChanged" Label="Sort" Margin="Margin.Dense" Dense>
+        <MudSelectItem Value="@Sort.PriceAsc">Price asc</MudSelectItem>
+        <MudSelectItem Value="@Sort.PriceDesc">Price desc</MudSelectItem>
+        <MudSelectItem Value="@Sort.DiscountAsc">Discount asc</MudSelectItem>
+        <MudSelectItem Value="@Sort.DiscountDesc">Discount desc</MudSelectItem>
+        <MudSelectItem Value="@Sort.NameAsc">Name asc</MudSelectItem>
+        <MudSelectItem Value="@Sort.NameDesc">Name desc</MudSelectItem>
+    </MudSelect>
+</section>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public ProductsFilter Filter { get; set; } = ProductsFilter.Empty;
+
+    [Parameter]
+    public EventCallback<ProductsFilter> FilterChanged { get; set; }
+
+    private Task CategoryChanged(CategoryType value) =>
+        FilterChanged.InvokeAsync(Filter = Filter with { Category = value });
+
+    private Task SortChanged(Sort value) =>
+        FilterChanged.InvokeAsync(Filter = Filter with { Sort = value });
+}

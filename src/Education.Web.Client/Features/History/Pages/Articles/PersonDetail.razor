@@ -5,13 +5,7 @@
     <div class="header">
         <div class="preamble">
             <div class="image">
-                <MudImage
-                    Class="mb-3"
-                    Src="@Person.ImageUrl"
-                    Alt="@Person.Title"
-                    ObjectFit="ObjectFit.Cover"
-                    ObjectPosition="ObjectPosition.Center"
-                    Fluid/>
+                <img class="fluid object-cover object-center mb-3" src="@Person.ImageUrl" alt="@Person.Title"/>
 
                 @if (Person.Born is not null || Person.Died is not null)
                 {

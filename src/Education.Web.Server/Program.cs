@@ -11,6 +11,7 @@ else
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 app.MapRazorPages();
+
 app.MapFallbackToPage("/_Host");
 
 app.Run();

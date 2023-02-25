@@ -61,12 +61,15 @@
                 <EventGuesserScoreChart Score="@profile.LargeEventGuesser.Score"/>
             </StatisticsCard>
 
-            <BudgetCard
-                Title="@L["InternalMoney:Silver"]"
-                Icon="@EduIcons.Silver"
-                Href="@HistoryUrl.User.MySilver"
-                Budget="@profile.Silver"/>
-
+            @foreach (var money in profile.Accounting)
+            {
+                <BudgetCard
+                    Title="@L[$"InternalMoney:{money.Currency}"]"
+                    Icon="@EduIcons.Silver"
+                    Href="@HistoryUrl.User.MySilver"
+                    Budget="@money.Finance"/>
+            }
+            
             <ActivityCard
                 Class="grid-column-sm-full"
                 Title="@L["Statistics:Daily"]"

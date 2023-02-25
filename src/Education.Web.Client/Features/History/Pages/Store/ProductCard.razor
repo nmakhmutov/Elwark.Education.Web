@@ -3,14 +3,7 @@
 @using Education.Web.Client.Models
 
 <article class="mud-paper pa-3">
-    <MudImage
-        Class="w-100 rounded mb-3"
-        Src="@Product.ImageUrl"
-        Alt="@Product.Title"
-        ObjectFit="ObjectFit.Cover"
-        ObjectPosition="ObjectPosition.Center"
-        Fluid/>
-
+    <img class="rounded object-cover object-center fluid w-100 mb-3" src="@Product.ImageUrl" alt="@Product.Title" loading="lazy"/>
     <MudText Class="one-line-text" Typo="Typo.subtitle1">
         @Product.Title
     </MudText>
@@ -54,7 +47,7 @@
                 Color="Color.Primary"
                 OnClick="@(() => OnPurchaseClick.InvokeAsync(Product))"
                 DisableElevation>
-                @L["Product:Buy"]
+                @L["Product:Details"]
             </MudButton>
         </MudBadge>
     </footer>

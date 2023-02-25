@@ -23,8 +23,8 @@ public sealed record GetEmpiresRequest(GetEmpiresRequest.SortType Sort, int Offs
                 SortType.Duration => nameof(SortType.Duration),
                 _ => nameof(SortType.Area)
             },
-            [nameof(Offset)] = Offset.ToString(),
-            [nameof(Limit)] = Limit.ToString()
+            [nameof(Limit)] = Limit.ToString(),
+            [nameof(Offset)] = Offset.ToString()
         };
 
         return QueryString.Create(values);

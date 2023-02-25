@@ -1,4 +1,4 @@
-@page "/history/my/monies/silver"
+@page "/history/my/accounting/silver"
 @using Education.Web.Client.Features.History.Services.User.Model
 @using Education.Web.Client.Features.History.Services.User
 @layout HistoryLayout
@@ -24,7 +24,7 @@
 
 @code {
 
-    private ApiResult<MoneyStatisticsModel> _result = ApiResult<MoneyStatisticsModel>.Loading();
+    private ApiResult<AccountingModel> _result = ApiResult<AccountingModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -40,6 +40,6 @@
     private IHistoryUserService UserService { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync() =>
-        _result = await UserService.GetSilverStatisticsAsync();
+        _result = await UserService.GetSilverAccountingAsync();
 
 }

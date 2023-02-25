@@ -6,6 +6,9 @@ public static class HistoryUrl
 {
     public const string Root = "/history";
 
+    public static string Search(string? q = null) =>
+        string.IsNullOrEmpty(q) ? $"{Root}/search" : $"{Root}/search?q={q}";
+
     public static class Content
     {
         public const string Empires = $"{Root}/empires";
@@ -74,7 +77,7 @@ public static class HistoryUrl
 
         public const string MyLargeEventGuessers = $"{My}/event-guessers/large";
 
-        public const string MySilver = $"{My}/monies/silver";
+        public const string MySilver = $"{My}/accounting/silver";
 
         public const string MyAchievements = $"{My}/achievements";
 

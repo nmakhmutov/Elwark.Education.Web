@@ -40,7 +40,7 @@
                 StateHasChanged();
             }
 
-            if (_timeLeft == TimeSpan.Zero && OnComplete.HasDelegate)
+            if (OnComplete.HasDelegate && TimeSpan.Zero >= _timeLeft)
                 await OnComplete.InvokeAsync();
         });
 
