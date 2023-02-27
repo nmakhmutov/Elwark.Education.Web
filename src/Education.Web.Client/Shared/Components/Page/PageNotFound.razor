@@ -1,10 +1,13 @@
-<PageTitle>@Error.Title</PageTitle>
+<PageTitle>
+    @Error.Title
+</PageTitle>
+
 <EduError Error="@Error"/>
 
 @code {
 
     private Error Error =>
-        Error.Create(L["Error:NotFound"], 404);
+        Error.Create(L["Shared_NotFound"], 404);
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

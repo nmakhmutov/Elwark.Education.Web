@@ -1,6 +1,7 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Article.Model
 @using Education.Web.Client.Models.Content
+
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
     <section class="grid">
         <header class="header">
@@ -13,14 +14,25 @@
             <div class="d-flex justify-center mb-6">
                 @if (Battle.Started == Battle.Finished)
                 {
-                    <HistoryDate Date="@Battle.Started" Typo="Typo.subtitle1"/>
+                    <HistoryDate
+                        Typo="Typo.subtitle1"
+                        Date="@Battle.Started"
+                        DateTimeFormatter="@DateTimeFormatter"/>
                 }
                 else
                 {
                     <div class="d-flex align-center">
-                        <HistoryDate Date="@Battle.Started" Typo="Typo.subtitle1"/>
+                        <HistoryDate
+                            Typo="Typo.subtitle1"
+                            Date="@Battle.Started"
+                            DateTimeFormatter="@DateTimeFormatter"/>
+
                         <MudText Typo="Typo.subtitle1" Class="mx-3">&#8212;</MudText>
-                        <HistoryDate Date="@Battle.Finished" Typo="Typo.subtitle1"/>
+
+                        <HistoryDate
+                            Typo="Typo.subtitle1"
+                            Date="@Battle.Finished"
+                            DateTimeFormatter="@DateTimeFormatter"/>
                     </div>
                 }
             </div>
@@ -46,11 +58,11 @@
             }
 
             <MudText Typo="Typo.h6">
-                @L["Battle:Location"]
+                @L["History_BattleLocation"]
             </MudText>
             <StyledMarkupString Class="mb-3 mb-sm-6" Content="@Battle.Location" DisableParagraphIndent/>
             <MudText Typo="Typo.h6">
-                @L["Battle:Result"]
+                @L["History_BattleResult"]
             </MudText>
             <StyledMarkupString Content="@Battle.Result" DisableParagraphIndent/>
         </section>
@@ -60,7 +72,7 @@
             {
                 <div class="mb-3 mb-sm-6">
                     <MudText Class="mb-3" Typo="Typo.h6" Align="Align.Center">
-                        @L[$"Battle:{item.Key}"]
+                        @L[$"History_Battle{item.Key}"]
                     </MudText>
                     <div class="d-flex justify-space-around gap-3">
                         @for (var i = 0; i < item.Value.Count; i++)
@@ -111,12 +123,15 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"], HistoryUrl.Root),
-        new BreadcrumbItem(L[$"Epoch:{Battle.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Battle.Epoch))
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L[$"History_Epoch{Battle.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Battle.Epoch))
     };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public ArticleDetail.BattleModel Battle { get; set; } = default!;
@@ -160,5 +175,8 @@
             _conflictParties[nameof(ConflictPartyModel.Losses)].Add(Battle.ConflictParties[i].Losses);
         }
     }
+
+    private string DateTimeFormatter(DateTime date) =>
+        Customer.Humanize(date);
 
 }

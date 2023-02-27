@@ -28,33 +28,34 @@
     }
 </style>
 
-<PageTitle>@L["History:Empires"]</PageTitle>
+<PageTitle>
+    @L["History_Empires"]
+</PageTitle>
 
 <MudTimeline TimelinePosition="@_timelinePosition" DisableModifiers>
     <MudTimelineItem HideDot>
         <div class="ma-3 ma-sm-6">
             <h2 class="subtitle">
-                @L["Empires:Subtitle"]
+                @L["History_EmpiresSubtitle"]
             </h2>
             <h1 class="title">
-                @L["History:Empires"]
+                @L["History_Empires"]
             </h1>
-            <MudSelect
-                T="GetEmpiresRequest.SortType"
-                Label="@L["Empire:By"]"
-                Dense
-                Variant="Variant.Text"
-                Value="@_sort"
-                Style="max-width: 300px"
-                ValueChanged="@SortChangedAsync">
+            <MudSelect T="GetEmpiresRequest.SortType"
+                       Label="@L["History_EmpireBy"]"
+                       Dense
+                       Variant="Variant.Text"
+                       Value="@_sort"
+                       Style="max-width: 300px"
+                       ValueChanged="@SortChangedAsync">
                 <MudSelectItem Value="@GetEmpiresRequest.SortType.Area">
-                    @L["Empire:MaxArea"]
+                    @L["History_EmpireMaxArea"]
                 </MudSelectItem>
                 <MudSelectItem Value="@GetEmpiresRequest.SortType.Population">
-                    @L["Empire:MaxPopulation"]
+                    @L["History_EmpireMaxPopulation"]
                 </MudSelectItem>
                 <MudSelectItem Value="@GetEmpiresRequest.SortType.Duration">
-                    @L["Empire:MaxDuration"]
+                    @L["History_EmpireMaxDuration"]
                 </MudSelectItem>
             </MudSelect>
         </div>
@@ -75,28 +76,29 @@
                                 </MudLink>
                             </div>
                             <div class="d-inline-flex align-center">
-                                <HistoryDate Date="@empire.Founded"/>
+                                <HistoryDate Date="@empire.Founded" DateTimeFormatter="@DateTimeFormatter"/>
                                 <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
-                                <HistoryDate Date="@empire.Dissolved"/>
+                                <HistoryDate Date="@empire.Dissolved" DateTimeFormatter="@DateTimeFormatter"/>
                             </div>
                             <MudText Typo="Typo.body1" Class="my-3">
                                 @empire.Overview
                             </MudText>
                             <MudText Typo="Typo.body2">
-                                @L["Empire:MaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                                @L["History_EmpireMaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
                             </MudText>
                             <MudText Typo="Typo.body2">
-                                @L["Empire:MaxPopulation"]: @empire.MaxPopulation.ToString("N0")
+                                @L["History_EmpireMaxPopulation"]: @empire.MaxPopulation.ToString("N0")
                             </MudText>
                             <MudText Typo="Typo.body2">
-                                @L["Empire:Duration"]:
+                                @L["History_EmpireDuration"]:
                                 @if (empire.Duration.HasValue)
                                 {
-                                    @empire.Duration.Value.ToString("N0")<small>&nbsp;@L["History:Years"].Value.ToLowerInvariant()</small>
+                                    @empire.Duration.Value.ToString("N0")
+                                    <small>&nbsp;@L["History_Years"].Value.ToLowerInvariant()</small>
                                 }
                                 else
                                 {
-                                    @L["History:Unknown"]
+                                    @L["Shared_Unknown"]
                                 }
                             </MudText>
                         </div>
@@ -124,6 +126,9 @@
 
     [Inject]
     private IHistoryArticleService ArticleService { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, SupplyParameterFromQuery(Name = "by")]
     public string? Sort { get; set; }
@@ -189,5 +194,8 @@
 
     public async ValueTask DisposeAsync() =>
         await BreakpointService.Unsubscribe(_subscriptionId);
+
+    private string DateTimeFormatter(DateTime date) => 
+        Customer.Humanize(date);
 
 }

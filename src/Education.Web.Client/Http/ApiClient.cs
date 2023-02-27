@@ -97,11 +97,11 @@ internal abstract class ApiClient
 
                 (>= 200 and < 300, false) => ApiResult<T>.Success(default!),
 
-                (403, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:AccessDenied"], 403)),
+                (403, false) => ApiResult<T>.Fail(Error.Create(_localizer["Shared_AccessDenied"], 403)),
 
-                (404, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:NotFound"], 404)),
+                (404, false) => ApiResult<T>.Fail(Error.Create(_localizer["Shared_NotFound"], 404)),
 
-                (_, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error:InternalServerError"], 500)),
+                (_, false) => ApiResult<T>.Fail(Error.Create(_localizer["Shared_InternalServerError"], 500)),
 
                 _ => ApiResult<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(_options, cts.Token))!)
             };
@@ -109,19 +109,19 @@ internal abstract class ApiClient
         catch (AccessTokenNotAvailableException ex)
         {
             ex.Redirect();
-            return ApiResult<T>.Fail(Error.Create(_localizer["Error:AccessDenied"], 403));
+            return ApiResult<T>.Fail(Error.Create(_localizer["Shared_AccessDenied"], 403));
         }
         catch (HttpRequestException)
         {
-            return ApiResult<T>.Fail(Error.Create(_localizer["Error:ServiceUnavailable"], 503));
+            return ApiResult<T>.Fail(Error.Create(_localizer["Shared_ServiceUnavailable"], 503));
         }
         catch (TaskCanceledException)
         {
-            return ApiResult<T>.Fail(Error.Create(_localizer["Error:RequestTimeout"], 408));
+            return ApiResult<T>.Fail(Error.Create(_localizer["Shared_RequestTimeout"], 408));
         }
         catch (Exception ex)
         {
-            return ApiResult<T>.Fail(Error.Create(_localizer["Error:BadGateway"], 502, ex.Message));
+            return ApiResult<T>.Fail(Error.Create(_localizer["Shared_BadGateway"], 502, ex.Message));
         }
     }
 }

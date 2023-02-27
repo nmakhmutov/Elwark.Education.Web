@@ -4,7 +4,9 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@_title</PageTitle>
+<PageTitle>
+    @_title
+</PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
     <EduPageHeader Title="@_title" Breadcrumbs="@Breadcrumbs"/>
@@ -15,7 +17,7 @@
         <StatisticDetailsGrid>
             <StatisticDetailsCard>
                 <TotalContent>
-                    <Subheader Title="@L["EventGuesser:Score"]" Subtitle="@L["ForAllTime"]"/>
+                    <Subheader Title="@L["History_EventGuesserScore"]" Subtitle="@L["ForAllTime"]"/>
                     <EventGuesserScoreChart Score="@result.Score"/>
                 </TotalContent>
                 <ProgressContent>
@@ -26,7 +28,7 @@
 
             <StatisticDetailsCard>
                 <TotalContent>
-                    <Subheader Title="@L["EventGuesser:Questions"]" Subtitle="@L["ForAllTime"]"/>
+                    <Subheader Title="@L["History_EventGuesserQuestions"]" Subtitle="@L["ForAllTime"]"/>
                     <EventGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
                 </TotalContent>
                 <ProgressContent>
@@ -73,10 +75,10 @@
 
     protected override void OnParametersSet() =>
         _title = Test?.ToLowerInvariant() switch {
-            "small" => L["EventGuessers:Small"],
-            "medium" => L["EventGuessers:Medium"],
-            "large" => L["EventGuessers:Large"],
-            _ => L["Error:NotFound"]
+            "small" => L["History_EventGuessersSmall"],
+            "medium" => L["History_EventGuessersMedium"],
+            "large" => L["History_EventGuessersLarge"],
+            _ => L["Shared_NotFound"]
             };
 
     protected override async Task OnParametersSetAsync() =>
@@ -85,7 +87,7 @@
             "small" => await UserService.GetSmallEventGuesserStatisticsAsync(),
             "medium" => await UserService.GetMediumEventGuesserStatisticsAsync(),
             "large" => await UserService.GetLargeEventGuesserStatisticsAsync(),
-            _ => ApiResult<EventGuesserStatisticsModel>.Fail(Error.Create(L["Error:NotFound"], 404))
+            _ => ApiResult<EventGuesserStatisticsModel>.Fail(Error.Create(L["Shared_NotFound"], 404))
             };
 
 }

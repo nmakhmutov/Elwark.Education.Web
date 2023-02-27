@@ -6,7 +6,7 @@
             <aside class="icon @IconClass">
                 <img class="image" src="@achievement.IconUrl" alt="@Alt" loading="lazy"/>
                 <MudText Typo="Typo.caption" Class="mt-1" Style="text-transform: uppercase" Color="Color.Inherit">
-                    @L["Achievement:Level"] @achievement.Level
+                    @L["Shared_AchievementLevel"] @achievement.Level
                 </MudText>
             </aside>
             <header class="header">
@@ -59,7 +59,7 @@
                     @achievement.Title
                 </h6>
                 <MudText Typo="Typo.caption" Class="d-block">
-                    @L["Achievement:Completed"] @Customer.Humanize(achievement.CompletedAt)
+                    @L["Shared_AchievementCompleted"] @DateTimeFormatter(achievement.CompletedAt)
                 </MudText>
             </header>
             break;
@@ -77,9 +77,6 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
-
     [Parameter, EditorRequired]
     public Achievement Achievement { get; set; } = default!;
 
@@ -89,5 +86,8 @@
     [Parameter]
     public string? IconClass { get; set; } = "green accent-4";
 
-    private string Alt => $"{L["Achievements"]}: {Achievement.Title}";
+    [Parameter]
+    public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
+    
+    private string Alt => $"{L["Shared_Achievements"]}: {Achievement.Title}";
 }

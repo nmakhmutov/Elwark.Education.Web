@@ -4,7 +4,9 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@L["Statistics"]</PageTitle>
+<PageTitle>
+    @L["Statistics"]
+</PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <EduPageHeader Title="@L["Statistics"]" Breadcrumbs="@Breadcrumbs"/>
@@ -38,7 +40,7 @@
             </StatisticsCard>
 
             <StatisticsCard
-                Title="@L["EventGuessers:Small"]"
+                Title="@L["History_EventGuessersSmall"]"
                 Value="@profile.SmallEventGuesser.Tests"
                 Href="@HistoryUrl.User.MySmallEventGuessers">
                 <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
@@ -46,7 +48,7 @@
             </StatisticsCard>
 
             <StatisticsCard
-                Title="@L["EventGuessers:Medium"]"
+                Title="@L["History_EventGuessersMedium"]"
                 Value="@profile.MediumEventGuesser.Tests"
                 Href="@HistoryUrl.User.MyMediumEventGuessers">
                 <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
@@ -54,7 +56,7 @@
             </StatisticsCard>
 
             <StatisticsCard
-                Title="@L["EventGuessers:Large"]"
+                Title="@L["History_EventGuessersLarge"]"
                 Value="@profile.LargeEventGuesser.Tests"
                 Href="@HistoryUrl.User.MyLargeEventGuessers">
                 <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>

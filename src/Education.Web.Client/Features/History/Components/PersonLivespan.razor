@@ -1,10 +1,16 @@
 @using Education.Web.Client.Features.History.Services
+
 <div class="d-flex justify-center justify-md-space-around align-center">
     <div>
         <MudText Class="text-transform-uppercase" Typo="Typo.body2">
-            @L["History:Born"]
+            @L["History_PersonBorn"]
         </MudText>
-        <HistoryDate Class="date" Date="@Born" Typo="Typo.h4" Color="Color.Info"/>
+        <HistoryDate 
+            Class="date"
+            Typo="Typo.h4"
+            Date="@Born"
+            DateTimeFormatter="@DateTimeFormatter"
+            Color="Color.Info"/>
         <MudText Typo="Typo.body2">
             @Born?.Place
         </MudText>
@@ -17,9 +23,14 @@
 
     <div>
         <MudText Class="text-transform-uppercase" Typo="Typo.body2">
-            @L["History:Died"]
+            @L["History_PersonDied"]
         </MudText>
-        <HistoryDate Class="date" Date="@Died" Typo="Typo.h4" Color="Color.Info"/>
+        <HistoryDate 
+            Class="date"
+            Typo="Typo.h4"
+            Date="@Died"
+            DateTimeFormatter="@DateTimeFormatter"
+            Color="Color.Info"/>
         <MudText Typo="Typo.body2">
             @Died?.Place
         </MudText>
@@ -37,4 +48,6 @@
     [Parameter, EditorRequired]
     public PersonBirthdayModel? Died { get; set; }
 
+    [Parameter, EditorRequired]
+    public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
 }

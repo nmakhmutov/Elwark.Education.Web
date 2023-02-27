@@ -8,14 +8,14 @@
             @if (Customer.CreatedAt > DateOnly.MinValue)
             {
                 <MudText Class="mud-text-secondary mb-3 mb-sm-6" Typo="Typo.body2">
-                    @L["Customer:MemberSince", Customer.Humanize(Customer.CreatedAt)]
+                    @L["Account_MemberSince", Customer.Humanize(Customer.CreatedAt)]
                 </MudText>
             }
         </div>
     </MudStack>
 
     <MudText Class="mb-3" Typo="Typo.h6" Align="Align.Center">
-        @L["Customer:Details"]
+        @L["Account_Details"]
     </MudText>
 
     <MudDivider Class="mb-3"/>
@@ -40,7 +40,7 @@
             EndIcon="@Icons.Material.Outlined.OpenInNew"
             Link="@Configuration["Urls:Account"]"
             Target="_blank">
-            @L["Account:Elwark"]
+            @L["Account_Elwark"]
         </MudButton>
     </MudStack>
 </MudPaper>
@@ -73,10 +73,10 @@
 
         _items = new Dictionary<string, string>
         {
-            [L["Customer:TimeZone"]] = Customer.TimeZone.Id,
-            [L["Customer:StartOfWeek"]] = L[$"DayOfWeek:{Customer.StartOfWeek}"],
-            [L["Customer:DateFormat"]] = $"{Customer.DateFormat} ({now.ToString(Customer.DateFormat)})",
-            [L["Customer:TimeFormat"]] = $"{Customer.TimeFormat} ({now.ToString(Customer.TimeFormat)})"
+            [L["Account_TimeZone"]] = Customer.TimeZone.Id,
+            [L["Account_StartOfWeek"]] = L[$"DayOfWeek:{Customer.StartOfWeek}"],
+            [L["Account_DateFormat"]] = $"{Customer.DateFormat} ({now.ToString(Customer.DateFormat)})",
+            [L["Account_TimeFormat"]] = $"{Customer.TimeFormat} ({now.ToString(Customer.TimeFormat)})"
         };
     }
 

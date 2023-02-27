@@ -6,7 +6,9 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@L["Tests"]</PageTitle>
+<PageTitle>
+    @L["Tests"]
+</PageTitle>
 
 <div class="background d-flex flex-column h-100">
 
@@ -65,7 +67,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
+        new BreadcrumbItem(L["History_Title"].Value, HistoryUrl.Root)
     };
 
     [Inject]

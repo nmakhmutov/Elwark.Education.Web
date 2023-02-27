@@ -7,42 +7,16 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@L["Inventory:Store"]</PageTitle>
+<PageTitle>
+    @L["Shared_InventoryStore"]
+</PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <section class="wallet">
-        @if (_wallet is not null)
-        {
-            foreach (var money in _wallet.Monies)
-            {
-                <section class="d-flex align-center">
-                    <MudIcon Class="mr-1" Icon="@EduIcons.Silver" Size="Size.Small"/>
-                    <MetricNumber Typo="Typo.subtitle1" Value="@money.Value"/>
-                </section>    
-            }
-            
-            <section class="d-flex align-center">
-                <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="Size.Small"/>
-                <div class="d-flex align-center">
-                    <MetricNumber
-                        Color="@(_wallet.Backpack.Fullness > _wallet.Backpack.Capacity ? Color.Error : Color.Default)"
-                        Typo="Typo.subtitle1"
-                        Value="@_wallet.Backpack.Fullness"/>
-                    <MudText Typo="Typo.subtitle1">/</MudText>
-                    <MetricNumber Typo="Typo.subtitle1" Value="@_wallet.Backpack.Capacity"/>
-                </div>
-            </section>
-        }
-        else
-        {
-            <section class="d-flex align-center">
-                <MudSkeleton Class="mr-1" SkeletonType="SkeletonType.Circle" Width="20px" Height="20px"/>
-                <MudSkeleton SkeletonType="SkeletonType.Text" Width="36px" Height="20px"/>
-            </section>
-        }
-    </section>
+    <EduPageHeader Title="@L["Shared_InventoryStore"]"/>
+</EduContainer>
 
-    <ProductToolbar FilterChanged="@ApplyFilter"/>
+<EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+    <ProductToolbar @bind-Filter="@_filter" Wallet="@_wallet"/>
 </EduContainer>
 
 @if (_isLoading)
@@ -56,22 +30,11 @@ else if (_error is not null)
 else
 {
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        @if (_filtered.Count > 0)
-        {
-            <section class="products">
-                @foreach (var product in _filtered)
-                {
-                    <ProductCard
-                        Product="@product.Product"
-                        ShowLockBadge="@(!product.IsAffordable)"
-                        OnPurchaseClick="@OpenPurchaseDialog"/>
-                }
-            </section>
-        }
-        else
-        {
-            <EduEmpty Title="No products"/>
-        }
+        <ProductsGrid Products="@_source" Filter="@_filter" Context="product">
+            <ProductCard Product="@product.Product"
+                         ShowLockBadge="@(!product.IsAffordable)"
+                         OnPurchaseClick="@OpenPurchaseDialog"/>
+        </ProductsGrid>
     </EduContainer>
 }
 
@@ -79,8 +42,8 @@ else
     private bool _isLoading = true;
     private Error? _error;
     private WalletModel? _wallet;
-    private IQueryable<ProductData> _source = new EnumerableQuery<ProductData>(Enumerable.Empty<ProductData>());
-    private IReadOnlyCollection<ProductData> _filtered = Array.Empty<ProductData>();
+    private ProductsFilter _filter = ProductsFilter.Empty;
+    private IQueryable<ProductDto> _source = new EnumerableQuery<ProductDto>(Enumerable.Empty<ProductDto>());
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -115,10 +78,8 @@ else
         }
 
         _source = products.Value
-            .Select(x => new ProductData(x, IsAffordable(wallet.Value, x)))
+            .Select(x => new ProductDto(x, IsAffordable(wallet.Value, x)))
             .AsQueryable();
-
-        _filtered = _source.Apply(ProductsFilter.Empty);
 
         _isLoading = false;
     }
@@ -148,11 +109,6 @@ else
             return;
 
         await OnInitializedAsync();
-    }
-
-    private void ApplyFilter(ProductsFilter filter)
-    {
-        _filtered = _source.Apply(filter);
     }
 
     private static bool IsAffordable(WalletModel wallet, ProductModel product)

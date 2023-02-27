@@ -1,22 +1,15 @@
-<header class="w-100 @Class">
-    @if (ChildContent is null)
-    {
+<header class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6 w-100 @Class">
+    <section>
         <MudText Typo="Typo.h5">
             @Title
         </MudText>
-    }
-    else
-    {
-        <section class="d-flex flex-wrap justify-space-between align-center gap-3 gap-sm-6">
-            <MudText Typo="Typo.h5">
-                @Title
-            </MudText>
-
-            @ChildContent
-        </section>
-    }
-
-    <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
+        @if (Breadcrumbs is not null)
+        {
+            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
+        }
+    </section>
+    
+    @ChildContent
 </header>
 
 @code {
@@ -25,7 +18,7 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
-    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
+    public List<BreadcrumbItem>? Breadcrumbs { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

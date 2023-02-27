@@ -2,7 +2,7 @@
 <div class="container">
     @foreach (var epoch in EpochTypeExtensions.List[1..])
     {
-        var title = L[$"Epoch:{epoch.ToFastString()}"];
+        var title = L[$"History_Epoch{epoch.ToFastString()}"];
         <div class="card">
             <img class="image object-cover object-center" src="@epoch.Image()" alt="@title" loading="lazy"/>
             <a href="@HistoryUrl.Content.Epoch(epoch)">

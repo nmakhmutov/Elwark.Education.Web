@@ -1,27 +1,106 @@
 @using Education.Web.Client.Models.Inventory
+@using Education.Web.Client.Features.History.Services.User.Model
 
-<section class="d-flex flex-wrap gap-3 gap-sm-3 @Class">
-    <MudSelect T="CategoryType" Value="@Filter.Category" ValueChanged="@CategoryChanged" Label="Category" Margin="Margin.Dense" Dense>
-        <MudSelectItem Value="@CategoryType.None">All</MudSelectItem>
-        <MudSelectItem Value="@CategoryType.Profile">Profile</MudSelectItem>
-        <MudSelectItem Value="@CategoryType.Test">Test</MudSelectItem>
-        <MudSelectItem Value="@CategoryType.EventGuesser">Event guesser</MudSelectItem>
-    </MudSelect>
+<section class="d-flex flex-wrap align-center gap-3 gap-sm-3 @Class">
+    <section>
+        <MudText Typo="Typo.caption">
+            @L["Shared_Wallet"]
+        </MudText>
+        <div class="wallet">
+            @if (Wallet is not null)
+            {
+                foreach (var money in Wallet.Monies)
+                {
+                    <section class="d-flex align-center">
+                        <MudIcon Class="mr-1" Icon="@EduIcons.Silver" Size="Size.Small"/>
+                        <MetricNumber Typo="Typo.subtitle1" Value="@money.Value"/>
+                    </section>
+                }
 
-    <MudSelect T="Sort" Value="@Filter.Sort" ValueChanged="@SortChanged" Label="Sort" Margin="Margin.Dense" Dense>
-        <MudSelectItem Value="@Sort.PriceAsc">Price asc</MudSelectItem>
-        <MudSelectItem Value="@Sort.PriceDesc">Price desc</MudSelectItem>
-        <MudSelectItem Value="@Sort.DiscountAsc">Discount asc</MudSelectItem>
-        <MudSelectItem Value="@Sort.DiscountDesc">Discount desc</MudSelectItem>
-        <MudSelectItem Value="@Sort.NameAsc">Name asc</MudSelectItem>
-        <MudSelectItem Value="@Sort.NameDesc">Name desc</MudSelectItem>
-    </MudSelect>
+                <section class="d-flex align-center">
+                    <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="Size.Small"/>
+                    <div class="d-flex align-center">
+                        <MetricNumber Value="@Wallet.Backpack.Fullness"
+                                      Typo="Typo.subtitle1"
+                                      Color="@(Wallet.Backpack.Fullness > Wallet.Backpack.Capacity ? Color.Error : Color.Default)"/>
+                        <MudText Typo="Typo.subtitle1">/</MudText>
+                        <MetricNumber Typo="Typo.subtitle1" Value="@Wallet.Backpack.Capacity"/>
+                    </div>
+                </section>
+            }
+            else
+            {
+                <section class="d-flex align-center">
+                    <MudSkeleton Class="mr-1" SkeletonType="SkeletonType.Circle" Width="20px" Height="20px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="36px" Height="20px"/>
+                </section>
+            }
+        </div>
+    </section>
+
+    <MudSpacer/>
+
+    <div class="dropdown">
+        <MudSelect T="CategoryType"
+                   Value="@Filter.Category"
+                   ValueChanged="@CategoryChanged"
+                   Label="@L["History_ProductsFilterCategory"]"
+                   Margin="Margin.Dense"
+                   Dense>
+            <MudSelectItem Value="@CategoryType.None">
+                @L["History_ProductsFilterCategoryAll"]
+            </MudSelectItem>
+            <MudSelectItem Value="@CategoryType.Profile">
+                @L["History_ProductsFilterCategoryProfile"]
+            </MudSelectItem>
+            <MudSelectItem Value="@CategoryType.Test">
+                @L["History_ProductsFilterCategoryTest"]
+            </MudSelectItem>
+            <MudSelectItem Value="@CategoryType.EventGuesser">
+                @L["History_ProductsFilterCategoryEventGuesser"]
+            </MudSelectItem>
+        </MudSelect>
+    </div>
+
+    <div class="dropdown">
+        <MudSelect T="Sort"
+                   Value="@Filter.Sort"
+                   ValueChanged="@SortChanged"
+                   Label="@L["History_ProductsFilterSort"]"
+                   Margin="Margin.Dense"
+                   Dense>
+            <MudSelectItem Value="@Sort.Featured">
+                @L["History_ProductsFilterSortFeatured"]
+            </MudSelectItem>
+            <MudSelectItem Value="@Sort.PriceAsc">
+                @L["History_ProductsFilterSortPriceAsc"]
+            </MudSelectItem>
+            <MudSelectItem Value="@Sort.PriceDesc">
+                @L["History_ProductsFilterSortPriceDesc"]
+            </MudSelectItem>
+            <MudSelectItem Value="@Sort.DiscountAsc">
+                @L["History_ProductsFilterSortDiscountAsc"]
+            </MudSelectItem>
+            <MudSelectItem Value="@Sort.DiscountDesc">
+                @L["History_ProductsFilterSortDiscountDesc"]
+            </MudSelectItem>
+            <MudSelectItem Value="@Sort.Title">
+                @L["History_ProductsFilterSortTitle"]
+            </MudSelectItem>
+        </MudSelect>
+    </div>
 </section>
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
     [Parameter]
     public string? Class { get; set; }
+
+    [Parameter]
+    public WalletModel? Wallet { get; set; }
 
     [Parameter]
     public ProductsFilter Filter { get; set; } = ProductsFilter.Empty;
@@ -34,4 +113,5 @@
 
     private Task SortChanged(Sort value) =>
         FilterChanged.InvokeAsync(Filter = Filter with { Sort = value });
+
 }

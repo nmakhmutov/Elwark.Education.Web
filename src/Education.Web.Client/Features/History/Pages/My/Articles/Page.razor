@@ -5,17 +5,31 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@_title</PageTitle>
+<PageTitle>
+    @_title
+</PageTitle>
 
 <ApiViewer Result="@_result" Context="result">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
-        <ArticleOverview Class="mb-3 mb-sm-6" Article="@result.Article" Total="@result.Total" Breadcrumbs="@_breadcrumbs"/>
+        <ArticleOverview
+            Class="mb-3 mb-sm-6"
+            Article="@result.Article"
+            Total="@result.Total"
+            Breadcrumbs="@_breadcrumbs"/>
 
-        <TestOverview Title="@L["Tests:Easy"]" Href="@HistoryUrl.User.MyEasyTests" Test="@result.EasyTest"/>
+        <TestOverview
+            Title="@L["Tests:Easy"]"
+            Href="@HistoryUrl.User.MyEasyTests"
+            Test="@result.EasyTest"
+            DateTimeFormatter="@DateTimeFormatter"/>
 
         <div class="py-6"></div>
 
-        <TestOverview Title="@L["Tests:Hard"]" Href="@HistoryUrl.User.MyHardTests" Test="@result.HardTest"/>
+        <TestOverview
+            Title="@L["Tests:Hard"]"
+            Href="@HistoryUrl.User.MyHardTests"
+            Test="@result.HardTest"
+            DateTimeFormatter="@DateTimeFormatter"/>
     </EduContainer>
 </ApiViewer>
 
@@ -31,6 +45,9 @@
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
 
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
@@ -38,15 +55,20 @@
     {
         _result = await UserService.GetArticlesAsync(Id);
 
-        if (_result.IsSuccess)
+        if (_result.IsFailed)
+            return;
+
+        var epoch = _result.Value.Article.Epoch;
+
+        _title = _result.Value.Article.Title;
+        _breadcrumbs = new List<BreadcrumbItem>
         {
-            _title = _result.Value.Article.Title;
-            _breadcrumbs = new List<BreadcrumbItem>
-            {
-                new(L["Subject:History"].Value, HistoryUrl.Root),
-                new(L[$"Epoch:{_result.Value.Article.Epoch.ToFastString()}"].Value, HistoryUrl.Content.Epoch(_result.Value.Article.Epoch))
-            };
-        }
+            new(L["History_Title"].Value, HistoryUrl.Root),
+            new(L[$"History_Epoch{epoch.ToFastString()}"].Value, HistoryUrl.Content.Epoch(epoch))
+        };
     }
+
+    private string DateTimeFormatter(DateTime date) =>
+        Customer.Humanize(date);
 
 }

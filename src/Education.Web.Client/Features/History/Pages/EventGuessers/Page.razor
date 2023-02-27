@@ -5,11 +5,13 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@L["EventGuesser"]</PageTitle>
+<PageTitle>
+    @L["History_EventGuesser"]
+</PageTitle>
 
 <div class="background d-flex flex-column h-100">
     <EduContainer Class="pt-3 pt-sm-6">
-        <EduPageHeader Title="@L["EventGuesser"]" Breadcrumbs="@Breadcrumbs">
+        <EduPageHeader Title="@L["History_EventGuesser"]" Breadcrumbs="@Breadcrumbs">
             <MudButton
                 DisableElevation
                 Variant="Variant.Text"
@@ -17,7 +19,7 @@
                 EndIcon="@Icons.Material.Outlined.Info"
                 Disabled="@(!_result.IsSuccess)"
                 OnClick="@OpenRule">
-                @L["EventGuesser:Rules"]
+                @L["History_EventGuesserRules"]
             </MudButton>
         </EduPageHeader>
     </EduContainer>
@@ -25,7 +27,7 @@
         <section class="grid pa-3 pa-sm-6">
             <section class="builder">
                 <MudText Typo="Typo.h6" Class="mb-3">
-                    @L["History:Epoch"]
+                    @L["History_Epoch"]
                 </MudText>
                 <EpochRadioGroup
                     SelectedEpoch="@HistorySettings.EventGuesserEpoch"
@@ -77,7 +79,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
+        new BreadcrumbItem(L["History_Title"].Value, HistoryUrl.Root)
     };
 
     [Inject]

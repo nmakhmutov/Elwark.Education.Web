@@ -5,7 +5,9 @@
 @layout MainLayout
 @attribute [Authorize]
 
-<PageTitle>@L["Account"]</PageTitle>
+<PageTitle>
+    @L["Account_Title"]
+</PageTitle>
 
 <ApiViewer Result="@_response">
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
@@ -52,7 +54,7 @@
         model switch {
         {Name: "History"} =>
             new SubjectEnhancedModel(
-                L["Subject:History"],
+                L["History_Title"],
                 HistoryUrl.Root,
                 HistoryUrl.User.MyProfile,
                 EduIcons.History,

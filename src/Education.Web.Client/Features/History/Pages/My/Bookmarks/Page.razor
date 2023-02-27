@@ -5,13 +5,21 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@L["Bookmarks"]</PageTitle>
+<PageTitle>
+    @L["Bookmarks"]
+</PageTitle>
+
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <EduPageHeader Title="@L["Bookmarks"]" Breadcrumbs="@Breadcrumbs">
         @if (!_isEmpty)
         {
             <div>
-                <MudSelect Label="@L["Bookmarks:Sort"]" T="BookmarksRequest.SortType" Value="@_request.Sort" ValueChanged="@OnSortChanged">
+                <MudSelect T="BookmarksRequest.SortType" 
+                           Label="@L["Bookmarks:Sort"]"
+                           Value="@_request.Sort" 
+                           ValueChanged="@OnSortChanged"
+                           Margin="Margin.Dense"
+                           Dense>
                     @foreach (var sort in BookmarksRequest.SortTypes)
                     {
                         <MudSelectItem T="BookmarksRequest.SortType" Value="sort.Key">
@@ -43,7 +51,7 @@ else
             <div class="grid px-3 px-sm-6 mb-3">
                 <div class="image"></div>
                 <div class="title">@L["Article:Title"]</div>
-                <div class="epoch">@L["History:Epoch"]</div>
+                <div class="epoch">@L["History_Epoch"]</div>
                 <div class="rating">@L["Rating"]</div>
                 <div class="passed-test">@L["NumberOfTests:Passed"]</div>
                 <div class="time-spent">@L["TimeSpent:Total"]</div>
@@ -61,7 +69,7 @@ else
                     </div>
                     <div class="epoch">
                         <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Text" Color="Color.Primary" Link="@HistoryUrl.Content.Epoch(item.Article.Epoch)">
-                            @L[$"Epoch:{item.Article.Epoch.ToFastString()}"]
+                            @L[$"History_Epoch{item.Article.Epoch.ToFastString()}"]
                         </MudChip>
                     </div>
                     <div class="rating">
@@ -84,7 +92,7 @@ else
                     <div class="actions">
                         @if (item.Activity.PassedTests > 0)
                         {
-                            <MudTooltip Text="@L["Button:Details"]">
+                            <MudTooltip Text="@L["Shared_ButtonDetails"]">
                                 <MudIconButton
                                     Link="@HistoryUrl.User.MyArticles(item.Article.Id)"
                                     Icon="@Icons.Material.Outlined.RemoveRedEye"/>

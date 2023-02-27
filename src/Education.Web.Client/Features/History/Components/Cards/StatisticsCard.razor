@@ -1,4 +1,4 @@
-@typeparam TValue
+@typeparam T
 
 <section class="mud-paper d-flex flex-column gap-3 pa-3 pa-sm-6 @Class">
     <header class="d-flex align-center justify-space-between">
@@ -14,7 +14,7 @@
     {
         <footer>
             <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary" Href="@Href">
-                @L["Button:Details"]
+                @L["Shared_ButtonDetails"]
             </MudButton>
         </footer>
     }
@@ -29,7 +29,7 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public TValue Value { get; set; } = default!;
+    public T Value { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

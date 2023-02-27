@@ -6,7 +6,9 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@(_result.IsSuccess ? $"{_testType}: {_currentQuestion.Article.Title}" : L["Tests"])</PageTitle>
+<PageTitle>
+    @(_result.IsSuccess ? $"{_testType}: {_currentQuestion.Article.Title}" : L["Tests"])
+</PageTitle>
 
 @switch (_result.Status)
 {

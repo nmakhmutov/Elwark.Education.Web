@@ -4,16 +4,18 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@L["Achievements"]</PageTitle>
+<PageTitle>
+    @L["Shared_Achievements"]
+</PageTitle>
 
-<EduPageHeader Class="pa-3 pa-sm-6" Title="@L["Achievements"]" Breadcrumbs="@Breadcrumbs">
+<EduPageHeader Class="pa-3 pa-sm-6" Title="@L["Shared_Achievements"]" Breadcrumbs="@Breadcrumbs">
     <MudText Typo="Typo.h5">
         @_subtitle
     </MudText>
 </EduPageHeader>
 
 <ApiViewer Result="@_result" Context="achievements">
-    <MudGrid Class="px-3 pb-3 px-sm-6 pb-sm-6" Spacing="0" >
+    <MudGrid Class="px-3 pb-3 px-sm-6 pb-sm-6" Spacing="0">
         @for (var index = 0; index < achievements.Categories.Length; index++)
         {
             var category = achievements.Categories[index];
@@ -41,7 +43,10 @@
                 <EduFillGrid>
                     @foreach (var achievement in category.Achievements)
                     {
-                        <AchievementCard IconClass="@background" Achievement="@achievement"/>
+                        <AchievementCard
+                            Achievement="@achievement"
+                            IconClass="@background"
+                            DateTimeFormatter="@DateTimeFormatter"/>
                     }
                 </EduFillGrid>
             </MudItem>
@@ -65,6 +70,9 @@
 
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -92,5 +100,8 @@
 
             _ => "pink accent-4 white-text"
             };
+
+    private string DateTimeFormatter(DateTime dateTime) => 
+        Customer.Humanize(dateTime);
 
 }

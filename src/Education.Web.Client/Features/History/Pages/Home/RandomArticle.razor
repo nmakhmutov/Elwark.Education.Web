@@ -11,11 +11,11 @@
                 ValueChanged="@((EpochType e) => HistorySettings.ChangeSearchRandomEpochAsync(e))"
                 Margin="Margin.Dense"
                 Variant="Variant.Text">
-                <MudSelectItem Value="@EpochType.None">@L["Epoch:Any"]</MudSelectItem>
+                <MudSelectItem Value="@EpochType.None">@L["History_EpochAny"]</MudSelectItem>
                 @foreach (var epoch in EpochTypeExtensions.List[1..])
                 {
                     <MudSelectItem Value="@epoch">
-                        @L[$"Epoch:{epoch.ToFastString()}"]
+                        @L[$"History_Epoch{epoch.ToFastString()}"]
                     </MudSelectItem>
                 }
             </MudSelect>

@@ -1,6 +1,7 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Article.Model
 @using Education.Web.Client.Models.Content
+
 <EduContainer Class="pa-0 pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
     <div class="header">
         <div class="preamble">
@@ -9,7 +10,7 @@
 
                 @if (Person.Born is not null || Person.Died is not null)
                 {
-                    <PersonLivespan Born="@Person.Born" Died="@Person.Died"/>
+                    <PersonLivespan Born="@Person.Born" Died="@Person.Died" DateTimeFormatter="@DateTimeFormatter"/>
                 }
             </div>
         </div>
@@ -19,9 +20,9 @@
                 @Person.Title
             </h1>
 
-            <Breadcrumbs Items="@Breadcrumbs" Class="pa-0 mb-3"/>
+            <Breadcrumbs Class="pa-0 mb-3" Items="@Breadcrumbs"/>
 
-            <MudText Typo="Typo.subtitle1" Class="mw-sm mb-3">
+            <MudText Class="w-max-960 mb-3" Typo="Typo.subtitle1">
                 @Person.Description
             </MudText>
 
@@ -82,12 +83,15 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"], HistoryUrl.Root),
-        new BreadcrumbItem(L[$"Epoch:{Person.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Person.Epoch))
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L[$"History_Epoch{Person.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Person.Epoch))
     };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public ArticleDetail.PersonModel Person { get; set; } = default!;
@@ -112,5 +116,8 @@
 
     [Parameter, EditorRequired]
     public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+
+    private string DateTimeFormatter(DateTime date) =>
+        Customer.Humanize(date);
 
 }

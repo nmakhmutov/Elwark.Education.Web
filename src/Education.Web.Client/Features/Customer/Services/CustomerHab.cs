@@ -31,16 +31,25 @@ internal sealed class CustomerHab : IAsyncDisposable
     public ValueTask DisposeAsync() =>
         _connection.DisposeAsync();
 
-    public event Action<NotificationMessage> OnNotificationReceived = _ => { };
+    public event Action<NotificationMessage> OnNotificationReceived = _ =>
+    {
+    };
 
     public async ValueTask InitAsync()
     {
         if (_connection.State != HubConnectionState.Disconnected)
             return;
 
-        var state = await _stateProvider.GetAuthenticationStateAsync();
-        if (state.User.Identity?.IsAuthenticated ?? false)
-            await _connection.StartAsync();
+        try
+        {
+            var state = await _stateProvider.GetAuthenticationStateAsync();
+            if (state.User.Identity?.IsAuthenticated ?? false)
+                await _connection.StartAsync();
+        }
+        catch
+        {
+            // ignored
+        }
     }
 
     private sealed class RetryPolicy : IRetryPolicy

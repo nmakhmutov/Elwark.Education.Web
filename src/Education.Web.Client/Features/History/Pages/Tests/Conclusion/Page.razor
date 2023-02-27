@@ -5,7 +5,9 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@_title</PageTitle>
+<PageTitle>
+    @_title
+</PageTitle>
 
 <ApiViewer Result="@_result" Context="conclusion">
     <MudAlert Class="mb-6 mb-sm-12" Square Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center">

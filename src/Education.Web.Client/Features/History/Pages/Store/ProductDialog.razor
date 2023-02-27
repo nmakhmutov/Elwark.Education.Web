@@ -224,6 +224,9 @@
     private Silver TotalPrice =>
         new(Product.Selling.Total.Amount * _quantity);
 
+    private uint TotalWeight =>
+        Product.InventoryWeight * _quantity;
+    
     private void UpdateErrorState() =>
         _error = GetErrorMessage();
 
@@ -235,8 +238,8 @@
                 L["InternalMoney:NotEnoughDescription", L[$"InternalMoney:{TotalPrice.Currency}"]]
                 );
 
-        if (Product.InventoryWeight > Wallet.Backpack.Emptiness)
-            return new Error(L["Backpack:FullTitle"], L["Backpack:FullDescription"]);
+        if (TotalWeight > Wallet.Backpack.Emptiness)
+            return new Error(L["Shared_BackpackIsFullTitle"], L["Shared_BackpackIsFullDescription"]);
 
         return null;
     }

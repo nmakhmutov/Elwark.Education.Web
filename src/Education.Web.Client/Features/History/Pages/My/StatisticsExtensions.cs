@@ -67,18 +67,18 @@ public static class StatisticsExtensions
         this EventGuesserStatisticsModel.ScoreContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
-            new(l["EventGuesser:Score"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
-            new(l["EventGuesser:Points"], contrast.Points.Current.ToMetric(), contrast.Points.Difference),
-            new(l["EventGuesser:Bonus"], contrast.Bonus.Current.ToMetric(), contrast.Bonus.Difference)
+            new(l["History_EventGuesserScore"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
+            new(l["History_EventGuesserPoints"], contrast.Points.Current.ToMetric(), contrast.Points.Difference),
+            new(l["History_EventGuesserBonus"], contrast.Bonus.Current.ToMetric(), contrast.Bonus.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(
         this EventGuesserStatisticsModel.AnswerRatioContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
-            new(l["EventGuesser:Questions"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
-            new(l["EventGuesser:Correct"], contrast.Correct.Current.ToMetric(), contrast.Correct.Difference),
-            new(l["EventGuesser:Incorrect"], contrast.Incorrect.Current.ToMetric(), contrast.Incorrect.Difference)
+            new(l["History_EventGuesserQuestions"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
+            new(l["History_EventGuesserCorrect"], contrast.Correct.Current.ToMetric(), contrast.Correct.Difference),
+            new(l["History_EventGuesserIncorrect"], contrast.Incorrect.Current.ToMetric(), contrast.Incorrect.Difference)
         };
 
     private static string RangeTitle(DateOnly starts, DateOnly ends) =>

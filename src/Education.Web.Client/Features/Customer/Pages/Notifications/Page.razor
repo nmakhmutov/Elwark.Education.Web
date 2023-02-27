@@ -6,7 +6,10 @@
 @layout MainLayout
 @attribute [Authorize]
 
-<PageTitle>@L["Notifications"]</PageTitle>
+<PageTitle>
+    @L["Notifications"]
+</PageTitle>
+
 <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
     <section class="grid">
         <section class="account">
@@ -76,7 +79,7 @@
                             DisableElevation
                             Variant="Variant.Filled"
                             Color="Color.Primary"
-                            Text="@L["Button:ShowMore"]"
+                            Text="@L["Shared_ButtonShowMore"]"
                             IsLoading="@_isMoreLoading"
                             OnClick="@LoadMore"/>
                     </asside>
@@ -94,7 +97,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Account"].Value, CustomerUrl.Root)
+        new BreadcrumbItem(L["Account_Title"].Value, CustomerUrl.Root)
     };
 
     [Inject]

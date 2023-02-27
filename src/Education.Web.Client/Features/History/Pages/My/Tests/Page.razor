@@ -4,7 +4,9 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>@_title</PageTitle>
+<PageTitle>
+    @_title
+</PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
     <EduPageHeader Title="@_title" Breadcrumbs="@Breadcrumbs"/>
@@ -102,7 +104,7 @@
             "easy" => L["Tests:Easy"],
             "hard" => L["Tests:Hard"],
             "mixed" => L["Tests:Mixed"],
-            _ => L["Error:NotFound"]
+            _ => L["Shared_NotFound"]
             };
 
     protected override async Task OnParametersSetAsync() =>
@@ -111,7 +113,7 @@
             "easy" => await UserService.GetEasyTestStatisticsAsync(),
             "hard" => await UserService.GetHardTestStatisticsAsync(),
             "mixed" => await UserService.GetMixedTestStatisticsAsync(),
-            _ => ApiResult<TestStatisticsModel>.Fail(Error.Create(L["Error:NotFound"], 404))
+            _ => ApiResult<TestStatisticsModel>.Fail(Error.Create(L["Shared_NotFound"], 404))
             };
 
 }

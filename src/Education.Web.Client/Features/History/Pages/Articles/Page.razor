@@ -4,7 +4,9 @@
 @using Education.Web.Client.Features.History.Services.Article
 @layout HistoryLayout
 
-<PageTitle>@_title</PageTitle>
+<PageTitle>
+    @_title
+</PageTitle>
 
 <ApiViewer Result="@_result" Context="result">
     @switch (result.Article)
@@ -60,6 +62,7 @@
 </ApiViewer>
 
 @code {
+    
     private string? _title;
     private ApiResult<ArticleCompositionModel> _result = ApiResult<ArticleCompositionModel>.Loading();
 

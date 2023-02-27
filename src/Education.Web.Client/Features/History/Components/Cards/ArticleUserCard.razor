@@ -7,14 +7,14 @@
             ArticleId="@ArticleId"
             OnBookmarkClick="@OnBookmarkClick"/>
 
-        <MudTooltip Text="@L["Article:ILikeThis"]">
+        <MudTooltip Text="@L["Shared_ILikeThis"]">
             <MudIconButton
                 Icon="@Icons.Material.Rounded.ThumbUp"
                 OnClick="@OnLike"
                 Color="@(_isLiked == true ? Color.Primary : Color.Default)"/>
         </MudTooltip>
 
-        <MudTooltip Text="@L["Article:IDislikeThis"]">
+        <MudTooltip Text="@L["Shared_IDislikeThis"]">
             <MudIconButton
                 Icon="@Icons.Material.Rounded.ThumbDown"
                 OnClick="@OnDislike"
@@ -22,7 +22,10 @@
         </MudTooltip>
     </MudToolBar>
 
-    <ArticleRating Rating="@Rating" ShowDetails Class="d-flex flex-column align-center justify-center"/>
+    <ArticleRating
+        Class="d-flex flex-column align-center justify-center"
+        Rating="@Rating"
+        ShowDetails/>
 </section>
 
 @code {

@@ -7,7 +7,7 @@
             @Article.Title
         </h1>
         <Breadcrumbs Items="@Breadcrumbs" Class="pa-3"/>
-        <MudText Typo="Typo.body1" Class="mw-sm" Align="Align.Center">
+        <MudText  Class="w-max-960" Typo="Typo.body1" Align="Align.Center">
             @Article.Description
         </MudText>
     </header>
@@ -54,8 +54,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"], HistoryUrl.Root),
-        new BreadcrumbItem(L[$"Epoch:{Article.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Article.Epoch))
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L[$"History_Epoch{Article.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Article.Epoch))
     };
 
     [Inject]

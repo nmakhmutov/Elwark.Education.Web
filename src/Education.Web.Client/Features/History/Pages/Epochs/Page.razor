@@ -6,10 +6,12 @@
 @using Education.Web.Client.Models
 @layout HistoryLayout
 
-<PageTitle>@L[$"Epoch:{_request.Epoch.ToFastString()}"]</PageTitle>
+<PageTitle>
+    @L[$"History_Epoch{_request.Epoch.ToFastString()}"]
+</PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
-    <EduPageHeader Title="@L[$"Epoch:{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>
+    <EduPageHeader Title="@L[$"History_Epoch{_request.Epoch.ToFastString()}"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="_result" Context="result">
@@ -39,7 +41,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["Subject:History"].Value, HistoryUrl.Root)
+        new BreadcrumbItem(L["History_Title"].Value, HistoryUrl.Root)
     };
 
     [Inject]
@@ -76,7 +78,7 @@
         }
         else
         {
-            var error = Error.Create(L["Error:NotFound"], 404);
+            var error = Error.Create(L["Shared_NotFound"], 404);
             _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Fail(error);
         }
     }
