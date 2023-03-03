@@ -1,7 +1,4 @@
 @using Education.Web.Client.Features.History.Services.Store.Model
-@using Education.Web.Client.Features.History.Services.User.Model
-@using Education.Web.Client.Models
-
 <article class="mud-paper pa-3">
     <img class="rounded object-cover object-center fluid w-100 mb-3" src="@Product.ImageUrl" alt="@Product.Title" loading="lazy"/>
     <MudText Class="one-line-text" Typo="Typo.subtitle1">
@@ -68,11 +65,9 @@
     [Parameter]
     public EventCallback<ProductModel> OnPurchaseClick { get; set; }
 
-    protected override void OnParametersSet()
-    {
+    protected override void OnParametersSet() =>
         _subtitle = Product.Inventories.Length > 1
             ? L["Product:InventoryCount", Product.Inventories.Length]
             : Product.Inventories[0].Category.Title;
-    }
 
 }

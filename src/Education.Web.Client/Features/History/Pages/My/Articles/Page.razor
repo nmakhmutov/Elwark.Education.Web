@@ -1,4 +1,4 @@
-@page "/history/my/articles/{id}"
+@page "/history/my/article/{id}"
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.User
 @using Education.Web.Client.Features.History.Services.User.Model
@@ -64,7 +64,7 @@
         _breadcrumbs = new List<BreadcrumbItem>
         {
             new(L["History_Title"].Value, HistoryUrl.Root),
-            new(L[$"History_Epoch{epoch.ToFastString()}"].Value, HistoryUrl.Content.Epoch(epoch))
+            new(L[$"History_Epoch{epoch.ToFastString()}"].Value, HistoryUrl.Content.Articles(epoch))
         };
     }
 

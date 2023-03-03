@@ -14,7 +14,7 @@ public sealed record ArticleStatisticsModel(
     public sealed record TotalModel(ulong Tests, ulong Score, uint Questions, TimeSpan TimeSpent);
 
     public sealed record ConclusionModel(
-        ConclusionStatus Status,
+        TestStatus Status,
         ScoreModel Score,
         AnswerRatioModel AnswerRatio,
         TimeSpan TimeSpent,

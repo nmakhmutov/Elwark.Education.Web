@@ -6,7 +6,7 @@ namespace Education.Web.Client.Features.History.Services.Test.Model;
 
 public abstract record TestConclusion(
     string TestId,
-    ConclusionStatus Status,
+    TestStatus Status,
     ScoreModel MaxScore,
     TimeSpan TestDuration,
     ScoreModel UserScore,
@@ -18,7 +18,7 @@ public abstract record TestConclusion(
     public sealed record EasyTestModel(
         string TestId,
         ArticleTitleModel Article,
-        ConclusionStatus Status,
+        TestStatus Status,
         ScoreModel MaxScore,
         TimeSpan TestDuration,
         ScoreModel UserScore,
@@ -34,7 +34,7 @@ public abstract record TestConclusion(
     public sealed record HardTestModel(
         string TestId,
         ArticleTitleModel Article,
-        ConclusionStatus Status,
+        TestStatus Status,
         ScoreModel MaxScore,
         TimeSpan TestDuration,
         ScoreModel UserScore,
@@ -49,7 +49,7 @@ public abstract record TestConclusion(
 
     public sealed record MixedTestModel(
         string TestId,
-        ConclusionStatus Status,
+        TestStatus Status,
         ScoreModel MaxScore,
         TimeSpan TestDuration,
         ScoreModel UserScore,

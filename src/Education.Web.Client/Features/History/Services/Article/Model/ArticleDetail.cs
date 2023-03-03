@@ -10,7 +10,7 @@ public abstract record ArticleDetail(
     MarkupString Content,
     string ImageUrl,
     EpochType Epoch,
-    string[] Tags
+    ContentRatingModel Rating
 )
 {
     public sealed record BattleModel(
@@ -25,9 +25,9 @@ public abstract record ArticleDetail(
         MarkupString Location,
         MarkupString Result,
         ImageModel? Map,
-        string[] Tags,
+        ContentRatingModel Rating,
         ConflictPartyModel[] ConflictParties
-    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Tags);
+    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Rating);
 
     public sealed record EmpireModel(
         string Id,
@@ -43,8 +43,8 @@ public abstract record ArticleDetail(
         uint? Duration,
         uint MaxArea,
         uint MaxPopulation,
-        string[] Tags
-    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Tags);
+        ContentRatingModel Rating
+    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Rating);
 
     public sealed record GeneralModel(
         string Id,
@@ -53,8 +53,8 @@ public abstract record ArticleDetail(
         MarkupString Content,
         string ImageUrl,
         EpochType Epoch,
-        string[] Tags
-    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Tags);
+        ContentRatingModel Rating
+    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Rating);
 
     public sealed record PersonModel(
         string Id,
@@ -65,7 +65,7 @@ public abstract record ArticleDetail(
         EpochType Epoch,
         PersonBirthdayModel? Born,
         PersonBirthdayModel? Died,
-        string[] Tags,
+        ContentRatingModel Rating,
         PersonalDetailModel[] Details
-    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Tags);
+    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Rating);
 }

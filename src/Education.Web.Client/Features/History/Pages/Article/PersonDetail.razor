@@ -55,7 +55,7 @@
         <ArticleUserCard
             Class="rating"
             ArticleId="@Person.Id"
-            Rating="@Rating"
+            Rating="@Person.Rating"
             UserActivity="@UserActivity"
             OnBookmarkClick="@OnBookmarkClick"
             OnLikeClick="@OnLikeClick"
@@ -84,7 +84,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L[$"History_Epoch{Person.Epoch.ToFastString()}"], HistoryUrl.Content.Epoch(Person.Epoch))
+        new BreadcrumbItem(L[$"History_Epoch{Person.Epoch.ToFastString()}"], HistoryUrl.Content.Articles(Person.Epoch))
     };
 
     [Inject]
@@ -95,9 +95,6 @@
 
     [Parameter, EditorRequired]
     public ArticleDetail.PersonModel Person { get; set; } = default!;
-
-    [Parameter, EditorRequired]
-    public ContentRatingModel Rating { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public UserActivityOverviewModel UserActivity { get; set; } = default!;

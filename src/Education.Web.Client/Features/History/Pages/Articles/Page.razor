@@ -1,70 +1,48 @@
-@page "/history/articles/{id}"
-@using Education.Web.Client.Features.History.Services.Article.Model
-@using Education.Web.Client.Features.History.Services.User
+@page "/history/articles"
+@using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Article
+@using Education.Web.Client.Features.History.Services.Article.Request
+@using Education.Web.Client.Features.History.Services.User
+@using Education.Web.Client.Models
 @layout HistoryLayout
 
 <PageTitle>
-    @_title
+    @L["History_Articles"]
 </PageTitle>
 
-<ApiViewer Result="@_result" Context="result">
-    @switch (result.Article)
-    {
-        case ArticleDetail.BattleModel battle:
-            <BattleDetail
-                Battle="@battle"
-                Rating="@result.Rating"
-                HasTest="@result.HasTest"
-                UserActivity="@result.UserActivity"
-                RelatedArticles="@result.RelatedArticles"
-                OnLikeClick="@LikeAsync"
-                OnDislikeClick="@DislikeAsync"
-                OnBookmarkClick="@ToggleBookmarkAsync"/>
-            break;
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@L["History_Articles"]" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
 
-        case ArticleDetail.EmpireModel empire:
-            <EmpireDetail
-                Empire="@empire"
-                Rating="@result.Rating"
-                HasTest="@result.HasTest"
-                UserActivity="@result.UserActivity"
-                RelatedArticles="@result.RelatedArticles"
-                OnLikeClick="@LikeAsync"
-                OnDislikeClick="@DislikeAsync"
-                OnBookmarkClick="@ToggleBookmarkAsync"/>
-            break;
-
-        case ArticleDetail.GeneralModel article:
-            <GeneralDetail
-                Article="@article"
-                Rating="@result.Rating"
-                HasTest="@result.HasTest"
-                UserActivity="@result.UserActivity"
-                RelatedArticles="@result.RelatedArticles"
-                OnLikeClick="@LikeAsync"
-                OnDislikeClick="@DislikeAsync"
-                OnBookmarkClick="@ToggleBookmarkAsync"/>
-            break;
-
-        case ArticleDetail.PersonModel person:
-            <PersonDetail
-                Person="@person"
-                Rating="@result.Rating"
-                HasTest="@result.HasTest"
-                UserActivity="@result.UserActivity"
-                RelatedArticles="@result.RelatedArticles"
-                OnLikeClick="@LikeAsync"
-                OnDislikeClick="@DislikeAsync"
-                OnBookmarkClick="@ToggleBookmarkAsync"/>
-            break;
-    }
+<ApiViewer Result="_result" Context="result">
+    <EduContainer>
+        <EduFillGrid Class="mb-6 mb-sm-12">
+            @foreach (var (article, activity) in result.Items)
+            {
+                <ArticleCard
+                    Article="@article"
+                    Activity="@activity"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            }
+        </EduFillGrid>
+        <MudPagination
+            Class="d-flex justify-center py-3 py-sm-6"
+            Rectangular
+            DisableElevation
+            Selected="@CurrentPage"
+            SelectedChanged="@OnPagination"
+            Count="@TotalPages"/>
+    </EduContainer>
 </ApiViewer>
 
 @code {
-    
-    private string? _title;
-    private ApiResult<ArticleCompositionModel> _result = ApiResult<ArticleCompositionModel>.Loading();
+    private GetArticlesRequest _request = new(EpochType.None, 1, 20);
+    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History_Title"].Value, HistoryUrl.Root)
+    };
 
     [Inject]
     private IHistoryArticleService ArticleService { get; set; } = default!;
@@ -72,34 +50,52 @@
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
 
-    [Parameter]
-    public string Id { get; set; } = string.Empty;
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter, SupplyParameterFromQuery(Name = "epoch")]
+    public string? EpochString { get; set; }
+
+    [Parameter, SupplyParameterFromQuery(Name = "page")]
+    public int CurrentPage { get; set; }
+
+    private int TotalPages => _result.IsSuccess
+        ? (int)double.Ceiling((double)_result.Value.Count / _request.Limit)
+        : 1;
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = ApiResult<ArticleCompositionModel>.Loading();
-        _result = await ArticleService.GetAsync(Id);
+        if (CurrentPage < 1)
+            CurrentPage = 1;
 
-        if (_result.IsSuccess)
-            _title = _result.Value.Article.Title;
+        _result = await ArticleService
+            .GetAsync(_request = _request with { Epoch = GetEpoch(), Offset = (CurrentPage - 1) * _request.Limit });
     }
 
-    private async Task<bool> LikeAsync()
+    private async Task<bool> OnBookmarkClick(string articleId)
     {
-        var response = await UserService.LikeAsync(Id);
-        return response.IsSuccess;
-    }
-
-    private async Task<bool> DislikeAsync()
-    {
-        var response = await UserService.DislikeAsync(Id);
-        return response.IsSuccess;
-    }
-
-    private async Task<bool> ToggleBookmarkAsync(string id)
-    {
-        var result = await UserService.ToggleBookmarkAsync(id);
+        var result = await UserService.ToggleBookmarkAsync(articleId);
         return result is { IsSuccess: true, Value: true };
+    }
+
+    private void OnPagination(int page)
+    {
+        _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
+    }
+
+    private EpochType GetEpoch()
+    {
+        if (string.IsNullOrEmpty(EpochString))
+            return EpochType.None;
+
+        if (Enum.TryParse<EpochType>(EpochString, true, out var value))
+            return value;
+
+        return EpochType.None;
     }
 
 }

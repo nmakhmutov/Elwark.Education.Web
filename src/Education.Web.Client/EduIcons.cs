@@ -27,8 +27,10 @@ public static class EduIcons
 
     public const string History = Icons.Material.Outlined.HistoryEdu;
 
-    public const string Epochs = Icons.Material.Outlined.HistoryToggleOff;
+    public const string Articles = Icons.Material.Outlined.Article;
 
+    public const string Courses = Icons.Material.Outlined.AutoStories;
+    
     public const string Empires = Icons.Material.Outlined.Foundation;
 
     public const string Tests = Icons.Material.Outlined.School;

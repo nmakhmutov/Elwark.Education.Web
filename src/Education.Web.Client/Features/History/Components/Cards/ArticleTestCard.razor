@@ -2,30 +2,31 @@
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     @if (HasTest && UserActivity.PassedTests > 0)
     {
-        <MudLink Typo="Typo.subtitle2" Href="@HistoryUrl.User.MyArticles(ArticleId)">
+        <MudLink Class="mt-3" Typo="Typo.subtitle2" Href="@HistoryUrl.User.MyArticle(ArticleId)">
             @L["Test:MyProgress"]
         </MudLink>
     }
     else
     {
-        <MudText Typo="Typo.subtitle2">
+        <MudText Class="mt-3" Typo="Typo.subtitle2">
             @L["Test:MyProgress"]
         </MudText>
     }
 
     <ArticleProgressView
-        Class="pt-3 pb-3 pb-sm-6"
+        Class="mt-3"
         PassedTests="@UserActivity.PassedTests"
         TimeSpent="@UserActivity.TimeSpent"/>
 
     @if (HasTest)
     {
         <MudButton
-            FullWidth
-            DisableElevation
+            Class="mt-3"
+            Link="@HistoryUrl.ArticleTest.Index(ArticleId)"
             Variant="Variant.Filled"
             Color="Color.Primary"
-            Link="@HistoryUrl.ArticleTest.Index(ArticleId)">
+            FullWidth
+            DisableElevation>
             @L["Test:Pass"]
         </MudButton>
     }

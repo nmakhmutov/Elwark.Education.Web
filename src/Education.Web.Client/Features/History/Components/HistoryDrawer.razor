@@ -1,18 +1,21 @@
 @using Education.Web.Client.Features.History.Services
-<MudDrawer Open="@DrawerOpen" OpenChanged="OnDrawerOpenChanged" ClipMode="DrawerClipMode.Docked" Breakpoint="Breakpoint.Lg" Elevation="0">
+<MudDrawer Open="@DrawerOpen"
+           OpenChanged="OnDrawerOpenChanged"
+           ClipMode="DrawerClipMode.Docked"
+           Breakpoint="Breakpoint.Lg"
+           Elevation="0">
     <MudNavMenu Color="Color.Primary" Dense Margin="Margin.Dense" Rounded="true" Class="pa-2">
         <MudNavLink Match="NavLinkMatch.All" Href="@HistoryUrl.Root" Icon="@Icons.Material.Outlined.Home">
             @L["Shared_HomePage"]
         </MudNavLink>
 
-        <MudNavGroup Title="@L["History_Epochs"]" Icon="@EduIcons.Epochs">
-            @foreach (var epoch in EpochTypeExtensions.List[1..])
-            {
-                <MudNavLink Href="@HistoryUrl.Content.Epoch(epoch)">
-                    @L[$"History_Epoch{epoch.ToFastString()}"]
-                </MudNavLink>
-            }
-        </MudNavGroup>
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Content.Courses" Icon="@EduIcons.Courses">
+            @L["History_Courses"]
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Content.Articles()" Icon="@EduIcons.Articles">
+            @L["History_Articles"]
+        </MudNavLink>
 
         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Content.Empires" Icon="@EduIcons.Empires">
             @L["History_Empires"]
@@ -23,10 +26,12 @@
         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.ArticleTest.Index()" Icon="@EduIcons.Tests">
             @L["Tests"]
         </MudNavLink>
+
         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.EventGuesser.Index" Icon="@EduIcons.EventGuesser">
             @L["History_EventGuesser"]
         </MudNavLink>
-        <MudNavGroup Title="@L["Leaderboards"]" Icon="@EduIcons.Leaderboard" Expanded>
+
+        <MudNavGroup Title="@L["Leaderboards"]" Icon="@EduIcons.Leaderboard">
             <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Leaderboard.Global">
                 @L["Leaderboard:GlobalTitle"]
             </MudNavLink>
@@ -34,6 +39,7 @@
                 @L["Leaderboard:MonthlyTitle"]
             </MudNavLink>
         </MudNavGroup>
+
         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Store.Index" Icon="@EduIcons.InventoryStore">
             @L["Shared_InventoryStore"]
         </MudNavLink>
@@ -43,20 +49,25 @@
                 <MudDivider Class="my-2"/>
 
                 <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyProfile" Icon="@EduIcons.Profile">
-                    @L["Profile"]
+                    @L["Shared_UserProfile"]
                 </MudNavLink>
+
                 <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyBackpack" Icon="@EduIcons.Backpack">
                     @L["Shared_Backpack"]
                 </MudNavLink>
+
                 <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyBookmarks" Icon="@EduIcons.Bookmarks">
                     @L["Bookmarks"]
                 </MudNavLink>
+
                 <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyQuests" Icon="@EduIcons.Quests">
                     @L["Quests"]
                 </MudNavLink>
+
                 <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyStatistics" Icon="@EduIcons.Statistics">
                     @L["Statistics"]
                 </MudNavLink>
+
                 <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyAchievements" Icon="@EduIcons.Achievements">
                     @L["Shared_Achievements"]
                 </MudNavLink>

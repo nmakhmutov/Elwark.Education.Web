@@ -1,0 +1,74 @@
+@page "/history/courses"
+@using Education.Web.Client.Features.History.Services.Course
+@using Education.Web.Client.Features.History.Services.Course.Request
+@using Education.Web.Client.Models
+@using Education.Web.Client.Features.History.Services
+@layout HistoryLayout
+
+<PageTitle>
+    @L["History_Courses"]
+</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@L["History_Courses"]" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
+
+<ApiViewer Result="_result" Context="result">
+    <EduContainer>
+        <EduFillGrid Class="mb-6 mb-sm-12">
+            @foreach (var item in result.Items)
+            {
+                <CourseCard Course="@item"/>
+            }
+        </EduFillGrid>
+        <MudPagination
+            Class="d-flex justify-center py-3 py-sm-6"
+            Rectangular
+            DisableElevation
+            Selected="@CurrentPage"
+            SelectedChanged="@OnPagination"
+            Count="@TotalPages"/>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+    private GetCourseRequest _request = new(0, 20);
+    private ApiResult<PagingOffsetModel<CourseOverviewModel>> _result = ApiResult<PagingOffsetModel<CourseOverviewModel>>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History_Title"].Value, HistoryUrl.Root)
+    };
+
+    [Inject]
+    private IHistoryCourseService CourseService { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter, SupplyParameterFromQuery(Name = "page")]
+    public int CurrentPage { get; set; }
+
+    private int TotalPages => _result.IsSuccess
+        ? (int)double.Ceiling((double)_result.Value.Count / _request.Limit)
+        : 1;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (CurrentPage < 1)
+            CurrentPage = 1;
+
+        _result = await CourseService
+            .GetAsync(_request = _request with { Offset = (CurrentPage - 1) * _request.Limit });
+    }
+
+    private void OnPagination(int page)
+    {
+        _result = ApiResult<PagingOffsetModel<CourseOverviewModel>>.Loading();
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
+    }
+
+}

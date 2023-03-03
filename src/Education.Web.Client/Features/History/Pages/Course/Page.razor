@@ -1,0 +1,51 @@
+@page "/history/course/{id}"
+@using Education.Web.Client.Features.History.Services.Course
+@using Education.Web.Client.Features.History.Services.Course.Model
+@layout HistoryLayout
+
+<PageTitle>
+    @_title
+</PageTitle>
+
+<ApiViewer Result="@_result" Context="result">
+    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+        <EduPageHeader Title="@result.Title" Breadcrumbs="@Breadcrumbs"/>
+    </EduContainer>
+
+    <EduContainer Class="pb-3 pb-sm-6">
+        <EduFillGrid>
+            @foreach (var article in result.Articles)
+            {
+                <ArticleCard Article="@article"/>
+            }
+        </EduFillGrid>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+    private string? _title;
+    private ApiResult<CourseModel> _result = ApiResult<CourseModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History_Title"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["History_Courses"].Value, HistoryUrl.Content.Courses)
+    };
+
+    [Inject]
+    private IHistoryCourseService CourseService { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _result = await CourseService.GetAsync(Id);
+        if (_result.IsSuccess)
+            _title = _result.Value.Title;
+    }
+
+}

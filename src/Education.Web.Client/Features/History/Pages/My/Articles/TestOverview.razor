@@ -40,7 +40,7 @@
                         <MudText Typo="Typo.subtitle1" Class="mr-3">
                             @DateTimeFormatter(conclusion.CompletedAt)
                         </MudText>
-                        <MudText Typo="@Typo.subtitle1" Color="@conclusion.Status.GetColor()">
+                        <MudText Typo="@Typo.subtitle1" Color="@GetColor(conclusion.Status)">
                             @L[$"ConclusionStatus:{conclusion.Status}"]
                         </MudText>
                     </div>
@@ -72,5 +72,15 @@
 
     [Parameter]
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
+
+    public static Color GetColor(TestStatus status) =>
+        status switch
+        {
+            TestStatus.Succeeded => Color.Success,
+            TestStatus.Failed => Color.Error,
+            TestStatus.TimeExceeded => Color.Warning,
+            TestStatus.MistakesExceeded => Color.Warning,
+            _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
+            };
 
 }

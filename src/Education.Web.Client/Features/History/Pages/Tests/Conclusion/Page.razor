@@ -76,12 +76,13 @@
             Navigation.NavigateTo(HistoryUrl.ArticleTest.Index());
     }
 
-    private static Severity GetColor(ConclusionStatus status) =>
-        status switch {
-            ConclusionStatus.Succeeded => Severity.Success,
-            ConclusionStatus.Failed => Severity.Error,
-            ConclusionStatus.TimeExceeded => Severity.Warning,
-            ConclusionStatus.MistakesExceeded => Severity.Warning,
+    private static Severity GetColor(TestStatus status) =>
+        status switch 
+        {
+            TestStatus.Succeeded => Severity.Success,
+            TestStatus.Failed => Severity.Error,
+            TestStatus.TimeExceeded => Severity.Warning,
+            TestStatus.MistakesExceeded => Severity.Warning,
             _ => Severity.Info
             };
 

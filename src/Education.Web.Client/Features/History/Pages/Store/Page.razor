@@ -31,9 +31,10 @@ else
 {
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <ProductsGrid Products="@_source" Filter="@_filter" Context="product">
-            <ProductCard Product="@product.Product"
-                         ShowLockBadge="@(!product.IsAffordable)"
-                         OnPurchaseClick="@OpenPurchaseDialog"/>
+            <ProductCard
+                Product="@product.Product"
+                ShowLockBadge="@(!product.IsAffordable)"
+                OnPurchaseClick="@OpenPurchaseDialog"/>
         </ProductsGrid>
     </EduContainer>
 }

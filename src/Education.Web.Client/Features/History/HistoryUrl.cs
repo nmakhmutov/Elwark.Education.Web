@@ -12,20 +12,28 @@ public static class HistoryUrl
     public static class Content
     {
         public const string Empires = $"{Root}/empires";
+        public const string Courses = $"{Root}/courses";
 
-        public static string Epoch(EpochType epoch) =>
-            $"{Root}/epochs/{epoch.ToFastString().ToLowerInvariant()}";
+        public static string Articles() =>
+            $"{Root}/articles";
+
+        public static string Articles(EpochType epoch) =>
+            $"{Root}/articles?epoch={epoch.ToFastString().ToLowerInvariant()}";
 
         public static string Article(string articleId) =>
-            $"{Root}/articles/{articleId}";
+            $"{Root}/article/{articleId}";
+
+        public static string Course(string courseId) =>
+            $"{Root}/course/{courseId}";
     }
 
     public static class ArticleTest
     {
-        public static string Index(string? articleId = null) =>
-            string.IsNullOrEmpty(articleId)
-                ? $"{Root}/tests"
-                : $"{Root}/tests?article={articleId}";
+        public static string Index() =>
+            $"{Root}/tests";
+
+        public static string Index(string articleId) =>
+            $"{Root}/tests?article={articleId}";
 
         public static string Test(string testId) =>
             $"{Root}/tests/{testId}";
@@ -87,7 +95,10 @@ public static class HistoryUrl
 
         public const string MyBookmarks = $"{My}/bookmarks";
 
-        public static string MyArticles(string articleId) =>
-            $"{My}/articles/{articleId}";
+        public static string MyArticle(string articleId) =>
+            $"{My}/article/{articleId}";
+
+        public static string MyCourse(string courseId) =>
+            $"{My}/course/{courseId}";
     }
 }
