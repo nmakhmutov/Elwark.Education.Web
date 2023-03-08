@@ -20,9 +20,6 @@ public sealed class ApiResult<T>
     public bool IsFailed =>
         Status == Status.Fail;
 
-    public bool IsLoaded =>
-        Status != Status.Loading;
-
     public T Value =>
         _data ?? throw new ArgumentNullException(nameof(Value));
 

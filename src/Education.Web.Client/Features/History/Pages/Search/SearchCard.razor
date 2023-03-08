@@ -1,0 +1,41 @@
+@using Education.Web.Client.Features.History.Services
+@using Education.Web.Client.Features.History.Services.Search.Model
+
+<article class="mud-paper card @Class">
+    <div class="card-header">
+        <a href="@Search.Href">
+            <img src="@Search.ImageUrl" alt="@Search.Title" loading="lazy"/>
+        </a>
+    </div>
+
+    <section class="content">
+        <header class="d-flex flex-column px-3 pt-3">
+            <span class="mud-text-secondary mud-typography-body2">
+                @Search.Category
+            </span>
+            <a class="mud-link mud-primary-text mud-link-underline-hover mud-typography-h6 one-line-text"
+               href="@Search.Href"
+               title="@Search.Title">
+                @Search.Title
+            </a>
+        </header>
+
+        <MudText Class="pa-3 flex-grow-1" Typo="Typo.body2">
+            @Search.Overview
+        </MudText>
+
+    </section>
+</article>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public SearchModel Search { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

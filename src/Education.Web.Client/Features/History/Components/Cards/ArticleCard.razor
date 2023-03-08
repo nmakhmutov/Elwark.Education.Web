@@ -1,42 +1,54 @@
 @using Education.Web.Client.Features.History.Services
 
-<section class="mud-paper card @(Horizontal ? "horizontal" : "vertical") @Class">
-    <header class="card-header">
+<article class="mud-paper card @(Horizontal ? "horizontal" : "vertical") @Class">
+    <div class="card-header">
         <a href="@HistoryUrl.Content.Article(Article.Id)">
             <img src="@Article.ThumbnailUrl" alt="@Article.Title" loading="lazy"/>
         </a>
-    </header>
+    </div>
 
-    <article class="content">
-        <aside class="d-flex align-center justify-space-between px-3">
+    <section class="content">
+        <header class="d-flex justify-space-between gap-3 px-3 pt-3">
+            <div class="d-flex flex-column gap-1">
+                <a class="mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
+                   href="@HistoryUrl.Content.Articles(Article.Epoch)">
+                    @L[$"History_Epoch{Article.Epoch.ToFastString()}"]
+                </a>
+                <a class="mud-link mud-primary-text mud-link-underline-hover mud-typography-h6 one-line-text"
+                   href="@HistoryUrl.Content.Article(Article.Id)"
+                   title="@Article.Title">
+                    @Article.Title
+                </a>
+            </div>
+            @if (OnBookmarkClick is not null)
+            {
+                <BookmarkButton
+                    ArticleId="@Article.Id"
+                    IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            }
+        </header>
+
+        @if (HideOverview)
+        {
+            <div class="flex-grow-1 pt-3"></div>
+        }
+        else
+        {
+            <MudText Class="px-3 pt-3 flex-grow-1" Typo="Typo.body2">
+                @if (ShortOverview && Article.Overview.Length > 140)
+                {
+                    @($"{Article.Overview[..137].TrimEnd()}...")
+                }
+                else
+                {
+                    @Article.Overview
+                }
+            </MudText>
+        }
+
+        <aside class="d-flex align-center justify-space-between pa-3">
             <ContentRating Rating="@Article.Rating" Size="Size.Small" ShowTooltip/>
-
-            <BookmarkButton
-                ArticleId="@Article.Id"
-                IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                OnBookmarkClick="@OnBookmarkClick"/>
-        </aside>
-
-        <div class="px-3 pb-3">
-            <MudLink Href="@HistoryUrl.Content.Article(Article.Id)" Typo="Typo.h6">
-                @Article.Title
-            </MudLink>
-        </div>
-
-        <MudText Class="px-3 pb-3" Typo="Typo.body2">
-            @Article.Overview
-        </MudText>
-
-        <div class="d-flex align-center justify-space-between px-3 pb-3">
-            <MudChip
-                Class="ma-0"
-                Size="Size.Small"
-                Color="Color.Primary"
-                Variant="Variant.Text"
-                Text="@L[$"History_Epoch{Article.Epoch.ToFastString()}"]"
-                Link="@HistoryUrl.Content.Articles(Article.Epoch)"
-                DisableRipple
-                Label/>
 
             @if (Activity is not null)
             {
@@ -67,10 +79,10 @@
                     </MudTooltip>
                 </div>
             }
-        </div>
+        </aside>
 
-    </article>
-</section>
+    </section>
+</article>
 
 @code {
     private string? _href;
@@ -91,7 +103,13 @@
     public bool Horizontal { get; set; }
 
     [Parameter]
-    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+    public bool HideOverview { get; set; }
+
+    [Parameter]
+    public bool ShortOverview { get; set; }
+
+    [Parameter]
+    public Func<string, Task<bool>>? OnBookmarkClick { get; set; }
 
     protected override void OnParametersSet() =>
         _href = Activity?.PassedTests > 0 ? HistoryUrl.User.MyArticle(Article.Id) : null;

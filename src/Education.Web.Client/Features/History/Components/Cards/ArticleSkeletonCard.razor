@@ -1,0 +1,38 @@
+<article class="mud-paper @Class">
+    <div class="d-flex @(Horizontal ? "flex-row" : "flex-column") h-100">
+        <MudSkeleton
+            Class="@(Horizontal ? "skeleton-image-horizontal" : "skeleton-image-vertical")"
+            SkeletonType="SkeletonType.Rectangle"/>
+
+        <div class="d-flex flex-column @(Horizontal ? "w-66" : "w-100")">
+            <div class="pa-3 pa-sm-6">
+                <MudSkeleton Width="30%" Height="42px;"/>
+                <MudSkeleton Width="80%"/>
+                <MudSkeleton Width="100%"/>
+            </div>
+
+            <MudSpacer/>
+
+            @if (!HideFooter)
+            {
+                <div class="d-flex align-center pa-3 pa-sm-6">
+                    <MudSkeleton Width="64px" Height="40px" Class="ml-2"/>
+                    <MudSkeleton Width="105px" Height="40px" Class="ml-3"/>
+                </div>
+            }
+        </div>
+    </div>
+</article>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public bool Horizontal { get; set; }
+
+    [Parameter]
+    public bool HideFooter { get; set; }
+
+}

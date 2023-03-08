@@ -13,9 +13,7 @@
         <EduFillGrid Class="mb-6 mb-sm-12">
             @foreach (var hint in result.Hints)
             {
-                <MudText Typo="Typo.subtitle1">
-                    @hint.Title
-                </MudText>
+                <SearchCard Search="@hint"/>
             }
         </EduFillGrid>
 
@@ -30,7 +28,7 @@
 </ApiViewer>
 
 @code {
-    private SearchRequest _request = new("", true, Array.Empty<string>(), 0, 20);
+    private readonly SearchRequest _request = new(string.Empty, true, Array.Empty<string>(), 0, 20);
     private ApiResult<SearchResultModel> _result = ApiResult<SearchResultModel>.Loading();
 
     [Inject]
@@ -54,28 +52,18 @@
         if (CurrentPage < 1)
             CurrentPage = 1;
 
-        if (string.IsNullOrEmpty(Query) || Query.Length < 2)
-        {
-            _result = ApiResult<SearchResultModel>.Success(new SearchResultModel(Enumerable.Empty<SearchModel>(), new Dictionary<string, int>(), 0));
-            return;
-        }
-
-        _request = _request with { Q = Query, Offset = (CurrentPage - 1) * _request.Limit};
-
-        _result = await HistorySearchService.SearchAsync(_request);
+        _result = Query is { Length: > 1 }
+            ? await HistorySearchService
+                .SearchAsync(_request with { Q = Query, Offset = (CurrentPage - 1) * _request.Limit})
+            : ApiResult<SearchResultModel>.Success(
+                new SearchResultModel(Enumerable.Empty<SearchModel>(), new Dictionary<string, int>(), 0)
+                );
     }
 
     private void OnPagination(int page)
     {
-        CurrentPage = page;
-
-        var url = Navigation.GetUriWithQueryParameters(new Dictionary<string, object?>
-        {
-            ["q"] = Query,
-            ["page"] = CurrentPage
-        });
-
-        Navigation.NavigateTo(url);
+        _result = ApiResult<SearchResultModel>.Loading();
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
     }
 
 }

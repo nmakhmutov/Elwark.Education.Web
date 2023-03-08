@@ -8,25 +8,16 @@
 </PageTitle>
 
 <ApiViewer Result="@_result" Context="result">
-    <SpotlightGrid Class="mb-3 mb-sm-6" Articles="@result.Trends.Take(8)"/>
+    @* <SpotlightGrid Class="mb-3 mb-sm-6" Articles="@result.Trending.Take(8)"/> *@
 
-    <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-        <div class="header">
-            <h2>@L["History_Epochs"]</h2>
-        </div>
-        <EpochSlider/>
+    <EduContainer Class="py-3 py-sm-6" MaxWidth="@EduWidth.W1600">
+        <UnderlinedTitle Class="mb-6" Title="@L["History_TrendingArticles"]"/>
+        <FeaturedArticlesGrid Articles="@result.Trending"/>
     </EduContainer>
 
     <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-        <div class="header">
-            <h2>@L["Articles:Trending"]</h2>
-        </div>
-        <section class="four-column">
-            @foreach (var item in result.Trends.Skip(8))
-            {
-                <ArticleCard Article="@item"/>
-            }
-        </section>
+        <UnderlinedTitle Class="mb-3" Title="@L["History_Epochs"]"/>
+        <EpochSlider/>
     </EduContainer>
 
     <EduContainer Class="mb-3 mb-sm-6 grey darken-4" MaxWidth="@EduWidth.W1280">
@@ -34,48 +25,28 @@
     </EduContainer>
 
     <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-        <div class="two-column">
-            <section>
-                <div class="header">
-                    <h2>@L["Articles:Recent"]</h2>
-                </div>
-                @for (var i = 0; i < result.Recent.Length; i++)
-                {
-                    var item = result.Recent[i];
-
-                    <ArticleCard
-                        Class="@(i == result.Recent.Length - 1 ? null : "mb-3 mb-sm-6")"
-                        Article="@item"
-                        Horizontal/>
-                }
-            </section>
-
-            <section>
-                <div class="header">
-                    <h2>@L["Articles:TopBookmarked"]</h2>
-                </div>
-
-                <EduFitGrid>
-                    @foreach (var item in result.TopBookmarked)
+        <GridWithSidebar Class="mb-3 mb-sm-6">
+            <Content>
+                <UnderlinedTitle Class="mb-3" Title="@L["History_ResentArticles"]"/>
+                <EduFillGrid>
+                    @foreach (var article in result.Recent)
                     {
-                        <ArticleCard Article="@item"/>
+                        <ArticleCard Article="@article"/>
                     }
-                </EduFitGrid>
-            </section>
-        </div>
-    </EduContainer>
-
-    <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-        <div class="header">
-            <h2>@L["Articles:TopRatings"]</h2>
-        </div>
-
-        <section class="four-column">
-            @foreach (var item in result.TopRatings)
-            {
-                <ArticleCard Article="@item"/>
-            }
-        </section>
+                </EduFillGrid>
+            </Content>
+            <Sidebar>
+                <UnderlinedTitle Class="mb-3" Title="@L["History_TopRatedArticles"]"/>
+                @foreach (var article in result.Popular)
+                {
+                    <ArticleCard
+                        Class="mb-3 mb-sm-6"
+                        Article="@article"
+                        Horizontal
+                        HideOverview/>
+                }
+            </Sidebar>
+        </GridWithSidebar>
     </EduContainer>
 
     <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">

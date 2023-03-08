@@ -135,9 +135,7 @@
 
     @if (RelatedArticles.Length > 0)
     {
-        <MudText Typo="Typo.h5" Class="mt-3 mt-sm-6 mb-3">
-            @L["Articles:Related"]
-        </MudText>
+        <UnderlinedTitle Class="my-3 mt-sm-6" Title="@L["Articles:Related"]"/>
         <EduFillGrid>
             @foreach (var (article, activity) in RelatedArticles)
             {
