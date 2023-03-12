@@ -1,47 +1,51 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Test.Request
 @using Education.Web.Client.Models
+
 <section class="@Class">
-    <MudText Typo="Typo.h5" Class="mb-3">
-        @L["Article"]
-    </MudText>
-
-    <ArticleCard
-        Class="mb-3 mb-sm-6"
-        Article="@Article"
-        Activity="@Activity"
-        OnBookmarkClick="@OnBookmarkClick"
-        Horizontal/>
-
-    <MudText Typo="Typo.h5" Class="mb-3">
-        @L["Test:Type"]
-    </MudText>
-
-    @if (Tests.Any(x => x.IsAllowed))
-    {
-        <TestRadioGroup
-            SelectedTest="@HistorySettings.TestType"
-            SelectedTestChanged="@HistorySettings.ChangeTestTypeAsync"
-            Tests="@Tests" Class="mb-6"/>
-
-        <div class="d-flex justify-center">
-            <LoadingButton
-                DisableElevation
-                Color="Color.Primary"
-                Variant="Variant.Filled"
-                Size="Size.Large"
-                Text="@L["Test:Pass"]"
-                LoadingText="@L["Loading"]"
-                IsLoading="@_isLoading"
-                OnClick="@CreateTestAsync"/>
-        </div>
-    }
-    else
-    {
-        <MudText Typo="Typo.subtitle1">
-            @L["Test:NotAvailableForArticle", Article.Title]
+    <div class="mb-3 mb-sm-6">
+        <MudText Typo="Typo.h6" Class="mb-3">
+            @L["Article"]
         </MudText>
-    }
+
+        <ArticleCard
+            Article="@Article"
+            Activity="@Activity"
+            OnBookmarkClick="@OnBookmarkClick"
+            Horizontal/>
+    </div>
+
+    <div class="mb-3 mb-sm-6">
+        <MudText Typo="Typo.h6" Class="mb-3">
+            @L["Test:Type"]
+        </MudText>
+
+        @if (Tests.Any(x => x.IsAllowed))
+        {
+            <TestRadioGroup
+                SelectedTest="@HistorySettings.TestType"
+                SelectedTestChanged="@HistorySettings.ChangeTestTypeAsync"
+                Tests="@Tests" Class="mb-6"/>
+
+            <div class="d-flex justify-center">
+                <LoadingButton
+                    DisableElevation
+                    Color="Color.Primary"
+                    Variant="Variant.Filled"
+                    Size="Size.Large"
+                    Text="@L["Test:Pass"]"
+                    LoadingText="@L["Loading"]"
+                    IsLoading="@_isLoading"
+                    OnClick="@CreateTestAsync"/>
+            </div>
+        }
+        else
+        {
+            <MudText Typo="Typo.subtitle1">
+                @L["Test:NotAvailableForArticle", Article.Title]
+            </MudText>
+        }
+    </div>
 </section>
 
 @code {

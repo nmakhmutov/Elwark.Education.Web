@@ -1,12 +1,36 @@
-<h2 class="title @Class">
-    <span>@Title</span>
+<h2 class="@_classes">
+    <span>
+        @Title
+    </span>
+
+    @if (!string.IsNullOrEmpty(Href))
+    {
+        <MudLink Href="@Href">
+            @HrefTitle
+        </MudLink>
+    }
 </h2>
 
 @code {
+    string? _classes;
 
     [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
     public string? Class { get; set; }
+
+    [Parameter]
+    public string? Href { get; set; }
+
+    [Parameter]
+    public string? HrefTitle { get; set; }
+
+    protected override void OnParametersSet() =>
+        _classes = CssBuilder
+            .Default("title")
+            .AddClass("d-flex align-center justify-space-between", !string.IsNullOrEmpty(Href))
+            .AddClass(Class, !string.IsNullOrEmpty(Class))
+            .Build();
+
 }

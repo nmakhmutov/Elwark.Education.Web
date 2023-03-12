@@ -1,4 +1,5 @@
 using Education.Web.Client.Features.History.Services;
+using Education.Web.Client.Features.History.Services.Article.Request;
 
 namespace Education.Web.Client.Features.History;
 
@@ -19,6 +20,9 @@ public static class HistoryUrl
 
         public static string Articles(EpochType epoch) =>
             $"{Root}/articles?epoch={epoch.ToFastString().ToLowerInvariant()}";
+
+        public static string Articles(GetArticlesRequest.SortType sort) =>
+            $"{Root}/articles?sort={sort.ToString().ToLowerInvariant()}";
 
         public static string Article(string articleId) =>
             $"{Root}/article/{articleId}";

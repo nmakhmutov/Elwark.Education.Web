@@ -7,7 +7,7 @@
         </a>
     </div>
 
-    <section class="content">
+    <section class="content flex-grow-1">
         <header class="d-flex justify-space-between gap-3 px-3 pt-3">
             <div class="d-flex flex-column gap-1">
                 <a class="mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
@@ -36,9 +36,9 @@
         else
         {
             <MudText Class="px-3 pt-3 flex-grow-1" Typo="Typo.body2">
-                @if (ShortOverview && Article.Overview.Length > 140)
+                @if (ShortOverview && Article.Overview.Length > 120)
                 {
-                    @($"{Article.Overview[..137].TrimEnd()}...")
+                    @($"{Article.Overview[..117].TrimEnd()}...")
                 }
                 else
                 {

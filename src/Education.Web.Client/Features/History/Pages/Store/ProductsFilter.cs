@@ -15,7 +15,7 @@ public enum Sort
 public sealed record ProductsFilter(CategoryType Category, Sort Sort)
 {
     public static ProductsFilter Empty =>
-        new (CategoryType.None, Sort.Featured);
+        new(CategoryType.None, Sort.Featured);
 }
 
 internal static class Extensions
