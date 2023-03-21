@@ -3,18 +3,19 @@
 
 <article class="mud-paper card @Class">
     <div class="card-header">
-        <a href="@Search.Href">
+        <a href="@Search.ContentHref">
             <img src="@Search.ImageUrl" alt="@Search.Title" loading="lazy"/>
         </a>
     </div>
 
     <section class="content">
         <header class="d-flex flex-column px-3 pt-3">
-            <span class="mud-text-secondary mud-typography-body2">
-                @Search.Category
-            </span>
+            <a class="mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
+               href="@Search.CategoryHref">
+                @_categoryTitle
+            </a>
             <a class="mud-link mud-primary-text mud-link-underline-hover mud-typography-h6 one-line-text"
-               href="@Search.Href"
+               href="@Search.ContentHref"
                title="@Search.Title">
                 @Search.Title
             </a>
@@ -28,6 +29,7 @@
 </article>
 
 @code {
+    private string? _categoryTitle;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -37,5 +39,14 @@
 
     [Parameter]
     public string? Class { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _categoryTitle = Search.Category switch {
+            "Article" => L["History_Articles"].ToString(),
+            "Course"=>L["History_Courses"].ToString(),
+            _=> null
+            };
+    }
 
 }

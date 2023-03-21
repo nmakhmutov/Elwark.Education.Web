@@ -14,7 +14,7 @@
             @Conclusion.Article.Title
         </MudLink>
     </div>
-    <MudTable Items="@Conclusion.Questions" Hover Breakpoint="Breakpoint.Xs" Elevation="0">
+    <MudTable Class="mb-3 mb-sm-6" Items="@Conclusion.Questions" Breakpoint="Breakpoint.Xs" Elevation="0" Hover>
         <HeaderContent>
             <MudTh>@L["Question"]</MudTh>
             <MudTh>@L["Question:IsAnswered"]</MudTh>
@@ -25,13 +25,36 @@
                 @context.Title
             </MudTd>
             <MudTd DataLabel="@L["Question:IsAnswered"]">
-                <MudCheckBox ReadOnly Checked="@context.IsAnswered"/>
+                <MudIcon
+                    Size="Size.Small"
+                    Icon="@(context.IsAnswered ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close)"/>
             </MudTd>
             <MudTd DataLabel="@L["Question:IsCorrect"]">
-                <MudCheckBox ReadOnly Checked="@context.IsCorrect"/>
+                <MudIcon
+                    Size="Size.Small"
+                    Icon="@(context.IsCorrect ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close)"/>
             </MudTd>
         </RowTemplate>
+        <FooterContent>
+            <MudTh/>
+            <MudTh>
+                @Conclusion.Questions.Count(x => x.IsAnswered) / @Conclusion.Questions.Length
+            </MudTh>
+            <MudTh>
+                @Conclusion.Questions.Count(x => x.IsCorrect) / @Conclusion.Questions.Length
+            </MudTh>
+        </FooterContent>
     </MudTable>
+
+    <div class="d-flex justify-center">
+        <MudButton
+            Href="@HistoryUrl.ArticleTest.Index(Conclusion.Article.Id)"
+            Color="Color.Primary"
+            Variant="Variant.Filled"
+            DisableElevation>
+            @L["Shared_TakeTheTestAgain"]
+        </MudButton>
+    </div>
 </EduContainer>
 
 

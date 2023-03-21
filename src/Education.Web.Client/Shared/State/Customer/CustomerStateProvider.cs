@@ -8,18 +8,20 @@ namespace Education.Web.Client.Shared.State.Customer;
 internal sealed class CustomerStateProvider
 {
     private readonly AuthenticationStateProvider _provider;
-    private readonly ICustomerService _service;
+    private readonly ICustomerService _customerService;
     private bool _isInitialized;
     private CustomerState _state;
 
-    public CustomerStateProvider(ICustomerService service, AuthenticationStateProvider provider)
+    public CustomerStateProvider(ICustomerService customerService, AuthenticationStateProvider provider)
     {
-        _service = service;
+        _customerService = customerService;
         _provider = provider;
         _state = CustomerState.Anonymous;
     }
 
-    public event Action<CustomerState> OnChanged = _ => { };
+    public event Action<CustomerState> OnChanged = _ =>
+    {
+    };
 
     public async ValueTask InitAsync()
     {
@@ -35,8 +37,8 @@ internal sealed class CustomerStateProvider
             return;
 
         _state = CustomerState.Map(customer);
-
         _isInitialized = true;
+
         OnChanged.Invoke(_state);
     }
 
@@ -45,14 +47,14 @@ internal sealed class CustomerStateProvider
 
     private async Task<CustomerModel?> GetOrCreateCustomerAsync()
     {
-        var customer = await _service.GetAsync();
+        var customer = await _customerService.GetAsync();
         if (customer.IsSuccess)
             return customer.Value;
 
         if (!customer.Error.IsUserNotFound())
             return null;
 
-        var result = await _service.CreateAsync();
+        var result = await _customerService.CreateAsync();
         return result.IsSuccess ? result.Value : null;
     }
 }

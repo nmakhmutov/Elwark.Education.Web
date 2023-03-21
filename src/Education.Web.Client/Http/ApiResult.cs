@@ -26,6 +26,17 @@ public sealed class ApiResult<T>
     public Error Error =>
         _error ?? throw new ArgumentNullException(nameof(Error));
 
+    public override string ToString()
+    {
+        if (_data is not null)
+            return _data.ToString() ?? "Data is null";
+
+        if (_error is not null)
+            return _error.ToString();
+
+        return Status.ToString();
+    }
+
     public static ApiResult<T> Loading() =>
         new(Status.Loading, default);
 

@@ -8,5 +8,5 @@ public sealed record CourseModel(
     string ImageUrl,
     string Description,
     ContentRatingModel Rating,
-    ArticleOverviewModel[] Articles
+    UserArticleOverviewModel[] Articles
 );

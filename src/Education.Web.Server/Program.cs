@@ -1,4 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -10,6 +11,7 @@ else
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
+
 app.MapRazorPages();
 
 app.MapFallbackToPage("/_Host");

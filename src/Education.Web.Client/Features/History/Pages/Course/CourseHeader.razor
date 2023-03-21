@@ -1,0 +1,25 @@
+<section class="image-background rounded" style="background-image: url('@Image')">
+    <article class="cover rounded">
+        <header class="header pa-3 pa-sm-6">
+            <Breadcrumbs Class="pa-0" Items="@Breadcrumbs" Color="Color.Inherit" SeparatorClass="mud-text-white"/>
+
+            <MudText Class="mb-16" Typo="Typo.h3" Color="Color.Inherit">
+                @Title
+            </MudText>
+
+        </header>
+    </article>
+</section>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Image { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem>? Breadcrumbs { get; set; }
+
+}

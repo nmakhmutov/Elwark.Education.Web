@@ -7,26 +7,26 @@ namespace Education.Web.Client.Features.History.Services.Test.Model;
 public abstract record TestConclusion(
     string TestId,
     TestStatus Status,
-    ScoreModel MaxScore,
-    TimeSpan TestDuration,
-    ScoreModel UserScore,
-    TimeSpan TimeSpent,
-    IInternalMoney[] Rewards,
-    DateTime CompletedAt
+    PerformanceModel<uint> QuestionScore,
+    PerformanceModel<uint> NoMistakeScore,
+    PerformanceModel<uint> SpeedScore,
+    PerformanceModel<uint> TotalScore,
+    PerformanceModel<TimeSpan> TimeSpent,
+    IInternalMoney[] Rewards
 )
 {
     public sealed record EasyTestModel(
         string TestId,
         ArticleTitleModel Article,
         TestStatus Status,
-        ScoreModel MaxScore,
-        TimeSpan TestDuration,
-        ScoreModel UserScore,
-        TimeSpan TimeSpent,
-        DateTime CompletedAt,
+        PerformanceModel<uint> QuestionScore,
+        PerformanceModel<uint> NoMistakeScore,
+        PerformanceModel<uint> SpeedScore,
+        PerformanceModel<uint> TotalScore,
+        PerformanceModel<TimeSpan> TimeSpent,
         IInternalMoney[] Rewards,
         EasyTestModel.Question[] Questions
-    ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
+    ) : TestConclusion(TestId, Status, QuestionScore, NoMistakeScore, SpeedScore, TotalScore, TimeSpent, Rewards)
     {
         public sealed record Question(string Title, bool IsAnswered, uint Correct, uint Incorrect);
     }
@@ -35,14 +35,14 @@ public abstract record TestConclusion(
         string TestId,
         ArticleTitleModel Article,
         TestStatus Status,
-        ScoreModel MaxScore,
-        TimeSpan TestDuration,
-        ScoreModel UserScore,
-        TimeSpan TimeSpent,
-        DateTime CompletedAt,
+        PerformanceModel<uint> QuestionScore,
+        PerformanceModel<uint> NoMistakeScore,
+        PerformanceModel<uint> SpeedScore,
+        PerformanceModel<uint> TotalScore,
+        PerformanceModel<TimeSpan> TimeSpent,
         IInternalMoney[] Rewards,
         HardTestModel.Question[] Questions
-    ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
+    ) : TestConclusion(TestId, Status, QuestionScore, NoMistakeScore, SpeedScore, TotalScore, TimeSpent, Rewards)
     {
         public sealed record Question(string Title, bool IsAnswered, bool IsCorrect);
     }
@@ -50,14 +50,14 @@ public abstract record TestConclusion(
     public sealed record MixedTestModel(
         string TestId,
         TestStatus Status,
-        ScoreModel MaxScore,
-        TimeSpan TestDuration,
-        ScoreModel UserScore,
-        TimeSpan TimeSpent,
-        DateTime CompletedAt,
+        PerformanceModel<uint> QuestionScore,
+        PerformanceModel<uint> NoMistakeScore,
+        PerformanceModel<uint> SpeedScore,
+        PerformanceModel<uint> TotalScore,
+        PerformanceModel<TimeSpan> TimeSpent,
         IInternalMoney[] Rewards,
         MixedTestModel.Question[] Questions
-    ) : TestConclusion(TestId, Status, MaxScore, TestDuration, UserScore, TimeSpent, Rewards, CompletedAt)
+    ) : TestConclusion(TestId, Status, QuestionScore, NoMistakeScore, SpeedScore, TotalScore, TimeSpent, Rewards)
     {
         public sealed record Question(string Title, bool IsAnswered, bool IsCorrect, ArticleTitleModel Article);
     }

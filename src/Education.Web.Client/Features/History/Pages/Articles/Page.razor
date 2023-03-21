@@ -11,7 +11,43 @@
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
-    <EduPageHeader Title="@L["History_Articles"]" Breadcrumbs="@Breadcrumbs"/>
+    <section class="header">
+        <EduPageHeader Class="title" Title="@L["History_Articles"]" Breadcrumbs="@Breadcrumbs"/>
+
+        <MudSelect T="EpochType"
+                   Value="@_epoch"
+                   ValueChanged="@OnEpochChange"
+                   Label="@L["History_Epoch"]"
+                   Margin="Margin.Dense"
+                   Variant="Variant.Text">
+            <MudSelectItem Value="@EpochType.None">
+                @L["History_EpochAny"]
+            </MudSelectItem>
+            @foreach (var epoch in EpochTypeExtensions.List[1..])
+            {
+                <MudSelectItem Value="@epoch">
+                    @L[$"History_Epoch{epoch.ToFastString()}"]
+                </MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudSelect T="GetArticlesRequest.SortType"
+                   Value="@_sort"
+                   ValueChanged="@OnSortChange"
+                   Label="@L["Shared_Sort"]"
+                   Margin="Margin.Dense"
+                   Variant="Variant.Text">
+            <MudSelectItem Value="@GetArticlesRequest.SortType.Newest">
+                @L["History_ResentArticles"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetArticlesRequest.SortType.Trending">
+                @L["History_TrendingArticles"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetArticlesRequest.SortType.Popularity">
+                @L["History_TopRatedArticles"]
+            </MudSelectItem>
+        </MudSelect>
+    </section>
 </EduContainer>
 
 <ApiViewer Result="_result" Context="result">
@@ -36,8 +72,12 @@
 </ApiViewer>
 
 @code {
-    private GetArticlesRequest _request = new(EpochType.None, GetArticlesRequest.SortType.Newest, 0, 20);
-    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+    private const int Limit = 20;
+    private EpochType _epoch;
+    private GetArticlesRequest.SortType _sort;
+
+    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
+        ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -45,13 +85,13 @@
     };
 
     [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
     private IHistoryArticleService ArticleService { get; set; } = default!;
 
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
@@ -66,22 +106,21 @@
     public int CurrentPage { get; set; }
 
     private int TotalPages => _result.IsSuccess
-        ? (int)double.Ceiling((double)_result.Value.Count / _request.Limit)
+        ? (int)double.Ceiling((double)_result.Value.Count / Limit)
         : 1;
 
     protected override async Task OnParametersSetAsync()
     {
+        _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+
         if (CurrentPage < 1)
             CurrentPage = 1;
 
-        _request = _request with {
-            Epoch = GetEpoch(),
-            Sort = GetSort(),
-            Offset = (CurrentPage - 1) * _request.Limit 
-            };
+        _sort = GetSort();
+        _epoch = GetEpoch();
 
         _result = await ArticleService
-            .GetAsync(_request);
+            .GetAsync(new GetArticlesRequest(_epoch, _sort, (CurrentPage - 1) * Limit, Limit));
     }
 
     private async Task<bool> OnBookmarkClick(string articleId)
@@ -93,29 +132,36 @@
     private void OnPagination(int page)
     {
         _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
+        var value = page < 2 ? (int?)null : page;
+
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", value));
+    }
+
+    private void OnEpochChange(EpochType epoch)
+    {
+        _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+        var value = epoch == EpochType.None ? null : epoch.ToFastString().ToLowerInvariant();
+
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("epoch", value));
+    }
+
+    private void OnSortChange(GetArticlesRequest.SortType sort)
+    {
+        _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("sort", sort.ToString().ToLowerInvariant()));
     }
 
     private EpochType GetEpoch()
     {
-        if (string.IsNullOrEmpty(EpochString))
-            return EpochType.None;
-
-        if (Enum.TryParse<EpochType>(EpochString, true, out var value))
-            return value;
-
-        return EpochType.None;
+        Enum.TryParse<EpochType>(EpochString, true, out var value);
+        return value;
     }
 
     private GetArticlesRequest.SortType GetSort()
     {
-        if (string.IsNullOrEmpty(SortString))
-            return GetArticlesRequest.SortType.Newest;
-
-        if (Enum.TryParse<GetArticlesRequest.SortType>(SortString, true, out var value))
-            return value;
-
-        return GetArticlesRequest.SortType.Newest;
+        Enum.TryParse<GetArticlesRequest.SortType>(SortString, true, out var value);
+        return value;
     }
 
 }

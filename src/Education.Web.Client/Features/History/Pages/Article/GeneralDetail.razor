@@ -3,11 +3,13 @@
 @using Education.Web.Client.Models.Content
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
     <header class="d-flex flex-column align-center mb-3 mb-sm-6">
+        <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
+        
         <h1 class="title">
             @Article.Title
         </h1>
-        <Breadcrumbs Items="@Breadcrumbs" Class="pa-3"/>
-        <MudText  Class="w-max-960" Typo="Typo.body1" Align="Align.Center">
+        
+        <MudText Class="w-max-960" Typo="Typo.body1" Align="Align.Justify">
             @Article.Description
         </MudText>
     </header>
@@ -19,7 +21,9 @@
     <section class="grid">
         <ArticleFormatingCard Class="toolbar"/>
 
-        <ArticleContentCard Class="content" Content="@Article.Content"/>
+        <article class="content">
+            <ArticleContentCard Content="@Article.Content"/>
+        </article>
 
         <ArticleTestCard Class="test" ArticleId="@Article.Id" HasTest="@HasTest" UserActivity="@UserActivity"/>
 

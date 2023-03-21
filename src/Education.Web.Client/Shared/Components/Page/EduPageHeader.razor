@@ -1,5 +1,6 @@
-<header class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6 w-100 @Class">
-    <section>
+@if (ChildContent is null)
+{
+    <header class="@Class">
         <MudText Typo="Typo.h5">
             @Title
         </MudText>
@@ -7,10 +8,24 @@
         {
             <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
         }
-    </section>
-    
-    @ChildContent
-</header>
+    </header>
+}
+else
+{
+    <header class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6 w-100 @Class">
+        <section>
+            <MudText Typo="Typo.h5">
+                @Title
+            </MudText>
+            @if (Breadcrumbs is not null)
+            {
+                <Breadcrumbs Items="@Breadcrumbs" Class="pa-0"/>
+            }
+        </section>
+
+        @ChildContent
+    </header>
+}
 
 @code {
 

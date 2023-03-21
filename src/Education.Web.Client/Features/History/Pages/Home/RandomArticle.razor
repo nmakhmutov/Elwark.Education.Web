@@ -6,12 +6,15 @@
             @L["Article:Random"]
         </MudText>
         <div class="search">
-            <MudSelect
-                Value="@HistorySettings.SearchRandomEpoch"
-                ValueChanged="@((EpochType e) => HistorySettings.ChangeSearchRandomEpochAsync(e))"
-                Margin="Margin.Dense"
-                Variant="Variant.Text">
-                <MudSelectItem Value="@EpochType.None">@L["History_EpochAny"]</MudSelectItem>
+            <MudSelect T="EpochType"
+                       Value="@HistorySettings.SearchRandomEpoch"
+                       ValueChanged="@HistorySettings.ChangeSearchRandomEpochAsync"
+                       Label="@L["History_Epoch"]"
+                       Margin="Margin.Dense"
+                       Variant="Variant.Text">
+                <MudSelectItem Value="@EpochType.None">
+                    @L["History_EpochAny"]
+                </MudSelectItem>
                 @foreach (var epoch in EpochTypeExtensions.List[1..])
                 {
                     <MudSelectItem Value="@epoch">

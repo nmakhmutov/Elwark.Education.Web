@@ -2,28 +2,28 @@
 <div class="statistics">
     <PercentChartCard
         Title="@L["TimeSpent"]"
-        Subtitle="@($"{Conclusion.TimeSpent.Humanize()} / {Conclusion.TestDuration.Humanize()}")"
-        Percentage="@Math.Round(Conclusion.TimeSpent / Conclusion.TestDuration * 100)"/>
+        Subtitle="@($"{Conclusion.TimeSpent.Raw.Humanize()} / {Conclusion.TimeSpent.Possible.Humanize()}")"
+        Percentage="@Math.Round(Conclusion.TimeSpent.Scaled * 100)"/>
 
     <PercentChartCard
         Title="@L["Score"]"
-        Subtitle="@($"{Conclusion.UserScore.Total.ToMetric()} / {Conclusion.MaxScore.Total.ToMetric()}")"
-        Percentage="@Math.Round((double)Conclusion.UserScore.Total / Conclusion.MaxScore.Total * 100)"/>
+        Subtitle="@($"{Conclusion.TotalScore.Raw.ToMetric()} / {Conclusion.TotalScore.Possible.ToMetric()}")"
+        Percentage="@Math.Round(Conclusion.TotalScore.Scaled * 100)"/>
 
     <PercentChartCard
         Title="@L["Score:ByQuestions"]"
-        Subtitle="@($"{Conclusion.UserScore.Questions.ToMetric()} / {Conclusion.MaxScore.Questions.ToMetric()}")"
-        Percentage="@Math.Round((double)Conclusion.UserScore.Questions / Conclusion.MaxScore.Questions * 100)"/>
+        Subtitle="@($"{Conclusion.QuestionScore.Raw.ToMetric()} / {Conclusion.QuestionScore.Possible.ToMetric()}")"
+        Percentage="@Math.Round(Conclusion.QuestionScore.Scaled * 100)"/>
 
     <PercentChartCard
         Title="@L["Score:NoMistakesBonus"]"
-        Subtitle="@($"{Conclusion.UserScore.NoMistakes.ToMetric()} / {Conclusion.MaxScore.NoMistakes.ToMetric()}")"
-        Percentage="@Math.Round((double)Conclusion.UserScore.NoMistakes / Conclusion.MaxScore.NoMistakes * 100)"/>
+        Subtitle="@($"{Conclusion.NoMistakeScore.Raw.ToMetric()} / {Conclusion.NoMistakeScore.Possible.ToMetric()}")"
+        Percentage="@Math.Round(Conclusion.NoMistakeScore.Scaled * 100)"/>
 
     <PercentChartCard
         Title="@L["Score:BySpeedBonus"]"
-        Subtitle="@($"{Conclusion.UserScore.Speed.ToMetric()} / {Conclusion.MaxScore.Speed.ToMetric()}")"
-        Percentage="@Math.Round((double)Conclusion.UserScore.Speed / Conclusion.MaxScore.Speed * 100)"/>
+        Subtitle="@($"{Conclusion.SpeedScore.Raw.ToMetric()} / {Conclusion.SpeedScore.Possible.ToMetric()}")"
+        Percentage="@Math.Round(Conclusion.SpeedScore.Scaled * 100)"/>
 </div>
 
 @code {

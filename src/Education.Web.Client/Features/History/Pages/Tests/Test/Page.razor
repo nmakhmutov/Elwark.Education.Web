@@ -106,8 +106,8 @@
                             Color="Color.Primary"
                             Size="Size.Medium"/>
                     </section>
-                    <InventoryGrid Inventory="@(_inventory.OrderByDescending(x => x.IsApplicable))" Context="item">
-                        @if (item.IsApplicable)
+                    <InventoryGrid Inventory="@(_inventory.OrderByDescending(x => x.IsInteractive))" Context="item">
+                        @if (item.IsInteractive)
                         {
                             <InventoryButtonCard
                                 Id="@item.Id"

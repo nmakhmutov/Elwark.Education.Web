@@ -12,15 +12,17 @@
 <div class="background d-flex flex-column h-100">
     <EduContainer Class="pt-3 pt-sm-6">
         <EduPageHeader Title="@L["History_EventGuesser"]" Breadcrumbs="@Breadcrumbs">
-            <MudButton
-                DisableElevation
-                Variant="Variant.Text"
-                Color="Color.Primary"
-                EndIcon="@Icons.Material.Outlined.Info"
-                Disabled="@(!_result.IsSuccess)"
-                OnClick="@OpenRule">
-                @L["History_EventGuesserRules"]
-            </MudButton>
+            <div>
+                <MudButton
+                    DisableElevation
+                    Variant="Variant.Text"
+                    Color="Color.Primary"
+                    EndIcon="@Icons.Material.Outlined.Info"
+                    Disabled="@(!_result.IsSuccess)"
+                    OnClick="@OpenRule">
+                    @L["History_EventGuesserRules"]
+                </MudButton>
+            </div>
         </EduPageHeader>
     </EduContainer>
     <ApiViewer Result="@_result" Context="model">
@@ -49,7 +51,7 @@
                         Size="Size.Large"
                         Color="Color.Primary"
                         Variant="Variant.Filled"
-                        Text="@L["Test:Pass"]"
+                        Text="@L["Shared_TakeTheTest"]"
                         LoadingText="@L["Loading"]"
                         IsLoading="@_isLoading"
                         Disabled="@(model.Tests.All(x => !x.IsAllowed))"

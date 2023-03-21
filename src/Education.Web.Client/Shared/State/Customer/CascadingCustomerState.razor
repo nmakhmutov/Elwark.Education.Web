@@ -3,7 +3,7 @@
 <CascadingValue TValue="CustomerState" Value="@_state" ChildContent="@ChildContent"/>
 
 @code {
-    private CustomerState _state = default!;
+    private CustomerState _state = CustomerState.Anonymous;
 
     [Inject]
     private CustomerStateProvider CustomerStateProvider { get; set; } = default!;
@@ -13,20 +13,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _state = CustomerStateProvider.GetCurrentState();
         CustomerStateProvider.OnChanged += OnStateChanged;
-
         await CustomerStateProvider.InitAsync();
     }
 
-    private void OnStateChanged(CustomerState state) =>
-        _ = InvokeAsync(() =>
-        {
-            _state = state;
-            StateHasChanged();
-        });
+    private void OnStateChanged(CustomerState state)
+    {
+        _state = state;
+        StateHasChanged();
+    }
 
     public void Dispose() =>
         CustomerStateProvider.OnChanged -= OnStateChanged;
-
 }

@@ -6,5 +6,5 @@ public sealed record TestInventoryModel(
     string Title,
     string Overview,
     string IconUrl,
-    bool IsApplicable
+    bool IsInteractive
 );
