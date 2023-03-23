@@ -10,9 +10,9 @@ using Education.Web.Client.Features.History.Services.Course;
 using Education.Web.Client.Features.History.Services.EventGuesser;
 using Education.Web.Client.Features.History.Services.Leaderboard;
 using Education.Web.Client.Features.History.Services.Order;
+using Education.Web.Client.Features.History.Services.Quiz;
 using Education.Web.Client.Features.History.Services.Search;
 using Education.Web.Client.Features.History.Services.Store;
-using Education.Web.Client.Features.History.Services.Test;
 using Education.Web.Client.Features.History.Services.User;
 using Education.Web.Client.Http;
 using Education.Web.Client.Http.Handlers;
@@ -112,7 +112,7 @@ builder.Services
     .AddScoped<IHistoryOrderService, HistoryOrderService>()
     .AddScoped<IHistorySearchService, HistorySearchService>()
     .AddScoped<IHistoryStoreService, HistoryStoreService>()
-    .AddScoped<IHistoryTestService, HistoryTestService>()
+    .AddScoped<IHistoryQuizService, HistoryQuizService>()
     .AddScoped<IHistoryUserService, HistoryUserService>();
 
 builder.Services

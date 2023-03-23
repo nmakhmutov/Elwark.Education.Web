@@ -1,0 +1,39 @@
+@using Education.Web.Client.Models.Test
+@using Education.Web.Client.Features.History.Services.Quiz.Model
+
+<div class="@Class">
+    <MudRadioGroup T="QuizType?" SelectedOption="@SelectedTest" SelectedOptionChanged="@SelectedTestChanged" Class="radio-group">
+        @foreach (var service in Tests)
+        {
+            <MudRadio T="QuizType?" Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)" Class="radio">
+                <MudPaper Elevation="0" Class="d-flex align-center pa-3">
+                    <div class="rounded-circle mud-background">
+                        <div class="d-flex justify-center align-center relative pa-2">
+                            <img class="image" src="@service.IconUrl" alt="@service.Title" loading="lazy"/>
+                        </div>
+                    </div>
+
+                    <MudText Typo="Typo.subtitle1" Class="one-line-text mx-3">
+                        @service.Title
+                    </MudText>
+                </MudPaper>
+            </MudRadio>
+        }
+    </MudRadioGroup>
+</div>
+
+@code {
+
+    [Parameter]
+    public QuizType? SelectedTest { get; set; }
+
+    [Parameter]
+    public EventCallback<QuizType?> SelectedTestChanged { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public QuizInformationModel[] Tests { get; set; } = Array.Empty<QuizInformationModel>();
+
+}

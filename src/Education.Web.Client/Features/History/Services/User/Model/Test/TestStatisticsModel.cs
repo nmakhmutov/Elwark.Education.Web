@@ -1,4 +1,4 @@
-using Education.Web.Client.Features.History.Services.Test.Model;
+using Education.Web.Client.Features.History.Services.Quiz.Model;
 using Education.Web.Client.Models.Statistics;
 
 namespace Education.Web.Client.Features.History.Services.User.Model.Test;

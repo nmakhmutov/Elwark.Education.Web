@@ -39,9 +39,9 @@
                 <MudText Typo="Typo.h6" Class="mb-3">
                     @L["Test:Type"]
                 </MudText>
-                <TestRadioGroup
+                <EventGuesserTypeRadioGroup
                     SelectedTest="@HistorySettings.EventGuesserType"
-                    SelectedTestChanged="@HistorySettings.ChangeEventGuesserTypeAsync"
+                    SelectedTestChanged="@(x => HistorySettings.ChangeEventGuesserTypeAsync(x))"
                     Tests="@model.Tests"
                     Class="mb-3 mb-sm-6"/>
 
@@ -77,7 +77,7 @@
 
 @code {
     private bool _isLoading;
-    private ApiResult<TestBuilderModel> _result = ApiResult<TestBuilderModel>.Loading();
+    private ApiResult<EventGuesserBuilderModel> _result = ApiResult<EventGuesserBuilderModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -107,8 +107,8 @@
         _result = await EventGuesserService.GetAsync();
         if (_result.IsSuccess)
         {
-            if (!_result.Value.Tests.Any(x => x.IsAllowed && x.Name == HistorySettings.EventGuesserType))
-                await HistorySettings.ChangeEventGuesserTypeAsync(_result.Value.Tests.FirstOrDefault(x => x.IsAllowed)?.Name);
+            if (!_result.Value.Tests.Any(x => x.IsAllowed && x.Type == HistorySettings.EventGuesserType))
+                await HistorySettings.ChangeEventGuesserTypeAsync(_result.Value.Tests.FirstOrDefault(x => x.IsAllowed)?.Type);
 
             return;
         }

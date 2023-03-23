@@ -11,18 +11,18 @@ internal sealed class HistoryEventGuesserService : IHistoryEventGuesserService
     public HistoryEventGuesserService(HistoryApiClient api) =>
         _api = api;
 
-    public Task<ApiResult<TestBuilderModel>> GetAsync() =>
-        _api.GetAsync<TestBuilderModel>("history/event-guessers");
+    public Task<ApiResult<EventGuesserBuilderModel>> GetAsync() =>
+        _api.GetAsync<EventGuesserBuilderModel>("history/event-guessers");
 
-    public Task<ApiResult<TestModel>> GetAsync(string id) =>
-        _api.GetAsync<TestModel>($"history/event-guessers/{id}");
+    public Task<ApiResult<EventGuesserModel>> GetAsync(string id) =>
+        _api.GetAsync<EventGuesserModel>($"history/event-guessers/{id}");
 
-    public Task<ApiResult<ConclusionModel>> GetConclusionAsync(string id) =>
-        _api.GetAsync<ConclusionModel>($"history/event-guessers/{id}/conclusion");
+    public Task<ApiResult<EventGuesserConclusionModel>> GetConclusionAsync(string id) =>
+        _api.GetAsync<EventGuesserConclusionModel>($"history/event-guessers/{id}/conclusion");
 
-    public Task<ApiResult<TestModel>> CreateAsync(CreateRequest request) =>
-        _api.PostAsync<TestModel, CreateRequest>("history/event-guessers", request);
+    public Task<ApiResult<EventGuesserModel>> CreateAsync(CreateRequest request) =>
+        _api.PostAsync<EventGuesserModel, CreateRequest>("history/event-guessers", request);
 
-    public Task<ApiResult<TestModel>> CheckAsync(string testId, string questionId, CheckRequest request) =>
-        _api.PostAsync<TestModel, CheckRequest>($"history/event-guessers/{testId}/questions/{questionId}", request);
+    public Task<ApiResult<EventGuesserModel>> CheckAsync(string testId, string questionId, CheckRequest request) =>
+        _api.PostAsync<EventGuesserModel, CheckRequest>($"history/event-guessers/{testId}/questions/{questionId}", request);
 }

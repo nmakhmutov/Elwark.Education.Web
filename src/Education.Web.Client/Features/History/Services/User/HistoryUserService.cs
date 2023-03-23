@@ -48,14 +48,11 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<StatisticsModel>> GetStatisticsAsync() =>
         _api.GetAsync<StatisticsModel>("history/users/me/statistics");
 
-    public Task<ApiResult<TestStatisticsModel>> GetEasyTestStatisticsAsync() =>
-        _api.GetAsync<TestStatisticsModel>("history/users/me/tests/easy");
+    public Task<ApiResult<TestStatisticsModel>> GetEasyQuizStatisticsAsync() =>
+        _api.GetAsync<TestStatisticsModel>("history/users/me/quizzes/easy");
 
-    public Task<ApiResult<TestStatisticsModel>> GetHardTestStatisticsAsync() =>
-        _api.GetAsync<TestStatisticsModel>("history/users/me/tests/hard");
-
-    public Task<ApiResult<TestStatisticsModel>> GetMixedTestStatisticsAsync() =>
-        _api.GetAsync<TestStatisticsModel>("history/users/me/tests/mixed");
+    public Task<ApiResult<TestStatisticsModel>> GetHardQuizStatisticsAsync() =>
+        _api.GetAsync<TestStatisticsModel>("history/users/me/quizzes/hard");
 
     public Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync() =>
         _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers/small");

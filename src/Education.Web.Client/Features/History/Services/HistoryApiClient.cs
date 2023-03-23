@@ -27,8 +27,6 @@ internal sealed class HistoryApiClient : ApiClient
             new InternalMoneyConverter(),
             new MarkupStringConverter(),
             new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
-            new TestConclusionConverter(),
-            new TestOverviewConverter(),
             new TestQuestionConverter()
         }
     };

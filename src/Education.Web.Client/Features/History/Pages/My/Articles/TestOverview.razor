@@ -73,13 +73,13 @@
     [Parameter]
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
 
-    public static Color GetColor(TestStatus status) =>
+    public static Color GetColor(QuizStatus status) =>
         status switch
         {
-            TestStatus.Succeeded => Color.Success,
-            TestStatus.Failed => Color.Error,
-            TestStatus.TimeExceeded => Color.Warning,
-            TestStatus.MistakesExceeded => Color.Warning,
+            QuizStatus.Succeeded => Color.Success,
+            QuizStatus.Failed => Color.Error,
+            QuizStatus.TimeExceeded => Color.Warning,
+            QuizStatus.MistakesExceeded => Color.Warning,
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
             };
 

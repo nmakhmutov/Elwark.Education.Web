@@ -6,13 +6,13 @@ namespace Education.Web.Client.Features.History.Services.EventGuesser;
 
 public interface IHistoryEventGuesserService
 {
-    Task<ApiResult<TestBuilderModel>> GetAsync();
+    Task<ApiResult<EventGuesserBuilderModel>> GetAsync();
 
-    Task<ApiResult<TestModel>> GetAsync(string id);
+    Task<ApiResult<EventGuesserModel>> GetAsync(string id);
 
-    Task<ApiResult<ConclusionModel>> GetConclusionAsync(string id);
+    Task<ApiResult<EventGuesserConclusionModel>> GetConclusionAsync(string id);
 
-    Task<ApiResult<TestModel>> CreateAsync(CreateRequest request);
+    Task<ApiResult<EventGuesserModel>> CreateAsync(CreateRequest request);
 
-    Task<ApiResult<TestModel>> CheckAsync(string testId, string questionId, CheckRequest request);
+    Task<ApiResult<EventGuesserModel>> CheckAsync(string testId, string questionId, CheckRequest request);
 }

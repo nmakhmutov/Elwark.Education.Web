@@ -25,7 +25,7 @@
             <ArticleContentCard Content="@Article.Content"/>
         </article>
 
-        <ArticleTestCard Class="test" ArticleId="@Article.Id" HasTest="@HasTest" UserActivity="@UserActivity"/>
+        <ArticleTestCard Class="test" ArticleId="@Article.Id" HasTest="@HasQuiz" UserActivity="@UserActivity"/>
 
         <ArticleUserCard
             Class="rating"
@@ -70,7 +70,7 @@
     public UserActivityOverviewModel UserActivity { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public bool HasTest { get; set; }
+    public bool HasQuiz { get; set; }
 
     [Parameter, EditorRequired]
     public UserArticleOverviewModel[] RelatedArticles { get; set; } = Array.Empty<UserArticleOverviewModel>();

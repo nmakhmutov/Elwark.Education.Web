@@ -15,15 +15,14 @@
 
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1600">
         <section class="grid">
-            <div>
-                <MudText Class="mb-3" Typo="Typo.h6">
+            <div class="d-flex flex-column gap-3 gap-sm-6">
+                <MudText Typo="Typo.h6">
                     Articles
                 </MudText>
 
                 @foreach (var (article, activity) in course.Articles)
                 {
                     <ArticleCard
-                        Class="mb-3 mb-sm-6"
                         Article="@article"
                         Activity="@activity"
                         OnBookmarkClick="@ToggleBookmarkAsync"
@@ -32,7 +31,7 @@
             </div>
 
             <div>
-                <MudText Class="mb-3" Typo="Typo.h6">
+                <MudText Class="mb-3 mb-sm-6" Typo="Typo.h6">
                     Course description
                 </MudText>
 

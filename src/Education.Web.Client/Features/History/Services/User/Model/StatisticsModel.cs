@@ -1,12 +1,11 @@
-using Education.Web.Client.Features.History.Services.Test.Model;
+using Education.Web.Client.Features.History.Services.Quiz.Model;
 using Education.Web.Client.Features.History.Services.User.Model.Test;
 
 namespace Education.Web.Client.Features.History.Services.User.Model;
 
 public sealed record StatisticsModel(
-    StatisticsModel.TestModel EasyTest,
-    StatisticsModel.TestModel HardTest,
-    StatisticsModel.TestModel MixedTest,
+    StatisticsModel.QuizModel EasyQuiz,
+    StatisticsModel.QuizModel HardQuiz,
     StatisticsModel.EventGuesserModel SmallEventGuesser,
     StatisticsModel.EventGuesserModel MediumEventGuesser,
     StatisticsModel.EventGuesserModel LargeEventGuesser,
@@ -15,7 +14,7 @@ public sealed record StatisticsModel(
     StatisticsModel.ProgressModel[] Monthly
 )
 {
-    public sealed record TestModel(NumberOfTestsModel NumberOfTests, ScoreModel Score);
+    public sealed record QuizModel(NumberOfTestsModel NumberOfTests, ScoreModel Score);
 
     public sealed record EventGuesserModel(uint Tests, Services.EventGuesser.Model.ScoreModel Score);
 
@@ -28,7 +27,7 @@ public sealed record StatisticsModel(
         ProgressModel.EventGuesserProgressModel EventGuesser
     )
     {
-        public sealed record TestProgressModel(uint Easy, uint Hard, uint Mixed);
+        public sealed record TestProgressModel(uint Easy, uint Hard);
 
         public sealed record EventGuesserProgressModel(uint Small, uint Medium, uint Large);
     }

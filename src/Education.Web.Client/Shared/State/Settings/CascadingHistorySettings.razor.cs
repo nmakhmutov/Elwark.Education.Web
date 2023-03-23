@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
 using Education.Web.Client.Features.History.Services;
+using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 
 namespace Education.Web.Client.Shared.State.Settings;
@@ -14,7 +15,7 @@ public sealed partial class CascadingHistorySettings
         SearchRandomEpoch = EpochType.None,
 
         TestEpoch = EpochType.None,
-        TestType = null,
+        QuizType = null,
 
         EventGuesserEpoch = EpochType.None,
         EventGuesserType = null
@@ -32,8 +33,8 @@ public sealed partial class CascadingHistorySettings
     public EpochType TestEpoch =>
         _settings.TestEpoch;
 
-    public string? TestType =>
-        _settings.TestType;
+    public QuizType? QuizType =>
+        _settings.QuizType;
 
     public EpochType EventGuesserEpoch =>
         _settings.EventGuesserEpoch;
@@ -56,8 +57,8 @@ public sealed partial class CascadingHistorySettings
     public ValueTask ChangeTestEpochAsync(EpochType epoch) =>
         UpdateStateAsync(_settings with { TestEpoch = epoch });
 
-    public ValueTask ChangeTestTypeAsync(string? type) =>
-        UpdateStateAsync(_settings with { TestType = type });
+    public ValueTask ChangeTestTypeAsync(QuizType? type) =>
+        UpdateStateAsync(_settings with { QuizType = type });
 
     public ValueTask ChangeEventGuesserEpochAsync(EpochType epoch) =>
         UpdateStateAsync(_settings with { EventGuesserEpoch = epoch });
@@ -81,8 +82,8 @@ public sealed partial class CascadingHistorySettings
         [JsonPropertyName("te")]
         public EpochType TestEpoch { get; init; }
 
-        [JsonPropertyName("tt")]
-        public string? TestType { get; init; }
+        [JsonPropertyName("qt")]
+        public QuizType? QuizType { get; init; }
 
         [JsonPropertyName("ege")]
         public EpochType EventGuesserEpoch { get; init; }

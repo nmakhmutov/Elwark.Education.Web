@@ -32,11 +32,9 @@ public interface IHistoryUserService
 
     Task<ApiResult<StatisticsModel>> GetStatisticsAsync();
 
-    Task<ApiResult<TestStatisticsModel>> GetEasyTestStatisticsAsync();
+    Task<ApiResult<TestStatisticsModel>> GetEasyQuizStatisticsAsync();
 
-    Task<ApiResult<TestStatisticsModel>> GetHardTestStatisticsAsync();
-
-    Task<ApiResult<TestStatisticsModel>> GetMixedTestStatisticsAsync();
+    Task<ApiResult<TestStatisticsModel>> GetHardQuizStatisticsAsync();
 
     Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync();
 

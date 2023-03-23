@@ -103,16 +103,14 @@
         {
             "easy" => L["Tests:Easy"],
             "hard" => L["Tests:Hard"],
-            "mixed" => L["Tests:Mixed"],
             _ => L["Shared_NotFound"]
             };
 
     protected override async Task OnParametersSetAsync() =>
         _result = Test?.ToLowerInvariant() switch
         {
-            "easy" => await UserService.GetEasyTestStatisticsAsync(),
-            "hard" => await UserService.GetHardTestStatisticsAsync(),
-            "mixed" => await UserService.GetMixedTestStatisticsAsync(),
+            "easy" => await UserService.GetEasyQuizStatisticsAsync(),
+            "hard" => await UserService.GetHardQuizStatisticsAsync(),
             _ => ApiResult<TestStatisticsModel>.Fail(Error.Create(L["Shared_NotFound"], 404))
             };
 

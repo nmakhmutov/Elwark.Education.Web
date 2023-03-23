@@ -19,13 +19,13 @@
     <ProductToolbar @bind-Filter="@_filter" Wallet="@_wallet"/>
 </EduContainer>
 
-@if (_isLoading)
-{
-    <Spinner/>
-}
-else if (_error is not null)
+@if (_error is not null)
 {
     <EduError Error="@_error"/>
+}
+else if (_isLoading)
+{
+    <Spinner/>
 }
 else
 {
