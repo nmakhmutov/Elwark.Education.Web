@@ -1,4 +1,4 @@
-@page "/history/tests"
+@page "/history/quizzes"
 @using Education.Web.Client.Features.History.Services.User
 @using Education.Web.Client.Features.History.Services.Quiz.Model
 @using Education.Web.Client.Features.History.Services.Quiz.Request
@@ -7,13 +7,13 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Tests"]
+    @L["Shared_Quizzes"]
 </PageTitle>
 
 <div class="background d-flex flex-column h-100">
 
     <EduContainer Class="pt-3 pt-sm-6">
-        <EduPageHeader Title="@L["Tests"]" Breadcrumbs="@Breadcrumbs">
+        <EduPageHeader Title="@L["Shared_Quizzes"]" Breadcrumbs="@Breadcrumbs">
             <div>
                 <MudButton
                     DisableElevation
@@ -22,7 +22,7 @@
                     EndIcon="@Icons.Material.Outlined.Info"
                     Disabled="@(!_result.IsSuccess)"
                     OnClick="@OpenRule">
-                    @L["Tests:Rules"]
+                    @L["Shared_QuizRules"]
                 </MudButton>
             </div>
         </EduPageHeader>
@@ -32,25 +32,25 @@
         <section class="grid pa-3 pa-sm-6">
             @if (model.Article is null)
             {
-                <EpochTestBuilder
+                <EpochQuizBuilder
                     Class="builder"
-                    Tests="@model.Tests"
-                    OnCreateClick="@OnCreateTestAsync"/>
+                    Quizzes="@model.Quizzes"
+                    OnCreateClick="@OnQuizCreateAsync"/>
             }
             else
             {
-                <ArticleTestBuilder
+                <ArticleQuizBuilder
                     Class="builder"
-                    Tests="@model.Tests"
+                    Quizzes="@model.Quizzes"
                     Article="@model.Article.Article"
                     Activity="@model.Article.Activity"
-                    OnCreateClick="@OnCreateTestAsync"
+                    OnCreateClick="@OnQuizCreateAsync"
                     OnBookmarkClick="@ToggleBookmarkAsync"/>
             }
 
             <section class="inventory">
                 <MudText Typo="Typo.h6" Class="mb-3">
-                    @L["Equipment:Test"]
+                    @L["Shared_QuizEquipment"]
                 </MudText>
                 <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index" Context="item">
                     <InventoryInfoCard
@@ -98,13 +98,13 @@
         _result = await QuizService.GetTestBuilderAsync(ArticleId);
 
         if (_result.IsFailed && _result.Error.IsTestAlreadyCreated(out var id))
-            Navigation.NavigateTo(HistoryUrl.ArticleTest.Test(id));
+            Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Test(id));
     }
 
-    private Task OnCreateTestAsync(CreateEpochTestRequest request) =>
+    private Task OnQuizCreateAsync(CreateEpochQuizRequest request) =>
         CreateTestAsync(() => QuizService.CreateAsync(request));
 
-    private Task OnCreateTestAsync(CreateArticleTestRequest request) =>
+    private Task OnQuizCreateAsync(CreateArticleQuizRequest request) =>
         CreateTestAsync(() => QuizService.CreateAsync(request));
 
     private async Task CreateTestAsync(Func<Task<ApiResult<QuizModel>>> call)
@@ -112,7 +112,7 @@
         var response = await call();
 
         if (response.IsSuccess)
-            Navigation.NavigateTo(HistoryUrl.ArticleTest.Test(response.Value.Overview.Id));
+            Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Test(response.Value.Overview.Id));
         else
             Snackbar.Add(response.Error.Detail, Severity.Error);
     }

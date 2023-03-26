@@ -1,41 +1,59 @@
 @using Education.Web.Client.Models.Inventory
 @using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Models
 
 <section class="d-flex flex-wrap align-center gap-3 gap-sm-3 @Class">
-    <section>
-        <MudText Typo="Typo.caption">
-            @L["Shared_Wallet"]
-        </MudText>
-        <div class="wallet">
-            @if (Wallet is not null)
+    <section class="wallet">
+        <div>
+            <MudText Typo="Typo.caption">
+                @L["Shared_Wallet"]
+            </MudText>
+            @if (Wallet is null)
             {
-                foreach (var money in Wallet.Monies)
-                {
-                    <section class="d-flex align-center">
-                        <MudIcon Class="mr-1" Icon="@EduIcons.Silver" Size="Size.Small"/>
-                        <MetricNumber Typo="Typo.subtitle1" Value="@money.Value"/>
-                    </section>
-                }
-
                 <section class="d-flex align-center">
-                    <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="Size.Small"/>
-                    <div class="d-flex align-center">
-                        <MetricNumber Value="@Wallet.Backpack.Fullness"
-                                      Typo="Typo.subtitle1"
-                                      Color="@(Wallet.Backpack.Fullness > Wallet.Backpack.Capacity ? Color.Error : Color.Default)"/>
-                        <MudText Typo="Typo.subtitle1">/</MudText>
-                        <MetricNumber Typo="Typo.subtitle1" Value="@Wallet.Backpack.Capacity"/>
-                    </div>
+                    <MudSkeleton Class="mr-1" SkeletonType="@SkeletonType.Circle" Width="20px" Height="20px"/>
+                    <MudSkeleton SkeletonType="@SkeletonType.Text" Width="22px" Height="16px"/>
                 </section>
             }
             else
             {
-                <section class="d-flex align-center">
-                    <MudSkeleton Class="mr-1" SkeletonType="SkeletonType.Circle" Width="20px" Height="20px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="36px" Height="20px"/>
-                </section>
+                <div class="d-flex align-center gap-3">
+                    @foreach (var money in Wallet.Monies)
+                    {
+                        <section class="d-flex align-center">
+                            <MudIcon Class="mr-1" Icon="@EduIcons.Silver" Size="@Size.Small"/>
+                            <MetricNumber Typo="@Typo.subtitle1" Value="@money.Value"/>
+                        </section>
+                    }
+                </div>
             }
         </div>
+
+        <div>
+            <MudText Typo="Typo.caption">
+                @L["Shared_Backpack"]
+            </MudText>
+            <section class="d-flex align-center">
+                @if (Wallet is null)
+                {
+                    <MudSkeleton Class="mr-1" SkeletonType="@SkeletonType.Circle" Width="20px" Height="20px"/>
+                    <MudSkeleton SkeletonType="@SkeletonType.Text" Width="22px" Height="16px"/>
+                }
+                else
+                {
+                    <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="@Size.Small"/>
+                    <div class="d-flex align-center">
+                        <MetricNumber Value="@Wallet.Backpack.Fullness"
+                                      Typo="@Typo.subtitle1"
+                                      Color="@GetBackpackColor()"/>
+                        <MudText Typo="@Typo.subtitle1">/</MudText>
+                        <MetricNumber Value="@Wallet.Backpack.Capacity"
+                                      Typo="@Typo.subtitle1"/>
+                    </div>
+                }
+            </section>
+        </div>
+
     </section>
 
     <MudSpacer/>
@@ -116,5 +134,13 @@
 
     private Task SortChanged(Sort value) =>
         FilterChanged.InvokeAsync(Filter = Filter with { Sort = value });
+
+    private Color GetBackpackColor()
+    {
+        if (Wallet is null)
+            return Color.Default;
+
+        return Wallet.Backpack.Fullness > Wallet.Backpack.Capacity ? Color.Error : Color.Default;
+    }
 
 }

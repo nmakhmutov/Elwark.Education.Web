@@ -53,7 +53,7 @@ else
                 <div class="title">@L["Article:Title"]</div>
                 <div class="epoch">@L["History_Epoch"]</div>
                 <div class="rating">@L["Rating"]</div>
-                <div class="passed-test">@L["NumberOfTests:Passed"]</div>
+                <div class="quizzes">@L["Shared_NumberOfPassedQuizzes"]</div>
                 <div class="time-spent">@L["TimeSpent:Total"]</div>
                 <div class="actions"></div>
             </div>
@@ -78,10 +78,10 @@ else
                             Rating="@item.Article.Rating"
                             ShowDetails/>
                     </div>
-                    <div class="passed-test">
+                    <div class="quizzes">
                         <div class="d-flex align-center">
-                            <MudIcon Icon="@EduIcons.Tests" Size="Size.Small" Class="mr-1"/>
-                            <MetricNumber Value="@item.Activity.PassedTests" Typo="Typo.body2"/>
+                            <MudIcon Icon="@EduIcons.Quiz" Size="Size.Small" Class="mr-1"/>
+                            <MetricNumber Value="@item.Activity.PassedQuizzes" Typo="Typo.body2"/>
                         </div>
                     </div>
                     <div class="time-spent">
@@ -93,7 +93,7 @@ else
                         </div>
                     </div>
                     <div class="actions">
-                        @if (item.Activity.PassedTests > 0)
+                        @if (item.Activity.PassedQuizzes > 0)
                         {
                             <MudTooltip Text="@L["Shared_ButtonDetails"]">
                                 <MudIconButton

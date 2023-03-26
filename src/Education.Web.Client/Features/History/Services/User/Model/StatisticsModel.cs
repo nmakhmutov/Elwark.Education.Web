@@ -1,5 +1,5 @@
 using Education.Web.Client.Features.History.Services.Quiz.Model;
-using Education.Web.Client.Features.History.Services.User.Model.Test;
+using Education.Web.Client.Features.History.Services.User.Model.Quiz;
 
 namespace Education.Web.Client.Features.History.Services.User.Model;
 
@@ -14,7 +14,7 @@ public sealed record StatisticsModel(
     StatisticsModel.ProgressModel[] Monthly
 )
 {
-    public sealed record QuizModel(NumberOfTestsModel NumberOfTests, ScoreModel Score);
+    public sealed record QuizModel(NumberOfQuizzesModel NumberOfQuizzes, ScoreModel Score);
 
     public sealed record EventGuesserModel(uint Tests, Services.EventGuesser.Model.ScoreModel Score);
 

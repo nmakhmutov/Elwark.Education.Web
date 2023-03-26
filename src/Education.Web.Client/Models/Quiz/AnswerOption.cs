@@ -1,4 +1,4 @@
-namespace Education.Web.Client.Models.Test;
+namespace Education.Web.Client.Models.Quiz;
 
 public abstract record AnswerOption(uint Id)
 {

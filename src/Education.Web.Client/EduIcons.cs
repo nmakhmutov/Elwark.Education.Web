@@ -33,7 +33,7 @@ public static class EduIcons
     
     public const string Empires = Icons.Material.Outlined.Foundation;
 
-    public const string Tests = Icons.Material.Outlined.School;
+    public const string Quiz = Icons.Material.Outlined.School;
 
     public const string Score = Icons.Material.Outlined.PendingActions;
 

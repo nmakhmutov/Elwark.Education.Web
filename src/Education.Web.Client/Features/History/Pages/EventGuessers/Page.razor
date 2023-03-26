@@ -37,12 +37,12 @@
                     Class="mb-3 mb-sm-6"/>
 
                 <MudText Typo="Typo.h6" Class="mb-3">
-                    @L["Test:Type"]
+                    @L["Shared_QuizType"]
                 </MudText>
                 <EventGuesserTypeRadioGroup
-                    SelectedTest="@HistorySettings.EventGuesserType"
-                    SelectedTestChanged="@(x => HistorySettings.ChangeEventGuesserTypeAsync(x))"
-                    Tests="@model.Tests"
+                    SelectedGuesser="@HistorySettings.EventGuesserType"
+                    SelectedGuesserChanged="@(x => HistorySettings.ChangeEventGuesserTypeAsync(x))"
+                    Guessers="@model.Tests"
                     Class="mb-3 mb-sm-6"/>
 
                 <div class="d-flex justify-center">
@@ -51,7 +51,7 @@
                         Size="Size.Large"
                         Color="Color.Primary"
                         Variant="Variant.Filled"
-                        Text="@L["Shared_TakeTheTest"]"
+                        Text="@L["Shared_TakeTheGuesser"]"
                         LoadingText="@L["Loading"]"
                         IsLoading="@_isLoading"
                         Disabled="@(model.Tests.All(x => !x.IsAllowed))"
@@ -61,7 +61,7 @@
 
             <section class="inventory">
                 <MudText Typo="Typo.h6" Class="mb-3">
-                    @L["Equipment:EventGuesser"]
+                    @L["History_EventGuesserEquipment"]
                 </MudText>
                 <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index" Context="inventory">
                     <InventoryInfoCard

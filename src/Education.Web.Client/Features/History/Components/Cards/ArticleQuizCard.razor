@@ -1,33 +1,33 @@
 @using Education.Web.Client.Features.History.Services
 <section class="mud-paper pa-3 pa-sm-6 @Class">
-    @if (HasTest && UserActivity.PassedTests > 0)
+    @if (HasQuiz && UserActivity.PassedQuizzes > 0)
     {
         <MudLink Class="mt-3" Typo="Typo.subtitle2" Href="@HistoryUrl.User.MyArticle(ArticleId)">
-            @L["Test:MyProgress"]
+            @L["Shared_MyProgress"]
         </MudLink>
     }
     else
     {
         <MudText Class="mt-3" Typo="Typo.subtitle2">
-            @L["Test:MyProgress"]
+            @L["Shared_MyProgress"]
         </MudText>
     }
 
     <ArticleProgressView
         Class="mt-3"
-        PassedTests="@UserActivity.PassedTests"
+        PassedQuizzes="@UserActivity.PassedQuizzes"
         TimeSpent="@UserActivity.TimeSpent"/>
 
-    @if (HasTest)
+    @if (HasQuiz)
     {
         <MudButton
             Class="mt-3"
-            Link="@HistoryUrl.ArticleTest.Index(ArticleId)"
+            Link="@HistoryUrl.ArticleQuiz.Index(ArticleId)"
             Variant="Variant.Filled"
             Color="Color.Primary"
             FullWidth
             DisableElevation>
-            @L["Shared_TakeTheTest"]
+            @L["Shared_TakeTheQuiz"]
         </MudButton>
     }
 </section>
@@ -47,6 +47,6 @@
     public UserActivityOverviewModel UserActivity { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public bool HasTest { get; set; }
+    public bool HasQuiz { get; set; }
 
 }

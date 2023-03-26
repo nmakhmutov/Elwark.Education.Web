@@ -53,15 +53,15 @@
             @if (Activity is not null)
             {
                 <div>
-                    <MudTooltip Text="@L["NumberOfTests:Passed"]">
+                    <MudTooltip Text="@L["Shared_NumberOfPassedQuizzes"]">
                         <MudChip
                             Class="ma-0"
                             Size="Size.Small"
                             Color="Color.Tertiary"
                             Variant="Variant.Text"
-                            Text="@Activity.PassedTests.ToString()"
+                            Text="@Activity.PassedQuizzes.ToString()"
                             Link="@_href"
-                            Icon="@EduIcons.Tests"
+                            Icon="@EduIcons.Quiz"
                             DisableRipple
                             Label/>
                     </MudTooltip>
@@ -112,6 +112,6 @@
     public Func<string, Task<bool>>? OnBookmarkClick { get; set; }
 
     protected override void OnParametersSet() =>
-        _href = Activity?.PassedTests > 0 ? HistoryUrl.User.MyArticle(Article.Id) : null;
+        _href = Activity?.PassedQuizzes > 0 ? HistoryUrl.User.MyArticle(Article.Id) : null;
 
 }

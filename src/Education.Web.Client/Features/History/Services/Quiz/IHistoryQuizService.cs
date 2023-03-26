@@ -1,7 +1,7 @@
 using Education.Web.Client.Features.History.Services.Quiz.Model;
 using Education.Web.Client.Features.History.Services.Quiz.Request;
 using Education.Web.Client.Http;
-using Education.Web.Client.Models.Test;
+using Education.Web.Client.Models.Quiz;
 
 namespace Education.Web.Client.Features.History.Services.Quiz;
 
@@ -9,9 +9,9 @@ public interface IHistoryQuizService
 {
     Task<ApiResult<QuizBuilderModel>> GetTestBuilderAsync(string? articleId);
 
-    Task<ApiResult<QuizModel>> CreateAsync(CreateArticleTestRequest request);
+    Task<ApiResult<QuizModel>> CreateAsync(CreateArticleQuizRequest request);
 
-    Task<ApiResult<QuizModel>> CreateAsync(CreateEpochTestRequest request);
+    Task<ApiResult<QuizModel>> CreateAsync(CreateEpochQuizRequest request);
 
     Task<ApiResult<QuizModel>> GetAsync(string id);
 

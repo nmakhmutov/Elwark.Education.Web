@@ -1,9 +1,9 @@
-@using Education.Web.Client.Models.Test
 @using Education.Web.Client.Features.History.Services.Quiz.Model
+@using Education.Web.Client.Models.Quiz
 
 <div class="@Class">
-    <MudRadioGroup T="QuizType?" SelectedOption="@SelectedTest" SelectedOptionChanged="@SelectedTestChanged" Class="radio-group">
-        @foreach (var service in Tests)
+    <MudRadioGroup T="QuizType?" SelectedOption="@SelectedQuiz" SelectedOptionChanged="@SelectedQuizChanged" Class="radio-group">
+        @foreach (var service in Quizzes)
         {
             <MudRadio T="QuizType?" Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)" Class="radio">
                 <MudPaper Elevation="0" Class="d-flex align-center pa-3">
@@ -25,15 +25,15 @@
 @code {
 
     [Parameter]
-    public QuizType? SelectedTest { get; set; }
+    public QuizType? SelectedQuiz { get; set; }
 
     [Parameter]
-    public EventCallback<QuizType?> SelectedTestChanged { get; set; }
+    public EventCallback<QuizType?> SelectedQuizChanged { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public QuizInformationModel[] Tests { get; set; } = Array.Empty<QuizInformationModel>();
+    public QuizInformationModel[] Quizzes { get; set; } = Array.Empty<QuizInformationModel>();
 
 }

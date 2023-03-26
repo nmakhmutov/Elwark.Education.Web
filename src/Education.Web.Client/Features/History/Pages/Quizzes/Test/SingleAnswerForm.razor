@@ -1,5 +1,5 @@
 @using FluentValidation
-@using Education.Web.Client.Models.Test
+@using Education.Web.Client.Models.Quiz
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
@@ -47,7 +47,7 @@
                     Variant="Variant.Filled"
                     Color="Color.Primary"
                     IsLoading="@IsLoading"
-                    Text="@L["Test:Answer"]"
+                    Text="@L["Shared_QuizAnswerToQuestion"]"
                     LoadingText="@L["Loading"]"
                     ButtonType="ButtonType.Submit"/>
             </div>
@@ -66,7 +66,7 @@
                         Variant="Variant.Filled"
                         Color="Color.Primary"
                         OnClick="@OnComplete">
-                        @L["Test:Result"]
+                        @L["Shared_QuizShowTheResult"]
                     </MudButton>
                 }
                 else
@@ -76,7 +76,7 @@
                         Variant="Variant.Filled"
                         Color="Color.Primary"
                         OnClick="@OnNext">
-                        @L["Test:Next"]
+                        @L["Shared_QuizNextQuestion"]
                     </MudButton>
                 }
             </div>
@@ -84,13 +84,13 @@
             if (CorrectAnswer.IsCorrect)
             {
                 <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
-                    @L["Test:CorrectAnswer"]
+                    @L["Shared_QuizCorrectAnswer"]
                 </MudText>
             }
             else
             {
                 <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
-                    @L["Test:IncorrectAnswer"]
+                    @L["Shared_QuizIncorrectAnswer"]
                 </MudText>
             }
         }
@@ -149,7 +149,7 @@
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.Answer)
                 .NotEmpty()
-                .WithMessage(localizer["Test:AnswerCannotBeEmpty"]);
+                .WithMessage(localizer["Shared_QuizAnswerCannotBeEmpty"]);
     }
 
 }

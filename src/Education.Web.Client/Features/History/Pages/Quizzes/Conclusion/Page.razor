@@ -1,7 +1,7 @@
-@page "/history/tests/{id}/conclusion"
-@using Education.Web.Client.Models.Test
+@page "/history/quizzes/{id}/conclusion"
 @using Education.Web.Client.Features.History.Services.Quiz.Model
 @using Education.Web.Client.Features.History.Services.Quiz
+@using Education.Web.Client.Models.Quiz
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -75,11 +75,11 @@
     
         <div class="d-flex justify-center">
             <MudButton
-                Href="@HistoryUrl.ArticleTest.Index(conclusion.Article.Id)"
+                Href="@HistoryUrl.ArticleQuiz.Index(conclusion.Article.Id)"
                 Color="Color.Primary"
                 Variant="Variant.Filled"
                 DisableElevation>
-                @L["Shared_TakeTheTestAgain"]
+                @L["Shared_TakeTheQuizAgain"]
             </MudButton>
         </div>
     </EduContainer>
@@ -105,10 +105,10 @@
     {
         _result = await QuizService.GetConclusionAsync(Id);
         if (_result.IsSuccess)
-            _title = $"{L[$"Test:{_result.Value.Type}"]}: {_result.Value.Article.Title}";
+            _title = $"{L[$"Shared_Quiz{_result.Value.Type}"]}: {_result.Value.Article.Title}";
 
         if (_result.IsFailed && _result.Error.IsTestNotFound())
-            Navigation.NavigateTo(HistoryUrl.ArticleTest.Index());
+            Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Index());
     }
 
     private static Severity GetColor(QuizStatus status) =>

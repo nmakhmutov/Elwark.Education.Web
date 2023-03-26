@@ -1,15 +1,15 @@
 using Education.Web.Client.Features.History.Services.Quiz.Model;
 using Education.Web.Client.Models.Statistics;
 
-namespace Education.Web.Client.Features.History.Services.User.Model.Test;
+namespace Education.Web.Client.Features.History.Services.User.Model.Quiz;
 
-public sealed record TestStatisticsModel(
+public sealed record QuizStatisticsModel(
     ScoreModel Score,
     AnswerRatioModel AnswerRatio,
-    NumberOfTestsModel NumberOfTests,
-    TestStatisticsModel.TimeSpentModel TimeSpent,
-    TestStatisticsModel.ContrastModel RangeContrast,
-    TestStatisticsModel.DailyProgress[] Progress
+    NumberOfQuizzesModel NumberOfQuizzes,
+    QuizStatisticsModel.TimeSpentModel TimeSpent,
+    QuizStatisticsModel.ContrastModel RangeContrast,
+    QuizStatisticsModel.DailyProgress[] Progress
 )
 {
     public sealed record ContrastModel(
@@ -18,7 +18,7 @@ public sealed record TestStatisticsModel(
         ScoreContrastModel Score,
         AnswerRatioContrastModel AnswerRatio,
         TimeSpentContrastModel TimeSpent,
-        NumberOfTestsContrastModel NumberOfTests
+        NumberOfQuizzesContrastModel NumberOfQuizzes
     );
 
     public sealed record ScoreContrastModel(
@@ -43,7 +43,7 @@ public sealed record TestStatisticsModel(
         ContrastModel<TimeSpan> Max
     );
 
-    public sealed record NumberOfTestsContrastModel(
+    public sealed record NumberOfQuizzesContrastModel(
         ContrastModel<uint> Successful,
         ContrastModel<uint> Failed,
         ContrastModel<uint> TimeExceeded,
@@ -56,7 +56,7 @@ public sealed record TestStatisticsModel(
         ScoreModel Score,
         AnswerRatioModel AnswerRatio,
         TimeSpentModel TimeSpent,
-        NumberOfTestsModel NumberOfTests
+        NumberOfQuizzesModel NumberOfQuizzes
     );
 
     public sealed record TimeSpentModel(TimeSpan Total, TimeSpan Average, TimeSpan Min, TimeSpan Max);

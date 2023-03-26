@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
 using Education.Web.Client.Features.History.Services;
-using Education.Web.Client.Models.Test;
+using Education.Web.Client.Models.Quiz;
 using Microsoft.AspNetCore.Components;
 
 namespace Education.Web.Client.Shared.State.Settings;

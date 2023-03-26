@@ -6,6 +6,6 @@ namespace Education.Web.Client.Features.History.Services.Quiz.Model;
 public sealed record QuizBuilderModel(
     TestRuleModel Rule,
     UserArticleOverviewModel? Article,
-    QuizInformationModel[] Tests,
+    QuizInformationModel[] Quizzes,
     UserInventoryModel[] Inventories
 );

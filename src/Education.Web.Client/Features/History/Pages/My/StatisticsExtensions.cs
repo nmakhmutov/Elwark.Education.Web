@@ -1,32 +1,32 @@
 using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.History.Components.Lists;
 using Education.Web.Client.Features.History.Services.User.Model.EventGuesser;
-using Education.Web.Client.Features.History.Services.User.Model.Test;
+using Education.Web.Client.Features.History.Services.User.Model.Quiz;
 using Microsoft.Extensions.Localization;
 
 namespace Education.Web.Client.Features.History.Pages.My;
 
 public static class StatisticsExtensions
 {
-    public static string RangeTitle(this TestStatisticsModel.ContrastModel contrast) =>
+    public static string RangeTitle(this QuizStatisticsModel.ContrastModel contrast) =>
         RangeTitle(contrast.Starts, contrast.Ends);
 
     public static string RangeTitle(this EventGuesserStatisticsModel.ContrastModel contrast) =>
         RangeTitle(contrast.Starts, contrast.Ends);
 
     public static ProgressList.Item[] GetProgress(
-        this TestStatisticsModel.NumberOfTestsContrastModel contrast, IStringLocalizer<App> l) =>
+        this QuizStatisticsModel.NumberOfQuizzesContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
-            new(l["NumberOfTests:Successful"], contrast.Successful.Current.ToMetric(), contrast.Successful.Difference),
-            new(l["NumberOfTests:Failed"], contrast.Failed.Current.ToMetric(), contrast.Failed.Difference),
-            new(l["NumberOfTests:MistakesExceeded"], contrast.MistakesExceeded.Current.ToMetric(), contrast.MistakesExceeded.Difference),
-            new(l["NumberOfTests:TimeExceeded"], contrast.TimeExceeded.Current.ToMetric(), contrast.TimeExceeded.Difference),
-            new(l["NumberOfTests:Total"], contrast.Total.Current.ToMetric(), contrast.Total.Difference)
+            new(l["Shared_NumberOfSuccessfulQuizzes"], contrast.Successful.Current.ToMetric(), contrast.Successful.Difference),
+            new(l["Shared_NumberOfFailedQuizzes"], contrast.Failed.Current.ToMetric(), contrast.Failed.Difference),
+            new(l["Shared_NumberOfMistakesExceededQuizzes"], contrast.MistakesExceeded.Current.ToMetric(), contrast.MistakesExceeded.Difference),
+            new(l["Shared_NumberOfTimeExceededQuizzes"], contrast.TimeExceeded.Current.ToMetric(), contrast.TimeExceeded.Difference),
+            new(l["Shared_NumberOfTotalQuizzes"], contrast.Total.Current.ToMetric(), contrast.Total.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(
-        this TestStatisticsModel.ScoreContrastModel contrast, IStringLocalizer<App> l) =>
+        this QuizStatisticsModel.ScoreContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
             new(l["Score:ByQuestions"], contrast.Questions.Current.ToMetric(), contrast.Questions.Difference),
@@ -36,7 +36,7 @@ public static class StatisticsExtensions
         };
 
     public static ProgressList.Item[] GetProgress(
-        this TestStatisticsModel.AnswerRatioContrastModel contrast, IStringLocalizer<App> l) =>
+        this QuizStatisticsModel.AnswerRatioContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
             new(l["Questions:Answered"], contrast.Answered.Current.ToMetric(), contrast.Answered.Difference),
@@ -47,7 +47,7 @@ public static class StatisticsExtensions
         };
 
     public static ProgressList.Item[] GetProgress(
-        this TestStatisticsModel.TimeSpentContrastModel contrast, IStringLocalizer<App> l) =>
+        this QuizStatisticsModel.TimeSpentContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
             new(l["TimeSpent:Min"], contrast.Min.Current.Humanize(), contrast.Min.Difference),
@@ -60,7 +60,7 @@ public static class StatisticsExtensions
         this EventGuesserStatisticsModel.ContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
-            new(l["Tests"], contrast.Tests.Current.ToMetric(), contrast.Tests.Difference)
+            new(l["History_EventGuesserTotal"], contrast.Tests.Current.ToMetric(), contrast.Tests.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(

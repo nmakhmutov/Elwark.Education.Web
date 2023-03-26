@@ -1,7 +1,7 @@
 using Education.Web.Client.Features.History.Services.Quiz.Model;
 using Education.Web.Client.Features.History.Services.Quiz.Request;
 using Education.Web.Client.Http;
-using Education.Web.Client.Models.Test;
+using Education.Web.Client.Models.Quiz;
 
 namespace Education.Web.Client.Features.History.Services.Quiz;
 
@@ -17,11 +17,11 @@ internal sealed class HistoryQuizService : IHistoryQuizService
             ? $"history/quizzes?articleId={articleId}"
             : "history/quizzes");
 
-    public Task<ApiResult<QuizModel>> CreateAsync(CreateArticleTestRequest request) =>
-        _api.PostAsync<QuizModel, CreateArticleTestRequest>("history/quizzes", request);
+    public Task<ApiResult<QuizModel>> CreateAsync(CreateArticleQuizRequest request) =>
+        _api.PostAsync<QuizModel, CreateArticleQuizRequest>("history/quizzes", request);
 
-    public Task<ApiResult<QuizModel>> CreateAsync(CreateEpochTestRequest request) =>
-        _api.PostAsync<QuizModel, CreateEpochTestRequest>("history/quizzes", request);
+    public Task<ApiResult<QuizModel>> CreateAsync(CreateEpochQuizRequest request) =>
+        _api.PostAsync<QuizModel, CreateEpochQuizRequest>("history/quizzes", request);
 
     public Task<ApiResult<QuizModel>> GetAsync(string id) =>
         _api.GetAsync<QuizModel>($"history/quizzes/{id}");

@@ -1,6 +1,6 @@
 using Education.Web.Client.Features.History.Services.User.Model;
 using Education.Web.Client.Features.History.Services.User.Model.EventGuesser;
-using Education.Web.Client.Features.History.Services.User.Model.Test;
+using Education.Web.Client.Features.History.Services.User.Model.Quiz;
 using Education.Web.Client.Features.History.Services.User.Request;
 using Education.Web.Client.Http;
 using Education.Web.Client.Models;
@@ -32,9 +32,9 @@ public interface IHistoryUserService
 
     Task<ApiResult<StatisticsModel>> GetStatisticsAsync();
 
-    Task<ApiResult<TestStatisticsModel>> GetEasyQuizStatisticsAsync();
+    Task<ApiResult<QuizStatisticsModel>> GetEasyQuizStatisticsAsync();
 
-    Task<ApiResult<TestStatisticsModel>> GetHardQuizStatisticsAsync();
+    Task<ApiResult<QuizStatisticsModel>> GetHardQuizStatisticsAsync();
 
     Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync();
 

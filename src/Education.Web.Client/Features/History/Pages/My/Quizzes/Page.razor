@@ -1,6 +1,6 @@
-@page "/history/my/tests/{test}"
-@using Education.Web.Client.Features.History.Services.User.Model.Test
+@page "/history/my/quizzes/{test}"
 @using Education.Web.Client.Features.History.Services.User
+@using Education.Web.Client.Features.History.Services.User.Model.Quiz
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -17,15 +17,15 @@
         <StatisticDetailsGrid>
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
-                    <Subheader Title="@L["Tests"]" Subtitle="@L["ForAllTime"]"/>
-                    <NumberOfTestChart Value="@result.NumberOfTests"/>
+                    <Subheader Title="@L["Shared_Quizzes"]" Subtitle="@L["ForAllTime"]"/>
+                    <NumberOfQuizzesChart Value="@result.NumberOfQuizzes"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["Progress"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
-                    <ProgressList Items="@result.RangeContrast.NumberOfTests.GetProgress(L)"/>
+                    <ProgressList Items="@result.RangeContrast.NumberOfQuizzes.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["Test:MyActivity"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                    <Subheader Title="@L["Shared_MyActivity"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
                     <NumberOfTestDailyProgressChart Progress="@result.Progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
@@ -40,7 +40,7 @@
                     <ProgressList Items="@result.RangeContrast.Score.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["Test:MyActivity"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
+                    <Subheader Title="@L["Shared_MyActivity"]" Subtitle="@result.RangeContrast.RangeTitle()"/>
                     <ScoreDailyProgressChart Progress="@result.Progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
@@ -80,7 +80,7 @@
 
 @code {
     private string? _title;
-    private ApiResult<TestStatisticsModel> _result = ApiResult<TestStatisticsModel>.Loading();
+    private ApiResult<QuizStatisticsModel> _result = ApiResult<QuizStatisticsModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -101,9 +101,9 @@
     protected override void OnParametersSet() =>
         _title = Test?.ToLowerInvariant() switch
         {
-            "easy" => L["Tests:Easy"],
-            "hard" => L["Tests:Hard"],
-            _ => L["Shared_NotFound"]
+            "easy" => L["Shared_QuizzesEasy"],
+            "hard" => L["Shared_QuizzesHard"],
+            _ => L["Error_NotFound"]
             };
 
     protected override async Task OnParametersSetAsync() =>
@@ -111,7 +111,7 @@
         {
             "easy" => await UserService.GetEasyQuizStatisticsAsync(),
             "hard" => await UserService.GetHardQuizStatisticsAsync(),
-            _ => ApiResult<TestStatisticsModel>.Fail(Error.Create(L["Shared_NotFound"], 404))
+            _ => ApiResult<QuizStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
             };
 
 }

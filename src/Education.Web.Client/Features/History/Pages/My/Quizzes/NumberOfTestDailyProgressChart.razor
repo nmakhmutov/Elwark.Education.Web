@@ -1,47 +1,47 @@
 @using ApexCharts
-@using Education.Web.Client.Features.History.Services.User.Model.Test
-<ApexChart @ref="@_chart" TItem="TestStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
+@using Education.Web.Client.Features.History.Services.User.Model.Quiz
+<ApexChart @ref="@_chart" TItem="QuizStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
     <ApexPointSeries
-        TItem="TestStatisticsModel.DailyProgress"
+        TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
-        Name="@L["NumberOfTests:Successful"]"
+        Name="@L["Shared_NumberOfSuccessfulQuizzes"]"
         Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
-        YValue="@(x => x.NumberOfTests.Succeeded)"/>
+        YValue="@(x => x.NumberOfQuizzes.Succeeded)"/>
 
     <ApexPointSeries
-        TItem="TestStatisticsModel.DailyProgress"
+        TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
-        Name="@L["NumberOfTests:Failed"]"
+        Name="@L["Shared_NumberOfFailedQuizzes"]"
         Stroke="@(new SeriesStroke { Color = Colors.Red.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
-        YValue="@(x => x.NumberOfTests.Failed)"/>
+        YValue="@(x => x.NumberOfQuizzes.Failed)"/>
 
     <ApexPointSeries
-        TItem="TestStatisticsModel.DailyProgress"
+        TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
-        Name="@L["NumberOfTests:MistakesExceeded"]"
+        Name="@L["Shared_NumberOfMistakesExceededQuizzes"]"
         Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
-        YValue="@(x => x.NumberOfTests.MistakesExceeded)"/>
+        YValue="@(x => x.NumberOfQuizzes.MistakesExceeded)"/>
 
     <ApexPointSeries
-        TItem="TestStatisticsModel.DailyProgress"
+        TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
-        Name="@L["NumberOfTests:TimeExceeded"]"
+        Name="@L["Shared_NumberOfTimeExceededQuizzes"]"
         Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
-        YValue="@(x => x.NumberOfTests.TimeExceeded)"/>
+        YValue="@(x => x.NumberOfQuizzes.TimeExceeded)"/>
 </ApexChart>
 
 @code {
-    private ApexChart<TestStatisticsModel.DailyProgress>? _chart;
+    private ApexChart<QuizStatisticsModel.DailyProgress>? _chart;
 
-    private ApexChartOptions<TestStatisticsModel.DailyProgress> _options = new()
+    private ApexChartOptions<QuizStatisticsModel.DailyProgress> _options = new()
     {
         Legend = new Legend
         {
@@ -79,7 +79,7 @@
     private CascadingTheme? ThemeProvider { get; set; }
 
     [Parameter, EditorRequired]
-    public TestStatisticsModel.DailyProgress[] Progress { get; set; } = Array.Empty<TestStatisticsModel.DailyProgress>();
+    public QuizStatisticsModel.DailyProgress[] Progress { get; set; } = Array.Empty<QuizStatisticsModel.DailyProgress>();
 
     protected override Task OnParametersSetAsync()
     {

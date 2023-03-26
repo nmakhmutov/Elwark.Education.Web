@@ -40,7 +40,7 @@
             <MudPaper Elevation="0" Class="pa-3 pa-sm-6">
                 <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-3 mb-sm-6">
                     <MudText Typo="Typo.h5">
-                        @L["Tests"]
+                        @L["Shared_Quizzes"]
                     </MudText>
                     <MetricNumber Value="@result.Tests" Typo="Typo.h5"/>
                 </MudStack>
@@ -78,7 +78,7 @@
             "small" => L["History_EventGuessersSmall"],
             "medium" => L["History_EventGuessersMedium"],
             "large" => L["History_EventGuessersLarge"],
-            _ => L["Shared_NotFound"]
+            _ => L["Error_NotFound"]
             };
 
     protected override async Task OnParametersSetAsync() =>
@@ -87,7 +87,7 @@
             "small" => await UserService.GetSmallEventGuesserStatisticsAsync(),
             "medium" => await UserService.GetMediumEventGuesserStatisticsAsync(),
             "large" => await UserService.GetLargeEventGuesserStatisticsAsync(),
-            _ => ApiResult<EventGuesserStatisticsModel>.Fail(Error.Create(L["Shared_NotFound"], 404))
+            _ => ApiResult<EventGuesserStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
             };
 
 }

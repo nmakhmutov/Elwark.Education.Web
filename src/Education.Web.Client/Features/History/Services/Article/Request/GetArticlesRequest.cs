@@ -9,7 +9,7 @@ public sealed record GetArticlesRequest(EpochType Epoch, GetArticlesRequest.Sort
     {
         Newest = 0,
         Popularity = 1,
-        Trending = 2,
+        Trending = 2
     }
 
     public QueryString ToQueryString()

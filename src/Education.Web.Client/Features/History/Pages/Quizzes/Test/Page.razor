@@ -1,13 +1,13 @@
-@page "/history/tests/{id}"
+@page "/history/quizzes/{id}"
 @using Education.Web.Client.Models.Inventory
-@using Education.Web.Client.Models.Test
 @using Education.Web.Client.Features.History.Services.Quiz.Model
 @using Education.Web.Client.Features.History.Services.Quiz
+@using Education.Web.Client.Models.Quiz
 @layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>
-    @(_result.IsSuccess ? $"{_testTypeTitle}: {_result.Value.Overview.Article.Title}" : L["Tests"])
+    @(_result.IsSuccess ? $"{_testTypeTitle}: {_result.Value.Overview.Article.Title}" : L["Shared_Quizzes"])
 </PageTitle>
 
 @switch (_result.Status)
@@ -94,7 +94,7 @@
                     <section class="mb-6">
                         <header class="d-flex justify-space-between">
                             <MudText Typo="Typo.subtitle1">
-                                @L["Test:QuestionOutOf", _quiz.Completed, _quiz.Questions]
+                                @L["Shared_QuizCompletedQuestionOutOf", _quiz.Completed, _quiz.Questions]
                             </MudText>
                             <CountdownTimer Date="@_quiz.ExpiredAt" Color="@_countdownColor" OnComplete="@OnExpired"/>
                         </header>
@@ -172,10 +172,10 @@
         if (_result.IsFailed)
         {
             if (_result.Error.IsTestAlreadyCompleted())
-                Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
+                Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
 
             if (_result.Error.IsTestNotFound())
-                Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
+                Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
 
             return;
         }
@@ -183,7 +183,7 @@
         _quiz = _result.Value.Overview;
         _currentQuestion = _result.Value.Question;
         _inventory = _result.Value.Inventory;
-        _testTypeTitle = L[$"Test:{_quiz.Type}"];
+        _testTypeTitle = L[$"Shared_Quiz{_quiz.Type}"];
     }
 
     private async Task OnExpired()
@@ -192,7 +192,7 @@
         _result = await QuizService.GetAsync(Id);
 
         if (_result.IsFailed)
-            Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
+            Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
     }
 
     private async Task OnShortAnswer(ShortAnswerModel answer)
@@ -234,7 +234,7 @@
         {
             if (result.Error.IsTestAlreadyCompleted())
             {
-                Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
+                Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
                 return;
             }
 
@@ -264,7 +264,7 @@
     }
 
     private void OnComplete() =>
-        Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
+        Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
 
     private async Task OnUseInventory(uint id)
     {
@@ -277,7 +277,7 @@
 
         if (test.Value.Question is null)
         {
-            Navigation.NavigateTo(HistoryUrl.ArticleTest.Conclusion(Id));
+            Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
             return;
         }
 

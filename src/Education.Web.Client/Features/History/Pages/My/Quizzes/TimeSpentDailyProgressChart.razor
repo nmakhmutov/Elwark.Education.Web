@@ -1,46 +1,72 @@
-@using Education.Web.Client.Features.History.Services.User.Model.Test
 @using ApexCharts
-<ApexChart @ref="@_chart" TItem="TestStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
+@using Education.Web.Client.Features.History.Services.User.Model.Quiz
+<ApexChart @ref="@_chart" TItem="QuizStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
     <ApexPointSeries
-        TItem="TestStatisticsModel.DailyProgress"
+        TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
-        Name="@L["Score:ByQuestions"]"
+        Name="@L["TimeSpent:Min"]"
         Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
-        YValue="@(x => x.Score.Questions)"/>
+        YValue="@(x => (decimal)x.TimeSpent.Min.TotalMilliseconds)"/>
 
     <ApexPointSeries
-        TItem="TestStatisticsModel.DailyProgress"
+        TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
-        Name="@L["Score:BySpeedBonus"]"
+        Name="@L["TimeSpent:Average"]"
         Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
-        YValue="@(x => x.Score.Speed)"/>
+        YValue="@(x => (decimal)x.TimeSpent.Average.TotalMilliseconds)"/>
 
     <ApexPointSeries
-        TItem="TestStatisticsModel.DailyProgress"
+        TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
-        Name="@L["Score:NoMistakesBonus"]"
+        Name="@L["TimeSpent:Max"]"
         Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
-        YValue="@(x => x.Score.NoMistakes)"/>
+        YValue="@(x => (decimal)x.TimeSpent.Max.TotalMilliseconds)"/>
+
 </ApexChart>
 
 @code {
-    private ApexChart<TestStatisticsModel.DailyProgress>? _chart;
 
-    private ApexChartOptions<TestStatisticsModel.DailyProgress> _options = new()
+        private const string Formatter = @"
+function(value) {
+    var minutes = Math.floor(value / 60000);
+    var seconds = ((value % 60000) / 1000).toFixed(0);
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}
+";
+
+    private ApexChart<QuizStatisticsModel.DailyProgress>? _chart;
+
+    private ApexChartOptions<QuizStatisticsModel.DailyProgress> _options = new()
     {
+        Yaxis = new List<YAxis>
+        {
+            new()
+            {
+                Labels = new YAxisLabels
+                {
+                    Formatter = Formatter
+                }
+            }
+        },
+        Tooltip = new Tooltip
+        {
+            Y = new TooltipY
+            {
+                Formatter = Formatter
+            }
+        },
         Legend = new Legend
         {
             Show = false
         },
         Chart = new Chart
         {
-            Stacked = true,
             Toolbar = new Toolbar
             {
                 Show = false
@@ -70,7 +96,7 @@
     private CascadingTheme? ThemeProvider { get; set; }
 
     [Parameter, EditorRequired]
-    public TestStatisticsModel.DailyProgress[] Progress { get; set; } = Array.Empty<TestStatisticsModel.DailyProgress>();
+    public QuizStatisticsModel.DailyProgress[] Progress { get; set; } = Array.Empty<QuizStatisticsModel.DailyProgress>();
 
     protected override Task OnParametersSetAsync()
     {

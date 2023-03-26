@@ -1,5 +1,5 @@
-@using Education.Web.Client.Models.Test
 @using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Models.Quiz
 
 <div class="d-flex flex-wrap align-center justify-space-between mb-3 mr-3">
     <MudLink Href="@Href" Typo="Typo.h5">
@@ -8,7 +8,7 @@
     <div class="d-flex align-center">
         <MudTooltip Text="@L["TimeSpent"]">
             <MudText Typo="Typo.h5" Class="mr-3">
-                @Test.TimeSpent.Humanize()
+                @Quiz.TimeSpent.Humanize()
             </MudText>
         </MudTooltip>
         <MudAvatar Color="Color.Primary" Size="Size.Medium">
@@ -18,21 +18,21 @@
 </div>
 
 <EduFitGrid Class="mb-3 mb-sm-6">
-    <StatisticsCard Title="@L["Tests"]" Value="@Test.NumberOfTests.Total">
-        <NumberOfTestChart Value="@Test.NumberOfTests"/>
+    <StatisticsCard Title="@L["Shared_Quizzes"]" Value="@Quiz.NumberOfQuizzes.Total">
+        <NumberOfQuizzesChart Value="@Quiz.NumberOfQuizzes"/>
     </StatisticsCard>
-    <StatisticsCard Title="@L["Score"]" Value="@Test.Score.Total">
-        <ScoreChart Value="@Test.Score"/>
+    <StatisticsCard Title="@L["Score"]" Value="@Quiz.Score.Total">
+        <ScoreChart Value="@Quiz.Score"/>
     </StatisticsCard>
-    <StatisticsCard Title="@L["Questions"]" Value="@Test.AnswerRatio.Questions">
-        <AnswerRatioChart Value="@Test.AnswerRatio"/>
+    <StatisticsCard Title="@L["Questions"]" Value="@Quiz.AnswerRatio.Questions">
+        <AnswerRatioChart Value="@Quiz.AnswerRatio"/>
     </StatisticsCard>
 </EduFitGrid>
 
-@if (Test.Conclusions.Length > 0)
+@if (Quiz.Conclusions.Length > 0)
 {
     <MudExpansionPanels Elevation="0">
-        @foreach (var conclusion in Test.Conclusions)
+        @foreach (var conclusion in Quiz.Conclusions)
         {
             <MudExpansionPanel>
                 <TitleContent>
@@ -46,7 +46,7 @@
                     </div>
                 </TitleContent>
                 <ChildContent>
-                    <TestConclusionList
+                    <QuizConclusionList
                         TimeSpent="@conclusion.TimeSpent"
                         Score="@conclusion.Score"
                         AnswerRatio="@conclusion.AnswerRatio"/>
@@ -68,7 +68,7 @@
     public string Href { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public ArticleStatisticsModel.ProgressModel Test { get; set; } = default!;
+    public ArticleStatisticsModel.ProgressModel Quiz { get; set; } = default!;
 
     [Parameter]
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();

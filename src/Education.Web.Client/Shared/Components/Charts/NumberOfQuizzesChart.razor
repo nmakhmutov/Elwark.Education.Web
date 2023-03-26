@@ -1,5 +1,6 @@
 @using ApexCharts
-@using Education.Web.Client.Features.History.Services.User.Model.Test
+@using Education.Web.Client.Features.History.Services.User.Model.Quiz
+
 <div class="@Class">
     @if (Value.Total > 0)
     {
@@ -49,23 +50,23 @@
     public string? Class { get; set; }
 
     [Parameter]
-    public NumberOfTestsModel Value { get; set; } = default!;
+    public NumberOfQuizzesModel Value { get; set; } = default!;
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["NumberOfTests:Successful"], Value.Succeeded, Colors.Green.Accent4),
-        new ChartList.Item(L["NumberOfTests:Failed"], Value.Failed, Colors.Red.Default),
-        new ChartList.Item(L["NumberOfTests:MistakesExceeded"], Value.MistakesExceeded, Colors.Blue.Default),
-        new ChartList.Item(L["NumberOfTests:TimeExceeded"], Value.TimeExceeded, Colors.DeepPurple.Default),
-        new ChartList.Item(L["NumberOfTests:Total"], Value.Total, null)
+        new ChartList.Item(L["Shared_NumberOfSuccessfulQuizzes"], Value.Succeeded, Colors.Green.Accent4),
+        new ChartList.Item(L["Shared_NumberOfFailedQuizzes"], Value.Failed, Colors.Red.Default),
+        new ChartList.Item(L["Shared_NumberOfMistakesExceededQuizzes"], Value.MistakesExceeded, Colors.Blue.Default),
+        new ChartList.Item(L["Shared_NumberOfTimeExceededQuizzes"], Value.TimeExceeded, Colors.DeepPurple.Default),
+        new ChartList.Item(L["Shared_NumberOfTotalQuizzes"], Value.Total, null)
     };
 
     private Data[] Series => new[]
     {
-        new Data(L["NumberOfTests:Successful"], Value.Succeeded),
-        new Data(L["NumberOfTests:Failed"], Value.Failed),
-        new Data(L["NumberOfTests:MistakesExceeded"], Value.MistakesExceeded),
-        new Data(L["NumberOfTests:TimeExceeded"], Value.TimeExceeded)
+        new Data(L["Shared_NumberOfSuccessfulQuizzes"], Value.Succeeded),
+        new Data(L["Shared_NumberOfFailedQuizzes"], Value.Failed),
+        new Data(L["Shared_NumberOfMistakesExceededQuizzes"], Value.MistakesExceeded),
+        new Data(L["Shared_NumberOfTimeExceededQuizzes"], Value.TimeExceeded)
     };
 
     private sealed record Data(string Name, decimal Value);

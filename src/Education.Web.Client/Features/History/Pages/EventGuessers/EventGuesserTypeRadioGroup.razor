@@ -1,10 +1,9 @@
 @using Education.Web.Client.Models
-@using Education.Web.Client.Models.Test
 @using Education.Web.Client.Features.History.Services.EventGuesser.Model
 
 <div class="@Class">
-    <MudRadioGroup SelectedOption="@SelectedTest" SelectedOptionChanged="@SelectedTestChanged" Class="radio-group">
-        @foreach (var service in Tests)
+    <MudRadioGroup SelectedOption="@SelectedGuesser" SelectedOptionChanged="@SelectedGuesserChanged" Class="radio-group">
+        @foreach (var service in Guessers)
         {
             <MudRadio Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)" Class="radio">
                 <MudPaper Elevation="0" Class="d-flex align-center pa-3">
@@ -26,15 +25,15 @@
 @code {
 
     [Parameter]
-    public string? SelectedTest { get; set; }
+    public string? SelectedGuesser { get; set; }
 
     [Parameter]
-    public EventCallback<string?> SelectedTestChanged { get; set; }
+    public EventCallback<string?> SelectedGuesserChanged { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public EventGuesserInformationModel[] Tests { get; set; } = Array.Empty<EventGuesserInformationModel>();
+    public EventGuesserInformationModel[] Guessers { get; set; } = Array.Empty<EventGuesserInformationModel>();
 
 }

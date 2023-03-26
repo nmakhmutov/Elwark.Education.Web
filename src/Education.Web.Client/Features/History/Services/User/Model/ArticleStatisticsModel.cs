@@ -1,6 +1,6 @@
 using Education.Web.Client.Features.History.Services.Quiz.Model;
-using Education.Web.Client.Features.History.Services.User.Model.Test;
-using Education.Web.Client.Models.Test;
+using Education.Web.Client.Features.History.Services.User.Model.Quiz;
+using Education.Web.Client.Models.Quiz;
 
 namespace Education.Web.Client.Features.History.Services.User.Model;
 
@@ -11,7 +11,7 @@ public sealed record ArticleStatisticsModel(
     ArticleStatisticsModel.ProgressModel HardQuiz
 )
 {
-    public sealed record TotalModel(ulong Tests, ulong Score, uint Questions, TimeSpan TimeSpent);
+    public sealed record TotalModel(ulong Quizzes, ulong Score, uint Questions, TimeSpan TimeSpent);
 
     public sealed record ConclusionModel(
         QuizStatus Status,
@@ -25,7 +25,7 @@ public sealed record ArticleStatisticsModel(
         ScoreModel Score,
         AnswerRatioModel AnswerRatio,
         TimeSpan TimeSpent,
-        NumberOfTestsModel NumberOfTests,
+        NumberOfQuizzesModel NumberOfQuizzes,
         ConclusionModel[] Conclusions
     );
 }

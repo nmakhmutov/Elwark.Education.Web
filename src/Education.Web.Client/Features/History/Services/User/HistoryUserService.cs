@@ -1,6 +1,6 @@
 using Education.Web.Client.Features.History.Services.User.Model;
 using Education.Web.Client.Features.History.Services.User.Model.EventGuesser;
-using Education.Web.Client.Features.History.Services.User.Model.Test;
+using Education.Web.Client.Features.History.Services.User.Model.Quiz;
 using Education.Web.Client.Features.History.Services.User.Request;
 using Education.Web.Client.Http;
 using Education.Web.Client.Models;
@@ -48,11 +48,11 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<StatisticsModel>> GetStatisticsAsync() =>
         _api.GetAsync<StatisticsModel>("history/users/me/statistics");
 
-    public Task<ApiResult<TestStatisticsModel>> GetEasyQuizStatisticsAsync() =>
-        _api.GetAsync<TestStatisticsModel>("history/users/me/quizzes/easy");
+    public Task<ApiResult<QuizStatisticsModel>> GetEasyQuizStatisticsAsync() =>
+        _api.GetAsync<QuizStatisticsModel>("history/users/me/quizzes/easy");
 
-    public Task<ApiResult<TestStatisticsModel>> GetHardQuizStatisticsAsync() =>
-        _api.GetAsync<TestStatisticsModel>("history/users/me/quizzes/hard");
+    public Task<ApiResult<QuizStatisticsModel>> GetHardQuizStatisticsAsync() =>
+        _api.GetAsync<QuizStatisticsModel>("history/users/me/quizzes/hard");
 
     public Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync() =>
         _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers/small");
