@@ -2,17 +2,19 @@
 
 <div class="@_blockClass">
     <MudIcon Size="@IconSize" Class="@_iconClass" Icon="@_icon"/>
-    <MetricNumber Value="@_amount" Typo="@Typo"/>
+    <MetricNumber Value="@Amount" Typo="@Typo"/>
 </div>
 
 @code {
-    private uint _amount;
     private string? _icon;
     private string? _blockClass;
     private string? _iconClass;
 
     [Parameter, EditorRequired]
-    public IInternalMoney Money { get; set; } = default!;
+    public InternalCurrency Currency { get; set; }
+
+    [Parameter, EditorRequired]
+    public long Amount { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
@@ -35,10 +37,10 @@
             .AddClass(Class)
             .Build();
 
-        (_icon, _amount) = Money switch {
-            Experience x => (EduIcons.Experience,x.Amount),
-            Silver x => (EduIcons.Silver,x.Amount),
-            _ => (Icons.Material.Outlined.Money,0u)
+        _icon = Currency switch {
+            InternalCurrency.Experience => EduIcons.Experience,
+            InternalCurrency.Silver => EduIcons.Silver,
+            _ => throw new ArgumentOutOfRangeException()
             };
     }
 

@@ -5,6 +5,7 @@
 @using Education.Web.Client.Features.History.Services.Order.Model
 @using Education.Web.Client.Features.History.Services.Store.Request
 @using Education.Web.Client.Features.History.Services.User.Model
+@using InternalMoney = Education.Web.Client.Shared.Components.Text.InternalMoney
 
 <MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
     <DialogContent>
@@ -57,7 +58,13 @@
                         @L["Product:TotalPrice"]
                     </MudText>
                     <div class="d-flex">
-                        <InternalMoney Class="price" Money="@TotalPrice" Typo="Typo.h5" IconSize="Size.Medium" Horizontal/>
+                        <InternalMoney 
+                            Class="price" 
+                            Currency="@TotalPrice.Currency"
+                            Amount="@TotalPrice.Amount"
+                            Typo="Typo.h5" 
+                            IconSize="Size.Medium" 
+                            Horizontal/>
                         @if (Product.Selling.Discount > 0)
                         {
                             <MudText Class="mud-text-secondary align-self-start ml-1" Typo="Typo.subtitle1">
@@ -218,25 +225,25 @@
         _status = null;
     }
 
-    private Silver OriginalPrice =>
-        new(Product.Selling.Original.Amount * _quantity);
+    private InternalMoneyModel OriginalPrice =>
+        Product.Selling.Original with { Amount = Product.Selling.Original.Amount * _quantity };
 
-    private Silver TotalPrice =>
-        new(Product.Selling.Total.Amount * _quantity);
+    private InternalMoneyModel TotalPrice =>
+        Product.Selling.Total with { Amount = Product.Selling.Total.Amount * _quantity };
 
     private uint TotalWeight =>
         Product.InventoryWeight * _quantity;
-    
+
     private void UpdateErrorState() =>
         _error = GetErrorMessage();
 
     private Error? GetErrorMessage()
     {
         if (!Wallet.Monies.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
-            return new Error(
-                L["InternalMoney:NotEnoughTitle", L[$"InternalMoney:{TotalPrice.Currency}"]],
-                L["InternalMoney:NotEnoughDescription", L[$"InternalMoney:{TotalPrice.Currency}"]]
-                );
+        {
+            var currency = L[$"InternalMoney:{TotalPrice.Currency}"];
+            return new Error(L["InternalMoney:NotEnoughTitle", currency], L["InternalMoney:NotEnoughDescription", currency]);
+        }
 
         if (TotalWeight > Wallet.Backpack.Emptiness)
             return new Error(L["Shared_BackpackIsFullTitle"], L["Shared_BackpackIsFullDescription"]);

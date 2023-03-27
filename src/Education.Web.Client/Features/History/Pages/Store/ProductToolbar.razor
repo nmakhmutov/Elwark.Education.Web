@@ -20,10 +20,11 @@
                 <div class="d-flex align-center gap-3">
                     @foreach (var money in Wallet.Monies)
                     {
-                        <section class="d-flex align-center">
-                            <MudIcon Class="mr-1" Icon="@EduIcons.Silver" Size="@Size.Small"/>
-                            <MetricNumber Typo="@Typo.subtitle1" Value="@money.Value"/>
-                        </section>
+                        <InternalMoney
+                            Currency="@money.Key"
+                            Amount="@money.Value"
+                            Typo="Typo.subtitle1"
+                            Horizontal/>
                     }
                 </div>
             }
@@ -53,7 +54,6 @@
                 }
             </section>
         </div>
-
     </section>
 
     <MudSpacer/>

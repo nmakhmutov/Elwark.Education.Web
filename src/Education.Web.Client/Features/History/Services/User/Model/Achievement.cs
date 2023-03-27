@@ -15,7 +15,7 @@ public abstract record Achievement(string Title, string Description, string Icon
         uint Score,
         uint Threshold,
         uint Completeness,
-        IInternalMoney[] Rewards
+        InternalMoneyModel[] Rewards
     ) : Achievement(Title, Description, IconUrl);
 
     public sealed record ProgressiveModel(
@@ -23,6 +23,6 @@ public abstract record Achievement(string Title, string Description, string Icon
         string Description,
         string IconUrl,
         uint Completeness,
-        IInternalMoney[] Rewards
+        InternalMoneyModel[] Rewards
     ) : Achievement(Title, Description, IconUrl);
 }

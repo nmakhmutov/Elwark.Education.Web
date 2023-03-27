@@ -119,7 +119,7 @@
 
     private async Task<bool> ToggleBookmarkAsync(string id)
     {
-        var result = await UserService.ToggleBookmarkAsync(id);
+        var result = await UserService.ToggleArticleBookmarkAsync(id);
         return result is { IsSuccess: true, Value: true };
     }
 

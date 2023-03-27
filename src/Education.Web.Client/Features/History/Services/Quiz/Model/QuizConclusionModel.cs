@@ -15,7 +15,7 @@ public sealed record QuizConclusionModel(
     PerformanceModel<uint> TotalScore,
     PerformanceModel<TimeSpan> TimeSpent,
     QuizConclusionModel.Question[] Questions,
-    IInternalMoney[] Rewards
+    InternalMoneyModel[] Rewards
 )
 {
     public sealed record Question(string Title, bool IsAnswered, uint Correct, uint Incorrect);

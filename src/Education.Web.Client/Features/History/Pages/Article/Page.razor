@@ -82,19 +82,19 @@
 
     private async Task<bool> LikeAsync()
     {
-        var response = await UserService.LikeAsync(Id);
+        var response = await UserService.LikeArticleAsync(Id);
         return response.IsSuccess;
     }
 
     private async Task<bool> DislikeAsync()
     {
-        var response = await UserService.DislikeAsync(Id);
+        var response = await UserService.DislikeArticleAsync(Id);
         return response.IsSuccess;
     }
 
     private async Task<bool> ToggleBookmarkAsync(string id)
     {
-        var result = await UserService.ToggleBookmarkAsync(id);
+        var result = await UserService.ToggleArticleBookmarkAsync(id);
         return result is { IsSuccess: true, Value: true };
     }
 

@@ -50,9 +50,15 @@ public interface IHistoryUserService
 
     Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId);
 
-    Task<ApiResult<bool>> ToggleBookmarkAsync(string articleId);
+    Task<ApiResult<bool>> ToggleArticleBookmarkAsync(string articleId);
 
-    Task<ApiResult<Unit>> LikeAsync(string articleId);
+    Task<ApiResult<Unit>> LikeArticleAsync(string articleId);
 
-    Task<ApiResult<Unit>> DislikeAsync(string articleId);
+    Task<ApiResult<Unit>> DislikeArticleAsync(string articleId);
+    
+    Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string articleId);
+
+    Task<ApiResult<Unit>> LikeCourseAsync(string articleId);
+
+    Task<ApiResult<Unit>> DislikeCourseAsync(string articleId);
 }

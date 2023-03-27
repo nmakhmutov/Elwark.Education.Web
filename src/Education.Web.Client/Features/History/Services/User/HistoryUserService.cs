@@ -20,7 +20,7 @@ internal sealed class HistoryUserService : IHistoryUserService
 
     public Task<ApiResult<BackpackModel>> GetBackpackAsync() =>
         _api.GetAsync<BackpackModel>("history/users/me/backpack");
-    
+
     public Task<ApiResult<WalletModel>> GetWalletAsync() =>
         _api.GetAsync<WalletModel>("history/users/me/wallet");
 
@@ -75,12 +75,21 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId) =>
         _api.GetAsync<ArticleStatisticsModel>($"history/users/me/articles/{articleId}");
 
-    public Task<ApiResult<bool>> ToggleBookmarkAsync(string articleId) =>
+    public Task<ApiResult<bool>> ToggleArticleBookmarkAsync(string articleId) =>
         _api.PostAsync<bool>($"history/users/me/articles/{articleId}/bookmarks");
 
-    public Task<ApiResult<Unit>> LikeAsync(string articleId) =>
+    public Task<ApiResult<Unit>> LikeArticleAsync(string articleId) =>
         _api.PostAsync<Unit>($"history/users/me/articles/{articleId}/likes");
 
-    public Task<ApiResult<Unit>> DislikeAsync(string articleId) =>
+    public Task<ApiResult<Unit>> DislikeArticleAsync(string articleId) =>
         _api.PostAsync<Unit>($"history/users/me/articles/{articleId}/dislikes");
+
+    public Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string articleId) =>
+        _api.PostAsync<bool>($"history/users/me/courses/{articleId}/bookmarks");
+
+    public Task<ApiResult<Unit>> LikeCourseAsync(string articleId) =>
+        _api.PostAsync<Unit>($"history/users/me/courses/{articleId}/likes");
+
+    public Task<ApiResult<Unit>> DislikeCourseAsync(string articleId) =>
+        _api.PostAsync<Unit>($"history/users/me/courses/{articleId}/dislikes");
 }

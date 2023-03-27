@@ -6,7 +6,7 @@ namespace Education.Web.Client.Features.History.Services.EventGuesser.Model;
 public sealed record EventGuesserConclusionModel(
     uint MaxScore,
     ScoreModel Score,
-    IInternalMoney[] Rewards,
+    InternalMoneyModel[] Rewards,
     QuestionModel[] Questions
 );
 

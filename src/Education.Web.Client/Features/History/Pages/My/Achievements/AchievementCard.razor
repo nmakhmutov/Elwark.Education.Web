@@ -24,7 +24,11 @@
                 <div class="d-flex flex-row">
                     @foreach (var reward in achievement.Rewards)
                     {
-                        <InternalMoney Class="mr-3" Money="@reward" Horizontal/>
+                        <InternalMoney
+                            Class="mr-3"
+                            Currency="@reward.Currency"
+                            Amount="@reward.Amount"
+                            Horizontal/>
                     }
                 </div>
             </footer>
@@ -44,7 +48,11 @@
                 <div class="d-flex flex-row">
                     @foreach (var reward in achievement.Rewards)
                     {
-                        <InternalMoney Class="mr-3" Money="@reward" Horizontal/>
+                        <InternalMoney 
+                            Class="mr-3"
+                            Currency="@reward.Currency"
+                            Amount="@reward.Amount"
+                            Horizontal/>
                     }
                 </div>
             </footer>
@@ -88,6 +96,6 @@
 
     [Parameter]
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
-    
+
     private string Alt => $"{L["Shared_Achievements"]}: {Achievement.Title}";
 }

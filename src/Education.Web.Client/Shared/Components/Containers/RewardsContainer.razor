@@ -7,7 +7,11 @@
         @foreach (var reward in Rewards)
         {
             <MudPaper Elevation="0" Class="d-flex align-center justify-center" Style="width: 120px; height: 120px">
-                <InternalMoney Money="@reward" IconSize="Size.Large" Typo="Typo.h4"/>
+                <InternalMoney
+                    Currency="@reward.Currency"
+                    Amount="@reward.Amount"
+                    IconSize="Size.Large"
+                    Typo="Typo.h4"/>
             </MudPaper>
         }
     </MudStack>
@@ -25,6 +29,6 @@
     public EduWidth MaxWidth { get; set; } = EduWidth.None;
 
     [Parameter, EditorRequired]
-    public IInternalMoney[] Rewards { get; set; } = Array.Empty<IInternalMoney>();
+    public InternalMoneyModel[] Rewards { get; set; } = Array.Empty<InternalMoneyModel>();
 
 }

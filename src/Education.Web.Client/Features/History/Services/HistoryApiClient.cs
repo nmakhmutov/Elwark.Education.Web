@@ -24,7 +24,6 @@ internal sealed class HistoryApiClient : ApiClient
             new AnswerOptionConverter(),
             new AnswerResultConverter(),
             new ArticleDetailConverter(),
-            new InternalMoneyConverter(),
             new MarkupStringConverter(),
             new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
             new TestQuestionConverter()

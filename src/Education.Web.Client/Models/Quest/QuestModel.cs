@@ -7,5 +7,5 @@ public sealed record QuestModel(
     uint Score,
     uint Threshold,
     bool IsCompleted,
-    IInternalMoney[] Rewards
+    InternalMoneyModel[] Rewards
 );

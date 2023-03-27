@@ -25,7 +25,12 @@
         <div class="d-flex flex-row align-center justify-center gap-3 pa-6">
             @foreach (var reward in Bonus.Rewards)
             {
-                <InternalMoney Money="@reward" Typo="Typo.h5" IconSize="Size.Large" Horizontal/>
+                <InternalMoney
+                    Currency="@reward.Currency"
+                    Amount="@reward.Amount"
+                    Typo="Typo.h5"
+                    IconSize="Size.Large"
+                    Horizontal/>
             }
         </div>
 
