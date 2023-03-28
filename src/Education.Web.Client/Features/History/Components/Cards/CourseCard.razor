@@ -14,7 +14,7 @@
 
             <BookmarkButton
                 ArticleId="@Course.Id"
-                IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                IsBookmarked="false"
                 OnBookmarkClick="@OnBookmarkClick"/>
         </aside>
 
@@ -27,53 +27,15 @@
         <MudText Class="px-3 pb-3" Typo="Typo.body2">
             @Course.Overview
         </MudText>
-
-        <div class="d-flex align-center justify-space-between px-3 pb-3">
-            @if (Activity is not null)
-            {
-                <div>
-                    <MudTooltip Text="@L["Shared_NumberOfPassedQuizzes"]">
-                        <MudChip
-                            Class="ma-0"
-                            Size="Size.Small"
-                            Color="Color.Tertiary"
-                            Variant="Variant.Text"
-                            Text="@Activity.PassedQuizzes.ToString()"
-                            Link="@_href"
-                            Icon="@EduIcons.Quiz"
-                            DisableRipple
-                            Label/>
-                    </MudTooltip>
-                    <MudTooltip Text="@L["TimeSpent:Total"]">
-                        <MudChip
-                            Class="ma-0"
-                            Size="Size.Small"
-                            Color="Color.Tertiary"
-                            Variant="Variant.Text"
-                            Text="@Activity.TimeSpent.Humanize()"
-                            Link="@_href"
-                            Icon="@EduIcons.TimeSpent"
-                            DisableRipple
-                            Label/>
-                    </MudTooltip>
-                </div>
-            }
-        </div>
-
     </article>
 </section>
 
 @code {
-    private string? _href;
-
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public CourseOverviewModel Course { get; set; } = default!;
-
-    [Parameter]
-    public UserActivityOverviewModel? Activity { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
@@ -83,8 +45,5 @@
 
     [Parameter]
     public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
-
-    protected override void OnParametersSet() =>
-        _href = Activity?.PassedQuizzes > 0 ? HistoryUrl.User.MyCourse(Course.Id) : null;
 
 }

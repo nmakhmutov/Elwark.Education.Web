@@ -54,10 +54,9 @@ else
                 <div class="epoch">@L["History_Epoch"]</div>
                 <div class="rating">@L["Rating"]</div>
                 <div class="quizzes">@L["Shared_NumberOfPassedQuizzes"]</div>
-                <div class="time-spent">@L["TimeSpent:Total"]</div>
                 <div class="actions"></div>
             </div>
-            <Virtualize @ref="@_virtualize" ItemsProvider="FavoriteDataProvider" ItemSize="110" Context="item">
+            <Virtualize @ref="@_virtualize" ItemsProvider="BookmarkProvider" ItemSize="110" Context="item">
                 <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
                     <div class="image">
                         <MudAvatar Size="Size.Large" Image="@item.Article.ThumbnailUrl"/>
@@ -68,7 +67,7 @@ else
                         </MudLink>
                     </div>
                     <div class="epoch">
-                        <MudChip Class="mx-0" Label DisableRipple Size="Size.Small" Variant="Variant.Text" Color="Color.Primary" Link="@HistoryUrl.Content.Articles(item.Article.Epoch)">
+                        <MudChip Class="mx-0" Size="Size.Small" Variant="Variant.Text" Color="Color.Primary" Link="@HistoryUrl.Content.Articles(item.Article.Epoch)" Label DisableRipple>
                             @L[$"History_Epoch{item.Article.Epoch.ToFastString()}"]
                         </MudChip>
                     </div>
@@ -79,21 +78,17 @@ else
                             ShowDetails/>
                     </div>
                     <div class="quizzes">
-                        <div class="d-flex align-center">
-                            <MudIcon Icon="@EduIcons.Quiz" Size="Size.Small" Class="mr-1"/>
-                            <MetricNumber Value="@item.Activity.PassedQuizzes" Typo="Typo.body2"/>
-                        </div>
-                    </div>
-                    <div class="time-spent">
-                        <div class="d-flex align-center">
-                            <MudIcon Icon="@EduIcons.TimeSpent" Size="Size.Small" Class="mr-1"/>
-                            <MudText Typo="Typo.body2">
-                                @item.Activity.TimeSpent.Humanize()
-                            </MudText>
-                        </div>
+                        <NumberOfQuizzesChip
+                            NumberOfQuizzes="@item.Activity.NumberOfEasyQuiz"
+                            Tooltip="@L["Shared_NumberOfPassedEasyQuizzes"]"
+                            Color="Color.Info"/>
+                        <NumberOfQuizzesChip
+                            NumberOfQuizzes="@item.Activity.NumberOfHardQuiz"
+                            Tooltip="@L["Shared_NumberOfPassedHardQuizzes"]"
+                            Color="Color.Primary"/>
                     </div>
                     <div class="actions">
-                        @if (item.Activity.PassedQuizzes > 0)
+                        @if (item.Activity.IsPassedAnyQuizzes)
                         {
                             <MudTooltip Text="@L["Shared_ButtonDetails"]">
                                 <MudIconButton
@@ -101,6 +96,7 @@ else
                                     Icon="@Icons.Material.Outlined.RemoveRedEye"/>
                             </MudTooltip>
                         }
+
                         <BookmarkButton
                             IsBookmarked="@item.Activity.IsBookmarked"
                             ArticleId="@item.Article.Id"
@@ -134,7 +130,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var data = await UserService.GetBookmarksAsync(_request);
+        var data = await UserService.GetArticleBookmarksAsync(_request);
         if (data.IsSuccess)
         {
             _request = _request with { Token = data.Value.Next };
@@ -145,7 +141,7 @@ else
         _isLoading = false;
     }
 
-    private async ValueTask<ItemsProviderResult<UserArticleOverviewModel>> FavoriteDataProvider(ItemsProviderRequest request)
+    private async ValueTask<ItemsProviderResult<UserArticleOverviewModel>> BookmarkProvider(ItemsProviderRequest request)
     {
         int GetLength() =>
             _items.Count + (string.IsNullOrEmpty(_request.Token) ? 0 : 1);
@@ -156,7 +152,7 @@ else
         if (isRangeAvailable)
             return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
 
-        var data = await UserService.GetBookmarksAsync(_request = _request with { Count = request.Count });
+        var data = await UserService.GetArticleBookmarksAsync(_request = _request with { Count = request.Count });
         if (data.IsFailed)
             return new ItemsProviderResult<UserArticleOverviewModel>(_items, GetLength());
 

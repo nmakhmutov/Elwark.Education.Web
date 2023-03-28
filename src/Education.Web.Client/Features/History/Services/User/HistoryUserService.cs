@@ -69,8 +69,8 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<AchievementsModel>> GetAchievementsAsync() =>
         _api.GetAsync<AchievementsModel>("history/users/me/achievements");
 
-    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetBookmarksAsync(BookmarksRequest request) =>
-        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/users/me/bookmarks", request);
+    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest request) =>
+        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/users/me/article-bookmarks", request);
 
     public Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId) =>
         _api.GetAsync<ArticleStatisticsModel>($"history/users/me/articles/{articleId}");
@@ -84,12 +84,15 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<Unit>> DislikeArticleAsync(string articleId) =>
         _api.PostAsync<Unit>($"history/users/me/articles/{articleId}/dislikes");
 
-    public Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string articleId) =>
-        _api.PostAsync<bool>($"history/users/me/courses/{articleId}/bookmarks");
+    public Task<ApiResult<PagingTokenModel<CourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest request) =>
+        _api.GetAsync<PagingTokenModel<CourseOverviewModel>>("history/users/me/course-bookmarks", request);
+    
+    public Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string courseId) =>
+        _api.PostAsync<bool>($"history/users/me/courses/{courseId}/bookmarks");
 
-    public Task<ApiResult<Unit>> LikeCourseAsync(string articleId) =>
-        _api.PostAsync<Unit>($"history/users/me/courses/{articleId}/likes");
+    public Task<ApiResult<Unit>> LikeCourseAsync(string courseId) =>
+        _api.PostAsync<Unit>($"history/users/me/courses/{courseId}/likes");
 
-    public Task<ApiResult<Unit>> DislikeCourseAsync(string articleId) =>
-        _api.PostAsync<Unit>($"history/users/me/courses/{articleId}/dislikes");
+    public Task<ApiResult<Unit>> DislikeCourseAsync(string courseId) =>
+        _api.PostAsync<Unit>($"history/users/me/courses/{courseId}/dislikes");
 }

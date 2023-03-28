@@ -46,7 +46,7 @@ public interface IHistoryUserService
 
     Task<ApiResult<AchievementsModel>> GetAchievementsAsync();
 
-    Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetBookmarksAsync(BookmarksRequest request);
+    Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest request);
 
     Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId);
 
@@ -55,10 +55,12 @@ public interface IHistoryUserService
     Task<ApiResult<Unit>> LikeArticleAsync(string articleId);
 
     Task<ApiResult<Unit>> DislikeArticleAsync(string articleId);
-    
-    Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string articleId);
 
-    Task<ApiResult<Unit>> LikeCourseAsync(string articleId);
+    Task<ApiResult<PagingTokenModel<CourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest request);
 
-    Task<ApiResult<Unit>> DislikeCourseAsync(string articleId);
+    Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string courseId);
+
+    Task<ApiResult<Unit>> LikeCourseAsync(string courseId);
+
+    Task<ApiResult<Unit>> DislikeCourseAsync(string courseId);
 }

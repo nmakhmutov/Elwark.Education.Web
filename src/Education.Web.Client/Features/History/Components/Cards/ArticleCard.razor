@@ -9,7 +9,7 @@
 
     <section class="content flex-grow-1">
         <header class="d-flex justify-space-between gap-3 px-3 pt-3">
-            <div class="d-flex flex-column gap-1">
+            <div class="d-flex flex-column gap-3">
                 <a class="mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
                    href="@HistoryUrl.Content.Articles(Article.Epoch)">
                     @L[$"History_Epoch{Article.Epoch.ToFastString()}"]
@@ -52,35 +52,20 @@
 
             @if (Activity is not null)
             {
-                <div>
-                    <MudTooltip Text="@L["Shared_NumberOfPassedQuizzes"]">
-                        <MudChip
-                            Class="ma-0"
-                            Size="Size.Small"
-                            Color="Color.Tertiary"
-                            Variant="Variant.Text"
-                            Text="@Activity.PassedQuizzes.ToString()"
-                            Link="@_href"
-                            Icon="@EduIcons.Quiz"
-                            DisableRipple
-                            Label/>
-                    </MudTooltip>
-                    <MudTooltip Text="@L["TimeSpent:Total"]">
-                        <MudChip
-                            Class="ma-0"
-                            Size="Size.Small"
-                            Color="Color.Tertiary"
-                            Variant="Variant.Text"
-                            Text="@Activity.TimeSpent.Humanize()"
-                            Link="@_href"
-                            Icon="@EduIcons.TimeSpent"
-                            DisableRipple
-                            Label/>
-                    </MudTooltip>
+                <div class="d-flex align-center gap-3">
+                    <NumberOfQuizzesChip
+                        NumberOfQuizzes="@Activity.NumberOfEasyQuiz"
+                        Color="Color.Info"
+                        Tooltip="@L["Shared_NumberOfPassedEasyQuizzes"]"
+                        Href="@_href"/>
+                    <NumberOfQuizzesChip
+                        NumberOfQuizzes="@Activity.NumberOfHardQuiz"
+                        Color="Color.Primary"
+                        Tooltip="@L["Shared_NumberOfPassedHardQuizzes"]"
+                        Href="@_href"/>
                 </div>
             }
         </aside>
-
     </section>
 </article>
 
@@ -112,6 +97,8 @@
     public Func<string, Task<bool>>? OnBookmarkClick { get; set; }
 
     protected override void OnParametersSet() =>
-        _href = Activity?.PassedQuizzes > 0 ? HistoryUrl.User.MyArticle(Article.Id) : null;
+        _href = Activity?.IsPassedAnyQuizzes == true
+            ? HistoryUrl.User.MyArticle(Article.Id)
+            : null;
 
 }
