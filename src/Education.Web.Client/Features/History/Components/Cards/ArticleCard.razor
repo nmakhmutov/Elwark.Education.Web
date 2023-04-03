@@ -23,7 +23,7 @@
             @if (OnBookmarkClick is not null)
             {
                 <BookmarkButton
-                    ArticleId="@Article.Id"
+                    Id="@Article.Id"
                     IsBookmarked="@(Activity?.IsBookmarked ?? false)"
                     OnBookmarkClick="@OnBookmarkClick"/>
             }
@@ -52,7 +52,7 @@
 
             @if (Activity is not null)
             {
-                <div class="d-flex align-center gap-3">
+                <div>
                     <NumberOfQuizzesChip
                         NumberOfQuizzes="@Activity.NumberOfEasyQuiz"
                         Color="Color.Info"
@@ -79,7 +79,7 @@
     public ArticleOverviewModel Article { get; set; } = default!;
 
     [Parameter]
-    public UserActivityOverviewModel? Activity { get; set; }
+    public UserArticleActivityModel? Activity { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

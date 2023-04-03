@@ -3,6 +3,7 @@
 @using Education.Web.Client.Features.History.Services.Course.Request
 @using Education.Web.Client.Models
 @using Education.Web.Client.Features.History.Services
+@using Education.Web.Client.Features.History.Services.User
 @layout HistoryLayout
 
 <PageTitle>
@@ -18,9 +19,13 @@
         <EduFillGrid Class="mb-6 mb-sm-12">
             @foreach (var item in result.Items)
             {
-                <CourseCard Course="@item"/>
+                <CourseCard
+                    Course="@item.Course"
+                    Activity="@item.Activity"
+                    OnBookmarkClick="@ToggleBookmarkAsync"/>
             }
         </EduFillGrid>
+
         <MudPagination
             Class="d-flex justify-center py-3 py-sm-6"
             Rectangular
@@ -33,7 +38,9 @@
 
 @code {
     private GetCourseRequest _request = new(0, 20);
-    private ApiResult<PagingOffsetModel<CourseOverviewModel>> _result = ApiResult<PagingOffsetModel<CourseOverviewModel>>.Loading();
+
+    private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
+        ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -42,6 +49,9 @@
 
     [Inject]
     private IHistoryCourseService CourseService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -67,8 +77,14 @@
 
     private void OnPagination(int page)
     {
-        _result = ApiResult<PagingOffsetModel<CourseOverviewModel>>.Loading();
+        _result = ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
+    }
+
+    private async Task<bool> ToggleBookmarkAsync(string id)
+    {
+        var result = await UserService.ToggleCourseBookmarkAsync(id);
+        return result is { IsSuccess: true, Value: true };
     }
 
 }

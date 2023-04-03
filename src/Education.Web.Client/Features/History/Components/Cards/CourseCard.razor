@@ -9,33 +9,42 @@
     </header>
 
     <article class="content">
-        <aside class="d-flex align-center justify-space-between px-3">
-            <ContentRating Rating="@Course.Rating" Size="Size.Small" ShowTooltip/>
-
-            <BookmarkButton
-                ArticleId="@Course.Id"
-                IsBookmarked="false"
-                OnBookmarkClick="@OnBookmarkClick"/>
-        </aside>
-
-        <div class="px-3 pb-3">
-            <MudLink Href="@HistoryUrl.Content.Course(Course.Id)" Typo="Typo.h6">
+        <header class="px-3 pt-3">
+            <a class="mud-link mud-primary-text mud-link-underline-hover mud-typography-h6 one-line-text"
+               href="@HistoryUrl.Content.Course(Course.Id)"
+               title="@Course.Title">
                 @Course.Title
-            </MudLink>
-        </div>
+            </a>
+        </header>
 
-        <MudText Class="px-3 pb-3" Typo="Typo.body2">
+        <MudText Class="px-3 pt-3 flex-grow-1" Typo="Typo.body2">
             @Course.Overview
         </MudText>
+
+        <aside class="d-flex align-center justify-space-between pa-3">
+            <ContentRating Rating="@Course.Rating" Size="Size.Medium" ShowTooltip/>
+
+            @if (OnBookmarkClick is not null)
+            {
+                <BookmarkButton
+                    Id="@Course.Id"
+                    IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            }
+        </aside>
     </article>
 </section>
 
 @code {
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public CourseOverviewModel Course { get; set; } = default!;
+
+    [Parameter]
+    public UserCourseActivityModel? Activity { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
@@ -44,6 +53,6 @@
     public bool Horizontal { get; set; }
 
     [Parameter]
-    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+    public Func<string, Task<bool>>? OnBookmarkClick { get; set; }
 
 }

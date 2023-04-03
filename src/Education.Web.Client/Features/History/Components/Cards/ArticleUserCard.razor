@@ -3,8 +3,8 @@
 <section class="mud-paper d-flex justify-space-between pa-3 @Class">
     <MudToolBar Dense DisableGutters Class="d-flex justify-center">
         <BookmarkButton
+            Id="@ArticleId"
             IsBookmarked="@UserActivity.IsBookmarked"
-            ArticleId="@ArticleId"
             OnBookmarkClick="@OnBookmarkClick"/>
 
         <MudTooltip Text="@L["Shared_ILikeThis"]">
@@ -44,7 +44,7 @@
     public ContentRatingModel Rating { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public UserActivityOverviewModel UserActivity { get; set; } = default!;
+    public UserArticleActivityModel UserActivity { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);

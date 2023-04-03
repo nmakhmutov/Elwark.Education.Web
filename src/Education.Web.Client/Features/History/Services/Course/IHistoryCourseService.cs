@@ -7,7 +7,7 @@ namespace Education.Web.Client.Features.History.Services.Course;
 
 public interface IHistoryCourseService
 {
-    Task<ApiResult<PagingOffsetModel<CourseOverviewModel>>> GetAsync(GetCourseRequest request);
+    Task<ApiResult<PagingOffsetModel<UserCourseOverviewModel>>> GetAsync(GetCourseRequest request);
 
     Task<ApiResult<CourseModel>> GetAsync(string id);
 }

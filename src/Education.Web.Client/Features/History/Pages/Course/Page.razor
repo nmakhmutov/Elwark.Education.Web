@@ -25,7 +25,7 @@
                     <ArticleCard
                         Article="@article"
                         Activity="@activity"
-                        OnBookmarkClick="@ToggleBookmarkAsync"
+                        OnBookmarkClick="@ToggleArticleBookmarkAsync"
                         Horizontal/>
                 }
             </div>
@@ -72,9 +72,15 @@
             _title = _result.Value.Title;
     }
 
-    private async Task<bool> ToggleBookmarkAsync(string id)
+    private async Task<bool> ToggleArticleBookmarkAsync(string id)
     {
         var result = await UserService.ToggleArticleBookmarkAsync(id);
+        return result is { IsSuccess: true, Value: true };
+    }
+
+    private async Task<bool> ToggleCourseBookmarkAsync(string id)
+    {
+        var result = await UserService.ToggleCourseBookmarkAsync(id);
         return result is { IsSuccess: true, Value: true };
     }
 
