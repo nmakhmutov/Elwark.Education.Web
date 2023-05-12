@@ -42,12 +42,12 @@
                     break;
 
                 case 1:
-                        <div class="quests">
-                            @foreach (var quest in data.WeeklyQuests.Quests)
-                            {
-                                <QuestProgressCard Class="mb-3" Quest="@quest"/>
-                            }
-                        </div>
+                    <div class="quests">
+                        @foreach (var quest in data.WeeklyQuests.Quests)
+                        {
+                            <QuestProgressCard Class="mb-3" Quest="@quest"/>
+                        }
+                    </div>
 
                     <div class="@(data.WeeklyQuests.Quests.Length == 0 ? "start" : "rewards")">
                         <QuestRewardsCard
@@ -92,46 +92,28 @@
     protected override async Task OnInitializedAsync() =>
         _result = await UserService.GetQuestAsync();
 
-    private async Task ClaimDailyBonusAsync()
-    {
-        var response = await UserService.ClaimDailyBonusAsync();
-        if (response.IsSuccess)
-            _result = ApiResult<UserQuestModel>.Success(_result.Value with { DailyBonus = response.Value });
-    }
+    private async Task ClaimDailyBonusAsync() =>
+        _result = (await UserService.ClaimDailyBonusAsync())
+            .Map(x => _result.Unwrap() with { DailyBonus = x });
 
-    private async Task RejectDailyBonusAsync()
-    {
-        var response = await UserService.RejectDailyBonusAsync();
-        if (response.IsSuccess)
-            _result = ApiResult<UserQuestModel>.Success(_result.Value with { DailyBonus = response.Value });
-    }
+    private async Task RejectDailyBonusAsync() =>
+        _result = (await UserService.RejectDailyBonusAsync())
+            .Map(x => _result.Unwrap() with { DailyBonus = x });
 
-    private async Task StartDailyQuestsAsync()
-    {
-        var response = await UserService.StartDailyQuestAsync();
-        if (response.IsSuccess)
-            _result = ApiResult<UserQuestModel>.Success(_result.Value with { DailyQuests = response.Value });
-    }
+    private async Task StartDailyQuestsAsync() =>
+        _result = (await UserService.StartDailyQuestAsync())
+            .Map(x => _result.Unwrap() with { DailyQuests = x });
 
-    private async Task CollectDailyQuestsAsync()
-    {
-        var response = await UserService.CollectDailyQuestAsync();
-        if (response.IsSuccess)
-            _result = ApiResult<UserQuestModel>.Success(_result.Value with { DailyQuests = response.Value });
-    }
+    private async Task CollectDailyQuestsAsync() =>
+        _result = (await UserService.CollectDailyQuestAsync())
+            .Map(x => _result.Unwrap() with { DailyQuests = x });
 
-    private async Task StartWeeklyQuestsAsync()
-    {
-        var response = await UserService.StartWeeklyQuestAsync();
-        if (response.IsSuccess)
-            _result = ApiResult<UserQuestModel>.Success(_result.Value with { WeeklyQuests = response.Value });
-    }
+    private async Task StartWeeklyQuestsAsync() =>
+        _result = (await UserService.StartWeeklyQuestAsync())
+            .Map(x => _result.Unwrap() with { WeeklyQuests = x });
 
-    private async Task CollectWeeklyQuestsAsync()
-    {
-        var response = await UserService.CollectWeeklyQuestAsync();
-        if (response.IsSuccess)
-            _result = ApiResult<UserQuestModel>.Success(_result.Value with { WeeklyQuests = response.Value });
-    }
+    private async Task CollectWeeklyQuestsAsync() =>
+        _result = (await UserService.CollectWeeklyQuestAsync())
+            .Map(x => _result.Unwrap() with { WeeklyQuests = x });
 
 }

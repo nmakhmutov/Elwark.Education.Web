@@ -36,7 +36,7 @@ internal sealed class NotificationService : INotificationService
     public async Task<ApiResult<Unit>> MarkAllAsReadAsync()
     {
         var result = await _api.DeleteAsync<Unit>("notifications");
-        if (result.IsFailed)
+        if (result.IsError)
             return result;
 
         _lastNotifications.Clear();
@@ -57,7 +57,9 @@ internal sealed class NotificationService : INotificationService
     public void Dispose() =>
         _hab.OnNotificationReceived -= ReceivedNotification;
 
-    public event Action OnChanged = () => { };
+    public event Action OnChanged = () =>
+    {
+    };
 
     public async ValueTask InitAsync()
     {
@@ -68,11 +70,10 @@ internal sealed class NotificationService : INotificationService
         if (state.User.Identity?.IsAuthenticated == false)
             return;
 
-        var result = await GetAsync(new NotificationsRequest(MaxNotifications));
-        if (result.IsSuccess)
-            _lastNotifications = result.Value.Items
-                .Select(x => new NotificationMessage(x.Subject, x.Title, x.Message, x.CreatedAt))
-                .ToList();
+        _lastNotifications = (await GetAsync(new NotificationsRequest(MaxNotifications)))
+            .Map(m => m.Items.Select(x => new NotificationMessage(x.Subject, x.Title, x.Message, x.CreatedAt)))
+            .UnwrapOr(Enumerable.Empty<NotificationMessage>())
+            .ToList();
 
         _isInitialized = true;
 

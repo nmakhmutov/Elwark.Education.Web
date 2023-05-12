@@ -4,7 +4,7 @@ using Education.Web.Client.Features.History.Services;
 using Education.Web.Client.Models.Quiz;
 using Microsoft.AspNetCore.Components;
 
-namespace Education.Web.Client.Shared.State.Settings;
+namespace Education.Web.Client.Shared.Settings;
 
 public sealed partial class CascadingHistorySettings
 {

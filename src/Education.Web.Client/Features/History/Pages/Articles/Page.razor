@@ -72,7 +72,7 @@
 </ApiViewer>
 
 @code {
-    private const int Limit = 20;
+        private const int Limit = 20;
     private EpochType _epoch;
     private GetArticlesRequest.SortType _sort;
 
@@ -105,9 +105,9 @@
     [Parameter, SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; }
 
-    private int TotalPages => _result.IsSuccess
-        ? (int)double.Ceiling((double)_result.Value.Count / Limit)
-        : 1;
+    private int TotalPages =>
+        _result.Map(x => (int)double.Ceiling((double)x.Count / Limit))
+            .UnwrapOr(1);
 
     protected override async Task OnParametersSetAsync()
     {
@@ -126,7 +126,7 @@
     private async Task<bool> OnBookmarkClick(string articleId)
     {
         var result = await UserService.ToggleArticleBookmarkAsync(articleId);
-        return result is { IsSuccess: true, Value: true };
+        return result.Match(x => x, _ => false, () => false);
     }
 
     private void OnPagination(int page)

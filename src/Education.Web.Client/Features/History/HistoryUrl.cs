@@ -77,23 +77,23 @@ public static class HistoryUrl
 
         public const string MyBackpack = $"{My}/backpack";
 
+        public const string MyQuizzes = $"{My}/quizzes";
+        
         public const string MyEasyQuizzes = $"{My}/quizzes/easy";
 
         public const string MyHardQuizzes = $"{My}/quizzes/hard";
 
+        public const string MyEventGuessers = $"{My}/event-guessers";
+        
         public const string MySmallEventGuessers = $"{My}/event-guessers/small";
 
         public const string MyMediumEventGuessers = $"{My}/event-guessers/medium";
 
         public const string MyLargeEventGuessers = $"{My}/event-guessers/large";
 
-        public const string MySilver = $"{My}/accounting/silver";
-
         public const string MyAchievements = $"{My}/achievements";
 
         public const string MyQuests = $"{My}/quests";
-
-        public const string MyStatistics = $"{My}/statistics";
 
         public const string MyBookmarks = $"{My}/bookmarks";
 

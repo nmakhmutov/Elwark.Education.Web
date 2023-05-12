@@ -7,26 +7,26 @@ public sealed record EventGuesserStatisticsModel(
     uint Tests,
     ScoreModel Score,
     AnswerRatioModel AnswerRatio,
-    EventGuesserStatisticsModel.ContrastModel RangeContrast
+    EventGuesserStatisticsModel.DeltaModel Delta
 )
 {
-    public sealed record ContrastModel(
-        DateOnly Starts,
-        DateOnly Ends,
-        ContrastModel<uint> Tests,
+    public sealed record DeltaModel(
+        DateOnly Start,
+        DateOnly End,
+        DeltaModel<uint> Tests,
         ScoreContrastModel Score,
         AnswerRatioContrastModel AnswerRatio
     );
 
     public sealed record ScoreContrastModel(
-        ContrastModel<uint> Total,
-        ContrastModel<uint> Points,
-        ContrastModel<uint> Bonus
+        DeltaModel<uint> Total,
+        DeltaModel<uint> Points,
+        DeltaModel<uint> Bonus
     );
 
     public sealed record AnswerRatioContrastModel(
-        ContrastModel<uint> Total,
-        ContrastModel<uint> Correct,
-        ContrastModel<uint> Incorrect
+        DeltaModel<uint> Total,
+        DeltaModel<uint> Correct,
+        DeltaModel<uint> Incorrect
     );
 }

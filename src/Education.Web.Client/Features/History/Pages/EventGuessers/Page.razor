@@ -81,7 +81,7 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["History_Title"].Value, HistoryUrl.Root)
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)
     };
 
     [Inject]
@@ -107,13 +107,14 @@
         _result = await EventGuesserService.GetAsync();
         if (_result.IsSuccess)
         {
-            if (!_result.Value.Tests.Any(x => x.IsAllowed && x.Type == HistorySettings.EventGuesserType))
-                await HistorySettings.ChangeEventGuesserTypeAsync(_result.Value.Tests.FirstOrDefault(x => x.IsAllowed)?.Type);
+            var tests = _result.Unwrap().Tests;
+            if (!tests.Any(x => x.IsAllowed && x.Type == HistorySettings.EventGuesserType))
+                await HistorySettings.ChangeEventGuesserTypeAsync(tests.FirstOrDefault(x => x.IsAllowed)?.Type);
 
             return;
         }
 
-        if (_result.IsFailed && _result.Error.IsTestAlreadyCreated(out var id))
+        if (_result.IsError && _result.UnwrapError().IsTestAlreadyCreated(out var id))
             Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(id));
     }
 
@@ -125,18 +126,19 @@
         _isLoading = true;
 
         var request = new CreateRequest(HistorySettings.EventGuesserType, HistorySettings.EventGuesserEpoch);
-        var response = await EventGuesserService.CreateAsync(request);
-        if (response.IsSuccess)
-            Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(response.Value.Id));
-        else
-            Snackbar.Add(response.Error.Detail, Severity.Error);
+        (await EventGuesserService.CreateAsync(request))
+            .Match(
+                x => Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(x.Id)),
+                e => Snackbar.Add(e.Detail, Severity.Error)
+            );
 
         _isLoading = false;
     }
 
     private void OpenRule()
     {
-        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = _result.Value.Rule.Content };
+        var rule = _result.Unwrap().Rule;
+        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = rule.Content };
         var options = new DialogOptions
         {
             FullWidth = true,
@@ -145,7 +147,7 @@
             CloseButton = true
         };
 
-        DialogService.Show<RuleDialog>(_result.Value.Rule.Title, parameters, options);
+        DialogService.Show<RuleDialog>(rule.Title, parameters, options);
     }
 
 }

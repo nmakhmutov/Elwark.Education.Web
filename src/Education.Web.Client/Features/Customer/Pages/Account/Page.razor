@@ -42,12 +42,12 @@
     protected override async Task OnInitializedAsync()
     {
         _response = await CustomerService.GetSubjectsAsync();
-        if (_response.IsFailed)
-            return;
-
-        foreach (var subject in _response.Value)
-            if (Enhance(subject) is {} item)
-                _subjects.Add(item);
+        _response.Match(subjects =>
+        {
+            foreach (var subject in subjects)
+                if (Enhance(subject) is {} item)
+                    _subjects.Add(item);
+        });
     }
 
     private SubjectEnhancedModel? Enhance(SubjectModel model) =>

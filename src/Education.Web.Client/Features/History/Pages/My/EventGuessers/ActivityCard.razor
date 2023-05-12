@@ -1,70 +1,45 @@
 @using ApexCharts
 @using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Services.User.Model.EventGuesser
+
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     <MudText Typo="Typo.h5">
         @Title
     </MudText>
-    <ApexChart @ref="@_chart" TItem="StatisticsModel.ProgressModel" Options="_options">
+    <ApexChart @ref="@_chart" TItem="EventGuessersStatisticsModel.ProgressModel" Options="_options">
         <ApexPointSeries
-            TItem="StatisticsModel.ProgressModel"
-            Items="Activities"
-            Name="@L["Statistics:Total"]"
-            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Green.Accent4 })"
-            SeriesType="SeriesType.Area"
-            XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.Total)"/>
-
-        <ApexPointSeries
-            TItem="StatisticsModel.ProgressModel"
-            Items="Activities"
-            Name="@L["Shared_QuizzesEasy"]"
-            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten3 })"
-            SeriesType="SeriesType.Area"
-            XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.Test.Easy)"/>
-
-        <ApexPointSeries
-            TItem="StatisticsModel.ProgressModel"
-            Items="Activities"
-            Name="@L["Shared_QuizzesHard"]"
-            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten1 })"
-            SeriesType="SeriesType.Area"
-            XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.Test.Hard)"/>
-
-        <ApexPointSeries
-            TItem="StatisticsModel.ProgressModel"
+            TItem="EventGuessersStatisticsModel.ProgressModel"
             Items="Activities"
             Name="@L["History_EventGuessersSmall"]"
             Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten3 })"
             SeriesType="SeriesType.Area"
             XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.EventGuesser.Small)"/>
-
+            YValue="@(x => x.Small)"/>
+        
         <ApexPointSeries
-            TItem="StatisticsModel.ProgressModel"
+            TItem="EventGuessersStatisticsModel.ProgressModel"
             Items="Activities"
             Name="@L["History_EventGuessersMedium"]"
             Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten1 })"
             SeriesType="SeriesType.Area"
             XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.EventGuesser.Medium)"/>
-
+            YValue="@(x => x.Medium)"/>
+        
         <ApexPointSeries
-            TItem="StatisticsModel.ProgressModel"
+            TItem="EventGuessersStatisticsModel.ProgressModel"
             Items="Activities"
             Name="@L["History_EventGuessersLarge"]"
             Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Darken2 })"
             SeriesType="SeriesType.Area"
             XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.EventGuesser.Large)"/>
+            YValue="@(x => x.Large)"/>
     </ApexChart>
 </section>
 
 @code {
-    private ApexChart<StatisticsModel.ProgressModel>? _chart;
+    private ApexChart<EventGuessersStatisticsModel.ProgressModel>? _chart;
 
-    private ApexChartOptions<StatisticsModel.ProgressModel> _options = new()
+    private ApexChartOptions<EventGuessersStatisticsModel.ProgressModel> _options = new()
     {
         Legend = new Legend
         {
@@ -100,11 +75,11 @@
     public string DateFormat { get; set; } = "dd MMM";
 
     [Parameter, EditorRequired]
-    public StatisticsModel.ProgressModel[] Activities { get; set; } = Array.Empty<StatisticsModel.ProgressModel>();
+    public EventGuessersStatisticsModel.ProgressModel[] Activities { get; set; } = Array.Empty<EventGuessersStatisticsModel.ProgressModel>();
 
     protected override Task OnParametersSetAsync()
     {
-        var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
+        var current = ThemeProvider is { IsDarkMode: true } ? Mode.Dark : Mode.Light;
         if (_options.Theme.Mode == current)
             return Task.CompletedTask;
 

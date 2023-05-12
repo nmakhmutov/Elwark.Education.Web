@@ -18,11 +18,14 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<ProfileModel>> GetProfileAsync() =>
         _api.GetAsync<ProfileModel>("history/users/me/profile");
 
+    public Task<ApiResult<InventoryModel>> GetInventoryAsync() =>
+        _api.GetAsync<InventoryModel>("history/users/me/inventory");
+
     public Task<ApiResult<BackpackModel>> GetBackpackAsync() =>
         _api.GetAsync<BackpackModel>("history/users/me/backpack");
 
-    public Task<ApiResult<WalletModel>> GetWalletAsync() =>
-        _api.GetAsync<WalletModel>("history/users/me/wallet");
+    public Task<ApiResult<IReadOnlyCollection<WalletModel>>> GetWalletAsync() =>
+        _api.GetAsync<IReadOnlyCollection<WalletModel>>("history/users/me/wallet");
 
     public Task<ApiResult<UserQuestModel>> GetQuestAsync() =>
         _api.GetAsync<UserQuestModel>("history/users/me/quests");
@@ -45,14 +48,17 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync() =>
         _api.DeleteAsync<DailyBonusModel>("history/users/me/bonus/daily");
 
-    public Task<ApiResult<StatisticsModel>> GetStatisticsAsync() =>
-        _api.GetAsync<StatisticsModel>("history/users/me/statistics");
+    public Task<ApiResult<QuizzesStatisticsModel>> GetQuizStatisticsAsync() =>
+        _api.GetAsync<QuizzesStatisticsModel>("history/users/me/quizzes");
 
     public Task<ApiResult<QuizStatisticsModel>> GetEasyQuizStatisticsAsync() =>
         _api.GetAsync<QuizStatisticsModel>("history/users/me/quizzes/easy");
 
     public Task<ApiResult<QuizStatisticsModel>> GetHardQuizStatisticsAsync() =>
         _api.GetAsync<QuizStatisticsModel>("history/users/me/quizzes/hard");
+
+    public Task<ApiResult<EventGuessersStatisticsModel>> GetEventGuesserStatisticsAsync() =>
+        _api.GetAsync<EventGuessersStatisticsModel>("history/users/me/event-guessers");
 
     public Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync() =>
         _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers/small");
@@ -63,13 +69,11 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync() =>
         _api.GetAsync<EventGuesserStatisticsModel>("history/users/me/event-guessers/large");
 
-    public Task<ApiResult<AccountingModel>> GetSilverAccountingAsync() =>
-        _api.GetAsync<AccountingModel>("history/users/me/accounting/silver");
-
     public Task<ApiResult<AchievementsModel>> GetAchievementsAsync() =>
         _api.GetAsync<AchievementsModel>("history/users/me/achievements");
 
-    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest request) =>
+    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(
+        BookmarksRequest request) =>
         _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/users/me/article-bookmarks", request);
 
     public Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId) =>
@@ -86,7 +90,7 @@ internal sealed class HistoryUserService : IHistoryUserService
 
     public Task<ApiResult<PagingTokenModel<CourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest request) =>
         _api.GetAsync<PagingTokenModel<CourseOverviewModel>>("history/users/me/course-bookmarks", request);
-    
+
     public Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string courseId) =>
         _api.PostAsync<bool>($"history/users/me/courses/{courseId}/bookmarks");
 

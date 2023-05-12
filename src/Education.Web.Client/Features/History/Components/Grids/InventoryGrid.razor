@@ -8,22 +8,11 @@
 
     @if (!string.IsNullOrEmpty(StoreHref))
     {
-        <div class="store rounded pa-3">
-            <MudFab
-                Label="@L["Shared_InventoryStore"]"
-                Href="@StoreHref"
-                StartIcon="@EduIcons.InventoryStore"
-                Color="Color.Primary"
-                Size="Size.Large"
-                DisableElevation/>
-        </div>
+        <InventoryStoreCard Href="@StoreHref"/>
     }
 </section>
 
 @code {
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public IEnumerable<T> Inventory { get; set; } = Enumerable.Empty<T>();

@@ -51,8 +51,6 @@ public static class EduIcons
 
     public const string Quests = Icons.Material.Outlined.TaskAlt;
 
-    public const string Statistics = Icons.Material.Outlined.QueryStats;
-
     public const string Bookmarks = Icons.Material.Outlined.Bookmarks;
 
     public const string Backpack = Icons.Material.Outlined.Backpack;

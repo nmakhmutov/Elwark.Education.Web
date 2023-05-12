@@ -141,7 +141,7 @@
         if (firstRender)
         {
             var options = new ResizeOptions { NotifyOnBreakpointOnly = true, SuppressInitEvent = false };
-            var result = await BreakpointService.Subscribe(x => OnBreakpointChanged(x), options);
+            var result = await BreakpointService.SubscribeAsync(x => OnBreakpointChanged(x), options);
 
             _subscriptionId = result.SubscriptionId;
         }
@@ -169,14 +169,10 @@
         InvokeAsync(StateHasChanged);
     }
 
-    private async ValueTask<ItemsProviderResult<EmpireOverviewModel>> EmpiresProvider(ItemsProviderRequest request)
-    {
-        var response = await ArticleService.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex, request.Count));
-
-        return response.IsSuccess
-            ? new ItemsProviderResult<EmpireOverviewModel>(response.Value.Items, (int)response.Value.Count)
-            : new ItemsProviderResult<EmpireOverviewModel>();
-    }
+    private async ValueTask<ItemsProviderResult<EmpireOverviewModel>> EmpiresProvider(ItemsProviderRequest request) =>
+        (await ArticleService.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex, request.Count)))
+            .Map(x => new ItemsProviderResult<EmpireOverviewModel>(x.Items, (int)x.Count))
+            .UnwrapOr(new ItemsProviderResult<EmpireOverviewModel>());
 
     private static GetEmpiresRequest.SortType Map(string? sort) =>
         sort switch {
@@ -193,9 +189,9 @@
             };
 
     public async ValueTask DisposeAsync() =>
-        await BreakpointService.Unsubscribe(_subscriptionId);
+        await BreakpointService.UnsubscribeAsync(_subscriptionId);
 
-    private string DateTimeFormatter(DateTime date) => 
+    private string DateTimeFormatter(DateTime date) =>
         Customer.Humanize(date);
 
 }

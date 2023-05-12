@@ -77,8 +77,8 @@
     protected override async Task OnParametersSetAsync()
     {
         _result = await UserService.GetAchievementsAsync();
-        if (_result.IsSuccess)
-            _subtitle = $"{_result.Value.Completed} / {_result.Value.Total}";
+        _subtitle = _result.Map(x => $"{x.Completed} / {x.Total}")
+            .UnwrapOr(string.Empty);
     }
 
     private static string GetIconBackground(string category) =>
@@ -101,7 +101,7 @@
             _ => "pink accent-4 white-text"
             };
 
-    private string DateTimeFormatter(DateTime dateTime) => 
+    private string DateTimeFormatter(DateTime dateTime) =>
         Customer.Humanize(dateTime);
 
 }

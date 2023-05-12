@@ -10,20 +10,21 @@
         @Loading
         break;
 
-    case Status.Fail:
+    case Status.Error:
         <PageTitle>
             @Result.Error.Title
         </PageTitle>
-        <EduError Error="Result.Error"/>
+        <EduError Error="Result.UnwrapError()"/>
         break;
 
     case Status.Success:
-        @ChildContent(Result.Value)
+        @ChildContent(Result.Unwrap())
         break;
 
     default:
         throw new ArgumentOutOfRangeException();
 }
+
 
 @code {
 

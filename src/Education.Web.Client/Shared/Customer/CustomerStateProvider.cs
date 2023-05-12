@@ -3,7 +3,7 @@ using Education.Web.Client.Features.Customer.Services.Account;
 using Education.Web.Client.Features.Customer.Services.Account.Model;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Education.Web.Client.Shared.State.Customer;
+namespace Education.Web.Client.Shared.Customer;
 
 internal sealed class CustomerStateProvider
 {
@@ -49,12 +49,12 @@ internal sealed class CustomerStateProvider
     {
         var customer = await _customerService.GetAsync();
         if (customer.IsSuccess)
-            return customer.Value;
+            return customer.Unwrap();
 
-        if (!customer.Error.IsUserNotFound())
+        if (!customer.UnwrapError().IsUserNotFound())
             return null;
 
         var result = await _customerService.CreateAsync();
-        return result.IsSuccess ? result.Value : null;
+        return result.IsSuccess ? result.Unwrap() : null;
     }
 }

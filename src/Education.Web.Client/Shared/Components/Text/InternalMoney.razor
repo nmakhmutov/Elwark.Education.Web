@@ -1,12 +1,11 @@
 @using Education.Web.Client.Models
 
 <div class="@_blockClass">
-    <MudIcon Size="@IconSize" Class="@_iconClass" Icon="@_icon"/>
+    <MudIcon Size="@IconSize" Class="@_iconClass" Icon="@Currency.GetIcon()"/>
     <MetricNumber Value="@Amount" Typo="@Typo"/>
 </div>
 
 @code {
-    private string? _icon;
     private string? _blockClass;
     private string? _iconClass;
 
@@ -36,12 +35,6 @@
             .AddClass(Horizontal ? "flex-row" : "flex-column")
             .AddClass(Class)
             .Build();
-
-        _icon = Currency switch {
-            InternalCurrency.Experience => EduIcons.Experience,
-            InternalCurrency.Silver => EduIcons.Silver,
-            _ => throw new ArgumentOutOfRangeException()
-            };
     }
 
 }

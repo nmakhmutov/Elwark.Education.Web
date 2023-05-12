@@ -43,7 +43,7 @@
         if (firstRender)
         {
             var options = new ResizeOptions { NotifyOnBreakpointOnly = true, SuppressInitEvent = false };
-            var result = await BreakpointService.Subscribe(x => OnBreakpointChanged(x), options);
+            var result = await BreakpointService.SubscribeAsync(x => OnBreakpointChanged(x), options);
 
             _subscriptionId = result.SubscriptionId;
         }
@@ -67,6 +67,6 @@
         _breakpoint >= (int)Breakpoint.Lg && i is 1 or 2;
 
     public async ValueTask DisposeAsync() =>
-        await BreakpointService.Unsubscribe(_subscriptionId);
+        await BreakpointService.UnsubscribeAsync(_subscriptionId);
 
 }

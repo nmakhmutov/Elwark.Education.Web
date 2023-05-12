@@ -8,13 +8,13 @@ public sealed record QuizStatisticsModel(
     AnswerRatioModel AnswerRatio,
     NumberOfQuizzesModel NumberOfQuizzes,
     QuizStatisticsModel.TimeSpentModel TimeSpent,
-    QuizStatisticsModel.ContrastModel RangeContrast,
+    QuizStatisticsModel.DeltaModel Delta,
     QuizStatisticsModel.DailyProgress[] Progress
 )
 {
-    public sealed record ContrastModel(
-        DateOnly Starts,
-        DateOnly Ends,
+    public sealed record DeltaModel(
+        DateOnly Start,
+        DateOnly End,
         ScoreContrastModel Score,
         AnswerRatioContrastModel AnswerRatio,
         TimeSpentContrastModel TimeSpent,
@@ -22,33 +22,33 @@ public sealed record QuizStatisticsModel(
     );
 
     public sealed record ScoreContrastModel(
-        ContrastModel<ulong> Total,
-        ContrastModel<uint> Questions,
-        ContrastModel<uint> NoMistakes,
-        ContrastModel<uint> Speed
+        DeltaModel<ulong> Total,
+        DeltaModel<uint> Questions,
+        DeltaModel<uint> NoMistakes,
+        DeltaModel<uint> Speed
     );
 
     public sealed record AnswerRatioContrastModel(
-        ContrastModel<uint> Questions,
-        ContrastModel<uint> Answered,
-        ContrastModel<uint> NotAnswered,
-        ContrastModel<uint> Correct,
-        ContrastModel<uint> Incorrect
+        DeltaModel<uint> Questions,
+        DeltaModel<uint> Answered,
+        DeltaModel<uint> NotAnswered,
+        DeltaModel<uint> Correct,
+        DeltaModel<uint> Incorrect
     );
 
     public sealed record TimeSpentContrastModel(
-        ContrastModel<TimeSpan> Total,
-        ContrastModel<TimeSpan> Average,
-        ContrastModel<TimeSpan> Min,
-        ContrastModel<TimeSpan> Max
+        DeltaModel<TimeSpan> Total,
+        DeltaModel<TimeSpan> Average,
+        DeltaModel<TimeSpan> Min,
+        DeltaModel<TimeSpan> Max
     );
 
     public sealed record NumberOfQuizzesContrastModel(
-        ContrastModel<uint> Successful,
-        ContrastModel<uint> Failed,
-        ContrastModel<uint> TimeExceeded,
-        ContrastModel<uint> MistakesExceeded,
-        ContrastModel<ulong> Total
+        DeltaModel<uint> Successful,
+        DeltaModel<uint> Failed,
+        DeltaModel<uint> TimeExceeded,
+        DeltaModel<uint> MistakesExceeded,
+        DeltaModel<ulong> Total
     );
 
     public sealed record DailyProgress(

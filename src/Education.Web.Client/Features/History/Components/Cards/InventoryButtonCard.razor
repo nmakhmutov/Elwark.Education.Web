@@ -1,14 +1,6 @@
-<InventoryInfoCard Title="@Title" Overview="@Overview" Quantity="@Quantity" IconUrl="@IconUrl">
-    <LoadingButton
-        Class="mt-3"
-        FullWidth
-        DisableElevation
-        Variant="Variant.Filled"
-        Color="Color.Primary"
-        IsLoading="@_isLoading"
-        Text="@ButtonText"
-        OnClick="@OnClickHandler"/>
-</InventoryInfoCard>
+@inherits InventoryInfoCard
+
+@{ base.BuildRenderTree(__builder); }
 
 @code {
     private bool _isLoading;
@@ -16,28 +8,30 @@
     [Parameter, EditorRequired]
     public uint Id { get; set; }
 
-    [Parameter, EditorRequired]
-    public uint Quantity { get; set; }
-
-    [Parameter, EditorRequired]
-    public string Title { get; set; } = string.Empty;
-
-    [Parameter, EditorRequired]
-    public string Overview { get; set; } = string.Empty;
-
-    [Parameter, EditorRequired]
-    public string IconUrl { get; set; } = string.Empty;
-
     [Parameter]
     public string? ButtonText { get; set; }
 
     [Parameter]
     public EventCallback<uint> OnClick { get; set; }
 
+    protected override void OnInitialized() =>
+        ChildContent =
+            @<LoadingButton
+                 Class="mt-3"
+                 FullWidth
+                 DisableElevation
+                 Variant="Variant.Filled"
+                 Color="Color.Primary"
+                 IsLoading="@_isLoading"
+                 Text="@ButtonText"
+                 OnClick="@OnClickHandler"/>;
+
     private async Task OnClickHandler()
     {
         _isLoading = true;
+
         await OnClick.InvokeAsync(Id);
+
         _isLoading = false;
     }
 

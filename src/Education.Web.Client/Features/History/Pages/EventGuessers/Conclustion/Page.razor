@@ -50,8 +50,8 @@
                         DateTimeFormatter="@DateTimeFormatter"/>
                 </MudTd>
                 <MudTd DataLabel="@L["History_EventGuesserUserAnswer"]">
-                    <HistoryDate 
-                        Typo="Typo.body2" 
+                    <HistoryDate
+                        Typo="Typo.body2"
                         Date="@context.UserAnswer"
                         DateTimeFormatter="@DateTimeFormatter"
                         Color="@(context.IsCorrect ? Color.Success : Color.Error)"/>
@@ -112,15 +112,14 @@
     protected override async Task OnInitializedAsync()
     {
         _result = await EventGuesserService.GetConclusionAsync(Id);
-        if (_result.IsFailed)
-        {
-            if (_result.Error.IsEventGuesserNotFound())
-                Navigation.NavigateTo(HistoryUrl.EventGuesser.Index);
-
-            return;
-        }
-
-        _progress = Math.Round((double)_result.Value.Score.Total / _result.Value.MaxScore * 100);
+        _result.Match(
+            x => _progress = Math.Round((double)x.Score.Total / x.MaxScore * 100),
+            e =>
+            {
+                if (e.IsEventGuesserNotFound())
+                    Navigation.NavigateTo(HistoryUrl.EventGuesser.Index);
+            }
+            );
     }
 
     private string DateTimeFormatter(DateTime date) =>

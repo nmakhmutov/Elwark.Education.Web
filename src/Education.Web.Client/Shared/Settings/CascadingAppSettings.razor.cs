@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Utilities;
 
-namespace Education.Web.Client.Shared.State.Settings;
+namespace Education.Web.Client.Shared.Settings;
 
 public sealed partial class CascadingAppSettings
 {

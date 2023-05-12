@@ -1,20 +1,27 @@
 @typeparam T
 
-<section class="mud-paper d-flex flex-column gap-3 pa-3 pa-sm-6 @Class">
-    <header class="d-flex align-center justify-space-between">
+<section class="mud-paper d-flex flex-column @Class">
+    <header class="d-flex align-center justify-space-between px-3 pt-3 px-sm-6 pt-sm-6">
         <MudText Typo="Typo.h5">
             @Title
         </MudText>
         <MetricNumber Value="@Value" Typo="Typo.h5"/>
     </header>
-    <section class="flex-grow-1">
+
+    <article class="flex-grow-1 pa-3 pa-sm-6">
         @ChildContent
-    </section>
+    </article>
+
     @if (Href is not null)
     {
-        <footer>
-            <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary" Href="@Href">
-                @L["Shared_ButtonDetails"]
+        <MudDivider FlexItem Style="flex-grow: 0"/>
+
+        <footer class="px-3 py-3">
+            <MudButton
+                Class="text-transform-none"
+                EndIcon="@Icons.Material.Outlined.ArrowForward"
+                Href="@Href">
+                @L["Shared_ButtonSeeMore"]
             </MudButton>
         </footer>
     }

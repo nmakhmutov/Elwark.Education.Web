@@ -16,6 +16,32 @@
             </aside>
 
             <section class="content">
+                <EduFillGrid Class="mb-3 mb-sm-6">
+                    <CardBadge
+                        Title="@L["Shared_Quizzes"]"
+                        Value="@model.TotalQuizzes"
+                        Icon="@EduIcons.Quiz">
+                        <MudButton
+                            Class="text-transform-none"
+                            EndIcon="@Icons.Material.Outlined.ArrowForward"
+                            Href="@HistoryUrl.User.MyQuizzes">
+                            @L["Shared_SeeAllQuizzes"]
+                        </MudButton>
+                    </CardBadge>
+
+                    <CardBadge
+                        Title="@L["History_EventGuessers"]"
+                        Value="@model.TotalEventGuessers"
+                        Icon="@EduIcons.EventGuesser">
+                        <MudButton
+                            Class="text-transform-none"
+                            EndIcon="@Icons.Material.Outlined.ArrowForward"
+                            Href="@HistoryUrl.User.MyEventGuessers">
+                            @L["History_SeeAllEventGuessers"]
+                        </MudButton>
+                    </CardBadge>
+                </EduFillGrid>
+
                 <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
                     Recent articles
                 </MudText>

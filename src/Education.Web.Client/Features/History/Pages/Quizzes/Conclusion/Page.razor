@@ -29,7 +29,7 @@
         </div>
         <ConclusionCharts ConclusionModel="@conclusion"/>
     </EduContainer>
-    
+
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <div class="mb-3">
             <MudLink Href="@HistoryUrl.Content.Article(conclusion.Article.Id)" Typo="Typo.h5">
@@ -72,7 +72,7 @@
                 </MudTh>
             </FooterContent>
         </MudTable>
-    
+
         <div class="d-flex justify-center">
             <MudButton
                 Href="@HistoryUrl.ArticleQuiz.Index(conclusion.Article.Id)"
@@ -104,10 +104,10 @@
     protected override async Task OnParametersSetAsync()
     {
         _result = await QuizService.GetConclusionAsync(Id);
-        if (_result.IsSuccess)
-            _title = $"{L[$"Shared_Quiz{_result.Value.Type}"]}: {_result.Value.Article.Title}";
+        _title = _result.Map(m => $"{L[$"Shared_Quiz{m.Type}"]}: {m.Article.Title}")
+            .UnwrapOr(string.Empty);
 
-        if (_result.IsFailed && _result.Error.IsTestNotFound())
+        if (_result.IsError && _result.UnwrapError().IsTestNotFound())
             Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Index());
     }
 

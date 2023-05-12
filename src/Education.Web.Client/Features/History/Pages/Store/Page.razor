@@ -42,9 +42,9 @@ else
 @code {
     private bool _isLoading = true;
     private Error? _error;
-    private WalletModel? _wallet;
+    private InventoryModel? _wallet;
     private ProductsFilter _filter = ProductsFilter.Empty;
-    private IQueryable<ProductDto> _source = new EnumerableQuery<ProductDto>(Enumerable.Empty<ProductDto>());
+    private IQueryable<ProductDto> _source = Enumerable.Empty<ProductDto>().AsQueryable();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -60,26 +60,22 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var wallet = await UserService.GetWalletAsync();
-        if (wallet.IsSuccess)
-        {
-            _wallet = wallet.Value;
-        }
-        else
-        {
-            _error = wallet.Error;
-            return;
-        }
+        (await UserService.GetInventoryAsync())
+            .Match(x => _wallet = x, x => _error = x);
 
-        var products = await StoreService.GetAsync();
-        if (products.IsFailed)
-        {
-            _error = products.Error;
+        if (_error is not null)
             return;
-        }
 
-        _source = products.Value
-            .Select(x => new ProductDto(x, IsAffordable(wallet.Value, x)))
+        _source = (await StoreService.GetAsync())
+            .Match(
+                m => m.Select(x => new ProductDto(x, IsAffordable(_wallet, x))),
+                x =>
+                {
+                    _error = x;
+                    return Enumerable.Empty<ProductDto>();
+                },
+                Enumerable.Empty<ProductDto>
+            )
             .AsQueryable();
 
         _isLoading = false;
@@ -112,12 +108,15 @@ else
         await OnInitializedAsync();
     }
 
-    private static bool IsAffordable(WalletModel wallet, ProductModel product)
+    private static bool IsAffordable(InventoryModel? wallet, ProductModel product)
     {
+        if (wallet is null)
+            return false;
+
         if (product.InventoryWeight > wallet.Backpack.Emptiness)
             return false;
 
-        if (wallet.Monies.TryGetValue(product.Selling.Total.Currency, out var amount))
+        if (wallet.Wallet.TryGetValue(product.Selling.Total.Currency, out var amount))
             return amount >= product.Selling.Total.Amount;
 
         return false;

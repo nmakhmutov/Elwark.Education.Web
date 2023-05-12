@@ -90,7 +90,7 @@ else
                     <div class="actions">
                         @if (item.Activity.IsPassedAnyQuizzes)
                         {
-                            <MudTooltip Text="@L["Shared_ButtonDetails"]">
+                            <MudTooltip Text="@L["Shared_ButtonSeeMore"]">
                                 <MudIconButton
                                     Link="@HistoryUrl.User.MyArticle(item.Article.Id)"
                                     Icon="@Icons.Material.Outlined.RemoveRedEye"/>
@@ -131,11 +131,11 @@ else
     protected override async Task OnInitializedAsync()
     {
         var data = await UserService.GetArticleBookmarksAsync(_request);
-        if (data.IsSuccess)
+        data.Match(x =>
         {
-            _request = _request with { Token = data.Value.Next };
-            _items.AddRange(data.Value.Items);
-        }
+            _request = _request with { Token = x.Next };
+            _items.AddRange(x.Items);
+        });
 
         _isEmpty = _items.Count == 0;
         _isLoading = false;
@@ -152,21 +152,21 @@ else
         if (isRangeAvailable)
             return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
 
-        var data = await UserService.GetArticleBookmarksAsync(_request = _request with { Count = request.Count });
-        if (data.IsFailed)
-            return new ItemsProviderResult<UserArticleOverviewModel>(_items, GetLength());
+        return (await UserService.GetArticleBookmarksAsync(_request = _request with { Count = request.Count }))
+            .Map(x =>
+            {
+                _request = _request with { Token = x.Next };
+                _items.AddRange(x.Items);
 
-        _request = _request with { Token = data.Value.Next };
-        _items.AddRange(data.Value.Items);
-
-        return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex), GetLength());
+                return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex), GetLength());
+            })
+            .UnwrapOr(new ItemsProviderResult<UserArticleOverviewModel>(_items, GetLength()));
     }
 
-    private async Task<bool> OnBookmarkClick(string articleId)
-    {
-        var result = await UserService.ToggleArticleBookmarkAsync(articleId);
-        return result is { IsSuccess: true, Value: true };
-    }
+    private async Task<bool> OnBookmarkClick(string articleId) =>
+        (await UserService.ToggleArticleBookmarkAsync(articleId))
+            .Map(x => x)
+            .UnwrapOr(false);
 
     private Task OnSortChanged(BookmarksRequest.SortType sort)
     {

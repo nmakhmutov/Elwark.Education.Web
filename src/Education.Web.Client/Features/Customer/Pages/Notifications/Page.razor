@@ -79,7 +79,7 @@
                             DisableElevation
                             Variant="Variant.Filled"
                             Color="Color.Primary"
-                            Text="@L["Shared_ButtonShowMore"]"
+                            Text="@L["Shared_ButtonSeeMore"]"
                             IsLoading="@_isMoreLoading"
                             OnClick="@LoadMore"/>
                     </asside>
@@ -112,11 +112,11 @@
     protected override async Task OnInitializedAsync()
     {
         _result = await NotificationService.GetAsync(_request);
-        if (_result.IsFailed)
-            return;
-
-        _notifications.AddRange(_result.Value.Items);
-        _request = new NotificationsRequest(10, _result.Value.Next);
+        _result.Match(x =>
+        {
+            _notifications.AddRange(x.Items);
+            _request = new NotificationsRequest(10, x.Next);
+        });
     }
 
     private async Task LoadMore()
@@ -125,12 +125,15 @@
             return;
 
         _isMoreLoading = true;
-        var response = await NotificationService.GetAsync(_request);
-        if (response.IsFailed)
-            _result = response;
-
-        _notifications.AddRange(response.Value.Items);
-        _request = _request with { Token = response.Value.Next };
+        (await NotificationService.GetAsync(_request))
+            .Match(
+                x =>
+                {
+                    _notifications.AddRange(x.Items);
+                    _request = _request with { Token = x.Next };
+                },
+                e => _result = ApiResult<PagingTokenModel<NotificationModel>>.Fail(e)
+            );
         _isMoreLoading = false;
     }
 

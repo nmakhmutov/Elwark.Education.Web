@@ -18,7 +18,7 @@
             else
             {
                 <div class="d-flex align-center gap-3">
-                    @foreach (var money in Wallet.Monies)
+                    @foreach (var money in Wallet.Wallet)
                     {
                         <InternalMoney
                             Currency="@money.Key"
@@ -121,7 +121,7 @@
     public string? Class { get; set; }
 
     [Parameter]
-    public WalletModel? Wallet { get; set; }
+    public InventoryModel? Wallet { get; set; }
 
     [Parameter]
     public ProductsFilter Filter { get; set; } = ProductsFilter.Empty;

@@ -2,7 +2,7 @@ using System.Globalization;
 using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.Customer.Services.Account.Model;
 
-namespace Education.Web.Client.Shared.State.Customer;
+namespace Education.Web.Client.Shared.Customer;
 
 public sealed record CustomerState(
     string Name,

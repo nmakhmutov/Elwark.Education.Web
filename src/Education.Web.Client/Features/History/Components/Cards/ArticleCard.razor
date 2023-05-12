@@ -8,32 +8,25 @@
     </div>
 
     <section class="content flex-grow-1">
-        <header class="d-flex justify-space-between gap-3 px-3 pt-3">
-            <div class="d-flex flex-column gap-3">
-                <a class="mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
-                   href="@HistoryUrl.Content.Articles(Article.Epoch)">
-                    @L[$"History_Epoch{Article.Epoch.ToFastString()}"]
-                </a>
+        <header class="px-3 pt-3">
+            <div class="overflow-hidden">
                 <a class="mud-link mud-primary-text mud-link-underline-hover mud-typography-h6 one-line-text"
                    href="@HistoryUrl.Content.Article(Article.Id)"
                    title="@Article.Title">
                     @Article.Title
                 </a>
             </div>
-            @if (OnBookmarkClick is not null)
-            {
-                <BookmarkButton
-                    Id="@Article.Id"
-                    IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                    OnBookmarkClick="@OnBookmarkClick"/>
-            }
+            <div>
+                <a class="mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
+                   href="@HistoryUrl.Content.Articles(Article.Epoch)">
+                    @L[$"History_Epoch{Article.Epoch.ToFastString()}"]
+                </a>
+            </div>
         </header>
 
-        @if (HideOverview)
-        {
-            <div class="flex-grow-1 pt-3"></div>
-        }
-        else
+        <ContentRating Class="px-3 pt-3" Rating="@Article.Rating" Size="Size.Small" ShowTooltip/>
+
+        @if (!HideOverview)
         {
             <MudText Class="px-3 pt-3 flex-grow-1" Typo="Typo.body2">
                 @if (ShortOverview && Article.Overview.Length > 120)
@@ -48,8 +41,6 @@
         }
 
         <aside class="d-flex align-center justify-space-between pa-3">
-            <ContentRating Rating="@Article.Rating" Size="Size.Small" ShowTooltip/>
-
             @if (Activity is not null)
             {
                 <div>
@@ -63,6 +54,16 @@
                         Color="Color.Primary"
                         Tooltip="@L["Shared_NumberOfPassedHardQuizzes"]"
                         Href="@_href"/>
+                </div>
+            }
+
+            @if (OnBookmarkClick is not null)
+            {
+                <div>
+                    <BookmarkButton
+                        Id="@Article.Id"
+                        IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                        OnBookmarkClick="@OnBookmarkClick"/>
                 </div>
             }
         </aside>

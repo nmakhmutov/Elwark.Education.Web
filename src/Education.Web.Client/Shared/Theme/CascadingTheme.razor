@@ -1,5 +1,5 @@
 @using Blazored.LocalStorage
-<MudThemeProvider Theme="@_theme" IsDarkMode="@IsDarkMode"/>
+<MudThemeProvider Theme="@Theme" IsDarkMode="@IsDarkMode"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -7,9 +7,9 @@
 
 @code {
 
-    private readonly MudTheme _theme = new()
+    private static readonly MudTheme Theme = new()
     {
-        Palette = new Palette
+        Palette = new PaletteLight
         {
             Primary = "#5569FF",
             Secondary = "#6E7FFF",
@@ -28,7 +28,7 @@
             TableLines = "#E8E8E8",
             OverlayLight = "rgba(255, 255, 255, 0.7)"
         },
-        PaletteDark = new Palette
+        PaletteDark = new PaletteDark
         {
             Primary = "#5569FF",
             Secondary = "#6E7FFF",

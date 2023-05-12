@@ -43,9 +43,9 @@
     [Parameter, SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; }
 
-    private int TotalPages => _result.IsSuccess
-        ? (int)double.Ceiling((double)_result.Value.Count / _request.Limit)
-        : 1;
+    private int TotalPages =>
+        _result.Map(x => (int)double.Ceiling((double)x.Count / _request.Limit))
+            .UnwrapOr(1);
 
     protected override async Task OnParametersSetAsync()
     {

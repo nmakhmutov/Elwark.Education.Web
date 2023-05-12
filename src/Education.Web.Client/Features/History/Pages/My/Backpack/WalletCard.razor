@@ -1,23 +1,29 @@
 @using ApexCharts
 @using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Models
 @using Color = MudBlazor.Color
 @using Align = MudBlazor.Align
 
 <section class="mud-paper d-flex flex-column @Class">
     <header class="mud-primary white-text rounded ma-3 pa-3">
         <div class="d-flex align-center justify-space-between">
-            <div class="d-flex align-center">
-                <MudIcon Class="mr-1" Icon="@Icon" Size="Size.Medium"/>
-                <MudText Typo="Typo.h6">
-                    @Title
+            <div class="flex-column gap-3">
+                <MudText Typo="Typo.subtitle1">
+                    @L[$"InternalMoney:{Wallet.Currency}"]
                 </MudText>
+                <div class="d-flex align-center">
+                    <MudIcon Class="mr-1" Icon="@Wallet.Currency.GetIcon()" Size="Size.Medium"/>
+                    <MudText Typo="Typo.h6">
+                        @Wallet.Balance
+                    </MudText>
+                </div>
             </div>
 
-            <div class="d-flex flex-column">
-                <MudChip Class="white-text ma-0" Label Icon="@_tendingIcon" Text="@($"{_tendingValue.ToMetric()} %")"/>
-                @if (Budget.Length > 0)
+            <div class="d-flex flex-column gap-3">
+                <MudChip Class="white-text ma-0" Text="@($"{_tendingValue.ToMetric()} %")" Icon="@_tendingIcon" Label/>
+
+                @if (Wallet.Budgets.Length > 0)
                 {
-                    <div class="mb-3"></div>
                     <ApexChart TItem="ApexData" Options="@_options" Width="@("100px")" Height="@("30px")">
                         <ApexPointSeries
                             TItem="ApexData"
@@ -32,13 +38,16 @@
         </div>
     </header>
 
-    @if (Budget.Length > 0)
+    @if (Wallet.Budgets.Length > 0)
     {
-        foreach (var item in Budget)
+        foreach (var item in Wallet.Budgets.Take(4))
         {
-            <div class="@_budgetItemClass">
+            <div class="d-flex align-center gap-3 gap-sm-6 py-3 px-3">
                 <div class="d-flex align-center flex-grow-1">
-                    <MudAvatar Class="rounded white-text mr-3" Color="@(item.Balance == 0 ? Color.Default : Color.Primary)" Size="Size.Medium">
+                    <MudAvatar
+                        Class="rounded white-text mr-3"
+                        Color="@(item.Balance == 0 ? Color.Default : Color.Primary)"
+                        Size="Size.Medium">
                         <MudIcon Icon="@Icons.Material.Outlined.CalendarMonth" Size="Size.Medium"/>
                     </MudAvatar>
                     <MudText Typo="Typo.subtitle2" Align="Align.Start">
@@ -46,20 +55,14 @@
                     </MudText>
                 </div>
                 <div>
-                    <div class="d-flex align-center">
-                        <MudIcon Class="mr-1" Size="Size.Small" Icon="@Icon"/>
-                        <MetricNumber Value="@item.Income" Typo="Typo.body1"/>
-                    </div>
-                    <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                    <MetricNumber Value="@item.Income" Typo="Typo.body1"/>
+                    <MudText Class="mud-text-secondary" Typo="Typo.body2">
                         @L["InternalMoney:Income"]
                     </MudText>
                 </div>
                 <div>
-                    <div class="d-flex align-center">
-                        <MudIcon Class="mr-1" Size="Size.Small" Icon="@Icon"/>
-                        <MetricNumber Value="@item.Expense" Typo="Typo.body1"/>
-                    </div>
-                    <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                    <MetricNumber Value="@item.Expense" Typo="Typo.body1"/>
+                    <MudText Class="mud-text-secondary" Typo="Typo.body2">
                         @L["InternalMoney:Expense"]
                     </MudText>
                 </div>
@@ -82,23 +85,11 @@
             </div>
         </div>
     }
-
-    @if (!string.IsNullOrEmpty(Href))
-    {
-        <div class="flex-grow-1"></div>
-
-        <footer class="pa-3 pa-sm-6">
-            <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary" Href="@Href">
-                @L["Shared_ButtonDetails"]
-            </MudButton>
-        </footer>
-    }
 </section>
 
 @code {
     private double _tendingValue;
     private string? _tendingIcon;
-    private string? _budgetItemClass;
     private readonly List<ApexData> _apex = new();
 
     private readonly ApexChartOptions<ApexData> _options = new()
@@ -131,16 +122,7 @@
     public IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public BudgetModel[] Budget { get; set; } = default!;
-
-    [Parameter, EditorRequired]
-    public string? Title { get; set; }
-
-    [Parameter, EditorRequired]
-    public string? Icon { get; set; }
-
-    [Parameter]
-    public string? Href { get; set; }
+    public WalletModel Wallet { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
@@ -149,17 +131,14 @@
     {
         var now = DateTime.UtcNow;
         var month = new DateOnly(now.Year, now.Month, 1);
-        for (var i = 0; i < 6; i++)
+        for (var i = 0; i < 12; i++)
         {
             var current = month.AddMonths(-i);
-            _apex.Add(
-                Budget.FirstOrDefault(x => x.Month == current) is {} item
-                    ? new ApexData(item.Month.ToDateTime(TimeOnly.MinValue), item.Balance)
-                    : new ApexData(current.ToDateTime(TimeOnly.MinValue), 0)
-                );
+            var item = Wallet.Budgets.FirstOrDefault(x => x.Month == current);
+            _apex.Add(new ApexData(current.ToDateTime(TimeOnly.MinValue), item?.Balance ?? 0));
         }
 
-        var (start, end) = Budget switch {
+        var (start, end) = Wallet.Budgets switch {
             [] => (0d, 0d),
             [var first] => (first.Balance, 0d),
             [var first, var second, ..] => (first.Balance, second.Balance)
@@ -179,10 +158,6 @@
             < 0 => Icons.Material.Outlined.TrendingDown,
             _ => Icons.Material.Outlined.TrendingFlat
             };
-
-        _budgetItemClass = string.IsNullOrEmpty(Href)
-            ? "d-flex align-center gap-3 gap-sm-6 py-3 px-3"
-            : "d-flex align-center gap-3 gap-sm-6 py-3 px-3 px-sm-6";
     }
 
     private sealed record ApexData(DateTime Month, long Balance);

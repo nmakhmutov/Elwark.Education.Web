@@ -54,18 +54,15 @@
     protected override async Task OnParametersSetAsync()
     {
         _result = await UserService.GetArticlesAsync(Id);
-
-        if (_result.IsFailed)
-            return;
-
-        var epoch = _result.Value.Article.Epoch;
-
-        _title = _result.Value.Article.Title;
-        _breadcrumbs = new List<BreadcrumbItem>
+        _result.Match(x =>
         {
-            new(L["History_Title"].Value, HistoryUrl.Root),
-            new(L[$"History_Epoch{epoch.ToFastString()}"].Value, HistoryUrl.Content.Articles(epoch))
-        };
+            _title = x.Article.Title;
+            _breadcrumbs = new List<BreadcrumbItem>
+            {
+                new(L["History_Title"], HistoryUrl.Root),
+                new(L[$"History_Epoch{x.Article.Epoch.ToFastString()}"], HistoryUrl.Content.Articles(x.Article.Epoch))
+            };
+        });
     }
 
     private string DateTimeFormatter(DateTime date) =>

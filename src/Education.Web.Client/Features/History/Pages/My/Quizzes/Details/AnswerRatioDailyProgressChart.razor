@@ -82,7 +82,7 @@
 
     protected override Task OnParametersSetAsync()
     {
-        var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
+        var current = ThemeProvider is { IsDarkMode: true } ? Mode.Dark : Mode.Light;
         if (_options.Theme.Mode == current)
             return Task.CompletedTask;
 

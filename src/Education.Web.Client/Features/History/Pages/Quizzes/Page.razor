@@ -1,7 +1,7 @@
 @page "/history/quizzes"
-@using Education.Web.Client.Features.History.Services.User
 @using Education.Web.Client.Features.History.Services.Quiz.Model
 @using Education.Web.Client.Features.History.Services.Quiz.Request
+@using Education.Web.Client.Features.History.Services.User
 @using Education.Web.Client.Features.History.Services.Quiz
 @layout HistoryLayout
 @attribute [Authorize]
@@ -97,7 +97,7 @@
     {
         _result = await QuizService.GetTestBuilderAsync(ArticleId);
 
-        if (_result.IsFailed && _result.Error.IsTestAlreadyCreated(out var id))
+        if (_result.IsError && _result.UnwrapError().IsTestAlreadyCreated(out var id))
             Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Test(id));
     }
 
@@ -107,28 +107,25 @@
     private Task OnQuizCreateAsync(CreateArticleQuizRequest request) =>
         CreateTestAsync(() => QuizService.CreateAsync(request));
 
-    private async Task CreateTestAsync(Func<Task<ApiResult<QuizModel>>> call)
-    {
-        var response = await call();
+    private async Task CreateTestAsync(Func<Task<ApiResult<QuizModel>>> call) =>
+        (await call())
+            .Match(
+                x => Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Test(x.Overview.Id)),
+                e => Snackbar.Add(e.Detail, Severity.Error)
+            );
 
-        if (response.IsSuccess)
-            Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Test(response.Value.Overview.Id));
-        else
-            Snackbar.Add(response.Error.Detail, Severity.Error);
-    }
-
-    private async Task<bool> ToggleBookmarkAsync(string id)
-    {
-        var result = await UserService.ToggleArticleBookmarkAsync(id);
-        return result is { IsSuccess: true, Value: true };
-    }
+    private async Task<bool> ToggleBookmarkAsync(string id) =>
+        (await UserService.ToggleArticleBookmarkAsync(id))
+            .Map(x => x)
+            .UnwrapOr(false);
 
     private void OpenRule()
     {
-        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = _result.Value.Rule.Content };
+        var rule = _result.Unwrap().Rule;
+        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = rule.Content };
         var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Large, CloseOnEscapeKey = true, CloseButton = true };
 
-        DialogService.Show<RuleDialog>(_result.Value.Rule.Title, parameters, options);
+        DialogService.Show<RuleDialog>(rule.Title, parameters, options);
     }
 
 }

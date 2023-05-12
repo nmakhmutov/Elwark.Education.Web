@@ -1,0 +1,135 @@
+@page "/history/my/quizzes/{test}"
+@using Education.Web.Client.Features.History.Services.User
+@using Education.Web.Client.Features.History.Services.User.Model.Quiz
+@using Education.Web.Client.Features.History.Services.Quiz.Model
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>
+    @_title
+</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@_title" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
+
+<ApiViewer Result="@_result" Context="result">
+    <EduContainer Class="pb-3 pb-sm-6">
+        <StatisticDetailsGrid>
+            <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
+                <TotalContent>
+                    <Subheader Title="@L["Shared_Quizzes"]" Subtitle="@L["ForAllTime"]"/>
+                    <NumberOfQuizzesChart Value="@result.NumberOfQuizzes"/>
+                </TotalContent>
+                <ProgressContent>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <ProgressList Items="@result.Delta.NumberOfQuizzes.GetProgress(L)"/>
+                </ProgressContent>
+                <ActivityContent>
+                    <Subheader Title="@L["Shared_MyActivity"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <NumberOfTestDailyProgressChart Progress="@_progress"/>
+                </ActivityContent>
+            </StatisticDetailsCard>
+
+            <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
+                <TotalContent>
+                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                    <ScoreChart Value="@result.Score"/>
+                </TotalContent>
+                <ProgressContent>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <ProgressList Items="@result.Delta.Score.GetProgress(L)"/>
+                </ProgressContent>
+                <ActivityContent>
+                    <Subheader Title="@L["Shared_MyActivity"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <ScoreDailyProgressChart Progress="@_progress"/>
+                </ActivityContent>
+            </StatisticDetailsCard>
+
+            <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
+                <TotalContent>
+                    <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
+                    <AnswerRatioChart Value="@result.AnswerRatio"/>
+                </TotalContent>
+                <ProgressContent>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <ProgressList Items="@result.Delta.AnswerRatio.GetProgress(L)"/>
+                </ProgressContent>
+                <ActivityContent>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <AnswerRatioDailyProgressChart Progress="@_progress"/>
+                </ActivityContent>
+            </StatisticDetailsCard>
+
+            <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
+                <TotalContent>
+                    <Subheader Title="@L["TimeSpent"]" Subtitle="@L["ForAllTime"]"/>
+                    <TimeSpentChart Value="@result.TimeSpent"/>
+                </TotalContent>
+                <ProgressContent>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <ProgressList Items="@result.Delta.TimeSpent.GetProgress(L)"/>
+                </ProgressContent>
+                <ActivityContent>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <TimeSpentDailyProgressChart Progress="@_progress"/>
+                </ActivityContent>
+            </StatisticDetailsCard>
+        </StatisticDetailsGrid>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+    private string? _title;
+    private QuizStatisticsModel.DailyProgress[] _progress = Array.Empty<QuizStatisticsModel.DailyProgress>();
+    private ApiResult<QuizStatisticsModel> _result = ApiResult<QuizStatisticsModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History_Title"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Shared_UserProfile"].Value, HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["Shared_Quizzes"].Value, HistoryUrl.User.MyQuizzes),
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    [Parameter]
+    public string? Test { get; set; }
+
+    protected override void OnParametersSet() =>
+        _title = Test?.ToLowerInvariant() switch
+        {
+            "easy" => L["Shared_QuizzesEasy"],
+            "hard" => L["Shared_QuizzesHard"],
+            _ => L["Error_NotFound"]
+            };
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _result = Test?.ToLowerInvariant() switch
+        {
+            "easy" => await UserService.GetEasyQuizStatisticsAsync(),
+            "hard" => await UserService.GetHardQuizStatisticsAsync(),
+            _ => ApiResult<QuizStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
+            };
+
+        _progress = _result
+            .Map(m => m.Progress.FillDailyGaps(m.Delta.Start, m.Delta.End, x => x.Date, x => EmptyProgress(x)))
+            .UnwrapOrElse(Enumerable.Empty<QuizStatisticsModel.DailyProgress>)
+            .ToArray();
+    }
+
+    private static QuizStatisticsModel.DailyProgress EmptyProgress(DateOnly date) =>
+        new(
+            date,
+            new ScoreModel(0, 0, 0, 0),
+            new AnswerRatioModel(0, 0, 0, 0, 0),
+            new QuizStatisticsModel.TimeSpentModel(TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero),
+            new NumberOfQuizzesModel(0, 0, 0, 0, 0)
+            );
+
+}

@@ -68,20 +68,22 @@
     protected override async Task OnParametersSetAsync()
     {
         _result = await CourseService.GetAsync(Id);
-        if (_result.IsSuccess)
-            _title = _result.Value.Title;
+        _title = _result.Map(x => x.Title)
+            .UnwrapOr(string.Empty);
     }
 
     private async Task<bool> ToggleArticleBookmarkAsync(string id)
     {
         var result = await UserService.ToggleArticleBookmarkAsync(id);
-        return result is { IsSuccess: true, Value: true };
+        return result.Map(x => x)
+            .UnwrapOr(false);
     }
 
-    private async Task<bool> ToggleCourseBookmarkAsync(string id)
-    {
-        var result = await UserService.ToggleCourseBookmarkAsync(id);
-        return result is { IsSuccess: true, Value: true };
-    }
+    // private async Task<bool> ToggleCourseBookmarkAsync(string id)
+    // {
+    //     var result = await UserService.ToggleCourseBookmarkAsync(id);
+    //     return result.Map(x => x)
+    //         .UnwrapOr(false);
+    // }
 
 }

@@ -1,0 +1,93 @@
+@page "/history/my/event-guessers/{test}"
+@using Education.Web.Client.Features.History.Services.User.Model.EventGuesser
+@using Education.Web.Client.Features.History.Services.User
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>
+    @_title
+</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@_title" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
+
+<ApiViewer Result="@_result" Context="result">
+    <EduContainer Class="pb-3 pb-sm-6">
+        <StatisticDetailsGrid>
+            <StatisticDetailsCard>
+                <TotalContent>
+                    <Subheader Title="@L["History_EventGuesserScore"]" Subtitle="@L["ForAllTime"]"/>
+                    <EventGuesserScoreChart Score="@result.Score"/>
+                </TotalContent>
+                <ProgressContent>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <ProgressList Items="@result.Delta.GetProgress(L)"/>
+                </ProgressContent>
+            </StatisticDetailsCard>
+
+            <StatisticDetailsCard>
+                <TotalContent>
+                    <Subheader Title="@L["History_EventGuesserQuestions"]" Subtitle="@L["ForAllTime"]"/>
+                    <EventGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
+                </TotalContent>
+                <ProgressContent>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <ProgressList Items="@result.Delta.GetProgress(L)"/>
+                </ProgressContent>
+            </StatisticDetailsCard>
+
+            <MudPaper Elevation="0" Class="pa-3 pa-sm-6">
+                <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-3 mb-sm-6">
+                    <MudText Typo="Typo.h5">
+                        @L["Shared_Quizzes"]
+                    </MudText>
+                    <MetricNumber Value="@result.Tests" Typo="Typo.h5"/>
+                </MudStack>
+                <section>
+                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <ProgressList Items="@result.Delta.GetProgress(L)"/>
+                </section>
+            </MudPaper>
+        </StatisticDetailsGrid>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+    private string? _title;
+    private ApiResult<EventGuesserStatisticsModel> _result = ApiResult<EventGuesserStatisticsModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History_Title"].Value, HistoryUrl.Root),
+        new BreadcrumbItem(L["Shared_UserProfile"].Value, HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["History_EventGuessers"].Value, HistoryUrl.User.MyEventGuessers)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    [Parameter]
+    public string? Test { get; set; }
+
+    protected override void OnParametersSet() =>
+        _title = Test?.ToLowerInvariant() switch {
+            "small" => L["History_EventGuessersSmall"],
+            "medium" => L["History_EventGuessersMedium"],
+            "large" => L["History_EventGuessersLarge"],
+            _ => L["Error_NotFound"]
+            };
+
+    protected override async Task OnParametersSetAsync() =>
+        _result = Test?.ToLowerInvariant() switch
+        {
+            "small" => await UserService.GetSmallEventGuesserStatisticsAsync(),
+            "medium" => await UserService.GetMediumEventGuesserStatisticsAsync(),
+            "large" => await UserService.GetLargeEventGuesserStatisticsAsync(),
+            _ => ApiResult<EventGuesserStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
+            };
+
+}

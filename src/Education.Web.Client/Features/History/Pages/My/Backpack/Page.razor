@@ -18,20 +18,31 @@
 
 <ApiViewer Result="@_result" Context="model">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index" Context="inventory">
-            <InventoryInfoCard
-                IconUrl="@inventory.IconUrl"
-                Overview="@inventory.Overview"
-                Quantity="@inventory.Quantity"
-                Subtitle="@inventory.Category.Title"
-                Title="@inventory.Title"/>
-        </InventoryGrid>
+        <section class="grid">
+            <article class="content">
+                <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index" Context="inventory">
+                    <InventoryInfoCard
+                        IconUrl="@inventory.IconUrl"
+                        Overview="@inventory.Overview"
+                        Quantity="@inventory.Quantity"
+                        Subtitle="@inventory.Category.Title"
+                        Title="@inventory.Title"/>
+                </InventoryGrid>
+            </article>
+            <aside class="sidebar">
+                @foreach (var item in _wallet)
+                {
+                    <WalletCard Wallet="@item"/>
+                }
+            </aside>
+        </section>
     </EduContainer>
 </ApiViewer>
 
 @code {
     private ApiResult<BackpackModel> _result = ApiResult<BackpackModel>.Loading();
     private string? _capacity;
+    private IReadOnlyCollection<WalletModel> _wallet = Array.Empty<WalletModel>();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -47,9 +58,13 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _wallet = (await UserService.GetWalletAsync())
+            .Map(x => x)
+            .UnwrapOr(Array.Empty<WalletModel>());
+
         _result = await UserService.GetBackpackAsync();
-        if (_result.IsSuccess)
-            _capacity = $"{_result.Value.Fullness} / {_result.Value.Capacity}";
+        _capacity = _result.Map(x => $"{x.Fullness} / {x.Capacity}")
+            .UnwrapOr(string.Empty);
     }
 
 }

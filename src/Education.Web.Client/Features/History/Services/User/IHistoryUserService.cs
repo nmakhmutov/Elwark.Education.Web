@@ -12,9 +12,11 @@ public interface IHistoryUserService
 {
     Task<ApiResult<ProfileModel>> GetProfileAsync();
 
+    Task<ApiResult<InventoryModel>> GetInventoryAsync();
+    
     Task<ApiResult<BackpackModel>> GetBackpackAsync();
 
-    Task<ApiResult<WalletModel>> GetWalletAsync();
+    Task<ApiResult<IReadOnlyCollection<WalletModel>>> GetWalletAsync();
 
     Task<ApiResult<UserQuestModel>> GetQuestAsync();
 
@@ -30,19 +32,19 @@ public interface IHistoryUserService
 
     Task<ApiResult<DailyBonusModel>> RejectDailyBonusAsync();
 
-    Task<ApiResult<StatisticsModel>> GetStatisticsAsync();
-
+    Task<ApiResult<QuizzesStatisticsModel>> GetQuizStatisticsAsync();
+    
     Task<ApiResult<QuizStatisticsModel>> GetEasyQuizStatisticsAsync();
 
     Task<ApiResult<QuizStatisticsModel>> GetHardQuizStatisticsAsync();
 
+    Task<ApiResult<EventGuessersStatisticsModel>> GetEventGuesserStatisticsAsync();
+    
     Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync();
 
     Task<ApiResult<EventGuesserStatisticsModel>> GetMediumEventGuesserStatisticsAsync();
 
     Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync();
-
-    Task<ApiResult<AccountingModel>> GetSilverAccountingAsync();
 
     Task<ApiResult<AchievementsModel>> GetAchievementsAsync();
 

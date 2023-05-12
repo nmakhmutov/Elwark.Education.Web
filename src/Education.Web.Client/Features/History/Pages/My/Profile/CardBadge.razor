@@ -1,0 +1,40 @@
+<section class="mud-paper @Class">
+    <article class="d-flex align-center pa-3 pa-sm-6">
+        <MudAvatar Class="mr-3 mr-sm-6" Rounded="true" Color="Color.Primary" Size="Size.Large">
+            <MudIcon Icon="@Icon" Size="Size.Large"/>
+        </MudAvatar>
+
+        <section>
+            <MudText Class="mud-text-secondary" Typo="Typo.subtitle2">@Title</MudText>
+            <MetricNumber Value="@Value" Typo="Typo.h4"/>
+        </section>
+    </article>
+
+    @if (ChildContent is not null)
+    {
+        <MudDivider/>
+        
+        <footer class="pa-3">
+            @ChildContent
+        </footer>
+    }
+</section>
+
+@code {
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public ulong Value { get; set; }
+
+    [Parameter]
+    public string? Icon { get; set; } = Icons.Material.Outlined.QueryStats;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+}

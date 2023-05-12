@@ -101,8 +101,10 @@
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
             return Array.Empty<SearchModel>();
 
-        var result = await HistorySearchService.SearchAsync(new SearchRequest(text, 0, 11), ct);
-        return result.IsSuccess ? result.Value.Hints : Array.Empty<SearchModel>();
+        return (await HistorySearchService.SearchAsync(new SearchRequest(text, 0, 11), ct))
+            .Map(x => x.Hints)
+            .UnwrapOrElse(Enumerable.Empty<SearchModel>)
+            .ToArray();
     }
 
     private Task OnSearchResult(SearchModel? entry)

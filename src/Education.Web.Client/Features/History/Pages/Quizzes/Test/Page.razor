@@ -1,13 +1,13 @@
 @page "/history/quizzes/{id}"
-@using Education.Web.Client.Models.Inventory
 @using Education.Web.Client.Features.History.Services.Quiz.Model
-@using Education.Web.Client.Features.History.Services.Quiz
+@using Education.Web.Client.Models.Inventory
 @using Education.Web.Client.Models.Quiz
+@using Education.Web.Client.Features.History.Services.Quiz
 @layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>
-    @(_result.IsSuccess ? $"{_testTypeTitle}: {_result.Value.Overview.Article.Title}" : L["Shared_Quizzes"])
+    @_result.Match(x => $"{_testTypeTitle}: {x.Overview.Article.Title}", e => e.Title, () => L["Shared_Quizzes"])
 </PageTitle>
 
 @switch (_result.Status)
@@ -16,8 +16,8 @@
         <Spinner/>
         break;
 
-    case Status.Fail:
-        <EduError Error="@_result.Error"/>
+    case Status.Error:
+        <EduError Error="@_result.UnwrapError()"/>
         break;
 
     case Status.Success:
@@ -169,21 +169,22 @@
     protected override async Task OnParametersSetAsync()
     {
         _result = await QuizService.GetAsync(Id);
-        if (_result.IsFailed)
-        {
-            if (_result.Error.IsTestAlreadyCompleted())
-                Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
+        _result.Match(
+            x =>
+            {
+                _quiz = x.Overview;
+                _currentQuestion = x.Question;
+                _inventory = x.Inventory;
+                _testTypeTitle = L[$"Shared_Quiz{_quiz.Type}"];
+            },
+            e =>
+            {
+                if (e.IsTestAlreadyCompleted())
+                    Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
 
-            if (_result.Error.IsTestNotFound())
-                Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
-
-            return;
-        }
-
-        _quiz = _result.Value.Overview;
-        _currentQuestion = _result.Value.Question;
-        _inventory = _result.Value.Inventory;
-        _testTypeTitle = L[$"Shared_Quiz{_quiz.Type}"];
+                if (e.IsTestNotFound())
+                    Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
+            });
     }
 
     private async Task OnExpired()
@@ -191,7 +192,7 @@
         _countdownColor = Color.Error;
         _result = await QuizService.GetAsync(Id);
 
-        if (_result.IsFailed)
+        if (_result.IsError)
             Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
     }
 
@@ -228,27 +229,28 @@
         _checking = false;
     }
 
-    private void UpdateState(ApiResult<QuizAnswerModel> result)
-    {
-        if (result.IsFailed)
-        {
-            if (result.Error.IsTestAlreadyCompleted())
+    private void UpdateState(ApiResult<QuizAnswerModel> result) =>
+        result.Match(
+            x =>
             {
-                Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
-                return;
-            }
+                _quiz = x.Overview;
+                _inventory = x.Inventory;
+                _nextQuestion = x.NextQuestion;
+                _correctAnswer = x.Answer;
 
-            Snackbar.Add(result.Error.Detail, Severity.Error);
-            return;
-        }
-
-        _quiz = result.Value.Overview;
-        _inventory = result.Value.Inventory;
-        _nextQuestion = result.Value.NextQuestion;
-        _correctAnswer = result.Value.Answer;
-
-        StateHasChanged();
-    }
+                StateHasChanged();
+            },
+            e =>
+            {
+                if (e.IsTestAlreadyCompleted())
+                {
+                    Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
+                }
+                else
+                {
+                    Snackbar.Add(e.Detail, Severity.Error);
+                }
+            });
 
     private void OnNext()
     {
@@ -266,24 +268,22 @@
     private void OnComplete() =>
         Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
 
-    private async Task OnUseInventory(uint id)
-    {
-        var test = await QuizService.ApplyInventoryAsync(_quiz.Id, id);
-        if (test.IsFailed)
-        {
-            Snackbar.Add(test.Error.Detail, Severity.Error);
-            return;
-        }
+    private async Task OnUseInventory(uint id) =>
+        (await QuizService.ApplyInventoryAsync(_quiz.Id, id))
+            .Match(
+                x =>
+                {
+                    if (x.Question is null)
+                    {
+                        Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
+                        return;
+                    }
 
-        if (test.Value.Question is null)
-        {
-            Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
-            return;
-        }
-
-        _quiz = test.Value.Overview;
-        _currentQuestion = test.Value.Question;
-        _inventory = test.Value.Inventory;
-    }
+                    _quiz = x.Overview;
+                    _currentQuestion = x.Question;
+                    _inventory = x.Inventory;
+                },
+                e => Snackbar.Add(e.Detail, Severity.Error)
+            );
 
 }

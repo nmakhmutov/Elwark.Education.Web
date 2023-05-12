@@ -62,9 +62,8 @@
 
         _isLoading = true;
 
-        var result = await ArticleService.GetRandomAsync(HistorySettings.SearchRandomEpoch);
-        if (result.IsSuccess)
-            Navigation.NavigateTo(HistoryUrl.Content.Article(result.Value));
+        (await ArticleService.GetRandomAsync(HistorySettings.SearchRandomEpoch))
+            .Match(x => Navigation.NavigateTo(HistoryUrl.Content.Article(x)));
 
         _isLoading = false;
     }
