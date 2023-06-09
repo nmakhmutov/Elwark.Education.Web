@@ -1,0 +1,43 @@
+@using Education.Web.Client.Features.History.Services
+@using Education.Web.Client.Features.History.Services.Article
+
+@if (_article.Length > 0)
+{
+    <div class="@Class">
+        <UnderlinedTitle Class="my-3" Title="@Title"/>
+
+        <EduFillGrid>
+            @foreach (var (article, activity) in _article)
+            {
+                <ArticleCard
+                    Article="@article"
+                    Activity="@activity"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            }
+        </EduFillGrid>
+    </div>
+}
+
+@code {
+    private UserArticleOverviewModel[] _article = Array.Empty<UserArticleOverviewModel>();
+
+    [Inject]
+    private IHistoryArticleService ArticleService { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string ArticleId { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _article = (await ArticleService.GetRelatedArticlesAsync(ArticleId))
+            .UnwrapOr(Array.Empty<UserArticleOverviewModel>());
+
+}

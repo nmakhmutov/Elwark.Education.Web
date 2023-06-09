@@ -9,7 +9,11 @@
     border-top-left-radius: var(--mud-default-borderradius);
     border-top-right-radius: var(--mud-default-borderradius);
     position: relative;
-    height: 200px;
+}
+
+.card.vertical .card-header {
+    max-height: 200px;
+    aspect-ratio: 16 / 9;
 }
 
 .card-header img {
@@ -35,8 +39,8 @@
     }
 
     .card.horizontal .card-header {
-        min-width: 33.333333%;
         height: auto;
+        min-width: 33.333333%;
         border-top-left-radius: var(--mud-default-borderradius);
         border-bottom-left-radius: var(--mud-default-borderradius);
         border-top-right-radius: 0;
@@ -44,11 +48,5 @@
 
     .card.horizontal .content {
         min-width: 66.666667%;
-    }
-}
-
-@media (min-width: 1920px) {
-    .card-header {
-        height: 250px;
     }
 }

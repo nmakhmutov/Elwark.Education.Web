@@ -21,7 +21,7 @@ public interface IHistoryQuizService
 
     Task<ApiResult<QuizAnswerModel>> CheckAsync(string testId, string questionId, ShortAnswerModel answer);
 
-    Task<ApiResult<InventoryAppliedModel>> ApplyInventoryAsync(string testId, uint inventoryId);
+    Task<ApiResult<UsedInventoryModel>> ApplyInventoryAsync(string testId, uint inventoryId);
 
     Task<ApiResult<QuizConclusionModel>> GetConclusionAsync(string id);
 }

@@ -3,14 +3,16 @@
 @using Education.Web.Client.Models.Content
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
-    <section class="grid">
-        <header class="header">
+    <header class="header">
+        <article>
             <div class="d-flex justify-center">
                 <Breadcrumbs Class="pa-0" Items="@Breadcrumbs"/>
             </div>
-            <h1 class="title">
+
+            <ArticleTitle Class="mud-typography-align-center mb-3">
                 @Battle.Title
-            </h1>
+            </ArticleTitle>
+
             <div class="d-flex justify-center mb-6">
                 @if (Battle.Started == Battle.Finished)
                 {
@@ -39,83 +41,87 @@
             <MudText Class="mb-3 mb-sm-6" Typo="Typo.body1" Align="Align.Center">
                 @Battle.Description
             </MudText>
-        </header>
-
-        <section class="battle-image">
-            <img class="image object-cover object-center mx-auto" src="@Battle.ImageUrl" alt="@Battle.Title" loading="lazy"/>
-        </section>
-
-        <section class="map mud-paper pa-3 pa-sm-6">
-            @if (Battle.Map?.Source is not null)
-            {
-                <a href="@Battle.Map.Source" target="_blank">
-                    <img class="map-image object-contain object-center" src="@Battle.Map.Source" alt="@Battle.Map.Overview" loading="lazy"/>
-                </a>
-
-                <MudText Class="mb-3 mb-sm-6" Typo="Typo.body2" Align="Align.Center">
-                    @Battle.Map.Overview
-                </MudText>
-            }
-
-            <MudText Typo="Typo.h6">
-                @L["History_BattleLocation"]
-            </MudText>
-            <StyledMarkupString Class="mb-3 mb-sm-6" Content="@Battle.Location" DisableParagraphIndent/>
-            <MudText Typo="Typo.h6">
-                @L["History_BattleResult"]
-            </MudText>
-            <StyledMarkupString Content="@Battle.Result" DisableParagraphIndent/>
-        </section>
-
-        <section class="conflict-parties mud-paper pa-3 pa-sm-6">
-            @foreach (var item in _conflictParties)
-            {
-                <div class="mb-3 mb-sm-6">
-                    <MudText Class="mb-3" Typo="Typo.h6" Align="Align.Center">
-                        @L[$"History_Battle{item.Key}"]
-                    </MudText>
-                    <div class="d-flex justify-space-around gap-3">
-                        @for (var i = 0; i < item.Value.Count; i++)
-                        {
-                            <StyledMarkupString Class="flex-1" Content="@item.Value[i]" DisableParagraphIndent/>
-                            @if (i < item.Value.Count - 1)
-                            {
-                                <MudDivider Class="flex-0" Vertical FlexItem/>
-                            }
-                        }
-                    </div>
-                </div>
-            }
-        </section>
-
-        <ArticleFormatingCard Class="toolbar"/>
-
-        <article class="content">
-            <ArticleContentCard Content="@Battle.Content"/>
         </article>
 
-        <ArticleQuizCard Class="quiz" ArticleId="@Battle.Id" HasQuiz="@HasQuiz" UserActivity="@UserActivity"/>
+        <aside class="battle-image">
+            <img class="image object-cover object-center mx-auto" src="@Battle.ImageUrl" alt="@Battle.Title" loading="lazy"/>
+        </aside>
+    </header>
 
-        <ArticleUserCard
-            Class="rating"
-            ArticleId="@Battle.Id"
-            Rating="@Battle.Rating"
-            UserActivity="@UserActivity"
-            OnBookmarkClick="@OnBookmarkClick"
-            OnLikeClick="@OnLikeClick"
-            OnDislikeClick="@OnDislikeClick"/>
-    </section>
+    <ContentGrid>
+        <Header>
+            <ContentToolbarCard/>
+        </Header>
 
-    @if (RelatedArticles.Length > 0)
-    {
-        <UnderlinedTitle Class="my-3 mt-sm-6" Title="@L["Articles:Related"]"/>
-        <EduFillGrid>
-            @foreach (var (article, activity) in RelatedArticles)
-            {
-                <ArticleCard Article="@article" Activity="@activity" OnBookmarkClick="@OnBookmarkClick"/>
-            }
-        </EduFillGrid>
-    }
+        <Content>
+            <ContentCard Content="@Battle.Content"/>
+        </Content>
+
+        <Sidebar>
+            <ArticleInformation TimeToRead="@Battle.TimeToRead" Rating="@Battle.Rating"/>
+
+            <section class="map mud-paper pa-3 pa-sm-6">
+                @if (Battle.Map?.Source is not null)
+                {
+                    <a href="@Battle.Map.Source" target="_blank">
+                        <img class="map-image object-contain object-center" src="@Battle.Map.Source" alt="@Battle.Map.Overview" loading="lazy"/>
+                    </a>
+
+                    <MudText Class="mb-3 mb-sm-6" Typo="Typo.body2" Align="Align.Center">
+                        @Battle.Map.Overview
+                    </MudText>
+                }
+
+                <MudText Typo="Typo.h6">
+                    @L["History_BattleLocation"]
+                </MudText>
+                <StyledMarkupString Class="mb-3 mb-sm-6" Content="@Battle.Location" DisableParagraphIndent/>
+                <MudText Typo="Typo.h6">
+                    @L["History_BattleResult"]
+                </MudText>
+                <StyledMarkupString Content="@Battle.Result" DisableParagraphIndent/>
+            </section>
+
+            <section class="conflict-parties mud-paper pa-3 pa-sm-6">
+                @foreach (var item in _conflictParties)
+                {
+                    <div class="mb-3 mb-sm-6">
+                        <MudText Class="mb-3" Typo="Typo.h6" Align="Align.Center">
+                            @L[$"History_Battle{item.Key}"]
+                        </MudText>
+                        <div class="d-flex justify-space-around gap-3">
+                            @for (var i = 0; i < item.Value.Count; i++)
+                            {
+                                <StyledMarkupString Class="flex-1" Content="@item.Value[i]" DisableParagraphIndent/>
+                                @if (i < item.Value.Count - 1)
+                                {
+                                    <MudDivider Class="flex-0" Vertical FlexItem/>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </section>
+
+            <AuthorizeView>
+                <QuizCard ArticleId="@Battle.Id" HasQuiz="@HasQuiz" Activity="@Activity"/>
+
+                <UserToolbarCard
+                    ArticleId="@Battle.Id"
+                    Activity="@Activity"
+                    OnBookmarkClick="@OnBookmarkClick"
+                    OnLikeClick="@OnLikeClick"
+                    OnDislikeClick="@OnDislikeClick"/>
+            </AuthorizeView>
+        </Sidebar>
+    </ContentGrid>
+
+    <RelatedArticles
+        Class="mt-sm-6"
+        ArticleId="@Battle.Id"
+        Title="@L["Shared_RelatedArticles"]"
+        OnBookmarkClick="@OnBookmarkClick"/>
+
 </EduContainer>
 
 @code {
@@ -137,13 +143,10 @@
     public ArticleDetail.BattleModel Battle { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public UserArticleActivityModel UserActivity { get; set; } = default!;
+    public UserArticleActivityModel? Activity { get; set; }
 
     [Parameter, EditorRequired]
     public bool HasQuiz { get; set; }
-
-    [Parameter, EditorRequired]
-    public UserArticleOverviewModel[] RelatedArticles { get; set; } = Array.Empty<UserArticleOverviewModel>();
 
     [Parameter, EditorRequired]
     public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
@@ -152,7 +155,7 @@
     public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
 
     [Parameter, EditorRequired]
-    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
 
     protected override void OnParametersSet()
     {

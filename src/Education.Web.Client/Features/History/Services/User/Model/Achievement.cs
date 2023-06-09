@@ -2,12 +2,19 @@ using Education.Web.Client.Models;
 
 namespace Education.Web.Client.Features.History.Services.User.Model;
 
-public abstract record Achievement(string Title, string Description, string IconUrl)
+public abstract record Achievement(string Id, string Title, string Description, string IconUrl)
 {
-    public sealed record CompletedModel(string Title, string Description, string IconUrl, DateTime CompletedAt)
-        : Achievement(Title, Description, IconUrl);
+    public sealed record CompletedModel(
+        string Id,
+        string Title,
+        string Description,
+        string IconUrl,
+        DateTime CompletedAt,
+        double GlobalCompletionPercent
+    ) : Achievement(Id, Title, Description, IconUrl);
 
     public sealed record LadderModel(
+        string Id,
         string Title,
         string Description,
         string IconUrl,
@@ -16,13 +23,14 @@ public abstract record Achievement(string Title, string Description, string Icon
         uint Threshold,
         uint Completeness,
         InternalMoneyModel[] Rewards
-    ) : Achievement(Title, Description, IconUrl);
+    ) : Achievement(Id, Title, Description, IconUrl);
 
     public sealed record ProgressiveModel(
+        string Id,
         string Title,
         string Description,
         string IconUrl,
         uint Completeness,
         InternalMoneyModel[] Rewards
-    ) : Achievement(Title, Description, IconUrl);
+    ) : Achievement(Id, Title, Description, IconUrl);
 }

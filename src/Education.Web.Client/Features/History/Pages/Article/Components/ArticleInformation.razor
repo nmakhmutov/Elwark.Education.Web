@@ -1,0 +1,43 @@
+@using Education.Web.Client.Models.Content
+<section class="mud-paper pa-3 pa-sm-6 @Class">
+    <MudText Typo="Typo.subtitle2">
+        @L["Shared_ArticleDetails"]
+    </MudText>
+
+    <MudSimpleTable Class="mt-3" Elevation="0" Dense>
+        <tbody>
+        <tr>
+            <td>
+                <MudText Typo="Typo.body2">@L["Shared_ContentRating"]</MudText>
+            </td>
+            <td>
+                <ContentRating Rating="@Rating" Size="Size.Small" ShowTooltip/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <MudText Typo="Typo.body2">@L["Shared_TimeToRead"]</MudText>
+            </td>
+            <td>
+                <MudText Typo="Typo.body2">@TimeToRead.Humanize(L)</MudText>
+            </td>
+        </tr>
+        </tbody>
+    </MudSimpleTable>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ContentRatingModel Rating { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public TimeSpan TimeToRead { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

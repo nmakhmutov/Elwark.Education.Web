@@ -8,13 +8,15 @@ public sealed record OrderStatusModel(int Code, string Name)
             "Creating" => 10,
             "Created" => 30,
             "StockConfirmed" => 60,
-            "PaymentConfirmed" => 90,
-            _ => 100
+            "Paid" => 90,
+            "Shipped" => 100,
+            "Cancelled" => 100,
+            _ => 0
         };
 
     public bool IsRejected =>
-        Name is "StockRejected" or "PaymentRejected" or "ShippedRejected";
+        Name is "Cancelled";
 
     public bool IsFinal =>
-        Name is "ShippedConfirmed" || IsRejected;
+        Name is "Shipped" or "Cancelled";
 }

@@ -1,5 +1,6 @@
 @using Education.Web.Client.Features.History.Services.User.Model
-<section class="mud-paper grid pa-3 pa-sm-6 @Class">
+
+<section class="mud-paper grid pa-3 pa-sm-6 @Class" id="@Achievement.Id">
     @switch (Achievement)
     {
         case Achievement.LadderModel achievement:
@@ -24,11 +25,7 @@
                 <div class="d-flex flex-row">
                     @foreach (var reward in achievement.Rewards)
                     {
-                        <InternalMoney
-                            Class="mr-3"
-                            Currency="@reward.Currency"
-                            Amount="@reward.Amount"
-                            Horizontal/>
+                        <InternalMoney Class="mr-3" Currency="@reward.Currency" Amount="@reward.Amount" Horizontal/>
                     }
                 </div>
             </footer>
@@ -48,11 +45,7 @@
                 <div class="d-flex flex-row">
                     @foreach (var reward in achievement.Rewards)
                     {
-                        <InternalMoney 
-                            Class="mr-3"
-                            Currency="@reward.Currency"
-                            Amount="@reward.Amount"
-                            Horizontal/>
+                        <InternalMoney Class="mr-3" Currency="@reward.Currency" Amount="@reward.Amount" Horizontal/>
                     }
                 </div>
             </footer>
@@ -66,10 +59,15 @@
                 <h6 class="title">
                     @achievement.Title
                 </h6>
-                <MudText Typo="Typo.caption" Class="d-block">
-                    @L["Shared_AchievementCompleted"] @DateTimeFormatter(achievement.CompletedAt)
-                </MudText>
             </header>
+            <footer class="progress">
+                <MudText Class="mb-1" Typo="Typo.body1">
+                    @L["Shared_AchievementCompletedOn"] @DateTimeFormatter(achievement.CompletedAt)
+                </MudText>
+                <MudText Class="@(achievement.GlobalCompletionPercent < 10 ? "rare-achievement" : null)" Typo="Typo.body2">
+                    @L["Shared_PercentOfUsersHaveThisAchievement", achievement.GlobalCompletionPercent]
+                </MudText>
+            </footer>
             break;
     }
 

@@ -1,5 +1,6 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.User.Model
+
 <section class="grid @Class">
     <div class="image-wrapper">
         <img class="image rounded object-cover object-center" src="@Article.ThumbnailUrl" alt="@Article.Title" loading="lazy"/>
@@ -9,10 +10,20 @@
         <div class="breadcrumbs">
             <Breadcrumbs Class="pa-0 mb-3" Items="@Breadcrumbs"/>
         </div>
+
         <MudLink Typo="Typo.h5" Href="@HistoryUrl.Content.Article(Article.Id)">
             @Article.Title
         </MudLink>
-        <MudText Class="w-max-600" Typo="Typo.body2">
+
+        <br/>
+
+        <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body1" href="@HistoryUrl.Content.Articles(Article.Epoch)">
+            @L[$"History_Epoch{Article.Epoch.ToFastString()}"]
+        </a>
+
+        <ContentRating Class="pt-3" Rating="@Article.Rating" Size="Size.Small" ShowTooltip/>
+
+        <MudText Class="w-max-600 pt-3" Typo="Typo.body2">
             @Article.Overview
         </MudText>
     </article>
@@ -56,6 +67,13 @@
                 @Total.TimeSpent.Humanize()
             </MudText>
         </div>
+        <div class="d-flex align-center justify-space-between mb-3">
+            <ArticleCompletionChip IsCompleted="@IsCompleted"/>
+            <BookmarkButton
+                Id="@Article.Id"
+                IsBookmarked="@IsBookmarked"
+                OnBookmarkClick="@OnBookmarkClick"/>
+        </div>
     </aside>
 </section>
 
@@ -73,6 +91,15 @@
     [Parameter, EditorRequired]
     public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
 
+    [Parameter, EditorRequired]
+    public bool? IsCompleted { get; set; }
+    
+    [Parameter, EditorRequired]
+    public bool IsBookmarked { get; set; }
+    
+    [Parameter, EditorRequired]
+    public Func<string, Task<ApiResult<bool>>>? OnBookmarkClick { get; set; }
+    
     [Parameter]
     public string? Class { get; set; }
 

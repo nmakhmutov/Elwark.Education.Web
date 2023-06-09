@@ -23,9 +23,9 @@
 
         @if (Quizzes.Any(x => x.IsAllowed))
         {
-            <QuizTypeRadioGroup
-                SelectedQuiz="@HistorySettings.QuizType"
-                SelectedQuizChanged="@HistorySettings.ChangeTestTypeAsync"
+            <QuizDifficultyRadioGroup
+                SelectedDifficulty="@HistorySettings.QuizDifficulty"
+                SelectedDifficultyChanged="@HistorySettings.ChangeQuizDifficultyAsync"
                 Quizzes="@Quizzes" Class="mb-6"/>
 
             <div class="d-flex justify-center">
@@ -71,26 +71,26 @@
     public EventCallback<CreateArticleQuizRequest> OnCreateClick { get; set; }
 
     [Parameter]
-    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
 
     [Parameter]
     public string? Class { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        if (Quizzes.Any(x => x.IsAllowed && x.Type == HistorySettings.QuizType))
+        if (Quizzes.Any(x => x.IsAllowed && x.Type == HistorySettings.QuizDifficulty))
             return;
 
-        await HistorySettings.ChangeTestTypeAsync(Quizzes.FirstOrDefault(x => x.IsAllowed)?.Type);
+        await HistorySettings.ChangeQuizDifficultyAsync(Quizzes.FirstOrDefault(x => x.IsAllowed)?.Type);
     }
 
     private async Task CreateTestAsync()
     {
-        if (!HistorySettings.QuizType.HasValue)
+        if (!HistorySettings.QuizDifficulty.HasValue)
             return;
 
         _isLoading = true;
-        await OnCreateClick.InvokeAsync(new CreateArticleQuizRequest(HistorySettings.QuizType.Value, Article.Id));
+        await OnCreateClick.InvokeAsync(new CreateArticleQuizRequest(HistorySettings.QuizDifficulty.Value, Article.Id));
         _isLoading = false;
     }
 

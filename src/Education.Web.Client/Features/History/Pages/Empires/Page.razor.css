@@ -1,65 +1,35 @@
 .title {
-    font-size: var(--mud-typography-h4-size);
-    font-family: var(--mud-typography-h4-family);
-    font-weight: var(--mud-typography-h4-weight);
-    line-height: var(--mud-typography-h4-lineheight);
-    letter-spacing: var(--mud-typography-h4-letterspacing);
+    font-size: clamp(var(--mud-typography-h2-size), var(--mud-typography-h1-size), var(--mud-typography-h1-size));
+    font-family: var(--mud-typography-h1-family);
+    font-weight: var(--mud-typography-h1-weight);
+    line-height: var(--mud-typography-h1-lineheight);
+    letter-spacing: var(--mud-typography-h1-letterspacing);
     text-transform: uppercase;
     color: #990000;
 }
 
 .subtitle {
-    font-size: var(--mud-typography-h5-size);
-    font-family: var(--mud-typography-h5-family);
-    font-weight: var(--mud-typography-h6-weight);
-    line-height: var(--mud-typography-h5-lineheight);
-    letter-spacing: var(--mud-typography-h5-letterspacing);
+    font-size: clamp(var(--mud-typography-h4-size), var(--mud-typography-h3-size), var(--mud-typography-h2-size));
+    font-family: var(--mud-typography-h3-family);
+    font-weight: var(--mud-typography-h3-weight);
+    line-height: var(--mud-typography-h3-lineheight);
+    letter-spacing: var(--mud-typography-h3-letterspacing);
     text-transform: uppercase;
+    max-width: 230px;
 }
 
 .content {
     margin: 12px;
+    max-width: 450px;
 }
 
 @media (min-width: 600px) {
-    .title {
-        font-size: var(--mud-typography-h3-size);
-        font-family: var(--mud-typography-h3-family);
-        font-weight: var(--mud-typography-h3-weight);
-        line-height: var(--mud-typography-h3-lineheight);
-        letter-spacing: var(--mud-typography-h3-letterspacing);
-    }
-
-    .subtitle {
-        font-size: var(--mud-typography-h4-size);
-        font-family: var(--mud-typography-h4-family);
-        font-weight: var(--mud-typography-h6-weight);
-        line-height: var(--mud-typography-h4-lineheight);
-        letter-spacing: var(--mud-typography-h4-letterspacing);
-    }
-
     .content {
         margin: 24px;
     }
 }
 
 @media (min-width: 960px) {
-    .title {
-        font-size: var(--mud-typography-h2-size);
-        font-family: var(--mud-typography-h2-family);
-        font-weight: var(--mud-typography-h2-weight);
-        line-height: var(--mud-typography-h2-lineheight);
-        letter-spacing: var(--mud-typography-h2-letterspacing);
-    }
-
-    .subtitle {
-        max-width: 200px;
-    }
-
-    .content {
-        max-width: 450px;
-    }
-
     .content-wrapper.end {
         display: flex;
         flex-direction: row;

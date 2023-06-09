@@ -27,7 +27,7 @@ internal sealed class NotificationService : INotificationService
         _snackbar = snackbar;
         _stateProvider = stateProvider;
 
-        _hab.OnNotificationReceived += ReceivedNotification;
+        _hab.OnMessageReceived += ReceivedMessage;
     }
 
     public Task<ApiResult<PagingTokenModel<NotificationModel>>> GetAsync(NotificationsRequest request) =>
@@ -55,7 +55,7 @@ internal sealed class NotificationService : INotificationService
         _lastNotifications.Count > 0;
 
     public void Dispose() =>
-        _hab.OnNotificationReceived -= ReceivedNotification;
+        _hab.OnMessageReceived -= ReceivedMessage;
 
     public event Action OnChanged = () =>
     {
@@ -71,7 +71,9 @@ internal sealed class NotificationService : INotificationService
             return;
 
         _lastNotifications = (await GetAsync(new NotificationsRequest(MaxNotifications)))
-            .Map(m => m.Items.Select(x => new NotificationMessage(x.Subject, x.Title, x.Message, x.CreatedAt)))
+            .Map(x => x.Items.Select(m =>
+                new NotificationMessage(m.Subject, m.Module, m.Title, m.Message, m.Payload, m.CreatedAt))
+            )
             .UnwrapOr(Enumerable.Empty<NotificationMessage>())
             .ToList();
 
@@ -80,7 +82,7 @@ internal sealed class NotificationService : INotificationService
         OnChanged.Invoke();
     }
 
-    private void ReceivedNotification(NotificationMessage notification)
+    private void ReceivedMessage(NotificationMessage notification)
     {
         _lastNotifications = _lastNotifications
             .Prepend(notification)

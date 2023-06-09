@@ -14,8 +14,8 @@ public sealed partial class CascadingHistorySettings
     {
         SearchRandomEpoch = EpochType.None,
 
-        TestEpoch = EpochType.None,
-        QuizType = null,
+        QuizEpoch = EpochType.None,
+        QuizDifficulty = null,
 
         EventGuesserEpoch = EpochType.None,
         EventGuesserType = null
@@ -30,11 +30,11 @@ public sealed partial class CascadingHistorySettings
     public EpochType SearchRandomEpoch =>
         _settings.SearchRandomEpoch;
 
-    public EpochType TestEpoch =>
-        _settings.TestEpoch;
+    public EpochType QuizEpoch =>
+        _settings.QuizEpoch;
 
-    public QuizType? QuizType =>
-        _settings.QuizType;
+    public DifficultyType? QuizDifficulty =>
+        _settings.QuizDifficulty;
 
     public EpochType EventGuesserEpoch =>
         _settings.EventGuesserEpoch;
@@ -54,11 +54,11 @@ public sealed partial class CascadingHistorySettings
     public ValueTask ChangeSearchRandomEpochAsync(EpochType epoch) =>
         UpdateStateAsync(_settings with { SearchRandomEpoch = epoch });
 
-    public ValueTask ChangeTestEpochAsync(EpochType epoch) =>
-        UpdateStateAsync(_settings with { TestEpoch = epoch });
+    public ValueTask ChangeQuizEpochAsync(EpochType epoch) =>
+        UpdateStateAsync(_settings with { QuizEpoch = epoch });
 
-    public ValueTask ChangeTestTypeAsync(QuizType? type) =>
-        UpdateStateAsync(_settings with { QuizType = type });
+    public ValueTask ChangeQuizDifficultyAsync(DifficultyType? type) =>
+        UpdateStateAsync(_settings with { QuizDifficulty = type });
 
     public ValueTask ChangeEventGuesserEpochAsync(EpochType epoch) =>
         UpdateStateAsync(_settings with { EventGuesserEpoch = epoch });
@@ -79,11 +79,11 @@ public sealed partial class CascadingHistorySettings
         [JsonPropertyName("sre")]
         public EpochType SearchRandomEpoch { get; init; }
 
-        [JsonPropertyName("te")]
-        public EpochType TestEpoch { get; init; }
+        [JsonPropertyName("qe")]
+        public EpochType QuizEpoch { get; init; }
 
-        [JsonPropertyName("qt")]
-        public QuizType? QuizType { get; init; }
+        [JsonPropertyName("qd")]
+        public DifficultyType? QuizDifficulty { get; init; }
 
         [JsonPropertyName("ege")]
         public EpochType EventGuesserEpoch { get; init; }

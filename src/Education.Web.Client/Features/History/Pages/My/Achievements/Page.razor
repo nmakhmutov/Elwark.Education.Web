@@ -1,6 +1,5 @@
 @page "/history/my/achievements"
 @using Education.Web.Client.Features.History.Services.User.Model
-@using Education.Web.Client.Features.History.Services.User
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -22,13 +21,13 @@
             var background = GetIconBackground(category.Name);
             var classes = index == 0 ? null : "mt-6 mt-sm-16";
 
-            <MudItem xs="12" md="3" xl="2" Class="@classes">
+            <MudItem xs="12" md="3" xxl="2" Class="@classes">
                 <div class="sticky-info">
-                    <div class="d-flex align-end">
+                    <div class="d-flex align-center justify-space-between gap-3 mb-3">
                         <MudText Typo="@Typo.h5">
                             @category.Title
                         </MudText>
-                        <MudText Typo="@Typo.subtitle1" Class="ml-3">
+                        <MudText Typo="@Typo.subtitle1">
                             @category.Completed/@category.Total
                         </MudText>
                     </div>
@@ -39,7 +38,7 @@
                 </div>
             </MudItem>
 
-            <MudItem xs="12" md="9" xl="10" Class="@classes">
+            <MudItem xs="12" md="9" xxl="10" Class="@classes">
                 <EduFillGrid>
                     @foreach (var achievement in category.Achievements)
                     {
@@ -74,7 +73,7 @@
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         _result = await UserService.GetAchievementsAsync();
         _subtitle = _result.Map(x => $"{x.Completed} / {x.Total}")

@@ -7,71 +7,61 @@
         </a>
     </div>
 
-    <section class="content flex-grow-1">
-        <header class="px-3 pt-3">
-            <div class="overflow-hidden">
-                <a class="mud-link mud-primary-text mud-link-underline-hover mud-typography-h6 one-line-text"
-                   href="@HistoryUrl.Content.Article(Article.Id)"
-                   title="@Article.Title">
-                    @Article.Title
-                </a>
-            </div>
-            <div>
-                <a class="mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
-                   href="@HistoryUrl.Content.Articles(Article.Epoch)">
-                    @L[$"History_Epoch{Article.Epoch.ToFastString()}"]
-                </a>
-            </div>
+    <section class="content flex-grow-1 gap-3 pa-3">
+        <header>
+            <MudLink Href="@HistoryUrl.Content.Article(Article.Id)" Typo="Typo.h5">
+                @Article.Title
+            </MudLink>
+            <br/>
+            <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body1" href="@HistoryUrl.Content.Articles(Article.Epoch)">
+                @L[$"History_Epoch{Article.Epoch.ToFastString()}"]
+            </a>
         </header>
 
-        <ContentRating Class="px-3 pt-3" Rating="@Article.Rating" Size="Size.Small" ShowTooltip/>
+        <div class="d-flex justify-space-between align-center gap-3">
+            <ContentRating Rating="@Article.Rating" Size="Size.Small" ShowTooltip/>
+
+            <MudTooltip Text="@L["Shared_TimeToRead"]">
+                <div class="d-flex align-center">
+                    <MudIcon Class="mr-1" Icon="@Icons.Material.Outlined.AccessTime" Size="Size.Small"/>
+                    <MudText Typo="Typo.body1">@Article.TimeToRead.Humanize(L)</MudText>
+                </div>
+            </MudTooltip>
+        </div>
 
         @if (!HideOverview)
         {
-            <MudText Class="px-3 pt-3 flex-grow-1" Typo="Typo.body2">
-                @if (ShortOverview && Article.Overview.Length > 120)
-                {
-                    @($"{Article.Overview[..117].TrimEnd()}...")
-                }
-                else
-                {
-                    @Article.Overview
-                }
+            <MudText Class="flex-grow-1" Typo="Typo.body1">
+                @(ShortOverview && Article.Overview.Length > 120 ? $"{Article.Overview[..117].TrimEnd()}..." : Article.Overview)
             </MudText>
         }
 
-        <aside class="d-flex align-center justify-space-between pa-3">
-            @if (Activity is not null)
-            {
-                <div>
-                    <NumberOfQuizzesChip
-                        NumberOfQuizzes="@Activity.NumberOfEasyQuiz"
-                        Color="Color.Info"
-                        Tooltip="@L["Shared_NumberOfPassedEasyQuizzes"]"
-                        Href="@_href"/>
-                    <NumberOfQuizzesChip
-                        NumberOfQuizzes="@Activity.NumberOfHardQuiz"
-                        Color="Color.Primary"
-                        Tooltip="@L["Shared_NumberOfPassedHardQuizzes"]"
-                        Href="@_href"/>
-                </div>
-            }
+        @if (!HideFooter)
+        {
+            <AuthorizeView>
+                <aside class="d-flex align-center justify-space-between gap-3">
+                    <TotalQuizzesChip Quizzes="@(Activity?.TotalQuizzes ?? 0)"/>
 
-            @if (OnBookmarkClick is not null)
-            {
-                <div>
-                    <BookmarkButton
-                        Id="@Article.Id"
-                        IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                        OnBookmarkClick="@OnBookmarkClick"/>
-                </div>
-            }
-        </aside>
+                    <ArticleCompletionChip
+                        IsCompleted="@Activity?.IsCompleted"
+                        Href="@(Activity?.IsCompleted is null ? null : HistoryUrl.User.MyArticle(Article.Id))"/>
+
+                    <MudSpacer/>
+
+                    @if (OnBookmarkClick is not null)
+                    {
+                        <BookmarkButton
+                            Id="@Article.Id"
+                            IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                            OnBookmarkClick="@OnBookmarkClick"/>
+                    }
+                </aside>
+            </AuthorizeView>
+        }
     </section>
 </article>
 
 @code {
-    private string? _href;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -92,14 +82,12 @@
     public bool HideOverview { get; set; }
 
     [Parameter]
+    public bool HideFooter { get; set; }
+
+    [Parameter]
     public bool ShortOverview { get; set; }
 
     [Parameter]
-    public Func<string, Task<bool>>? OnBookmarkClick { get; set; }
-
-    protected override void OnParametersSet() =>
-        _href = Activity?.IsPassedAnyQuizzes == true
-            ? HistoryUrl.User.MyArticle(Article.Id)
-            : null;
+    public Func<string, Task<ApiResult<bool>>>? OnBookmarkClick { get; set; }
 
 }

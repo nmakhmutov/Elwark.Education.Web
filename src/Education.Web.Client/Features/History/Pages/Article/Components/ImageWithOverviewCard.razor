@@ -1,0 +1,28 @@
+<section class="mud-paper pa-3 pa-sm-6 @Class">
+    <MudText Class="mb-3" Typo="Typo.subtitle2">
+        @Title
+    </MudText>
+    
+    <a href="@Source" target="_blank">
+        <img class="w-100 object-contain object-center" src="@Source" alt="@Overview" loading="lazy"/>
+    </a>
+
+    <MudText Typo="Typo.body2" Align="Align.Center">
+        @Overview
+    </MudText>
+</section>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public string? Source { get; set; }
+
+    [Parameter, EditorRequired]
+    public string? Title { get; set; }
+
+    [Parameter, EditorRequired]
+    public string? Overview { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+}

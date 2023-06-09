@@ -1,7 +1,42 @@
 @using Microsoft.AspNetCore.Components.Rendering
 @inherits MudButton
 
-@{ base.BuildRenderTree(__builder); }
+<MudButton
+    Class="@Class"
+    Color="@Color"
+    Disabled="@(Disabled || IsLoading)"
+    Href="@Href"
+    Rel="@Rel"
+    Size="@Size"
+    Style="@Style"
+    Tag="@Tag"
+    Target="@Target"
+    Variant="@Variant"
+    ButtonType="@ButtonType"
+    DisableElevation="@DisableElevation"
+    DisableRipple="@DisableRipple"
+    EndIcon="@EndIcon"
+    FullWidth="@FullWidth"
+    HtmlTag="@HtmlTag"
+    IconClass="@IconClass"
+    IconColor="@IconColor"
+    IconSize="@IconSize"
+    OnClick="@OnClick"
+    StartIcon="@StartIcon"
+    UserAttributes="@UserAttributes">
+    @if (IsLoading)
+    {
+        <MudProgressCircular Size="Size.Small" Indeterminate/>
+        @if (!string.IsNullOrEmpty(LoadingText))
+        {
+            <MudText Typo="Typo.button" Class="ms-2">@LoadingText</MudText>
+        }
+    }
+    else
+    {
+        <MudText Typo="Typo.button">@Text</MudText>
+    }
+</MudButton>
 
 @code {
 
@@ -13,25 +48,4 @@
 
     [Parameter]
     public string? LoadingText { get; set; }
-
-    protected override void OnParametersSet()
-    {
-        Disabled = Disabled || IsLoading;
-        ChildContent = RenderFragment;
-    }
-
-    private void RenderFragment(RenderTreeBuilder builder)
-    {
-        if (IsLoading)
-        {
-            builder.AddContent(1, @<MudProgressCircular Size="Size.Small" Indeterminate/>);
-            if (!string.IsNullOrEmpty(LoadingText))
-                builder.AddContent(2, @<MudText Typo="Typo.button" Class="ms-2">@LoadingText</MudText>);
-        }
-        else
-        {
-            builder.AddContent(1, @<MudText Typo="Typo.button">@Text</MudText>);
-        }
-    }
-
 }

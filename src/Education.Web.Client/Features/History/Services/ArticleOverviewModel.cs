@@ -4,9 +4,10 @@ namespace Education.Web.Client.Features.History.Services;
 
 public sealed record ArticleOverviewModel(
     string Id,
+    EpochType Epoch,
     string Title,
     string Overview,
     string ThumbnailUrl,
-    EpochType Epoch,
+    TimeSpan TimeToRead,
     ContentRatingModel Rating
 );

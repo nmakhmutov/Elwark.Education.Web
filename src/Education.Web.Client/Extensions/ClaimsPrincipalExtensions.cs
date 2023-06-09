@@ -4,9 +4,18 @@ namespace Education.Web.Client.Extensions;
 
 public static class ClaimsPrincipalExtensions
 {
-    public static long GetId(this ClaimsPrincipal principal)
+    public static bool IsAuthenticated(this ClaimsPrincipal principal) =>
+        principal.Identity?.IsAuthenticated ?? false;
+
+    public static long GetId(this ClaimsPrincipal principal) =>
+        principal.GetIdOrDefault() ?? throw new NullReferenceException("Claims doesn't contain 'sub'");
+
+    public static long? GetIdOrDefault(this ClaimsPrincipal principal)
     {
-        var sub = principal.FindFirst("sub")?.Value ?? throw new NullReferenceException("Claims doesn't contain 'sub'");
-        return long.Parse(sub);
+        if (principal.Identity?.IsAuthenticated == false)
+            return null;
+
+        var sub = principal.FindFirst("sub")?.Value;
+        return sub is null ? null : long.Parse(sub);
     }
 }

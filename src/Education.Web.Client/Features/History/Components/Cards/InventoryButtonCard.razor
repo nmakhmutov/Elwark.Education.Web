@@ -1,6 +1,22 @@
 @inherits InventoryInfoCard
 
-@{ base.BuildRenderTree(__builder); }
+<InventoryInfoCard
+    Class="@Class"
+    Overview="@Overview"
+    Quantity="@Quantity"
+    Subtitle="@Subtitle"
+    Title="@Title"
+    IconUrl="@IconUrl">
+    <LoadingButton
+        Class="mt-3"
+        FullWidth
+        DisableElevation
+        Variant="Variant.Filled"
+        Color="Color.Primary"
+        IsLoading="@_isLoading"
+        Text="@ButtonText"
+        OnClick="@OnClickHandler"/>
+</InventoryInfoCard>
 
 @code {
     private bool _isLoading;
@@ -13,18 +29,6 @@
 
     [Parameter]
     public EventCallback<uint> OnClick { get; set; }
-
-    protected override void OnInitialized() =>
-        ChildContent =
-            @<LoadingButton
-                 Class="mt-3"
-                 FullWidth
-                 DisableElevation
-                 Variant="Variant.Filled"
-                 Color="Color.Primary"
-                 IsLoading="@_isLoading"
-                 Text="@ButtonText"
-                 OnClick="@OnClickHandler"/>;
 
     private async Task OnClickHandler()
     {

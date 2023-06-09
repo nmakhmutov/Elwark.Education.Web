@@ -1,39 +1,67 @@
 @using Education.Web.Client.Features.History.Services
-@using Education.Web.Client.Features.History.Services.Course.Model
 
-<section class="mud-paper card @(Horizontal ? "horizontal" : "vertical") @Class">
-    <header class="card-header">
+<article class="mud-paper card @(Horizontal ? "horizontal" : "vertical") @Class">
+    <div class="card-header">
         <a href="@HistoryUrl.Content.Course(Course.Id)">
             <img src="@Course.ThumbnailUrl" alt="@Course.Title" loading="lazy"/>
         </a>
-    </header>
+    </div>
 
-    <article class="content">
-        <header class="px-3 pt-3">
-            <a class="mud-link mud-primary-text mud-link-underline-hover mud-typography-h6 one-line-text"
-               href="@HistoryUrl.Content.Course(Course.Id)"
-               title="@Course.Title">
+    <section class="content flex-grow-1 gap-3 pa-3">
+        <header>
+            <MudLink Href="@HistoryUrl.Content.Course(Course.Id)" Typo="Typo.h5">
                 @Course.Title
-            </a>
+            </MudLink>
         </header>
 
-        <MudText Class="px-3 pt-3 flex-grow-1" Typo="Typo.body2">
+        <div class="d-flex justify-space-between align-center gap-3">
+            <ContentRating Rating="@Course.Rating" Size="Size.Small" ShowTooltip/>
+
+            <MudTooltip Text="@L["Shared_Articles"]">
+                <div class="d-flex align-center">
+                    <MudIcon Class="mr-1" Icon="@EduIcons.Articles" Size="Size.Small"/>
+                    <MudText Typo="Typo.body1">@Course.ArticleCount</MudText>
+                </div>
+            </MudTooltip>
+        </div>
+
+        <MudText Class="flex-grow-1" Typo="Typo.body1">
             @Course.Overview
         </MudText>
 
-        <aside class="d-flex align-center justify-space-between pa-3">
-            <ContentRating Rating="@Course.Rating" Size="Size.Medium" ShowTooltip/>
+        <AuthorizeView>
+            <aside class="d-flex align-center justify-space-between gap-3">
+                <div class="flex-grow-1">
+                    @if (Activity is not null)
+                    {
+                        if (Activity.IsStarted)
+                        {
+                            <MudProgressLinear Value="@Activity.Completeness" Color="Color.Primary" Size="Size.Large" Rounded>
+                                <MudText Typo="Typo.body2" Color="Color.Dark">
+                                    @Activity.Completeness%
+                                </MudText>
+                            </MudProgressLinear>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.subtitle1">
+                                Not started
+                            </MudText>
+                        }
+                    }
+                </div>
 
-            @if (OnBookmarkClick is not null)
-            {
-                <BookmarkButton
-                    Id="@Course.Id"
-                    IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                    OnBookmarkClick="@OnBookmarkClick"/>
-            }
-        </aside>
-    </article>
-</section>
+                @if (OnBookmarkClick is not null)
+                {
+                    <BookmarkButton
+                        Id="@Course.Id"
+                        IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                        OnBookmarkClick="@OnBookmarkClick"/>
+                }
+            </aside>
+        </AuthorizeView>
+    </section>
+</article>
 
 @code {
 
@@ -53,6 +81,6 @@
     public bool Horizontal { get; set; }
 
     [Parameter]
-    public Func<string, Task<bool>>? OnBookmarkClick { get; set; }
+    public Func<string, Task<ApiResult<bool>>>? OnBookmarkClick { get; set; }
 
 }

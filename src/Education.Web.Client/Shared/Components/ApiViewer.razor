@@ -1,3 +1,4 @@
+@using System.Diagnostics
 @typeparam T
 
 @switch (Result.Status)
@@ -14,7 +15,7 @@
         <PageTitle>
             @Result.Error.Title
         </PageTitle>
-        <EduError Error="Result.UnwrapError()"/>
+        <EduError Class="align-center justify-center flex-grow-1" Error="@(Result.UnwrapError())"/>
         break;
 
     case Status.Success:
@@ -22,7 +23,7 @@
         break;
 
     default:
-        throw new ArgumentOutOfRangeException();
+        throw new UnreachableException($"Unknown loading status {Result.Status}");
 }
 
 

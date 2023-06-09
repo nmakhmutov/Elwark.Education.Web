@@ -1,0 +1,49 @@
+.header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.image ::deep img {
+    margin: 0 auto;
+    display: block;
+}
+
+.details {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-size: var(--mud-typography-subtitle1-size);
+}
+
+.details ::deep .title {
+    font-style: italic;
+}
+
+.details ::deep p {
+    font-size: var(--mud-typography-body1-size);
+}
+
+@media (min-width: 600px) {
+    .header {
+        display: grid;
+        margin-bottom: 24px;
+    }
+
+    .image ::deep img {
+        max-height: 60vh;
+    }
+
+}
+
+@media (min-width: 960px) {
+    .header {
+        grid-template-columns: minmax(240px, auto) 2fr;
+    }
+
+    .image ::deep img {
+        display: inline;
+        max-height: 70vh;
+    }
+}

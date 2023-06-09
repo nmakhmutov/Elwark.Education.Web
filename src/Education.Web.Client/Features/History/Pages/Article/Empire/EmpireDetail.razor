@@ -1,12 +1,15 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Article.Model
 @using Education.Web.Client.Models.Content
+
 <header class="background" style="@_style">
     <section class="d-flex flex-column justify-center align-center h-100">
         <Breadcrumbs Items="@Breadcrumbs" Typo="Typo.subtitle1"/>
-        <h1 class="title mb-3">
+
+        <ArticleTitle Class="mb-3">
             @Empire.Title
-        </h1>
+        </ArticleTitle>
+
         <section class="d-flex flex-wrap justify-center align-center">
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
@@ -18,6 +21,7 @@
                     Typo="Typo.h6"
                     Align="Align.Center"/>
             </div>
+
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
                     @L["History_EmpireDissolved"]
@@ -28,6 +32,7 @@
                     Typo="Typo.h6"
                     Align="Align.Center"/>
             </div>
+
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
                     @L["History_EmpireDuration"]
@@ -44,6 +49,7 @@
                     }
                 </MudText>
             </div>
+
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
                     @L["History_EmpireMaxArea"]
@@ -59,6 +65,7 @@
                     }
                 </MudText>
             </div>
+
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
                     @L["History_EmpireMaxPopulation"]
@@ -75,6 +82,7 @@
                 </MudText>
             </div>
         </section>
+
         <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
             <MudText Typo="Typo.subtitle1" Align="Align.Justify">
                 @Empire.Description
@@ -84,70 +92,52 @@
 </header>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
-    <section class="grid">
-        @if (Empire.Flag is not null)
-        {
-            <section class="flag mud-paper pa-3 pa-sm-6">
-                <MudText Class="mb-3" Typo="Typo.subtitle2">
-                    @L["History_EmpireFlag"]
-                </MudText>
-                <a href="@Empire.Flag.Source" target="_blank">
-                    <img class="image object-contain object-center" src="@Empire.Flag.Source" alt="@Empire.Flag.Overview" loading="lazy"/>
-                </a>
+    <ContentGrid>
+        <Header>
+            <ContentToolbarCard/>
+        </Header>
 
-                <MudText Typo="Typo.body2" Align="Align.Center">
-                    @Empire.Flag.Overview
-                </MudText>
-            </section>
-        }
+        <Content>
+            <ContentCard Content="@Empire.Content"/>
+        </Content>
 
-        @if (Empire.Map is not null)
-        {
-            <section class="map mud-paper pa-3 pa-sm-6">
-                <MudText Class="mb-3" Typo="Typo.subtitle2">
-                    @L["History_EmpireMap"]
-                </MudText>
-                <a href="@Empire.Map.Source" target="_blank">
-                    <img class="image object-contain object-center" src="@Empire.Map.Source" alt="@Empire.Map.Overview" loading="lazy"/>
-                </a>
+        <Sidebar>
+            <ArticleInformation TimeToRead="@Empire.TimeToRead" Rating="@Empire.Rating"/>
 
-                <MudText Typo="Typo.body2" Align="Align.Center">
-                    @Empire.Map.Overview
-                </MudText>
-            </section>
-        }
-
-        <ArticleFormatingCard Class="toolbar"/>
-
-        <article class="content">
-            <ArticleContentCard Content="@Empire.Content"/>
-        </article>
-
-        <ArticleQuizCard Class="quiz" ArticleId="@Empire.Id" HasQuiz="@HasQuiz" UserActivity="@UserActivity"/>
-
-        <ArticleUserCard
-            Class="rating"
-            ArticleId="@Empire.Id"
-            Rating="@Empire.Rating"
-            UserActivity="@UserActivity"
-            OnBookmarkClick="@OnBookmarkClick"
-            OnLikeClick="@OnLikeClick"
-            OnDislikeClick="@OnDislikeClick"/>
-    </section>
-
-    @if (RelatedArticles.Length > 0)
-    {
-        <UnderlinedTitle Class="my-3 mt-sm-6" Title="@L["Articles:Related"]"/>
-        <EduFillGrid>
-            @foreach (var (article, activity) in RelatedArticles)
+            @if (Empire.Flag is not null)
             {
-                <ArticleCard
-                    Article="@article"
-                    Activity="@activity"
-                    OnBookmarkClick="@OnBookmarkClick"/>
+                <ImageWithOverviewCard
+                    Title="@L["History_EmpireFlag"]"
+                    Source="@Empire.Flag.Source"
+                    Overview="@Empire.Flag.Overview"/>
             }
-        </EduFillGrid>
-    }
+
+            @if (Empire.Map is not null)
+            {
+                <ImageWithOverviewCard
+                    Title="@L["History_EmpireMap"]"
+                    Source="@Empire.Map.Source"
+                    Overview="@Empire.Map.Overview"/>
+            }
+
+            <AuthorizeView>
+                <QuizCard ArticleId="@Empire.Id" HasQuiz="@HasQuiz" Activity="@Activity"/>
+
+                <UserToolbarCard
+                    ArticleId="@Empire.Id"
+                    Activity="@Activity"
+                    OnBookmarkClick="@OnBookmarkClick"
+                    OnLikeClick="@OnLikeClick"
+                    OnDislikeClick="@OnDislikeClick"/>
+            </AuthorizeView>
+        </Sidebar>
+    </ContentGrid>
+
+    <RelatedArticles
+        Class="mt-sm-6"
+        ArticleId="@Empire.Id"
+        Title="@L["Shared_RelatedArticles"]"
+        OnBookmarkClick="@OnBookmarkClick"/>
 </EduContainer>
 
 @code {
@@ -172,13 +162,10 @@
     public ArticleDetail.EmpireModel Empire { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public UserArticleActivityModel UserActivity { get; set; } = default!;
+    public UserArticleActivityModel? Activity { get; set; }
 
     [Parameter, EditorRequired]
     public bool HasQuiz { get; set; }
-
-    [Parameter, EditorRequired]
-    public UserArticleOverviewModel[] RelatedArticles { get; set; } = Array.Empty<UserArticleOverviewModel>();
 
     [Parameter, EditorRequired]
     public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
@@ -187,7 +174,7 @@
     public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
 
     [Parameter, EditorRequired]
-    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
 
     protected override void OnParametersSet()
     {

@@ -1,66 +1,63 @@
 @page "/history/article/{id}"
 @using Education.Web.Client.Features.History.Services.Article.Model
-@using Education.Web.Client.Features.History.Services.User
-@using Education.Web.Client.Features.History.Services.Article
 @layout HistoryLayout
 
-<PageTitle>
-    @_title
-</PageTitle>
-
 <ApiViewer Result="@_result" Context="result">
+    <PageTitle>
+        @result.Article.Title
+    </PageTitle>
+
+    <PageMetaContent
+        Title="@result.Article.Title" 
+        Description="@result.Article.Description" 
+        Image="@result.Article.ImageUrl"/>
+
     @switch (result.Article)
     {
         case ArticleDetail.BattleModel battle:
             <BattleDetail
                 Battle="@battle"
                 HasQuiz="@result.HasQuiz"
-                UserActivity="@result.UserActivity"
-                RelatedArticles="@result.RelatedArticles"
+                Activity="@result.Activity"
                 OnLikeClick="@LikeAsync"
                 OnDislikeClick="@DislikeAsync"
-                OnBookmarkClick="@ToggleBookmarkAsync"/>
+                OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
             break;
 
         case ArticleDetail.EmpireModel empire:
             <EmpireDetail
                 Empire="@empire"
                 HasQuiz="@result.HasQuiz"
-                UserActivity="@result.UserActivity"
-                RelatedArticles="@result.RelatedArticles"
+                Activity="@result.Activity"
                 OnLikeClick="@LikeAsync"
                 OnDislikeClick="@DislikeAsync"
-                OnBookmarkClick="@ToggleBookmarkAsync"/>
+                OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
             break;
 
         case ArticleDetail.GeneralModel article:
             <GeneralDetail
                 Article="@article"
                 HasQuiz="@result.HasQuiz"
-                UserActivity="@result.UserActivity"
-                RelatedArticles="@result.RelatedArticles"
+                Activity="@result.Activity"
                 OnLikeClick="@LikeAsync"
                 OnDislikeClick="@DislikeAsync"
-                OnBookmarkClick="@ToggleBookmarkAsync"/>
+                OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
             break;
 
         case ArticleDetail.PersonModel person:
             <PersonDetail
                 Person="@person"
                 HasQuiz="@result.HasQuiz"
-                UserActivity="@result.UserActivity"
-                RelatedArticles="@result.RelatedArticles"
+                Activity="@result.Activity"
                 OnLikeClick="@LikeAsync"
                 OnDislikeClick="@DislikeAsync"
-                OnBookmarkClick="@ToggleBookmarkAsync"/>
+                OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
             break;
     }
 </ApiViewer>
 
 @code {
-
-    private string? _title;
-    private ApiResult<ArticleCompositionModel> _result = ApiResult<ArticleCompositionModel>.Loading();
+    private ApiResult<UserArticleDetailModel> _result = ApiResult<UserArticleDetailModel>.Loading();
 
     [Inject]
     private IHistoryArticleService ArticleService { get; set; } = default!;
@@ -73,10 +70,8 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = ApiResult<ArticleCompositionModel>.Loading();
+        _result = ApiResult<UserArticleDetailModel>.Loading();
         _result = await ArticleService.GetAsync(Id);
-        _title = _result.Map(x => x.Article.Title)
-            .UnwrapOr(string.Empty);
     }
 
     private async Task<bool> LikeAsync()
@@ -89,13 +84,6 @@
     {
         var response = await UserService.DislikeArticleAsync(Id);
         return response.IsSuccess;
-    }
-
-    private async Task<bool> ToggleBookmarkAsync(string id)
-    {
-        var result = await UserService.ToggleArticleBookmarkAsync(id);
-        return result.Map(x => x)
-            .UnwrapOr(false);
     }
 
 }

@@ -4,8 +4,8 @@ namespace Education.Web.Client.Models;
 
 public enum InternalCurrency
 {
-    Experience,
-    Silver
+    Experience = 1,
+    Silver = 2
 }
 
 internal static class InternalCurrencyExtensions

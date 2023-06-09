@@ -9,6 +9,7 @@ using Education.Web.Client.Features.History.Services.Article;
 using Education.Web.Client.Features.History.Services.Course;
 using Education.Web.Client.Features.History.Services.EventGuesser;
 using Education.Web.Client.Features.History.Services.Leaderboard;
+using Education.Web.Client.Features.History.Services.Learner;
 using Education.Web.Client.Features.History.Services.Order;
 using Education.Web.Client.Features.History.Services.Quiz;
 using Education.Web.Client.Features.History.Services.Search;
@@ -29,7 +30,7 @@ using Polly.Extensions.Http;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Logging
-    .SetMinimumLevel(builder.HostEnvironment.IsDevelopment() ? LogLevel.Warning : LogLevel.Critical);
+    .SetMinimumLevel(builder.HostEnvironment.IsDevelopment() ? LogLevel.Debug : LogLevel.Critical);
 
 // builder.RootComponents.Add<App>("#app");
 // builder.RootComponents.Add<HeadOutlet>("head::after");
@@ -37,10 +38,10 @@ builder.Logging
 builder.Services
     .AddMudServices(options =>
     {
-        options.SnackbarConfiguration.PreventDuplicates = false;
         options.SnackbarConfiguration.NewestOnTop = true;
         options.SnackbarConfiguration.ShowCloseIcon = true;
         options.SnackbarConfiguration.MaxDisplayedSnackbars = 4;
+        options.SnackbarConfiguration.PreventDuplicates = false;
         options.SnackbarConfiguration.SnackbarVariant = Variant.Text;
     })
     .AddBlazoredLocalStorage(options =>
@@ -109,6 +110,7 @@ builder.Services
     .AddScoped<IHistoryCourseService, HistoryCourseService>()
     .AddScoped<IHistoryEventGuesserService, HistoryEventGuesserService>()
     .AddScoped<IHistoryLeaderboardService, HistoryLeaderboardService>()
+    .AddScoped<IHistoryLearnerService, HistoryLearnerService>()
     .AddScoped<IHistoryOrderService, HistoryOrderService>()
     .AddScoped<IHistorySearchService, HistorySearchService>()
     .AddScoped<IHistoryStoreService, HistoryStoreService>()

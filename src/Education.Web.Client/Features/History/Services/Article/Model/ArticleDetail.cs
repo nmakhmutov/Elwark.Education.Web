@@ -3,69 +3,69 @@ using Microsoft.AspNetCore.Components;
 
 namespace Education.Web.Client.Features.History.Services.Article.Model;
 
-public abstract record ArticleDetail(
-    string Id,
-    string Title,
-    string Description,
-    MarkupString Content,
-    string ImageUrl,
-    EpochType Epoch,
-    ContentRatingModel Rating
-)
+public abstract record ArticleDetail(string Id, string Title, string Description, string ImageUrl)
 {
     public sealed record BattleModel(
         string Id,
+        EpochType Epoch,
         string Title,
         string Description,
         MarkupString Content,
         string ImageUrl,
-        EpochType Epoch,
         HistoricalDateModel? Started,
         HistoricalDateModel? Finished,
         MarkupString Location,
         MarkupString Result,
         ImageModel? Map,
+        TimeSpan TimeToRead,
         ContentRatingModel Rating,
+        DateTime CreatedAt,
         ConflictPartyModel[] ConflictParties
-    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Rating);
+    ) : ArticleDetail(Id, Title, Description, ImageUrl);
 
     public sealed record EmpireModel(
         string Id,
+        EpochType Epoch,
         string Title,
         string Description,
         MarkupString Content,
         string ImageUrl,
         ImageModel? Flag,
         ImageModel? Map,
-        EpochType Epoch,
         HistoricalDateModel? Founded,
         HistoricalDateModel? Dissolved,
         uint? Duration,
         uint MaxArea,
         uint MaxPopulation,
-        ContentRatingModel Rating
-    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Rating);
+        TimeSpan TimeToRead,
+        ContentRatingModel Rating,
+        DateTime CreatedAt
+    ) : ArticleDetail(Id, Title, Description, ImageUrl);
 
     public sealed record GeneralModel(
         string Id,
+        EpochType Epoch,
         string Title,
         string Description,
         MarkupString Content,
         string ImageUrl,
-        EpochType Epoch,
-        ContentRatingModel Rating
-    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Rating);
+        TimeSpan TimeToRead,
+        ContentRatingModel Rating,
+        DateTime CreatedAt
+    ) : ArticleDetail(Id, Title, Description, ImageUrl);
 
     public sealed record PersonModel(
         string Id,
+        EpochType Epoch,
         string Title,
         string Description,
         MarkupString Content,
         string ImageUrl,
-        EpochType Epoch,
         PersonBirthdayModel? Born,
         PersonBirthdayModel? Died,
+        TimeSpan TimeToRead,
         ContentRatingModel Rating,
+        DateTime CreatedAt,
         PersonalDetailModel[] Details
-    ) : ArticleDetail(Id, Title, Description, Content, ImageUrl, Epoch, Rating);
+    ) : ArticleDetail(Id, Title, Description, ImageUrl);
 }

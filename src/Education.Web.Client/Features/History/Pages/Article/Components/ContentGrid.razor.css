@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+@media (min-width: 600px) {
+    .container {
+        gap: 24px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .container {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(2, auto) 1fr;
+    }
+
+    .header {
+        grid-column: span 3;
+    }
+
+    .content {
+        grid-column: span 9;
+        grid-row: 1/-1;
+    }
+
+    ::deep .sidebar {
+        grid-column: span 3;
+    }
+}

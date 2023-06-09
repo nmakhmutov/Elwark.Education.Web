@@ -16,8 +16,8 @@ public sealed partial class DifferenceLabel
     protected override void OnParametersSet() =>
         (_value, _icon, _color) = Difference switch
         {
-            < 0 => ($"{Difference.ToMetric()}%", Icons.Material.Outlined.ArrowDownward, Color.Error),
-            > 0 => ($"+{Difference.ToMetric()}%", Icons.Material.Outlined.ArrowUpward, Color.Success),
-            _ => ($"{Difference.ToMetric()}%", Icons.Material.Outlined.ArrowBack, Color.Surface)
+            < 0 => ($"{Difference.ToMetric("N1")}%", Icons.Material.Outlined.ArrowDownward, Color.Error),
+            > 0 => ($"+{Difference.ToMetric("N1")}%", Icons.Material.Outlined.ArrowUpward, Color.Success),
+            _ => ($"{Difference.ToMetric("N1")}%", Icons.Material.Outlined.ArrowBack, Color.Surface)
         };
 }

@@ -18,8 +18,11 @@ internal sealed class HistoryArticleService : IHistoryArticleService
     public Task<ApiResult<PagingOffsetModel<EmpireOverviewModel>>> GetAsync(GetEmpiresRequest request) =>
         _api.GetAsync<PagingOffsetModel<EmpireOverviewModel>>("history/empires", request);
 
-    public Task<ApiResult<ArticleCompositionModel>> GetAsync(string id) =>
-        _api.GetAsync<ArticleCompositionModel>($"history/articles/{id}");
+    public Task<ApiResult<UserArticleDetailModel>> GetAsync(string id) =>
+        _api.GetAsync<UserArticleDetailModel>($"history/articles/{id}");
+    
+    public Task<ApiResult<UserArticleOverviewModel[]>> GetRelatedArticlesAsync(string id) =>
+        _api.GetAsync<UserArticleOverviewModel[]>($"history/articles/{id}/related");
 
     public Task<ApiResult<SpotlightModel>> GetSpotlightAsync() =>
         _api.GetAsync<SpotlightModel>("history/articles/spotlight");

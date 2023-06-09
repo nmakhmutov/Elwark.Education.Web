@@ -2,7 +2,7 @@
 @using Education.Web.Client.Features.History.Services.Article.Model
 @using Education.Web.Client.Models.Content
 
-<EduContainer Class="pa-0 pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+<EduContainer Class="pa-0 pb-3 pb-sm-6" MaxWidth="EduWidth.W1440">
     <div class="header">
         <div class="preamble">
             <div class="image">
@@ -16,13 +16,13 @@
         </div>
 
         <div class="content pa-3 pa-sm-6">
-            <h1 class="title mb-3">
+            <ArticleTitle Class="mb-3">
                 @Person.Title
-            </h1>
+            </ArticleTitle>
 
             <Breadcrumbs Class="pa-0 mb-3" Items="@Breadcrumbs"/>
 
-            <MudText Class="w-max-960 mb-3" Typo="Typo.subtitle1">
+            <MudText Class="mb-3" Typo="Typo.subtitle1">
                 @Person.Description
             </MudText>
 
@@ -42,41 +42,38 @@
             }
         </div>
     </div>
-</EduContainer>
 
-<EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1440">
-    <section class="grid">
-        <ArticleFormatingCard Class="toolbar"/>
+    <ContentGrid>
+        <Header>
+            <ContentToolbarCard/>
+        </Header>
 
-        <article class="content">
-            <ArticleContentCard Content="@Person.Content"/>
-        </article>
+        <Content>
+            <ContentCard Content="@Person.Content"/>
+        </Content>
 
-        <ArticleQuizCard Class="quiz" ArticleId="@Person.Id" HasQuiz="@HasQuiz" UserActivity="@UserActivity"/>
+        <Sidebar>
+            <ArticleInformation TimeToRead="@Person.TimeToRead" Rating="@Person.Rating"/>
 
-        <ArticleUserCard
-            Class="rating"
-            ArticleId="@Person.Id"
-            Rating="@Person.Rating"
-            UserActivity="@UserActivity"
-            OnBookmarkClick="@OnBookmarkClick"
-            OnLikeClick="@OnLikeClick"
-            OnDislikeClick="@OnDislikeClick"/>
-    </section>
+            <AuthorizeView>
+                <QuizCard ArticleId="@Person.Id" HasQuiz="@HasQuiz" Activity="@Activity"/>
 
-    @if (RelatedArticles.Length > 0)
-    {
-        <UnderlinedTitle Class="my-3 mt-sm-6" Title="@L["Articles:Related"]"/>
-        <EduFillGrid>
-            @foreach (var (article, activity) in RelatedArticles)
-            {
-                <ArticleCard
-                    Article="@article"
-                    Activity="@activity"
-                    OnBookmarkClick="@OnBookmarkClick"/>
-            }
-        </EduFillGrid>
-    }
+                <UserToolbarCard
+                    ArticleId="@Person.Id"
+                    Activity="@Activity"
+                    OnBookmarkClick="@OnBookmarkClick"
+                    OnLikeClick="@OnLikeClick"
+                    OnDislikeClick="@OnDislikeClick"/>
+            </AuthorizeView>
+        </Sidebar>
+    </ContentGrid>
+
+    <RelatedArticles
+        Class="mt-sm-6"
+        ArticleId="@Person.Id"
+        Title="@L["Shared_RelatedArticles"]"
+        OnBookmarkClick="@OnBookmarkClick"/>
+
 </EduContainer>
 
 @code {
@@ -97,13 +94,10 @@
     public ArticleDetail.PersonModel Person { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public UserArticleActivityModel UserActivity { get; set; } = default!;
+    public UserArticleActivityModel? Activity { get; set; }
 
     [Parameter, EditorRequired]
     public bool HasQuiz { get; set; }
-
-    [Parameter, EditorRequired]
-    public UserArticleOverviewModel[] RelatedArticles { get; set; } = Array.Empty<UserArticleOverviewModel>();
 
     [Parameter, EditorRequired]
     public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
@@ -112,7 +106,7 @@
     public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
 
     [Parameter, EditorRequired]
-    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
 
     private string DateTimeFormatter(DateTime date) =>
         Customer.Humanize(date);

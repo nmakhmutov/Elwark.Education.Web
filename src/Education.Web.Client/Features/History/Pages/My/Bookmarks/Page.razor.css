@@ -1,12 +1,8 @@
 .grid {
     display: grid;
-    grid-template-columns: 56px auto 100px;
+    grid-template-columns: 56px auto 50px;
     align-items: center;
     gap: 12px;
-}
-
-.epoch {
-    display: none;
 }
 
 .rating {
@@ -16,6 +12,12 @@
 
 .quizzes {
     display: none;
+    justify-self: center;
+}
+
+.completion {
+    display: none;
+    justify-self: center;
 }
 
 .actions {
@@ -24,32 +26,32 @@
 
 @media (min-width: 600px) {
     .grid {
-        grid-template-columns: 56px 1fr 150px 100px;
+        grid-template-columns: 56px 1fr 150px 50px;
         gap: 24px;
     }
 
-    .epoch {
+    .completion {
         display: block;
-        justify-self: start;
     }
 }
 
+
 @media (min-width: 960px) {
     .grid {
-        grid-template-columns: 56px 1fr 150px 140px 100px;
+        grid-template-columns: 56px 1fr 150px 150px 50px;
     }
 
-    .rating {
+    .quizzes {
         display: block;
     }
 }
 
 @media (min-width: 1280px) {
     .grid {
-        grid-template-columns: 56px 1fr 150px 140px 140px 100px;
+        grid-template-columns: 56px 1fr 150px 150px 150px 50px;
     }
 
-    .quizzes {
+    .rating {
         display: block;
     }
 }

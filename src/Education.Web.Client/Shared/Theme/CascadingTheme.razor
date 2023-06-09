@@ -1,11 +1,13 @@
 @using Blazored.LocalStorage
-<MudThemeProvider Theme="@Theme" IsDarkMode="@IsDarkMode"/>
+<MudThemeProvider @ref="@_mudThemeProvider" Theme="@Theme" IsDarkMode="@IsDarkMode"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
 <CascadingValue TValue="CascadingTheme" Value="@(this)" ChildContent="@ChildContent"/>
 
 @code {
+        private const string CacheKey = "ts";
+    private MudThemeProvider _mudThemeProvider = default!;
 
     private static readonly MudTheme Theme = new()
     {
@@ -59,7 +61,19 @@
         },
         Typography = new Typography
         {
-            H6 = new H6 { FontWeight = 400 }
+            H1 = new H1 { FontSize = "3.5rem", FontWeight = 300 },
+            H2 = new H2 { FontSize = "2.75rem", FontWeight = 300 },
+            H3 = new H3 { FontSize = "2.25rem", FontWeight = 300 },
+            H4 = new H4 { FontSize = "1.875rem", FontWeight = 400 },
+            H5 = new H5 { FontSize = "1.5rem", FontWeight = 400 },
+            H6 = new H6 { FontSize = "1.25rem", FontWeight = 400 },
+            Subtitle1 = new Subtitle1 { FontSize = "1.125rem", FontWeight = 400 },
+            Subtitle2 = new Subtitle2 { FontSize = "1rem", FontWeight = 500 },
+            Body1 = new Body1 { FontSize = "1rem", FontWeight = 400 },
+            Body2 = new Body2 { FontSize = "0.875rem", FontWeight = 400 },
+            Caption = new Caption { FontSize = "0.8rem", FontWeight = 400 },
+            Button = new Button { FontSize = "0.875rem", FontWeight = 500 },
+            Overline = new Overline { FontSize = "0.75rem", FontWeight = 400 }
         }
     };
 
@@ -71,16 +85,27 @@
 
     public bool IsDarkMode { get; private set; }
 
-    public string Icon =>
+    public string Icon => 
         IsDarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode;
 
-    protected override async Task OnInitializedAsync() =>
-        IsDarkMode = await Storage.GetItemAsync<bool>("ts");
-
-    public async Task ToggleAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await Storage.SetItemAsync("ts", IsDarkMode = !IsDarkMode);
-        StateHasChanged();
+        if (!firstRender)
+            return;
+
+        await _mudThemeProvider.WatchSystemPreference(x => ChangeTheme(x));
+
+        IsDarkMode = await Storage.GetItemAsync<bool?>(CacheKey) ?? await _mudThemeProvider.GetSystemPreference();
     }
+
+    private Task ChangeTheme(bool isDarkMode) =>
+        InvokeAsync(() =>
+        {
+            IsDarkMode = isDarkMode;
+            StateHasChanged();
+        });
+
+    public async Task ToggleAsync() =>
+        await Storage.SetItemAsync(CacheKey, IsDarkMode = !IsDarkMode);
 
 }

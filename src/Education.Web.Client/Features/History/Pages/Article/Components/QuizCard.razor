@@ -1,0 +1,82 @@
+@using Education.Web.Client.Features.History.Services
+
+<section class="mud-paper pa-3 pa-sm-6 @Class">
+    @if (HasQuiz && Activity?.IsCompleted is not null)
+    {
+        <MudLink Typo="Typo.subtitle2" Href="@HistoryUrl.User.MyArticle(ArticleId)">
+            @L["Shared_MyProgress"]
+        </MudLink>
+    }
+    else
+    {
+        <MudText Typo="Typo.subtitle2">
+            @L["Shared_MyProgress"]
+        </MudText>
+    }
+
+    <MudSimpleTable Class="mt-3" Elevation="0" Dense>
+        <tbody>
+        <tr>
+            <td>
+                <MudText Typo="Typo.body2">@L["Shared_ArticleLearningStatus"]</MudText>
+            </td>
+            <td>
+                <MudText Typo="Typo.body2">
+                    @(Activity?.IsCompleted switch {
+                        true => L["Shared_ArticleLearningStatusCompleted"],
+                        false => L["Shared_ArticleLearningStatusIncompleted"],
+                        null => L["Shared_ArticleLearningStatusUnengaged"]
+                        })
+                </MudText>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <MudText Typo="Typo.body2">@L["Shared_NumberOfPassedQuizzes"]</MudText>
+            </td>
+            <td>
+                <MudText Typo="Typo.body2">@((Activity?.TotalQuizzes ?? 0).ToMetric())</MudText>
+            </td>
+        </tr>
+        </tbody>
+    </MudSimpleTable>
+
+    <div class="mt-3 mt-sm-6">
+        @if (HasQuiz)
+        {
+            <MudButton
+                Link="@HistoryUrl.ArticleQuiz.Index(ArticleId)"
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                FullWidth
+                DisableElevation>
+                @L["Shared_TakeTheQuiz"]
+            </MudButton>
+        }
+        else
+        {
+            <MudText Typo="Typo.body1" Color="Color.Info">
+                @L["Shared_TheArticleDoesNotHaveAnyQuizzesYet"]
+            </MudText>
+        }
+    </div>
+</section>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public string ArticleId { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public UserArticleActivityModel? Activity { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool HasQuiz { get; set; }
+
+}

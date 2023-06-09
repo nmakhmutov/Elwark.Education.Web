@@ -1,8 +1,6 @@
 @page "/history/quizzes"
 @using Education.Web.Client.Features.History.Services.Quiz.Model
 @using Education.Web.Client.Features.History.Services.Quiz.Request
-@using Education.Web.Client.Features.History.Services.User
-@using Education.Web.Client.Features.History.Services.Quiz
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -45,7 +43,7 @@
                     Article="@model.Article.Article"
                     Activity="@model.Article.Activity"
                     OnCreateClick="@OnQuizCreateAsync"
-                    OnBookmarkClick="@ToggleBookmarkAsync"/>
+                    OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
             }
 
             <section class="inventory">
@@ -113,11 +111,6 @@
                 x => Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Test(x.Overview.Id)),
                 e => Snackbar.Add(e.Detail, Severity.Error)
             );
-
-    private async Task<bool> ToggleBookmarkAsync(string id) =>
-        (await UserService.ToggleArticleBookmarkAsync(id))
-            .Map(x => x)
-            .UnwrapOr(false);
 
     private void OpenRule()
     {

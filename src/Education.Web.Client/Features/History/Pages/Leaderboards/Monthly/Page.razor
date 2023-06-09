@@ -1,6 +1,5 @@
 @page "/history/leaderboards/monthly"
 @using Education.Web.Client.Features.History.Services.Leaderboard.Model
-@using Education.Web.Client.Features.History.Services.Leaderboard
 @layout HistoryLayout
 
 <PageTitle>
@@ -62,7 +61,7 @@
                                 You are not contestant yet
                             </MudText>
                             <MudText Typo="Typo.caption">
-                                Just earn experince by passing tasks to join
+                                Just earn experience by passing tasks to join
                             </MudText>
                         </div>
                     }
@@ -115,7 +114,7 @@
                 </Experience>
             </RegularRanking>
 
-            <Virtualize Items="@(result.IsActive ? result.Users : result.Users[3..])" ItemSize="64" Context="user">
+            <Virtualize Items="@(NormalizeUsers(result))" ItemSize="64" Context="user">
                 <RegularRanking Class="mb-3" Background="@GetBackgroundColor(user.Id)">
                     <Rank>
                         <MudAvatar Color="Color.Primary">@user.Rank</MudAvatar>
@@ -141,7 +140,7 @@
 </ApiViewer>
 
 @code {
-    private long _highlightUser;
+    private long? _highlightUser;
     private ApiResult<MonthlyLeaderboardModel> _result = ApiResult<MonthlyLeaderboardModel>.Loading();
 
     [Inject]
@@ -155,11 +154,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await LeaderboardService.GetMonthAsync();
-
         var state = await StateProvider.GetAuthenticationStateAsync();
-        if (state.User.Identity?.IsAuthenticated ?? false)
-            _highlightUser = state.User.GetId();
+        _highlightUser = state.User.GetIdOrDefault();
+        _result = await LeaderboardService.GetMonthAsync();
     }
 
     private async Task OnMonthChanged(DateOnly month) =>
@@ -167,5 +164,16 @@
 
     private RegularRanking.BackgroundColor GetBackgroundColor(long userId) =>
         _highlightUser == userId ? RegularRanking.BackgroundColor.Highlight : RegularRanking.BackgroundColor.Paper;
+
+    private static ICollection<UserRankingModel> NormalizeUsers(MonthlyLeaderboardModel leaderboard)
+    {
+        if (leaderboard.IsActive)
+            return leaderboard.Users;
+
+        if (leaderboard.Users.Length > 2)
+            return leaderboard.Users[3..];
+
+        return Array.Empty<UserRankingModel>();
+    }
 
 }

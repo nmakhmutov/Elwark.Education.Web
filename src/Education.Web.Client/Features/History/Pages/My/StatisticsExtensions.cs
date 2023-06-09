@@ -18,13 +18,10 @@ public static class StatisticsExtensions
         this QuizStatisticsModel.NumberOfQuizzesContrastModel contrast, IStringLocalizer<App> l) =>
         new ProgressList.Item[]
         {
-            new(l["Shared_NumberOfSuccessfulQuizzes"], contrast.Successful.Current.ToMetric(),
-                contrast.Successful.Difference),
+            new(l["Shared_NumberOfSuccessfulQuizzes"], contrast.Successful.Current.ToMetric(), contrast.Successful.Difference),
             new(l["Shared_NumberOfFailedQuizzes"], contrast.Failed.Current.ToMetric(), contrast.Failed.Difference),
-            new(l["Shared_NumberOfMistakesExceededQuizzes"], contrast.MistakesExceeded.Current.ToMetric(),
-                contrast.MistakesExceeded.Difference),
-            new(l["Shared_NumberOfTimeExceededQuizzes"], contrast.TimeExceeded.Current.ToMetric(),
-                contrast.TimeExceeded.Difference),
+            new(l["Shared_NumberOfMistakesExceededQuizzes"], contrast.MistakesExceeded.Current.ToMetric(), contrast.MistakesExceeded.Difference),
+            new(l["Shared_NumberOfTimeExceededQuizzes"], contrast.TimeExceeded.Current.ToMetric(), contrast.TimeExceeded.Difference),
             new(l["Shared_NumberOfTotalQuizzes"], contrast.Total.Current.ToMetric(), contrast.Total.Difference)
         };
 
@@ -81,8 +78,7 @@ public static class StatisticsExtensions
         {
             new(l["History_EventGuesserQuestions"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
             new(l["History_EventGuesserCorrect"], contrast.Correct.Current.ToMetric(), contrast.Correct.Difference),
-            new(l["History_EventGuesserIncorrect"], contrast.Incorrect.Current.ToMetric(),
-                contrast.Incorrect.Difference)
+            new(l["History_EventGuesserIncorrect"], contrast.Incorrect.Current.ToMetric(), contrast.Incorrect.Difference)
         };
 
     private static string RangeTitle(DateOnly starts, DateOnly ends) =>

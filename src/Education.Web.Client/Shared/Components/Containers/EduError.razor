@@ -1,4 +1,4 @@
-<EduContainer Class="align-center h-100" MaxWidth="EduWidth.W600">
+<EduContainer Class="@Class" MaxWidth="EduWidth.W600">
     <div class="d-flex gap-3 align-center justify-center">
         <MudText Typo="Typo.h4">
             @Error.Status
@@ -44,5 +44,8 @@
 
     [Parameter, EditorRequired]
     public Error Error { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
 
 }

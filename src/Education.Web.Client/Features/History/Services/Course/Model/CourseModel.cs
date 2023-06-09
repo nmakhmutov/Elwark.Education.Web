@@ -7,6 +7,7 @@ public sealed record CourseModel(
     string Title,
     string ImageUrl,
     string Description,
+    TimeSpan TimeToRead,
     ContentRatingModel Rating,
     UserCourseActivityModel UserActivity,
     UserArticleOverviewModel[] Articles

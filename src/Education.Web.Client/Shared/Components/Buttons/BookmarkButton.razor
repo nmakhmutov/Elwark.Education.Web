@@ -23,7 +23,7 @@
     public bool IsBookmarked { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<bool>> OnBookmarkClick { get; set; } = _ => Task.FromResult(false);
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
 
     [Parameter]
     public Size Size { get; set; } = Size.Medium;
@@ -32,6 +32,7 @@
     public string? Class { get; set; }
 
     private async Task OnBookmarkChanged(bool toggled) =>
-        IsBookmarked = await OnBookmarkClick.Invoke(Id);
+        IsBookmarked = (await OnBookmarkClick.Invoke(Id))
+            .UnwrapOr(false);
 
 }

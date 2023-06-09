@@ -1,6 +1,6 @@
 namespace Education.Web.Client.Models.Quiz;
 
-public enum QuizType
+public enum DifficultyType
 {
     Easy = 0,
     Hard = 1

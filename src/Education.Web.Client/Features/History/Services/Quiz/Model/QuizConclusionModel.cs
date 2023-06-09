@@ -6,7 +6,7 @@ namespace Education.Web.Client.Features.History.Services.Quiz.Model;
 
 public sealed record QuizConclusionModel(
     string TestId,
-    QuizType Type,
+    DifficultyType Type,
     QuizStatus Status,
     ArticleTitleModel Article,
     PerformanceModel<uint> QuestionScore,

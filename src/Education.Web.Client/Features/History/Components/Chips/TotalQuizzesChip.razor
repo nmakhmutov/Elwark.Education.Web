@@ -1,0 +1,22 @@
+<MudTooltip Text="@L["Shared_NumberOfPassedQuizzes"]">
+    <MudChip
+        Class="ma-0"
+        Color="Color.Primary"
+        Variant="Variant.Outlined"
+        Icon="@EduIcons.Quiz"
+        Text="@Quizzes.ToMetric("G")"
+        Link="@Href"/>
+</MudTooltip>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public uint Quizzes { get; set; }
+
+    [Parameter]
+    public string? Href { get; set; }
+
+}

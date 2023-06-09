@@ -2,10 +2,10 @@
 @using Education.Web.Client.Models.Quiz
 
 <div class="@Class">
-    <MudRadioGroup T="QuizType?" SelectedOption="@SelectedQuiz" SelectedOptionChanged="@SelectedQuizChanged" Class="radio-group">
+    <MudRadioGroup T="DifficultyType?" SelectedOption="@SelectedDifficulty" SelectedOptionChanged="@SelectedDifficultyChanged" Class="radio-group">
         @foreach (var service in Quizzes)
         {
-            <MudRadio T="QuizType?" Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)" Class="radio">
+            <MudRadio T="DifficultyType?" Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)" Class="radio">
                 <MudPaper Elevation="0" Class="d-flex align-center pa-3">
                     <div class="rounded-circle mud-background">
                         <div class="d-flex justify-center align-center relative pa-2">
@@ -25,10 +25,10 @@
 @code {
 
     [Parameter]
-    public QuizType? SelectedQuiz { get; set; }
+    public DifficultyType? SelectedDifficulty { get; set; }
 
     [Parameter]
-    public EventCallback<QuizType?> SelectedQuizChanged { get; set; }
+    public EventCallback<DifficultyType?> SelectedDifficultyChanged { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

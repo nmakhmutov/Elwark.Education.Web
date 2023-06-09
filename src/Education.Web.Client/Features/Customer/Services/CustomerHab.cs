@@ -1,3 +1,4 @@
+using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.Customer.Services.Notification.Model;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -25,13 +26,18 @@ internal sealed class CustomerHab : IAsyncDisposable
             .WithAutomaticReconnect(new RetryPolicy())
             .Build();
 
-        _connection.On<NotificationMessage>("Notifications", message => OnNotificationReceived.Invoke(message));
+        _connection.On<CustomerChangedType>("Customers", status => OnCustomerChanged.Invoke(status));
+        _connection.On<NotificationMessage>("Messages", message => OnMessageReceived.Invoke(message));
     }
 
     public ValueTask DisposeAsync() =>
         _connection.DisposeAsync();
 
-    public event Action<NotificationMessage> OnNotificationReceived = _ =>
+    public event Action<CustomerChangedType> OnCustomerChanged = _ =>
+    {
+    };
+
+    public event Action<NotificationMessage> OnMessageReceived = _ =>
     {
     };
 
@@ -43,7 +49,7 @@ internal sealed class CustomerHab : IAsyncDisposable
         try
         {
             var state = await _stateProvider.GetAuthenticationStateAsync();
-            if (state.User.Identity?.IsAuthenticated ?? false)
+            if (state.User.IsAuthenticated())
                 await _connection.StartAsync();
         }
         catch

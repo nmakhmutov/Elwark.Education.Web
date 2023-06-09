@@ -1,50 +1,62 @@
 @page "/history/course/{id}"
-@using Education.Web.Client.Features.History.Services.Course
 @using Education.Web.Client.Features.History.Services.Course.Model
-@using Education.Web.Client.Features.History.Services.User
 @layout HistoryLayout
 
-<PageTitle>
-    @_title
-</PageTitle>
-
 <ApiViewer Result="@_result" Context="course">
+    <PageTitle>
+        @course.Title
+    </PageTitle>
+
+    <PageMetaContent
+        Title="@course.Title"
+        Description="@course.Description"
+        Image="@course.ImageUrl"/>
+
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1600">
-        <CourseHeader Title="@course.Title" Image="@course.ImageUrl" Breadcrumbs="@Breadcrumbs"/>
+        <CourseHeader
+            Id="@course.Id"
+            Title="@course.Title"
+            Image="@course.ImageUrl"
+            Breadcrumbs="@Breadcrumbs"
+            TimeToRead="@course.TimeToRead"
+            ArticleCount="@course.Articles.Length"
+            UserActivity="@course.UserActivity"
+            OnBookmarkClick="@UserService.ToggleCourseBookmarkAsync"
+            OnStartClick="@StartCourseAsync"/>
     </EduContainer>
 
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1600">
-        <section class="grid">
-            <div class="d-flex flex-column gap-3 gap-sm-6">
-                <MudText Typo="Typo.h6">
-                    Articles
+        <section class="content">
+            <div class="articles">
+                <MudText Class="mb-3 mb-sm-6" Typo="Typo.h4">
+                    @L["Shared_Articles"]
                 </MudText>
-
+                
                 @foreach (var (article, activity) in course.Articles)
                 {
                     <ArticleCard
+                        Class="mb-3 mb-sm-6"
                         Article="@article"
                         Activity="@activity"
-                        OnBookmarkClick="@ToggleArticleBookmarkAsync"
+                        OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"
                         Horizontal/>
                 }
             </div>
 
-            <div>
-                <MudText Class="mb-3 mb-sm-6" Typo="Typo.h6">
+            <aside class="aside">
+                <MudText Class="mb-3 mb-sm-6" Typo="Typo.h4">
                     Course description
                 </MudText>
 
                 <MudText Typo="Typo.body1">
                     @course.Description
                 </MudText>
-            </div>
+            </aside>
         </section>
     </EduContainer>
 </ApiViewer>
 
 @code {
-    private string? _title;
     private ApiResult<CourseModel> _result = ApiResult<CourseModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -60,30 +72,21 @@
     private IHistoryUserService UserService { get; set; } = default!;
 
     [Inject]
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
+
+    [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
-    protected override async Task OnParametersSetAsync()
-    {
+    protected override async Task OnParametersSetAsync() =>
         _result = await CourseService.GetAsync(Id);
-        _title = _result.Map(x => x.Title)
-            .UnwrapOr(string.Empty);
-    }
 
-    private async Task<bool> ToggleArticleBookmarkAsync(string id)
+    private async Task StartCourseAsync(string id)
     {
-        var result = await UserService.ToggleArticleBookmarkAsync(id);
-        return result.Map(x => x)
-            .UnwrapOr(false);
+        var result = await LearnerService.StartCourseAsync(id);
+        result.Map(x => _result = ApiResult<CourseModel>.Success(_result.Unwrap() with { UserActivity = x }));
     }
-
-    // private async Task<bool> ToggleCourseBookmarkAsync(string id)
-    // {
-    //     var result = await UserService.ToggleCourseBookmarkAsync(id);
-    //     return result.Map(x => x)
-    //         .UnwrapOr(false);
-    // }
 
 }

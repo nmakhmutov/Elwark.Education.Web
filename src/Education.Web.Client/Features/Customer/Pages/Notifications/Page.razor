@@ -17,16 +17,18 @@
         </section>
         <section class="notifications">
             <EduPageHeader Class="mb-3 mb-sm-6" Title="@L["Notifications"]" Breadcrumbs="@Breadcrumbs">
-                <MudButton
-                    Style="text-transform: none"
-                    Variant="Variant.Outlined"
-                    Color="Color.Primary"
-                    Size="Size.Medium"
-                    StartIcon="@Icons.Material.Outlined.DoneAll"
-                    Disabled="@(!NotificationService.HasNotifications)"
-                    OnClick="MarkAllAsReadAsync">
-                    @L["Notifications:MarkAsRead"]
-                </MudButton>
+                <div>
+                    <MudButton
+                        Style="text-transform: none"
+                        Variant="Variant.Outlined"
+                        Color="Color.Primary"
+                        Size="Size.Medium"
+                        StartIcon="@Icons.Material.Outlined.DoneAll"
+                        Disabled="@(!NotificationService.HasNotifications)"
+                        OnClick="MarkAllAsReadAsync">
+                        @L["Notifications:MarkAsRead"]
+                    </MudButton>
+                </div>
             </EduPageHeader>
 
             <ApiViewer Result="_result">
@@ -35,39 +37,46 @@
                     <EduEmpty Title="@L["Notifications:NothingNew"]"/>
                 }
 
-                <Virtualize Items="@_notifications" Context="item">
+                <Virtualize Items="@_notifications" Context="notification">
                     <section class="mud-paper d-flex pa-3 mb-3">
-                        <NotificationAvatar Class="mr-3" Subject="@item.Subject"/>
+                        <NotificationAvatar Class="mr-3" Subject="@notification.Subject"/>
                         <article class="flex-1">
-                            @if (string.IsNullOrEmpty(item.Message))
+                            @if (string.IsNullOrEmpty(notification.Message))
                             {
                                 <MudText Class="mud-text-secondary" Typo="Typo.body2">
-                                    @Customer.Humanize(item.CreatedAt)
+                                    @Customer.Humanize(notification.CreatedAt)
                                 </MudText>
                                 <MudText Typo="Typo.body1">
-                                    @item.Title
+                                    @notification.Title
                                 </MudText>
                             }
                             else
                             {
                                 <header class="d-flex align-center mud-text-secondary">
                                     <MudText Typo="Typo.body2">
-                                        @item.Title
+                                        @notification.Title
                                     </MudText>
                                     <MudIcon Class="dot mx-1" Icon="@Icons.Material.Outlined.Adjust"/>
                                     <MudText Typo="Typo.body2">
-                                        @Customer.Humanize(item.CreatedAt)
+                                        @Customer.Humanize(notification.CreatedAt)
                                     </MudText>
                                 </header>
                                 <MudText Typo="Typo.body1">
-                                    @item.Message
+                                    @notification.Message
                                 </MudText>
                             }
                         </article>
                         <aside>
+                            @if (!string.IsNullOrEmpty(notification.Href))
+                            {
+                                <MudIconButton
+                                    Icon="@Icons.Material.Outlined.ReadMore"
+                                    Href="@notification.Href"/>
+                            }
+
                             <MudIconButton
                                 Icon="@Icons.Material.Outlined.MarkEmailRead"
-                                OnClick="@(() => MarkAsReadAsync(item.Id))"/>
+                                OnClick="@(() => MarkAsReadAsync(notification.Id))"/>
                         </aside>
                     </section>
                 </Virtualize>
@@ -90,7 +99,7 @@
 </EduContainer>
 
 @code {
-    private NotificationsRequest _request = new(15);
+    private NotificationsRequest _request = new(10);
     private ApiResult<PagingTokenModel<NotificationModel>> _result = ApiResult<PagingTokenModel<NotificationModel>>.Loading();
     private readonly List<NotificationModel> _notifications = new();
     private bool _isMoreLoading;
@@ -115,7 +124,7 @@
         _result.Match(x =>
         {
             _notifications.AddRange(x.Items);
-            _request = new NotificationsRequest(10, x.Next);
+            _request = new NotificationsRequest(20, x.Next);
         });
     }
 
@@ -129,8 +138,8 @@
             .Match(
                 x =>
                 {
-                    _notifications.AddRange(x.Items);
                     _request = _request with { Token = x.Next };
+                    _notifications.AddRange(x.Items);
                 },
                 e => _result = ApiResult<PagingTokenModel<NotificationModel>>.Fail(e)
             );
@@ -148,5 +157,4 @@
         _notifications.Clear();
         return NotificationService.MarkAllAsReadAsync();
     }
-
 }

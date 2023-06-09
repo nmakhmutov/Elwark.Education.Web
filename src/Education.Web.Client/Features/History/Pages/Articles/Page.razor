@@ -1,18 +1,15 @@
 @page "/history/articles"
-@using Education.Web.Client.Features.History.Services
-@using Education.Web.Client.Features.History.Services.Article
 @using Education.Web.Client.Features.History.Services.Article.Request
-@using Education.Web.Client.Features.History.Services.User
 @using Education.Web.Client.Models
 @layout HistoryLayout
 
 <PageTitle>
-    @L["History_Articles"]
+    @L["Shared_Articles"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
     <section class="header">
-        <EduPageHeader Class="title" Title="@L["History_Articles"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Class="title" Title="@L["Shared_Articles"]" Breadcrumbs="@Breadcrumbs"/>
 
         <MudSelect T="EpochType"
                    Value="@_epoch"
@@ -38,13 +35,13 @@
                    Margin="Margin.Dense"
                    Variant="Variant.Text">
             <MudSelectItem Value="@GetArticlesRequest.SortType.Newest">
-                @L["History_ResentArticles"]
+                @L["Shared_ResentArticles"]
             </MudSelectItem>
             <MudSelectItem Value="@GetArticlesRequest.SortType.Trending">
-                @L["History_TrendingArticles"]
+                @L["Shared_TrendingArticles"]
             </MudSelectItem>
             <MudSelectItem Value="@GetArticlesRequest.SortType.Popularity">
-                @L["History_TopRatedArticles"]
+                @L["Shared_TopRatedArticles"]
             </MudSelectItem>
         </MudSelect>
     </section>
@@ -58,9 +55,10 @@
                 <ArticleCard
                     Article="@article"
                     Activity="@activity"
-                    OnBookmarkClick="@OnBookmarkClick"/>
+                    OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
             }
         </EduFillGrid>
+
         <MudPagination
             Class="d-flex justify-center py-3 py-sm-6"
             Rectangular
@@ -121,12 +119,6 @@
 
         _result = await ArticleService
             .GetAsync(new GetArticlesRequest(_epoch, _sort, (CurrentPage - 1) * Limit, Limit));
-    }
-
-    private async Task<bool> OnBookmarkClick(string articleId)
-    {
-        var result = await UserService.ToggleArticleBookmarkAsync(articleId);
-        return result.Match(x => x, _ => false, () => false);
     }
 
     private void OnPagination(int page)

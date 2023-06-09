@@ -1,0 +1,26 @@
+<section class="container">
+    <header class="header">
+        @Header
+    </header>
+    
+    <article class="content">
+        @Content
+    </article>
+    
+    <EduFitGrid Class="sidebar">
+        @Sidebar
+    </EduFitGrid>
+</section>
+
+@code {
+
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+
+    [Parameter]
+    public RenderFragment? Content { get; set; }
+
+    [Parameter]
+    public RenderFragment? Sidebar { get; set; }
+
+}

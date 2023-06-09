@@ -7,5 +7,6 @@ public sealed record CourseOverviewModel(
     string Title,
     string Overview,
     string ThumbnailUrl,
+    uint ArticleCount,
     ContentRatingModel Rating
 );

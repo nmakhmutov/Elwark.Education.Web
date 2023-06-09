@@ -1,9 +1,6 @@
 @page "/history/courses"
-@using Education.Web.Client.Features.History.Services.Course
 @using Education.Web.Client.Features.History.Services.Course.Request
 @using Education.Web.Client.Models
-@using Education.Web.Client.Features.History.Services
-@using Education.Web.Client.Features.History.Services.User
 @layout HistoryLayout
 
 <PageTitle>
@@ -14,15 +11,15 @@
     <EduPageHeader Title="@L["History_Courses"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="_result" Context="result">
+<ApiViewer Result="@_result" Context="result">
     <EduContainer>
         <EduFillGrid Class="mb-6 mb-sm-12">
-            @foreach (var item in result.Items)
+            @foreach (var (course, activity) in result.Items)
             {
                 <CourseCard
-                    Course="@item.Course"
-                    Activity="@item.Activity"
-                    OnBookmarkClick="@ToggleBookmarkAsync"/>
+                    Course="@course"
+                    Activity="@activity"
+                    OnBookmarkClick="@UserService.ToggleCourseBookmarkAsync"/>
             }
         </EduFillGrid>
 
@@ -62,9 +59,9 @@
     [Parameter, SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; }
 
-    private int TotalPages => _result
-        .Map(m => (int)double.Ceiling((double)m.Count / _request.Limit))
-        .UnwrapOr(1);
+    private int TotalPages =>
+        _result.Map(m => (int)double.Ceiling((double)m.Count / _request.Limit))
+            .UnwrapOr(1);
 
     protected override async Task OnParametersSetAsync()
     {
@@ -79,12 +76,6 @@
     {
         _result = ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
-    }
-
-    private async Task<bool> ToggleBookmarkAsync(string id)
-    {
-        var result = await UserService.ToggleCourseBookmarkAsync(id);
-        return result.Match(x => x, _ => false, () => false);
     }
 
 }

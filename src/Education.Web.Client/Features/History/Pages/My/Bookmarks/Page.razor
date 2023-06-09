@@ -1,6 +1,4 @@
 @page "/history/my/bookmarks"
-@using Education.Web.Client.Features.History.Services
-@using Education.Web.Client.Features.History.Services.User
 @using Education.Web.Client.Features.History.Services.User.Request
 @layout HistoryLayout
 @attribute [Authorize]
@@ -51,56 +49,45 @@ else
             <div class="grid px-3 px-sm-6 mb-3">
                 <div class="image"></div>
                 <div class="title">@L["Article:Title"]</div>
-                <div class="epoch">@L["History_Epoch"]</div>
                 <div class="rating">@L["Rating"]</div>
                 <div class="quizzes">@L["Shared_NumberOfPassedQuizzes"]</div>
+                <div class="completion">@L["Shared_ArticleLearningStatus"]</div>
                 <div class="actions"></div>
             </div>
-            <Virtualize @ref="@_virtualize" ItemsProvider="BookmarkProvider" ItemSize="110" Context="item">
+            <Virtualize @ref="_virtualize" ItemsProvider="BookmarkProvider" ItemSize="110" Context="item">
                 <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
                     <div class="image">
                         <MudAvatar Size="Size.Large" Image="@item.Article.ThumbnailUrl"/>
                     </div>
                     <div class="title">
-                        <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)">
+                        <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)" Typo="Typo.h6">
                             @item.Article.Title
                         </MudLink>
-                    </div>
-                    <div class="epoch">
-                        <MudChip Class="mx-0" Size="Size.Small" Variant="Variant.Text" Color="Color.Primary" Link="@HistoryUrl.Content.Articles(item.Article.Epoch)" Label DisableRipple>
+                        <br/>
+                        <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
+                           href="@HistoryUrl.Content.Articles(item.Article.Epoch)">
                             @L[$"History_Epoch{item.Article.Epoch.ToFastString()}"]
-                        </MudChip>
+                        </a>
                     </div>
                     <div class="rating">
                         <ContentRating
                             Class="d-inline-flex flex-column align-center"
                             Rating="@item.Article.Rating"
-                            ShowDetails/>
+                            ShowTooltip/>
                     </div>
                     <div class="quizzes">
-                        <NumberOfQuizzesChip
-                            NumberOfQuizzes="@item.Activity.NumberOfEasyQuiz"
-                            Tooltip="@L["Shared_NumberOfPassedEasyQuizzes"]"
-                            Color="Color.Info"/>
-                        <NumberOfQuizzesChip
-                            NumberOfQuizzes="@item.Activity.NumberOfHardQuiz"
-                            Tooltip="@L["Shared_NumberOfPassedHardQuizzes"]"
-                            Color="Color.Primary"/>
+                        <TotalQuizzesChip Quizzes="@(item.Activity?.TotalQuizzes ?? 0)"/>
+                    </div>
+                    <div class="completion">
+                        <ArticleCompletionChip 
+                            IsCompleted="@item.Activity?.IsCompleted"
+                            Href="@(item.Activity?.IsCompleted is null ? null : HistoryUrl.User.MyArticle(item.Article.Id))"/>
                     </div>
                     <div class="actions">
-                        @if (item.Activity.IsPassedAnyQuizzes)
-                        {
-                            <MudTooltip Text="@L["Shared_ButtonSeeMore"]">
-                                <MudIconButton
-                                    Link="@HistoryUrl.User.MyArticle(item.Article.Id)"
-                                    Icon="@Icons.Material.Outlined.RemoveRedEye"/>
-                            </MudTooltip>
-                        }
-
                         <BookmarkButton
                             Id="@item.Article.Id"
-                            IsBookmarked="@item.Activity.IsBookmarked"
-                            OnBookmarkClick="@OnBookmarkClick"/>
+                            IsBookmarked="@item.Activity!.IsBookmarked"
+                            OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
                     </div>
                 </div>
 
@@ -160,13 +147,8 @@ else
 
                 return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex), GetLength());
             })
-            .UnwrapOr(new ItemsProviderResult<UserArticleOverviewModel>(_items, GetLength()));
+            .UnwrapOr(new ItemsProviderResult<UserArticleOverviewModel>(_items, 0));
     }
-
-    private async Task<bool> OnBookmarkClick(string articleId) =>
-        (await UserService.ToggleArticleBookmarkAsync(articleId))
-            .Map(x => x)
-            .UnwrapOr(false);
 
     private Task OnSortChanged(BookmarksRequest.SortType sort)
     {

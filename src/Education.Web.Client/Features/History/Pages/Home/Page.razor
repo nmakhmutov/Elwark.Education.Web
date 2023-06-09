@@ -1,6 +1,5 @@
 @page "/history"
 @using Education.Web.Client.Features.History.Services.Article.Model
-@using Education.Web.Client.Features.History.Services.Article
 @using Education.Web.Client.Features.History.Services.Article.Request
 @layout HistoryLayout
 
@@ -14,7 +13,7 @@
     <EduContainer Class="py-3 py-sm-6" MaxWidth="@EduWidth.W1600">
         <UnderlinedTitle
             Class="mb-6"
-            Title="@L["History_TrendingArticles"]"
+            Title="@L["Shared_TrendingArticles"]"
             Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Trending)"
             HrefTitle="@L["Shared_ViewAll"]"/>
 
@@ -35,21 +34,21 @@
             <Content>
                 <UnderlinedTitle
                     Class="mb-3"
-                    Title="@L["History_ResentArticles"]"
+                    Title="@L["Shared_ResentArticles"]"
                     Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Newest)"
                     HrefTitle="@L["Shared_ViewAll"]"/>
 
                 <EduFillGrid>
                     @foreach (var article in result.Recent)
                     {
-                        <ArticleCard Article="@article"/>
+                        <ArticleCard Article="@article" HideFooter/>
                     }
                 </EduFillGrid>
             </Content>
             <Sidebar>
                 <UnderlinedTitle
                     Class="mb-3"
-                    Title="@L["History_TopRatedArticles"]"
+                    Title="@L["Shared_TopRatedArticles"]"
                     Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Popularity)"
                     HrefTitle="@L["Shared_ViewAll"]"/>
 
@@ -59,6 +58,7 @@
                         Class="mb-3 mb-sm-6"
                         Article="@article"
                         Horizontal
+                        HideFooter
                         HideOverview/>
                 }
             </Sidebar>

@@ -1,11 +1,12 @@
 @using Education.Web.Client.Features.History.Services.Search.Model
 @using Education.Web.Client.Features.History.Services.Search.Request
-@using Education.Web.Client.Features.History.Services.Search
 @inherits LayoutComponentBase
 
 <CascadingTheme>
     <CascadingHistorySettings>
-        <MudLayout Class="d-flex flex-column">
+        <MudLayout Class="d-flex flex-column min-vh-100">
+            <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged"/>
+
             <AppBar Title="@L["History_Title"]" Href="@HistoryUrl.Root" DrawerToggleCallback="@ToggleDrawerAsync">
                 <div class="w-sm-33 w-md-50">
                     <MudAutocomplete
@@ -50,18 +51,11 @@
                 </div>
             </AppBar>
 
-            <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged"/>
-
-            <main class="mud-main-content">
+            <main class="d-flex flex-column flex-grow-1 mud-main-content">
                 @Body
             </main>
 
-            <footer class="pa-3 pa-sm-6">
-                <MudText Typo="Typo.subtitle1">
-                    &copy; @DateTime.Now.Year Elwark
-                </MudText>
-                <img class="image" src="@ElwarkIcons.Primary60X60" alt="Elwark logo" loading="lazy"/>
-            </footer>
+            <MainFooter/>
 
             <MudScrollToTop>
                 <MudFab Icon="@Icons.Material.Outlined.KeyboardArrowUp" Color="Color.Primary"/>

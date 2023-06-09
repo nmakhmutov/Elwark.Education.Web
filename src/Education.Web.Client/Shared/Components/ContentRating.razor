@@ -2,36 +2,40 @@
 <div class="@Class">
     @if (ShowTooltip)
     {
-        <MudTooltip RootClass="d-flex" Placement="Placement.Bottom" Text="@($"{L["Rating"]}: {Rating.Stars:F1}")">
-            <MudRating
-                Class="@_ratingClass"
-                MaxValue="5"
-                Size="@Size"
-                SelectedValue="@_selectedStart"
-                ReadOnly/>
+        <MudTooltip RootClass="d-flex" Placement="Placement.Bottom">
+            <ChildContent>
+                @RatingComponent
+            </ChildContent>
+
+            <TooltipContent>
+                <div class="d-flex align-center gap-3">
+                    @RatingComponent
+                    <MudText Typo="Typo.body1">
+                        @L["Shared_ContentRatingOutOf", Rating.Stars, 5]
+                    </MudText>
+                </div>
+                <MudText Typo="Typo.body2">
+                    @L["Shared_ContentRatingVoters", Rating.Votes.ToMetric()]
+                </MudText>
+            </TooltipContent>
         </MudTooltip>
     }
     else
     {
-        <MudRating
-            Class="@_ratingClass"
-            MaxValue="5"
-            Size="@Size"
-            SelectedValue="@_selectedStart"
-            ReadOnly/>
-    }
-
-    @if (ShowDetails)
-    {
-        <MudText Typo="Typo.caption" Class="ml-1">
-            @($"{Rating.Stars:F1} / {Rating.Votes.ToMetric()}")
-        </MudText>
+        @RatingComponent
     }
 </div>
 
 @code {
     private string? _ratingClass;
-    private int _selectedStart;
+
+    private RenderFragment RatingComponent =>
+        @<MudRating
+             Class="@_ratingClass"
+             MaxValue="5"
+             Size="@Size"
+             SelectedValue="@((int)Math.Round(Rating.Stars))"
+             ReadOnly/>;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -48,19 +52,12 @@
     [Parameter]
     public bool ShowTooltip { get; set; }
 
-    [Parameter]
-    public bool ShowDetails { get; set; }
-
-    protected override void OnParametersSet()
-    {
-        _selectedStart = (int)Math.Round(Rating.Stars);
-        _ratingClass = Size switch{
+    protected override void OnParametersSet() =>
+        _ratingClass = Size switch {
             Size.Small => "rating small",
             Size.Medium => "rating medium",
             Size.Large => "rating large",
             _ => "rating"
             };
-    }
-
 
 }

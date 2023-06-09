@@ -1,15 +1,14 @@
 @page "/history/quizzes/{id}/conclusion"
 @using Education.Web.Client.Features.History.Services.Quiz.Model
-@using Education.Web.Client.Features.History.Services.Quiz
 @using Education.Web.Client.Models.Quiz
 @layout HistoryLayout
 @attribute [Authorize]
 
-<PageTitle>
-    @_title
-</PageTitle>
-
 <ApiViewer Result="@_result" Context="conclusion">
+    <PageTitle>
+        @L[$"Shared_Quiz{conclusion.Type}"]: @conclusion.Article.Title
+    </PageTitle>
+    
     <MudAlert Class="mb-6 mb-sm-12" Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
         @L[$"ConclusionStatus:{conclusion.Status}"]
     </MudAlert>
@@ -86,7 +85,6 @@
 </ApiViewer>
 
 @code {
-    private string? _title;
     private ApiResult<QuizConclusionModel> _result = ApiResult<QuizConclusionModel>.Loading();
 
     [Inject]
@@ -104,8 +102,6 @@
     protected override async Task OnParametersSetAsync()
     {
         _result = await QuizService.GetConclusionAsync(Id);
-        _title = _result.Map(m => $"{L[$"Shared_Quiz{m.Type}"]}: {m.Article.Title}")
-            .UnwrapOr(string.Empty);
 
         if (_result.IsError && _result.UnwrapError().IsTestNotFound())
             Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Index());

@@ -7,16 +7,16 @@
         @L["History_Epoch"]
     </MudText>
     <EpochRadioGroup
-        SelectedEpoch="@HistorySettings.TestEpoch"
-        SelectedEpochChanged="@HistorySettings.ChangeTestEpochAsync"
+        SelectedEpoch="@HistorySettings.QuizEpoch"
+        SelectedEpochChanged="@HistorySettings.ChangeQuizEpochAsync"
         Class="mb-3 mb-sm-6"/>
 
     <MudText Class="mb-3" Typo="Typo.h6">
         @L["Shared_QuizType"]
     </MudText>
-    <QuizTypeRadioGroup
-        SelectedQuiz="@HistorySettings.QuizType"
-        SelectedQuizChanged="@(x => HistorySettings.ChangeTestTypeAsync(x))"
+    <QuizDifficultyRadioGroup
+        SelectedDifficulty="@HistorySettings.QuizDifficulty"
+        SelectedDifficultyChanged="@(x => HistorySettings.ChangeQuizDifficultyAsync(x))"
         Quizzes="@Quizzes"
         Class="mb-3 mb-sm-6"/>
 
@@ -54,19 +54,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (Quizzes.Any(x => x.IsAllowed && x.Type == HistorySettings.QuizType))
+        if (Quizzes.Any(x => x.IsAllowed && x.Type == HistorySettings.QuizDifficulty))
             return;
 
-        await HistorySettings.ChangeTestTypeAsync(Quizzes.FirstOrDefault(x => x.IsAllowed)?.Type);
+        await HistorySettings.ChangeQuizDifficultyAsync(Quizzes.FirstOrDefault(x => x.IsAllowed)?.Type);
     }
 
     private async Task CreateTestAsync()
     {
-        if (!HistorySettings.QuizType.HasValue)
+        if (!HistorySettings.QuizDifficulty.HasValue)
             return;
 
         _isLoading = true;
-        await OnCreateClick.InvokeAsync(new CreateEpochQuizRequest(HistorySettings.QuizType.Value, HistorySettings.TestEpoch));
+        await OnCreateClick.InvokeAsync(new CreateEpochQuizRequest(HistorySettings.QuizDifficulty.Value, HistorySettings.QuizEpoch));
         _isLoading = false;
     }
 

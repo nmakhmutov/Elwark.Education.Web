@@ -1,3 +1,6 @@
+using System.Text;
+using Microsoft.Extensions.Localization;
+
 namespace Education.Web.Client.Extensions;
 
 public static class DateTimeExtensions
@@ -20,5 +23,24 @@ public static class DateTimeExtensions
         };
 
         return span.ToString(format);
+    }
+
+    public static string Humanize(this TimeSpan span, IStringLocalizer localizer, bool hideSeconds = false)
+    {
+        var sb = new StringBuilder();
+        
+        if (span.Days > 0)
+            sb.Append($"{span.Days}{localizer["Shared_DaysAbbreviation"]} ");
+
+        if (span.Hours > 0)
+            sb.Append($"{span.Hours}{localizer["Shared_HoursAbbreviation"]} ");
+        
+        if(span.Minutes > 0)
+            sb.Append($"{span.Minutes}{localizer["Shared_MinutesAbbreviation"]} ");
+        
+        if(span.Seconds > 0 && !hideSeconds)
+            sb.Append($"{span.Seconds}{localizer["Shared_SecondsAbbreviation"]} ");
+
+        return sb.ToString().TrimEnd();
     }
 }

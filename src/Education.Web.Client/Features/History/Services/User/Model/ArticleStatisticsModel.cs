@@ -8,7 +8,9 @@ public sealed record ArticleStatisticsModel(
     ArticleOverviewModel Article,
     ArticleStatisticsModel.TotalModel Total,
     ArticleStatisticsModel.ProgressModel EasyQuiz,
-    ArticleStatisticsModel.ProgressModel HardQuiz
+    ArticleStatisticsModel.ProgressModel HardQuiz,
+    bool IsBookmarked,
+    bool? IsCompleted
 )
 {
     public sealed record TotalModel(ulong Quizzes, ulong Score, uint Questions, TimeSpan TimeSpent);
