@@ -2,7 +2,7 @@
 @using Education.Web.Client.Features.History.Services.Article.Model
 @using Education.Web.Client.Models.Content
 
-<EduContainer Class="pa-0 pb-3 pb-sm-6" MaxWidth="EduWidth.W1440">
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
     <div class="header">
         <div class="preamble">
             <div class="image">
@@ -46,6 +46,7 @@
     <ContentGrid>
         <Header>
             <ContentToolbarCard/>
+            <ArticleInformation TimeToRead="@Person.TimeToRead" Rating="@Person.Rating"/>
         </Header>
 
         <Content>
@@ -53,8 +54,6 @@
         </Content>
 
         <Sidebar>
-            <ArticleInformation TimeToRead="@Person.TimeToRead" Rating="@Person.Rating"/>
-
             <AuthorizeView>
                 <QuizCard ArticleId="@Person.Id" HasQuiz="@HasQuiz" Activity="@Activity"/>
 

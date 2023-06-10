@@ -22,6 +22,7 @@
     <ContentGrid>
         <Header>
             <ContentToolbarCard/>
+            <ArticleInformation TimeToRead="@Article.TimeToRead" Rating="@Article.Rating"/>
         </Header>
 
         <Content>
@@ -29,8 +30,6 @@
         </Content>
 
         <Sidebar>
-            <ArticleInformation TimeToRead="@Article.TimeToRead" Rating="@Article.Rating"/>
-
             <AuthorizeView>
                 <QuizCard ArticleId="@Article.Id" HasQuiz="@HasQuiz" Activity="@Activity"/>
 
