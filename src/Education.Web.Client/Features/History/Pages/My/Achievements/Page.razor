@@ -18,7 +18,7 @@
         @for (var index = 0; index < achievements.Categories.Length; index++)
         {
             var category = achievements.Categories[index];
-            var background = GetIconBackground(category.Name);
+            // var background = GetIconBackground(category.Name);
             var classes = index == 0 ? null : "mt-6 mt-sm-16";
 
             <MudItem xs="12" md="3" xxl="2" Class="@classes">
@@ -28,7 +28,7 @@
                             @category.Title
                         </MudText>
                         <MudText Typo="@Typo.subtitle1">
-                            @category.Completed/@category.Total
+                            @category.Unlocked/@category.Total
                         </MudText>
                     </div>
 
@@ -44,8 +44,8 @@
                     {
                         <AchievementCard
                             Achievement="@achievement"
-                            IconClass="@background"
-                            DateTimeFormatter="@DateTimeFormatter"/>
+                            DateTimeFormatter="@Customer.Humanize"
+                            Paper/>
                     }
                 </EduFillGrid>
             </MudItem>
@@ -76,7 +76,7 @@
     protected override async Task OnInitializedAsync()
     {
         _result = await UserService.GetAchievementsAsync();
-        _subtitle = _result.Map(x => $"{x.Completed} / {x.Total}")
+        _subtitle = _result.Map(x => $"{x.Unlocked} / {x.Total}")
             .UnwrapOr(string.Empty);
     }
 
@@ -99,8 +99,5 @@
 
             _ => "pink accent-4 white-text"
             };
-
-    private string DateTimeFormatter(DateTime dateTime) =>
-        Customer.Humanize(dateTime);
 
 }

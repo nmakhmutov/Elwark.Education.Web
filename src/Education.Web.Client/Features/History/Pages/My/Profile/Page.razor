@@ -7,18 +7,39 @@
     @L["Shared_UserProfile"]
 </PageTitle>
 
-<ApiViewer Result="@_result" Context="model">
+<ApiViewer Result="@_result" Context="profile">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
+            <header class="header">
+                <MudText Typo="Typo.h2">
+                    @L["Shared_UserProfile"]
+                </MudText>
+            </header>
+
             <aside class="sidebar">
-                <ProfileCard Class="mb-3 mb-sm-6" Level="@model.Level"/>
+                <EduFitGrid Class="align-start">
+                    <ProfileCard Customer="@Customer">
+                        <UserLevelProgress
+                            Class="pa-3 pa-sm-6"
+                            Level="@profile.Level.Rank"
+                            Experience="@profile.Level.Experience"
+                            Threshold="@profile.Level.Threshold"/>
+                    </ProfileCard>
+
+                    <AchievementsCard
+                        Customer="@Customer"
+                        Total="@profile.Achievements.Total"
+                        Completed="@profile.Achievements.Unlocked"
+                        Completeness="@profile.Achievements.Completeness"
+                        LatestCompletedAchievement="@profile.Achievements.LatestCompletedAchievement"/>
+                </EduFitGrid>
             </aside>
 
             <section class="content">
                 <EduFillGrid Class="mb-3 mb-sm-6">
                     <CardBadge
                         Title="@L["Shared_Quizzes"]"
-                        Value="@model.TotalQuizzes"
+                        Value="@profile.TotalQuizzes"
                         Icon="@EduIcons.Quiz">
                         <MudButton
                             Class="text-transform-none"
@@ -30,7 +51,7 @@
 
                     <CardBadge
                         Title="@L["History_EventGuessers"]"
-                        Value="@model.TotalEventGuessers"
+                        Value="@profile.TotalEventGuessers"
                         Icon="@EduIcons.EventGuesser">
                         <MudButton
                             Class="text-transform-none"
@@ -41,11 +62,11 @@
                     </CardBadge>
                 </EduFillGrid>
 
-                <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
+                <MudText Class="mb-3 mb-sm-6" Typo="Typo.h4">
                     Recent articles
                 </MudText>
                 <EduFillGrid>
-                    @foreach (var item in model.RecentArticles)
+                    @foreach (var item in profile.RecentArticles)
                     {
                         <ArticleCard Article="@item.Article" Activity="@item.Activity"/>
                     }
@@ -60,6 +81,9 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    public CustomerState Customer { get; set; } = default!;
 
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;

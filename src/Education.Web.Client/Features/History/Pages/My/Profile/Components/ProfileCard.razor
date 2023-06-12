@@ -1,0 +1,36 @@
+@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.Customer
+
+<section class="card @Class">
+    <header class="card-header"></header>
+
+    <section class="card-content px-3 px-sm-6">
+        <img class="avatar rounded-circle" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
+        <h5 class="mud-typography mud-typography-h5 one-line-text pt-1" title="@Customer.Name">
+            @Customer.Name
+        </h5>
+        <span>
+            <MudLink Typo="Typo.subtitle2" Href="@CustomerUrl.Root">
+                @L["Account_Title"]
+            </MudLink>
+        </span>
+    </section>
+
+    @ChildContent
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public CustomerState Customer { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

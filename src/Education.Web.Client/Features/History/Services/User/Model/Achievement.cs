@@ -9,8 +9,8 @@ public abstract record Achievement(string Id, string Title, string Description, 
         string Title,
         string Description,
         string IconUrl,
-        DateTime CompletedAt,
-        double GlobalCompletionPercent
+        DateTime UnlockedAt,
+        double GlobalUnlockedPercent
     ) : Achievement(Id, Title, Description, IconUrl);
 
     public sealed record LadderModel(

@@ -15,6 +15,28 @@
         grid-template-columns: repeat(12, 1fr);
     }
 
+    .grid .header {
+        grid-column: span 7;
+        order: 1;
+    }
+
+    .grid .sidebar {
+        grid-column: span 5;
+        grid-row: span 2;
+        order: 2;
+    }
+
+    .grid .content {
+        grid-column: span 7;
+        order: 3;
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid .header {
+        grid-column: span 8;
+    }
+
     .grid .sidebar {
         grid-column: span 4;
     }
@@ -25,6 +47,10 @@
 }
 
 @media (min-width: 1600px) {
+    .grid .header {
+        grid-column: span 9;
+    }
+    
     .grid .sidebar {
         grid-column: span 3;
     }
