@@ -40,11 +40,12 @@
         {
             <AuthorizeView>
                 <aside class="d-flex align-center justify-space-between gap-3">
-                    <TotalQuizzesChip Quizzes="@(Activity?.TotalQuizzes ?? 0)"/>
+                    <TotalQuizzesChip Quizzes="@(Activity?.TotalQuizzes ?? 0)" ShowTooltip/>
 
                     <ArticleCompletionChip
                         IsCompleted="@Activity?.IsCompleted"
-                        Href="@(Activity?.IsCompleted is null ? null : HistoryUrl.User.MyArticle(Article.Id))"/>
+                        Href="@HistoryUrl.User.MyArticle(Article.Id)"
+                        ShowTooltip/>
 
                     <MudSpacer/>
 

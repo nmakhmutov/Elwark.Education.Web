@@ -59,13 +59,9 @@
             3 => Icons.Material.Outlined.MilitaryTech,
             _ => Icons.Material.Outlined.Architecture
             };
-
-        _place = Rank switch {
-            1 => L["Leaderboard:FirstPlace"].Value,
-            2 => L["Leaderboard:SecondPlace"].Value,
-            3 => L["Leaderboard:ThirdPlace"].Value,
-            _ => null
-            };
+        
+        var resource = L[$"Shared_Leaderboard{Rank}Place"];
+        _place = resource.ResourceNotFound ? string.Empty : resource;
     }
 
 }

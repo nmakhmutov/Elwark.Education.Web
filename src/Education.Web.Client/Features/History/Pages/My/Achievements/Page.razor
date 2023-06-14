@@ -14,43 +14,38 @@
 </EduPageHeader>
 
 <ApiViewer Result="@_result" Context="achievements">
-    <MudGrid Class="px-3 pb-3 px-sm-6 pb-sm-6" Spacing="0">
-        @for (var index = 0; index < achievements.Categories.Length; index++)
-        {
-            var category = achievements.Categories[index];
-            // var background = GetIconBackground(category.Name);
-            var classes = index == 0 ? null : "mt-6 mt-sm-16";
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <section class="grid">
+            @foreach (var category in achievements.Categories)
+            {
+                <section class="sidebar">
+                    <div class="sticky-info">
+                        <div class="d-flex align-center justify-space-between gap-3 mb-3">
+                            <MudText Typo="@Typo.h5">
+                                @category.Title
+                            </MudText>
+                            <MudText Typo="@Typo.subtitle1">
+                                @category.Unlocked/@category.Total
+                            </MudText>
+                        </div>
 
-            <MudItem xs="12" md="3" xxl="2" Class="@classes">
-                <div class="sticky-info">
-                    <div class="d-flex align-center justify-space-between gap-3 mb-3">
-                        <MudText Typo="@Typo.h5">
-                            @category.Title
-                        </MudText>
-                        <MudText Typo="@Typo.subtitle1">
-                            @category.Unlocked/@category.Total
+                        <MudText Typo="@Typo.body1">
+                            @category.Description
                         </MudText>
                     </div>
+                </section>
 
-                    <MudText Typo="@Typo.body1">
-                        @category.Description
-                    </MudText>
-                </div>
-            </MudItem>
-
-            <MudItem xs="12" md="9" xxl="10" Class="@classes">
-                <EduFillGrid>
-                    @foreach (var achievement in category.Achievements)
-                    {
-                        <AchievementCard
-                            Achievement="@achievement"
-                            DateTimeFormatter="@Customer.Humanize"
-                            Paper/>
-                    }
-                </EduFillGrid>
-            </MudItem>
-        }
-    </MudGrid>
+                <section class="content">
+                    <EduFillGrid>
+                        @foreach (var achievement in category.Achievements)
+                        {
+                            <AchievementCard Achievement="@achievement" DateTimeFormatter="@Customer.Humanize" Paper/>
+                        }
+                    </EduFillGrid>
+                </section>
+            }
+        </section>
+    </EduContainer>
 </ApiViewer>
 
 @code {
@@ -58,8 +53,8 @@
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
-        new BreadcrumbItem(L["History_Title"].Value, HistoryUrl.Root),
-        new BreadcrumbItem(L["Shared_UserProfile"].Value, HistoryUrl.User.MyProfile)
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["Shared_UserProfile"], HistoryUrl.User.MyProfile)
     };
 
     private ApiResult<AchievementsModel> _result = ApiResult<AchievementsModel>.Loading();
@@ -79,25 +74,4 @@
         _subtitle = _result.Map(x => $"{x.Unlocked} / {x.Total}")
             .UnwrapOr(string.Empty);
     }
-
-    private static string GetIconBackground(string category) =>
-        category switch {
-            "EasyQuizzes" => "blue lighten-3 white-text",
-            "HardQuizzes" => "blue lighten-1 white-text",
-            "MixedQuizzes" => "blue darken-2 white-text",
-            "Quizzes" => "blue darken-4 white-text",
-
-            "SmallEventGuessers" => "orange lighten-2 white-text",
-            "MediumEventGuessers" => "orange lighten-1 white-text",
-            "LargeEventGuessers" => "orange darken-2 white-text",
-            "EventGuessers" => "orange darken-4 white-text",
-
-            "Contests" => "green lighten-1 white-text",
-            "Earnings" => "green darken-1 white-text",
-            "Levels" => "green darken-2 white-text",
-            "Quests" => "green darken-3 white-text",
-
-            _ => "pink accent-4 white-text"
-            };
-
 }

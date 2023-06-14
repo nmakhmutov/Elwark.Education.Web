@@ -1,5 +1,3 @@
-@using Education.Web.Client.Features.History.Services
-
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     @if (HasQuiz && Activity?.IsCompleted is not null)
     {
@@ -18,26 +16,39 @@
         <tbody>
         <tr>
             <td>
-                <MudText Typo="Typo.body2">@L["Shared_ArticleLearningStatus"]</MudText>
+                <MudText Typo="Typo.body1">@L["Shared_NumberOfPassedQuizzes"]</MudText>
             </td>
             <td>
-                <MudText Typo="Typo.body2">
-                    @(Activity?.IsCompleted switch {
-                        true => L["Shared_ArticleLearningStatusCompleted"],
-                        false => L["Shared_ArticleLearningStatusIncompleted"],
-                        null => L["Shared_ArticleLearningStatusUnengaged"]
-                        })
+                <MudText Typo="Typo.body1">
+                    @((Activity?.TotalQuizzes ?? 0).ToMetric())
                 </MudText>
             </td>
         </tr>
         <tr>
             <td>
-                <MudText Typo="Typo.body2">@L["Shared_NumberOfPassedQuizzes"]</MudText>
+                <MudText Typo="Typo.body1">@L["Shared_ArticleLearningStatus"]</MudText>
             </td>
             <td>
-                <MudText Typo="Typo.body2">@((Activity?.TotalQuizzes ?? 0).ToMetric())</MudText>
+                <ArticleCompletionChip
+                    IsCompleted="@Activity?.IsCompleted"
+                    Href="@HistoryUrl.User.MyArticle(ArticleId)"
+                    Size="Size.Small"/>
             </td>
         </tr>
+        @if (HasQuiz)
+        {
+            <tr>
+                <td colspan="2">
+                    <MudText Typo="Typo.body2">
+                        @(Activity?.IsCompleted switch {
+                            true =>  L["Shared_ArticleLearningStatusCompletedDescription"],
+                            false => L["Shared_ArticleLearningStatusIncompletedDescription"],
+                            null =>  L["Shared_ArticleLearningStatusUnengagedDescription"]
+                            })
+                    </MudText>
+                </td>
+            </tr>
+        }
         </tbody>
     </MudSimpleTable>
 

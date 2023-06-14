@@ -1,18 +1,29 @@
-<MudTooltip Text="@L["Shared_ArticleLearningStatus"]">
-    <MudChip
-        Class="ma-0"
-        Variant="Variant.Outlined"
-        Color="_color"
-        Icon="@_icon"
-        Text="@_text"
-        Href="@Href"/>
-</MudTooltip>
+@if (ShowTooltip)
+{
+    <MudTooltip Text="@L["Shared_ArticleLearningStatus"]">
+        @Chip
+    </MudTooltip>
+}
+else
+{
+    @Chip
+}
 
 @code {
 
     private Color _color;
-    private string _icon = string.Empty;
-    private string _text = string.Empty;
+    private string? _icon;
+    private string? _text;
+
+    private RenderFragment Chip =>
+        @<MudChip
+             Class="ma-0"
+             Variant="Variant.Outlined"
+             Size="@Size"
+             Color="_color"
+             Icon="@_icon"
+             Text="@_text"
+             Href="@(IsCompleted is null ? null : Href)"/>;
 
     [Inject]
     public IStringLocalizer<App> L { get; set; } = default!;
@@ -22,6 +33,12 @@
 
     [Parameter]
     public string? Href { get; set; }
+
+    [Parameter]
+    public bool ShowTooltip { get; set; }
+
+    [Parameter]
+    public Size Size { get; set; } = Size.Medium;
 
     protected override void OnParametersSet() =>
         (_color, _icon, _text) = IsCompleted switch {
