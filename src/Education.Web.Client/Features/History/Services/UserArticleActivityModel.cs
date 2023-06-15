@@ -4,5 +4,10 @@ public sealed record UserArticleActivityModel(
     bool IsBookmarked,
     bool? IsCompleted,
     bool? IsLiked,
-    uint TotalQuizzes
-);
+    uint EasyQuizzes,
+    uint HardQuizzes
+)
+{
+    public uint TotalQuizzes =>
+        EasyQuizzes + HardQuizzes;
+}

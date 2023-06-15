@@ -11,19 +11,34 @@
 
 <ApiViewer Result="@_response">
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
-        <EduFillGrid>
+        <EduFillGrid Class="align-start">
             <AccountCard Class="account"/>
+
             @foreach (var subject in _subjects)
             {
-                <SubjectCard
-                    Level="@subject.Level"
-                    Experience="@subject.Experience"
-                    Threshold="@subject.Threshold"
-                    Title="@subject.Title"
-                    HomeHref="@subject.HomeHref"
-                    ProfileHref="@subject.ProfileHref"
-                    Icon="@subject.Icon"
-                    Background="@subject.Background"/>
+                <SubjectCard Title="@subject.Title" ProfileHref="@subject.ProfileHref" Background="@subject.Image">
+                    <Icon>
+                        <SubjectIcon Icon="@subject.Icon" Background="@subject.Gradient"/>
+                    </Icon>
+                    <ChildContent>
+                        <UserLevelProgress
+                            Class="pa-3 pa-sm-6"
+                            Level="@subject.Level"
+                            Experience="@subject.Experience"
+                            Threshold="@subject.Threshold"/>
+
+                        <MudDivider/>
+
+                        <footer class="pa-3">
+                            <MudButton
+                                Class="text-transform-none"
+                                EndIcon="@Icons.Material.Outlined.ArrowForward"
+                                Href="@subject.SubjectHref">
+                                @L["Shared_SeeSubjectOfStudy"]
+                            </MudButton>
+                        </footer>
+                    </ChildContent>
+                </SubjectCard>
             }
         </EduFillGrid>
     </EduContainer>
@@ -31,7 +46,7 @@
 
 @code {
     private ApiResult<SubjectModel[]> _response = ApiResult<SubjectModel[]>.Loading();
-    private readonly List<SubjectEnhancedModel> _subjects = new();
+    private SubjectEnhancedModel[] _subjects = Array.Empty<SubjectEnhancedModel>();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -42,12 +57,8 @@
     protected override async Task OnInitializedAsync()
     {
         _response = await CustomerService.GetSubjectsAsync();
-        _response.Match(subjects =>
-        {
-            foreach (var subject in subjects)
-                if (Enhance(subject) is {} item)
-                    _subjects.Add(item);
-        });
+        _subjects = _response.Map(subjects => subjects.Select(x => Enhance(x)).Where(x => x is not null).ToArray())
+            .UnwrapOr(Array.Empty<SubjectEnhancedModel>())!;
     }
 
     private SubjectEnhancedModel? Enhance(SubjectModel model) =>
@@ -57,8 +68,9 @@
                 L["History_Title"],
                 HistoryUrl.Root,
                 HistoryUrl.User.MyProfile,
-                EduIcons.History,
                 "/images/history/history.jpg",
+                EduIcons.History,
+                "linear-gradient(45deg, #ffa726 10%, #ef6c00 90%)",
                 model.Level,
                 model.Experience,
                 model.Threshold
@@ -68,10 +80,11 @@
 
     private sealed record SubjectEnhancedModel(
         string Title,
-        string HomeHref,
+        string SubjectHref,
         string ProfileHref,
+        string Image,
         string Icon,
-        string Background,
+        string Gradient,
         uint Level,
         ulong Experience,
         ulong Threshold

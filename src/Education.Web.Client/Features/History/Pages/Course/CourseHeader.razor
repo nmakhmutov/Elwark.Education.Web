@@ -12,7 +12,23 @@
             <MudSpacer/>
 
             <section>
-                <div class="d-flex align-center flex-wrap gap-3 gap-sm-6">
+                @if (_isAuthenticated && !Activity.IsStarted)
+                {
+                    <div class="mb-3">
+                        <LoadingButton
+                            Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            Size="Size.Medium"
+                            OnClick="@OnStartCourseClick"
+                            Text="@L["Shared_StartTheCourse"]"
+                            IsLoading="@_isStarting"
+                            LoadingText="@L["Loading"]"
+                            DisableRipple
+                            DisableElevation/>
+                    </div>
+                }
+
+                <div class="d-flex flex-wrap align-center align-sm-end gap-3 gap-sm-6">
                     <div class="d-flex align-center">
                         <MudIcon Class="mr-1" Icon="@EduIcons.Articles"/>
 
@@ -28,40 +44,55 @@
                             @TimeToRead.Humanize(L)
                         </MudText>
                     </div>
+
+                    @if (_isAuthenticated)
+                    {
+                        <MudSpacer/>
+
+                        @if (Activity.IsStarted)
+                        {
+                            <LikeButtons
+                                Color="Color.Inherit"
+                                Id="@CourseId"
+                                IsLiked="@Activity.IsLiked"
+                                OnLikeClick="@OnLikeClick"
+                                OnDislikeClick="@OnDislikeClick"/>
+                        }
+
+                        <BookmarkButton
+                            Color="Color.Inherit"
+                            Id="@CourseId"
+                            IsBookmarked="@Activity.IsBookmarked"
+                            OnBookmarkClick="@OnBookmarkClick"/>
+                    }
                 </div>
 
-                <AuthorizeView>
-                    <div class="mt-3">
-                        @if (UserActivity.IsStarted)
-                        {
-                            <MudProgressLinear Value="@UserActivity.Completeness" Color="Color.Primary" Size="Size.Medium" Rounded/>
-                        }
-                        else
-                        {
-                            <MudButton
-                                Variant="Variant.Filled"
-                                Color="Color.Primary"
-                                Size="Size.Large"
-                                DisableElevation
-                                DisableRipple
-                                OnClick="@(_ => OnStartClick.InvokeAsync(Id))">
-                                @L["Shared_StartTheCourse"]
-                            </MudButton>
-                        }
+                @if (_isAuthenticated && Activity.IsStarted)
+                {
+                    <div class="d-flex align-center gap-3 mt-3">
+                        <MudProgressLinear Value="@Activity.Completeness" Color="Color.Primary" Size="Size.Large" Rounded/>
+                        <MudText Typo="Typo.body1" Color="Color.Inherit">
+                            @Activity.Completeness%
+                        </MudText>
                     </div>
-                </AuthorizeView>
+                }
             </section>
         </header>
     </article>
 </section>
 
 @code {
+    private bool _isStarting;
+    private bool _isAuthenticated;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [Inject]
+    private AuthenticationStateProvider StateProvider { get; set; } = default!;
+
     [Parameter, EditorRequired]
-    public string Id { get; set; } = string.Empty;
+    public string CourseId { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
     public string Title { get; set; } = string.Empty;
@@ -76,15 +107,35 @@
     public TimeSpan TimeToRead { get; set; }
 
     [Parameter, EditorRequired]
-    public UserCourseActivityModel UserActivity { get; set; } = default!;
+    public UserCourseActivityModel Activity { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public List<BreadcrumbItem>? Breadcrumbs { get; set; }
+    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
     public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
 
     [Parameter, EditorRequired]
     public EventCallback<string> OnStartClick { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await StateProvider.GetAuthenticationStateAsync();
+        _isAuthenticated = state.User.IsAuthenticated();
+    }
+
+    private async Task OnStartCourseClick()
+    {
+        _isStarting = true;
+        await OnStartClick.InvokeAsync(CourseId);
+
+        _isStarting = false;
+    }
 
 }

@@ -4,7 +4,7 @@
         Toggled="@IsBookmarked"
         ToggledChanged="@OnBookmarkChanged"
         Icon="@Icons.Material.Outlined.BookmarkAdd"
-        Color="Color.Default"
+        Color="@Color"
         Size="@Size"
         ToggledSize="@Size"
         ToggledIcon="@Icons.Material.Outlined.BookmarkAdded"
@@ -24,6 +24,9 @@
 
     [Parameter, EditorRequired]
     public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
+
+    [Parameter]
+    public Color Color { get; set; } = Color.Default;
 
     [Parameter]
     public Size Size { get; set; } = Size.Medium;

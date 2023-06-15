@@ -1,0 +1,41 @@
+<section class="card @Class">
+    <header class="card-header" style="background-image: url('@Background')"></header>
+
+    <section class="card-content px-3 px-sm-6">
+        @Icon
+        <h5 class="mud-typography mud-typography-h5 one-line-text pt-1" title="@Title">
+            @Title
+        </h5>
+        <span>
+            <MudLink Typo="Typo.subtitle2" Href="@ProfileHref">
+                @L["Shared_UserProfile"]
+            </MudLink>
+        </span>
+    </section>
+
+    @ChildContent
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string? Title { get; set; }
+
+    [Parameter, EditorRequired]
+    public string? ProfileHref { get; set; }
+
+    [Parameter, EditorRequired]
+    public string? Background { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? Icon { get; set; }
+}

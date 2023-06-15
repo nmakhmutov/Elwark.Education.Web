@@ -3,33 +3,20 @@
 
 <section class="mud-paper pa-3 @Class">
     <MudToolBar Dense DisableGutters Class="d-flex justify-space-between">
-        <div>
-            <MudTooltip Text="@L["Shared_ILikeThis"]">
-                <MudIconButton
-                    Icon="@Icons.Material.Rounded.ThumbUp"
-                    OnClick="@OnLike"
-                    Color="@(Activity?.IsLiked == true ? Color.Primary : Color.Default)"/>
-            </MudTooltip>
-
-            <MudTooltip Text="@L["Shared_IDislikeThis"]">
-                <MudIconButton
-                    Icon="@Icons.Material.Rounded.ThumbDown"
-                    OnClick="@OnDislike"
-                    Color="@(Activity?.IsLiked == false ? Color.Primary : Color.Default)"/>
-            </MudTooltip>
-        </div>
+        <LikeButtons
+            Id="@ArticleId"
+            IsLiked="@IsLiked"
+            OnLikeClick="@OnLikeClick"
+            OnDislikeClick="@OnDislikeClick"/>
 
         <BookmarkButton
             Id="@ArticleId"
-            IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+            IsBookmarked="@(IsBookmarked ?? false)"
             OnBookmarkClick="@OnBookmarkClick"/>
     </MudToolBar>
 </section>
 
 @code {
-
-    [Inject]
-    public IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
@@ -38,33 +25,18 @@
     public string ArticleId { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public UserArticleActivityModel? Activity { get; set; }
+    public bool? IsLiked { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+    public bool? IsBookmarked { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
     public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
-
-    private async Task OnLike()
-    {
-        if (Activity?.IsLiked == true)
-            return;
-
-        if (await OnLikeClick() && Activity is not null)
-            Activity = Activity with {IsLiked = true};
-    }
-
-    private async Task OnDislike()
-    {
-        if (Activity?.IsLiked == false)
-            return;
-
-        if (await OnDislikeClick() && Activity is not null)
-            Activity = Activity with {IsLiked = false};
-    }
 
 }

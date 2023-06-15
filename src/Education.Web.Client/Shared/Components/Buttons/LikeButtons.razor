@@ -1,0 +1,58 @@
+<div class="@Class">
+    <MudTooltip Text="@L["Shared_ILikeThis"]">
+        <MudIconButton
+            Icon="@Icons.Material.Rounded.ThumbUp"
+            OnClick="@OnLike"
+            Color="@(IsLiked == true ? Color.Primary : Color)"/>
+    </MudTooltip>
+
+    <MudTooltip Text="@L["Shared_IDislikeThis"]">
+        <MudIconButton
+            Icon="@Icons.Material.Rounded.ThumbDown"
+            OnClick="@OnDislike"
+            Color="@(IsLiked == false ? Color.Primary : Color)"/>
+    </MudTooltip>
+</div>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Id { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public bool? IsLiked { get; set; }
+
+    [Parameter]
+    public Color Color { get; set; } = Color.Default;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+
+    private async Task OnLike()
+    {
+        if (IsLiked == true)
+            return;
+
+        IsLiked = (await OnLikeClick.Invoke(Id))
+            .Match(_ => true, _ => false, () => true);
+    }
+
+    private async Task OnDislike()
+    {
+        if (IsLiked == false)
+            return;
+
+        IsLiked = (await OnDislikeClick.Invoke(Id))
+            .Match(_ => false, _ => true, () => false);
+    }
+
+}

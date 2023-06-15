@@ -14,15 +14,17 @@
 
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1600">
         <CourseHeader
-            Id="@course.Id"
+            CourseId="@course.Id"
             Title="@course.Title"
             Image="@course.ImageUrl"
             Breadcrumbs="@Breadcrumbs"
             TimeToRead="@course.TimeToRead"
             ArticleCount="@course.Articles.Length"
-            UserActivity="@course.UserActivity"
+            Activity="@course.UserActivity"
+            OnLikeClick="@UserService.LikeCourseAsync"
+            OnDislikeClick="@UserService.DislikeCourseAsync"
             OnBookmarkClick="@UserService.ToggleCourseBookmarkAsync"
-            OnStartClick="@StartCourseAsync"/>
+            OnStartClick="@StartCourseAsync" />
     </EduContainer>
 
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1600">

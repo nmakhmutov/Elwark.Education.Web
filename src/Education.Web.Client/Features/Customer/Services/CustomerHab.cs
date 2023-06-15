@@ -17,6 +17,7 @@ internal sealed class CustomerHab : IAsyncDisposable
         _connection = new HubConnectionBuilder()
             .WithUrl(new Uri(host, "/hubs/notification"), options =>
             {
+                options.UseAcks = true;
                 options.AccessTokenProvider = async () =>
                 {
                     var result = await tokenProvider.RequestAccessToken();

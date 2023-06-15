@@ -55,11 +55,16 @@
 
         <Sidebar>
             <AuthorizeView>
-                <QuizCard ArticleId="@Person.Id" HasQuiz="@HasQuiz" Activity="@Activity"/>
+                <QuizCard
+                    ArticleId="@Person.Id"
+                    HasEasyQuiz="@HasEasyQuiz"
+                    HasHardQuiz="@HasHardQuiz"
+                    Activity="@Activity"/>
 
                 <UserToolbarCard
                     ArticleId="@Person.Id"
-                    Activity="@Activity"
+                    IsLiked="@Activity?.IsLiked"
+                    IsBookmarked="@Activity?.IsBookmarked"
                     OnBookmarkClick="@OnBookmarkClick"
                     OnLikeClick="@OnLikeClick"
                     OnDislikeClick="@OnDislikeClick"/>
@@ -96,13 +101,16 @@
     public UserArticleActivityModel? Activity { get; set; }
 
     [Parameter, EditorRequired]
-    public bool HasQuiz { get; set; }
+    public bool HasEasyQuiz { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<Task<bool>> OnLikeClick { get; set; } = () => Task.FromResult(false);
+    public bool HasHardQuiz { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<Task<bool>> OnDislikeClick { get; set; } = () => Task.FromResult(false);
+    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+
+    [Parameter, EditorRequired]
+    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
     public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));

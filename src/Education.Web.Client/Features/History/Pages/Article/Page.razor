@@ -8,8 +8,8 @@
     </PageTitle>
 
     <PageMetaContent
-        Title="@result.Article.Title" 
-        Description="@result.Article.Description" 
+        Title="@result.Article.Title"
+        Description="@result.Article.Description"
         Image="@result.Article.ImageUrl"/>
 
     @switch (result.Article)
@@ -17,40 +17,44 @@
         case ArticleDetail.BattleModel battle:
             <BattleDetail
                 Battle="@battle"
-                HasQuiz="@result.HasQuiz"
+                HasEasyQuiz="@result.HasEasyQuiz"
+                HasHardQuiz="@result.HasHardQuiz"
                 Activity="@result.Activity"
-                OnLikeClick="@LikeAsync"
-                OnDislikeClick="@DislikeAsync"
+                OnLikeClick="@UserService.LikeArticleAsync"
+                OnDislikeClick="@UserService.DislikeArticleAsync"
                 OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
             break;
 
         case ArticleDetail.EmpireModel empire:
             <EmpireDetail
                 Empire="@empire"
-                HasQuiz="@result.HasQuiz"
+                HasEasyQuiz="@result.HasEasyQuiz"
+                HasHardQuiz="@result.HasHardQuiz"
                 Activity="@result.Activity"
-                OnLikeClick="@LikeAsync"
-                OnDislikeClick="@DislikeAsync"
+                OnLikeClick="@UserService.LikeArticleAsync"
+                OnDislikeClick="@UserService.DislikeArticleAsync"
                 OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
             break;
 
         case ArticleDetail.GeneralModel article:
             <GeneralDetail
                 Article="@article"
-                HasQuiz="@result.HasQuiz"
+                HasEasyQuiz="@result.HasEasyQuiz"
+                HasHardQuiz="@result.HasHardQuiz"
                 Activity="@result.Activity"
-                OnLikeClick="@LikeAsync"
-                OnDislikeClick="@DislikeAsync"
+                OnLikeClick="@UserService.LikeArticleAsync"
+                OnDislikeClick="@UserService.DislikeArticleAsync"
                 OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
             break;
 
         case ArticleDetail.PersonModel person:
             <PersonDetail
                 Person="@person"
-                HasQuiz="@result.HasQuiz"
+                HasEasyQuiz="@result.HasEasyQuiz"
+                HasHardQuiz="@result.HasHardQuiz"
                 Activity="@result.Activity"
-                OnLikeClick="@LikeAsync"
-                OnDislikeClick="@DislikeAsync"
+                OnLikeClick="@UserService.LikeArticleAsync"
+                OnDislikeClick="@UserService.DislikeArticleAsync"
                 OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
             break;
     }
@@ -72,18 +76,6 @@
     {
         _result = ApiResult<UserArticleDetailModel>.Loading();
         _result = await ArticleService.GetAsync(Id);
-    }
-
-    private async Task<bool> LikeAsync()
-    {
-        var response = await UserService.LikeArticleAsync(Id);
-        return response.IsSuccess;
-    }
-
-    private async Task<bool> DislikeAsync()
-    {
-        var response = await UserService.DislikeArticleAsync(Id);
-        return response.IsSuccess;
     }
 
 }
