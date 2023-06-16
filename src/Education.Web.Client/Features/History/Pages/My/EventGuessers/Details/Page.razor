@@ -16,7 +16,7 @@
         <StatisticDetailsGrid>
             <StatisticDetailsCard>
                 <TotalContent>
-                    <Subheader Title="@L["History_EventGuesserScore"]" Subtitle="@L["ForAllTime"]"/>
+                    <Subheader Title="@L["History_EventGuesser_Score"]" Subtitle="@L["ForAllTime"]"/>
                     <EventGuesserScoreChart Score="@result.Score"/>
                 </TotalContent>
                 <ProgressContent>
@@ -27,7 +27,7 @@
 
             <StatisticDetailsCard>
                 <TotalContent>
-                    <Subheader Title="@L["History_EventGuesserQuestions"]" Subtitle="@L["ForAllTime"]"/>
+                    <Subheader Title="@L["History_EventGuesser_Questions"]" Subtitle="@L["ForAllTime"]"/>
                     <EventGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
                 </TotalContent>
                 <ProgressContent>
@@ -74,9 +74,9 @@
 
     protected override void OnParametersSet() =>
         _title = Test?.ToLowerInvariant() switch {
-            "small" => L["History_EventGuessersSmall"],
-            "medium" => L["History_EventGuessersMedium"],
-            "large" => L["History_EventGuessersLarge"],
+            "small" => L["History_EventGuessers_Small"],
+            "medium" => L["History_EventGuessers_Medium"],
+            "large" => L["History_EventGuessers_Large"],
             _ => L["Error_NotFound"]
             };
 

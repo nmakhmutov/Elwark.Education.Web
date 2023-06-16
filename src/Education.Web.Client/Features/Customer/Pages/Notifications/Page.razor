@@ -25,7 +25,7 @@
                         StartIcon="@Icons.Material.Outlined.DoneAll"
                         Disabled="@(!NotificationService.HasNotifications)"
                         OnClick="MarkAllAsReadAsync">
-                        @L["Notifications:MarkAsRead"]
+                        @L["Notifications_MarkAsRead"]
                     </MudButton>
                 </div>
             </EduPageHeader>
@@ -33,7 +33,7 @@
             <ApiViewer Result="_result">
                 @if (_notifications.Count == 0)
                 {
-                    <EduEmpty Title="@L["Notifications:NothingNew"]"/>
+                    <EduEmpty Title="@L["Notifications_NothingNew"]"/>
                 }
 
                 <Virtualize Items="@_notifications" Context="notification">

@@ -85,7 +85,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L[$"History_Epoch{Person.Epoch.ToFastString()}"], HistoryUrl.Content.Articles(Person.Epoch))
+        new BreadcrumbItem(L[Person.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Person.Epoch))
     };
 
     [Inject]

@@ -3,7 +3,7 @@
 @layout HistoryLayout
 
 <PageTitle>
-    @L["Leaderboard:MonthlyName"]
+    @L["Leaderboard_Monthly_FullTitle"]
 </PageTitle>
 
 <ApiViewer Result="@_result" Context="result">
@@ -15,24 +15,24 @@
                         <MudIcon Icon="@Icons.Material.Outlined.StarOutline" Size="Size.Large" Class="ma-6"/>
                     </div>
                     <MudText Typo="Typo.h4">
-                        @L["Leaderboard:MonthlyName"]
+                        @L["Leaderboard_Monthly_FullTitle"]
                     </MudText>
                 </div>
 
                 <MudText Class="w-max-600 my-3 my-sm-6" Typo="Typo.subtitle1">
-                    @L["Leaderboard:MonthlyDescription"]
+                    @L["Leaderboard_Monthly_Description"]
                 </MudText>
 
                 @if (result.IsActive)
                 {
                     <MudChip Class="ma-0" Label Icon="@Icons.Material.Outlined.Equalizer" Variant="Variant.Text" Color="Color.Primary">
-                        @L["Leaderboard:InProgress"]
+                        @L["Leaderboard_InProgress"]
                     </MudChip>
                 }
                 else
                 {
                     <MudChip Class="ma-0" Label Icon="@Icons.Material.Outlined.EmojiEvents" Variant="Variant.Text" Color="Color.Success">
-                        @L["Leaderboard:Completed"]
+                        @L["Leaderboard_CompetitionCompleted"]
                     </MudChip>
                 }
                 <div class="month-wrapper mt-3">
@@ -104,13 +104,13 @@
         {
             <RegularRanking DisableHover>
                 <Rank>
-                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:Rank"]</MudText>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard_Rank"]</MudText>
                 </Rank>
                 <Name>
-                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:UserName"]</MudText>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard_User_Name"]</MudText>
                 </Name>
                 <Experience>
-                    <MudText Typo="Typo.subtitle2">@L["Leaderboard:UserExperience"]</MudText>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard_User_Experience"]</MudText>
                 </Experience>
             </RegularRanking>
 
@@ -133,8 +133,8 @@
         else
         {
             <EduEmpty
-                Title="@L["Leaderboard:EmptyContestantsTitle"]"
-                Subtitle="@L["Leaderboard:EmptyContestantsSubtitle"]"/>
+                Title="@L["Leaderboard_NoContestantsTitle"]"
+                Subtitle="@L["Leaderboard_NoContestantsSubtitle"]"/>
         }
     </EduContainer>
 </ApiViewer>

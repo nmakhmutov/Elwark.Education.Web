@@ -15,7 +15,7 @@ public static class StatisticsExtensions
         RangeTitle(delta.Start, delta.End);
 
     public static ProgressList.Item[] GetProgress(
-        this QuizStatisticsModel.NumberOfQuizzesContrastModel contrast, IStringLocalizer<App> l) =>
+        this QuizStatisticsModel.NumberOfQuizzesContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
             new(l["Shared_NumberOfSuccessfulQuizzes"], contrast.Successful.Current.ToMetric(), contrast.Successful.Difference),
@@ -26,7 +26,7 @@ public static class StatisticsExtensions
         };
 
     public static ProgressList.Item[] GetProgress(
-        this QuizStatisticsModel.ScoreContrastModel contrast, IStringLocalizer<App> l) =>
+        this QuizStatisticsModel.ScoreContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
             new(l["Score:ByQuestions"], contrast.Questions.Current.ToMetric(), contrast.Questions.Difference),
@@ -36,7 +36,7 @@ public static class StatisticsExtensions
         };
 
     public static ProgressList.Item[] GetProgress(
-        this QuizStatisticsModel.AnswerRatioContrastModel contrast, IStringLocalizer<App> l) =>
+        this QuizStatisticsModel.AnswerRatioContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
             new(l["Questions:Answered"], contrast.Answered.Current.ToMetric(), contrast.Answered.Difference),
@@ -47,7 +47,7 @@ public static class StatisticsExtensions
         };
 
     public static ProgressList.Item[] GetProgress(
-        this QuizStatisticsModel.TimeSpentContrastModel contrast, IStringLocalizer<App> l) =>
+        this QuizStatisticsModel.TimeSpentContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
             new(l["TimeSpent:Min"], contrast.Min.Current.Humanize(), contrast.Min.Difference),
@@ -57,28 +57,28 @@ public static class StatisticsExtensions
         };
 
     public static ProgressList.Item[] GetProgress(
-        this EventGuesserStatisticsModel.DeltaModel delta, IStringLocalizer<App> l) =>
+        this EventGuesserStatisticsModel.DeltaModel delta, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["History_EventGuesserTotal"], delta.Tests.Current.ToMetric(), delta.Tests.Difference)
+            new(l["History_EventGuesser_Total"], delta.Tests.Current.ToMetric(), delta.Tests.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(
-        this EventGuesserStatisticsModel.ScoreContrastModel contrast, IStringLocalizer<App> l) =>
+        this EventGuesserStatisticsModel.ScoreContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["History_EventGuesserScore"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
-            new(l["History_EventGuesserPoints"], contrast.Points.Current.ToMetric(), contrast.Points.Difference),
-            new(l["History_EventGuesserBonus"], contrast.Bonus.Current.ToMetric(), contrast.Bonus.Difference)
+            new(l["History_EventGuesser_Score"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
+            new(l["History_EventGuesser_Points"], contrast.Points.Current.ToMetric(), contrast.Points.Difference),
+            new(l["History_EventGuesser_x2Bonus"], contrast.Bonus.Current.ToMetric(), contrast.Bonus.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(
-        this EventGuesserStatisticsModel.AnswerRatioContrastModel contrast, IStringLocalizer<App> l) =>
+        this EventGuesserStatisticsModel.AnswerRatioContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["History_EventGuesserQuestions"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
-            new(l["History_EventGuesserCorrect"], contrast.Correct.Current.ToMetric(), contrast.Correct.Difference),
-            new(l["History_EventGuesserIncorrect"], contrast.Incorrect.Current.ToMetric(), contrast.Incorrect.Difference)
+            new(l["History_EventGuesser_Questions"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
+            new(l["History_EventGuesser_Correct"], contrast.Correct.Current.ToMetric(), contrast.Correct.Difference),
+            new(l["History_EventGuesser_Incorrect"], contrast.Incorrect.Current.ToMetric(), contrast.Incorrect.Difference)
         };
 
     private static string RangeTitle(DateOnly starts, DateOnly ends) =>

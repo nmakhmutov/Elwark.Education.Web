@@ -20,7 +20,7 @@
     protected override void OnParametersSet() =>
         _class = CssBuilder.Default("markdown")
             .AddClass("text-indent", !DisableParagraphIndent)
-            .AddClass(Class, Class is not null)
+            .AddClass(Class)
             .Build();
 
 }

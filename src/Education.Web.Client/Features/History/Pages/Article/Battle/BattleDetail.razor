@@ -72,11 +72,11 @@
                 }
 
                 <MudText Typo="Typo.h6">
-                    @L["History_BattleLocation"]
+                    @L["History_Battle_Location"]
                 </MudText>
                 <StyledMarkupString Class="mb-3 mb-sm-6" Content="@Battle.Location" DisableParagraphIndent/>
                 <MudText Typo="Typo.h6">
-                    @L["History_BattleResult"]
+                    @L["History_Battle_Result"]
                 </MudText>
                 <StyledMarkupString Content="@Battle.Result" DisableParagraphIndent/>
             </section>
@@ -86,7 +86,7 @@
                 {
                     <div class="mb-3 mb-sm-6">
                         <MudText Class="mb-3" Typo="Typo.h6" Align="Align.Center">
-                            @L[$"History_Battle{item.Key}"]
+                            @L[$"History_Battle_{item.Key}"]
                         </MudText>
                         <div class="d-flex justify-space-around gap-3">
                             @for (var i = 0; i < item.Value.Count; i++)
@@ -103,7 +103,7 @@
             </section>
 
             <AuthorizeView>
-                <QuizCard 
+                <QuizCard
                     ArticleId="@Battle.Id"
                     HasEasyQuiz="@HasEasyQuiz"
                     HasHardQuiz="@HasHardQuiz"
@@ -134,7 +134,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L[$"History_Epoch{Battle.Epoch.ToFastString()}"], HistoryUrl.Content.Articles(Battle.Epoch))
+        new BreadcrumbItem(L[Battle.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Battle.Epoch))
     };
 
     [Inject]
@@ -151,7 +151,7 @@
 
     [Parameter, EditorRequired]
     public bool HasEasyQuiz { get; set; }
-    
+
     [Parameter, EditorRequired]
     public bool HasHardQuiz { get; set; }
 

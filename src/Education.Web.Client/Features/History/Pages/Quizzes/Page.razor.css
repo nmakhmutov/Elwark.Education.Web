@@ -1,42 +1,18 @@
-.background {
-    transition: background 1s ease-out;
-    min-height: calc(100vh - calc(var(--mud-appbar-height) - var(--mud-appbar-height) / 4));
-}
-
 .grid {
-    display: grid;
-    gap: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 @media (min-width: 600px) {
-    .background {
-        min-height: calc(100vh - var(--mud-appbar-height));
+    .grid {
+        gap: 24px;
     }
 }
 
 @media (min-width: 1280px) {
     .grid {
+        display: grid;
         grid-template-columns: 2fr 1fr;
-    }
-}
-
-@media (min-width: 600px) and (min-height: 600px) {
-    .background {
-        background: linear-gradient(160deg, var(--mud-palette-background) 35%, transparent),
-        url('/images/illustration/test-builder.svg') no-repeat bottom right;
-    }
-}
-
-@media (min-width: 960px) and (min-height: 600px) {
-    .background {
-        background: linear-gradient(145deg, var(--mud-palette-background) 45%, transparent),
-        url('/images/illustration/test-builder.svg') no-repeat bottom right;
-    }
-}
-
-@media (min-width: 1280px) and (min-height: 600px) {
-    .background {
-        background: linear-gradient(145deg, var(--mud-palette-background) 50%, transparent),
-        url('/images/illustration/test-builder.svg') no-repeat bottom right;
     }
 }

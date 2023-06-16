@@ -48,9 +48,9 @@
     protected override void OnParametersSet()
     {
         _class = CssBuilder.Default("card pa-3 pa-sm-6")
-            .AddClass(Class, !string.IsNullOrEmpty(Class))
             .AddClass($"rank rank-{Rank}")
             .AddClass(Rank % 2 == 0 ? "even" : "odd")
+            .AddClass(Class)
             .Build();
 
         _icon = Rank switch {

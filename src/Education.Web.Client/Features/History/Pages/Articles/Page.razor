@@ -17,12 +17,12 @@
                    Margin="Margin.Dense"
                    Variant="Variant.Text">
             <MudSelectItem Value="@EpochType.None">
-                @L["History_EpochAny"]
+                @L["History_Epoch_Any"]
             </MudSelectItem>
             @foreach (var epoch in EpochTypeExtensions.List[1..])
             {
                 <MudSelectItem Value="@epoch">
-                    @L[$"History_Epoch{epoch.ToFastString()}"]
+                    @L[epoch.ResourceKey()]
                 </MudSelectItem>
             }
         </MudSelect>

@@ -35,26 +35,26 @@
     <MudTimelineItem HideDot>
         <div class="ma-3 ma-sm-6">
             <h2 class="subtitle">
-                @L["History_EmpiresSubtitle"]
+                @L["History_Empire_Subtitle"]
             </h2>
             <h1 class="title">
                 @L["History_Empires"]
             </h1>
             <MudSelect T="GetEmpiresRequest.SortType"
-                       Label="@L["History_EmpireBy"]"
+                       Label="@L["History_Empire_SortBy"]"
                        Dense
                        Variant="Variant.Text"
                        Value="@_sort"
                        Style="max-width: 300px"
                        ValueChanged="@SortChangedAsync">
                 <MudSelectItem Value="@GetEmpiresRequest.SortType.Area">
-                    @L["History_EmpireMaxArea"]
+                    @L["History_Empire_MaxArea"]
                 </MudSelectItem>
                 <MudSelectItem Value="@GetEmpiresRequest.SortType.Population">
-                    @L["History_EmpireMaxPopulation"]
+                    @L["History_Empire_MaxPopulation"]
                 </MudSelectItem>
                 <MudSelectItem Value="@GetEmpiresRequest.SortType.Duration">
-                    @L["History_EmpireMaxDuration"]
+                    @L["History_Empire_MaxDuration"]
                 </MudSelectItem>
             </MudSelect>
         </div>
@@ -83,13 +83,13 @@
                                 @empire.Overview
                             </MudText>
                             <MudText Typo="Typo.body2">
-                                @L["History_EmpireMaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                                @L["History_Empire_MaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
                             </MudText>
                             <MudText Typo="Typo.body2">
-                                @L["History_EmpireMaxPopulation"]: @empire.MaxPopulation.ToString("N0")
+                                @L["History_Empire_MaxPopulation"]: @empire.MaxPopulation.ToString("N0")
                             </MudText>
                             <MudText Typo="Typo.body2">
-                                @L["History_EmpireDuration"]:
+                                @L["History_Empire_Duration"]:
                                 @if (empire.Duration.HasValue)
                                 {
                                     @empire.Duration.Value.ToString("N0")

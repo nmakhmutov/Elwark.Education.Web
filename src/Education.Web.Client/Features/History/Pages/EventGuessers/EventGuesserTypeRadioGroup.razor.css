@@ -1,11 +1,7 @@
-::deep .radio-group {
-    width: 100%
-}
-
-::deep .radio-group > div > div {
-    display: grid;
+::deep .radio-group .mud-radio-group {
+    display: flex;
+    flex-direction: column;
     gap: 12px;
-    grid-template-columns: 100%;
 }
 
 ::deep .radio {
@@ -15,6 +11,14 @@
 }
 
 ::deep .radio .mud-radio-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: var(--mud-palette-surface);
+    border-radius: var(--mud-default-borderradius);
+    transition: box-shadow 300ms cubic-bezier(.4, 0, .2, 1) 0ms;
+    overflow: hidden;
     width: 100%;
 }
 
@@ -24,14 +28,15 @@
 }
 
 @media (min-width: 600px) {
-    ::deep .radio-group > div > div {
+    ::deep .radio-group .mud-radio-group {
+        display: grid;
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         gap: 24px;
     }
 }
 
 @media (min-width: 960px) {
-    ::deep .radio-group > div > div {
+    ::deep .radio-group .mud-radio-group {
         grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     }
 }

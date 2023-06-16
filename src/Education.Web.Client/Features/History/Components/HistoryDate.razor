@@ -53,7 +53,7 @@
                 .Append(' ');
 
         if (month.HasValue)
-            sb.Append(L[$"Month:{CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName((int)month.Value)}"])
+            sb.Append(CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName((int)month.Value))
                 .Append(' ');
 
         sb.Append(Math.Abs(year));

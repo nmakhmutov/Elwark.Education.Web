@@ -4,12 +4,12 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_EventGuesserCompleted"]
+    @L["History_EventGuesser_Completed"]
 </PageTitle>
 
 <ApiViewer Result="@_result" Context="conclusion">
     <MudAlert Class="mb-6 mb-sm-12" Severity="Severity.Success" Square ContentAlignment="HorizontalAlignment.Center">
-        @L["History_EventGuesserCompleted"]
+        @L["History_EventGuesser_Completed"]
     </MudAlert>
 
     <CompletedStars Class="mb-6" Progress="@_progress"/>
@@ -27,11 +27,11 @@
             <HeaderContent>
                 <MudTh>@L["Article"]</MudTh>
                 <MudTh>@L["Question"]</MudTh>
-                <MudTh>@L["History_EventGuesserCorrectAnswer"]</MudTh>
-                <MudTh>@L["History_EventGuesserUserAnswer"]</MudTh>
-                <MudTh>@L["History_EventGuesserPoints"]</MudTh>
-                <MudTh>@L["History_EventGuesserBonus"]</MudTh>
-                <MudTh>@L["History_EventGuesserScore"]</MudTh>
+                <MudTh>@L["History_EventGuesserCorrect_Answer"]</MudTh>
+                <MudTh>@L["History_EventGuesser_UserAnswer"]</MudTh>
+                <MudTh>@L["History_EventGuesser_Points"]</MudTh>
+                <MudTh>@L["History_EventGuesser_x2Bonus"]</MudTh>
+                <MudTh>@L["History_EventGuesser_Score"]</MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="@L["Article"]">
@@ -42,26 +42,26 @@
                 <MudTd DataLabel="@L["Question"]">
                     @context.Title
                 </MudTd>
-                <MudTd DataLabel="@L["History_EventGuesserCorrectAnswer"]">
+                <MudTd DataLabel="@L["History_EventGuesserCorrect_Answer"]">
                     <HistoryDate
                         Typo="Typo.body2"
                         Date="@context.CorrectAnswer"
                         DateTimeFormatter="@DateTimeFormatter"/>
                 </MudTd>
-                <MudTd DataLabel="@L["History_EventGuesserUserAnswer"]">
+                <MudTd DataLabel="@L["History_EventGuesser_UserAnswer"]">
                     <HistoryDate
                         Typo="Typo.body2"
                         Date="@context.UserAnswer"
                         DateTimeFormatter="@DateTimeFormatter"
                         Color="@(context.IsCorrect ? Color.Success : Color.Error)"/>
                 </MudTd>
-                <MudTd DataLabel="@L["History_EventGuesserPoints"]">
+                <MudTd DataLabel="@L["History_EventGuesser_Points"]">
                     @context.Score.Points
                 </MudTd>
-                <MudTd DataLabel="@L["History_EventGuesserBonus"]">
+                <MudTd DataLabel="@L["History_EventGuesser_x2Bonus"]">
                     @context.Score.Bonus
                 </MudTd>
-                <MudTd DataLabel="@L["History_EventGuesserScore"]">
+                <MudTd DataLabel="@L["History_EventGuesser_Score"]">
                     @context.Score.Total
                 </MudTd>
             </RowTemplate>

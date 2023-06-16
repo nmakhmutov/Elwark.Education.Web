@@ -8,71 +8,70 @@
     @L["History_EventGuesser"]
 </PageTitle>
 
-<div class="background d-flex flex-column h-100">
-    <EduContainer Class="pt-3 pt-sm-6">
-        <EduPageHeader Title="@L["History_EventGuesser"]" Breadcrumbs="@Breadcrumbs">
-            <div>
-                <MudButton
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@L["History_EventGuesser"]" Breadcrumbs="@Breadcrumbs">
+        <div>
+            <MudButton
+                DisableElevation
+                Variant="Variant.Text"
+                Color="Color.Primary"
+                EndIcon="@Icons.Material.Outlined.Info"
+                Disabled="@(!_result.IsSuccess)"
+                OnClick="@OpenRule">
+                @L["History_EventGuesser_Rules"]
+            </MudButton>
+        </div>
+    </EduPageHeader>
+</EduContainer>
+
+<ApiViewer Result="@_result" Context="model">
+    <section class="grid px-3 pb-3 px-sm-6 pb-sm-6">
+        <section class="builder">
+            <MudText Typo="Typo.h6" Class="mb-3">
+                @L["History_Epoch"]
+            </MudText>
+            <EpochRadioGroup
+                SelectedEpoch="@HistorySettings.EventGuesserEpoch"
+                SelectedEpochChanged="@HistorySettings.ChangeEventGuesserEpochAsync"
+                Class="mb-3 mb-sm-6"/>
+
+            <MudText Typo="Typo.h6" Class="mb-3">
+                @L["Shared_QuizType"]
+            </MudText>
+            <EventGuesserTypeRadioGroup
+                SelectedGuesser="@HistorySettings.EventGuesserType"
+                SelectedGuesserChanged="@(x => HistorySettings.ChangeEventGuesserTypeAsync(x))"
+                Guessers="@model.Tests"
+                Class="mb-3 mb-sm-6"/>
+
+            <div class="d-flex justify-center">
+                <LoadingButton
                     DisableElevation
-                    Variant="Variant.Text"
+                    Size="Size.Large"
                     Color="Color.Primary"
-                    EndIcon="@Icons.Material.Outlined.Info"
-                    Disabled="@(!_result.IsSuccess)"
-                    OnClick="@OpenRule">
-                    @L["History_EventGuesserRules"]
-                </MudButton>
+                    Variant="Variant.Filled"
+                    Text="@L["Shared_TakeTheGuesser"]"
+                    LoadingText="@L["Loading"]"
+                    IsLoading="@_isLoading"
+                    Disabled="@(model.Tests.All(x => !x.IsAllowed))"
+                    OnClick="@CreateTestAsync"/>
             </div>
-        </EduPageHeader>
-    </EduContainer>
-    <ApiViewer Result="@_result" Context="model">
-        <section class="grid pa-3 pa-sm-6">
-            <section class="builder">
-                <MudText Typo="Typo.h6" Class="mb-3">
-                    @L["History_Epoch"]
-                </MudText>
-                <EpochRadioGroup
-                    SelectedEpoch="@HistorySettings.EventGuesserEpoch"
-                    SelectedEpochChanged="@HistorySettings.ChangeEventGuesserEpochAsync"
-                    Class="mb-3 mb-sm-6"/>
-
-                <MudText Typo="Typo.h6" Class="mb-3">
-                    @L["Shared_QuizType"]
-                </MudText>
-                <EventGuesserTypeRadioGroup
-                    SelectedGuesser="@HistorySettings.EventGuesserType"
-                    SelectedGuesserChanged="@(x => HistorySettings.ChangeEventGuesserTypeAsync(x))"
-                    Guessers="@model.Tests"
-                    Class="mb-3 mb-sm-6"/>
-
-                <div class="d-flex justify-center">
-                    <LoadingButton
-                        DisableElevation
-                        Size="Size.Large"
-                        Color="Color.Primary"
-                        Variant="Variant.Filled"
-                        Text="@L["Shared_TakeTheGuesser"]"
-                        LoadingText="@L["Loading"]"
-                        IsLoading="@_isLoading"
-                        Disabled="@(model.Tests.All(x => !x.IsAllowed))"
-                        OnClick="@CreateTestAsync"/>
-                </div>
-            </section>
-
-            <section class="inventory">
-                <MudText Typo="Typo.h6" Class="mb-3">
-                    @L["History_EventGuesserEquipment"]
-                </MudText>
-                <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index" Context="inventory">
-                    <InventoryInfoCard
-                        Title="@inventory.Title"
-                        Overview="@inventory.Overview"
-                        Quantity="@inventory.Quantity"
-                        IconUrl="@inventory.IconUrl"/>
-                </InventoryGrid>
-            </section>
         </section>
-    </ApiViewer>
-</div>
+
+        <section class="inventory">
+            <MudText Typo="Typo.h6" Class="mb-3">
+                @L["History_EventGuesser_Equipment"]
+            </MudText>
+            <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index" Context="inventory">
+                <InventoryInfoCard
+                    Title="@inventory.Title"
+                    Overview="@inventory.Overview"
+                    Quantity="@inventory.Quantity"
+                    IconUrl="@inventory.IconUrl"/>
+            </InventoryGrid>
+        </section>
+    </section>
+</ApiViewer>
 
 @code {
     private bool _isLoading;

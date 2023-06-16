@@ -238,8 +238,8 @@
     {
         if (!Wallet.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
         {
-            var currency = L[$"InternalMoney:{TotalPrice.Currency}"];
-            return new Error(L["InternalMoney:NotEnoughTitle", currency], L["InternalMoney:NotEnoughDescription", currency]);
+            var currency = L[$"InternalMoney_{TotalPrice.Currency}"];
+            return new Error(L["InternalMoney_NotEnoughMoneyTitle", currency], L["InternalMoney_NotEnoughMoneyDescription", currency]);
         }
 
         if (TotalWeight > Wallet.Backpack.Emptiness)

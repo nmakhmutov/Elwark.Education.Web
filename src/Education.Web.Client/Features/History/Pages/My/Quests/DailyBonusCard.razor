@@ -15,7 +15,7 @@
     {
         <div class="d-flex flex-column align-center pa-3 pa-sm-6">
             <MudText Typo="Typo.subtitle2">
-                @L["DailyBonus:UnlockedAt"]
+                @L["DailyBonus_UnlockedAt"]
             </MudText>
             <CountdownTimer Date="@Bonus.NextTimeAt.Value" Typo="Typo.h3" OnComplete="@OnReached"/>
         </div>
@@ -41,7 +41,7 @@
                 DisableElevation
                 Variant="Variant.Filled"
                 Color="Color.Primary"
-                Text="@L["DailyBonus:Claim"]"
+                Text="@L["DailyBonus_Claim"]"
                 LoadingText="@L["Loading"]"
                 Disabled="@(_loading != Loading.None)"
                 IsLoading="@(_loading == Loading.Collect)"
@@ -51,7 +51,7 @@
                 DisableElevation
                 Variant="Variant.Outlined"
                 Color="Color.Default"
-                Text="@L["DailyBonus:Reject"]"
+                Text="@L["DailyBonus_Reject"]"
                 LoadingText="@L["Loading"]"
                 Disabled="@(_loading != Loading.None)"
                 IsLoading="@(_loading == Loading.Reject)"

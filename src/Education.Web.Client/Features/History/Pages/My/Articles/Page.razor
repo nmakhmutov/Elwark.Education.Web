@@ -58,7 +58,7 @@
             .Map(x => new List<BreadcrumbItem>
             {
                 new(L["History_Title"], HistoryUrl.Root),
-                new(L[$"History_Epoch{x.Article.Epoch.ToFastString()}"], HistoryUrl.Content.Articles(x.Article.Epoch))
+                new(L[x.Article.Epoch.ResourceKey()], HistoryUrl.Content.Articles(x.Article.Epoch))
             })
             .UnwrapOr(new List<BreadcrumbItem>());
     }

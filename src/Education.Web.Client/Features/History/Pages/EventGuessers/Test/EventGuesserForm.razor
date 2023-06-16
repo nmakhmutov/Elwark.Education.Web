@@ -4,17 +4,17 @@
 
     <div class="form">
         <MudNumericField
-            @bind-Value="@_model.Year"
+            @bind-Value="_model.Year"
             For="@(() => _model.Year)"
-            Label="@L["History_EventGuesserYear"]"
+            Label="@L["History_EventGuesser_Year"]"
             Variant="Variant.Text"
             HideSpinButtons
             AutoFocus/>
 
         <MudSelect T="uint?"
-                   @bind-Value="@_model.Month"
+                   @bind-Value="_model.Month"
                    For="@(() => _model.Month)"
-                   Label="@L["History_EventGuesserMonth"]"
+                   Label="@L["History_EventGuesser_Month"]"
                    Clearable>
             @foreach (var month in Months)
             {
@@ -25,18 +25,18 @@
         </MudSelect>
 
         <MudNumericField
-            @bind-Value="@_model.Day"
+            @bind-Value="_model.Day"
             For="@(() => _model.Day)"
-            Label="@L["History_EventGuesserDay"]"
+            Label="@L["History_EventGuesser_Day"]"
             Variant="Variant.Text"
             HideSpinButtons/>
 
-        <MudRadioGroup @bind-SelectedOption="@_model.IsBc">
+        <MudRadioGroup @bind-SelectedOption="_model.IsBc">
             <MudRadio Option="false">
-                @L["History_DateAd"]
+                @L["History_Date_Ad"]
             </MudRadio>
             <MudRadio Option="true">
-                @L["History_DateBc"]
+                @L["History_Date_Bc"]
             </MudRadio>
         </MudRadioGroup>
 
@@ -63,21 +63,10 @@
     [Parameter, EditorRequired]
     public EventCallback<Model> OnAnswer { get; set; }
 
-    private Dictionary<uint, string> Months => new()
-    {
-        [1] = L["Month:January"],
-        [2] = L["Month:February"],
-        [3] = L["Month:March"],
-        [4] = L["Month:April"],
-        [5] = L["Month:May"],
-        [6] = L["Month:June"],
-        [7] = L["Month:July"],
-        [8] = L["Month:August"],
-        [9] = L["Month:September"],
-        [10] = L["Month:October"],
-        [11] = L["Month:November"],
-        [12] = L["Month:December"]
-    };
+    private Dictionary<uint, string> Months =>
+        CultureInfo.CurrentCulture.DateTimeFormat.MonthNames
+            .Select((s, i) => new KeyValuePair<uint, string>((uint)i + 1, s))
+            .ToDictionary();
 
     public sealed record Model
     {

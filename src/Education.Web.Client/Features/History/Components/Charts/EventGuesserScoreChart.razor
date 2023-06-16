@@ -46,15 +46,15 @@
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["History_EventGuesserPoints"], Score.Points, Colors.Blue.Default),
-        new ChartList.Item(L["History_EventGuesserBonus"], Score.Bonus, Colors.DeepPurple.Default),
-        new ChartList.Item(L["History_EventGuesserScore"], Score.Total, null)
+        new ChartList.Item(L["History_EventGuesser_Points"], Score.Points, Colors.Blue.Default),
+        new ChartList.Item(L["History_EventGuesser_x2Bonus"], Score.Bonus, Colors.DeepPurple.Default),
+        new ChartList.Item(L["History_EventGuesser_Score"], Score.Total, null)
     };
 
     private Data[] Series => new[]
     {
-        new Data(L["History_EventGuesserPoints"], Score.Points),
-        new Data(L["History_EventGuesserBonus"], Score.Bonus)
+        new Data(L["History_EventGuesser_Points"], Score.Points),
+        new Data(L["History_EventGuesser_x2Bonus"], Score.Bonus)
     };
 
     private sealed record Data(string Name, decimal Value);

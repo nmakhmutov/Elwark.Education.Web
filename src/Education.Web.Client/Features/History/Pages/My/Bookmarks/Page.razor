@@ -21,7 +21,7 @@
                     @foreach (var sort in BookmarksRequest.SortTypes)
                     {
                         <MudSelectItem T="BookmarksRequest.SortType" Value="sort.Key">
-                            @L[$"Bookmarks:{sort.Value}"]
+                            @L[$"Bookmarks_{sort.Value}"]
                         </MudSelectItem>
                     }
                 </MudSelect>
@@ -41,14 +41,14 @@ else
         {
             <EduEmpty
                 Class="grid-column-full"
-                Title="@L["Bookmarks:EmptyTitle"]"
-                Subtitle="@L["Bookmarks:EmptySubtitle"]"/>
+                Title="@L["Bookmarks_EmptyTitle"]"
+                Subtitle="@L["Bookmarks_EmptySubtitle"]"/>
         }
         else
         {
             <div class="grid px-3 px-sm-6 mb-3">
                 <div class="image"></div>
-                <div class="title">@L["Article:Title"]</div>
+                <div class="title">@L["Article_Random"]</div>
                 <div class="rating">@L["Rating"]</div>
                 <div class="quizzes">@L["Shared_NumberOfTotalQuizzes"]</div>
                 <div class="completion">@L["Shared_ArticleLearningStatus"]</div>
@@ -66,7 +66,7 @@ else
                         <br/>
                         <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
                            href="@HistoryUrl.Content.Articles(item.Article.Epoch)">
-                            @L[$"History_Epoch{item.Article.Epoch.ToFastString()}"]
+                            @L[item.Article.Epoch.ResourceKey()]
                         </a>
                     </div>
                     <div class="rating">

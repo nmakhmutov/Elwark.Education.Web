@@ -57,9 +57,9 @@
             };
 
         _class = CssBuilder.Default("d-flex align-center gap-3 pa-3")
-            .AddClass(Class, !string.IsNullOrEmpty(Class))
             .AddClass("hover", !DisableHover)
-            .AddClass(background, !string.IsNullOrEmpty(background))
+            .AddClass(background)
+            .AddClass(Class)
             .Build();
     }
 

@@ -9,7 +9,7 @@
         <div class="d-flex align-center justify-space-between">
             <div class="flex-column gap-3">
                 <MudText Typo="Typo.subtitle1">
-                    @L[$"InternalMoney:{Wallet.Currency}"]
+                    @L[$"InternalMoney_{Wallet.Currency}"]
                 </MudText>
                 <div class="d-flex align-center">
                     <MudIcon Class="mr-1" Icon="@Wallet.Currency.GetIcon()" Size="Size.Medium"/>
@@ -51,19 +51,19 @@
                         <MudIcon Icon="@Icons.Material.Outlined.CalendarMonth" Size="Size.Medium"/>
                     </MudAvatar>
                     <MudText Typo="Typo.subtitle2" Align="Align.Start">
-                        @L[$"Month:{CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(item.Month.Month)}"]
+                        @CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(item.Month.Month)
                     </MudText>
                 </div>
                 <div>
                     <MetricNumber Value="@item.Income" Typo="Typo.body1"/>
                     <MudText Class="mud-text-secondary" Typo="Typo.body2">
-                        @L["InternalMoney:Income"]
+                        @L["InternalMoney_Income"]
                     </MudText>
                 </div>
                 <div>
                     <MetricNumber Value="@item.Expense" Typo="Typo.body1"/>
                     <MudText Class="mud-text-secondary" Typo="Typo.body2">
-                        @L["InternalMoney:Expense"]
+                        @L["InternalMoney_Expense"]
                     </MudText>
                 </div>
             </div>
@@ -77,10 +77,10 @@
             </MudAvatar>
             <div>
                 <MudText Typo="Typo.subtitle2" Align="Align.Start">
-                    @L["InternalMoney:EmptyBalanceTitle"]
+                    @L["InternalMoney_BalanceEmptyTitle"]
                 </MudText>
                 <MudText Typo="Typo.body2" Align="Align.Start">
-                    @L["InternalMoney:EmptyBalanceSubtitle"]
+                    @L["InternalMoney_BalanceEmptySubtitle"]
                 </MudText>
             </div>
         </div>

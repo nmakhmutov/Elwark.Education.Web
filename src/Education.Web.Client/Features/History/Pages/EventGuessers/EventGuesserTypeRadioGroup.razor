@@ -2,21 +2,17 @@
 @using Education.Web.Client.Features.History.Services.EventGuesser.Model
 
 <div class="@Class">
-    <MudRadioGroup SelectedOption="@SelectedGuesser" SelectedOptionChanged="@SelectedGuesserChanged" Class="radio-group">
+    <MudRadioGroup Class="radio-group" SelectedOption="@SelectedGuesser" SelectedOptionChanged="@SelectedGuesserChanged">
         @foreach (var service in Guessers)
         {
-            <MudRadio Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)" Class="radio">
-                <MudPaper Elevation="0" Class="d-flex align-center pa-3">
-                    <div class="rounded-circle mud-background">
-                        <div class="d-flex justify-center align-center relative pa-2">
-                            <img class="image" src="@service.IconUrl" alt="@service.Title" loading="lazy"/>
-                        </div>
-                    </div>
+            <MudRadio Class="radio" Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)">
+                <div class="d-flex justify-center align-center rounded-circle mud-background relative pa-2">
+                    <img class="image" src="@service.IconUrl" alt="@service.Title" loading="lazy"/>
+                </div>
 
-                    <MudText Typo="Typo.subtitle1" Class="one-line-text mx-3">
-                        @service.Title
-                    </MudText>
-                </MudPaper>
+                <p class="mud-typography mud-typography-subtitle1 one-line-text" title="@service.Title">
+                    @service.Title
+                </p>
             </MudRadio>
         }
     </MudRadioGroup>

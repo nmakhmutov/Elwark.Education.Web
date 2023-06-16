@@ -1,52 +1,45 @@
-<MudPaper Class="@_class" Elevation="0">
-    <MudStack Row AlignItems="AlignItems.Center" Class="mb-3">
+<section class="mud-paper @Class">
+    <header class="d-flex align-center gap-3 pa-3 pa-sm-6">
         <img class="image object-cover object-center rounded-circle" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
-        <div>
-            <MudText Typo="Typo.h6">
+        <div class="overflow-hidden">
+            <MudText Class="one-line-text" Typo="Typo.h6">
                 @Customer.Name
             </MudText>
-            @if (Customer.CreatedAt > DateOnly.MinValue)
-            {
-                <MudText Class="mud-text-secondary mb-3 mb-sm-6" Typo="Typo.body2">
-                    @L["Account_MemberSince", Customer.Humanize(Customer.CreatedAt)]
-                </MudText>
-            }
+            <MudText Class="mud-text-secondary" Typo="Typo.body2">
+                @L["Account_MemberSince", Customer.Humanize(Customer.CreatedAt)]
+            </MudText>
         </div>
-    </MudStack>
+    </header>
 
-    <MudText Class="mb-3" Typo="Typo.h6" Align="Align.Center">
-        @L["Account_Details"]
-    </MudText>
-
-    <MudDivider Class="mb-3"/>
-
-    @foreach (var item in _items)
-    {
-        <MudStack Row Spacing="1" AlignItems="AlignItems.Center" Class="mb-3">
-            <MudText Typo="Typo.body2" Style="font-weight: bold">
-                @item.Key:
-            </MudText>
-            <MudText Typo="Typo.body2" Class="mud-text-secondary">
-                @item.Value
-            </MudText>
-        </MudStack>
-    }
-
-    <MudStack Row Justify="Justify.Center" Class="mt-6">
+    <article class="d-flex flex-column gap-3 px-3 px-sm-6">
+        @foreach (var item in _items)
+        {
+            <div class="d-flex align-center">
+                <MudText Typo="Typo.body2">
+                    <b>@item.Key: &nbsp;</b>
+                </MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                    @item.Value
+                </MudText>
+            </div>
+        }
+    </article>
+    
+    <MudDivider Class="mt-3 mbt-sm-6"/>
+    
+    <footer class="pa-3">
         <MudButton
-            DisableElevation
-            Variant="Variant.Outlined"
-            Color="Color.Primary"
+            Class="text-transform-none"
             EndIcon="@Icons.Material.Outlined.OpenInNew"
-            Link="@Configuration["Urls:Account"]"
+            IconSize="Size.Small"
+            Href="@Configuration["Urls:Account"]"
             Target="_blank">
             @L["Account_Elwark"]
         </MudButton>
-    </MudStack>
-</MudPaper>
+    </footer>
+</section>
 
 @code {
-    private string? _class;
     private IDictionary<string, string> _items = new Dictionary<string, string>();
 
     [CascadingParameter]
@@ -58,23 +51,17 @@
     [Inject]
     private IConfiguration Configuration { get; set; } = default!;
 
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
-
     [Parameter]
     public string? Class { get; set; }
 
     protected override void OnParametersSet()
     {
         var now = DateTime.Now;
-        _class = CssBuilder.Default("pa-3 pa-sm-6")
-            .AddClass(Class, Class is not null)
-            .Build();
 
         _items = new Dictionary<string, string>
         {
             [L["Account_TimeZone"]] = Customer.TimeZone.Id,
-            [L["Account_StartOfWeek"]] = L[$"DayOfWeek:{Customer.StartOfWeek}"],
+            [L["Account_StartOfWeek"]] = L[$"DayOfWeek_{Customer.StartOfWeek}"],
             [L["Account_DateFormat"]] = $"{Customer.DateFormat} ({now.ToString(Customer.DateFormat)})",
             [L["Account_TimeFormat"]] = $"{Customer.TimeFormat} ({now.ToString(Customer.TimeFormat)})"
         };
