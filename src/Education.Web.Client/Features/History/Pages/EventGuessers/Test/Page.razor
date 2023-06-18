@@ -5,11 +5,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_EventGuesser"]
+    @L["History_EventGuesser_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
-    <EduPageHeader Title="@L["History_EventGuesser"]" Breadcrumbs="@Breadcrumbs"/>
+    <EduPageHeader Title="@L["History_EventGuesser_Title"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result">
@@ -44,7 +44,7 @@
 
             <div class="header-questions">
                 <MudText Typo="Typo.subtitle1">
-                    @L["Questions"] @_completedQuestions / @_totalQuestions
+                    @L["Questions_Title"] @_completedQuestions / @_totalQuestions
                 </MudText>
             </div>
 
@@ -72,7 +72,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["History_EventGuesser"], HistoryUrl.EventGuesser.Index)
+        new BreadcrumbItem(L["History_EventGuesser_Title"], HistoryUrl.EventGuesser.Index)
     };
 
     [Inject]

@@ -30,7 +30,7 @@
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
     
     protected override void OnInitialized() =>
-        _date = Date is null ? L["Shared_Unknown"] : Format(Date);
+        _date = Date is null ? L["Unknown_Title"] : Format(Date);
 
     private string Format(HistoricalDateModel date)
     {

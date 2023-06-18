@@ -4,7 +4,7 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Shared_UserProfile"]
+    @L["User_Profile_Title"]
 </PageTitle>
 
 <ApiViewer Result="@_result" Context="profile">
@@ -12,7 +12,7 @@
         <section class="grid">
             <header class="header">
                 <MudText Typo="Typo.h2">
-                    @L["Shared_UserProfile"]
+                    @L["User_Profile_Title"]
                 </MudText>
             </header>
 
@@ -38,19 +38,19 @@
             <section class="content">
                 <EduFillGrid Class="mb-3 mb-sm-6">
                     <CardBadge
-                        Title="@L["Shared_Quizzes"]"
+                        Title="@L["Quizzes_Title"]"
                         Value="@profile.TotalQuizzes"
                         Icon="@EduIcons.Quiz">
                         <MudButton
                             Class="text-transform-none"
                             EndIcon="@Icons.Material.Outlined.ArrowForward"
                             Href="@HistoryUrl.User.MyQuizzes">
-                            @L["Shared_SeeAllQuizzes"]
+                            @L["Quizzes_SeeAll"]
                         </MudButton>
                     </CardBadge>
 
                     <CardBadge
-                        Title="@L["History_EventGuessers"]"
+                        Title="@L["History_EventGuessers_Title"]"
                         Value="@profile.TotalEventGuessers"
                         Icon="@EduIcons.EventGuesser">
                         <MudButton

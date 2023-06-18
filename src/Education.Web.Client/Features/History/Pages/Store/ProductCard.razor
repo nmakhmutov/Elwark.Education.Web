@@ -50,7 +50,7 @@
                 Color="Color.Primary"
                 OnClick="@(() => OnPurchaseClick.InvokeAsync(Product))"
                 DisableElevation>
-                @L["Product:Details"]
+                @L["Button_Details"]
             </MudButton>
         </MudBadge>
     </footer>
@@ -73,7 +73,7 @@
 
     protected override void OnParametersSet() =>
         _subtitle = Product.Inventories.Length > 1
-            ? L["Product:InventoryCount", Product.Inventories.Length]
+            ? L["Product_InventoryCount", Product.Inventories.Length]
             : Product.Inventories[0].Category.Title;
 
 }

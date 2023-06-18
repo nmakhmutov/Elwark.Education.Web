@@ -1,5 +1,4 @@
 @page "/history/course/{id}"
-@using Education.Web.Client.Features.History.Services.Course.Model
 @layout HistoryLayout
 
 <ApiViewer Result="@_result" Context="course">
@@ -14,30 +13,27 @@
 
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1600">
         <CourseHeader
+            Class="mb-3 mb-sm-6"
             CourseId="@course.Id"
             Title="@course.Title"
             Image="@course.ImageUrl"
-            Breadcrumbs="@Breadcrumbs"
             TimeToRead="@course.TimeToRead"
             ArticleCount="@course.Articles.Length"
             Activity="@course.UserActivity"
             OnLikeClick="@UserService.LikeCourseAsync"
             OnDislikeClick="@UserService.DislikeCourseAsync"
             OnBookmarkClick="@UserService.ToggleCourseBookmarkAsync"
-            OnStartClick="@StartCourseAsync" />
-    </EduContainer>
+            OnStartClick="@StartCourseAsync"/>
 
-    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1600">
         <section class="content">
             <div class="articles">
-                <MudText Class="mb-3 mb-sm-6" Typo="Typo.h4">
-                    @L["Shared_Articles"]
+                <MudText Typo="Typo.h5">
+                    @L["Articles_Title"]
                 </MudText>
-                
+
                 @foreach (var (article, activity) in course.Articles)
                 {
                     <ArticleCard
-                        Class="mb-3 mb-sm-6"
                         Article="@article"
                         Activity="@activity"
                         OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"
@@ -45,27 +41,27 @@
                 }
             </div>
 
-            <aside class="aside">
-                <MudText Class="mb-3 mb-sm-6" Typo="Typo.h4">
-                    Course description
-                </MudText>
+            <EduFillGrid Class="aside">
+                <section>
+                    <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
+                        @L["Course_Description_Title"]
+                    </MudText>
 
-                <MudText Typo="Typo.body1">
-                    @course.Description
-                </MudText>
-            </aside>
+                    <MudText Typo="Typo.body1">
+                        @course.Description
+                    </MudText>
+                </section>
+
+                <CourseDetails 
+                    Learners="@course.Learners"
+                    Rating="@course.Rating"/>
+            </EduFillGrid>
         </section>
     </EduContainer>
 </ApiViewer>
 
 @code {
     private ApiResult<CourseModel> _result = ApiResult<CourseModel>.Loading();
-
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["History_Courses"], HistoryUrl.Content.Courses)
-    };
 
     [Inject]
     private IHistoryCourseService CourseService { get; set; } = default!;

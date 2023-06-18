@@ -4,10 +4,10 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Shared_Achievements"]
+    @L["Achievements_Title"]
 </PageTitle>
 
-<EduPageHeader Class="pa-3 pa-sm-6" Title="@L["Shared_Achievements"]" Breadcrumbs="@Breadcrumbs">
+<EduPageHeader Class="pa-3 pa-sm-6" Title="@L["Achievements_Title"]" Breadcrumbs="@Breadcrumbs">
     <MudText Typo="Typo.h5">
         @_subtitle
     </MudText>
@@ -54,7 +54,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Shared_UserProfile"], HistoryUrl.User.MyProfile)
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
     };
 
     private ApiResult<AchievementsModel> _result = ApiResult<AchievementsModel>.Loading();

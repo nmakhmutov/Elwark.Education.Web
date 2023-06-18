@@ -3,17 +3,17 @@
 @layout HistoryLayout
 
 <PageTitle>
-    @L["Shared_Articles"]
+    @L["Articles_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
     <section class="header">
-        <EduPageHeader Class="title" Title="@L["Shared_Articles"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Class="title" Title="@L["Articles_Title"]" Breadcrumbs="@Breadcrumbs"/>
 
         <MudSelect T="EpochType"
                    Value="@_epoch"
                    ValueChanged="@OnEpochChange"
-                   Label="@L["History_Epoch"]"
+                   Label="@L["History_Epoch_Title"]"
                    Margin="Margin.Dense"
                    Variant="Variant.Text">
             <MudSelectItem Value="@EpochType.None">
@@ -30,17 +30,17 @@
         <MudSelect T="GetArticlesRequest.SortType"
                    Value="@_sort"
                    ValueChanged="@OnSortChange"
-                   Label="@L["Shared_Sort"]"
+                   Label="@L["Sort_Title"]"
                    Margin="Margin.Dense"
                    Variant="Variant.Text">
             <MudSelectItem Value="@GetArticlesRequest.SortType.Newest">
-                @L["Shared_ResentArticles"]
+                @L["Articles_Resent_Title"]
             </MudSelectItem>
             <MudSelectItem Value="@GetArticlesRequest.SortType.Trending">
-                @L["Shared_TrendingArticles"]
+                @L["Articles_Trending_Title"]
             </MudSelectItem>
             <MudSelectItem Value="@GetArticlesRequest.SortType.Popularity">
-                @L["Shared_TopRatedArticles"]
+                @L["Articles_TopRated_Title"]
             </MudSelectItem>
         </MudSelect>
     </section>

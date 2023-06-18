@@ -1,6 +1,6 @@
 @if (ShowTooltip)
 {
-    <MudTooltip Text="@L["Shared_ArticleLearningStatus"]">
+    <MudTooltip Text="@L["LearningStatus_Title"]">
         @Chip
     </MudTooltip>
 }
@@ -42,9 +42,9 @@ else
 
     protected override void OnParametersSet() =>
         (_color, _icon, _text) = IsCompleted switch {
-            true => (Color.Success, Icons.Material.Outlined.CheckCircle, L["Shared_ArticleLearningStatusCompleted"]),
-            false => (Color.Warning, Icons.Material.Outlined.ModeStandby, L["Shared_ArticleLearningStatusIncompleted"]),
-            null => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked, L["Shared_ArticleLearningStatusUnengaged"])
+            true => (Color.Success, Icons.Material.Outlined.CheckCircle, L["LearningStatus_Completed_Title"]),
+            false => (Color.Warning, Icons.Material.Outlined.ModeStandby, L["LearningStatus_Incompleted_Title"]),
+            null => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked, L["LearningStatus_Unengaged_Title"])
             };
 
 }

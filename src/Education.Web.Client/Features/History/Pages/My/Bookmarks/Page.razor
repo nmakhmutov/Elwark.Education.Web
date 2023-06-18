@@ -4,16 +4,16 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Bookmarks"]
+    @L["Bookmarks_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Bookmarks"]" Breadcrumbs="@Breadcrumbs">
+    <EduPageHeader Title="@L["Bookmarks_Title"]" Breadcrumbs="@Breadcrumbs">
         @if (!_isEmpty)
         {
             <div>
                 <MudSelect T="BookmarksRequest.SortType"
-                           Label="@L["Shared_Sort"]"
+                           Label="@L["Sort_Title"]"
                            Value="@_request.Sort"
                            ValueChanged="@OnSortChanged"
                            Margin="Margin.Dense"
@@ -50,8 +50,8 @@ else
                 <div class="image"></div>
                 <div class="title">@L["Article_Random"]</div>
                 <div class="rating">@L["Rating"]</div>
-                <div class="quizzes">@L["Shared_NumberOfTotalQuizzes"]</div>
-                <div class="completion">@L["Shared_ArticleLearningStatus"]</div>
+                <div class="quizzes">@L["NumberOfQuizzes_Total_Title"]</div>
+                <div class="completion">@L["LearningStatus_Title"]</div>
                 <div class="actions"></div>
             </div>
             <Virtualize @ref="_virtualize" ItemsProvider="BookmarkProvider" ItemSize="110" Context="item">
@@ -106,7 +106,7 @@ else
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Shared_UserProfile"], HistoryUrl.User.MyProfile)
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
     };
 
     [Inject]

@@ -4,11 +4,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_EventGuessers"]
+    @L["History_EventGuessers_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["History_EventGuessers"]" Breadcrumbs="@Breadcrumbs"/>
+    <EduPageHeader Title="@L["History_EventGuessers_Title"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" Context="profile">
@@ -18,7 +18,7 @@
                 Title="@L["History_EventGuessers_Small"]"
                 Value="@profile.SmallEventGuesser.Tests"
                 Href="@HistoryUrl.User.MySmallEventGuessers">
-                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                 <EventGuesserScoreChart Score="@profile.SmallEventGuesser.Score"/>
             </StatisticsCard>
 
@@ -26,7 +26,7 @@
                 Title="@L["History_EventGuessers_Medium"]"
                 Value="@profile.MediumEventGuesser.Tests"
                 Href="@HistoryUrl.User.MyMediumEventGuessers">
-                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                 <EventGuesserScoreChart Score="@profile.MediumEventGuesser.Score"/>
             </StatisticsCard>
 
@@ -34,13 +34,13 @@
                 Title="@L["History_EventGuessers_Large"]"
                 Value="@profile.LargeEventGuesser.Tests"
                 Href="@HistoryUrl.User.MyLargeEventGuessers">
-                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                 <EventGuesserScoreChart Score="@profile.LargeEventGuesser.Score"/>
             </StatisticsCard>
 
             <ActivityCard
                 Class="grid-column-sm-full"
-                Title="@L["Statistics:Daily"]"
+                Title="@L["Activities_Daily_Title"]"
                 Activities="@_daily"
                 DateFormat="dd MMM"/>
 
@@ -48,7 +48,7 @@
             {
                 <ActivityCard
                     Class="grid-column-full"
-                    Title="@L["Statistics:Monthly"]"
+                    Title="@L["Activities_Monthly_Title"]"
                     Activities="@_monthly"
                     DateFormat="MMM yyyy"/>
             }
@@ -64,7 +64,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Shared_UserProfile"], HistoryUrl.User.MyProfile)
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
     };
 
     [Inject]

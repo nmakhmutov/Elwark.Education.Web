@@ -14,7 +14,7 @@
                 <section class="progress">
                     <div class="d-flex align-center justify-space-between mb-1">
                         <MudText Typo="Typo.body1" Class="text-transform-up">
-                            @L["Shared_AchievementLevel", achievement.Level]
+                            @L["Achievement_Level", achievement.Level]
                         </MudText>
 
                         <div class="d-flex flex-row align-center">
@@ -64,10 +64,10 @@
                 </h6>
                 <section class="progress">
                     <MudText Class="mb-1" Typo="Typo.body2">
-                        @L["Shared_AchievementCompletedOn", DateTimeFormatter(achievement.UnlockedAt)]
+                        @L["Achievement_CompletedOn", DateTimeFormatter(achievement.UnlockedAt)]
                     </MudText>
                     <MudText Class="@(achievement.GlobalUnlockedPercent < 10 ? "rare-achievement" : null)" Typo="Typo.caption">
-                        @L["Shared_PercentOfUsersHaveThisAchievement", achievement.GlobalUnlockedPercent]
+                        @L["Achievements_PercentOfUsersWhoHaveIt", achievement.GlobalUnlockedPercent]
                     </MudText>
                 </section>
             </section>
@@ -103,7 +103,7 @@
 
     protected override void OnInitialized()
     {
-        _alt = $"{L["Shared_Achievements"]}: {Achievement.Title}";
+        _alt = $"{L["Achievements_Title"]}: {Achievement.Title}";
 
         _class = CssBuilder.Default("grid")
             .AddClass("mud-paper", Paper)

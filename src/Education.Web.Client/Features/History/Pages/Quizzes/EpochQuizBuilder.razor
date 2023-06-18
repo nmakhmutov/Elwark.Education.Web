@@ -3,7 +3,7 @@
 
 <section class="@Class">
     <MudText Class="mb-3" Typo="Typo.h6">
-        @L["History_Epoch"]
+        @L["History_Epoch_Title"]
     </MudText>
     <EpochRadioGroup
         SelectedEpoch="@HistorySettings.QuizEpoch"
@@ -11,7 +11,7 @@
         Class="mb-3 mb-sm-6"/>
 
     <MudText Class="mb-3" Typo="Typo.h6">
-        @L["Shared_QuizType"]
+        @L["Quiz_Type_Title"]
     </MudText>
     <QuizDifficultyRadioGroup
         SelectedDifficulty="@HistorySettings.QuizDifficulty"
@@ -25,8 +25,8 @@
             Color="Color.Primary"
             Variant="Variant.Filled"
             Size="Size.Large"
-            Text="@L["Shared_TakeTheQuiz"]"
-            LoadingText="@L["Loading"]"
+            Text="@L["Quiz_TakeTheQuiz"]"
+            LoadingText="@L["Loading_Title"]"
             IsLoading="@_isLoading"
             Disabled="@(Quizzes.All(x => !x.IsAllowed))"
             OnClick="@CreateTestAsync"/>

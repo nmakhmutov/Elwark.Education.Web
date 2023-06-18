@@ -17,60 +17,60 @@
         <StatisticDetailsGrid>
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
-                    <Subheader Title="@L["Shared_Quizzes"]" Subtitle="@L["ForAllTime"]"/>
+                    <Subheader Title="@L["Quizzes_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                     <NumberOfQuizzesChart Value="@result.NumberOfQuizzes"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.NumberOfQuizzes.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["Shared_MyActivity"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["User_MyActivity"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <NumberOfTestDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
 
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
-                    <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                     <ScoreChart Value="@result.Score"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.Score.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["Shared_MyActivity"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["User_MyActivity"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ScoreDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
 
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
-                    <Subheader Title="@L["Questions"]" Subtitle="@L["ForAllTime"]"/>
+                    <Subheader Title="@L["Questions_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                     <AnswerRatioChart Value="@result.AnswerRatio"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.AnswerRatio.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <AnswerRatioDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
 
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
-                    <Subheader Title="@L["TimeSpent"]" Subtitle="@L["ForAllTime"]"/>
+                    <Subheader Title="@L["TimeSpent_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                     <TimeSpentChart Value="@result.TimeSpent"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.TimeSpent.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <TimeSpentDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
@@ -86,8 +86,8 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Shared_UserProfile"], HistoryUrl.User.MyProfile),
-        new BreadcrumbItem(L["Shared_Quizzes"], HistoryUrl.User.MyQuizzes),
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["Quizzes_Title"], HistoryUrl.User.MyQuizzes),
     };
 
     [Inject]
@@ -102,8 +102,8 @@
     protected override void OnParametersSet() =>
         _title = Test?.ToLowerInvariant() switch
         {
-            "easy" => L["Shared_QuizzesEasy"],
-            "hard" => L["Shared_QuizzesHard"],
+            "easy" => L["Quizzes_Easy_Title"],
+            "hard" => L["Quizzes_Hard_Title"],
             _ => L["Error_NotFound"]
             };
 

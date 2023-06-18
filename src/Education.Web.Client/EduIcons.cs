@@ -41,6 +41,8 @@ public static class EduIcons
 
     public const string TimeSpent = Icons.Material.Outlined.Timer;
 
+    public const string TimeToRead = Icons.Material.Outlined.AccessTime;
+
     public const string EventGuesser = Icons.Material.Outlined.EventAvailable;
 
     public const string Leaderboard = Icons.Material.Outlined.Leaderboard;

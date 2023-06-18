@@ -4,11 +4,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Quests"]
+    @L["Quests_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Quests"]" Breadcrumbs="@Breadcrumbs"/>
+    <EduPageHeader Title="@L["Quests_Title"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" Context="data">
@@ -30,7 +30,7 @@
 
                     <div class="@(data.DailyQuests.Quests.Length == 0 ? "start" : "rewards")">
                         <QuestRewardsCard
-                            Title="@L["Rewards"]"
+                            Title="@L["Rewards_Title"]"
                             Subtitle="Complete all daily missions"
                             Status="@data.DailyQuests.Status"
                             ExpiresAt="@data.DailyQuests.ExpiresAt"
@@ -50,7 +50,7 @@
 
                     <div class="@(data.WeeklyQuests.Quests.Length == 0 ? "start" : "rewards")">
                         <QuestRewardsCard
-                            Title="@L["Rewards"]"
+                            Title="@L["Rewards_Title"]"
                             Subtitle="Complete all weekly missions"
                             Status="@data.WeeklyQuests.Status"
                             ExpiresAt="@data.WeeklyQuests.ExpiresAt"
@@ -79,7 +79,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Shared_UserProfile"], HistoryUrl.User.MyProfile)
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
     };
 
     [Inject]

@@ -1,6 +1,4 @@
-@using Education.Web.Client.Features.History.Services
-
-<section class="image-background rounded" style="background-image: url('@Image')">
+<section class="image-background rounded @Class" style="background-image: url('@Image')">
     <article class="cover rounded">
         <header class="header">
             <Breadcrumbs Class="pa-0" Items="@Breadcrumbs" Color="Color.Inherit" SeparatorClass="mud-text-white"/>
@@ -20,9 +18,9 @@
                             Color="Color.Primary"
                             Size="Size.Medium"
                             OnClick="@OnStartCourseClick"
-                            Text="@L["Shared_StartTheCourse"]"
+                            Text="@L["Course_Start_Button"]"
                             IsLoading="@_isStarting"
-                            LoadingText="@L["Loading"]"
+                            LoadingText="@L["Loading_Title"]"
                             DisableRipple
                             DisableElevation/>
                     </div>
@@ -33,12 +31,12 @@
                         <MudIcon Class="mr-1" Icon="@EduIcons.Articles"/>
 
                         <MudText Typo="Typo.subtitle1">
-                            @ArticleCount @L["Shared_Articles"]
+                            @ArticleCount @L["Articles_Title"]
                         </MudText>
                     </div>
 
                     <div class="d-flex align-center">
-                        <MudIcon Class="mr-1" Icon="@Icons.Material.Outlined.AccessTime"/>
+                        <MudIcon Class="mr-1" Icon="@EduIcons.TimeToRead"/>
 
                         <MudText Typo="Typo.subtitle1">
                             @TimeToRead.Humanize(L)
@@ -70,7 +68,12 @@
                 @if (_isAuthenticated && Activity.IsStarted)
                 {
                     <div class="d-flex align-center gap-3 mt-3">
-                        <MudProgressLinear Value="@Activity.Completeness" Color="Color.Primary" Size="Size.Large" Rounded/>
+                        <MudProgressLinear
+                            Value="@Activity.Completeness"
+                            Color="Color.Primary"
+                            Size="Size.Large"
+                            Rounded/>
+
                         <MudText Typo="Typo.body1" Color="Color.Inherit">
                             @Activity.Completeness%
                         </MudText>
@@ -84,6 +87,12 @@
 @code {
     private bool _isStarting;
     private bool _isAuthenticated;
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["History_Courses"], HistoryUrl.Content.Courses)
+    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -110,19 +119,19 @@
     public UserCourseActivityModel Activity { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
+    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
-
-    [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public EventCallback<string> OnStartClick { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

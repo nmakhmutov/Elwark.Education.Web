@@ -2,7 +2,7 @@
 <section class="mud-paper d-flex flex-column @Class">
     <header class="header">
         <MudText Typo="Typo.h5" Align="Align.Center" Class="white-text pt-3">
-            @L["DailyBonus"]
+            @L["DailyBonus_Title"]
         </MudText>
         <div class="gift">
             <img class="gift-image" src="/images/history/gift-box.png" alt="Gift box" loading="lazy"/>
@@ -42,7 +42,7 @@
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 Text="@L["DailyBonus_Claim"]"
-                LoadingText="@L["Loading"]"
+                LoadingText="@L["Loading_Title"]"
                 Disabled="@(_loading != Loading.None)"
                 IsLoading="@(_loading == Loading.Collect)"
                 OnClick="@ClaimAsync"/>
@@ -52,7 +52,7 @@
                 Variant="Variant.Outlined"
                 Color="Color.Default"
                 Text="@L["DailyBonus_Reject"]"
-                LoadingText="@L["Loading"]"
+                LoadingText="@L["Loading_Title"]"
                 Disabled="@(_loading != Loading.None)"
                 IsLoading="@(_loading == Loading.Reject)"
                 OnClick="@RejectAsync"/>

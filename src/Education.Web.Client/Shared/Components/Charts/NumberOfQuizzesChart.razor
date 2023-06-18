@@ -54,19 +54,19 @@
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["Shared_NumberOfSuccessfulQuizzes"], Value.Succeeded, Colors.Green.Accent4),
-        new ChartList.Item(L["Shared_NumberOfFailedQuizzes"], Value.Failed, Colors.Red.Default),
-        new ChartList.Item(L["Shared_NumberOfMistakesExceededQuizzes"], Value.MistakesExceeded, Colors.Blue.Default),
-        new ChartList.Item(L["Shared_NumberOfTimeExceededQuizzes"], Value.TimeExceeded, Colors.DeepPurple.Default),
-        new ChartList.Item(L["Shared_NumberOfTotalQuizzes"], Value.Total, null)
+        new ChartList.Item(L["NumberOfQuizzes_Successful_Title"], Value.Succeeded, Colors.Green.Accent4),
+        new ChartList.Item(L["NumberOfQuizzes_Failed_Title"], Value.Failed, Colors.Red.Default),
+        new ChartList.Item(L["NumberOfQuizzes_MistakesExceeded_Title"], Value.MistakesExceeded, Colors.Blue.Default),
+        new ChartList.Item(L["NumberOfQuizzes_TimeExceeded_Title"], Value.TimeExceeded, Colors.DeepPurple.Default),
+        new ChartList.Item(L["NumberOfQuizzes_Total_Title"], Value.Total, null)
     };
 
     private Data[] Series => new[]
     {
-        new Data(L["Shared_NumberOfSuccessfulQuizzes"], Value.Succeeded),
-        new Data(L["Shared_NumberOfFailedQuizzes"], Value.Failed),
-        new Data(L["Shared_NumberOfMistakesExceededQuizzes"], Value.MistakesExceeded),
-        new Data(L["Shared_NumberOfTimeExceededQuizzes"], Value.TimeExceeded)
+        new Data(L["NumberOfQuizzes_Successful_Title"], Value.Succeeded),
+        new Data(L["NumberOfQuizzes_Failed_Title"], Value.Failed),
+        new Data(L["NumberOfQuizzes_MistakesExceeded_Title"], Value.MistakesExceeded),
+        new Data(L["NumberOfQuizzes_TimeExceeded_Title"], Value.TimeExceeded)
     };
 
     private sealed record Data(string Name, decimal Value);

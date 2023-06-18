@@ -6,7 +6,7 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @_result.Match(x => $"{_testTypeTitle}: {x.Overview.Article.Title}", e => e.Title, () => L["Shared_Quizzes"])
+    @_result.Match(x => $"{_testTypeTitle}: {x.Overview.Article.Title}", e => e.Title, () => L["Quizzes_Title"])
 </PageTitle>
 
 @switch (_result.Status)
@@ -93,7 +93,7 @@
                     <section class="mb-6">
                         <header class="d-flex justify-space-between">
                             <MudText Typo="Typo.subtitle1">
-                                @L["Shared_QuizCompletedQuestionOutOf", _quiz.Completed, _quiz.Questions]
+                                @L["Quiz_CompletedQuestionOutOf", _quiz.Completed, _quiz.Questions]
                             </MudText>
                             <CountdownTimer Date="@_quiz.ExpiredAt" Color="@_countdownColor" OnComplete="@OnExpired"/>
                         </header>
@@ -174,7 +174,7 @@
                 _quiz = x.Overview;
                 _currentQuestion = x.Question;
                 _inventory = x.Inventory;
-                _testTypeTitle = L[$"Shared_Quiz{_quiz.Type}"];
+                _testTypeTitle = L[$"Quiz_{_quiz.Type}_Title"];
             },
             e =>
             {

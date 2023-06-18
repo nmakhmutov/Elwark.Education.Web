@@ -6,7 +6,7 @@
 
 <ApiViewer Result="@_result" Context="conclusion">
     <PageTitle>
-        @L[$"Shared_Quiz{conclusion.Type}"]: @conclusion.Article.Title
+        @L[$"Quiz_{conclusion.Type}_Title"]: @conclusion.Article.Title
     </PageTitle>
     
     <MudAlert Class="mb-6 mb-sm-12" Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
@@ -23,7 +23,7 @@
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <div class="mb-3">
             <MudLink Href="@HistoryUrl.User.MyArticle(conclusion.Article.Id)" Typo="Typo.h5">
-                @L["Statistics"]
+                @L["Statistics_Title"]
             </MudLink>
         </div>
         <ConclusionCharts ConclusionModel="@conclusion"/>
@@ -37,24 +37,24 @@
         </div>
         <MudTable Class="mb-3 mb-sm-6" Items="@conclusion.Questions" Breakpoint="Breakpoint.Xs" Elevation="0" Hover>
             <HeaderContent>
-                <MudTh>@L["Question"]</MudTh>
-                <MudTh>@L["Question:IsAnswered"]</MudTh>
-                <MudTh>@L["Question:Correct"]</MudTh>
-                <MudTh>@L["Question:Incorrect"]</MudTh>
+                <MudTh>@L["Question_Title"]</MudTh>
+                <MudTh>@L["Question_IsAnswered"]</MudTh>
+                <MudTh>@L["Question_Correct"]</MudTh>
+                <MudTh>@L["Question_Incorrect"]</MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="@L["Question"]">
+                <MudTd DataLabel="@L["Question_Title"]">
                     @context.Title
                 </MudTd>
-                <MudTd DataLabel="@L["Question:IsAnswered"]">
+                <MudTd DataLabel="@L["Question_IsAnswered"]">
                     <MudIcon
                         Size="Size.Small"
                         Icon="@(context.IsAnswered ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close)"/>
                 </MudTd>
-                <MudTd DataLabel="@L["Question:Correct"]">
+                <MudTd DataLabel="@L["Question_Correct"]">
                     @context.Correct
                 </MudTd>
-                <MudTd DataLabel="@L["Question:Incorrect"]">
+                <MudTd DataLabel="@L["Question_Incorrect"]">
                     @context.Incorrect
                 </MudTd>
             </RowTemplate>
@@ -78,7 +78,7 @@
                 Color="Color.Primary"
                 Variant="Variant.Filled"
                 DisableElevation>
-                @L["Shared_TakeTheQuizAgain"]
+                @L["Quiz_TakeTheQuizAgain"]
             </MudButton>
         </div>
     </EduContainer>

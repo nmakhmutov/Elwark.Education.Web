@@ -24,9 +24,9 @@
             </div>
         }
     </article>
-    
+
     <MudDivider Class="mt-3 mbt-sm-6"/>
-    
+
     <footer class="pa-3">
         <MudButton
             Class="text-transform-none"
@@ -61,7 +61,7 @@
         _items = new Dictionary<string, string>
         {
             [L["Account_TimeZone"]] = Customer.TimeZone.Id,
-            [L["Account_StartOfWeek"]] = L[$"DayOfWeek_{Customer.StartOfWeek}"],
+            [L["Account_StartOfWeek"]] = CultureInfo.InvariantCulture.DateTimeFormat.GetDayName(Customer.StartOfWeek),
             [L["Account_DateFormat"]] = $"{Customer.DateFormat} ({now.ToString(Customer.DateFormat)})",
             [L["Account_TimeFormat"]] = $"{Customer.TimeFormat} ({now.ToString(Customer.TimeFormat)})"
         };

@@ -2,7 +2,7 @@
 <div class="@Class">
     @if (ShowTooltip)
     {
-        <MudTooltip RootClass="d-flex" Placement="Placement.Bottom">
+        <MudTooltip RootClass="d-flex" Placement="@Placement">
             <ChildContent>
                 @RatingComponent
             </ChildContent>
@@ -11,11 +11,11 @@
                 <div class="d-flex align-center gap-3">
                     @RatingComponent
                     <MudText Typo="Typo.body1">
-                        @L["Shared_ContentRatingOutOf", Rating.Stars, 5]
+                        @L["ContentRating_OutOf", Rating.Stars, 5]
                     </MudText>
                 </div>
                 <MudText Typo="Typo.body2">
-                    @L["Shared_ContentRatingVoters", Rating.Votes.ToMetric()]
+                    @L["ContentRating_Voters", Rating.Votes.ToMetric()]
                 </MudText>
             </TooltipContent>
         </MudTooltip>
@@ -52,6 +52,9 @@
     [Parameter]
     public bool ShowTooltip { get; set; }
 
+    [Parameter]
+    public Placement Placement { get; set; } = Placement.Bottom;
+    
     protected override void OnParametersSet() =>
         _ratingClass = Size switch {
             Size.Small => "rating small",

@@ -30,16 +30,16 @@ public static class DateTimeExtensions
         var sb = new StringBuilder();
         
         if (span.Days > 0)
-            sb.Append($"{span.Days}{localizer["Shared_DaysAbbreviation"]} ");
+            sb.Append($"{span.Days}{localizer["Abbreviation_Days"]} ");
 
         if (span.Hours > 0)
-            sb.Append($"{span.Hours}{localizer["Shared_HoursAbbreviation"]} ");
+            sb.Append($"{span.Hours}{localizer["Abbreviation_Hours"]} ");
         
         if(span.Minutes > 0)
-            sb.Append($"{span.Minutes}{localizer["Shared_MinutesAbbreviation"]} ");
+            sb.Append($"{span.Minutes}{localizer["Abbreviation_Minutes"]} ");
         
         if(span.Seconds > 0 && !hideSeconds)
-            sb.Append($"{span.Seconds}{localizer["Shared_SecondsAbbreviation"]} ");
+            sb.Append($"{span.Seconds}{localizer["Abbreviation_Seconds"]} ");
 
         return sb.ToString().TrimEnd();
     }

@@ -6,7 +6,7 @@
         @Title
     </MudLink>
     <div class="d-flex align-center">
-        <MudTooltip Text="@L["TimeSpent"]">
+        <MudTooltip Text="@L["TimeSpent_Title"]">
             <MudText Typo="Typo.h5" Class="mr-3">
                 @Quiz.TimeSpent.Humanize()
             </MudText>
@@ -18,13 +18,13 @@
 </div>
 
 <EduFitGrid Class="mb-3 mb-sm-6">
-    <StatisticsCard Title="@L["Shared_Quizzes"]" Value="@Quiz.NumberOfQuizzes.Total">
+    <StatisticsCard Title="@L["Quizzes_Title"]" Value="@Quiz.NumberOfQuizzes.Total">
         <NumberOfQuizzesChart Value="@Quiz.NumberOfQuizzes"/>
     </StatisticsCard>
-    <StatisticsCard Title="@L["Score"]" Value="@Quiz.Score.Total">
+    <StatisticsCard Title="@L["Score_Title"]" Value="@Quiz.Score.Total">
         <ScoreChart Value="@Quiz.Score"/>
     </StatisticsCard>
-    <StatisticsCard Title="@L["Questions"]" Value="@Quiz.AnswerRatio.Questions">
+    <StatisticsCard Title="@L["Questions_Title"]" Value="@Quiz.AnswerRatio.Questions">
         <AnswerRatioChart Value="@Quiz.AnswerRatio"/>
     </StatisticsCard>
 </EduFitGrid>

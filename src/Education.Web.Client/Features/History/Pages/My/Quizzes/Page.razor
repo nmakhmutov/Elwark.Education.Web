@@ -4,35 +4,35 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Shared_Quizzes"]
+    @L["Quizzes_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Shared_Quizzes"]" Breadcrumbs="@Breadcrumbs"/>
+    <EduPageHeader Title="@L["Quizzes_Title"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" Context="profile">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <EduFillGrid>
             <StatisticsCard
-                Title="@L["Shared_QuizzesEasy"]"
+                Title="@L["Quizzes_Easy_Title"]"
                 Value="@profile.EasyQuiz.NumberOfQuizzes.Total"
                 Href="@HistoryUrl.User.MyEasyQuizzes">
-                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                 <ScoreChart Value="@profile.EasyQuiz.Score"/>
             </StatisticsCard>
 
             <StatisticsCard
-                Title="@L["Shared_QuizzesHard"]"
+                Title="@L["Quizzes_Hard_Title"]"
                 Value="@profile.HardQuiz.NumberOfQuizzes.Total"
                 Href="@HistoryUrl.User.MyHardQuizzes">
-                <Subheader Title="@L["Score"]" Subtitle="@L["ForAllTime"]"/>
+                <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                 <ScoreChart Value="@profile.HardQuiz.Score"/>
             </StatisticsCard>
 
             <ActivityCard
                 Class="grid-column-sm-full"
-                Title="@L["Statistics:Daily"]"
+                Title="@L["Activities_Daily_Title"]"
                 Activities="@_daily"
                 DateFormat="dd MMM"/>
 
@@ -40,7 +40,7 @@
             {
                 <ActivityCard
                     Class="grid-column-full"
-                    Title="@L["Statistics:Monthly"]"
+                    Title="@L["Activities_Monthly_Title"]"
                     Activities="@_monthly"
                     DateFormat="MMM yyyy"/>
             }
@@ -56,7 +56,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Shared_UserProfile"], HistoryUrl.User.MyProfile)
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
     };
 
     [Inject]

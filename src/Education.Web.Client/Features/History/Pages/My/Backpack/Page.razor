@@ -4,11 +4,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Shared_Backpack"]
+    @L["Backpack_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Shared_Backpack"]" Breadcrumbs="@Breadcrumbs">
+    <EduPageHeader Title="@L["Backpack_Title"]" Breadcrumbs="@Breadcrumbs">
         <MudText Typo="Typo.h5">
             @_capacity
         </MudText>
@@ -46,7 +46,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Shared_UserProfile"], HistoryUrl.User.MyProfile)
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
     };
 
     [Inject]

@@ -16,22 +16,22 @@
         <StatisticDetailsGrid>
             <StatisticDetailsCard>
                 <TotalContent>
-                    <Subheader Title="@L["History_EventGuesser_Score"]" Subtitle="@L["ForAllTime"]"/>
+                    <Subheader Title="@L["History_EventGuesser_Score"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                     <EventGuesserScoreChart Score="@result.Score"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.GetProgress(L)"/>
                 </ProgressContent>
             </StatisticDetailsCard>
 
             <StatisticDetailsCard>
                 <TotalContent>
-                    <Subheader Title="@L["History_EventGuesser_Questions"]" Subtitle="@L["ForAllTime"]"/>
+                    <Subheader Title="@L["History_EventGuesser_Questions"]" Subtitle="@L["Statistics_ForAllTime"]"/>
                     <EventGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.GetProgress(L)"/>
                 </ProgressContent>
             </StatisticDetailsCard>
@@ -39,12 +39,12 @@
             <MudPaper Elevation="0" Class="pa-3 pa-sm-6">
                 <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-3 mb-sm-6">
                     <MudText Typo="Typo.h5">
-                        @L["Shared_Quizzes"]
+                        @L["Quizzes_Title"]
                     </MudText>
                     <MetricNumber Value="@result.Tests" Typo="Typo.h5"/>
                 </MudStack>
                 <section>
-                    <Subheader Title="@L["Progress"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.GetProgress(L)"/>
                 </section>
             </MudPaper>
@@ -59,8 +59,8 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Shared_UserProfile"], HistoryUrl.User.MyProfile),
-        new BreadcrumbItem(L["History_EventGuessers"], HistoryUrl.User.MyEventGuessers)
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["History_EventGuessers_Title"], HistoryUrl.User.MyEventGuessers)
     };
 
     [Inject]

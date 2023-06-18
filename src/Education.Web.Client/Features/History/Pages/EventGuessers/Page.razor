@@ -5,11 +5,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_EventGuesser"]
+    @L["History_EventGuesser_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
-    <EduPageHeader Title="@L["History_EventGuesser"]" Breadcrumbs="@Breadcrumbs">
+    <EduPageHeader Title="@L["History_EventGuesser_Title"]" Breadcrumbs="@Breadcrumbs">
         <div>
             <MudButton
                 DisableElevation
@@ -28,7 +28,7 @@
     <section class="grid px-3 pb-3 px-sm-6 pb-sm-6">
         <section class="builder">
             <MudText Typo="Typo.h6" Class="mb-3">
-                @L["History_Epoch"]
+                @L["History_Epoch_Title"]
             </MudText>
             <EpochRadioGroup
                 SelectedEpoch="@HistorySettings.EventGuesserEpoch"
@@ -36,7 +36,7 @@
                 Class="mb-3 mb-sm-6"/>
 
             <MudText Typo="Typo.h6" Class="mb-3">
-                @L["Shared_QuizType"]
+                @L["Quiz_Type_Title"]
             </MudText>
             <EventGuesserTypeRadioGroup
                 SelectedGuesser="@HistorySettings.EventGuesserType"
@@ -50,8 +50,8 @@
                     Size="Size.Large"
                     Color="Color.Primary"
                     Variant="Variant.Filled"
-                    Text="@L["Shared_TakeTheGuesser"]"
-                    LoadingText="@L["Loading"]"
+                    Text="@L["History_EventGuesser_TakeTheGuesser"]"
+                    LoadingText="@L["Loading_Title"]"
                     IsLoading="@_isLoading"
                     Disabled="@(model.Tests.All(x => !x.IsAllowed))"
                     OnClick="@CreateTestAsync"/>

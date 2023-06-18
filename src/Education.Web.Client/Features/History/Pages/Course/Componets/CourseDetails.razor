@@ -1,15 +1,15 @@
 @using Education.Web.Client.Models.Content
 
-<section class="mud-paper pa-3 pa-sm-6 @Class">
-    <MudText Class="mb-3" Typo="Typo.subtitle2">
-        @L["Article_DetailsTitle"]
+<section class="@Class">
+    <MudText Class="mb-3" Typo="Typo.h5">
+        @L["Course_Details_Title"]
     </MudText>
 
     <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-2">
-        <MudText Typo="Typo.body1">@L["TimeToRead_Title"]</MudText>
+        <MudText Typo="Typo.body1">@L["Course_Learners_Title"]</MudText>
         <div class="d-flex align-center gap-1">
-            <MudText Typo="Typo.body1">@TimeToRead.Humanize(L)</MudText>
-            <MudIcon Icon="@EduIcons.TimeToRead" Size="Size.Small"/>
+            <MudText Typo="Typo.body1">@Learners.ToMetric()</MudText>
+            <MudIcon Icon="@Icons.Material.Outlined.People" Size="Size.Small"/>
         </div>
     </div>
 
@@ -27,8 +27,8 @@
     [Parameter, EditorRequired]
     public ContentRatingModel Rating { get; set; } = default!;
 
-    [Parameter, EditorRequired]
-    public TimeSpan TimeToRead { get; set; }
+    [Parameter]
+    public uint Learners { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

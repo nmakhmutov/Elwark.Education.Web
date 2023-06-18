@@ -6,7 +6,7 @@
     <div class="d-flex flex-column align-center mb-3 @(CorrectAnswer is null ? "mb-sm-6" : "")">
         <MudTextField
             @bind-Value="@UserAnswer.Answer"
-            Label="@L["Shared_QuizUserAnswer"]"
+            Label="@L["Quiz_UserAnswer"]"
             For="@(() => UserAnswer.Answer)"
             Disabled="@(CorrectAnswer is not null)"/>
 
@@ -26,8 +26,8 @@
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 IsLoading="@IsLoading"
-                Text="@L["Shared_QuizAnswerToQuestion"]"
-                LoadingText="@L["Loading"]"
+                Text="@L["Quiz_AnswerToQuestion"]"
+                LoadingText="@L["Loading_Title"]"
                 ButtonType="ButtonType.Submit"/>
         </div>
 
@@ -45,7 +45,7 @@
                     Variant="Variant.Filled"
                     Color="Color.Primary"
                     OnClick="@OnComplete">
-                    @L["Shared_QuizShowTheResult"]
+                    @L["Quiz_ShowTheResult"]
                 </MudButton>
             }
             else
@@ -55,7 +55,7 @@
                     Variant="Variant.Filled"
                     Color="Color.Primary"
                     OnClick="@OnNext">
-                    @L["Shared_QuizNextQuestion"]
+                    @L["Quiz_NextQuestion"]
                 </MudButton>
             }
         </div>
@@ -63,13 +63,13 @@
         if (CorrectAnswer.IsCorrect)
         {
             <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
-                @L["Shared_QuizCorrectAnswer"]
+                @L["Quiz_CorrectAnswer"]
             </MudText>
         }
         else
         {
             <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
-                @L["Shared_QuizIncorrectAnswer"]
+                @L["Quiz_IncorrectAnswer"]
             </MudText>
         }
     }
@@ -113,7 +113,7 @@
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.Answer)
                 .NotEmpty()
-                .WithMessage(localizer["Shared_QuizAnswerCannotBeEmpty"]);
+                .WithMessage(localizer["Quiz_AnswerCannotBeEmpty"]);
     }
 
 }

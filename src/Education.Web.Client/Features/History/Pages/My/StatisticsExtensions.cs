@@ -18,42 +18,42 @@ public static class StatisticsExtensions
         this QuizStatisticsModel.NumberOfQuizzesContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["Shared_NumberOfSuccessfulQuizzes"], contrast.Successful.Current.ToMetric(), contrast.Successful.Difference),
-            new(l["Shared_NumberOfFailedQuizzes"], contrast.Failed.Current.ToMetric(), contrast.Failed.Difference),
-            new(l["Shared_NumberOfMistakesExceededQuizzes"], contrast.MistakesExceeded.Current.ToMetric(), contrast.MistakesExceeded.Difference),
-            new(l["Shared_NumberOfTimeExceededQuizzes"], contrast.TimeExceeded.Current.ToMetric(), contrast.TimeExceeded.Difference),
-            new(l["Shared_NumberOfTotalQuizzes"], contrast.Total.Current.ToMetric(), contrast.Total.Difference)
+            new(l["NumberOfQuizzes_Successful_Title"], contrast.Successful.Current.ToMetric(), contrast.Successful.Difference),
+            new(l["NumberOfQuizzes_Failed_Title"], contrast.Failed.Current.ToMetric(), contrast.Failed.Difference),
+            new(l["NumberOfQuizzes_MistakesExceeded_Title"], contrast.MistakesExceeded.Current.ToMetric(), contrast.MistakesExceeded.Difference),
+            new(l["NumberOfQuizzes_TimeExceeded_Title"], contrast.TimeExceeded.Current.ToMetric(), contrast.TimeExceeded.Difference),
+            new(l["NumberOfQuizzes_Total_Title"], contrast.Total.Current.ToMetric(), contrast.Total.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(
         this QuizStatisticsModel.ScoreContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["Score:ByQuestions"], contrast.Questions.Current.ToMetric(), contrast.Questions.Difference),
-            new(l["Score:BySpeedBonus"], contrast.Speed.Current.ToMetric(), contrast.Speed.Difference),
-            new(l["Score:NoMistakesBonus"], contrast.NoMistakes.Current.ToMetric(), contrast.NoMistakes.Difference),
-            new(l["Score:Total"], contrast.Total.Current.ToMetric(), contrast.Total.Difference)
+            new(l["Score_Questions_Title"], contrast.Questions.Current.ToMetric(), contrast.Questions.Difference),
+            new(l["Score_SpeedBonus_Title"], contrast.Speed.Current.ToMetric(), contrast.Speed.Difference),
+            new(l["Score_NoMistakesBonus_Title"], contrast.NoMistakes.Current.ToMetric(), contrast.NoMistakes.Difference),
+            new(l["Score_Total_Title"], contrast.Total.Current.ToMetric(), contrast.Total.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(
         this QuizStatisticsModel.AnswerRatioContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["Questions:Answered"], contrast.Answered.Current.ToMetric(), contrast.Answered.Difference),
-            new(l["Questions:NotAnswered"], contrast.NotAnswered.Current.ToMetric(), contrast.NotAnswered.Difference),
-            new(l["Questions:Correct"], contrast.Correct.Current.ToMetric(), contrast.Questions.Difference),
-            new(l["Questions:Incorrect"], contrast.Incorrect.Current.ToMetric(), contrast.Incorrect.Difference),
-            new(l["Questions:Total"], contrast.Questions.Current.ToMetric(), contrast.Questions.Difference)
+            new(l["Questions_Answered"], contrast.Answered.Current.ToMetric(), contrast.Answered.Difference),
+            new(l["Questions_NotAnswered"], contrast.NotAnswered.Current.ToMetric(), contrast.NotAnswered.Difference),
+            new(l["Questions_Correct"], contrast.Correct.Current.ToMetric(), contrast.Questions.Difference),
+            new(l["Questions_Incorrect"], contrast.Incorrect.Current.ToMetric(), contrast.Incorrect.Difference),
+            new(l["Questions_Total"], contrast.Questions.Current.ToMetric(), contrast.Questions.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(
         this QuizStatisticsModel.TimeSpentContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["TimeSpent:Min"], contrast.Min.Current.Humanize(), contrast.Min.Difference),
-            new(l["TimeSpent:Max"], contrast.Max.Current.Humanize(), contrast.Max.Difference),
-            new(l["TimeSpent:Average"], contrast.Average.Current.Humanize(), contrast.Average.Difference),
-            new(l["TimeSpent:Total"], contrast.Total.Current.Humanize(), contrast.Total.Difference)
+            new(l["TimeSpent_Min_Title"], contrast.Min.Current.Humanize(), contrast.Min.Difference),
+            new(l["TimeSpent_Max_Title"], contrast.Max.Current.Humanize(), contrast.Max.Difference),
+            new(l["TimeSpent_Average_Title"], contrast.Average.Current.Humanize(), contrast.Average.Difference),
+            new(l["TimeSpent_Total_Title"], contrast.Total.Current.Humanize(), contrast.Total.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(

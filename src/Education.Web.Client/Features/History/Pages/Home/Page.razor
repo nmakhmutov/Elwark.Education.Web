@@ -13,15 +13,15 @@
     <EduContainer Class="py-3 py-sm-6" MaxWidth="@EduWidth.W1600">
         <UnderlinedTitle
             Class="mb-6"
-            Title="@L["Shared_TrendingArticles"]"
+            Title="@L["Articles_Trending_Title"]"
             Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Trending)"
-            HrefTitle="@L["Shared_ViewAll"]"/>
+            HrefTitle="@L["Button_ViewAll"]"/>
 
         <FeaturedArticlesGrid Articles="@result.Trending"/>
     </EduContainer>
 
     <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-        <UnderlinedTitle Class="mb-3" Title="@L["History_Epochs"]"/>
+        <UnderlinedTitle Class="mb-3" Title="@L["History_Epochs_Title"]"/>
         <EpochSlider/>
     </EduContainer>
 
@@ -34,9 +34,9 @@
             <Content>
                 <UnderlinedTitle
                     Class="mb-3"
-                    Title="@L["Shared_ResentArticles"]"
+                    Title="@L["Articles_Resent_Title"]"
                     Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Newest)"
-                    HrefTitle="@L["Shared_ViewAll"]"/>
+                    HrefTitle="@L["Button_ViewAll"]"/>
 
                 <EduFillGrid>
                     @foreach (var article in result.Recent)
@@ -48,9 +48,9 @@
             <Sidebar>
                 <UnderlinedTitle
                     Class="mb-3"
-                    Title="@L["Shared_TopRatedArticles"]"
+                    Title="@L["Articles_TopRated_Title"]"
                     Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Popularity)"
-                    HrefTitle="@L["Shared_ViewAll"]"/>
+                    HrefTitle="@L["Button_ViewAll"]"/>
 
                 @foreach (var article in result.Popular)
                 {
