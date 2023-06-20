@@ -1,6 +1,5 @@
 @page "/history/store"
 @using Education.Web.Client.Features.History.Services.User.Model
-@using Education.Web.Client.Features.History.Services.Store.Model
 
 @layout HistoryLayout
 @attribute [Authorize]
@@ -14,108 +13,65 @@
 </EduContainer>
 
 <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-    <ProductToolbar @bind-Filter="@_filter" Wallet="@_wallet"/>
+    <ProductsToolbar @bind-Filter="@_filter" Inventory="@_inventory"/>
 </EduContainer>
 
-@if (_error is not null)
+@switch (_filter.Catalog)
 {
-    <EduError Error="@_error"/>
-}
-else if (_isLoading)
-{
-    <Spinner/>
-}
-else
-{
-    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <ProductsGrid Products="@_source" Filter="@_filter" Context="product">
-            <ProductCard
-                Product="@product.Product"
-                ShowLockBadge="@(!product.IsAffordable)"
-                OnPurchaseClick="@OpenPurchaseDialog"/>
-        </ProductsGrid>
-    </EduContainer>
+    case CatalogType.Inventory:
+        <InventoryProducts 
+            Inventory="@_inventory"
+            Filter="@_filter"
+            IsAffordable="@IsInventoryAffordable"
+            OnProductPurchased="@OnInventoryPurchased"/>
+        break;
+
+    case CatalogType.Bundles:
+        <BundleProducts
+            Inventory="@_inventory"
+            Filter="@_filter"
+            IsAffordable="@IsBundleAffordable"
+            OnProductPurchased="@OnBundlePurchased"/>
+        break;
 }
 
 @code {
-    private bool _isLoading = true;
-    private Error? _error;
-    private InventoryModel? _wallet;
     private ProductsFilter _filter = ProductsFilter.Empty;
-    private IQueryable<ProductDto> _source = Enumerable.Empty<ProductDto>().AsQueryable();
+    private InventoryModel _inventory = new(new Dictionary<InternalCurrency, long>(), new InventoryModel.BackpackModel(0, 0, 0));
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryStoreService StoreService { get; set; } = default!;
-
-    [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
 
-    [Inject]
-    private IDialogService DialogService { get; set; } = default!;
+    protected override Task OnInitializedAsync() =>
+        LoadInventoryAsync();
 
-    protected override async Task OnInitializedAsync()
+    private async Task LoadInventoryAsync() =>
+        _inventory = (await UserService.GetInventoryAsync())
+            .Map(x => x)
+            .UnwrapOr(_inventory);
+    
+    private Task OnInventoryPurchased() =>
+        LoadInventoryAsync();
+
+    private Task OnBundlePurchased() =>
+        LoadInventoryAsync();
+    
+    private bool IsInventoryAffordable(Product.InventoryModel inventory) => 
+        IsAffordable(inventory.Selling, inventory.Weight);
+
+    private bool IsBundleAffordable(Product.BundleModel bundle) =>
+        IsAffordable(bundle.Price, bundle.Weight);
+
+    private bool IsAffordable(Product.PriceModel price, uint weight)
     {
-        (await UserService.GetInventoryAsync())
-            .Match(x => _wallet = x, x => _error = x);
-
-        if (_error is not null)
-            return;
-
-        _source = (await StoreService.GetAsync())
-            .Match(
-                m => m.Select(x => new ProductDto(x, IsAffordable(_wallet, x))),
-                x =>
-                {
-                    _error = x;
-                    return Enumerable.Empty<ProductDto>();
-                },
-                Enumerable.Empty<ProductDto>
-            )
-            .AsQueryable();
-
-        _isLoading = false;
-    }
-
-    private async Task OpenPurchaseDialog(ProductModel product)
-    {
-        if (_wallet is null)
-            return;
-
-        var options = new DialogOptions
-        {
-            FullWidth = true,
-            MaxWidth = product.Inventories.Length > 3 ? MaxWidth.Medium : MaxWidth.Small,
-            CloseButton = false,
-            NoHeader = true
-        };
-
-        var parameters = new DialogParameters
-        {
-            [nameof(ProductDialog.Product)] = product,
-            [nameof(ProductDialog.Wallet)] = _wallet
-        };
-
-        var dialog = await DialogService.ShowAsync<ProductDialog>(product.Title, parameters, options);
-        var result = await dialog.Result;
-        if (result.Canceled)
-            return;
-
-        await OnInitializedAsync();
-    }
-
-    private static bool IsAffordable(InventoryModel? wallet, ProductModel product)
-    {
-        if (wallet is null)
+        if (weight > _inventory.Backpack.Emptiness)
             return false;
 
-        if (product.InventoryWeight > wallet.Backpack.Emptiness)
-            return false;
-
-        if (wallet.Wallet.TryGetValue(product.Selling.Total.Currency, out var amount))
-            return amount >= product.Selling.Total.Amount;
+        if (_inventory.Wallet.TryGetValue(price.Total.Currency, out var amount))
+            return amount >= price.Total.Amount;
 
         return false;
     }

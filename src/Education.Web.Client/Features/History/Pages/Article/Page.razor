@@ -19,9 +19,9 @@
                 HasEasyQuiz="@result.HasEasyQuiz"
                 HasHardQuiz="@result.HasHardQuiz"
                 Activity="@result.Activity"
-                OnLikeClick="@UserService.LikeArticleAsync"
-                OnDislikeClick="@UserService.DislikeArticleAsync"
-                OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
+                OnLikeClick="@LearnerService.LikeArticleAsync"
+                OnDislikeClick="@LearnerService.DislikeArticleAsync"
+                OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
             break;
 
         case ArticleDetail.EmpireModel empire:
@@ -30,9 +30,9 @@
                 HasEasyQuiz="@result.HasEasyQuiz"
                 HasHardQuiz="@result.HasHardQuiz"
                 Activity="@result.Activity"
-                OnLikeClick="@UserService.LikeArticleAsync"
-                OnDislikeClick="@UserService.DislikeArticleAsync"
-                OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
+                OnLikeClick="@LearnerService.LikeArticleAsync"
+                OnDislikeClick="@LearnerService.DislikeArticleAsync"
+                OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
             break;
 
         case ArticleDetail.GeneralModel article:
@@ -41,9 +41,9 @@
                 HasEasyQuiz="@result.HasEasyQuiz"
                 HasHardQuiz="@result.HasHardQuiz"
                 Activity="@result.Activity"
-                OnLikeClick="@UserService.LikeArticleAsync"
-                OnDislikeClick="@UserService.DislikeArticleAsync"
-                OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
+                OnLikeClick="@LearnerService.LikeArticleAsync"
+                OnDislikeClick="@LearnerService.DislikeArticleAsync"
+                OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
             break;
 
         case ArticleDetail.PersonModel person:
@@ -52,9 +52,9 @@
                 HasEasyQuiz="@result.HasEasyQuiz"
                 HasHardQuiz="@result.HasHardQuiz"
                 Activity="@result.Activity"
-                OnLikeClick="@UserService.LikeArticleAsync"
-                OnDislikeClick="@UserService.DislikeArticleAsync"
-                OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
+                OnLikeClick="@LearnerService.LikeArticleAsync"
+                OnDislikeClick="@LearnerService.DislikeArticleAsync"
+                OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
             break;
     }
 </ApiViewer>
@@ -66,7 +66,7 @@
     private IHistoryArticleService ArticleService { get; set; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;

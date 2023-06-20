@@ -18,7 +18,7 @@
                 <CourseCard
                     Course="@course"
                     Activity="@activity"
-                    OnBookmarkClick="@UserService.ToggleCourseBookmarkAsync"/>
+                    OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"/>
             }
         </EduFillGrid>
 
@@ -47,7 +47,7 @@
     private IHistoryCourseService CourseService { get; set; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

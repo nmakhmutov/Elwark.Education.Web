@@ -87,7 +87,7 @@ else
                         <BookmarkButton
                             Id="@item.Article.Id"
                             IsBookmarked="@item.Activity!.IsBookmarked"
-                            OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
+                            OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
                     </div>
                 </div>
 
@@ -110,14 +110,14 @@ else
     };
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
-
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        var data = await UserService.GetArticleBookmarksAsync(_request);
+        var data = await LearnerService.GetArticleBookmarksAsync(_request);
         data.Match(x =>
         {
             _request = _request with { Token = x.Next };
@@ -139,7 +139,7 @@ else
         if (isRangeAvailable)
             return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
 
-        return (await UserService.GetArticleBookmarksAsync(_request = _request with { Count = request.Count }))
+        return (await LearnerService.GetArticleBookmarksAsync(_request = _request with { Count = request.Count }))
             .Map(x =>
             {
                 _request = _request with { Token = x.Next };

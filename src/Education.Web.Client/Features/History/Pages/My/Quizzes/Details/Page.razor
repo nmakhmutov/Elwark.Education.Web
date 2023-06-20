@@ -94,7 +94,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     [Parameter]
     public string? Test { get; set; }
@@ -111,8 +111,8 @@
     {
         _result = Test?.ToLowerInvariant() switch
         {
-            "easy" => await UserService.GetEasyQuizStatisticsAsync(),
-            "hard" => await UserService.GetHardQuizStatisticsAsync(),
+            "easy" => await LearnerService.GetEasyQuizStatisticsAsync(),
+            "hard" => await LearnerService.GetHardQuizStatisticsAsync(),
             _ => ApiResult<QuizStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
             };
 

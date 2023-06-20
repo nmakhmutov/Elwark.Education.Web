@@ -67,7 +67,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     [Parameter]
     public string? Test { get; set; }
@@ -83,9 +83,9 @@
     protected override async Task OnParametersSetAsync() =>
         _result = Test?.ToLowerInvariant() switch
         {
-            "small" => await UserService.GetSmallEventGuesserStatisticsAsync(),
-            "medium" => await UserService.GetMediumEventGuesserStatisticsAsync(),
-            "large" => await UserService.GetLargeEventGuesserStatisticsAsync(),
+            "small" => await LearnerService.GetSmallEventGuesserStatisticsAsync(),
+            "medium" => await LearnerService.GetMediumEventGuesserStatisticsAsync(),
+            "large" => await LearnerService.GetLargeEventGuesserStatisticsAsync(),
             _ => ApiResult<EventGuesserStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
             };
 

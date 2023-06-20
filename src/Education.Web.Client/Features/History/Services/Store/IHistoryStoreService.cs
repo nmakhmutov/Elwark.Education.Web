@@ -6,7 +6,9 @@ namespace Education.Web.Client.Features.History.Services.Store;
 
 public interface IHistoryStoreService
 {
-    Task<ApiResult<ProductModel[]>> GetAsync();
+    public Task<ApiResult<Product.InventoryModel[]>> GetInventoriesAsync();
 
-    Task<ApiResult<Guid>> CheckoutAsync(CheckoutRequest request);
+    public Task<ApiResult<Product.BundleModel[]>> GetBundlesAsync();
+
+    public Task<ApiResult<Guid>> CheckoutAsync(CheckoutRequest request);
 }

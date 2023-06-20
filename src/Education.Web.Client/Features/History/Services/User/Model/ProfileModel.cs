@@ -8,7 +8,7 @@ public sealed record ProfileModel(
     UserArticleOverviewModel[] RecentArticles
 )
 {
-    public sealed record LevelModel(uint Rank, ulong Experience, ulong Threshold);
+    public sealed record LevelModel(uint Level, ulong Experience, ulong Threshold);
 
     public sealed record AchievementModel(
         uint Total,

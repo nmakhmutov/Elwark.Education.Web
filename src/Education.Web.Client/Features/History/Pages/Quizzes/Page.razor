@@ -41,7 +41,7 @@
                 Article="@model.Article.Article"
                 Activity="@model.Article.Activity"
                 OnCreateClick="@OnQuizCreateAsync"
-                OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
+                OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
         }
 
         <section class="inventory">
@@ -74,7 +74,7 @@
     private IHistoryQuizService QuizService { get; set; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;

@@ -1,4 +1,3 @@
-@using Education.Web.Client.Features.History.Services.Store.Model
 @using Education.Web.Client.Features.History.Services.Order.Model
 @using Education.Web.Client.Features.History.Services.Store.Request
 @using Education.Web.Client.Features.History.Services.User.Model
@@ -6,28 +5,20 @@
 
 <MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
     <DialogContent>
-        <header class="d-flex justify-space-between align-center mb-3 mb-sm-6">
-            <MudText Typo="Typo.h5">
-                @Product.Title
-            </MudText>
+        <div class="d-flex justify-space-between align-start pa-3 mb-3 mb-sm-6">
+            <div></div>
+            
+            <InventoryInfoCard
+                Class="border mud-border-lines-default mt-4"
+                Title="@Product.Title"
+                Subtitle="@Product.Category.Title"
+                Overview="@Product.Overview"
+                IconUrl="@Product.IconUrl"
+                Quantity="@(1)"/>
 
             <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
-        </header>
-
-        <div class="mud-background rounded pa-3 mb-3 mb-sm-6">
-            <MudText Class="mb-3" Typo="Typo.subtitle1">
-                @L["Product_Inventories"]
-            </MudText>
-            <InventoryGrid Inventory="@Product.Inventories" Context="inventory">
-                <InventoryInfoCard
-                    IconUrl="@inventory.IconUrl"
-                    Overview="@inventory.Overview"
-                    Quantity="@inventory.Quantity"
-                    Subtitle="@inventory.Category.Title"
-                    Title="@inventory.Title"/>
-            </InventoryGrid>
         </div>
-
+        
         @if (_status is null)
         {
             <div class="d-flex flex-column flex-sm-row justify-space-between align-sm-end gap-3">
@@ -55,12 +46,12 @@
                         @L["Product_TotalPrice"]
                     </MudText>
                     <div class="d-flex">
-                        <InternalMoney 
-                            Class="price" 
+                        <InternalMoney
+                            Class="price"
                             Currency="@TotalPrice.Currency"
                             Amount="@TotalPrice.Amount"
-                            Typo="Typo.h5" 
-                            IconSize="Size.Medium" 
+                            Typo="Typo.h5"
+                            IconSize="Size.Medium"
                             Horizontal/>
                         @if (Product.Selling.Discount > 0)
                         {
@@ -116,14 +107,17 @@
         }
         else
         {
-            <MudProgressLinear
-                Color="@(_status.IsRejected ? Color.Error : Color.Primary)"
-                Value="@_status.Progress"
-                Striped="@(!_status.IsFinal)"/>
+            if (_error is null)
+            {
+                <MudProgressLinear
+                    Color="@(_status.IsRejected ? Color.Error : Color.Primary)"
+                    Value="@_status.Progress"
+                    Striped="@(!_status.IsFinal)"/>
 
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                @L[$"OrderStatus_{_status.Name}"]
-            </MudText>
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                    @L[$"OrderStatus_{_status.Name}"]
+                </MudText>
+            }
         }
 
         @if (_error is not null)
@@ -156,10 +150,10 @@
     MudDialogInstance MudDialog { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public ProductModel Product { get; set; } = default!;
+    public Product.InventoryModel Product { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public InventoryModel Wallet { get; set; } = default!;
+    public InventoryModel Inventory { get; set; } = default!;
 
     protected override void OnParametersSet() =>
         UpdateErrorState();
@@ -197,9 +191,11 @@
 
         await InvokeAsync(async () =>
         {
+            var delay = TimeSpan.FromSeconds(3);
+            
             while (_status is { IsFinal:false })
             {
-                await Task.Delay(TimeSpan.FromSeconds(1.2));
+                await Task.Delay(delay);
 
                 var status = await OrderService.GetStatus(result.Value);
                 if (status.IsError)
@@ -212,6 +208,7 @@
                 }
 
                 _status = status.Value;
+                delay = TimeSpan.FromSeconds(1.2);
                 StateHasChanged();
 
                 if (status.Value is { IsFinal: true, IsRejected: false })
@@ -229,20 +226,20 @@
         Product.Selling.Total with { Amount = Product.Selling.Total.Amount * _quantity };
 
     private uint TotalWeight =>
-        Product.InventoryWeight * _quantity;
+        Product.Weight * _quantity;
 
     private void UpdateErrorState() =>
         _error = GetErrorMessage();
 
     private Error? GetErrorMessage()
     {
-        if (!Wallet.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
+        if (!Inventory.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
         {
             var currency = L[$"InternalMoney_{TotalPrice.Currency}"];
             return new Error(L["InternalMoney_NotEnoughMoneyTitle", currency], L["InternalMoney_NotEnoughMoneyDescription", currency]);
         }
 
-        if (TotalWeight > Wallet.Backpack.Emptiness)
+        if (TotalWeight > Inventory.Backpack.Emptiness)
             return new Error(L["Backpack_IsFull_Title"], L["Backpack_IsFull_Description"]);
 
         return null;

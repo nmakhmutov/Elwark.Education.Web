@@ -15,7 +15,7 @@
             Breadcrumbs="@_breadcrumbs"
             IsBookmarked="@result.IsBookmarked" 
             IsCompleted="@result.IsCompleted"
-            OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"
+            OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
             Total="@result.Total" />
 
         <QuizOverview
@@ -43,7 +43,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
@@ -53,7 +53,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await UserService.GetArticlesAsync(Id);
+        _result = await LearnerService.GetArticlesAsync(Id);
         _breadcrumbs = _result
             .Map(x => new List<BreadcrumbItem>
             {

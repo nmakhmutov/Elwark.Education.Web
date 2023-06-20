@@ -1,6 +1,6 @@
 <EduContainer Class="@Class" MaxWidth="EduWidth.W600">
-    <div class="d-flex gap-3 align-center justify-center">
-        <MudText Typo="Typo.h4">
+    <div class="d-flex gap-3 align-center justify-center mb-3">
+        <MudText Typo="Typo.h3">
             @Error.Status
         </MudText>
 
@@ -9,11 +9,14 @@
         </MudText>
     </div>
 
-    <MudText Class="mb-6" Typo="Typo.subtitle1" Align="Align.Center">
-        @Error.Detail
-    </MudText>
+    @if (!string.IsNullOrEmpty(Error.Detail))
+    {
+        <MudText Class="mb-3" Typo="Typo.subtitle1" Align="Align.Center">
+            @Error.Detail
+        </MudText>
+    }
 
-    <MudStack Row Justify="Justify.Center">
+    <div class="d-flex justify-center gap-3">
         <MudButton
             DisableElevation
             Variant="Variant.Filled"
@@ -21,6 +24,7 @@
             Link="@EduUrl.Root">
             @L["Button_GoToHome"]
         </MudButton>
+
         @if (Error.Status > 499)
         {
             <MudButton
@@ -31,7 +35,7 @@
                 @L["Button_Reload"]
             </MudButton>
         }
-    </MudStack>
+    </div>
 </EduContainer>
 
 @code {

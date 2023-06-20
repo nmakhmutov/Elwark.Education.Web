@@ -1,0 +1,85 @@
+@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Models.Inventory
+
+<ApiViewer Result="@_result" Context="bundles">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <section class="products">
+            @foreach (var bundle in ApplyFilter(bundles))
+            {
+                <BundleCard 
+                    Bundle="@bundle" 
+                    ShowLockBadge="@(!IsAffordable(bundle))" 
+                    OnPurchaseClick="@OpenPurchaseDialog"/>
+            }
+        </section>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+    private ApiResult<Product.BundleModel[]> _result = ApiResult<Product.BundleModel[]>.Loading();
+
+    [Inject]
+    private IHistoryStoreService StoreService { get; set; } = default!;
+
+    [Inject]
+    private IDialogService DialogService { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public InventoryModel Inventory { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ProductsFilter Filter { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public Func<Product.BundleModel, bool> IsAffordable { get; set; } = _ => false;
+
+    [Parameter]
+    public EventCallback<Product.BundleModel> OnProductPurchased { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await StoreService.GetBundlesAsync();
+
+    private async Task OpenPurchaseDialog(Product.BundleModel product)
+    {
+        var options = new DialogOptions
+        {
+            FullWidth = true,
+            MaxWidth = product.Inventories.Length > 3 ? MaxWidth.Medium : MaxWidth.Small,
+            CloseButton = false,
+            NoHeader = true
+        };
+
+        var parameters = new DialogParameters
+        {
+            [nameof(BundleDialog.Product)] = product,
+            [nameof(BundleDialog.Inventory)] = Inventory
+        };
+
+        var dialog = await DialogService.ShowAsync<BundleDialog>(product.Title, parameters, options);
+        var result = await dialog.Result;
+        if (result.Canceled)
+            return;
+
+        await OnProductPurchased.InvokeAsync(product);
+    }
+
+    private IEnumerable<Product.BundleModel> ApplyFilter(IEnumerable<Product.BundleModel> source)
+    {
+        if (Filter.Category != CategoryType.None)
+            source = source.Where(x => x.Inventories.Any(t => t.Category.Type == Filter.Category));
+
+        source = Filter.Sort switch
+        {
+            ProductSort.Featured => source,
+            ProductSort.PriceAsc => source.OrderBy(x => x.Price.Total.Amount),
+            ProductSort.PriceDesc => source.OrderByDescending(x => x.Price.Total.Amount),
+            ProductSort.DiscountAsc => source.OrderBy(x => x.Price.Discount),
+            ProductSort.DiscountDesc => source.OrderByDescending(x => x.Price.Discount),
+            ProductSort.Title => source.OrderBy(x => x.Title),
+            _ => throw new ArgumentOutOfRangeException()
+            };
+
+        return source;
+    }
+
+}

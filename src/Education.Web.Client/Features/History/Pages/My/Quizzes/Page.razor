@@ -63,11 +63,11 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await UserService.GetQuizStatisticsAsync();
+        _result = await LearnerService.GetQuizStatisticsAsync();
         _result.Match(model =>
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);

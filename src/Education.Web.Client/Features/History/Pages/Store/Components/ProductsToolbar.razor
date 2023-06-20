@@ -1,0 +1,158 @@
+@using Education.Web.Client.Models.Inventory
+@using Education.Web.Client.Features.History.Services.User.Model
+
+<section class="d-flex flex-wrap align-center gap-3 gap-sm-3 @Class">
+    <div class="dropdown">
+        <MudSelect T="CatalogType"
+                   Value="@Filter.Catalog"
+                   ValueChanged="@CatalogChanged"
+                   Label="@L["History_InventoryStore_Catalog_Title"]"
+                   Margin="Margin.Dense"
+                   Dense>
+            <MudSelectItem Value="@CatalogType.Inventory">
+                @L["History_InventoryStore_Catalog_Inventories"]
+            </MudSelectItem>
+            <MudSelectItem Value="@CatalogType.Bundles">
+                @L["History_InventoryStore_Catalog_Bundles"]
+            </MudSelectItem>
+        </MudSelect>
+    </div>
+
+    <div class="dropdown">
+        <MudSelect T="CategoryType"
+                   Value="@Filter.Category"
+                   ValueChanged="@CategoryChanged"
+                   Label="@L["History_InventoryStore_Category_Title"]"
+                   Margin="Margin.Dense"
+                   Dense>
+            <MudSelectItem Value="@CategoryType.None">
+                @L["History_InventoryStore_Category_All"]
+            </MudSelectItem>
+            <MudSelectItem Value="@CategoryType.Profile">
+                @L["History_InventoryStore_Category_Profile"]
+            </MudSelectItem>
+            <MudSelectItem Value="@CategoryType.Quiz">
+                @L["History_InventoryStore_Category_Quiz"]
+            </MudSelectItem>
+            <MudSelectItem Value="@CategoryType.Examination">
+                @L["History_InventoryStore_Category_Examination"]
+            </MudSelectItem>
+            <MudSelectItem Value="@CategoryType.EventGuesser">
+                @L["History_InventoryStore_Category_EventGuesser"]
+            </MudSelectItem>
+        </MudSelect>
+    </div>
+
+    <div class="dropdown">
+        <MudSelect T="ProductSort"
+                   Value="@Filter.Sort"
+                   ValueChanged="@SortChanged"
+                   Label="@L["Sort_Title"]"
+                   Margin="Margin.Dense"
+                   Dense>
+            <MudSelectItem Value="@ProductSort.Featured">
+                @L["History_InventoryStore_Sort_Featured"]
+            </MudSelectItem>
+            <MudSelectItem Value="@ProductSort.PriceAsc">
+                @L["History_InventoryStore_Sort_PriceAsc"]
+            </MudSelectItem>
+            <MudSelectItem Value="@ProductSort.PriceDesc">
+                @L["History_InventoryStore_Sort_PriceDesc"]
+            </MudSelectItem>
+            <MudSelectItem Value="@ProductSort.DiscountAsc">
+                @L["History_InventoryStore_Sort_DiscountAsc"]
+            </MudSelectItem>
+            <MudSelectItem Value="@ProductSort.DiscountDesc">
+                @L["History_InventoryStore_Sort_DiscountDesc"]
+            </MudSelectItem>
+            <MudSelectItem Value="@ProductSort.Title">
+                @L["History_InventoryStore_Sort_ProductTitle"]
+            </MudSelectItem>
+        </MudSelect>
+    </div>
+
+    <MudButton
+        Class="align-self-center align-self-sm-end"
+        Variant="Variant.Text"
+        Color="Color.Primary"
+        Disabled="@(Filter == ProductsFilter.Empty)"
+        OnClick="@OnResetClick">
+        @L["History_InventoryStore_ResetFilter_Button"]
+    </MudButton>
+
+    <MudSpacer/>
+
+    <section class="wallet">
+        @if (Inventory.Wallet.Count > 0)
+        {
+            <div>
+                <MudText Typo="Typo.caption">
+                    @L["Wallet_Title"]
+                </MudText>
+                <div class="d-flex align-center gap-3">
+                    @foreach (var money in Inventory.Wallet)
+                    {
+                        <InternalMoney
+                            Currency="@money.Key"
+                            Amount="@money.Value"
+                            Typo="Typo.subtitle1"
+                            Horizontal/>
+                    }
+                </div>
+            </div>
+        }
+
+        <div>
+            <MudText Typo="Typo.caption">
+                @L["Backpack_Title"]
+            </MudText>
+            <section class="d-flex align-center">
+                <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="@Size.Small"/>
+                <div class="d-flex align-center">
+                    <MetricNumber
+                        Value="@Inventory.Backpack.Fullness"
+                        Typo="@Typo.subtitle1"
+                        Color="@GetBackpackColor()"/>
+                    <MudText Typo="@Typo.subtitle1">&nbsp;/&nbsp;</MudText>
+                    <MetricNumber
+                        Value="@Inventory.Backpack.Capacity"
+                        Typo="@Typo.subtitle1"/>
+                </div>
+            </section>
+        </div>
+    </section>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public InventoryModel Inventory { get; set; } = default!;
+
+    [Parameter]
+    public ProductsFilter Filter { get; set; } = ProductsFilter.Empty;
+
+    [Parameter]
+    public EventCallback<ProductsFilter> FilterChanged { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private Task CatalogChanged(CatalogType catalog) =>
+        FilterChanged.InvokeAsync(Filter = Filter with { Catalog = catalog});
+
+    private Task CategoryChanged(CategoryType category) =>
+        FilterChanged.InvokeAsync(Filter = Filter with { Category = category });
+
+    private Task SortChanged(ProductSort sort) =>
+        FilterChanged.InvokeAsync(Filter = Filter with { Sort = sort });
+
+    private Task OnResetClick() =>
+        FilterChanged.InvokeAsync(Filter = ProductsFilter.Empty);
+
+    private Color GetBackpackColor() =>
+        Inventory.Backpack.Fullness > Inventory.Backpack.Capacity ? Color.Error : Color.Default;
+
+}

@@ -54,7 +54,7 @@
                 <ArticleCard
                     Article="@article"
                     Activity="@activity"
-                    OnBookmarkClick="@UserService.ToggleArticleBookmarkAsync"/>
+                    OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
             }
         </EduFillGrid>
 
@@ -88,7 +88,7 @@
     private IHistoryArticleService ArticleService { get; set; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;

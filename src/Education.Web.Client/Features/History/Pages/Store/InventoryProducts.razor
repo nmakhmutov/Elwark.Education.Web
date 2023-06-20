@@ -1,0 +1,85 @@
+@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Models.Inventory
+
+<ApiViewer Result="@_result" Context="inventories">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <section class="products">
+            @foreach (var inventory in ApplyFilter(inventories))
+            {
+                <InventoryCard
+                    Inventory="@inventory"
+                    ShowLockBadge="@(!IsAffordable(inventory))"
+                    OnPurchaseClick="@OpenPurchaseDialog"/>
+            }
+        </section>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+    private ApiResult<Product.InventoryModel[]> _result = ApiResult<Product.InventoryModel[]>.Loading();
+
+    [Inject]
+    private IHistoryStoreService StoreService { get; set; } = default!;
+    
+    [Inject]
+    private IDialogService DialogService { get; set; } = default!;
+    
+    [Parameter, EditorRequired]
+    public InventoryModel Inventory { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ProductsFilter Filter { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public Func<Product.InventoryModel, bool> IsAffordable { get; set; } = _ => false;
+
+    [Parameter]
+    public EventCallback<Product.InventoryModel> OnProductPurchased { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await StoreService.GetInventoriesAsync();
+
+    private IEnumerable<Product.InventoryModel> ApplyFilter(IEnumerable<Product.InventoryModel> source)
+    {
+        if (Filter.Category != CategoryType.None)
+            source = source.Where(x => x.Category.Type == Filter.Category);
+
+        source = Filter.Sort switch
+        {
+            ProductSort.Featured => source,
+            ProductSort.PriceAsc => source.OrderBy(x => x.Selling.Total.Amount),
+            ProductSort.PriceDesc => source.OrderByDescending(x => x.Selling.Total.Amount),
+            ProductSort.DiscountAsc => source.OrderBy(x => x.Selling.Discount),
+            ProductSort.DiscountDesc => source.OrderByDescending(x => x.Selling.Discount),
+            ProductSort.Title => source.OrderBy(x => x.Title),
+            _ => throw new ArgumentOutOfRangeException()
+            };
+
+        return source;
+    }
+
+    private async Task OpenPurchaseDialog(Product.InventoryModel product)
+    {
+        var options = new DialogOptions
+        {
+            FullWidth = true,
+            MaxWidth = MaxWidth.Small,
+            CloseButton = false,
+            NoHeader = true
+        };
+
+        var parameters = new DialogParameters
+        {
+            [nameof(InventoryDialog.Product)] = product,
+            [nameof(InventoryDialog.Inventory)] = Inventory
+        };
+
+        var dialog = await DialogService.ShowAsync<InventoryDialog>(product.Title, parameters, options);
+        var result = await dialog.Result;
+        if (result.Canceled)
+            return;
+
+        await OnProductPurchased.InvokeAsync(product);
+    }
+
+}
