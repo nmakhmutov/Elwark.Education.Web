@@ -31,16 +31,16 @@
                 @L["History_Epoch_Title"]
             </MudText>
             <EpochRadioGroup
-                SelectedEpoch="@HistorySettings.EventGuesserEpoch"
-                SelectedEpochChanged="@HistorySettings.ChangeEventGuesserEpochAsync"
+                SelectedEpoch="@_settings.Epoch"
+                SelectedEpochChanged="@OnEpochChanged"
                 Class="mb-3 mb-sm-6"/>
 
             <MudText Typo="Typo.h6" Class="mb-3">
                 @L["Quiz_Type_Title"]
             </MudText>
             <EventGuesserTypeRadioGroup
-                SelectedGuesser="@HistorySettings.EventGuesserType"
-                SelectedGuesserChanged="@(x => HistorySettings.ChangeEventGuesserTypeAsync(x))"
+                SelectedGuesser="@_settings.Size"
+                SelectedGuesserChanged="@OnSizeChanged"
                 Guessers="@model.Tests"
                 Class="mb-3 mb-sm-6"/>
 
@@ -75,6 +75,7 @@
 
 @code {
     private bool _isLoading;
+    private Settings _settings = new(EpochType.None, null);
     private ApiResult<EventGuesserBuilderModel> _result = ApiResult<EventGuesserBuilderModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
@@ -97,20 +98,18 @@
     [Inject]
     private IDialogService DialogService { get; set; } = default!;
 
-    [CascadingParameter]
-    private CascadingHistorySettings HistorySettings { get; set; } = default!;
+    [Inject]
+    private ILocalStorageService Storage { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
+        _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
         _result = await EventGuesserService.GetAsync();
-        if (_result.IsSuccess)
+        await _result.Match(async model =>
         {
-            var tests = _result.Unwrap().Tests;
-            if (!tests.Any(x => x.IsAllowed && x.Type == HistorySettings.EventGuesserType))
-                await HistorySettings.ChangeEventGuesserTypeAsync(tests.FirstOrDefault(x => x.IsAllowed)?.Type);
-
-            return;
-        }
+            if (!model.Tests.Any(x => x.IsAllowed && x.Type == _settings.Size))
+                await OnSizeChanged(model.Tests.FirstOrDefault(x => x.IsAllowed)?.Type);
+        });
 
         if (_result.IsError && _result.UnwrapError().IsTestAlreadyCreated(out var id))
             Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(id));
@@ -118,12 +117,12 @@
 
     private async Task CreateTestAsync()
     {
-        if (string.IsNullOrEmpty(HistorySettings.EventGuesserType))
+        if (string.IsNullOrEmpty(_settings.Size))
             return;
 
         _isLoading = true;
 
-        var request = new CreateRequest(HistorySettings.EventGuesserType, HistorySettings.EventGuesserEpoch);
+        var request = new CreateRequest(_settings.Size, _settings.Epoch);
         (await EventGuesserService.CreateAsync(request))
             .Match(
                 x => Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(x.Id)),
@@ -133,6 +132,18 @@
         _isLoading = false;
     }
 
+    private async Task OnEpochChanged(EpochType epoch)
+    {
+        _settings = _settings with { Epoch = epoch };
+        await Storage.SetItemAsync(HistoryLocalStorageKey.EventGuesserSettings, _settings);
+    }
+
+    private async Task OnSizeChanged(string? type)
+    {
+        _settings = _settings with { Size = type };
+        await Storage.SetItemAsync(HistoryLocalStorageKey.EventGuesserSettings, _settings);
+    }
+    
     private void OpenRule()
     {
         var rule = _result.Unwrap().Rule;
@@ -147,5 +158,7 @@
 
         DialogService.Show<RuleDialog>(rule.Title, parameters, options);
     }
+
+    private sealed record Settings(EpochType Epoch, string? Size);
 
 }

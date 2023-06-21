@@ -1,21 +1,22 @@
 @using Education.Web.Client.Features.History.Services.Quiz.Model
 @using Education.Web.Client.Features.History.Services.Quiz.Request
+@using Education.Web.Client.Models.Quiz
 
 <section class="@Class">
     <MudText Class="mb-3" Typo="Typo.h6">
         @L["History_Epoch_Title"]
     </MudText>
     <EpochRadioGroup
-        SelectedEpoch="@HistorySettings.QuizEpoch"
-        SelectedEpochChanged="@HistorySettings.ChangeQuizEpochAsync"
+        SelectedEpoch="@Epoch"
+        SelectedEpochChanged="@EpochChanged"
         Class="mb-3 mb-sm-6"/>
 
     <MudText Class="mb-3" Typo="Typo.h6">
         @L["Quiz_Type_Title"]
     </MudText>
     <QuizDifficultyRadioGroup
-        SelectedDifficulty="@HistorySettings.QuizDifficulty"
-        SelectedDifficultyChanged="@(x => HistorySettings.ChangeQuizDifficultyAsync(x))"
+        SelectedDifficulty="@Difficulty"
+        SelectedDifficultyChanged="@DifficultyChanged"
         Quizzes="@Quizzes"
         Class="mb-3 mb-sm-6"/>
 
@@ -38,13 +39,22 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-
-    [CascadingParameter]
-    private CascadingHistorySettings HistorySettings { get; set; } = default!;
-
+    
     [Parameter, EditorRequired]
     public QuizInformationModel[] Quizzes { get; set; } = Array.Empty<QuizInformationModel>();
 
+    [Parameter]
+    public DifficultyType? Difficulty { get; set; }
+
+    [Parameter]
+    public EventCallback<DifficultyType?> DifficultyChanged { get; set; }
+    
+    [Parameter]
+    public EpochType Epoch { get; set; }
+
+    [Parameter]
+    public EventCallback<EpochType> EpochChanged { get; set; }
+    
     [Parameter, EditorRequired]
     public EventCallback<CreateEpochQuizRequest> OnCreateClick { get; set; }
 
@@ -53,19 +63,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (Quizzes.Any(x => x.IsAllowed && x.Type == HistorySettings.QuizDifficulty))
+        if (Quizzes.Any(x => x.IsAllowed && x.Type == Difficulty))
             return;
 
-        await HistorySettings.ChangeQuizDifficultyAsync(Quizzes.FirstOrDefault(x => x.IsAllowed)?.Type);
+        await DifficultyChanged.InvokeAsync(Quizzes.FirstOrDefault(x => x.IsAllowed)?.Type);
     }
 
     private async Task CreateTestAsync()
     {
-        if (!HistorySettings.QuizDifficulty.HasValue)
+        if (!Difficulty.HasValue)
             return;
 
         _isLoading = true;
-        await OnCreateClick.InvokeAsync(new CreateEpochQuizRequest(HistorySettings.QuizDifficulty.Value, HistorySettings.QuizEpoch));
+        await OnCreateClick.InvokeAsync(new CreateEpochQuizRequest(Difficulty.Value, Epoch));
         _isLoading = false;
     }
 

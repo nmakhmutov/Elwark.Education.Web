@@ -66,6 +66,12 @@ public sealed class ApiResult<T>
             success(Value);
     }
 
+    public async Task Match(Func<T, Task> success)
+    {
+        if (IsSuccess)
+            await success(Value);
+    }
+
     public void Match(Action<T> success, Action<Error> error)
     {
         if (IsSuccess)

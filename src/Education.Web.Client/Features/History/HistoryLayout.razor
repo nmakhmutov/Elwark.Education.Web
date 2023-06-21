@@ -3,65 +3,63 @@
 @inherits LayoutComponentBase
 
 <CascadingTheme>
-    <CascadingHistorySettings>
-        <MudLayout Class="d-flex flex-column min-vh-100">
-            <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged"/>
+    <MudLayout Class="d-flex flex-column min-vh-100">
+        <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged"/>
 
-            <AppBar Title="@L["History_Title"]" Href="@HistoryUrl.Root" DrawerToggleCallback="@ToggleDrawerAsync">
-                <div class="w-sm-33 w-md-50">
-                    <MudAutocomplete
-                        T="SearchModel"
-                        @ref="@_searchAutocomplete"
-                        DebounceInterval="300"
-                        AdornmentIcon="@Icons.Material.Outlined.Search"
-                        Placeholder="@L["Search_Title"]"
-                        IconSize="Size.Small"
-                        Margin="Margin.Dense"
-                        Variant="Variant.Outlined"
-                        Adornment="Adornment.Start"
-                        SearchFuncWithCancel="OnSearch"
-                        ValueChanged="OnSearchResult"
-                        TextChanged="OnTextChanged"
-                        ResetValueOnEmptyText
-                        ShowProgressIndicator
-                        Clearable
-                        Dense>
-                        <ItemTemplate Context="result">
-                            <div class="d-flex align-center">
-                                <MudAvatar Image="@result.ImageUrl" Size="Size.Large" Square Class="mr-4"/>
-                                <div class="one-line-text">
-                                    <MudText Class="mud-text-secondary" Typo="Typo.caption">
-                                        @result.Category
-                                    </MudText>
-                                    <MudText Typo="Typo.body1">
-                                        @result.Title
-                                    </MudText>
-                                    <MudText Typo="Typo.caption">
-                                        @result.Overview
-                                    </MudText>
-                                </div>
+        <AppBar Title="@L["History_Title"]" Href="@HistoryUrl.Root" DrawerToggleCallback="@ToggleDrawerAsync">
+            <div class="w-sm-33 w-md-50">
+                <MudAutocomplete
+                    T="SearchModel"
+                    @ref="@_searchAutocomplete"
+                    DebounceInterval="300"
+                    AdornmentIcon="@Icons.Material.Outlined.Search"
+                    Placeholder="@L["Search_Title"]"
+                    IconSize="Size.Small"
+                    Margin="Margin.Dense"
+                    Variant="Variant.Outlined"
+                    Adornment="Adornment.Start"
+                    SearchFuncWithCancel="OnSearch"
+                    ValueChanged="OnSearchResult"
+                    TextChanged="OnTextChanged"
+                    ResetValueOnEmptyText
+                    ShowProgressIndicator
+                    Clearable
+                    Dense>
+                    <ItemTemplate Context="result">
+                        <div class="d-flex align-center">
+                            <MudAvatar Image="@result.ImageUrl" Size="Size.Large" Square Class="mr-4"/>
+                            <div class="one-line-text">
+                                <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                                    @result.Category
+                                </MudText>
+                                <MudText Typo="Typo.body1">
+                                    @result.Title
+                                </MudText>
+                                <MudText Typo="Typo.caption">
+                                    @result.Overview
+                                </MudText>
                             </div>
-                        </ItemTemplate>
-                        <MoreItemsTemplate>
-                            <MudLink Class="px-3" OnClick="@OnSearchMore">
-                                More results
-                            </MudLink>
-                        </MoreItemsTemplate>
-                    </MudAutocomplete>
-                </div>
-            </AppBar>
+                        </div>
+                    </ItemTemplate>
+                    <MoreItemsTemplate>
+                        <MudLink Class="px-3" OnClick="@OnSearchMore">
+                            More results
+                        </MudLink>
+                    </MoreItemsTemplate>
+                </MudAutocomplete>
+            </div>
+        </AppBar>
 
-            <main class="d-flex flex-column flex-grow-1 mud-main-content">
-                @Body
-            </main>
+        <main class="d-flex flex-column flex-grow-1 mud-main-content">
+            @Body
+        </main>
 
-            <MainFooter/>
+        <MainFooter/>
 
-            <MudScrollToTop>
-                <MudFab Icon="@Icons.Material.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
-            </MudScrollToTop>
-        </MudLayout>
-    </CascadingHistorySettings>
+        <MudScrollToTop>
+            <MudFab Icon="@Icons.Material.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
+        </MudScrollToTop>
+    </MudLayout>
 </CascadingTheme>
 
 @code {
@@ -93,7 +91,7 @@
     private async Task<IEnumerable<SearchModel>> OnSearch(string text, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
-            return Array.Empty<SearchModel>();
+            return Enumerable.Empty<SearchModel>();
 
         return (await HistorySearchService.SearchAsync(new SearchRequest(text, 0, 11), ct))
             .Map(x => x.Hints)

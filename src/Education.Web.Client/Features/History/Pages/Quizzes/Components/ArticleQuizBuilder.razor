@@ -1,6 +1,7 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Quiz.Model
 @using Education.Web.Client.Features.History.Services.Quiz.Request
+@using Education.Web.Client.Models.Quiz
 
 <section class="@Class">
     <div class="mb-3 mb-sm-6">
@@ -23,8 +24,8 @@
         @if (Quizzes.Any(x => x.IsAllowed))
         {
             <QuizDifficultyRadioGroup
-                SelectedDifficulty="@HistorySettings.QuizDifficulty"
-                SelectedDifficultyChanged="@HistorySettings.ChangeQuizDifficultyAsync"
+                SelectedDifficulty="@Difficulty"
+                SelectedDifficultyChanged="@DifficultyChanged"
                 Quizzes="@Quizzes" Class="mb-6"/>
 
             <div class="d-flex justify-center">
@@ -54,9 +55,6 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [CascadingParameter]
-    private CascadingHistorySettings HistorySettings { get; set; } = default!;
-
     [Parameter, EditorRequired]
     public ArticleOverviewModel Article { get; set; } = default!;
 
@@ -66,6 +64,12 @@
     [Parameter, EditorRequired]
     public QuizInformationModel[] Quizzes { get; set; } = Array.Empty<QuizInformationModel>();
 
+    [Parameter]
+    public DifficultyType? Difficulty { get; set; }
+
+    [Parameter]
+    public EventCallback<DifficultyType?> DifficultyChanged { get; set; }
+    
     [Parameter, EditorRequired]
     public EventCallback<CreateArticleQuizRequest> OnCreateClick { get; set; }
 
@@ -77,19 +81,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (Quizzes.Any(x => x.IsAllowed && x.Type == HistorySettings.QuizDifficulty))
+        if (Quizzes.Any(x => x.IsAllowed && x.Type == Difficulty))
             return;
 
-        await HistorySettings.ChangeQuizDifficultyAsync(Quizzes.FirstOrDefault(x => x.IsAllowed)?.Type);
+        await DifficultyChanged.InvokeAsync(Quizzes.FirstOrDefault(x => x.IsAllowed)?.Type);
     }
 
     private async Task CreateTestAsync()
     {
-        if (!HistorySettings.QuizDifficulty.HasValue)
+        if (!Difficulty.HasValue)
             return;
 
         _isLoading = true;
-        await OnCreateClick.InvokeAsync(new CreateArticleQuizRequest(HistorySettings.QuizDifficulty.Value, Article.Id));
+        await OnCreateClick.InvokeAsync(new CreateArticleQuizRequest(Difficulty.Value, Article.Id));
         _isLoading = false;
     }
 

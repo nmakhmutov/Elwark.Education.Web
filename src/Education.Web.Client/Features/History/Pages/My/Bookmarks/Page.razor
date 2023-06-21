@@ -1,5 +1,4 @@
 @page "/history/my/bookmarks"
-@using Blazored.LocalStorage
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -43,13 +42,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _filter = await Storage.GetItemAsync<BookmarksFilter>(HistoryLocalStorageKey.BookmarksFilterKey) ?? BookmarksFilter.Empty;
+        _filter = await Storage.GetItemAsync<BookmarksFilter>(HistoryLocalStorageKey.BookmarkSettings) ?? BookmarksFilter.Empty;
     }
 
     private async Task OnFilterChanged(BookmarksFilter filter)
     {
         _filter = filter;
-        await Storage.SetItemAsync(HistoryLocalStorageKey.BookmarksFilterKey, filter);
+        await Storage.SetItemAsync(HistoryLocalStorageKey.BookmarkSettings, filter);
     }
 
 }
