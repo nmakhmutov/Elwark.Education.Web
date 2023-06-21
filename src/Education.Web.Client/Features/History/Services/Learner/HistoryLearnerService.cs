@@ -36,7 +36,7 @@ internal sealed class HistoryLearnerService : IHistoryLearnerService
         _api.GetAsync<EventGuesserStatisticsModel>("history/learners/me/event-guessers/large");
 
     public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest request) =>
-        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/users/me/articles/bookmarks", request);
+        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/learners/me/articles/bookmarks", request);
     
     public Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId) =>
         _api.GetAsync<ArticleStatisticsModel>($"history/learners/me/articles/{articleId}");
@@ -50,8 +50,8 @@ internal sealed class HistoryLearnerService : IHistoryLearnerService
     public Task<ApiResult<Unit>> DislikeArticleAsync(string articleId) =>
         _api.PostAsync<Unit>($"history/learners/me/articles/{articleId}/dislikes");
 
-    public Task<ApiResult<PagingTokenModel<CourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest request) =>
-        _api.GetAsync<PagingTokenModel<CourseOverviewModel>>("history/users/me/courses/bookmarks", request);
+    public Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest request) =>
+        _api.GetAsync<PagingTokenModel<UserCourseOverviewModel>>("history/learners/me/courses/bookmarks", request);
     
     public Task<ApiResult<UserCourseActivityModel>> StartCourseAsync(string courseId) =>
         _api.PostAsync<UserCourseActivityModel>($"/history/learners/me/courses/{courseId}");

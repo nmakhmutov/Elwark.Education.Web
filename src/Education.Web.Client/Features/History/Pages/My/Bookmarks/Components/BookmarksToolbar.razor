@@ -1,0 +1,57 @@
+@using Education.Web.Client.Features.History.Services.User.Request
+
+<section class="d-flex flex-wrap align-center gap-3 gap-sm-3 @Class">
+    <div class="dropdown">
+        <MudSelect T="BookmarksCatalog"
+                   Value="@Filter.Catalog"
+                   ValueChanged="@TypeChanged"
+                   Label="@L["Bookmarks_Catalog_Title"]"
+                   Margin="Margin.Dense"
+                   Dense>
+            <MudSelectItem Value="@BookmarksCatalog.Articles">
+                @L["Bookmarks_Catalog_Articles"]
+            </MudSelectItem>
+            <MudSelectItem Value="@BookmarksCatalog.Courses">
+                @L["Bookmarks_Catalog_Courses"]
+            </MudSelectItem>
+        </MudSelect>
+    </div>
+
+    <div class="dropdown">
+        <MudSelect T="BookmarksRequest.SortType"
+                   Label="@L["SortBy_Title"]"
+                   Value="@Filter.Sort"
+                   ValueChanged="@SortChanged"
+                   Margin="Margin.Dense"
+                   Dense>
+            <MudSelectItem Value="BookmarksRequest.SortType.DateAddedNewest">
+                @L["Bookmarks_DateAddedNewest"]
+            </MudSelectItem>
+            <MudSelectItem Value="BookmarksRequest.SortType.DateAddedOldest">
+                @L["Bookmarks_DateAddedOldest"]
+            </MudSelectItem>
+        </MudSelect>
+    </div>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public BookmarksFilter Filter { get; set; } = BookmarksFilter.Empty;
+
+    [Parameter]
+    public EventCallback<BookmarksFilter> FilterChanged { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private Task TypeChanged(BookmarksCatalog catalog) =>
+        FilterChanged.InvokeAsync(Filter with { Catalog = catalog });
+
+    private Task SortChanged(BookmarksRequest.SortType sort) =>
+        FilterChanged.InvokeAsync(Filter with { Sort = sort });
+
+}

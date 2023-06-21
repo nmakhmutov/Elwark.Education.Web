@@ -6,14 +6,13 @@ using Microsoft.AspNetCore.Components;
 
 namespace Education.Web.Client.Shared.Settings;
 
+[Obsolete]
 public sealed partial class CascadingHistorySettings
 {
     private const string StorageKey = "set.hst";
 
     private HistorySettings _settings = new()
     {
-        SearchRandomEpoch = EpochType.None,
-
         QuizEpoch = EpochType.None,
         QuizDifficulty = null,
 
@@ -26,9 +25,6 @@ public sealed partial class CascadingHistorySettings
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-    public EpochType SearchRandomEpoch =>
-        _settings.SearchRandomEpoch;
 
     public EpochType QuizEpoch =>
         _settings.QuizEpoch;
@@ -51,9 +47,6 @@ public sealed partial class CascadingHistorySettings
         _settings = result;
     }
 
-    public ValueTask ChangeSearchRandomEpochAsync(EpochType epoch) =>
-        UpdateStateAsync(_settings with { SearchRandomEpoch = epoch });
-
     public ValueTask ChangeQuizEpochAsync(EpochType epoch) =>
         UpdateStateAsync(_settings with { QuizEpoch = epoch });
 
@@ -74,11 +67,9 @@ public sealed partial class CascadingHistorySettings
         return Storage.SetItemAsync(StorageKey, _settings);
     }
 
+    [Obsolete]
     private sealed record HistorySettings
     {
-        [JsonPropertyName("sre")]
-        public EpochType SearchRandomEpoch { get; init; }
-
         [JsonPropertyName("qe")]
         public EpochType QuizEpoch { get; init; }
 

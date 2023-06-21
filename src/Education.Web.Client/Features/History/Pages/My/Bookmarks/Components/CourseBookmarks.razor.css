@@ -1,0 +1,44 @@
+.grid {
+    display: grid;
+    grid-template-columns: 56px auto 50px;
+    align-items: center;
+    gap: 12px;
+}
+
+.rating {
+    display: none;
+    justify-self: center;
+}
+
+.completion {
+    display: none;
+    justify-self: center;
+}
+
+.actions {
+    justify-self: end;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        grid-template-columns: 56px 1fr 180px 50px;
+        gap: 24px;
+    }
+
+    .completion {
+        min-width: 100%;
+        display: block;
+    }
+}
+
+
+@media (min-width: 960px) {
+    .grid {
+        grid-template-columns: 56px 1fr 150px 250px 50px;
+    }
+
+    .rating {
+        display: block;
+    }
+
+}

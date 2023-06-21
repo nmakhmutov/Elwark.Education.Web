@@ -31,25 +31,7 @@
 
         <AuthorizeView>
             <aside class="d-flex align-center justify-space-between gap-3">
-                <div class="flex-grow-1">
-                    @if (Activity is not null)
-                    {
-                        if (Activity.IsStarted)
-                        {
-                            <MudProgressLinear Value="@Activity.Completeness" Color="Color.Primary" Size="Size.Large" Rounded>
-                                <MudText Typo="Typo.body2" Color="Color.Dark">
-                                    @Activity.Completeness%
-                                </MudText>
-                            </MudProgressLinear>
-                        }
-                        else
-                        {
-                            <MudText Typo="Typo.subtitle1">
-                                Not started
-                            </MudText>
-                        }
-                    }
-                </div>
+                <CourseProgress Class="flex-grow-1" Progress="@Activity?.Completeness"/>
 
                 @if (OnBookmarkClick is not null)
                 {

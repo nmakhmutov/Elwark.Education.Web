@@ -1,5 +1,5 @@
 @page "/history/my/bookmarks"
-@using Education.Web.Client.Features.History.Services.User.Request
+@using Blazored.LocalStorage
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -8,100 +8,26 @@
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Bookmarks_Title"]" Breadcrumbs="@Breadcrumbs">
-        @if (!_isEmpty)
-        {
-            <div>
-                <MudSelect T="BookmarksRequest.SortType"
-                           Label="@L["Sort_Title"]"
-                           Value="@_request.Sort"
-                           ValueChanged="@OnSortChanged"
-                           Margin="Margin.Dense"
-                           Dense>
-                    @foreach (var sort in BookmarksRequest.SortTypes)
-                    {
-                        <MudSelectItem T="BookmarksRequest.SortType" Value="sort.Key">
-                            @L[$"Bookmarks_{sort.Value}"]
-                        </MudSelectItem>
-                    }
-                </MudSelect>
-            </div>
-        }
-    </EduPageHeader>
+    <EduPageHeader Title="@L["Bookmarks_Title"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
-@if (_isLoading)
-{
-    <Spinner/>
-}
-else
-{
-    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        @if (_isEmpty)
-        {
-            <EduEmpty
-                Class="grid-column-full"
-                Title="@L["Bookmarks_EmptyTitle"]"
-                Subtitle="@L["Bookmarks_EmptySubtitle"]"/>
-        }
-        else
-        {
-            <div class="grid px-3 px-sm-6 mb-3">
-                <div class="image"></div>
-                <div class="title">@L["Article_Random"]</div>
-                <div class="rating">@L["Rating"]</div>
-                <div class="quizzes">@L["NumberOfQuizzes_Total_Title"]</div>
-                <div class="completion">@L["LearningStatus_Title"]</div>
-                <div class="actions"></div>
-            </div>
-            <Virtualize @ref="_virtualize" ItemsProvider="BookmarkProvider" ItemSize="110" Context="item">
-                <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
-                    <div class="image">
-                        <MudAvatar Size="Size.Large" Image="@item.Article.ThumbnailUrl"/>
-                    </div>
-                    <div class="title">
-                        <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)" Typo="Typo.h6">
-                            @item.Article.Title
-                        </MudLink>
-                        <br/>
-                        <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
-                           href="@HistoryUrl.Content.Articles(item.Article.Epoch)">
-                            @L[item.Article.Epoch.ResourceKey()]
-                        </a>
-                    </div>
-                    <div class="rating">
-                        <ContentRating
-                            Class="d-inline-flex flex-column align-center"
-                            Rating="@item.Article.Rating"
-                            ShowTooltip/>
-                    </div>
-                    <div class="quizzes">
-                        <TotalQuizzesChip Quizzes="@(item.Activity?.TotalQuizzes ?? 0)"/>
-                    </div>
-                    <div class="completion">
-                        <ArticleCompletionChip 
-                            IsCompleted="@item.Activity?.IsCompleted"
-                            Href="@HistoryUrl.User.MyArticle(item.Article.Id)"/>
-                    </div>
-                    <div class="actions">
-                        <BookmarkButton
-                            Id="@item.Article.Id"
-                            IsBookmarked="@item.Activity!.IsBookmarked"
-                            OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
-                    </div>
-                </div>
+<EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+    <BookmarksToolbar Filter="@_filter" FilterChanged="@OnFilterChanged"/>
+</EduContainer>
 
-            </Virtualize>
-        }
-    </EduContainer>
+@switch (_filter.Catalog)
+{
+    case BookmarksCatalog.Articles:
+        <ArticleBookmarks Sort="@_filter.Sort" />
+        break;
+        
+    case BookmarksCatalog.Courses:
+        <CourseBookmarks Sort="@_filter.Sort"/>
+        break;
 }
 
 @code {
-    private bool _isLoading = true;
-    private bool _isEmpty = true;
-    private Virtualize<UserArticleOverviewModel> _virtualize = default!;
-    private readonly List<UserArticleOverviewModel> _items = new();
-    private BookmarksRequest _request = new(BookmarksRequest.SortType.DateAddedNewest, 20);
+    private BookmarksFilter _filter = BookmarksFilter.Empty;
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -110,52 +36,20 @@ else
     };
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
-    
-    [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private ILocalStorageService Storage { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        var data = await LearnerService.GetArticleBookmarksAsync(_request);
-        data.Match(x =>
-        {
-            _request = _request with { Token = x.Next };
-            _items.AddRange(x.Items);
-        });
-
-        _isEmpty = _items.Count == 0;
-        _isLoading = false;
+        _filter = await Storage.GetItemAsync<BookmarksFilter>(HistoryLocalStorageKey.BookmarksFilterKey) ?? BookmarksFilter.Empty;
     }
 
-    private async ValueTask<ItemsProviderResult<UserArticleOverviewModel>> BookmarkProvider(ItemsProviderRequest request)
+    private async Task OnFilterChanged(BookmarksFilter filter)
     {
-        int GetLength() =>
-            _items.Count + (string.IsNullOrEmpty(_request.Token) ? 0 : 1);
-
-        var isRangeAvailable = _items.Count > (request.StartIndex + 1) * request.Count ||
-                               (_items.Count > 0 && string.IsNullOrEmpty(_request.Token));
-
-        if (isRangeAvailable)
-            return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
-
-        return (await LearnerService.GetArticleBookmarksAsync(_request = _request with { Count = request.Count }))
-            .Map(x =>
-            {
-                _request = _request with { Token = x.Next };
-                _items.AddRange(x.Items);
-
-                return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex), GetLength());
-            })
-            .UnwrapOr(new ItemsProviderResult<UserArticleOverviewModel>(_items, 0));
-    }
-
-    private Task OnSortChanged(BookmarksRequest.SortType sort)
-    {
-        _request = _request with { Sort = sort, Token = null };
-        _items.Clear();
-
-        return _virtualize.RefreshDataAsync();
+        _filter = filter;
+        await Storage.SetItemAsync(HistoryLocalStorageKey.BookmarksFilterKey, filter);
     }
 
 }

@@ -10,6 +10,6 @@ public sealed record CourseModel(
     TimeSpan TimeToRead,
     uint Learners,
     ContentRatingModel Rating,
-    UserCourseActivityModel UserActivity,
+    UserCourseActivityModel? UserActivity,
     UserArticleOverviewModel[] Articles
 );

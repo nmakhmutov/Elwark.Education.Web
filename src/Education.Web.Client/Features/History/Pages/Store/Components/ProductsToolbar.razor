@@ -47,7 +47,7 @@
         <MudSelect T="ProductSort"
                    Value="@Filter.Sort"
                    ValueChanged="@SortChanged"
-                   Label="@L["Sort_Title"]"
+                   Label="@L["SortBy_Title"]"
                    Margin="Margin.Dense"
                    Dense>
             <MudSelectItem Value="@ProductSort.Featured">
@@ -141,16 +141,16 @@
     public string? Class { get; set; }
 
     private Task CatalogChanged(CatalogType catalog) =>
-        FilterChanged.InvokeAsync(Filter = Filter with { Catalog = catalog});
+        FilterChanged.InvokeAsync(Filter with { Catalog = catalog});
 
     private Task CategoryChanged(CategoryType category) =>
-        FilterChanged.InvokeAsync(Filter = Filter with { Category = category });
+        FilterChanged.InvokeAsync(Filter with { Category = category });
 
     private Task SortChanged(ProductSort sort) =>
-        FilterChanged.InvokeAsync(Filter = Filter with { Sort = sort });
+        FilterChanged.InvokeAsync(Filter with { Sort = sort });
 
     private Task OnResetClick() =>
-        FilterChanged.InvokeAsync(Filter = ProductsFilter.Empty);
+        FilterChanged.InvokeAsync(ProductsFilter.Empty);
 
     private Color GetBackpackColor() =>
         Inventory.Backpack.Fullness > Inventory.Backpack.Capacity ? Color.Error : Color.Default;

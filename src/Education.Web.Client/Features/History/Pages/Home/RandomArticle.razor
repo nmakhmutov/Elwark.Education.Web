@@ -1,5 +1,7 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Article
+@using Blazored.LocalStorage
+
 <section class="background rounded pa-16">
     <section class="mud-paper rounded pa-16">
         <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-3 mb-sm-6">
@@ -7,8 +9,8 @@
         </MudText>
         <div class="search">
             <MudSelect T="EpochType"
-                       Value="@HistorySettings.SearchRandomEpoch"
-                       ValueChanged="@HistorySettings.ChangeSearchRandomEpochAsync"
+                       Value="@_epoch"
+                       ValueChanged="@OnEpochChanged"
                        Label="@L["History_Epoch_Title"]"
                        Margin="Margin.Dense"
                        Variant="Variant.Text">
@@ -37,7 +39,8 @@
 </section>
 
 @code {
-
+    private EpochType _epoch = EpochType.None;
+    
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -50,10 +53,18 @@
     [CascadingParameter]
     private CascadingHistorySettings HistorySettings { get; set; } = default!;
 
+    [Inject]
+    private ILocalStorageService Storage { get; set; } = default!;
+    
     [Parameter]
     public string? Class { get; set; }
 
     private bool _isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _epoch = await Storage.GetItemAsync<EpochType>(HistoryLocalStorageKey.SearchRandomArticleByEpochKey);
+    }
 
     private async Task OnClick()
     {
@@ -62,10 +73,16 @@
 
         _isLoading = true;
 
-        (await ArticleService.GetRandomAsync(HistorySettings.SearchRandomEpoch))
+        (await ArticleService.GetRandomAsync(_epoch))
             .Match(x => Navigation.NavigateTo(HistoryUrl.Content.Article(x)));
 
         _isLoading = false;
+    }
+
+    private async Task OnEpochChanged(EpochType epoch)
+    {
+        _epoch = epoch;
+        await Storage.SetItemAsync(HistoryLocalStorageKey.SearchRandomArticleByEpochKey, epoch);
     }
 
 }

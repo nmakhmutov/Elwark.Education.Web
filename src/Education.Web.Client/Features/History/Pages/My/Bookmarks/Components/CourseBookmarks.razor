@@ -1,0 +1,122 @@
+@using Education.Web.Client.Features.History.Services.User.Request
+@using System.ComponentModel
+
+<EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+    @if (_isEmpty)
+    {
+        <EduEmpty Class="grid-column-full" Title="@L["Bookmarks_EmptyTitle"]" Subtitle="@L["Bookmarks_EmptySubtitle"]"/>
+    }
+    else
+    {
+        <div class="grid px-3 px-sm-6 mb-3">
+            <div class="image"></div>
+            <div class="title">@L["Course_Title"]</div>
+            <div class="rating">@L["Rating"]</div>
+            <div class="completion">@L["LearningStatus_Title"]</div>
+            <div class="actions"></div>
+        </div>
+
+        <Virtualize @ref="_virtualize" ItemsProvider="BookmarkProvider" ItemSize="120">
+            <Placeholder>
+                <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
+                    <div class="image">
+                        <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px"/>
+                    </div>
+                    <div class="title">
+                        <MudSkeleton Class="my-4" SkeletonType="SkeletonType.Text" Width="60%" Height="30px"/>
+                    </div>
+                    <div class="rating">
+                        <MudRating MaxValue="5" SelectedValue="0" Disabled/>
+                    </div>
+                    <div class="completion">
+                        <CourseProgress Progress="@(null)"/>
+                    </div>
+                    <div class="actions">
+                        <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
+                    </div>
+                </div>
+            </Placeholder>
+            <ItemContent Context="item">
+                <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
+                    <div class="image">
+                        <MudAvatar Size="Size.Large" Image="@item.Course.ThumbnailUrl"/>
+                    </div>
+                    <div class="title">
+                        <MudLink Href="@HistoryUrl.Content.Course(item.Course.Id)" Typo="Typo.h6">
+                            @item.Course.Title
+                        </MudLink>
+                    </div>
+                    <div class="rating">
+                        <ContentRating
+                            Class="d-inline-flex flex-column align-center"
+                            Rating="@item.Course.Rating"
+                            ShowTooltip/>
+                    </div>
+                    <div class="completion">
+                        <CourseProgress Progress="@item.Activity?.Completeness"/>
+                    </div>
+                    <div class="actions">
+                        <BookmarkButton
+                            Id="@item.Course.Id"
+                            IsBookmarked="@(item.Activity?.IsBookmarked ?? false)"
+                            OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"/>
+                    </div>
+                </div>
+            </ItemContent>
+        </Virtualize>
+    }
+</EduContainer>
+
+@code {
+    private string? _token;
+    private bool _isEmpty = false;
+    private Virtualize<UserCourseOverviewModel>? _virtualize;
+    private readonly List<UserCourseOverviewModel> _items = new();
+
+    [Inject]
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public BookmarksRequest.SortType Sort { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (_virtualize is null)
+            return Task.CompletedTask;
+
+        _items.Clear();
+
+        return _virtualize.RefreshDataAsync();
+    }
+
+    private async ValueTask<ItemsProviderResult<UserCourseOverviewModel>> BookmarkProvider(ItemsProviderRequest request)
+    {
+        int GetLength() =>
+            _items.Count + (string.IsNullOrEmpty(_token) ? 0 : 1);
+
+        var isRangeAvailable = _items.Count > (request.StartIndex + 1) * request.Count ||
+                               (_items.Count > 0 && string.IsNullOrEmpty(_token));
+
+        if (isRangeAvailable)
+            return new ItemsProviderResult<UserCourseOverviewModel>(_items.Take(request.StartIndex..request.Count), GetLength());
+
+        return (await LearnerService.GetCourseBookmarksAsync(new BookmarksRequest(Sort, request.Count, _token)))
+            .Map(x =>
+            {
+                _token = x.Next;
+                _items.AddRange(x.Items);
+                if (!_isEmpty && _items.Count == 0)
+                {
+                    _isEmpty = true;
+                    StateHasChanged();
+                }
+
+                return new ItemsProviderResult<UserCourseOverviewModel>(_items.Take(request.StartIndex..), GetLength());
+            })
+            .UnwrapOr(new ItemsProviderResult<UserCourseOverviewModel>(_items, 0));
+    }
+
+}

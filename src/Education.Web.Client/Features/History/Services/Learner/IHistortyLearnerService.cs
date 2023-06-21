@@ -33,7 +33,7 @@ public interface IHistoryLearnerService
 
     Task<ApiResult<Unit>> DislikeArticleAsync(string articleId);
 
-    Task<ApiResult<PagingTokenModel<CourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest request);
+    Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest request);
 
     Task<ApiResult<UserCourseActivityModel>> StartCourseAsync(string courseId);
 

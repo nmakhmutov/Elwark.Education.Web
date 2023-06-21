@@ -10,7 +10,7 @@
             <MudSpacer/>
 
             <section>
-                @if (_isAuthenticated && !Activity.IsStarted)
+                @if (_isAuthenticated && Activity?.Completeness.HasValue == false)
                 {
                     <div class="mb-3">
                         <LoadingButton
@@ -47,12 +47,12 @@
                     {
                         <MudSpacer/>
 
-                        @if (Activity.IsStarted)
+                        @if (Activity?.Completeness.HasValue == true)
                         {
                             <LikeButtons
                                 Color="Color.Inherit"
                                 Id="@CourseId"
-                                IsLiked="@Activity.IsLiked"
+                                IsLiked="@Activity?.IsLiked"
                                 OnLikeClick="@OnLikeClick"
                                 OnDislikeClick="@OnDislikeClick"/>
                         }
@@ -60,24 +60,14 @@
                         <BookmarkButton
                             Color="Color.Inherit"
                             Id="@CourseId"
-                            IsBookmarked="@Activity.IsBookmarked"
+                            IsBookmarked="@(Activity?.IsBookmarked ?? false)"
                             OnBookmarkClick="@OnBookmarkClick"/>
                     }
                 </div>
 
-                @if (_isAuthenticated && Activity.IsStarted)
+                @if (_isAuthenticated && Activity?.Completeness.HasValue == true)
                 {
-                    <div class="d-flex align-center gap-3 mt-3">
-                        <MudProgressLinear
-                            Value="@Activity.Completeness"
-                            Color="Color.Primary"
-                            Size="Size.Large"
-                            Rounded/>
-
-                        <MudText Typo="Typo.body1" Color="Color.Inherit">
-                            @Activity.Completeness%
-                        </MudText>
-                    </div>
+                    <CourseProgress Progress="@Activity?.Completeness" Size="Size.Large" Typo="Typo.subtitle1"/>
                 }
             </section>
         </header>
@@ -91,7 +81,7 @@
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["History_Courses"], HistoryUrl.Content.Courses)
+        new BreadcrumbItem(L["Courses_Title"], HistoryUrl.Content.Courses)
     };
 
     [Inject]
@@ -116,7 +106,7 @@
     public TimeSpan TimeToRead { get; set; }
 
     [Parameter, EditorRequired]
-    public UserCourseActivityModel Activity { get; set; } = default!;
+    public UserCourseActivityModel? Activity { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = default!;
