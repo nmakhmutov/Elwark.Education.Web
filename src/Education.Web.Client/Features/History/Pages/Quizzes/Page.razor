@@ -7,19 +7,7 @@
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
-    <EduPageHeader Title="@L["Quizzes_Title"]" Breadcrumbs="@Breadcrumbs">
-        <div>
-            <MudButton
-                DisableElevation
-                Variant="Variant.Text"
-                Color="Color.Primary"
-                EndIcon="@Icons.Material.Outlined.Info"
-                Disabled="@(!_result.IsSuccess)"
-                OnClick="@OpenRule">
-                @L["Quiz_Rules_Title"]
-            </MudButton>
-        </div>
-    </EduPageHeader>
+    <EduPageHeader Title="@L["Quizzes_Title"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" Context="model">
@@ -88,9 +76,6 @@
     private ISnackbar Snackbar { get; set; } = default!;
 
     [Inject]
-    private IDialogService DialogService { get; set; } = default!;
-
-    [Inject]
     private ILocalStorageService Storage { get; set; } = default!;
 
     [Parameter, SupplyParameterFromQuery(Name = "article")]
@@ -118,15 +103,6 @@
                 x => Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Test(x.Overview.Id)),
                 e => Snackbar.Add(e.Detail, Severity.Error)
             );
-
-    private void OpenRule()
-    {
-        var rule = _result.Unwrap().Rule;
-        var parameters = new DialogParameters { [nameof(RuleDialog.Content)] = rule.Content };
-        var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Large, CloseOnEscapeKey = true, CloseButton = true };
-
-        DialogService.Show<RuleDialog>(rule.Title, parameters, options);
-    }
 
     private async Task OnEpochChanged(EpochType epoch)
     {
