@@ -1,5 +1,4 @@
-@using Blazored.LocalStorage
-<MudThemeProvider @ref="@_mudThemeProvider" Theme="@Theme" IsDarkMode="@IsDarkMode"/>
+<MudThemeProvider @ref="@_provider" Theme="@ThemeConfiguration" IsDarkMode="@IsDarkMode"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -7,9 +6,9 @@
 
 @code {
         private const string CacheKey = "ts";
-    private MudThemeProvider _mudThemeProvider = default!;
+    private MudThemeProvider _provider = new();
 
-    private static readonly MudTheme Theme = new()
+    private static readonly MudTheme ThemeConfiguration = new()
     {
         Palette = new PaletteLight
         {
@@ -83,9 +82,11 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    public MudTheme Theme => _provider.Theme;
+
     public bool IsDarkMode { get; private set; }
 
-    public string Icon => 
+    public string Icon =>
         IsDarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -93,9 +94,9 @@
         if (!firstRender)
             return;
 
-        await _mudThemeProvider.WatchSystemPreference(x => ChangeTheme(x));
+        await _provider.WatchSystemPreference(x => ChangeTheme(x));
 
-        IsDarkMode = await Storage.GetItemAsync<bool?>(CacheKey) ?? await _mudThemeProvider.GetSystemPreference();
+        IsDarkMode = await Storage.GetItemAsync<bool?>(CacheKey) ?? await _provider.GetSystemPreference();
     }
 
     private Task ChangeTheme(bool isDarkMode) =>

@@ -26,7 +26,7 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override void OnParametersSet() =>
+    protected override Task OnInitializedAsync() =>
         InvokeAsync(async () =>
         {
             _timeLeft = GetTimeLeft();

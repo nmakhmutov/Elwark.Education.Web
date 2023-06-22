@@ -1,9 +1,9 @@
-<section class="mud-paper pa-3 pa-sm-6 @Class">
-    <div class="d-flex justify-space-between align-center mb-3 mb-sm-6">
+<section class="mud-paper d-flex flex-column pa-3 gap-3 pa-sm-6 gap-sm-6 @Class">
+    <div class="d-flex justify-space-between align-center">
         <MudText Class="mr-3" Typo="Typo.body2">
             @L["Article_TextAlignment"]
         </MudText>
-        <MudButtonGroup DisableElevation Size="Size.Small" Variant="Variant.Outlined">
+        <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" DisableElevation>
             <MudIconButton
                 Icon="@Icons.Material.Outlined.FormatAlignLeft"
                 Disabled="@(AppSettings.TextAlign == Align.Left)"
@@ -26,22 +26,32 @@
     <div class="d-flex justify-space-between align-center">
         <MudText Typo="Typo.body2" Class="mr-3">
             @L["Article_TextFont"]
-            <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                @($"x{AppSettings.FontSize:N1}")
-            </MudText>
         </MudText>
-        <MudButtonGroup DisableElevation Size="Size.Small" Variant="Variant.Outlined">
+        <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" OverrideStyles DisableElevation>
             <MudIconButton
-                DisableElevation
                 Disabled="@(!AppSettings.CanDecreaseFont)"
                 Icon="@Icons.Material.Outlined.Remove"
-                OnClick="@AppSettings.DecreaseFontAsync"/>
+                OnClick="@AppSettings.DecreaseFontAsync"
+                DisableElevation/>
+            <input class="input" value="@((int)(AppSettings.FontSize * 100) + "%")" readonly/>
             <MudIconButton
-                DisableElevation
                 Disabled="@(!AppSettings.CanIncreaseFont)"
                 Icon="@Icons.Material.Outlined.Add"
-                OnClick="@AppSettings.IncreaseFontAsync"/>
+                OnClick="@AppSettings.IncreaseFontAsync"
+                DisableElevation/>
         </MudButtonGroup>
+    </div>
+
+    <div class="d-flex justify-space-between align-center">
+        <MudText Typo="Typo.body2" Class="mr-3">
+            @L["Article_TextBold"]
+        </MudText>
+        <MudCheckBox
+            T="bool"
+            Color="Color.Primary"
+            Checked="@AppSettings.IsFontWeightBold"
+            CheckedChanged="@(() => AppSettings.ToggleFontWeight())">
+        </MudCheckBox>
     </div>
 </section>
 

@@ -19,111 +19,111 @@
     case Status.Success:
         <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
             <section class="grid">
-                <div>
-                    <section class="mud-paper pa-3 pa-sm-6">
-                        <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
-                            @_testTypeTitle
+                <header class="timer">
+                    <section class="d-flex flex-wrap justify-space-between gap-3">
+                        <MudText Typo="Typo.subtitle1">
+                            @L["Quiz_QuestionOutOf", _quiz.Completed, _quiz.Questions]
                         </MudText>
-                        <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center" Style="font-weight: 500">
-                            @_result.Value.Overview.Article.Title
-                        </MudText>
-
-                        @if (_currentQuestion.ImageUrl is not null)
-                        {
-                            <img class="image mb-3 mb-sm-6" src="@_currentQuestion.ImageUrl" alt="@_currentQuestion.Title"/>
-                        }
-
-                        <MudText Class="mb-6" Typo="Typo.subtitle1" Align="Align.Center">
-                            @_currentQuestion.Title
-                        </MudText>
-
-                        @switch (_currentQuestion)
-                        {
-                            case QuizQuestion.MultipleModel question:
-                            {
-                                <MultipleAnswerForm
-                                    IsLoading="@_checking"
-                                    IsTestCompleted="@IsCompleted"
-                                    CorrectAnswer="@(_correctAnswer as AnswerResult.MultipleModel)"
-                                    UserAnswer="@(_userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel())"
-                                    Options="@question.Options"
-                                    OnAnswer="@OnMultiplyAnswer"
-                                    OnNext="@OnNext"
-                                    OnComplete="@OnComplete"/>
-                                break;
-                            }
-
-                            case QuizQuestion.ShortModel:
-                            {
-                                <ShortAnswerForm
-                                    IsLoading="@_checking"
-                                    IsTestCompleted="@IsCompleted"
-                                    CorrectAnswer="@(_correctAnswer as AnswerResult.ShortModel)"
-                                    UserAnswer="@(_userAnswer as ShortAnswerModel ?? new ShortAnswerModel())"
-                                    OnAnswer="@OnShortAnswer"
-                                    OnNext="@OnNext"
-                                    OnComplete="@OnComplete"/>
-                                break;
-                            }
-
-                            case QuizQuestion.SingleModel question:
-                            {
-                                <SingleAnswerForm
-                                    IsLoading="@_checking"
-                                    IsTestCompleted="@IsCompleted"
-                                    CorrectAnswer="@(_correctAnswer as AnswerResult.SingleModel)"
-                                    UserAnswer="@(_userAnswer as SingleAnswerModel ?? new SingleAnswerModel())"
-                                    Options="@question.Options"
-                                    OnAnswer="@OnSingleAnswer"
-                                    OnNext="@OnNext"
-                                    OnComplete="@OnComplete"/>
-                                break;
-                            }
-
-                            default:
-                                throw new ArgumentOutOfRangeException(nameof(_currentQuestion));
-                        }
+                        <CountdownTimer
+                            Date="@_quiz.ExpiredAt"
+                            Color="@_countdownColor"
+                            OnComplete="@OnExpired"/>
                     </section>
-                </div>
+                    <MudProgressLinear
+                        Rounded
+                        Min="0"
+                        Max="100"
+                        Value="@Progress"
+                        Color="Color.Primary"
+                        Size="Size.Medium"/>
+                </header>
 
-                <aside>
-                    <section class="mb-6">
-                        <header class="d-flex justify-space-between">
-                            <MudText Typo="Typo.subtitle1">
-                                @L["Quiz_CompletedQuestionOutOf", _quiz.Completed, _quiz.Questions]
-                            </MudText>
-                            <CountdownTimer Date="@_quiz.ExpiredAt" Color="@_countdownColor" OnComplete="@OnExpired"/>
-                        </header>
-                        <MudProgressLinear
-                            Rounded
-                            Min="0"
-                            Max="100"
-                            Value="@Progress"
-                            Color="Color.Primary"
-                            Size="Size.Medium"/>
-                    </section>
-                    <InventoryGrid Inventory="@(_inventory.OrderByDescending(x => x.IsInteractive))" Context="item">
-                        @if (item.IsInteractive)
+                <article class="quiz mud-paper pa-3 pa-sm-6">
+                    <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
+                        @_testTypeTitle
+                    </MudText>
+                    <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center" Style="font-weight: 500">
+                        @_result.Value.Overview.Article.Title
+                    </MudText>
+
+                    @if (_currentQuestion.ImageUrl is not null)
+                    {
+                        <img class="image mb-3 mb-sm-6" src="@_currentQuestion.ImageUrl" alt="@_currentQuestion.Title"/>
+                    }
+
+                    <MudText Class="mb-6" Typo="Typo.subtitle1" Align="Align.Center">
+                        @_currentQuestion.Title
+                    </MudText>
+
+                    @switch (_currentQuestion)
+                    {
+                        case QuizQuestion.MultipleModel question:
                         {
-                            <InventoryButtonCard
-                                Id="@item.Id"
-                                Quantity="@item.Quantity"
-                                Title="@item.Title"
-                                Overview="@item.Overview"
-                                IconUrl="@item.IconUrl"
-                                ButtonText="@L["Inventory_Use"]"
-                                OnClick="@OnUseInventory"/>
+                            <MultipleAnswerForm
+                                IsLoading="@_checking"
+                                IsTestCompleted="@IsCompleted"
+                                CorrectAnswer="@(_correctAnswer as AnswerResult.MultipleModel)"
+                                UserAnswer="@(_userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel())"
+                                Options="@question.Options"
+                                OnAnswer="@OnMultiplyAnswer"
+                                OnNext="@OnNext"
+                                OnComplete="@OnComplete"/>
+                            break;
                         }
-                        else
+
+                        case QuizQuestion.ShortModel:
                         {
-                            <InventoryInfoCard
-                                Title="@item.Title"
-                                Overview="@item.Overview"
-                                Quantity="@item.Quantity"
-                                IconUrl="@item.IconUrl"/>
+                            <ShortAnswerForm
+                                IsLoading="@_checking"
+                                IsTestCompleted="@IsCompleted"
+                                CorrectAnswer="@(_correctAnswer as AnswerResult.ShortModel)"
+                                UserAnswer="@(_userAnswer as ShortAnswerModel ?? new ShortAnswerModel())"
+                                OnAnswer="@OnShortAnswer"
+                                OnNext="@OnNext"
+                                OnComplete="@OnComplete"/>
+                            break;
                         }
-                    </InventoryGrid>
-                </aside>
+
+                        case QuizQuestion.SingleModel question:
+                        {
+                            <SingleAnswerForm
+                                IsLoading="@_checking"
+                                IsTestCompleted="@IsCompleted"
+                                CorrectAnswer="@(_correctAnswer as AnswerResult.SingleModel)"
+                                UserAnswer="@(_userAnswer as SingleAnswerModel ?? new SingleAnswerModel())"
+                                Options="@question.Options"
+                                OnAnswer="@OnSingleAnswer"
+                                OnNext="@OnNext"
+                                OnComplete="@OnComplete"/>
+                            break;
+                        }
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(_currentQuestion));
+                    }
+                </article>
+
+                <InventoryGrid Class="inventory" Inventory="@(_inventory.OrderByDescending(x => x.IsInteractive))" Context="item">
+                    @if (item.IsInteractive)
+                    {
+                        <InventoryButtonCard
+                            Id="@item.Id"
+                            Quantity="@item.Quantity"
+                            Title="@item.Title"
+                            Overview="@item.Overview"
+                            IconUrl="@item.IconUrl"
+                            ButtonText="@L["Inventory_Use"]"
+                            OnClick="@OnUseInventory"/>
+                    }
+                    else
+                    {
+                        <InventoryInfoCard
+                            Title="@item.Title"
+                            Overview="@item.Overview"
+                            Quantity="@item.Quantity"
+                            IconUrl="@item.IconUrl"/>
+                    }
+                </InventoryGrid>
             </section>
         </EduContainer>
         break;

@@ -1,5 +1,13 @@
+@using System.Text
+
 <article class="mud-paper pa-3 pa-sm-6 @Class">
-    <StyledMarkupString Content="@Content" Style="@AppSettings.TextStyles"/>
+    <style>
+        :root {
+            @CreateVariables()
+        }
+    </style>
+
+    @Content
 </article>
 
 @code {
@@ -7,10 +15,58 @@
     [CascadingParameter]
     private CascadingAppSettings AppSettings { get; set; } = default!;
 
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
     public MarkupString Content { get; set; }
+
+    private string CreateVariables()
+    {
+        if (ThemeProvider is null)
+            return string.Empty;
+
+        var sb = new StringBuilder();
+        var justify = AppSettings.TextAlign switch
+        {
+            Align.Left => "left",
+            Align.Start => "left",
+            Align.Right => "right",
+            Align.End => "right",
+            Align.Center => "center",
+            Align.Justify => "justify",
+            _ => "inherit"
+            };
+
+        sb.AppendLine($"--article-h1-size: {Math.Round(AppSettings.FontSize * 3.5, 2)}rem;");
+        sb.AppendLine($"--article-h1-weight: {Bold(ThemeProvider.Theme.Typography.H1.FontWeight)};");
+
+        sb.AppendLine($"--article-h2-size: {Math.Round(AppSettings.FontSize * 2.75, 2)}rem;");
+        sb.AppendLine($"--article-h2-weight: {Bold(ThemeProvider.Theme.Typography.H2.FontWeight)};");
+
+        sb.AppendLine($"--article-h3-size: {Math.Round(AppSettings.FontSize * 2.25, 2)}rem;");
+        sb.AppendLine($"--article-h3-weight: {Bold(ThemeProvider.Theme.Typography.H3.FontWeight)};");
+
+        sb.AppendLine($"--article-h4-size: {Math.Round(AppSettings.FontSize * 1.875, 2)}rem;");
+        sb.AppendLine($"--article-h4-weight: {Bold(ThemeProvider.Theme.Typography.H4.FontWeight)};");
+
+        sb.AppendLine($"--article-h5-size: {Math.Round(AppSettings.FontSize * 1.5, 2)}rem;");
+        sb.AppendLine($"--article-h5-weight: {Bold(ThemeProvider.Theme.Typography.H5.FontWeight)};");
+
+        sb.AppendLine($"--article-h6-size: {Math.Round(AppSettings.FontSize * 1.25, 2)}rem;");
+        sb.AppendLine($"--article-h6-weight: {Bold(ThemeProvider.Theme.Typography.H6.FontWeight)};");
+
+        sb.AppendLine($"--article-text-size: {AppSettings.FontSize}rem;");
+        sb.AppendLine($"--article-text-weight: {Bold(ThemeProvider.Theme.Typography.Body1.FontWeight)};");
+        sb.AppendLine($"--article-text-align: {justify};");
+
+        return sb.ToString();
+    }
+
+    private int Bold(int fontWeight) =>
+        fontWeight * (AppSettings.IsFontWeightBold ? 2 : 1);
 
 }

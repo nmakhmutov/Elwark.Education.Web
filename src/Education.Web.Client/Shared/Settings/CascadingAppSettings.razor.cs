@@ -32,6 +32,9 @@ public sealed partial class CascadingAppSettings
     public double FontSize =>
         _settings.FontSize;
 
+    public bool IsFontWeightBold =>
+        _settings.IsFontWeightBold;
+
     public bool IsSidebarOpen =>
         _settings.IsSidebarOpen;
 
@@ -94,6 +97,9 @@ public sealed partial class CascadingAppSettings
     public ValueTask AlignTextJustifyAsync() =>
         UpdateAsync(_settings with { TextAlign = Align.Justify });
 
+    public ValueTask ToggleFontWeight() =>
+        UpdateAsync(_settings with { IsFontWeightBold = !_settings.IsFontWeightBold });
+
     public ValueTask ToggleSidebarAsync(bool isOpen) =>
         UpdateAsync(_settings with { IsSidebarOpen = isOpen });
 
@@ -112,6 +118,9 @@ public sealed partial class CascadingAppSettings
 
         [JsonPropertyName("fs")]
         public double FontSize { get; init; } = 1;
+
+        [JsonPropertyName("fw")]
+        public bool IsFontWeightBold { get; init; }
 
         [JsonPropertyName("iso")]
         public bool IsSidebarOpen { get; init; }
