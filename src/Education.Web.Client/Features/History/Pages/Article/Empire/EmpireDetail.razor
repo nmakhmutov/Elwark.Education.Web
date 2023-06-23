@@ -1,6 +1,7 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Article.Model
 @using Education.Web.Client.Models.Content
+@using Education.Web.Client.Services
 
 <header class="background" style="@_style">
     <section class="d-flex flex-column justify-center align-center h-100">
@@ -17,7 +18,7 @@
                 </MudText>
                 <HistoryDate
                     Date="@Empire.Founded"
-                    DateTimeFormatter="@DateTimeFormatter"
+                    DateTimeFormatter="@Customer.Humanize"
                     Typo="Typo.h6"
                     Align="Align.Center"/>
             </div>
@@ -28,7 +29,7 @@
                 </MudText>
                 <HistoryDate
                     Date="@Empire.Dissolved"
-                    DateTimeFormatter="@DateTimeFormatter"
+                    DateTimeFormatter="@Customer.Humanize"
                     Typo="Typo.h6"
                     Align="Align.Center"/>
             </div>
@@ -94,12 +95,12 @@
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
     <ContentGrid>
         <Header>
-            <ContentToolbarCard/>
+            <ContentToolbarCard Formatter="@Formatter"/>
             <ArticleInformation TimeToRead="@Empire.TimeToRead" Rating="@Empire.Rating"/>
         </Header>
 
         <Content>
-            <ContentCard Content="@Empire.Content"/>
+            <ContentCard Formatter="@Formatter" Content="@Empire.Content"/>
         </Content>
 
         <Sidebar>
@@ -120,7 +121,7 @@
             }
 
             <AuthorizeView>
-                <QuizCard 
+                <QuizCard
                     ArticleId="@Empire.Id"
                     HasEasyQuiz="@HasEasyQuiz"
                     HasHardQuiz="@HasHardQuiz"
@@ -156,11 +157,14 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [CascadingParameter]
-    private CascadingTheme? ThemeProvider { get; set; }
-
+    [Inject]
+    private ContentFormatter Formatter { get; set; } = default!;
+    
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
+    
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
 
     [Parameter, EditorRequired]
     public ArticleDetail.EmpireModel Empire { get; set; } = default!;
@@ -170,18 +174,26 @@
 
     [Parameter, EditorRequired]
     public bool HasEasyQuiz { get; set; }
-    
+
     [Parameter, EditorRequired]
     public bool HasHardQuiz { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } =
+        _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } =
+        _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } =
+        _ => Task.FromResult(ApiResult<bool>.Success(false));
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Formatter.InitializeAsync();
+    }
 
     protected override void OnParametersSet()
     {
@@ -194,8 +206,5 @@
             .AddStyle("background-position", "top center")
             .Build();
     }
-
-    private string DateTimeFormatter(DateTime date) =>
-        Customer.Humanize(date);
 
 }

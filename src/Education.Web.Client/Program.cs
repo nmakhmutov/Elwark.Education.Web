@@ -17,6 +17,7 @@ using Education.Web.Client.Features.History.Services.Store;
 using Education.Web.Client.Features.History.Services.User;
 using Education.Web.Client.Http;
 using Education.Web.Client.Http.Handlers;
+using Education.Web.Client.Services;
 using Education.Web.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -118,6 +119,7 @@ builder.Services
     .AddScoped<IHistoryUserService, HistoryUserService>();
 
 builder.Services
+    .AddScoped<ContentFormatter>()
     .AddScoped<CustomerStateProvider>();
 
 var app = builder.Build();

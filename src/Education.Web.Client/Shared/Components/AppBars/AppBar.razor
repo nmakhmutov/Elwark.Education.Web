@@ -1,7 +1,7 @@
 <MudAppBar Elevation="0">
-    @if (DrawerToggleCallback.HasDelegate)
+    @if (OnDrawerClick.HasDelegate)
     {
-        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggleCallback"/>
+        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@OnDrawerClick"/>
     }
 
     <MudLink Href="@Href" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None" Class="d-none d-sm-block">
@@ -33,7 +33,7 @@
     public string Href { get; set; } = "#";
 
     [Parameter]
-    public EventCallback<MouseEventArgs> DrawerToggleCallback { get; set; }
+    public EventCallback OnDrawerClick { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }

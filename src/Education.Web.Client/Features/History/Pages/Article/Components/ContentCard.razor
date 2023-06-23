@@ -1,36 +1,93 @@
+@using Education.Web.Client.Services
 @using System.Text
+@implements IDisposable
 
 <article class="mud-paper pa-3 pa-sm-6 @Class">
-    <style>
-        :root {
-            @CreateVariables()
-        }
-    </style>
+    <style>@_styles</style>
 
     @Content
 </article>
 
 @code {
 
-    [CascadingParameter]
-    private CascadingAppSettings AppSettings { get; set; } = default!;
+    private string? _styles;
 
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
 
-    [Parameter]
-    public string? Class { get; set; }
+    [Parameter, EditorRequired]
+    public ContentFormatter Formatter { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public MarkupString Content { get; set; }
 
-    private string CreateVariables()
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Formatter.OnChanged += UpdateStyles;
+        UpdateStyles();
+    }
+
+    private void UpdateStyles()
+    {
+        _styles = CreateStyleVariables();
+        StateHasChanged();
+    }
+
+    private string CreateStyleVariables()
     {
         if (ThemeProvider is null)
             return string.Empty;
 
-        var sb = new StringBuilder();
-        var justify = AppSettings.TextAlign switch
+        var sb = new StringBuilder(":root {\n");
+
+        sb.AppendLine($"--article-h1-size: {FontSize(3.5)}rem;");
+        sb.AppendLine($"--article-h1-weight: {TextBold(ThemeProvider.Theme.Typography.H1.FontWeight)};");
+        sb.AppendLine($"--article-h1-height: {LineHeight(ThemeProvider.Theme.Typography.H1.LineHeight)};");
+
+        sb.AppendLine($"--article-h2-size: {FontSize(2.75)}rem;");
+        sb.AppendLine($"--article-h2-weight: {TextBold(ThemeProvider.Theme.Typography.H2.FontWeight)};");
+        sb.AppendLine($"--article-h2-height: {LineHeight(ThemeProvider.Theme.Typography.H2.LineHeight)};");
+
+        sb.AppendLine($"--article-h3-size: {FontSize(2.25)}rem;");
+        sb.AppendLine($"--article-h3-weight: {TextBold(ThemeProvider.Theme.Typography.H3.FontWeight)};");
+        sb.AppendLine($"--article-h3-height: {LineHeight(ThemeProvider.Theme.Typography.H3.LineHeight)};");
+
+        sb.AppendLine($"--article-h4-size: {FontSize(1.875)}rem;");
+        sb.AppendLine($"--article-h4-weight: {TextBold(ThemeProvider.Theme.Typography.H4.FontWeight)};");
+        sb.AppendLine($"--article-h4-height: {LineHeight(ThemeProvider.Theme.Typography.H4.LineHeight)};");
+
+        sb.AppendLine($"--article-h5-size: {FontSize(1.5)}rem;");
+        sb.AppendLine($"--article-h5-weight: {TextBold(ThemeProvider.Theme.Typography.H5.FontWeight)};");
+        sb.AppendLine($"--article-h5-height: {LineHeight(ThemeProvider.Theme.Typography.H5.LineHeight)};");
+
+        sb.AppendLine($"--article-h6-size: {FontSize(1.25)}rem;");
+        sb.AppendLine($"--article-h6-weight: {TextBold(ThemeProvider.Theme.Typography.H6.FontWeight)};");
+        sb.AppendLine($"--article-h6-height: {LineHeight(ThemeProvider.Theme.Typography.H6.LineHeight)};");
+
+        sb.AppendLine($"--article-text-size: {Formatter.FontSize}rem;");
+        sb.AppendLine($"--article-text-weight: {TextBold(ThemeProvider.Theme.Typography.Body1.FontWeight)};");
+        sb.AppendLine($"--article-text-height: {LineHeight(ThemeProvider.Theme.Typography.Body1.LineHeight)};");
+        sb.AppendLine($"--article-text-align: {Justify()};");
+
+        sb.Append("}");
+
+        return sb.ToString();
+    }
+
+    private double FontSize(double fontSize) =>
+        Math.Round(Formatter.FontSize * fontSize, 2);
+
+    private double LineHeight(double lineHeight) =>
+        Math.Round(Formatter.LineHeight * lineHeight, 4);
+
+    private int TextBold(int fontWeight) =>
+        fontWeight * (Formatter.IsFontWeightBold ? 2 : 1);
+
+    private string Justify() =>
+        Formatter.TextAlign switch
         {
             Align.Left => "left",
             Align.Start => "left",
@@ -41,32 +98,7 @@
             _ => "inherit"
             };
 
-        sb.AppendLine($"--article-h1-size: {Math.Round(AppSettings.FontSize * 3.5, 2)}rem;");
-        sb.AppendLine($"--article-h1-weight: {Bold(ThemeProvider.Theme.Typography.H1.FontWeight)};");
-
-        sb.AppendLine($"--article-h2-size: {Math.Round(AppSettings.FontSize * 2.75, 2)}rem;");
-        sb.AppendLine($"--article-h2-weight: {Bold(ThemeProvider.Theme.Typography.H2.FontWeight)};");
-
-        sb.AppendLine($"--article-h3-size: {Math.Round(AppSettings.FontSize * 2.25, 2)}rem;");
-        sb.AppendLine($"--article-h3-weight: {Bold(ThemeProvider.Theme.Typography.H3.FontWeight)};");
-
-        sb.AppendLine($"--article-h4-size: {Math.Round(AppSettings.FontSize * 1.875, 2)}rem;");
-        sb.AppendLine($"--article-h4-weight: {Bold(ThemeProvider.Theme.Typography.H4.FontWeight)};");
-
-        sb.AppendLine($"--article-h5-size: {Math.Round(AppSettings.FontSize * 1.5, 2)}rem;");
-        sb.AppendLine($"--article-h5-weight: {Bold(ThemeProvider.Theme.Typography.H5.FontWeight)};");
-
-        sb.AppendLine($"--article-h6-size: {Math.Round(AppSettings.FontSize * 1.25, 2)}rem;");
-        sb.AppendLine($"--article-h6-weight: {Bold(ThemeProvider.Theme.Typography.H6.FontWeight)};");
-
-        sb.AppendLine($"--article-text-size: {AppSettings.FontSize}rem;");
-        sb.AppendLine($"--article-text-weight: {Bold(ThemeProvider.Theme.Typography.Body1.FontWeight)};");
-        sb.AppendLine($"--article-text-align: {justify};");
-
-        return sb.ToString();
-    }
-
-    private int Bold(int fontWeight) =>
-        fontWeight * (AppSettings.IsFontWeightBold ? 2 : 1);
+    public void Dispose() =>
+        Formatter.OnChanged -= UpdateStyles;
 
 }

@@ -1,6 +1,7 @@
 @using Education.Web.Client.Features.History.Services
-<MudDrawer Open="@DrawerOpen"
-           OpenChanged="OnDrawerOpenChanged"
+
+<MudDrawer Open="@Open"
+           OpenChanged="OpenChanged"
            ClipMode="DrawerClipMode.Docked"
            Breakpoint="Breakpoint.Lg"
            Elevation="0">
@@ -78,9 +79,9 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
-    public bool DrawerOpen { get; set; }
+    public bool Open { get; set; }
 
     [Parameter]
-    public EventCallback<bool> OnDrawerOpenChanged { get; set; }
+    public EventCallback<bool> OpenChanged { get; set; }
 
 }

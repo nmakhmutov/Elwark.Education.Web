@@ -1,6 +1,7 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Article.Model
 @using Education.Web.Client.Models.Content
+@using Education.Web.Client.Services
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
     <header class="d-flex flex-column align-center mb-3 mb-sm-6">
@@ -21,12 +22,12 @@
 
     <ContentGrid>
         <Header>
-            <ContentToolbarCard/>
+            <ContentToolbarCard Formatter="@Formatter" />
             <ArticleInformation TimeToRead="@Article.TimeToRead" Rating="@Article.Rating"/>
         </Header>
 
         <Content>
-            <ContentCard Content="@Article.Content"/>
+            <ContentCard Formatter="@Formatter" Content="@Article.Content"/>
         </Content>
 
         <Sidebar>
@@ -65,7 +66,10 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-
+    
+    [Inject]
+    private ContentFormatter Formatter { get; set; } = default!;
+    
     [Parameter, EditorRequired]
     public ArticleDetail.GeneralModel Article { get; set; } = default!;
 
@@ -79,12 +83,19 @@
     public bool HasHardQuiz { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = 
+        _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = 
+        _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = 
+        _ => Task.FromResult(ApiResult<bool>.Success(false));
 
+    protected override async Task OnInitializedAsync()
+    {
+        await Formatter.InitializeAsync();
+    }
 }

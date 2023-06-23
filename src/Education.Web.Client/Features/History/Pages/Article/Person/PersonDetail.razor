@@ -1,6 +1,7 @@
 @using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Article.Model
 @using Education.Web.Client.Models.Content
+@using Education.Web.Client.Services
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
     <div class="header">
@@ -10,7 +11,10 @@
 
                 @if (Person.Born is not null || Person.Died is not null)
                 {
-                    <PersonLivespan Born="@Person.Born" Died="@Person.Died" DateTimeFormatter="@DateTimeFormatter"/>
+                    <PersonLivespan 
+                        Born="@Person.Born"
+                        Died="@Person.Died"
+                        DateTimeFormatter="@Customer.Humanize"/>
                 }
             </div>
         </div>
@@ -45,12 +49,12 @@
 
     <ContentGrid>
         <Header>
-            <ContentToolbarCard/>
+            <ContentToolbarCard Formatter="@Formatter" />
             <ArticleInformation TimeToRead="@Person.TimeToRead" Rating="@Person.Rating"/>
         </Header>
 
         <Content>
-            <ContentCard Content="@Person.Content"/>
+            <ContentCard Formatter="@Formatter" Content="@Person.Content"/>
         </Content>
 
         <Sidebar>
@@ -91,6 +95,9 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [Inject]
+    private ContentFormatter Formatter { get; set; } = default!;
+
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
 
@@ -107,15 +114,20 @@
     public bool HasHardQuiz { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = 
+        _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = 
+        _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = 
+        _ => Task.FromResult(ApiResult<bool>.Success(false));
 
-    private string DateTimeFormatter(DateTime date) =>
-        Customer.Humanize(date);
-
+    protected override async Task OnInitializedAsync()
+    {
+        await Formatter.InitializeAsync();
+    }
+    
 }

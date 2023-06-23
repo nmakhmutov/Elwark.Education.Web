@@ -4,9 +4,9 @@
 
 <CascadingTheme>
     <MudLayout Class="d-flex flex-column min-vh-100">
-        <HistoryDrawer DrawerOpen="@_isOpen" OnDrawerOpenChanged="@OnDrawerOpenChanged"/>
+        <HistoryDrawer @bind-Open="@_isOpen"/>
 
-        <AppBar Title="@L["History_Title"]" Href="@HistoryUrl.Root" DrawerToggleCallback="@ToggleDrawerAsync">
+        <AppBar Title="@L["History_Title"]" Href="@HistoryUrl.Root" OnDrawerClick="@ToggleDrawer">
             <div class="w-sm-33 w-md-50">
                 <MudAutocomplete
                     T="SearchModel"
@@ -75,19 +75,10 @@
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
-
-    [CascadingParameter]
-    private CascadingAppSettings AppSettings { get; set; } = default!;
-
-    protected override void OnParametersSet() =>
-        _isOpen = AppSettings.IsSidebarOpen;
-
-    private ValueTask ToggleDrawerAsync() =>
-        OnDrawerOpenChanged(!_isOpen);
-
-    private ValueTask OnDrawerOpenChanged(bool value) =>
-        AppSettings.ToggleSidebarAsync(_isOpen = value);
-
+    
+    private void ToggleDrawer() =>
+        _isOpen = !_isOpen;
+    
     private async Task<IEnumerable<SearchModel>> OnSearch(string text, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
