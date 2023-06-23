@@ -3,15 +3,12 @@
 
 <ApiViewer Result="@_result" Context="bundles">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <section class="products">
-            @foreach (var bundle in ApplyFilter(bundles))
-            {
-                <BundleCard 
-                    Bundle="@bundle" 
-                    ShowLockBadge="@(!IsAffordable(bundle))" 
-                    OnPurchaseClick="@OpenPurchaseDialog"/>
-            }
-        </section>
+        <ProductsGrid Products="@ApplyFilter(bundles)" Context="bundle">
+            <BundleCard
+                Bundle="@bundle"
+                ShowLockBadge="@(!IsAffordable(bundle))"
+                OnPurchaseClick="@OpenPurchaseDialog"/>
+        </ProductsGrid>
     </EduContainer>
 </ApiViewer>
 
@@ -63,7 +60,7 @@
         await OnProductPurchased.InvokeAsync(product);
     }
 
-    private IEnumerable<Product.BundleModel> ApplyFilter(IEnumerable<Product.BundleModel> source)
+    private Product.BundleModel[] ApplyFilter(IEnumerable<Product.BundleModel> source)
     {
         if (Filter.Category != CategoryType.None)
             source = source.Where(x => x.Inventories.Any(t => t.Category.Type == Filter.Category));
@@ -79,7 +76,7 @@
             _ => throw new ArgumentOutOfRangeException()
             };
 
-        return source;
+        return source.ToArray();
     }
 
 }

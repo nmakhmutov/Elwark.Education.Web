@@ -3,15 +3,12 @@
 
 <ApiViewer Result="@_result" Context="inventories">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <section class="products">
-            @foreach (var inventory in ApplyFilter(inventories))
-            {
-                <InventoryCard
-                    Inventory="@inventory"
-                    ShowLockBadge="@(!IsAffordable(inventory))"
-                    OnPurchaseClick="@OpenPurchaseDialog"/>
-            }
-        </section>
+        <ProductsGrid Products="@ApplyFilter(inventories)" Context="inventory">
+            <InventoryCard
+                Inventory="@inventory"
+                ShowLockBadge="@(!IsAffordable(inventory))"
+                OnPurchaseClick="@OpenPurchaseDialog"/>
+        </ProductsGrid>
     </EduContainer>
 </ApiViewer>
 
@@ -20,10 +17,10 @@
 
     [Inject]
     private IHistoryStoreService StoreService { get; set; } = default!;
-    
+
     [Inject]
     private IDialogService DialogService { get; set; } = default!;
-    
+
     [Parameter, EditorRequired]
     public InventoryModel Inventory { get; set; } = default!;
 
@@ -39,7 +36,7 @@
     protected override async Task OnInitializedAsync() =>
         _result = await StoreService.GetInventoriesAsync();
 
-    private IEnumerable<Product.InventoryModel> ApplyFilter(IEnumerable<Product.InventoryModel> source)
+    private Product.InventoryModel[] ApplyFilter(IEnumerable<Product.InventoryModel> source)
     {
         if (Filter.Category != CategoryType.None)
             source = source.Where(x => x.Category.Type == Filter.Category);
@@ -55,7 +52,7 @@
             _ => throw new ArgumentOutOfRangeException()
             };
 
-        return source;
+        return source.ToArray();
     }
 
     private async Task OpenPurchaseDialog(Product.InventoryModel product)

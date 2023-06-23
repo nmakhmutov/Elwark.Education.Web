@@ -1,6 +1,6 @@
 @implements IDisposable
 
-<MudText Typo="Typo" Align="Align" Class="@Class" Color="@Color">
+<MudText Typo="@Typo" Align="@Align" Class="@Class" Color="@Color">
     @_timeLeft.Humanize()
 </MudText>
 
@@ -9,10 +9,7 @@
     private readonly PeriodicTimer _timer = new(TimeSpan.FromSeconds(1));
 
     [Parameter, EditorRequired]
-    public DateTime Date { get; set; }
-
-    [Parameter]
-    public EventCallback OnComplete { get; set; } = EventCallback.Empty;
+    public DateTime Deadline { get; set; }
 
     [Parameter]
     public Typo Typo { get; set; } = Typo.subtitle1;
@@ -26,26 +23,29 @@
     [Parameter]
     public string? Class { get; set; }
 
+    [Parameter]
+    public EventCallback OnComplete { get; set; }
+
     protected override Task OnInitializedAsync() =>
         InvokeAsync(async () =>
         {
-            _timeLeft = GetTimeLeft();
+            UpdateRemainingTime();
 
             while (await _timer.WaitForNextTickAsync())
             {
-                _timeLeft = GetTimeLeft();
                 if (TimeSpan.Zero >= _timeLeft)
                     break;
 
+                UpdateRemainingTime();
                 StateHasChanged();
             }
 
-            if (OnComplete.HasDelegate && TimeSpan.Zero >= _timeLeft)
+            if (OnComplete.HasDelegate)
                 await OnComplete.InvokeAsync();
         });
 
-    private TimeSpan GetTimeLeft() =>
-        new((Date - DateTime.UtcNow).Ticks / TimeSpan.TicksPerSecond * TimeSpan.TicksPerSecond);
+    private void UpdateRemainingTime() =>
+        _timeLeft = new TimeSpan(Deadline.Ticks - DateTime.UtcNow.Ticks / TimeSpan.TicksPerSecond * TimeSpan.TicksPerSecond);
 
     public void Dispose() =>
         _timer.Dispose();

@@ -14,16 +14,16 @@
 
 @media (min-width: 600px) {
     .grid {
-        display: grid;
-        grid-template-columns: minmax(100px, 1fr);
-        align-items: start;
+
         gap: 24px;
     }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 960px) {
     .grid {
-        grid-template-columns: 3fr 1fr;
+        display: grid;
+        align-items: start;
+        grid-template-columns: 2fr 1fr;
         grid-template-rows: auto 1fr;
     }
 
@@ -40,5 +40,11 @@
     ::deep .inventory {
         grid-column: 2;
         grid-row: 2;
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: 3fr 1fr;
     }
 }
