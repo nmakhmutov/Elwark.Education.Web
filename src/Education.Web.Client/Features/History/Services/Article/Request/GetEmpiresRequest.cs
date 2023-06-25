@@ -12,9 +12,8 @@ public sealed record GetEmpiresRequest(GetEmpiresRequest.SortType Sort, int Offs
         Duration = 2
     }
 
-    public QueryString ToQueryString()
-    {
-        var values = new Dictionary<string, string?>
+    public QueryString ToQueryString() =>
+        QueryString.Create(new Dictionary<string, string?>
         {
             [nameof(Sort)] = Sort switch
             {
@@ -25,8 +24,5 @@ public sealed record GetEmpiresRequest(GetEmpiresRequest.SortType Sort, int Offs
             },
             [nameof(Limit)] = Limit.ToString(),
             [nameof(Offset)] = Offset.ToString()
-        };
-
-        return QueryString.Create(values);
-    }
+        });
 }

@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Localization;
 
 namespace Education.Web.Client.Http;
@@ -10,18 +11,24 @@ internal abstract class ApiClient
 {
     private readonly ApiAnonymousClient _anonymous;
     private readonly ApiAuthenticatedClient _authenticated;
-    private readonly IStringLocalizer<App> _localizer;
+    private readonly IStringLocalizer _localizer;
     private readonly JsonSerializerOptions _options;
     private readonly AuthenticationStateProvider _provider;
+    private readonly TimeSpan _timeout;
 
     protected ApiClient(ApiAnonymousClient anonymous, ApiAuthenticatedClient authenticated,
-        IStringLocalizer<App> localizer, AuthenticationStateProvider provider, JsonSerializerOptions options)
+        IWebAssemblyHostEnvironment environment, AuthenticationStateProvider provider, IStringLocalizer localizer,
+        JsonSerializerOptions options)
     {
         _anonymous = anonymous;
         _authenticated = authenticated;
         _localizer = localizer;
         _provider = provider;
         _options = options;
+
+        _timeout = environment.IsDevelopment()
+            ? TimeSpan.FromMinutes(10)
+            : TimeSpan.FromMinutes(1);
     }
 
     public async Task<ApiResult<T>> GetAsync<T>(string url, CancellationToken ct = default)
@@ -80,12 +87,13 @@ internal abstract class ApiClient
         CancellationToken ct
     )
     {
-        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct, timeout.Token);
+        using var source = new CancellationTokenSource(_timeout);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct, source.Token);
 
         try
         {
-            using var message = await action(cts.Token).ConfigureAwait(false);
+            using var message = await action(cts.Token)
+                .ConfigureAwait(false);
 
             var status = (uint)message.StatusCode;
             var hasContent = (message.Content.Headers.ContentLength ?? 0) > 0;

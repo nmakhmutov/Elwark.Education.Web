@@ -7,7 +7,26 @@
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
-    <EduPageHeader Title="@L["Courses_Title"]" Breadcrumbs="@Breadcrumbs"/>
+    <section class="header">
+        <EduPageHeader Class="title" Title="@L["Courses_Title"]" Breadcrumbs="@Breadcrumbs"/>
+
+        <MudSelect T="GetCourseRequest.SortType"
+                   Value="@_sort"
+                   ValueChanged="@OnSortChange"
+                   Label="@L["SortBy_Title"]"
+                   Margin="Margin.Dense"
+                   Variant="Variant.Text">
+            <MudSelectItem Value="@GetCourseRequest.SortType.Newest">
+                @L["ContentSort_Resent_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetCourseRequest.SortType.Trending">
+                @L["ContentSort_Trending_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetCourseRequest.SortType.Popularity">
+                @L["ContentSort_TopRated_Title"]
+            </MudSelectItem>
+        </MudSelect>
+    </section>
 </EduContainer>
 
 <ApiViewer Result="@_result" Context="result">
@@ -33,7 +52,8 @@
 </ApiViewer>
 
 @code {
-    private GetCourseRequest _request = new(0, 20);
+    private const int Limit = 20;
+    private GetCourseRequest.SortType _sort;
 
     private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
         ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
@@ -44,37 +64,59 @@
     };
 
     [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
     private IHistoryCourseService CourseService { get; set; } = default!;
 
     [Inject]
     private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
     private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter, SupplyParameterFromQuery(Name = "sort")]
+    public string? SortString { get; set; }
 
     [Parameter, SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; }
 
     private int TotalPages =>
-        _result.Map(m => (int)double.Ceiling((double)m.Count / _request.Limit))
+        _result.Map(x => (int)double.Ceiling((double)x.Count / Limit))
             .UnwrapOr(1);
 
     protected override async Task OnParametersSetAsync()
     {
+        _result = ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
+
         if (CurrentPage < 1)
             CurrentPage = 1;
 
+        _sort = GetSort();
+
         _result = await CourseService
-            .GetAsync(_request = _request with { Offset = (CurrentPage - 1) * _request.Limit });
+            .GetAsync(new GetCourseRequest(_sort,(CurrentPage - 1) * Limit, Limit));
     }
 
     private void OnPagination(int page)
     {
         _result = ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
+        var value = page < 2 ? (int?)null : page;
+
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", value));
+    }
+
+    private void OnSortChange(GetCourseRequest.SortType sort)
+    {
+        _result = ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
+
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("sort", sort.ToString().ToLowerInvariant()));
+    }
+
+    private GetCourseRequest.SortType GetSort()
+    {
+        Enum.TryParse<GetCourseRequest.SortType>(SortString, true, out var value);
+        return value;
     }
 
 }

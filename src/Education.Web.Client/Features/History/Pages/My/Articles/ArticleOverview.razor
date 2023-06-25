@@ -1,6 +1,4 @@
-@using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.User.Model
-
 <section class="grid @Class">
     <div class="image-wrapper">
         <img class="image rounded object-cover object-center" src="@Article.ThumbnailUrl" alt="@Article.Title" loading="lazy"/>
@@ -79,6 +77,13 @@
 
 @code {
 
+    private List<BreadcrumbItem> Breadcrumbs =>
+        new()
+        {
+            new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+            new BreadcrumbItem(L[Article.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Article.Epoch))
+        };
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -89,17 +94,14 @@
     public ArticleStatisticsModel.TotalModel Total { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public List<BreadcrumbItem> Breadcrumbs { get; set; } = new();
+    public bool? IsCompleted { get; set; }
 
     [Parameter, EditorRequired]
-    public bool? IsCompleted { get; set; }
-    
-    [Parameter, EditorRequired]
     public bool IsBookmarked { get; set; }
-    
+
     [Parameter, EditorRequired]
     public Func<string, Task<ApiResult<bool>>>? OnBookmarkClick { get; set; }
-    
+
     [Parameter]
     public string? Class { get; set; }
 

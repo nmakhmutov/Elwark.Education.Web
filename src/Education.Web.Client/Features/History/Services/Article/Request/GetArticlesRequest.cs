@@ -12,9 +12,8 @@ public sealed record GetArticlesRequest(EpochType Epoch, GetArticlesRequest.Sort
         Trending = 2
     }
 
-    public QueryString ToQueryString()
-    {
-        var values = new Dictionary<string, string?>
+    public QueryString ToQueryString() =>
+        QueryString.Create(new Dictionary<string, string?>
         {
             [nameof(Epoch)] = Epoch.ToFastString(),
             [nameof(Sort)] = Sort switch
@@ -26,8 +25,5 @@ public sealed record GetArticlesRequest(EpochType Epoch, GetArticlesRequest.Sort
             },
             [nameof(Limit)] = Limit.ToString(),
             [nameof(Offset)] = Offset.ToString()
-        };
-
-        return QueryString.Create(values);
-    }
+        });
 }

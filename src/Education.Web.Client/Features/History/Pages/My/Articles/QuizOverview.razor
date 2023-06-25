@@ -1,21 +1,30 @@
 @using Education.Web.Client.Features.History.Services.User.Model
 @using Education.Web.Client.Models.Quiz
 
-<div class="d-flex flex-wrap align-center justify-space-between mb-3 mr-3">
-    <MudLink Href="@Href" Typo="Typo.h5">
-        @Title
-    </MudLink>
-    <div class="d-flex align-center">
-        <MudTooltip Text="@L["TimeSpent_Title"]">
-            <MudText Typo="Typo.h5" Class="mr-3">
-                @Quiz.TimeSpent.Humanize()
-            </MudText>
-        </MudTooltip>
+<section class="d-flex justify-space-between align-center mb-3">
+    <div class="d-flex align-center gap-3">
         <MudAvatar Color="Color.Primary" Size="Size.Medium">
             <MudIcon Icon="@EduIcons.TimeSpent" Size="Size.Medium"/>
         </MudAvatar>
+
+        <div class="d-flex flex-column">
+            <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                @L["TimeSpent_Title"]
+            </MudText>
+            <MudText Typo="Typo.h6">
+                @Quiz.TimeSpent.Humanize()
+            </MudText>
+        </div>
     </div>
-</div>
+
+    <MudButton
+        Class="text-transform-none"
+        Color="Color.Primary"
+        EndIcon="@Icons.Material.Outlined.ArrowForward" 
+        Href="@SeeAllHref">
+        @SeeAllText
+    </MudButton>
+</section>
 
 <EduFitGrid Class="mb-3 mb-sm-6">
     <StatisticsCard Title="@L["Quizzes_Title"]" Value="@Quiz.NumberOfQuizzes.Total">
@@ -31,17 +40,27 @@
 
 @if (Quiz.Conclusions.Length > 0)
 {
+    <MudText Class="mb-3" Typo="Typo.h6">
+        @L["PastLearningChecks_Title"]
+    </MudText>
     <MudExpansionPanels Elevation="0">
         @foreach (var conclusion in Quiz.Conclusions)
         {
             <MudExpansionPanel>
                 <TitleContent>
-                    <div class="d-flex">
-                        <MudText Typo="Typo.subtitle1" Class="mr-3">
+                    <div class="d-flex gap-3 mr-3">
+                        <MudText Typo="Typo.subtitle1">
                             @DateTimeFormatter(conclusion.CompletedAt)
                         </MudText>
+
                         <MudText Typo="@Typo.subtitle1" Color="@GetColor(conclusion.Status)">
                             @L[$"ConclusionStatus_{conclusion.Status}"]
+                        </MudText>
+
+                        <MudSpacer/>
+
+                        <MudText Class="d-none d-sm-inline" Typo="@Typo.subtitle1">
+                            @L["Questions_CorrectOutOfTotal", conclusion.AnswerRatio.Correct, conclusion.AnswerRatio.Questions]
                         </MudText>
                     </div>
                 </TitleContent>
@@ -62,10 +81,10 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public string Title { get; set; } = string.Empty;
+    public string? SeeAllText { get; set; }
 
     [Parameter, EditorRequired]
-    public string Href { get; set; } = string.Empty;
+    public string? SeeAllHref { get; set; }
 
     [Parameter, EditorRequired]
     public ArticleStatisticsModel.ProgressModel Quiz { get; set; } = default!;
@@ -73,7 +92,7 @@
     [Parameter]
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
 
-    public static Color GetColor(QuizStatus status) =>
+    private static Color GetColor(QuizStatus status) =>
         status switch
         {
             QuizStatus.Succeeded => Color.Success,
