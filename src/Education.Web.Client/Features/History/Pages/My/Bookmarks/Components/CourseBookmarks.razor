@@ -101,7 +101,7 @@
                                (_items.Count > 0 && string.IsNullOrEmpty(_token));
 
         if (isRangeAvailable)
-            return new ItemsProviderResult<UserCourseOverviewModel>(_items.Take(request.StartIndex..request.Count), GetLength());
+            return new ItemsProviderResult<UserCourseOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
 
         return (await LearnerService.GetCourseBookmarksAsync(new BookmarksRequest(Sort, request.Count, _token)))
             .Map(x =>
@@ -114,7 +114,7 @@
                     StateHasChanged();
                 }
 
-                return new ItemsProviderResult<UserCourseOverviewModel>(_items.Take(request.StartIndex..), GetLength());
+                return new ItemsProviderResult<UserCourseOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
             })
             .UnwrapOr(new ItemsProviderResult<UserCourseOverviewModel>(_items, 0));
     }

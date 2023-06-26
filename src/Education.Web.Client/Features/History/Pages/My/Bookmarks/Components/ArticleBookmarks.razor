@@ -121,16 +121,20 @@
                                (_items.Count > 0 && string.IsNullOrEmpty(_token));
 
         if (isRangeAvailable)
-            return new ItemsProviderResult<UserArticleOverviewModel>(_items.Take(request.StartIndex..request.Count), GetLength());
+            return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
 
         return (await LearnerService.GetArticleBookmarksAsync(new BookmarksRequest(Sort, request.Count, _token)))
             .Map(x =>
             {
                 _token = x.Next;
                 _items.AddRange(x.Items);
-                _isEmpty = _items.Count == 0;
+                if (!_isEmpty && _items.Count == 0)
+                {
+                    _isEmpty = true;
+                    StateHasChanged();
+                }
 
-                return new ItemsProviderResult<UserArticleOverviewModel>(_items.Take(request.StartIndex..), GetLength());
+                return new ItemsProviderResult<UserArticleOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
             })
             .UnwrapOr(new ItemsProviderResult<UserArticleOverviewModel>(_items, 0));
     }

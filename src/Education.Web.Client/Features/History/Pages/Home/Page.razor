@@ -1,5 +1,4 @@
 @page "/history"
-@using Education.Web.Client.Features.History.Services.Article.Model
 @using Education.Web.Client.Features.History.Services.Article.Request
 @layout HistoryLayout
 
@@ -7,80 +6,59 @@
     @L["History_Title"]
 </PageTitle>
 
-<ApiViewer Result="@_result" Context="result">
-    @* <SpotlightGrid Class="mb-3 mb-sm-6" Articles="@result.Trending.Take(8)"/> *@
+<EduContainer Class="py-3 py-sm-6" MaxWidth="@EduWidth.W1600">
+    <UnderlinedTitle
+        Class="mb-6"
+        Title="@L["Articles_Trending_Title"]"
+        Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Trending)"
+        HrefTitle="@L["Button_ViewAll"]"/>
 
-    <EduContainer Class="py-3 py-sm-6" MaxWidth="@EduWidth.W1600">
-        <UnderlinedTitle
-            Class="mb-6"
-            Title="@L["Articles_Trending_Title"]"
-            Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Trending)"
-            HrefTitle="@L["Button_ViewAll"]"/>
+    <FeaturedArticles/>
+</EduContainer>
 
-        <FeaturedArticlesGrid Articles="@result.Trending"/>
-    </EduContainer>
+<EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
+    <UnderlinedTitle Class="mb-3" Title="@L["History_Epochs_Title"]"/>
+    
+    <EpochSlider/>
+</EduContainer>
 
-    <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-        <UnderlinedTitle Class="mb-3" Title="@L["History_Epochs_Title"]"/>
-        <EpochSlider/>
-    </EduContainer>
+<EduContainer Class="mb-3 mb-sm-6 grey darken-4" MaxWidth="@EduWidth.W1600">
+    <DailyArticle Class="my-6 my-sm-12"/>
+</EduContainer>
 
-    <EduContainer Class="mb-3 mb-sm-6 grey darken-4" MaxWidth="@EduWidth.W1280">
-        <DailyArticle Article="@result.DailyArticle" Class="my-6 my-sm-12"/>
-    </EduContainer>
+<EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
+    <section class="wrapper mb-3 mb-sm-6">
+        <div class="grid">
+            <UnderlinedTitle
+                Class="mb-3"
+                Title="@L["Articles_Resent_Title"]"
+                Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Newest)"
+                HrefTitle="@L["Button_ViewAll"]"/>
 
-    <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-        <GridWithSidebar Class="mb-3 mb-sm-6">
-            <Content>
-                <UnderlinedTitle
-                    Class="mb-3"
-                    Title="@L["Articles_Resent_Title"]"
-                    Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Newest)"
-                    HrefTitle="@L["Button_ViewAll"]"/>
+            <RecentArticles/>
+        </div>
 
-                <EduFillGrid>
-                    @foreach (var article in result.Recent)
-                    {
-                        <ArticleCard Article="@article" HideFooter/>
-                    }
-                </EduFillGrid>
-            </Content>
-            <Sidebar>
+        <aside class="sidebar">
+            <div>
                 <UnderlinedTitle
                     Class="mb-3"
                     Title="@L["Articles_TopRated_Title"]"
                     Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Popularity)"
                     HrefTitle="@L["Button_ViewAll"]"/>
 
-                @foreach (var article in result.Popular)
-                {
-                    <ArticleCard
-                        Class="mb-3 mb-sm-6"
-                        Article="@article"
-                        Horizontal
-                        HideFooter
-                        HideOverview/>
-                }
-            </Sidebar>
-        </GridWithSidebar>
-    </EduContainer>
+                <PopularArticles/>
+            </div>
+        </aside>
+    </section>
+</EduContainer>
 
-    <EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-        <RandomArticle Class="my-6 my-sm-12"/>
-    </EduContainer>
-
-</ApiViewer>
+<EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
+    <RandomArticle Class="my-6 my-sm-12"/>
+</EduContainer>
 
 @code {
-    private ApiResult<SpotlightModel> _result = ApiResult<SpotlightModel>.Loading();
-
-    [Inject]
-    private IHistoryArticleService HistoryArticleService { get; set; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-
-    protected override async Task OnInitializedAsync() =>
-        _result = await HistoryArticleService.GetSpotlightAsync();
 
 }

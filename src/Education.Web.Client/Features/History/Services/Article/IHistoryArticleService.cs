@@ -15,7 +15,5 @@ public interface IHistoryArticleService
     
     Task<ApiResult<UserArticleOverviewModel[]>> GetRelatedArticlesAsync(string id);
 
-    Task<ApiResult<SpotlightModel>> GetSpotlightAsync();
-
     Task<ApiResult<string>> GetRandomAsync(EpochType epoch);
 }
