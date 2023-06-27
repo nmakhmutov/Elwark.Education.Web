@@ -1,25 +1,25 @@
 @using Education.Web.Client.Features.History.Services.Article.Request
 
-<ApiViewer Result="@_result">
-    <Loading>
-        @for (var i = 0; i < 6; i++)
-        {
-            <ArticleSkeletonCard/>
-        }
-    </Loading>
-    <ChildContent Context="articles">
-        <EduFillGrid>
+<EduFillGrid>
+    <ApiViewer Result="@_result">
+        <Loading>
+            @for (var i = 0; i < 6; i++)
+            {
+                <ArticleSkeletonCard/>
+            }
+        </Loading>
+        <ChildContent Context="articles">
             @foreach (var item in articles.Items)
             {
-                <ArticleCard 
+                <ArticleCard
                     Article="@item.Article"
                     Activity="@item.Activity"
                     OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
                     ShortOverview/>
             }
-        </EduFillGrid>
-    </ChildContent>
-</ApiViewer>
+        </ChildContent>
+    </ApiViewer>
+</EduFillGrid>
 
 @code {
 
