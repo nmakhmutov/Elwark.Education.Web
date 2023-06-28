@@ -6,7 +6,7 @@
         <Loading>
             @for (var i = 0; i < 6; i++)
             {
-                <ArticleSkeletonCard
+                <SkeletonCard
                     Horizontal="@IsHorizontal(i)"
                     HideFooter="@IsHiddenOverview(i)"/>
             }
@@ -52,16 +52,14 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            var options = new ResizeOptions { NotifyOnBreakpointOnly = true };
-            var result = await BreakpointService.SubscribeAsync(x => OnBreakpointChanged(x), options);
-            
-            _subscriptionId = result.SubscriptionId;
-            OnBreakpointChanged(result.Breakpoint);
-        }
+        if (!firstRender)
+            return;
 
-        await base.OnAfterRenderAsync(firstRender);
+        var options = new ResizeOptions { NotifyOnBreakpointOnly = true };
+        var result = await BreakpointService.SubscribeAsync(x => OnBreakpointChanged(x), options);
+        _subscriptionId = result.SubscriptionId;
+
+        OnBreakpointChanged(result.Breakpoint);
     }
 
     private void OnBreakpointChanged(Breakpoint breakpoint)

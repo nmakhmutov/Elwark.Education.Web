@@ -5,20 +5,29 @@
 
 <MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
     <DialogContent>
-        <div class="d-flex justify-space-between align-start pa-3 mb-3 mb-sm-6">
-            <div></div>
-            
-            <InventoryInfoCard
-                Class="border mud-border-lines-default mt-4"
-                Title="@Product.Title"
-                Subtitle="@Product.Category.Title"
-                Overview="@Product.Overview"
-                IconUrl="@Product.IconUrl"
-                Quantity="@(1)"/>
+        <section class="d-flex gap-3 gap-sm-6 mb-3 mb-sm-6">
+            <div class="mud-background d-flex justify-center align-center rounded-lg relative pa-9">
+                <img class="image" src="@Product.IconUrl" alt="@Product.Title" loading="lazy"/>
+            </div>
 
-            <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
-        </div>
-        
+            <header class="d-flex justify-space-between flex-grow-1 align-start">
+                <div>
+                    <MudText Typo="Typo.h5">
+                        @Product.Title
+                    </MudText>
+                    <MudText Class="mud-text-secondary mb-3" Typo="Typo.body1">
+                        @Product.Category.Title
+                    </MudText>
+                    <MudText Typo="Typo.body2">
+                        @Product.Overview
+                    </MudText>
+                </div>
+
+                <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
+            </header>
+
+        </section>
+
         @if (_status is null)
         {
             <div class="d-flex flex-column flex-sm-row justify-space-between align-sm-end gap-3">
@@ -78,7 +87,7 @@
 
                         <MudNumericField
                             Class="number-input"
-                            @bind-Value="@_quantity"
+                            @bind-Value="@(                                             _quantity)"
                             Variant="Variant.Outlined"
                             Margin="Margin.Dense"
                             Min="@Min"
@@ -192,7 +201,7 @@
         await InvokeAsync(async () =>
         {
             var delay = TimeSpan.FromSeconds(1);
-            
+
             while (_status is { IsFinal:false })
             {
                 await Task.Delay(delay);

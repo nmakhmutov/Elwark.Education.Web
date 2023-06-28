@@ -9,26 +9,18 @@
                     Start with premium subscription today.
                 </MudText>
             </div>
-            <ApiViewer Result="@_result">
-                <Loading>
-                    <div class="pricing-grid">
-                        <SkeletonCard/>
-                        <SkeletonCard/>
-                    </div>
-                </Loading>
-                <ChildContent Context="subscriptions">
-                    <div class="pricing-grid">
-                        @foreach (var item in subscriptions)
-                        {
-                            <SubscriptionCard
-                                Id="@item.Id"
-                                Months="@item.Months"
-                                Price="@item.Price"
-                                Type="@item.Type"
-                                OnBuyClick="@OnBuyClick"/>
-                        }
-                    </div>
-                </ChildContent>
+            <ApiViewer Result="@_result" Context="subscriptions">
+                <div class="pricing-grid">
+                    @foreach (var item in subscriptions)
+                    {
+                        <SubscriptionCard
+                            Id="@item.Id"
+                            Months="@item.Months"
+                            Price="@item.Price"
+                            Type="@item.Type"
+                            OnBuyClick="@OnBuyClick"/>
+                    }
+                </div>
             </ApiViewer>
         </div>
     </DialogContent>
