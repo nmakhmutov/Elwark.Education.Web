@@ -1,6 +1,3 @@
-@using Education.Web.Client.Features.History.Services
-@using Education.Web.Client.Features.History.Services.Article.Request
-
 <ApiViewer Result="@_result" Context="item">
     <div class="grid @Class">
         <div class="image">
@@ -48,9 +45,6 @@
 
     [Inject]
     private IHistoryArticleService HistoryArticleService { get; set; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

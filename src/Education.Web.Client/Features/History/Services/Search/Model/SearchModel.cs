@@ -13,7 +13,7 @@ public sealed record SearchModel
         (ContentHref, CategoryHref) = category switch
         {
             "Article" => (HistoryUrl.Content.Article(Id), HistoryUrl.Content.Articles()),
-            "Course" => (HistoryUrl.Content.Course(Id), HistoryUrl.Content.Courses),
+            "Course" => (HistoryUrl.Content.Course(Id), HistoryUrl.Content.Courses()),
             _ => (HistoryUrl.Root, HistoryUrl.Root)
         };
     }

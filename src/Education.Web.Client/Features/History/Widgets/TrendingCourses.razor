@@ -1,6 +1,4 @@
-@using Education.Web.Client.Features.History.Services
-@using Education.Web.Client.Features.History.Services.Article
-@using Education.Web.Client.Features.History.Services.Article.Request
+@using Education.Web.Client.Features.History.Services.Course.Request
 @implements IAsyncDisposable;
 
 <section class="grid @Class">
@@ -16,10 +14,10 @@
         <ChildContent Context="articles">
             @for (var i = 0; i < articles.Items.Length; i++)
             {
-                <ArticleCard
-                    Article="@articles.Items[i].Article"
+                <CourseCard
+                    Course="@articles.Items[i].Course"
                     Activity="@articles.Items[i].Activity"
-                    OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
+                    OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"
                     Horizontal="@IsHorizontal(i)"
                     HideOverview="@IsHiddenOverview(i)"
                     ShortOverview="@IsShortOverview(i)"
@@ -32,14 +30,15 @@
 @code {
     private Guid _subscriptionId;
     private int _breakpoint;
-    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
-        ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+
+    private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
+        ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
 
     [Inject]
     private IBreakpointService BreakpointService { get; set; } = default!;
 
     [Inject]
-    private IHistoryArticleService HistoryArticleService { get; set; } = default!;
+    private IHistoryCourseService HistoryCourseService { get; set; } = default!;
 
     [Inject]
     private IHistoryLearnerService LearnerService { get; set; } = default!;
@@ -48,17 +47,18 @@
     public string? Class { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _result = await HistoryArticleService
-            .GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 0, 6));
+        _result = await HistoryCourseService
+            .GetAsync(new GetCourseRequest(GetCourseRequest.SortType.Trending, 0, 6));
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            var options = new ResizeOptions { NotifyOnBreakpointOnly = true, SuppressInitEvent = false };
+            var options = new ResizeOptions { NotifyOnBreakpointOnly = true };
             var result = await BreakpointService.SubscribeAsync(x => OnBreakpointChanged(x), options);
-
+            
             _subscriptionId = result.SubscriptionId;
+            OnBreakpointChanged(result.Breakpoint);
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -67,6 +67,7 @@
     private void OnBreakpointChanged(Breakpoint breakpoint)
     {
         _breakpoint = (int)breakpoint;
+        Console.WriteLine(breakpoint);
         InvokeAsync(StateHasChanged);
     }
 

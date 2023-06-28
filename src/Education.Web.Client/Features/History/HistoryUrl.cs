@@ -1,5 +1,7 @@
+using System.Text;
 using Education.Web.Client.Features.History.Services;
 using Education.Web.Client.Features.History.Services.Article.Request;
+using Education.Web.Client.Features.History.Services.Course.Request;
 
 namespace Education.Web.Client.Features.History;
 
@@ -13,19 +15,38 @@ public static class HistoryUrl
     public static class Content
     {
         public const string Empires = $"{Root}/empires";
-        public const string Courses = $"{Root}/courses";
 
         public static string Articles() =>
             $"{Root}/articles";
 
         public static string Articles(EpochType epoch) =>
-            $"{Root}/articles?epoch={epoch.ToFastString().ToLowerInvariant()}";
+            Articles(GetArticlesRequest.SortType.Newest, epoch);
 
-        public static string Articles(GetArticlesRequest.SortType sort) =>
-            $"{Root}/articles?sort={sort.ToString().ToLowerInvariant()}";
+        public static string Articles(GetArticlesRequest.SortType sort, EpochType epoch = EpochType.None)
+        {
+            var sb = new StringBuilder($"{Root}/articles")
+                .Append(sort switch
+                {
+                    GetArticlesRequest.SortType.Newest => "newest",
+                    GetArticlesRequest.SortType.Popularity => "popularity",
+                    GetArticlesRequest.SortType.Trending => "trending",
+                    _ => "newest"
+                });
+
+            if (epoch != EpochType.None)
+                sb.Append($"?epoch={epoch.ToFastString().ToLowerInvariant()}");
+
+            return sb.ToString();
+        }
 
         public static string Article(string articleId) =>
             $"{Root}/article/{articleId}";
+
+        public static string Courses() =>
+            $"{Root}/courses";
+
+        public static string Courses(GetCourseRequest.SortType sort) =>
+            $"{Root}/courses/{sort.ToString().ToLowerInvariant()}";
 
         public static string Course(string courseId) =>
             $"{Root}/course/{courseId}";
@@ -78,13 +99,13 @@ public static class HistoryUrl
         public const string MyBackpack = $"{My}/backpack";
 
         public const string MyQuizzes = $"{My}/quizzes";
-        
+
         public const string MyEasyQuizzes = $"{My}/quizzes/easy";
 
         public const string MyHardQuizzes = $"{My}/quizzes/hard";
 
         public const string MyEventGuessers = $"{My}/event-guessers";
-        
+
         public const string MySmallEventGuessers = $"{My}/event-guessers/small";
 
         public const string MyMediumEventGuessers = $"{My}/event-guessers/medium";

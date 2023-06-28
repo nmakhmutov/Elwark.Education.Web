@@ -1,0 +1,104 @@
+@page "/history/courses/{category}"
+@layout HistoryLayout
+
+<PageTitle>
+    @L["Courses_Title"]
+</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6">
+    <section class="header">
+        <EduPageHeader Class="title" Title="@L["Courses_Title"]" Breadcrumbs="@Breadcrumbs"/>
+
+        <MudSelect T="GetCourseRequest.SortType"
+                   Value="@_sort"
+                   ValueChanged="@OnSortChange"
+                   Label="@L["SortBy_Title"]"
+                   Margin="Margin.Dense"
+                   Variant="Variant.Text">
+            <MudSelectItem Value="@GetCourseRequest.SortType.Newest">
+                @L["ContentSort_Resent_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetCourseRequest.SortType.Trending">
+                @L["ContentSort_Trending_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetCourseRequest.SortType.Popularity">
+                @L["ContentSort_TopRated_Title"]
+            </MudSelectItem>
+        </MudSelect>
+    </section>
+</EduContainer>
+
+<ApiViewer Result="@_result" Context="result">
+    <EduContainer>
+        <EduFillGrid Class="mb-6 mb-sm-12">
+            @foreach (var (course, activity) in result.Items)
+            {
+                <CourseCard
+                    Course="@course"
+                    Activity="@activity"
+                    OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"/>
+            }
+        </EduFillGrid>
+
+        <MudPagination
+            Class="d-flex justify-center py-3 py-sm-6"
+            Rectangular
+            DisableElevation
+            Selected="@CurrentPage"
+            SelectedChanged="@OnPagination"
+            Count="@TotalPages"/>
+    </EduContainer>
+</ApiViewer>
+
+@code {
+        private const int Limit = 20;
+    private GetCourseRequest.SortType _sort;
+    private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
+        ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryCourseService CourseService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Parameter]
+    public string? Category { get; set; }
+
+    [Parameter, SupplyParameterFromQuery(Name = "page")]
+    public int CurrentPage { get; set; }
+
+    private int TotalPages =>
+        _result.Map(x => (int)double.Ceiling((double)x.Count / Limit))
+            .UnwrapOr(1);
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _result = ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
+
+        if (CurrentPage < 1)
+            CurrentPage = 1;
+
+        Enum.TryParse(Category, true, out _sort);
+
+        _result = await CourseService
+            .GetAsync(new GetCourseRequest(_sort, (CurrentPage - 1) * Limit, Limit));
+    }
+
+    private void OnPagination(int page) => 
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page < 2 ? null : page));
+
+    private void OnSortChange(GetCourseRequest.SortType sort) => 
+        Navigation.NavigateTo(HistoryUrl.Content.Courses(sort));
+}

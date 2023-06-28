@@ -1,5 +1,6 @@
 @page "/history"
 @using Education.Web.Client.Features.History.Services.Article.Request
+@using Education.Web.Client.Features.History.Services.Course.Request
 @layout HistoryLayout
 
 <PageTitle>
@@ -13,48 +14,20 @@
         Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Trending)"
         HrefTitle="@L["Button_ViewAll"]"/>
 
-    <FeaturedArticles/>
+    <TrendingArticles/>
 </EduContainer>
 
-<EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-    <UnderlinedTitle Class="mb-3" Title="@L["History_Epochs_Title"]"/>
-    
-    <EpochSlider/>
+<EduContainer Class="py-3 py-sm-6" MaxWidth="@EduWidth.W1600">
+    <UnderlinedTitle
+        Class="mb-6"
+        Title="@L["Courses_Trending_Title"]"
+        Href="@HistoryUrl.Content.Courses(GetCourseRequest.SortType.Trending)"
+        HrefTitle="@L["Button_ViewAll"]"/>
+
+    <TrendingCourses/>
 </EduContainer>
 
-<EduContainer Class="mb-3 mb-sm-6 grey darken-4" MaxWidth="@EduWidth.W1600">
-    <DailyArticle Class="my-6 my-sm-12"/>
-</EduContainer>
-
-<EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-    <section class="wrapper mb-3 mb-sm-6">
-        <div class="grid">
-            <UnderlinedTitle
-                Class="mb-3"
-                Title="@L["Articles_Resent_Title"]"
-                Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Newest)"
-                HrefTitle="@L["Button_ViewAll"]"/>
-
-            <RecentArticles/>
-        </div>
-
-        <aside class="sidebar">
-            <div>
-                <UnderlinedTitle
-                    Class="mb-3"
-                    Title="@L["Articles_TopRated_Title"]"
-                    Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Popularity)"
-                    HrefTitle="@L["Button_ViewAll"]"/>
-
-                <PopularArticles/>
-            </div>
-        </aside>
-    </section>
-</EduContainer>
-
-<EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-    <RandomArticle Class="my-6 my-sm-12"/>
-</EduContainer>
+<div></div>
 
 @code {
 

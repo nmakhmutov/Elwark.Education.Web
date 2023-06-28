@@ -1,0 +1,37 @@
+<EduFillGrid>
+    <ApiViewer Result="@_result">
+        <Loading>
+            @for (var i = 0; i < 6; i++)
+            {
+                <ArticleSkeletonCard/>
+            }
+        </Loading>
+        <ChildContent Context="articles">
+            @foreach (var item in articles.Items)
+            {
+                <CourseCard
+                    Course="@item.Course"
+                    Activity="@item.Activity"
+                    OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
+                    ShortOverview/>
+            }
+        </ChildContent>
+    </ApiViewer>
+</EduFillGrid>
+
+@code {
+
+    private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
+        ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
+
+    [Inject]
+    private IHistoryCourseService HistoryCourseService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await HistoryCourseService
+            .GetAsync(new GetCourseRequest(GetCourseRequest.SortType.Newest, 0, 6));
+
+}

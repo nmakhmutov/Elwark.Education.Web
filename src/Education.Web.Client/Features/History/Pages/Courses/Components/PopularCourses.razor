@@ -1,21 +1,21 @@
-@using Education.Web.Client.Features.History.Services.Article.Request
-
 <EduFillGrid>
     <ApiViewer Result="@_result">
         <Loading>
             @for (var i = 0; i < 6; i++)
             {
-                <ArticleSkeletonCard/>
+                <ArticleSkeletonCard Horizontal HideFooter/>
             }
         </Loading>
         <ChildContent Context="articles">
             @foreach (var item in articles.Items)
             {
-                <ArticleCard
-                    Article="@item.Article"
+                <CourseCard
+                    Course="@item.Course"
                     Activity="@item.Activity"
                     OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
-                    ShortOverview/>
+                    Horizontal
+                    HideFooter
+                    HideOverview/>
             }
         </ChildContent>
     </ApiViewer>
@@ -23,17 +23,17 @@
 
 @code {
 
-    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
-        ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+    private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
+        ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
 
     [Inject]
-    private IHistoryArticleService HistoryArticleService { get; set; } = default!;
+    private IHistoryCourseService HistoryCourseService { get; set; } = default!;
 
     [Inject]
     private IHistoryLearnerService LearnerService { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _result = await HistoryArticleService
-            .GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Newest, 0, 6));
+        _result = await HistoryCourseService
+            .GetAsync(new GetCourseRequest(GetCourseRequest.SortType.Popularity, 0, 6));
 
 }

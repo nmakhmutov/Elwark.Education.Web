@@ -25,23 +25,29 @@
             </MudTooltip>
         </div>
 
-        <MudText Class="flex-grow-1" Typo="Typo.body1">
-            @Course.Overview
-        </MudText>
+        @if (!HideOverview)
+        {
+            <MudText Class="flex-grow-1" Typo="Typo.body1">
+                @(ShortOverview && Course.Overview.Length > 80 ? $"{Course.Overview[..77].TrimEnd()}..." : Course.Overview)
+            </MudText>
+        }
 
-        <AuthorizeView>
-            <aside class="d-flex align-center justify-space-between gap-3">
-                <CourseProgress Class="flex-grow-1" Progress="@Activity?.Completeness"/>
+        @if (!HideFooter)
+        {
+            <AuthorizeView>
+                <aside class="d-flex align-center justify-space-between gap-3">
+                    <CourseProgress Class="flex-grow-1" Progress="@Activity?.Completeness"/>
 
-                @if (OnBookmarkClick is not null)
-                {
-                    <BookmarkButton
-                        Id="@Course.Id"
-                        IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                        OnBookmarkClick="@OnBookmarkClick"/>
-                }
-            </aside>
-        </AuthorizeView>
+                    @if (OnBookmarkClick is not null)
+                    {
+                        <BookmarkButton
+                            Id="@Course.Id"
+                            IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                            OnBookmarkClick="@OnBookmarkClick"/>
+                    }
+                </aside>
+            </AuthorizeView>
+        }
     </section>
 </article>
 
@@ -61,6 +67,15 @@
 
     [Parameter]
     public bool Horizontal { get; set; }
+
+    [Parameter]
+    public bool HideOverview { get; set; }
+
+    [Parameter]
+    public bool HideFooter { get; set; }
+
+    [Parameter]
+    public bool ShortOverview { get; set; }
 
     [Parameter]
     public Func<string, Task<ApiResult<bool>>>? OnBookmarkClick { get; set; }

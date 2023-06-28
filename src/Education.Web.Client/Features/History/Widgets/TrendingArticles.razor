@@ -1,0 +1,84 @@
+@using Education.Web.Client.Features.History.Services.Article.Request
+@implements IAsyncDisposable;
+
+<section class="grid @Class">
+    <ApiViewer Result="@_result">
+        <Loading>
+            @for (var i = 0; i < 6; i++)
+            {
+                <ArticleSkeletonCard
+                    Horizontal="@IsHorizontal(i)"
+                    HideFooter="@IsHiddenOverview(i)"/>
+            }
+        </Loading>
+        <ChildContent Context="articles">
+            @for (var i = 0; i < articles.Items.Length; i++)
+            {
+                <ArticleCard
+                    Article="@articles.Items[i].Article"
+                    Activity="@articles.Items[i].Activity"
+                    OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
+                    Horizontal="@IsHorizontal(i)"
+                    HideOverview="@IsHiddenOverview(i)"
+                    ShortOverview="@IsShortOverview(i)"
+                    HideFooter="@IsHiddenOverview(i)"/>
+            }
+        </ChildContent>
+    </ApiViewer>
+</section>
+
+@code {
+    private Guid _subscriptionId;
+    private int _breakpoint;
+    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
+        ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+
+    [Inject]
+    private IBreakpointService BreakpointService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryArticleService HistoryArticleService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await HistoryArticleService
+            .GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 0, 6));
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var options = new ResizeOptions { NotifyOnBreakpointOnly = true };
+            var result = await BreakpointService.SubscribeAsync(x => OnBreakpointChanged(x), options);
+
+            _subscriptionId = result.SubscriptionId;
+            OnBreakpointChanged(result.Breakpoint);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void OnBreakpointChanged(Breakpoint breakpoint)
+    {
+        _breakpoint = (int)breakpoint;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private bool IsHorizontal(int i) =>
+        _breakpoint >= (int)Breakpoint.Lg && i > 0;
+
+    private bool IsHiddenOverview(int i) =>
+        _breakpoint >= (int)Breakpoint.Lg && i > 2;
+
+    private bool IsShortOverview(int i) =>
+        _breakpoint >= (int)Breakpoint.Lg && i is 1 or 2;
+
+    public async ValueTask DisposeAsync() =>
+        await BreakpointService.UnsubscribeAsync(_subscriptionId);
+
+}

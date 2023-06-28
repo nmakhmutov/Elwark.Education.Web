@@ -1,11 +1,9 @@
-@using Education.Web.Client.Features.History.Services.Article.Request
-
 <EduFillGrid>
     <ApiViewer Result="@_result">
         <Loading>
             @for (var i = 0; i < 6; i++)
             {
-                <ArticleSkeletonCard Horizontal HideFooter/>
+                <ArticleSkeletonCard/>
             }
         </Loading>
         <ChildContent Context="articles">
@@ -15,9 +13,7 @@
                     Article="@item.Article"
                     Activity="@item.Activity"
                     OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
-                    Horizontal
-                    HideFooter
-                    HideOverview/>
+                    ShortOverview/>
             }
         </ChildContent>
     </ApiViewer>
@@ -36,6 +32,6 @@
 
     protected override async Task OnInitializedAsync() =>
         _result = await HistoryArticleService
-            .GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Popularity, 0, 6));
+            .GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Newest, 0, 6));
 
 }

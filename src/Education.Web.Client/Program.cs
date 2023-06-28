@@ -31,7 +31,7 @@ using Polly.Extensions.Http;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Logging
-    .SetMinimumLevel(builder.HostEnvironment.IsDevelopment() ? LogLevel.Debug : LogLevel.Critical);
+    .SetMinimumLevel(builder.HostEnvironment.IsDevelopment() ? LogLevel.Error : LogLevel.Critical);
 
 // builder.RootComponents.Add<App>("#app");
 // builder.RootComponents.Add<HeadOutlet>("head::after");
