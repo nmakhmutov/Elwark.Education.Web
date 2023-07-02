@@ -1,11 +1,10 @@
-@using ApexCharts
 @using Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser
-
+@using ApexCharts
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     <MudText Typo="Typo.h5">
         @Title
     </MudText>
-    <ApexChart @ref="@_chart" TItem="EventGuessersStatisticsModel.ProgressModel" Options="_options">
+    <ApexChart @ref="@(_chart)" TItem="EventGuessersStatisticsModel.ProgressModel" Options="_options">
         <ApexPointSeries
             TItem="EventGuessersStatisticsModel.ProgressModel"
             Items="Activities"
@@ -14,7 +13,7 @@
             SeriesType="SeriesType.Area"
             XValue="@(e => e.Date.ToString(DateFormat))"
             YValue="@(x => x.Small)"/>
-        
+
         <ApexPointSeries
             TItem="EventGuessersStatisticsModel.ProgressModel"
             Items="Activities"
@@ -23,7 +22,7 @@
             SeriesType="SeriesType.Area"
             XValue="@(e => e.Date.ToString(DateFormat))"
             YValue="@(x => x.Medium)"/>
-        
+
         <ApexPointSeries
             TItem="EventGuessersStatisticsModel.ProgressModel"
             Items="Activities"

@@ -4,13 +4,13 @@
 
 <CascadingTheme>
     <MudLayout Class="d-flex flex-column min-vh-100">
-        <HistoryDrawer @bind-Open="@_isOpen"/>
+        <HistoryDrawer @bind-Open="@(_isOpen)"/>
 
         <AppBar Title="@L["History_Title"]" Href="@HistoryUrl.Root" OnDrawerClick="@ToggleDrawer">
             <div class="w-sm-33 w-md-50">
                 <MudAutocomplete
                     T="SearchModel"
-                    @ref="@_searchAutocomplete"
+                    @ref="@(_searchAutocomplete)"
                     DebounceInterval="300"
                     AdornmentIcon="@Icons.Material.Outlined.Search"
                     Placeholder="@L["Search_Title"]"
@@ -75,10 +75,10 @@
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
-    
+
     private void ToggleDrawer() =>
         _isOpen = !_isOpen;
-    
+
     private async Task<IEnumerable<SearchModel>> OnSearch(string text, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)

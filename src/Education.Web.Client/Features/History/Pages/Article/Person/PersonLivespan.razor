@@ -1,11 +1,9 @@
-@using Education.Web.Client.Features.History.Services
-
 <div class="d-flex justify-center justify-md-space-around align-center">
     <div>
         <MudText Class="text-transform-uppercase" Typo="Typo.body2">
             @L["History_Person_Born"]
         </MudText>
-        <HistoryDate 
+        <HistoryDate
             Class="date"
             Typo="Typo.h4"
             Date="@Born"
@@ -25,7 +23,7 @@
         <MudText Class="text-transform-uppercase" Typo="Typo.body2">
             @L["History_Person_Died"]
         </MudText>
-        <HistoryDate 
+        <HistoryDate
             Class="date"
             Typo="Typo.h4"
             Date="@Died"
@@ -50,4 +48,5 @@
 
     [Parameter, EditorRequired]
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
+
 }

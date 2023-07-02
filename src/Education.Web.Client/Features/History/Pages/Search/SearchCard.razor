@@ -1,6 +1,4 @@
-@using Education.Web.Client.Features.History.Services
 @using Education.Web.Client.Features.History.Services.Search.Model
-
 <article class="mud-paper card @Class">
     <div class="card-header">
         <a href="@Search.ContentHref">
@@ -40,13 +38,11 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override void OnParametersSet()
-    {
+    protected override void OnParametersSet() =>
         _categoryTitle = Search.Category switch {
             "Article" => L["Articles_Title"].ToString(),
             "Course"=>L["Courses_Title"].ToString(),
             _=> null
             };
-    }
 
 }

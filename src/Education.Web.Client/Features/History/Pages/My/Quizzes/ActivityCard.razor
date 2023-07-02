@@ -1,11 +1,10 @@
-@using ApexCharts
 @using Education.Web.Client.Features.History.Services.Learner.Model.Quiz
-
+@using ApexCharts
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     <MudText Typo="Typo.h5">
         @Title
     </MudText>
-    <ApexChart @ref="@_chart" TItem="QuizzesStatisticsModel.ProgressModel" Options="_options">
+    <ApexChart @ref="@(_chart)" TItem="QuizzesStatisticsModel.ProgressModel" Options="_options">
         <ApexPointSeries
             TItem="QuizzesStatisticsModel.ProgressModel"
             Items="Activities"

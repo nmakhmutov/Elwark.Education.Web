@@ -1,11 +1,10 @@
 @using FluentValidation
-@using Education.Web.Client.Models.Quiz
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
     <div class="d-flex flex-column align-center mb-3 @(CorrectAnswer is null ? "mb-sm-6" : "")">
         <MudTextField
-            @bind-Value="@UserAnswer.Answer"
+            @bind-Value="@(UserAnswer.Answer)"
             Label="@L["Quiz_UserAnswer"]"
             For="@(() => UserAnswer.Answer)"
             Disabled="@(CorrectAnswer is not null)"/>

@@ -17,11 +17,13 @@ public static class NumberExtensions
         ToMetric((double)input, format);
 
     public static string ToMetric(this uint input,
-        [StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format = null) =>
+        [StringSyntax(StringSyntaxAttribute.NumericFormat)]
+        string? format = null) =>
         ToMetric((double)input, format);
 
     public static string ToMetric(this ulong input,
-        [StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format = null) =>
+        [StringSyntax(StringSyntaxAttribute.NumericFormat)]
+        string? format = null) =>
         ToMetric((double)input, format);
 
     public static string ToMetric(this double input,

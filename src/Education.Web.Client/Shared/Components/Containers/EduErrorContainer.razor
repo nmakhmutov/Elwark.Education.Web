@@ -11,12 +11,7 @@
     </MudText>
 
     <MudText Class="mb-3 mud-text-secondary" Typo="Typo.body1" Align="Align.Center">
-        @(Error switch {
-            { Detail: not null } => Error.Detail,
-            { Status: 404 } => L["Error_NotFound_Description"],
-            { Status: 500 } => L["Error_InternalServerError_Description"],
-            _ => L["Error_Description"]
-        })
+        @GetErrorDetail()
     </MudText>
 
     <div class="d-flex justify-center gap-3">
@@ -54,5 +49,13 @@
 
     [Parameter]
     public string? Class { get; set; }
+
+    private string GetErrorDetail() =>
+        Error switch {
+        { Detail: not null } => Error.Detail,
+        { Status: 404 } => L["Error_NotFound_Description"],
+        { Status: 500 } => L["Error_InternalServerError_Description"],
+            _ => L["Error_Description"]
+            };
 
 }

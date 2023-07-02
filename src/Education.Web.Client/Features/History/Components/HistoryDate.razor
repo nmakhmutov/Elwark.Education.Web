@@ -1,6 +1,4 @@
-@using Education.Web.Client.Features.History.Services
 @using System.Text
-
 <MudText Typo="@Typo" Color="@Color" Align="Align" Class="@Class">
     @_date
 </MudText>
@@ -28,7 +26,7 @@
 
     [Parameter, EditorRequired]
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
-    
+
     protected override void OnInitialized() =>
         _date = Date is null ? L["Unknown_Title"] : Format(Date);
 

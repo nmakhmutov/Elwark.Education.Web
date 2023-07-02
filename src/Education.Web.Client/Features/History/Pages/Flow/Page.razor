@@ -1,6 +1,6 @@
 @page "/history/flow"
-@using Education.Web.Client.Features.History.Services.Flow
 @using Education.Web.Client.Features.History.Services.Flow.Model
+@using Education.Web.Client.Features.History.Services.Flow
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -8,29 +8,15 @@
     @L["Flow_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6">
-    <EduPageHeader Title="@L["Flow_Title"]" Breadcrumbs="@Breadcrumbs"/>
-</EduContainer>
-
 <ApiViewer Result="@_result">
     <Error Context="error">
         @if (error.IsFlowNotFound())
         {
-            <EduContainer Class="align-center justify-center flex-grow-1" MaxWidth="EduWidth.W960">
-                <div class="d-flex justify-center">
-                    <MudButton
-                        Variant="Variant.Filled"
-                        Color="Color.Primary"
-                        OnClick="@OnStartClick"
-                        DisableElevation>
-                        @L["Flow_Start_Button"]
-                    </MudButton>
-                </div>
-            </EduContainer>
+            <FlowStartContainer Class="align-center justify-center flex-grow-1 py-3 py-sm-6" OnStartClick="@OnStartClick"/>
         }
         else
         {
-            <EduError Class="align-center justify-center flex-grow-1" Error="@(error)"/>
+            <EduErrorContainer Class="align-center justify-center flex-grow-1 py-3 py-sm-6" Error="@(error)"/>
         }
     </Error>
     <ChildContent Context="flow">
@@ -40,11 +26,6 @@
 
 @code {
     private ApiResult<FlowModel> _result = ApiResult<FlowModel>.Loading();
-
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)
-    };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

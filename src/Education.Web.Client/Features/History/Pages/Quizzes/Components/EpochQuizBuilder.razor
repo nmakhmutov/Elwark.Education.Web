@@ -1,7 +1,3 @@
-@using Education.Web.Client.Features.History.Services.Quiz.Model
-@using Education.Web.Client.Features.History.Services.Quiz.Request
-@using Education.Web.Client.Models.Quiz
-
 <section class="@Class">
     <MudText Class="mb-3" Typo="Typo.h6">
         @L["History_Epoch_Title"]
@@ -39,7 +35,7 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Parameter, EditorRequired]
     public QuizInformationModel[] Quizzes { get; set; } = Array.Empty<QuizInformationModel>();
 
@@ -48,13 +44,13 @@
 
     [Parameter]
     public EventCallback<DifficultyType?> DifficultyChanged { get; set; }
-    
+
     [Parameter]
     public EpochType Epoch { get; set; }
 
     [Parameter]
     public EventCallback<EpochType> EpochChanged { get; set; }
-    
+
     [Parameter, EditorRequired]
     public EventCallback<CreateEpochQuizRequest> OnCreateClick { get; set; }
 

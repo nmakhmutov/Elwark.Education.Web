@@ -185,10 +185,8 @@
     public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } =
         _ => Task.FromResult(ApiResult<bool>.Success(false));
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() => 
         await Formatter.InitializeAsync();
-    }
 
     protected override void OnParametersSet()
     {

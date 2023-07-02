@@ -17,9 +17,9 @@
 @switch (_filter.Catalog)
 {
     case BookmarksCatalog.Articles:
-        <ArticleBookmarks Sort="@_filter.Sort" />
+        <ArticleBookmarks Sort="@_filter.Sort"/>
         break;
-        
+
     case BookmarksCatalog.Courses:
         <CourseBookmarks Sort="@_filter.Sort"/>
         break;
@@ -40,10 +40,8 @@
     [Inject]
     private ILocalStorageService Storage { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() => 
         _filter = await Storage.GetItemAsync<BookmarksFilter>(HistoryLocalStorageKey.BookmarkSettings) ?? BookmarksFilter.Empty;
-    }
 
     private async Task OnFilterChanged(BookmarksFilter filter)
     {

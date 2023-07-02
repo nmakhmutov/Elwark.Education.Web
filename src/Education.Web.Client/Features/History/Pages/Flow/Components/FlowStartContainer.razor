@@ -1,0 +1,46 @@
+<EduContainer Class="@Class" MaxWidth="EduWidth.W1280">
+    <div class="wrapper">
+        <div class="content">
+            <MudText Class="mb-6" Typo="Typo.h1">
+                @L["Flow_Title_Part1"] <b class="mud-primary-text">@L["Flow_Title_Part2"]</b>
+            </MudText>
+            <MudText Class="mb-6" Typo="Typo.body1">
+                @L["Flow_Description"]
+            </MudText>
+            <div>
+                <MudButton
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    OnClick="@OnStartClick"
+                    StartIcon="@Icons.Material.Outlined.PlayArrow"
+                    DisableElevation>
+                    @L["Flow_Start_Button"]
+                </MudButton>
+            </div>
+        </div>
+        <div class="image">
+            <img src="@_url" alt="flow"/>
+        </div>
+    </div>
+</EduContainer>
+
+@code {
+
+    private string? _url;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public EventCallback OnStartClick { get; set; }
+
+    protected override void OnParametersSet() =>
+        _url = $"/images/history/flow_{(ThemeProvider?.IsDarkMode == true ? "dark" : "light")}.svg";
+
+}

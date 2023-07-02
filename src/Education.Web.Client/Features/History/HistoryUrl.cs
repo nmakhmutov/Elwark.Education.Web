@@ -15,7 +15,7 @@ public static class HistoryUrl
     public static class Content
     {
         public const string Empires = $"{Root}/empires";
-        
+
         public const string Random = $"{Root}/random";
 
         public static string Articles() =>
@@ -59,7 +59,7 @@ public static class HistoryUrl
         public static string Index() =>
             $"{Root}/flow";
     }
-    
+
     public static class Quiz
     {
         public static string Index() =>

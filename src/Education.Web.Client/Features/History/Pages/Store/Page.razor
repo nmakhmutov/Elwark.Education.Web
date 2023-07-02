@@ -13,13 +13,13 @@
 </EduContainer>
 
 <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-    <ProductsToolbar @bind-Filter="@_filter" Inventory="@_inventory"/>
+    <ProductsToolbar @bind-Filter="@(_filter)" Inventory="@_inventory"/>
 </EduContainer>
 
 @switch (_filter.Catalog)
 {
     case CatalogType.Inventory:
-        <InventoryProducts 
+        <InventoryProducts
             Inventory="@_inventory"
             Filter="@_filter"
             IsAffordable="@IsInventoryAffordable"
@@ -52,14 +52,14 @@
         _inventory = (await UserService.GetInventoryAsync())
             .Map(x => x)
             .UnwrapOr(_inventory);
-    
+
     private Task OnInventoryPurchased() =>
         LoadInventoryAsync();
 
     private Task OnBundlePurchased() =>
         LoadInventoryAsync();
-    
-    private bool IsInventoryAffordable(Product.InventoryModel inventory) => 
+
+    private bool IsInventoryAffordable(Product.InventoryModel inventory) =>
         IsAffordable(inventory.Selling, inventory.Weight);
 
     private bool IsBundleAffordable(Product.BundleModel bundle) =>

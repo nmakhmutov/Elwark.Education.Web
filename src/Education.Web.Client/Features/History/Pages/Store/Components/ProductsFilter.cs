@@ -8,7 +8,6 @@ public sealed record ProductsFilter(CatalogType Catalog, CategoryType Category, 
         new(CatalogType.Inventory, CategoryType.None, ProductSort.Featured);
 }
 
-
 public enum ProductSort
 {
     Featured,
@@ -24,4 +23,3 @@ public enum CatalogType
     Inventory,
     Bundles
 }
-

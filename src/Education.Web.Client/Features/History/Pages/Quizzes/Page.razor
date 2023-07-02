@@ -86,7 +86,7 @@
     {
         _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
         _result = await QuizService.GetTestBuilderAsync(ArticleId);
-        
+
         _result.MathError(x =>
         {
             if (x.IsTestAlreadyCreated(out var id))

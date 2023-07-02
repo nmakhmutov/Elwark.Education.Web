@@ -1,8 +1,3 @@
-@using Education.Web.Client.Features.History.Services
-@using Education.Web.Client.Features.History.Services.Article.Model
-@using Education.Web.Client.Models.Content
-@using Education.Web.Client.Services
-
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
     <header class="header">
         <article>
@@ -51,7 +46,7 @@
 
     <ContentGrid>
         <Header>
-            <ContentToolbarCard Formatter="@Formatter" />
+            <ContentToolbarCard Formatter="@Formatter"/>
             <ArticleInformation TimeToRead="@Battle.TimeToRead" Rating="@Battle.Rating"/>
         </Header>
 
@@ -140,10 +135,10 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Inject]
     private ContentFormatter Formatter { get; set; } = default!;
-    
+
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
 
@@ -160,22 +155,20 @@
     public bool HasHardQuiz { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = 
+    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } =
         _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = 
+    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } =
         _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = 
+    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } =
         _ => Task.FromResult(ApiResult<bool>.Success(false));
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() => 
         await Formatter.InitializeAsync();
-    }
-    
+
     protected override void OnParametersSet()
     {
         _conflictParties = new Dictionary<string, List<MarkupString>>

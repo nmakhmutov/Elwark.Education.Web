@@ -1,5 +1,3 @@
-@using Education.Web.Client.Features.History.Services
-
 <article class="mud-paper card @(Horizontal ? "horizontal" : "vertical") @Class">
     <div class="card-header">
         <a href="@HistoryUrl.Content.Article(Article.Id)">
@@ -41,7 +39,7 @@
             <AuthorizeView>
                 <aside class="d-flex align-center justify-space-between gap-3">
                     <TotalQuizzesChip
-                        Easy="@(Activity?.EasyQuizzes ?? 0)" 
+                        Easy="@(Activity?.EasyQuizzes ?? 0)"
                         Hard="@(Activity?.HardQuizzes ?? 0)"/>
 
                     <ArticleCompletionChip

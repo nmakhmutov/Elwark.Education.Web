@@ -28,18 +28,26 @@ public static class DateTimeExtensions
     public static string Humanize(this TimeSpan span, IStringLocalizer localizer, bool hideSeconds = false)
     {
         var sb = new StringBuilder();
-        
+
         if (span.Days > 0)
-            sb.Append($"{span.Days}{localizer["Abbreviation_Days"]} ");
+            sb.Append(span.Days)
+                .Append(localizer["Abbreviation_Days"])
+                .Append(' ');
 
         if (span.Hours > 0)
-            sb.Append($"{span.Hours}{localizer["Abbreviation_Hours"]} ");
-        
-        if(span.Minutes > 0)
-            sb.Append($"{span.Minutes}{localizer["Abbreviation_Minutes"]} ");
-        
-        if(span.Seconds > 0 && !hideSeconds)
-            sb.Append($"{span.Seconds}{localizer["Abbreviation_Seconds"]} ");
+            sb.Append(span.Hours)
+                .Append(localizer["Abbreviation_Hours"])
+                .Append(' ');
+
+        if (span.Minutes > 0)
+            sb.Append(span.Minutes)
+                .Append(localizer["Abbreviation_Minutes"])
+                .Append(' ');
+
+        if (span.Seconds > 0 && !hideSeconds)
+            sb.Append(span.Seconds)
+                .Append(localizer["Abbreviation_Seconds"])
+                .Append(' ');
 
         return sb.ToString().TrimEnd();
     }

@@ -18,10 +18,13 @@ public static class StatisticsExtensions
         this QuizStatisticsModel.NumberOfQuizzesContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["NumberOfQuizzes_Successful_Title"], contrast.Successful.Current.ToMetric(), contrast.Successful.Difference),
+            new(l["NumberOfQuizzes_Successful_Title"], contrast.Successful.Current.ToMetric(),
+                contrast.Successful.Difference),
             new(l["NumberOfQuizzes_Failed_Title"], contrast.Failed.Current.ToMetric(), contrast.Failed.Difference),
-            new(l["NumberOfQuizzes_MistakesExceeded_Title"], contrast.MistakesExceeded.Current.ToMetric(), contrast.MistakesExceeded.Difference),
-            new(l["NumberOfQuizzes_TimeExceeded_Title"], contrast.TimeExceeded.Current.ToMetric(), contrast.TimeExceeded.Difference),
+            new(l["NumberOfQuizzes_MistakesExceeded_Title"], contrast.MistakesExceeded.Current.ToMetric(),
+                contrast.MistakesExceeded.Difference),
+            new(l["NumberOfQuizzes_TimeExceeded_Title"], contrast.TimeExceeded.Current.ToMetric(),
+                contrast.TimeExceeded.Difference),
             new(l["NumberOfQuizzes_Total_Title"], contrast.Total.Current.ToMetric(), contrast.Total.Difference)
         };
 
@@ -31,7 +34,8 @@ public static class StatisticsExtensions
         {
             new(l["Score_Questions_Title"], contrast.Questions.Current.ToMetric(), contrast.Questions.Difference),
             new(l["Score_SpeedBonus_Title"], contrast.Speed.Current.ToMetric(), contrast.Speed.Difference),
-            new(l["Score_NoMistakesBonus_Title"], contrast.NoMistakes.Current.ToMetric(), contrast.NoMistakes.Difference),
+            new(l["Score_NoMistakesBonus_Title"], contrast.NoMistakes.Current.ToMetric(),
+                contrast.NoMistakes.Difference),
             new(l["Score_Total_Title"], contrast.Total.Current.ToMetric(), contrast.Total.Difference)
         };
 
@@ -78,7 +82,8 @@ public static class StatisticsExtensions
         {
             new(l["History_EventGuesser_Questions"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
             new(l["History_EventGuesser_Correct"], contrast.Correct.Current.ToMetric(), contrast.Correct.Difference),
-            new(l["History_EventGuesser_Incorrect"], contrast.Incorrect.Current.ToMetric(), contrast.Incorrect.Difference)
+            new(l["History_EventGuesser_Incorrect"], contrast.Incorrect.Current.ToMetric(),
+                contrast.Incorrect.Difference)
         };
 
     private static string RangeTitle(DateOnly starts, DateOnly ends) =>

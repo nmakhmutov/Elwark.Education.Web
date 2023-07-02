@@ -1,8 +1,6 @@
 @using ApexCharts
 @using Education.Web.Client.Features.History.Services.User.Model
 @using Align = MudBlazor.Align
-@using Color = MudBlazor.Color
-
 <section class="mud-paper @Class">
     <header class="px-3 pt-3 px-sm-6 pt-sm-6">
         <MudText Typo="Typo.h5">
@@ -78,7 +76,7 @@
                     },
                     Value = new RadialBarDataLabelsValue
                     {
-                        FontSize = "1.875rem",
+                        FontSize = "1.875rem"
                     },
                     Total = new RadialBarDataLabelsTotal
                     {
@@ -93,10 +91,10 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-    
+
     [Parameter, EditorRequired]
     public CustomerState Customer { get; set; } = default!;
-    
+
     [Parameter]
     public double Total { get; set; }
 

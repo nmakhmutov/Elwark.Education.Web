@@ -54,6 +54,7 @@
 @code {
         private const int Limit = 20;
     private GetCourseRequest.SortType _sort;
+
     private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
         ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
 
@@ -97,9 +98,10 @@
             .GetAsync(new GetCourseRequest(_sort, (CurrentPage - 1) * Limit, Limit));
     }
 
-    private void OnPagination(int page) => 
+    private void OnPagination(int page) =>
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page < 2 ? null : page));
 
-    private void OnSortChange(GetCourseRequest.SortType sort) => 
+    private void OnSortChange(GetCourseRequest.SortType sort) =>
         Navigation.NavigateTo(HistoryUrl.Content.Courses(sort));
+
 }

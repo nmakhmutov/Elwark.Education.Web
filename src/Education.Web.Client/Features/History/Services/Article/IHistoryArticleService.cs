@@ -12,7 +12,7 @@ public interface IHistoryArticleService
     Task<ApiResult<PagingOffsetModel<EmpireOverviewModel>>> GetAsync(GetEmpiresRequest request);
 
     Task<ApiResult<UserArticleDetailModel>> GetAsync(string id);
-    
+
     Task<ApiResult<UserArticleOverviewModel[]>> GetRelatedArticlesAsync(string id);
 
     Task<ApiResult<UserArticleOverviewModel>> GetRandomAsync(EpochType epoch);

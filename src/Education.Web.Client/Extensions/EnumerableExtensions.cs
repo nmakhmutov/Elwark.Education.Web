@@ -16,7 +16,7 @@ internal static class EnumerableExtensions
         for (var day = start; day <= end; day = day.AddDays(1))
             yield return dictionary.GetValueOrDefault(day, zero(day));
     }
-    
+
     internal static IEnumerable<T> FillDailyGaps<T>(
         this IEnumerable<T> source,
         DateOnly today,

@@ -4,7 +4,7 @@
 
     <div class="form">
         <MudNumericField
-            @bind-Value="_model.Year"
+            @bind-Value="@(_model.Year)"
             For="@(() => _model.Year)"
             Label="@L["History_EventGuesser_Year"]"
             Variant="Variant.Text"
@@ -12,7 +12,7 @@
             AutoFocus/>
 
         <MudSelect T="uint?"
-                   @bind-Value="_model.Month"
+                   @bind-Value="@(_model.Month)"
                    For="@(() => _model.Month)"
                    Label="@L["History_EventGuesser_Month"]"
                    Clearable>
@@ -25,13 +25,13 @@
         </MudSelect>
 
         <MudNumericField
-            @bind-Value="_model.Day"
+            @bind-Value="@(_model.Day)"
             For="@(() => _model.Day)"
             Label="@L["History_EventGuesser_Day"]"
             Variant="Variant.Text"
             HideSpinButtons/>
 
-        <MudRadioGroup @bind-SelectedOption="_model.IsBc">
+        <MudRadioGroup @bind-SelectedOption="@(_model.IsBc)">
             <MudRadio Option="false">
                 @L["History_Date_Ad"]
             </MudRadio>

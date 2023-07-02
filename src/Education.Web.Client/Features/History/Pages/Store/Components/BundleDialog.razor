@@ -1,8 +1,6 @@
 @using Education.Web.Client.Features.History.Services.Order.Model
 @using Education.Web.Client.Features.History.Services.Store.Request
 @using Education.Web.Client.Features.History.Services.User.Model
-@using InternalMoney = Education.Web.Client.Shared.Components.Text.InternalMoney
-
 <MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
     <DialogContent>
         <header class="d-flex justify-space-between align-center mb-3 mb-sm-6">
@@ -86,7 +84,7 @@
 
                         <MudNumericField
                             Class="number-input"
-                            @bind-Value="@_quantity"
+                            @bind-Value="@(_quantity)"
                             Variant="Variant.Outlined"
                             Margin="Margin.Dense"
                             Min="@Min"
@@ -178,10 +176,8 @@
         UpdateErrorState();
     }
 
-    private void OnCloseClick()
-    {
+    private void OnCloseClick() => 
         MudDialog.Close(_status is null ? DialogResult.Cancel() : DialogResult.Ok(true));
-    }
 
     private async Task OnPurchaseClick()
     {
@@ -200,7 +196,7 @@
         await InvokeAsync(async () =>
         {
             var delay = TimeSpan.FromSeconds(1);
-            
+
             while (_status is { IsFinal:false })
             {
                 await Task.Delay(delay);

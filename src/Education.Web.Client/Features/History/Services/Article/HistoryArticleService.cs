@@ -20,7 +20,7 @@ internal sealed class HistoryArticleService : IHistoryArticleService
 
     public Task<ApiResult<UserArticleDetailModel>> GetAsync(string id) =>
         _api.GetAsync<UserArticleDetailModel>($"history/articles/{id}");
-    
+
     public Task<ApiResult<UserArticleOverviewModel[]>> GetRelatedArticlesAsync(string id) =>
         _api.GetAsync<UserArticleOverviewModel[]>($"history/articles/{id}/related");
 

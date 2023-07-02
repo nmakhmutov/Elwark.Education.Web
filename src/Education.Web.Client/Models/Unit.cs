@@ -1,6 +1,8 @@
 namespace Education.Web.Client.Models;
 
-public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>, IComparable
+public readonly struct Unit : IEquatable<Unit>,
+    IComparable<Unit>,
+    IComparable
 {
     public static readonly Unit Value = new();
 

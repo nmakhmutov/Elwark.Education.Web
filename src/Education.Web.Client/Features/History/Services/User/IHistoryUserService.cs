@@ -9,7 +9,7 @@ public interface IHistoryUserService
     Task<ApiResult<ProfileModel>> GetProfileAsync();
 
     Task<ApiResult<InventoryModel>> GetInventoryAsync();
-    
+
     Task<ApiResult<BackpackModel>> GetBackpackAsync();
 
     Task<ApiResult<IReadOnlyCollection<WalletModel>>> GetWalletAsync();
