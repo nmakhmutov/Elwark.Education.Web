@@ -80,6 +80,12 @@ public sealed class ApiResult<T>
             error(Error);
     }
 
+    public void MathError(Action<Error> error)
+    {
+        if (IsError)
+            error(Error);
+    }
+
     public ApiResult<U> Map<U>(Func<T, U> fn) =>
         Match(x => ApiResult<U>.Success(fn(x)), ApiResult<U>.Fail, ApiResult<U>.Loading);
 
@@ -97,6 +103,9 @@ public sealed class ApiResult<T>
 
     public Error UnwrapError() =>
         _error ?? throw new ArgumentNullException(nameof(Error));
+
+    public bool Is(Func<Error, bool> fn) =>
+        !IsSuccess && fn(Error);
 
     public override string ToString()
     {

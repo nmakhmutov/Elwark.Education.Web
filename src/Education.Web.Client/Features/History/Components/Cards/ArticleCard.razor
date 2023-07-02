@@ -32,7 +32,7 @@
         @if (!HideOverview)
         {
             <MudText Class="flex-grow-1" Typo="Typo.body1">
-                @(ShortOverview && Article.Overview.Length > 80 ? $"{Article.Overview[..77].TrimEnd()}..." : Article.Overview)
+                @(ShortOverview && Article.Overview.Length > 60 ? $"{Article.Overview[..57].TrimEnd()}..." : Article.Overview)
             </MudText>
         }
 
@@ -40,7 +40,9 @@
         {
             <AuthorizeView>
                 <aside class="d-flex align-center justify-space-between gap-3">
-                    <TotalQuizzesChip Quizzes="@(Activity?.TotalQuizzes ?? 0)" ShowTooltip/>
+                    <TotalQuizzesChip
+                        Easy="@(Activity?.EasyQuizzes ?? 0)" 
+                        Hard="@(Activity?.HardQuizzes ?? 0)"/>
 
                     <ArticleCompletionChip
                         IsCompleted="@Activity?.IsCompleted"

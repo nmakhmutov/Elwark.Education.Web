@@ -1,0 +1,110 @@
+@page "/history/random"
+@using Education.Web.Client.Features.History.Services.Learner
+@layout HistoryLayout
+
+<ApiViewer Result="@_result">
+    <Loading>
+        <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W960">
+            <div class="wrapper mb-3 mb-sm-6">
+                <SkeletonCard Horizontal/>
+            </div>
+
+            <div class="d-flex justify-center">
+                <MudButton
+                    DisableElevation
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    Disabled>
+                    @L["Search_Title"]
+                </MudButton>
+            </div>
+        </EduContainer>
+    </Loading>
+
+    <ChildContent Context="item">
+        <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W960">
+            <div class="wrapper mb-3 mb-sm-6">
+                @if (item.Article is not null)
+                {
+                    <PageTitle>
+                        @L["Random_Title"]: @item.Article.Article.Title
+                    </PageTitle>
+
+                    <ArticleCard
+                        Article="@item.Article.Article"
+                        Activity="@item.Article.Activity"
+                        OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
+                        Horizontal/>
+                }
+
+                @if (item.Course is not null)
+                {
+                    <PageTitle>
+                        @L["Random_Title"]: @item.Course.Course.Title
+                    </PageTitle>
+
+                    <CourseCard
+                        Course="@item.Course.Course"
+                        Activity="@item.Course.Activity"
+                        OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"
+                        Horizontal/>
+                }
+            </div>
+
+            <div class="d-flex justify-center">
+                <MudButton
+                    DisableElevation
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    OnClick="@SearchAsync">
+                    @L["Search_Title"]
+                </MudButton>
+            </div>
+        </EduContainer>
+    </ChildContent>
+</ApiViewer>
+
+@code {
+
+    private ApiResult<OneOf> _result = ApiResult<OneOf>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryArticleService ArticleService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryCourseService CourseService { get; set; } = default!;
+
+    [Inject]
+    private IHistoryLearnerService LearnerService { get; set; } = default!;
+
+    protected override Task OnInitializedAsync() =>
+        SearchAsync();
+
+    private async Task SearchAsync()
+    {
+        _result = ApiResult<OneOf>.Loading();
+        if (Random.Shared.Next(0, 2) % 2 == 0)
+        {
+            _result = (await ArticleService.GetRandomAsync(EpochType.None))
+                .Map(x => OneOf.Create(x));
+        }
+        else
+        {
+            _result = (await CourseService.GetRandomAsync())
+                .Map(x => OneOf.Create(x));
+        }
+    }
+
+    private sealed record OneOf(UserArticleOverviewModel? Article, UserCourseOverviewModel? Course)
+    {
+        public static OneOf Create(UserArticleOverviewModel article) =>
+            new(article, null);
+
+        public static OneOf Create(UserCourseOverviewModel course) =>
+            new(null, course);
+    }
+
+}

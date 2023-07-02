@@ -1,0 +1,64 @@
+@page "/history/flow"
+@using Education.Web.Client.Features.History.Services.Flow
+@using Education.Web.Client.Features.History.Services.Flow.Model
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>
+    @L["Flow_Title"]
+</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6">
+    <EduPageHeader Title="@L["Flow_Title"]" Breadcrumbs="@Breadcrumbs"/>
+</EduContainer>
+
+<ApiViewer Result="@_result">
+    <Error Context="error">
+        @if (error.IsFlowNotFound())
+        {
+            <EduContainer Class="align-center justify-center flex-grow-1" MaxWidth="EduWidth.W960">
+                <div class="d-flex justify-center">
+                    <MudButton
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        OnClick="@OnStartClick"
+                        DisableElevation>
+                        @L["Flow_Start_Button"]
+                    </MudButton>
+                </div>
+            </EduContainer>
+        }
+        else
+        {
+            <EduError Class="align-center justify-center flex-grow-1" Error="@(error)"/>
+        }
+    </Error>
+    <ChildContent Context="flow">
+        @flow.Streak
+    </ChildContent>
+</ApiViewer>
+
+@code {
+    private ApiResult<FlowModel> _result = ApiResult<FlowModel>.Loading();
+
+    private List<BreadcrumbItem> Breadcrumbs => new()
+    {
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryFlowService FlowService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await FlowService.GetAsync();
+
+    private async Task OnStartClick()
+    {
+        _result = ApiResult<FlowModel>.Loading();
+        _result = await FlowService.StartAsync();
+    }
+
+}

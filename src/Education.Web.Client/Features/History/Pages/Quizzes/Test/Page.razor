@@ -57,7 +57,7 @@
 
                     @switch (_currentQuestion)
                     {
-                        case QuizQuestion.MultipleModel question:
+                        case Question.MultipleModel question:
                         {
                             <MultipleAnswerForm
                                 IsLoading="@_checking"
@@ -71,7 +71,7 @@
                             break;
                         }
 
-                        case QuizQuestion.ShortModel:
+                        case Question.ShortModel:
                         {
                             <ShortAnswerForm
                                 IsLoading="@_checking"
@@ -84,7 +84,7 @@
                             break;
                         }
 
-                        case QuizQuestion.SingleModel question:
+                        case Question.SingleModel question:
                         {
                             <SingleAnswerForm
                                 IsLoading="@_checking"
@@ -134,8 +134,8 @@
     private TestInventoryModel[] _inventory = Array.Empty<TestInventoryModel>();
     private Color _countdownColor = Color.Default;
     private QuizOverviewModel _quiz = default!;
-    private QuizQuestion _currentQuestion = default!;
-    private QuizQuestion? _nextQuestion;
+    private Question _currentQuestion = default!;
+    private Question? _nextQuestion;
     private AnswerToQuestionModel? _userAnswer;
     private AnswerResult? _correctAnswer;
     private bool _checking;
@@ -176,10 +176,10 @@
             e =>
             {
                 if (e.IsTestAlreadyCompleted())
-                    Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
+                    Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
 
                 if (e.IsTestNotFound())
-                    Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
+                    Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
             });
     }
 
@@ -189,7 +189,7 @@
         _result = await QuizService.GetAsync(Id);
 
         if (_result.IsError)
-            Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
+            Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
     }
 
     private async Task OnShortAnswer(ShortAnswerModel answer)
@@ -240,7 +240,7 @@
             {
                 if (e.IsTestAlreadyCompleted())
                 {
-                    Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
+                    Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
                 }
                 else
                 {
@@ -262,7 +262,7 @@
     }
 
     private void OnComplete() =>
-        Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
+        Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
 
     private async Task OnUseInventory(uint id) =>
         (await QuizService.ApplyInventoryAsync(_quiz.Id, id))
@@ -271,7 +271,7 @@
                 {
                     if (x.Question is null)
                     {
-                        Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Conclusion(Id));
+                        Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
                         return;
                     }
 

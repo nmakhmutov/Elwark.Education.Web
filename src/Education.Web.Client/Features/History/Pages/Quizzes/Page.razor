@@ -1,4 +1,5 @@
 @page "/history/quizzes"
+@using Education.Web.Client.Features.History.Services.Learner
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -85,22 +86,27 @@
     {
         _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
         _result = await QuizService.GetTestBuilderAsync(ArticleId);
-
-        if (_result.IsError && _result.UnwrapError().IsTestAlreadyCreated(out var id))
-            Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Test(id));
+        
+        _result.MathError(x =>
+        {
+            if (x.IsTestAlreadyCreated(out var id))
+            {
+                Navigation.NavigateTo(HistoryUrl.Quiz.Test(id));
+            }
+        });
     }
 
     private async Task OnQuizCreateAsync(CreateEpochQuizRequest request) =>
         (await QuizService.CreateAsync(request))
             .Match(
-                x => Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Test(x.Overview.Id)),
+                x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Overview.Id)),
                 e => Snackbar.Add(e.Detail, Severity.Error)
             );
-    
+
     private async Task OnQuizCreateAsync(CreateArticleQuizRequest request) =>
         (await QuizService.CreateAsync(request))
             .Match(
-                x => Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Test(x.Overview.Id)),
+                x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Overview.Id)),
                 e => Snackbar.Add(e.Detail, Severity.Error)
             );
 

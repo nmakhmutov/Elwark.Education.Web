@@ -1,3 +1,4 @@
+@using Education.Web.Client.Features.History.Services.Learner
 <EduFillGrid>
     <ApiViewer Result="@_result">
         <Loading>
@@ -13,9 +14,9 @@
                     Course="@item.Course"
                     Activity="@item.Activity"
                     OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
+                    ShortOverview
                     Horizontal
-                    HideFooter
-                    HideOverview/>
+                    HideFooter/>
             }
         </ChildContent>
     </ApiViewer>

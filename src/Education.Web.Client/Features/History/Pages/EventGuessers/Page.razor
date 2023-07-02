@@ -72,7 +72,7 @@
     };
 
     [Inject]
-    public IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
     private IHistoryEventGuesserService EventGuesserService { get; set; } = default!;
@@ -96,8 +96,14 @@
                 await OnSizeChanged(model.Tests.FirstOrDefault(x => x.IsAllowed)?.Type);
         });
 
-        if (_result.IsError && _result.UnwrapError().IsTestAlreadyCreated(out var id))
-            Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(id));
+        _result.MathError(x =>
+        {
+            if (x.IsTestAlreadyCreated(out var id))
+            {
+                Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(id));
+            }
+        });
+        
     }
 
     private async Task CreateTestAsync()

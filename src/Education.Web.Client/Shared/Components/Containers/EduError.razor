@@ -1,30 +1,25 @@
-<EduContainer Class="@Class" MaxWidth="EduWidth.W600">
-    <div class="d-flex gap-3 align-center justify-center mb-3">
-        <MudText Typo="Typo.h3">
-            @Error.Status
-        </MudText>
-
-        <MudText Typo="Typo.h5">
-            @Error.Title
-        </MudText>
-    </div>
-
-    @if (!string.IsNullOrEmpty(Error.Detail))
+<EduContainer Class="@Class" MaxWidth="EduWidth.W960">
+    @if (Error.Status == 404)
     {
-        <MudText Class="mb-3" Typo="Typo.subtitle1" Align="Align.Center">
-            @Error.Detail
-        </MudText>
+        <div class="d-flex justify-center mb-3">
+            <MudImage Class="w-max-480 w-100" Src="/images/illustration/not_found.svg"/>
+        </div>
     }
 
-    <div class="d-flex justify-center gap-3">
-        <MudButton
-            DisableElevation
-            Variant="Variant.Filled"
-            Color="Color.Primary"
-            Link="@EduUrl.Root">
-            @L["Button_GoToHome"]
-        </MudButton>
+    <MudText Class="mb-3" Typo="Typo.h2" Align="Align.Center">
+        @($"{Error.Status}: {Error.Title}")
+    </MudText>
 
+    <MudText Class="mb-3 mud-text-secondary" Typo="Typo.body1" Align="Align.Center">
+        @(Error switch {
+            { Detail: not null } => Error.Detail,
+            { Status: 404 } => L["Error_NotFound_Description"],
+            { Status: 500 } => L["Error_InternalServerError_Description"],
+            _ => L["Error_Description"]
+        })
+    </MudText>
+
+    <div class="d-flex justify-center gap-3">
         @if (Error.Status > 499)
         {
             <MudButton
@@ -35,6 +30,14 @@
                 @L["Button_Reload"]
             </MudButton>
         }
+
+        <MudButton
+            DisableElevation
+            Variant="Variant.Text"
+            Color="Color.Primary"
+            Link="@EduUrl.Root">
+            @L["BackToHome_Button"]
+        </MudButton>
     </div>
 </EduContainer>
 

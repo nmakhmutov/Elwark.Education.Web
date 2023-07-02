@@ -15,6 +15,8 @@ public static class HistoryUrl
     public static class Content
     {
         public const string Empires = $"{Root}/empires";
+        
+        public const string Random = $"{Root}/random";
 
         public static string Articles() =>
             $"{Root}/articles";
@@ -24,7 +26,7 @@ public static class HistoryUrl
 
         public static string Articles(GetArticlesRequest.SortType sort, EpochType epoch = EpochType.None)
         {
-            var sb = new StringBuilder($"{Root}/articles")
+            var sb = new StringBuilder($"{Root}/articles/")
                 .Append(sort switch
                 {
                     GetArticlesRequest.SortType.Newest => "newest",
@@ -52,7 +54,13 @@ public static class HistoryUrl
             $"{Root}/course/{courseId}";
     }
 
-    public static class ArticleQuiz
+    public static class Flow
+    {
+        public static string Index() =>
+            $"{Root}/flow";
+    }
+    
+    public static class Quiz
     {
         public static string Index() =>
             $"{Root}/quizzes";

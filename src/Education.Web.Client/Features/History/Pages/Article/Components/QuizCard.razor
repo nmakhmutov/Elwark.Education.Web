@@ -56,7 +56,7 @@
         @if (_hasQuiz)
         {
             <MudButton
-                Link="@HistoryUrl.ArticleQuiz.Index(ArticleId)"
+                Link="@HistoryUrl.Quiz.Index(ArticleId)"
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 FullWidth
@@ -78,7 +78,7 @@
         };
 
     [Inject]
-    public IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

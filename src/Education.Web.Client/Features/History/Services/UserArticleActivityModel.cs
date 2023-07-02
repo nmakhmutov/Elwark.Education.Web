@@ -6,8 +6,4 @@ public sealed record UserArticleActivityModel(
     bool? IsLiked,
     uint EasyQuizzes,
     uint HardQuizzes
-)
-{
-    public uint TotalQuizzes =>
-        EasyQuizzes + HardQuizzes;
-}
+);

@@ -1,6 +1,6 @@
 using Education.Web.Client.Http;
 
-namespace Education.Web.Client.Features.History.Services.User.Request;
+namespace Education.Web.Client.Features.History.Services.Learner.Request;
 
 public sealed record BookmarksRequest(BookmarksRequest.SortType Sort, int Count, string? Token = null)
     : IQueryStringRequest

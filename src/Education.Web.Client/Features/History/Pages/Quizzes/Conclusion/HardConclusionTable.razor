@@ -1,0 +1,44 @@
+<MudTable Class="@Class" Items="@Questions" Breakpoint="Breakpoint.Xs" Elevation="0" Hover>
+    <HeaderContent>
+        <MudTh>@L["Question_Title"]</MudTh>
+        <MudTh>@L["Question_Answered"]</MudTh>
+        <MudTh>@L["Question_Correct"]</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="@L["Question_Title"]">
+            @context.Title
+        </MudTd>
+        <MudTd DataLabel="@L["Question_Answered"]">
+            <MudIcon
+                Size="Size.Small"
+                Icon="@(context.IsAnswered ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close)"/>
+        </MudTd>
+        <MudTd DataLabel="@L["Question_Correct"]">
+            <MudIcon
+                Size="Size.Small"
+                Icon="@(context.Correct > 0 ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close)"/>
+        </MudTd>
+    </RowTemplate>
+    <FooterContent>
+        <MudTh/>
+        <MudTh>
+            @Questions.Count(x => x.IsAnswered) / @Questions.Length
+        </MudTh>
+        <MudTh>
+            @Questions.Sum(x => x.Correct) / @Questions.Length
+        </MudTh>
+    </FooterContent>
+</MudTable>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public QuizConclusionModel.Question[] Questions { get; set; } = Array.Empty<QuizConclusionModel.Question>();
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

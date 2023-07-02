@@ -1,6 +1,6 @@
 using Education.Web.Client.Features.History.Services.EventGuesser.Model;
 
-namespace Education.Web.Client.Features.History.Services.User.Model.EventGuesser;
+namespace Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser;
 
 public sealed record EventGuessersStatisticsModel(
     EventGuessersStatisticsModel.EventGuesserModel SmallEventGuesser,

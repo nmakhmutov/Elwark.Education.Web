@@ -6,7 +6,7 @@
     <PageTitle>
         @L[$"Quiz_{conclusion.Type}_Title"]: @conclusion.Article.Title
     </PageTitle>
-    
+
     <MudAlert Class="mb-6 mb-sm-12" Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
         @L[$"ConclusionStatus_{conclusion.Status}"]
     </MudAlert>
@@ -33,46 +33,20 @@
                 @conclusion.Article.Title
             </MudLink>
         </div>
-        <MudTable Class="mb-3 mb-sm-6" Items="@conclusion.Questions" Breakpoint="Breakpoint.Xs" Elevation="0" Hover>
-            <HeaderContent>
-                <MudTh>@L["Question_Title"]</MudTh>
-                <MudTh>@L["Question_IsAnswered"]</MudTh>
-                <MudTh>@L["Question_Correct"]</MudTh>
-                <MudTh>@L["Question_Incorrect"]</MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd DataLabel="@L["Question_Title"]">
-                    @context.Title
-                </MudTd>
-                <MudTd DataLabel="@L["Question_IsAnswered"]">
-                    <MudIcon
-                        Size="Size.Small"
-                        Icon="@(context.IsAnswered ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close)"/>
-                </MudTd>
-                <MudTd DataLabel="@L["Question_Correct"]">
-                    @context.Correct
-                </MudTd>
-                <MudTd DataLabel="@L["Question_Incorrect"]">
-                    @context.Incorrect
-                </MudTd>
-            </RowTemplate>
-            <FooterContent>
-                <MudTh/>
-                <MudTh>
-                    @conclusion.Questions.Count(x => x.IsAnswered) / @conclusion.Questions.Length
-                </MudTh>
-                <MudTh>
-                    @conclusion.Questions.Sum(x => x.Correct) / @conclusion.Questions.Length
-                </MudTh>
-                <MudTh>
-                    @conclusion.Questions.Sum(x => x.Incorrect) / @conclusion.Questions.Length
-                </MudTh>
-            </FooterContent>
-        </MudTable>
+
+        @switch (conclusion.Type)
+        {
+            case DifficultyType.Easy:
+                <EasyConclusionTable Class="mb-3 mb-sm-6" Questions="@conclusion.Questions"/>
+                break;
+            case DifficultyType.Hard:
+                <HardConclusionTable Class="mb-3 mb-sm-6" Questions="@conclusion.Questions"/>
+                break;
+        }
 
         <div class="d-flex justify-center">
             <MudButton
-                Href="@HistoryUrl.ArticleQuiz.Index(conclusion.Article.Id)"
+                Href="@HistoryUrl.Quiz.Index(conclusion.Article.Id)"
                 Color="Color.Primary"
                 Variant="Variant.Filled"
                 DisableElevation>
@@ -101,8 +75,8 @@
     {
         _result = await QuizService.GetConclusionAsync(Id);
 
-        if (_result.IsError && _result.UnwrapError().IsTestNotFound())
-            Navigation.NavigateTo(HistoryUrl.ArticleQuiz.Index());
+        if (_result.Is(x => x.IsTestNotFound()))
+            Navigation.NavigateTo(HistoryUrl.Quiz.Index());
     }
 
     private static Severity GetColor(QuizStatus status) =>

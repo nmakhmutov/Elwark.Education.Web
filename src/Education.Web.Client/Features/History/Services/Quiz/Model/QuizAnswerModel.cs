@@ -6,6 +6,6 @@ namespace Education.Web.Client.Features.History.Services.Quiz.Model;
 public sealed record QuizAnswerModel(
     QuizOverviewModel Overview,
     AnswerResult Answer,
-    QuizQuestion? NextQuestion,
+    Question? NextQuestion,
     TestInventoryModel[] Inventory
 );

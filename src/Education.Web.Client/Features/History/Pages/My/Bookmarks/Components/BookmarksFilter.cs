@@ -1,4 +1,4 @@
-using Education.Web.Client.Features.History.Services.User.Request;
+using Education.Web.Client.Features.History.Services.Learner.Request;
 
 namespace Education.Web.Client.Features.History.Pages.My.Bookmarks.Components;
 

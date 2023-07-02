@@ -1,7 +1,7 @@
-using Education.Web.Client.Features.History.Services.User.Model;
-using Education.Web.Client.Features.History.Services.User.Model.EventGuesser;
-using Education.Web.Client.Features.History.Services.User.Model.Quiz;
-using Education.Web.Client.Features.History.Services.User.Request;
+using Education.Web.Client.Features.History.Services.Learner.Model;
+using Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser;
+using Education.Web.Client.Features.History.Services.Learner.Model.Quiz;
+using Education.Web.Client.Features.History.Services.Learner.Request;
 using Education.Web.Client.Http;
 using Education.Web.Client.Models;
 

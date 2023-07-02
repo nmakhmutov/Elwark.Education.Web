@@ -11,11 +11,15 @@
         @Loading
         break;
 
-    case Status.Error:
+    case Status.Error when Error is null:
         <PageTitle>
             @Result.Error.Title
         </PageTitle>
         <EduError Class="align-center justify-center flex-grow-1" Error="@(Result.UnwrapError())"/>
+        break;
+
+    case Status.Error when Error is not null:
+        @Error(Result.UnwrapError())
         break;
 
     case Status.Success:
@@ -37,5 +41,8 @@
 
     [Parameter]
     public RenderFragment? Loading { get; set; }
+
+    [Parameter]
+    public RenderFragment<Error>? Error { get; set; }
 
 }

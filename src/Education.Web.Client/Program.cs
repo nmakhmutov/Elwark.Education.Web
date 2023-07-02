@@ -8,6 +8,7 @@ using Education.Web.Client.Features.History.Services;
 using Education.Web.Client.Features.History.Services.Article;
 using Education.Web.Client.Features.History.Services.Course;
 using Education.Web.Client.Features.History.Services.EventGuesser;
+using Education.Web.Client.Features.History.Services.Flow;
 using Education.Web.Client.Features.History.Services.Leaderboard;
 using Education.Web.Client.Features.History.Services.Learner;
 using Education.Web.Client.Features.History.Services.Order;
@@ -110,6 +111,7 @@ builder.Services
     .AddScoped<IHistoryArticleService, HistoryArticleService>()
     .AddScoped<IHistoryCourseService, HistoryCourseService>()
     .AddScoped<IHistoryEventGuesserService, HistoryEventGuesserService>()
+    .AddScoped<IHistoryFlowService, HistoryFlowService>()
     .AddScoped<IHistoryLeaderboardService, HistoryLeaderboardService>()
     .AddScoped<IHistoryLearnerService, HistoryLearnerService>()
     .AddScoped<IHistoryOrderService, HistoryOrderService>()

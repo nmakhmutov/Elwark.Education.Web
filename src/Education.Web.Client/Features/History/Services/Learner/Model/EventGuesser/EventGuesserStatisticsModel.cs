@@ -1,7 +1,7 @@
 using Education.Web.Client.Features.History.Services.EventGuesser.Model;
 using Education.Web.Client.Models.Statistics;
 
-namespace Education.Web.Client.Features.History.Services.User.Model.EventGuesser;
+namespace Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser;
 
 public sealed record EventGuesserStatisticsModel(
     uint Tests,

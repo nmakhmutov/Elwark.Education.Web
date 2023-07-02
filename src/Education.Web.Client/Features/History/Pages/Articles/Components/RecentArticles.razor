@@ -1,7 +1,8 @@
+@using Education.Web.Client.Features.History.Services.Learner
 <EduFillGrid>
     <ApiViewer Result="@_result">
         <Loading>
-            @for (var i = 0; i < 6; i++)
+            @for (var i = 0; i < 12; i++)
             {
                 <SkeletonCard/>
             }
@@ -32,6 +33,6 @@
 
     protected override async Task OnInitializedAsync() =>
         _result = await HistoryArticleService
-            .GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Newest, 0, 6));
+            .GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Newest, 0, 12));
 
 }

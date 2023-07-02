@@ -1,8 +1,8 @@
+using Education.Web.Client.Features.History.Services.Learner.Model.Quiz;
 using Education.Web.Client.Features.History.Services.Quiz.Model;
-using Education.Web.Client.Features.History.Services.User.Model.Quiz;
 using Education.Web.Client.Models.Quiz;
 
-namespace Education.Web.Client.Features.History.Services.User.Model;
+namespace Education.Web.Client.Features.History.Services.Learner.Model;
 
 public sealed record ArticleStatisticsModel(
     ArticleOverviewModel Article,

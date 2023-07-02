@@ -1,35 +1,42 @@
-@if (ShowTooltip)
-{
-    <MudTooltip Text="@L["NumberOfQuizzes_Total_Title"]">
-        @Chip
-    </MudTooltip>
-}
-else
-{
-    @Chip
-}
+<MudTooltip Text="@L["NumberOfQuizzes_Total_Title"]">
+    <ChildContent>
+        <MudChip
+            Class="ma-0"
+            Color="Color.Primary"
+            Variant="Variant.Outlined"
+            Icon="@EduIcons.Quiz"
+            Text="@Quizzes.ToMetric("G")"/>
+    </ChildContent>
+
+    <TooltipContent>
+        <div class="d-flex flex-column">
+            <div class="d-flex gap-1">
+                <MudIcon Size="Size.Small" Icon="@EduIcons.Quiz"/>
+                <MudText Typo="Typo.body2">
+                    @L["NumberOfQuizzes_PassedHard_Title"]: @Hard.ToMetric("G")
+                </MudText>
+            </div>
+            <div class="d-flex gap-1">
+                <MudIcon Size="Size.Small" Icon="@EduIcons.Quiz"/>
+                <MudText Typo="Typo.body2">
+                    @L["NumberOfQuizzes_PassedEasy_Title"]: @Easy.ToMetric("G")
+                </MudText>
+            </div>
+        </div>
+    </TooltipContent>
+</MudTooltip>
 
 @code {
-
-    private RenderFragment Chip =>
-        @<MudChip
-             Class="ma-0"
-             Color="Color.Primary"
-             Variant="Variant.Outlined"
-             Icon="@EduIcons.Quiz"
-             Text="@Quizzes.ToMetric("G")"
-             Link="@Href"/>;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    private uint Quizzes => Easy + Hard;
+
     [Parameter, EditorRequired]
-    public uint Quizzes { get; set; }
+    public uint Easy { get; set; }
 
-    [Parameter]
-    public bool ShowTooltip { get; set; }
-
-    [Parameter]
-    public string? Href { get; set; }
+    [Parameter, EditorRequired]
+    public uint Hard { get; set; }
 
 }

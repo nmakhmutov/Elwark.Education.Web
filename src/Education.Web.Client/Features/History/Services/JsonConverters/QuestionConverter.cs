@@ -4,22 +4,22 @@ using Education.Web.Client.Models.Quiz;
 
 namespace Education.Web.Client.Features.History.Services.JsonConverters;
 
-internal sealed class TestQuestionConverter : JsonConverter<QuizQuestion?>
+internal sealed class QuestionConverter : JsonConverter<Question?>
 {
-    public override QuizQuestion? Read(ref Utf8JsonReader reader, Type _, JsonSerializerOptions options)
+    public override Question? Read(ref Utf8JsonReader reader, Type _, JsonSerializerOptions options)
     {
         using var document = JsonDocument.ParseValue(ref reader);
         var type = document.RootElement.GetProperty("type").GetString();
 
         return type switch
         {
-            "short" => document.Deserialize<QuizQuestion.ShortModel>(options),
-            "single" => document.Deserialize<QuizQuestion.SingleModel>(options),
-            "multiple" => document.Deserialize<QuizQuestion.MultipleModel>(options),
+            "short" => document.Deserialize<Question.ShortModel>(options),
+            "single" => document.Deserialize<Question.SingleModel>(options),
+            "multiple" => document.Deserialize<Question.MultipleModel>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, @"Unknown test question")
         };
     }
 
-    public override void Write(Utf8JsonWriter writer, QuizQuestion? value, JsonSerializerOptions options) =>
+    public override void Write(Utf8JsonWriter writer, Question? value, JsonSerializerOptions options) =>
         JsonSerializer.Serialize(writer, value, options);
 }

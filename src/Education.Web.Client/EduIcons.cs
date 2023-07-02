@@ -30,8 +30,12 @@ public static class EduIcons
     public const string Articles = Icons.Material.Outlined.Article;
 
     public const string Courses = Icons.Material.Outlined.AutoStories;
-    
+
     public const string Empires = Icons.Material.Outlined.Foundation;
+
+    public const string Random = Icons.Material.Outlined.ContentPasteSearch;
+
+    public const string Flow = Icons.Material.Outlined.Waves;
 
     public const string Quiz = Icons.Material.Outlined.School;
 

@@ -1,4 +1,4 @@
-namespace Education.Web.Client.Features.History.Services.User.Model.Quiz;
+namespace Education.Web.Client.Features.History.Services.Learner.Model.Quiz;
 
 public sealed record NumberOfQuizzesModel(
     uint Succeeded,

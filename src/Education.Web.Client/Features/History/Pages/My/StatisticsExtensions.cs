@@ -1,7 +1,7 @@
 using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.History.Components.Lists;
-using Education.Web.Client.Features.History.Services.User.Model.EventGuesser;
-using Education.Web.Client.Features.History.Services.User.Model.Quiz;
+using Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser;
+using Education.Web.Client.Features.History.Services.Learner.Model.Quiz;
 using Microsoft.Extensions.Localization;
 
 namespace Education.Web.Client.Features.History.Pages.My;
