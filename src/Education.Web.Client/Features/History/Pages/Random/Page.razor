@@ -2,70 +2,90 @@
 @using Education.Web.Client.Features.History.Services.Learner
 @layout HistoryLayout
 
-<ApiViewer Result="@_result">
-    <Loading>
-        <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W960">
-            <div class="wrapper mb-3 mb-sm-6">
-                <SkeletonCard Horizontal/>
-            </div>
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W600">
+    <div class="d-flex flex-column gap-3 mb-3 flex-sm-row justify-sm-space-between align-sm-center mb-sm-6">
+        <MudText Typo="Typo.h2">
+            @L["Random_Content_Title"]
+        </MudText>
+        <MudButton
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            OnClick="@OnSearchClick"
+            DisableElevation>
+            @L["Random_Next_Button"]
+        </MudButton>
+    </div>
 
-            <div class="d-flex justify-center">
-                <MudButton
-                    DisableElevation
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    Disabled>
-                    @L["Search_Title"]
-                </MudButton>
-            </div>
-        </EduContainer>
-    </Loading>
+    <div class="wrapper mb-3 mb-sm-6">
+        <ApiViewer Result="@_result">
+            <Loading>
+                <SkeletonCard Class="min-h-inherit"/>
+            </Loading>
 
-    <ChildContent Context="item">
-        <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W960">
-            <div class="wrapper mb-3 mb-sm-6">
+            <ChildContent Context="item">
                 @if (item.Article is not null)
                 {
                     <PageTitle>
-                        @L["Random_Title"]: @item.Article.Article.Title
+                        @L["Random_Content_Title"]: @item.Article.Article.Title
                     </PageTitle>
 
                     <ArticleCard
+                        Class="min-h-inherit"
                         Article="@item.Article.Article"
                         Activity="@item.Article.Activity"
-                        OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
-                        Horizontal/>
+                        OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
                 }
 
                 @if (item.Course is not null)
                 {
                     <PageTitle>
-                        @L["Random_Title"]: @item.Course.Course.Title
+                        @L["Random_Content_Title"]: @item.Course.Course.Title
                     </PageTitle>
 
                     <CourseCard
+                        Class="min-h-inherit"
                         Course="@item.Course.Course"
                         Activity="@item.Course.Activity"
-                        OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"
-                        Horizontal/>
+                        OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"/>
                 }
-            </div>
+            </ChildContent>
+        </ApiViewer>
+    </div>
 
-            <div class="d-flex justify-center">
-                <MudButton
-                    DisableElevation
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    OnClick="@SearchAsync">
-                    @L["Search_Title"]
-                </MudButton>
-            </div>
-        </EduContainer>
-    </ChildContent>
-</ApiViewer>
+    @if (_history.Count > 0)
+    {
+        <MudText Class="mb-3" Typo="Typo.h5">
+            @L["Random_Content_History_Title"]
+        </MudText>
+
+        <Virtualize Items="@_history" Context="item">
+            @if (item.Article is not null)
+            {
+                <ArticleCard
+                    Class="mb-3 mb-sm-6"
+                    Article="@item.Article.Article"
+                    Activity="@item.Article.Activity"
+                    OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
+                    Horizontal
+                    HideOverview/>
+            }
+
+            @if (item.Course is not null)
+            {
+                <CourseCard
+                    Class="mb-3 mb-sm-6"
+                    Course="@item.Course.Course"
+                    Activity="@item.Course.Activity"
+                    OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"
+                    Horizontal
+                    HideOverview/>
+            }
+        </Virtualize>
+    }
+</EduContainer>
 
 @code {
-
+    private readonly List<OneOf> _history = new();
     private ApiResult<OneOf> _result = ApiResult<OneOf>.Loading();
 
     [Inject]
@@ -83,9 +103,19 @@
     protected override Task OnInitializedAsync() =>
         SearchAsync();
 
+    private Task OnSearchClick()
+    {
+        if (_result.IsLoading)
+            return Task.CompletedTask;
+
+        _result.Match(x => _history.Insert(0, x));
+        _result = ApiResult<OneOf>.Loading();
+
+        return SearchAsync();
+    }
+
     private async Task SearchAsync()
     {
-        _result = ApiResult<OneOf>.Loading();
         if (Random.Shared.Next(0, 2) % 2 == 0)
         {
             _result = (await ArticleService.GetRandomAsync(EpochType.None))

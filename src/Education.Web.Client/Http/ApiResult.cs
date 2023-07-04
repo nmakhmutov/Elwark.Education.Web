@@ -36,6 +36,9 @@ public sealed class ApiResult<T>
     public bool IsError =>
         Status == Status.Error;
 
+    public bool IsLoading =>
+        Status == Status.Loading;
+    
     public T Value =>
         _value ?? throw new ArgumentNullException(nameof(Value));
 
