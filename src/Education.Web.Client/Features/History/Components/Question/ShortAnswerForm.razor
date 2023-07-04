@@ -1,4 +1,5 @@
 @using FluentValidation
+@using Education.Web.Client.Models.Quiz
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
@@ -37,26 +38,13 @@
     else
     {
         <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
-            @if (IsTestCompleted)
-            {
-                <MudButton
-                    DisableElevation
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    OnClick="@OnComplete">
-                    @L["Quiz_ShowTheResult"]
-                </MudButton>
-            }
-            else
-            {
-                <MudButton
-                    DisableElevation
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    OnClick="@OnNext">
-                    @L["Quiz_NextQuestion"]
-                </MudButton>
-            }
+            <MudButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                OnClick="@OnNextClick"
+                DisableElevation>
+                @OnNextTitle
+            </MudButton>
         </div>
 
         if (CorrectAnswer.IsCorrect)
@@ -81,9 +69,6 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public bool IsTestCompleted { get; set; }
-
-    [Parameter, EditorRequired]
     public bool IsLoading { get; set; }
 
     [Parameter, EditorRequired]
@@ -93,19 +78,19 @@
     public AnswerResult.ShortModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback<ShortAnswerModel> OnAnswer { get; set; }
+    public EventCallback<ShortAnswerModel> OnAnswerClick { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback OnNext { get; set; }
-
+    public string OnNextTitle { get; set; } = string.Empty;
+    
     [Parameter, EditorRequired]
-    public EventCallback OnComplete { get; set; }
+    public EventCallback OnNextClick { get; set; }
 
     protected override void OnInitialized() =>
         _validator = new Validator(L);
 
     private Task OnValidSubmit() =>
-        OnAnswer.InvokeAsync(UserAnswer);
+        OnAnswerClick.InvokeAsync(UserAnswer);
 
     public sealed class Validator : AbstractValidator<ShortAnswerModel>
     {

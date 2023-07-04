@@ -1,0 +1,97 @@
+@using Education.Web.Client.Models.Quiz
+<section class="@Class">
+    @Header
+
+    @if (Question.ImageUrl is not null)
+    {
+        <img class="image mb-3 mb-sm-6" src="@Question.ImageUrl" alt="@Question.Title"/>
+    }
+
+    <MudText Class="mb-6" Typo="Typo.subtitle1" Align="Align.Center">
+        @Question.Title
+    </MudText>
+
+    @switch (Question)
+    {
+        case Question.MultipleModel question:
+        {
+            <MultipleAnswerForm
+                IsLoading="@_checking"
+                CorrectAnswer="@(CorrectAnswer as AnswerResult.MultipleModel)"
+                UserAnswer="@(_userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel())"
+                Options="@question.Options"
+                OnAnswerClick="@OnAnswer"
+                OnNextTitle="@OnNextTitle"
+                OnNextClick="@OnNext"/>
+            break;
+        }
+
+        case Question.ShortModel:
+        {
+            <ShortAnswerForm
+                IsLoading="@_checking"
+                CorrectAnswer="@(CorrectAnswer as AnswerResult.ShortModel)"
+                UserAnswer="@(_userAnswer as ShortAnswerModel ?? new ShortAnswerModel())"
+                OnAnswerClick="@OnAnswer"
+                OnNextTitle="@OnNextTitle"
+                OnNextClick="@OnNext"/>
+            break;
+        }
+
+        case Question.SingleModel question:
+        {
+            <SingleAnswerForm
+                IsLoading="@_checking"
+                CorrectAnswer="@(CorrectAnswer as AnswerResult.SingleModel)"
+                UserAnswer="@(_userAnswer as SingleAnswerModel ?? new SingleAnswerModel())"
+                Options="@question.Options"
+                OnAnswerClick="@OnAnswer"
+                OnNextTitle="@OnNextTitle"
+                OnNextClick="@OnNext"/>
+            break;
+        }
+    }
+</section>
+
+@code {
+    private bool _checking;
+    private AnswerToQuestionModel? _userAnswer;
+
+    [Parameter, EditorRequired]
+    public Question Question { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public AnswerResult? CorrectAnswer { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<AnswerToQuestionModel> OnAnswerClick { get; set; }
+    
+    [Parameter, EditorRequired]
+    public string OnNextTitle { get; set; } = string.Empty;
+    
+    [Parameter, EditorRequired]
+    public EventCallback OnNextClick { get; set; }
+
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task OnAnswer(AnswerToQuestionModel answer)
+    {
+        _checking = true;
+        _userAnswer = answer;
+
+        await OnAnswerClick.InvokeAsync(answer);
+
+        _checking = false;
+    }
+
+    private Task OnNext()
+    {
+        _userAnswer = null;
+        return OnNextClick.InvokeAsync();
+    }
+
+}

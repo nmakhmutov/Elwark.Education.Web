@@ -1,8 +1,9 @@
 @using FluentValidation
+@using Education.Web.Client.Models.Quiz
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
-    <MudRadioGroup @bind-SelectedOption="@(UserAnswer.Answer)">
+    <MudRadioGroup @bind-SelectedOption="@(                                             UserAnswer.Answer)">
         <div class="d-flex flex-wrap align-center justify-center gap-3 mb-3 mb-sm-6">
             @foreach (var option in Options)
             {
@@ -42,13 +43,13 @@
         {
             <div class="d-flex flex-row justify-center">
                 <LoadingButton
-                    DisableElevation
                     Variant="Variant.Filled"
                     Color="Color.Primary"
                     IsLoading="@IsLoading"
                     Text="@L["Quiz_AnswerToQuestion"]"
                     LoadingText="@L["Loading_Title"]"
-                    ButtonType="ButtonType.Submit"/>
+                    ButtonType="ButtonType.Submit"
+                    DisableElevation/>
             </div>
 
             <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error" Class="mt-3 mt-sm-6">
@@ -58,26 +59,13 @@
         else
         {
             <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
-                @if (IsTestCompleted)
-                {
-                    <MudButton
-                        DisableElevation
-                        Variant="Variant.Filled"
-                        Color="Color.Primary"
-                        OnClick="@OnComplete">
-                        @L["Quiz_ShowTheResult"]
-                    </MudButton>
-                }
-                else
-                {
-                    <MudButton
-                        DisableElevation
-                        Variant="Variant.Filled"
-                        Color="Color.Primary"
-                        OnClick="@OnNext">
-                        @L["Quiz_NextQuestion"]
-                    </MudButton>
-                }
+                <MudButton
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    OnClick="@OnNextClick"
+                    DisableElevation>
+                    @OnNextTitle
+                </MudButton>
             </div>
 
             if (CorrectAnswer.IsCorrect)
@@ -103,9 +91,6 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public bool IsTestCompleted { get; set; }
-
-    [Parameter, EditorRequired]
     public bool IsLoading { get; set; }
 
     [Parameter, EditorRequired]
@@ -118,19 +103,19 @@
     public AnswerOption[] Options { get; set; } = Array.Empty<AnswerOption>();
 
     [Parameter, EditorRequired]
-    public EventCallback<SingleAnswerModel> OnAnswer { get; set; }
+    public EventCallback<SingleAnswerModel> OnAnswerClick { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback OnNext { get; set; }
+    public string OnNextTitle { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public EventCallback OnComplete { get; set; }
+    public EventCallback OnNextClick { get; set; }
 
     protected override void OnInitialized() =>
         _validator = new Validator(L);
 
     private Task OnValidSubmit() =>
-        OnAnswer.InvokeAsync(UserAnswer);
+        OnAnswerClick.InvokeAsync(UserAnswer);
 
     private (string? Icon, Color Color) Get(AnswerOption option) =>
         CorrectAnswer switch {

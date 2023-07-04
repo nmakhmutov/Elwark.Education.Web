@@ -9,6 +9,7 @@ namespace Education.Web.Client.Http;
 
 internal abstract class ApiClient
 {
+    private static readonly Type InputType = typeof(object);
     private readonly ApiAnonymousClient _anonymous;
     private readonly ApiAuthenticatedClient _authenticated;
     private readonly IStringLocalizer _localizer;
@@ -80,7 +81,7 @@ internal abstract class ApiClient
         ExecuteAsync<T>(token => _authenticated.DeleteAsync(url, token), ct);
 
     private JsonContent CreateJson<T>(T value) =>
-        JsonContent.Create(value, null, _options);
+        JsonContent.Create(value, InputType, null, _options);
 
     private async Task<ApiResult<T>> ExecuteAsync<T>(
         Func<CancellationToken, Task<HttpResponseMessage>> action,

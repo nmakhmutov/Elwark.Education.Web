@@ -38,72 +38,24 @@
                         Size="Size.Medium"/>
                 </header>
 
-                <article class="quiz mud-paper pa-3 pa-sm-6">
-                    <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
-                        @_testTypeTitle
-                    </MudText>
-                    <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center" Style="font-weight: 500">
-                        @_result.Value.Overview.Article.Title
-                    </MudText>
+                <QuestionForm
+                    Class="quiz mud-paper pa-3 pa-sm-6"
+                    Question="@_currentQuestion"
+                    CorrectAnswer="@_correctAnswer"
+                    OnAnswerClick="@OnAnswer"
+                    OnNextTitle="@(_nextQuestion is null ? L["Quiz_ShowTheResult"] : L["Quiz_NextQuestion"])"
+                    OnNextClick="@OnNext">
+                    <Header>
+                        <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
+                            @_testTypeTitle
+                        </MudText>
+                        <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center" Style="font-weight: 500">
+                            @_result.Value.Overview.Article.Title
+                        </MudText>
+                    </Header>
+                </QuestionForm>
 
-                    @if (_currentQuestion.ImageUrl is not null)
-                    {
-                        <img class="image mb-3 mb-sm-6" src="@_currentQuestion.ImageUrl" alt="@_currentQuestion.Title"/>
-                    }
-
-                    <MudText Class="mb-6" Typo="Typo.subtitle1" Align="Align.Center">
-                        @_currentQuestion.Title
-                    </MudText>
-
-                    @switch (_currentQuestion)
-                    {
-                        case Question.MultipleModel question:
-                        {
-                            <MultipleAnswerForm
-                                IsLoading="@_checking"
-                                IsTestCompleted="@IsCompleted"
-                                CorrectAnswer="@(_correctAnswer as AnswerResult.MultipleModel)"
-                                UserAnswer="@(_userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel())"
-                                Options="@question.Options"
-                                OnAnswer="@OnMultiplyAnswer"
-                                OnNext="@OnNext"
-                                OnComplete="@OnComplete"/>
-                            break;
-                        }
-
-                        case Question.ShortModel:
-                        {
-                            <ShortAnswerForm
-                                IsLoading="@_checking"
-                                IsTestCompleted="@IsCompleted"
-                                CorrectAnswer="@(_correctAnswer as AnswerResult.ShortModel)"
-                                UserAnswer="@(_userAnswer as ShortAnswerModel ?? new ShortAnswerModel())"
-                                OnAnswer="@OnShortAnswer"
-                                OnNext="@OnNext"
-                                OnComplete="@OnComplete"/>
-                            break;
-                        }
-
-                        case Question.SingleModel question:
-                        {
-                            <SingleAnswerForm
-                                IsLoading="@_checking"
-                                IsTestCompleted="@IsCompleted"
-                                CorrectAnswer="@(_correctAnswer as AnswerResult.SingleModel)"
-                                UserAnswer="@(_userAnswer as SingleAnswerModel ?? new SingleAnswerModel())"
-                                Options="@question.Options"
-                                OnAnswer="@OnSingleAnswer"
-                                OnNext="@OnNext"
-                                OnComplete="@OnComplete"/>
-                            break;
-                        }
-
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(_currentQuestion));
-                    }
-                </article>
-
-                <InventoryGrid Class="inventory" Inventory="@(_inventory.OrderByDescending(x => x.IsInteractive))" Context="item">
+                <InventoryGrid Class="inventory" Inventory="@_inventory" Context="item">
                     @if (item.IsInteractive)
                     {
                         <InventoryButtonCard
@@ -136,9 +88,7 @@
     private QuizOverviewModel _quiz = default!;
     private Question _currentQuestion = default!;
     private Question? _nextQuestion;
-    private AnswerToQuestionModel? _userAnswer;
     private AnswerResult? _correctAnswer;
-    private bool _checking;
     private string _testTypeTitle = string.Empty;
 
     [Inject]
@@ -159,10 +109,7 @@
     private double Progress =>
         (double)_quiz.Completed / _quiz.Questions * 100;
 
-    private bool IsCompleted =>
-        _quiz.Completed == _quiz.Questions;
-
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         _result = await QuizService.GetAsync(Id);
         _result.Match(
@@ -192,37 +139,10 @@
             Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
     }
 
-    private async Task OnShortAnswer(ShortAnswerModel answer)
+    private async Task OnAnswer(AnswerToQuestionModel answer)
     {
-        _checking = true;
-        _userAnswer = answer;
-
         var result = await QuizService.CheckAsync(_quiz.Id, _currentQuestion.Id, answer);
         UpdateState(result);
-
-        _checking = false;
-    }
-
-    private async Task OnSingleAnswer(SingleAnswerModel answer)
-    {
-        _checking = true;
-        _userAnswer = answer;
-
-        var result = await QuizService.CheckAsync(_quiz.Id, _currentQuestion.Id, answer);
-        UpdateState(result);
-
-        _checking = false;
-    }
-
-    private async Task OnMultiplyAnswer(MultipleAnswerModel answer)
-    {
-        _checking = true;
-        _userAnswer = answer;
-
-        var result = await QuizService.CheckAsync(_quiz.Id, _currentQuestion.Id, answer);
-        UpdateState(result);
-
-        _checking = false;
     }
 
     private void UpdateState(ApiResult<QuizAnswerModel> result) =>
@@ -251,18 +171,17 @@
     private void OnNext()
     {
         if (_nextQuestion is null)
+        {
+            Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
             return;
+        }
 
         _currentQuestion = _nextQuestion;
         _nextQuestion = null;
-        _userAnswer = null;
         _correctAnswer = null;
 
         StateHasChanged();
     }
-
-    private void OnComplete() =>
-        Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
 
     private async Task OnUseInventory(uint id) =>
         (await QuizService.ApplyInventoryAsync(_quiz.Id, id))
