@@ -13,19 +13,6 @@
 
     @switch (Question)
     {
-        case Question.MultipleModel question:
-        {
-            <MultipleAnswerForm
-                IsLoading="@_checking"
-                CorrectAnswer="@(CorrectAnswer as AnswerResult.MultipleModel)"
-                UserAnswer="@(_userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel())"
-                Options="@question.Options"
-                OnAnswerClick="@OnAnswer"
-                OnNextTitle="@OnNextTitle"
-                OnNextClick="@OnNext"/>
-            break;
-        }
-
         case Question.ShortModel:
         {
             <ShortAnswerForm
@@ -50,6 +37,19 @@
                 OnNextClick="@OnNext"/>
             break;
         }
+
+        case Question.MultipleModel question:
+        {
+            <MultipleAnswerForm
+                IsLoading="@_checking"
+                CorrectAnswer="@(CorrectAnswer as AnswerResult.MultipleModel)"
+                UserAnswer="@(_userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel())"
+                Options="@question.Options"
+                OnAnswerClick="@OnAnswer"
+                OnNextTitle="@OnNextTitle"
+                OnNextClick="@OnNext"/>
+            break;
+        }
     }
 </section>
 
@@ -65,10 +65,10 @@
 
     [Parameter, EditorRequired]
     public EventCallback<AnswerToQuestionModel> OnAnswerClick { get; set; }
-    
+
     [Parameter, EditorRequired]
     public string OnNextTitle { get; set; } = string.Empty;
-    
+
     [Parameter, EditorRequired]
     public EventCallback OnNextClick { get; set; }
 
@@ -88,10 +88,14 @@
         _checking = false;
     }
 
-    private Task OnNext()
+    private async Task OnNext()
     {
+        _checking = true;
         _userAnswer = null;
-        return OnNextClick.InvokeAsync();
+
+        await OnNextClick.InvokeAsync();
+
+        _checking = false;
     }
 
 }

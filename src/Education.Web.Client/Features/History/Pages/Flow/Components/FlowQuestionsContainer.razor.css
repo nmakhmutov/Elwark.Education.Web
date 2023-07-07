@@ -1,0 +1,34 @@
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        gap: 24px;
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        display: grid;
+        align-items: start;
+        grid-template-columns: 2fr 1fr;
+    }
+
+    .sidebar {
+        height: 100%;
+    }
+
+    .sidebar > div {
+        position: sticky;
+        top: calc(var(--mud-appbar-height) + 24px);
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: 3fr 1fr;
+    }
+}

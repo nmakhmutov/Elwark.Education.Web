@@ -75,7 +75,7 @@
     {
         _result = await QuizService.GetConclusionAsync(Id);
 
-        if (_result.Is(x => x.IsTestNotFound()))
+        if (_result.Is(x => x.IsQuizNotFound()))
             Navigation.NavigateTo(HistoryUrl.Quiz.Index());
     }
 

@@ -106,6 +106,8 @@ internal abstract class ApiClient
 
                 (>= 200 and < 300, false) => ApiResult<T>.Success(default!),
 
+                (401, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error_Unauthorized"], 401)),
+
                 (403, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error_AccessDenied"], 403)),
 
                 (404, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error_NotFound"], 404)),

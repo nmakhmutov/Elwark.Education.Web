@@ -3,44 +3,24 @@
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
-    <div class="d-flex flex-wrap align-center justify-center gap-3 mb-3 mb-sm-6">
+    <div class="d-flex flex-column mx-auto w-max-480 gap-3 mb-3 mb-sm-6">
         @foreach (var option in Options)
         {
             var (icon, color) = Get(option);
 
-            <div class="d-flex flex-row align-center">
-                @if (icon is null)
-                {
-                    <span style="width: 24px">&nbsp;</span>
-                }
-                else
-                {
-                    <MudIcon Icon="@icon" Color="@color"/>
-                }
-
+            <div class="d-flex flex-row justify-space-between align-center border-solid border rounded mud-border-primary">
                 <MudCheckBox
+                    Class="flex-grow-1"
                     Checked="@(UserAnswer.Answer.Contains(option.Id))"
                     CheckedChanged="@((bool b) => OnChecked(b, option.Id))"
                     Disabled="@(CorrectAnswer != null)"
                     Color="Color.Primary">
-                    @switch (option)
-                    {
-                        case AnswerOption.ImageModel x:
-                            <div class="image">
-                                <img src="@x.ImageUrl" alt="@x.Id"/>
-                            </div>
-                            break;
-
-                        case AnswerOption.TextModel x:
-                            <MudText Typo="Typo.body1">
-                                @x.Text
-                            </MudText>
-                            break;
-
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(option));
-                    }
+                    <AnswerOptionForm Option="@option"/>
                 </MudCheckBox>
+                @if (icon is not null)
+                {
+                    <MudIcon Class="mr-3" Icon="@icon" Color="@color"/>
+                }
             </div>
         }
     </div>
@@ -65,13 +45,14 @@
     else
     {
         <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
-            <MudButton
+            <LoadingButton
                 Variant="Variant.Filled"
                 Color="Color.Primary"
+                IsLoading="@IsLoading"
+                Text="@OnNextTitle"
+                LoadingText="@L["Loading_Title"]"
                 OnClick="@OnNextClick"
-                DisableElevation>
-                @OnNextTitle
-            </MudButton>
+                DisableElevation/>
         </div>
 
         if (CorrectAnswer.IsCorrect)
@@ -147,7 +128,7 @@
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.Answer)
                 .NotEmpty()
-                .WithMessage(localizer["Quiz_AnswerCannotBeEmpty"]);
+                .WithMessage(localizer["Question_AnswerCannotBeEmpty"]);
     }
 
 }

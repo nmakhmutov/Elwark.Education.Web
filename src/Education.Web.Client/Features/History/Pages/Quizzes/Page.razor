@@ -89,10 +89,8 @@
 
         _result.MathError(x =>
         {
-            if (x.IsTestAlreadyCreated(out var id))
-            {
+            if (x.IsQuizAlreadyCreated(out var id))
                 Navigation.NavigateTo(HistoryUrl.Quiz.Test(id));
-            }
         });
     }
 

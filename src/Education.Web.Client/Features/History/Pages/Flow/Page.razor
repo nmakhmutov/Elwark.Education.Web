@@ -1,4 +1,5 @@
 @page "/history/flow"
+@using Education.Web.Client.Models.Quiz
 @using Education.Web.Client.Features.History.Services.Flow.Model
 @using Education.Web.Client.Features.History.Services.Flow
 @layout HistoryLayout
@@ -20,11 +21,18 @@
         }
     </Error>
     <ChildContent Context="flow">
-        @flow.Streak
+        <FlowQuestionsContainer
+            Class="py-3 py-sm-6"
+            Flow="flow"
+            CorrectAnswer="@_correctAnswer"
+            OnAnswerClick="@OnAnswerClick"
+            OnNextClick="@OnNextQuestion"
+            OnBankCollectClick="OnBankCollect"/>
     </ChildContent>
 </ApiViewer>
 
 @code {
+    private AnswerResult? _correctAnswer;
     private ApiResult<FlowModel> _result = ApiResult<FlowModel>.Loading();
 
     [Inject]
@@ -41,5 +49,26 @@
         _result = ApiResult<FlowModel>.Loading();
         _result = await FlowService.StartAsync();
     }
+
+    private async Task OnAnswerClick(AnswerToQuestionModel answer)
+    {
+        var flow = _result.Unwrap();
+        _result = (await FlowService.CheckAsync(flow.Question.Id, answer))
+            .Map(x =>
+            {
+                _correctAnswer = x.Answer;
+                return flow with { Streak = x.Streak, Bank = x.Bank };
+            });
+    }
+
+    private async Task OnNextQuestion()
+    {
+        _correctAnswer = null;
+        _result = await FlowService.GetAsync();
+    }
+
+    private async Task OnBankCollect() =>
+        (await FlowService.CollectBankAsync())
+            .Match(_ => _result = ApiResult<FlowModel>.Success(_result.Unwrap() with { Bank = Array.Empty<InternalMoneyModel>()}));
 
 }

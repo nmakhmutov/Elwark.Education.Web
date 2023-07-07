@@ -1,0 +1,101 @@
+@using Education.Web.Client.Features.History.Services.Flow.Model
+@using Education.Web.Client.Models.Quiz
+<EduContainer Class="@Class" MaxWidth="EduWidth.W1280">
+    <section class="grid">
+        <QuestionForm
+            Class="flow mud-paper pa-3 pa-sm-6"
+            Question="@Flow.Question"
+            CorrectAnswer="@CorrectAnswer"
+            OnAnswerClick="@OnAnswerClick"
+            OnNextTitle="@(L["Question_Next"])"
+            OnNextClick="@OnNextClick">
+            <Header>
+                <MudText Class="mb-3" Typo="Typo.h2" Align="Align.Center">
+                    @L["Flow_Title"]
+                </MudText>
+            </Header>
+        </QuestionForm>
+
+        <aside class="sidebar">
+            <div class="mud-paper pa-3 pa-sm-6">
+                <div class="d-flex justify-space-between align-center gap-3 mb-3">
+                    <MudText Typo="Typo.body1">
+                        @L["Flow_Streak_Title"]
+                    </MudText>
+                    <div class="d-flex align-center">
+                        <MudIcon Class="mud-text-secondary" Icon="@Icons.Material.Filled.Whatshot"/>
+                        <MudText Typo="Typo.body1">
+                            @Flow.Streak
+                        </MudText>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-space-between align-center gap-3 mb-3">
+                    <MudText Typo="Typo.body1">
+                        @L["Flow_Bank_Title"]
+                    </MudText>
+                    <div class="d-flex gap-3">
+                        @if (Flow.Bank.Length == 0)
+                        {
+                            <MudText Class="mud-text-secondary" Typo="Typo.body1">
+                                @L["Flow_Bank_Empty"]
+                            </MudText>
+                        }
+                        else
+                        {
+                            foreach (var money in Flow.Bank)
+                            {
+                                <InternalMoney Currency="@money.Currency" Amount="@money.Amount" Horizontal/>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex justify-end">
+                    <LoadingButton
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        IsLoading="@_isLoading"
+                        Text="@L["Flow_CollectBank"]"
+                        LoadingText="@L["Loading_Title"]"
+                        OnClick="@OnCollectBank"
+                        Disabled="@(Flow.Bank.Length == 0)"
+                        DisableElevation/>
+                </div>
+            </div>
+        </aside>
+    </section>
+</EduContainer>
+
+@code {
+    private bool _isLoading;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public FlowModel Flow { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public AnswerResult? CorrectAnswer { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<AnswerToQuestionModel> OnAnswerClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnNextClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnBankCollectClick { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task OnCollectBank()
+    {
+        _isLoading = true;
+        await OnBankCollectClick.InvokeAsync();
+        _isLoading = false;
+    }
+
+}

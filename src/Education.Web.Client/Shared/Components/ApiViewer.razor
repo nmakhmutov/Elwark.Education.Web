@@ -11,11 +11,11 @@
         @Loading
         break;
 
-    case Status.Error when Error is null:
+    case Status.Error when Error is null && Result.UnwrapError() is { } error:
         <PageTitle>
-            @Result.Error.Title
+            @error.Title
         </PageTitle>
-        <EduErrorContainer Class="align-center justify-center flex-grow-1" Error="@(Result.UnwrapError())"/>
+        <EduErrorContainer Class="align-center justify-center flex-grow-1" Error="@(error)"/>
         break;
 
     case Status.Error when Error is not null:

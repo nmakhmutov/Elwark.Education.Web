@@ -3,38 +3,24 @@
 <EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
-    <MudRadioGroup @bind-SelectedOption="@(                                             UserAnswer.Answer)">
-        <div class="d-flex flex-wrap align-center justify-center gap-3 mb-3 mb-sm-6">
+    <MudRadioGroup @bind-SelectedOption="@(UserAnswer.Answer)">
+        <div class="d-flex flex-column mx-auto w-max-480 gap-3 mb-3 mb-sm-6">
             @foreach (var option in Options)
             {
                 var (icon, color) = Get(option);
 
-                <div class="d-flex flex-row align-center">
-                    @if (icon is null)
-                    {
-                        <span style="width: 24px">&nbsp;</span>
-                    }
-                    else
+                <div class="d-flex flex-row justify-space-between align-center border-solid border rounded mud-border-primary px-3">
+                    <MudRadio
+                        Class="flex-grow-1"
+                        Option="@option.Id"
+                        Color="Color.Primary"
+                        Disabled="@(CorrectAnswer != null)">
+                        <AnswerOptionForm Option="@option"/>
+                    </MudRadio>
+                    @if (icon is not null)
                     {
                         <MudIcon Icon="@icon" Color="@color"/>
                     }
-
-                    <MudRadio Disabled="@(CorrectAnswer != null)" Color="Color.Primary" Option="@option.Id">
-                        @switch (option)
-                        {
-                            case AnswerOption.ImageModel x:
-                                <div class="image">
-                                    <img src="@x.ImageUrl" alt="@x.Id"/>
-                                </div>
-                                break;
-
-                            case AnswerOption.TextModel x:
-                                <MudText Typo="Typo.body1">
-                                    @x.Text
-                                </MudText>
-                                break;
-                        }
-                    </MudRadio>
                 </div>
             }
         </div>
@@ -59,13 +45,14 @@
         else
         {
             <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
-                <MudButton
+                <LoadingButton
                     Variant="Variant.Filled"
                     Color="Color.Primary"
+                    IsLoading="@IsLoading"
+                    Text="@OnNextTitle"
+                    LoadingText="@L["Loading_Title"]"
                     OnClick="@OnNextClick"
-                    DisableElevation>
-                    @OnNextTitle
-                </MudButton>
+                    DisableElevation/>
             </div>
 
             if (CorrectAnswer.IsCorrect)
@@ -133,7 +120,7 @@
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.Answer)
                 .NotEmpty()
-                .WithMessage(localizer["Quiz_AnswerCannotBeEmpty"]);
+                .WithMessage(localizer["Question_AnswerCannotBeEmpty"]);
     }
 
 }

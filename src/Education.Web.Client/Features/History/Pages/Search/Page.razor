@@ -55,7 +55,7 @@
             ? await HistorySearchService
                 .SearchAsync(_request with { Q = Query, Offset = (CurrentPage - 1) * _request.Limit})
             : ApiResult<SearchResultModel>.Success(
-                new SearchResultModel(Enumerable.Empty<SearchModel>(), new Dictionary<string, int>(), 0)
+                new SearchResultModel(Array.Empty<SearchModel>(), new Dictionary<string, int>(), 0)
                 );
     }
 

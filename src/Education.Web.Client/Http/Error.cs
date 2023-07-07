@@ -12,8 +12,6 @@ public sealed record Error
 
     public string? Id { get; init; }
 
-    public IDictionary<string, string[]> Errors { get; init; } = new Dictionary<string, string[]>();
-
     public static Error Create(string title, int status, string? detail = null) =>
         new()
         {

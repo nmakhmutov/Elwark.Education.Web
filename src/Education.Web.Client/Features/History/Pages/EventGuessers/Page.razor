@@ -90,7 +90,7 @@
     {
         _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
         _result = await EventGuesserService.GetAsync();
-        await _result.Match(async model =>
+        await _result.MatchAsync(async model =>
         {
             if (!model.Tests.Any(x => x.IsAllowed && x.Type == _settings.Size))
                 await OnSizeChanged(model.Tests.FirstOrDefault(x => x.IsAllowed)?.Type);
@@ -98,10 +98,8 @@
 
         _result.MathError(x =>
         {
-            if (x.IsTestAlreadyCreated(out var id))
-            {
+            if (x.IsEventGuesserAlreadyCreated(out var id))
                 Navigation.NavigateTo(HistoryUrl.EventGuesser.Test(id));
-            }
         });
     }
 

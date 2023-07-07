@@ -6,80 +6,69 @@
     @_result.Match(x => $"{_testTypeTitle}: {x.Overview.Article.Title}", e => e.Title, () => L["Quizzes_Title"])
 </PageTitle>
 
-@switch (_result.Status)
-{
-    case Status.Loading:
-        <Spinner/>
-        break;
+<ApiViewer Result="@_result" Context="quiz">
+    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
+        <section class="grid">
+            <header class="timer">
+                <section class="d-flex flex-wrap justify-space-between gap-3">
+                    <MudText Typo="Typo.subtitle1">
+                        @L["Quiz_QuestionOutOf", _quiz.Completed, _quiz.Questions]
+                    </MudText>
+                    <CountdownTimer
+                        Deadline="@_quiz.ExpiredAt"
+                        Color="@_countdownColor"
+                        OnComplete="@OnExpired"/>
+                </section>
+                <MudProgressLinear
+                    Rounded
+                    Min="0"
+                    Max="100"
+                    Value="@Progress"
+                    Color="Color.Primary"
+                    Size="Size.Medium"/>
+            </header>
 
-    case Status.Error:
-        <EduErrorContainer Error="@_result.UnwrapError()"/>
-        break;
+            <QuestionForm
+                Class="quiz mud-paper pa-3 pa-sm-6"
+                Question="@_currentQuestion"
+                CorrectAnswer="@_correctAnswer"
+                OnAnswerClick="@OnAnswer"
+                OnNextTitle="@(_nextQuestion is null ? L["Quiz_ShowTheResult"] : L["Question_Next"])"
+                OnNextClick="@OnNext">
+                <Header>
+                    <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
+                        @_testTypeTitle
+                    </MudText>
+                    <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center">
+                        @quiz.Overview.Article.Title
+                    </MudText>
+                </Header>
+            </QuestionForm>
 
-    case Status.Success:
-        <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
-            <section class="grid">
-                <header class="timer">
-                    <section class="d-flex flex-wrap justify-space-between gap-3">
-                        <MudText Typo="Typo.subtitle1">
-                            @L["Quiz_QuestionOutOf", _quiz.Completed, _quiz.Questions]
-                        </MudText>
-                        <CountdownTimer
-                            Deadline="@_quiz.ExpiredAt"
-                            Color="@_countdownColor"
-                            OnComplete="@OnExpired"/>
-                    </section>
-                    <MudProgressLinear
-                        Rounded
-                        Min="0"
-                        Max="100"
-                        Value="@Progress"
-                        Color="Color.Primary"
-                        Size="Size.Medium"/>
-                </header>
-
-                <QuestionForm
-                    Class="quiz mud-paper pa-3 pa-sm-6"
-                    Question="@_currentQuestion"
-                    CorrectAnswer="@_correctAnswer"
-                    OnAnswerClick="@OnAnswer"
-                    OnNextTitle="@(_nextQuestion is null ? L["Quiz_ShowTheResult"] : L["Quiz_NextQuestion"])"
-                    OnNextClick="@OnNext">
-                    <Header>
-                        <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
-                            @_testTypeTitle
-                        </MudText>
-                        <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center" Style="font-weight: 500">
-                            @_result.Value.Overview.Article.Title
-                        </MudText>
-                    </Header>
-                </QuestionForm>
-
-                <InventoryGrid Class="inventory" Inventory="@_inventory" Context="item">
-                    @if (item.IsInteractive)
-                    {
-                        <InventoryButtonCard
-                            Id="@item.Id"
-                            Quantity="@item.Quantity"
-                            Title="@item.Title"
-                            Overview="@item.Overview"
-                            IconUrl="@item.IconUrl"
-                            ButtonText="@L["Inventory_Use"]"
-                            OnClick="@OnUseInventory"/>
-                    }
-                    else
-                    {
-                        <InventoryInfoCard
-                            Title="@item.Title"
-                            Overview="@item.Overview"
-                            Quantity="@item.Quantity"
-                            IconUrl="@item.IconUrl"/>
-                    }
-                </InventoryGrid>
-            </section>
-        </EduContainer>
-        break;
-}
+            <InventoryGrid Class="inventory" Inventory="@_inventory" Context="item">
+                @if (item.IsInteractive)
+                {
+                    <InventoryButtonCard
+                        Id="@item.Id"
+                        Quantity="@item.Quantity"
+                        Title="@item.Title"
+                        Overview="@item.Overview"
+                        IconUrl="@item.IconUrl"
+                        ButtonText="@L["Inventory_Use"]"
+                        OnClick="@OnUseInventory"/>
+                }
+                else
+                {
+                    <InventoryInfoCard
+                        Title="@item.Title"
+                        Overview="@item.Overview"
+                        Quantity="@item.Quantity"
+                        IconUrl="@item.IconUrl"/>
+                }
+            </InventoryGrid>
+        </section>
+    </EduContainer>
+</ApiViewer>
 
 @code {
     private ApiResult<QuizModel> _result = ApiResult<QuizModel>.Loading();
@@ -122,10 +111,7 @@
             },
             e =>
             {
-                if (e.IsTestAlreadyCompleted())
-                    Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
-
-                if (e.IsTestNotFound())
+                if (e.IsQuizAlreadyCompleted() || e.IsQuizNotFound())
                     Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
             });
     }
@@ -158,14 +144,10 @@
             },
             e =>
             {
-                if (e.IsTestAlreadyCompleted())
-                {
+                if (e.IsQuizAlreadyCompleted())
                     Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
-                }
                 else
-                {
                     Snackbar.Add(e.Detail, Severity.Error);
-                }
             });
 
     private void OnNext()

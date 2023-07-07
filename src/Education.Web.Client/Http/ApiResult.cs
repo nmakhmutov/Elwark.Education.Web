@@ -38,11 +38,11 @@ public sealed class ApiResult<T>
 
     public bool IsLoading =>
         Status == Status.Loading;
-    
-    public T Value =>
+
+    private T Value =>
         _value ?? throw new ArgumentNullException(nameof(Value));
 
-    public Error Error =>
+    private Error Error =>
         _error ?? throw new ArgumentNullException(nameof(Error));
 
     public static ApiResult<T> Loading() =>
@@ -69,7 +69,7 @@ public sealed class ApiResult<T>
             success(Value);
     }
 
-    public async Task Match(Func<T, Task> success)
+    public async Task MatchAsync(Func<T, Task> success)
     {
         if (IsSuccess)
             await success(Value);
@@ -96,7 +96,7 @@ public sealed class ApiResult<T>
         Match(Success, _ => Success(fn()), () => Success(fn()));
 
     public T Unwrap() =>
-        _value ?? throw new ArgumentNullException(nameof(Value));
+        Value;
 
     public T UnwrapOr(T defaultValue) =>
         Match(value => value, _ => defaultValue, () => defaultValue);
@@ -105,7 +105,7 @@ public sealed class ApiResult<T>
         Match(value => value, _ => fn(), fn);
 
     public Error UnwrapError() =>
-        _error ?? throw new ArgumentNullException(nameof(Error));
+        Error;
 
     public bool Is(Func<Error, bool> fn) =>
         !IsSuccess && fn(Error);

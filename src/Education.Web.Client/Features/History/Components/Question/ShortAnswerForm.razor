@@ -38,13 +38,14 @@
     else
     {
         <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
-            <MudButton
+            <LoadingButton
                 Variant="Variant.Filled"
                 Color="Color.Primary"
+                IsLoading="@IsLoading"
+                Text="@OnNextTitle"
+                LoadingText="@L["Loading_Title"]"
                 OnClick="@OnNextClick"
-                DisableElevation>
-                @OnNextTitle
-            </MudButton>
+                DisableElevation/>
         </div>
 
         if (CorrectAnswer.IsCorrect)
@@ -82,7 +83,7 @@
 
     [Parameter, EditorRequired]
     public string OnNextTitle { get; set; } = string.Empty;
-    
+
     [Parameter, EditorRequired]
     public EventCallback OnNextClick { get; set; }
 
@@ -97,7 +98,7 @@
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.Answer)
                 .NotEmpty()
-                .WithMessage(localizer["Quiz_AnswerCannotBeEmpty"]);
+                .WithMessage(localizer["Question_AnswerCannotBeEmpty"]);
     }
 
 }

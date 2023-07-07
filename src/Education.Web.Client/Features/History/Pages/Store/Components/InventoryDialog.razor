@@ -85,7 +85,7 @@
 
                         <MudNumericField
                             Class="number-input"
-                            @bind-Value="@(                                             _quantity)"
+                            @bind-Value="@(_quantity)"
                             Variant="Variant.Outlined"
                             Margin="Margin.Dense"
                             Min="@Min"
@@ -177,7 +177,7 @@
         UpdateErrorState();
     }
 
-    private void OnCloseClick() => 
+    private void OnCloseClick() =>
         MudDialog.Close(_status is null ? DialogResult.Cancel() : DialogResult.Ok(true));
 
     private async Task OnPurchaseClick()
@@ -190,7 +190,8 @@
         var result = await StoreService.CheckoutAsync(new CheckoutRequest(Product.Id, _quantity));
         if (result.IsError)
         {
-            _error = new Error(result.Error.Title, result.Error.Detail);
+            var error = result.UnwrapError();
+            _error = new Error(error.Title, error.Detail);
             return;
         }
 
@@ -202,21 +203,22 @@
             {
                 await Task.Delay(delay);
 
-                var status = await OrderService.GetStatus(result.Value);
+                var status = await OrderService.GetStatus(result.Unwrap());
                 if (status.IsError)
                 {
-                    if (status.Error.IsOrderNotFound())
+                    if (status.Is(x => x.IsOrderNotFound()))
                         continue;
 
-                    _error = new Error(status.Error.Title, status.Error.Detail);
+                    var error = status.UnwrapError();
+                    _error = new Error(error.Title, error.Detail);
                     return;
                 }
 
-                _status = status.Value;
+                _status = status.Unwrap();
                 delay = TimeSpan.FromSeconds(1.2);
                 StateHasChanged();
 
-                if (status.Value is { IsFinal: true, IsRejected: false })
+                if (_status is { IsFinal: true, IsRejected: false })
                     MudDialog.Close(DialogResult.Ok(true));
             }
         });
@@ -241,7 +243,10 @@
         if (!Inventory.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
         {
             var currency = L[$"InternalMoney_{TotalPrice.Currency}"];
-            return new Error(L["InternalMoney_NotEnoughMoneyTitle", currency], L["InternalMoney_NotEnoughMoneyDescription", currency]);
+            return new Error(
+                L["InternalMoney_NotEnoughMoneyTitle", currency],
+                L["InternalMoney_NotEnoughMoneyDescription", currency]
+                );
         }
 
         if (TotalWeight > Inventory.Backpack.Emptiness)
