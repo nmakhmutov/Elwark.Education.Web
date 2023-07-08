@@ -4,8 +4,49 @@
 @layout HistoryLayout
 
 <PageTitle>
-    History: @Query
+    @L["History_Title"]: @Query
 </PageTitle>
+
+<EduContainer Class="py-3 py-sm-6 mb-6">
+    <section class="background rounded">
+        <h2 class="title white-text">
+            <b>@_result.Map(x => L["Search_CountOfFountResults", x.Count])</b>
+        </h2>
+
+        <EditForm Model="@this" OnValidSubmit="OnSearchSubmit">
+            <section class="search mud-paper">
+                <MudTextField
+                    Class="flex-sm-grow-1"
+                    @bind-Value="@Query"
+                    Label="@L["Search_Title"]"
+                    InputType="InputType.Search"
+                    Variant="Variant.Text"/>
+                
+                <MudSelect 
+                    T="string?"
+                    @bind-Value="@Category" 
+                    Label="@L["Search_Content_Title"]" 
+                    Margin="Margin.Dense" 
+                    Clearable
+                    Dense>
+                    @foreach (var category in _categories)
+                    {
+                        <MudSelectItem Value="category.Key">
+                            @category.Key (@category.Value)
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+
+                <div class="search-button">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" FullWidth DisableElevation>
+                        @L["Search_Title"]
+                    </MudButton>
+                </div>
+            </section>
+        </EditForm>
+
+    </section>
+</EduContainer>
 
 <ApiViewer Result="_result" Context="result">
     <EduContainer Class="py-3 py-sm-6">
@@ -27,6 +68,7 @@
 </ApiViewer>
 
 @code {
+    private IReadOnlyDictionary<string, int> _categories = new Dictionary<string, int>();
     private readonly SearchRequest _request = new(string.Empty, true, Array.Empty<string>(), 0, 20);
     private ApiResult<SearchResultModel> _result = ApiResult<SearchResultModel>.Loading();
 
@@ -36,11 +78,17 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
     [Parameter, SupplyParameterFromQuery(Name = "q")]
     public string? Query { get; set; }
 
     [Parameter, SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; }
+
+    [Parameter, SupplyParameterFromQuery(Name = "category")]
+    public string? Category { get; set; }
 
     private int TotalPages =>
         _result.Map(x => (int)double.Ceiling((double)x.Count / _request.Limit))
@@ -48,21 +96,43 @@
 
     protected override async Task OnParametersSetAsync()
     {
+        _result = ApiResult<SearchResultModel>.Loading();
+
         if (CurrentPage < 1)
             CurrentPage = 1;
 
-        _result = Query is { Length: > 1 }
-            ? await HistorySearchService
-                .SearchAsync(_request with { Q = Query, Offset = (CurrentPage - 1) * _request.Limit})
-            : ApiResult<SearchResultModel>.Success(
-                new SearchResultModel(Array.Empty<SearchModel>(), new Dictionary<string, int>(), 0)
-                );
+        if (Query is not { Length: > 1 })
+        {
+            _result = ApiResult<SearchResultModel>.Success(SearchResultModel.Empty);
+            return;
+        }
+
+        _result = await HistorySearchService.SearchAsync(
+            _request with {
+                Q = Query, 
+                Offset = (CurrentPage - 1) * _request.Limit,
+                Categories = string.IsNullOrWhiteSpace(Category) ? Array.Empty<string>() : new[] { Category }
+                });
+
+        _categories = _result.Map(x => x.Categories ?? new Dictionary<string, int>())
+            .UnwrapOr(new Dictionary<string, int>());
     }
 
     private void OnPagination(int page)
     {
-        _result = ApiResult<SearchResultModel>.Loading();
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
+    }
+
+    private void OnSearchSubmit()
+    {
+        var parameters = new Dictionary<string, object?>
+        {
+            ["q"] = Query,
+            ["category"] = string.IsNullOrWhiteSpace(Category) ? null : Category,
+            ["page"] = 1
+        };
+
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(parameters));
     }
 
 }

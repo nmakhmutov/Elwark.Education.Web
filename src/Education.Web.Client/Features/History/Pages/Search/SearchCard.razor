@@ -1,33 +1,35 @@
 @using Education.Web.Client.Features.History.Services.Search.Model
-<article class="mud-paper card @Class">
+<article class="mud-paper card @(Horizontal ? "horizontal" : "vertical") @Class">
     <div class="card-header">
         <a href="@Search.ContentHref">
             <img src="@Search.ImageUrl" alt="@Search.Title" loading="lazy"/>
         </a>
     </div>
 
-    <section class="content">
-        <header class="d-flex flex-column px-3 pt-3">
-            <a class="mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
-               href="@Search.CategoryHref">
-                @_categoryTitle
-            </a>
-            <a class="mud-link mud-primary-text mud-link-underline-hover mud-typography-h6 one-line-text"
-               href="@Search.ContentHref"
-               title="@Search.Title">
+    <section class="content flex-grow-1 gap-3 pa-3">
+        <header>
+            <MudLink Href="@Search.ContentHref" Typo="Typo.h5">
                 @Search.Title
+            </MudLink>
+            <br/>
+            <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body1" href="@Search.CategoryHref">
+                @CategoryTitle
             </a>
         </header>
 
-        <MudText Class="pa-3 flex-grow-1" Typo="Typo.body2">
+        <MudText Class="flex-grow-1" Typo="Typo.body1">
             @Search.Overview
         </MudText>
-
     </section>
 </article>
 
 @code {
-    private string? _categoryTitle;
+    private string? CategoryTitle =>
+        Search.Category switch {
+            "Article" => L["Articles_Title"].ToString(),
+            "Course"=>L["Courses_Title"].ToString(),
+            _=> null
+            };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -38,11 +40,7 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override void OnParametersSet() =>
-        _categoryTitle = Search.Category switch {
-            "Article" => L["Articles_Title"].ToString(),
-            "Course"=>L["Courses_Title"].ToString(),
-            _=> null
-            };
+    [Parameter]
+    public bool Horizontal { get; set; }
 
 }
