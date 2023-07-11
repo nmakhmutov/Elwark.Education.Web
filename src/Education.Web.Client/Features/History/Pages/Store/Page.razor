@@ -13,14 +13,14 @@
 </EduContainer>
 
 <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-    <ProductsToolbar @bind-Filter="@(_filter)" Inventory="@_inventory"/>
+    <ProductsToolbar @bind-Filter="@(_filter)" Possessions="@_possessions"/>
 </EduContainer>
 
 @switch (_filter.Catalog)
 {
     case CatalogType.Inventory:
         <InventoryProducts
-            Inventory="@_inventory"
+            Possessions="@_possessions"
             Filter="@_filter"
             IsAffordable="@IsInventoryAffordable"
             OnProductPurchased="@OnInventoryPurchased"/>
@@ -28,7 +28,7 @@
 
     case CatalogType.Bundles:
         <BundleProducts
-            Inventory="@_inventory"
+            Possessions="@_possessions"
             Filter="@_filter"
             IsAffordable="@IsBundleAffordable"
             OnProductPurchased="@OnBundlePurchased"/>
@@ -37,7 +37,7 @@
 
 @code {
     private ProductsFilter _filter = ProductsFilter.Empty;
-    private InventoryModel _inventory = new(new Dictionary<InternalCurrency, long>(), new InventoryModel.BackpackModel(0, 0, 0));
+    private PossessionsModel _possessions = new(new Dictionary<InternalCurrency, long>(), new PossessionsModel.BackpackModel(0, 0, 0));
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -49,9 +49,9 @@
         LoadInventoryAsync();
 
     private async Task LoadInventoryAsync() =>
-        _inventory = (await UserService.GetInventoryAsync())
+        _possessions = (await UserService.GetPossessionsAsync())
             .Map(x => x)
-            .UnwrapOr(_inventory);
+            .UnwrapOr(_possessions);
 
     private Task OnInventoryPurchased() =>
         LoadInventoryAsync();
@@ -67,10 +67,10 @@
 
     private bool IsAffordable(Product.PriceModel price, uint weight)
     {
-        if (weight > _inventory.Backpack.Emptiness)
+        if (weight > _possessions.Backpack.Emptiness)
             return false;
 
-        if (_inventory.Wallet.TryGetValue(price.Total.Currency, out var amount))
+        if (_possessions.Wallet.TryGetValue(price.Total.Currency, out var amount))
             return amount >= price.Total.Amount;
 
         return false;

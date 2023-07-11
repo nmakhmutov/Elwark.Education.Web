@@ -82,14 +82,14 @@
     <MudSpacer/>
 
     <section class="wallet">
-        @if (Inventory.Wallet.Count > 0)
+        @if (Possessions.Wallet.Count > 0)
         {
             <div>
                 <MudText Typo="Typo.caption">
                     @L["Wallet_Title"]
                 </MudText>
                 <div class="d-flex align-center gap-3">
-                    @foreach (var money in Inventory.Wallet)
+                    @foreach (var money in Possessions.Wallet)
                     {
                         <InternalMoney
                             Currency="@money.Key"
@@ -109,12 +109,12 @@
                 <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="@Size.Small"/>
                 <div class="d-flex align-center">
                     <MetricNumber
-                        Value="@Inventory.Backpack.Fullness"
+                        Value="@Possessions.Backpack.Fullness"
                         Typo="@Typo.subtitle1"
                         Color="@GetBackpackColor()"/>
                     <MudText Typo="@Typo.subtitle1">&nbsp;/&nbsp;</MudText>
                     <MetricNumber
-                        Value="@Inventory.Backpack.Capacity"
+                        Value="@Possessions.Backpack.Capacity"
                         Typo="@Typo.subtitle1"/>
                 </div>
             </section>
@@ -128,7 +128,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter]
-    public InventoryModel Inventory { get; set; } = default!;
+    public PossessionsModel Possessions { get; set; } = default!;
 
     [Parameter]
     public ProductsFilter Filter { get; set; } = ProductsFilter.Empty;
@@ -152,6 +152,6 @@
         FilterChanged.InvokeAsync(ProductsFilter.Empty);
 
     private Color GetBackpackColor() =>
-        Inventory.Backpack.Fullness > Inventory.Backpack.Capacity ? Color.Error : Color.Default;
+        Possessions.Backpack.IsFull ? Color.Error : Color.Default;
 
 }

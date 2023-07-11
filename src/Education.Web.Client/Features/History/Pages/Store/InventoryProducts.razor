@@ -21,7 +21,7 @@
     private IDialogService DialogService { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public InventoryModel Inventory { get; set; } = default!;
+    public PossessionsModel Possessions { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public ProductsFilter Filter { get; set; } = default!;
@@ -67,7 +67,7 @@
         var parameters = new DialogParameters
         {
             [nameof(InventoryDialog.Product)] = product,
-            [nameof(InventoryDialog.Inventory)] = Inventory
+            [nameof(InventoryDialog.Possessions)] = Possessions
         };
 
         var dialog = await DialogService.ShowAsync<InventoryDialog>(product.Title, parameters, options);

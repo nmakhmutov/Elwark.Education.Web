@@ -11,7 +11,8 @@
                 @Article.Title
             </MudLink>
             <br/>
-            <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body1" href="@HistoryUrl.Content.Articles(Article.Epoch)">
+            <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body1"
+               href="@HistoryUrl.Content.Articles(Article.Epoch)">
                 @L[Article.Epoch.ResourceKey()]
             </a>
         </header>
@@ -30,7 +31,7 @@
         @if (!HideOverview)
         {
             <MudText Class="flex-grow-1" Typo="Typo.body1">
-                @(ShortOverview && Article.Overview.Length > 60 ? $"{Article.Overview[..57].TrimEnd()}..." : Article.Overview)
+                @(ShortOverview && Article.Overview.Length > 60 ? $"{Article.Overview[..57].Trim()}..." : Article.Overview)
             </MudText>
         }
 

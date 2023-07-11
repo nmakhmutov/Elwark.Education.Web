@@ -15,7 +15,7 @@
             <div class="actions"></div>
         </div>
 
-        <Virtualize @ref="@(_virtualize)" ItemsProvider="BookmarkProvider" ItemSize="120">
+        <Virtualize @ref="@_virtualize" ItemsProvider="BookmarkProvider" ItemSize="120">
             <Placeholder>
                 <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
                     <div class="image">
@@ -70,7 +70,7 @@
     private string? _token;
     private bool _isEmpty = false;
     private Virtualize<UserCourseOverviewModel>? _virtualize;
-    private readonly List<UserCourseOverviewModel> _items = new();
+    private readonly HashSet<UserCourseOverviewModel> _items = new();
 
     [Inject]
     private IHistoryLearnerService LearnerService { get; set; } = default!;
@@ -96,26 +96,31 @@
         int GetLength() =>
             _items.Count + (string.IsNullOrEmpty(_token) ? 0 : 1);
 
+        var items = _items.Skip(request.StartIndex).Take(request.Count);
+
         var isRangeAvailable = _items.Count > (request.StartIndex + 1) * request.Count ||
                                (_items.Count > 0 && string.IsNullOrEmpty(_token));
 
-        if (isRangeAvailable)
-            return new ItemsProviderResult<UserCourseOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
+        if (isRangeAvailable || request.Count == 0)
+            return new ItemsProviderResult<UserCourseOverviewModel>(items, GetLength());
 
         return (await LearnerService.GetCourseBookmarksAsync(new BookmarksRequest(Sort, request.Count, _token)))
             .Map(x =>
             {
                 _token = x.Next;
-                _items.AddRange(x.Items);
+                
+                foreach (var item in x.Items)
+                    _items.Add(item);
+
                 if (!_isEmpty && _items.Count == 0)
                 {
                     _isEmpty = true;
                     StateHasChanged();
                 }
 
-                return new ItemsProviderResult<UserCourseOverviewModel>(_items.Skip(request.StartIndex).Take(request.Count), GetLength());
+                return new ItemsProviderResult<UserCourseOverviewModel>(items, GetLength());
             })
-            .UnwrapOr(new ItemsProviderResult<UserCourseOverviewModel>(_items, 0));
+            .UnwrapOr(new ItemsProviderResult<UserCourseOverviewModel>(items, 0));
     }
 
 }

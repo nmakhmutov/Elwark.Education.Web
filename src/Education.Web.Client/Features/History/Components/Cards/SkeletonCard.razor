@@ -1,30 +1,28 @@
-<article class="mud-paper @Class">
-    <div class="d-flex @(Horizontal ? "flex-row" : "flex-column") min-h-inherit">
-        <MudSkeleton
-            Class="@(Horizontal ? "skeleton-image-horizontal" : "skeleton-image-vertical")"
-            SkeletonType="SkeletonType.Rectangle"/>
+<article class="mud-paper d-flex @(Horizontal ? "flex-row" : "flex-column") min-h-inherit @Class">
+    <MudSkeleton
+        Class="@(Horizontal ? "skeleton-image-horizontal" : "skeleton-image-vertical")"
+        SkeletonType="SkeletonType.Rectangle"/>
 
-        <div class="d-flex flex-column @(Horizontal ? "w-66" : "flex-grow-1 w-100")">
-            <div class="flex-grow-1 pa-3 h-100">
-                <MudSkeleton Width="30%" Height="42px;"/>
-                <MudSkeleton Width="50%"/>
-                <MudSkeleton Width="80%"/>
-                <MudSkeleton Width="60%"/>
-            </div>
-
-            @if (!HideFooter)
-            {
-                <div class="d-flex justify-space-between align-center pa-3">
-                    <div class="d-flex align-center gap-3">
-                        <MudSkeleton Width="64px" Height="40px"/>
-                        <MudSkeleton Width="105px" Height="40px"/>
-                    </div>
-                    <div>
-                        <MudSkeleton SkeletonType="SkeletonType.Circle" Width="38px" Height="38px"/>
-                    </div>
-                </div>
-            }
+    <div class="d-flex flex-column @(Horizontal ? "w-66" : "flex-grow-1 w-100")">
+        <div class="flex-grow-1 pa-3 h-100">
+            <MudSkeleton Width="30%" Height="42px;"/>
+            <MudSkeleton Width="50%"/>
+            <MudSkeleton Width="80%"/>
+            <MudSkeleton Width="60%"/>
         </div>
+
+        @if (!HideFooter)
+        {
+            <div class="d-flex justify-space-between align-center pa-3">
+                <div class="d-flex align-center gap-3">
+                    <MudSkeleton Width="64px" Height="40px"/>
+                    <MudSkeleton Width="105px" Height="40px"/>
+                </div>
+                <div>
+                    <MudSkeleton SkeletonType="SkeletonType.Circle" Width="38px" Height="38px"/>
+                </div>
+            </div>
+        }
     </div>
 </article>
 

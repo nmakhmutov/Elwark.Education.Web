@@ -9,16 +9,18 @@
             </div>
 
             <header class="d-flex justify-space-between flex-grow-1 align-start">
-                <div>
+                <div class="d-flex flex-column h-100">
                     <MudText Typo="Typo.h5">
                         @Product.Title
                     </MudText>
-                    <MudText Class="mud-text-secondary mb-3" Typo="Typo.body1">
-                        @Product.Category.Title
-                    </MudText>
-                    <MudText Typo="Typo.body2">
+                    <MudText Class="flex-grow-1" Typo="Typo.body1">
                         @Product.Overview
                     </MudText>
+
+                    @if (Product.Weight > 0)
+                    {
+                        <InBackpackCount InventoryId="@Product.InventoryId"/>
+                    }
                 </div>
 
                 <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
@@ -160,7 +162,7 @@
     public Product.InventoryModel Product { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public InventoryModel Inventory { get; set; } = default!;
+    public PossessionsModel Possessions { get; set; } = default!;
 
     protected override void OnParametersSet() =>
         UpdateErrorState();
@@ -240,7 +242,7 @@
 
     private Error? GetErrorMessage()
     {
-        if (!Inventory.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
+        if (!Possessions.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
         {
             var currency = L[$"InternalMoney_{TotalPrice.Currency}"];
             return new Error(
@@ -249,7 +251,7 @@
                 );
         }
 
-        if (TotalWeight > Inventory.Backpack.Emptiness)
+        if (TotalWeight > Possessions.Backpack.Emptiness)
             return new Error(L["Backpack_IsFull_Title"], L["Backpack_IsFull_Description"]);
 
         return null;

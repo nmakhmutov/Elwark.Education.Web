@@ -121,7 +121,7 @@
     private NavigationManager Navigation { get; set; } = default!;
 
     [Inject]
-    private IBreakpointService BreakpointService { get; set; } = default!;
+    private IBrowserViewportService ViewportService { get; set; } = default!;
 
     [Inject]
     private IHistoryArticleService ArticleService { get; set; } = default!;
@@ -137,13 +137,12 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            var options = new ResizeOptions { NotifyOnBreakpointOnly = true, SuppressInitEvent = false };
-            var result = await BreakpointService.SubscribeAsync(x => OnBreakpointChanged(x), options);
+        if (!firstRender)
+            return;
 
-            _subscriptionId = result.SubscriptionId;
-        }
+        _subscriptionId = Guid.NewGuid();
+        var options = new ResizeOptions { NotifyOnBreakpointOnly = true, SuppressInitEvent = false };
+        await ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
     }
 
     private async Task SortChangedAsync(GetEmpiresRequest.SortType sort)
@@ -186,7 +185,7 @@
             };
 
     public async ValueTask DisposeAsync() =>
-        await BreakpointService.UnsubscribeAsync(_subscriptionId);
+        await ViewportService.UnsubscribeAsync(_subscriptionId);
 
     private string DateTimeFormatter(DateTime date) =>
         Customer.Humanize(date);

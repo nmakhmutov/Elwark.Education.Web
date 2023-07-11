@@ -10,7 +10,7 @@ internal sealed class TimeZoneInfoConverter : JsonConverter<TimeZoneInfo>
         var tz = reader.GetString();
 
         if (string.IsNullOrEmpty(tz))
-            return TimeZoneInfo.Utc;
+            return TimeZoneInfo.Local;
 
         try
         {

@@ -7,6 +7,7 @@ public abstract record Product(string Id, string Title, uint Weight)
 {
     public sealed record InventoryModel(
         string Id,
+        uint InventoryId,
         string Title,
         string IconUrl,
         string Overview,

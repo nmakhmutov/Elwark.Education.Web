@@ -8,7 +8,9 @@ public interface IHistoryUserService
 {
     Task<ApiResult<ProfileModel>> GetProfileAsync();
 
-    Task<ApiResult<InventoryModel>> GetInventoryAsync();
+    Task<ApiResult<PossessionsModel>> GetPossessionsAsync();
+
+    Task<ApiResult<InventoryQuantityModel>> GetInventoryAsync(uint id);
 
     Task<ApiResult<BackpackModel>> GetBackpackAsync();
 

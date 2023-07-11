@@ -36,7 +36,7 @@
         ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
 
     [Inject]
-    private IBreakpointService BreakpointService { get; set; } = default!;
+    private IBrowserViewportService ViewportService { get; set; } = default!;
 
     [Inject]
     private IHistoryArticleService HistoryArticleService { get; set; } = default!;
@@ -56,11 +56,9 @@
         if (!firstRender)
             return;
 
+        _subscriptionId = Guid.NewGuid();
         var options = new ResizeOptions { NotifyOnBreakpointOnly = true };
-        var result = await BreakpointService.SubscribeAsync(x => OnBreakpointChanged(x), options);
-        _subscriptionId = result.SubscriptionId;
-
-        OnBreakpointChanged(result.Breakpoint);
+        await ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
     }
 
     private void OnBreakpointChanged(Breakpoint breakpoint)
@@ -79,6 +77,6 @@
         _breakpoint >= (int)Breakpoint.Lg && i is 1 or 2;
 
     public async ValueTask DisposeAsync() =>
-        await BreakpointService.UnsubscribeAsync(_subscriptionId);
+        await ViewportService.UnsubscribeAsync(_subscriptionId);
 
 }

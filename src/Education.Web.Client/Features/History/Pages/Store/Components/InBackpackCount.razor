@@ -1,0 +1,33 @@
+@using Education.Web.Client.Features.History.Services.User.Model
+<ApiViewer Result="@_backpack">
+    <Loading>
+        <MudSkeleton SkeletonType="SkeletonType.Text" Width="60%"/>
+    </Loading>
+    <Error>
+        <MudText Typo="Typo.body2">
+            @L["Inventory_InTheBackpack", 0]
+        </MudText>
+    </Error>
+    <ChildContent Context="inventory">
+        <MudText Typo="Typo.body2">
+            @L["Inventory_InTheBackpack", inventory.Quantity]
+        </MudText>
+    </ChildContent>
+</ApiViewer>
+
+@code {
+    private ApiResult<InventoryQuantityModel> _backpack = ApiResult<InventoryQuantityModel>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public uint InventoryId { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _backpack = await UserService.GetInventoryAsync(InventoryId);
+
+}

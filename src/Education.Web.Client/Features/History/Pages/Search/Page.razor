@@ -1,6 +1,7 @@
 @page "/history/search"
 @using Education.Web.Client.Features.History.Services.Search.Request
 @using Education.Web.Client.Features.History.Services.Search.Model
+@using System.Collections.ObjectModel
 @layout HistoryLayout
 
 <PageTitle>
@@ -38,7 +39,12 @@
                 </MudSelect>
 
                 <div class="search-button">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" FullWidth DisableElevation>
+                    <MudButton 
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        ButtonType="ButtonType.Submit"
+                        FullWidth
+                        DisableElevation>
                         @L["Search_Title"]
                     </MudButton>
                 </div>
@@ -109,13 +115,13 @@
 
         _result = await HistorySearchService.SearchAsync(
             _request with {
-                Q = Query, 
+                Q = Query,
                 Offset = (CurrentPage - 1) * _request.Limit,
                 Categories = string.IsNullOrWhiteSpace(Category) ? Array.Empty<string>() : new[] { Category }
                 });
 
-        _categories = _result.Map(x => x.Categories ?? new Dictionary<string, int>())
-            .UnwrapOr(new Dictionary<string, int>());
+        _categories = _result.Map(x => x.Categories)
+            .UnwrapOrElse(() => ReadOnlyDictionary<string, int>.Empty);
     }
 
     private void OnPagination(int page)

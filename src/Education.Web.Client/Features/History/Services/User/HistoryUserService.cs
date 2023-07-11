@@ -14,8 +14,11 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<ProfileModel>> GetProfileAsync() =>
         _api.GetAsync<ProfileModel>("history/users/me/profile");
 
-    public Task<ApiResult<InventoryModel>> GetInventoryAsync() =>
-        _api.GetAsync<InventoryModel>("history/users/me/inventory");
+    public Task<ApiResult<PossessionsModel>> GetPossessionsAsync() =>
+        _api.GetAsync<PossessionsModel>("history/users/me/possessions");
+    
+    public Task<ApiResult<InventoryQuantityModel>> GetInventoryAsync(uint id) =>
+        _api.GetAsync<InventoryQuantityModel>($"history/users/me/inventory/{id}");
 
     public Task<ApiResult<BackpackModel>> GetBackpackAsync() =>
         _api.GetAsync<BackpackModel>("history/users/me/backpack");

@@ -159,7 +159,7 @@
     public Product.BundleModel Product { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public InventoryModel Inventory { get; set; } = default!;
+    public PossessionsModel Possessions { get; set; } = default!;
 
     protected override void OnParametersSet() =>
         UpdateErrorState();
@@ -239,13 +239,13 @@
 
     private Error? GetErrorMessage()
     {
-        if (!Inventory.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
+        if (!Possessions.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
         {
             var currency = L[$"InternalMoney_{TotalPrice.Currency}"];
             return new Error(L["InternalMoney_NotEnoughMoneyTitle", currency], L["InternalMoney_NotEnoughMoneyDescription", currency]);
         }
 
-        if (TotalWeight > Inventory.Backpack.Emptiness)
+        if (TotalWeight > Possessions.Backpack.Emptiness)
             return new Error(L["Backpack_IsFull_Title"], L["Backpack_IsFull_Description"]);
 
         return null;
