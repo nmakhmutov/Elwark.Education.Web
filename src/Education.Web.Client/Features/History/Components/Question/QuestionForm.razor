@@ -18,7 +18,6 @@
             <ShortAnswerForm
                 IsLoading="@_checking"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.ShortModel)"
-                UserAnswer="@(_userAnswer as ShortAnswerModel ?? new ShortAnswerModel())"
                 OnAnswerClick="@OnAnswer"
                 OnNextTitle="@OnNextTitle"
                 OnNextClick="@OnNext"/>
@@ -30,7 +29,6 @@
             <SingleAnswerForm
                 IsLoading="@_checking"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.SingleModel)"
-                UserAnswer="@(_userAnswer as SingleAnswerModel ?? new SingleAnswerModel())"
                 Options="@question.Options"
                 OnAnswerClick="@OnAnswer"
                 OnNextTitle="@OnNextTitle"
@@ -43,19 +41,27 @@
             <MultipleAnswerForm
                 IsLoading="@_checking"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.MultipleModel)"
-                UserAnswer="@(_userAnswer as MultipleAnswerModel ?? new MultipleAnswerModel())"
                 Options="@question.Options"
                 OnAnswerClick="@OnAnswer"
                 OnNextTitle="@OnNextTitle"
                 OnNextClick="@OnNext"/>
             break;
         }
+
+        case Question.OrderedModel question:
+            <OrderedAnswerForm
+                IsLoading="@_checking"
+                CorrectAnswer="@(CorrectAnswer as AnswerResult.OrderedModel)"
+                Options="@question.Options"
+                OnAnswerClick="@OnAnswer"
+                OnNextTitle="@OnNextTitle"
+                OnNextClick="@OnNext"/>
+            break;
     }
 </section>
 
 @code {
     private bool _checking;
-    private AnswerToQuestionModel? _userAnswer;
 
     [Parameter, EditorRequired]
     public Question Question { get; set; } = default!;
@@ -81,8 +87,6 @@
     private async Task OnAnswer(AnswerToQuestionModel answer)
     {
         _checking = true;
-        _userAnswer = answer;
-
         await OnAnswerClick.InvokeAsync(answer);
 
         _checking = false;
@@ -91,8 +95,6 @@
     private async Task OnNext()
     {
         _checking = true;
-        _userAnswer = null;
-
         await OnNextClick.InvokeAsync();
 
         _checking = false;

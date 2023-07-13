@@ -1,15 +1,15 @@
 @using FluentValidation
 @using Education.Web.Client.Models.Quiz
-<EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@_userAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
-    <MudRadioGroup @bind-SelectedOption="@(UserAnswer.Answer)">
+    <MudRadioGroup @bind-SelectedOption="@(_userAnswer.Answer)">
         <div class="d-flex flex-column mx-auto w-max-480 gap-3 mb-3 mb-sm-6">
             @foreach (var option in Options)
             {
                 var (icon, color) = Get(option);
 
-                <div class="d-flex flex-row justify-space-between align-center border-solid border rounded mud-border-primary px-3">
+                <div class="d-flex flex-row align-center border-solid border rounded mud-border-primary px-3">
                     <MudRadio
                         Class="flex-grow-1"
                         Option="@option.Id"
@@ -51,7 +51,7 @@
                     IsLoading="@IsLoading"
                     Text="@OnNextTitle"
                     LoadingText="@L["Loading_Title"]"
-                    OnClick="@OnNextClick"
+                    OnClick="@OnNextAsync"
                     DisableElevation/>
             </div>
 
@@ -73,15 +73,13 @@
 
 @code {
     private Validator _validator = default!;
+    private SingleAnswerModel _userAnswer = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public bool IsLoading { get; set; }
-
-    [Parameter, EditorRequired]
-    public SingleAnswerModel UserAnswer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public AnswerResult.SingleModel? CorrectAnswer { get; set; }
@@ -102,14 +100,20 @@
         _validator = new Validator(L);
 
     private Task OnValidSubmit() =>
-        OnAnswerClick.InvokeAsync(UserAnswer);
+        OnAnswerClick.InvokeAsync(_userAnswer);
+
+    private Task OnNextAsync()
+    {
+        _userAnswer = new SingleAnswerModel();
+        return OnNextClick.InvokeAsync();
+    }
 
     private (string? Icon, Color Color) Get(AnswerOption option) =>
         CorrectAnswer switch {
         { } x when option.Id == x.Answer =>
             (Icon: Icons.Material.Outlined.Check , Color: Color.Success),
 
-        {IsCorrect: false} when option.Id == UserAnswer.Answer =>
+        {IsCorrect: false} when option.Id == _userAnswer.Answer =>
             (Icon: Icons.Material.Outlined.Clear , Color: Color.Error),
 
             _ => (Icon: null, Color: Color.Default)

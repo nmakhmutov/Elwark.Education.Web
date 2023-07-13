@@ -1,6 +1,6 @@
 @using FluentValidation
 @using Education.Web.Client.Models.Quiz
-<EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@_userAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
     <div class="d-flex flex-column mx-auto w-max-480 gap-3 mb-3 mb-sm-6">
@@ -8,10 +8,10 @@
         {
             var (icon, color) = Get(option);
 
-            <div class="d-flex flex-row justify-space-between align-center border-solid border rounded mud-border-primary">
+            <div class="d-flex flex-row align-center border-solid border rounded mud-border-primary">
                 <MudCheckBox
                     Class="flex-grow-1"
-                    Checked="@(UserAnswer.Answer.Contains(option.Id))"
+                    Checked="@(_userAnswer.Answer.Contains(option.Id))"
                     CheckedChanged="@((bool b) => OnChecked(b, option.Id))"
                     Disabled="@(CorrectAnswer != null)"
                     Color="Color.Primary">
@@ -51,7 +51,7 @@
                 IsLoading="@IsLoading"
                 Text="@OnNextTitle"
                 LoadingText="@L["Loading_Title"]"
-                OnClick="@OnNextClick"
+                OnClick="@OnNextAsync"
                 DisableElevation/>
         </div>
 
@@ -72,15 +72,13 @@
 
 @code {
     private Validator _validator = default!;
+    private MultipleAnswerModel _userAnswer = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public bool IsLoading { get; set; }
-
-    [Parameter, EditorRequired]
-    public MultipleAnswerModel UserAnswer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public AnswerResult.MultipleModel? CorrectAnswer { get; set; }
@@ -101,14 +99,20 @@
         _validator = new Validator(L);
 
     private Task OnValidSubmit() =>
-        OnAnswerClick.InvokeAsync(UserAnswer);
+        OnAnswerClick.InvokeAsync(_userAnswer);
+
+    private Task OnNextAsync()
+    {
+        _userAnswer = new MultipleAnswerModel();
+        return OnNextClick.InvokeAsync();
+    }
 
     private void OnChecked(bool isAdded, uint id)
     {
         if (isAdded)
-            UserAnswer.Answer.Add(id);
+            _userAnswer.Answer.Add(id);
         else
-            UserAnswer.Answer.Remove(id);
+            _userAnswer.Answer.Remove(id);
     }
 
     private (string? Icon, Color Color) Get(AnswerOption option) =>
@@ -117,7 +121,7 @@
         { } x when x.Answer.Contains(option.Id) => 
             (Icon: Icons.Material.Outlined.Check , Color: Color.Success),
                                                 
-        {IsCorrect:false} when UserAnswer.Answer.Contains(option.Id) => 
+        {IsCorrect:false} when _userAnswer.Answer.Contains(option.Id) => 
             (Icon: Icons.Material.Outlined.Clear , Color: Color.Error),
                 
             _ => (Icon: null, Color: Color.Default)

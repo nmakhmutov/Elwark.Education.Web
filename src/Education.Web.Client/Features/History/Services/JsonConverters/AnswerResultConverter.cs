@@ -16,6 +16,7 @@ internal sealed class AnswerResultConverter : JsonConverter<AnswerResult?>
             "short" => document.Deserialize<AnswerResult.ShortModel>(options),
             "single" => document.Deserialize<AnswerResult.SingleModel>(options),
             "multiple" => document.Deserialize<AnswerResult.MultipleModel>(options),
+            "ordered" => document.Deserialize<AnswerResult.OrderedModel>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(AnswerResult), type, @"Unknown answer result")
         };
     }

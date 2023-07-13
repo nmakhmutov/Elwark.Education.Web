@@ -1,13 +1,13 @@
 @using FluentValidation
 @using Education.Web.Client.Models.Quiz
-<EditForm Model="@UserAnswer" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@_userAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
     <div class="d-flex flex-column align-center mb-3 @(CorrectAnswer is null ? "mb-sm-6" : "")">
         <MudTextField
-            @bind-Value="@(UserAnswer.Answer)"
+            @bind-Value="@(_userAnswer.Answer)"
             Label="@L["Quiz_UserAnswer"]"
-            For="@(() => UserAnswer.Answer)"
+            For="@(() => _userAnswer.Answer)"
             Disabled="@(CorrectAnswer is not null)"/>
 
         @if (CorrectAnswer is not null)
@@ -44,7 +44,7 @@
                 IsLoading="@IsLoading"
                 Text="@OnNextTitle"
                 LoadingText="@L["Loading_Title"]"
-                OnClick="@OnNextClick"
+                OnClick="@OnNextAsync"
                 DisableElevation/>
         </div>
 
@@ -65,15 +65,13 @@
 
 @code {
     private Validator _validator = default!;
+    private ShortAnswerModel _userAnswer = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public bool IsLoading { get; set; }
-
-    [Parameter, EditorRequired]
-    public ShortAnswerModel UserAnswer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public AnswerResult.ShortModel? CorrectAnswer { get; set; }
@@ -91,8 +89,14 @@
         _validator = new Validator(L);
 
     private Task OnValidSubmit() =>
-        OnAnswerClick.InvokeAsync(UserAnswer);
+        OnAnswerClick.InvokeAsync(_userAnswer);
 
+    private Task OnNextAsync()
+    {
+        _userAnswer = new ShortAnswerModel();
+        return OnNextClick.InvokeAsync();
+    }
+    
     public sealed class Validator : AbstractValidator<ShortAnswerModel>
     {
         public Validator(IStringLocalizer<App> localizer) =>

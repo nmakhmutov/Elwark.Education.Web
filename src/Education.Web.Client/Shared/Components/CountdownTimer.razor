@@ -5,6 +5,7 @@
 </MudText>
 
 @code {
+    private bool _disposed = false;
     private TimeSpan _timeLeft = TimeSpan.Zero;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromSeconds(1));
 
@@ -40,14 +41,17 @@
                 StateHasChanged();
             }
 
-            if (OnComplete.HasDelegate)
+            if (!_disposed && OnComplete.HasDelegate)
                 await OnComplete.InvokeAsync();
         });
 
     private void UpdateRemainingTime() =>
         _timeLeft = new TimeSpan(Deadline.Ticks - DateTime.UtcNow.Ticks / TimeSpan.TicksPerSecond * TimeSpan.TicksPerSecond);
 
-    public void Dispose() =>
+    public void Dispose()
+    {
+        _disposed = true;
         _timer.Dispose();
+    }
 
 }
