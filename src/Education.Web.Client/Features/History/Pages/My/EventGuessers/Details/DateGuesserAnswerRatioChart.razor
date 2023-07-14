@@ -1,5 +1,5 @@
 @using ApexCharts
-@using Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser
+@using Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser
 <div class="@Class">
     @if (AnswerRatio.Total > 0)
     {
@@ -42,15 +42,15 @@
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["History_EventGuesser_Correct"], AnswerRatio.Correct, Colors.Green.Accent4),
-        new ChartList.Item(L["History_EventGuesser_Incorrect"], AnswerRatio.Incorrect, Colors.Red.Default),
-        new ChartList.Item(L["History_EventGuesser_Questions"], AnswerRatio.Total, null)
+        new ChartList.Item(L["History_DateGuesser_Correct"], AnswerRatio.Correct, Colors.Green.Accent4),
+        new ChartList.Item(L["History_DateGuesser_Incorrect"], AnswerRatio.Incorrect, Colors.Red.Default),
+        new ChartList.Item(L["History_DateGuesser_Questions"], AnswerRatio.Total, null)
     };
 
     private Data[] Series => new[]
     {
-        new Data(L["History_EventGuesser_Correct"], AnswerRatio.Correct),
-        new Data(L["History_EventGuesser_Incorrect"], AnswerRatio.Incorrect)
+        new Data(L["History_DateGuesser_Correct"], AnswerRatio.Correct),
+        new Data(L["History_DateGuesser_Incorrect"], AnswerRatio.Incorrect)
     };
 
     private sealed record Data(string Name, decimal Value);

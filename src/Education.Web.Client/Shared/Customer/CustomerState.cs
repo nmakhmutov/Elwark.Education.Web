@@ -15,7 +15,7 @@ public sealed record CustomerState(
 )
 {
     private const string AnonymousImage =
-        "https://res.cloudinary.com/elwark/image/upload/v1/People/default.svg";
+        "https://res.cloudinary.com/elwark/image/upload/f_auto,q_auto/v1/People/default.svg";
 
     public static CustomerState Anonymous =>
         new(

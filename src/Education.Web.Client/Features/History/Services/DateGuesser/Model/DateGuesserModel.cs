@@ -1,14 +1,14 @@
 using Education.Web.Client.Models.Inventory;
 
-namespace Education.Web.Client.Features.History.Services.EventGuesser.Model;
+namespace Education.Web.Client.Features.History.Services.DateGuesser.Model;
 
-public sealed record EventGuesserModel(
+public sealed record DateGuesserModel(
     string Id,
     DateTime X2BonusUntil,
     ScoreModel Score,
     uint CompletedQuestions,
     uint TotalQuestions,
-    EventGuesserModel.QuestionModel? Question,
+    DateGuesserModel.QuestionModel? Question,
     TestInventoryModel[] Inventory
 )
 {

@@ -1,9 +1,9 @@
 using Education.Web.Client.Models;
 using Education.Web.Client.Models.Content;
 
-namespace Education.Web.Client.Features.History.Services.EventGuesser.Model;
+namespace Education.Web.Client.Features.History.Services.DateGuesser.Model;
 
-public sealed record EventGuesserConclusionModel(
+public sealed record DateGuesserConclusionModel(
     uint MaxScore,
     ScoreModel Score,
     InternalMoneyModel[] Rewards,

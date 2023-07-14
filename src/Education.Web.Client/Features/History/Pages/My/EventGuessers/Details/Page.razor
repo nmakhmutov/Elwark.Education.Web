@@ -1,6 +1,6 @@
-@page "/history/my/event-guessers/{test}"
-@using Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser
+@page "/history/my/date-guessers/{test}"
 @using Education.Web.Client.Features.History.Services.Learner
+@using Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -17,8 +17,8 @@
         <StatisticDetailsGrid>
             <StatisticDetailsCard>
                 <TotalContent>
-                    <Subheader Title="@L["History_EventGuesser_Score"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <EventGuesserScoreChart Score="@result.Score"/>
+                    <Subheader Title="@L["History_DateGuesser_Score"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <DateGuesserScoreChart Score="@result.Score"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
@@ -28,8 +28,8 @@
 
             <StatisticDetailsCard>
                 <TotalContent>
-                    <Subheader Title="@L["History_EventGuesser_Questions"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <EventGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
+                    <Subheader Title="@L["History_DateGuesser_Questions"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <DateGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
@@ -55,13 +55,13 @@
 
 @code {
     private string? _title;
-    private ApiResult<EventGuesserStatisticsModel> _result = ApiResult<EventGuesserStatisticsModel>.Loading();
+    private ApiResult<DateGuesserStatisticsModel> _result = ApiResult<DateGuesserStatisticsModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
-        new BreadcrumbItem(L["History_EventGuessers_Title"], HistoryUrl.User.MyEventGuessers)
+        new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.User.MyDateGuessers)
     };
 
     [Inject]
@@ -75,19 +75,19 @@
 
     protected override void OnParametersSet() =>
         _title = Test?.ToLowerInvariant() switch {
-            "small" => L["History_EventGuessers_Small"],
-            "medium" => L["History_EventGuessers_Medium"],
-            "large" => L["History_EventGuessers_Large"],
+            "small" => L["History_DateGuessers_Small"],
+            "medium" => L["History_DateGuessers_Medium"],
+            "large" => L["History_DateGuessers_Large"],
             _ => L["Error_NotFound"]
             };
 
     protected override async Task OnParametersSetAsync() =>
         _result = Test?.ToLowerInvariant() switch
         {
-            "small" => await LearnerService.GetSmallEventGuesserStatisticsAsync(),
-            "medium" => await LearnerService.GetMediumEventGuesserStatisticsAsync(),
-            "large" => await LearnerService.GetLargeEventGuesserStatisticsAsync(),
-            _ => ApiResult<EventGuesserStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
+            "small" => await LearnerService.GetSmallDateGuesserStatisticsAsync(),
+            "medium" => await LearnerService.GetMediumDateGuesserStatisticsAsync(),
+            "large" => await LearnerService.GetLargeDateGuesserStatisticsAsync(),
+            _ => ApiResult<DateGuesserStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
             };
 
 }

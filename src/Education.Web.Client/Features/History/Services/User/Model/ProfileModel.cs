@@ -3,7 +3,7 @@ namespace Education.Web.Client.Features.History.Services.User.Model;
 public sealed record ProfileModel(
     ProfileModel.LevelModel Level,
     ulong TotalQuizzes,
-    ulong TotalEventGuessers,
+    ulong TotalDateGuessers,
     ProfileModel.AchievementModel Achievements,
     UserArticleOverviewModel[] RecentArticles
 )

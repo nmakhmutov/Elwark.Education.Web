@@ -2,7 +2,7 @@ namespace Education.Web.Client;
 
 public static class ElwarkIcons
 {
-    private const string Host = "https://res.cloudinary.com/elwark/image/upload/v1/Elwark/primary";
+    private const string Host = "https://res.cloudinary.com/elwark/image/upload/f_auto,q_auto/v1/Elwark/primary";
 
     public const string PrimaryFavicon = $"{Host}/favicon.ico";
     public const string Primary16X16 = $"{Host}/16x16.png";

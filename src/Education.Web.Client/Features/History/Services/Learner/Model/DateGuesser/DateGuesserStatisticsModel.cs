@@ -1,13 +1,13 @@
-using Education.Web.Client.Features.History.Services.EventGuesser.Model;
+using Education.Web.Client.Features.History.Services.DateGuesser.Model;
 using Education.Web.Client.Models.Statistics;
 
-namespace Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser;
+namespace Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser;
 
-public sealed record EventGuesserStatisticsModel(
+public sealed record DateGuesserStatisticsModel(
     uint Tests,
     ScoreModel Score,
     AnswerRatioModel AnswerRatio,
-    EventGuesserStatisticsModel.DeltaModel Delta
+    DateGuesserStatisticsModel.DeltaModel Delta
 )
 {
     public sealed record DeltaModel(

@@ -1,5 +1,5 @@
 using Education.Web.Client.Features.History.Services.Learner.Model;
-using Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser;
+using Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser;
 using Education.Web.Client.Features.History.Services.Learner.Model.Quiz;
 using Education.Web.Client.Features.History.Services.Learner.Request;
 using Education.Web.Client.Http;
@@ -23,17 +23,17 @@ internal sealed class HistoryLearnerService : IHistoryLearnerService
     public Task<ApiResult<QuizStatisticsModel>> GetHardQuizStatisticsAsync() =>
         _api.GetAsync<QuizStatisticsModel>("history/learners/me/quizzes/hard");
 
-    public Task<ApiResult<EventGuessersStatisticsModel>> GetEventGuesserStatisticsAsync() =>
-        _api.GetAsync<EventGuessersStatisticsModel>("history/learners/me/event-guessers");
+    public Task<ApiResult<DateGuessersStatisticsModel>> GetDateGuesserStatisticsAsync() =>
+        _api.GetAsync<DateGuessersStatisticsModel>("history/learners/me/date-guessers");
 
-    public Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync() =>
-        _api.GetAsync<EventGuesserStatisticsModel>("history/learners/me/event-guessers/small");
+    public Task<ApiResult<DateGuesserStatisticsModel>> GetSmallDateGuesserStatisticsAsync() =>
+        _api.GetAsync<DateGuesserStatisticsModel>("history/learners/me/date-guessers/small");
 
-    public Task<ApiResult<EventGuesserStatisticsModel>> GetMediumEventGuesserStatisticsAsync() =>
-        _api.GetAsync<EventGuesserStatisticsModel>("history/learners/me/event-guessers/medium");
+    public Task<ApiResult<DateGuesserStatisticsModel>> GetMediumDateGuesserStatisticsAsync() =>
+        _api.GetAsync<DateGuesserStatisticsModel>("history/learners/me/date-guessers/medium");
 
-    public Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync() =>
-        _api.GetAsync<EventGuesserStatisticsModel>("history/learners/me/event-guessers/large");
+    public Task<ApiResult<DateGuesserStatisticsModel>> GetLargeDateGuesserStatisticsAsync() =>
+        _api.GetAsync<DateGuesserStatisticsModel>("history/learners/me/date-guessers/large");
 
     public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest request) =>
         _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/learners/me/articles/bookmarks", request);

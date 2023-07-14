@@ -41,5 +41,5 @@ public static class EpochTypeExtensions
         $"History_Epoch_{type.ToFastString()}";
 
     public static string Image(this EpochType type) =>
-        $"https://res.cloudinary.com/elwark/image/upload/v1/Education/History/Epochs/{type.ToFastString()}.jpg";
+        $"https://res.cloudinary.com/elwark/image/upload/f_auto,q_auto/v1/Education/History/Epochs/{type.ToFastString()}.jpg";
 }

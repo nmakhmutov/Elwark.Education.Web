@@ -1,4 +1,4 @@
-@using Education.Web.Client.Features.History.Services.EventGuesser.Model
+@using Education.Web.Client.Features.History.Services.DateGuesser.Model
 <div class="@Class">
     <MudRadioGroup Class="radio-group" SelectedOption="@SelectedGuesser" SelectedOptionChanged="@SelectedGuesserChanged">
         @foreach (var service in Guessers)
@@ -28,6 +28,6 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public EventGuesserInformationModel[] Guessers { get; set; } = Array.Empty<EventGuesserInformationModel>();
+    public DateGuesserInformationModel[] Guessers { get; set; } = Array.Empty<DateGuesserInformationModel>();
 
 }

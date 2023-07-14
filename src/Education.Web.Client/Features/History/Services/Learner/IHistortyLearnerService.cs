@@ -1,5 +1,5 @@
 using Education.Web.Client.Features.History.Services.Learner.Model;
-using Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser;
+using Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser;
 using Education.Web.Client.Features.History.Services.Learner.Model.Quiz;
 using Education.Web.Client.Features.History.Services.Learner.Request;
 using Education.Web.Client.Http;
@@ -15,13 +15,13 @@ public interface IHistoryLearnerService
 
     Task<ApiResult<QuizStatisticsModel>> GetHardQuizStatisticsAsync();
 
-    Task<ApiResult<EventGuessersStatisticsModel>> GetEventGuesserStatisticsAsync();
+    Task<ApiResult<DateGuessersStatisticsModel>> GetDateGuesserStatisticsAsync();
 
-    Task<ApiResult<EventGuesserStatisticsModel>> GetSmallEventGuesserStatisticsAsync();
+    Task<ApiResult<DateGuesserStatisticsModel>> GetSmallDateGuesserStatisticsAsync();
 
-    Task<ApiResult<EventGuesserStatisticsModel>> GetMediumEventGuesserStatisticsAsync();
+    Task<ApiResult<DateGuesserStatisticsModel>> GetMediumDateGuesserStatisticsAsync();
 
-    Task<ApiResult<EventGuesserStatisticsModel>> GetLargeEventGuesserStatisticsAsync();
+    Task<ApiResult<DateGuesserStatisticsModel>> GetLargeDateGuesserStatisticsAsync();
 
     Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest request);
 

@@ -1,15 +1,16 @@
-@page "/history/event-guessers/{id}"
-@using Education.Web.Client.Features.History.Services.EventGuesser.Model
-@using Education.Web.Client.Features.History.Services.EventGuesser.Request
+@page "/history/date-guessers/{id}"
+@using Education.Web.Client.Features.History.Services.DateGuesser.Model
+@using Education.Web.Client.Features.History.Services.DateGuesser.Request
+@using Education.Web.Client.Features.History.Services.DateGuesser
 @layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_EventGuesser_Title"]
+    @L["History_DateGuesser_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
-    <EduPageHeader Title="@L["History_EventGuesser_Title"]" Breadcrumbs="@Breadcrumbs"/>
+    <EduPageHeader Title="@L["History_DateGuesser_Title"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result">
@@ -23,7 +24,7 @@
                     </MudText>
                 </div>
                 <MudText Typo="Typo.caption">
-                    @L["History_EventGuesser_Score"]
+                    @L["History_DateGuesser_Score"]
                 </MudText>
             </div>
 
@@ -33,7 +34,7 @@
                     <div class="d-flex flex-row justify-end align-center">
                         <MudIcon Icon="@EduIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
                         <MudText Typo="Typo.subtitle1">
-                            @L["History_EventGuesser_x2Bonus"]
+                            @L["History_DateGuesser_x2Bonus"]
                         </MudText>
                     </div>
                     <div class="d-flex flex-row justify-end">
@@ -58,31 +59,31 @@
             </div>
         </div>
 
-        <EventGuesserForm OnAnswer="@OnValidSubmit"/>
+        <DateGuesserForm OnAnswer="@OnValidSubmit"/>
 
     </EduContainer>
 </ApiViewer>
 
 @code {
 
-    private ApiResult<EventGuesserModel> _result = ApiResult<EventGuesserModel>.Loading();
+    private ApiResult<DateGuesserModel> _result = ApiResult<DateGuesserModel>.Loading();
     private ScoreModel _score = new(0, 0, 0);
     private DateTime _x2BonusUntil;
     private uint _totalQuestions;
     private uint _completedQuestions;
-    private EventGuesserModel.QuestionModel _question = default!;
+    private DateGuesserModel.QuestionModel _question = default!;
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["History_EventGuesser_Title"], HistoryUrl.EventGuesser.Index)
+        new BreadcrumbItem(L["History_DateGuesser_Title"], HistoryUrl.DateGuesser.Index)
     };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryEventGuesserService EventGuesserService { get; set; } = default!;
+    private IHistoryDateGuesserService DateGuesserService { get; set; } = default!;
 
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
@@ -95,7 +96,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await EventGuesserService.GetAsync(Id);
+        _result = await DateGuesserService.GetAsync(Id);
         _result.Match(
             x =>
             {
@@ -107,24 +108,24 @@
             },
             e =>
             {
-                if (e.IsEventGuesserNotFound())
-                    Navigation.NavigateTo(HistoryUrl.EventGuesser.Conclusion(Id));
+                if (e.IsDateGuesserNotFound())
+                    Navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
             }
             );
     }
 
-    private async Task OnValidSubmit(EventGuesserForm.Model model)
+    private async Task OnValidSubmit(DateGuesserForm.Model model)
     {
         var year = model.Year.GetValueOrDefault();
         var request = new CheckRequest(model.IsBc ? -year : year, model.Month, model.Day);
 
-        var result = await EventGuesserService.CheckAsync(Id, _question.Id, request);
+        var result = await DateGuesserService.CheckAsync(Id, _question.Id, request);
         result.Match(
             x =>
             {
                 if (x.Question is null)
                 {
-                    Navigation.NavigateTo(HistoryUrl.EventGuesser.Conclusion(Id));
+                    Navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
                     return;
                 }
 

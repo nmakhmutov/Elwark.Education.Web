@@ -1,6 +1,6 @@
 using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.History.Components.Lists;
-using Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser;
+using Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser;
 using Education.Web.Client.Features.History.Services.Learner.Model.Quiz;
 using Microsoft.Extensions.Localization;
 
@@ -11,7 +11,7 @@ public static class StatisticsExtensions
     public static string RangeTitle(this QuizStatisticsModel.DeltaModel delta) =>
         RangeTitle(delta.Start, delta.End);
 
-    public static string RangeTitle(this EventGuesserStatisticsModel.DeltaModel delta) =>
+    public static string RangeTitle(this DateGuesserStatisticsModel.DeltaModel delta) =>
         RangeTitle(delta.Start, delta.End);
 
     public static ProgressList.Item[] GetProgress(
@@ -61,28 +61,28 @@ public static class StatisticsExtensions
         };
 
     public static ProgressList.Item[] GetProgress(
-        this EventGuesserStatisticsModel.DeltaModel delta, IStringLocalizer l) =>
+        this DateGuesserStatisticsModel.DeltaModel delta, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["History_EventGuesser_Total"], delta.Tests.Current.ToMetric(), delta.Tests.Difference)
+            new(l["History_DateGuesser_Total"], delta.Tests.Current.ToMetric(), delta.Tests.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(
-        this EventGuesserStatisticsModel.ScoreContrastModel contrast, IStringLocalizer l) =>
+        this DateGuesserStatisticsModel.ScoreContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["History_EventGuesser_Score"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
-            new(l["History_EventGuesser_Points"], contrast.Points.Current.ToMetric(), contrast.Points.Difference),
-            new(l["History_EventGuesser_x2Bonus"], contrast.Bonus.Current.ToMetric(), contrast.Bonus.Difference)
+            new(l["History_DateGuesser_Score"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
+            new(l["History_DateGuesser_Points"], contrast.Points.Current.ToMetric(), contrast.Points.Difference),
+            new(l["History_DateGuesser_x2Bonus"], contrast.Bonus.Current.ToMetric(), contrast.Bonus.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(
-        this EventGuesserStatisticsModel.AnswerRatioContrastModel contrast, IStringLocalizer l) =>
+        this DateGuesserStatisticsModel.AnswerRatioContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["History_EventGuesser_Questions"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
-            new(l["History_EventGuesser_Correct"], contrast.Correct.Current.ToMetric(), contrast.Correct.Difference),
-            new(l["History_EventGuesser_Incorrect"], contrast.Incorrect.Current.ToMetric(),
+            new(l["History_DateGuesser_Questions"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
+            new(l["History_DateGuesser_Correct"], contrast.Correct.Current.ToMetric(), contrast.Correct.Difference),
+            new(l["History_DateGuesser_Incorrect"], contrast.Incorrect.Current.ToMetric(),
                 contrast.Incorrect.Difference)
         };
 

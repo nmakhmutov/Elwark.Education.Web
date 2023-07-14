@@ -1,5 +1,5 @@
 @using ApexCharts
-@using Education.Web.Client.Features.History.Services.EventGuesser.Model
+@using Education.Web.Client.Features.History.Services.DateGuesser.Model
 <div class="@Class">
     @if (Score.Total > 0)
     {
@@ -46,15 +46,15 @@
 
     private ChartList.Item[] Items => new[]
     {
-        new ChartList.Item(L["History_EventGuesser_Points"], Score.Points, Colors.Blue.Default),
-        new ChartList.Item(L["History_EventGuesser_x2Bonus"], Score.Bonus, Colors.DeepPurple.Default),
-        new ChartList.Item(L["History_EventGuesser_Score"], Score.Total, null)
+        new ChartList.Item(L["History_DateGuesser_Points"], Score.Points, Colors.Blue.Default),
+        new ChartList.Item(L["History_DateGuesser_x2Bonus"], Score.Bonus, Colors.DeepPurple.Default),
+        new ChartList.Item(L["History_DateGuesser_Score"], Score.Total, null)
     };
 
     private Data[] Series => new[]
     {
-        new Data(L["History_EventGuesser_Points"], Score.Points),
-        new Data(L["History_EventGuesser_x2Bonus"], Score.Bonus)
+        new Data(L["History_DateGuesser_Points"], Score.Points),
+        new Data(L["History_DateGuesser_x2Bonus"], Score.Bonus)
     };
 
     private sealed record Data(string Name, decimal Value);

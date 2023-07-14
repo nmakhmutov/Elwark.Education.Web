@@ -1,15 +1,16 @@
-@page "/history/event-guessers/{id}/conclusion"
-@using Education.Web.Client.Features.History.Services.EventGuesser.Model
+@page "/history/date-guessers/{id}/conclusion"
+@using Education.Web.Client.Features.History.Services.DateGuesser.Model
+@using Education.Web.Client.Features.History.Services.DateGuesser
 @layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_EventGuesser_Completed"]
+    @L["History_DateGuesser_Completed"]
 </PageTitle>
 
 <ApiViewer Result="@_result" Context="conclusion">
     <MudAlert Class="mb-6 mb-sm-12" Severity="Severity.Success" Square ContentAlignment="HorizontalAlignment.Center">
-        @L["History_EventGuesser_Completed"]
+        @L["History_DateGuesser_Completed"]
     </MudAlert>
 
     <CompletedStars Class="mb-6" Progress="@_progress"/>
@@ -27,11 +28,11 @@
             <HeaderContent>
                 <MudTh>@L["Article_Title"]</MudTh>
                 <MudTh>@L["Question_Title"]</MudTh>
-                <MudTh>@L["History_EventGuesserCorrect_Answer"]</MudTh>
-                <MudTh>@L["History_EventGuesser_UserAnswer"]</MudTh>
-                <MudTh>@L["History_EventGuesser_Points"]</MudTh>
-                <MudTh>@L["History_EventGuesser_x2Bonus"]</MudTh>
-                <MudTh>@L["History_EventGuesser_Score"]</MudTh>
+                <MudTh>@L["History_DateGuesserCorrect_Answer"]</MudTh>
+                <MudTh>@L["History_DateGuesser_UserAnswer"]</MudTh>
+                <MudTh>@L["History_DateGuesser_Points"]</MudTh>
+                <MudTh>@L["History_DateGuesser_x2Bonus"]</MudTh>
+                <MudTh>@L["History_DateGuesser_Score"]</MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="@L["Article_Title"]">
@@ -42,26 +43,26 @@
                 <MudTd DataLabel="@L["Question_Title"]">
                     @context.Title
                 </MudTd>
-                <MudTd DataLabel="@L["History_EventGuesserCorrect_Answer"]">
+                <MudTd DataLabel="@L["History_DateGuesserCorrect_Answer"]">
                     <HistoryDate
                         Typo="Typo.body2"
                         Date="@context.CorrectAnswer"
                         DateTimeFormatter="@DateTimeFormatter"/>
                 </MudTd>
-                <MudTd DataLabel="@L["History_EventGuesser_UserAnswer"]">
+                <MudTd DataLabel="@L["History_DateGuesser_UserAnswer"]">
                     <HistoryDate
                         Typo="Typo.body2"
                         Date="@context.UserAnswer"
                         DateTimeFormatter="@DateTimeFormatter"
                         Color="@(context.IsCorrect ? Color.Success : Color.Error)"/>
                 </MudTd>
-                <MudTd DataLabel="@L["History_EventGuesser_Points"]">
+                <MudTd DataLabel="@L["History_DateGuesser_Points"]">
                     @context.Score.Points
                 </MudTd>
-                <MudTd DataLabel="@L["History_EventGuesser_x2Bonus"]">
+                <MudTd DataLabel="@L["History_DateGuesser_x2Bonus"]">
                     @context.Score.Bonus
                 </MudTd>
-                <MudTd DataLabel="@L["History_EventGuesser_Score"]">
+                <MudTd DataLabel="@L["History_DateGuesser_Score"]">
                     @context.Score.Total
                 </MudTd>
             </RowTemplate>
@@ -89,25 +90,25 @@
 
         <div class="d-flex justify-center">
             <MudButton
-                Href="@HistoryUrl.EventGuesser.Index"
+                Href="@HistoryUrl.DateGuesser.Index"
                 Color="Color.Primary"
                 Variant="Variant.Filled"
                 DisableElevation>
-                @L["EventGuesser_TakeTheGuesserAgain"]
+                @L["History_DateGuesser_TakeTheGuesserAgain"]
             </MudButton>
         </div>
     </EduContainer>
 </ApiViewer>
 
 @code {
-    private ApiResult<EventGuesserConclusionModel> _result = ApiResult<EventGuesserConclusionModel>.Loading();
+    private ApiResult<DateGuesserConclusionModel> _result = ApiResult<DateGuesserConclusionModel>.Loading();
     private double _progress;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryEventGuesserService EventGuesserService { get; set; } = default!;
+    private IHistoryDateGuesserService DateGuesserService { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
@@ -120,13 +121,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await EventGuesserService.GetConclusionAsync(Id);
+        _result = await DateGuesserService.GetConclusionAsync(Id);
         _result.Match(
             x => _progress = Math.Round((double)x.Score.Total / x.MaxScore * 100),
             e =>
             {
-                if (e.IsEventGuesserNotFound())
-                    Navigation.NavigateTo(HistoryUrl.EventGuesser.Index);
+                if (e.IsDateGuesserNotFound())
+                    Navigation.NavigateTo(HistoryUrl.DateGuesser.Index);
             }
             );
     }

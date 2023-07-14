@@ -1,42 +1,42 @@
-@page "/history/my/event-guessers"
-@using Education.Web.Client.Features.History.Services.Learner.Model.EventGuesser
+@page "/history/my/date-guessers"
 @using Education.Web.Client.Features.History.Services.Learner
+@using Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser
 @layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_EventGuessers_Title"]
+    @L["History_DateGuessers_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["History_EventGuessers_Title"]" Breadcrumbs="@Breadcrumbs"/>
+    <EduPageHeader Title="@L["History_DateGuessers_Title"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" Context="profile">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <EduFillGrid>
             <StatisticsCard
-                Title="@L["History_EventGuessers_Small"]"
-                Value="@profile.SmallEventGuesser.Tests"
-                Href="@HistoryUrl.User.MySmallEventGuessers">
+                Title="@L["History_DateGuessers_Small"]"
+                Value="@profile.SmallDateGuesser.Tests"
+                Href="@HistoryUrl.User.MySmallDateGuessers">
                 <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                <EventGuesserScoreChart Score="@profile.SmallEventGuesser.Score"/>
+                <DateGuesserScoreChart Score="@profile.SmallDateGuesser.Score"/>
             </StatisticsCard>
 
             <StatisticsCard
-                Title="@L["History_EventGuessers_Medium"]"
-                Value="@profile.MediumEventGuesser.Tests"
-                Href="@HistoryUrl.User.MyMediumEventGuessers">
+                Title="@L["History_DateGuessers_Medium"]"
+                Value="@profile.MediumDateGuesser.Tests"
+                Href="@HistoryUrl.User.MyMediumDateGuessers">
                 <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                <EventGuesserScoreChart Score="@profile.MediumEventGuesser.Score"/>
+                <DateGuesserScoreChart Score="@profile.MediumDateGuesser.Score"/>
             </StatisticsCard>
 
             <StatisticsCard
-                Title="@L["History_EventGuessers_Large"]"
-                Value="@profile.LargeEventGuesser.Tests"
-                Href="@HistoryUrl.User.MyLargeEventGuessers">
+                Title="@L["History_DateGuessers_Large"]"
+                Value="@profile.LargeDateGuesser.Tests"
+                Href="@HistoryUrl.User.MyLargeDateGuessers">
                 <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                <EventGuesserScoreChart Score="@profile.LargeEventGuesser.Score"/>
+                <DateGuesserScoreChart Score="@profile.LargeDateGuesser.Score"/>
             </StatisticsCard>
 
             <ActivityCard
@@ -58,9 +58,9 @@
 </ApiViewer>
 
 @code {
-    private EventGuessersStatisticsModel.ProgressModel[] _daily = Array.Empty<EventGuessersStatisticsModel.ProgressModel>();
-    private EventGuessersStatisticsModel.ProgressModel[] _monthly = Array.Empty<EventGuessersStatisticsModel.ProgressModel>();
-    private ApiResult<EventGuessersStatisticsModel> _result = ApiResult<EventGuessersStatisticsModel>.Loading();
+    private DateGuessersStatisticsModel.ProgressModel[] _daily = Array.Empty<DateGuessersStatisticsModel.ProgressModel>();
+    private DateGuessersStatisticsModel.ProgressModel[] _monthly = Array.Empty<DateGuessersStatisticsModel.ProgressModel>();
+    private ApiResult<DateGuessersStatisticsModel> _result = ApiResult<DateGuessersStatisticsModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs => new()
     {
@@ -76,16 +76,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await LearnerService.GetEventGuesserStatisticsAsync();
+        _result = await LearnerService.GetDateGuesserStatisticsAsync();
         _result.Match(model =>
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
             _daily = model.Daily
-                .FillDailyGaps(today, x => x.Date, x => new EventGuessersStatisticsModel.ProgressModel(x, 0, 0, 0))
+                .FillDailyGaps(today, x => x.Date, x => new DateGuessersStatisticsModel.ProgressModel(x, 0, 0, 0))
                 .ToArray();
 
             _monthly = model.Monthly
-                .FillMonthlyGaps(today, x => x.Date, x => new EventGuessersStatisticsModel.ProgressModel(x, 0, 0, 0))
+                .FillMonthlyGaps(today, x => x.Date, x => new DateGuessersStatisticsModel.ProgressModel(x, 0, 0, 0))
                 .ToArray();
         });
     }

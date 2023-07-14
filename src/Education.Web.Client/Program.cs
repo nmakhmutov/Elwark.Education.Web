@@ -7,7 +7,7 @@ using Education.Web.Client.Features.Customer.Services.Notification;
 using Education.Web.Client.Features.History.Services;
 using Education.Web.Client.Features.History.Services.Article;
 using Education.Web.Client.Features.History.Services.Course;
-using Education.Web.Client.Features.History.Services.EventGuesser;
+using Education.Web.Client.Features.History.Services.DateGuesser;
 using Education.Web.Client.Features.History.Services.Flow;
 using Education.Web.Client.Features.History.Services.Leaderboard;
 using Education.Web.Client.Features.History.Services.Learner;
@@ -110,7 +110,7 @@ builder.Services
     .AddScoped<HistoryApiClient>()
     .AddScoped<IHistoryArticleService, HistoryArticleService>()
     .AddScoped<IHistoryCourseService, HistoryCourseService>()
-    .AddScoped<IHistoryEventGuesserService, HistoryEventGuesserService>()
+    .AddScoped<IHistoryDateGuesserService, HistoryDateGuesserService>()
     .AddScoped<IHistoryFlowService, HistoryFlowService>()
     .AddScoped<IHistoryLeaderboardService, HistoryLeaderboardService>()
     .AddScoped<IHistoryLearnerService, HistoryLearnerService>()

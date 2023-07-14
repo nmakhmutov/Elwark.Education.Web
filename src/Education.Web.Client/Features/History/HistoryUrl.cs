@@ -75,15 +75,15 @@ public static class HistoryUrl
             $"{Root}/quizzes/{testId}/conclusion";
     }
 
-    public static class EventGuesser
+    public static class DateGuesser
     {
-        public const string Index = $"{Root}/event-guessers";
+        public const string Index = $"{Root}/date-guessers";
 
         public static string Test(string testId) =>
-            $"{Root}/event-guessers/{testId}";
+            $"{Root}/date-guessers/{testId}";
 
         public static string Conclusion(string testId) =>
-            $"{Root}/event-guessers/{testId}/conclusion";
+            $"{Root}/date-guessers/{testId}/conclusion";
     }
 
     public static class Leaderboard
@@ -112,13 +112,13 @@ public static class HistoryUrl
 
         public const string MyHardQuizzes = $"{My}/quizzes/hard";
 
-        public const string MyEventGuessers = $"{My}/event-guessers";
+        public const string MyDateGuessers = $"{My}/date-guessers";
 
-        public const string MySmallEventGuessers = $"{My}/event-guessers/small";
+        public const string MySmallDateGuessers = $"{My}/date-guessers/small";
 
-        public const string MyMediumEventGuessers = $"{My}/event-guessers/medium";
+        public const string MyMediumDateGuessers = $"{My}/date-guessers/medium";
 
-        public const string MyLargeEventGuessers = $"{My}/event-guessers/large";
+        public const string MyLargeDateGuessers = $"{My}/date-guessers/large";
 
         public const string MyAchievements = $"{My}/achievements";
 

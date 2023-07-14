@@ -8,5 +8,5 @@ public enum CategoryType
     Profile = 1,
     Quiz = 2,
     Examination = 3,
-    EventGuesser = 4
+    DateGuesser = 4
 }
