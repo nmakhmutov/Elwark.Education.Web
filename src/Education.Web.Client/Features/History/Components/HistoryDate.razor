@@ -27,38 +27,32 @@
     [Parameter, EditorRequired]
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
 
-    protected override void OnInitialized() =>
+    protected override void OnParametersSet() =>
         _date = Date is null ? L["Unknown_Title"] : Format(Date);
 
     private string Format(HistoricalDateModel date)
     {
-        var (year, month, day) = date;
+        if (date is { IsFull: true, Year: > 999 })
+        {
+            var value = new DateTime(date.Year, (int)date.Month.GetValueOrDefault(), (int)date.Day.GetValueOrDefault());
+            return DateTimeFormatter(value);
+        }
+        
         var sb = new StringBuilder(15);
 
-        if (month.HasValue && day.HasValue)
-        {
-            sb.Append(DateTimeFormatter(new DateTime(Math.Abs(year), (int)month.Value, (int)day.Value)));
-
-            if (year < 0)
-                sb.Append(' ')
-                    .Append(L["History_Date_Bc"]);
-
-            return sb.ToString();
-        }
-
-        if (day.HasValue)
-            sb.Append(day.Value)
+        if (date.Day.HasValue)
+            sb.Append(date.Day.Value)
                 .Append(' ');
 
-        if (month.HasValue)
-            sb.Append(CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName((int)month.Value))
+        if (date.Month.HasValue)
+            sb.Append(CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName((int)date.Month.Value))
                 .Append(' ');
 
-        sb.Append(Math.Abs(year));
+        sb.Append(Math.Abs(date.Year));
 
-        if (year < 0)
+        if (date.Year < 0)
             sb.Append(' ')
-                .Append(L["History_Date_Bc"]);
+                .Append(L["History_Date_BCE"]);
 
         return sb.ToString();
     }

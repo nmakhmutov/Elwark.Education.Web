@@ -7,9 +7,7 @@
         <Loading>
             @for (var i = 0; i < 6; i++)
             {
-                <SkeletonCard
-                    Horizontal="@IsHorizontal(i)"
-                    HideFooter="@IsHiddenOverview(i)"/>
+                <SkeletonCard Horizontal="@IsHorizontal(i)" HideFooter="IsHiddenOverview(i)"/>
             }
         </Loading>
         <ChildContent Context="articles">
@@ -22,7 +20,7 @@
                     Horizontal="@IsHorizontal(i)"
                     HideOverview="@IsHiddenOverview(i)"
                     ShortOverview="@IsShortOverview(i)"
-                    HideFooter="@IsHiddenOverview(i)"/>
+                    OneLineHeader/>
             }
         </ChildContent>
     </ApiViewer>

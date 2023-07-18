@@ -3,7 +3,7 @@
 @layout HistoryLayout
 
 <PageTitle>
-    @L["Leaderboard_Global_FullTitle"]
+    @L["Leaderboard_GlobalTop_Title"]
 </PageTitle>
 
 <ApiViewer Result="@_result" Context="items">
@@ -14,9 +14,14 @@
                     <div class="d-flex align-center justify-center mud-primary white-text rounded mr-3 mr-sm-6">
                         <MudIcon Icon="@Icons.Material.Outlined.StarOutline" Size="Size.Large" Class="ma-6"/>
                     </div>
-                    <MudText Typo="Typo.h4">
-                        @L["Leaderboard_Global_FullTitle"]
-                    </MudText>
+                    <div>
+                        <MudText Typo="Typo.subtitle1">
+                            @L["Leaderboard_Title"]
+                        </MudText>
+                        <MudText Typo="Typo.h3">
+                            @L["Leaderboard_GlobalTop_Title"]
+                        </MudText>
+                    </div>
                 </div>
             </section>
             @foreach (var user in items[..3])
@@ -33,9 +38,6 @@
 
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <RegularRanking DisableHover>
-            <Rank>
-                <MudText Typo="Typo.subtitle2">@L["Leaderboard_Rank"]</MudText>
-            </Rank>
             <Name>
                 <MudText Typo="Typo.subtitle2">@L["Leaderboard_User_Name"]</MudText>
             </Name>
@@ -49,12 +51,14 @@
 
         <Virtualize Items="@items[3..]" ItemSize="64" Context="user">
             <RegularRanking Class="mb-3" Background="@GetBackgroundColor(user.Id)">
-                <Rank>
-                    <MudAvatar Color="Color.Primary">@user.Rank</MudAvatar>
-                </Rank>
+                <Image>
+                    <MudAvatar Image="@user.Image" Alt="@user.FullName" Size="Size.Large"/>
+                </Image>
                 <Name>
-                    <MudAvatar Image="@user.Image" Alt="@user.FullName" Class="mr-3"/>
-                    <MudText Typo="Typo.subtitle1">@user.FullName</MudText>
+                    <div>
+                        <MudText Typo="Typo.body1">@user.FullName</MudText>
+                        <MudText Typo="Typo.caption">@L["Leaderboard_Rank"]: @user.Rank</MudText>
+                    </div>
                 </Name>
                 <Level>
                     <MudIcon Icon="@EduIcons.Level" Class="green-text text-darken-1 mr-3"/>

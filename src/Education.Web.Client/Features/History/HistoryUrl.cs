@@ -14,9 +14,11 @@ public static class HistoryUrl
 
     public static class Content
     {
+        public const string Random = $"{Root}/random";
+
         public const string Empires = $"{Root}/empires";
 
-        public const string Random = $"{Root}/random";
+        public const string Timeline = $"{Root}/timeline";
 
         public static string Articles() =>
             $"{Root}/articles";

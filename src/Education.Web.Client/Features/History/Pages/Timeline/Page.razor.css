@@ -1,0 +1,60 @@
+.grid {
+
+}
+
+::deep .year {
+    line-height: 0.89;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-auto-flow: dense;
+    }
+
+    .seed-0 ::deep .article {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .seed-0 ::deep .article:nth-child(2n) {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    .seed-0 ::deep .article:nth-child(3n) {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    .seed-1 ::deep .article {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    .seed-1 ::deep .article:nth-child(2n) {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    .seed-1 ::deep .article:nth-child(3n) {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .seed-2 ::deep .article {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    .seed-2 ::deep .article:nth-child(2n) {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .seed-2 ::deep .article:nth-child(3n) {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+}

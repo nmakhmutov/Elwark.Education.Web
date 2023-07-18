@@ -42,11 +42,11 @@ else
 
     protected override void OnParametersSet() =>
         (_value, _tooltip) = Value switch {
-            int i => (i.ToMetric("G"), i > 999 ? i.ToString("G") : null),
-            uint i => (i.ToMetric("G"), i > 999 ? i.ToString("G") : null),
-            long i => (i.ToMetric("G"), i > 999 ? i.ToString("G") : null),
-            ulong i => (i.ToMetric("G"), i > 999 ? i.ToString("G") : null),
-            double i => (i.ToMetric("G"), i > 999 ? i.ToString("G") : null),
+            int i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
+            uint i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
+            long i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
+            ulong i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
+            double i => (i.ToMetric("G"), i > 999 ? i.ToString("N") : null),
             string s => (s, null),
             _ => (Value?.ToString() ?? string.Empty, null)
             };

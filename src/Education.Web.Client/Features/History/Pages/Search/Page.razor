@@ -86,13 +86,13 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    [Parameter, SupplyParameterFromQuery(Name = "q")]
+    [SupplyParameterFromQuery(Name = "q")]
     public string? Query { get; set; }
 
-    [Parameter, SupplyParameterFromQuery(Name = "page")]
+    [SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; }
 
-    [Parameter, SupplyParameterFromQuery(Name = "category")]
+    [SupplyParameterFromQuery(Name = "category")]
     public string? Category { get; set; }
 
     private int TotalPages =>

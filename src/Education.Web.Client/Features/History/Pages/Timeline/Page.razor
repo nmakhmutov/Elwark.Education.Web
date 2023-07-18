@@ -1,0 +1,33 @@
+@page "/history/timeline"
+@layout HistoryLayout
+
+<PageTitle>
+    @L["History_Timeline_Title"]
+</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W600">
+    <MudText Typo="Typo.subtitle1" Align="Align.Center">Year</MudText>
+    <div class="d-flex justify-center align-center gap-3 gap-sm-6">
+        <MudIconButton Icon="@Icons.Material.Outlined.ArrowBack" OnClick="@OnPreviousYearClick"/>
+        <div class="d-flex align-end">
+            <MudText Class="year" Typo="Typo.h1">
+                @Math.Abs(Year)
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @L[Year > 0 ? "History_Date_CE" : "History_Date_BCE"]
+            </MudText>
+        </div>
+        <MudIconButton Icon="@Icons.Material.Outlined.ArrowForward" OnClick="@OnNextYearClick"/>
+    </div>
+</EduContainer>
+
+<ApiViewer Result="_result" Context="result">
+    <section class="grid seed-@(Year % 3)">
+        @foreach (var item in result.Items)
+        {
+            <ArticleCard
+                Class="article"
+                Article="@(new ArticleOverviewModel(item.Id, item.Epoch, item.Title, item.Overview, item.ThumbnailUrl, item.TimeToRead, item.Rating))"/>
+        }
+    </section>
+</ApiViewer>

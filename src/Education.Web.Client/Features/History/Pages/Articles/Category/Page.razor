@@ -1,5 +1,4 @@
 @page "/history/articles/{category}"
-@using Education.Web.Client.Features.History.Services.Learner
 @layout HistoryLayout
 
 <PageTitle>
@@ -8,7 +7,7 @@
 
 <EduContainer Class="py-3 py-sm-6">
     <section class="header">
-        <EduPageHeader Class="title" Title="@L["Articles_Title"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Class="title" Title="@L["Articles_Title"]"/>
 
         <MudSelect T="EpochType"
                    Value="@_epoch"
@@ -67,75 +66,3 @@
             Count="@TotalPages"/>
     </EduContainer>
 </ApiViewer>
-
-@code {
-        private const int Limit = 20;
-    private EpochType _epoch;
-    private GetArticlesRequest.SortType _sort;
-
-    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
-        ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
-
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)
-    };
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryArticleService ArticleService { get; set; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
-
-    [Parameter]
-    public string? Category { get; set; }
-
-    [Parameter, SupplyParameterFromQuery(Name = "epoch")]
-    public string? EpochString { get; set; }
-
-    [Parameter, SupplyParameterFromQuery(Name = "page")]
-    public int CurrentPage { get; set; }
-
-    private int TotalPages =>
-        _result.Map(x => (int)double.Ceiling((double)x.Count / Limit))
-            .UnwrapOr(1);
-
-    protected override async Task OnParametersSetAsync()
-    {
-        _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
-
-        if (CurrentPage < 1)
-            CurrentPage = 1;
-
-        Enum.TryParse(Category, true, out _sort);
-        Enum.TryParse(EpochString, true, out _epoch);
-
-        _result = await ArticleService
-            .GetAsync(new GetArticlesRequest(_epoch, _sort, (CurrentPage - 1) * Limit, Limit));
-    }
-
-    private void OnPagination(int page)
-    {
-        _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
-        var value = page < 2 ? (int?)null : page;
-
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", value));
-    }
-
-    private void OnEpochChange(EpochType epoch)
-    {
-        var value = epoch == EpochType.None ? null : epoch.ToFastString().ToLowerInvariant();
-
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("epoch", value));
-    }
-
-    private void OnSortChange(GetArticlesRequest.SortType sort) =>
-        Navigation.NavigateTo(HistoryUrl.Content.Articles(sort, _epoch));
-
-}

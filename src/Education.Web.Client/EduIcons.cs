@@ -33,6 +33,8 @@ public static class EduIcons
 
     public const string Empires = Icons.Material.Outlined.Foundation;
 
+    public const string Timeline = Icons.Material.Outlined.ViewTimeline;
+
     public const string RandomContent = Icons.Material.Outlined.ContentPasteSearch;
 
     public const string Flow = Icons.Material.Outlined.Waves;

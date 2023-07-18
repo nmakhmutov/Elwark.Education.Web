@@ -1,5 +1,4 @@
 @page "/history/courses/{category}"
-@using Education.Web.Client.Features.History.Services.Learner
 @layout HistoryLayout
 
 <PageTitle>
@@ -8,7 +7,7 @@
 
 <EduContainer Class="py-3 py-sm-6">
     <section class="header">
-        <EduPageHeader Class="title" Title="@L["Courses_Title"]" Breadcrumbs="@Breadcrumbs"/>
+        <EduPageHeader Class="title" Title="@L["Courses_Title"]"/>
 
         <MudSelect T="GetCourseRequest.SortType"
                    Value="@_sort"
@@ -50,58 +49,3 @@
             Count="@TotalPages"/>
     </EduContainer>
 </ApiViewer>
-
-@code {
-        private const int Limit = 20;
-    private GetCourseRequest.SortType _sort;
-
-    private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
-        ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
-
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)
-    };
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryCourseService CourseService { get; set; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
-
-    [Parameter]
-    public string? Category { get; set; }
-
-    [Parameter, SupplyParameterFromQuery(Name = "page")]
-    public int CurrentPage { get; set; }
-
-    private int TotalPages =>
-        _result.Map(x => (int)double.Ceiling((double)x.Count / Limit))
-            .UnwrapOr(1);
-
-    protected override async Task OnParametersSetAsync()
-    {
-        _result = ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
-
-        if (CurrentPage < 1)
-            CurrentPage = 1;
-
-        Enum.TryParse(Category, true, out _sort);
-
-        _result = await CourseService
-            .GetAsync(new GetCourseRequest(_sort, (CurrentPage - 1) * Limit, Limit));
-    }
-
-    private void OnPagination(int page) =>
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page < 2 ? null : page));
-
-    private void OnSortChange(GetCourseRequest.SortType sort) =>
-        Navigation.NavigateTo(HistoryUrl.Content.Courses(sort));
-
-}

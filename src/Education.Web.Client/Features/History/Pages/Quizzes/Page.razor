@@ -79,7 +79,7 @@
     [Inject]
     private ILocalStorageService Storage { get; set; } = default!;
 
-    [Parameter, SupplyParameterFromQuery(Name = "article")]
+    [SupplyParameterFromQuery(Name = "article")]
     public string? ArticleId { get; set; }
 
     protected override async Task OnInitializedAsync()

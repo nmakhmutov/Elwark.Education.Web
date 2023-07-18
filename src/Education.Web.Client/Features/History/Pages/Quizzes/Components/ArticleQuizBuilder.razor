@@ -12,12 +12,12 @@
     </div>
 
     <div class="mb-3 mb-sm-6">
-        <MudText Typo="Typo.h6" Class="mb-3">
-            @L["Quiz_Type_Title"]
-        </MudText>
-
-        @if (Quizzes.Any(x => x.IsAllowed))
+        @if (Quizzes.Length > 0)
         {
+            <MudText Typo="Typo.h6" Class="mb-3">
+                @L["Quiz_Type_Title"]
+            </MudText>
+
             <QuizDifficultyRadioGroup
                 SelectedDifficulty="@Difficulty"
                 SelectedDifficultyChanged="@DifficultyChanged"
@@ -32,12 +32,13 @@
                     Text="@L["Quiz_TakeTheQuiz"]"
                     LoadingText="@L["Loading_Title"]"
                     IsLoading="@_isLoading"
+                    Disabled="@(Quizzes.All(x => !x.IsAllowed))"
                     OnClick="@CreateTestAsync"/>
             </div>
         }
         else
         {
-            <MudText Typo="Typo.subtitle1">
+            <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Warning">
                 @L["Quiz_NotAvailableForArticle", Article.Title]
             </MudText>
         }

@@ -3,7 +3,7 @@
 @layout HistoryLayout
 
 <PageTitle>
-    @L["Leaderboard_Monthly_FullTitle"]
+    @L["Leaderboard_MonthlyTop_Title"]
 </PageTitle>
 
 <ApiViewer Result="@_result" Context="result">
@@ -14,9 +14,14 @@
                     <div class="d-flex align-center justify-center mud-primary white-text rounded mr-3 mr-sm-6">
                         <MudIcon Icon="@Icons.Material.Outlined.StarOutline" Size="Size.Large" Class="ma-6"/>
                     </div>
-                    <MudText Typo="Typo.h4">
-                        @L["Leaderboard_Monthly_FullTitle"]
-                    </MudText>
+                    <div>
+                        <MudText Typo="Typo.subtitle1">
+                            @L["Leaderboard_Title"]
+                        </MudText>
+                        <MudText Typo="Typo.h3">
+                            @L["Leaderboard_MonthlyTop_Title"]
+                        </MudText>
+                    </div>
                 </div>
 
                 <MudText Class="w-max-600 my-3 my-sm-6" Typo="Typo.subtitle1">
@@ -68,12 +73,14 @@
                     else
                     {
                         <RegularRanking DisableHover Background="RegularRanking.BackgroundColor.Paper">
-                            <Rank>
-                                <MudAvatar Color="Color.Primary">@result.User.Rank</MudAvatar>
-                            </Rank>
+                            <Image>
+                                <MudAvatar Image="@result.User.Image" Alt="@result.User.FullName" Size="Size.Large"/>
+                            </Image>
                             <Name>
-                                <MudAvatar Class="mr-3" Image="@result.User.Image" Alt="@result.User.FullName"/>
-                                <MudText Typo="Typo.subtitle1">@result.User.FullName</MudText>
+                                <div>
+                                    <MudText Typo="Typo.body1">@result.User.FullName</MudText>
+                                    <MudText Typo="Typo.caption">@L["Leaderboard_Rank"]: @result.User.Rank</MudText>
+                                </div>
                             </Name>
                             <Experience>
                                 <MudIcon Class="mr-3" Icon="@EduIcons.Experience"/>
@@ -103,9 +110,6 @@
         @if (result.Users.Length > 0)
         {
             <RegularRanking DisableHover>
-                <Rank>
-                    <MudText Typo="Typo.subtitle2">@L["Leaderboard_Rank"]</MudText>
-                </Rank>
                 <Name>
                     <MudText Typo="Typo.subtitle2">@L["Leaderboard_User_Name"]</MudText>
                 </Name>
@@ -116,12 +120,14 @@
 
             <Virtualize Items="@(NormalizeUsers(result))" ItemSize="64" Context="user">
                 <RegularRanking Class="mb-3" Background="@GetBackgroundColor(user.Id)">
-                    <Rank>
-                        <MudAvatar Color="Color.Primary">@user.Rank</MudAvatar>
-                    </Rank>
+                    <Image>
+                        <MudAvatar Image="@user.Image" Alt="@user.FullName" Size="Size.Large"/>
+                    </Image>
                     <Name>
-                        <MudAvatar Class="mr-3" Image="@user.Image" Alt="@user.FullName"/>
-                        <MudText Typo="Typo.subtitle1">@user.FullName</MudText>
+                        <div>
+                            <MudText Typo="Typo.body1">@user.FullName</MudText>
+                            <MudText Typo="Typo.caption">@L["Leaderboard_Rank"]: @user.Rank</MudText>
+                        </div>
                     </Name>
                     <Experience>
                         <MudIcon Class="mr-3" Icon="@EduIcons.Experience"/>

@@ -8,30 +8,30 @@ internal static class ErrorExtensions
     public static bool IsQuizAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string id)
     {
         id = error.Id;
-        return error.Type == "Quiz:AlreadyCreated" && !string.IsNullOrEmpty(error.Id);
+        return error.Type == "Quiz_AlreadyCreated" && !string.IsNullOrEmpty(error.Id);
     }
 
     public static bool IsQuizAlreadyCompleted(this Error error) =>
-        error.Type == "Quiz:AlreadyCompleted";
+        error.Type == "Quiz_AlreadyCompleted";
 
     public static bool IsQuizNotFound(this Error error) =>
-        error.Type == "Quiz:NotFound";
+        error.Type == "Quiz_NotFound";
 
     public static bool IsFlowNotFound(this Error error) =>
-        error.Type == "Flow:NotFound";
+        error.Type == "Flow_NotFound";
 
     public static bool IsDateGuesserAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string id)
     {
         id = error.Id;
-        return error.Type == "DateGuesser:AlreadyCreated" && !string.IsNullOrEmpty(error.Id);
+        return error.Type == "DateGuesser_AlreadyCreated" && !string.IsNullOrEmpty(error.Id);
     }
     
     public static bool IsDateGuesserNotFound(this Error error) =>
-        error.Type == "DateGuesser:NotFound";
+        error.Type == "DateGuesser_NotFound";
 
     public static bool IsOrderNotFound(this Error error) =>
-        error.Type == "Ordering:NotFound";
+        error.Type == "Ordering_NotFound";
 
     public static bool IsUserNotFound(this Error error) =>
-        error.Type == "User:NotFound";
+        error.Type == "User_NotFound";
 }

@@ -6,10 +6,12 @@
     </div>
 
     <section class="content flex-grow-1 gap-3 pa-3">
-        <header>
-            <MudLink Href="@HistoryUrl.Content.Course(Course.Id)" Typo="Typo.h5">
+        <header class="@(OneLineHeader ? "one-line-text" : null)">
+            <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
+               href="@HistoryUrl.Content.Course(Course.Id)"
+               alt="@Course.Title">
                 @Course.Title
-            </MudLink>
+            </a>
         </header>
 
         <div class="d-flex justify-space-between align-center gap-3">
@@ -63,6 +65,9 @@
     [Parameter]
     public string? Class { get; set; }
 
+    [Parameter]
+    public bool OneLineHeader { get; set; }
+    
     [Parameter]
     public bool Horizontal { get; set; }
 
