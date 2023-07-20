@@ -52,13 +52,13 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public ArticleOverviewModel Article { get; set; } = default!;
+    public required ArticleOverviewModel Article { get; set; }
 
     [Parameter, EditorRequired]
-    public UserArticleActivityModel Activity { get; set; } = default!;
+    public required UserArticleActivityModel Activity { get; set; }
 
     [Parameter, EditorRequired]
-    public QuizInformationModel[] Quizzes { get; set; } = Array.Empty<QuizInformationModel>();
+    public required QuizInformationModel[] Quizzes { get; set; }
 
     [Parameter]
     public DifficultyType? Difficulty { get; set; }
@@ -67,7 +67,7 @@
     public EventCallback<DifficultyType?> DifficultyChanged { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback<CreateArticleQuizRequest> OnCreateClick { get; set; }
+    public required EventCallback<CreateArticleQuizRequest> OnCreateClick { get; set; }
 
     [Parameter]
     public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));

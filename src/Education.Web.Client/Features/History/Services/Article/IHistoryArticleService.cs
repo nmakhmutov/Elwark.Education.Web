@@ -17,5 +17,5 @@ public interface IHistoryArticleService
 
     Task<ApiResult<UserArticleOverviewModel[]>> GetRelatedArticlesAsync(string id);
 
-    Task<ApiResult<UserArticleOverviewModel>> GetRandomAsync(EpochType epoch);
+    Task<ApiResult<UserArticleOverviewModel>> GetRandomAsync(EpochType epoch = EpochType.None);
 }

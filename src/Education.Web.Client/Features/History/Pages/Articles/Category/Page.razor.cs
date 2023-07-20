@@ -34,7 +34,7 @@ public sealed partial class Page
     public string? Category { get; set; }
 
     [SupplyParameterFromQuery(Name = "epoch")]
-    public string? EpochString { get; set; }
+    public string? Epoch { get; set; }
 
     [SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; }
@@ -51,7 +51,7 @@ public sealed partial class Page
             CurrentPage = 1;
 
         Enum.TryParse(Category, true, out _sort);
-        Enum.TryParse(EpochString, true, out _epoch);
+        Enum.TryParse(Epoch, true, out _epoch);
 
         _result = await ArticleService
             .GetAsync(new GetArticlesRequest(_epoch, _sort, (CurrentPage - 1) * Limit, Limit));
@@ -59,10 +59,8 @@ public sealed partial class Page
 
     private void OnPagination(int page)
     {
-        _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
-        var value = page < 2 ? (int?)null : page;
-
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", value));
+        CurrentPage = page;
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page < 2 ? null : page));
     }
 
     private void OnEpochChange(EpochType epoch)

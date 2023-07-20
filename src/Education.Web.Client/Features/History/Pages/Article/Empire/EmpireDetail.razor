@@ -162,30 +162,27 @@
     private CascadingTheme? ThemeProvider { get; set; }
 
     [Parameter, EditorRequired]
-    public ArticleDetail.EmpireModel Empire { get; set; } = default!;
+    public required ArticleDetail.EmpireModel Empire { get; set; }
 
     [Parameter, EditorRequired]
-    public UserArticleActivityModel? Activity { get; set; }
+    public required UserArticleActivityModel? Activity { get; set; }
 
     [Parameter, EditorRequired]
-    public bool HasEasyQuiz { get; set; }
+    public required bool HasEasyQuiz { get; set; }
 
     [Parameter, EditorRequired]
-    public bool HasHardQuiz { get; set; }
+    public required bool HasHardQuiz { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } =
-        _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public required Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } =
-        _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public required Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } =
-        _ => Task.FromResult(ApiResult<bool>.Success(false));
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
 
-    protected override async Task OnInitializedAsync() => 
+    protected override async Task OnInitializedAsync() =>
         await Formatter.InitializeAsync();
 
     protected override void OnParametersSet()

@@ -1,6 +1,4 @@
 @page "/history/date-guessers/{id}/conclusion"
-@using Education.Web.Client.Features.History.Services.DateGuesser.Model
-@using Education.Web.Client.Features.History.Services.DateGuesser
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -47,13 +45,13 @@
                     <HistoryDate
                         Typo="Typo.body2"
                         Date="@context.CorrectAnswer"
-                        DateTimeFormatter="@DateTimeFormatter"/>
+                        DateTimeFormatter="@Customer.Humanize"/>
                 </MudTd>
                 <MudTd DataLabel="@L["History_DateGuesser_UserAnswer"]">
                     <HistoryDate
                         Typo="Typo.body2"
                         Date="@context.UserAnswer"
-                        DateTimeFormatter="@DateTimeFormatter"
+                        DateTimeFormatter="@Customer.Humanize"
                         Color="@(context.IsCorrect ? Color.Success : Color.Error)"/>
                 </MudTd>
                 <MudTd DataLabel="@L["History_DateGuesser_Points"]">
@@ -99,40 +97,3 @@
         </div>
     </EduContainer>
 </ApiViewer>
-
-@code {
-    private ApiResult<DateGuesserConclusionModel> _result = ApiResult<DateGuesserConclusionModel>.Loading();
-    private double _progress;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryDateGuesserService DateGuesserService { get; set; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
-
-    [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
-
-    [Parameter]
-    public string Id { get; set; } = string.Empty;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _result = await DateGuesserService.GetConclusionAsync(Id);
-        _result.Match(
-            x => _progress = Math.Round((double)x.Score.Total / x.MaxScore * 100),
-            e =>
-            {
-                if (e.IsDateGuesserNotFound())
-                    Navigation.NavigateTo(HistoryUrl.DateGuesser.Index);
-            }
-            );
-    }
-
-    private string DateTimeFormatter(DateTime date) =>
-        Customer.Humanize(date);
-
-}

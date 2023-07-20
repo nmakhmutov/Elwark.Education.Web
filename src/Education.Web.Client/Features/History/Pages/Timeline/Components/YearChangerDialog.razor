@@ -1,0 +1,70 @@
+<MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
+    <DialogContent>
+        <EditForm Model="@this" OnValidSubmit="@OnValidSubmit">
+            <FluentValidationValidator/>
+
+            <div class="d-flex align-end gap-3 gap-sm-6 mb-3 mb-sm-6">
+                <MudNumericField
+                    T="int"
+                    Value="@Year"
+                    ValueChanged="@OnYearChanged"
+                    For="@(() => Year)"
+                    Label="@L["History_Timeline_Year"]"
+                    Variant="Variant.Text"
+                    HideSpinButtons
+                    AutoFocus/>
+
+                <MudRadioGroup @bind-SelectedOption="@(_isCe)">
+                    <MudRadio Option="true" Color="Color.Primary" UnCheckedColor="Color.Default">
+                        @L["History_Date_CE"]
+                    </MudRadio>
+                    <MudRadio Option="false" Color="Color.Primary" UnCheckedColor="Color.Default">
+                        @L["History_Date_BCE"]
+                    </MudRadio>
+                </MudRadioGroup>
+            </div>
+
+            <div class="d-flex justify-center">
+                <MudButton
+                    DisableElevation
+                    Color="Color.Primary"
+                    Variant="Variant.Filled"
+                    ButtonType="ButtonType.Submit">
+                    @L["History_Timeline_GoToYear"]
+                </MudButton>
+            </div>
+
+        </EditForm>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private bool _isCe;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required int Year { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _isCe = Year > 0;
+        Year = Math.Abs(Year);
+    }
+
+    private void OnValidSubmit()
+    {
+        var year = _isCe ? Math.Abs(Year) : -Math.Abs(Year);
+        MudDialog.Close(DialogResult.Ok(year));
+    }
+
+    private void OnYearChanged(int year)
+    {
+        Year = year;
+        _isCe = year > 0;
+    }
+}

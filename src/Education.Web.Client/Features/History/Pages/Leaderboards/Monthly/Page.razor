@@ -1,5 +1,4 @@
 @page "/history/leaderboards/monthly"
-@using Education.Web.Client.Features.History.Services.Leaderboard.Model
 @layout HistoryLayout
 
 <PageTitle>
@@ -30,13 +29,23 @@
 
                 @if (result.IsActive)
                 {
-                    <MudChip Class="ma-0" Label Icon="@Icons.Material.Outlined.Equalizer" Variant="Variant.Text" Color="Color.Primary">
+                    <MudChip
+                        Class="ma-0"
+                        Icon="@Icons.Material.Outlined.Equalizer"
+                        Variant="Variant.Text"
+                        Color="Color.Primary"
+                        Label>
                         @L["Leaderboard_InProgress"]
                     </MudChip>
                 }
                 else
                 {
-                    <MudChip Class="ma-0" Label Icon="@Icons.Material.Outlined.EmojiEvents" Variant="Variant.Text" Color="Color.Success">
+                    <MudChip
+                        Class="ma-0"
+                        Icon="@Icons.Material.Outlined.EmojiEvents"
+                        Variant="Variant.Text"
+                        Color="Color.Success"
+                        Label>
                         @L["Leaderboard_CompetitionCompleted"]
                     </MudChip>
                 }
@@ -56,7 +65,7 @@
 
             @if (result.IsActive)
             {
-                <section>
+                <section class="countdown">
                     <CardCountdown Class="justify-center mb-3 mb-sm-6" Date="@result.EndsAt"/>
 
                     @if (result.User is null)
@@ -144,42 +153,3 @@
         }
     </EduContainer>
 </ApiViewer>
-
-@code {
-    private long? _highlightUser;
-    private ApiResult<MonthlyLeaderboardModel> _result = ApiResult<MonthlyLeaderboardModel>.Loading();
-
-    [Inject]
-    private IHistoryLeaderboardService LeaderboardService { get; set; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private AuthenticationStateProvider StateProvider { get; set; } = default!;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var state = await StateProvider.GetAuthenticationStateAsync();
-        _highlightUser = state.User.GetIdOrDefault();
-        _result = await LeaderboardService.GetMonthAsync();
-    }
-
-    private async Task OnMonthChanged(DateOnly month) =>
-        _result = await LeaderboardService.GetMonthAsync(month);
-
-    private RegularRanking.BackgroundColor GetBackgroundColor(long userId) =>
-        _highlightUser == userId ? RegularRanking.BackgroundColor.Highlight : RegularRanking.BackgroundColor.Paper;
-
-    private static ICollection<UserRankingModel> NormalizeUsers(MonthlyLeaderboardModel leaderboard)
-    {
-        if (leaderboard.IsActive)
-            return leaderboard.Users;
-
-        if (leaderboard.Users.Length > 2)
-            return leaderboard.Users[3..];
-
-        return Array.Empty<UserRankingModel>();
-    }
-
-}

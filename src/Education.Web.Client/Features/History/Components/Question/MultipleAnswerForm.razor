@@ -78,19 +78,19 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public bool IsLoading { get; set; }
+    public required bool IsLoading { get; set; }
 
     [Parameter, EditorRequired]
-    public AnswerResult.MultipleModel? CorrectAnswer { get; set; }
+    public required AnswerResult.MultipleModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
-    public AnswerOption[] Options { get; set; } = Array.Empty<AnswerOption>();
+    public required AnswerOption[] Options { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback<MultipleAnswerModel> OnAnswerClick { get; set; }
+    public required EventCallback<MultipleAnswerModel> OnAnswerClick { get; set; }
 
     [Parameter, EditorRequired]
-    public string OnNextTitle { get; set; } = string.Empty;
+    public required string OnNextTitle { get; set; }
 
     [Parameter, EditorRequired]
     public EventCallback OnNextClick { get; set; }

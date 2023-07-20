@@ -21,13 +21,13 @@
     private IDialogService DialogService { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public PossessionsModel Possessions { get; set; } = default!;
+    public required PossessionsModel Possessions { get; set; }
 
     [Parameter, EditorRequired]
-    public ProductsFilter Filter { get; set; } = default!;
+    public required ProductsFilter Filter { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<Product.BundleModel, bool> IsAffordable { get; set; } = _ => false;
+    public required Func<Product.BundleModel, bool> IsAffordable { get; set; }
 
     [Parameter]
     public EventCallback<Product.BundleModel> OnProductPurchased { get; set; }

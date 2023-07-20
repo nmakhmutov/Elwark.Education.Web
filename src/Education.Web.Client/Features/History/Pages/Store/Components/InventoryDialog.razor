@@ -159,10 +159,10 @@
     MudDialogInstance MudDialog { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public Product.InventoryModel Product { get; set; } = default!;
+    public required Product.InventoryModel Product { get; set; }
 
     [Parameter, EditorRequired]
-    public PossessionsModel Possessions { get; set; } = default!;
+    public required PossessionsModel Possessions { get; set; }
 
     protected override void OnParametersSet() =>
         UpdateErrorState();

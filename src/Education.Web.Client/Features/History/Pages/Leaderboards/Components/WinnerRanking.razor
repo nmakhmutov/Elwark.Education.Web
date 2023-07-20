@@ -28,19 +28,19 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public uint Rank { get; set; }
+    public required uint Rank { get; set; }
 
     [Parameter, EditorRequired]
-    public long Id { get; set; }
+    public required long Id { get; set; }
 
     [Parameter, EditorRequired]
-    public string FullName { get; set; } = string.Empty;
+    public required string FullName { get; set; }
 
     [Parameter, EditorRequired]
-    public string Image { get; set; } = string.Empty;
+    public required string Image { get; set; }
 
     [Parameter, EditorRequired]
-    public uint Experience { get; set; }
+    public required uint Experience { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

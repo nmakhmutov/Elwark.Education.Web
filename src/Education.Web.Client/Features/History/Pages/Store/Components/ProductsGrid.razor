@@ -17,7 +17,7 @@ else
 @code {
 
     [Parameter, EditorRequired]
-    public T[] Products { get; set; } = Array.Empty<T>();
+    public required T[] Products { get; set; }
 
     [Parameter]
     public RenderFragment<T> ChildContent { get; set; } = _ => @<div></div>;

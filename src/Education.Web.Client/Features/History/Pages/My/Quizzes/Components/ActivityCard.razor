@@ -1,43 +1,34 @@
+@using Education.Web.Client.Features.History.Services.Learner.Model.Quiz
 @using ApexCharts
-@using Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     <MudText Typo="Typo.h5">
         @Title
     </MudText>
-    <ApexChart @ref="@(_chart)" TItem="DateGuessersStatisticsModel.ProgressModel" Options="_options">
+    <ApexChart @ref="@(_chart)" TItem="QuizzesStatisticsModel.ProgressModel" Options="_options">
         <ApexPointSeries
-            TItem="DateGuessersStatisticsModel.ProgressModel"
+            TItem="QuizzesStatisticsModel.ProgressModel"
             Items="Activities"
-            Name="@L["History_DateGuessers_Small"]"
-            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten3 })"
+            Name="@L["Quizzes_Easy_Title"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten3 })"
             SeriesType="SeriesType.Area"
             XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.Small)"/>
+            YValue="@(x => x.Easy)"/>
 
         <ApexPointSeries
-            TItem="DateGuessersStatisticsModel.ProgressModel"
+            TItem="QuizzesStatisticsModel.ProgressModel"
             Items="Activities"
-            Name="@L["History_DateGuessers_Medium"]"
-            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten1 })"
+            Name="@L["Quizzes_Hard_Title"]"
+            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten1 })"
             SeriesType="SeriesType.Area"
             XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.Medium)"/>
-
-        <ApexPointSeries
-            TItem="DateGuessersStatisticsModel.ProgressModel"
-            Items="Activities"
-            Name="@L["History_DateGuessers_Large"]"
-            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Darken2 })"
-            SeriesType="SeriesType.Area"
-            XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.Large)"/>
+            YValue="@(x => x.Hard)"/>
     </ApexChart>
 </section>
 
 @code {
-    private ApexChart<DateGuessersStatisticsModel.ProgressModel>? _chart;
+    private ApexChart<QuizzesStatisticsModel.ProgressModel>? _chart;
 
-    private ApexChartOptions<DateGuessersStatisticsModel.ProgressModel> _options = new()
+    private ApexChartOptions<QuizzesStatisticsModel.ProgressModel> _options = new()
     {
         Legend = new Legend
         {
@@ -73,7 +64,7 @@
     public string DateFormat { get; set; } = "dd MMM";
 
     [Parameter, EditorRequired]
-    public DateGuessersStatisticsModel.ProgressModel[] Activities { get; set; } = Array.Empty<DateGuessersStatisticsModel.ProgressModel>();
+    public required QuizzesStatisticsModel.ProgressModel[] Activities { get; set; }
 
     protected override Task OnParametersSetAsync()
     {

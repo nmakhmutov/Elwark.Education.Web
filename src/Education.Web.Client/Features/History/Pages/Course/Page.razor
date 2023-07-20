@@ -1,5 +1,4 @@
 @page "/history/course/{id}"
-@using Education.Web.Client.Features.History.Services.Learner
 @layout HistoryLayout
 
 <ApiViewer Result="@_result" Context="course">
@@ -60,29 +59,3 @@
         </section>
     </EduContainer>
 </ApiViewer>
-
-@code {
-    private ApiResult<CourseModel> _result = ApiResult<CourseModel>.Loading();
-
-    [Inject]
-    private IHistoryCourseService CourseService { get; set; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Parameter]
-    public string Id { get; set; } = string.Empty;
-
-    protected override async Task OnParametersSetAsync() =>
-        _result = await CourseService.GetAsync(Id);
-
-    private async Task StartCourseAsync(string id)
-    {
-        var result = await LearnerService.StartCourseAsync(id);
-        result.Map(x => _result = ApiResult<CourseModel>.Success(_result.Unwrap() with { UserActivity = x }));
-    }
-
-}

@@ -19,21 +19,21 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public string ArticleId { get; set; } = default!;
+    public required string ArticleId { get; set; }
 
     [Parameter, EditorRequired]
-    public bool? IsLiked { get; set; }
+    public required bool? IsLiked { get; set; }
 
     [Parameter, EditorRequired]
-    public bool? IsBookmarked { get; set; }
+    public required bool? IsBookmarked { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public required Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public required Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = _ => Task.FromResult(ApiResult<bool>.Success(false));
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
 
 }

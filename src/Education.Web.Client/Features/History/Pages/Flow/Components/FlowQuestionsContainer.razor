@@ -31,19 +31,19 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public FlowModel Flow { get; set; } = default!;
+    public required FlowModel Flow { get; set; }
 
     [Parameter, EditorRequired]
-    public AnswerResult? CorrectAnswer { get; set; }
+    public required AnswerResult? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback<AnswerToQuestionModel> OnAnswerClick { get; set; }
+    public required EventCallback<AnswerToQuestionModel> OnAnswerClick { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback OnNextClick { get; set; }
+    public required EventCallback OnNextClick { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback OnBankCollectClick { get; set; }
+    public required EventCallback OnBankCollectClick { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

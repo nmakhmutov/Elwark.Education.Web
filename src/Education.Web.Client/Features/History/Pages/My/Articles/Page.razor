@@ -1,6 +1,4 @@
 @page "/history/my/article/{id}"
-@using Education.Web.Client.Features.History.Services.Learner.Model
-@using Education.Web.Client.Features.History.Services.Learner
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -36,23 +34,3 @@
         </MudTabs>
     </EduContainer>
 </ApiViewer>
-
-@code {
-    private ApiResult<ArticleStatisticsModel> _result = ApiResult<ArticleStatisticsModel>.Loading();
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
-
-    [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
-
-    [Parameter]
-    public string Id { get; set; } = string.Empty;
-
-    protected override async Task OnInitializedAsync() =>
-        _result = await LearnerService.GetArticlesAsync(Id);
-
-}

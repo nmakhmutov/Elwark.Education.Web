@@ -80,13 +80,13 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public string? SeeAllText { get; set; }
+    public required string SeeAllText { get; set; }
 
     [Parameter, EditorRequired]
-    public string? SeeAllHref { get; set; }
+    public required string SeeAllHref { get; set; }
 
     [Parameter, EditorRequired]
-    public ArticleStatisticsModel.ProgressModel Quiz { get; set; } = default!;
+    public required ArticleStatisticsModel.ProgressModel Quiz { get; set; }
 
     [Parameter]
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();

@@ -41,12 +41,12 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public PersonBirthdayModel? Born { get; set; }
+    public required PersonBirthdayModel? Born { get; set; }
 
     [Parameter, EditorRequired]
-    public PersonBirthdayModel? Died { get; set; }
+    public required PersonBirthdayModel? Died { get; set; }
 
-    [Parameter, EditorRequired]
+    [Parameter]
     public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
 
 }

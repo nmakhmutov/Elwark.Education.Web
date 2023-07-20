@@ -23,7 +23,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public CustomerState Customer { get; set; } = default!;
+    public required CustomerState Customer { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }

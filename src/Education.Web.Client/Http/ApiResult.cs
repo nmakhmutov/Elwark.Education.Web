@@ -82,6 +82,14 @@ public sealed class ApiResult<T>
         else if (IsError)
             error(Error);
     }
+    
+    public async Task MatchAsync(Func<T, Task> success, Action<Error> error)
+    {
+        if (IsSuccess)
+            await success(Value);
+        else if (IsError)
+            error(Error);
+    }
 
     public void MathError(Action<Error> error)
     {

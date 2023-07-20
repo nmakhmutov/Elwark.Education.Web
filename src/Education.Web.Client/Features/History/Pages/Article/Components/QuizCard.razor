@@ -80,20 +80,20 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [Parameter, EditorRequired]
+    public required string ArticleId { get; set; }
+
+    [Parameter, EditorRequired]
+    public required UserArticleActivityModel? Activity { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool HasEasyQuiz { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool HasHardQuiz { get; set; }
+
     [Parameter]
     public string? Class { get; set; }
-
-    [Parameter, EditorRequired]
-    public string ArticleId { get; set; } = default!;
-
-    [Parameter, EditorRequired]
-    public UserArticleActivityModel? Activity { get; set; }
-
-    [Parameter, EditorRequired]
-    public bool HasEasyQuiz { get; set; }
-
-    [Parameter, EditorRequired]
-    public bool HasHardQuiz { get; set; }
 
     protected override void OnParametersSet() =>
         _hasQuiz = HasEasyQuiz || HasHardQuiz;

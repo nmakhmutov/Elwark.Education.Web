@@ -82,8 +82,7 @@ public static class StatisticsExtensions
         {
             new(l["History_DateGuesser_Questions"], contrast.Total.Current.ToMetric(), contrast.Total.Difference),
             new(l["History_DateGuesser_Correct"], contrast.Correct.Current.ToMetric(), contrast.Correct.Difference),
-            new(l["History_DateGuesser_Incorrect"], contrast.Incorrect.Current.ToMetric(),
-                contrast.Incorrect.Difference)
+            new(l["History_DateGuesser_Incorrect"], contrast.Incorrect.Current.ToMetric(), contrast.Incorrect.Difference)
         };
 
     private static string RangeTitle(DateOnly starts, DateOnly ends) =>

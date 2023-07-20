@@ -37,7 +37,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public QuizInformationModel[] Quizzes { get; set; } = Array.Empty<QuizInformationModel>();
+    public required QuizInformationModel[] Quizzes { get; set; }
 
     [Parameter]
     public DifficultyType? Difficulty { get; set; }
@@ -52,7 +52,7 @@
     public EventCallback<EpochType> EpochChanged { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback<CreateEpochQuizRequest> OnCreateClick { get; set; }
+    public required EventCallback<CreateEpochQuizRequest> OnCreateClick { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

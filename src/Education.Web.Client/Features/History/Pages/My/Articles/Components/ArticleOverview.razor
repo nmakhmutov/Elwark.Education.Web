@@ -88,19 +88,19 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public ArticleOverviewModel Article { get; set; } = default!;
+    public required ArticleOverviewModel Article { get; set; }
 
     [Parameter, EditorRequired]
-    public ArticleStatisticsModel.TotalModel Total { get; set; } = default!;
+    public required ArticleStatisticsModel.TotalModel Total { get; set; }
 
     [Parameter, EditorRequired]
-    public bool? IsCompleted { get; set; }
+    public required bool? IsCompleted { get; set; }
 
     [Parameter, EditorRequired]
-    public bool IsBookmarked { get; set; }
+    public required bool IsBookmarked { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<bool>>>? OnBookmarkClick { get; set; }
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

@@ -1,6 +1,4 @@
 @page "/history/my/date-guessers/{test}"
-@using Education.Web.Client.Features.History.Services.Learner
-@using Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -52,42 +50,3 @@
         </StatisticDetailsGrid>
     </EduContainer>
 </ApiViewer>
-
-@code {
-    private string? _title;
-    private ApiResult<DateGuesserStatisticsModel> _result = ApiResult<DateGuesserStatisticsModel>.Loading();
-
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
-        new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.User.MyDateGuessers)
-    };
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
-
-    [Parameter]
-    public string? Test { get; set; }
-
-    protected override void OnParametersSet() =>
-        _title = Test?.ToLowerInvariant() switch {
-            "small" => L["History_DateGuessers_Small"],
-            "medium" => L["History_DateGuessers_Medium"],
-            "large" => L["History_DateGuessers_Large"],
-            _ => L["Error_NotFound"]
-            };
-
-    protected override async Task OnParametersSetAsync() =>
-        _result = Test?.ToLowerInvariant() switch
-        {
-            "small" => await LearnerService.GetSmallDateGuesserStatisticsAsync(),
-            "medium" => await LearnerService.GetMediumDateGuesserStatisticsAsync(),
-            "large" => await LearnerService.GetLargeDateGuesserStatisticsAsync(),
-            _ => ApiResult<DateGuesserStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
-            };
-
-}

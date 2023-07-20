@@ -23,10 +23,10 @@
     [Parameter]
     public EventCallback<DifficultyType?> SelectedDifficultyChanged { get; set; }
 
+    [Parameter, EditorRequired]
+    public required QuizInformationModel[] Quizzes { get; set; }
+
     [Parameter]
     public string? Class { get; set; }
-
-    [Parameter, EditorRequired]
-    public QuizInformationModel[] Quizzes { get; set; } = Array.Empty<QuizInformationModel>();
 
 }

@@ -1,5 +1,4 @@
 @page "/history/random"
-@using Education.Web.Client.Features.History.Services.Learner
 @layout HistoryLayout
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W600">
@@ -83,58 +82,3 @@
         </Virtualize>
     }
 </EduContainer>
-
-@code {
-    private readonly List<OneOf> _history = new();
-    private ApiResult<OneOf> _result = ApiResult<OneOf>.Loading();
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryArticleService ArticleService { get; set; } = default!;
-
-    [Inject]
-    private IHistoryCourseService CourseService { get; set; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
-
-    protected override Task OnInitializedAsync() =>
-        SearchAsync();
-
-    private Task OnSearchClick()
-    {
-        if (_result.IsLoading)
-            return Task.CompletedTask;
-
-        _result.Match(x => _history.Insert(0, x));
-        _result = ApiResult<OneOf>.Loading();
-
-        return SearchAsync();
-    }
-
-    private async Task SearchAsync()
-    {
-        if (Random.Shared.Next(0, 2) % 2 == 0)
-        {
-            _result = (await ArticleService.GetRandomAsync(EpochType.None))
-                .Map(x => OneOf.Create(x));
-        }
-        else
-        {
-            _result = (await CourseService.GetRandomAsync())
-                .Map(x => OneOf.Create(x));
-        }
-    }
-
-    private sealed record OneOf(UserArticleOverviewModel? Article, UserCourseOverviewModel? Course)
-    {
-        public static OneOf Create(UserArticleOverviewModel article) =>
-            new(article, null);
-
-        public static OneOf Create(UserCourseOverviewModel course) =>
-            new(null, course);
-    }
-
-}

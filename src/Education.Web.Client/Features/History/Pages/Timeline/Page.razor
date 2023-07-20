@@ -5,20 +5,20 @@
     @L["History_Timeline_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W600">
-    <MudText Typo="Typo.subtitle1" Align="Align.Center">Year</MudText>
+<EduContainer Class="mud-paper py-3 py-sm-6" MaxWidth="EduWidth.W600">
+    <MudText Typo="Typo.h6" Align="Align.Center">Year</MudText>
     <div class="d-flex justify-center align-center gap-3 gap-sm-6">
         <MudIconButton Icon="@Icons.Material.Outlined.ArrowBack" OnClick="@OnPreviousYearClick"/>
-        <div class="d-flex align-end">
-            <MudText Class="year" Typo="Typo.h1">
+        <MudButton Variant="Variant.Text" Color="Color.Default" DisableElevation OnClick="@OnYearClick">
+            <MudText Typo="Typo.h1">
                 @Math.Abs(Year)
             </MudText>
-            <MudText Typo="Typo.body2">
-                @L[Year > 0 ? "History_Date_CE" : "History_Date_BCE"]
-            </MudText>
-        </div>
+        </MudButton>
         <MudIconButton Icon="@Icons.Material.Outlined.ArrowForward" OnClick="@OnNextYearClick"/>
     </div>
+    <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
+        @L[Year > 0 ? "History_Date_CE" : "History_Date_BCE"]
+    </MudText>
 </EduContainer>
 
 <ApiViewer Result="_result" Context="result">

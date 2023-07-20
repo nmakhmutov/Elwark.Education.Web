@@ -31,11 +31,11 @@
             Variant="Variant.Text"
             HideSpinButtons/>
 
-        <MudRadioGroup @bind-SelectedOption="@(_model.IsBc)">
-            <MudRadio Option="false">
+        <MudRadioGroup @bind-SelectedOption="@(_model.IsCe)">
+            <MudRadio Option="true" Color="Color.Primary" UnCheckedColor="Color.Default">
                 @L["History_Date_CE"]
             </MudRadio>
-            <MudRadio Option="true">
+            <MudRadio Option="false" Color="Color.Primary" UnCheckedColor="Color.Default">
                 @L["History_Date_BCE"]
             </MudRadio>
         </MudRadioGroup>
@@ -61,7 +61,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public EventCallback<Model> OnAnswer { get; set; }
+    public required EventCallback<Model> OnAnswer { get; set; }
 
     private Dictionary<uint, string> Months =>
         CultureInfo.CurrentCulture.DateTimeFormat.MonthNames
@@ -76,7 +76,7 @@
 
         public uint? Day { get; set; }
 
-        public bool IsBc { get; set; }
+        public bool IsCe { get; set; }
 
         public sealed class Validator : AbstractValidator<Model>
         {

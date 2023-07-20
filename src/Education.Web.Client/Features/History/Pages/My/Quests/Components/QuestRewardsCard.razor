@@ -63,25 +63,25 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public string Title { get; set; } = string.Empty;
+    public required string Title { get; set; }
 
     [Parameter, EditorRequired]
-    public string Subtitle { get; set; } = string.Empty;
+    public required string Subtitle { get; set; }
 
     [Parameter, EditorRequired]
-    public QuestStatus Status { get; set; }
+    public required QuestStatus Status { get; set; }
 
     [Parameter, EditorRequired]
-    public DateTime ExpiresAt { get; set; }
+    public required DateTime ExpiresAt { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback OnStart { get; set; }
+    public required EventCallback OnStart { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback OnCollect { get; set; }
+    public required EventCallback OnCollect { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback OnExpired { get; set; }
+    public required EventCallback OnExpired { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

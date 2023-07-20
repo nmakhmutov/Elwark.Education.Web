@@ -52,8 +52,11 @@ public sealed partial class Page
             .GetAsync(new GetCourseRequest(_sort, (CurrentPage - 1) * Limit, Limit));
     }
 
-    private void OnPagination(int page) =>
+    private void OnPagination(int page)
+    {
+        CurrentPage = page;
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page < 2 ? null : page));
+    }
 
     private void OnSortChange(GetCourseRequest.SortType sort) =>
         Navigation.NavigateTo(HistoryUrl.Content.Courses(sort));
