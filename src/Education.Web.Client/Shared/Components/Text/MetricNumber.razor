@@ -2,14 +2,14 @@
 
 @if (_tooltip is null)
 {
-    <MudText Class="@Class" Typo="Typo" Color="@Color" Style="@Style">
+    <MudText Class="@Class" Typo="Typo" Align="@Align" Color="@Color" Style="@Style">
         @_value@EndIcon
     </MudText>
 }
 else
 {
     <MudTooltip Text="@_tooltip" Placement="@Placement">
-        <MudText Class="@Class" Typo="@Typo" Color="@Color" Style="@Style">
+        <MudText Class="@Class" Typo="@Typo" Align="@Align" Color="@Color" Style="@Style">
             @_value@EndIcon
         </MudText>
     </MudTooltip>
@@ -30,6 +30,9 @@ else
 
     [Parameter]
     public Typo Typo { get; set; } = Typo.body1;
+
+    [Parameter]
+    public Align Align { get; set; }
 
     [Parameter]
     public Color Color { get; set; } = Color.Inherit;

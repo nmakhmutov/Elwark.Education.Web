@@ -3,28 +3,18 @@
         <EditForm Model="@this" OnValidSubmit="@OnValidSubmit">
             <FluentValidationValidator/>
 
-            <div class="d-flex align-end gap-3 gap-sm-6 mb-3 mb-sm-6">
+            <div class="d-flex align-end gap-3 gap-sm-6 mb-1">
                 <MudNumericField
                     T="int"
                     Value="@Year"
                     ValueChanged="@OnYearChanged"
+                    Max="@DateTime.UtcNow.Year"
                     For="@(() => Year)"
                     Label="@L["History_Timeline_Year"]"
                     Variant="Variant.Text"
                     HideSpinButtons
                     AutoFocus/>
 
-                <MudRadioGroup @bind-SelectedOption="@(_isCe)">
-                    <MudRadio Option="true" Color="Color.Primary" UnCheckedColor="Color.Default">
-                        @L["History_Date_CE"]
-                    </MudRadio>
-                    <MudRadio Option="false" Color="Color.Primary" UnCheckedColor="Color.Default">
-                        @L["History_Date_BCE"]
-                    </MudRadio>
-                </MudRadioGroup>
-            </div>
-
-            <div class="d-flex justify-center">
                 <MudButton
                     DisableElevation
                     Color="Color.Primary"
@@ -33,6 +23,15 @@
                     @L["History_Timeline_GoToYear"]
                 </MudButton>
             </div>
+
+            <MudRadioGroup @bind-SelectedOption="@(_isCe)">
+                <MudRadio Option="true" Color="Color.Primary" UnCheckedColor="Color.Default">
+                    @L["History_Date_CE"]
+                </MudRadio>
+                <MudRadio Option="false" Color="Color.Primary" UnCheckedColor="Color.Default">
+                    @L["History_Date_BCE"]
+                </MudRadio>
+            </MudRadioGroup>
 
         </EditForm>
     </DialogContent>
@@ -67,4 +66,5 @@
         Year = year;
         _isCe = year > 0;
     }
+
 }

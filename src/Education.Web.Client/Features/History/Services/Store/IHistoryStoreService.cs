@@ -8,6 +8,8 @@ public interface IHistoryStoreService
 {
     public Task<ApiResult<Product.InventoryModel[]>> GetInventoriesAsync();
 
+    Task<ApiResult<UpcomingInventoriesModel>> GetUpcomingInventoriesAsync();
+
     public Task<ApiResult<Product.BundleModel[]>> GetBundlesAsync();
 
     public Task<ApiResult<Guid>> CheckoutAsync(CheckoutRequest request);

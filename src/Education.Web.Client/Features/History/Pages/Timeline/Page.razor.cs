@@ -34,9 +34,7 @@ public sealed partial class Page
 
     protected override async Task OnParametersSetAsync()
     {
-        if (Year == 0)
-            Year = DateTime.Now.Year - 100;
-
+        Year = NormalizeYear(Year);
         _result = await ArticleService.GetAsync(_request with { Year = Year });
     }
 
@@ -47,7 +45,7 @@ public sealed partial class Page
         if (Year == 0)
             Year--;
 
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", Year));
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear(Year)));
     }
 
     private void OnNextYearClick()
@@ -57,7 +55,7 @@ public sealed partial class Page
         if (Year == 0)
             Year++;
 
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", Year));
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear(Year)));
     }
 
     private async Task OnYearClick()
@@ -80,7 +78,14 @@ public sealed partial class Page
         if (result.Canceled)
             return;
 
-        var year = (int)result.Data;
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", year));
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear((int)result.Data)));
+    }
+
+    private static int NormalizeYear(int year)
+    {
+        if (year == 0)
+            return DateTime.UtcNow.Year - 100;
+
+        return Math.Min(year, DateTime.UtcNow.Year);
     }
 }

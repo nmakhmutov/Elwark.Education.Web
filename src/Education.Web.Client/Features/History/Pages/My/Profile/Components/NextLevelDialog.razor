@@ -1,0 +1,57 @@
+@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Services.Store.Model
+<MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
+    <DialogContent>
+        <div class="d-flex justify-space-between align-center gap-3 gap-sm-6">
+            <div style="width: 48px">&nbsp;</div>
+            <MudText Typo="Typo.h3" Align="Align.Center">@FullName</MudText>
+            <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@(() => MudDialog.Close())"/>
+        </div>
+
+        <UserLevelProgress
+            Class="w-max-600 mx-auto mb-3 mb-sm-6"
+            Level="@Level.Level"
+            Experience="@Level.Experience"
+            Threshold="@Level.Threshold"
+            ShowDetails/>
+
+        <div class="mud-background rounded pa-3 pa-sm-6">
+            <ApiViewer Result="@_result" Context="upcoming">
+                <MudText Class="mb-3 mb-sm-6" Typo="Typo.subtitle1" Align="Align.Center">
+                    <b>@L["User_ReachLevelToUnlock", upcoming.NextLevel]:</b>
+                </MudText>
+
+                <InventoryGrid Class="justify-center" Inventory="@upcoming.Inventories" Context="inventory">
+                    <InventoryInfoCard
+                        Title="@inventory.Title"
+                        IconUrl="@inventory.IconUrl"
+                        Subtitle="@inventory.Category.Title"
+                        Overview="@inventory.Overview"/>
+                </InventoryGrid>
+            </ApiViewer>
+        </div>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private ApiResult<UpcomingInventoriesModel> _result = ApiResult<UpcomingInventoriesModel>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryStoreService StoreService { get; set; } = default!;
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required string FullName { get; set; }
+
+    [Parameter, EditorRequired]
+    public required ProfileModel.LevelModel Level { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await StoreService.GetUpcomingInventoriesAsync();
+
+}

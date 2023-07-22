@@ -1,13 +1,9 @@
 <section class="mud-paper d-flex flex-column pa-3 @Class">
     <div class="mud-background rounded-lg relative mb-3">
-        <div class="d-flex justify-center align-center px-6 pt-6 pb-3">
-            <img class="image" src="@IconUrl" alt="@Title" loading="lazy"/>
-        </div>
-        <div class="d-flex justify-space-between px-1">
-            <MetricNumber Value="@Quantity" Typo="Typo.body1"/>
-            <MudTooltip Placement="Placement.Left">
+        <div class="d-flex justify-center align-center @(Quantity.HasValue ? "px-6 py-3" : "pa-6")">
+            <MudTooltip>
                 <ChildContent>
-                    <MudIconButton Class="pa-0 ma-0" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"/>
+                    <img class="image" src="@IconUrl" alt="@Title" loading="lazy"/>
                 </ChildContent>
                 <TooltipContent>
                     <div class="d-flex flex-column align-start">
@@ -17,6 +13,10 @@
                 </TooltipContent>
             </MudTooltip>
         </div>
+        @if (Quantity.HasValue)
+        {
+            <MetricNumber Value="@Quantity.Value" Typo="Typo.subtitle2" Align="Align.Center"/>
+        }
     </div>
 
     <h6 class="mud-typography mud-typography-subtitle1 one-line-text" title="@Title">
@@ -47,8 +47,8 @@
     [Parameter, EditorRequired]
     public string? IconUrl { get; set; }
 
-    [Parameter, EditorRequired]
-    public uint Quantity { get; set; }
+    [Parameter]
+    public uint? Quantity { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
