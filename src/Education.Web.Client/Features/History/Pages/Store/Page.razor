@@ -6,29 +6,60 @@
     @L["InventoryStore_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1600">
     <EduPageHeader Title="@L["InventoryStore_Title"]"/>
 </EduContainer>
 
-<EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-    <ProductsToolbar @bind-Filter="@(_filter)" Possessions="@_possessions"/>
+<EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1600">
+    <MudTabs Class="rounded-t" Elevation="0">
+        <Header>
+            <section class="d-flex flex-wrap flex-sm-nowrap align-center gap-3 pa-3">
+                <div class="d-flex align-center gap-3">
+                    @foreach (var (currency, amount) in _possessions.Wallet)
+                    {
+                        <InternalMoney Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal/>
+                    }
+                </div>
+
+                <MudTooltip Text="@L["Backpack_Title"]">
+                    <section class="d-flex align-center">
+                        <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="@Size.Small"/>
+                        <div class="d-flex align-center">
+                            <MetricNumber
+                                Value="@_possessions.Backpack.Fullness"
+                                Typo="@Typo.body1"
+                                Color="@GetBackpackColor()"/>
+                            <MudText Typo="@Typo.body1">&nbsp;/&nbsp;</MudText>
+                            <MetricNumber
+                                Value="@_possessions.Backpack.Capacity"
+                                Typo="@Typo.body1"/>
+                        </div>
+                    </section>
+                </MudTooltip>
+            </section>
+        </Header>
+
+        <PrePanelContent>
+            <ProductsToolbar
+                Class="mud-paper rounded-b pa-3 mb-3 mb-sm-6"
+                @bind-Filter="@(_filter)"/>
+        </PrePanelContent>
+
+        <ChildContent>
+            <MudTabPanel Icon="@Icons.Material.Outlined.Inventory2" Text="@L["History_InventoryStore_Catalog_Inventories"]">
+                <InventoryProducts
+                    Possessions="@_possessions"
+                    Filter="@_filter"
+                    IsAffordable="@IsInventoryAffordable"
+                    OnProductPurchased="@OnInventoryPurchased"/>
+            </MudTabPanel>
+            <MudTabPanel Icon="@Icons.Material.Outlined.ShoppingBag" Text="@L["History_InventoryStore_Catalog_Bundles"]">
+                <BundleProducts
+                    Possessions="@_possessions"
+                    Filter="@_filter"
+                    IsAffordable="@IsBundleAffordable"
+                    OnProductPurchased="@OnBundlePurchased"/>
+            </MudTabPanel>
+        </ChildContent>
+    </MudTabs>
 </EduContainer>
-
-@switch (_filter.Catalog)
-{
-    case CatalogType.Inventory:
-        <InventoryProducts
-            Possessions="@_possessions"
-            Filter="@_filter"
-            IsAffordable="@IsInventoryAffordable"
-            OnProductPurchased="@OnInventoryPurchased"/>
-        break;
-
-    case CatalogType.Bundles:
-        <BundleProducts
-            Possessions="@_possessions"
-            Filter="@_filter"
-            IsAffordable="@IsBundleAffordable"
-            OnProductPurchased="@OnBundlePurchased"/>
-        break;
-}

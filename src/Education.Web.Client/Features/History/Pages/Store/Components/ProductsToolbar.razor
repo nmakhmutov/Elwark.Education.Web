@@ -1,28 +1,24 @@
-@using Education.Web.Client.Features.History.Services.User.Model
 @using Education.Web.Client.Models.Inventory
 <section class="d-flex flex-wrap align-center gap-3 gap-sm-3 @Class">
-    <div class="dropdown">
-        <MudSelect T="CatalogType"
-                   Value="@Filter.Catalog"
-                   ValueChanged="@CatalogChanged"
-                   Label="@L["History_InventoryStore_Catalog_Title"]"
-                   Margin="Margin.Dense"
-                   Dense>
-            <MudSelectItem Value="@CatalogType.Inventory">
-                @L["History_InventoryStore_Catalog_Inventories"]
-            </MudSelectItem>
-            <MudSelectItem Value="@CatalogType.Bundles">
-                @L["History_InventoryStore_Catalog_Bundles"]
-            </MudSelectItem>
-        </MudSelect>
-    </div>
+    <MudTextField
+        T="string"
+        Value="@Filter.Search"
+        ValueChanged="@SearchChanged"
+        Variant="Variant.Outlined"
+        Margin="Margin.Dense"
+        Adornment="Adornment.Start"
+        AdornmentIcon="@Icons.Material.Outlined.Search"
+        Placeholder="@L["Search_Title"]"
+        Clearable
+        Immediate/>
 
     <div class="dropdown">
         <MudSelect T="CategoryType"
                    Value="@Filter.Category"
                    ValueChanged="@CategoryChanged"
-                   Label="@L["History_InventoryStore_Category_Title"]"
                    Margin="Margin.Dense"
+                   Variant="Variant.Outlined"
+                   Label="@L["History_InventoryStore_Category_Title"]"
                    Dense>
             <MudSelectItem Value="@CategoryType.None">
                 @L["History_InventoryStore_Category_All"]
@@ -46,6 +42,7 @@
         <MudSelect T="ProductSort"
                    Value="@Filter.Sort"
                    ValueChanged="@SortChanged"
+                   Variant="Variant.Outlined"
                    Label="@L["SortBy_Title"]"
                    Margin="Margin.Dense"
                    Dense>
@@ -69,66 +66,12 @@
             </MudSelectItem>
         </MudSelect>
     </div>
-
-    <MudButton
-        Class="align-self-center align-self-sm-end"
-        Variant="Variant.Text"
-        Color="Color.Primary"
-        Disabled="@(Filter == ProductsFilter.Empty)"
-        OnClick="@OnResetClick">
-        @L["History_InventoryStore_ResetFilter_Button"]
-    </MudButton>
-
-    <MudSpacer/>
-
-    <section class="wallet">
-        @if (Possessions.Wallet.Count > 0)
-        {
-            <div>
-                <MudText Typo="Typo.caption">
-                    @L["Wallet_Title"]
-                </MudText>
-                <div class="d-flex align-center gap-3">
-                    @foreach (var money in Possessions.Wallet)
-                    {
-                        <InternalMoney
-                            Currency="@money.Key"
-                            Amount="@money.Value"
-                            Typo="Typo.subtitle1"
-                            Horizontal/>
-                    }
-                </div>
-            </div>
-        }
-
-        <div>
-            <MudText Typo="Typo.caption">
-                @L["Backpack_Title"]
-            </MudText>
-            <section class="d-flex align-center">
-                <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="@Size.Small"/>
-                <div class="d-flex align-center">
-                    <MetricNumber
-                        Value="@Possessions.Backpack.Fullness"
-                        Typo="@Typo.subtitle1"
-                        Color="@GetBackpackColor()"/>
-                    <MudText Typo="@Typo.subtitle1">&nbsp;/&nbsp;</MudText>
-                    <MetricNumber
-                        Value="@Possessions.Backpack.Capacity"
-                        Typo="@Typo.subtitle1"/>
-                </div>
-            </section>
-        </div>
-    </section>
 </section>
 
 @code {
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Parameter]
-    public PossessionsModel Possessions { get; set; } = default!;
 
     [Parameter]
     public ProductsFilter Filter { get; set; } = ProductsFilter.Empty;
@@ -139,19 +82,13 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private Task CatalogChanged(CatalogType catalog) =>
-        FilterChanged.InvokeAsync(Filter with { Catalog = catalog});
-
     private Task CategoryChanged(CategoryType category) =>
         FilterChanged.InvokeAsync(Filter with { Category = category });
 
     private Task SortChanged(ProductSort sort) =>
         FilterChanged.InvokeAsync(Filter with { Sort = sort });
 
-    private Task OnResetClick() =>
-        FilterChanged.InvokeAsync(ProductsFilter.Empty);
-
-    private Color GetBackpackColor() =>
-        Possessions.Backpack.IsFull ? Color.Error : Color.Default;
+    private void SearchChanged(string? search) =>
+        FilterChanged.InvokeAsync(Filter with { Search = search });
 
 }

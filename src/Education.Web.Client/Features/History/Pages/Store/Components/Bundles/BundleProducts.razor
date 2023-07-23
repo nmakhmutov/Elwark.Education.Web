@@ -1,14 +1,31 @@
 @using Education.Web.Client.Features.History.Services.User.Model
 @using Education.Web.Client.Models.Inventory
-<ApiViewer Result="@_result" Context="bundles">
-    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <ProductsGrid Products="@ApplyFilter(bundles)" Context="bundle">
-            <BundleCard
-                Bundle="@bundle"
-                ShowLockBadge="@(!IsAffordable(bundle))"
-                OnPurchaseClick="@OpenPurchaseDialog"/>
+<ApiViewer Result="@_result">
+    <ChildContent Context="bundles">
+        <ProductsGrid Products="@ApplyFilter(bundles)">
+            <ChildContent Context="bundle">
+                <BundleCard
+                    Bundle="@bundle"
+                    ShowLockBadge="@(!IsAffordable(bundle))"
+                    OnPurchaseClick="@OpenPurchaseDialog"/>
+            </ChildContent>
+            <NoRecordsContent>
+                <EduEmpty
+                    Title="@L["InventoryStore_Bundles_NotFound"]"
+                    Subtitle="@L["InventoryStore_TryToResetYourFilter"]"/>
+            </NoRecordsContent>
         </ProductsGrid>
-    </EduContainer>
+    </ChildContent>
+    <Loading>
+        <ProductsGrid Products="@(Enumerable.Range(0, 6).ToArray())">
+            <InventorySkeletonCard>
+                <div class="d-flex justify-space-between align-center mt-6">
+                    <MudSkeleton SkeletonType="SkeletonType.Circle" Width="24px" Height="24px"/>
+                    <MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Variant="Variant.Filled" Disabled/>
+                </div>
+            </InventorySkeletonCard>
+        </ProductsGrid>
+    </Loading>
 </ApiViewer>
 
 @code {
@@ -19,6 +36,9 @@
 
     [Inject]
     private IDialogService DialogService { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public required PossessionsModel Possessions { get; set; }
@@ -74,6 +94,9 @@
             ProductSort.Title => source.OrderBy(x => x.Title),
             _ => throw new ArgumentOutOfRangeException()
             };
+
+        if (!string.IsNullOrEmpty(Filter.Search))
+            source = source.Where(x => x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase));
 
         return source.ToArray();
     }

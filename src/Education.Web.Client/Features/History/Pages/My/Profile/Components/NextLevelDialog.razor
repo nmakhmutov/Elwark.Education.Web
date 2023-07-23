@@ -16,18 +16,28 @@
             ShowDetails/>
 
         <div class="mud-background rounded pa-3 pa-sm-6">
-            <ApiViewer Result="@_result" Context="upcoming">
-                <MudText Class="mb-3 mb-sm-6" Typo="Typo.subtitle1" Align="Align.Center">
-                    <b>@L["User_ReachLevelToUnlock", upcoming.NextLevel]:</b>
-                </MudText>
+            <ApiViewer Result="@_result">
+                <ChildContent Context="upcoming">
+                    <MudText Class="mb-3 mb-sm-6" Typo="Typo.subtitle1" Align="Align.Center">
+                        <b>@L["User_ReachLevelToUnlock", upcoming.NextLevel]:</b>
+                    </MudText>
 
-                <InventoryGrid Class="justify-center" Inventory="@upcoming.Inventories" Context="inventory">
-                    <InventoryInfoCard
-                        Title="@inventory.Title"
-                        IconUrl="@inventory.IconUrl"
-                        Subtitle="@inventory.Category.Title"
-                        Overview="@inventory.Overview"/>
-                </InventoryGrid>
+                    <InventoryGrid Class="justify-center" Inventory="@upcoming.Inventories" Context="inventory">
+                        <InventoryInfoCard
+                            Title="@inventory.Title"
+                            IconUrl="@inventory.IconUrl"
+                            Subtitle="@inventory.Category.Title"
+                            Overview="@inventory.Overview"/>
+                    </InventoryGrid>
+                </ChildContent>
+                <Loading>
+                    <div class="d-flex justify-center">
+                        <MudSkeleton Class="mb-3 mb-sm-6" SkeletonType="SkeletonType.Text" Width="30%"/>
+                    </div>
+                    <InventoryGrid Class="justify-center" Inventory="@(Enumerable.Range(0, 2))">
+                        <InventorySkeletonCard/>
+                    </InventoryGrid>
+                </Loading>
             </ApiViewer>
         </div>
     </DialogContent>

@@ -1,92 +1,90 @@
 @using Education.Web.Client.Features.History.Services.Learner
 @using Education.Web.Client.Features.History.Services.Learner.Request
-<EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-    @if (_isEmpty)
-    {
-        <EduEmpty Class="grid-column-full" Title="@L["Bookmarks_EmptyTitle"]" Subtitle="@L["Bookmarks_EmptySubtitle"]"/>
-    }
-    else
-    {
-        <div class="grid px-3 px-sm-6 mb-3">
-            <div class="image"></div>
-            <div class="title">@L["Article_Title"]</div>
-            <div class="rating">@L["Rating"]</div>
-            <div class="quizzes">@L["NumberOfQuizzes_Total_Title"]</div>
-            <div class="completion">@L["LearningStatus_Title"]</div>
-            <div class="actions"></div>
-        </div>
+@if (_isEmpty)
+{
+    <EduEmpty Class="grid-column-full" Title="@L["Bookmarks_EmptyTitle"]" Subtitle="@L["Bookmarks_EmptySubtitle"]"/>
+}
+else
+{
+    <div class="grid px-3 px-sm-6 mb-3">
+        <div class="image"></div>
+        <div class="title">@L["Article_Title"]</div>
+        <div class="rating">@L["Rating"]</div>
+        <div class="quizzes">@L["NumberOfQuizzes_Total_Title"]</div>
+        <div class="completion">@L["LearningStatus_Title"]</div>
+        <div class="actions"></div>
+    </div>
 
-        <Virtualize @ref="_virtualize" ItemsProvider="BookmarkProvider" ItemSize="120">
-            <Placeholder>
-                <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
-                    <div class="image">
-                        <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px"/>
-                    </div>
-                    <div class="title">
-                        <MudSkeleton Class="my-1" SkeletonType="SkeletonType.Text" Width="60%" Height="32px"/>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Width="25%" Height="22px"/>
-                    </div>
-                    <div class="rating">
-                        <MudRating MaxValue="5" SelectedValue="0" Disabled/>
-                    </div>
-                    <div class="quizzes">
-                        <MudChip
-                            Class="ma-0"
-                            Color="Color.Default"
-                            Variant="Variant.Outlined"
-                            Icon="@EduIcons.Quiz"
-                            Text="0"/>
-                    </div>
-                    <div class="completion">
-                        <ArticleCompletionChip IsCompleted="@(null)"/>
-                    </div>
-                    <div class="actions">
-                        <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
-                    </div>
+    <Virtualize @ref="@(_virtualize)" ItemsProvider="BookmarkProvider" ItemSize="120">
+        <Placeholder>
+            <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
+                <div class="image">
+                    <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px"/>
                 </div>
-            </Placeholder>
-            <ItemContent Context="item">
-                <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
-                    <div class="image">
-                        <MudAvatar Size="Size.Large" Image="@item.Article.ThumbnailUrl"/>
-                    </div>
-                    <div class="title">
-                        <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)" Typo="Typo.h6">
-                            @item.Article.Title
-                        </MudLink>
-                        <br/>
-                        <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
-                           href="@HistoryUrl.Content.Articles(item.Article.Epoch)">
-                            @L[item.Article.Epoch.ResourceKey()]
-                        </a>
-                    </div>
-                    <div class="rating">
-                        <ContentRating
-                            Class="d-inline-flex flex-column align-center"
-                            Rating="@item.Article.Rating"
-                            ShowTooltip/>
-                    </div>
-                    <div class="quizzes">
-                        <TotalQuizzesChip
-                            Easy="@(item.Activity?.EasyQuizzes ?? 0)"
-                            Hard="@(item.Activity?.HardQuizzes ?? 0)"/>
-                    </div>
-                    <div class="completion">
-                        <ArticleCompletionChip
-                            IsCompleted="@item.Activity?.IsCompleted"
-                            Href="@HistoryUrl.User.MyArticle(item.Article.Id)"/>
-                    </div>
-                    <div class="actions">
-                        <BookmarkButton
-                            Id="@item.Article.Id"
-                            IsBookmarked="@item.Activity!.IsBookmarked"
-                            OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
-                    </div>
+                <div class="title">
+                    <MudSkeleton Class="my-1" SkeletonType="SkeletonType.Text" Width="60%" Height="32px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="25%" Height="22px"/>
                 </div>
-            </ItemContent>
-        </Virtualize>
-    }
-</EduContainer>
+                <div class="rating">
+                    <MudRating MaxValue="5" SelectedValue="0" Disabled/>
+                </div>
+                <div class="quizzes">
+                    <MudChip
+                        Class="ma-0"
+                        Color="Color.Default"
+                        Variant="Variant.Outlined"
+                        Icon="@EduIcons.Quiz"
+                        Text="0"/>
+                </div>
+                <div class="completion">
+                    <ArticleCompletionChip IsCompleted="@(null)"/>
+                </div>
+                <div class="actions">
+                    <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
+                </div>
+            </div>
+        </Placeholder>
+        <ItemContent Context="item">
+            <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
+                <div class="image">
+                    <MudAvatar Size="Size.Large" Image="@item.Article.ThumbnailUrl"/>
+                </div>
+                <div class="title">
+                    <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)" Typo="Typo.h6">
+                        @item.Article.Title
+                    </MudLink>
+                    <br/>
+                    <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
+                       href="@HistoryUrl.Content.Articles(item.Article.Epoch)">
+                        @L[item.Article.Epoch.ResourceKey()]
+                    </a>
+                </div>
+                <div class="rating">
+                    <ContentRating
+                        Class="d-inline-flex flex-column align-center"
+                        Rating="@item.Article.Rating"
+                        ShowTooltip/>
+                </div>
+                <div class="quizzes">
+                    <TotalQuizzesChip
+                        Easy="@(item.Activity?.EasyQuizzes ?? 0)"
+                        Hard="@(item.Activity?.HardQuizzes ?? 0)"/>
+                </div>
+                <div class="completion">
+                    <ArticleCompletionChip
+                        IsCompleted="@item.Activity?.IsCompleted"
+                        Href="@HistoryUrl.User.MyArticle(item.Article.Id)"/>
+                </div>
+                <div class="actions">
+                    <BookmarkButton
+                        Id="@item.Article.Id"
+                        IsBookmarked="@item.Activity!.IsBookmarked"
+                        OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
+                </div>
+            </div>
+        </ItemContent>
+    </Virtualize>
+}
 
 @code {
     private string? _token;
@@ -133,7 +131,7 @@
 
                 foreach (var item in x.Items)
                     _items.Add(item);
-                
+
                 if (!_isEmpty && _items.Count == 0)
                 {
                     _isEmpty = true;

@@ -11,16 +11,17 @@
 </EduContainer>
 
 <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-    <BookmarksToolbar Filter="@_filter" FilterChanged="@OnFilterChanged"/>
+    <MudTabs Elevation="0" TabHeaderClass="mb-3 mb-sm-6" Rounded>
+        <Header>
+            <BookmarksToolbar @bind-Filter="@(_filter)"/>
+        </Header>
+        <ChildContent>
+            <MudTabPanel Icon="@EduIcons.Articles" Text="@L["Bookmarks_Catalog_Articles"]">
+                <ArticleBookmarks Sort="@_filter.Sort"/>
+            </MudTabPanel>
+            <MudTabPanel Icon="@EduIcons.Courses" Text="@L["Bookmarks_Catalog_Courses"]">
+                <CourseBookmarks Sort="@_filter.Sort"/>
+            </MudTabPanel>
+        </ChildContent>
+    </MudTabs>
 </EduContainer>
-
-@switch (_filter.Catalog)
-{
-    case BookmarksCatalog.Articles:
-        <ArticleBookmarks Sort="@_filter.Sort"/>
-        break;
-
-    case BookmarksCatalog.Courses:
-        <CourseBookmarks Sort="@_filter.Sort"/>
-        break;
-}

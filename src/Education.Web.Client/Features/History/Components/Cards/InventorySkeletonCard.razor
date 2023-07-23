@@ -1,0 +1,22 @@
+<section class="mud-paper d-flex flex-column pa-3 @Class">
+    <div class="mud-background rounded-lg relative mb-3">
+        <div class="d-flex justify-center align-center pa-6">
+            <MudSkeleton SkeletonType="SkeletonType.Circle" Width="48px" Height="48px"/>
+        </div>
+    </div>
+
+    <MudSkeleton Class="mb-1 mt-2" SkeletonType="SkeletonType.Text" Width="100%"/>
+    <MudSkeleton SkeletonType="SkeletonType.Text" Width="70%"/>
+
+    @ChildContent
+</section>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+}

@@ -2,16 +2,7 @@ using Education.Web.Client.Features.History.Services.Learner.Request;
 
 namespace Education.Web.Client.Features.History.Pages.My.Bookmarks.Components;
 
-public enum BookmarksCatalog
+public sealed record BookmarksFilter(BookmarksRequest.SortType Sort)
 {
-    Articles,
-    Courses
-}
-
-public sealed record BookmarksFilter(BookmarksCatalog Catalog, BookmarksRequest.SortType Sort)
-{
-    public static readonly BookmarksFilter Empty = new(
-        BookmarksCatalog.Articles,
-        BookmarksRequest.SortType.DateAddedNewest
-    );
+    public static readonly BookmarksFilter Empty = new(BookmarksRequest.SortType.DateAddedNewest);
 }

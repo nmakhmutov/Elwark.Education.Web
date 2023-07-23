@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Education.Web.Client.Features.History.Pages.Store.Components;
 using Education.Web.Client.Features.History.Services.Store.Model;
 using Education.Web.Client.Features.History.Services.User;
@@ -5,14 +6,16 @@ using Education.Web.Client.Features.History.Services.User.Model;
 using Education.Web.Client.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using MudBlazor;
 
 namespace Education.Web.Client.Features.History.Pages.Store;
 
 public sealed partial class Page
 {
     private ProductsFilter _filter = ProductsFilter.Empty;
+
     private PossessionsModel _possessions =
-        new(new Dictionary<InternalCurrency, long>(), new PossessionsModel.BackpackModel(0, 0, 0));
+        new(ReadOnlyDictionary<InternalCurrency, long>.Empty, new PossessionsModel.BackpackModel(0, 0, 0));
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -50,4 +53,7 @@ public sealed partial class Page
 
         return false;
     }
+
+    private Color GetBackpackColor() =>
+        _possessions.Backpack.IsFull ? Color.Error : Color.Default;
 }

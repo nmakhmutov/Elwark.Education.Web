@@ -1,14 +1,51 @@
 @using Education.Web.Client.Features.History.Services.User.Model
 @using Education.Web.Client.Models.Inventory
-<ApiViewer Result="@_result" Context="inventories">
-    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <ProductsGrid Products="@ApplyFilter(inventories)" Context="inventory">
-            <InventoryCard
-                Inventory="@inventory"
-                ShowLockBadge="@(!IsAffordable(inventory))"
-                OnPurchaseClick="@OpenPurchaseDialog"/>
+
+<ApiViewer Result="@_result">
+    <ChildContent Context="inventories">
+        <ProductsGrid Products="@ApplyFilter(inventories)">
+            <ChildContent Context="inventory">
+                <InventoryInfoCard
+                    Overview="@inventory.Overview"
+                    Subtitle="@inventory.Category.Title"
+                    Title="@inventory.Title"
+                    IconUrl="@inventory.IconUrl">
+                    <footer class="d-flex justify-space-between align-center gap-3 mt-3">
+                        <ProductPrice Price="@inventory.Selling"/>
+
+                        <MudBadge
+                            Icon="@Icons.Material.Outlined.Lock"
+                            Color="@Color.Error"
+                            Visible="@(!IsAffordable(inventory))"
+                            Bordered
+                            Overlap>
+                            <MudIconButton
+                                Icon="@Icons.Material.Outlined.ShoppingCart"
+                                Variant="Variant.Filled"
+                                Color="Color.Primary"
+                                OnClick="@(() => OpenPurchaseDialog(inventory))"
+                                DisableElevation/>
+                        </MudBadge>
+                    </footer>
+                </InventoryInfoCard>
+            </ChildContent>
+            <NoRecordsContent>
+                <EduEmpty
+                    Title="@L["InventoryStore_Inventories_NotFound"]"
+                    Subtitle="@L["InventoryStore_TryToResetYourFilter"]"/>
+            </NoRecordsContent>
         </ProductsGrid>
-    </EduContainer>
+    </ChildContent>
+    <Loading>
+        <ProductsGrid Products="@(Enumerable.Range(0, 6).ToArray())">
+            <InventorySkeletonCard>
+                <div class="d-flex justify-space-between align-center mt-6">
+                    <MudSkeleton SkeletonType="SkeletonType.Circle" Width="24px" Height="24px"/>
+                    <MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Variant="Variant.Filled" Disabled/>
+                </div>
+            </InventorySkeletonCard>
+        </ProductsGrid>
+    </Loading>
 </ApiViewer>
 
 @code {
@@ -19,6 +56,9 @@
 
     [Inject]
     private IDialogService DialogService { get; set; } = default!;
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public required PossessionsModel Possessions { get; set; }
@@ -50,6 +90,9 @@
             ProductSort.Title => source.OrderBy(x => x.Title),
             _ => throw new ArgumentOutOfRangeException()
             };
+
+        if (!string.IsNullOrEmpty(Filter.Search))
+            source = source.Where(x => x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase));
 
         return source.ToArray();
     }

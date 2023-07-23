@@ -1,36 +1,17 @@
 @using Education.Web.Client.Features.History.Services.Learner.Request
-<section class="d-flex flex-wrap align-center gap-3 gap-sm-3 @Class">
-    <div class="dropdown">
-        <MudSelect T="BookmarksCatalog"
-                   Value="@Filter.Catalog"
-                   ValueChanged="@TypeChanged"
-                   Label="@L["Bookmarks_Catalog_Title"]"
-                   Margin="Margin.Dense"
-                   Dense>
-            <MudSelectItem Value="@BookmarksCatalog.Articles">
-                @L["Bookmarks_Catalog_Articles"]
-            </MudSelectItem>
-            <MudSelectItem Value="@BookmarksCatalog.Courses">
-                @L["Bookmarks_Catalog_Courses"]
-            </MudSelectItem>
-        </MudSelect>
-    </div>
-
-    <div class="dropdown">
-        <MudSelect T="BookmarksRequest.SortType"
-                   Label="@L["SortBy_Title"]"
-                   Value="@Filter.Sort"
-                   ValueChanged="@SortChanged"
-                   Margin="Margin.Dense"
-                   Dense>
-            <MudSelectItem Value="BookmarksRequest.SortType.DateAddedNewest">
-                @L["Bookmarks_DateAddedNewest"]
-            </MudSelectItem>
-            <MudSelectItem Value="BookmarksRequest.SortType.DateAddedOldest">
-                @L["Bookmarks_DateAddedOldest"]
-            </MudSelectItem>
-        </MudSelect>
-    </div>
+<section class="@Class">
+    <MudMenu Icon="@Icons.Material.Outlined.Tune">
+        @foreach (var sort in BookmarksRequest.SortTypes)
+        {
+            <MudMenuItem
+                Class="flex-row-reverse gap-3 gap-sm-6"
+                OnClick="@(() => SortChanged(sort.Key))" 
+                Icon="@(Filter.Sort == sort.Key ? Icons.Material.Outlined.Check : null)"
+                IconSize="Size.Small">
+                @L[$"Bookmarks_{sort.Value}"]
+            </MudMenuItem>
+        }
+    </MudMenu>
 </section>
 
 @code {
@@ -47,10 +28,7 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private Task TypeChanged(BookmarksCatalog catalog) =>
-        FilterChanged.InvokeAsync(Filter with { Catalog = catalog });
-
     private Task SortChanged(BookmarksRequest.SortType sort) =>
-        FilterChanged.InvokeAsync(Filter with { Sort = sort });
+        FilterChanged.InvokeAsync(new BookmarksFilter(sort));
 
 }

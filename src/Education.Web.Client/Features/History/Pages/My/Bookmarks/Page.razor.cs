@@ -1,4 +1,3 @@
-using Blazored.LocalStorage;
 using Education.Web.Client.Features.History.Pages.My.Bookmarks.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -19,17 +18,4 @@ public sealed partial class Page
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private ILocalStorageService Storage { get; set; } = default!;
-
-    protected override async Task OnInitializedAsync() =>
-        _filter = await Storage.GetItemAsync<BookmarksFilter>(HistoryLocalStorageKey.BookmarkSettings) ??
-                  BookmarksFilter.Empty;
-
-    private async Task OnFilterChanged(BookmarksFilter filter)
-    {
-        _filter = filter;
-        await Storage.SetItemAsync(HistoryLocalStorageKey.BookmarkSettings, filter);
-    }
 }

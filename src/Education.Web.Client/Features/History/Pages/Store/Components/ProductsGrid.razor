@@ -2,7 +2,7 @@
 
 @if (Products.Length == 0)
 {
-    <EduEmpty Title="Nothing"/>
+    @NoRecordsContent
 }
 else
 {
@@ -22,4 +22,6 @@ else
     [Parameter]
     public RenderFragment<T> ChildContent { get; set; } = _ => @<div></div>;
 
+    [Parameter]
+    public RenderFragment? NoRecordsContent { get; set; }
 }
