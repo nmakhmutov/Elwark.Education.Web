@@ -25,7 +25,7 @@
             </section>
             @foreach (var user in items[..3])
             {
-                <RankingCard
+                <TopContestantCard
                     Rank="@user.Rank"
                     Level="@user.Level"
                     Experience="@user.Experience"
@@ -36,39 +36,40 @@
     </EduContainer>
 
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <RegularRanking DisableHover>
+        <RegularRanking DisableHover Transparent>
             <Name>
                 <MudText Typo="Typo.subtitle2">@L["Leaderboard_User_Name"]</MudText>
             </Name>
-            <Level>
+            <Points>
                 <MudText Typo="Typo.subtitle2">@L["Leaderboard_User_Level"]</MudText>
-            </Level>
-            <Experience>
+            </Points>
+            <Additional>
                 <MudText Typo="Typo.subtitle2">@L["Leaderboard_User_Experience"]</MudText>
-            </Experience>
+            </Additional>
         </RegularRanking>
 
         <Virtualize Items="@items[3..]" ItemSize="64" Context="user">
-            <RegularRanking Class="mb-3" Background="@GetBackgroundColor(user.Id)">
+            <RegularRanking Class="mb-3" Highlight="@(_highlightUser == user.Id)">
                 <Image>
                     <MudAvatar Image="@user.Image" Alt="@user.FullName" Size="Size.Large"/>
                 </Image>
                 <Name>
                     <div>
-                        <MudText Typo="Typo.body1">@user.FullName</MudText>
-                        <MudText Typo="Typo.caption">@L["Leaderboard_Rank"]: @user.Rank</MudText>
+                        <MudText Typo="Typo.subtitle1">@user.FullName</MudText>
+                        <div class="d-flex align-center gap-1">
+                            <MudIcon Icon="@Icons.Material.Outlined.EmojiEvents" Size="Size.Small"/>
+                            <MudText Typo="Typo.body1">@user.Rank</MudText>
+                        </div>
                     </div>
                 </Name>
-                <Level>
-                    <MudIcon Icon="@EduIcons.Level" Class="green-text text-darken-1 mr-3"/>
+                <Points>
                     <MudText Typo="Typo.h6">
                         @user.Level
                     </MudText>
-                </Level>
-                <Experience>
-                    <MudIcon Icon="@EduIcons.Experience" Class="mr-3"/>
+                </Points>
+                <Additional>
                     <MetricNumber Value="@user.Experience" Typo="Typo.h6"/>
-                </Experience>
+                </Additional>
             </RegularRanking>
         </Virtualize>
     </EduContainer>

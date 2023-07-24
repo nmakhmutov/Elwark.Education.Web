@@ -1,5 +1,4 @@
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Pages.Leaderboards.Components;
 using Education.Web.Client.Features.History.Services.Leaderboard;
 using Education.Web.Client.Features.History.Services.Leaderboard.Model;
 using Education.Web.Client.Http;
@@ -11,8 +10,8 @@ namespace Education.Web.Client.Features.History.Pages.Leaderboards.Global;
 
 public sealed partial class Page
 {
-    private long _highlightUser;
-    private ApiResult<GlobalRankingModel[]> _result = ApiResult<GlobalRankingModel[]>.Loading();
+    private long? _highlightUser;
+    private ApiResult<GlobalContestantModel[]> _result = ApiResult<GlobalContestantModel[]>.Loading();
 
     [Inject]
     private IHistoryLeaderboardService LeaderboardService { get; set; } = default!;
@@ -25,14 +24,8 @@ public sealed partial class Page
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await LeaderboardService.GetGlobalAsync();
-
         var state = await StateProvider.GetAuthenticationStateAsync();
-        if (state.User.Identity?.IsAuthenticated ?? false)
-            _highlightUser = state.User.GetId();
+        _highlightUser = state.User.GetIdOrDefault();
+        _result = await LeaderboardService.GetGlobalAsync();
     }
-
-    private RegularRanking.BackgroundColor GetBackgroundColor(long userId) =>
-        _highlightUser == userId ? RegularRanking.BackgroundColor.Highlight : RegularRanking.BackgroundColor.Paper;
-
 }

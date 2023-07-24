@@ -6,10 +6,7 @@
 
                 @if (Person.Born is not null || Person.Died is not null)
                 {
-                    <PersonLivespan
-                        Born="@Person.Born"
-                        Died="@Person.Died"
-                        DateTimeFormatter="@Customer.Humanize"/>
+                    <PersonLivespan Born="@Person.Born" Died="@Person.Died"/>
                 }
             </div>
         </div>
@@ -92,9 +89,6 @@
 
     [Inject]
     private ContentFormatter Formatter { get; set; } = default!;
-
-    [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public required ArticleDetail.PersonModel Person { get; set; }

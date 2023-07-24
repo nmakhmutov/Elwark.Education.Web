@@ -42,16 +42,12 @@
                     @context.Title
                 </MudTd>
                 <MudTd DataLabel="@L["History_DateGuesserCorrect_Answer"]">
-                    <HistoryDate
-                        Typo="Typo.body2"
-                        Date="@context.CorrectAnswer"
-                        DateTimeFormatter="@Customer.Humanize"/>
+                    <HistoryDate Typo="Typo.body2" Date="@context.CorrectAnswer"/>
                 </MudTd>
                 <MudTd DataLabel="@L["History_DateGuesser_UserAnswer"]">
                     <HistoryDate
                         Typo="Typo.body2"
                         Date="@context.UserAnswer"
-                        DateTimeFormatter="@Customer.Humanize"
                         Color="@(context.IsCorrect ? Color.Success : Color.Error)"/>
                 </MudTd>
                 <MudTd DataLabel="@L["History_DateGuesser_Points"]">

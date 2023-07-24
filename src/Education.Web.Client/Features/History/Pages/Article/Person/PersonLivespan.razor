@@ -3,12 +3,7 @@
         <MudText Class="text-transform-uppercase" Typo="Typo.body2">
             @L["History_Person_Born"]
         </MudText>
-        <HistoryDate
-            Class="date"
-            Typo="Typo.h4"
-            Date="@Born"
-            DateTimeFormatter="@DateTimeFormatter"
-            Color="Color.Info"/>
+        <HistoryDate Class="date" Typo="Typo.h4" Date="@Born" Color="Color.Info"/>
         <MudText Typo="Typo.body2">
             @Born?.Place
         </MudText>
@@ -23,12 +18,7 @@
         <MudText Class="text-transform-uppercase" Typo="Typo.body2">
             @L["History_Person_Died"]
         </MudText>
-        <HistoryDate
-            Class="date"
-            Typo="Typo.h4"
-            Date="@Died"
-            DateTimeFormatter="@DateTimeFormatter"
-            Color="Color.Info"/>
+        <HistoryDate Class="date" Typo="Typo.h4" Date="@Died" Color="Color.Info"/>
         <MudText Typo="Typo.body2">
             @Died?.Place
         </MudText>
@@ -45,8 +35,5 @@
 
     [Parameter, EditorRequired]
     public required PersonBirthdayModel? Died { get; set; }
-
-    [Parameter]
-    public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
 
 }

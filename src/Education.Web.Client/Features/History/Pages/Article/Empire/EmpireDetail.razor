@@ -11,22 +11,14 @@
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
                     @L["History_Empire_Founded"]
                 </MudText>
-                <HistoryDate
-                    Date="@Empire.Founded"
-                    DateTimeFormatter="@Customer.Humanize"
-                    Typo="Typo.h6"
-                    Align="Align.Center"/>
+                <HistoryDate Date="@Empire.Founded" Typo="Typo.h6" Align="Align.Center"/>
             </div>
 
             <div class="pa-3 pa-sm-6">
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
                     @L["History_Empire_Dissolved"]
                 </MudText>
-                <HistoryDate
-                    Date="@Empire.Dissolved"
-                    DateTimeFormatter="@Customer.Humanize"
-                    Typo="Typo.h6"
-                    Align="Align.Center"/>
+                <HistoryDate Date="@Empire.Dissolved" Typo="Typo.h6" Align="Align.Center"/>
             </div>
 
             <div class="pa-3 pa-sm-6">
@@ -154,9 +146,6 @@
 
     [Inject]
     private ContentFormatter Formatter { get; set; } = default!;
-
-    [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
 
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }

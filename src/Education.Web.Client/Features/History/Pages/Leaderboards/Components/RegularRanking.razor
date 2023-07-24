@@ -5,19 +5,13 @@
     <div class="name">
         @Name
     </div>
-    @if (Level is not null)
+    <div class="points">
+        @Points
+    </div>
+    @if (Additional is not null)
     {
-        <div class="level">
-            @Level
-        </div>
-        <div class="experience d-none d-sm-flex">
-            @Experience
-        </div>
-    }
-    else
-    {
-        <div class="experience">
-            @Experience
+        <div class="additional">
+            @Additional
         </div>
     }
 </section>
@@ -32,13 +26,16 @@
     public RenderFragment? Name { get; set; }
 
     [Parameter]
-    public RenderFragment? Level { get; set; }
+    public RenderFragment? Points { get; set; }
 
     [Parameter]
-    public RenderFragment? Experience { get; set; }
+    public RenderFragment? Additional { get; set; }
 
     [Parameter]
-    public BackgroundColor Background { get; set; } = BackgroundColor.None;
+    public bool Highlight { get; set; }
+
+    [Parameter]
+    public bool Transparent { get; set; }
 
     [Parameter]
     public bool DisableHover { get; set; }
@@ -46,28 +43,11 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override void OnParametersSet()
-    {
-        var background = Background switch
-        {
-            BackgroundColor.None => null,
-            BackgroundColor.Paper => "mud-paper",
-            BackgroundColor.Highlight => "highlight-paper",
-            _ => null
-            };
-
+    protected override void OnParametersSet() =>
         _class = CssBuilder.Default("d-flex align-center gap-3 pa-3")
+            .AddClass(Transparent ? null : Highlight ? "highlight-paper" : "mud-paper")
             .AddClass("hover", !DisableHover)
-            .AddClass(background)
             .AddClass(Class)
             .Build();
-    }
-
-    public enum BackgroundColor
-    {
-        None,
-        Paper,
-        Highlight
-    }
 
 }

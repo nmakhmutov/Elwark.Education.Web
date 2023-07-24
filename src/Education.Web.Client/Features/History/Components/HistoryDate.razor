@@ -24,20 +24,11 @@
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter, EditorRequired]
-    public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
-
     protected override void OnParametersSet() =>
         _date = Date is null ? L["Unknown_Title"] : Format(Date);
 
     private string Format(HistoricalDateModel date)
     {
-        if (date is { IsFull: true, Year: > 999 })
-        {
-            var value = new DateTime(date.Year, (int)date.Month.GetValueOrDefault(), (int)date.Day.GetValueOrDefault());
-            return DateTimeFormatter(value);
-        }
-        
         var sb = new StringBuilder(15);
 
         if (date.Day.HasValue)
@@ -45,8 +36,14 @@
                 .Append(' ');
 
         if (date.Month.HasValue)
-            sb.Append(CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName((int)date.Month.Value))
+        {
+            var month = date.Day.HasValue
+                ? CultureInfo.InvariantCulture.DateTimeFormat.GetAbbreviatedMonthName((int)date.Month.Value)
+                : CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName((int)date.Month.Value);
+
+            sb.Append(month)
                 .Append(' ');
+        }
 
         sb.Append(Math.Abs(date.Year));
 

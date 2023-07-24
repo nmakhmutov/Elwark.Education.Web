@@ -8,7 +8,7 @@
 <ApiViewer Result="@_result" Context="result">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <div class="d-flex flex-column flex-md-row gap-3 mb-sm-6">
-            <section>
+            <section class="flex-sm-grow-1">
                 <div class="d-flex align-center">
                     <div class="d-flex align-center justify-center mud-primary white-text rounded mr-3 mr-sm-6">
                         <MudIcon Icon="@Icons.Material.Outlined.StarOutline" Size="Size.Large" Class="ma-6"/>
@@ -61,12 +61,10 @@
                 </div>
             </section>
 
-            <div class="d-none d-md-block flex-grow-1"></div>
-
             @if (result.IsActive)
             {
-                <section class="countdown">
-                    <CardCountdown Class="justify-center mb-3 mb-sm-6" Date="@result.EndsAt"/>
+                <section class="countdown align-self-center">
+                    <CardCountdown Class="justify-space-between mb-3 mb-sm-6" Date="@result.EndsAt"/>
 
                     @if (result.User is null)
                     {
@@ -81,20 +79,25 @@
                     }
                     else
                     {
-                        <RegularRanking DisableHover Background="RegularRanking.BackgroundColor.Paper">
+                        <RegularRanking DisableHover>
                             <Image>
                                 <MudAvatar Image="@result.User.Image" Alt="@result.User.FullName" Size="Size.Large"/>
                             </Image>
                             <Name>
                                 <div>
-                                    <MudText Typo="Typo.body1">@result.User.FullName</MudText>
-                                    <MudText Typo="Typo.caption">@L["Leaderboard_Rank"]: @result.User.Rank</MudText>
+                                    <MudText Typo="Typo.subtitle1">@result.User.FullName</MudText>
+                                    <div class="d-flex align-center gap-1">
+                                        <MudIcon Icon="@Icons.Material.Outlined.EmojiEvents" Size="Size.Small"/>
+                                        <MudText Typo="Typo.body1">@result.User.Rank</MudText>
+                                    </div>
                                 </div>
                             </Name>
-                            <Experience>
-                                <MudIcon Class="mr-3" Icon="@EduIcons.Experience"/>
-                                <MetricNumber Value="@result.User.Experience" Typo="Typo.h6"/>
-                            </Experience>
+                            <Points>
+                                <div class="d-flex align-center gap-3">
+                                    <MudIcon Icon="@EduIcons.Experience"/>
+                                    <MetricNumber Value="@result.User.Experience" Typo="Typo.h6"/>
+                                </div>
+                            </Points>
                         </RegularRanking>
                     }
                 </section>
@@ -104,7 +107,7 @@
                 <section class="winner-wrapper">
                     @foreach (var item in result.Users.Take(3))
                     {
-                        <WinnerRanking
+                        <MonthlyWinnerCard
                             Class="@(item.Rank == 3 ? null : "mb-3 mb-sm-6")"
                             Id="@item.Id"
                             Image="@item.Image"
@@ -118,30 +121,38 @@
 
         @if (result.Users.Length > 0)
         {
-            <RegularRanking DisableHover>
+            <RegularRanking DisableHover Transparent>
                 <Name>
                     <MudText Typo="Typo.subtitle2">@L["Leaderboard_User_Name"]</MudText>
                 </Name>
-                <Experience>
+                <Points>
                     <MudText Typo="Typo.subtitle2">@L["Leaderboard_User_Experience"]</MudText>
-                </Experience>
+                </Points>
+                <Additional>
+                    <MudText Typo="Typo.subtitle2">@L["Leaderboard_User_Rewards"]</MudText>
+                </Additional>
             </RegularRanking>
 
             <Virtualize Items="@(NormalizeUsers(result))" ItemSize="64" Context="user">
-                <RegularRanking Class="mb-3" Background="@GetBackgroundColor(user.Id)">
+                <RegularRanking Class="mb-3" Highlight="@(_highlightUser == user.Id)">
                     <Image>
                         <MudAvatar Image="@user.Image" Alt="@user.FullName" Size="Size.Large"/>
                     </Image>
                     <Name>
                         <div>
-                            <MudText Typo="Typo.body1">@user.FullName</MudText>
-                            <MudText Typo="Typo.caption">@L["Leaderboard_Rank"]: @user.Rank</MudText>
+                            <MudText Typo="Typo.subtitle1">@user.FullName</MudText>
+                            <div class="d-flex align-center gap-1">
+                                <MudIcon Icon="@Icons.Material.Outlined.EmojiEvents" Size="Size.Small"/>
+                                <MudText Typo="Typo.body1">@user.Rank</MudText>
+                            </div>
                         </div>
                     </Name>
-                    <Experience>
-                        <MudIcon Class="mr-3" Icon="@EduIcons.Experience"/>
+                    <Points>
                         <MetricNumber Value="@user.Experience" Typo="Typo.h6"/>
-                    </Experience>
+                    </Points>
+                    <Additional>
+                        <InternalMonies Monies="@user.Rewards" Typo="Typo.h6" Horizontal/>
+                    </Additional>
                 </RegularRanking>
             </Virtualize>
         }

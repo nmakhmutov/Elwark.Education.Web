@@ -1,0 +1,25 @@
+<div class="d-flex flex-wrap align-center gap-3 @Class">
+    @foreach (var (currency, amount) in Monies)
+    {
+        <InternalMoney Currency="@currency" Amount="@amount" Typo="@Typo" IconSize="@IconSize" Horizontal="@Horizontal"/>
+    }
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public required IEnumerable<InternalMoneyModel> Monies { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body1;
+
+    [Parameter]
+    public Size IconSize { get; set; } = Size.Small;
+
+    [Parameter]
+    public bool Horizontal { get; set; }
+    
+}

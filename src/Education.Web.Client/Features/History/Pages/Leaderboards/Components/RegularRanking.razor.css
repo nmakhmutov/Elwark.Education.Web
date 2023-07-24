@@ -3,21 +3,17 @@
 }
 
 .name {
-    display: flex;
-    align-items: center;
-    flex: 1 1 0;
+    flex: 1 1 auto;
 }
 
-.level {
+.points {
     display: flex;
-    align-items: center;
-    width: 80px;
-}
-
-.experience {
-    display: flex;
-    align-items: center;
+    justify-content: end;
     width: 100px;
+}
+
+.additional {
+    display: none;
 }
 
 .highlight-paper {
@@ -29,4 +25,15 @@
 
 .mud-paper.hover:hover {
     background-color: var(--mud-palette-action-default-hover);
+}
+
+@media (min-width: 960px) {
+    .points {
+        justify-content: unset;
+    }
+
+    .additional {
+        display: flex;
+        width: 140px;
+    }
 }

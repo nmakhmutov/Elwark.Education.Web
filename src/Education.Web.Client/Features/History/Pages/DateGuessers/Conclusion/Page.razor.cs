@@ -2,7 +2,6 @@ using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.History.Services.DateGuesser;
 using Education.Web.Client.Features.History.Services.DateGuesser.Model;
 using Education.Web.Client.Http;
-using Education.Web.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -21,9 +20,6 @@ public sealed partial class Page
 
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
-
-    [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
 
     [Parameter]
     public required string Id { get; set; }

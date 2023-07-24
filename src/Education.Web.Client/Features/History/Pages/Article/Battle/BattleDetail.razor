@@ -12,25 +12,16 @@
             <div class="d-flex justify-center mb-6">
                 @if (Battle.Started == Battle.Finished)
                 {
-                    <HistoryDate
-                        Typo="Typo.subtitle1"
-                        Date="@Battle.Started"
-                        DateTimeFormatter="@Customer.Humanize"/>
+                    <HistoryDate Typo="Typo.subtitle1" Date="@Battle.Started"/>
                 }
                 else
                 {
                     <div class="d-flex align-center">
-                        <HistoryDate
-                            Typo="Typo.subtitle1"
-                            Date="@Battle.Started"
-                            DateTimeFormatter="@Customer.Humanize"/>
+                        <HistoryDate Typo="Typo.subtitle1" Date="@Battle.Started"/>
 
                         <MudText Typo="Typo.subtitle1" Class="mx-3">&#8212;</MudText>
 
-                        <HistoryDate
-                            Typo="Typo.subtitle1"
-                            Date="@Battle.Finished"
-                            DateTimeFormatter="@Customer.Humanize"/>
+                        <HistoryDate Typo="Typo.subtitle1" Date="@Battle.Finished"/>
                     </div>
                 }
             </div>
@@ -138,9 +129,6 @@
 
     [Inject]
     private ContentFormatter Formatter { get; set; } = default!;
-
-    [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public required ArticleDetail.BattleModel Battle { get; set; }

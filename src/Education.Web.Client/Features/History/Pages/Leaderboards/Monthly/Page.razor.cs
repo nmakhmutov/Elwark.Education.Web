@@ -1,5 +1,4 @@
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Pages.Leaderboards.Components;
 using Education.Web.Client.Features.History.Services.Leaderboard;
 using Education.Web.Client.Features.History.Services.Leaderboard.Model;
 using Education.Web.Client.Http;
@@ -33,14 +32,11 @@ public sealed partial class Page
     private async Task OnMonthChanged(DateOnly month) =>
         _result = await LeaderboardService.GetMonthAsync(month);
 
-    private RegularRanking.BackgroundColor GetBackgroundColor(long userId) =>
-        _highlightUser == userId ? RegularRanking.BackgroundColor.Highlight : RegularRanking.BackgroundColor.Paper;
-
-    private static ICollection<UserRankingModel> NormalizeUsers(MonthlyLeaderboardModel leaderboard)
+    private static ICollection<MonthlyContestantModel> NormalizeUsers(MonthlyLeaderboardModel leaderboard)
     {
         if (leaderboard.IsActive)
             return leaderboard.Users;
 
-        return leaderboard.Users.Length > 2 ? leaderboard.Users[3..] : Array.Empty<UserRankingModel>();
+        return leaderboard.Users.Length > 2 ? leaderboard.Users[3..] : Array.Empty<MonthlyContestantModel>();
     }
 }

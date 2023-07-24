@@ -1,7 +1,6 @@
 using Education.Web.Client.Features.History.Services.Article;
 using Education.Web.Client.Features.History.Services.Article.Model;
 using Education.Web.Client.Features.History.Services.Article.Request;
-using Education.Web.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.Extensions.Localization;
@@ -28,9 +27,6 @@ public sealed partial class Page
 
     [Inject]
     private IHistoryArticleService ArticleService { get; set; } = default!;
-
-    [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
 
     [SupplyParameterFromQuery(Name = "by")]
     public string? Sort { get; set; }
