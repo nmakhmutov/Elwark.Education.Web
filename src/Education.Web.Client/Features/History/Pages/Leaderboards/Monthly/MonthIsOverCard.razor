@@ -1,0 +1,19 @@
+<div class="card d-flex align-center gap-3 pa-3 pa-sm-6 @Class">
+    <div class="d-flex align-center flex-grow-1 mr-3 mr-sm-6">
+        <MudText Typo="Typo.h6">@L["Leaderboard_CompetitionIsOver"]</MudText>
+    </div>
+
+    <MudDivider Vertical FlexItem/>
+    
+    <MudIcon Class="icon" Icon="@Icons.Material.Outlined.EmojiEvents" Size="Size.Large"/>
+</div>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

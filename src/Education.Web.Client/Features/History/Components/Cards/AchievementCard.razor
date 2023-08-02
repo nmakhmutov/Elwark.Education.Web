@@ -23,12 +23,7 @@
                         </div>
                     </div>
                     <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
-                    <div class="d-flex flex-row">
-                        @foreach (var reward in achievement.Rewards)
-                        {
-                            <InternalMoney Class="mr-3" Typo="Typo.body1" Currency="@reward.Currency" Amount="@reward.Amount" Horizontal/>
-                        }
-                    </div>
+                    <InternalMonies Monies="@achievement.Rewards" Horizontal/>
                 </section>
             </section>
             break;
@@ -43,12 +38,7 @@
                 </h6>
                 <section class="progress">
                     <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
-                    <div class="d-flex flex-row">
-                        @foreach (var reward in achievement.Rewards)
-                        {
-                            <InternalMoney Class="mr-3" Currency="@reward.Currency" Amount="@reward.Amount" Horizontal/>
-                        }
-                    </div>
+                    <InternalMonies Monies="@achievement.Rewards" Horizontal/>
                 </section>
             </section>
             break;

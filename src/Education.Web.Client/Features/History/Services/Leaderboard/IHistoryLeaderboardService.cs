@@ -5,7 +5,7 @@ namespace Education.Web.Client.Features.History.Services.Leaderboard;
 
 public interface IHistoryLeaderboardService
 {
-    Task<ApiResult<GlobalContestantModel[]>> GetGlobalAsync();
+    Task<ApiResult<GlobalContestantModel[]>> GetGlobalAsync(string? region);
 
     Task<ApiResult<MonthlyLeaderboardModel>> GetMonthAsync(DateOnly? date = null);
 }

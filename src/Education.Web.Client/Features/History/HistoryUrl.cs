@@ -124,7 +124,7 @@ public static class HistoryUrl
 
         public const string MyAchievements = $"{My}/achievements";
 
-        public const string MyQuests = $"{My}/quests";
+        public const string MyAssignments = $"{My}/assignments";
 
         public const string MyBookmarks = $"{My}/bookmarks";
 

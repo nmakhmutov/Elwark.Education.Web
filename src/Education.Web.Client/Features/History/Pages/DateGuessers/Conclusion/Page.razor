@@ -15,6 +15,17 @@
 
     <RewardsContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
 
+    <div class="d-flex justify-center pa-3 pa-sm-6">
+        <MudButton
+            Href="@HistoryUrl.DateGuesser.Index"
+            Color="Color.Primary"
+            Variant="Variant.Filled"
+            Size="Size.Large"
+            DisableElevation>
+            @L["History_DateGuesser_TakeTheGuesserAgain"]
+        </MudButton>
+    </div>
+    
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <MudTable
             Items="@conclusion.Questions"
@@ -81,15 +92,5 @@
                 </MudTh>
             </FooterContent>
         </MudTable>
-
-        <div class="d-flex justify-center">
-            <MudButton
-                Href="@HistoryUrl.DateGuesser.Index"
-                Color="Color.Primary"
-                Variant="Variant.Filled"
-                DisableElevation>
-                @L["History_DateGuesser_TakeTheGuesserAgain"]
-            </MudButton>
-        </div>
     </EduContainer>
 </ApiViewer>

@@ -17,7 +17,18 @@
     {
         <RewardsContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
     }
-
+    
+    <div class="d-flex justify-center py-3 py-sm-6">
+        <MudButton
+            Href="@HistoryUrl.Quiz.Index(conclusion.Article.Id)"
+            Color="Color.Primary"
+            Variant="Variant.Filled"
+            Size="Size.Large"
+            DisableElevation>
+            @L["Quiz_TakeTheQuizAgain"]
+        </MudButton>
+    </div>
+    
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <div class="mb-3">
             <MudLink Href="@HistoryUrl.User.MyArticle(conclusion.Article.Id)" Typo="Typo.h5">
@@ -44,15 +55,5 @@
                 <HardConclusionTable Class="mb-3 mb-sm-6" Questions="@conclusion.Questions"/>
                 break;
         }
-
-        <div class="d-flex justify-center">
-            <MudButton
-                Href="@HistoryUrl.Quiz.Index(conclusion.Article.Id)"
-                Color="Color.Primary"
-                Variant="Variant.Filled"
-                DisableElevation>
-                @L["Quiz_TakeTheQuizAgain"]
-            </MudButton>
-        </div>
     </EduContainer>
 </ApiViewer>

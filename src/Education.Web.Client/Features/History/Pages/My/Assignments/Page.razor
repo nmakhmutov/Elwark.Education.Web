@@ -1,13 +1,13 @@
-@page "/history/my/quests"
+@page "/history/my/assignments"
 @layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Quests_Title"]
+    @L["Assignments_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Quests_Title"]" Breadcrumbs="@Breadcrumbs"/>
+    <EduPageHeader Title="@L["Assignments_Title"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" Context="data">
@@ -21,18 +21,18 @@
             {
                 case 0:
                     <div class="quests">
-                        @foreach (var quest in data.DailyQuests.Quests)
+                        @foreach (var quest in data.DailyAssignments.Assignments)
                         {
                             <QuestProgressCard Class="mb-3" Quest="@quest"/>
                         }
                     </div>
 
-                    <div class="@(data.DailyQuests.Quests.Length == 0 ? "start" : "rewards")">
+                    <div class="@(data.DailyAssignments.Assignments.Length == 0 ? "start" : "rewards")">
                         <QuestRewardsCard
                             Title="@L["Rewards_Title"]"
                             Subtitle="Complete all daily missions"
-                            Status="@data.DailyQuests.Status"
-                            ExpiresAt="@data.DailyQuests.ExpiresAt"
+                            Status="@data.DailyAssignments.Status"
+                            ExpiresAt="@data.DailyAssignments.ExpiresAt"
                             OnStart="@StartDailyQuestsAsync"
                             OnCollect="@CollectDailyQuestsAsync"
                             OnExpired="@OnInitializedAsync"/>
@@ -41,18 +41,18 @@
 
                 case 1:
                     <div class="quests">
-                        @foreach (var quest in data.WeeklyQuests.Quests)
+                        @foreach (var quest in data.WeeklyAssignments.Assignments)
                         {
                             <QuestProgressCard Class="mb-3" Quest="@quest"/>
                         }
                     </div>
 
-                    <div class="@(data.WeeklyQuests.Quests.Length == 0 ? "start" : "rewards")">
+                    <div class="@(data.WeeklyAssignments.Assignments.Length == 0 ? "start" : "rewards")">
                         <QuestRewardsCard
                             Title="@L["Rewards_Title"]"
                             Subtitle="Complete all weekly missions"
-                            Status="@data.WeeklyQuests.Status"
-                            ExpiresAt="@data.WeeklyQuests.ExpiresAt"
+                            Status="@data.WeeklyAssignments.Status"
+                            ExpiresAt="@data.WeeklyAssignments.ExpiresAt"
                             OnStart="@StartWeeklyQuestsAsync"
                             OnCollect="@CollectWeeklyQuestsAsync"
                             OnExpired="@OnInitializedAsync"/>

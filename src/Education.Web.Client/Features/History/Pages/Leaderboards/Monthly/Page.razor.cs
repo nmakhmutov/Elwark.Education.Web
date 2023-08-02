@@ -31,12 +31,4 @@ public sealed partial class Page
 
     private async Task OnMonthChanged(DateOnly month) =>
         _result = await LeaderboardService.GetMonthAsync(month);
-
-    private static ICollection<MonthlyContestantModel> NormalizeUsers(MonthlyLeaderboardModel leaderboard)
-    {
-        if (leaderboard.IsActive)
-            return leaderboard.Users;
-
-        return leaderboard.Users.Length > 2 ? leaderboard.Users[3..] : Array.Empty<MonthlyContestantModel>();
-    }
 }

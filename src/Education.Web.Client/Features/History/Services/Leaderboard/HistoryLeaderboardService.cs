@@ -10,8 +10,8 @@ internal sealed class HistoryLeaderboardService : IHistoryLeaderboardService
     public HistoryLeaderboardService(HistoryApiClient api) =>
         _api = api;
 
-    public Task<ApiResult<GlobalContestantModel[]>> GetGlobalAsync() =>
-        _api.GetAsync<GlobalContestantModel[]>("history/leaderboards/global");
+    public Task<ApiResult<GlobalContestantModel[]>> GetGlobalAsync(string? region) =>
+        _api.GetAsync<GlobalContestantModel[]>($"history/leaderboards/global/{region}");
 
     public Task<ApiResult<MonthlyLeaderboardModel>> GetMonthAsync(DateOnly? date = null) =>
         _api.GetAsync<MonthlyLeaderboardModel>(

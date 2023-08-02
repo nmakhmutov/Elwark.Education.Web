@@ -8,11 +8,11 @@
             Max="@Threshold"
             Value="@Experience"
             Rounded>
-            <div class="d-flex align-center white-text">
-                <MetricNumber Value="@Experience" Typo="Typo.caption"/>
-                <div>&nbsp;/&nbsp;</div>
-                <MetricNumber Value="@Threshold" Typo="Typo.caption"/>
-            </div>
+            <MudTooltip Text="@($"{Experience:N0} / {Threshold:N0}")">
+                <MudText Class="@(_percentage > 49 ? "white-text" : null)" Typo="Typo.caption">
+                    @Experience.ToMetric("G") / @Threshold.ToMetric("G")
+                </MudText>
+            </MudTooltip>
         </MudProgressLinear>
     }
     else

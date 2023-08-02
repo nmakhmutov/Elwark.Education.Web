@@ -4,7 +4,7 @@
         @L["Tasks:Daily"]
     </MudText>
 
-    @foreach (var item in Quest.Quests)
+    @foreach (var item in Quest.Assignments)
     {
         <section class="d-flex align-center gap-3">
             <MudAvatar Class="rounded white-text" Color="@(item.IsCompleted ? Color.Success : Color.Default)" Size="Size.Medium">
@@ -78,7 +78,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public required QuestsModel Quest { get; set; }
+    public required AssignmentsModel Quest { get; set; }
 
     [Parameter]
     public EventCallback OnCollect { get; set; }

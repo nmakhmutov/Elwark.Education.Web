@@ -16,15 +16,15 @@ public interface IHistoryUserService
 
     Task<ApiResult<IReadOnlyCollection<WalletModel>>> GetWalletAsync();
 
-    Task<ApiResult<UserQuestModel>> GetQuestAsync();
+    Task<ApiResult<UserAssignmentModel>> GetAssignmentsAsync();
 
-    Task<ApiResult<QuestsModel>> StartDailyQuestAsync();
+    Task<ApiResult<AssignmentsModel>> StartDailyAssignmentsAsync();
 
-    Task<ApiResult<QuestsModel>> CollectDailyQuestAsync();
+    Task<ApiResult<AssignmentsModel>> CollectDailyAssignmentsAsync();
 
-    Task<ApiResult<QuestsModel>> StartWeeklyQuestAsync();
+    Task<ApiResult<AssignmentsModel>> StartWeeklyAssignmentsAsync();
 
-    Task<ApiResult<QuestsModel>> CollectWeeklyQuestAsync();
+    Task<ApiResult<AssignmentsModel>> CollectWeeklyAssignmentsAsync();
 
     Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync();
 

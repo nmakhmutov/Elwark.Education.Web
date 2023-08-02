@@ -22,8 +22,20 @@
                         </MudText>
                     </div>
                 </div>
+
+                <div class="w-max-180 my-3">
+                    <MudSelect T="string" Label="@L["Region_Title"]" Value="@_region" ValueChanged="@OnRegionChanged">
+                        @foreach (var region in _regions)
+                        {
+                            <MudSelectItem Value="@region">
+                                @L[$"Region_{region}"]
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </div>
             </section>
-            @foreach (var user in items[..3])
+
+            @foreach (var user in items.Take(3))
             {
                 <TopContestantCard
                     Rank="@user.Rank"

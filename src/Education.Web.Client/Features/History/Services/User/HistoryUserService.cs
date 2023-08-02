@@ -26,20 +26,20 @@ internal sealed class HistoryUserService : IHistoryUserService
     public Task<ApiResult<IReadOnlyCollection<WalletModel>>> GetWalletAsync() =>
         _api.GetAsync<IReadOnlyCollection<WalletModel>>("history/users/me/wallet");
 
-    public Task<ApiResult<UserQuestModel>> GetQuestAsync() =>
-        _api.GetAsync<UserQuestModel>("history/users/me/quests");
+    public Task<ApiResult<UserAssignmentModel>> GetAssignmentsAsync() =>
+        _api.GetAsync<UserAssignmentModel>("history/users/me/assignments");
 
-    public Task<ApiResult<QuestsModel>> StartDailyQuestAsync() =>
-        _api.PostAsync<QuestsModel, object>("history/users/me/quests/daily", new { Status = "Start" });
+    public Task<ApiResult<AssignmentsModel>> StartDailyAssignmentsAsync() =>
+        _api.PostAsync<AssignmentsModel, object>("history/users/me/assignments/daily", new { Status = "Start" });
 
-    public Task<ApiResult<QuestsModel>> CollectDailyQuestAsync() =>
-        _api.PostAsync<QuestsModel, object>("history/users/me/quests/daily", new { Status = "Claim" });
+    public Task<ApiResult<AssignmentsModel>> CollectDailyAssignmentsAsync() =>
+        _api.PostAsync<AssignmentsModel, object>("history/users/me/assignments/daily", new { Status = "Claim" });
 
-    public Task<ApiResult<QuestsModel>> StartWeeklyQuestAsync() =>
-        _api.PostAsync<QuestsModel, object>("history/users/me/quests/weekly", new { Status = "Start" });
+    public Task<ApiResult<AssignmentsModel>> StartWeeklyAssignmentsAsync() =>
+        _api.PostAsync<AssignmentsModel, object>("history/users/me/assignments/weekly", new { Status = "Start" });
 
-    public Task<ApiResult<QuestsModel>> CollectWeeklyQuestAsync() =>
-        _api.PostAsync<QuestsModel, object>("history/users/me/quests/weekly", new { Status = "Claim" });
+    public Task<ApiResult<AssignmentsModel>> CollectWeeklyAssignmentsAsync() =>
+        _api.PostAsync<AssignmentsModel, object>("history/users/me/assignments/weekly", new { Status = "Claim" });
 
     public Task<ApiResult<DailyBonusModel>> ClaimDailyBonusAsync() =>
         _api.PutAsync<DailyBonusModel>("history/users/me/bonus/daily");

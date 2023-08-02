@@ -32,7 +32,7 @@ using Polly.Extensions.Http;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Logging
-    .SetMinimumLevel(builder.HostEnvironment.IsDevelopment() ? LogLevel.Error : LogLevel.Critical);
+    .SetMinimumLevel(builder.HostEnvironment.IsDevelopment() ? LogLevel.Information : LogLevel.Critical);
 
 // builder.RootComponents.Add<App>("#app");
 // builder.RootComponents.Add<HeadOutlet>("head::after");
@@ -124,7 +124,7 @@ builder.Services
     .AddScoped<ContentFormatter>()
     .AddScoped<CustomerStateProvider>();
 
-var app = builder.Build();
+await using var app = builder.Build();
 
 await app.Services.GetRequiredService<CustomerHab>()
     .InitAsync();

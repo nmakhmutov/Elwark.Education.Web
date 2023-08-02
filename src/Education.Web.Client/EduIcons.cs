@@ -57,7 +57,7 @@ public static class EduIcons
 
     public const string Profile = Icons.Material.Outlined.Dashboard;
 
-    public const string Quests = Icons.Material.Outlined.TaskAlt;
+    public const string Assignment = Icons.Material.Outlined.Assignment;
 
     public const string Bookmarks = Icons.Material.Outlined.Bookmarks;
 
