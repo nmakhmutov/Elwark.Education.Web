@@ -1,6 +1,17 @@
+using Education.Web.Client.Models.Content;
 using Education.Web.Client.Models.Inventory;
 using Education.Web.Client.Models.Quiz;
 
 namespace Education.Web.Client.Features.History.Services.Quiz.Model;
 
-public sealed record QuizModel(QuizOverviewModel Overview, Question Question, TestInventoryModel[] Inventory);
+public sealed record QuizModel(
+    string Id,
+    DifficultyType Type,
+    uint CompletedQuestions,
+    uint TotalQuestions,
+    bool IsCompleted,
+    DateTime ExpiredAt,
+    ArticleTitleModel Article,
+    Question Question,
+    TestInventoryModel[] Inventory
+);

@@ -7,44 +7,11 @@
 
 <ApiViewer Result="@_result" Context="items">
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
-        <header class="header">
-            <section class="title">
-                <div class="d-flex align-center">
-                    <div class="d-flex align-center justify-center mud-primary white-text rounded mr-3 mr-sm-6">
-                        <MudIcon Icon="@Icons.Material.Outlined.StarOutline" Size="Size.Large" Class="ma-6"/>
-                    </div>
-                    <div>
-                        <MudText Typo="Typo.subtitle1">
-                            @L["Leaderboard_Title"]
-                        </MudText>
-                        <MudText Typo="Typo.h3">
-                            @L["Leaderboard_GlobalTop_Title"]
-                        </MudText>
-                    </div>
-                </div>
-
-                <div class="w-max-180 my-3">
-                    <MudSelect T="string" Label="@L["Region_Title"]" Value="@_region" ValueChanged="@OnRegionChanged">
-                        @foreach (var region in _regions)
-                        {
-                            <MudSelectItem Value="@region">
-                                @L[$"Region_{region}"]
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
-                </div>
-            </section>
-
-            @foreach (var user in items.Take(3))
-            {
-                <TopContestantCard
-                    Rank="@user.Rank"
-                    Level="@user.Level"
-                    Experience="@user.Experience"
-                    Name="@user.FullName"
-                    Image="@user.Image"/>
-            }
-        </header>
+        <GlobalHeader 
+            Contestants="@items.Take(3)" 
+            Regions="@_regions"
+            Region="@_region"
+            RegionChanged="@OnRegionChanged" />
     </EduContainer>
 
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">

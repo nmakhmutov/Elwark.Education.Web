@@ -2,7 +2,6 @@ using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.History.Services.Quiz;
 using Education.Web.Client.Features.History.Services.Quiz.Model;
 using Education.Web.Client.Http;
-using Education.Web.Client.Models.Inventory;
 using Education.Web.Client.Models.Quiz;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -13,13 +12,7 @@ namespace Education.Web.Client.Features.History.Pages.Quizzes.Test;
 public sealed partial class Page
 {
     private ApiResult<QuizModel> _result = ApiResult<QuizModel>.Loading();
-    private TestInventoryModel[] _inventory = Array.Empty<TestInventoryModel>();
-    private Color _countdownColor = Color.Default;
-    private QuizOverviewModel _quiz = default!;
-    private Question _currentQuestion = default!;
-    private Question? _nextQuestion;
     private AnswerResult? _correctAnswer;
-    private string _testTypeTitle = string.Empty;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -37,90 +30,68 @@ public sealed partial class Page
     public string Id { get; set; } = string.Empty;
 
     private double Progress =>
-        (double)_quiz.Completed / _quiz.Questions * 100;
+        _result.Match(x => (double)x.CompletedQuestions / x.TotalQuestions * 100, _ => 0, () => 0);
 
     protected override async Task OnInitializedAsync()
     {
         _result = await QuizService.GetAsync(Id);
-        _result.Match(
-            x =>
-            {
-                _quiz = x.Overview;
-                _currentQuestion = x.Question;
-                _inventory = x.Inventory;
-                _testTypeTitle = L[$"Quiz_{_quiz.Type}_Title"];
-            },
-            e =>
-            {
-                if (e.IsQuizAlreadyCompleted() || e.IsQuizNotFound())
-                    Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
-            });
+        _result.MathError(e =>
+        {
+            if (e.IsQuizAlreadyCompleted() || e.IsQuizNotFound())
+                Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
+        });
     }
 
-    private async Task OnExpired()
+    private async Task OnExpiredAsync()
     {
-        _countdownColor = Color.Error;
         _result = await QuizService.GetAsync(Id);
-
-        if (_result.IsError)
-            Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
+        _result.MathError(_ => Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id)));
     }
 
-    private async Task OnAnswer(AnswerToQuestionModel answer)
+    private async Task OnAnswerAsync(AnswerToQuestionModel answer)
     {
-        var result = await QuizService.CheckAsync(_quiz.Id, _currentQuestion.Id, answer);
-        UpdateState(result);
+        var quiz = _result.Unwrap();
+        (await QuizService.CheckAsync(quiz.Id, quiz.Question.Id, answer))
+            .Match(
+                x =>
+                {
+                    _correctAnswer = x.Answer;
+                    _result = ApiResult<QuizModel>.Success(quiz with
+                    {
+                        CompletedQuestions = x.CompletedQuestions,
+                        TotalQuestions = x.TotalQuestions,
+                        IsCompleted = x.IsCompleted
+                    });
+
+                    StateHasChanged();
+                },
+                e =>
+                {
+                    if (e.IsQuizAlreadyCompleted())
+                        Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
+                    else
+                        Snackbar.Add(e.Detail, Severity.Error);
+                });
     }
 
-    private void UpdateState(ApiResult<QuizAnswerModel> result) =>
-        result.Match(
-            x =>
-            {
-                _quiz = x.Overview;
-                _inventory = x.Inventory;
-                _nextQuestion = x.NextQuestion;
-                _correctAnswer = x.Answer;
-
-                StateHasChanged();
-            },
-            e =>
-            {
-                if (e.IsQuizAlreadyCompleted())
-                    Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
-                else
-                    Snackbar.Add(e.Detail, Severity.Error);
-            });
-
-    private void OnNext()
+    private async Task OnNextAsync()
     {
-        if (_nextQuestion is null)
+        var quiz = _result.Unwrap();
+        if (quiz.IsCompleted)
         {
             Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
             return;
         }
 
-        _currentQuestion = _nextQuestion;
-        _nextQuestion = null;
         _correctAnswer = null;
+        _result = await QuizService.GetAsync(Id);
 
         StateHasChanged();
     }
 
-    private async Task OnUseInventory(uint id) =>
-        (await QuizService.ApplyInventoryAsync(_quiz.Id, id))
-        .Match(
-            x =>
-            {
-                if (x.Question is null)
-                {
-                    Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
-                    return;
-                }
-
-                _quiz = x.Overview;
-                _currentQuestion = x.Question;
-                _inventory = x.Inventory;
-            },
-            e => Snackbar.Add(e.Detail, Severity.Error)
-        );
+    private async Task OnUseInventory(uint id)
+    {
+        _result = await QuizService.ApplyInventoryAsync(Id, id);
+        _result.MathError(e => Snackbar.Add(e.Detail, Severity.Error));
+    }
 }

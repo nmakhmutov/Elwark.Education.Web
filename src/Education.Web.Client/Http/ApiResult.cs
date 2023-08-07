@@ -79,15 +79,17 @@ public sealed class ApiResult<T>
     {
         if (IsSuccess)
             success(Value);
-        else if (IsError)
+
+        if (IsError)
             error(Error);
     }
-    
+
     public async Task MatchAsync(Func<T, Task> success, Action<Error> error)
     {
         if (IsSuccess)
             await success(Value);
-        else if (IsError)
+
+        if (IsError)
             error(Error);
     }
 
@@ -123,10 +125,7 @@ public sealed class ApiResult<T>
         if (_value is not null)
             return _value.ToString() ?? "Data is null";
 
-        if (_error is not null)
-            return _error.ToString();
-
-        return Status.ToString();
+        return _error is not null ? _error.ToString()! : Status.ToString();
     }
 }
 

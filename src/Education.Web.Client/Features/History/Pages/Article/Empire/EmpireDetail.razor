@@ -8,28 +8,27 @@
 
         <section class="d-flex flex-wrap justify-center align-center">
             <div class="pa-3 pa-sm-6">
-                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Secondary">
                     @L["History_Empire_Founded"]
                 </MudText>
                 <HistoryDate Date="@Empire.Founded" Typo="Typo.h6" Align="Align.Center"/>
             </div>
 
             <div class="pa-3 pa-sm-6">
-                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Secondary">
                     @L["History_Empire_Dissolved"]
                 </MudText>
                 <HistoryDate Date="@Empire.Dissolved" Typo="Typo.h6" Align="Align.Center"/>
             </div>
 
             <div class="pa-3 pa-sm-6">
-                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Secondary">
                     @L["History_Empire_Duration"]
                 </MudText>
                 <MudText Typo="Typo.h6" Align="Align.Center">
                     @if (Empire.Duration.HasValue)
                     {
-                        @Empire.Duration.Value.ToString("N0")
-                        <small>&nbsp;@L["History_Years"].Value.ToLowerInvariant()</small>
+                        @($"{Empire.Duration.Value:N0} {L["History_Years"].Value.ToLowerInvariant()}")
                     }
                     else
                     {
@@ -39,7 +38,7 @@
             </div>
 
             <div class="pa-3 pa-sm-6">
-                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Secondary">
                     @L["History_Empire_MaxArea"]
                 </MudText>
                 <MudText Typo="Typo.h6" Align="Align.Center">
@@ -55,7 +54,7 @@
             </div>
 
             <div class="pa-3 pa-sm-6">
-                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Secondary">
                     @L["History_Empire_MaxPopulation"]
                 </MudText>
                 <MudText Typo="Typo.h6" Align="Align.Center">

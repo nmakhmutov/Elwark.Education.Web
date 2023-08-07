@@ -60,14 +60,14 @@ public sealed partial class Page
     private async Task OnQuizCreateAsync(CreateEpochQuizRequest request) =>
         (await QuizService.CreateAsync(request))
         .Match(
-            x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Overview.Id)),
+            x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Id)),
             e => Snackbar.Add(e.Detail, Severity.Error)
         );
 
     private async Task OnQuizCreateAsync(CreateArticleQuizRequest request) =>
         (await QuizService.CreateAsync(request))
         .Match(
-            x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Overview.Id)),
+            x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Id)),
             e => Snackbar.Add(e.Detail, Severity.Error)
         );
 

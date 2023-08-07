@@ -1,0 +1,62 @@
+@using Education.Web.Client.Features.History.Services.Leaderboard.Model
+<header class="header">
+    <MudChipSet
+        Class="d-flex flex-wrap justify-center mb-3 mb-sm-6"
+        SelectedChip="@_selected"
+        SelectedChipChanged="@OnChanged"
+        Mandatory>
+        @foreach (var region in Regions)
+        {
+            <MudChip 
+                Default="@(region == Region)" 
+                Value="@region"
+                Text="@L[$"Region_{region}"]" 
+                Color="Color.Primary"
+                SelectedColor="Color.Secondary"
+                Variant="Variant.Outlined"/>
+        }
+    </MudChipSet>
+
+    <h1 class="champions">
+        @L["Leaderboard_Champions"]
+    </h1>
+
+    <article class="contestants">
+        @foreach (var contestant in Contestants)
+        {
+            <TopContestantCard
+                Rank="@contestant.Rank"
+                Level="@contestant.Level"
+                Experience="@contestant.Experience"
+                Name="@contestant.FullName"
+                Image="@contestant.Image"/>
+        }
+    </article>
+</header>
+
+@code {
+    MudChip? _selected;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required IEnumerable<string> Regions { get; set; }
+
+    [Parameter, EditorRequired]
+    public required string Region { get; set; }
+
+    [Parameter, EditorRequired]
+    public required EventCallback<string> RegionChanged { get; set; }
+
+    [Parameter, EditorRequired]
+    public required IEnumerable<GlobalContestantModel> Contestants { get; set; }
+
+    private async Task OnChanged(MudChip chip)
+    {
+        _selected = chip;
+
+        await RegionChanged.InvokeAsync((string)chip.Value);
+    }
+
+}
