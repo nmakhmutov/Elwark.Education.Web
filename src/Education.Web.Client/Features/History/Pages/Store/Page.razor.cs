@@ -6,7 +6,6 @@ using Education.Web.Client.Features.History.Services.User.Model;
 using Education.Web.Client.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-using MudBlazor;
 
 namespace Education.Web.Client.Features.History.Pages.Store;
 
@@ -22,6 +21,12 @@ public sealed partial class Page
 
     [Inject]
     private IHistoryUserService UserService { get; set; } = default!;
+
+    [SupplyParameterFromQuery]
+    public string? Search { get; init; }
+
+    protected override void OnParametersSet() =>
+        _filter = _filter with { Search = Search };
 
     protected override Task OnInitializedAsync() =>
         LoadInventoryAsync();
@@ -53,7 +58,4 @@ public sealed partial class Page
 
         return false;
     }
-
-    private Color GetBackpackColor() =>
-        _possessions.Backpack.IsFull ? Color.Error : Color.Default;
 }

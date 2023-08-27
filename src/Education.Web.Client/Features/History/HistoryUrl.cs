@@ -97,7 +97,11 @@ public static class HistoryUrl
 
     public static class Store
     {
-        public const string Index = $"{Root}/store";
+        public static string Index() =>
+            $"{Root}/store";
+
+        public static string Index(string search) =>
+            $"{Root}/store?search={search}";
     }
 
     public static class User

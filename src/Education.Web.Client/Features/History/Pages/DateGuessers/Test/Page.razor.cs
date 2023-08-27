@@ -22,7 +22,7 @@ public sealed partial class Page
         new()
         {
             new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-            new BreadcrumbItem(L["History_DateGuesser_Title"], HistoryUrl.DateGuesser.Index)
+            new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.DateGuesser.Index)
         };
 
     [Inject]

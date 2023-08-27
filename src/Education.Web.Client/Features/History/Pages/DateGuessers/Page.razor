@@ -3,11 +3,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_DateGuesser_Title"]
+    @L["History_DateGuessers_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
-    <EduPageHeader Title="@L["History_DateGuesser_Title"]" Breadcrumbs="@Breadcrumbs"/>
+    <EduPageHeader Title="@L["History_DateGuessers_Title"]" Breadcrumbs="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" Context="model">
@@ -25,10 +25,10 @@
                 @L["Quiz_Type_Title"]
             </MudText>
             <DateGuesserTypeRadioGroup
+                Class="mb-3 mb-sm-6"
                 SelectedGuesser="@_settings.Size"
                 SelectedGuesserChanged="@OnSizeChanged"
-                Guessers="@model.Tests"
-                Class="mb-3 mb-sm-6"/>
+                Guessers="@model.Tests"/>
 
             <div class="d-flex justify-center">
                 <LoadingButton
@@ -48,7 +48,7 @@
             <MudText Typo="Typo.h6" Class="mb-3">
                 @L["History_DateGuesser_Equipment"]
             </MudText>
-            <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index" Context="inventory">
+            <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index(L["History_Store_DateGuesser_Category"])" Context="inventory">
                 <InventoryInfoCard
                     Title="@inventory.Title"
                     Overview="@inventory.Overview"

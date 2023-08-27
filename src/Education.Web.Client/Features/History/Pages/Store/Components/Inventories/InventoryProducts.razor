@@ -92,7 +92,13 @@
             };
 
         if (!string.IsNullOrEmpty(Filter.Search))
-            source = source.Where(x => x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase));
+            source = source.Where(x =>
+            {
+                var title = x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase);
+                var category = x.Category.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase);
+
+                return title || category;
+            });
 
         return source.ToArray();
     }
