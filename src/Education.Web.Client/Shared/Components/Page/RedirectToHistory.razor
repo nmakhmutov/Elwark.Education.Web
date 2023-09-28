@@ -1,0 +1,11 @@
+@using Education.Web.Client.Features.History
+
+@code {
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    protected override void OnInitialized() =>
+        Navigation.NavigateTo(HistoryUrl.Root);
+
+}

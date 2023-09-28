@@ -1,9 +1,7 @@
-using System.Collections.ObjectModel;
 using Education.Web.Client.Features.History.Pages.Store.Components;
 using Education.Web.Client.Features.History.Services.Store.Model;
 using Education.Web.Client.Features.History.Services.User;
 using Education.Web.Client.Features.History.Services.User.Model;
-using Education.Web.Client.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -12,9 +10,7 @@ namespace Education.Web.Client.Features.History.Pages.Store;
 public sealed partial class Page
 {
     private ProductsFilter _filter = ProductsFilter.Empty;
-
-    private PossessionsModel _possessions =
-        new(ReadOnlyDictionary<InternalCurrency, long>.Empty, new PossessionsModel.BackpackModel(0, 0, 0));
+    private PossessionsModel _possessions = PossessionsModel.Empty;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

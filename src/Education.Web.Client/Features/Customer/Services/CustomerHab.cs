@@ -17,14 +17,14 @@ internal sealed class CustomerHab : IAsyncDisposable
         _connection = new HubConnectionBuilder()
             .WithUrl(new Uri(host, "/hubs/notification"), options =>
             {
-                options.UseAcks = true;
+                options.UseStatefulReconnect = true;
                 options.AccessTokenProvider = async () =>
                 {
                     var result = await tokenProvider.RequestAccessToken();
                     return result.TryGetToken(out var token) ? token.Value : null;
                 };
             })
-            .WithAutomaticReconnect(new RetryPolicy())
+            .WithAutomaticReconnect(RetryPolicy.Instance)
             .Build();
 
         _connection.On<CustomerChangedType>("Customers", status => OnCustomerChanged.Invoke(status));
@@ -61,6 +61,12 @@ internal sealed class CustomerHab : IAsyncDisposable
 
     private sealed class RetryPolicy : IRetryPolicy
     {
+        public static readonly RetryPolicy Instance = new();
+
+        private RetryPolicy()
+        {
+        }
+        
         public TimeSpan? NextRetryDelay(RetryContext retryContext) =>
             retryContext.PreviousRetryCount switch
             {
