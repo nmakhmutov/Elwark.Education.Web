@@ -69,11 +69,8 @@ public sealed class ApiResult<T>
             success(Value);
     }
 
-    public async Task MatchAsync(Func<T, Task> success)
-    {
-        if (IsSuccess)
-            await success(Value);
-    }
+    public Task MatchAsync(Func<T, Task> success) =>
+        IsSuccess ? success(Value) : Task.CompletedTask;
 
     public void Match(Action<T> success, Action<Error> error)
     {

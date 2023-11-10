@@ -61,8 +61,11 @@ public sealed partial class Page
             .UnwrapOrElse(() => ReadOnlyDictionary<string, int>.Empty);
     }
 
-    private void OnPagination(int page) =>
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
+    private void OnPagination(int page)
+    {
+        CurrentPage = page;
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page < 2 ? null : page));
+    }
 
     private void OnSearchSubmit()
     {

@@ -100,13 +100,10 @@
 @code {
     private NotificationsRequest _request = new(10);
     private ApiResult<PagingTokenModel<NotificationModel>> _result = ApiResult<PagingTokenModel<NotificationModel>>.Loading();
-    private readonly List<NotificationModel> _notifications = new();
+    private readonly List<NotificationModel> _notifications = [];
     private bool _isMoreLoading;
 
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["Account_Title"], CustomerUrl.Root)
-    };
+    private List<BreadcrumbItem> Breadcrumbs => [new BreadcrumbItem(L["Account_Title"], CustomerUrl.Root)];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

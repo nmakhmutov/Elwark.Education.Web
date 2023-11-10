@@ -18,36 +18,31 @@
 
 @code {
 
-    private ApexChartOptions<Data> Options => new()
-    {
-        PlotOptions = new PlotOptions
+    private ApexChartOptions<Data> Options =>
+        new()
         {
-            Bar = new PlotOptionsBar
+            PlotOptions = new PlotOptions
             {
-                Horizontal = true
-            }
-        },
-        Tooltip = new Tooltip
-        {
-            Enabled = false
-        },
-        Chart = new Chart
-        {
-            Toolbar = new Toolbar
-            {
-                Show = false
+                Bar = new PlotOptionsBar
+                {
+                    Horizontal = true
+                }
             },
-            Background = "transparent",
-            ForeColor = "var(--mud-palette-text-primary)"
-        },
-        Colors = new List<string>
-        {
-            Colors.Blue.Default,
-            Colors.DeepPurple.Default,
-            Colors.Green.Accent4,
-            Colors.Red.Default
-        }
-    };
+            Tooltip = new Tooltip
+            {
+                Enabled = false
+            },
+            Chart = new Chart
+            {
+                Toolbar = new Toolbar
+                {
+                    Show = false
+                },
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Colors = [Colors.Blue.Default, Colors.DeepPurple.Default, Colors.Green.Accent4, Colors.Red.Default]
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -58,26 +53,17 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private List<Data> Series => new()
-    {
-        new Data(L["Questions_Correct"], 0, Colors.Green.Accent4),
-        new Data(L["Questions_Correct"], Value.Correct, Colors.Green.Accent4),
-        new Data(L["Questions_Incorrect"], 0, Colors.Red.Default),
-        new Data(L["Questions_Incorrect"], Value.Incorrect, Colors.Red.Default),
-        new Data(L["Questions_Answered"], 0, Colors.Blue.Default),
-        new Data(L["Questions_Answered"], Value.Answered, Colors.Blue.Default),
-        new Data(L["Questions_NotAnswered"], 0, Colors.DeepPurple.Default),
-        new Data(L["Questions_NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default)
-    };
+    private List<Data> Series => [new Data(L["Questions_Correct"], 0, Colors.Green.Accent4), new Data(L["Questions_Correct"], Value.Correct, Colors.Green.Accent4), new Data(L["Questions_Incorrect"], 0, Colors.Red.Default), new Data(L["Questions_Incorrect"], Value.Incorrect, Colors.Red.Default), new Data(L["Questions_Answered"], 0, Colors.Blue.Default), new Data(L["Questions_Answered"], Value.Answered, Colors.Blue.Default), new Data(L["Questions_NotAnswered"], 0, Colors.DeepPurple.Default), new Data(L["Questions_NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default)];
 
-    private ChartList.Item[] Items => new[]
-    {
-        new ChartList.Item(L["Questions_Correct"], Value.Correct, Colors.Green.Accent4),
-        new ChartList.Item(L["Questions_Incorrect"], Value.Incorrect, Colors.Red.Default),
-        new ChartList.Item(L["Questions_Answered"], Value.Answered, Colors.Blue.Default),
-        new ChartList.Item(L["Questions_NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default),
-        new ChartList.Item(L["Questions_Total"], Value.Questions, null)
-    };
+    private ChartList.Item[] Items =>
+        new[]
+        {
+            new ChartList.Item(L["Questions_Correct"], Value.Correct, Colors.Green.Accent4),
+            new ChartList.Item(L["Questions_Incorrect"], Value.Incorrect, Colors.Red.Default),
+            new ChartList.Item(L["Questions_Answered"], Value.Answered, Colors.Blue.Default),
+            new ChartList.Item(L["Questions_NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default),
+            new ChartList.Item(L["Questions_Total"], Value.Questions, null)
+        };
 
     private sealed record Data(string Name, uint Value, string Color);
 

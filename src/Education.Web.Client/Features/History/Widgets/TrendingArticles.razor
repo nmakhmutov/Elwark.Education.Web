@@ -49,14 +49,14 @@
         _result = await HistoryArticleService
             .GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 0, 6));
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)
-            return;
+            return Task.CompletedTask;
 
         _subscriptionId = Guid.NewGuid();
         var options = new ResizeOptions { NotifyOnBreakpointOnly = true };
-        await ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
+        return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
     }
 
     private void OnBreakpointChanged(Breakpoint breakpoint)

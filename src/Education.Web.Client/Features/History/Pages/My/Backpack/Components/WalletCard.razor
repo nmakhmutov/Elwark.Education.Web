@@ -90,7 +90,7 @@
 @code {
     private double _tendingValue;
     private string? _tendingIcon;
-    private readonly List<ApexData> _apex = new();
+    private readonly List<ApexData> _apex = [];
 
     private readonly ApexChartOptions<ApexData> _options = new()
     {
@@ -109,10 +109,7 @@
         },
         Stroke = new Stroke
         {
-            Colors = new List<string>
-            {
-                "#FFFFFF"
-            },
+            Colors = ["#FFFFFF"],
             Curve = Curve.Smooth,
             Width = 3
         }

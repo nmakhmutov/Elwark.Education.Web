@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 
-namespace Education.Web.Client.Features.History.Pages.My.EventGuessers.Details;
+namespace Education.Web.Client.Features.History.Pages.My.DateGuessers.Details;
 
 public sealed partial class Page
 {
@@ -13,12 +13,7 @@ public sealed partial class Page
     private ApiResult<DateGuesserStatisticsModel> _result = ApiResult<DateGuesserStatisticsModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs =>
-        new()
-        {
-            new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-            new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
-            new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.User.MyDateGuessers)
-        };
+        [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root), new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile), new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.User.MyDateGuessers)];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

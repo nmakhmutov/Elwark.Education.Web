@@ -1,7 +1,7 @@
 .grid {
     display: grid;
     gap: 12px;
-    height: 100%;
+    grid-template-columns: 100%;
 }
 
 @media (min-width: 600px) {
@@ -13,47 +13,23 @@
 @media (min-width: 960px) {
     .grid {
         grid-template-columns: repeat(12, 1fr);
-        grid-template-rows: 48px auto;
     }
 
-    ::deep .nav {
-        grid-column: span 8;
-        grid-row: 1;
+    .grid .sidebar {
+        grid-column: span 5;
     }
 
-    ::deep .quests {
-        grid-column: span 8;
-    }
-
-    ::deep .rewards {
-        grid-column: span 8;
-        grid-row: 2;
-    }
-
-    ::deep .start {
-        grid-column: 3 / 8;
-    }
-
-    ::deep .bonus {
-        grid-column: span 4;
-        grid-row: 1 / 3;
+    .grid .content {
+        grid-column: span 7;
     }
 }
 
-@media (min-width: 1440px) {
-    ::deep .nav {
+@media (min-width: 1600px) {
+    .grid .sidebar {
+        grid-column: span 3;
+    }
+
+    .grid .content {
         grid-column: span 9;
-    }
-
-    ::deep .quests {
-        grid-column: span 6;
-    }
-
-    ::deep .rewards {
-        grid-column: span 3;
-    }
-
-    ::deep .bonus {
-        grid-column: span 3;
     }
 }

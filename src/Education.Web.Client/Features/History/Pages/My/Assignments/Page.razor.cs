@@ -9,15 +9,10 @@ namespace Education.Web.Client.Features.History.Pages.My.Assignments;
 
 public sealed partial class Page
 {
-    private int _index;
     private ApiResult<UserAssignmentModel> _result = ApiResult<UserAssignmentModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs =>
-        new()
-        {
-            new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-            new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
-        };
+        [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root), new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -30,25 +25,25 @@ public sealed partial class Page
 
     private async Task ClaimDailyBonusAsync() =>
         _result = (await UserService.ClaimDailyBonusAsync())
-            .Map(x => _result.Unwrap() with { DailyBonus = x });
+            .Map(bonus => _result.Unwrap() with { DailyBonus = bonus });
 
     private async Task RejectDailyBonusAsync() =>
         _result = (await UserService.RejectDailyBonusAsync())
-            .Map(x => _result.Unwrap() with { DailyBonus = x });
+            .Map(bonus => _result.Unwrap() with { DailyBonus = bonus });
 
     private async Task StartDailyQuestsAsync() =>
         _result = (await UserService.StartDailyAssignmentsAsync())
-            .Map(x => _result.Unwrap() with { DailyAssignments = x });
+            .Map(assignments => _result.Unwrap() with { DailyAssignments = assignments });
 
     private async Task CollectDailyQuestsAsync() =>
         _result = (await UserService.CollectDailyAssignmentsAsync())
-            .Map(x => _result.Unwrap() with { DailyAssignments = x });
+            .Map(assignments => _result.Unwrap() with { DailyAssignments = assignments });
 
     private async Task StartWeeklyQuestsAsync() =>
         _result = (await UserService.StartWeeklyAssignmentsAsync())
-            .Map(x => _result.Unwrap() with { WeeklyAssignments = x });
+            .Map(assignments => _result.Unwrap() with { WeeklyAssignments = assignments });
 
     private async Task CollectWeeklyQuestsAsync() =>
         _result = (await UserService.CollectWeeklyAssignmentsAsync())
-            .Map(x => _result.Unwrap() with { WeeklyAssignments = x });
+            .Map(assignments => _result.Unwrap() with { WeeklyAssignments = assignments });
 }

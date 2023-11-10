@@ -19,10 +19,7 @@ public sealed partial class Page
     private ApiResult<QuizBuilderModel> _result = ApiResult<QuizBuilderModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs =>
-        new()
-        {
-            new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)
-        };
+        [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

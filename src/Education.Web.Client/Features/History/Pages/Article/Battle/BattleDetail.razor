@@ -118,11 +118,7 @@
 @code {
     private Dictionary<string, List<MarkupString>> _conflictParties = new();
 
-    private List<BreadcrumbItem> Breadcrumbs => new()
-    {
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L[Battle.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Battle.Epoch))
-    };
+    private List<BreadcrumbItem> Breadcrumbs => [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root), new BreadcrumbItem(L[Battle.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Battle.Epoch))];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -158,10 +154,10 @@
     {
         _conflictParties = new Dictionary<string, List<MarkupString>>
         {
-            { nameof(ConflictPartyModel.Belligerents), new List<MarkupString> { Battle.ConflictParties[0].Belligerents } },
-            { nameof(ConflictPartyModel.Commanders), new List<MarkupString> { Battle.ConflictParties[0].Commanders } },
-            { nameof(ConflictPartyModel.Strength), new List<MarkupString> { Battle.ConflictParties[0].Strength } },
-            { nameof(ConflictPartyModel.Losses), new List<MarkupString> { Battle.ConflictParties[0].Losses } }
+            { nameof(ConflictPartyModel.Belligerents), [Battle.ConflictParties[0].Belligerents] },
+            { nameof(ConflictPartyModel.Commanders), [Battle.ConflictParties[0].Commanders] },
+            { nameof(ConflictPartyModel.Strength), [Battle.ConflictParties[0].Strength] },
+            { nameof(ConflictPartyModel.Losses), [Battle.ConflictParties[0].Losses] }
         };
 
         for (var i = 1; i < Battle.ConflictParties.Length; i++)

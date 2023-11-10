@@ -4,8 +4,7 @@ public sealed record ProfileModel(
     ProfileModel.LevelModel Level,
     ulong TotalQuizzes,
     ulong TotalDateGuessers,
-    ProfileModel.AchievementModel Achievements,
-    UserArticleOverviewModel[] RecentArticles
+    ProfileModel.AchievementModel Achievements
 )
 {
     public sealed record LevelModel(uint Level, ulong Experience, ulong Threshold);

@@ -23,6 +23,8 @@ public interface IHistoryLearnerService
 
     Task<ApiResult<DateGuesserStatisticsModel>> GetLargeDateGuesserStatisticsAsync();
 
+    public Task<ApiResult<UserArticleOverviewModel[]>> GetRecentArticlesAsync();
+
     Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest request);
 
     Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId);

@@ -19,11 +19,7 @@ public sealed partial class Page
     private DateGuesserModel.QuestionModel _question = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
-        new()
-        {
-            new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-            new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.DateGuesser.Index)
-        };
+        [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root), new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.DateGuesser.Index)];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

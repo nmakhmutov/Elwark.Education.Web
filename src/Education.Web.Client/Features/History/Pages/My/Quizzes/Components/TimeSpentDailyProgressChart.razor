@@ -44,16 +44,15 @@ function(value) {
 
     private ApexChartOptions<QuizStatisticsModel.DailyProgress> _options = new()
     {
-        Yaxis = new List<YAxis>
-        {
-            new()
+        Yaxis = [
+            new YAxis
             {
                 Labels = new YAxisLabels
                 {
                     Formatter = Formatter
                 }
             }
-        },
+        ],
         Tooltip = new Tooltip
         {
             Y = new TooltipY

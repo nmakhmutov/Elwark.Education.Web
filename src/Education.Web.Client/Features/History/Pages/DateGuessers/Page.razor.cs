@@ -18,10 +18,7 @@ public sealed partial class Page
     private ApiResult<DateGuesserBuilderModel> _result = ApiResult<DateGuesserBuilderModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs =>
-        new()
-        {
-            new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)
-        };
+        [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -44,11 +41,9 @@ public sealed partial class Page
         _result = await DateGuesserService.GetAsync();
 
         await _result.MatchAsync(
-            async model =>
-            {
-                if (!model.Tests.Any(x => x.IsAllowed && x.Type == _settings.Size))
-                    await OnSizeChanged(model.Tests.FirstOrDefault(x => x.IsAllowed)?.Type);
-            },
+            model => model.Tests.Any(x => x.IsAllowed && x.Type == _settings.Size)
+                ? Task.CompletedTask
+                : OnSizeChanged(model.Tests.FirstOrDefault(x => x.IsAllowed)?.Type),
             error =>
             {
                 if (error.IsDateGuesserAlreadyCreated(out var id))

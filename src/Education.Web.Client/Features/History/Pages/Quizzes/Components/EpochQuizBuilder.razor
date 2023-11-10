@@ -57,13 +57,10 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (Quizzes.Any(x => x.IsAllowed && x.Type == Difficulty))
-            return;
-
-        await DifficultyChanged.InvokeAsync(Quizzes.FirstOrDefault(x => x.IsAllowed)?.Type);
-    }
+    protected override Task OnInitializedAsync() =>
+        Quizzes.Any(x => x.IsAllowed && x.Type == Difficulty)
+            ? Task.CompletedTask
+            : DifficultyChanged.InvokeAsync(Quizzes.FirstOrDefault(x => x.IsAllowed)?.Type);
 
     private async Task CreateTestAsync()
     {

@@ -52,11 +52,11 @@
     [Parameter, EditorRequired]
     public required IEnumerable<GlobalContestantModel> Contestants { get; set; }
 
-    private async Task OnChanged(MudChip chip)
+    private Task OnChanged(MudChip chip)
     {
         _selected = chip;
 
-        await RegionChanged.InvokeAsync((string)chip.Value);
+        return RegionChanged.InvokeAsync((string)chip.Value);
     }
 
 }

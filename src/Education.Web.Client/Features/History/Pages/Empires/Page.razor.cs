@@ -31,22 +31,23 @@ public sealed partial class Page
     [SupplyParameterFromQuery(Name = "by")]
     public string? Sort { get; set; }
 
-    protected override async Task OnParametersSetAsync()
+    protected override Task OnParametersSetAsync()
     {
         _sort = Map(Sort);
-        
-        if(!string.IsNullOrEmpty(Sort))
-            await _empireVirtualize.RefreshDataAsync();
+
+        return string.IsNullOrEmpty(Sort) 
+            ? Task.CompletedTask 
+            : _empireVirtualize.RefreshDataAsync();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)
-            return;
+            return Task.CompletedTask;
 
         _subscriptionId = Guid.NewGuid();
         var options = new ResizeOptions { NotifyOnBreakpointOnly = true, SuppressInitEvent = false };
-        await ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
+        return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
     }
 
     private void SortChanged(GetEmpiresRequest.SortType sort)

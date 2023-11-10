@@ -29,19 +29,33 @@
                 <ScoreChart Value="@profile.HardQuiz.Score"/>
             </StatisticsCard>
 
-            <ActivityCard
-                Class="grid-column-sm-full"
-                Title="@L["Activities_Daily_Title"]"
-                Activities="@_daily"
-                DateFormat="dd MMM"/>
-
+            <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
+                <MudText Typo="Typo.h5">
+                    @L["Activities_Daily_Title"]
+                </MudText>
+                @if (_monthly.Length > 0)
+                {
+                    <ActivityChart Activities="@_daily" DateFormat="dd MMM"/>
+                }
+                else
+                {
+                    <MudText>
+                        @L["Activities_NoActivitiesWithinTheLast30Days"]
+                    </MudText>
+                }
+            </section>
+            
             @if (_monthly.Length > 1)
             {
-                <ActivityCard
-                    Class="grid-column-full"
-                    Title="@L["Activities_Monthly_Title"]"
-                    Activities="@_monthly"
-                    DateFormat="MMM yyyy"/>
+                <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
+                    <MudText Typo="Typo.h5">
+                        @L["Activities_Monthly_Title"]
+                    </MudText>
+                    @if (_monthly.Length > 0)
+                    {
+                        <ActivityChart Activities="@_monthly" DateFormat="MMM yyyy"/>
+                    }
+                </section>
             }
         </EduFillGrid>
     </EduContainer>

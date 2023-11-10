@@ -1,29 +1,25 @@
 @using Education.Web.Client.Features.History.Services.Learner.Model.Quiz
 @using ApexCharts
-<section class="mud-paper pa-3 pa-sm-6 @Class">
-    <MudText Typo="Typo.h5">
-        @Title
-    </MudText>
-    <ApexChart @ref="@(_chart)" TItem="QuizzesStatisticsModel.ProgressModel" Options="_options">
-        <ApexPointSeries
-            TItem="QuizzesStatisticsModel.ProgressModel"
-            Items="Activities"
-            Name="@L["Quizzes_Easy_Title"]"
-            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten3 })"
-            SeriesType="SeriesType.Area"
-            XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.Easy)"/>
 
-        <ApexPointSeries
-            TItem="QuizzesStatisticsModel.ProgressModel"
-            Items="Activities"
-            Name="@L["Quizzes_Hard_Title"]"
-            Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten1 })"
-            SeriesType="SeriesType.Area"
-            XValue="@(e => e.Date.ToString(DateFormat))"
-            YValue="@(x => x.Hard)"/>
-    </ApexChart>
-</section>
+<ApexChart @ref="@(_chart)" TItem="QuizzesStatisticsModel.ProgressModel" Options="_options">
+    <ApexPointSeries
+        TItem="QuizzesStatisticsModel.ProgressModel"
+        Items="Activities"
+        Name="@L["Quizzes_Easy_Title"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten3 })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString(DateFormat))"
+        YValue="@(x => x.Easy)"/>
+
+    <ApexPointSeries
+        TItem="QuizzesStatisticsModel.ProgressModel"
+        Items="Activities"
+        Name="@L["Quizzes_Hard_Title"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten1 })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString(DateFormat))"
+        YValue="@(x => x.Hard)"/>
+</ApexChart>
 
 @code {
     private ApexChart<QuizzesStatisticsModel.ProgressModel>? _chart;
@@ -53,12 +49,6 @@
 
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
-
-    [Parameter]
-    public string? Class { get; set; }
-
-    [Parameter]
-    public string? Title { get; set; }
 
     [Parameter]
     public string DateFormat { get; set; } = "dd MMM";
