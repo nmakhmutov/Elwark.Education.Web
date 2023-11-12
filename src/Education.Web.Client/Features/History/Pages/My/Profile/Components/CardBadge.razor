@@ -1,19 +1,17 @@
-<section class="mud-paper @Class">
-    <article class="d-flex align-center pa-3 pa-sm-6">
-        <MudAvatar Class="mr-3 mr-sm-6" Rounded="true" Color="Color.Primary" Size="Size.Large">
+<section class="d-flex flex-column mud-paper @Class">
+    <article class="d-flex align-start gap-3 flex-grow-1 border-b mud-border-lines-default pa-3 pa-sm-6">
+        <MudAvatar Rounded="true" Color="Color.Primary" Size="Size.Large">
             <MudIcon Icon="@Icon" Size="Size.Large"/>
         </MudAvatar>
 
-        <section>
+        <span>
             <MudText Class="mud-text-secondary" Typo="Typo.subtitle2">@Title</MudText>
-            <MetricNumber Value="@Value" Typo="Typo.h4"/>
-        </section>
+            <MetricNumber Value="@Value" Typo="Typo.h5"/>
+        </span>
     </article>
 
     @if (ChildContent is not null)
     {
-        <MudDivider/>
-
         <footer class="pa-3">
             @ChildContent
         </footer>

@@ -9,61 +9,50 @@
 <ApiViewer Result="@_result" Context="profile">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
-            <header class="header">
-                <MudText Typo="Typo.h2">
-                    @L["User_Profile_Title"]
-                </MudText>
-            </header>
+            <ProfileCard Class="profile" Customer="@Customer">
+                <UserLevelProgress
+                    Class="pa-3 pa-sm-6"
+                    Level="@profile.Level.Level"
+                    Experience="@profile.Level.Experience"
+                    Threshold="@profile.Level.Threshold"
+                    OnLevelClick="@OnLevelClick"/>
+            </ProfileCard>
 
-            <aside class="sidebar">
-                <EduFitGrid Class="align-start">
-                    <ProfileCard Customer="@Customer">
-                        <UserLevelProgress
-                            Class="pa-3 pa-sm-6"
-                            Level="@profile.Level.Level"
-                            Experience="@profile.Level.Experience"
-                            Threshold="@profile.Level.Threshold"
-                            OnLevelClick="@OnLevelClick"/>
-                    </ProfileCard>
+            <CardBadge
+                Class="quizzes"
+                Title="@L["Quizzes_Title"]"
+                Value="@profile.TotalQuizzes"
+                Icon="@EduIcons.Quiz">
+                <MudButton
+                    Class="text-transform-none"
+                    EndIcon="@Icons.Material.Outlined.ArrowForward"
+                    Href="@HistoryUrl.User.MyQuizzes">
+                    @L["Quizzes_SeeAll"]
+                </MudButton>
+            </CardBadge>
 
-                    <AchievementsCard
-                        Customer="@Customer"
-                        Total="@profile.Achievements.Total"
-                        Completed="@profile.Achievements.Unlocked"
-                        Completeness="@profile.Achievements.Completeness"
-                        LatestCompletedAchievement="@profile.Achievements.LatestCompletedAchievement"/>
-                </EduFitGrid>
-            </aside>
+            <CardBadge
+                Class="date-guessers"
+                Title="@L["History_DateGuessers_Title"]"
+                Value="@profile.TotalDateGuessers"
+                Icon="@EduIcons.DateGuesser">
+                <MudButton
+                    Class="text-transform-none"
+                    EndIcon="@Icons.Material.Outlined.ArrowForward"
+                    Href="@HistoryUrl.User.MyDateGuessers">
+                    @L["History_DateGuessers_SeeAll"]
+                </MudButton>
+            </CardBadge>
 
-            <section class="content">
-                <EduFillGrid Class="mb-3 mb-sm-6">
-                    <CardBadge
-                        Title="@L["Quizzes_Title"]"
-                        Value="@profile.TotalQuizzes"
-                        Icon="@EduIcons.Quiz">
-                        <MudButton
-                            Class="text-transform-none"
-                            EndIcon="@Icons.Material.Outlined.ArrowForward"
-                            Href="@HistoryUrl.User.MyQuizzes">
-                            @L["Quizzes_SeeAll"]
-                        </MudButton>
-                    </CardBadge>
+            <AchievementsCard
+                Class="achievement"
+                Customer="@Customer"
+                Total="@profile.Achievements.Total"
+                Completed="@profile.Achievements.Unlocked"
+                Completeness="@profile.Achievements.Completeness"
+                LatestCompletedAchievement="@profile.Achievements.LatestCompletedAchievement"/>
 
-                    <CardBadge
-                        Title="@L["History_DateGuessers_Title"]"
-                        Value="@profile.TotalDateGuessers"
-                        Icon="@EduIcons.DateGuesser">
-                        <MudButton
-                            Class="text-transform-none"
-                            EndIcon="@Icons.Material.Outlined.ArrowForward"
-                            Href="@HistoryUrl.User.MyDateGuessers">
-                            @L["History_DateGuessers_SeeAll"]
-                        </MudButton>
-                    </CardBadge>
-                </EduFillGrid>
-
-                <RecentArticles/>
-            </section>
+            <RecentArticles Class="recent-articles"/>
         </section>
     </EduContainer>
 </ApiViewer>

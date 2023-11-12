@@ -5,7 +5,7 @@
 <CascadingValue TValue="CascadingTheme" Value="@(this)" ChildContent="@ChildContent"/>
 
 @code {
-        private const string CacheKey = "ts";
+    private const string CacheKey = "ts";
     private MudThemeProvider _provider = new();
 
     private static readonly MudTheme ThemeConfiguration = new()
@@ -82,7 +82,8 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    public MudTheme Theme => _provider.Theme!;
+    public MudTheme Theme =>
+        _provider.Theme!;
 
     public bool IsDarkMode { get; private set; }
 
@@ -94,19 +95,17 @@
         if (!firstRender)
             return;
 
-        await _provider.WatchSystemPreference(x => ChangeTheme(x));
-
         IsDarkMode = await Storage.GetItemAsync<bool?>(CacheKey) ?? await _provider.GetSystemPreference();
+        await _provider.WatchSystemPreference(OnSystemPreferenceChanged);
     }
-
-    private Task ChangeTheme(bool isDarkMode) =>
-        InvokeAsync(() =>
-        {
-            IsDarkMode = isDarkMode;
-            StateHasChanged();
-        });
 
     public async Task ToggleAsync() =>
         await Storage.SetItemAsync(CacheKey, IsDarkMode = !IsDarkMode);
+
+    private async Task OnSystemPreferenceChanged(bool isDarkMode)
+    {
+        await Storage.SetItemAsync(CacheKey, IsDarkMode = isDarkMode);
+        StateHasChanged();
+    }
 
 }

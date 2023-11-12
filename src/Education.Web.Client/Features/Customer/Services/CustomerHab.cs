@@ -66,7 +66,7 @@ internal sealed class CustomerHab : IAsyncDisposable
         private RetryPolicy()
         {
         }
-        
+
         public TimeSpan? NextRetryDelay(RetryContext retryContext) =>
             retryContext.PreviousRetryCount switch
             {

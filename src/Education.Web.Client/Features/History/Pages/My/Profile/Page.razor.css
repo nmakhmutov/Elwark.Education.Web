@@ -4,58 +4,60 @@
     height: 100%;
 }
 
+::deep .achievement {
+    width: 100%;
+}
+
 @media (min-width: 600px) {
     .grid {
+        grid-template-columns: 1fr 1fr;
         gap: 24px;
+        grid-template-areas: 
+            "quizzes profile"
+            "dg profile"
+            ". achievement"
+            "ra ra";
+    }
+
+    ::deep .profile {
+        grid-area: profile;
+    }
+
+    ::deep .quizzes {
+        grid-area: quizzes;
+    }
+
+    ::deep .date-guessers {
+        grid-area: dg;
+    }
+
+    ::deep .achievement {
+        grid-area: achievement;
+    }
+
+    ::deep .recent-articles {
+        grid-area: ra;
     }
 }
 
 @media (min-width: 960px) {
     .grid {
-        grid-template-columns: repeat(12, 1fr);
-    }
-
-    .grid .header {
-        grid-column: span 7;
-        order: 1;
-    }
-
-    .grid .sidebar {
-        grid-column: span 5;
-        grid-row: span 2;
-        order: 2;
-    }
-
-    .grid .content {
-        grid-column: span 7;
-        order: 3;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-areas: 
+            "quizzes dg profile"
+            "ra ra profile"
+            "ra ra achievement"
+            "ra ra .";
     }
 }
 
 @media (min-width: 1280px) {
-    .grid .header {
-        grid-column: span 8;
-    }
-
-    .grid .sidebar {
-        grid-column: span 4;
-    }
-
-    .grid .content {
-        grid-column: span 8;
-    }
-}
-
-@media (min-width: 1600px) {
-    .grid .header {
-        grid-column: span 9;
-    }
-
-    .grid .sidebar {
-        grid-column: span 3;
-    }
-
-    .grid .content {
-        grid-column: span 9;
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-areas: 
+            "quizzes dg . profile"
+            "ra ra ra profile"
+            "ra ra ra achievement"
+            "ra ra ra .";
     }
 }

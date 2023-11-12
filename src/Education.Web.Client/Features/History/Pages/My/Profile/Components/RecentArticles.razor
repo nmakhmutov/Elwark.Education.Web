@@ -1,25 +1,42 @@
 @using Education.Web.Client.Features.History.Services.Learner
+@using Education.Web.Client.Features.History.Services.Learner.Request
 
-<MudText Class="mb-3 mb-sm-6" Typo="Typo.h4">
-    Recent articles
-</MudText>
-<ApiViewer Result="@_response" Context="articles">
-<EduFillGrid>
-    @foreach (var article in articles)
-    {
-        <ArticleCard Article="@article.Article" Activity="@article.Activity"/>
-    }
-</EduFillGrid>
-    
-</ApiViewer>
+<section class="mud-paper pa-3 pa-sm-6 @Class">
+    <MudText Class="mb-3 mb-sm-6" Typo="Typo.h6">
+        Recent articles
+    </MudText>
+    <ApiViewer Result="@_response">
+        <ChildContent Context="page">
+            <EduFillGrid>
+                @foreach (var article in page.Items)
+                {
+                    <ArticleCard Article="@article.Article" Activity="@article.Activity"/>
+                }
+            </EduFillGrid>
+        </ChildContent>
+        <Loading>
+            <EduFillGrid>
+                @for (var i = 0; i < _count; i++)
+                {
+                    <SkeletonCard/>
+                }
+            </EduFillGrid>
+        </Loading>
+    </ApiViewer>
+</section>
 
 @code {
-    private ApiResult<UserArticleOverviewModel[]> _response = ApiResult<UserArticleOverviewModel[]>.Loading();
+    private int _count = 6;
+    private ApiResult<PagingTokenModel<UserArticleOverviewModel>> _response = 
+        ApiResult<PagingTokenModel<UserArticleOverviewModel>>.Loading();
 
     [Inject]
     private IHistoryLearnerService LearnerService { get; set; } = default!;
 
+    [Parameter]
+    public string? Class { get; set; }
+
     protected override async Task OnInitializedAsync() =>
-        _response = await LearnerService.GetRecentArticlesAsync();
+        _response = await LearnerService.GetArticleHistoryAsync(new HistoryRequest(true, _count));
 
 }
