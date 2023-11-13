@@ -24,12 +24,14 @@
 </article>
 
 @code {
+
     private string? CategoryTitle =>
-        Search.Category switch {
+        Search.Category switch
+        {
             "Article" => L["Articles_Title"].ToString(),
-            "Course"=>L["Courses_Title"].ToString(),
-            _=> null
-            };
+            "Course" => L["Courses_Title"].ToString(),
+            _ => null
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

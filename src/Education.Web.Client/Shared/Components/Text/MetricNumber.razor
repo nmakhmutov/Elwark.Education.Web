@@ -44,7 +44,8 @@ else
     public Placement Placement { get; set; } = Placement.Bottom;
 
     protected override void OnParametersSet() =>
-        (_value, _tooltip) = Value switch {
+        (_value, _tooltip) = Value switch
+        {
             int i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
             uint i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
             long i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
@@ -52,6 +53,6 @@ else
             double i => (i.ToMetric("G"), i > 999 ? i.ToString("N") : null),
             string s => (s, null),
             _ => (Value?.ToString() ?? string.Empty, null)
-            };
+        };
 
 }

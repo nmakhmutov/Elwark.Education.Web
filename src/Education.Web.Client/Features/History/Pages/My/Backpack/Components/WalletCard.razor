@@ -1,8 +1,8 @@
-@using ApexCharts
-@using Education.Web.Client.Features.History.Services.User.Model
 @using Align = MudBlazor.Align
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
+@using ApexCharts
+@using Education.Web.Client.Features.History.Services.User.Model
 
 <section class="mud-paper d-flex flex-column @Class">
     <header class="mud-primary white-text rounded ma-3 pa-3">
@@ -135,11 +135,12 @@
             _apex.Add(new ApexData(current.ToDateTime(TimeOnly.MinValue), item?.Balance ?? 0));
         }
 
-        var (start, end) = Wallet.Budgets switch {
+        var (start, end) = Wallet.Budgets switch
+        {
             [] => (0d, 0d),
             [var first] => (first.Balance, 0d),
             [var first, var second, ..] => (first.Balance, second.Balance)
-            };
+        };
 
         _tendingValue = ((start - end) / end * 100) switch
         {
@@ -147,14 +148,14 @@
             double.PositiveInfinity => 100,
             double.NegativeInfinity => -100,
             var x => start > end ? Math.Abs(x) : -Math.Abs(x)
-            };
+        };
 
         _tendingIcon = _tendingValue switch
         {
             > 0 => Icons.Material.Outlined.TrendingUp,
             < 0 => Icons.Material.Outlined.TrendingDown,
             _ => Icons.Material.Outlined.TrendingFlat
-            };
+        };
     }
 
     private sealed record ApexData(DateTime Month, long Balance);

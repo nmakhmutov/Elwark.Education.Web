@@ -70,11 +70,13 @@
 @code {
     private bool _hasQuiz;
 
-    private string Status => (_hasQuiz, Activity?.IsCompleted) switch {
-        (true, true) => L["LearningStatus_Completed_Description"],
-        (true, false) => L["LearningStatus_Incompleted_Description"],
-        (true, null) => L["LearningStatus_Unengaged_Description"],
-        _ => L["Article_TheArticleDoesNotHaveAnyQuizzesYet"]
+    private string Status =>
+        (_hasQuiz, Activity?.IsCompleted) switch
+        {
+            (true, true) => L["LearningStatus_Completed_Description"],
+            (true, false) => L["LearningStatus_Incompleted_Description"],
+            (true, null) => L["LearningStatus_Unengaged_Description"],
+            _ => L["Article_TheArticleDoesNotHaveAnyQuizzesYet"]
         };
 
     [Inject]

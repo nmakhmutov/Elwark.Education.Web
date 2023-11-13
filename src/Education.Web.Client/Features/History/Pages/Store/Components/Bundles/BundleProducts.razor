@@ -93,7 +93,7 @@
             ProductSort.DiscountDesc => source.OrderByDescending(x => x.Price.Discount),
             ProductSort.Title => source.OrderBy(x => x.Title),
             _ => throw new ArgumentOutOfRangeException()
-            };
+        };
 
         if (!string.IsNullOrEmpty(Filter.Search))
             source = source.Where(x => x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase));

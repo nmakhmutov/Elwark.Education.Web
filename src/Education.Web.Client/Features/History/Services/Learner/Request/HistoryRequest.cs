@@ -11,13 +11,13 @@ public sealed record HistoryRequest(bool OnlyIncompleted, int Count, string? Tok
         {
             [nameof(Count)] = Count.ToString()
         };
-        
+
         if (Token is not null)
             values.Add(nameof(Token), Token);
-        
-        if(OnlyIncompleted)
+
+        if (OnlyIncompleted)
             values.Add(nameof(OnlyIncompleted), "true");
-        
+
         return QueryString.Create(values);
     }
 }

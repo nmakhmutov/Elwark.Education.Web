@@ -24,5 +24,6 @@ internal sealed class HistoryDateGuesserService : IHistoryDateGuesserService
         _api.PostAsync<DateGuesserModel, CreateRequest>("history/date-guessers", request);
 
     public Task<ApiResult<DateGuesserModel>> CheckAsync(string testId, string questionId, CheckRequest request) =>
-        _api.PostAsync<DateGuesserModel, CheckRequest>($"history/date-guessers/{testId}/questions/{questionId}", request);
+        _api.PostAsync<DateGuesserModel, CheckRequest>($"history/date-guessers/{testId}/questions/{questionId}",
+            request);
 }

@@ -25,7 +25,7 @@ internal static class ErrorExtensions
         id = error.Id;
         return error.Type == "DateGuesser_AlreadyCreated" && !string.IsNullOrEmpty(error.Id);
     }
-    
+
     public static bool IsDateGuesserNotFound(this Error error) =>
         error.Type == "DateGuesser_NotFound";
 

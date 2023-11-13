@@ -11,8 +11,8 @@ namespace Education.Web.Client.Features.History.Pages.Quizzes.Test;
 
 public sealed partial class Page
 {
-    private ApiResult<QuizModel> _result = ApiResult<QuizModel>.Loading();
     private AnswerResult? _correctAnswer;
+    private ApiResult<QuizModel> _result = ApiResult<QuizModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

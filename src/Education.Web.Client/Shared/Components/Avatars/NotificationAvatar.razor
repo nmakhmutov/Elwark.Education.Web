@@ -16,9 +16,10 @@
     public string? Class { get; set; }
 
     protected override void OnInitialized() =>
-        (_icon, _color) = Subject switch {
+        (_icon, _color) = Subject switch
+        {
             "History" => (EduIcons.History, Color.Primary),
-            _=> (Icons.Material.Outlined.Message, Color.Default)
-            };
+            _ => (Icons.Material.Outlined.Message, Color.Default)
+        };
 
 }

@@ -10,7 +10,7 @@ public abstract record AnswerResult(bool IsCorrect)
 
     public sealed record MultipleModel(bool IsCorrect, IEnumerable<uint> Answer)
         : AnswerResult(IsCorrect);
-    
+
     public sealed record OrderedModel(bool IsCorrect, IEnumerable<uint> Answer)
         : AnswerResult(IsCorrect);
 }

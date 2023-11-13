@@ -12,7 +12,10 @@ public sealed partial class Page
     private ApiResult<UserAssignmentModel> _result = ApiResult<UserAssignmentModel>.Loading();
 
     private List<BreadcrumbItem> Breadcrumbs =>
-        [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root), new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)];
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
+    ];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

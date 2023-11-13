@@ -11,12 +11,16 @@ namespace Education.Web.Client.Features.History.Pages.My.Quizzes.Details;
 
 public sealed partial class Page
 {
-    private string? _title;
     private QuizStatisticsModel.DailyProgress[] _progress = Array.Empty<QuizStatisticsModel.DailyProgress>();
     private ApiResult<QuizStatisticsModel> _result = ApiResult<QuizStatisticsModel>.Loading();
+    private string? _title;
 
     private List<BreadcrumbItem> Breadcrumbs =>
-        [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root), new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile), new BreadcrumbItem(L["Quizzes_Title"], HistoryUrl.User.MyQuizzes)];
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["Quizzes_Title"], HistoryUrl.User.MyQuizzes)
+    ];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

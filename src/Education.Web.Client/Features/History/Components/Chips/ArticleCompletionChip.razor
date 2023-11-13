@@ -41,10 +41,11 @@ else
     public Size Size { get; set; } = Size.Medium;
 
     protected override void OnParametersSet() =>
-        (_color, _icon, _text) = IsCompleted switch {
+        (_color, _icon, _text) = IsCompleted switch
+        {
             true => (Color.Success, Icons.Material.Outlined.CheckCircle, L["LearningStatus_Completed_Title"]),
             false => (Color.Warning, Icons.Material.Outlined.ModeStandby, L["LearningStatus_Incompleted_Title"]),
             null => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked, L["LearningStatus_Unengaged_Title"])
-            };
+        };
 
 }

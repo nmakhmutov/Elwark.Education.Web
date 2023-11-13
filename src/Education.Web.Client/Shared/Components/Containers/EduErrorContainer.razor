@@ -51,7 +51,8 @@
     public string? Class { get; set; }
 
     private string GetErrorDetail() =>
-        Error switch {
+        Error switch
+        {
             { Detail: not null } => Error.Detail,
             { Status: 404 } => L["Error_NotFound_Description"],
             { Status: 500 } => L["Error_InternalServerError_Description"],

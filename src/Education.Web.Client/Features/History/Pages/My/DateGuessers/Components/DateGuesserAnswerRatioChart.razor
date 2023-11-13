@@ -18,14 +18,15 @@
 
 @code {
 
-    private ApexChartOptions<Data> Options => new()
-    {
-        Legend = new Legend
+    private ApexChartOptions<Data> Options =>
+        new()
         {
-            Show = false
-        },
-        Colors = [Colors.Green.Accent4, Colors.Red.Default]
-    };
+            Legend = new Legend
+            {
+                Show = false
+            },
+            Colors = [Colors.Green.Accent4, Colors.Red.Default]
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -36,18 +37,20 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private ChartList.Item[] Items => new[]
-    {
-        new ChartList.Item(L["History_DateGuesser_Correct"], AnswerRatio.Correct, Colors.Green.Accent4),
-        new ChartList.Item(L["History_DateGuesser_Incorrect"], AnswerRatio.Incorrect, Colors.Red.Default),
-        new ChartList.Item(L["History_DateGuesser_Questions"], AnswerRatio.Total, null)
-    };
+    private ChartList.Item[] Items =>
+        new[]
+        {
+            new ChartList.Item(L["History_DateGuesser_Correct"], AnswerRatio.Correct, Colors.Green.Accent4),
+            new ChartList.Item(L["History_DateGuesser_Incorrect"], AnswerRatio.Incorrect, Colors.Red.Default),
+            new ChartList.Item(L["History_DateGuesser_Questions"], AnswerRatio.Total, null)
+        };
 
-    private Data[] Series => new[]
-    {
-        new Data(L["History_DateGuesser_Correct"], AnswerRatio.Correct),
-        new Data(L["History_DateGuesser_Incorrect"], AnswerRatio.Incorrect)
-    };
+    private Data[] Series =>
+        new[]
+        {
+            new Data(L["History_DateGuesser_Correct"], AnswerRatio.Correct),
+            new Data(L["History_DateGuesser_Incorrect"], AnswerRatio.Incorrect)
+        };
 
     private sealed record Data(string Name, decimal Value);
 

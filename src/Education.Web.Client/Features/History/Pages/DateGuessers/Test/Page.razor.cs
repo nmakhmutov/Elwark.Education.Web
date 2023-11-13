@@ -11,15 +11,18 @@ namespace Education.Web.Client.Features.History.Pages.DateGuessers.Test;
 
 public sealed partial class Page
 {
-    private ApiResult<DateGuesserModel> _result = ApiResult<DateGuesserModel>.Loading();
-    private ScoreModel _score = new(0, 0, 0);
-    private DateTime _x2BonusUntil;
-    private uint _totalQuestions;
     private uint _completedQuestions;
     private DateGuesserModel.QuestionModel _question = default!;
+    private ApiResult<DateGuesserModel> _result = ApiResult<DateGuesserModel>.Loading();
+    private ScoreModel _score = new(0, 0, 0);
+    private uint _totalQuestions;
+    private DateTime _x2BonusUntil;
 
     private List<BreadcrumbItem> Breadcrumbs =>
-        [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root), new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.DateGuesser.Index)];
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.DateGuesser.Index)
+    ];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

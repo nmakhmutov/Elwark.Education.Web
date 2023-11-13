@@ -35,7 +35,7 @@
              MaxValue="5"
              Size="@Size"
              SelectedValue="@((int)Math.Round(Rating.Stars))"
-             ReadOnly/>;
+    ReadOnly/>;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -56,11 +56,12 @@
     public Placement Placement { get; set; } = Placement.Bottom;
 
     protected override void OnParametersSet() =>
-        _ratingClass = Size switch {
+        _ratingClass = Size switch
+        {
             Size.Small => "rating small",
             Size.Medium => "rating medium",
             Size.Large => "rating large",
             _ => "rating"
-            };
+        };
 
 }

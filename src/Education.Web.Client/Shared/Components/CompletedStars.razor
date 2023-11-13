@@ -25,7 +25,7 @@
         _stars.Add((StarIcon(second), StarColor(second), "font-size: 6rem"));
 
         var third = StarFullness(Progress, .67, .90);
-        _stars.Add((StarIcon(third),StarColor(third), "font-size: 5rem"));
+        _stars.Add((StarIcon(third), StarColor(third), "font-size: 5rem"));
     }
 
     private static short StarFullness(double progress, double min, double max)
@@ -40,11 +40,12 @@
     }
 
     private static string StarIcon(short fullness) =>
-        fullness switch {
+        fullness switch
+        {
             0 => Icons.Material.Outlined.StarBorder,
             1 => Icons.Material.Outlined.StarHalf,
             _ => Icons.Material.Outlined.Star
-            };
+        };
 
     private static Color StarColor(short fullness) =>
         fullness == 0 ? Color.Default : Color.Warning;

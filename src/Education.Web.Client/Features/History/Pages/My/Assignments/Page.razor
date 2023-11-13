@@ -30,13 +30,13 @@
                                 OnStart="@StartDailyQuestsAsync"
                                 OnCollect="@CollectDailyQuestsAsync"
                                 OnExpired="@OnInitializedAsync"/>
-                            
+
                             @foreach (var quest in data.DailyAssignments.Assignments)
                             {
                                 <QuestProgressCard Class="mb-3" Quest="@quest"/>
                             }
                         </MudTabPanel>
-                        
+
                         <MudTabPanel Text="Weekly">
                             <QuestRewardsCard
                                 Class="mb-3"
@@ -47,7 +47,7 @@
                                 OnStart="@StartWeeklyQuestsAsync"
                                 OnCollect="@CollectWeeklyQuestsAsync"
                                 OnExpired="@OnInitializedAsync"/>
-                            
+
                             @foreach (var quest in data.WeeklyAssignments.Assignments)
                             {
                                 <QuestProgressCard Class="mb-3" Quest="@quest"/>

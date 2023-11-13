@@ -9,8 +9,8 @@ namespace Education.Web.Client.Features.History.Pages.DateGuessers.Conclusion;
 
 public sealed partial class Page
 {
-    private ApiResult<DateGuesserConclusionModel> _result = ApiResult<DateGuesserConclusionModel>.Loading();
     private double _progress;
+    private ApiResult<DateGuesserConclusionModel> _result = ApiResult<DateGuesserConclusionModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

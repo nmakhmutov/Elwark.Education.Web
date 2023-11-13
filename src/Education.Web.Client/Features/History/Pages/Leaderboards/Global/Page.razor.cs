@@ -10,9 +10,9 @@ namespace Education.Web.Client.Features.History.Pages.Leaderboards.Global;
 
 public sealed partial class Page
 {
+    private readonly string[] _regions = { "GL", "EU", "AS", "NA", "SA", "OC", "AF" };
     private long? _highlightUser;
     private string _region = "GL";
-    private readonly string[] _regions = { "GL", "EU", "AS", "NA", "SA", "OC", "AF" };
     private ApiResult<GlobalContestantModel[]> _result = ApiResult<GlobalContestantModel[]>.Loading();
 
     [Inject]

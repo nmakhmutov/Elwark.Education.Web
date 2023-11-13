@@ -11,10 +11,10 @@ namespace Education.Web.Client.Features.History.Pages.Empires;
 
 public sealed partial class Page
 {
+    private Virtualize<EmpireOverviewModel> _empireVirtualize = new();
+    private GetEmpiresRequest.SortType _sort = GetEmpiresRequest.SortType.Area;
     private Guid _subscriptionId;
     private TimelinePosition _timelinePosition = TimelinePosition.Start;
-    private GetEmpiresRequest.SortType _sort = GetEmpiresRequest.SortType.Area;
-    private Virtualize<EmpireOverviewModel> _empireVirtualize = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -31,12 +31,15 @@ public sealed partial class Page
     [SupplyParameterFromQuery(Name = "by")]
     public string? Sort { get; set; }
 
+    public async ValueTask DisposeAsync() =>
+        await ViewportService.UnsubscribeAsync(_subscriptionId);
+
     protected override Task OnParametersSetAsync()
     {
         _sort = Map(Sort);
 
-        return string.IsNullOrEmpty(Sort) 
-            ? Task.CompletedTask 
+        return string.IsNullOrEmpty(Sort)
+            ? Task.CompletedTask
             : _empireVirtualize.RefreshDataAsync();
     }
 
@@ -50,10 +53,8 @@ public sealed partial class Page
         return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
     }
 
-    private void SortChanged(GetEmpiresRequest.SortType sort)
-    {
+    private void SortChanged(GetEmpiresRequest.SortType sort) =>
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("by", Map(sort)));
-    }
 
     private void OnBreakpointChanged(Breakpoint e)
     {
@@ -91,7 +92,4 @@ public sealed partial class Page
             GetEmpiresRequest.SortType.Population => "population",
             _ => "area"
         };
-
-    public async ValueTask DisposeAsync() =>
-        await ViewportService.UnsubscribeAsync(_subscriptionId);
 }

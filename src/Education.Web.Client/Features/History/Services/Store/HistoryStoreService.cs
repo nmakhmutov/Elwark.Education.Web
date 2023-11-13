@@ -16,7 +16,7 @@ internal sealed class HistoryStoreService : IHistoryStoreService
 
     public Task<ApiResult<UpcomingInventoriesModel>> GetUpcomingInventoriesAsync() =>
         _api.GetAsync<UpcomingInventoriesModel>("history/store/inventories/upcoming");
-    
+
     public Task<ApiResult<Product.BundleModel[]>> GetBundlesAsync() =>
         _api.GetAsync<Product.BundleModel[]>("history/store/bundles");
 

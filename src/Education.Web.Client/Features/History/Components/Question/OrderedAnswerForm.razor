@@ -1,7 +1,4 @@
-@using FluentValidation
 @using Education.Web.Client.Models.Quiz
-@using Education.Web.Client.Features.History.Services.Leaderboard.Model
-@using System.Reflection.Metadata.Ecma335
 <div class="d-flex flex-column mx-auto w-max-480 gap-3 mb-3 mb-sm-6">
     <MudDropContainer
         T="AnswerOption"
@@ -19,7 +16,7 @@
                 <div class="flex-grow-1">
                     <AnswerOptionForm Option="@option"/>
                 </div>
-                @if (GetMeta(option.Id) is {} meta)
+                @if (GetMeta(option.Id) is { } meta)
                 {
                     <div class="d-flex align-center gap-3">
                         <MudText Typo="Typo.body2">@meta.CorrectIndex</MudText>
@@ -82,7 +79,7 @@ else
     private List<AnswerOption> _options = new();
     private List<uint> _correctIds = new();
     private MudDropContainer<AnswerOption>? _container;
-    
+
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
@@ -107,11 +104,11 @@ else
     protected override void OnParametersSet()
     {
         _container?.Refresh();
-        
+
         if (_options.Count == 0)
             _options.AddRange(Options);
 
-        if(_correctIds.Count == 0 && CorrectAnswer is not null)
+        if (_correctIds.Count == 0 && CorrectAnswer is not null)
             _correctIds.AddRange(CorrectAnswer.Answer);
     }
 
@@ -129,7 +126,7 @@ else
     {
         _options.Clear();
         _correctIds.Clear();
-        
+
         return OnNextClick.InvokeAsync();
     }
 
@@ -144,7 +141,7 @@ else
 
     private Metadata? GetMeta(uint id)
     {
-        if(CorrectAnswer is null)
+        if (CorrectAnswer is null)
             return null;
 
         var i1 = _options.FindIndex(x => x.Id == id);

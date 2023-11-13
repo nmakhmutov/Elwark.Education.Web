@@ -118,14 +118,14 @@
     private (string? Icon, Color Color) Get(AnswerOption option) =>
         CorrectAnswer switch
         {
-        { } x when x.Answer.Contains(option.Id) => 
-            (Icon: Icons.Material.Outlined.Check , Color: Color.Success),
-                                                
-        {IsCorrect:false} when _userAnswer.Answer.Contains(option.Id) => 
-            (Icon: Icons.Material.Outlined.Clear , Color: Color.Error),
-                
+            { } x when x.Answer.Contains(option.Id) =>
+                (Icon: Icons.Material.Outlined.Check, Color: Color.Success),
+
+            { IsCorrect: false } when _userAnswer.Answer.Contains(option.Id) =>
+                (Icon: Icons.Material.Outlined.Clear, Color: Color.Error),
+
             _ => (Icon: null, Color: Color.Default)
-            };
+        };
 
     public sealed class Validator : AbstractValidator<MultipleAnswerModel>
     {

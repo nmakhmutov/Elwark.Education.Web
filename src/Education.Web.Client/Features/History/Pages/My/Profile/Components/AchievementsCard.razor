@@ -1,6 +1,6 @@
+@using Align = MudBlazor.Align
 @using ApexCharts
 @using Education.Web.Client.Features.History.Services.User.Model
-@using Align = MudBlazor.Align
 <section class="mud-paper @Class">
     <header class="px-3 pt-3 px-sm-6 pt-sm-6">
         <MudText Typo="Typo.h5">
@@ -46,45 +46,46 @@
 
 @code {
 
-    private ApexChartOptions<Data> Options => new()
-    {
-        Chart = new Chart
+    private ApexChartOptions<Data> Options =>
+        new()
         {
-            Background = "transparent",
-            ForeColor = "var(--mud-palette-text-primary)",
-            OffsetY = -25,
-            Sparkline = new ChartSparkline
+            Chart = new Chart
             {
-                Enabled = true
-            }
-        },
-        Colors = [Colors.Green.Accent4],
-        PlotOptions = new PlotOptions
-        {
-            RadialBar = new PlotOptionsRadialBar
-            {
-                StartAngle = -120,
-                EndAngle = 120,
-                DataLabels = new RadialBarDataLabels
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)",
+                OffsetY = -25,
+                Sparkline = new ChartSparkline
                 {
-                    Name = new RadialBarDataLabelsName
+                    Enabled = true
+                }
+            },
+            Colors = [Colors.Green.Accent4],
+            PlotOptions = new PlotOptions
+            {
+                RadialBar = new PlotOptionsRadialBar
+                {
+                    StartAngle = -120,
+                    EndAngle = 120,
+                    DataLabels = new RadialBarDataLabels
                     {
-                        Show = false
-                    },
-                    Value = new RadialBarDataLabelsValue
-                    {
-                        FontSize = "1.875rem"
-                    },
-                    Total = new RadialBarDataLabelsTotal
-                    {
-                        Show = true,
-                        FontSize = "1rem",
-                        Formatter = @"function (w) { return w.globals.seriesTotals[0] + '%'; }"
+                        Name = new RadialBarDataLabelsName
+                        {
+                            Show = false
+                        },
+                        Value = new RadialBarDataLabelsValue
+                        {
+                            FontSize = "1.875rem"
+                        },
+                        Total = new RadialBarDataLabelsTotal
+                        {
+                            Show = true,
+                            FontSize = "1rem",
+                            Formatter = @"function (w) { return w.globals.seriesTotals[0] + '%'; }"
+                        }
                     }
                 }
             }
-        }
-    };
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

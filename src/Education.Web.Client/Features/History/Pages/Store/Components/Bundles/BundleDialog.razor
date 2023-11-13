@@ -137,8 +137,8 @@
 </MudDialog>
 
 @code {
-        private const byte Min = 1;
-        private const byte Max = 42;
+    private const byte Min = 1;
+    private const byte Max = 42;
     private byte _quantity = 1;
     private OrderStatusModel? _status;
     private Error? _error;
@@ -176,7 +176,7 @@
         UpdateErrorState();
     }
 
-    private void OnCloseClick() => 
+    private void OnCloseClick() =>
         MudDialog.Close(_status is null ? DialogResult.Cancel() : DialogResult.Ok(true));
 
     private async Task OnPurchaseClick()
@@ -198,7 +198,7 @@
         {
             var delay = TimeSpan.FromSeconds(1);
 
-            while (_status is { IsFinal:false })
+            while (_status is { IsFinal: false })
             {
                 await Task.Delay(delay);
 

@@ -31,7 +31,8 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
-    private uint Quizzes => Easy + Hard;
+    private uint Quizzes =>
+        Easy + Hard;
 
     [Parameter, EditorRequired]
     public uint Easy { get; set; }

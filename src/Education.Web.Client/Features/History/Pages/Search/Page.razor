@@ -11,7 +11,7 @@
             <b>@_result.Map(x => L["Search_CountOfFountResults", x.Count])</b>
         </h2>
 
-        <EditForm Model="@this" OnValidSubmit="OnSearchSubmit">
+        <EditForm Model="@(this)" OnValidSubmit="OnSearchSubmit">
             <section class="search mud-paper">
                 <MudTextField
                     Class="flex-sm-grow-1"
@@ -19,11 +19,11 @@
                     Label="@L["Search_Title"]"
                     InputType="InputType.Search"
                     Variant="Variant.Text"/>
-                
-                <MudSelect 
-                    @bind-Value="@Category" 
-                    Label="@L["Search_Content_Title"]" 
-                    Margin="Margin.Dense" 
+
+                <MudSelect
+                    @bind-Value="@Category"
+                    Label="@L["Search_Content_Title"]"
+                    Margin="Margin.Dense"
                     Clearable
                     Dense>
                     @foreach (var category in _categories)
@@ -35,7 +35,7 @@
                 </MudSelect>
 
                 <div class="search-button">
-                    <MudButton 
+                    <MudButton
                         Variant="Variant.Filled"
                         Color="Color.Primary"
                         ButtonType="ButtonType.Submit"

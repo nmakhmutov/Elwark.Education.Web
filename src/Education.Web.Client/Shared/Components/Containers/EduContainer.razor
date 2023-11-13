@@ -26,7 +26,8 @@
 
     protected override void OnParametersSet()
     {
-        var width = MaxWidth switch {
+        var width = MaxWidth switch
+        {
             EduWidth.None => null,
             EduWidth.W600 => "mw-600",
             EduWidth.W960 => "mw-960",
@@ -36,7 +37,7 @@
             EduWidth.W1920 => "mw-1920",
             EduWidth.W2560 => "mw-2560",
             _ => null
-            };
+        };
 
         _outerCss = CssBuilder.Default("section")
             .AddClass(Class);

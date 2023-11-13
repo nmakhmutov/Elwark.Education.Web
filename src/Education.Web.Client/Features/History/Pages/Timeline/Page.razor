@@ -25,9 +25,16 @@
     <section class="grid seed-@(Year % 3)">
         @foreach (var item in result.Items)
         {
-            <ArticleCard
-                Class="article"
-                Article="@(new ArticleOverviewModel(item.Id, item.Epoch, item.Title, item.Overview, item.ThumbnailUrl, item.TimeToRead, item.Rating))"/>
+            <div>
+                <MudImage 
+                    Src="@item.ThumbnailUrl"
+                    ObjectFit="ObjectFit.Cover"
+                    ObjectPosition="ObjectPosition.Center" 
+                    Style="width: 100%; height: 100%"/>
+            </div>
+            @* <ArticleCard *@
+            @*     Class="article" *@
+            @*     Article="@(new ArticleOverviewModel(item.Id, item.Epoch, item.Title, item.Overview, item.ThumbnailUrl, item.TimeToRead, item.Rating))"/> *@
         }
     </section>
 </ApiViewer>

@@ -2,7 +2,7 @@
 @using Education.Web.Client.Features.Customer
 @implements IDisposable
 
-<MudBadge Color="Color.Secondary" Visible="NotificationService.HasNotifications" Dot Overlap >
+<MudBadge Color="Color.Secondary" Visible="NotificationService.HasNotifications" Dot Overlap>
     <MudMenu
         Icon="@Icon"
         Color="Color.Inherit"
@@ -81,9 +81,10 @@
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
 
-    private string Icon => NotificationService.HasNotifications
-        ? Icons.Material.Outlined.NotificationsActive
-        : Icons.Material.Outlined.NotificationsNone;
+    private string Icon =>
+        NotificationService.HasNotifications
+            ? Icons.Material.Outlined.NotificationsActive
+            : Icons.Material.Outlined.NotificationsNone;
 
     protected override async Task OnInitializedAsync()
     {

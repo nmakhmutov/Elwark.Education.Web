@@ -18,41 +18,43 @@
 
 @code {
 
-    private ApexChartOptions<Data> Options => new()
-    {
-        PlotOptions = new PlotOptions
+    private ApexChartOptions<Data> Options =>
+        new()
         {
-            Bar = new PlotOptionsBar
+            PlotOptions = new PlotOptions
             {
-                Horizontal = true
-            }
-        },
-        Xaxis = new XAxis
-        {
-            Labels = new XAxisLabels
-            {
-                Formatter = @"
-function(value) {
-    var minutes = Math.floor(value / 60000);
-    var seconds = ((value % 60000) / 1000).toFixed(0);
-    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-}"
-            }
-        },
-        Tooltip = new Tooltip
-        {
-            Enabled = false
-        },
-        Chart = new Chart
-        {
-            Toolbar = new Toolbar
-            {
-                Show = false
+                Bar = new PlotOptionsBar
+                {
+                    Horizontal = true
+                }
             },
-            Background = "transparent",
-            ForeColor = "var(--mud-palette-text-primary)"
-        }
-    };
+            Xaxis = new XAxis
+            {
+                Labels = new XAxisLabels
+                {
+                    Formatter = @"
+                                function(value) {
+                                    var minutes = Math.floor(value / 60000);
+                                    var seconds = ((value % 60000) / 1000).toFixed(0);
+                                    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+                                }
+                                "
+                }
+            },
+            Tooltip = new Tooltip
+            {
+                Enabled = false
+            },
+            Chart = new Chart
+            {
+                Toolbar = new Toolbar
+                {
+                    Show = false
+                },
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            }
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -63,23 +65,25 @@ function(value) {
     [Parameter]
     public QuizStatisticsModel.TimeSpentModel Value { get; set; } = default!;
 
-    private ChartList.Item[] Items => new[]
-    {
-        new ChartList.Item(L["TimeSpent_Min_Title"], Value.Min.Humanize(), Colors.Green.Accent4),
-        new ChartList.Item(L["TimeSpent_Average_Title"], Value.Average.Humanize(), Colors.Blue.Default),
-        new ChartList.Item(L["TimeSpent_Max_Title"], Value.Max.Humanize(), Colors.DeepPurple.Default),
-        new ChartList.Item(L["TimeSpent_Total_Title"], Value.Total.Humanize(), null)
-    };
+    private ChartList.Item[] Items =>
+        new[]
+        {
+            new ChartList.Item(L["TimeSpent_Min_Title"], Value.Min.Humanize(), Colors.Green.Accent4),
+            new ChartList.Item(L["TimeSpent_Average_Title"], Value.Average.Humanize(), Colors.Blue.Default),
+            new ChartList.Item(L["TimeSpent_Max_Title"], Value.Max.Humanize(), Colors.DeepPurple.Default),
+            new ChartList.Item(L["TimeSpent_Total_Title"], Value.Total.Humanize(), null)
+        };
 
-    private Data[] Series => new[]
-    {
-        new Data(L["TimeSpent_Min_Title"], 0, Colors.Green.Accent4),
-        new Data(L["TimeSpent_Min_Title"], (decimal)Value.Min.TotalMilliseconds, Colors.Green.Accent4),
-        new Data(L["TimeSpent_Average_Title"], 0, Colors.Blue.Default),
-        new Data(L["TimeSpent_Average_Title"], (decimal)Value.Average.TotalMilliseconds, Colors.Blue.Default),
-        new Data(L["TimeSpent_Max_Title"], 0, Colors.DeepPurple.Default),
-        new Data(L["TimeSpent_Max_Title"], (decimal)Value.Max.TotalMilliseconds, Colors.DeepPurple.Default)
-    };
+    private Data[] Series =>
+        new[]
+        {
+            new Data(L["TimeSpent_Min_Title"], 0, Colors.Green.Accent4),
+            new Data(L["TimeSpent_Min_Title"], (decimal)Value.Min.TotalMilliseconds, Colors.Green.Accent4),
+            new Data(L["TimeSpent_Average_Title"], 0, Colors.Blue.Default),
+            new Data(L["TimeSpent_Average_Title"], (decimal)Value.Average.TotalMilliseconds, Colors.Blue.Default),
+            new Data(L["TimeSpent_Max_Title"], 0, Colors.DeepPurple.Default),
+            new Data(L["TimeSpent_Max_Title"], (decimal)Value.Max.TotalMilliseconds, Colors.DeepPurple.Default)
+        };
 
     private sealed record Data(string Name, decimal Value, string Color);
 

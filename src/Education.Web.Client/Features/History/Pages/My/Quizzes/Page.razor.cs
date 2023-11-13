@@ -14,7 +14,11 @@ public sealed partial class Page
     private QuizzesStatisticsModel.ProgressModel[] _monthly = Array.Empty<QuizzesStatisticsModel.ProgressModel>();
     private ApiResult<QuizzesStatisticsModel> _result = ApiResult<QuizzesStatisticsModel>.Loading();
 
-    private List<BreadcrumbItem> Breadcrumbs => [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root), new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)];
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
+    ];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -37,5 +41,4 @@ public sealed partial class Page
                 .ToArray();
         });
     }
-
 }

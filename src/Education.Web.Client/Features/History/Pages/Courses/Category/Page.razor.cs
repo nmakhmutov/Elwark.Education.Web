@@ -12,10 +12,9 @@ namespace Education.Web.Client.Features.History.Pages.Courses.Category;
 public sealed partial class Page
 {
     private const int Limit = 20;
-    private GetCourseRequest.SortType _sort;
-
     private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
         ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
+    private GetCourseRequest.SortType _sort;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

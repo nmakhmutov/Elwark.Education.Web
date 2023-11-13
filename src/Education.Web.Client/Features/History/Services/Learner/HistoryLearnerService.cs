@@ -34,7 +34,7 @@ internal sealed class HistoryLearnerService : IHistoryLearnerService
 
     public Task<ApiResult<DateGuesserStatisticsModel>> GetLargeDateGuesserStatisticsAsync() =>
         _api.GetAsync<DateGuesserStatisticsModel>("history/learners/me/date-guessers/large");
-    
+
     public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleHistoryAsync(HistoryRequest request) =>
         _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/learners/me/articles", request);
 

@@ -25,5 +25,4 @@ public sealed partial class Page
 
     protected override async Task OnParametersSetAsync() =>
         _result = await LearnerService.GetArticlesAsync(Id);
-
 }

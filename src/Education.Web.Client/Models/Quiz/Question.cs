@@ -22,7 +22,7 @@ public abstract record Question(string Id, string Title, string? ImageUrl)
         ArticleTitleModel Article,
         AnswerOption[] Options
     ) : Question(Id, Title, ImageUrl);
-    
+
     public sealed record OrderedModel(
         string Id,
         string Title,

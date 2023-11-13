@@ -62,21 +62,22 @@
     }
 
     private SubjectEnhancedModel? Enhance(SubjectModel model) =>
-        model switch {
-        {Name: "History"} =>
-            new SubjectEnhancedModel(
-                L["History_Title"],
-                HistoryUrl.Root,
-                HistoryUrl.User.MyProfile,
-                "/images/history/history.jpg",
-                EduIcons.History,
-                "linear-gradient(45deg, #ffa726 10%, #ef6c00 90%)",
-                model.Level,
-                model.Experience,
-                model.Threshold
+        model switch
+        {
+            { Name: "History" } =>
+                new SubjectEnhancedModel(
+                    L["History_Title"],
+                    HistoryUrl.Root,
+                    HistoryUrl.User.MyProfile,
+                    "/images/history/history.jpg",
+                    EduIcons.History,
+                    "linear-gradient(45deg, #ffa726 10%, #ef6c00 90%)",
+                    model.Level,
+                    model.Experience,
+                    model.Threshold
                 ),
             _ => null
-            };
+        };
 
     private sealed record SubjectEnhancedModel(
         string Title,
@@ -88,6 +89,6 @@
         uint Level,
         ulong Experience,
         ulong Threshold
-        );
+    );
 
 }

@@ -14,7 +14,7 @@ internal sealed class HistoryFlowService : IHistoryFlowService
 
     public Task<ApiResult<FlowModel>> GetAsync() =>
         _api.GetAsync<FlowModel>("history/flows/me");
-    
+
     public Task<ApiResult<FlowModel>> StartAsync() =>
         _api.PostAsync<FlowModel>("history/flows/me");
 
