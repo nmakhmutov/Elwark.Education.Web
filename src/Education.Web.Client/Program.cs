@@ -67,7 +67,7 @@ builder.Services
 
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway")!;
 var policy = HttpPolicyExtensions.HandleTransientHttpError()
-    .WaitAndRetryAsync(builder.HostEnvironment.IsDevelopment() ? 1 : 5, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
+    .WaitAndRetryAsync(builder.HostEnvironment.IsDevelopment() ? 0 : 5, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
 builder.Services
     .AddScoped<CorrelationHandler>()
@@ -127,6 +127,6 @@ builder.Services
 await using var app = builder.Build();
 
 await app.Services.GetRequiredService<CustomerHab>()
-    .InitAsync();
+    .StartAsync();
 
 await app.RunAsync();

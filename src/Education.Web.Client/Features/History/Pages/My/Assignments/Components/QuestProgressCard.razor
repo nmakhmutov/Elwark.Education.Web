@@ -8,13 +8,7 @@
             @Quest.Title
         </MudText>
 
-        <MudProgressLinear
-            Class="mb-1"
-            Min="0"
-            Max="@Quest.Threshold"
-            Value="@Quest.Score"
-            Color="@(Quest.IsCompleted ? Color.Success : Color.Primary)"
-            Size="Size.Small"/>
+        <MudProgressLinear Class="mb-1" Value="@Quest.Score" Color="@(Quest.IsCompleted ? Color.Success : Color.Primary)"/>
 
         <div class="d-flex justify-space-between align-start">
             <MetricNumber Value="@((double)Quest.Score / Quest.Threshold * 100)" Typo="Typo.body2"/>

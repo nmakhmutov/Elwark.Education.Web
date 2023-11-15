@@ -1,5 +1,6 @@
 @using Education.Web.Client.Features.History.Services.User.Model
 @using Education.Web.Client.Models.Inventory
+@using System.Diagnostics
 <ApiViewer Result="@_result">
     <ChildContent Context="inventories">
         <ProductsGrid Products="@ApplyFilter(inventories)">
@@ -87,17 +88,12 @@
             ProductSort.DiscountAsc => source.OrderBy(x => x.Selling.Discount),
             ProductSort.DiscountDesc => source.OrderByDescending(x => x.Selling.Discount),
             ProductSort.Title => source.OrderBy(x => x.Title),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new UnreachableException($"Unknown sort type {Filter.Sort}")
         };
 
         if (!string.IsNullOrEmpty(Filter.Search))
-            source = source.Where(x =>
-            {
-                var title = x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase);
-                var category = x.Category.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase);
-
-                return title || category;
-            });
+            source = source.Where(x => x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase) 
+                                       || x.Category.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase));
 
         return source.ToArray();
     }

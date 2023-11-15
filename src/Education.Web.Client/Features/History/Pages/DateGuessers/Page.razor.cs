@@ -16,8 +16,9 @@ public sealed partial class Page
     private bool _isLoading;
     private ApiResult<DateGuesserBuilderModel> _result = ApiResult<DateGuesserBuilderModel>.Loading();
     private Settings _settings = new(EpochType.None, null);
-    
-    private List<BreadcrumbItem> Breadcrumbs => [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)];
+
+    private List<BreadcrumbItem> Breadcrumbs =>
+        [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

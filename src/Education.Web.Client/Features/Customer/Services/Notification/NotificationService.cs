@@ -40,7 +40,7 @@ internal sealed class NotificationService : INotificationService
             return result;
 
         _lastNotifications.Clear();
-        OnChanged.Invoke();
+        await OnChanged.Invoke();
 
         return result;
     }
@@ -57,11 +57,10 @@ internal sealed class NotificationService : INotificationService
     public void Dispose() =>
         _hab.OnMessageReceived -= ReceivedMessage;
 
-    public event Action OnChanged = () =>
-    {
-    };
+    public event Func<ValueTask> OnChanged = () =>
+        ValueTask.CompletedTask;
 
-    public async ValueTask InitAsync()
+    public async ValueTask StartAsync()
     {
         if (_isInitialized)
             return;
@@ -79,10 +78,10 @@ internal sealed class NotificationService : INotificationService
 
         _isInitialized = true;
 
-        OnChanged.Invoke();
+        await OnChanged.Invoke();
     }
 
-    private void ReceivedMessage(NotificationMessage notification)
+    private ValueTask ReceivedMessage(NotificationMessage notification)
     {
         _lastNotifications = _lastNotifications
             .Prepend(notification)
@@ -98,6 +97,6 @@ internal sealed class NotificationService : INotificationService
 
         _snackbar.Add(sb.ToString());
 
-        OnChanged.Invoke();
+        return OnChanged.Invoke();
     }
 }

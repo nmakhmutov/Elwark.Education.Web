@@ -2,6 +2,7 @@ using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.Customer.Services.Notification.Model;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Education.Web.Client.Features.Customer.Services;
@@ -18,6 +19,8 @@ internal sealed class CustomerHab : IAsyncDisposable
             .WithUrl(new Uri(host, "/hubs/notification"), options =>
             {
                 options.UseStatefulReconnect = true;
+                options.SkipNegotiation = true;
+                options.Transports = HttpTransportType.WebSockets;
                 options.AccessTokenProvider = async () =>
                 {
                     var result = await tokenProvider.RequestAccessToken();
@@ -27,22 +30,20 @@ internal sealed class CustomerHab : IAsyncDisposable
             .WithAutomaticReconnect(RetryPolicy.Instance)
             .Build();
 
-        _connection.On<CustomerChangedType>("Customers", status => OnCustomerChanged.Invoke(status));
-        _connection.On<NotificationMessage>("Messages", message => OnMessageReceived.Invoke(message));
+        _connection.On<CustomerChangedType>("Customers", async status => await OnCustomerChanged.Invoke(status));
+        _connection.On<NotificationMessage>("Messages", async message => await OnMessageReceived.Invoke(message));
     }
 
     public ValueTask DisposeAsync() =>
         _connection.DisposeAsync();
 
-    public event Action<CustomerChangedType> OnCustomerChanged = _ =>
-    {
-    };
+    public event Func<CustomerChangedType, ValueTask> OnCustomerChanged = _ =>
+        ValueTask.CompletedTask;
 
-    public event Action<NotificationMessage> OnMessageReceived = _ =>
-    {
-    };
+    public event Func<NotificationMessage, ValueTask> OnMessageReceived = _ =>
+        ValueTask.CompletedTask;
 
-    public async ValueTask InitAsync()
+    public async ValueTask StartAsync()
     {
         if (_connection.State != HubConnectionState.Disconnected)
             return;

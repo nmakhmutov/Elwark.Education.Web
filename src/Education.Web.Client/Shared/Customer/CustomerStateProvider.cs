@@ -46,23 +46,10 @@ internal sealed class CustomerStateProvider : IDisposable
         _isInitialized = true;
     }
 
-    private async void OnCustomerChanged(CustomerChangedType status)
+    private async ValueTask OnCustomerChanged(CustomerChangedType status)
     {
-        switch (status)
-        {
-            case CustomerChangedType.Created:
-                return;
-
-            case CustomerChangedType.Updated:
-                await UpdateCustomer();
-                break;
-
-            case CustomerChangedType.Deleted:
-                break;
-
-            default:
-                throw new ArgumentOutOfRangeException(nameof(status), status, null);
-        }
+        if (status == CustomerChangedType.Updated)
+            await UpdateCustomer();
     }
 
     private async Task UpdateCustomer()

@@ -134,7 +134,11 @@
 @code {
     private string? _style;
 
-    private List<BreadcrumbItem> Breadcrumbs => [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root), new BreadcrumbItem(L[Empire.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Empire.Epoch))];
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L[Empire.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Empire.Epoch))
+    ];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

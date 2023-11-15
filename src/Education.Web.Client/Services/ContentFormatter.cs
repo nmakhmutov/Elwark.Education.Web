@@ -110,7 +110,7 @@ public sealed class ContentFormatter
 
     private async ValueTask UpdateAsync(State state)
     {
-        if (_state.GetHashCode() == state.GetHashCode())
+        if (_state == state)
             return;
 
         _state = state;

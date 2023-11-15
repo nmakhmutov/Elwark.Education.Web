@@ -103,7 +103,8 @@
     private readonly List<NotificationModel> _notifications = [];
     private bool _isMoreLoading;
 
-    private List<BreadcrumbItem> Breadcrumbs => [new BreadcrumbItem(L["Account_Title"], CustomerUrl.Root)];
+    private List<BreadcrumbItem> Breadcrumbs =>
+        [new BreadcrumbItem(L["Account_Title"], CustomerUrl.Root)];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

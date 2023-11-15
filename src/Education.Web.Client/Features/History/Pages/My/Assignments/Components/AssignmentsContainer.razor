@@ -1,0 +1,128 @@
+@using Education.Web.Client.Models.Quest
+<section class="@Class">
+    <div class="mud-paper d-flex justify-space-between align-center pa-3 pa-sm-6 mb-3">
+        <article>
+            <MudText Typo="Typo.h6">
+                @Title
+            </MudText>
+            <MudText Typo="Typo.body1">
+                @Subtitle
+            </MudText>
+        </article>
+        
+        <aside>
+            @switch (Status)
+            {
+                case QuestStatus.Expired:
+                    <LoadingButton
+                        DisableElevation
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        Text="@L["Assignments_Start_Button"]"
+                        IsLoading="@_isLoading"
+                        OnClick="@StartAsync"/>
+                    break;
+
+                case QuestStatus.InProgress or QuestStatus.Completed:
+                    <div class="d-flex align-center justify-space-around gap-3">
+                        <div class="d-flex align-center justify-center">
+                            <MudIcon Class="mr-1" Icon="@Icons.Material.Outlined.Timer"/>
+                            <CountdownTimer Deadline="@ExpiresAt" OnComplete="@ExpiredAsync"/>
+                        </div>
+
+                        <div>
+                            <LoadingButton
+                                DisableElevation
+                                Variant="Variant.Filled"
+                                Color="Color.Primary"
+                                Text="@L["Assignments_Collect_Button"]"
+                                IsLoading="@_isLoading"
+                                Disabled="@(Status != QuestStatus.Completed)"
+                                OnClick="@CollectAsync"/>
+                        </div>
+                    </div>
+                    break;
+
+                case QuestStatus.Collected:
+                    <div class="d-flex align-center justify-center">
+                        <MudIcon Class="mr-1" Icon="@Icons.Material.Outlined.CheckCircle" Color="Color.Success"/>
+                        <MudText Typo="Typo.subtitle1">
+                            @L["Assignments_Collected_Description"]
+                        </MudText>
+                    </div>
+                    break;
+            }
+        </aside>
+    </div>
+
+    @foreach (var quest in Quests)
+    {
+        <QuestProgressCard Class="mb-3" Quest="@quest"/>
+    }
+</section>
+
+@code {
+    private bool _isLoading;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required string Title { get; set; }
+
+    [Parameter, EditorRequired]
+    public required string Subtitle { get; set; }
+
+    [Parameter, EditorRequired]
+    public required QuestStatus Status { get; set; }
+
+    [Parameter, EditorRequired]
+    public required DateTime ExpiresAt { get; set; }
+
+    [Parameter, EditorRequired]
+    public required QuestModel[] Quests { get; set; }
+
+    [Parameter, EditorRequired]
+    public required EventCallback OnStart { get; set; }
+
+    [Parameter, EditorRequired]
+    public required EventCallback OnCollect { get; set; }
+
+    [Parameter, EditorRequired]
+    public required EventCallback OnExpired { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task StartAsync()
+    {
+        _isLoading = true;
+
+        try
+        {
+            await OnStart.InvokeAsync();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task CollectAsync()
+    {
+        _isLoading = true;
+
+        try
+        {
+            await OnCollect.InvokeAsync();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private Task ExpiredAsync() =>
+        OnExpired.InvokeAsync();
+
+}

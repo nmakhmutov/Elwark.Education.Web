@@ -7,11 +7,11 @@ namespace Education.Web.Client.Features.Customer.Services.Notification;
 
 public interface INotificationService : IDisposable
 {
+    public event Func<ValueTask> OnChanged;
+    
     public bool HasNotifications { get; }
 
     public IReadOnlyCollection<NotificationMessage> LastNotifications { get; }
-
-    public event Action OnChanged;
 
     Task<ApiResult<PagingTokenModel<NotificationModel>>> GetAsync(NotificationsRequest request);
 
@@ -19,5 +19,5 @@ public interface INotificationService : IDisposable
 
     Task<ApiResult<Unit>> MarkAsReadAsync(string id);
 
-    ValueTask InitAsync();
+    ValueTask StartAsync();
 }

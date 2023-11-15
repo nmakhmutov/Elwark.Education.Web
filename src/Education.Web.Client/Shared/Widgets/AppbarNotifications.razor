@@ -88,11 +88,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        NotificationService.OnChanged += StateHasChanged;
-        await NotificationService.InitAsync();
+        NotificationService.OnChanged += Update;
+        await NotificationService.StartAsync();
     }
 
     public void Dispose() =>
-        NotificationService.OnChanged -= StateHasChanged;
+        NotificationService.OnChanged -= Update;
 
+    private ValueTask Update()
+    {
+        StateHasChanged();
+        return ValueTask.CompletedTask;
+    }
 }

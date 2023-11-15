@@ -6,12 +6,8 @@
     @L["Assignments_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Assignments_Title"]" Breadcrumbs="@Breadcrumbs"/>
-</EduContainer>
-
 <ApiViewer Result="@_result" Context="data">
-    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <div class="grid">
             <div class="content">
                 <MudTabs Elevation="0" Rounded Centered>
@@ -21,37 +17,27 @@
 
                     <ChildContent>
                         <MudTabPanel Text="Daily">
-                            <QuestRewardsCard
-                                Class="mb-3"
-                                Title="@L["Rewards_Title"]"
+                            <AssignmentsContainer
+                                Quests="@data.DailyAssignments.Assignments"
+                                Title="Daily assignments"
                                 Subtitle="Complete all daily missions"
                                 Status="@data.DailyAssignments.Status"
                                 ExpiresAt="@data.DailyAssignments.ExpiresAt"
                                 OnStart="@StartDailyQuestsAsync"
                                 OnCollect="@CollectDailyQuestsAsync"
                                 OnExpired="@OnInitializedAsync"/>
-
-                            @foreach (var quest in data.DailyAssignments.Assignments)
-                            {
-                                <QuestProgressCard Class="mb-3" Quest="@quest"/>
-                            }
                         </MudTabPanel>
 
                         <MudTabPanel Text="Weekly">
-                            <QuestRewardsCard
-                                Class="mb-3"
-                                Title="@L["Rewards_Title"]"
+                            <AssignmentsContainer
+                                Quests="@data.WeeklyAssignments.Assignments"
+                                Title="Weekly assignments"
                                 Subtitle="Complete all weekly missions"
                                 Status="@data.WeeklyAssignments.Status"
                                 ExpiresAt="@data.WeeklyAssignments.ExpiresAt"
                                 OnStart="@StartWeeklyQuestsAsync"
                                 OnCollect="@CollectWeeklyQuestsAsync"
                                 OnExpired="@OnInitializedAsync"/>
-
-                            @foreach (var quest in data.WeeklyAssignments.Assignments)
-                            {
-                                <QuestProgressCard Class="mb-3" Quest="@quest"/>
-                            }
                         </MudTabPanel>
                     </ChildContent>
                 </MudTabs>

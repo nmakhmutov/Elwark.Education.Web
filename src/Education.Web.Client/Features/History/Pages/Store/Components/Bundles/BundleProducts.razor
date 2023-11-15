@@ -1,5 +1,6 @@
 @using Education.Web.Client.Features.History.Services.User.Model
 @using Education.Web.Client.Models.Inventory
+@using System.Diagnostics
 <ApiViewer Result="@_result">
     <ChildContent Context="bundles">
         <ProductsGrid Products="@ApplyFilter(bundles)">
@@ -92,7 +93,7 @@
             ProductSort.DiscountAsc => source.OrderBy(x => x.Price.Discount),
             ProductSort.DiscountDesc => source.OrderByDescending(x => x.Price.Discount),
             ProductSort.Title => source.OrderBy(x => x.Title),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new UnreachableException($"Unknown sort type {Filter.Sort}")
         };
 
         if (!string.IsNullOrEmpty(Filter.Search))
