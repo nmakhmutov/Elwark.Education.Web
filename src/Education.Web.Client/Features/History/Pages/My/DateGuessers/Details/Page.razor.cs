@@ -14,16 +14,16 @@ public sealed partial class Page
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
-        new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.User.MyDateGuessers)
+        new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.User.MyDateGuessers),
+        new BreadcrumbItem(_title ?? string.Empty, null, true)
     ];
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; init; } = default!;
 
     [Parameter]
     public required string Test { get; set; }

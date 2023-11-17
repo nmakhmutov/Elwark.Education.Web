@@ -26,8 +26,6 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
-using Polly;
-using Polly.Extensions.Http;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -66,11 +64,8 @@ builder.Services
     });
 
 var gatewayUrl = builder.Configuration.GetValue<Uri>("Urls:Gateway")!;
-var policy = HttpPolicyExtensions.HandleTransientHttpError()
-    .WaitAndRetryAsync(builder.HostEnvironment.IsDevelopment() ? 0 : 5, i => TimeSpan.FromSeconds(Math.Pow(2, i)));
 
 builder.Services
-    .AddScoped<CorrelationHandler>()
     .AddScoped<LocalizationHandler>()
     .AddScoped<AuthorizationMessageHandler>(provider =>
     {
@@ -84,15 +79,21 @@ builder.Services
 builder.Services
     .AddHttpClient<ApiAnonymousClient>(client => client.BaseAddress = gatewayUrl)
     .AddHttpMessageHandler<LocalizationHandler>()
-    .AddHttpMessageHandler<CorrelationHandler>()
-    .AddPolicyHandler(policy);
+    .AddStandardResilienceHandler(options =>
+    {
+        options.Retry.UseJitter = true;
+        options.Retry.MaxRetryAttempts = builder.HostEnvironment.IsDevelopment() ? 1 : 5;
+    });
 
 builder.Services
     .AddHttpClient<ApiAuthenticatedClient>(client => client.BaseAddress = gatewayUrl)
     .AddHttpMessageHandler<LocalizationHandler>()
-    .AddHttpMessageHandler<CorrelationHandler>()
     .AddHttpMessageHandler<AuthorizationMessageHandler>()
-    .AddPolicyHandler(policy);
+    .AddStandardResilienceHandler(options =>
+    {
+        options.Retry.UseJitter = true;
+        options.Retry.MaxRetryAttempts = builder.HostEnvironment.IsDevelopment() ? 1 : 5;
+    });
 
 builder.Services
     .AddScoped<CustomerApiClient>()

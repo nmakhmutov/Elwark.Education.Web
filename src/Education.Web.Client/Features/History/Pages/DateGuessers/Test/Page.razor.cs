@@ -21,7 +21,7 @@ public sealed partial class Page
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["History_DateGuessers_Title"], HistoryUrl.DateGuesser.Index)
+        new BreadcrumbItem(L["History_DateGuessers_Title"], null, true)
     ];
 
     [Inject]

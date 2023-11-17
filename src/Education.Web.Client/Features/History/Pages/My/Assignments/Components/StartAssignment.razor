@@ -1,0 +1,59 @@
+<EduContainer Class="px-0" MaxWidth="EduWidth.W1280">
+    <div class="wrapper">
+        <div class="content">
+            <MudText Class="mb-6" Typo="Typo.h1">
+                @Title
+            </MudText>
+            <MudText Class="mb-6" Typo="Typo.body1">
+                @Description
+            </MudText>
+            <div>
+                <LoadingButton
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    StartIcon="@Icons.Material.Outlined.PlayArrow"
+                    Text="@L["Assignments_Start_Button"]"
+                    IsLoading="@_isLoading"
+                    OnClick="@StartAsync"
+                    DisableElevation/>
+            </div>
+        </div>
+        <div class="image">
+            <img src="@Image" alt="@Title"/>
+        </div>
+    </div>
+</EduContainer>
+
+@code {
+    private bool _isLoading;
+
+    [Inject]
+    public IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required string Title { get; set; }
+
+    [Parameter, EditorRequired]
+    public required string Description { get; set; }
+
+    [Parameter, EditorRequired]
+    public required string Image { get; set; }
+
+    [Parameter, EditorRequired]
+    public required EventCallback OnStart { get; set; }
+
+    private async Task StartAsync()
+    {
+        _isLoading = true;
+
+        try
+        {
+            await OnStart.InvokeAsync();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+}

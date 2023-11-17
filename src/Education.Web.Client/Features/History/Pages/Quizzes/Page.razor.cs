@@ -19,7 +19,10 @@ public sealed partial class Page
     private Settings _settings = new(EpochType.None, null);
 
     private List<BreadcrumbItem> Breadcrumbs =>
-        [new BreadcrumbItem(L["History_Title"], HistoryUrl.Root)];
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["Quizzes_Title"], null, true)
+    ];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

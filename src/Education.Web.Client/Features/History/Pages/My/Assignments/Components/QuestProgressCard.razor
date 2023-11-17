@@ -1,22 +1,28 @@
 @using Education.Web.Client.Models.Quest
-<section class="mud-paper d-flex align-center gap-3 pa-3 @Class">
-    <MudAvatar Class="rounded white-text" Color="@(Quest.IsCompleted ? Color.Success : Color.Default)" Size="Size.Large">
-        <MudIcon Icon="@Icons.Material.Outlined.Check" Size="Size.Large"/>
-    </MudAvatar>
-    <div class="w-100">
+<section class="mud-paper pa-3 @Class">
+    <div class="d-flex justify-space-between align-end">
         <MudText Typo="Typo.subtitle1">
             @Quest.Title
         </MudText>
+        
+        <MudTooltip Text="@Quest.Description" Placement="Placement.Left" Arrow Inline>
+            <MudIcon Class="mud-text-secondary" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"/>
+        </MudTooltip>
+    </div>
+    
+    <MudProgressLinear
+        Class="mb-1"
+        Max="@Quest.Threshold"
+        Value="@Quest.Score"
+        Color="@(Quest.IsCompleted ? Color.Success : Color.Primary)"/>
 
-        <MudProgressLinear Class="mb-1" Value="@Quest.Score" Color="@(Quest.IsCompleted ? Color.Success : Color.Primary)"/>
+    <div class="d-flex justify-space-between align-center">
+        <InternalMonies Monies="@Quest.Rewards" Horizontal/>
 
-        <div class="d-flex justify-space-between align-start">
-            <MetricNumber Value="@((double)Quest.Score / Quest.Threshold * 100)" Typo="Typo.body2"/>
-            <div class="d-flex align-center">
-                <MetricNumber Value="@Quest.Score" Typo="Typo.body2"/>
-                <div>&nbsp;/&nbsp;</div>
-                <MetricNumber Value="@Quest.Threshold" Typo="Typo.body2"/>
-            </div>
+        <div class="d-flex align-center">
+            <MetricNumber Value="@Quest.Score" Typo="Typo.body2"/>
+            <div>&nbsp;/&nbsp;</div>
+            <MetricNumber Value="@Quest.Threshold" Typo="Typo.body2"/>
         </div>
     </div>
 </section>

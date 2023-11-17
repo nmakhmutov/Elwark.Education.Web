@@ -15,20 +15,19 @@
             <AccountCard/>
         </section>
         <section class="notifications">
-            <EduPageHeader Class="mb-3 mb-sm-6" Title="@L["Notifications_Title"]" Breadcrumbs="@Breadcrumbs">
-                <div>
-                    <MudButton
-                        Style="text-transform: none"
-                        Variant="Variant.Outlined"
-                        Color="Color.Primary"
-                        Size="Size.Medium"
-                        StartIcon="@Icons.Material.Outlined.DoneAll"
-                        Disabled="@(!NotificationService.HasNotifications)"
-                        OnClick="MarkAllAsReadAsync">
-                        @L["Notifications_MarkAsRead"]
-                    </MudButton>
-                </div>
-            </EduPageHeader>
+            <div class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6 mb-3 mb-sm-6">
+                <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+                <MudButton
+                    Style="text-transform: none"
+                    Variant="Variant.Outlined"
+                    Color="Color.Primary"
+                    Size="Size.Medium"
+                    StartIcon="@Icons.Material.Outlined.DoneAll"
+                    Disabled="@(!NotificationService.HasNotifications)"
+                    OnClick="@MarkAllAsReadAsync">
+                    @L["Notifications_MarkAsRead"]
+                </MudButton>
+            </div>
 
             <ApiViewer Result="_result">
                 @if (_notifications.Count == 0)
@@ -104,7 +103,10 @@
     private bool _isMoreLoading;
 
     private List<BreadcrumbItem> Breadcrumbs =>
-        [new BreadcrumbItem(L["Account_Title"], CustomerUrl.Root)];
+    [
+        new BreadcrumbItem(L["Account_Title"], CustomerUrl.Root),
+        new BreadcrumbItem(L["Notifications_Title"], null, true)
+    ];
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

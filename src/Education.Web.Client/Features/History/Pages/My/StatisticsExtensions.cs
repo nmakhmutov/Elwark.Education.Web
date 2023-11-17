@@ -54,10 +54,10 @@ public static class StatisticsExtensions
         this QuizStatisticsModel.TimeSpentContrastModel contrast, IStringLocalizer l) =>
         new ProgressList.Item[]
         {
-            new(l["TimeSpent_Min_Title"], contrast.Min.Current.Humanize(), contrast.Min.Difference),
-            new(l["TimeSpent_Max_Title"], contrast.Max.Current.Humanize(), contrast.Max.Difference),
-            new(l["TimeSpent_Average_Title"], contrast.Average.Current.Humanize(), contrast.Average.Difference),
-            new(l["TimeSpent_Total_Title"], contrast.Total.Current.Humanize(), contrast.Total.Difference)
+            new(l["TimeSpent_Min_Title"], contrast.Min.Current.Humanize(l), contrast.Min.Difference),
+            new(l["TimeSpent_Max_Title"], contrast.Max.Current.Humanize(l), contrast.Max.Difference),
+            new(l["TimeSpent_Average_Title"], contrast.Average.Current.Humanize(l), contrast.Average.Difference),
+            new(l["TimeSpent_Total_Title"], contrast.Total.Current.Humanize(l), contrast.Total.Difference)
         };
 
     public static ProgressList.Item[] GetProgress(

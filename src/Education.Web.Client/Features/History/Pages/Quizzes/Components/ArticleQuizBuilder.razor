@@ -86,8 +86,15 @@
             return;
 
         _isLoading = true;
-        await OnCreateClick.InvokeAsync(new CreateArticleQuizRequest(Difficulty.Value, Article.Id));
-        _isLoading = false;
+        
+        try
+        {
+            await OnCreateClick.InvokeAsync(new CreateArticleQuizRequest(Difficulty.Value, Article.Id));
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
 }

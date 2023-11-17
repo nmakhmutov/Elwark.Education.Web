@@ -113,9 +113,8 @@ public sealed class ContentFormatter
         if (_state == state)
             return;
 
-        _state = state;
-        await _storage.SetItemAsync(StorageKey, _state);
-
+        await _storage.SetItemAsync(StorageKey, _state = state);
+        
         OnChanged.Invoke();
     }
 

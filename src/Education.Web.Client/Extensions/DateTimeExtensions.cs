@@ -25,30 +25,16 @@ public static class DateTimeExtensions
         return span.ToString(format);
     }
 
-    public static string Humanize(this TimeSpan span, IStringLocalizer localizer, bool hideSeconds = false)
+    public static string Humanize(this TimeSpan span, IStringLocalizer localizer)
     {
-        var sb = new StringBuilder();
+        if (span.TotalDays > 1)
+            return $"{span.Days}{localizer["Abbreviation_Days"]} {span.Hours}{localizer["Abbreviation_Hours"]}";
 
-        if (span.Days > 0)
-            sb.Append(span.Days)
-                .Append(localizer["Abbreviation_Days"])
-                .Append(' ');
+        if (span.TotalHours > 1)
+            return $"{span.Hours}{localizer["Abbreviation_Hours"]} {span.Minutes}{localizer["Abbreviation_Minutes"]}";
 
-        if (span.Hours > 0)
-            sb.Append(span.Hours)
-                .Append(localizer["Abbreviation_Hours"])
-                .Append(' ');
-
-        if (span.Minutes > 0)
-            sb.Append(span.Minutes)
-                .Append(localizer["Abbreviation_Minutes"])
-                .Append(' ');
-
-        if (span.Seconds > 0 && !hideSeconds)
-            sb.Append(span.Seconds)
-                .Append(localizer["Abbreviation_Seconds"])
-                .Append(' ');
-
-        return sb.ToString().TrimEnd();
+        return span.TotalMinutes > 1
+            ? $"{span.Minutes}{localizer["Abbreviation_Minutes"]} {span.Seconds}{localizer["Abbreviation_Seconds"]}"
+            : $"{span.Seconds}{localizer["Abbreviation_Seconds"]}";
     }
 }

@@ -63,8 +63,15 @@
     private async Task OnCollectBank()
     {
         _isLoading = true;
-        await OnBankCollectClick.InvokeAsync();
-        _isLoading = false;
+        
+        try
+        {
+            await OnBankCollectClick.InvokeAsync();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
 }

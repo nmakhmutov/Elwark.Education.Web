@@ -85,8 +85,15 @@
     private async Task OnClick()
     {
         _isLoading = true;
-        await OnBuyClick.InvokeAsync(Id);
-        _isLoading = false;
+
+        try
+        {
+            await OnBuyClick.InvokeAsync(Id);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
 }

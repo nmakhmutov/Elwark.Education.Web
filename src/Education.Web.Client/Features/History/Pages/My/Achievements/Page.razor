@@ -6,11 +6,14 @@
     @L["Achievements_Title"]
 </PageTitle>
 
-<EduPageHeader Class="pa-3 pa-sm-6" Title="@L["Achievements_Title"]" Breadcrumbs="@Breadcrumbs">
-    <MudText Typo="Typo.h5">
-        @_subtitle
-    </MudText>
-</EduPageHeader>
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+    <div class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6">
+        <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+        <MudText Typo="Typo.h5">
+            @_subtitle
+        </MudText>
+    </div>
+</EduContainer>
 
 <ApiViewer Result="@_result" Context="achievements">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">

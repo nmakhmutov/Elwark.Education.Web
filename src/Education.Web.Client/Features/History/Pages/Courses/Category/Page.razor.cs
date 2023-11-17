@@ -6,6 +6,7 @@ using Education.Web.Client.Http;
 using Education.Web.Client.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using MudBlazor;
 
 namespace Education.Web.Client.Features.History.Pages.Courses.Category;
 
@@ -33,7 +34,13 @@ public sealed partial class Page
 
     [SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; }
-
+    
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["Courses_Title"], null, true)
+    ];
+    
     private int TotalPages =>
         _result.Map(x => (int)double.Ceiling((double)x.Count / Limit))
             .UnwrapOr(1);

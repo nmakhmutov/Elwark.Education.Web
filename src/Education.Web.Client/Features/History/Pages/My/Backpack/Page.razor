@@ -7,11 +7,12 @@
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <EduPageHeader Title="@L["Backpack_Title"]" Breadcrumbs="@Breadcrumbs">
+    <div class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6">
+        <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
         <MudText Typo="Typo.h5">
             @_capacity
         </MudText>
-    </EduPageHeader>
+    </div>
 </EduContainer>
 
 <ApiViewer Result="@_result" Context="model">

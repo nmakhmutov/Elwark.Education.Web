@@ -34,9 +34,14 @@
     {
         _isLoading = true;
 
-        await OnClick.InvokeAsync(Id);
-
-        _isLoading = false;
+        try
+        {
+            await OnClick.InvokeAsync(Id);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
 }

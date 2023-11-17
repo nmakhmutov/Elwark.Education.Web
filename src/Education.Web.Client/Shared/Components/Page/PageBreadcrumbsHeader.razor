@@ -1,0 +1,40 @@
+<MudBreadcrumbs Class="@($"pa-0 {Class}")" Items="@Items" MaxItems="3">
+    <SeparatorTemplate>
+        <div class="d-flex">
+            <MudIcon Class="mud-text-secondary" Icon="@Icons.Material.Outlined.ChevronRight" Size="@_separatorSize"/>
+        </div>
+    </SeparatorTemplate>
+    <ItemTemplate Context="item">
+        @if (item.Disabled)
+        {
+            <MudText Typo="_typo" Color="Color.Default">
+                @if (!string.IsNullOrEmpty(item.Icon))
+                {
+                    <MudIcon Icon="@item.Icon" Size="@_separatorSize"/>
+                }
+                @item.Text
+            </MudText>
+        }
+        else
+        {
+            <MudLink Typo="_typo" Href="@item.Href" Color="Color.Primary">
+                @if (!string.IsNullOrEmpty(item.Icon))
+                {
+                    <MudIcon Icon="@item.Icon" Size="@_separatorSize"/>
+                }
+                @item.Text
+            </MudLink>
+        }
+    </ItemTemplate>
+</MudBreadcrumbs>
+
+@code {
+    private Typo _typo = Typo.h5;
+    private Size _separatorSize = Size.Small;
+    
+    [Parameter, EditorRequired]
+    public List<BreadcrumbItem> Items { get; set; } = new();
+
+    [Parameter]
+    public string? Class { get; set; }
+}

@@ -1,7 +1,7 @@
 <div class="statistics">
     <PercentChartCard
         Title="@L["TimeSpent_Title"]"
-        Subtitle="@($"{ConclusionModel.TimeSpent.Raw.Humanize()} / {ConclusionModel.TimeSpent.Possible.Humanize()}")"
+        Subtitle="@($"{ConclusionModel.TimeSpent.Raw.Humanize(L)} / {ConclusionModel.TimeSpent.Possible.Humanize(L)}")"
         Percentage="@Math.Round(ConclusionModel.TimeSpent.Scaled * 100)"/>
 
     <PercentChartCard

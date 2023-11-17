@@ -10,7 +10,7 @@
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <div class="grid">
             <div class="content">
-                <MudTabs Elevation="0" Rounded Centered>
+                <MudTabs Elevation="0" Rounded>
                     <PrePanelContent>
                         <div class="mb-3 mb-sm-6"></div>
                     </PrePanelContent>
@@ -20,7 +20,7 @@
                             <AssignmentsContainer
                                 Quests="@data.DailyAssignments.Assignments"
                                 Title="Daily assignments"
-                                Subtitle="Complete all daily missions"
+                                Description="Dive into your daily pursuits with a renewed perspective. Each task you undertake is a key to unlocking valuable treasures, transforming routine into reward."
                                 Status="@data.DailyAssignments.Status"
                                 ExpiresAt="@data.DailyAssignments.ExpiresAt"
                                 OnStart="@StartDailyQuestsAsync"
@@ -32,7 +32,7 @@
                             <AssignmentsContainer
                                 Quests="@data.WeeklyAssignments.Assignments"
                                 Title="Weekly assignments"
-                                Subtitle="Complete all weekly missions"
+                                Description="Embark on your weekly assignments with a fresh outlook. Each task you embrace serves as a gateway to unlocking valuable treasures, turning your routine into a week filled with rewards."
                                 Status="@data.WeeklyAssignments.Status"
                                 ExpiresAt="@data.WeeklyAssignments.ExpiresAt"
                                 OnStart="@StartWeeklyQuestsAsync"

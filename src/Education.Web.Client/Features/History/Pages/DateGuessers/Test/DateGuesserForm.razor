@@ -101,9 +101,16 @@
     private async Task OnValidSubmit()
     {
         _isLoading = true;
-        await OnAnswer.InvokeAsync(_model);
-        _model = new Model();
-        _isLoading = false;
+        
+        try
+        {
+            await OnAnswer.InvokeAsync(_model);
+            _model = new Model();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
 }

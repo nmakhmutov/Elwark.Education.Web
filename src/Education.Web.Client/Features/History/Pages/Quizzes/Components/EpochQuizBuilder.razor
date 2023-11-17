@@ -68,8 +68,14 @@
             return;
 
         _isLoading = true;
-        await OnCreateClick.InvokeAsync(new CreateEpochQuizRequest(Difficulty.Value, Epoch));
-        _isLoading = false;
+        
+        try
+        {
+            await OnCreateClick.InvokeAsync(new CreateEpochQuizRequest(Difficulty.Value, Epoch));
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
-
 }

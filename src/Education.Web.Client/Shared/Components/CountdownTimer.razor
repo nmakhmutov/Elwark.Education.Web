@@ -1,7 +1,7 @@
 @implements IDisposable
 
 <MudText Typo="@Typo" Align="@Align" Class="@Class" Color="@Color">
-    @_timeLeft.Humanize()
+    @_timeLeft.Humanize(L)
 </MudText>
 
 @code {
@@ -9,6 +9,9 @@
     private TimeSpan _timeLeft = TimeSpan.Zero;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromSeconds(1));
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+    
     [Parameter, EditorRequired]
     public DateTime Deadline { get; set; }
 

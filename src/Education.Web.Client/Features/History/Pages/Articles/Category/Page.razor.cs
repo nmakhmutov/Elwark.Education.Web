@@ -6,6 +6,7 @@ using Education.Web.Client.Http;
 using Education.Web.Client.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using MudBlazor;
 
 namespace Education.Web.Client.Features.History.Pages.Articles.Category;
 
@@ -29,6 +30,12 @@ public sealed partial class Page
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["Articles_Title"], null, true)
+    ];
+    
     [Parameter]
     public string? Category { get; set; }
 
