@@ -101,21 +101,21 @@
     private ApiResult<PagingTokenModel<NotificationModel>> _result = ApiResult<PagingTokenModel<NotificationModel>>.Loading();
     private readonly List<NotificationModel> _notifications = [];
     private bool _isMoreLoading;
+    
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private INotificationService NotificationService { get; init; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; init; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["Account_Title"], CustomerUrl.Root),
         new BreadcrumbItem(L["Notifications_Title"], null, true)
     ];
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private INotificationService NotificationService { get; set; } = default!;
-
-    [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {

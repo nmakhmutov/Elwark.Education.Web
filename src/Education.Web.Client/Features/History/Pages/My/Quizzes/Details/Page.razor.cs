@@ -15,19 +15,19 @@ public sealed partial class Page
     private ApiResult<QuizStatisticsModel> _result = ApiResult<QuizStatisticsModel>.Loading();
     private string? _title;
 
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IHistoryLearnerService LearnerService { get; init; } = default!;
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
         new BreadcrumbItem(L["Quizzes_Title"], HistoryUrl.User.MyQuizzes),
         new BreadcrumbItem(_title ?? string.Empty, null, true)
     ];
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
-
+    
     [Parameter]
     public string? Test { get; set; }
 

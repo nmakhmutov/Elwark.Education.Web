@@ -75,7 +75,7 @@
     private bool _loading;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required AssignmentsModel Quest { get; set; }

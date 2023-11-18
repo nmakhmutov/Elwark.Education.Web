@@ -77,18 +77,18 @@
 @code {
     private bool _isStarting;
     private bool _isAuthenticated;
+    
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private AuthenticationStateProvider StateProvider { get; set; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["Courses_Title"], HistoryUrl.Content.Courses())
     ];
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private AuthenticationStateProvider StateProvider { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public string CourseId { get; set; } = string.Empty;

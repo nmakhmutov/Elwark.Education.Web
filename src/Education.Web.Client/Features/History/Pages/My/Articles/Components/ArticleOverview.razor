@@ -77,14 +77,14 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L[Article.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Article.Epoch))
     ];
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public required ArticleOverviewModel Article { get; set; }

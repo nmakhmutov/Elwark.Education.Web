@@ -12,10 +12,10 @@ public sealed partial class Page
     private ApiResult<ArticleStatisticsModel> _result = ApiResult<ArticleStatisticsModel>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; init; } = default!;
 
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;

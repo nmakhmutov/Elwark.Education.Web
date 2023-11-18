@@ -10,7 +10,7 @@
     private readonly PeriodicTimer _timer = new(TimeSpan.FromSeconds(1));
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
     
     [Parameter, EditorRequired]
     public DateTime Deadline { get; set; }

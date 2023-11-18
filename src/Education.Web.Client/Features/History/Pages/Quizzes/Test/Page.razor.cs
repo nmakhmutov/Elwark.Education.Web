@@ -15,16 +15,16 @@ public sealed partial class Page
     private ApiResult<QuizModel> _result = ApiResult<QuizModel>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryQuizService QuizService { get; set; } = default!;
+    private IHistoryQuizService QuizService { get; init; } = default!;
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    private NavigationManager Navigation { get; init; } = default!;
 
     [Inject]
-    private ISnackbar Snackbar { get; set; } = default!;
+    private ISnackbar Snackbar { get; init; } = default!;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
@@ -37,7 +37,7 @@ public sealed partial class Page
         _result = await QuizService.GetAsync(Id);
         _result.MathError(e =>
         {
-            if (e.IsQuizAlreadyCompleted() || e.IsQuizNotFound())
+            if (e.IsQuizAlreadyCompleted() || e.IsQuizNotFound() || e.IsQuizExpired())
                 Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
         });
     }

@@ -17,16 +17,16 @@ public sealed partial class Page
     private TimelinePosition _timelinePosition = TimelinePosition.Start;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    private NavigationManager Navigation { get; init; } = default!;
 
     [Inject]
-    private IBrowserViewportService ViewportService { get; set; } = default!;
+    private IBrowserViewportService ViewportService { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService ArticleService { get; set; } = default!;
+    private IHistoryArticleService ArticleService { get; init; } = default!;
 
     [SupplyParameterFromQuery(Name = "by")]
     public string? Sort { get; set; }

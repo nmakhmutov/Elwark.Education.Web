@@ -54,13 +54,13 @@
 @code {
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    private NavigationManager Navigation { get; init; } = default!;
 
     [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
+    private CustomerState Customer { get; init; } = default!;
 
     private void OnLogin() =>
         Navigation.NavigateToLogin(AuthenticationUrl.LogIn(Navigation.Uri));

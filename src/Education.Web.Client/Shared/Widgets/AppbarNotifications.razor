@@ -73,13 +73,13 @@
 @code {
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private INotificationService NotificationService { get; set; } = default!;
+    private INotificationService NotificationService { get; init; } = default!;
 
     [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
+    private CustomerState Customer { get; init; } = default!;
 
     private string Icon =>
         NotificationService.HasNotifications

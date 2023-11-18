@@ -19,16 +19,16 @@ public sealed partial class Page
     private GetArticlesRequest.SortType _sort;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService ArticleService { get; set; } = default!;
+    private IHistoryArticleService ArticleService { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; init; } = default!;
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    private NavigationManager Navigation { get; init; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [

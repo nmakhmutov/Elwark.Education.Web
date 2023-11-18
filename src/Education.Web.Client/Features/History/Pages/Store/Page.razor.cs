@@ -13,10 +13,10 @@ public sealed partial class Page
     private PossessionsModel _possessions = PossessionsModel.Empty;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
+    private IHistoryUserService UserService { get; init; } = default!;
 
     [SupplyParameterFromQuery]
     public string? Search { get; init; }

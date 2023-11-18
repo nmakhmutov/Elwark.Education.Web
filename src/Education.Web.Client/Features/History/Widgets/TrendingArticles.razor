@@ -34,13 +34,13 @@
         ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
 
     [Inject]
-    private IBrowserViewportService ViewportService { get; set; } = default!;
+    private IBrowserViewportService ViewportService { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService HistoryArticleService { get; set; } = default!;
+    private IHistoryArticleService HistoryArticleService { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; init; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

@@ -18,16 +18,16 @@ public sealed partial class Page
         ApiResult<PagingOffsetModel<TimelineOverviewModel>>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService ArticleService { get; set; } = default!;
+    private IHistoryArticleService ArticleService { get; init; } = default!;
 
     [Inject]
-    private IDialogService DialogService { get; set; } = default!;
+    private IDialogService DialogService { get; init; } = default!;
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    private NavigationManager Navigation { get; init; } = default!;
 
     [SupplyParameterFromQuery(Name = "year")]
     public int Year { get; set; }

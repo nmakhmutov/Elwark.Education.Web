@@ -118,17 +118,17 @@
 @code {
     private Dictionary<string, List<MarkupString>> _conflictParties = new();
 
-    private List<BreadcrumbItem> Breadcrumbs =>
-        [
-            new BreadcrumbItem(L["History_Title"], HistoryUrl.Root), 
-            new BreadcrumbItem(L[Battle.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Battle.Epoch))
-        ];
-
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
     private ContentFormatter Formatter { get; set; } = default!;
+
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L[Battle.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Battle.Epoch))
+    ];
 
     [Parameter, EditorRequired]
     public required ArticleDetail.BattleModel Battle { get; set; }

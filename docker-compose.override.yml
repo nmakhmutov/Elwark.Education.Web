@@ -6,6 +6,9 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512M
+          memory: 128M
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - HTTP_PORTS=80
     ports:
       - "5010:80"

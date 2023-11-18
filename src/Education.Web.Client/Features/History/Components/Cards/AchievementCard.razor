@@ -73,10 +73,10 @@
     private string? _class;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public Achievement Achievement { get; set; } = default!;
+    public Achievement Achievement { get; init; } = default!;
 
     [Parameter]
     public bool Paper { get; set; }

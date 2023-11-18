@@ -47,10 +47,10 @@
     private ApiResult<UpcomingInventoriesModel> _result = ApiResult<UpcomingInventoriesModel>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryStoreService StoreService { get; set; } = default!;
+    private IHistoryStoreService StoreService { get; init; } = default!;
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;

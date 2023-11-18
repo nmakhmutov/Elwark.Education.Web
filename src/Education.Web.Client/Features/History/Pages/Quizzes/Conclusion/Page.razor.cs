@@ -14,13 +14,13 @@ public sealed partial class Page
     private ApiResult<QuizConclusionModel> _result = ApiResult<QuizConclusionModel>.Loading();
 
     [Inject]
-    private IHistoryQuizService QuizService { get; set; } = default!;
+    private IHistoryQuizService QuizService { get; init; } = default!;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    private NavigationManager Navigation { get; init; } = default!;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;

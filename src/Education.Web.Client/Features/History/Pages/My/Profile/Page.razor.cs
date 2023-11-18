@@ -14,16 +14,16 @@ public sealed partial class Page
     private ApiResult<ProfileModel> _result = ApiResult<ProfileModel>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IDialogService DialogService { get; set; } = default!;
+    private IDialogService DialogService { get; init; } = default!;
 
     [CascadingParameter]
-    public CustomerState Customer { get; set; } = default!;
+    public CustomerState Customer { get; init; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
+    private IHistoryUserService UserService { get; init; } = default!;
 
     protected override async Task OnInitializedAsync() =>
         _result = await UserService.GetProfileAsync();

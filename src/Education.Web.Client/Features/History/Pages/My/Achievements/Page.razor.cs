@@ -13,20 +13,20 @@ public sealed partial class Page
     private ApiResult<AchievementsModel> _result = ApiResult<AchievementsModel>.Loading();
     private string? _subtitle;
 
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; init; } = default!;
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
         new BreadcrumbItem(L["Achievements_Title"], null, true)
     ];
 
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
-
     [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
+    private CustomerState Customer { get; init; } = default!;
 
     protected override async Task OnInitializedAsync()
     {

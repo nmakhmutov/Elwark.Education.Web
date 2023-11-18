@@ -6,7 +6,7 @@
     private CustomerState _state = CustomerState.Anonymous;
 
     [Inject]
-    private CustomerStateProvider CustomerStateProvider { get; set; } = default!;
+    private CustomerStateProvider CustomerStateProvider { get; init; } = default!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }

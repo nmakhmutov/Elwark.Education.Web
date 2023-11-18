@@ -13,13 +13,13 @@ public sealed partial class Page
     private ApiResult<DateGuesserConclusionModel> _result = ApiResult<DateGuesserConclusionModel>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryDateGuesserService DateGuesserService { get; set; } = default!;
+    private IHistoryDateGuesserService DateGuesserService { get; init; } = default!;
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    private NavigationManager Navigation { get; init; } = default!;
 
     [Parameter]
     public required string Id { get; set; }

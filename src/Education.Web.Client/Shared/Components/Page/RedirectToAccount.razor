@@ -3,7 +3,7 @@
 @code {
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    private NavigationManager Navigation { get; init; } = default!;
 
     protected override void OnInitialized() =>
         Navigation.NavigateTo(CustomerUrl.Root);

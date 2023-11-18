@@ -14,16 +14,16 @@ public sealed partial class Page
     private ApiResult<OneOf> _result = ApiResult<OneOf>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService ArticleService { get; set; } = default!;
+    private IHistoryArticleService ArticleService { get; init; } = default!;
 
     [Inject]
-    private IHistoryCourseService CourseService { get; set; } = default!;
+    private IHistoryCourseService CourseService { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; init; } = default!;
 
     protected override Task OnInitializedAsync() =>
         SearchAsync();

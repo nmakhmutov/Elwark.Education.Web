@@ -5,6 +5,7 @@ using Education.Web.Client.Models;
 using Education.Web.Client.Models.Quiz;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using MudBlazor;
 
 namespace Education.Web.Client.Features.History.Pages.Flow;
 
@@ -14,11 +15,17 @@ public sealed partial class Page
     private ApiResult<FlowModel> _result = ApiResult<FlowModel>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryFlowService FlowService { get; set; } = default!;
+    private IHistoryFlowService FlowService { get; init; } = default!;
 
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["Flow_Title"], null, true)
+    ];
+    
     protected override async Task OnInitializedAsync() =>
         _result = await FlowService.GetAsync();
 

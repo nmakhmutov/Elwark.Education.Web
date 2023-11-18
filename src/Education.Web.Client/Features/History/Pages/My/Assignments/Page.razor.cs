@@ -11,18 +11,18 @@ public sealed partial class Page
 {
     private ApiResult<UserAssignmentModel> _result = ApiResult<UserAssignmentModel>.Loading();
 
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IHistoryUserService UserService { get; init; } = default!;
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
     ];
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryUserService UserService { get; set; } = default!;
-
+    
     protected override async Task OnInitializedAsync() =>
         _result = await UserService.GetAssignmentsAsync();
 

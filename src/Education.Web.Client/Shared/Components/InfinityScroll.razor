@@ -4,7 +4,7 @@
     private DotNetObjectReference<InfinityScroll>? _objectRef;
 
     [Inject]
-    private IJSRuntime JsRuntime { get; set; } = default!;
+    private IJSRuntime JsRuntime { get; init; } = default!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }

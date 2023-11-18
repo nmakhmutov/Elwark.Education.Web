@@ -18,30 +18,30 @@ public sealed partial class Page
     private ApiResult<QuizBuilderModel> _result = ApiResult<QuizBuilderModel>.Loading();
     private Settings _settings = new(EpochType.None, null);
 
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IHistoryQuizService QuizService { get; init; } = default!;
+
+    [Inject]
+    private IHistoryLearnerService LearnerService { get; init; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; init; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; init; } = default!;
+
+    [Inject]
+    private ILocalStorageService Storage { get; init; } = default!;
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["Quizzes_Title"], null, true)
     ];
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryQuizService QuizService { get; set; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
-
-    [Inject]
-    private ISnackbar Snackbar { get; set; } = default!;
-
-    [Inject]
-    private ILocalStorageService Storage { get; set; } = default!;
-
+    
     [SupplyParameterFromQuery(Name = "article")]
     public string? ArticleId { get; set; }
 

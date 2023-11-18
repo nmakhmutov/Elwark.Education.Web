@@ -14,13 +14,13 @@ public sealed partial class Page
     private ApiResult<MonthlyLeaderboardModel> _result = ApiResult<MonthlyLeaderboardModel>.Loading();
 
     [Inject]
-    private IHistoryLeaderboardService LeaderboardService { get; set; } = default!;
+    private IHistoryLeaderboardService LeaderboardService { get; init; } = default!;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private AuthenticationStateProvider StateProvider { get; set; } = default!;
+    private AuthenticationStateProvider StateProvider { get; init; } = default!;
 
     protected override async Task OnInitializedAsync()
     {

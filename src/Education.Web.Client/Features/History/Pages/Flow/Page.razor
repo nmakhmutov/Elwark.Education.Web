@@ -18,9 +18,13 @@
         }
     </Error>
     <ChildContent Context="flow">
+        <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+            <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+        </EduContainer>
+
         <FlowQuestionsContainer
-            Class="py-3 py-sm-6"
-            Flow="flow"
+            Class="pb-3 pb-sm-6"
+            Flow="@flow"
             CorrectAnswer="@_correctAnswer"
             OnAnswerClick="@OnAnswerClick"
             OnNextClick="@OnNextQuestion"

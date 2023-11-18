@@ -14,18 +14,18 @@ public sealed partial class Page
     private QuizzesStatisticsModel.ProgressModel[] _monthly = Array.Empty<QuizzesStatisticsModel.ProgressModel>();
     private ApiResult<QuizzesStatisticsModel> _result = ApiResult<QuizzesStatisticsModel>.Loading();
 
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IHistoryLearnerService LearnerService { get; init; } = default!;
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
         new BreadcrumbItem(L["Quizzes_Title"], null, true)
     ];
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
-
+    
     protected override async Task OnInitializedAsync()
     {
         _result = await LearnerService.GetQuizStatisticsAsync();

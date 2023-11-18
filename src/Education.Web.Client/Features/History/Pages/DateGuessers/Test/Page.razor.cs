@@ -18,24 +18,24 @@ public sealed partial class Page
     private uint _totalQuestions;
     private DateTime _x2BonusUntil;
 
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IHistoryDateGuesserService DateGuesserService { get; init; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; init; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; init; } = default!;
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["History_DateGuessers_Title"], null, true)
     ];
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryDateGuesserService DateGuesserService { get; set; } = default!;
-
-    [Inject]
-    private ISnackbar Snackbar { get; set; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
-
+    
     [Parameter]
     public string Id { get; set; } = string.Empty;
 

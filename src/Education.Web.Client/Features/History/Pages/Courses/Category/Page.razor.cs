@@ -18,28 +18,28 @@ public sealed partial class Page
     private GetCourseRequest.SortType _sort;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryCourseService CourseService { get; set; } = default!;
+    private IHistoryCourseService CourseService { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; init; } = default!;
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
-
-    [Parameter]
-    public string? Category { get; set; }
-
-    [SupplyParameterFromQuery(Name = "page")]
-    public int CurrentPage { get; set; }
+    private NavigationManager Navigation { get; init; } = default!;
     
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["Courses_Title"], null, true)
     ];
+    
+    [Parameter]
+    public string? Category { get; set; }
+
+    [SupplyParameterFromQuery(Name = "page")]
+    public int CurrentPage { get; set; }
     
     private int TotalPages =>
         _result.Map(x => (int)double.Ceiling((double)x.Count / Limit))

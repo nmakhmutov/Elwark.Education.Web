@@ -144,13 +144,13 @@
     private Error? _error;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryStoreService StoreService { get; set; } = default!;
+    private IHistoryStoreService StoreService { get; init; } = default!;
 
     [Inject]
-    private IHistoryOrderService OrderService { get; set; } = default!;
+    private IHistoryOrderService OrderService { get; init; } = default!;
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;

@@ -71,10 +71,10 @@
 @code {
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter]
-    public ProductsFilter Filter { get; set; } = ProductsFilter.Empty;
+    public ProductsFilter Filter { get; init; } = ProductsFilter.Empty;
 
     [Parameter]
     public EventCallback<ProductsFilter> FilterChanged { get; set; }

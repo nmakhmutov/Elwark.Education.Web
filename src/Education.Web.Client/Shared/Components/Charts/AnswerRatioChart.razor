@@ -45,10 +45,10 @@
         };
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public AnswerRatioModel Value { get; set; } = default!;
+    public AnswerRatioModel Value { get; init; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

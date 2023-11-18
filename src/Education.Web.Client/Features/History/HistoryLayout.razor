@@ -68,13 +68,13 @@
     private MudAutocomplete<SearchModel> _searchAutocomplete = default!;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistorySearchService HistorySearchService { get; set; } = default!;
+    private IHistorySearchService HistorySearchService { get; init; } = default!;
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    private NavigationManager Navigation { get; init; } = default!;
 
     private void ToggleDrawer() =>
         _isOpen = !_isOpen;

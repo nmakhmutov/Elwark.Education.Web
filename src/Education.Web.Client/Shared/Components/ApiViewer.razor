@@ -37,7 +37,7 @@
     public ApiResult<T> Result { get; set; } = ApiResult<T>.Loading();
 
     [Parameter]
-    public RenderFragment<T> ChildContent { get; set; } = default!;
+    public RenderFragment<T> ChildContent { get; init; } = default!;
 
     [Parameter]
     public RenderFragment? Loading { get; set; }

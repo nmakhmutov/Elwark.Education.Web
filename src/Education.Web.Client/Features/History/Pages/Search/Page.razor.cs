@@ -15,13 +15,13 @@ public sealed partial class Page
     private ApiResult<SearchResultModel> _result = ApiResult<SearchResultModel>.Loading();
 
     [Inject]
-    private IHistorySearchService HistorySearchService { get; set; } = default!;
+    private IHistorySearchService HistorySearchService { get; init; } = default!;
 
     [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    private NavigationManager Navigation { get; init; } = default!;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [SupplyParameterFromQuery(Name = "q")]
     public string? Query { get; set; }

@@ -17,27 +17,27 @@ public sealed partial class Page
     private ApiResult<DateGuesserBuilderModel> _result = ApiResult<DateGuesserBuilderModel>.Loading();
     private Settings _settings = new(EpochType.None, null);
 
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IHistoryDateGuesserService DateGuesserService { get; init; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; init; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; init; } = default!;
+
+    [Inject]
+    private ILocalStorageService Storage { get; init; } = default!;
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["History_DateGuessers_Title"], null, true)
     ];
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IHistoryDateGuesserService DateGuesserService { get; set; } = default!;
-
-    [Inject]
-    private ISnackbar Snackbar { get; set; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
-
-    [Inject]
-    private ILocalStorageService Storage { get; set; } = default!;
-
+    
     protected override async Task OnInitializedAsync()
     {
         _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.DateGuesserSettings) ?? _settings;

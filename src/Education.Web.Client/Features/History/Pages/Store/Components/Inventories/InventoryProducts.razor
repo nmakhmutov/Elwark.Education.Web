@@ -52,13 +52,13 @@
     private ApiResult<Product.InventoryModel[]> _result = ApiResult<Product.InventoryModel[]>.Loading();
 
     [Inject]
-    private IHistoryStoreService StoreService { get; set; } = default!;
+    private IHistoryStoreService StoreService { get; init; } = default!;
 
     [Inject]
-    private IDialogService DialogService { get; set; } = default!;
+    private IDialogService DialogService { get; init; } = default!;
 
     [Inject]
-    public IStringLocalizer<App> L { get; set; } = default!;
+    public IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required PossessionsModel Possessions { get; set; }

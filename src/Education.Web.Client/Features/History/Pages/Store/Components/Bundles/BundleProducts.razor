@@ -33,13 +33,13 @@
     private ApiResult<Product.BundleModel[]> _result = ApiResult<Product.BundleModel[]>.Loading();
 
     [Inject]
-    private IHistoryStoreService StoreService { get; set; } = default!;
+    private IHistoryStoreService StoreService { get; init; } = default!;
 
     [Inject]
-    private IDialogService DialogService { get; set; } = default!;
+    private IDialogService DialogService { get; init; } = default!;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required PossessionsModel Possessions { get; set; }
