@@ -34,66 +34,6 @@
             break;
     }
 
-    @* <div class="mud-paper d-flex justify-space-between align-center gap-3 gap-sm-6 pa-3 pa-sm-6 mb-3"> *@
-    @*     <article> *@
-    @*         <MudText Typo="Typo.h5"> *@
-    @*             @Title *@
-    @*         </MudText> *@
-    @* *@
-    @*         @switch (Status) *@
-    @*         { *@
-    @*             case QuestStatus.Expired: *@
-    @*                 <MudText Class="mb-3" Typo="Typo.body1"> *@
-    @*                     @Subtitle *@
-    @*                 </MudText> *@
-    @* *@
-    @*                 <LoadingButton *@
-    @*                     DisableElevation *@
-    @*                     Variant="Variant.Filled" *@
-    @*                     Color="Color.Primary" *@
-    @*                     Text="@L["Assignments_Start_Button"]" *@
-    @*                     IsLoading="@_isLoading" *@
-    @*                     OnClick="@StartAsync"/> *@
-    @*                 break; *@
-    @* *@
-    @*             case QuestStatus.InProgress: *@
-    @*                 <MudText Class="mb-3" Typo="Typo.body1"> *@
-    @*                     Complete all tasks before *@
-    @*                 </MudText> *@
-    @*                 <MudButton Variant="Variant.Filled" Disabled> *@
-    @*                     <div class="d-flex align-center"> *@
-    @*                         <MudIcon Class="mr-1" Icon="@Icons.Material.Outlined.Timer" Size="Size.Small"/> *@
-    @*                         <CountdownTimer Deadline="@ExpiresAt" Typo="Typo.body1" OnComplete="@ExpiredAsync"/> *@
-    @*                     </div> *@
-    @*                 </MudButton> *@
-    @*                 break; *@
-    @* *@
-    @*             case QuestStatus.Completed: *@
-    @*                 <LoadingButton *@
-    @*                     Variant="Variant.Filled" *@
-    @*                     Color="Color.Primary" *@
-    @*                     Text="@L["Assignments_Collect_Button"]" *@
-    @*                     IsLoading="@_isLoading" *@
-    @*                     OnClick="@CollectAsync" *@
-    @*                     DisableElevation/> *@
-    @*                 break; *@
-    @* *@
-    @*             case QuestStatus.Collected: *@
-    @*                 <div class="d-flex align-center justify-center"> *@
-    @*                     <MudIcon Class="mr-1" Icon="@Icons.Material.Outlined.CheckCircle" Color="Color.Success"/> *@
-    @*                     <MudText Typo="Typo.subtitle1"> *@
-    @*                         @L["Assignments_Collected_Description"] *@
-    @*                     </MudText> *@
-    @*                 </div> *@
-    @*                 break; *@
-    @*         } *@
-    @*     </article> *@
-    @* *@
-    @*     <div class="d-flex align-center justify-center mud-primary white-text rounded mr-3 mr-sm-6"> *@
-    @*         <MudIcon Icon="@EduIcons.Assignment" Size="Size.Large" Class="ma-6"/> *@
-    @*     </div> *@
-    @* </div> *@
-
     <section class="d-flex flex-column gap-3">
         @foreach (var quest in Quests)
         {

@@ -14,8 +14,7 @@ internal sealed class CustomerStateProvider : IDisposable
     private bool _isInitialized;
     private CustomerState _state;
 
-    public CustomerStateProvider(ICustomerService customerService, AuthenticationStateProvider provider,
-        CustomerHab hab)
+    public CustomerStateProvider(ICustomerService customerService, AuthenticationStateProvider provider, CustomerHab hab)
     {
         _customerService = customerService;
         _provider = provider;
@@ -33,7 +32,10 @@ internal sealed class CustomerStateProvider : IDisposable
     public async ValueTask InitAsync()
     {
         if (_isInitialized)
+        {
+            OnChanged.Invoke(_state);
             return;
+        }
 
         var state = await _provider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated == false)
