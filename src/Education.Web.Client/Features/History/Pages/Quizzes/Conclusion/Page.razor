@@ -4,11 +4,11 @@
 
 <ApiViewer Result="@_result" Context="conclusion">
     <PageTitle>
-        @L[$"Quiz_{conclusion.Type}_Title"]: @conclusion.Article.Title
+        @L.GetQuizDifficultyTitle(conclusion.Type): @conclusion.Article.Title
     </PageTitle>
 
     <MudAlert Class="mb-6 mb-sm-12" Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
-        @L[$"ConclusionStatus_{conclusion.Status}"]
+        @L.GetConclusionStatusTitle(conclusion.Status)
     </MudAlert>
 
     <CompletedStars Class="mb-6" Progress="@conclusion.TotalScore.Scaled"/>

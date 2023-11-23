@@ -40,14 +40,14 @@
                     Possessions="@_possessions"
                     Filter="@_filter"
                     IsAffordable="@IsInventoryAffordable"
-                    OnProductPurchased="@OnInventoryPurchased"/>
+                    OnProductPurchased="@LoadInventoryAsync"/>
             </MudTabPanel>
             <MudTabPanel Icon="@Icons.Material.Outlined.ShoppingBag" Text="@L["History_InventoryStore_Catalog_Bundles"]">
                 <BundleProducts
                     Possessions="@_possessions"
                     Filter="@_filter"
                     IsAffordable="@IsBundleAffordable"
-                    OnProductPurchased="@OnBundlePurchased"/>
+                    OnProductPurchased="@LoadInventoryAsync"/>
             </MudTabPanel>
         </ChildContent>
     </MudTabs>

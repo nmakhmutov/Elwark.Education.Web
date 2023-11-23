@@ -9,9 +9,9 @@ public abstract record Product(string Id, string Title, uint Weight)
         string Id,
         uint InventoryId,
         string Title,
-        string IconUrl,
+        string ImageUrl,
         string Overview,
-        InventoryCategoryModel Category,
+        CategoryType Category,
         uint Weight,
         PriceModel Selling,
         PriceModel Purchasing
@@ -20,6 +20,7 @@ public abstract record Product(string Id, string Title, uint Weight)
     public sealed record BundleModel(
         string Id,
         string Title,
+        string Overview,
         string ImageUrl,
         uint Weight,
         PriceModel Price,

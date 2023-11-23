@@ -18,22 +18,22 @@
                    ValueChanged="@CategoryChanged"
                    Margin="Margin.Dense"
                    Variant="Variant.Outlined"
-                   Label="@L["History_InventoryStore_Category_Title"]"
+                   Label="@L["History_Inventory_Category_Title"]"
                    Dense>
             <MudSelectItem Value="@CategoryType.None">
-                @L["History_InventoryStore_Category_All"]
+                @L["History_Inventory_Category_All"]
             </MudSelectItem>
             <MudSelectItem Value="@CategoryType.Profile">
-                @L["History_InventoryStore_Category_Profile"]
+                @L.GetInventoryCategoryTypeTitle(CategoryType.Profile)
             </MudSelectItem>
             <MudSelectItem Value="@CategoryType.Quiz">
-                @L["History_InventoryStore_Category_Quiz"]
+                @L.GetInventoryCategoryTypeTitle(CategoryType.Quiz)
             </MudSelectItem>
             <MudSelectItem Value="@CategoryType.Examination">
-                @L["History_InventoryStore_Category_Examination"]
+                @L.GetInventoryCategoryTypeTitle(CategoryType.Examination)
             </MudSelectItem>
             <MudSelectItem Value="@CategoryType.DateGuesser">
-                @L["History_InventoryStore_Category_DateGuesser"]
+                @L.GetInventoryCategoryTypeTitle(CategoryType.DateGuesser)
             </MudSelectItem>
         </MudSelect>
     </div>

@@ -21,10 +21,10 @@
             <article class="content">
                 <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index()" Context="inventory">
                     <InventoryInfoCard
-                        IconUrl="@inventory.IconUrl"
+                        IconUrl="@inventory.ImageUrl"
                         Overview="@inventory.Overview"
                         Quantity="@inventory.Quantity"
-                        Subtitle="@inventory.Category.Title"
+                        Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
                         Title="@inventory.Title"/>
                 </InventoryGrid>
             </article>

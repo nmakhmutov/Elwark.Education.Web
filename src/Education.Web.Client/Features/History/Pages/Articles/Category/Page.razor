@@ -21,7 +21,7 @@
             @foreach (var epoch in EpochTypeExtensions.List[1..])
             {
                 <MudSelectItem Value="@epoch">
-                    @L[epoch.ResourceKey()]
+                    @L.GetEpochTitle(epoch)
                 </MudSelectItem>
             }
         </MudSelect>

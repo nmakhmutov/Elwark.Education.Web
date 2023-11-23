@@ -5,6 +5,6 @@ public sealed record UserInventoryModel(
     uint Quantity,
     string Title,
     string Overview,
-    string IconUrl,
-    InventoryCategoryModel Category
+    string ImageUrl,
+    CategoryType Category
 );

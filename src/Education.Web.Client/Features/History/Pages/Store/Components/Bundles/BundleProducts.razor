@@ -11,7 +11,8 @@
                     OnPurchaseClick="@OpenPurchaseDialog"/>
             </ChildContent>
             <NoRecordsContent>
-                <EduEmpty
+                <NoContent 
+                    Icon="@Icons.Material.Outlined.ShoppingBag"
                     Title="@L["InventoryStore_Bundles_NotFound"]"
                     Subtitle="@L["InventoryStore_TryToResetYourFilter"]"/>
             </NoRecordsContent>
@@ -83,7 +84,7 @@
     private Product.BundleModel[] ApplyFilter(IEnumerable<Product.BundleModel> source)
     {
         if (Filter.Category != CategoryType.None)
-            source = source.Where(x => x.Inventories.Any(t => t.Category.Type == Filter.Category));
+            source = source.Where(x => x.Inventories.Any(t => t.Category == Filter.Category));
 
         source = Filter.Sort switch
         {

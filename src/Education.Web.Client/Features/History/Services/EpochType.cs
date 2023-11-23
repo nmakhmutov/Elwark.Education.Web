@@ -37,9 +37,6 @@ public static class EpochTypeExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
-    public static string ResourceKey(this EpochType type) =>
-        $"History_Epoch_{type.ToFastString()}";
-
     public static string Image(this EpochType type) =>
         $"https://res.cloudinary.com/elwark/image/upload/f_auto,q_auto/v1/Education/History/Epochs/{type.ToFastString()}.jpg";
 }

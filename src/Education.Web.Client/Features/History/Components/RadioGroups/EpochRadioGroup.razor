@@ -29,7 +29,7 @@
     private IEnumerable<Epoch> GetEpochs()
     {
         foreach (var epoch in EpochTypeExtensions.List[1..])
-            yield return new Epoch(epoch, L[epoch.ResourceKey()], epoch.Image());
+            yield return new Epoch(epoch, L.GetEpochTitle(epoch), epoch.Image());
 
         yield return new Epoch(EpochType.None, L["History_Epoch_Any"], "/images/history/history.jpg");
     }

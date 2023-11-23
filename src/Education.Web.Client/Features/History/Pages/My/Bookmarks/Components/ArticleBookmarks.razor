@@ -2,7 +2,7 @@
 @using Education.Web.Client.Features.History.Services.Learner.Request
 @if (_isEmpty)
 {
-    <EduEmpty Class="grid-column-full" Title="@L["Bookmarks_EmptyTitle"]" Subtitle="@L["Bookmarks_EmptySubtitle"]"/>
+    <NoContent Class="mt-6 mt-sm-12" Title="@L["Bookmarks_NoArticles"]" Icon="@EduIcons.Bookmarks"/>
 }
 else
 {
@@ -47,7 +47,7 @@ else
                     <br/>
                     <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
                        href="@HistoryUrl.Content.Articles(item.Article.Epoch)">
-                        @L[item.Article.Epoch.ResourceKey()]
+                        @L.GetEpochTitle(item.Article.Epoch)
                     </a>
                 </div>
                 <div class="rating">

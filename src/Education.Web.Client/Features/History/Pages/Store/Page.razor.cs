@@ -2,6 +2,7 @@ using Education.Web.Client.Features.History.Pages.Store.Components;
 using Education.Web.Client.Features.History.Services.Store.Model;
 using Education.Web.Client.Features.History.Services.User;
 using Education.Web.Client.Features.History.Services.User.Model;
+using Education.Web.Client.Models.Inventory;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -19,10 +20,13 @@ public sealed partial class Page
     private IHistoryUserService UserService { get; init; } = default!;
 
     [SupplyParameterFromQuery]
-    public string? Search { get; init; }
+    public string? Category { get; set; }
 
-    protected override void OnParametersSet() =>
-        _filter = _filter with { Search = Search };
+    protected override void OnParametersSet()
+    {
+        if (Enum.TryParse(Category, true, out CategoryType type))
+            _filter = _filter with { Category = type };
+    }
 
     protected override Task OnInitializedAsync() =>
         LoadInventoryAsync();
@@ -31,12 +35,6 @@ public sealed partial class Page
         _possessions = (await UserService.GetPossessionsAsync())
             .Map(x => x)
             .UnwrapOr(_possessions);
-
-    private Task OnInventoryPurchased() =>
-        LoadInventoryAsync();
-
-    private Task OnBundlePurchased() =>
-        LoadInventoryAsync();
 
     private bool IsInventoryAffordable(Product.InventoryModel inventory) =>
         IsAffordable(inventory.Selling, inventory.Weight);

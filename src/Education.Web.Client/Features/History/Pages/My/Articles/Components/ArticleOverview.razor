@@ -16,7 +16,7 @@
         <br/>
 
         <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body1" href="@HistoryUrl.Content.Articles(Article.Epoch)">
-            @L[Article.Epoch.ResourceKey()]
+            @L.GetEpochTitle(Article.Epoch)
         </a>
 
         <ContentRating Class="pt-3" Rating="@Article.Rating" Size="Size.Small" ShowTooltip/>
@@ -83,7 +83,7 @@
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L[Article.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Article.Epoch))
+        new BreadcrumbItem(L.GetEpochTitle(Article.Epoch), HistoryUrl.Content.Articles(Article.Epoch))
     ];
 
     [Parameter, EditorRequired]

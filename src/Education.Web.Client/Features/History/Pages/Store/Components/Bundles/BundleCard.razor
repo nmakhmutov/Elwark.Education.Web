@@ -28,7 +28,7 @@
     private string Subtitle =>
         Bundle.Inventories.Length > 1
             ? L["Product_InventoryCount", Bundle.Inventories.Length]
-            : Bundle.Inventories[0].Category.Title;
+            : L.GetInventoryCategoryTypeTitle(Bundle.Inventories[0].Category);
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

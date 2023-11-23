@@ -4,10 +4,15 @@
 <MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
     <DialogContent>
         <header class="d-flex justify-space-between align-center mb-3 mb-sm-6">
-            <MudText Typo="Typo.h5">
-                @Product.Title
-            </MudText>
-
+            <div class="d-flex flex-column">
+                <MudText Typo="Typo.h5">
+                    @Product.Title
+                </MudText>
+                <MudText Typo="Typo.body1">
+                    @Product.Overview
+                </MudText>
+            </div>
+            
             <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
         </header>
 
@@ -17,10 +22,10 @@
             </MudText>
             <InventoryGrid Inventory="@Product.Inventories" Context="inventory">
                 <InventoryInfoCard
-                    IconUrl="@inventory.IconUrl"
+                    IconUrl="@inventory.ImageUrl"
                     Overview="@inventory.Overview"
                     Quantity="@(inventory.Quantity * _quantity)"
-                    Subtitle="@inventory.Category.Title"
+                    Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
                     Title="@inventory.Title"/>
             </InventoryGrid>
         </div>
@@ -241,7 +246,7 @@
     {
         if (!Possessions.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
         {
-            var currency = L[$"InternalMoney_{TotalPrice.Currency}"];
+            var currency = L.GetInternalCurrencyTitle(TotalPrice.Currency);
             return new Error(L["InternalMoney_NotEnoughMoneyTitle", currency], L["InternalMoney_NotEnoughMoneyDescription", currency]);
         }
 

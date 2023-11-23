@@ -2,6 +2,7 @@ using System.Text;
 using Education.Web.Client.Features.History.Services;
 using Education.Web.Client.Features.History.Services.Article.Request;
 using Education.Web.Client.Features.History.Services.Course.Request;
+using Education.Web.Client.Models.Inventory;
 
 namespace Education.Web.Client.Features.History;
 
@@ -100,8 +101,8 @@ public static class HistoryUrl
         public static string Index() =>
             $"{Root}/store";
 
-        public static string Index(string search) =>
-            $"{Root}/store?search={search}";
+        public static string Index(CategoryType category) =>
+            $"{Root}/store?category={category}";
     }
 
     public static class User

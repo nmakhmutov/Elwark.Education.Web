@@ -61,7 +61,7 @@
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L[Article.Epoch.ResourceKey()], HistoryUrl.Content.Articles(Article.Epoch))
+        new BreadcrumbItem(L.GetEpochTitle(Article.Epoch), HistoryUrl.Content.Articles(Article.Epoch))
     ];
     
     [Parameter, EditorRequired]
