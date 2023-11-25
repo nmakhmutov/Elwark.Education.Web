@@ -15,10 +15,9 @@ internal abstract class ApiClient
     private readonly IStringLocalizer _localizer;
     private readonly JsonSerializerOptions _options;
     private readonly AuthenticationStateProvider _provider;
-    private readonly TimeSpan _timeout;
 
     protected ApiClient(ApiAnonymousClient anonymous, ApiAuthenticatedClient authenticated,
-        IWebAssemblyHostEnvironment environment, AuthenticationStateProvider provider, IStringLocalizer localizer,
+        AuthenticationStateProvider provider, IStringLocalizer localizer,
         JsonSerializerOptions options)
     {
         _anonymous = anonymous;
@@ -26,10 +25,6 @@ internal abstract class ApiClient
         _localizer = localizer;
         _provider = provider;
         _options = options;
-
-        _timeout = environment.IsDevelopment()
-            ? TimeSpan.FromMinutes(10)
-            : TimeSpan.FromMinutes(1);
     }
 
     public async Task<ApiResult<T>> GetAsync<T>(string url, CancellationToken ct = default)
@@ -88,12 +83,9 @@ internal abstract class ApiClient
         CancellationToken ct
     )
     {
-        using var source = new CancellationTokenSource(_timeout);
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct, source.Token);
-
         try
         {
-            using var message = await action(cts.Token)
+            using var message = await action(ct)
                 .ConfigureAwait(false);
 
             var status = (uint)message.StatusCode;
@@ -102,7 +94,7 @@ internal abstract class ApiClient
             return (status, hasContent) switch
             {
                 (>= 200 and < 300, true) =>
-                    ApiResult<T>.Success((await message.Content.ReadFromJsonAsync<T>(_options, cts.Token))!),
+                    ApiResult<T>.Success((await message.Content.ReadFromJsonAsync<T>(_options, ct))!),
 
                 (>= 200 and < 300, false) => ApiResult<T>.Success(default!),
 
@@ -114,7 +106,7 @@ internal abstract class ApiClient
 
                 (_, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error_InternalServerError"], 500)),
 
-                _ => ApiResult<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(_options, cts.Token))!)
+                _ => ApiResult<T>.Fail((await message.Content.ReadFromJsonAsync<Error>(_options, ct))!)
             };
         }
         catch (AccessTokenNotAvailableException ex)

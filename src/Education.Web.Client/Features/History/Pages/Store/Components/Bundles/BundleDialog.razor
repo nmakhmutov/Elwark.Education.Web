@@ -1,5 +1,5 @@
 @using Education.Web.Client.Features.History.Services.Order.Model
-@using Education.Web.Client.Features.History.Services.Store.Request
+@using Education.Web.Client.Features.History.Services.Order.Request
 @using Education.Web.Client.Features.History.Services.User.Model
 <MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
     <DialogContent>
@@ -12,7 +12,7 @@
                     @Product.Overview
                 </MudText>
             </div>
-            
+
             <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
         </header>
 
@@ -126,7 +126,7 @@
                     Striped="@(!_status.IsFinal)"/>
 
                 <MudText Typo="Typo.subtitle1" Align="Align.Center">
-                    @L[$"OrderStatus_{_status.Name}"]
+                    @L[$"OrderStatus_{_status.Status}"]
                 </MudText>
             }
         }
@@ -150,9 +150,6 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryStoreService StoreService { get; init; } = default!;
 
     [Inject]
     private IHistoryOrderService OrderService { get; init; } = default!;
@@ -190,8 +187,7 @@
         if (_error is not null)
             return;
 
-        _status = new OrderStatusModel(0, "Creating");
-        var result = await StoreService.CheckoutAsync(new CheckoutRequest(Product.Id, _quantity));
+        var result = await OrderService.CheckoutAsync(new CheckoutRequest(Guid.NewGuid(), Product.Id, _quantity));
         if (result.IsError)
         {
             var error = result.UnwrapError();
@@ -199,15 +195,15 @@
             return;
         }
 
+        var delay = TimeSpan.FromSeconds(1);
+
         await InvokeAsync(async () =>
         {
-            var delay = TimeSpan.FromSeconds(1);
-
             while (_status is { IsFinal: false })
             {
                 await Task.Delay(delay);
 
-                var status = await OrderService.GetStatus(result.Unwrap());
+                var status = await OrderService.GetStatus(result.Unwrap().Id);
                 if (status.IsError)
                 {
                     if (status.Is(x => x.IsOrderNotFound()))
@@ -219,7 +215,6 @@
                 }
 
                 _status = status.Unwrap();
-                delay = TimeSpan.FromSeconds(1.2);
                 StateHasChanged();
 
                 if (_status is { IsFinal: true, IsRejected: false })

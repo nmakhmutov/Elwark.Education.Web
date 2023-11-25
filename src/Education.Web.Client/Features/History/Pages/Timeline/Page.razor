@@ -21,7 +21,7 @@
     </MudText>
 </EduContainer>
 
-<ApiViewer Result="_result" Context="result">
+<ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync" Context="result">
     <section class="grid seed-@(Year % 3)">
         @foreach (var item in result.Items)
         {

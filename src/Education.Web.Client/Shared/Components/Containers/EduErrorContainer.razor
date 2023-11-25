@@ -17,13 +17,13 @@
     <div class="d-flex justify-center gap-3">
         @if (Error.Status > 499)
         {
-            <MudButton
-                DisableElevation
+            <LoadingButton
+                IsLoading="@_isLoading"
                 Variant="Variant.Outlined"
                 Color="Color.Primary"
-                OnClick="@(() => Navigation.NavigateTo(Navigation.Uri, true))">
-                @L["Button_Reload"]
-            </MudButton>
+                OnClick="@Reload"
+                Text="@L["Button_Reload"]"
+                DisableElevation/>
         }
 
         <MudButton
@@ -37,6 +37,7 @@
 </EduContainer>
 
 @code {
+    private bool _isLoading;
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
@@ -48,7 +49,31 @@
     public Error Error { get; set; } = default!;
 
     [Parameter]
+    public EventCallback OnReloadClick { get; set; }
+
+    [Parameter]
     public string? Class { get; set; }
+
+    private async Task Reload()
+    {
+        _isLoading = true;
+        
+        try
+        {
+            if (OnReloadClick.HasDelegate)
+            {
+                await OnReloadClick.InvokeAsync();
+            }
+            else
+            {
+                Navigation.NavigateTo(Navigation.Uri, true);
+            }
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
 
     private string GetErrorDetail() =>
         Error switch

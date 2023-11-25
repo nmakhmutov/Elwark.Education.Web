@@ -5,7 +5,7 @@
     @L["Leaderboard_GlobalTop_Title"]
 </PageTitle>
 
-<ApiViewer Result="@_result" Context="items">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="items">
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
         <GlobalHeader
             Contestants="@items.Take(3)"

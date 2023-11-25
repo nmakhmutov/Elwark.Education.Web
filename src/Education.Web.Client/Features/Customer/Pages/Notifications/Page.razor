@@ -29,7 +29,7 @@
                 </MudButton>
             </div>
 
-            <ApiViewer Result="_result">
+            <ApiViewer Result="_result" OnReloadClick="@OnInitializedAsync">
                 @if (_notifications.Count == 0)
                 {
                     <NoContent Title="@L["Notifications_NothingNew"]"/>

@@ -9,7 +9,7 @@
                     Start with premium subscription today.
                 </MudText>
             </div>
-            <ApiViewer Result="@_result" Context="subscriptions">
+            <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="subscriptions">
                 <div class="pricing-grid">
                     @foreach (var item in subscriptions)
                     {
@@ -17,7 +17,6 @@
                             Id="@item.Id"
                             Months="@item.Months"
                             Price="@item.Price"
-                            Type="@item.Type"
                             OnBuyClick="@OnBuyClick"/>
                     }
                 </div>

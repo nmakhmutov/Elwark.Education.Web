@@ -15,7 +15,10 @@
         <PageTitle>
             @error.Title
         </PageTitle>
-        <EduErrorContainer Class="align-center justify-center flex-grow-1" Error="@(error)"/>
+        <EduErrorContainer
+            Class="align-center justify-center flex-grow-1"
+            Error="@error"
+            OnReloadClick="@OnReloadClick"/>
         break;
 
     case Status.Error when Error is not null:
@@ -44,5 +47,8 @@
 
     [Parameter]
     public RenderFragment<Error>? Error { get; set; }
+
+    [Parameter]
+    public EventCallback OnReloadClick { get; set; }
 
 }

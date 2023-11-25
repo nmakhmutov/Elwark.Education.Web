@@ -14,7 +14,10 @@
         }
         else
         {
-            <EduErrorContainer Class="align-center justify-center flex-grow-1 py-3 py-sm-6" Error="@(error)"/>
+            <EduErrorContainer 
+                Class="align-center justify-center flex-grow-1 py-3 py-sm-6" 
+                Error="@error"
+                OnReloadClick="@OnInitializedAsync"/>
         }
     </Error>
     <ChildContent Context="flow">

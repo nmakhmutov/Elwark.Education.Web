@@ -10,7 +10,7 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_result" Context="model">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
     <section class="grid px-3 pb-3 px-sm-6 pb-sm-6">
         @if (model.Article is null)
         {

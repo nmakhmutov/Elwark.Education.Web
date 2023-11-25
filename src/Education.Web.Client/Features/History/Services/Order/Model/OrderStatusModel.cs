@@ -1,22 +1,21 @@
 namespace Education.Web.Client.Features.History.Services.Order.Model;
 
-public sealed record OrderStatusModel(int Code, string Name)
+public sealed record OrderStatusModel(Guid Id, string Status)
 {
     public int Progress =>
-        Name switch
+        Status switch
         {
-            "Creating" => 10,
-            "Created" => 30,
-            "StockConfirmed" => 60,
-            "Paid" => 90,
+            "Created" => 0,
+            "StockConfirmed" => 33,
+            "Paid" => 66,
             "Shipped" => 100,
             "Cancelled" => 100,
             _ => 0
         };
 
     public bool IsRejected =>
-        Name is "Cancelled";
+        Status is "Cancelled";
 
     public bool IsFinal =>
-        Name is "Shipped" or "Cancelled";
+        Status is "Shipped" or "Cancelled";
 }

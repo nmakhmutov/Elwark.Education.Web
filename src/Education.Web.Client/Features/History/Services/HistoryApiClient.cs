@@ -32,8 +32,8 @@ internal sealed class HistoryApiClient : ApiClient
     };
 
     public HistoryApiClient(ApiAnonymousClient anonymous, ApiAuthenticatedClient authenticated,
-        IWebAssemblyHostEnvironment environment, IStringLocalizer<App> localizer, AuthenticationStateProvider provider)
-        : base(anonymous, authenticated, environment, provider, localizer, Options)
+        IStringLocalizer<App> localizer, AuthenticationStateProvider provider)
+        : base(anonymous, authenticated, provider, localizer, Options)
     {
     }
 }

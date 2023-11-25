@@ -2,7 +2,7 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<ApiViewer Result="@_result" Context="conclusion">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="conclusion">
     <PageTitle>
         @L.GetQuizDifficultyTitle(conclusion.Type): @conclusion.Article.Title
     </PageTitle>

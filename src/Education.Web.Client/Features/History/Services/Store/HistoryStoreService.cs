@@ -1,5 +1,4 @@
 using Education.Web.Client.Features.History.Services.Store.Model;
-using Education.Web.Client.Features.History.Services.Store.Request;
 using Education.Web.Client.Http;
 
 namespace Education.Web.Client.Features.History.Services.Store;
@@ -19,7 +18,4 @@ internal sealed class HistoryStoreService : IHistoryStoreService
 
     public Task<ApiResult<Product.BundleModel[]>> GetBundlesAsync() =>
         _api.GetAsync<Product.BundleModel[]>("history/store/bundles");
-
-    public Task<ApiResult<Guid>> CheckoutAsync(CheckoutRequest request) =>
-        _api.PostAsync<Guid, CheckoutRequest>("history/store/checkout", request);
 }

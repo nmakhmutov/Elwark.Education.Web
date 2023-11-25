@@ -6,7 +6,7 @@
     @_result.Match(x => $"{L.GetQuizDifficultyTitle(x.Type)}: {x.Article.Title}", e => e.Title, () => L["Quizzes_Title"])
 </PageTitle>
 
-<ApiViewer Result="@_result" Context="quiz">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="quiz">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
             <header class="timer">
