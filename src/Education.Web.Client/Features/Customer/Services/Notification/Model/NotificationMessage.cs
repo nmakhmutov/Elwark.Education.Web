@@ -10,7 +10,7 @@ public record NotificationMessage
         string subject,
         string module,
         string title,
-        string? message,
+        string message,
         Dictionary<string, string> payload,
         DateTime createdAt
     )
@@ -23,8 +23,8 @@ public record NotificationMessage
         CreatedAt = createdAt;
         Href = (subject, module) switch
         {
-            ("History", "Inventory") => HistoryUrl.User.MyBackpack,
-            ("History", "Achievement") => $"{HistoryUrl.User.MyAchievements}#{GetPayloadValue("id")}",
+            ("History", "Inventory") => $"{HistoryUrl.User.MyBackpack}?id={GetPayloadValue("id")}",
+            ("History", "Achievement") => $"{HistoryUrl.User.MyAchievements}?id={GetPayloadValue("id")}",
             ("History", "Profile") => HistoryUrl.User.MyProfile,
             _ => null
         };
@@ -36,7 +36,7 @@ public record NotificationMessage
 
     public string Title { get; }
 
-    public string? Message { get; }
+    public string Message { get; }
 
     public string? Href { get; }
 

@@ -10,13 +10,9 @@ namespace Education.Web.Client.Features.History.Pages.My.DateGuessers;
 
 public sealed partial class Page
 {
-    private DateGuessersStatisticsModel.ProgressModel[] _daily =
-        Array.Empty<DateGuessersStatisticsModel.ProgressModel>();
-
-    private DateGuessersStatisticsModel.ProgressModel[] _monthly =
-        Array.Empty<DateGuessersStatisticsModel.ProgressModel>();
-
     private ApiResult<DateGuessersStatisticsModel> _result = ApiResult<DateGuessersStatisticsModel>.Loading();
+    private DateGuessersStatisticsModel.ProgressModel[] _daily = [];
+    private DateGuessersStatisticsModel.ProgressModel[] _monthly = [];
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -29,7 +25,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
         new BreadcrumbItem(L["History_DateGuessers_Title"], null, true)
     ];
-    
+
     protected override async Task OnInitializedAsync()
     {
         _result = await LearnerService.GetDateGuesserStatisticsAsync();

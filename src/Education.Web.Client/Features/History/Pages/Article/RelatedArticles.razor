@@ -16,7 +16,7 @@
 }
 
 @code {
-    private UserArticleOverviewModel[] _article = Array.Empty<UserArticleOverviewModel>();
+    private UserArticleOverviewModel[] _article = [];
 
     [Inject]
     private IHistoryArticleService ArticleService { get; set; } = default!;
@@ -35,6 +35,6 @@
 
     protected override async Task OnInitializedAsync() =>
         _article = (await ArticleService.GetRelatedArticlesAsync(ArticleId))
-            .UnwrapOr(Array.Empty<UserArticleOverviewModel>());
+            .UnwrapOr([]);
 
 }

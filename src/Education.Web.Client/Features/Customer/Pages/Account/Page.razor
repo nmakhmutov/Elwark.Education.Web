@@ -46,7 +46,7 @@
 
 @code {
     private ApiResult<SubjectModel[]> _response = ApiResult<SubjectModel[]>.Loading();
-    private SubjectEnhancedModel[] _subjects = Array.Empty<SubjectEnhancedModel>();
+    private SubjectEnhancedModel[] _subjects = [];
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -58,7 +58,7 @@
     {
         _response = await CustomerService.GetSubjectsAsync();
         _subjects = _response.Map(subjects => subjects.Select(x => Enhance(x)).Where(x => x is not null).ToArray())
-            .UnwrapOr(Array.Empty<SubjectEnhancedModel>())!;
+            .UnwrapOrElse(() => [])!;
     }
 
     private SubjectEnhancedModel? Enhance(SubjectModel model) =>

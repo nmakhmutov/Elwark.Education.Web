@@ -10,8 +10,8 @@ namespace Education.Web.Client.Features.History.Pages.My.Quizzes;
 
 public sealed partial class Page
 {
-    private QuizzesStatisticsModel.ProgressModel[] _daily = Array.Empty<QuizzesStatisticsModel.ProgressModel>();
-    private QuizzesStatisticsModel.ProgressModel[] _monthly = Array.Empty<QuizzesStatisticsModel.ProgressModel>();
+    private QuizzesStatisticsModel.ProgressModel[] _daily = [];
+    private QuizzesStatisticsModel.ProgressModel[] _monthly = [];
     private ApiResult<QuizzesStatisticsModel> _result = ApiResult<QuizzesStatisticsModel>.Loading();
 
     [Inject]

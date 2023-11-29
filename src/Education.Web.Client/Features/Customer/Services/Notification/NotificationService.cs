@@ -88,14 +88,12 @@ internal sealed class NotificationService : INotificationService
             .Take(MaxNotifications)
             .ToList();
 
-        var sb = new StringBuilder();
-        sb.Append($"<p class='mud-typography mud-typography-caption'>{notification.Subject}</p>");
-        sb.Append($"<h6 class='mud-typography mud-typography-subtitle1'>{notification.Title}</h6>");
+        var message = $"""
+                       <h6 class='mud-typography mud-typography-subtitle1'>{notification.Title}</h6>
+                       <p class='mud-typography mud-typography-body2'>{notification.Message}</p>
+                       """;
 
-        if (!string.IsNullOrEmpty(notification.Message))
-            sb.Append($"<p class='mud-typography mud-typography-body2'>{notification.Message}</p>");
-
-        _snackbar.Add(sb.ToString());
+        _snackbar.Add(message);
 
         return OnChanged.Invoke();
     }

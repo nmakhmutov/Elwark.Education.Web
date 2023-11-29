@@ -5,7 +5,7 @@ public sealed record NotificationModel(
     string Subject,
     string Module,
     string Title,
-    string? Message,
+    string Message,
     Dictionary<string, string> Payload,
     DateTime CreatedAt
 ) : NotificationMessage(Subject, Module, Title, Message, Payload, CreatedAt);

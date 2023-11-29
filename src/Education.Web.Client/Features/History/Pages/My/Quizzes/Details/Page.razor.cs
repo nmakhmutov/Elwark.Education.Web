@@ -11,8 +11,8 @@ namespace Education.Web.Client.Features.History.Pages.My.Quizzes.Details;
 
 public sealed partial class Page
 {
-    private QuizStatisticsModel.DailyProgress[] _progress = Array.Empty<QuizStatisticsModel.DailyProgress>();
     private ApiResult<QuizStatisticsModel> _result = ApiResult<QuizStatisticsModel>.Loading();
+    private QuizStatisticsModel.DailyProgress[] _progress = [];
     private string? _title;
 
     [Inject]
@@ -27,7 +27,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["Quizzes_Title"], HistoryUrl.User.MyQuizzes),
         new BreadcrumbItem(_title ?? string.Empty, null, true)
     ];
-    
+
     [Parameter]
     public string? Test { get; set; }
 

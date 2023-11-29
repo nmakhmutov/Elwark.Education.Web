@@ -54,5 +54,5 @@ public sealed partial class Page
 
     private async Task OnBankCollect() =>
         _result = (await FlowService.CollectBankAsync())
-            .Map(_ => _result.Unwrap() with { Bank = Array.Empty<InternalMoneyModel>() });
+            .Map(_ => _result.Unwrap() with { Bank = [] });
 }

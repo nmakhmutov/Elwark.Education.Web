@@ -63,10 +63,13 @@ public sealed class ApiResult<T>
             _ => throw new UnreachableException($"Unknown status {Status}")
         };
 
-    public void Match(Action<T> success)
+    public bool Match(Action<T> success)
     {
-        if (IsSuccess)
-            success(Value);
+        if (!IsSuccess)
+            return false;
+
+        success(Value);
+        return true;
     }
 
     public Task MatchAsync(Func<T, Task> success) =>
@@ -90,10 +93,13 @@ public sealed class ApiResult<T>
             error(Error);
     }
 
-    public void MathError(Action<Error> error)
+    public bool MathError(Action<Error> error)
     {
-        if (IsError)
-            error(Error);
+        if (!IsError)
+            return false;
+
+        error(Error);
+        return true;
     }
 
     public ApiResult<U> Map<U>(Func<T, U> fn) =>

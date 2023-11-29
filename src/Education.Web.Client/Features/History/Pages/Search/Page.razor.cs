@@ -10,7 +10,7 @@ namespace Education.Web.Client.Features.History.Pages.Search;
 
 public sealed partial class Page
 {
-    private readonly SearchRequest _request = new(string.Empty, true, Array.Empty<string>(), 0, 20);
+    private readonly SearchRequest _request = new(string.Empty, true, [], 0, 20);
     private IReadOnlyDictionary<string, int> _categories = new Dictionary<string, int>();
     private ApiResult<SearchResultModel> _result = ApiResult<SearchResultModel>.Loading();
 
@@ -54,7 +54,7 @@ public sealed partial class Page
             {
                 Q = Query,
                 Offset = (CurrentPage - 1) * _request.Limit,
-                Categories = string.IsNullOrWhiteSpace(Category) ? Array.Empty<string>() : new[] { Category }
+                Categories = string.IsNullOrWhiteSpace(Category) ? [] : new[] { Category }
             });
 
         _categories = _result.Map(x => x.Categories)

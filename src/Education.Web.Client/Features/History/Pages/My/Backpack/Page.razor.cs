@@ -11,7 +11,7 @@ public sealed partial class Page
 {
     private string? _capacity;
     private ApiResult<BackpackModel> _result = ApiResult<BackpackModel>.Loading();
-    private IReadOnlyCollection<WalletModel> _wallet = Array.Empty<WalletModel>();
+    private IReadOnlyCollection<WalletModel> _wallet = [];
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -29,7 +29,7 @@ public sealed partial class Page
     {
         _wallet = (await UserService.GetWalletAsync())
             .Map(x => x)
-            .UnwrapOr(Array.Empty<WalletModel>());
+            .UnwrapOrElse(() => []);
 
         _result = await UserService.GetBackpackAsync();
         _capacity = _result.Map(x => $"{x.Fullness} / {x.Capacity}")

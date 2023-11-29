@@ -188,37 +188,31 @@
             return;
 
         var result = await OrderService.CheckoutAsync(new CheckoutRequest(Guid.NewGuid(), Product.Id, _quantity));
-        if (result.IsError)
-        {
-            var error = result.UnwrapError();
-            _error = new Error(error.Title, error.Detail);
+        if (result.MathError(x => _error = new Error(x.Title, x.Detail)))
             return;
-        }
+
+        result.Match(x => _status = x);
+        StateHasChanged();
 
         var delay = TimeSpan.FromSeconds(1);
-
         await InvokeAsync(async () =>
         {
             while (_status is { IsFinal: false })
             {
                 await Task.Delay(delay);
 
-                var status = await OrderService.GetStatus(result.Unwrap().Id);
-                if (status.IsError)
-                {
-                    if (status.Is(x => x.IsOrderNotFound()))
-                        continue;
-
-                    var error = status.UnwrapError();
-                    _error = new Error(error.Title, error.Detail);
-                    return;
-                }
-
-                _status = status.Unwrap();
+                var status = await OrderService.GetStatus(_status.Id);
+                status.Match(x => _status = x, e => _error = new Error(e.Title, e.Detail));
                 StateHasChanged();
 
                 if (_status is { IsFinal: true, IsRejected: false })
+                {
                     MudDialog.Close(DialogResult.Ok(true));
+                    return;
+                }
+
+                if (_error is not null)
+                    return;
             }
         });
 

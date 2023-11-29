@@ -19,8 +19,8 @@ public sealed partial class Page
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile)
+        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["Assignments_Title"], null, true),
     ];
     
     protected override async Task OnInitializedAsync() =>

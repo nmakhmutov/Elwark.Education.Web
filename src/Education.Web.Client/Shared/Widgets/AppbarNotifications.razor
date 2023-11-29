@@ -2,7 +2,7 @@
 @using Education.Web.Client.Features.Customer
 @implements IDisposable
 
-<MudBadge Color="Color.Secondary" Visible="NotificationService.HasNotifications" Dot Overlap>
+<MudBadge Color="Color.Secondary" Visible="@NotificationService.HasNotifications" Dot Overlap>
     <MudMenu
         Icon="@Icon"
         Color="Color.Inherit"
@@ -21,7 +21,7 @@
                     Size="Size.Small"
                     StartIcon="@Icons.Material.Outlined.DoneAll"
                     Disabled="@(!NotificationService.HasNotifications)"
-                    OnClick="NotificationService.MarkAllAsReadAsync">
+                    OnClick="@NotificationService.MarkAllAsReadAsync">
                     @L["Notifications_MarkAsRead"]
                 </MudButton>
             </header>
@@ -33,19 +33,21 @@
                     <MudDivider/>
 
                     <MudMenuItem Class="px-3 py-2" Href="@notification.Href">
-                        <div class="d-flex">
+                        <div class="d-flex align-center">
                             <NotificationAvatar Class="mr-3" Subject="@notification.Subject"/>
-                            <div>
-                                <MudText Typo="Typo.subtitle2">
-                                    @notification.Title
-                                </MudText>
+                            <section>
+                                <header class="d-flex align-center gap-3">
+                                    <MudText Typo="Typo.subtitle2">
+                                        @notification.Title
+                                    </MudText>
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                                        @Customer.Humanize(notification.CreatedAt)
+                                    </MudText>
+                                </header>
                                 <MudText Typo="Typo.body2">
                                     @notification.Message
                                 </MudText>
-                                <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                                    @Customer.Humanize(notification.CreatedAt)
-                                </MudText>
-                            </div>
+                            </section>
                         </div>
                     </MudMenuItem>
                 }
@@ -100,4 +102,5 @@
         StateHasChanged();
         return ValueTask.CompletedTask;
     }
+
 }

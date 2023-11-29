@@ -5,9 +5,9 @@ public sealed record OrderStatusModel(Guid Id, string Status)
     public int Progress =>
         Status switch
         {
-            "Created" => 0,
-            "StockConfirmed" => 33,
-            "Paid" => 66,
+            "Created" => 25,
+            "StockConfirmed" => 50,
+            "Paid" => 75,
             "Shipped" => 100,
             "Cancelled" => 100,
             _ => 0

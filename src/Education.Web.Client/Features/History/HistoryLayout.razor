@@ -86,7 +86,7 @@
 
         return (await HistorySearchService.SearchAsync(new SearchRequest(text, 0, 11), ct))
             .Map(x => x.Hints)
-            .UnwrapOrElse(Array.Empty<SearchModel>)
+            .UnwrapOrElse(() => [])
             .ToArray();
     }
 

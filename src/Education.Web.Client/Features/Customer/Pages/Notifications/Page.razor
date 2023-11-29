@@ -36,42 +36,31 @@
                 }
 
                 <Virtualize Items="@_notifications" Context="notification">
-                    <section class="mud-paper d-flex pa-3 mb-3">
+                    <section class="mud-paper d-flex align-center pa-3 mb-3">
                         <NotificationAvatar Class="mr-3" Subject="@notification.Subject"/>
                         <article class="flex-1">
-                            @if (string.IsNullOrEmpty(notification.Message))
-                            {
-                                <MudText Class="mud-text-secondary" Typo="Typo.body2">
-                                    @Customer.Humanize(notification.CreatedAt)
-                                </MudText>
-                                <MudText Typo="Typo.body1">
+                            <header class="d-flex align-center gap-3">
+                                <MudText Typo="Typo.subtitle2">
                                     @notification.Title
                                 </MudText>
+                                <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                                    @Customer.Humanize(notification.CreatedAt)
+                                </MudText>
+                            </header>
+                            @if (string.IsNullOrEmpty(notification.Href))
+                            {
+                                <MudText Typo="Typo.body2">
+                                    @notification.Message
+                                </MudText>    
                             }
                             else
                             {
-                                <header class="d-flex align-center mud-text-secondary">
-                                    <MudText Typo="Typo.body2">
-                                        @notification.Title
-                                    </MudText>
-                                    <MudIcon Class="dot mx-1" Icon="@Icons.Material.Outlined.Adjust"/>
-                                    <MudText Typo="Typo.body2">
-                                        @Customer.Humanize(notification.CreatedAt)
-                                    </MudText>
-                                </header>
-                                <MudText Typo="Typo.body1">
+                                <MudLink Typo="Typo.body2" Href="@notification.Href">
                                     @notification.Message
-                                </MudText>
+                                </MudLink>
                             }
                         </article>
                         <aside>
-                            @if (!string.IsNullOrEmpty(notification.Href))
-                            {
-                                <MudIconButton
-                                    Icon="@Icons.Material.Outlined.ReadMore"
-                                    Href="@notification.Href"/>
-                            }
-
                             <MudIconButton
                                 Icon="@Icons.Material.Outlined.MarkEmailRead"
                                 OnClick="@(() => MarkAsReadAsync(notification.Id))"/>
@@ -101,7 +90,7 @@
     private ApiResult<PagingTokenModel<NotificationModel>> _result = ApiResult<PagingTokenModel<NotificationModel>>.Loading();
     private readonly List<NotificationModel> _notifications = [];
     private bool _isMoreLoading;
-    
+
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 

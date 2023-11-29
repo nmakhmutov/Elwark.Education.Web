@@ -18,7 +18,6 @@ internal sealed class CustomerHab : IAsyncDisposable
         _connection = new HubConnectionBuilder()
             .WithUrl(new Uri(host, "/hubs/notification"), options =>
             {
-                options.UseStatefulReconnect = true;
                 options.SkipNegotiation = true;
                 options.Transports = HttpTransportType.WebSockets;
                 options.AccessTokenProvider = async () =>
@@ -27,11 +26,11 @@ internal sealed class CustomerHab : IAsyncDisposable
                     return result.TryGetToken(out var token) ? token.Value : null;
                 };
             })
+            .WithStatefulReconnect()
+            .WithServerTimeout(TimeSpan.FromMinutes(10))
+            .WithKeepAliveInterval(TimeSpan.FromMinutes(5))
             .WithAutomaticReconnect(RetryPolicy.Instance)
             .Build();
-
-        _connection.On<CustomerChangedType>("Customers", async status => await OnCustomerChanged.Invoke(status));
-        _connection.On<NotificationMessage>("Messages", async message => await OnMessageReceived.Invoke(message));
     }
 
     public ValueTask DisposeAsync() =>
@@ -51,8 +50,13 @@ internal sealed class CustomerHab : IAsyncDisposable
         try
         {
             var state = await _stateProvider.GetAuthenticationStateAsync();
-            if (state.User.IsAuthenticated())
-                await _connection.StartAsync();
+            if (!state.User.IsAuthenticated())
+                return;
+
+            _connection.On<CustomerChangedType>("Customers", async status => await OnCustomerChanged.Invoke(status));
+            _connection.On<NotificationMessage>("Messages", async message => await OnMessageReceived.Invoke(message));
+
+            await _connection.StartAsync();
         }
         catch
         {
