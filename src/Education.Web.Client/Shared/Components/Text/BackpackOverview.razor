@@ -1,0 +1,27 @@
+<section class="d-flex align-center @Class">
+    <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="@Size"/>
+    <div class="d-flex align-center">
+        <MetricNumber Value="@Fullness" Typo="@Typo"/>
+        <MudText Typo="@Typo">&nbsp;/&nbsp;</MudText>
+        <MetricNumber Value="@Capacity" Typo="@Typo"/>
+    </div>
+</section>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public uint Fullness { get; set; }
+
+    [Parameter, EditorRequired]
+    public uint Capacity { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body1;
+
+    [Parameter]
+    public Size Size { get; set; } = Size.Small;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

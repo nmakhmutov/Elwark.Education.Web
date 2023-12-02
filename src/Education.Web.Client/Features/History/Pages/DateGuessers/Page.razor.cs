@@ -44,7 +44,7 @@ public sealed partial class Page
         _result = await DateGuesserService.GetAsync();
 
         await _result.MatchAsync(
-            model => model.Tests.Any(x => x.IsAllowed && x.Type == _settings.Size)
+            model => model.Tests.Any(x => x.IsAllowed && x.Type == _settings.Type)
                 ? Task.CompletedTask
                 : OnSizeChanged(model.Tests.FirstOrDefault(x => x.IsAllowed)?.Type),
             error =>
@@ -57,12 +57,12 @@ public sealed partial class Page
 
     private async Task CreateTestAsync()
     {
-        if (string.IsNullOrEmpty(_settings.Size))
+        if (!_settings.Type.HasValue)
             return;
 
         _isLoading = true;
 
-        var request = new CreateRequest(_settings.Size, _settings.Epoch);
+        var request = new CreateRequest(_settings.Type.Value, _settings.Epoch);
         (await DateGuesserService.CreateAsync(request))
             .Match(
                 x => Navigation.NavigateTo(HistoryUrl.DateGuesser.Test(x.Id)),
@@ -78,11 +78,11 @@ public sealed partial class Page
         await Storage.SetItemAsync(HistoryLocalStorageKey.DateGuesserSettings, _settings);
     }
 
-    private async Task OnSizeChanged(string? type)
+    private async Task OnSizeChanged(DateGuesserType? type)
     {
-        _settings = _settings with { Size = type };
+        _settings = _settings with { Type = type };
         await Storage.SetItemAsync(HistoryLocalStorageKey.DateGuesserSettings, _settings);
     }
 
-    private sealed record Settings(EpochType Epoch, string? Size);
+    private sealed record Settings(EpochType Epoch, DateGuesserType? Type);
 }

@@ -1,20 +1,23 @@
 @using Education.Web.Client.Features.Customer
 <section class="card @Class">
-    <header class="card-header"></header>
+    <header class="card-header">
+        <img class="avatar rounded-circle mud-elevation-5 ma-3" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
+    </header>
 
-    <section class="card-content px-3 px-sm-6">
-        <img class="avatar rounded-circle" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
-        <h5 class="mud-typography mud-typography-h5 one-line-text pt-1" title="@Customer.Name">
-            @Customer.Name
-        </h5>
-        <span>
-            <MudLink Typo="Typo.subtitle2" Href="@CustomerUrl.Root">
-                @L["Account_Title"]
-            </MudLink>
-        </span>
-    </section>
+    <MudText Class="one-line-text pt-1" Typo="Typo.h5" Align="Align.Center">
+        @Customer.Name
+    </MudText>
 
     @ChildContent
+
+    <footer class="border-t mud-border-lines-default pa-3">
+        <MudButton
+            Class="text-transform-none"
+            EndIcon="@Icons.Material.Outlined.ArrowForward"
+            Href="@CustomerUrl.Root">
+            @L["Account_Title"]
+        </MudButton>
+    </footer>
 </section>
 
 @code {

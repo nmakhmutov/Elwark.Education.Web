@@ -19,7 +19,7 @@
             @L.GetEpochTitle(Article.Epoch)
         </a>
 
-        <ContentRating Class="pt-3" Rating="@Article.Rating" Size="Size.Small" ShowTooltip/>
+        <ContentRating Class="pt-3" Rating="@Article.Rating" ShowTooltip/>
 
         <MudText Class="w-max-600 pt-3" Typo="Typo.body2">
             @Article.Overview
@@ -78,7 +78,7 @@
 @code {
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [

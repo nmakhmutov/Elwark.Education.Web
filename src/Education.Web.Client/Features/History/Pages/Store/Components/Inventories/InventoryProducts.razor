@@ -62,7 +62,7 @@
     public IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required PossessionsModel Possessions { get; set; }
+    public required ProfileModel Profile { get; set; }
 
     [Parameter, EditorRequired]
     public required ProductsFilter Filter { get; set; }
@@ -111,7 +111,7 @@
         var parameters = new DialogParameters
         {
             [nameof(InventoryDialog.Product)] = product,
-            [nameof(InventoryDialog.Possessions)] = Possessions
+            [nameof(InventoryDialog.Profile)] = Profile
         };
 
         var dialog = await DialogService.ShowAsync<InventoryDialog>(product.Title, parameters, options);

@@ -79,10 +79,10 @@
     private bool _isAuthenticated;
     
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private AuthenticationStateProvider StateProvider { get; set; } = default!;
+    private AuthenticationStateProvider StateProvider { get; init; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [

@@ -85,10 +85,10 @@ else
     private readonly HashSet<UserArticleOverviewModel> _items = new();
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerService LearnerService { get; init; } = default!;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required BookmarksRequest.SortType Sort { get; set; }

@@ -135,10 +135,10 @@
     private string? _style;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private ContentFormatter Formatter { get; set; } = default!;
+    private ContentFormatter Formatter { get; init; } = default!;
     
     private List<BreadcrumbItem> Breadcrumbs =>
     [

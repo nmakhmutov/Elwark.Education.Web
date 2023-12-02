@@ -20,7 +20,7 @@
         </header>
 
         <div class="d-flex justify-space-between align-center gap-3">
-            <ContentRating Rating="@Article.Rating" Size="Size.Small" ShowTooltip/>
+            <ContentRating Rating="@Article.Rating" ShowTooltip/>
 
             <MudTooltip Text="@L["TimeToRead_Title"]">
                 <div class="d-flex align-center">
@@ -68,7 +68,7 @@
 @code {
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required ArticleOverviewModel Article { get; set; }

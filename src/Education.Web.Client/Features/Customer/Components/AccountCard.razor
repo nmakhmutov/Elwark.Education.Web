@@ -42,15 +42,15 @@
 @code {
     private IDictionary<string, string> _items = new Dictionary<string, string>();
 
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IConfiguration Configuration { get; init; } = default!;
+
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
-
-    [Inject]
-    private IConfiguration Configuration { get; set; } = default!;
-
+    
     [Parameter]
     public string? Class { get; set; }
 

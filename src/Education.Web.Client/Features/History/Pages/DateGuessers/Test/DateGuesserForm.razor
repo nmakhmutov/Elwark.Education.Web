@@ -58,7 +58,7 @@
     private Model _model = new();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required EventCallback<Model> OnAnswer { get; set; }

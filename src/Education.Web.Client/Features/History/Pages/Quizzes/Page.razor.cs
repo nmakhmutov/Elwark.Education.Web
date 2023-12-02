@@ -41,7 +41,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["Quizzes_Title"], null, true)
     ];
-    
+
     [SupplyParameterFromQuery(Name = "article")]
     public string? ArticleId { get; set; }
 

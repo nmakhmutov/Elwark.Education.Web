@@ -7,7 +7,7 @@
     private string? _date;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter]
     public HistoricalDateModel? Date { get; set; }

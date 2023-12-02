@@ -4,7 +4,6 @@ using Education.Web.Client.Features.History.Services.JsonConverters;
 using Education.Web.Client.Http;
 using Education.Web.Client.Http.JsonConverters;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Localization;
 
 namespace Education.Web.Client.Features.History.Services;

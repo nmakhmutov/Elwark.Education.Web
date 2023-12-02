@@ -4,11 +4,11 @@
         {
             <MudRadio T="DifficultyType?" Class="radio" Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)">
                 <div class="d-flex justify-center align-center rounded-circle mud-background relative pa-2">
-                    <img class="image" src="@service.ImageUrl" alt="@service.Title" loading="lazy"/>
+                    <img class="image" src="@service.AccessInventory.ImageUrl" alt="@L[$"Quiz_{service.Type}_Title"]" loading="lazy"/>
                 </div>
 
-                <p class="mud-typography mud-typography-subtitle1 one-line-text" title="@service.Title">
-                    @service.Title
+                <p class="mud-typography mud-typography-subtitle1 one-line-text flex-1" title="@L[$"Quiz_{service.Type}_Title"]">
+                    @L[$"Quiz_{service.Type}_Title"]
                 </p>
             </MudRadio>
         }
@@ -16,6 +16,9 @@
 </div>
 
 @code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter]
     public DifficultyType? SelectedDifficulty { get; set; }

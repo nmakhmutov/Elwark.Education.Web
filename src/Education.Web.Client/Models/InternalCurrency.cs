@@ -5,7 +5,8 @@ namespace Education.Web.Client.Models;
 public enum InternalCurrency
 {
     Experience = 1,
-    Silver = 2
+    Scroll = 2,
+    Book = 3
 }
 
 internal static class InternalCurrencyExtensions
@@ -14,7 +15,8 @@ internal static class InternalCurrencyExtensions
         currency switch
         {
             InternalCurrency.Experience => EduIcons.Experience,
-            InternalCurrency.Silver => EduIcons.Silver,
+            InternalCurrency.Scroll => EduIcons.Scroll,
+            InternalCurrency.Book => EduIcons.Book,
             _ => throw new UnreachableException($"Unknown type {currency} of {nameof(InternalCurrency)}")
         };
 }

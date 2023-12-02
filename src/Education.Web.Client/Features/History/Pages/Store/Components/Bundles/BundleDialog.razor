@@ -125,7 +125,7 @@
                     Value="@_status.Progress"
                     Striped="@(!_status.IsFinal)"/>
 
-                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                <MudText Typo="Typo.subtitle2" Align="Align.Center">
                     @L[$"OrderStatus_{_status.Status}"]
                 </MudText>
             }
@@ -161,7 +161,7 @@
     public required Product.BundleModel Product { get; set; }
 
     [Parameter, EditorRequired]
-    public required PossessionsModel Possessions { get; set; }
+    public required ProfileModel Profile { get; set; }
 
     protected override void OnParametersSet() =>
         UpdateErrorState();
@@ -187,6 +187,7 @@
         if (_error is not null)
             return;
 
+        _status = new OrderStatusModel(Guid.Empty, "Creating");
         var result = await OrderService.CheckoutAsync(new CheckoutRequest(Guid.NewGuid(), Product.Id, _quantity));
         if (result.MathError(x => _error = new Error(x.Title, x.Detail)))
             return;
@@ -215,8 +216,6 @@
                     return;
             }
         });
-
-        _status = null;
     }
 
     private InternalMoneyModel OriginalPrice =>
@@ -233,13 +232,13 @@
 
     private Error? GetErrorMessage()
     {
-        if (!Possessions.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
+        if (!Profile.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
         {
             var currency = L.GetInternalCurrencyTitle(TotalPrice.Currency);
             return new Error(L["InternalMoney_NotEnoughMoneyTitle", currency], L["InternalMoney_NotEnoughMoneyDescription", currency]);
         }
 
-        if (TotalWeight > Possessions.Backpack.Emptiness)
+        if (TotalWeight > Profile.Backpack.Emptiness)
             return new Error(L["Backpack_IsFull_Title"], L["Backpack_IsFull_Description"]);
 
         return null;

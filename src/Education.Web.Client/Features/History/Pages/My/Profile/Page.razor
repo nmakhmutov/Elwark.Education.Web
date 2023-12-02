@@ -11,11 +11,22 @@
         <section class="grid">
             <ProfileCard Class="profile" Customer="@Customer">
                 <UserLevelProgress
-                    Class="pa-3 pa-sm-6"
-                    Level="@profile.Level.Level"
+                    Class="px-3 px-sm-6"
+                    Level="@profile.Level.Current"
                     Experience="@profile.Level.Experience"
                     Threshold="@profile.Level.Threshold"
                     OnLevelClick="@OnLevelClick"/>
+
+                <section class="d-flex flex-wrap flex-sm-nowrap justify-space-between align-center gap-3 pa-3 pa-sm-6">
+                    <div class="d-flex align-center gap-3">
+                        @foreach (var (currency, amount) in profile.Wallet)
+                        {
+                            <InternalMoney Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal/>
+                        }
+                    </div>
+
+                    <BackpackOverview Fullness="@profile.Backpack.Fullness" Capacity="@profile.Backpack.Capacity"/>
+                </section>
             </ProfileCard>
 
             <CardBadge

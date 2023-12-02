@@ -1,4 +1,3 @@
-using System.Text;
 using Microsoft.Extensions.Localization;
 
 namespace Education.Web.Client.Extensions;

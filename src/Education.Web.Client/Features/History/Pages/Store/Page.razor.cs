@@ -11,7 +11,7 @@ namespace Education.Web.Client.Features.History.Pages.Store;
 public sealed partial class Page
 {
     private ProductsFilter _filter = ProductsFilter.Empty;
-    private PossessionsModel _possessions = PossessionsModel.Empty;
+    private ProfileModel _profile = new(new UserLevelModel(0, 0, 0), new BackpackOverviewModel(0, 0, 0), []);
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -32,9 +32,9 @@ public sealed partial class Page
         LoadInventoryAsync();
 
     private async Task LoadInventoryAsync() =>
-        _possessions = (await UserService.GetPossessionsAsync())
+        _profile = (await UserService.GetProfileAsync())
             .Map(x => x)
-            .UnwrapOr(_possessions);
+            .UnwrapOrElse(() => _profile);
 
     private bool IsInventoryAffordable(Product.InventoryModel inventory) =>
         IsAffordable(inventory.Selling, inventory.Weight);
@@ -44,10 +44,10 @@ public sealed partial class Page
 
     private bool IsAffordable(Product.PriceModel price, uint weight)
     {
-        if (weight > _possessions.Backpack.Emptiness)
+        if (weight > _profile.Backpack.Emptiness)
             return false;
 
-        if (_possessions.Wallet.TryGetValue(price.Total.Currency, out var amount))
+        if (_profile.Wallet.TryGetValue(price.Total.Currency, out var amount))
             return amount >= price.Total.Amount;
 
         return false;

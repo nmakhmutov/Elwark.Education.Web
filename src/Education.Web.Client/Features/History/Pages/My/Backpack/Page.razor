@@ -9,9 +9,11 @@
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <div class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6">
         <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
-        <MudText Typo="Typo.h5">
-            @_capacity
-        </MudText>
+        @if(_result.IsSuccess)
+        {
+            var backpack = _result.Unwrap();
+            <BackpackOverview Fullness="@backpack.Fullness" Capacity="@backpack.Capacity" Typo="Typo.h5" Size="Size.Medium"/>
+        }
     </div>
 </EduContainer>
 
@@ -31,7 +33,7 @@
             <aside class="sidebar">
                 @foreach (var item in _wallet)
                 {
-                    <WalletCard Wallet="@item"/>
+                    <WalletCard Class="mb-3 mb-sm-6" Wallet="@item"/>
                 }
             </aside>
         </section>

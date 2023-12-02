@@ -122,7 +122,7 @@
     private Dictionary<string, List<MarkupString>> _conflictParties = new();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
     private ContentFormatter Formatter { get; set; } = default!;

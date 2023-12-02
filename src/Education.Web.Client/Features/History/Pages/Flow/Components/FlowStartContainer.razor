@@ -29,7 +29,7 @@
     private string? _url;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }

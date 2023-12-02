@@ -25,11 +25,7 @@
                     </em>
                 </MudText>
 
-                <ContentRating
-                    Class="d-flex align-center my-3"
-                    Rating="@item.Article.Rating"
-                    Size="Size.Small"
-                    ShowTooltip/>
+                <ContentRating Class="d-flex align-center my-3" Rating="@item.Article.Rating" ShowTooltip/>
 
                 <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)" Typo="Typo.h4" Color="Color.Inherit">
                     @item.Article.Title
@@ -57,10 +53,10 @@
         ApiResult<UserArticleOverviewModel>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService HistoryArticleService { get; set; } = default!;
+    private IHistoryArticleService HistoryArticleService { get; init; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

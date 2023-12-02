@@ -81,38 +81,35 @@ public sealed class ContentFormatter
     {
     };
 
-    public ValueTask IncreaseFontSizeAsync() =>
+    public Task IncreaseFontSizeAsync() =>
         UpdateAsync(_state with { FontSize = Math.Min(MaxFontSize, Math.Round(_state.FontSize + 0.1, 2)) });
 
-    public ValueTask DecreaseFontSizeAsync() =>
+    public Task DecreaseFontSizeAsync() =>
         UpdateAsync(_state with { FontSize = Math.Max(MinFontSize, Math.Round(_state.FontSize - 0.1, 2)) });
 
-    public ValueTask IncreaseLineHeightAsync() =>
+    public Task IncreaseLineHeightAsync() =>
         UpdateAsync(_state with { LineHeight = Math.Min(MaxLineHeight, Math.Round(_state.LineHeight + 0.1, 2)) });
 
-    public ValueTask DecreaseLineHeightAsync() =>
+    public Task DecreaseLineHeightAsync() =>
         UpdateAsync(_state with { LineHeight = Math.Max(MinLineHeight, Math.Round(_state.LineHeight - 0.1, 2)) });
 
-    public ValueTask AlignTextLeftAsync() =>
+    public Task AlignTextLeftAsync() =>
         UpdateAsync(_state with { TextAlign = Align.Left });
 
-    public ValueTask AlignTextRightAsync() =>
+    public Task AlignTextRightAsync() =>
         UpdateAsync(_state with { TextAlign = Align.Right });
 
-    public ValueTask AlignTextCenterAsync() =>
+    public Task AlignTextCenterAsync() =>
         UpdateAsync(_state with { TextAlign = Align.Center });
 
-    public ValueTask AlignTextJustifyAsync() =>
+    public Task AlignTextJustifyAsync() =>
         UpdateAsync(_state with { TextAlign = Align.Justify });
 
-    public ValueTask ToggleFontWeightAsync() =>
+    public Task ToggleFontWeightAsync() =>
         UpdateAsync(_state with { IsFontWeightBold = !_state.IsFontWeightBold });
 
-    private async ValueTask UpdateAsync(State state)
+    private async Task UpdateAsync(State state)
     {
-        if (_state == state)
-            return;
-
         await _storage.SetItemAsync(StorageKey, _state = state);
         
         OnChanged.Invoke();

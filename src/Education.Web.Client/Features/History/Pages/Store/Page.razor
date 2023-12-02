@@ -11,22 +11,13 @@
         <Header>
             <section class="d-flex flex-wrap flex-sm-nowrap align-center gap-3 pa-3">
                 <div class="d-flex align-center gap-3">
-                    @foreach (var (currency, amount) in _possessions.Wallet)
+                    @foreach (var (currency, amount) in _profile.Wallet)
                     {
                         <InternalMoney Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal/>
                     }
                 </div>
 
-                <MudTooltip Text="@L["Backpack_Title"]">
-                    <section class="d-flex align-center">
-                        <MudIcon Class="mr-1" Icon="@EduIcons.Backpack" Size="@Size.Small"/>
-                        <div class="d-flex align-center">
-                            <MetricNumber Value="@_possessions.Backpack.Fullness" Typo="@Typo.body1"/>
-                            <MudText Typo="@Typo.body1">&nbsp;/&nbsp;</MudText>
-                            <MetricNumber Value="@_possessions.Backpack.Capacity" Typo="@Typo.body1"/>
-                        </div>
-                    </section>
-                </MudTooltip>
+                <BackpackOverview Fullness="@_profile.Backpack.Fullness" Capacity="@_profile.Backpack.Capacity"/>
             </section>
         </Header>
 
@@ -37,14 +28,14 @@
         <ChildContent>
             <MudTabPanel Icon="@Icons.Material.Outlined.Inventory2" Text="@L["History_InventoryStore_Catalog_Inventories"]">
                 <InventoryProducts
-                    Possessions="@_possessions"
+                    Profile="@_profile"
                     Filter="@_filter"
                     IsAffordable="@IsInventoryAffordable"
                     OnProductPurchased="@LoadInventoryAsync"/>
             </MudTabPanel>
             <MudTabPanel Icon="@Icons.Material.Outlined.ShoppingBag" Text="@L["History_InventoryStore_Catalog_Bundles"]">
                 <BundleProducts
-                    Possessions="@_possessions"
+                    Profile="@_profile"
                     Filter="@_filter"
                     IsAffordable="@IsBundleAffordable"
                     OnProductPurchased="@LoadInventoryAsync"/>

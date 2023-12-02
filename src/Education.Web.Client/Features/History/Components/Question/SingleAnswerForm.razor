@@ -76,7 +76,7 @@
     private SingleAnswerModel _userAnswer = new();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public bool IsLoading { get; set; }

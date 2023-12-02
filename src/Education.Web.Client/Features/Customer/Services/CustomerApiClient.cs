@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 using Education.Web.Client.Http;
 using Education.Web.Client.Http.JsonConverters;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Localization;
 
 namespace Education.Web.Client.Features.Customer.Services;

@@ -29,7 +29,7 @@ internal sealed class CustomerStateProvider : IDisposable
     {
     };
 
-    public async ValueTask InitAsync()
+    public async Task InitAsync()
     {
         if (_isInitialized)
         {

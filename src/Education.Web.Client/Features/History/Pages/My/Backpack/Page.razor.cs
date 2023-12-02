@@ -9,7 +9,6 @@ namespace Education.Web.Client.Features.History.Pages.My.Backpack;
 
 public sealed partial class Page
 {
-    private string? _capacity;
     private ApiResult<BackpackModel> _result = ApiResult<BackpackModel>.Loading();
     private IReadOnlyCollection<WalletModel> _wallet = [];
 
@@ -32,7 +31,5 @@ public sealed partial class Page
             .UnwrapOrElse(() => []);
 
         _result = await UserService.GetBackpackAsync();
-        _capacity = _result.Map(x => $"{x.Fullness} / {x.Capacity}")
-            .UnwrapOr(string.Empty);
     }
 }

@@ -13,14 +13,14 @@
 
     <div class="d-flex justify-space-between align-center">
         <MudText Typo="Typo.body1">@L["ContentRating_Title"]</MudText>
-        <ContentRating Rating="@Rating" Size="Size.Small" Placement="Placement.Right" ShowTooltip/>
+        <ContentRating Rating="@Rating" Placement="Placement.Right" ShowTooltip/>
     </div>
 </section>
 
 @code {
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required ContentRatingModel Rating { get; set; }

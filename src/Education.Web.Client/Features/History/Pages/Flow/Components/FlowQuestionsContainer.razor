@@ -24,7 +24,7 @@
 @code {
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required FlowModel Flow { get; set; }

@@ -1,15 +1,15 @@
 @using Education.Web.Client.Features.History.Services.DateGuesser.Model
 <div class="@Class">
-    <MudRadioGroup Class="radio-group" SelectedOption="@SelectedGuesser" SelectedOptionChanged="@SelectedGuesserChanged">
+    <MudRadioGroup T="DateGuesserType?" Class="radio-group" SelectedOption="@SelectedGuesser" SelectedOptionChanged="@SelectedGuesserChanged">
         @foreach (var service in Guessers)
         {
-            <MudRadio Class="radio" Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)">
+            <MudRadio T="DateGuesserType?" Class="radio" Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)">
                 <div class="d-flex justify-center align-center rounded-circle mud-background relative pa-2">
-                    <img class="image" src="@service.ImageUrl" alt="@service.Title" loading="lazy"/>
+                    <img class="image" src="@service.AccessInventory.ImageUrl" alt="@L[$"History_DateGuesser_{service.Type}_Title"]" loading="lazy"/>
                 </div>
 
-                <p class="mud-typography mud-typography-subtitle1 one-line-text" title="@service.Title">
-                    @service.Title
+                <p class="mud-typography mud-typography-subtitle1 one-line-text" title="@L[$"History_DateGuesser_{service.Type}_Title"]">
+                    @L[$"History_DateGuesser_{service.Type}_Title"]
                 </p>
             </MudRadio>
         }
@@ -18,14 +18,17 @@
 
 @code {
 
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+    
     [Parameter, EditorRequired]
     public required DateGuesserInformationModel[] Guessers { get; set; }
 
     [Parameter]
-    public string? SelectedGuesser { get; set; }
+    public DateGuesserType? SelectedGuesser { get; set; }
 
     [Parameter]
-    public EventCallback<string?> SelectedGuesserChanged { get; set; }
+    public EventCallback<DateGuesserType?> SelectedGuesserChanged { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

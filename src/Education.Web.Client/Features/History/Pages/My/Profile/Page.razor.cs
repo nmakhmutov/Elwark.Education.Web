@@ -11,7 +11,7 @@ namespace Education.Web.Client.Features.History.Pages.My.Profile;
 
 public sealed partial class Page
 {
-    private ApiResult<ProfileModel> _result = ApiResult<ProfileModel>.Loading();
+    private ApiResult<ProfileStatisticsModel> _result = ApiResult<ProfileStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -26,7 +26,7 @@ public sealed partial class Page
     private IHistoryUserService UserService { get; init; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _result = await UserService.GetProfileAsync();
+        _result = await UserService.GetStatisticsAsync();
 
     private async Task OnLevelClick()
     {
@@ -44,7 +44,7 @@ public sealed partial class Page
         var parameters = new DialogParameters
         {
             [nameof(NextLevelDialog.FullName)] = Customer.Name,
-            [nameof(NextLevelDialog.Level)] = _result.Unwrap().Level
+            [nameof(NextLevelDialog.Level)] = _result.Map(x => x.Level).Unwrap()
         };
 
         await DialogService.ShowAsync<NextLevelDialog>(string.Empty, parameters, options);
