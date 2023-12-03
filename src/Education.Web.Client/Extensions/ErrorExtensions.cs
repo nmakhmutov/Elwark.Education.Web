@@ -16,7 +16,7 @@ internal static class ErrorExtensions
 
     public static bool IsQuizNotFound(this Error error) =>
         error.Type == "Quiz_NotFound";
-    
+
     public static bool IsQuizExpired(this Error error) =>
         error.Type == "Quiz_Expired";
 

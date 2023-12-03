@@ -30,12 +30,12 @@
                     <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
                     <InternalMonies Monies="@achievement.Rewards" Horizontal/>
                     break;
-                    
+
                 case Achievement.ProgressiveModel achievement:
                     <MudProgressLinear Class="mb-1" Min="0" Max="100" Value="@achievement.Completeness" Color="Color.Primary"/>
                     <InternalMonies Monies="@achievement.Rewards" Horizontal/>
                     break;
-                    
+
                 case Achievement.CompletedModel achievement:
                     <MudText Class="mb-1" Typo="Typo.body2">
                         @L["Achievement_CompletedOn", DateTimeFormatter(achievement.UnlockedAt)]

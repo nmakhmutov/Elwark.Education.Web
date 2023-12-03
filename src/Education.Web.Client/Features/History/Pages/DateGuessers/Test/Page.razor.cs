@@ -35,7 +35,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["History_DateGuessers_Title"], null, true)
     ];
-    
+
     [Parameter]
     public string Id { get; set; } = string.Empty;
 

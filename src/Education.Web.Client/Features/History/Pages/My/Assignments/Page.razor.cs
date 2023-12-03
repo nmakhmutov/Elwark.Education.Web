@@ -20,9 +20,9 @@ public sealed partial class Page
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
-        new BreadcrumbItem(L["Assignments_Title"], null, true),
+        new BreadcrumbItem(L["Assignments_Title"], null, true)
     ];
-    
+
     protected override async Task OnInitializedAsync() =>
         _result = await UserService.GetAssignmentsAsync();
 

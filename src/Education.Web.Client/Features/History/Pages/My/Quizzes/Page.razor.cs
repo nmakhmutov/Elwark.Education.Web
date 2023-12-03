@@ -25,7 +25,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
         new BreadcrumbItem(L["Quizzes_Title"], null, true)
     ];
-    
+
     protected override async Task OnInitializedAsync()
     {
         _result = await LearnerService.GetQuizStatisticsAsync();

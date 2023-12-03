@@ -11,8 +11,8 @@ namespace Education.Web.Client.Features.History.Pages.My.Quizzes.Details;
 
 public sealed partial class Page
 {
-    private ApiResult<QuizStatisticsModel> _result = ApiResult<QuizStatisticsModel>.Loading();
     private QuizStatisticsModel.DailyProgress[] _progress = [];
+    private ApiResult<QuizStatisticsModel> _result = ApiResult<QuizStatisticsModel>.Loading();
     private string? _title;
 
     [Inject]

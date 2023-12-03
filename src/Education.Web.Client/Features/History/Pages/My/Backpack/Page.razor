@@ -9,7 +9,7 @@
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <div class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6">
         <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
-        @if(_result.IsSuccess)
+        @if (_result.IsSuccess)
         {
             var backpack = _result.Unwrap();
             <BackpackOverview Fullness="@backpack.Fullness" Capacity="@backpack.Capacity" Typo="Typo.h5" Size="Size.Medium"/>

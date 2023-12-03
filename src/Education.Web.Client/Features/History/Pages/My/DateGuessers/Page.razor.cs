@@ -10,9 +10,9 @@ namespace Education.Web.Client.Features.History.Pages.My.DateGuessers;
 
 public sealed partial class Page
 {
-    private ApiResult<DateGuessersStatisticsModel> _result = ApiResult<DateGuessersStatisticsModel>.Loading();
     private DateGuessersStatisticsModel.ProgressModel[] _daily = [];
     private DateGuessersStatisticsModel.ProgressModel[] _monthly = [];
+    private ApiResult<DateGuessersStatisticsModel> _result = ApiResult<DateGuessersStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;

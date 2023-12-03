@@ -14,8 +14,10 @@ public sealed partial class Page
 {
     private const int Limit = 20;
     private EpochType _epoch;
+
     private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
         ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+
     private GetArticlesRequest.SortType _sort;
 
     [Inject]
@@ -35,7 +37,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["Articles_Title"], null, true)
     ];
-    
+
     [Parameter]
     public string? Category { get; set; }
 

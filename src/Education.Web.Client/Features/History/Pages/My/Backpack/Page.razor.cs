@@ -23,7 +23,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
         new BreadcrumbItem(L["Backpack_Title"], null, true)
     ];
-    
+
     protected override async Task OnInitializedAsync()
     {
         _wallet = (await UserService.GetWalletAsync())

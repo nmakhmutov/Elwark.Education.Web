@@ -1,7 +1,6 @@
 @using Education.Web.Client.Features.History.Services.User.Model
 @using Education.Web.Client.Models.Inventory
 @using System.Diagnostics
-
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <ChildContent Context="bundles">
         <ProductsGrid Products="@ApplyFilter(bundles)">
@@ -12,7 +11,7 @@
                     OnPurchaseClick="@OpenPurchaseDialog"/>
             </ChildContent>
             <NoRecordsContent>
-                <NoContent 
+                <NoContent
                     Icon="@Icons.Material.Outlined.ShoppingBag"
                     Title="@L["InventoryStore_Bundles_NotFound"]"
                     Subtitle="@L["InventoryStore_TryToResetYourFilter"]"/>
@@ -86,17 +85,6 @@
     {
         if (Filter.Category != CategoryType.None)
             source = source.Where(x => x.Inventories.Any(t => t.Category == Filter.Category));
-
-        source = Filter.Sort switch
-        {
-            ProductSort.Featured => source,
-            ProductSort.PriceAsc => source.OrderBy(x => x.Price.Total.Amount),
-            ProductSort.PriceDesc => source.OrderByDescending(x => x.Price.Total.Amount),
-            ProductSort.DiscountAsc => source.OrderBy(x => x.Price.Discount),
-            ProductSort.DiscountDesc => source.OrderByDescending(x => x.Price.Discount),
-            ProductSort.Title => source.OrderBy(x => x.Title),
-            _ => throw new UnreachableException($"Unknown sort type {Filter.Sort}")
-        };
 
         if (!string.IsNullOrEmpty(Filter.Search))
             source = source.Where(x => x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase));

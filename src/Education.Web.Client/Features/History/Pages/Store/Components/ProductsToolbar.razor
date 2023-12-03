@@ -37,35 +37,6 @@
             </MudSelectItem>
         </MudSelect>
     </div>
-
-    <div class="dropdown">
-        <MudSelect T="ProductSort"
-                   Value="@Filter.Sort"
-                   ValueChanged="@SortChanged"
-                   Variant="Variant.Outlined"
-                   Label="@L["SortBy_Title"]"
-                   Margin="Margin.Dense"
-                   Dense>
-            <MudSelectItem Value="@ProductSort.Featured">
-                @L["History_InventoryStore_Sort_Featured"]
-            </MudSelectItem>
-            <MudSelectItem Value="@ProductSort.PriceAsc">
-                @L["History_InventoryStore_Sort_PriceAsc"]
-            </MudSelectItem>
-            <MudSelectItem Value="@ProductSort.PriceDesc">
-                @L["History_InventoryStore_Sort_PriceDesc"]
-            </MudSelectItem>
-            <MudSelectItem Value="@ProductSort.DiscountAsc">
-                @L["History_InventoryStore_Sort_DiscountAsc"]
-            </MudSelectItem>
-            <MudSelectItem Value="@ProductSort.DiscountDesc">
-                @L["History_InventoryStore_Sort_DiscountDesc"]
-            </MudSelectItem>
-            <MudSelectItem Value="@ProductSort.Title">
-                @L["History_InventoryStore_Sort_ProductTitle"]
-            </MudSelectItem>
-        </MudSelect>
-    </div>
 </section>
 
 @code {
@@ -84,9 +55,6 @@
 
     private Task CategoryChanged(CategoryType category) =>
         FilterChanged.InvokeAsync(Filter with { Category = category });
-
-    private Task SortChanged(ProductSort sort) =>
-        FilterChanged.InvokeAsync(Filter with { Sort = sort });
 
     private void SearchChanged(string? search) =>
         FilterChanged.InvokeAsync(Filter with { Search = search });

@@ -24,7 +24,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["Flow_Title"], null, true)
     ];
-    
+
     protected override async Task OnInitializedAsync() =>
         _result = await FlowService.GetAsync();
 

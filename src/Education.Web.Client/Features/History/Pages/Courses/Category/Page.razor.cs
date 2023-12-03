@@ -13,8 +13,10 @@ namespace Education.Web.Client.Features.History.Pages.Courses.Category;
 public sealed partial class Page
 {
     private const int Limit = 20;
+
     private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
         ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
+
     private GetCourseRequest.SortType _sort;
 
     [Inject]
@@ -28,19 +30,19 @@ public sealed partial class Page
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
-    
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["Courses_Title"], null, true)
     ];
-    
+
     [Parameter]
     public string? Category { get; set; }
 
     [SupplyParameterFromQuery(Name = "page")]
     public int CurrentPage { get; set; }
-    
+
     private int TotalPages =>
         _result.Map(x => (int)double.Ceiling((double)x.Count / Limit))
             .UnwrapOr(1);

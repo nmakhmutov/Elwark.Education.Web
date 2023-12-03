@@ -37,7 +37,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L["History_DateGuessers_Title"], null, true)
     ];
-    
+
     protected override async Task OnInitializedAsync()
     {
         _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.DateGuesserSettings) ?? _settings;

@@ -77,18 +77,19 @@
 </EduContainer>
 
 @code {
+
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
     private ContentFormatter Formatter { get; init; } = default!;
-    
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
         new BreadcrumbItem(L.GetEpochTitle(Person.Epoch), HistoryUrl.Content.Articles(Person.Epoch))
     ];
-    
+
     [Parameter, EditorRequired]
     public required ArticleDetail.PersonModel Person { get; set; }
 

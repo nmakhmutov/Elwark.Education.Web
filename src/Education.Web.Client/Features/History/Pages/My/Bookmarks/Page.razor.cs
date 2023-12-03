@@ -11,7 +11,7 @@ public sealed partial class Page
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
-    
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),

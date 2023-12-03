@@ -111,7 +111,7 @@ public sealed class ContentFormatter
     private async Task UpdateAsync(State state)
     {
         await _storage.SetItemAsync(StorageKey, _state = state);
-        
+
         OnChanged.Invoke();
     }
 

@@ -13,7 +13,7 @@ internal sealed class HistoryOrderService : IHistoryOrderService
 
     public Task<ApiResult<OrderStatusModel>> GetStatus(Guid id) =>
         _api.GetAsync<OrderStatusModel>($"history/orders/{id}/status");
-    
+
     public Task<ApiResult<OrderStatusModel>> CheckoutAsync(CheckoutRequest request) =>
         _api.PostAsync<OrderStatusModel, CheckoutRequest>("history/orders", request);
 }
