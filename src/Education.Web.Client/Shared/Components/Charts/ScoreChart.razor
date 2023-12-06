@@ -1,21 +1,18 @@
 @using ApexCharts
 @using Education.Web.Client.Features.History.Services.Quiz.Model
 <div class="@Class">
-    @if (Value.Total > 0)
-    {
-        <div class="d-flex justify-center">
-            <div class="wrapper">
-                <ApexChart TItem="Data" Options="@Options">
-                    <ApexPointSeries
-                        TItem="Data"
-                        Items="@Series"
-                        SeriesType="SeriesType.Donut"
-                        XValue="@(x => x.Name)"
-                        YAggregate="@(x => x.Sum(e => e.Value))"/>
-                </ApexChart>
-            </div>
+    <div class="d-flex justify-center">
+        <div class="wrapper">
+            <ApexChart TItem="Data" Options="@Options">
+                <ApexPointSeries
+                    TItem="Data"
+                    Items="@Series"
+                    SeriesType="SeriesType.Donut"
+                    XValue="@(x => x.Name)"
+                    YAggregate="@(x => x.Sum(e => e.Value))"/>
+            </ApexChart>
         </div>
-    }
+    </div>
 
     <ChartList Items="@Items"/>
 </div>

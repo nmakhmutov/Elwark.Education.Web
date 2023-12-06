@@ -10,7 +10,7 @@ public sealed record ArticleStatisticsModel(
     ArticleStatisticsModel.ProgressModel EasyQuiz,
     ArticleStatisticsModel.ProgressModel HardQuiz,
     bool IsBookmarked,
-    bool? IsCompleted
+    LearningStatus Status
 )
 {
     public sealed record TotalModel(ulong Quizzes, ulong Score, uint Questions, TimeSpan TimeSpent);

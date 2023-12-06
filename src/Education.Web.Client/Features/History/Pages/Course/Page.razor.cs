@@ -9,7 +9,7 @@ namespace Education.Web.Client.Features.History.Pages.Course;
 
 public sealed partial class Page
 {
-    private ApiResult<CourseModel> _result = ApiResult<CourseModel>.Loading();
+    private ApiResult<UserCourseDetailModel> _result = ApiResult<UserCourseDetailModel>.Loading();
 
     [Inject]
     private IHistoryCourseService CourseService { get; init; } = default!;
@@ -28,5 +28,5 @@ public sealed partial class Page
 
     private async Task StartCourseAsync(string id) =>
         _result = (await LearnerService.StartCourseAsync(id))
-            .Map(x => _result.Unwrap() with { UserActivity = x });
+            .Map(x => _result.Unwrap() with { Activity = x });
 }

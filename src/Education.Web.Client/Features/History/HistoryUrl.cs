@@ -55,6 +55,9 @@ public static class HistoryUrl
 
         public static string Course(string courseId) =>
             $"{Root}/course/{courseId}";
+
+        public static string ExaminationBuilder(string courseId) =>
+            $"{Root}/course/{courseId}/examinations";
     }
 
     public static class Flow
@@ -76,6 +79,12 @@ public static class HistoryUrl
 
         public static string Conclusion(string testId) =>
             $"{Root}/quizzes/{testId}/conclusion";
+    }
+
+    public static class Examination
+    {
+        public static string Index() =>
+            $"{Root}/examinations";
     }
 
     public static class DateGuesser

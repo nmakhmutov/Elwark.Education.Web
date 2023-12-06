@@ -1,6 +1,6 @@
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     <div class="mb-3">
-        @if (Activity?.IsCompleted is not null)
+        @if (Activity?.Status != LearningStatus.Unengaged)
         {
             <MudLink Typo="Typo.subtitle2" Href="@HistoryUrl.User.MyArticle(ArticleId)">
                 @L["User_MyProgress"]
@@ -41,15 +41,25 @@
     }
 
     <div class="d-flex justify-space-between align-center pb-1 mb-2">
-        <MudText Typo="Typo.body1">@L["LearningStatus_Title"]</MudText>
+        <MudText Typo="Typo.body1">
+            @L["LearningStatus_Title"]
+        </MudText>
+
         <ArticleCompletionChip
-            IsCompleted="@Activity?.IsCompleted"
+            Status="@(Activity?.Status ?? LearningStatus.Unengaged)"
             Href="@HistoryUrl.User.MyArticle(ArticleId)"
             Size="Size.Small"/>
     </div>
 
     <MudText Typo="Typo.body2">
-        @Status
+        @if (_hasQuiz)
+        {
+            @L.GetLearningStatusDescription(Activity?.Status ?? LearningStatus.Unengaged)
+        }
+        else
+        {
+            @L["Article_TheArticleDoesNotHaveAnyQuizzesYet"]
+        }
     </MudText>
 
     <div class="mt-3 mt-sm-6">
@@ -69,15 +79,6 @@
 
 @code {
     private bool _hasQuiz;
-
-    private string Status =>
-        (_hasQuiz, Activity?.IsCompleted) switch
-        {
-            (true, true) => L["LearningStatus_Completed_Description"],
-            (true, false) => L["LearningStatus_Incompleted_Description"],
-            (true, null) => L["LearningStatus_Unengaged_Description"],
-            _ => L["Article_TheArticleDoesNotHaveAnyQuizzesYet"]
-        };
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;

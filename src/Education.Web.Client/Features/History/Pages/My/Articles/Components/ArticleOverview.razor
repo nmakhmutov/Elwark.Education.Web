@@ -66,7 +66,8 @@
             </MudText>
         </div>
         <div class="d-flex align-center justify-space-between mb-3">
-            <ArticleCompletionChip IsCompleted="@IsCompleted" ShowTooltip/>
+            <ArticleCompletionChip Status="@Status" ShowTooltip/>
+            
             <BookmarkButton
                 Id="@Article.Id"
                 IsBookmarked="@IsBookmarked"
@@ -93,7 +94,7 @@
     public required ArticleStatisticsModel.TotalModel Total { get; set; }
 
     [Parameter, EditorRequired]
-    public required bool? IsCompleted { get; set; }
+    public required LearningStatus Status { get; set; }
 
     [Parameter, EditorRequired]
     public required bool IsBookmarked { get; set; }

@@ -15,8 +15,8 @@ internal sealed class HistoryCourseService : IHistoryCourseService
     public Task<ApiResult<PagingOffsetModel<UserCourseOverviewModel>>> GetAsync(GetCourseRequest request) =>
         _api.GetAsync<PagingOffsetModel<UserCourseOverviewModel>>("history/courses", request);
 
-    public Task<ApiResult<CourseModel>> GetAsync(string id) =>
-        _api.GetAsync<CourseModel>($"history/courses/{id}");
+    public Task<ApiResult<UserCourseDetailModel>> GetAsync(string id) =>
+        _api.GetAsync<UserCourseDetailModel>($"history/courses/{id}");
 
     public Task<ApiResult<UserCourseOverviewModel>> GetRandomAsync() =>
         _api.GetAsync<UserCourseOverviewModel>("history/courses/random");

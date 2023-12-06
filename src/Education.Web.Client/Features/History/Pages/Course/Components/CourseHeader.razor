@@ -10,7 +10,7 @@
             <MudSpacer/>
 
             <section>
-                @if (_isAuthenticated && Activity?.Completeness.HasValue == false)
+                @if (HasExaminations && Activity?.Completeness.HasValue == false)
                 {
                     <div class="mb-3">
                         <LoadingButton
@@ -35,27 +35,16 @@
                         </MudText>
                     </div>
 
-                    <div class="d-flex align-center">
-                        <MudIcon Class="mr-1" Icon="@EduIcons.TimeToRead"/>
-
-                        <MudText Typo="Typo.subtitle1">
-                            @TimeToRead.Humanize(L)
-                        </MudText>
-                    </div>
-
                     @if (_isAuthenticated)
                     {
                         <MudSpacer/>
 
-                        @if (Activity?.Completeness.HasValue == true)
-                        {
-                            <LikeButtons
-                                Color="Color.Inherit"
-                                Id="@CourseId"
-                                IsLiked="@Activity?.IsLiked"
-                                OnLikeClick="@OnLikeClick"
-                                OnDislikeClick="@OnDislikeClick"/>
-                        }
+                        <LikeButtons
+                            Color="Color.Inherit"
+                            Id="@CourseId"
+                            IsLiked="@Activity?.IsLiked"
+                            OnLikeClick="@OnLikeClick"
+                            OnDislikeClick="@OnDislikeClick"/>
 
                         <BookmarkButton
                             Color="Color.Inherit"
@@ -103,10 +92,10 @@
     public int ArticleCount { get; set; }
 
     [Parameter, EditorRequired]
-    public TimeSpan TimeToRead { get; set; }
+    public bool HasExaminations { get; set; }
 
     [Parameter, EditorRequired]
-    public UserCourseActivityModel? Activity { get; set; } = default!;
+    public UserCourseActivityModel? Activity { get; set; }
 
     [Parameter, EditorRequired]
     public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = default!;

@@ -13,29 +13,38 @@
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="profile">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <EduFillGrid>
-            <StatisticsCard
-                Title="@L["History_DateGuessers_Small"]"
-                Value="@profile.SmallDateGuesser.Tests"
-                Href="@HistoryUrl.User.MySmallDateGuessers">
-                <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                <DateGuesserScoreChart Score="@profile.SmallDateGuesser.Score"/>
-            </StatisticsCard>
+            @if (profile.SmallDateGuesser.Score.Total > 0)
+            {
+                <StatisticsCard
+                    Title="@L["History_DateGuessers_Small"]"
+                    Value="@profile.SmallDateGuesser.Tests"
+                    Href="@HistoryUrl.User.MySmallDateGuessers">
+                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <DateGuesserScoreChart Score="@profile.SmallDateGuesser.Score"/>
+                </StatisticsCard>
+            }
 
-            <StatisticsCard
-                Title="@L["History_DateGuessers_Medium"]"
-                Value="@profile.MediumDateGuesser.Tests"
-                Href="@HistoryUrl.User.MyMediumDateGuessers">
-                <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                <DateGuesserScoreChart Score="@profile.MediumDateGuesser.Score"/>
-            </StatisticsCard>
+            @if (profile.MediumDateGuesser.Score.Total > 0)
+            {
+                <StatisticsCard
+                    Title="@L["History_DateGuessers_Medium"]"
+                    Value="@profile.MediumDateGuesser.Tests"
+                    Href="@HistoryUrl.User.MyMediumDateGuessers">
+                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <DateGuesserScoreChart Score="@profile.MediumDateGuesser.Score"/>
+                </StatisticsCard>
+            }
 
-            <StatisticsCard
-                Title="@L["History_DateGuessers_Large"]"
-                Value="@profile.LargeDateGuesser.Tests"
-                Href="@HistoryUrl.User.MyLargeDateGuessers">
-                <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                <DateGuesserScoreChart Score="@profile.LargeDateGuesser.Score"/>
-            </StatisticsCard>
+            @if (profile.LargeDateGuesser.Score.Total > 0)
+            {
+                <StatisticsCard
+                    Title="@L["History_DateGuessers_Large"]"
+                    Value="@profile.LargeDateGuesser.Tests"
+                    Href="@HistoryUrl.User.MyLargeDateGuessers">
+                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <DateGuesserScoreChart Score="@profile.LargeDateGuesser.Score"/>
+                </StatisticsCard>
+            }
 
             <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
                 <MudText Typo="Typo.h5">

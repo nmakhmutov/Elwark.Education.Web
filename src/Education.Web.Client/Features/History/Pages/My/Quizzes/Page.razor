@@ -13,21 +13,27 @@
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="profile">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <EduFillGrid>
-            <StatisticsCard
-                Title="@L["Quizzes_Easy_Title"]"
-                Value="@profile.EasyQuiz.NumberOfQuizzes.Total"
-                Href="@HistoryUrl.User.MyEasyQuizzes">
-                <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                <ScoreChart Value="@profile.EasyQuiz.Score"/>
-            </StatisticsCard>
+            @if (profile.EasyQuiz.Score.Total > 0)
+            {
+                <StatisticsCard
+                    Title="@L["Quizzes_Easy_Title"]"
+                    Value="@profile.EasyQuiz.NumberOfQuizzes.Total"
+                    Href="@HistoryUrl.User.MyEasyQuizzes">
+                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <ScoreChart Value="@profile.EasyQuiz.Score"/>
+                </StatisticsCard>
+            }
 
-            <StatisticsCard
-                Title="@L["Quizzes_Hard_Title"]"
-                Value="@profile.HardQuiz.NumberOfQuizzes.Total"
-                Href="@HistoryUrl.User.MyHardQuizzes">
-                <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                <ScoreChart Value="@profile.HardQuiz.Score"/>
-            </StatisticsCard>
+            @if (profile.HardQuiz.Score.Total > 0)
+            {
+                <StatisticsCard
+                    Title="@L["Quizzes_Hard_Title"]"
+                    Value="@profile.HardQuiz.NumberOfQuizzes.Total"
+                    Href="@HistoryUrl.User.MyHardQuizzes">
+                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <ScoreChart Value="@profile.HardQuiz.Score"/>
+                </StatisticsCard>
+            }
 
             <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
                 <MudText Typo="Typo.h5">

@@ -13,7 +13,6 @@ else
 
     private Color _color;
     private string? _icon;
-    private string? _text;
 
     private RenderFragment Chip =>
         @<MudChip
@@ -22,14 +21,14 @@ else
              Size="@Size"
              Color="_color"
              Icon="@_icon"
-             Text="@_text"
-             Href="@(IsCompleted is null ? null : Href)"/>;
+             Text="@L.GetLearningStatusTitle(Status)"
+             Href="@(Status == LearningStatus.Unengaged ? null : Href)"/>;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public bool? IsCompleted { get; set; }
+    public LearningStatus Status { get; set; }
 
     [Parameter]
     public string? Href { get; set; }
@@ -41,11 +40,12 @@ else
     public Size Size { get; set; } = Size.Medium;
 
     protected override void OnParametersSet() =>
-        (_color, _icon, _text) = IsCompleted switch
+        (_color, _icon) = Status switch
         {
-            true => (Color.Success, Icons.Material.Outlined.CheckCircle, L["LearningStatus_Completed_Title"]),
-            false => (Color.Warning, Icons.Material.Outlined.ModeStandby, L["LearningStatus_Incompleted_Title"]),
-            null => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked, L["LearningStatus_Unengaged_Title"])
+            LearningStatus.Unengaged => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked),
+            LearningStatus.Incompleted => (Color.Warning, Icons.Material.Outlined.ModeStandby),
+            LearningStatus.Completed => (Color.Success, Icons.Material.Outlined.CheckCircle),
+            _ => throw new ArgumentOutOfRangeException()
         };
 
 }

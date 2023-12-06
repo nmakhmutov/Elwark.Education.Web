@@ -7,9 +7,9 @@ public sealed record CourseModel(
     string Title,
     string ImageUrl,
     string Description,
-    TimeSpan TimeToRead,
-    uint Learners,
-    ContentRatingModel Rating,
-    UserCourseActivityModel? UserActivity,
+    CourseModel.CourseDetailsModel Details,
     UserArticleOverviewModel[] Articles
-);
+)
+{
+    public sealed record CourseDetailsModel(uint Learners, TimeSpan TimeToRead, ContentRatingModel Rating);
+}

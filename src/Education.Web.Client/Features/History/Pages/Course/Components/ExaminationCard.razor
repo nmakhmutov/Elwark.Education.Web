@@ -1,0 +1,94 @@
+<section class="@Class">
+    <div class="mb-3">
+        @if (Activity?.Completeness > 0)
+        {
+            <MudLink Typo="Typo.h5" Href="@HistoryUrl.User.MyCourse(CourseId)">
+                @L["User_MyProgress"]
+            </MudLink>
+        }
+        else
+        {
+            <MudText Typo="Typo.h5">
+                @L["User_MyProgress"]
+            </MudText>
+        }
+    </div>
+
+    @if (HasEasyExamination)
+    {
+        <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-2">
+            <MudText Typo="Typo.body1">@L["NumberOfExaminations_PassedEasy_Title"]</MudText>
+            <div class="d-flex align-center gap-1">
+                <MudText Typo="Typo.body1">
+                    @((Activity?.EasyExaminations ?? 0).ToMetric())
+                </MudText>
+                <MudIcon Icon="@EduIcons.Examination" Size="Size.Small"/>
+            </div>
+        </div>
+    }
+
+    @if (HasHardExamination)
+    {
+        <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-2">
+            <MudText Typo="Typo.body1">@L["NumberOfExaminations_PassedHard_Title"]</MudText>
+            <div class="d-flex align-center gap-1">
+                <MudText Typo="Typo.body1">
+                    @((Activity?.HardExaminations ?? 0).ToMetric())
+                </MudText>
+                <MudIcon Icon="@EduIcons.Examination" Size="Size.Small"/>
+            </div>
+        </div>
+    }
+    
+    @* <div class="d-flex justify-space-between align-center pb-1 mb-2"> *@
+    @*     <MudText Typo="Typo.body1">@L["LearningStatus_Title"]</MudText> *@
+    @*     <ArticleCompletionChip *@
+    @*         IsCompleted="@Activity?.Completeness" *@
+    @*         Href="@HistoryUrl.User.MyArticle(CourseId)" *@
+    @*         Size="Size.Small"/> *@
+    @* </div> *@
+
+    @* <MudText Typo="Typo.body2"> *@
+    @*     @Status *@
+    @* </MudText> *@
+
+    <div class="mt-3 mt-sm-6">
+        @if (_hasExamination)
+        {
+            <MudButton
+                Link="@HistoryUrl.Content.ExaminationBuilder(CourseId)"
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                FullWidth
+                DisableElevation>
+                @L["Examination_TakeTheExamination"]
+            </MudButton>
+        }
+    </div>
+</section>
+
+@code {
+    private bool _hasExamination;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required string CourseId { get; set; }
+
+    [Parameter, EditorRequired]
+    public required UserCourseActivityModel? Activity { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool HasEasyExamination { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool HasHardExamination { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnParametersSet() =>
+        _hasExamination = HasEasyExamination || HasHardExamination;
+
+}

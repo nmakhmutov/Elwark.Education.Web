@@ -46,7 +46,7 @@
                     @*     Hard="@(Activity?.HardQuizzes ?? 0)"/> *@
 
                     <ArticleCompletionChip
-                        IsCompleted="@Activity?.IsCompleted"
+                        Status="@(Activity?.Status ?? LearningStatus.Unengaged)"
                         Href="@HistoryUrl.User.MyArticle(Article.Id)"
                         ShowTooltip/>
 

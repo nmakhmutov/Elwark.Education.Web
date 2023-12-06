@@ -13,24 +13,31 @@
             Article="@result.Article"
             Total="@result.Total"
             IsBookmarked="@result.IsBookmarked"
-            IsCompleted="@result.IsCompleted"
+            Status="@result.Status"
             OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
 
         <MudTabs Elevation="0" PanelClass="pt-6" ApplyEffectsToContainer Rounded>
-            <MudTabPanel Text="@L["Quizzes_Easy_Title"]">
-                <QuizOverview
-                    Quiz="@result.EasyQuiz"
-                    SeeAllText="@L["Quizzes_Easy_SeeAll"]"
-                    SeeAllHref="@HistoryUrl.User.MyEasyQuizzes"
-                    DateTimeFormatter="@Customer.Humanize"/>
-            </MudTabPanel>
-            <MudTabPanel Text="@L["Quizzes_Hard_Title"]">
-                <QuizOverview
-                    Quiz="@result.HardQuiz"
-                    SeeAllText="@L["Quizzes_Hard_SeeAll"]"
-                    SeeAllHref="@HistoryUrl.User.MyHardQuizzes"
-                    DateTimeFormatter="@Customer.Humanize"/>
-            </MudTabPanel>
+            @if (result.EasyQuiz.NumberOfQuizzes.Total > 0)
+            {
+                <MudTabPanel Text="@L["Quizzes_Easy_Title"]">
+                    <QuizOverview
+                        Quiz="@result.EasyQuiz"
+                        SeeAllText="@L["Quizzes_Easy_SeeAll"]"
+                        SeeAllHref="@HistoryUrl.User.MyEasyQuizzes"
+                        DateTimeFormatter="@Customer.Humanize"/>
+                </MudTabPanel>
+            }
+
+            @if (result.HardQuiz.NumberOfQuizzes.Total > 0)
+            {
+                <MudTabPanel Text="@L["Quizzes_Hard_Title"]">
+                    <QuizOverview
+                        Quiz="@result.HardQuiz"
+                        SeeAllText="@L["Quizzes_Hard_SeeAll"]"
+                        SeeAllHref="@HistoryUrl.User.MyHardQuizzes"
+                        DateTimeFormatter="@Customer.Humanize"/>
+                </MudTabPanel>
+            }
         </MudTabs>
     </EduContainer>
 </ApiViewer>
