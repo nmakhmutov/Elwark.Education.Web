@@ -1,29 +1,15 @@
-<div class="@Class">
-    @if (Progress.HasValue)
-    {
-        <div class="d-flex align-center gap-3">
-            <MudProgressLinear Value="@((double)(Progress ?? 0))" Color="Color.Primary" Size="Size" Rounded/>
+<div class="d-flex align-center gap-3 @Class">
+    <MudProgressLinear Value="@((double)Progress)" Color="Color.Primary" Size="Size" Rounded/>
 
-            <MudText Typo="Typo" Color="Color.Inherit">
-                @Progress%
-            </MudText>
-        </div>
-    }
-    else
-    {
-        <MudChip
-            Class="ma-0"
-            Variant="Variant.Outlined"
-            Size="@Size"
-            Icon="@Icons.Material.Outlined.RadioButtonUnchecked"
-            Text="Not started"/>
-    }
+    <MudText Typo="Typo" Color="Color.Inherit">
+        @Progress%
+    </MudText>
 </div>
 
 @code {
 
     [Parameter, EditorRequired]
-    public uint? Progress { get; set; }
+    public uint Progress { get; set; }
 
     [Parameter]
     public Size Size { get; set; } = Size.Medium;

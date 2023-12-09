@@ -48,10 +48,11 @@
 <ApiViewer Result="_result" OnReloadClick="@OnInitializedAsync" Context="result">
     <EduContainer>
         <EduFillGrid Class="mb-6 mb-sm-12">
-            @foreach (var (article, activity) in result.Items)
+            @foreach (var (article, activity, hasQuiz) in result.Items)
             {
                 <ArticleCard
                     Article="@article"
+                    HasQuiz="@hasQuiz"
                     Activity="@activity"
                     OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
             }

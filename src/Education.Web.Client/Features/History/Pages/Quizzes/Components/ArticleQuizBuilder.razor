@@ -6,6 +6,7 @@
 
         <ArticleCard
             Article="@Article"
+            HasQuiz="@HasQuiz"
             Activity="@Activity"
             OnBookmarkClick="@OnBookmarkClick"
             Horizontal/>
@@ -53,6 +54,9 @@
 
     [Parameter, EditorRequired]
     public required ArticleOverviewModel Article { get; set; }
+    
+    [Parameter, EditorRequired]
+    public bool HasQuiz { get; set; }
 
     [Parameter, EditorRequired]
     public required UserArticleActivityModel Activity { get; set; }

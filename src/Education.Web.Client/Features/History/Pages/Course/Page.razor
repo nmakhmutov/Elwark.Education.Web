@@ -31,10 +31,11 @@
                     @L["Articles_Title"]
                 </MudText>
 
-                @foreach (var (article, activity) in model.Course.Articles)
+                @foreach (var (article, activity, hasQuiz) in model.Course.Articles)
                 {
                     <ArticleCard
                         Article="@article"
+                        HasQuiz="@hasQuiz"
                         Activity="@activity"
                         OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
                         Horizontal/>
@@ -54,7 +55,7 @@
 
                 <CourseDetails Details="@model.Course.Details"/>
 
-                @if (model.Activity?.Completeness.HasValue == true)
+                @if (model.Activity?.Status != CourseLearningStatus.NotStarted)
                 {
                     <ExaminationCard
                         CourseId="@model.Course.Id"

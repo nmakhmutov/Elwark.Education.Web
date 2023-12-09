@@ -4,10 +4,11 @@
         <UnderlinedTitle Class="my-3" Title="@Title"/>
 
         <EduFillGrid>
-            @foreach (var (article, activity) in _article)
+            @foreach (var (article, activity, hasQuiz) in _article)
             {
                 <ArticleCard
                     Article="@article"
+                    HasQuiz="@hasQuiz"
                     Activity="@activity"
                     OnBookmarkClick="@OnBookmarkClick"/>
             }

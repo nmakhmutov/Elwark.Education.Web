@@ -32,9 +32,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Logging
     .SetMinimumLevel(builder.HostEnvironment.IsDevelopment() ? LogLevel.Information : LogLevel.Critical);
 
-// builder.RootComponents.Add<App>("#app");
-// builder.RootComponents.Add<HeadOutlet>("head::after");
-
 builder.Services
     .AddMudServices(options =>
     {
@@ -81,6 +78,9 @@ builder.Services
     .AddHttpMessageHandler<LocalizationHandler>()
     .AddStandardResilienceHandler(options =>
     {
+        options.AttemptTimeout.Timeout = TimeSpan.FromMinutes(1);
+        options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(2);
+        options.CircuitBreaker.SamplingDuration = TimeSpan.FromMinutes(2);
         options.Retry.UseJitter = true;
         options.Retry.MaxRetryAttempts = builder.HostEnvironment.IsDevelopment() ? 1 : 5;
     });
@@ -91,6 +91,9 @@ builder.Services
     .AddHttpMessageHandler<AuthorizationMessageHandler>()
     .AddStandardResilienceHandler(options =>
     {
+        options.AttemptTimeout.Timeout = TimeSpan.FromMinutes(1);
+        options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(2);
+        options.CircuitBreaker.SamplingDuration = TimeSpan.FromMinutes(2);
         options.Retry.UseJitter = true;
         options.Retry.MaxRetryAttempts = builder.HostEnvironment.IsDevelopment() ? 1 : 5;
     });

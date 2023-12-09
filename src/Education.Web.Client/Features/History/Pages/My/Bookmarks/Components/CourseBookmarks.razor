@@ -19,7 +19,7 @@ else
                     <MudRating MaxValue="5" SelectedValue="0" Disabled/>
                 </div>
                 <div class="completion">
-                    <CourseProgress Progress="@(null)"/>
+                    <CourseCompletion Status="CourseLearningStatus.NotStarted" Completeness="0"/>
                 </div>
                 <div class="actions">
                     <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
@@ -43,7 +43,9 @@ else
                         ShowTooltip/>
                 </div>
                 <div class="completion">
-                    <CourseProgress Progress="@item.Activity?.Completeness"/>
+                    <CourseCompletion 
+                        Status="@(item.Activity?.Status ?? CourseLearningStatus.NotStarted)"
+                        Completeness="@(item.Activity?.Completeness ?? 0)"/>
                 </div>
                 <div class="actions">
                     <BookmarkButton

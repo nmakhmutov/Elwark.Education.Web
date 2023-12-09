@@ -4,11 +4,11 @@
     <NotAuthorized>
         <MudButton
             Class="ml-3"
-            DisableElevation
             Variant="Variant.Filled"
             Color="Color.Primary"
             Size="Size.Small"
-            OnClick="@OnLogin">
+            OnClick="@OnLogin"
+            DisableElevation>
             @L["Account_SignIn"]
         </MudButton>
     </NotAuthorized>
@@ -18,34 +18,38 @@
     </Authorizing>
 
     <Authorized>
-        <MudMenu Class="ml-3" OffsetX Dense Direction="Direction.Left">
+        <MudMenu Class="ml-3" Direction="Direction.Left" OffsetX Dense>
             <ActivatorContent>
-                <img class="image rounded-circle object-cover object-center" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
+                <img class="avatar rounded-circle object-cover object-center" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
             </ActivatorContent>
 
             <ChildContent>
-                <section class="mud-paper pa-3 mt-n2">
-                    <header class="customer">
-                        <img class="image rounded-circle object-cover object-center mr-3" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
-                        <MudText Class="one-line-text" Typo="Typo.body1">
-                            @Customer.Name
-                        </MudText>
-                    </header>
+                <section class="container d-flex flex-column align-center gap-3 pa-3 pa-sm-6">
+                    <img class="image rounded-circle object-cover object-center" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
+
+                    <MudText Class="one-line-text" Typo="Typo.h5" Align="Align.Center">
+                        @L["HiUserName_Title", Customer.Name]
+                    </MudText>
+
+                    <MudFab
+                        Class="text-transform-none"
+                        Color="Color.Default"
+                        Size="Size.Small"
+                        Href="@Configuration["Urls:Account"]"
+                        Target="_blank"
+                        Label="@L["ManageYourElwarkAccount_Title"]"
+                        DisableRipple
+                        DisableElevation/>
+
+                    <MudButtonGroup Color="Color.Primary" Variant="Variant.Text" Size="Size.Large" DisableElevation>
+                        <MudButton StartIcon="@Icons.Material.Outlined.Person" Href="@CustomerUrl.Root" DisableRipple>
+                            @L["Account_Title"]
+                        </MudButton>
+                        <MudButton StartIcon="@Icons.Material.Outlined.Login" OnClick="@OnLogout" DisableRipple>
+                            @L["Account_Logout"]
+                        </MudButton>
+                    </MudButtonGroup>
                 </section>
-
-                <MudDivider Class="mb-3"/>
-
-                <MudListItem
-                    Class="px-3"
-                    Text="@L["Account_Title"]"
-                    Icon="@Icons.Material.Outlined.Person"
-                    Href="@CustomerUrl.Root"/>
-
-                <MudListItem
-                    Class="px-3 mb-n2"
-                    Text="@L["Account_Logout"]"
-                    Icon="@Icons.Material.Outlined.Login"
-                    OnClick="@OnLogout"/>
             </ChildContent>
         </MudMenu>
     </Authorized>
@@ -58,6 +62,9 @@
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
+
+    [Inject]
+    private IConfiguration Configuration { get; init; } = default!;
 
     [CascadingParameter]
     private CustomerState Customer { get; init; } = default!;

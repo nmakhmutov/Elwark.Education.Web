@@ -21,30 +21,32 @@
                 <SkeletonCard Class="min-h-inherit"/>
             </Loading>
 
-            <ChildContent Context="item">
-                @if (item.Article is not null)
+            <ChildContent Context="model">
+                @if (model.Article is not null)
                 {
                     <PageTitle>
-                        @L["Random_Content_Title"]: @item.Article.Article.Title
+                        @L["Random_Content_Title"]: @model.Article.Article.Title
                     </PageTitle>
 
                     <ArticleCard
                         Class="min-h-inherit"
-                        Article="@item.Article.Article"
-                        Activity="@item.Article.Activity"
+                        Article="@model.Article.Article"
+                        HasQuiz="@model.Article.HasQuiz"
+                        Activity="@model.Article.Activity"
                         OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
                 }
 
-                @if (item.Course is not null)
+                @if (model.Course is not null)
                 {
                     <PageTitle>
-                        @L["Random_Content_Title"]: @item.Course.Course.Title
+                        @L["Random_Content_Title"]: @model.Course.Course.Title
                     </PageTitle>
 
                     <CourseCard
                         Class="min-h-inherit"
-                        Course="@item.Course.Course"
-                        Activity="@item.Course.Activity"
+                        Course="@model.Course.Course"
+                        Activity="@model.Course.Activity"
+                        HasExamination="@model.Course.HasExamination"
                         OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"/>
                 }
             </ChildContent>
@@ -57,24 +59,26 @@
             @L["Random_Content_History_Title"]
         </MudText>
 
-        <Virtualize Items="@_history" Context="item">
-            @if (item.Article is not null)
+        <Virtualize Items="@_history" Context="model">
+            @if (model.Article is not null)
             {
                 <ArticleCard
                     Class="mb-3 mb-sm-6"
-                    Article="@item.Article.Article"
-                    Activity="@item.Article.Activity"
+                    Article="@model.Article.Article"
+                    HasQuiz="@model.Article.HasQuiz"
+                    Activity="@model.Article.Activity"
                     OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
                     Horizontal
                     ShortOverview/>
             }
 
-            @if (item.Course is not null)
+            @if (model.Course is not null)
             {
                 <CourseCard
                     Class="mb-3 mb-sm-6"
-                    Course="@item.Course.Course"
-                    Activity="@item.Course.Activity"
+                    Course="@model.Course.Course"
+                    Activity="@model.Course.Activity"
+                    HasExamination="@model.Course.HasExamination"
                     OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"
                     Horizontal
                     ShortOverview/>

@@ -1,6 +1,6 @@
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     <div class="mb-3">
-        @if (Activity?.Status != LearningStatus.Unengaged)
+        @if (Activity?.Status != LearningStatus.NotEngaged)
         {
             <MudLink Typo="Typo.subtitle2" Href="@HistoryUrl.User.MyArticle(ArticleId)">
                 @L["User_MyProgress"]
@@ -46,7 +46,7 @@
         </MudText>
 
         <ArticleCompletionChip
-            Status="@(Activity?.Status ?? LearningStatus.Unengaged)"
+            Status="@(Activity?.Status ?? LearningStatus.NotEngaged)"
             Href="@HistoryUrl.User.MyArticle(ArticleId)"
             Size="Size.Small"/>
     </div>
@@ -54,7 +54,7 @@
     <MudText Typo="Typo.body2">
         @if (_hasQuiz)
         {
-            @L.GetLearningStatusDescription(Activity?.Status ?? LearningStatus.Unengaged)
+            @L.GetLearningStatusDescription(Activity?.Status ?? LearningStatus.NotEngaged)
         }
         else
         {

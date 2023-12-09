@@ -10,12 +10,15 @@
                 <SkeletonCard Horizontal="@IsHorizontal(i)" HideFooter="IsHiddenOverview(i)"/>
             }
         </Loading>
-        <ChildContent Context="articles">
-            @for (var i = 0; i < articles.Items.Length; i++)
+        <ChildContent Context="courses">
+            @for (var i = 0; i < courses.Items.Length; i++)
             {
+                var course = courses.Items[i];
+                
                 <CourseCard
-                    Course="@articles.Items[i].Course"
-                    Activity="@articles.Items[i].Activity"
+                    Course="@course.Course"
+                    Activity="@course.Activity"
+                    HasExamination="@course.HasExamination"
                     OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"
                     Horizontal="@IsHorizontal(i)"
                     HideOverview="@IsHiddenOverview(i)"

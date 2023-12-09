@@ -21,7 +21,7 @@ public sealed record GetCourseRequest(GetCourseRequest.SortType Sort, int Offset
                 SortType.Trending => nameof(SortType.Trending),
                 _ => nameof(SortType.Newest)
             },
-            [nameof(Limit)] = Limit.ToString(),
-            [nameof(Offset)] = Offset.ToString()
+            [nameof(Offset)] = Offset.ToString(),
+            [nameof(Limit)] = Limit.ToString()
         });
 }

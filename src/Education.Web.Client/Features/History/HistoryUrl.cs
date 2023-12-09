@@ -57,7 +57,7 @@ public static class HistoryUrl
             $"{Root}/course/{courseId}";
 
         public static string ExaminationBuilder(string courseId) =>
-            $"{Root}/course/{courseId}/examinations";
+            $"{Root}/course/{courseId}/examination";
     }
 
     public static class Flow

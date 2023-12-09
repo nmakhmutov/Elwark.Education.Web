@@ -22,7 +22,7 @@ else
              Color="_color"
              Icon="@_icon"
              Text="@L.GetLearningStatusTitle(Status)"
-             Href="@(Status == LearningStatus.Unengaged ? null : Href)"/>;
+             Href="@(Status == LearningStatus.NotEngaged ? null : Href)"/>;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -42,7 +42,7 @@ else
     protected override void OnParametersSet() =>
         (_color, _icon) = Status switch
         {
-            LearningStatus.Unengaged => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked),
+            LearningStatus.NotEngaged => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked),
             LearningStatus.Incompleted => (Color.Warning, Icons.Material.Outlined.ModeStandby),
             LearningStatus.Completed => (Color.Success, Icons.Material.Outlined.CheckCircle),
             _ => throw new ArgumentOutOfRangeException()

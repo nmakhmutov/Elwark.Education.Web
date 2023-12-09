@@ -22,10 +22,13 @@ internal static class LocalizationExtensions
 
     public static string GetInventoryCategoryTypeTitle(this IStringLocalizer localizer, CategoryType type) =>
         localizer[$"History_Inventory_Category_{type}"];
-    
+
     public static string GetLearningStatusTitle(this IStringLocalizer localizer, LearningStatus status) =>
         localizer[$"LearningStatus_{status}_Title"];
-    
+
     public static string GetLearningStatusDescription(this IStringLocalizer localizer, LearningStatus status) =>
         localizer[$"LearningStatus_{status}_Description"];
+
+    public static string GetCourseLearningStatusTitle(this IStringLocalizer localizer, CourseLearningStatus status) =>
+        localizer[$"CourseLearningStatus_{status}_Title"];
 }

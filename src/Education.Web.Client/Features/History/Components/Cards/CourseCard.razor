@@ -35,9 +35,17 @@
         @if (!HideFooter)
         {
             <AuthorizeView>
-                <aside class="d-flex align-center justify-space-between gap-3">
-                    <CourseProgress Class="flex-grow-1" Progress="@Activity?.Completeness"/>
-
+                <aside class="d-flex align-center gap-3">
+                    @if (HasExamination)
+                    {
+                        <CourseCompletion
+                            Class="flex-grow-1"
+                            Status="@(Activity?.Status ?? CourseLearningStatus.NotStarted)"
+                            Completeness="@(Activity?.Completeness ?? 0)"/>
+                    }
+                    
+                    <MudSpacer/>
+                    
                     @if (OnBookmarkClick is not null)
                     {
                         <BookmarkButton
@@ -58,6 +66,9 @@
 
     [Parameter, EditorRequired]
     public CourseOverviewModel Course { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public bool HasExamination { get; set; }
 
     [Parameter]
     public UserCourseActivityModel? Activity { get; set; }

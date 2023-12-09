@@ -28,7 +28,7 @@ else
                         Text="0"/>
                 </div>
                 <div class="completion">
-                    <ArticleCompletionChip Status="LearningStatus.Unengaged"/>
+                    <ArticleCompletionChip Status="LearningStatus.NotEngaged"/>
                 </div>
                 <div class="actions">
                     <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
@@ -63,7 +63,7 @@ else
                 </div>
                 <div class="completion">
                     <ArticleCompletionChip
-                        Status="@(item.Activity?.Status ?? LearningStatus.Unengaged)"
+                        Status="@(item.Activity?.Status ?? LearningStatus.NotEngaged)"
                         Href="@HistoryUrl.User.MyArticle(item.Article.Id)"
                         ShowTooltip/>
                 </div>

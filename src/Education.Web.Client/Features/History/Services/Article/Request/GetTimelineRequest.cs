@@ -8,7 +8,7 @@ public sealed record GetTimelineRequest(int Year, int Offset, int Limit) : IQuer
         QueryString.Create(new Dictionary<string, string?>
         {
             [nameof(Year)] = Year.ToString(),
-            [nameof(Limit)] = Limit.ToString(),
-            [nameof(Offset)] = Offset.ToString()
+            [nameof(Offset)] = Offset.ToString(),
+            [nameof(Limit)] = Limit.ToString()
         });
 }

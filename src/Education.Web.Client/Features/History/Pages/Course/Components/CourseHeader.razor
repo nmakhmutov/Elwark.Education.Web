@@ -10,7 +10,7 @@
             <MudSpacer/>
 
             <section>
-                @if (HasExaminations && Activity?.Completeness.HasValue == false)
+                @if (HasExaminations && Activity?.Status == CourseLearningStatus.NotStarted)
                 {
                     <div class="mb-3">
                         <LoadingButton
@@ -54,9 +54,9 @@
                     }
                 </div>
 
-                @if (_isAuthenticated && Activity?.Completeness.HasValue == true)
+                @if (_isAuthenticated && Activity?.Status > CourseLearningStatus.NotStarted)
                 {
-                    <CourseProgress Progress="@Activity?.Completeness" Typo="Typo.subtitle1"/>
+                    <CourseProgress Progress="@(Activity?.Completeness ?? 0)" Typo="Typo.subtitle1"/>
                 }
             </section>
         </header>

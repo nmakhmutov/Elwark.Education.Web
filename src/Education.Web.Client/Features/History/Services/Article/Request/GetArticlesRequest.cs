@@ -23,7 +23,7 @@ public sealed record GetArticlesRequest(EpochType Epoch, GetArticlesRequest.Sort
                 SortType.Trending => nameof(SortType.Trending),
                 _ => nameof(SortType.Newest)
             },
-            [nameof(Limit)] = Limit.ToString(),
-            [nameof(Offset)] = Offset.ToString()
+            [nameof(Offset)] = Offset.ToString(),
+            [nameof(Limit)] = Limit.ToString()
         });
 }
