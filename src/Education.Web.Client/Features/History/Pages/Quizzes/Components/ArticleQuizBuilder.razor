@@ -20,9 +20,10 @@
             </MudText>
 
             <QuizDifficultyRadioGroup
+                Class="mb-6"
                 SelectedDifficulty="@Difficulty"
                 SelectedDifficultyChanged="@DifficultyChanged"
-                Quizzes="@Quizzes" Class="mb-6"/>
+                Quizzes="@Quizzes"/>
 
             <div class="d-flex justify-center">
                 <LoadingButton
@@ -39,9 +40,9 @@
         }
         else
         {
-            <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Warning">
+            <MudAlert Severity="Severity.Info">
                 @L["Quiz_NotAvailableForArticle", Article.Title]
-            </MudText>
+            </MudAlert>
         }
     </div>
 </section>
@@ -54,7 +55,7 @@
 
     [Parameter, EditorRequired]
     public required ArticleOverviewModel Article { get; set; }
-    
+
     [Parameter, EditorRequired]
     public bool HasQuiz { get; set; }
 

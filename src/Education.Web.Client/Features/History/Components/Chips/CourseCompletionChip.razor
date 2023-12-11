@@ -1,43 +1,44 @@
-<section class="@Class">
-    @if (Status == CourseLearningStatus.InProgress)
-    {
-        <CourseProgress Progress="@Completeness" Size="Size" Typo="Typo"/>
-    }
-    else
-    {
-        <MudChip
-            Class="ma-0"
-            Variant="Variant.Outlined"
-            Size="@Size"
-            Color="@_color"
-            Icon="@_icon"
-            Text="@L.GetCourseLearningStatusTitle(Status)"/>
-    }
-</section>
+@if (ShowTooltip)
+{
+    <MudTooltip Text="@L["LearningStatus_Title"]">
+        @Chip
+    </MudTooltip>
+}
+else
+{
+    @Chip
+}
 
 @code {
+
     private Color _color;
     private string? _icon;
+
+    private RenderFragment Chip =>
+        @<MudChip
+             Class="ma-0"
+             Variant="Variant.Outlined"
+             Size="@Size"
+             Color="_color"
+             Icon="@_icon"
+             Text="@L.GetStatusTitle(Status)"
+             Href="@(Status == CourseLearningStatus.NotStarted ? null : Href)"/>;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public uint Completeness { get; set; }
-
-    [Parameter, EditorRequired]
     public CourseLearningStatus Status { get; set; }
+
+    [Parameter]
+    public string? Href { get; set; }
+
+    [Parameter]
+    public bool ShowTooltip { get; set; }
 
     [Parameter]
     public Size Size { get; set; } = Size.Medium;
 
-    [Parameter]
-    public Typo Typo { get; set; } = Typo.body1;
-
-    [Parameter]
-    public string? Class { get; set; }
-    
-    
     protected override void OnParametersSet() =>
         (_color, _icon) = Status switch
         {
@@ -47,4 +48,5 @@
             CourseLearningStatus.Completed => (Color.Success, Icons.Material.Outlined.CheckCircle),
             _ => throw new ArgumentOutOfRangeException()
         };
+
 }

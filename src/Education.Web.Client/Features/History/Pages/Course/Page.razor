@@ -55,7 +55,7 @@
 
                 <CourseDetails Details="@model.Course.Details"/>
 
-                @if (model.Activity?.Status != CourseLearningStatus.NotStarted)
+                @if (model.Activity?.Status > CourseLearningStatus.NotStarted)
                 {
                     <ExaminationCard
                         CourseId="@model.Course.Id"

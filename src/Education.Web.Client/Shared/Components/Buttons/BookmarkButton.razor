@@ -1,14 +1,12 @@
 <MudTooltip Text="@(L[IsBookmarked ? "Bookmarks_Remove" : "Bookmarks_Add"])">
     <MudToggleIconButton
         Class="@Class"
-        Toggled="@IsBookmarked"
-        ToggledChanged="@OnBookmarkChanged"
-        Icon="@Icons.Material.Outlined.BookmarkAdd"
         Color="@Color"
-        Size="@Size"
-        ToggledSize="@Size"
+        Icon="@Icons.Material.Outlined.BookmarkAdd"
         ToggledIcon="@Icons.Material.Outlined.BookmarkAdded"
-        ToggledColor="Color.Error"/>
+        ToggledColor="Color.Error"
+        Toggled="@IsBookmarked"
+        ToggledChanged="@OnBookmarkChanged"/>
 </MudTooltip>
 
 @code {
@@ -27,9 +25,6 @@
 
     [Parameter]
     public Color Color { get; set; } = Color.Default;
-
-    [Parameter]
-    public Size Size { get; set; } = Size.Medium;
 
     [Parameter]
     public string? Class { get; set; }

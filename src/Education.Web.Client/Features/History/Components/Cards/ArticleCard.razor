@@ -6,10 +6,11 @@
     </div>
 
     <section class="content flex-grow-1 gap-3 pa-3">
-        <header class="@(OneLineHeader ? "one-line-text" : null)">
+        <header class="one-line-text">
             <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
                href="@HistoryUrl.Content.Article(Article.Id)"
-               alt="@Article.Title">
+               alt="@Article.Title"
+               title="@Article.Title">
                 @Article.Title
             </a>
             <br/>
@@ -51,13 +52,10 @@
 
                     <MudSpacer/>
 
-                    @if (OnBookmarkClick is not null)
-                    {
-                        <BookmarkButton
-                            Id="@Article.Id"
-                            IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                            OnBookmarkClick="@OnBookmarkClick"/>
-                    }
+                    <BookmarkButton
+                        Id="@Article.Id"
+                        IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                        OnBookmarkClick="@OnBookmarkClick"/>
                 </aside>
             </AuthorizeView>
         }
@@ -75,14 +73,14 @@
     [Parameter, EditorRequired]
     public bool HasQuiz { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public UserArticleActivityModel? Activity { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
-
-    [Parameter]
-    public bool OneLineHeader { get; set; }
 
     [Parameter]
     public bool Horizontal { get; set; }
@@ -95,8 +93,5 @@
 
     [Parameter]
     public bool ShortOverview { get; set; }
-
-    [Parameter]
-    public Func<string, Task<ApiResult<bool>>>? OnBookmarkClick { get; set; }
 
 }

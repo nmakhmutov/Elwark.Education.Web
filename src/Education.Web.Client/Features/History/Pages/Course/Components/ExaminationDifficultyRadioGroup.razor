@@ -1,0 +1,37 @@
+@using Education.Web.Client.Models.Quiz
+@using Education.Web.Client.Features.History.Services.Quiz.Model
+<div class="@Class">
+    <MudRadioGroup T="DifficultyType?" Class="radio-group" SelectedOption="@SelectedDifficulty" SelectedOptionChanged="@SelectedDifficultyChanged">
+        @foreach (var service in Examinations)
+        {
+            <MudRadio T="DifficultyType?" Class="radio" Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)">
+                <div class="d-flex justify-center align-center rounded-circle mud-background relative pa-2">
+                    <img class="image" src="@service.AccessInventory.ImageUrl" alt="@L[$"Examination_{service.Type}_Title"]" loading="lazy"/>
+                </div>
+
+                <p class="mud-typography mud-typography-subtitle1 one-line-text flex-1" title="@L[$"Examination_{service.Type}_Title"]">
+                    @L[$"Examination_{service.Type}_Title"]
+                </p>
+            </MudRadio>
+        }
+    </MudRadioGroup>
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter]
+    public DifficultyType? SelectedDifficulty { get; set; }
+
+    [Parameter]
+    public EventCallback<DifficultyType?> SelectedDifficultyChanged { get; set; }
+
+    [Parameter, EditorRequired]
+    public required ExaminationInformationModel[] Examinations { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

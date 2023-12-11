@@ -1,6 +1,6 @@
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     <div class="mb-3">
-        @if (Activity?.Status != LearningStatus.NotEngaged)
+        @if (Activity?.Status > LearningStatus.NotEngaged)
         {
             <MudLink Typo="Typo.subtitle2" Href="@HistoryUrl.User.MyArticle(ArticleId)">
                 @L["User_MyProgress"]
@@ -16,7 +16,7 @@
 
     @if (HasEasyQuiz)
     {
-        <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-2">
+        <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
             <MudText Typo="Typo.body1">@L["NumberOfQuizzes_PassedEasy_Title"]</MudText>
             <div class="d-flex align-center gap-1">
                 <MudText Typo="Typo.body1">
@@ -29,7 +29,7 @@
 
     @if (HasHardQuiz)
     {
-        <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-2">
+        <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
             <MudText Typo="Typo.body1">@L["NumberOfQuizzes_PassedHard_Title"]</MudText>
             <div class="d-flex align-center gap-1">
                 <MudText Typo="Typo.body1">
@@ -40,7 +40,7 @@
         </div>
     }
 
-    <div class="d-flex justify-space-between align-center pb-1 mb-2">
+    <div class="d-flex justify-space-between align-center pb-1 mb-3">
         <MudText Typo="Typo.body1">
             @L["LearningStatus_Title"]
         </MudText>
@@ -51,10 +51,10 @@
             Size="Size.Small"/>
     </div>
 
-    <MudText Typo="Typo.body2">
+    <MudText Class="mb-3" Typo="Typo.body2">
         @if (_hasQuiz)
         {
-            @L.GetLearningStatusDescription(Activity?.Status ?? LearningStatus.NotEngaged)
+            @L.GetStatusDescription(Activity?.Status ?? LearningStatus.NotEngaged)
         }
         else
         {
@@ -62,19 +62,17 @@
         }
     </MudText>
 
-    <div class="mt-3 mt-sm-6">
-        @if (_hasQuiz)
-        {
-            <MudButton
-                Link="@HistoryUrl.Quiz.Index(ArticleId)"
-                Variant="Variant.Filled"
-                Color="Color.Primary"
-                FullWidth
-                DisableElevation>
-                @L["Quiz_TakeTheQuiz"]
-            </MudButton>
-        }
-    </div>
+    @if (_hasQuiz)
+    {
+        <MudButton
+            Link="@HistoryUrl.Quiz.Index(ArticleId)"
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            FullWidth
+            DisableElevation>
+            @L["Quiz_TakeTheQuiz"]
+        </MudButton>
+    }
 </section>
 
 @code {
