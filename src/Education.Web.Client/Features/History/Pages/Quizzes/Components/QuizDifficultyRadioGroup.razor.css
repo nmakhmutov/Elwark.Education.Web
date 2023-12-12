@@ -8,16 +8,14 @@
     display: flex;
     margin-right: 0;
     margin-inline-end: 0;
+    background-color: var(--mud-palette-surface) !important;
+    border-radius: var(--mud-default-borderradius);
+    transition: box-shadow 300ms cubic-bezier(.4, 0, .2, 1) 0ms;
+    margin-left: 1px;
 }
 
 ::deep .radio .mud-radio-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
     padding: 12px;
-    background-color: var(--mud-palette-surface);
-    border-radius: var(--mud-default-borderradius);
-    transition: box-shadow 300ms cubic-bezier(.4, 0, .2, 1) 0ms;
     overflow: hidden;
     width: 100%;
 }
@@ -37,6 +35,6 @@
 
 @media (min-width: 960px) {
     ::deep .radio-group .mud-radio-group {
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     }
 }

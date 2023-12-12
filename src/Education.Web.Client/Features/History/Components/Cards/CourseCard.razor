@@ -6,52 +6,58 @@
     </div>
 
     <section class="content flex-grow-1 gap-3 pa-3">
-        <header class="one-line-text">
-            <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
-               href="@HistoryUrl.Content.Course(Course.Id)"
-               alt="@Course.Title">
-                @Course.Title
-            </a>
+        <header>
+            <div class="@(OneLineTitle ? "one-line-text" : null)">
+                <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h6"
+                   href="@HistoryUrl.Content.Course(Course.Id)"
+                   alt="@Course.Title"
+                   title="@Course.Title">
+                    @Course.Title
+                </a>
+            </div>
+            <div class="d-flex align-center justify-space-between">
+                <ContentRating Rating="@Course.Rating" ShowTooltip/>
+
+                <MudTooltip Text="@L["Articles_Title"]">
+                    <div class="d-flex align-center">
+                        <MudText Class="mr-1" Typo="Typo.body1">@Course.ArticleCount</MudText>
+                        <MudIcon Icon="@EduIcons.Articles" Size="Size.Small"/>
+                    </div>
+                </MudTooltip>
+            </div>
         </header>
 
-        <div class="d-flex justify-space-between align-center gap-3">
-            <ContentRating Rating="@Course.Rating" ShowTooltip/>
-
-            <MudTooltip Text="@L["Articles_Title"]">
-                <div class="d-flex align-center">
-                    <MudIcon Class="mr-1" Icon="@EduIcons.Articles" Size="Size.Small"/>
-                    <MudText Typo="Typo.body1">@Course.ArticleCount</MudText>
-                </div>
-            </MudTooltip>
+        <div class="flex-grow-1">
+            @if (!HideOverview)
+            {
+                <MudText Typo="Typo.body1">
+                    @(ShortOverview && Course.Overview.Length > 60 ? $"{Course.Overview[..57].TrimEnd()}..." : Course.Overview)
+                </MudText>
+            }
         </div>
-
-        @if (!HideOverview)
-        {
-            <MudText Class="flex-grow-1" Typo="Typo.body1">
-                @(ShortOverview && Course.Overview.Length > 60 ? $"{Course.Overview[..57].TrimEnd()}..." : Course.Overview)
-            </MudText>
-        }
 
         @if (!HideFooter)
         {
-            <AuthorizeView>
-                <aside class="d-flex align-center gap-3">
-                    @if (HasExamination)
-                    {
-                        <CourseCompletion
-                            Class="flex-grow-1"
-                            Status="@(Activity?.Status ?? CourseLearningStatus.NotStarted)"
-                            Completeness="@(Activity?.Completeness ?? 0)"/>
-                    }
-
-                    <MudSpacer/>
-
+            <footer class="d-flex align-center gap-3">
+                @if (HasExamination)
+                {
+                    <CourseCompletion
+                        Class="w-100"
+                        Status="@(Activity?.Status ?? CourseLearningStatus.NotStarted)"
+                        Completeness="@(Activity?.Completeness ?? 0)"
+                        Typo="Typo.caption"
+                        Size="Size.Small"/>
+                }
+                
+                <MudSpacer/>
+                
+                <AuthorizeView>
                     <BookmarkButton
                         Id="@Course.Id"
                         IsBookmarked="@(Activity?.IsBookmarked ?? false)"
                         OnBookmarkClick="@OnBookmarkClick"/>
-                </aside>
-            </AuthorizeView>
+                </AuthorizeView>
+            </footer>
         }
     </section>
 </article>
@@ -87,5 +93,8 @@
 
     [Parameter]
     public bool ShortOverview { get; set; }
+
+    [Parameter]
+    public bool OneLineTitle { get; set; }
 
 }

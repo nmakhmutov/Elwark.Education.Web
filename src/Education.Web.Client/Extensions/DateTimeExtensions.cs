@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.Extensions.Localization;
 
 namespace Education.Web.Client.Extensions;
@@ -32,8 +33,14 @@ public static class DateTimeExtensions
         if (span.TotalHours > 1)
             return $"{span.Hours}{localizer["Abbreviation_Hours"]} {span.Minutes}{localizer["Abbreviation_Minutes"]}";
 
-        return span.TotalMinutes > 1
-            ? $"{span.Minutes}{localizer["Abbreviation_Minutes"]} {span.Seconds}{localizer["Abbreviation_Seconds"]}"
-            : $"{span.Seconds}{localizer["Abbreviation_Seconds"]}";
+        var sb = new StringBuilder();
+
+        if (span.Minutes > 0)
+            sb.Append($"{span.Minutes}{localizer["Abbreviation_Minutes"]} ");
+
+        if (span.Seconds > 0)
+            sb.Append($"{span.Seconds}{localizer["Abbreviation_Seconds"]}");
+
+        return sb.ToString();
     }
 }

@@ -4,7 +4,7 @@
 @attribute [Authorize]
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
+    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
@@ -13,52 +13,17 @@
     </PageTitle>
 
     <section class="grid px-3 pb-3 px-sm-6 pb-sm-6">
-        <section>
+        <section class="course">
             <MudText Typo="Typo.h6" Class="mb-3">
                 @L["Course_Title"]
             </MudText>
-            
+
             <CourseCard
-                Class="mb-3 mb-sm-6"
                 Course="@model.Course"
                 Activity="@model.Activity"
                 OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
                 HasExamination="@(model.Examinations.Length > 0)"
                 Horizontal/>
-
-            <div class="mb-3 mb-sm-6">
-                @if (model.Examinations.Length > 0)
-                {
-                    <MudText Typo="Typo.h6" Class="mb-3">
-                        @L["Examination_Type_Title"]
-                    </MudText>
-
-                    <ExaminationDifficultyRadioGroup
-                        Class="mb-6"
-                        SelectedDifficulty="@_difficulty"
-                        SelectedDifficultyChanged="@DifficultyChanged"
-                        Examinations="@model.Examinations"/>
-
-                    <div class="d-flex justify-center">
-                        <LoadingButton
-                            DisableElevation
-                            Color="Color.Primary"
-                            Variant="Variant.Filled"
-                            Size="Size.Large"
-                            Text="@L["Examination_TakeTheExamination"]"
-                            LoadingText="@L["Loading_Title"]"
-                            IsLoading="@_isLoading"
-                            Disabled="@(model.Examinations.All(x => !x.IsAllowed))"
-                            OnClick="@CreateTestAsync"/>
-                    </div>
-                }
-                else
-                {
-                    <MudAlert Severity="Severity.Info">
-                        @L["Examination_NotAvailableForCourse", model.Course.Title]
-                    </MudAlert>
-                }
-            </div>
         </section>
 
         <section class="inventory">
@@ -72,6 +37,40 @@
                     Quantity="@item.Quantity"
                     IconUrl="@item.ImageUrl"/>
             </InventoryGrid>
+        </section>
+
+        <section class="exam">
+            @if (model.Examinations.Length > 0)
+            {
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @L["Examination_Type_Title"]
+                </MudText>
+
+                <ExaminationDifficultyRadioGroup
+                    Class="mb-6"
+                    SelectedDifficulty="@_difficulty"
+                    SelectedDifficultyChanged="@DifficultyChanged"
+                    Examinations="@model.Examinations"/>
+
+                <div class="d-flex justify-center">
+                    <LoadingButton
+                        Color="Color.Primary"
+                        Variant="Variant.Filled"
+                        Size="Size.Large"
+                        Text="@L["Examination_TakeTheExamination"]"
+                        LoadingText="@L["Loading_Title"]"
+                        IsLoading="@_isLoading"
+                        Disabled="@(model.Examinations.All(x => !x.IsAllowed))"
+                        OnClick="@CreateTestAsync"
+                        DisableElevation/>
+                </div>
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Info">
+                    @L["Examination_NotAvailableForCourse", model.Course.Title]
+                </MudAlert>
+            }
         </section>
     </section>
 </ApiViewer>

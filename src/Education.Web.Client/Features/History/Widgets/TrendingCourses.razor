@@ -22,7 +22,7 @@
                     OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"
                     Horizontal="@IsHorizontal(i)"
                     HideOverview="@IsHiddenOverview(i)"
-                    ShortOverview="@IsShortOverview(i)"/>
+                    OneLineTitle/>
             }
         </ChildContent>
     </ApiViewer>
@@ -72,9 +72,6 @@
 
     private bool IsHiddenOverview(int i) =>
         _breakpoint >= (int)Breakpoint.Lg && i > 2;
-
-    private bool IsShortOverview(int i) =>
-        _breakpoint >= (int)Breakpoint.Lg && i is 1 or 2;
 
     public async ValueTask DisposeAsync() =>
         await ViewportService.UnsubscribeAsync(_subscriptionId);

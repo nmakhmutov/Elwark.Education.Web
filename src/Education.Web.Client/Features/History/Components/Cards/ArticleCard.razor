@@ -6,58 +6,61 @@
     </div>
 
     <section class="content flex-grow-1 gap-3 pa-3">
-        <header class="one-line-text">
-            <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h5"
-               href="@HistoryUrl.Content.Article(Article.Id)"
-               alt="@Article.Title"
-               title="@Article.Title">
-                @Article.Title
-            </a>
-            <br/>
-            <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body1"
-               href="@HistoryUrl.Content.Articles(Article.Epoch)">
-                @L.GetEpochTitle(Article.Epoch)
-            </a>
+        <header>
+            <div class="@(OneLineTitle ? "one-line-text" : null)">
+                <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h6"
+                   href="@HistoryUrl.Content.Article(Article.Id)"
+                   alt="@Article.Title"
+                   title="@Article.Title">
+                    @Article.Title
+                </a>
+            </div>
+            <div class="d-flex align-center justify-space-between">
+                <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body1"
+                   href="@HistoryUrl.Content.Articles(Article.Epoch)">
+                    @L.GetEpochTitle(Article.Epoch)
+                </a>
+                <MudTooltip Text="@L["TimeToRead_Title"]">
+                    <div class="d-flex align-center">
+                        <MudText Class="mr-1" Typo="Typo.body2">@Article.TimeToRead.Humanize(L)</MudText>
+                        <MudIcon Icon="@EduIcons.TimeToRead" Size="Size.Small"/>
+                    </div>
+                </MudTooltip>
+            </div>
         </header>
 
-        <div class="d-flex justify-space-between align-center gap-3">
-            <ContentRating Rating="@Article.Rating" ShowTooltip/>
-
-            <MudTooltip Text="@L["TimeToRead_Title"]">
-                <div class="d-flex align-center">
-                    <MudIcon Class="mr-1" Icon="@EduIcons.TimeToRead" Size="Size.Small"/>
-                    <MudText Typo="Typo.body1">@Article.TimeToRead.Humanize(L)</MudText>
-                </div>
-            </MudTooltip>
+        <div class="flex-grow-1">
+            @if (!HideOverview)
+            {
+                <MudText Typo="Typo.body1">
+                    @(ShortOverview && Article.Overview.Length > 60 ? $"{Article.Overview[..57].TrimEnd()}..." : Article.Overview)
+                </MudText>
+            }
         </div>
-
-        @if (!HideOverview)
-        {
-            <MudText Class="flex-grow-1" Typo="Typo.body1">
-                @(ShortOverview && Article.Overview.Length > 60 ? $"{Article.Overview[..57].Trim()}..." : Article.Overview)
-            </MudText>
-        }
 
         @if (!HideFooter)
         {
-            <AuthorizeView>
-                <aside class="d-flex align-center gap-3">
-                    @if (HasQuiz)
-                    {
-                        <ArticleCompletionChip
-                            Status="@(Activity?.Status ?? LearningStatus.NotEngaged)"
-                            Href="@HistoryUrl.User.MyArticle(Article.Id)"
-                            ShowTooltip/>
-                    }
+            <footer class="d-flex align-center gap-3">
+                <ContentRating Rating="@Article.Rating" ShowTooltip/>
 
-                    <MudSpacer/>
+                <MudSpacer/>
 
+                @if (HasQuiz)
+                {
+                    <ArticleCompletionChip
+                        Status="@(Activity?.Status ?? LearningStatus.NotEngaged)"
+                        Href="@HistoryUrl.User.MyArticle(Article.Id)"
+                        Size="Size.Small"
+                        ShowTooltip/>
+                }
+
+                <AuthorizeView>
                     <BookmarkButton
                         Id="@Article.Id"
                         IsBookmarked="@(Activity?.IsBookmarked ?? false)"
                         OnBookmarkClick="@OnBookmarkClick"/>
-                </aside>
-            </AuthorizeView>
+                </AuthorizeView>
+            </footer>
         }
     </section>
 </article>
@@ -93,5 +96,8 @@
 
     [Parameter]
     public bool ShortOverview { get; set; }
+
+    [Parameter]
+    public bool OneLineTitle { get; set; }
 
 }

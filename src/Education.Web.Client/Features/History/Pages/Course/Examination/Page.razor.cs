@@ -13,7 +13,6 @@ namespace Education.Web.Client.Features.History.Pages.Course.Examination;
 public sealed partial class Page
 {
     private ApiResult<ExaminationBuilderModel> _result = ApiResult<ExaminationBuilderModel>.Loading();
-    private readonly List<BreadcrumbItem> _breadcrumbs = new(4);
     private DifficultyType? _difficulty;
     private bool _isLoading;
 
@@ -32,24 +31,23 @@ public sealed partial class Page
     [Parameter]
     public required string Id { get; set; }
 
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["Courses_Title"], HistoryUrl.Content.Courses()),
+        new BreadcrumbItem(L["Examinations_Title"], null, true)
+    ];
+
     protected override async Task OnInitializedAsync()
     {
-        _breadcrumbs.Add(new BreadcrumbItem(L["History_Title"], HistoryUrl.Root));
-        _breadcrumbs.Add(new BreadcrumbItem(L["Courses_Title"], HistoryUrl.Content.Courses()));
-
         _difficulty = await Storage.GetItemAsync<DifficultyType?>(HistoryLocalStorageKey.ExaminationSettings);
 
         _result = await CourseService.GetExaminationAsync(Id);
         await _result.MatchAsync(x =>
-        {
-            _breadcrumbs.Add(new BreadcrumbItem(x.Course.Title, HistoryUrl.Content.Course(x.Course.Id)));
-
-            return x.Examinations.Any(e => e.IsAllowed && e.Type == _difficulty)
+            x.Examinations.Any(e => e.IsAllowed && e.Type == _difficulty)
                 ? Task.CompletedTask
-                : DifficultyChanged(x.Examinations.FirstOrDefault(t => t.IsAllowed)?.Type);
-        });
-
-        _breadcrumbs.Add(new BreadcrumbItem(L["Examinations_Title"], null, true));
+                : DifficultyChanged(x.Examinations.FirstOrDefault(t => t.IsAllowed)?.Type)
+        );
     }
 
     private Task CreateTestAsync()

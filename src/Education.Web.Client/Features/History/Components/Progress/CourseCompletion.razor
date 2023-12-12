@@ -1,13 +1,11 @@
-<section class="@Class">
-    @if (Status == CourseLearningStatus.InProgress)
-    {
-        <CourseProgress Progress="@Completeness" Size="Size" Typo="Typo"/>
-    }
-    else
-    {
-        <CourseCompletionChip Status="@Status" Size="@Size" ShowTooltip/>
-    }
-</section>
+@if (Status == CourseLearningStatus.InProgress)
+{
+    <CourseProgress Class="@Class" Progress="@Completeness" Size="Size" Typo="Typo"/>
+}
+else
+{
+    <CourseCompletionChip Status="@Status" Size="@Size" ShowTooltip/>
+}
 
 @code {
 

@@ -1,15 +1,23 @@
 <div class="@Class">
     <MudRadioGroup T="DifficultyType?" Class="radio-group" SelectedOption="@SelectedDifficulty" SelectedOptionChanged="@SelectedDifficultyChanged">
-        @foreach (var service in Quizzes)
+        @foreach (var quiz in Quizzes)
         {
-            <MudRadio T="DifficultyType?" Class="radio" Option="@service.Type" Color="Color.Primary" Disabled="@(!service.IsAllowed)">
-                <div class="d-flex justify-center align-center rounded-circle mud-background relative pa-2">
-                    <img class="image" src="@service.AccessInventory.ImageUrl" alt="@L[$"Quiz_{service.Type}_Title"]" loading="lazy"/>
-                </div>
+            <MudRadio T="DifficultyType?" Class="radio" Option="@quiz.Type" Color="Color.Primary" Disabled="@(!quiz.IsAllowed)">
+                <div class="d-flex justify-space-between gap-3">
+                    <div>
+                        <p class="mud-typography mud-typography-subtitle2 one-line-text mb-3" title="@L[$"Quiz_{quiz.Type}_Title"]">
+                            @L[$"Quiz_{quiz.Type}_Title"]
+                        </p>
+                        <div>
+                            <MudText Typo="Typo.body2">@quiz.AccessInventory.Title</MudText>
+                            <MudText Class="mud-text-secondary" Typo="Typo.caption">@L["Inventory_Required_Title"]</MudText>
+                        </div>
+                    </div>
 
-                <p class="mud-typography mud-typography-subtitle1 one-line-text flex-1" title="@L[$"Quiz_{service.Type}_Title"]">
-                    @L[$"Quiz_{service.Type}_Title"]
-                </p>
+                    <div class="d-flex justify-center align-center mud-background rounded relative pa-6">
+                        <img class="image" src="@quiz.AccessInventory.ImageUrl" alt="@L[$"Quiz_{quiz.Type}_Title"]" loading="lazy"/>
+                    </div>
+                </div>
             </MudRadio>
         }
     </MudRadioGroup>
