@@ -1,4 +1,4 @@
-@using Education.Web.Client.Models.Quiz
+@using Education.Web.Client.Models.Test
 <section class="@Class">
     @Header
 
@@ -70,7 +70,7 @@
     public AnswerResult? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback<AnswerToQuestionModel> OnAnswerClick { get; set; }
+    public EventCallback<UserAnswerModel> OnAnswerClick { get; set; }
 
     [Parameter, EditorRequired]
     public string OnNextTitle { get; set; } = string.Empty;
@@ -84,7 +84,7 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private async Task OnAnswer(AnswerToQuestionModel answer)
+    private async Task OnAnswer(UserAnswerModel answer)
     {
         _checking = true;
         await OnAnswerClick.InvokeAsync(answer);

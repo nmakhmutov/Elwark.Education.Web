@@ -1,7 +1,7 @@
 using Education.Web.Client.Features.History.Services.Flow;
 using Education.Web.Client.Features.History.Services.Flow.Model;
 using Education.Web.Client.Http;
-using Education.Web.Client.Models.Quiz;
+using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -34,7 +34,7 @@ public sealed partial class Page
         _result = await FlowService.StartAsync();
     }
 
-    private async Task OnAnswerClick(AnswerToQuestionModel answer)
+    private async Task OnAnswerClick(UserAnswerModel answer)
     {
         var flow = _result.Unwrap();
         _result = (await FlowService.CheckAsync(flow.Question.Id, answer))

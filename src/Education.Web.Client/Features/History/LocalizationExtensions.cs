@@ -1,7 +1,7 @@
 using Education.Web.Client.Features.History.Services;
 using Education.Web.Client.Models;
 using Education.Web.Client.Models.Inventory;
-using Education.Web.Client.Models.Quiz;
+using Education.Web.Client.Models.Test;
 using Microsoft.Extensions.Localization;
 
 namespace Education.Web.Client.Features.History;

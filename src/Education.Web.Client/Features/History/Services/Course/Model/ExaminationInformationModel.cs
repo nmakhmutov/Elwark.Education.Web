@@ -1,5 +1,5 @@
 using Education.Web.Client.Models.Inventory;
-using Education.Web.Client.Models.Quiz;
+using Education.Web.Client.Models.Test;
 
 namespace Education.Web.Client.Features.History.Services.Course.Model;
 

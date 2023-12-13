@@ -1,4 +1,4 @@
-namespace Education.Web.Client.Models.Quiz;
+namespace Education.Web.Client.Models.Test;
 
 public abstract record AnswerResult(bool IsCorrect)
 {

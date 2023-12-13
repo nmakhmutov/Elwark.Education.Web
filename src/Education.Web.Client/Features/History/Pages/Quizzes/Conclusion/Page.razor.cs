@@ -2,7 +2,7 @@ using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.History.Services.Quiz;
 using Education.Web.Client.Features.History.Services.Quiz.Model;
 using Education.Web.Client.Http;
-using Education.Web.Client.Models.Quiz;
+using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;

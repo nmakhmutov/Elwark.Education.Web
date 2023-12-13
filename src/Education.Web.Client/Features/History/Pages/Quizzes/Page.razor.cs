@@ -1,12 +1,12 @@
 using Blazored.LocalStorage;
 using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.History.Services;
-using Education.Web.Client.Features.History.Services.Learner;
 using Education.Web.Client.Features.History.Services.Quiz;
 using Education.Web.Client.Features.History.Services.Quiz.Model;
 using Education.Web.Client.Features.History.Services.Quiz.Request;
+using Education.Web.Client.Features.History.Settings;
 using Education.Web.Client.Http;
-using Education.Web.Client.Models.Quiz;
+using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -15,17 +15,15 @@ namespace Education.Web.Client.Features.History.Pages.Quizzes;
 
 public sealed partial class Page
 {
-    private ApiResult<QuizBuilderModel> _result = ApiResult<QuizBuilderModel>.Loading();
-    private Settings _settings = new(EpochType.None, null);
+    private ApiResult<EpochQuizBuilderModel> _result = ApiResult<EpochQuizBuilderModel>.Loading();
+    private QuizSettings _settings = QuizSettings.Empty;
+    private bool _isLoading;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
     private IHistoryQuizService QuizService { get; init; } = default!;
-
-    [Inject]
-    private IHistoryLearnerService LearnerService { get; init; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
@@ -42,13 +40,10 @@ public sealed partial class Page
         new BreadcrumbItem(L["Quizzes_Title"], null, true)
     ];
 
-    [SupplyParameterFromQuery(Name = "article")]
-    public string? ArticleId { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
-        _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
-        _result = await QuizService.GetTestBuilderAsync(ArticleId);
+        _settings = await Storage.GetItemAsync<QuizSettings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
+        _result = await QuizService.GetTestBuilderAsync();
 
         _result.MathError(x =>
         {
@@ -57,19 +52,20 @@ public sealed partial class Page
         });
     }
 
-    private async Task OnQuizCreateAsync(CreateEpochQuizRequest request) =>
-        (await QuizService.CreateAsync(request))
-        .Match(
-            x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Id)),
-            e => Snackbar.Add(e.Detail, Severity.Error)
-        );
+    private async Task CreateQuizAsync()
+    {
+        if(!_settings.Difficulty.HasValue)
+            return;
+        
+        _isLoading = true;
+        (await QuizService.CreateAsync(new CreateQuizRequest(_settings.Difficulty.Value, _settings.Epoch)))
+            .Match(
+                x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Id)),
+                e => Snackbar.Add(e.Detail, Severity.Error)
+            );
 
-    private async Task OnQuizCreateAsync(CreateArticleQuizRequest request) =>
-        (await QuizService.CreateAsync(request))
-        .Match(
-            x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Id)),
-            e => Snackbar.Add(e.Detail, Severity.Error)
-        );
+        _isLoading = false;
+    }
 
     private async Task OnEpochChanged(EpochType epoch)
     {
@@ -83,5 +79,3 @@ public sealed partial class Page
         await Storage.SetItemAsync(HistoryLocalStorageKey.QuizSettings, _settings);
     }
 }
-
-public sealed record Settings(EpochType Epoch, DifficultyType? Difficulty);

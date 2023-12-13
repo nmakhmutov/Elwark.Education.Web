@@ -46,7 +46,10 @@ public static class HistoryUrl
 
         public static string Article(string articleId) =>
             $"{Root}/article/{articleId}";
-
+        
+        public static string QuizBuilder(string articleId) =>
+            $"{Root}/article/{articleId}/quiz";
+        
         public static string Courses() =>
             $"{Root}/courses";
 
@@ -70,9 +73,6 @@ public static class HistoryUrl
     {
         public static string Index() =>
             $"{Root}/quizzes";
-
-        public static string Index(string articleId) =>
-            $"{Root}/quizzes?article={articleId}";
 
         public static string Test(string testId) =>
             $"{Root}/quizzes/{testId}";

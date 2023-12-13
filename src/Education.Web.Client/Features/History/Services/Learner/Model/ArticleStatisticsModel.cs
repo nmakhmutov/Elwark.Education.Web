@@ -1,6 +1,6 @@
 using Education.Web.Client.Features.History.Services.Learner.Model.Quiz;
 using Education.Web.Client.Features.History.Services.Quiz.Model;
-using Education.Web.Client.Models.Quiz;
+using Education.Web.Client.Models.Test;
 
 namespace Education.Web.Client.Features.History.Services.Learner.Model;
 

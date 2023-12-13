@@ -2,6 +2,7 @@ using Education.Web.Client.Features.History.Services.Article.Model;
 using Education.Web.Client.Features.History.Services.Article.Request;
 using Education.Web.Client.Http;
 using Education.Web.Client.Models;
+using Education.Web.Client.Models.Test;
 
 namespace Education.Web.Client.Features.History.Services.Article;
 
@@ -29,4 +30,10 @@ internal sealed class HistoryArticleService : IHistoryArticleService
 
     public Task<ApiResult<UserArticleOverviewModel>> GetRandomAsync(EpochType epoch) =>
         _api.GetAsync<UserArticleOverviewModel>($"history/articles/random?epoch={epoch.ToFastString()}");
+
+    public Task<ApiResult<ArticleQuizBuilderModel>> GetQuizBuilderAsync(string id) =>
+        _api.GetAsync<ArticleQuizBuilderModel>($"history/articles/{id}/quizzes");
+
+    public Task<ApiResult<TestCreationModel>> CreateQuizAsync(string id, CreateQuizRequest request) =>
+        _api.PostAsync<TestCreationModel, CreateQuizRequest>($"history/articles/{id}/quizzes", request);
 }

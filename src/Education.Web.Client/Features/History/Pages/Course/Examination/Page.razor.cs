@@ -3,7 +3,7 @@ using Education.Web.Client.Features.History.Services.Course;
 using Education.Web.Client.Features.History.Services.Course.Model;
 using Education.Web.Client.Features.History.Services.Learner;
 using Education.Web.Client.Http;
-using Education.Web.Client.Models.Quiz;
+using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -46,7 +46,7 @@ public sealed partial class Page
         await _result.MatchAsync(x =>
             x.Examinations.Any(e => e.IsAllowed && e.Type == _difficulty)
                 ? Task.CompletedTask
-                : DifficultyChanged(x.Examinations.FirstOrDefault(t => t.IsAllowed)?.Type)
+                : ChangeDifficulty(x.Examinations.FirstOrDefault(t => t.IsAllowed)?.Type)
         );
     }
 
@@ -56,7 +56,7 @@ public sealed partial class Page
         return Task.CompletedTask;
     }
 
-    private async Task DifficultyChanged(DifficultyType? difficulty)
+    private async Task ChangeDifficulty(DifficultyType? difficulty)
     {
         _difficulty = difficulty;
 

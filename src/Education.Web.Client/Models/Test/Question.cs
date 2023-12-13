@@ -1,6 +1,6 @@
 using Education.Web.Client.Models.Content;
 
-namespace Education.Web.Client.Models.Quiz;
+namespace Education.Web.Client.Models.Test;
 
 public abstract record Question(string Id, string Title, string? ImageUrl)
 {

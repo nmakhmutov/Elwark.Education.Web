@@ -6,36 +6,43 @@
     @L["Quizzes_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.None">
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
     <section class="grid px-3 pb-3 px-sm-6 pb-sm-6">
-        @if (model.Article is null)
-        {
-            <EpochQuizBuilder
-                Class="builder"
-                Quizzes="@model.Quizzes"
-                Epoch="@_settings.Epoch"
-                EpochChanged="@OnEpochChanged"
-                Difficulty="@_settings.Difficulty"
-                DifficultyChanged="@OnDifficultyChanged"
-                OnCreateClick="@OnQuizCreateAsync"/>
-        }
-        else
-        {
-            <ArticleQuizBuilder
-                Class="builder"
-                Quizzes="@model.Quizzes"
-                Article="@model.Article.Article"
-                HasQuiz="@model.Article.HasQuiz"
-                Activity="@model.Article.Activity"
-                Difficulty="@_settings.Difficulty"
-                DifficultyChanged="@OnDifficultyChanged"
-                OnCreateClick="@OnQuizCreateAsync"
-                OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
-        }
+        <section class="builder">
+            <MudText Class="mb-3" Typo="Typo.h6">
+                @L["History_Epoch_Title"]
+            </MudText>
+            <EpochRadioGroup
+                Class="mb-3 mb-sm-6"
+                SelectedEpoch="@_settings.Epoch"
+                SelectedEpochChanged="@OnEpochChanged"/>
+
+            <MudText Class="mb-3" Typo="Typo.h6">
+                @L["Quiz_Type_Title"]
+            </MudText>
+            <QuizDifficultyRadioGroup
+                Class="mb-3 mb-sm-6"
+                SelectedDifficulty="@_settings.Difficulty"
+                SelectedDifficultyChanged="@OnDifficultyChanged"
+                Quizzes="@model.Quizzes"/>
+
+            <div class="d-flex justify-center">
+                <LoadingButton
+                    DisableElevation
+                    Color="Color.Primary"
+                    Variant="Variant.Filled"
+                    Size="Size.Large"
+                    Text="@L["Quiz_TakeTheQuiz"]"
+                    LoadingText="@L["Loading_Title"]"
+                    IsLoading="@_isLoading"
+                    Disabled="@(model.Quizzes.All(x => !x.IsAllowed))"
+                    OnClick="@CreateQuizAsync"/>
+            </div>
+        </section>
 
         <section class="inventory">
             <MudText Typo="Typo.h6" Class="mb-3">

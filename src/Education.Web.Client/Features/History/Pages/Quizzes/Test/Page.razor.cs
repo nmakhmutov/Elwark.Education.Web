@@ -2,7 +2,7 @@ using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.History.Services.Quiz;
 using Education.Web.Client.Features.History.Services.Quiz.Model;
 using Education.Web.Client.Http;
-using Education.Web.Client.Models.Quiz;
+using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -48,7 +48,7 @@ public sealed partial class Page
         _result.MathError(_ => Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id)));
     }
 
-    private async Task OnAnswerAsync(AnswerToQuestionModel answer)
+    private async Task OnAnswerAsync(UserAnswerModel answer)
     {
         var quiz = _result.Unwrap();
         (await QuizService.CheckAsync(quiz.Id, quiz.Question.Id, answer))
