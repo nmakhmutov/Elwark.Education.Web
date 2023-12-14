@@ -3,6 +3,7 @@ using Education.Web.Client.Features.History.Services.Store.Model;
 using Education.Web.Client.Features.History.Services.User;
 using Education.Web.Client.Features.History.Services.User.Model;
 using Education.Web.Client.Models.Inventory;
+using Education.Web.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -19,6 +20,9 @@ public sealed partial class Page
     [Inject]
     private IHistoryUserService UserService { get; init; } = default!;
 
+    [CascadingParameter]
+    public CustomerState Customer { get; init; } = default!;
+    
     [SupplyParameterFromQuery]
     public string? Category { get; set; }
 
@@ -29,9 +33,9 @@ public sealed partial class Page
     }
 
     protected override Task OnInitializedAsync() =>
-        LoadInventoryAsync();
+        UpdateProfileAsync();
 
-    private async Task LoadInventoryAsync() =>
+    private async Task UpdateProfileAsync() =>
         _profile = (await UserService.GetProfileAsync())
             .Map(x => x)
             .UnwrapOrElse(() => _profile);

@@ -19,12 +19,12 @@ public sealed partial class Page
     [Inject]
     private IDialogService DialogService { get; init; } = default!;
 
-    [CascadingParameter]
-    public CustomerState Customer { get; init; } = default!;
-
     [Inject]
     private IHistoryUserService UserService { get; init; } = default!;
 
+    [CascadingParameter]
+    public CustomerState Customer { get; init; } = default!;
+    
     protected override async Task OnInitializedAsync() =>
         _result = await UserService.GetStatisticsAsync();
 

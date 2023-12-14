@@ -9,26 +9,14 @@
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="profile">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
-            <ProfileCard Class="profile" Customer="@Customer">
-                <UserLevelProgress
-                    Class="px-3 px-sm-6"
-                    Level="@profile.Level.Current"
-                    Experience="@profile.Level.Experience"
-                    Threshold="@profile.Level.Threshold"
-                    OnLevelClick="@OnLevelClick"/>
-
-                <section class="d-flex flex-wrap flex-sm-nowrap justify-space-between align-center gap-3 pa-3 pa-sm-6">
-                    <div class="d-flex align-center gap-3">
-                        @foreach (var (currency, amount) in profile.Wallet)
-                        {
-                            <InternalMoney Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal/>
-                        }
-                    </div>
-                    <MudButton Color="Color.Primary" Variant="Variant.Text" Href="@HistoryUrl.User.MyBackpack">
-                        <BackpackOverview Fullness="@profile.Backpack.Fullness" Capacity="@profile.Backpack.Capacity"/>
-                    </MudButton>
-                </section>
-            </ProfileCard>
+            <ProfileCard 
+                Class="profile"
+                Customer="@Customer"
+                Level="@profile.Level"
+                Backpack="@profile.Backpack"
+                Wallet="@profile.Wallet"
+                OnLevelClick="@OnLevelClick"
+                ShowFooter/>
 
             <CardBadge
                 Class="quizzes"

@@ -7,39 +7,40 @@
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <MudTabs Class="rounded-t" Elevation="0">
-        <Header>
-            <section class="d-flex flex-wrap flex-sm-nowrap align-center gap-3 pa-3">
-                <div class="d-flex align-center gap-3">
-                    @foreach (var (currency, amount) in _profile.Wallet)
-                    {
-                        <InternalMoney Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal/>
-                    }
-                </div>
+    <div class="grid">
+        <MudTabs Class="shopfront rounded-t" Elevation="0">
+            <PrePanelContent>
+                <ProductsToolbar Class="mud-paper rounded-b pa-3 mb-3 mb-sm-6" @bind-Filter="@(_filter)"/>
+            </PrePanelContent>
 
-                <BackpackOverview Fullness="@_profile.Backpack.Fullness" Capacity="@_profile.Backpack.Capacity"/>
-            </section>
-        </Header>
+            <ChildContent>
+                <MudTabPanel Icon="@Icons.Material.Outlined.Inventory2" Text="@L["History_InventoryStore_Catalog_Inventories"]">
+                    <InventoryProducts
+                        Profile="@_profile"
+                        Filter="@_filter"
+                        IsAffordable="@IsInventoryAffordable"
+                        OnProductPurchased="@UpdateProfileAsync"/>
+                </MudTabPanel>
+                <MudTabPanel Icon="@Icons.Material.Outlined.ShoppingBag" Text="@L["History_InventoryStore_Catalog_Bundles"]">
+                    <BundleProducts
+                        Profile="@_profile"
+                        Filter="@_filter"
+                        IsAffordable="@IsBundleAffordable"
+                        OnProductPurchased="@UpdateProfileAsync"/>
+                </MudTabPanel>
+            </ChildContent>
+        </MudTabs>
 
-        <PrePanelContent>
-            <ProductsToolbar Class="mud-paper rounded-b pa-3 mb-3 mb-sm-6" @bind-Filter="@(_filter)"/>
-        </PrePanelContent>
+        <ProfileCard
+            Class="profile"
+            Customer="@Customer"
+            Level="@_profile.Level"
+            Backpack="@_profile.Backpack"
+            Wallet="@_profile.Wallet"/>
 
-        <ChildContent>
-            <MudTabPanel Icon="@Icons.Material.Outlined.Inventory2" Text="@L["History_InventoryStore_Catalog_Inventories"]">
-                <InventoryProducts
-                    Profile="@_profile"
-                    Filter="@_filter"
-                    IsAffordable="@IsInventoryAffordable"
-                    OnProductPurchased="@LoadInventoryAsync"/>
-            </MudTabPanel>
-            <MudTabPanel Icon="@Icons.Material.Outlined.ShoppingBag" Text="@L["History_InventoryStore_Catalog_Bundles"]">
-                <BundleProducts
-                    Profile="@_profile"
-                    Filter="@_filter"
-                    IsAffordable="@IsBundleAffordable"
-                    OnProductPurchased="@LoadInventoryAsync"/>
-            </MudTabPanel>
-        </ChildContent>
-    </MudTabs>
+        <ExchangeCard
+            Class="exchange"
+            Wallet="@_profile.Wallet"
+            OnExchanged="@UpdateProfileAsync"/>
+    </div>
 </EduContainer>

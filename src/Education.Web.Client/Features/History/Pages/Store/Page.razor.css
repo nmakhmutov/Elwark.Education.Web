@@ -1,0 +1,48 @@
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        gap: 24px;
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    ::deep .shopfront {
+        grid-column: 1/-1;
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: auto auto 1fr;
+    }
+
+    ::deep .shopfront {
+        grid-column: 1;
+        grid-row: 1/-1;
+    }
+
+    ::deep .profile {
+        grid-column: 2;
+    }
+
+    ::deep .exchange {
+        grid-column: 2;
+    }
+}
+
+@media (min-width: 1600px) {
+    .grid {
+        grid-template-columns: 3fr 1fr;
+    }
+}
