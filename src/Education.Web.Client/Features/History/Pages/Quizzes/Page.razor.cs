@@ -58,6 +58,7 @@ public sealed partial class Page
             return;
         
         _isLoading = true;
+        
         (await QuizService.CreateAsync(new CreateQuizRequest(_settings.Difficulty.Value, _settings.Epoch)))
             .Match(
                 x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Id)),

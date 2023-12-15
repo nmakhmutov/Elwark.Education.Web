@@ -2,6 +2,7 @@ using Education.Web.Client.Features.Customer.Services.Notification.Model;
 using Education.Web.Client.Features.Customer.Services.Notification.Request;
 using Education.Web.Client.Http;
 using Education.Web.Client.Models;
+using Microsoft.AspNetCore.Components;
 
 namespace Education.Web.Client.Features.Customer.Services.Notification;
 
@@ -11,13 +12,13 @@ public interface INotificationService : IDisposable
 
     public IReadOnlyCollection<NotificationMessage> LastNotifications { get; }
 
-    public event Func<ValueTask> OnChanged;
-
     Task<ApiResult<PagingTokenModel<NotificationModel>>> GetAsync(NotificationsRequest request);
 
     Task<ApiResult<Unit>> MarkAllAsReadAsync();
 
     Task<ApiResult<Unit>> MarkAsReadAsync(string id);
 
-    ValueTask StartAsync();
+    public IDisposable NotifyOnChange(EventCallback callback);
+
+    Task StartAsync();
 }

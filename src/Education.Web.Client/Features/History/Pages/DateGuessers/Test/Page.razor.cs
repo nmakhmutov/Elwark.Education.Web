@@ -62,7 +62,7 @@ public sealed partial class Page
     private async Task OnValidSubmit(DateGuesserForm.Model model)
     {
         var year = model.Year.GetValueOrDefault();
-        var request = new CheckRequest(model.IsCe ? -year : year, model.Month, model.Day);
+        var request = new CheckRequest(model.IsCe ? year : -year, model.Month, model.Day);
 
         var result = await DateGuesserService.CheckAsync(Id, _question.Id, request);
         result.Match(

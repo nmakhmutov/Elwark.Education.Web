@@ -1,7 +1,4 @@
 @page "/account/my/notifications"
-@using Education.Web.Client.Features.Customer.Services.Notification.Request
-@using Education.Web.Client.Features.Customer.Services.Notification.Model
-@using Education.Web.Client.Features.Customer.Services.Notification
 @layout MainLayout
 @attribute [Authorize]
 
@@ -18,7 +15,7 @@
             <div class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6 mb-3 mb-sm-6">
                 <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
                 <MudButton
-                    Style="text-transform: none"
+                    Class="text-transform-none"
                     Variant="Variant.Outlined"
                     Color="Color.Primary"
                     Size="Size.Medium"
@@ -36,29 +33,42 @@
                 }
 
                 <Virtualize Items="@_notifications" Context="notification">
-                    <section class="mud-paper d-flex align-center pa-3 mb-3">
-                        <NotificationAvatar Class="mr-3" Subject="@notification.Subject"/>
+                    <section class="mud-paper d-flex align-center gap-3 pa-3 mb-3">
+                        <NotificationAvatar Subject="@notification.Subject"/>
                         <article class="flex-1">
                             <header class="d-flex align-center gap-3">
-                                <MudText Typo="Typo.subtitle2">
-                                    @notification.Title
-                                </MudText>
+                                @if (string.IsNullOrEmpty(notification.Href))
+                                {
+                                    <MudText Typo="Typo.subtitle1">
+                                        @notification.Title
+                                    </MudText>
+                                }
+                                else
+                                {
+                                    <MudLink Typo="Typo.subtitle1" Href="@notification.Href">
+                                        @notification.Title
+                                    </MudLink>
+                                }
                                 <MudText Typo="Typo.caption" Class="mud-text-secondary">
                                     @Customer.Humanize(notification.CreatedAt)
                                 </MudText>
                             </header>
-                            @if (string.IsNullOrEmpty(notification.Href))
-                            {
-                                <MudText Typo="Typo.body2">
+
+                            <footer class="d-flex align-center gap-3">
+                                <MudText Typo="Typo.body1">
                                     @notification.Message
                                 </MudText>
-                            }
-                            else
-                            {
-                                <MudLink Typo="Typo.body2" Href="@notification.Href">
-                                    @notification.Message
-                                </MudLink>
-                            }
+                                
+                                <section class="d-flex gap-3">
+                                    @foreach (var reward in notification.Money)
+                                    {
+                                        <InternalMoney
+                                            Currency="@reward.Currency"
+                                            Amount="@reward.Amount"
+                                            Horizontal/>
+                                    }
+                                </section>
+                            </footer>
                         </article>
                         <aside>
                             <MudIconButton
@@ -77,73 +87,10 @@
                             Color="Color.Primary"
                             Text="@L["Button_SeeMore"]"
                             IsLoading="@_isMoreLoading"
-                            OnClick="@LoadMore"/>
+                            OnClick="@LoadMoreAsync"/>
                     </asside>
                 }
             </ApiViewer>
         </section>
     </section>
 </EduContainer>
-
-@code {
-    private NotificationsRequest _request = new(10);
-    private ApiResult<PagingTokenModel<NotificationModel>> _result = ApiResult<PagingTokenModel<NotificationModel>>.Loading();
-    private readonly List<NotificationModel> _notifications = [];
-    private bool _isMoreLoading;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private INotificationService NotificationService { get; init; } = default!;
-
-    [CascadingParameter]
-    private CustomerState Customer { get; init; } = default!;
-
-    private List<BreadcrumbItem> Breadcrumbs =>
-    [
-        new BreadcrumbItem(L["Account_Title"], CustomerUrl.Root),
-        new BreadcrumbItem(L["Notifications_Title"], null, true)
-    ];
-
-    protected override async Task OnInitializedAsync()
-    {
-        _result = await NotificationService.GetAsync(_request);
-        _result.Match(x =>
-        {
-            _notifications.AddRange(x.Items);
-            _request = new NotificationsRequest(20, x.Next);
-        });
-    }
-
-    private async Task LoadMore()
-    {
-        if (_request.Token is null)
-            return;
-
-        _isMoreLoading = true;
-        (await NotificationService.GetAsync(_request))
-            .Match(
-                x =>
-                {
-                    _request = _request with { Token = x.Next };
-                    _notifications.AddRange(x.Items);
-                },
-                e => _result = ApiResult<PagingTokenModel<NotificationModel>>.Fail(e)
-            );
-        _isMoreLoading = false;
-    }
-
-    private Task MarkAsReadAsync(string id)
-    {
-        _notifications.RemoveAll(x => x.Id == id);
-        return NotificationService.MarkAsReadAsync(id);
-    }
-
-    private Task MarkAllAsReadAsync()
-    {
-        _notifications.Clear();
-        return NotificationService.MarkAllAsReadAsync();
-    }
-
-}

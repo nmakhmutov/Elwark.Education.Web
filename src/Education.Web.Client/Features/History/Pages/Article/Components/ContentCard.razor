@@ -8,7 +8,7 @@
 </article>
 
 @code {
-
+    IDisposable? _subscription;
     private string? _styles;
 
     [CascadingParameter]
@@ -25,7 +25,7 @@
 
     protected override void OnInitialized()
     {
-        Formatter.OnChanged += UpdateStyles;
+        _subscription = Formatter.NotifyOnChange(EventCallback.Factory.Create(this, UpdateStyles));
         UpdateStyles();
     }
 
@@ -98,6 +98,6 @@
         };
 
     public void Dispose() =>
-        Formatter.OnChanged -= UpdateStyles;
+        _subscription?.Dispose();
 
 }

@@ -1,21 +1,21 @@
-@using FluentValidation
 <EditForm Model="@_model" OnValidSubmit="@OnValidSubmit">
     <FluentValidationValidator/>
 
     <div class="form">
         <MudNumericField
-            @bind-Value="@(_model.Year)"
+            @bind-Value="@_model.Year"
             For="@(() => _model.Year)"
             Label="@L["History_DateGuesser_Year"]"
             Variant="Variant.Text"
             HideSpinButtons
             AutoFocus/>
 
-        <MudSelect T="uint?"
-                   @bind-Value="@(_model.Month)"
-                   For="@(() => _model.Month)"
-                   Label="@L["History_DateGuesser_Month"]"
-                   Clearable>
+        <MudSelect
+            T="uint?"
+            @bind-Value="@_model.Month"
+            For="@(() => _model.Month)"
+            Label="@L["History_DateGuesser_Month"]"
+            Clearable>
             @foreach (var month in Months)
             {
                 <MudSelectItem Value="@month.Key" T="uint?">
@@ -25,13 +25,13 @@
         </MudSelect>
 
         <MudNumericField
-            @bind-Value="@(_model.Day)"
+            @bind-Value="@_model.Day"
             For="@(() => _model.Day)"
             Label="@L["History_DateGuesser_Day"]"
             Variant="Variant.Text"
             HideSpinButtons/>
 
-        <MudRadioGroup @bind-SelectedOption="@(_model.IsCe)">
+        <MudRadioGroup @bind-SelectedOption="@_model.IsCe">
             <MudRadio Option="true" Color="Color.Primary" UnCheckedColor="Color.Default">
                 @L["History_Date_CE"]
             </MudRadio>
@@ -52,65 +52,3 @@
         </div>
     </div>
 </EditForm>
-
-@code {
-    private bool _isLoading;
-    private Model _model = new();
-
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Parameter, EditorRequired]
-    public required EventCallback<Model> OnAnswer { get; set; }
-
-    private Dictionary<uint, string> Months =>
-        CultureInfo.CurrentCulture.DateTimeFormat.MonthNames
-            .Select((s, i) => new KeyValuePair<uint, string>((uint)i + 1, s))
-            .ToDictionary();
-
-    public sealed record Model
-    {
-        public int? Year { get; set; }
-
-        public uint? Month { get; set; }
-
-        public uint? Day { get; set; }
-
-        public bool IsCe { get; set; }
-
-        public sealed class Validator : AbstractValidator<Model>
-        {
-            public Validator()
-            {
-                RuleFor(x => x.Year)
-                    .NotNull()
-                    .GreaterThan(0)
-                    .LessThanOrEqualTo(9999);
-
-                RuleFor(x => x.Month)
-                    .GreaterThan(0u)
-                    .LessThanOrEqualTo(12u);
-
-                RuleFor(x => x.Day)
-                    .GreaterThan(0u)
-                    .LessThanOrEqualTo(31u);
-            }
-        }
-    }
-
-    private async Task OnValidSubmit()
-    {
-        _isLoading = true;
-
-        try
-        {
-            await OnAnswer.InvokeAsync(_model);
-            _model = new Model();
-        }
-        finally
-        {
-            _isLoading = false;
-        }
-    }
-
-}

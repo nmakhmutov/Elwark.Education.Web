@@ -1,10 +1,11 @@
 using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace Education.Web.Client.Services;
 
-public sealed class ContentFormatter
+public sealed class ContentFormatter : IDisposable
 {
     private const double MinFontSize = 1;
     private const double MaxFontSize = 2;
@@ -14,6 +15,7 @@ public sealed class ContentFormatter
 
     private const string StorageKey = "fmt.srv";
 
+    private readonly HashSet<StateChangedSubscription> _subscriptions = [];
     private readonly ILocalStorageService _storage;
     private bool _isInitialized;
     private State _state;
@@ -77,9 +79,13 @@ public sealed class ContentFormatter
         };
     }
 
-    public event Action OnChanged = () =>
+    public IDisposable NotifyOnChange(EventCallback callback)
     {
-    };
+        var subscription = new StateChangedSubscription(this, callback);
+        _subscriptions.Add(subscription);
+
+        return subscription;
+    }
 
     public Task IncreaseFontSizeAsync() =>
         UpdateAsync(_state with { FontSize = Math.Min(MaxFontSize, Math.Round(_state.FontSize + 0.1, 2)) });
@@ -112,7 +118,7 @@ public sealed class ContentFormatter
     {
         await _storage.SetItemAsync(StorageKey, _state = state);
 
-        OnChanged.Invoke();
+        await Task.WhenAll(_subscriptions.Select(s => s.NotifyAsync()));
     }
 
     private sealed record State
@@ -128,5 +134,28 @@ public sealed class ContentFormatter
 
         [JsonPropertyName("fw")]
         public bool IsFontWeightBold { get; init; }
+    }
+
+    private sealed class StateChangedSubscription : IDisposable
+    {
+        private readonly ContentFormatter _owner;
+        private readonly EventCallback _callback;
+
+        public StateChangedSubscription(ContentFormatter owner, EventCallback callback)
+        {
+            _owner = owner;
+            _callback = callback;
+        }
+
+        public void Dispose() =>
+            _owner._subscriptions.Remove(this);
+
+        public Task NotifyAsync() =>
+            _callback.InvokeAsync();
+    }
+
+    public void Dispose()
+    {
+        _subscriptions.Clear();
     }
 }

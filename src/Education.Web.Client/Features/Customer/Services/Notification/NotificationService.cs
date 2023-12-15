@@ -2,6 +2,7 @@ using Education.Web.Client.Features.Customer.Services.Notification.Model;
 using Education.Web.Client.Features.Customer.Services.Notification.Request;
 using Education.Web.Client.Http;
 using Education.Web.Client.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 
@@ -12,21 +13,30 @@ internal sealed class NotificationService : INotificationService
     private const int MaxNotifications = 4;
 
     private readonly CustomerApiClient _api;
-    private readonly CustomerHab _hab;
     private readonly ISnackbar _snackbar;
     private readonly AuthenticationStateProvider _stateProvider;
+    private readonly HashSet<StateChangedSubscription> _subscriptions = [];
     private bool _isInitialized;
-    private List<NotificationMessage> _lastNotifications = new();
+    private List<NotificationMessage> _notifications = [];
+    private readonly IDisposable _subscription;
 
     public NotificationService(CustomerApiClient api, CustomerHab hab, ISnackbar snackbar,
         AuthenticationStateProvider stateProvider)
     {
         _api = api;
-        _hab = hab;
         _snackbar = snackbar;
         _stateProvider = stateProvider;
 
-        _hab.OnMessageReceived += ReceivedMessage;
+        var callback = EventCallback.Factory.Create<NotificationMessage>(this, ReceivedMessage);
+        _subscription = hab.NotifyOnNotification(callback);
+    }
+
+    public IDisposable NotifyOnChange(EventCallback callback)
+    {
+        var subscription = new StateChangedSubscription(this, callback);
+        _subscriptions.Add(subscription);
+
+        return subscription;
     }
 
     public Task<ApiResult<PagingTokenModel<NotificationModel>>> GetAsync(NotificationsRequest request) =>
@@ -38,8 +48,8 @@ internal sealed class NotificationService : INotificationService
         if (result.IsError)
             return result;
 
-        _lastNotifications.Clear();
-        await OnChanged.Invoke();
+        _notifications.Clear();
+        await NotifyChangeSubscribersAsync();
 
         return result;
     }
@@ -48,18 +58,15 @@ internal sealed class NotificationService : INotificationService
         _api.DeleteAsync<Unit>($"notifications/{id}");
 
     public IReadOnlyCollection<NotificationMessage> LastNotifications =>
-        _lastNotifications.AsReadOnly();
+        _notifications.AsReadOnly();
 
     public bool HasNotifications =>
-        _lastNotifications.Count > 0;
+        _notifications.Count > 0;
 
     public void Dispose() =>
-        _hab.OnMessageReceived -= ReceivedMessage;
+        _subscription.Dispose();
 
-    public event Func<ValueTask> OnChanged = () =>
-        ValueTask.CompletedTask;
-
-    public async ValueTask StartAsync()
+    public async Task StartAsync()
     {
         if (_isInitialized)
             return;
@@ -68,7 +75,7 @@ internal sealed class NotificationService : INotificationService
         if (state.User.Identity?.IsAuthenticated == false)
             return;
 
-        _lastNotifications = (await GetAsync(new NotificationsRequest(MaxNotifications)))
+        _notifications = (await GetAsync(new NotificationsRequest(MaxNotifications)))
             .Map(x => x.Items.Select(m =>
                 new NotificationMessage(m.Subject, m.Module, m.Title, m.Message, m.Payload, m.CreatedAt))
             )
@@ -77,12 +84,12 @@ internal sealed class NotificationService : INotificationService
 
         _isInitialized = true;
 
-        await OnChanged.Invoke();
+        await NotifyChangeSubscribersAsync();
     }
 
-    private ValueTask ReceivedMessage(NotificationMessage notification)
+    private Task ReceivedMessage(NotificationMessage notification)
     {
-        _lastNotifications = _lastNotifications
+        _notifications = _notifications
             .Prepend(notification)
             .Take(MaxNotifications)
             .ToList();
@@ -94,6 +101,27 @@ internal sealed class NotificationService : INotificationService
 
         _snackbar.Add(message);
 
-        return OnChanged.Invoke();
+        return NotifyChangeSubscribersAsync();
+    }
+
+    private Task NotifyChangeSubscribersAsync() =>
+        Task.WhenAll(_subscriptions.Select(s => s.NotifyAsync()));
+
+    private sealed class StateChangedSubscription : IDisposable
+    {
+        private readonly EventCallback _callback;
+        private readonly NotificationService _owner;
+
+        public StateChangedSubscription(NotificationService owner, EventCallback callback)
+        {
+            _owner = owner;
+            _callback = callback;
+        }
+
+        public void Dispose() =>
+            _owner._subscriptions.Remove(this);
+
+        public Task NotifyAsync() =>
+            _callback.InvokeAsync();
     }
 }

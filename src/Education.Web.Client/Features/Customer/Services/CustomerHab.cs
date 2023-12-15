@@ -1,5 +1,6 @@
 using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.Customer.Services.Notification.Model;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Http.Connections;
@@ -11,6 +12,8 @@ internal sealed class CustomerHab : IAsyncDisposable
 {
     private readonly HubConnection _connection;
     private readonly AuthenticationStateProvider _stateProvider;
+    private readonly HashSet<CustomerStateChangedSubscription> _customerChangedSubscriptions = [];
+    private readonly HashSet<NotificationStateChangedSubscription> _notificationSubscriptions = [];
 
     public CustomerHab(Uri host, IAccessTokenProvider tokenProvider, AuthenticationStateProvider stateProvider)
     {
@@ -33,14 +36,29 @@ internal sealed class CustomerHab : IAsyncDisposable
             .Build();
     }
 
-    public ValueTask DisposeAsync() =>
-        _connection.DisposeAsync();
+    public IDisposable NotifyOnCustomerChange(EventCallback<CustomerChangedType> callback)
+    {
+        var subscription = new CustomerStateChangedSubscription(this, callback);
+        _customerChangedSubscriptions.Add(subscription);
 
-    public event Func<CustomerChangedType, ValueTask> OnCustomerChanged = _ =>
-        ValueTask.CompletedTask;
+        return subscription;
+    }
 
-    public event Func<NotificationMessage, ValueTask> OnMessageReceived = _ =>
-        ValueTask.CompletedTask;
+    public IDisposable NotifyOnNotification(EventCallback<NotificationMessage> callback)
+    {
+        var subscription = new NotificationStateChangedSubscription(this, callback);
+        _notificationSubscriptions.Add(subscription);
+
+        return subscription;
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        _customerChangedSubscriptions.Clear();
+        _notificationSubscriptions.Clear();
+
+        return _connection.DisposeAsync();
+    }
 
     public async ValueTask StartAsync()
     {
@@ -53,8 +71,10 @@ internal sealed class CustomerHab : IAsyncDisposable
             if (!state.User.IsAuthenticated())
                 return;
 
-            _connection.On<CustomerChangedType>("Customers", async status => await OnCustomerChanged.Invoke(status));
-            _connection.On<NotificationMessage>("Messages", async message => await OnMessageReceived.Invoke(message));
+            _connection.On<CustomerChangedType>("Customers",
+                status => Task.WhenAll(_customerChangedSubscriptions.Select(s => s.NotifyAsync(status))));
+            _connection.On<NotificationMessage>("Messages",
+                message => Task.WhenAll(_notificationSubscriptions.Select(s => s.NotifyAsync(message))));
 
             await _connection.StartAsync();
         }
@@ -82,5 +102,41 @@ internal sealed class CustomerHab : IAsyncDisposable
                 4 => TimeSpan.FromMinutes(1),
                 _ => TimeSpan.FromMinutes(5)
             };
+    }
+
+    private sealed class CustomerStateChangedSubscription : IDisposable
+    {
+        private readonly EventCallback<CustomerChangedType> _callback;
+        private readonly CustomerHab _owner;
+
+        public CustomerStateChangedSubscription(CustomerHab owner, EventCallback<CustomerChangedType> callback)
+        {
+            _owner = owner;
+            _callback = callback;
+        }
+
+        public void Dispose() =>
+            _owner._customerChangedSubscriptions.Remove(this);
+
+        public Task NotifyAsync(CustomerChangedType type) =>
+            _callback.InvokeAsync(type);
+    }
+
+    private sealed class NotificationStateChangedSubscription : IDisposable
+    {
+        private readonly EventCallback<NotificationMessage> _callback;
+        private readonly CustomerHab _owner;
+
+        public NotificationStateChangedSubscription(CustomerHab owner, EventCallback<NotificationMessage> callback)
+        {
+            _owner = owner;
+            _callback = callback;
+        }
+
+        public void Dispose() =>
+            _owner._notificationSubscriptions.Remove(this);
+
+        public Task NotifyAsync(NotificationMessage message) =>
+            _callback.InvokeAsync(message);
     }
 }

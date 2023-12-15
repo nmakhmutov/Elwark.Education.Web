@@ -2,6 +2,7 @@ using Education.Web.Client.Extensions;
 using Education.Web.Client.Features.Customer.Services;
 using Education.Web.Client.Features.Customer.Services.Account;
 using Education.Web.Client.Features.Customer.Services.Account.Model;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Education.Web.Client.Shared.Customer;
@@ -13,9 +14,11 @@ internal sealed class CustomerStateProvider : IDisposable
     private readonly AuthenticationStateProvider _provider;
     private bool _isInitialized;
     private CustomerState _state;
+    private IDisposable? _subscription;
+    private readonly HashSet<StateChangedSubscription> _subscriptions = [];
 
-    public CustomerStateProvider(ICustomerService customerService, AuthenticationStateProvider provider,
-        CustomerHab hab)
+    public CustomerStateProvider(CustomerHab hab, ICustomerService customerService,
+        AuthenticationStateProvider provider)
     {
         _customerService = customerService;
         _provider = provider;
@@ -23,18 +26,25 @@ internal sealed class CustomerStateProvider : IDisposable
         _state = CustomerState.Anonymous;
     }
 
-    public void Dispose() =>
-        _hab.OnCustomerChanged -= OnCustomerChanged;
-
-    public event Action<CustomerState> OnChanged = _ =>
+    public void Dispose()
     {
-    };
+        _subscriptions.Clear();
+        _subscription?.Dispose();
+    }
+
+    public IDisposable NotifyOnChange(EventCallback<CustomerState> callback)
+    {
+        var subscription = new StateChangedSubscription(this, callback);
+        _subscriptions.Add(subscription);
+
+        return subscription;
+    }
 
     public async Task InitAsync()
     {
         if (_isInitialized)
         {
-            OnChanged.Invoke(_state);
+            await NotifyChangeSubscribersAsync(_state);
             return;
         }
 
@@ -42,7 +52,8 @@ internal sealed class CustomerStateProvider : IDisposable
         if (state.User.Identity?.IsAuthenticated == false)
             return;
 
-        _hab.OnCustomerChanged += OnCustomerChanged;
+        var callback = EventCallback.Factory.Create<CustomerChangedType>(this, OnCustomerChanged);
+        _subscription = _hab.NotifyOnCustomerChange(callback);
 
         await UpdateCustomer();
 
@@ -62,8 +73,7 @@ internal sealed class CustomerStateProvider : IDisposable
             return;
 
         _state = CustomerState.Map(customer);
-
-        OnChanged.Invoke(_state);
+        await NotifyChangeSubscribersAsync(_state);
     }
 
     private async Task<CustomerModel?> GetOrCreateCustomerAsync()
@@ -77,5 +87,26 @@ internal sealed class CustomerStateProvider : IDisposable
 
         var result = await _customerService.CreateAsync();
         return result.IsSuccess ? result.Unwrap() : null;
+    }
+
+    private Task NotifyChangeSubscribersAsync(CustomerState state) =>
+        Task.WhenAll(_subscriptions.Select(s => s.NotifyAsync(state)));
+
+    private sealed class StateChangedSubscription : IDisposable
+    {
+        private readonly EventCallback<CustomerState> _callback;
+        private readonly CustomerStateProvider _owner;
+
+        public StateChangedSubscription(CustomerStateProvider owner, EventCallback<CustomerState> callback)
+        {
+            _owner = owner;
+            _callback = callback;
+        }
+
+        public void Dispose() =>
+            _owner._subscriptions.Remove(this);
+
+        public Task NotifyAsync(CustomerState state) =>
+            _callback.InvokeAsync(state);
     }
 }

@@ -24,10 +24,10 @@
 
                 <MudSelect @bind-Value="@_isBuying" Label="@L["Exchange_Operation_Title"]" Margin="Margin.Dense" Variant="Variant.Outlined">
                     <MudSelectItem Value="true">
-                        @L["Exchange_Buying_Title"]
+                        @L["Exchange_Buy_Title"]
                     </MudSelectItem>
                     <MudSelectItem Value="false">
-                        @L["Exchange_Selling_Title"]
+                        @L["Exchange_Sell_Title"]
                     </MudSelectItem>
                 </MudSelect>
             </div>
@@ -36,6 +36,7 @@
                 <MudNumericField
                     T="uint"
                     @bind-Value="_amount"
+                    Min="1"
                     Label="@L["Exchange_Amount"]"
                     Margin="Margin.Dense"
                     Variant="Variant.Outlined"
@@ -58,8 +59,6 @@
                 }
             </div>
 
-            <MudSpacer/>
-
             <LoadingButton
                 Variant="Variant.Filled"
                 Color="Color.Primary"
@@ -75,7 +74,7 @@
 </section>
 
 @code {
-    private uint _amount;
+    private uint _amount = 1;
     private bool _isBuying = true;
     private bool _isLoading;
     private Exchange _rate = default!;

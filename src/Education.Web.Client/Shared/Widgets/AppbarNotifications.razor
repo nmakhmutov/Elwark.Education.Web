@@ -32,9 +32,9 @@
                 {
                     <MudDivider/>
 
-                    <MudMenuItem Class="px-3 py-2" Href="@notification.Href">
-                        <div class="d-flex align-center">
-                            <NotificationAvatar Class="mr-3" Subject="@notification.Subject"/>
+                    <MudMenuItem Class="pa-3" Href="@notification.Href">
+                        <div class="d-flex align-center gap-3">
+                            <NotificationAvatar Subject="@notification.Subject"/>
                             <section>
                                 <header class="d-flex align-center gap-3">
                                     <MudText Typo="Typo.subtitle2">
@@ -44,9 +44,21 @@
                                         @Customer.Humanize(notification.CreatedAt)
                                     </MudText>
                                 </header>
-                                <MudText Typo="Typo.body2">
-                                    @notification.Message
-                                </MudText>
+                                <footer class="d-flex align-center gap-3">
+                                    <MudText Typo="Typo.body1">
+                                        @notification.Message
+                                    </MudText>
+
+                                    <section class="d-flex gap-3">
+                                        @foreach (var reward in notification.Money)
+                                        {
+                                            <InternalMoney
+                                                Currency="@reward.Currency"
+                                                Amount="@reward.Amount"
+                                                Horizontal/>
+                                        }
+                                    </section>
+                                </footer>
                             </section>
                         </div>
                     </MudMenuItem>
@@ -73,6 +85,7 @@
 </MudBadge>
 
 @code {
+    private IDisposable? _subscription;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -90,17 +103,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        NotificationService.OnChanged += Update;
+        _subscription = NotificationService.NotifyOnChange(EventCallback.Factory.Create(this, StateHasChanged));
         await NotificationService.StartAsync();
     }
 
     public void Dispose() =>
-        NotificationService.OnChanged -= Update;
-
-    private ValueTask Update()
-    {
-        StateHasChanged();
-        return ValueTask.CompletedTask;
-    }
+        _subscription?.Dispose();
 
 }

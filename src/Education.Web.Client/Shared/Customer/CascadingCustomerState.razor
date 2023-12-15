@@ -4,6 +4,7 @@
 
 @code {
     private CustomerState _state = CustomerState.Anonymous;
+    private IDisposable? _subscription;
 
     [Inject]
     private CustomerStateProvider CustomerStateProvider { get; init; } = default!;
@@ -13,7 +14,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        CustomerStateProvider.OnChanged += OnStateChanged;
+        _subscription = CustomerStateProvider.NotifyOnChange(EventCallback.Factory.Create<CustomerState>(this, OnStateChanged));
         await CustomerStateProvider.InitAsync();
     }
 
@@ -24,6 +25,6 @@
     }
 
     public void Dispose() =>
-        CustomerStateProvider.OnChanged -= OnStateChanged;
+        _subscription?.Dispose();
 
 }

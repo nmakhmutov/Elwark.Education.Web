@@ -1,11 +1,13 @@
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Education.Web.Client.Features.History;
+using Education.Web.Client.Models;
 
 namespace Education.Web.Client.Features.Customer.Services.Notification.Model;
 
 public record NotificationMessage
 {
+    private readonly List<InternalMoneyModel> _money;
+    private readonly Dictionary<string, string> _payload;
+
     public NotificationMessage(
         string subject,
         string module,
@@ -19,15 +21,12 @@ public record NotificationMessage
         Module = module;
         Title = title;
         Message = message;
-        Payload = payload;
         CreatedAt = createdAt;
-        Href = (subject, module) switch
-        {
-            ("History", "Inventory") => $"{HistoryUrl.User.MyBackpack}?id={GetPayloadValue("id")}",
-            ("History", "Achievement") => $"{HistoryUrl.User.MyAchievements}?id={GetPayloadValue("id")}",
-            ("History", "Profile") => HistoryUrl.User.MyProfile,
-            _ => null
-        };
+
+        _payload = payload;
+        _money = [];
+
+        DisassemblePayload();
     }
 
     public string Subject { get; }
@@ -38,15 +37,29 @@ public record NotificationMessage
 
     public string Message { get; }
 
-    public string? Href { get; }
-
-    public Dictionary<string, string> Payload { get; }
-
     public DateTime CreatedAt { get; }
 
-    private string? GetPayloadValue(string key)
+    public string? Href { get; private set; }
+
+    public IReadOnlyCollection<InternalMoneyModel> Money =>
+        _money.AsReadOnly();
+
+    private void DisassemblePayload()
     {
-        ref var value = ref CollectionsMarshal.GetValueRefOrNullRef(Payload, key);
-        return Unsafe.IsNullRef(ref value) ? null : value;
+        string? id = null;
+
+        foreach (var (key, value) in _payload)
+            if (id is null && key.Equals("id", StringComparison.OrdinalIgnoreCase))
+                id = value;
+            else if (Enum.TryParse<InternalCurrency>(key, true, out var currency))
+                _money.Add(new InternalMoneyModel(currency, uint.Parse(value)));
+
+        Href = (Subject, Module) switch
+        {
+            ("History", "Inventory") => $"{HistoryUrl.User.MyBackpack}?id={id}",
+            ("History", "Achievement") => $"{HistoryUrl.User.MyAchievements}?id={id}",
+            ("History", "Profile") => HistoryUrl.User.MyProfile,
+            _ => null
+        };
     }
 }
