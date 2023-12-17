@@ -1,6 +1,8 @@
-@using Education.Web.Client.Features.History.Services.Order.Model
-@using Education.Web.Client.Features.History.Services.Order.Request
-@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Clients.Order.Model
+@using Education.Web.Client.Features.History.Clients.Order.Request
+@using Education.Web.Client.Features.History.Clients.Store.Model
+@using Education.Web.Client.Features.History.Clients.User.Model
+@using Education.Web.Client.Features.History.Clients.Order
 <MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
     <DialogContent>
         <section class="d-flex gap-3 gap-sm-6 mb-3 mb-sm-6">
@@ -150,7 +152,7 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryOrderService OrderService { get; init; } = default!;
+    private IHistoryOrderClient OrderClient { get; init; } = default!;
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;
@@ -186,7 +188,7 @@
             return;
 
         _status = new OrderStatusModel(Guid.Empty, "Creating");
-        var result = await OrderService.CheckoutAsync(new CheckoutRequest(Guid.NewGuid(), Product.Id, _quantity));
+        var result = await OrderClient.CheckoutAsync(new CheckoutRequest(Guid.NewGuid(), Product.Id, _quantity));
         if (result.MathError(x => _error = new Error(x.Title, x.Detail)))
             return;
 
@@ -200,7 +202,7 @@
             {
                 await Task.Delay(delay);
 
-                var status = await OrderService.GetStatus(_status.Id);
+                var status = await OrderClient.GetStatus(_status.Id);
                 status.Match(x => _status = x, e => _error = new Error(e.Title, e.Detail));
                 StateHasChanged();
 

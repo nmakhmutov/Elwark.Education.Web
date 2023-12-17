@@ -1,8 +1,8 @@
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients.Article;
+using Education.Web.Client.Features.History.Clients.Article.Model;
+using Education.Web.Client.Features.History.Clients.Article.Request;
 using Education.Web.Client.Features.History.Pages.Timeline.Components;
-using Education.Web.Client.Features.History.Services.Article;
-using Education.Web.Client.Features.History.Services.Article.Model;
-using Education.Web.Client.Features.History.Services.Article.Request;
-using Education.Web.Client.Http;
 using Education.Web.Client.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -21,7 +21,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService ArticleService { get; init; } = default!;
+    private IHistoryArticleClient ArticleClient { get; init; } = default!;
 
     [Inject]
     private IDialogService DialogService { get; init; } = default!;
@@ -35,7 +35,7 @@ public sealed partial class Page
     protected override async Task OnParametersSetAsync()
     {
         Year = NormalizeYear(Year);
-        _result = await ArticleService.GetAsync(_request with { Year = Year });
+        _result = await ArticleClient.GetAsync(_request with { Year = Year });
     }
 
     private void OnPreviousYearClick()

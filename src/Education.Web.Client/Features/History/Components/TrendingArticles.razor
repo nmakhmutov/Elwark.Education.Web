@@ -1,0 +1,80 @@
+@using Education.Web.Client.Features.History.Clients
+@using Education.Web.Client.Features.History.Clients.Article
+@using Education.Web.Client.Features.History.Clients.Article.Request
+@using Education.Web.Client.Features.History.Clients.Learner
+@using Education.Web.Client.Clients
+@implements IAsyncDisposable;
+
+<section class="grid @Class">
+    <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+        <Loading>
+            @for (var i = 0; i < 6; i++)
+            {
+                <SkeletonCard Horizontal="@IsHorizontal(i)" HideFooter="IsHiddenOverview(i)"/>
+            }
+        </Loading>
+        <ChildContent Context="articles">
+            @for (var i = 0; i < articles.Items.Length; i++)
+            {
+                <ArticleCard
+                    Article="@articles.Items[i].Article"
+                    HasQuiz="@articles.Items[i].HasQuiz"
+                    Activity="@articles.Items[i].Activity"
+                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                    Horizontal="@IsHorizontal(i)"
+                    HideOverview="@IsHiddenOverview(i)"
+                    OneLineTitle/>
+            }
+        </ChildContent>
+    </ApiViewer>
+</section>
+
+@code {
+    private Guid _subscriptionId;
+    private int _breakpoint;
+
+    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
+        ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+
+    [Inject]
+    private IBrowserViewportService ViewportService { get; init; } = default!;
+
+    [Inject]
+    private IHistoryArticleClient ArticleClient { get; init; } = default!;
+
+    [Inject]
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await ArticleClient
+            .GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 0, 6));
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return Task.CompletedTask;
+
+        _subscriptionId = Guid.NewGuid();
+        var options = new ResizeOptions { NotifyOnBreakpointOnly = true };
+        return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
+    }
+
+    private void OnBreakpointChanged(Breakpoint breakpoint)
+    {
+        _breakpoint = (int)breakpoint;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private bool IsHorizontal(int i) =>
+        _breakpoint >= (int)Breakpoint.Lg && i > 0;
+
+    private bool IsHiddenOverview(int i) =>
+        _breakpoint >= (int)Breakpoint.Lg && i > 2;
+
+    public async ValueTask DisposeAsync() =>
+        await ViewportService.UnsubscribeAsync(_subscriptionId);
+
+}

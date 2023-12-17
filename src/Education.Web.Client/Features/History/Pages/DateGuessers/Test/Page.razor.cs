@@ -1,8 +1,8 @@
+using Education.Web.Client.Clients;
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Services.DateGuesser;
-using Education.Web.Client.Features.History.Services.DateGuesser.Model;
-using Education.Web.Client.Features.History.Services.DateGuesser.Request;
-using Education.Web.Client.Http;
+using Education.Web.Client.Features.History.Clients.DateGuesser;
+using Education.Web.Client.Features.History.Clients.DateGuesser.Model;
+using Education.Web.Client.Features.History.Clients.DateGuesser.Request;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -22,7 +22,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryDateGuesserService DateGuesserService { get; init; } = default!;
+    private IHistoryDateGuesserClient DateGuesserClient { get; init; } = default!;
 
     [Inject]
     private ISnackbar Snackbar { get; init; } = default!;
@@ -41,7 +41,7 @@ public sealed partial class Page
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await DateGuesserService.GetAsync(Id);
+        _result = await DateGuesserClient.GetAsync(Id);
         _result.Match(
             x =>
             {
@@ -64,7 +64,7 @@ public sealed partial class Page
         var year = model.Year.GetValueOrDefault();
         var request = new CheckRequest(model.IsCe ? year : -year, model.Month, model.Day);
 
-        var result = await DateGuesserService.CheckAsync(Id, _question.Id, request);
+        var result = await DateGuesserClient.CheckAsync(Id, _question.Id, request);
         result.Match(
             x =>
             {

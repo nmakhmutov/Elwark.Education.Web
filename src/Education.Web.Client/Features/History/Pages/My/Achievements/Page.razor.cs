@@ -1,6 +1,6 @@
-using Education.Web.Client.Features.History.Services.User;
-using Education.Web.Client.Features.History.Services.User.Model;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients.User;
+using Education.Web.Client.Features.History.Clients.User.Model;
 using Education.Web.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -17,7 +17,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; init; } = default!;
+    private IHistoryUserClient UserClient { get; init; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
@@ -30,7 +30,7 @@ public sealed partial class Page
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await UserService.GetAchievementsAsync();
+        _result = await UserClient.GetAchievementsAsync();
         _subtitle = _result.Map(x => $"{x.Unlocked} / {x.Total}")
             .UnwrapOr(string.Empty);
     }

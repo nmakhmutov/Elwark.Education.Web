@@ -1,8 +1,8 @@
-using Education.Web.Client.Features.History.Services;
-using Education.Web.Client.Features.History.Services.Course;
-using Education.Web.Client.Features.History.Services.Course.Request;
-using Education.Web.Client.Features.History.Services.Learner;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients;
+using Education.Web.Client.Features.History.Clients.Course;
+using Education.Web.Client.Features.History.Clients.Course.Request;
+using Education.Web.Client.Features.History.Clients.Learner;
 using Education.Web.Client.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -23,10 +23,10 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryCourseService CourseService { get; init; } = default!;
+    private IHistoryCourseClient CourseClient { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; init; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
@@ -56,7 +56,7 @@ public sealed partial class Page
 
         Enum.TryParse(Category, true, out _sort);
 
-        _result = await CourseService
+        _result = await CourseClient
             .GetAsync(new GetCourseRequest(_sort, (CurrentPage - 1) * Limit, Limit));
     }
 

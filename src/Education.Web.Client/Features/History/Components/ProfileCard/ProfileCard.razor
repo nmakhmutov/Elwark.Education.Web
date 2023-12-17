@@ -1,4 +1,5 @@
-@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Clients.User
+@using Education.Web.Client.Features.History.Clients.User.Model
 @using Education.Web.Client.Features.Customer
 <section class="mud-paper @Class">
     <header class="d-flex align-center pa-3 pa-sm-6">
@@ -46,7 +47,7 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; init; } = default!;
+    private IHistoryUserClient UserClient { get; init; } = default!;
 
     [Inject]
     private IDialogService DialogService { get; init; } = default!;

@@ -1,5 +1,7 @@
-@using Education.Web.Client.Features.History.Services.Learner
-@using Education.Web.Client.Features.History.Services.Learner.Request
+@using Education.Web.Client.Features.History.Clients
+@using Education.Web.Client.Features.History.Clients.Learner
+@using Education.Web.Client.Features.History.Clients.Learner.Request
+@using Education.Web.Client.Clients
 @if (_isEmpty)
 {
     <NoContent Class="mt-6 mt-sm-12" Title="@L["Bookmarks_NoCourses"]" Icon="@EduIcons.Bookmarks"/>
@@ -51,7 +53,7 @@ else
                     <BookmarkButton
                         Id="@item.Course.Id"
                         IsBookmarked="@(item.Activity?.IsBookmarked ?? false)"
-                        OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"/>
+                        OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
                 </div>
             </div>
         </ItemContent>
@@ -65,7 +67,7 @@ else
     private readonly HashSet<UserCourseOverviewModel> _items = new();
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; init; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -96,7 +98,7 @@ else
         if (isRangeAvailable || request.Count == 0)
             return new ItemsProviderResult<UserCourseOverviewModel>(items, GetLength());
 
-        return (await LearnerService.GetCourseBookmarksAsync(new BookmarksRequest(Sort, request.Count, _token)))
+        return (await LearnerClient.GetCourseBookmarksAsync(new BookmarksRequest(Sort, request.Count, _token)))
             .Map(x =>
             {
                 _token = x.Next;

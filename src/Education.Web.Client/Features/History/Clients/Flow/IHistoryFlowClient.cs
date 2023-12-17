@@ -1,0 +1,17 @@
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients.Flow.Model;
+using Education.Web.Client.Models;
+using Education.Web.Client.Models.Test;
+
+namespace Education.Web.Client.Features.History.Clients.Flow;
+
+public interface IHistoryFlowClient
+{
+    public Task<ApiResult<FlowModel>> GetAsync();
+
+    public Task<ApiResult<FlowModel>> StartAsync();
+
+    public Task<ApiResult<FlowAnswerModel>> CheckAsync(string questionId, UserAnswerModel answer);
+
+    public Task<ApiResult<Unit>> CollectBankAsync();
+}

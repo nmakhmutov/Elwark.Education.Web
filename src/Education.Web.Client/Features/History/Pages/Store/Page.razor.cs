@@ -1,7 +1,7 @@
+using Education.Web.Client.Features.History.Clients.Store.Model;
+using Education.Web.Client.Features.History.Clients.User;
+using Education.Web.Client.Features.History.Clients.User.Model;
 using Education.Web.Client.Features.History.Pages.Store.Components;
-using Education.Web.Client.Features.History.Services.Store.Model;
-using Education.Web.Client.Features.History.Services.User;
-using Education.Web.Client.Features.History.Services.User.Model;
 using Education.Web.Client.Models.Inventory;
 using Education.Web.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
@@ -18,7 +18,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; init; } = default!;
+    private IHistoryUserClient UserClient { get; init; } = default!;
 
     [CascadingParameter]
     public CustomerState Customer { get; init; } = default!;
@@ -36,7 +36,7 @@ public sealed partial class Page
         UpdateProfileAsync();
 
     private async Task UpdateProfileAsync() =>
-        _profile = (await UserService.GetProfileAsync())
+        _profile = (await UserClient.GetProfileAsync())
             .Map(x => x)
             .UnwrapOrElse(() => _profile);
 

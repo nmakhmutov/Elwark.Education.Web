@@ -1,5 +1,6 @@
-@using Education.Web.Client.Features.History.Services.Store.Model
-@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Clients.Store.Model
+@using Education.Web.Client.Features.History.Clients.User.Model
+@using Education.Web.Client.Features.History.Clients.Store
 <MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
     <DialogContent>
         <div class="d-flex justify-space-between align-center gap-3 gap-sm-6">
@@ -50,7 +51,7 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryStoreService StoreService { get; init; } = default!;
+    private IHistoryStoreClient StoreClient { get; init; } = default!;
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;
@@ -62,6 +63,6 @@
     public required UserLevelModel Level { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _result = await StoreService.GetUpcomingInventoriesAsync();
+        _result = await StoreClient.GetUpcomingInventoriesAsync();
 
 }

@@ -1,5 +1,8 @@
-@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Clients.Store.Model
+@using Education.Web.Client.Features.History.Clients.User.Model
+@using Education.Web.Client.Features.History.Clients.Store
 @using Education.Web.Client.Models.Inventory
+@using Education.Web.Client.Clients
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <ChildContent Context="bundles">
         <ProductsGrid Products="@ApplyFilter(bundles)">
@@ -33,7 +36,7 @@
     private ApiResult<Product.BundleModel[]> _result = ApiResult<Product.BundleModel[]>.Loading();
 
     [Inject]
-    private IHistoryStoreService StoreService { get; init; } = default!;
+    private IHistoryStoreClient StoreClient { get; init; } = default!;
 
     [Inject]
     private IDialogService DialogService { get; init; } = default!;
@@ -54,7 +57,7 @@
     public EventCallback<Product.BundleModel> OnProductPurchased { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _result = await StoreService.GetBundlesAsync();
+        _result = await StoreClient.GetBundlesAsync();
 
     private async Task OpenPurchaseDialog(Product.BundleModel product)
     {

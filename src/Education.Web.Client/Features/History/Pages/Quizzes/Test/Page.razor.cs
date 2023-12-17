@@ -1,7 +1,7 @@
+using Education.Web.Client.Clients;
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Services.Quiz;
-using Education.Web.Client.Features.History.Services.Quiz.Model;
-using Education.Web.Client.Http;
+using Education.Web.Client.Features.History.Clients.Quiz;
+using Education.Web.Client.Features.History.Clients.Quiz.Model;
 using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -18,7 +18,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryQuizService QuizService { get; init; } = default!;
+    private IHistoryQuizClient QuizClient { get; init; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
@@ -34,7 +34,7 @@ public sealed partial class Page
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await QuizService.GetAsync(Id);
+        _result = await QuizClient.GetAsync(Id);
         _result.MathError(e =>
         {
             if (e.IsQuizAlreadyCompleted() || e.IsQuizNotFound() || e.IsQuizExpired())
@@ -44,14 +44,14 @@ public sealed partial class Page
 
     private async Task OnExpiredAsync()
     {
-        _result = await QuizService.GetAsync(Id);
+        _result = await QuizClient.GetAsync(Id);
         _result.MathError(_ => Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id)));
     }
 
     private async Task OnAnswerAsync(UserAnswerModel answer)
     {
         var quiz = _result.Unwrap();
-        (await QuizService.CheckAsync(quiz.Id, quiz.Question.Id, answer))
+        (await QuizClient.CheckAsync(quiz.Id, quiz.Question.Id, answer))
             .Match(
                 x =>
                 {
@@ -84,14 +84,14 @@ public sealed partial class Page
         }
 
         _correctAnswer = null;
-        _result = await QuizService.GetAsync(Id);
+        _result = await QuizClient.GetAsync(Id);
 
         StateHasChanged();
     }
 
     private async Task OnUseInventory(uint id)
     {
-        _result = await QuizService.ApplyInventoryAsync(Id, id);
+        _result = await QuizClient.ApplyInventoryAsync(Id, id);
         _result.MathError(e => Snackbar.Add(e.Detail, Severity.Error));
     }
 }

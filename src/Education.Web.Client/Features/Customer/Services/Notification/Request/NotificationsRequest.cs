@@ -1,4 +1,4 @@
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
 
 namespace Education.Web.Client.Features.Customer.Services.Notification.Request;
 

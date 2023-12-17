@@ -1,4 +1,6 @@
-@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Clients.User.Model
+@using Education.Web.Client.Features.History.Clients.User
+@using Education.Web.Client.Clients
 <ApiViewer Result="@_backpack" OnReloadClick="@OnInitializedAsync">
     <Loading>
         <MudSkeleton SkeletonType="SkeletonType.Text" Width="60%"/>
@@ -22,12 +24,12 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryUserService UserService { get; init; } = default!;
+    private IHistoryUserClient UserClient { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public uint InventoryId { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _backpack = await UserService.GetInventoryAsync(InventoryId);
+        _backpack = await UserClient.GetInventoryAsync(InventoryId);
 
 }

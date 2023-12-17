@@ -9,7 +9,7 @@ namespace Education.Web.Client.Shared.Customer;
 
 internal sealed class CustomerStateProvider : IDisposable
 {
-    private readonly ICustomerService _customerService;
+    private readonly IAccountClient _accountClient;
     private readonly CustomerHab _hab;
     private readonly AuthenticationStateProvider _provider;
     private readonly HashSet<StateChangedSubscription> _subscriptions = [];
@@ -17,10 +17,10 @@ internal sealed class CustomerStateProvider : IDisposable
     private CustomerState _state;
     private IDisposable? _subscription;
 
-    public CustomerStateProvider(CustomerHab hab, ICustomerService customerService,
+    public CustomerStateProvider(CustomerHab hab, IAccountClient accountClient,
         AuthenticationStateProvider provider)
     {
-        _customerService = customerService;
+        _accountClient = accountClient;
         _provider = provider;
         _hab = hab;
         _state = CustomerState.Anonymous;
@@ -60,10 +60,12 @@ internal sealed class CustomerStateProvider : IDisposable
         _isInitialized = true;
     }
 
-    private async ValueTask OnCustomerChanged(CustomerChangedType status)
+    private Task OnCustomerChanged(CustomerChangedType status)
     {
         if (status == CustomerChangedType.Updated)
-            await UpdateCustomer();
+            return UpdateCustomer();
+
+        return Task.CompletedTask;
     }
 
     private async Task UpdateCustomer()
@@ -78,14 +80,14 @@ internal sealed class CustomerStateProvider : IDisposable
 
     private async Task<CustomerModel?> GetOrCreateCustomerAsync()
     {
-        var customer = await _customerService.GetAsync();
+        var customer = await _accountClient.GetAsync();
         if (customer.IsSuccess)
             return customer.Unwrap();
 
         if (!customer.UnwrapError().IsUserNotFound())
             return null;
 
-        var result = await _customerService.CreateAsync();
+        var result = await _accountClient.CreateAsync();
         return result.IsSuccess ? result.Unwrap() : null;
     }
 

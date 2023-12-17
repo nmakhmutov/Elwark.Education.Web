@@ -1,6 +1,6 @@
-using Education.Web.Client.Features.History.Services.Learner;
-using Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients.Learner;
+using Education.Web.Client.Features.History.Clients.Learner.Model.DateGuesser;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -16,7 +16,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; init; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
@@ -31,9 +31,9 @@ public sealed partial class Page
     protected override async Task OnParametersSetAsync() =>
         (_title, _result) = Test.ToLowerInvariant() switch
         {
-            "small" => (L["History_DateGuessers_Small"], await LearnerService.GetSmallDateGuesserStatisticsAsync()),
-            "medium" => (L["History_DateGuessers_Medium"], await LearnerService.GetMediumDateGuesserStatisticsAsync()),
-            "large" => (L["History_DateGuessers_Large"], await LearnerService.GetLargeDateGuesserStatisticsAsync()),
+            "small" => (L["History_DateGuessers_Small"], await LearnerClient.GetSmallDateGuesserStatisticsAsync()),
+            "medium" => (L["History_DateGuessers_Medium"], await LearnerClient.GetMediumDateGuesserStatisticsAsync()),
+            "large" => (L["History_DateGuessers_Large"], await LearnerClient.GetLargeDateGuesserStatisticsAsync()),
             _ => (L["Error_NotFound"],
                 ApiResult<DateGuesserStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404)))
         };

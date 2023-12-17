@@ -1,7 +1,7 @@
+using Education.Web.Client.Clients;
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Services.DateGuesser;
-using Education.Web.Client.Features.History.Services.DateGuesser.Model;
-using Education.Web.Client.Http;
+using Education.Web.Client.Features.History.Clients.DateGuesser;
+using Education.Web.Client.Features.History.Clients.DateGuesser.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -16,7 +16,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryDateGuesserService DateGuesserService { get; init; } = default!;
+    private IHistoryDateGuesserClient DateGuesserClient { get; init; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
@@ -26,7 +26,7 @@ public sealed partial class Page
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await DateGuesserService.GetConclusionAsync(Id);
+        _result = await DateGuesserClient.GetConclusionAsync(Id);
         _result.Match(
             x => _progress = Math.Round((double)x.Score.Total / x.MaxScore * 100),
             e =>

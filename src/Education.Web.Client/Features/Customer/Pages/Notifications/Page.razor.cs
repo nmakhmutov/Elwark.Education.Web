@@ -1,7 +1,7 @@
+using Education.Web.Client.Clients;
 using Education.Web.Client.Features.Customer.Services.Notification;
 using Education.Web.Client.Features.Customer.Services.Notification.Model;
 using Education.Web.Client.Features.Customer.Services.Notification.Request;
-using Education.Web.Client.Http;
 using Education.Web.Client.Models;
 using Education.Web.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;

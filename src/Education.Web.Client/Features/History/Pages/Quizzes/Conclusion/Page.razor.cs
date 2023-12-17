@@ -1,7 +1,7 @@
+using Education.Web.Client.Clients;
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Services.Quiz;
-using Education.Web.Client.Features.History.Services.Quiz.Model;
-using Education.Web.Client.Http;
+using Education.Web.Client.Features.History.Clients.Quiz;
+using Education.Web.Client.Features.History.Clients.Quiz.Model;
 using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -14,7 +14,7 @@ public sealed partial class Page
     private ApiResult<QuizConclusionModel> _result = ApiResult<QuizConclusionModel>.Loading();
 
     [Inject]
-    private IHistoryQuizService QuizService { get; init; } = default!;
+    private IHistoryQuizClient QuizClient { get; init; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -27,7 +27,7 @@ public sealed partial class Page
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = await QuizService.GetConclusionAsync(Id);
+        _result = await QuizClient.GetConclusionAsync(Id);
 
         if (_result.Is(x => x.IsQuizNotFound()))
             Navigation.NavigateTo(HistoryUrl.Quiz.Index());

@@ -1,5 +1,6 @@
-@using Education.Web.Client.Features.History.Services.Exchange
-@using Education.Web.Client.Features.History.Services.Exchange.Requests
+@using Education.Web.Client.Features.History.Clients.Exchange
+@using Education.Web.Client.Features.History.Clients.Exchange.Requests
+@using Education.Web.Client.Clients
 <section class="mud-paper d-flex flex-column gap-3 gap-sm-6 pa-3 pa-sm-6 @Class">
     <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
         <Loading>
@@ -83,7 +84,7 @@
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryExchangeService ExchangeService { get; init; } = default!;
+    private IHistoryExchangeClient ExchangeClient { get; init; } = default!;
 
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
@@ -102,7 +103,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await ExchangeService.GetRatesAsync();
+        var result = await ExchangeClient.GetRatesAsync();
         _result = result.Map(rates =>
         {
             var data = rates.Where(x => x.ConversionFactor == 1)
@@ -141,7 +142,7 @@
 
         try
         {
-            var result = await ExchangeService.ExchangeAsync(new ExchangeRequest(from, to, amount));
+            var result = await ExchangeClient.ExchangeAsync(new ExchangeRequest(from, to, amount));
 
             await result.MatchAsync(_ => OnExchanged.InvokeAsync(), e => Snackbar.Add(e.Detail, Severity.Error));
         }

@@ -1,3 +1,7 @@
+@using Education.Web.Client.Features.History.Clients
+@using Education.Web.Client.Features.History.Clients.Article
+@using Education.Web.Client.Features.History.Clients.Article.Request
+@using Education.Web.Client.Clients
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <Loading>
         <div class="grid @Class">
@@ -56,7 +60,7 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService HistoryArticleService { get; init; } = default!;
+    private IHistoryArticleClient ArticleClient { get; init; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
@@ -64,7 +68,7 @@
     protected override async Task OnInitializedAsync()
     {
         var request = new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 10, 1);
-        _result = (await HistoryArticleService.GetAsync(request))
+        _result = (await ArticleClient.GetAsync(request))
             .Map(x => x.Items.First());
     }
 

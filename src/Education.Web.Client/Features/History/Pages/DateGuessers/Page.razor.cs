@@ -1,10 +1,10 @@
 using Blazored.LocalStorage;
+using Education.Web.Client.Clients;
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Services;
-using Education.Web.Client.Features.History.Services.DateGuesser;
-using Education.Web.Client.Features.History.Services.DateGuesser.Model;
-using Education.Web.Client.Features.History.Services.DateGuesser.Request;
-using Education.Web.Client.Http;
+using Education.Web.Client.Features.History.Clients;
+using Education.Web.Client.Features.History.Clients.DateGuesser;
+using Education.Web.Client.Features.History.Clients.DateGuesser.Model;
+using Education.Web.Client.Features.History.Clients.DateGuesser.Request;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -21,7 +21,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryDateGuesserService DateGuesserService { get; init; } = default!;
+    private IHistoryDateGuesserClient DateGuesserClient { get; init; } = default!;
 
     [Inject]
     private ISnackbar Snackbar { get; init; } = default!;
@@ -41,7 +41,7 @@ public sealed partial class Page
     protected override async Task OnInitializedAsync()
     {
         _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.DateGuesserSettings) ?? _settings;
-        _result = await DateGuesserService.GetAsync();
+        _result = await DateGuesserClient.GetAsync();
 
         await _result.MatchAsync(
             model => model.Tests.Any(x => x.IsAllowed && x.Type == _settings.Type)
@@ -63,7 +63,7 @@ public sealed partial class Page
         _isLoading = true;
 
         var request = new CreateRequest(_settings.Type.Value, _settings.Epoch);
-        (await DateGuesserService.CreateAsync(request))
+        (await DateGuesserClient.CreateAsync(request))
             .Match(
                 x => Navigation.NavigateTo(HistoryUrl.DateGuesser.Test(x.Id)),
                 e => Snackbar.Add(e.Detail, Severity.Error)

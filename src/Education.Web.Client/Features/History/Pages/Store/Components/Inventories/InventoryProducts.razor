@@ -1,5 +1,8 @@
-@using Education.Web.Client.Features.History.Services.User.Model
+@using Education.Web.Client.Features.History.Clients.Store.Model
+@using Education.Web.Client.Features.History.Clients.User.Model
+@using Education.Web.Client.Features.History.Clients.Store
 @using Education.Web.Client.Models.Inventory
+@using Education.Web.Client.Clients
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <ChildContent Context="inventories">
         <ProductsGrid Products="@ApplyFilter(inventories)">
@@ -52,7 +55,7 @@
     private ApiResult<Product.InventoryModel[]> _result = ApiResult<Product.InventoryModel[]>.Loading();
 
     [Inject]
-    private IHistoryStoreService StoreService { get; init; } = default!;
+    private IHistoryStoreClient StoreClient { get; init; } = default!;
 
     [Inject]
     private IDialogService DialogService { get; init; } = default!;
@@ -73,7 +76,7 @@
     public EventCallback<Product.InventoryModel> OnProductPurchased { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _result = await StoreService.GetInventoriesAsync();
+        _result = await StoreClient.GetInventoriesAsync();
 
     private Product.InventoryModel[] ApplyFilter(IEnumerable<Product.InventoryModel> source)
     {

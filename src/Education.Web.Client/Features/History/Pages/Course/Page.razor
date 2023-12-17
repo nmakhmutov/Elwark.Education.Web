@@ -20,9 +20,9 @@
             HasExaminations="@(model.HasEasyExamination || model.HasHardExamination)"
             ArticleCount="@model.Course.Articles.Length"
             Activity="@model.Activity"
-            OnLikeClick="@LearnerService.LikeCourseAsync"
-            OnDislikeClick="@LearnerService.DislikeCourseAsync"
-            OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"
+            OnLikeClick="@LearnerClient.LikeCourseAsync"
+            OnDislikeClick="@LearnerClient.DislikeCourseAsync"
+            OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"
             OnStartClick="@StartCourseAsync"/>
 
         <section class="content">
@@ -37,7 +37,7 @@
                         Article="@article"
                         HasQuiz="@hasQuiz"
                         Activity="@activity"
-                        OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
+                        OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
                         Horizontal/>
                 }
             </div>

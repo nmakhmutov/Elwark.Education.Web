@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
 
 namespace Education.Web.Client.Extensions;
 

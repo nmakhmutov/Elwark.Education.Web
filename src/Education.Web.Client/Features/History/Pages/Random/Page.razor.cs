@@ -1,8 +1,8 @@
-using Education.Web.Client.Features.History.Services;
-using Education.Web.Client.Features.History.Services.Article;
-using Education.Web.Client.Features.History.Services.Course;
-using Education.Web.Client.Features.History.Services.Learner;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients;
+using Education.Web.Client.Features.History.Clients.Article;
+using Education.Web.Client.Features.History.Clients.Course;
+using Education.Web.Client.Features.History.Clients.Learner;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -17,13 +17,13 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService ArticleService { get; init; } = default!;
+    private IHistoryArticleClient ArticleClient { get; init; } = default!;
 
     [Inject]
-    private IHistoryCourseService CourseService { get; init; } = default!;
+    private IHistoryCourseClient CourseClient { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; init; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     protected override Task OnInitializedAsync() =>
         SearchAsync();
@@ -41,8 +41,8 @@ public sealed partial class Page
 
     private async Task SearchAsync() =>
         _result = System.Random.Shared.Next(0, 2) % 2 == 0
-            ? (await ArticleService.GetRandomAsync()).Map(x => OneOf.Create(x))
-            : (await CourseService.GetRandomAsync()).Map(x => OneOf.Create(x));
+            ? (await ArticleClient.GetRandomAsync()).Map(x => OneOf.Create(x))
+            : (await CourseClient.GetRandomAsync()).Map(x => OneOf.Create(x));
 }
 
 public sealed record OneOf(UserArticleOverviewModel? Article, UserCourseOverviewModel? Course)

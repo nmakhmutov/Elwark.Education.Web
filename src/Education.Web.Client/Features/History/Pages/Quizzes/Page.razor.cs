@@ -1,11 +1,11 @@
 using Blazored.LocalStorage;
+using Education.Web.Client.Clients;
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Services;
-using Education.Web.Client.Features.History.Services.Quiz;
-using Education.Web.Client.Features.History.Services.Quiz.Model;
-using Education.Web.Client.Features.History.Services.Quiz.Request;
+using Education.Web.Client.Features.History.Clients;
+using Education.Web.Client.Features.History.Clients.Quiz;
+using Education.Web.Client.Features.History.Clients.Quiz.Model;
+using Education.Web.Client.Features.History.Clients.Quiz.Request;
 using Education.Web.Client.Features.History.Settings;
-using Education.Web.Client.Http;
 using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -23,7 +23,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryQuizService QuizService { get; init; } = default!;
+    private IHistoryQuizClient QuizClient { get; init; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
@@ -43,8 +43,8 @@ public sealed partial class Page
     protected override async Task OnInitializedAsync()
     {
         _settings = await Storage.GetItemAsync<QuizSettings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
-        _result = await QuizService.GetTestBuilderAsync();
-        
+        _result = await QuizClient.GetTestBuilderAsync();
+
         await _result.MatchAsync(x =>
             {
                 if (x.Quizzes.Any(e => e.IsAllowed && e.Type == _settings.Difficulty))
@@ -71,7 +71,7 @@ public sealed partial class Page
 
         _isLoading = true;
 
-        (await QuizService.CreateAsync(new CreateQuizRequest(_settings.Difficulty.Value, _settings.Epoch)))
+        (await QuizClient.CreateAsync(new CreateQuizRequest(_settings.Difficulty.Value, _settings.Epoch)))
             .Match(
                 x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Id)),
                 e => Snackbar.Add(e.Detail, Severity.Error)

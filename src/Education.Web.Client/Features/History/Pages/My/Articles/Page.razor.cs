@@ -1,6 +1,6 @@
-using Education.Web.Client.Features.History.Services.Learner;
-using Education.Web.Client.Features.History.Services.Learner.Model;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients.Learner;
+using Education.Web.Client.Features.History.Clients.Learner.Model;
 using Education.Web.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -15,7 +15,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; init; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
@@ -24,5 +24,5 @@ public sealed partial class Page
     public required string Id { get; set; }
 
     protected override async Task OnParametersSetAsync() =>
-        _result = await LearnerService.GetArticlesAsync(Id);
+        _result = await LearnerClient.GetArticlesAsync(Id);
 }

@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Education.Web.Client.Http;
-using Education.Web.Client.Http.JsonConverters;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Clients.JsonConverters;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 

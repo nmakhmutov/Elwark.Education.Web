@@ -1,11 +1,11 @@
 using Blazored.LocalStorage;
+using Education.Web.Client.Clients;
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Services.Article;
-using Education.Web.Client.Features.History.Services.Article.Model;
-using Education.Web.Client.Features.History.Services.Article.Request;
-using Education.Web.Client.Features.History.Services.Learner;
+using Education.Web.Client.Features.History.Clients.Article;
+using Education.Web.Client.Features.History.Clients.Article.Model;
+using Education.Web.Client.Features.History.Clients.Article.Request;
+using Education.Web.Client.Features.History.Clients.Learner;
 using Education.Web.Client.Features.History.Settings;
-using Education.Web.Client.Http;
 using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -23,10 +23,10 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryArticleService ArticleService { get; set; } = default!;
+    private IHistoryArticleClient ArticleClient { get; set; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; set; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
@@ -50,8 +50,8 @@ public sealed partial class Page
     protected override async Task OnInitializedAsync()
     {
         _settings = await Storage.GetItemAsync<QuizSettings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
-        _result = await ArticleService.GetQuizBuilderAsync(Id);
-        
+        _result = await ArticleClient.GetQuizBuilderAsync(Id);
+
         await _result.MatchAsync(x =>
             {
                 if (x.Quizzes.Any(e => e.IsAllowed && e.Type == _settings.Difficulty))
@@ -79,7 +79,7 @@ public sealed partial class Page
 
         _isLoading = true;
 
-        var quiz = await ArticleService.CreateQuizAsync(Id, new CreateQuizRequest(_settings.Difficulty.Value));
+        var quiz = await ArticleClient.CreateQuizAsync(Id, new CreateQuizRequest(_settings.Difficulty.Value));
         quiz.Match(
             x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Id)),
             e => Snackbar.Add(e.Detail, Severity.Error)

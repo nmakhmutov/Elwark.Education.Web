@@ -1,5 +1,4 @@
 @page "/account"
-@using Education.Web.Client.Features.Customer.Services.Account.Model
 @using Education.Web.Client.Features.History
 @using Education.Web.Client.Features.Customer.Services.Account
 @layout MainLayout
@@ -52,11 +51,11 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private ICustomerService CustomerService { get; init; } = default!;
+    private IAccountClient AccountClient { get; init; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await CustomerService.GetSubjectsAsync();
+        _response = await AccountClient.GetSubjectsAsync();
         _subjects = _response.Map(subjects => subjects.Select(x => Enhance(x)).Where(x => x is not null).ToArray())
             .UnwrapOrElse(() => [])!;
     }

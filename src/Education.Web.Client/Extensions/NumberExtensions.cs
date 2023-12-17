@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Education.Web.Client.Extensions;
 
-public static class NumberExtensions
+internal static class NumberExtensions
 {
     private static readonly char[] Prefixes = { 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y' };
 

@@ -1,0 +1,27 @@
+@inherits LayoutComponentBase
+
+<CascadingTheme>
+    <MudLayout Class="d-flex flex-column min-vh-100">
+        <HistoryDrawer @bind-Open="@_isOpen"/>
+
+        <HistoryAppBar OnDrawerClick="@ToggleDrawer"/>
+
+        <main class="d-flex flex-column flex-grow-1 mud-main-content">
+            @Body
+        </main>
+
+        <HistoryFooter/>
+
+        <MudScrollToTop>
+            <MudFab Icon="@Icons.Material.Outlined.KeyboardArrowUp" Color="Color.Primary"/>
+        </MudScrollToTop>
+    </MudLayout>
+</CascadingTheme>
+
+@code {
+    private bool _isOpen;
+
+    private void ToggleDrawer() =>
+        _isOpen = !_isOpen;
+
+}

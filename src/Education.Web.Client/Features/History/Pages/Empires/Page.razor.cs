@@ -1,6 +1,6 @@
-using Education.Web.Client.Features.History.Services.Article;
-using Education.Web.Client.Features.History.Services.Article.Model;
-using Education.Web.Client.Features.History.Services.Article.Request;
+using Education.Web.Client.Features.History.Clients.Article;
+using Education.Web.Client.Features.History.Clients.Article.Model;
+using Education.Web.Client.Features.History.Clients.Article.Request;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.Extensions.Localization;
@@ -26,7 +26,7 @@ public sealed partial class Page
     private IBrowserViewportService ViewportService { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService ArticleService { get; init; } = default!;
+    private IHistoryArticleClient ArticleClient { get; init; } = default!;
 
     [SupplyParameterFromQuery(Name = "by")]
     public string? Sort { get; set; }
@@ -71,7 +71,7 @@ public sealed partial class Page
 
     private async ValueTask<ItemsProviderResult<EmpireOverviewModel>> EmpiresProvider(ItemsProviderRequest request)
     {
-        var result = await ArticleService.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex, request.Count));
+        var result = await ArticleClient.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex, request.Count));
 
         return result.Map(x => new ItemsProviderResult<EmpireOverviewModel>(x.Items, (int)x.Count))
             .UnwrapOr(new ItemsProviderResult<EmpireOverviewModel>());

@@ -18,9 +18,9 @@
             <ShortAnswerForm
                 IsLoading="@_checking"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.ShortModel)"
-                OnAnswerClick="@OnAnswer"
+                OnAnswerClick="@AnswerNextAsync"
                 OnNextTitle="@OnNextTitle"
-                OnNextClick="@OnNext"/>
+                OnNextClick="@NextAsync"/>
             break;
         }
 
@@ -30,9 +30,9 @@
                 IsLoading="@_checking"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.SingleModel)"
                 Options="@question.Options"
-                OnAnswerClick="@OnAnswer"
+                OnAnswerClick="@AnswerNextAsync"
                 OnNextTitle="@OnNextTitle"
-                OnNextClick="@OnNext"/>
+                OnNextClick="@NextAsync"/>
             break;
         }
 
@@ -42,9 +42,9 @@
                 IsLoading="@_checking"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.MultipleModel)"
                 Options="@question.Options"
-                OnAnswerClick="@OnAnswer"
+                OnAnswerClick="@AnswerNextAsync"
                 OnNextTitle="@OnNextTitle"
-                OnNextClick="@OnNext"/>
+                OnNextClick="@NextAsync"/>
             break;
         }
 
@@ -53,9 +53,9 @@
                 IsLoading="@_checking"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.OrderedModel)"
                 Options="@question.Options"
-                OnAnswerClick="@OnAnswer"
+                OnAnswerClick="@AnswerNextAsync"
                 OnNextTitle="@OnNextTitle"
-                OnNextClick="@OnNext"/>
+                OnNextClick="@NextAsync"/>
             break;
     }
 </section>
@@ -84,7 +84,7 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private async Task OnAnswer(UserAnswerModel answer)
+    private async Task AnswerNextAsync(UserAnswerModel answer)
     {
         _checking = true;
         await OnAnswerClick.InvokeAsync(answer);
@@ -92,7 +92,7 @@
         _checking = false;
     }
 
-    private async Task OnNext()
+    private async Task NextAsync()
     {
         _checking = true;
         await OnNextClick.InvokeAsync();

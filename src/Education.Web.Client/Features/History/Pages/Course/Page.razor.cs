@@ -1,7 +1,7 @@
-using Education.Web.Client.Features.History.Services.Course;
-using Education.Web.Client.Features.History.Services.Course.Model;
-using Education.Web.Client.Features.History.Services.Learner;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients.Course;
+using Education.Web.Client.Features.History.Clients.Course.Model;
+using Education.Web.Client.Features.History.Clients.Learner;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -12,10 +12,10 @@ public sealed partial class Page
     private ApiResult<UserCourseDetailModel> _result = ApiResult<UserCourseDetailModel>.Loading();
 
     [Inject]
-    private IHistoryCourseService CourseService { get; init; } = default!;
+    private IHistoryCourseClient CourseClient { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; init; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -24,9 +24,9 @@ public sealed partial class Page
     public string Id { get; set; } = string.Empty;
 
     protected override async Task OnParametersSetAsync() =>
-        _result = await CourseService.GetAsync(Id);
+        _result = await CourseClient.GetAsync(Id);
 
     private async Task StartCourseAsync(string id) =>
-        _result = (await LearnerService.StartCourseAsync(id))
+        _result = (await LearnerClient.StartCourseAsync(id))
             .Map(x => _result.Unwrap() with { Activity = x });
 }

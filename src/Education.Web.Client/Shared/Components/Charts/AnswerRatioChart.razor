@@ -1,17 +1,14 @@
 @using ApexCharts
-@using Education.Web.Client.Features.History.Services.Learner.Model.Quiz
+@using Education.Web.Client.Features.History.Clients.Learner.Model.Quiz
 <div class="@Class">
-    @if (Value.Questions > 0)
-    {
-        <ApexChart TItem="Data" Options="@Options">
-            <ApexRangeSeries
-                TItem="Data"
-                Items="@Series"
-                XValue="@(x => x.Name)"
-                YValue="@(x => x.Value)"
-                PointColor="@(x => x.Color)"/>
-        </ApexChart>
-    }
+    <ApexChart TItem="Data" Options="@Options">
+        <ApexRangeSeries
+            TItem="Data"
+            Items="@Series"
+            XValue="@(x => x.Name)"
+            YValue="@(x => x.Value)"
+            PointColor="@(x => x.Color)"/>
+    </ApexChart>
 
     <ChartList Items="@Items"/>
 </div>

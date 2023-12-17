@@ -1,0 +1,109 @@
+@using Education.Web.Client.Features.History.Clients.Search.Model
+@using Education.Web.Client.Features.History.Clients.Search.Request
+@using Education.Web.Client.Features.History.Clients.Search
+<MudAppBar Elevation="0">
+    <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@OnDrawerClick"/>
+
+    <MudLink Class="d-none d-sm-block" Href="@HistoryUrl.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+        @L["History_Title"] <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
+    </MudLink>
+
+    <MudSpacer/>
+
+    <div class="w-sm-33 w-md-50">
+        <MudAutocomplete
+            T="SearchModel"
+            @ref="@_searchAutocomplete"
+            DebounceInterval="300"
+            AdornmentIcon="@Icons.Material.Outlined.Search"
+            Placeholder="@L["Search_Title"]"
+            IconSize="Size.Small"
+            Margin="Margin.Dense"
+            Variant="Variant.Outlined"
+            Adornment="Adornment.Start"
+            SearchFuncWithCancel="OnSearch"
+            ValueChanged="OnSearchResult"
+            TextChanged="OnTextChanged"
+            ResetValueOnEmptyText
+            ShowProgressIndicator
+            Clearable
+            Dense>
+            <ItemTemplate Context="result">
+                <div class="d-flex align-center">
+                    <MudAvatar Image="@result.ImageUrl" Size="Size.Large" Square Class="mr-3"/>
+                    <div class="one-line-text">
+                        <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                            @result.Category
+                        </MudText>
+                        <MudText Typo="Typo.body1">
+                            @result.Title
+                        </MudText>
+                        <MudText Typo="Typo.caption">
+                            @result.Overview
+                        </MudText>
+                    </div>
+                </div>
+            </ItemTemplate>
+            <MoreItemsTemplate>
+                <MudLink Class="px-3" OnClick="@OnSearchMore">
+                    More results
+                </MudLink>
+            </MoreItemsTemplate>
+        </MudAutocomplete>
+    </div>
+
+    <MudSpacer/>
+
+    <ThemeSwitchButton/>
+
+    <AppbarNotifications/>
+
+    <AppbarUserMenu/>
+</MudAppBar>
+
+@code {
+    private string? _search;
+    private MudAutocomplete<SearchModel> _searchAutocomplete = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IHistorySearchClient SearchClient { get; init; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; init; } = default!;
+
+    [Parameter]
+    public EventCallback OnDrawerClick { get; set; }
+
+    private async Task<IEnumerable<SearchModel>> OnSearch(string text, CancellationToken ct)
+    {
+        if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
+            return Enumerable.Empty<SearchModel>();
+
+        return (await SearchClient.SearchAsync(new SearchRequest(text, 0, 11), ct))
+            .Map(x => x.Hints)
+            .UnwrapOrElse(() => [])
+            .ToArray();
+    }
+
+    private Task OnSearchResult(SearchModel? entry)
+    {
+        if (entry is null)
+            return Task.CompletedTask;
+
+        Navigation.NavigateTo(entry.ContentHref);
+        return _searchAutocomplete.Clear();
+    }
+
+    private Task OnSearchMore()
+    {
+        Navigation.NavigateTo(HistoryUrl.Search(_search));
+        return _searchAutocomplete.Clear();
+    }
+
+    private void OnTextChanged(string value) =>
+        _search = value;
+
+}

@@ -2,7 +2,7 @@ using System.Security.Claims;
 
 namespace Education.Web.Client.Extensions;
 
-public static class ClaimsPrincipalExtensions
+internal static class ClaimsPrincipalExtensions
 {
     public static bool IsAuthenticated(this ClaimsPrincipal principal) =>
         principal.Identity?.IsAuthenticated ?? false;

@@ -33,7 +33,7 @@
                         Article="@model.Article.Article"
                         HasQuiz="@model.Article.HasQuiz"
                         Activity="@model.Article.Activity"
-                        OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"/>
+                        OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
                 }
 
                 @if (model.Course is not null)
@@ -47,7 +47,7 @@
                         Course="@model.Course.Course"
                         Activity="@model.Course.Activity"
                         HasExamination="@model.Course.HasExamination"
-                        OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"/>
+                        OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
                 }
             </ChildContent>
         </ApiViewer>
@@ -67,7 +67,7 @@
                     Article="@model.Article.Article"
                     HasQuiz="@model.Article.HasQuiz"
                     Activity="@model.Article.Activity"
-                    OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
+                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
                     Horizontal
                     ShortOverview/>
             }
@@ -79,7 +79,7 @@
                     Course="@model.Course.Course"
                     Activity="@model.Course.Activity"
                     HasExamination="@model.Course.HasExamination"
-                    OnBookmarkClick="@LearnerService.ToggleCourseBookmarkAsync"
+                    OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"
                     Horizontal
                     ShortOverview/>
             }

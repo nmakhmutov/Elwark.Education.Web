@@ -1,7 +1,7 @@
 using System.Text;
-using Education.Web.Client.Features.History.Services;
-using Education.Web.Client.Features.History.Services.Article.Request;
-using Education.Web.Client.Features.History.Services.Course.Request;
+using Education.Web.Client.Features.History.Clients;
+using Education.Web.Client.Features.History.Clients.Article.Request;
+using Education.Web.Client.Features.History.Clients.Course.Request;
 using Education.Web.Client.Models.Inventory;
 
 namespace Education.Web.Client.Features.History;

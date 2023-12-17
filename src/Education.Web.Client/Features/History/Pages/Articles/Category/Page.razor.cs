@@ -1,8 +1,8 @@
-using Education.Web.Client.Features.History.Services;
-using Education.Web.Client.Features.History.Services.Article;
-using Education.Web.Client.Features.History.Services.Article.Request;
-using Education.Web.Client.Features.History.Services.Learner;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients;
+using Education.Web.Client.Features.History.Clients.Article;
+using Education.Web.Client.Features.History.Clients.Article.Request;
+using Education.Web.Client.Features.History.Clients.Learner;
 using Education.Web.Client.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -24,10 +24,10 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleService ArticleService { get; init; } = default!;
+    private IHistoryArticleClient ArticleClient { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; init; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
@@ -61,7 +61,7 @@ public sealed partial class Page
         Enum.TryParse(Category, true, out _sort);
         Enum.TryParse(Epoch, true, out _epoch);
 
-        _result = await ArticleService
+        _result = await ArticleClient
             .GetAsync(new GetArticlesRequest(_epoch, _sort, (CurrentPage - 1) * Limit, Limit));
     }
 

@@ -1,7 +1,7 @@
+using Education.Web.Client.Clients;
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Services.Leaderboard;
-using Education.Web.Client.Features.History.Services.Leaderboard.Model;
-using Education.Web.Client.Http;
+using Education.Web.Client.Features.History.Clients.Leaderboard;
+using Education.Web.Client.Features.History.Clients.Leaderboard.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
@@ -16,7 +16,7 @@ public sealed partial class Page
     private ApiResult<GlobalContestantModel[]> _result = ApiResult<GlobalContestantModel[]>.Loading();
 
     [Inject]
-    private IHistoryLeaderboardService LeaderboardService { get; init; } = default!;
+    private IHistoryLeaderboardClient LeaderboardClient { get; init; } = default!;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -28,12 +28,12 @@ public sealed partial class Page
     {
         var state = await StateProvider.GetAuthenticationStateAsync();
         _highlightUser = state.User.GetIdOrDefault();
-        _result = await LeaderboardService.GetGlobalAsync(_region);
+        _result = await LeaderboardClient.GetGlobalAsync(_region);
     }
 
     private async Task OnRegionChanged(string region)
     {
         _region = region;
-        _result = await LeaderboardService.GetGlobalAsync(_region);
+        _result = await LeaderboardClient.GetGlobalAsync(_region);
     }
 }

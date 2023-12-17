@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
-using Education.Web.Client.Features.History.Services.Search;
-using Education.Web.Client.Features.History.Services.Search.Model;
-using Education.Web.Client.Features.History.Services.Search.Request;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients.Search;
+using Education.Web.Client.Features.History.Clients.Search.Model;
+using Education.Web.Client.Features.History.Clients.Search.Request;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -15,7 +15,7 @@ public sealed partial class Page
     private ApiResult<SearchResultModel> _result = ApiResult<SearchResultModel>.Loading();
 
     [Inject]
-    private IHistorySearchService HistorySearchService { get; init; } = default!;
+    private IHistorySearchClient SearchClient { get; init; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
@@ -49,7 +49,7 @@ public sealed partial class Page
             return;
         }
 
-        _result = await HistorySearchService.SearchAsync(
+        _result = await SearchClient.SearchAsync(
             _request with
             {
                 Q = Query,

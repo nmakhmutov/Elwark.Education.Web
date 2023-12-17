@@ -1,4 +1,4 @@
-using Education.Web.Client.Features.History.Services;
+using Education.Web.Client.Features.History.Clients;
 using Education.Web.Client.Models;
 using Education.Web.Client.Models.Inventory;
 using Education.Web.Client.Models.Test;

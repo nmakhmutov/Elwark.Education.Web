@@ -1,7 +1,7 @@
+using Education.Web.Client.Clients;
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Services.Learner;
-using Education.Web.Client.Features.History.Services.Learner.Model.DateGuesser;
-using Education.Web.Client.Http;
+using Education.Web.Client.Features.History.Clients.Learner;
+using Education.Web.Client.Features.History.Clients.Learner.Model.DateGuesser;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -18,7 +18,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; init; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
@@ -28,7 +28,7 @@ public sealed partial class Page
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await LearnerService.GetDateGuesserStatisticsAsync();
+        _result = await LearnerClient.GetDateGuesserStatisticsAsync();
         _result.Match(model =>
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);

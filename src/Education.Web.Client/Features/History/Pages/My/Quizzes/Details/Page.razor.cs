@@ -1,8 +1,8 @@
+using Education.Web.Client.Clients;
 using Education.Web.Client.Extensions;
-using Education.Web.Client.Features.History.Services.Learner;
-using Education.Web.Client.Features.History.Services.Learner.Model.Quiz;
-using Education.Web.Client.Features.History.Services.Quiz.Model;
-using Education.Web.Client.Http;
+using Education.Web.Client.Features.History.Clients.Learner;
+using Education.Web.Client.Features.History.Clients.Learner.Model.Quiz;
+using Education.Web.Client.Features.History.Clients.Quiz.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -19,7 +19,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; init; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
@@ -43,8 +43,8 @@ public sealed partial class Page
     {
         _result = Test?.ToLowerInvariant() switch
         {
-            "easy" => await LearnerService.GetEasyQuizStatisticsAsync(),
-            "hard" => await LearnerService.GetHardQuizStatisticsAsync(),
+            "easy" => await LearnerClient.GetEasyQuizStatisticsAsync(),
+            "hard" => await LearnerClient.GetHardQuizStatisticsAsync(),
             _ => ApiResult<QuizStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
         };
 

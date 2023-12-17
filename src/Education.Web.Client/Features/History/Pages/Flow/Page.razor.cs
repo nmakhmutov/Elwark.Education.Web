@@ -1,6 +1,6 @@
-using Education.Web.Client.Features.History.Services.Flow;
-using Education.Web.Client.Features.History.Services.Flow.Model;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients.Flow;
+using Education.Web.Client.Features.History.Clients.Flow.Model;
 using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -17,7 +17,7 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryFlowService FlowService { get; init; } = default!;
+    private IHistoryFlowClient FlowClient { get; init; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
@@ -26,18 +26,18 @@ public sealed partial class Page
     ];
 
     protected override async Task OnInitializedAsync() =>
-        _result = await FlowService.GetAsync();
+        _result = await FlowClient.GetAsync();
 
     private async Task OnStartClick()
     {
         _result = ApiResult<FlowModel>.Loading();
-        _result = await FlowService.StartAsync();
+        _result = await FlowClient.StartAsync();
     }
 
     private async Task OnAnswerClick(UserAnswerModel answer)
     {
         var flow = _result.Unwrap();
-        _result = (await FlowService.CheckAsync(flow.Question.Id, answer))
+        _result = (await FlowClient.CheckAsync(flow.Question.Id, answer))
             .Map(x =>
             {
                 _correctAnswer = x.Answer;
@@ -48,10 +48,10 @@ public sealed partial class Page
     private async Task OnNextQuestion()
     {
         _correctAnswer = null;
-        _result = await FlowService.GetAsync();
+        _result = await FlowClient.GetAsync();
     }
 
     private async Task OnBankCollect() =>
-        _result = (await FlowService.CollectBankAsync())
+        _result = (await FlowClient.CollectBankAsync())
             .Map(_ => _result.Unwrap() with { Bank = [] });
 }

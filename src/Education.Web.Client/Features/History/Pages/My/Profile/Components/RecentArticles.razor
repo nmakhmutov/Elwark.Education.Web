@@ -1,5 +1,7 @@
-@using Education.Web.Client.Features.History.Services.Learner
-@using Education.Web.Client.Features.History.Services.Learner.Request
+@using Education.Web.Client.Features.History.Clients
+@using Education.Web.Client.Features.History.Clients.Learner
+@using Education.Web.Client.Features.History.Clients.Learner.Request
+@using Education.Web.Client.Clients
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     <MudText Class="mb-3 mb-sm-6" Typo="Typo.h6">
         Recent articles
@@ -35,12 +37,12 @@
         ApiResult<PagingTokenModel<UserArticleOverviewModel>>.Loading();
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _response = await LearnerService.GetArticleHistoryAsync(new HistoryRequest(true, _count));
+        _response = await LearnerClient.GetArticleHistoryAsync(new HistoryRequest(true, _count));
 
 }

@@ -1,0 +1,93 @@
+<MudDrawer Open="@Open" OpenChanged="OpenChanged" ClipMode="DrawerClipMode.Docked" Breakpoint="Breakpoint.Lg" Elevation="0">
+    <MudNavMenu Color="Color.Primary" Dense Margin="Margin.Dense" Rounded="true" Class="pa-2">
+        <MudNavLink Match="NavLinkMatch.All" Href="@HistoryUrl.Root" Icon="@Icons.Material.Outlined.Home">
+            @L["Button_Home"]
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Content.Courses()" Icon="@EduIcons.Courses">
+            @L["Courses_Title"]
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Content.Articles()" Icon="@EduIcons.Articles">
+            @L["Articles_Title"]
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Content.Empires" Icon="@EduIcons.Empires">
+            @L["History_Empires_Title"]
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Content.Timeline" Icon="@EduIcons.Timeline">
+            @L["History_Timeline_Title"]
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Content.Random" Icon="@EduIcons.RandomContent">
+            @L["Random_Content_Title"]
+        </MudNavLink>
+
+        <MudDivider Class="my-2"/>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Flow.Index()" Icon="@EduIcons.Flow">
+            @L["Flow_Title"]
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Quiz.Index()" Icon="@EduIcons.Quiz">
+            @L["Quizzes_Title"]
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.DateGuesser.Index" Icon="@EduIcons.DateGuesser">
+            @L["History_DateGuessers_Title"]
+        </MudNavLink>
+
+        <MudNavGroup Title="@L["Leaderboards_Title"]" Icon="@EduIcons.Leaderboard">
+            <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Leaderboard.Global">
+                @L["Leaderboard_GlobalTop_Title"]
+            </MudNavLink>
+            <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Leaderboard.Monthly">
+                @L["Leaderboard_MonthlyTop_Title"]
+            </MudNavLink>
+        </MudNavGroup>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Store.Index()" Icon="@EduIcons.InventoryStore">
+            @L["InventoryStore_Title"]
+        </MudNavLink>
+
+        <AuthorizeView>
+            <Authorized>
+                <MudDivider Class="my-2"/>
+
+                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyProfile" Icon="@EduIcons.Profile">
+                    @L["User_Profile_Title"]
+                </MudNavLink>
+
+                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyBackpack" Icon="@EduIcons.Backpack">
+                    @L["Backpack_Title"]
+                </MudNavLink>
+
+                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyBookmarks" Icon="@EduIcons.Bookmarks">
+                    @L["Bookmarks_Title"]
+                </MudNavLink>
+
+                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyAssignments" Icon="@EduIcons.Assignment">
+                    @L["Assignments_Title"]
+                </MudNavLink>
+
+                <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyAchievements" Icon="@EduIcons.Achievements">
+                    @L["Achievements_Title"]
+                </MudNavLink>
+            </Authorized>
+        </AuthorizeView>
+    </MudNavMenu>
+</MudDrawer>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter]
+    public bool Open { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OpenChanged { get; set; }
+
+}

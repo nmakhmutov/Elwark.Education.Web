@@ -1,4 +1,8 @@
-@using Education.Web.Client.Features.History.Services.Learner
+@using Education.Web.Client.Features.History.Clients
+@using Education.Web.Client.Features.History.Clients.Article
+@using Education.Web.Client.Features.History.Clients.Article.Request
+@using Education.Web.Client.Features.History.Clients.Learner
+@using Education.Web.Client.Clients
 <EduFillGrid>
     <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
         <Loading>
@@ -14,7 +18,7 @@
                     Article="@item.Article"
                     HasQuiz="@item.HasQuiz"
                     Activity="@item.Activity"
-                    OnBookmarkClick="@LearnerService.ToggleArticleBookmarkAsync"
+                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
                     OneLineTitle/>
             }
         </ChildContent>
@@ -27,13 +31,13 @@
         ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
 
     [Inject]
-    private IHistoryArticleService HistoryArticleService { get; set; } = default!;
+    private IHistoryArticleClient ArticleClient { get; set; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _result = await HistoryArticleService
+        _result = await ArticleClient
             .GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Newest, 0, 12));
 
 }

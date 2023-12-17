@@ -1,8 +1,8 @@
 using Blazored.LocalStorage;
-using Education.Web.Client.Features.History.Services.Course;
-using Education.Web.Client.Features.History.Services.Course.Model;
-using Education.Web.Client.Features.History.Services.Learner;
-using Education.Web.Client.Http;
+using Education.Web.Client.Clients;
+using Education.Web.Client.Features.History.Clients.Course;
+using Education.Web.Client.Features.History.Clients.Course.Model;
+using Education.Web.Client.Features.History.Clients.Learner;
 using Education.Web.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -20,10 +20,10 @@ public sealed partial class Page
     private IStringLocalizer<App> L { get; set; } = default!;
 
     [Inject]
-    private IHistoryCourseService CourseService { get; set; } = default!;
+    private IHistoryCourseClient CourseClient { get; set; } = default!;
 
     [Inject]
-    private IHistoryLearnerService LearnerService { get; set; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; set; } = default!;
 
     [Inject]
     private ILocalStorageService Storage { get; init; } = default!;
@@ -42,7 +42,7 @@ public sealed partial class Page
     {
         _difficulty = await Storage.GetItemAsync<DifficultyType?>(HistoryLocalStorageKey.ExaminationSettings);
 
-        _result = await CourseService.GetExaminationAsync(Id);
+        _result = await CourseClient.GetExaminationAsync(Id);
         await _result.MatchAsync(x =>
             x.Examinations.Any(e => e.IsAllowed && e.Type == _difficulty)
                 ? Task.CompletedTask
