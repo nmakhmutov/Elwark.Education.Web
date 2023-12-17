@@ -12,10 +12,10 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         _subscription = CustomerStateProvider.NotifyOnChange(EventCallback.Factory.Create<CustomerState>(this, OnStateChanged));
-        await CustomerStateProvider.InitAsync();
+        return CustomerStateProvider.InitAsync();
     }
 
     private void OnStateChanged(CustomerState state)

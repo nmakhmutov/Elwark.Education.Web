@@ -1,6 +1,5 @@
 @using Education.Web.Client.Features.History.Services.Exchange
 @using Education.Web.Client.Features.History.Services.Exchange.Requests
-@using System.Text.Json
 <section class="mud-paper d-flex flex-column gap-3 gap-sm-6 pa-3 pa-sm-6 @Class">
     <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
         <Loading>
@@ -106,12 +105,12 @@
         var result = await ExchangeService.GetRatesAsync();
         _result = result.Map(rates =>
         {
-            var data = rates.Where(x => x.Multiplayer == 1)
+            var data = rates.Where(x => x.ConversionFactor == 1)
                 .Join(rates, x => x.From, x => x.To, (fr, to) =>
                     new Exchange(
                         fr.From,
-                        new Exchange.Item(fr.To, to.Multiplayer),
-                        new Exchange.Item(to.From, (uint)(fr.Multiplayer * fr.Rate))
+                        new Exchange.Item(fr.To, to.ConversionFactor),
+                        new Exchange.Item(to.From, (uint)(fr.ConversionFactor * fr.Rate))
                     )
                 )
                 .ToArray();

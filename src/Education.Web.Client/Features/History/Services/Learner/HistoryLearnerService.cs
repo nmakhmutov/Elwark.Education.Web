@@ -38,7 +38,8 @@ internal sealed class HistoryLearnerService : IHistoryLearnerService
     public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleHistoryAsync(HistoryRequest request) =>
         _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/learners/me/articles", request);
 
-    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest request) =>
+    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(
+        BookmarksRequest request) =>
         _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/learners/me/articles/bookmarks", request);
 
     public Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId) =>

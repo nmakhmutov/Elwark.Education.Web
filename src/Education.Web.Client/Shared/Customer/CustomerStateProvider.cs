@@ -12,10 +12,10 @@ internal sealed class CustomerStateProvider : IDisposable
     private readonly ICustomerService _customerService;
     private readonly CustomerHab _hab;
     private readonly AuthenticationStateProvider _provider;
+    private readonly HashSet<StateChangedSubscription> _subscriptions = [];
     private bool _isInitialized;
     private CustomerState _state;
     private IDisposable? _subscription;
-    private readonly HashSet<StateChangedSubscription> _subscriptions = [];
 
     public CustomerStateProvider(CustomerHab hab, ICustomerService customerService,
         AuthenticationStateProvider provider)

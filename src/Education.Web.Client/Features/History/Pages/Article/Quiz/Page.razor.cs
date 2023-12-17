@@ -15,9 +15,9 @@ namespace Education.Web.Client.Features.History.Pages.Article.Quiz;
 
 public sealed partial class Page
 {
+    private bool _isLoading;
     private ApiResult<ArticleQuizBuilderModel> _result = ApiResult<ArticleQuizBuilderModel>.Loading();
     private QuizSettings _settings = QuizSettings.Empty;
-    private bool _isLoading;
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -51,12 +51,13 @@ public sealed partial class Page
     {
         _settings = await Storage.GetItemAsync<QuizSettings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
         _result = await ArticleService.GetQuizBuilderAsync(Id);
+        
         await _result.MatchAsync(x =>
             {
                 if (x.Quizzes.Any(e => e.IsAllowed && e.Type == _settings.Difficulty))
                     return Task.CompletedTask;
 
-                return ChangeDifficulty(x.Quizzes.FirstOrDefault(t => t.IsAllowed)?.Type);
+                return ChangeDifficultyAsync(x.Quizzes.FirstOrDefault(t => t.IsAllowed)?.Type);
             },
             x =>
             {
@@ -65,7 +66,7 @@ public sealed partial class Page
             });
     }
 
-    private async Task ChangeDifficulty(DifficultyType? difficulty)
+    private async Task ChangeDifficultyAsync(DifficultyType? difficulty)
     {
         _settings = _settings with { Difficulty = difficulty };
         await Storage.SetItemAsync(HistoryLocalStorageKey.QuizSettings, _settings);

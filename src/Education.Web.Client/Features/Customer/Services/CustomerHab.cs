@@ -11,9 +11,9 @@ namespace Education.Web.Client.Features.Customer.Services;
 internal sealed class CustomerHab : IAsyncDisposable
 {
     private readonly HubConnection _connection;
-    private readonly AuthenticationStateProvider _stateProvider;
     private readonly HashSet<CustomerStateChangedSubscription> _customerChangedSubscriptions = [];
     private readonly HashSet<NotificationStateChangedSubscription> _notificationSubscriptions = [];
+    private readonly AuthenticationStateProvider _stateProvider;
 
     public CustomerHab(Uri host, IAccessTokenProvider tokenProvider, AuthenticationStateProvider stateProvider)
     {
@@ -36,6 +36,14 @@ internal sealed class CustomerHab : IAsyncDisposable
             .Build();
     }
 
+    public ValueTask DisposeAsync()
+    {
+        _customerChangedSubscriptions.Clear();
+        _notificationSubscriptions.Clear();
+
+        return _connection.DisposeAsync();
+    }
+
     public IDisposable NotifyOnCustomerChange(EventCallback<CustomerChangedType> callback)
     {
         var subscription = new CustomerStateChangedSubscription(this, callback);
@@ -52,30 +60,20 @@ internal sealed class CustomerHab : IAsyncDisposable
         return subscription;
     }
 
-    public ValueTask DisposeAsync()
-    {
-        _customerChangedSubscriptions.Clear();
-        _notificationSubscriptions.Clear();
-
-        return _connection.DisposeAsync();
-    }
-
     public async ValueTask StartAsync()
     {
         if (_connection.State != HubConnectionState.Disconnected)
             return;
 
+        var state = await _stateProvider.GetAuthenticationStateAsync();
+        if (!state.User.IsAuthenticated())
+            return;
+
+        _connection.On<CustomerChangedType>("Customers", status => NotifyCustomerChangeSubscribersAsync(status));
+        _connection.On<NotificationMessage>("Messages", message => NotifyNotificationSubscribersAsync(message));
+
         try
         {
-            var state = await _stateProvider.GetAuthenticationStateAsync();
-            if (!state.User.IsAuthenticated())
-                return;
-
-            _connection.On<CustomerChangedType>("Customers",
-                status => Task.WhenAll(_customerChangedSubscriptions.Select(s => s.NotifyAsync(status))));
-            _connection.On<NotificationMessage>("Messages",
-                message => Task.WhenAll(_notificationSubscriptions.Select(s => s.NotifyAsync(message))));
-
             await _connection.StartAsync();
         }
         catch
@@ -83,6 +81,12 @@ internal sealed class CustomerHab : IAsyncDisposable
             // ignored
         }
     }
+
+    private Task NotifyCustomerChangeSubscribersAsync(CustomerChangedType status) =>
+        Task.WhenAll(_customerChangedSubscriptions.Select(s => s.NotifyAsync(status)));
+
+    private Task NotifyNotificationSubscribersAsync(NotificationMessage message) =>
+        Task.WhenAll(_notificationSubscriptions.Select(s => s.NotifyAsync(message)));
 
     private sealed class RetryPolicy : IRetryPolicy
     {

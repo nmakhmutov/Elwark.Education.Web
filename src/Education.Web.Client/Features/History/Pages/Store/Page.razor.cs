@@ -22,7 +22,7 @@ public sealed partial class Page
 
     [CascadingParameter]
     public CustomerState Customer { get; init; } = default!;
-    
+
     [SupplyParameterFromQuery]
     public string? Category { get; set; }
 

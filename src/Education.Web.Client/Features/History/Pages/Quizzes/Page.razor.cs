@@ -15,9 +15,9 @@ namespace Education.Web.Client.Features.History.Pages.Quizzes;
 
 public sealed partial class Page
 {
+    private bool _isLoading;
     private ApiResult<EpochQuizBuilderModel> _result = ApiResult<EpochQuizBuilderModel>.Loading();
     private QuizSettings _settings = QuizSettings.Empty;
-    private bool _isLoading;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -44,7 +44,19 @@ public sealed partial class Page
     {
         _settings = await Storage.GetItemAsync<QuizSettings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
         _result = await QuizService.GetTestBuilderAsync();
+        
+        await _result.MatchAsync(x =>
+            {
+                if (x.Quizzes.Any(e => e.IsAllowed && e.Type == _settings.Difficulty))
+                    return Task.CompletedTask;
 
+                return ChangeDifficultyAsync(x.Quizzes.FirstOrDefault(t => t.IsAllowed)?.Type);
+            },
+            x =>
+            {
+                if (x.IsQuizAlreadyCreated(out var id))
+                    Navigation.NavigateTo(HistoryUrl.Quiz.Test(id));
+            });
         _result.MathError(x =>
         {
             if (x.IsQuizAlreadyCreated(out var id))
@@ -54,11 +66,11 @@ public sealed partial class Page
 
     private async Task CreateQuizAsync()
     {
-        if(!_settings.Difficulty.HasValue)
+        if (!_settings.Difficulty.HasValue)
             return;
-        
+
         _isLoading = true;
-        
+
         (await QuizService.CreateAsync(new CreateQuizRequest(_settings.Difficulty.Value, _settings.Epoch)))
             .Match(
                 x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Id)),
@@ -68,13 +80,13 @@ public sealed partial class Page
         _isLoading = false;
     }
 
-    private async Task OnEpochChanged(EpochType epoch)
+    private async Task ChangeEpochAsync(EpochType epoch)
     {
         _settings = _settings with { Epoch = epoch };
         await Storage.SetItemAsync(HistoryLocalStorageKey.QuizSettings, _settings);
     }
 
-    private async Task OnDifficultyChanged(DifficultyType? difficulty)
+    private async Task ChangeDifficultyAsync(DifficultyType? difficulty)
     {
         _settings = _settings with { Difficulty = difficulty };
         await Storage.SetItemAsync(HistoryLocalStorageKey.QuizSettings, _settings);

@@ -39,7 +39,7 @@ public static class EduIcons
     public const string Flow = Icons.Material.Outlined.Waves;
 
     public const string Quiz = Icons.Material.Outlined.School;
-    
+
     public const string Examination = Icons.Material.Outlined.LibraryBooks;
 
     public const string Score = Icons.Material.Outlined.PendingActions;

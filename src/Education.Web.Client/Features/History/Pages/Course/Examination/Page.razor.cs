@@ -12,9 +12,9 @@ namespace Education.Web.Client.Features.History.Pages.Course.Examination;
 
 public sealed partial class Page
 {
-    private ApiResult<ExaminationBuilderModel> _result = ApiResult<ExaminationBuilderModel>.Loading();
     private DifficultyType? _difficulty;
     private bool _isLoading;
+    private ApiResult<ExaminationBuilderModel> _result = ApiResult<ExaminationBuilderModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;

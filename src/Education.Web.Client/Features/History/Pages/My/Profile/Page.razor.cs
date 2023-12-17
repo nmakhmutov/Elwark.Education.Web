@@ -19,7 +19,7 @@ public sealed partial class Page
 
     [CascadingParameter]
     public CustomerState Customer { get; init; } = default!;
-    
+
     protected override async Task OnInitializedAsync() =>
         _result = await UserService.GetStatisticsAsync();
 }

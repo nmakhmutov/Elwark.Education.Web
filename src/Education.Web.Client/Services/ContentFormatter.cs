@@ -15,8 +15,8 @@ public sealed class ContentFormatter : IDisposable
 
     private const string StorageKey = "fmt.srv";
 
-    private readonly HashSet<StateChangedSubscription> _subscriptions = [];
     private readonly ILocalStorageService _storage;
+    private readonly HashSet<StateChangedSubscription> _subscriptions = [];
     private bool _isInitialized;
     private State _state;
 
@@ -50,6 +50,9 @@ public sealed class ContentFormatter : IDisposable
 
     public bool CanDecreaseLineHeight =>
         LineHeight > MinLineHeight;
+
+    public void Dispose() =>
+        _subscriptions.Clear();
 
     public async ValueTask InitializeAsync()
     {
@@ -138,8 +141,8 @@ public sealed class ContentFormatter : IDisposable
 
     private sealed class StateChangedSubscription : IDisposable
     {
-        private readonly ContentFormatter _owner;
         private readonly EventCallback _callback;
+        private readonly ContentFormatter _owner;
 
         public StateChangedSubscription(ContentFormatter owner, EventCallback callback)
         {
@@ -152,10 +155,5 @@ public sealed class ContentFormatter : IDisposable
 
         public Task NotifyAsync() =>
             _callback.InvokeAsync();
-    }
-
-    public void Dispose()
-    {
-        _subscriptions.Clear();
     }
 }

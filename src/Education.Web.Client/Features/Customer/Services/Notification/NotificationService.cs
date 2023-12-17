@@ -13,22 +13,21 @@ internal sealed class NotificationService : INotificationService
     private const int MaxNotifications = 4;
 
     private readonly CustomerApiClient _api;
+    private readonly CustomerHab _hab;
     private readonly ISnackbar _snackbar;
     private readonly AuthenticationStateProvider _stateProvider;
     private readonly HashSet<StateChangedSubscription> _subscriptions = [];
     private bool _isInitialized;
     private List<NotificationMessage> _notifications = [];
-    private readonly IDisposable _subscription;
+    private IDisposable? _subscription;
 
     public NotificationService(CustomerApiClient api, CustomerHab hab, ISnackbar snackbar,
         AuthenticationStateProvider stateProvider)
     {
         _api = api;
+        _hab = hab;
         _snackbar = snackbar;
         _stateProvider = stateProvider;
-
-        var callback = EventCallback.Factory.Create<NotificationMessage>(this, ReceivedMessage);
-        _subscription = hab.NotifyOnNotification(callback);
     }
 
     public IDisposable NotifyOnChange(EventCallback callback)
@@ -64,7 +63,7 @@ internal sealed class NotificationService : INotificationService
         _notifications.Count > 0;
 
     public void Dispose() =>
-        _subscription.Dispose();
+        _subscription?.Dispose();
 
     public async Task StartAsync()
     {
@@ -74,6 +73,9 @@ internal sealed class NotificationService : INotificationService
         var state = await _stateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated == false)
             return;
+
+        var callback = EventCallback.Factory.Create<NotificationMessage>(this, ReceivedMessage);
+        _subscription = _hab.NotifyOnNotification(callback);
 
         _notifications = (await GetAsync(new NotificationsRequest(MaxNotifications)))
             .Map(x => x.Items.Select(m =>

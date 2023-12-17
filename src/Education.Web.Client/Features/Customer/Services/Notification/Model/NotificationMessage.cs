@@ -1,65 +1,10 @@
-using Education.Web.Client.Features.History;
-using Education.Web.Client.Models;
-
 namespace Education.Web.Client.Features.Customer.Services.Notification.Model;
 
-public record NotificationMessage
-{
-    private readonly List<InternalMoneyModel> _money;
-    private readonly Dictionary<string, string> _payload;
-
-    public NotificationMessage(
-        string subject,
-        string module,
-        string title,
-        string message,
-        Dictionary<string, string> payload,
-        DateTime createdAt
-    )
-    {
-        Subject = subject;
-        Module = module;
-        Title = title;
-        Message = message;
-        CreatedAt = createdAt;
-
-        _payload = payload;
-        _money = [];
-
-        DisassemblePayload();
-    }
-
-    public string Subject { get; }
-
-    public string Module { get; }
-
-    public string Title { get; }
-
-    public string Message { get; }
-
-    public DateTime CreatedAt { get; }
-
-    public string? Href { get; private set; }
-
-    public IReadOnlyCollection<InternalMoneyModel> Money =>
-        _money.AsReadOnly();
-
-    private void DisassemblePayload()
-    {
-        string? id = null;
-
-        foreach (var (key, value) in _payload)
-            if (id is null && key.Equals("id", StringComparison.OrdinalIgnoreCase))
-                id = value;
-            else if (Enum.TryParse<InternalCurrency>(key, true, out var currency))
-                _money.Add(new InternalMoneyModel(currency, uint.Parse(value)));
-
-        Href = (Subject, Module) switch
-        {
-            ("History", "Inventory") => $"{HistoryUrl.User.MyBackpack}?id={id}",
-            ("History", "Achievement") => $"{HistoryUrl.User.MyAchievements}?id={id}",
-            ("History", "Profile") => HistoryUrl.User.MyProfile,
-            _ => null
-        };
-    }
-}
+public sealed record NotificationMessage(
+    string Subject,
+    string Module,
+    string Title,
+    string Message,
+    IReadOnlyDictionary<string, string> Payload,
+    DateTime CreatedAt
+) : NotificationBase(Subject, Module, Title, Message, Payload, CreatedAt);

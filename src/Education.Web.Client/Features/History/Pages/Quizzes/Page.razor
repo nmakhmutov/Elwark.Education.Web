@@ -19,7 +19,7 @@
             <EpochRadioGroup
                 Class="mb-3 mb-sm-6"
                 SelectedEpoch="@_settings.Epoch"
-                SelectedEpochChanged="@OnEpochChanged"/>
+                SelectedEpochChanged="@ChangeEpochAsync"/>
 
             <MudText Class="mb-3" Typo="Typo.h6">
                 @L["Quiz_Type_Title"]
@@ -27,7 +27,7 @@
             <QuizDifficultyRadioGroup
                 Class="mb-3 mb-sm-6"
                 SelectedDifficulty="@_settings.Difficulty"
-                SelectedDifficultyChanged="@OnDifficultyChanged"
+                SelectedDifficultyChanged="@ChangeDifficultyAsync"
                 Quizzes="@model.Quizzes"/>
 
             <div class="d-flex justify-center">

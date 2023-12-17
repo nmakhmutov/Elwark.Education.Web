@@ -6,6 +6,6 @@ public sealed record NotificationModel(
     string Module,
     string Title,
     string Message,
-    Dictionary<string, string> Payload,
+    IReadOnlyDictionary<string, string> Payload,
     DateTime CreatedAt
-) : NotificationMessage(Subject, Module, Title, Message, Payload, CreatedAt);
+) : NotificationBase(Subject, Module, Title, Message, Payload, CreatedAt);

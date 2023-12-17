@@ -44,7 +44,7 @@
 </section>
 
 @code {
-    private double _percentage = 0;
+    private double _percentage;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -68,6 +68,6 @@
     public EventCallback OnLevelClick { get; set; }
 
     protected override void OnParametersSet() =>
-        _percentage = 100.0 * Experience / Threshold;
+        _percentage = Experience + Threshold > 0 ? 100.0 * Experience / Threshold : 0;
 
 }

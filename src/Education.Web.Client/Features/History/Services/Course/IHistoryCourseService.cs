@@ -10,9 +10,8 @@ public interface IHistoryCourseService
     Task<ApiResult<PagingOffsetModel<UserCourseOverviewModel>>> GetAsync(GetCourseRequest request);
 
     Task<ApiResult<UserCourseDetailModel>> GetAsync(string id);
-    
+
     Task<ApiResult<ExaminationBuilderModel>> GetExaminationAsync(string id);
 
     Task<ApiResult<UserCourseOverviewModel>> GetRandomAsync();
-    
 }

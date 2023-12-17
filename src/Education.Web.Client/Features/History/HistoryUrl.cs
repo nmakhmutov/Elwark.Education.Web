@@ -46,10 +46,10 @@ public static class HistoryUrl
 
         public static string Article(string articleId) =>
             $"{Root}/article/{articleId}";
-        
+
         public static string QuizBuilder(string articleId) =>
             $"{Root}/article/{articleId}/quiz";
-        
+
         public static string Courses() =>
             $"{Root}/courses";
 
