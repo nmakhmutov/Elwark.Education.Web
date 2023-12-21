@@ -1,0 +1,118 @@
+@using Education.Client.Features.History.Clients.Article.Model
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
+    <div class="header">
+        <div class="preamble">
+            <div class="image">
+                <img class="fluid object-cover object-center mb-3" src="@Person.ImageUrl" alt="@Person.Title"/>
+
+                @if (Person.Born is not null || Person.Died is not null)
+                {
+                    <PersonLivespan Born="@Person.Born" Died="@Person.Died"/>
+                }
+            </div>
+        </div>
+
+        <div class="content pa-3 pa-sm-6">
+            <ArticleTitle Class="mb-3">
+                @Person.Title
+            </ArticleTitle>
+
+            <Breadcrumbs Class="pa-0 mb-3" Items="@Breadcrumbs"/>
+
+            <MudText Class="mb-3" Typo="Typo.subtitle1">
+                @Person.Description
+            </MudText>
+
+            @if (Person.Details.Length > 0)
+            {
+                <div class="details">
+                    @foreach (var (title, text) in Person.Details)
+                    {
+                        <div>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                                @title
+                            </MudText>
+                            <StyledMarkupString Content="@text" DisableParagraphIndent/>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <ContentGrid>
+        <Header>
+            <ContentToolbarCard Formatter="@Formatter"/>
+            <ArticleInformation TimeToRead="@Person.TimeToRead" Rating="@Person.Rating"/>
+        </Header>
+
+        <Content>
+            <ContentCard Formatter="@Formatter" Content="@Person.Content"/>
+        </Content>
+
+        <Sidebar>
+            <AuthorizeView>
+                <QuizCard
+                    ArticleId="@Person.Id"
+                    HasEasyQuiz="@HasEasyQuiz"
+                    HasHardQuiz="@HasHardQuiz"
+                    Activity="@Activity"/>
+
+                <UserToolbarCard
+                    ArticleId="@Person.Id"
+                    IsLiked="@Activity?.IsLiked"
+                    IsBookmarked="@Activity?.IsBookmarked"
+                    OnBookmarkClick="@OnBookmarkClick"
+                    OnLikeClick="@OnLikeClick"
+                    OnDislikeClick="@OnDislikeClick"/>
+            </AuthorizeView>
+        </Sidebar>
+    </ContentGrid>
+
+    <RelatedArticles
+        Class="mt-sm-6"
+        ArticleId="@Person.Id"
+        Title="@L["Articles_Related_Title"]"
+        OnBookmarkClick="@OnBookmarkClick"/>
+
+</EduContainer>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private ContentFormatter Formatter { get; init; } = default!;
+
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L.GetEpochTitle(Person.Epoch), HistoryUrl.Content.Articles(Person.Epoch))
+    ];
+
+    [Parameter, EditorRequired]
+    public required ArticleDetail.PersonModel Person { get; set; }
+
+    [Parameter, EditorRequired]
+    public required UserArticleActivityModel? Activity { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool HasEasyQuiz { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool HasHardQuiz { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        await Formatter.InitializeAsync();
+
+}

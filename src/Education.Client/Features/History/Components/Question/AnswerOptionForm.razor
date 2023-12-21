@@ -1,0 +1,22 @@
+@using Education.Client.Models.Test
+@switch (Option)
+{
+    case AnswerOption.ImageModel x:
+        <div class="image">
+            <img src="@x.ImageUrl" alt="@x.Id"/>
+        </div>
+        break;
+
+    case AnswerOption.TextModel x:
+        <MudText Typo="Typo.body1">
+            @x.Text
+        </MudText>
+        break;
+}
+
+@code {
+
+    [Parameter, EditorRequired]
+    public AnswerOption Option { get; set; } = default!;
+
+}

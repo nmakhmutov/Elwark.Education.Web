@@ -1,0 +1,108 @@
+@using Education.Client.Models.Test
+@using FluentValidation
+<EditForm Model="@_userAnswer" OnValidSubmit="OnValidSubmit">
+    <FluentValidationValidator Validator="@_validator"/>
+
+    <div class="d-flex flex-column align-center mb-3 @(CorrectAnswer is null ? "mb-sm-6" : "")">
+        <MudTextField
+            @bind-Value="@(_userAnswer.Answer)"
+            Label="@L["Quiz_UserAnswer"]"
+            For="@(() => _userAnswer.Answer)"
+            Disabled="@(CorrectAnswer is not null)"/>
+
+        @if (CorrectAnswer is not null)
+        {
+            <MudText Typo="Typo.subtitle2" Color="@(CorrectAnswer.IsCorrect ? Color.Success : Color.Error)">
+                @CorrectAnswer.Answer
+            </MudText>
+        }
+    </div>
+
+    @if (CorrectAnswer is null)
+    {
+        <div class="d-flex flex-row justify-center">
+            <LoadingButton
+                DisableElevation
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                IsLoading="@IsLoading"
+                Text="@L["Quiz_AnswerToQuestion"]"
+                LoadingText="@L["Loading_Title"]"
+                ButtonType="ButtonType.Submit"/>
+        </div>
+
+        <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error" Class="mt-3 mt-sm-6">
+            <ValidationSummary/>
+        </MudText>
+    }
+    else
+    {
+        <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
+            <LoadingButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                IsLoading="@IsLoading"
+                Text="@OnNextTitle"
+                LoadingText="@L["Loading_Title"]"
+                OnClick="@OnNextAsync"
+                DisableElevation/>
+        </div>
+
+        if (CorrectAnswer.IsCorrect)
+        {
+            <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
+                @L["Quiz_CorrectAnswer"]
+            </MudText>
+        }
+        else
+        {
+            <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
+                @L["Quiz_IncorrectAnswer"]
+            </MudText>
+        }
+    }
+</EditForm>
+
+@code {
+    private Validator _validator = default!;
+    private ShortAnswerModel _userAnswer = new();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public bool IsLoading { get; set; }
+
+    [Parameter, EditorRequired]
+    public AnswerResult.ShortModel? CorrectAnswer { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<ShortAnswerModel> OnAnswerClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public string OnNextTitle { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public EventCallback OnNextClick { get; set; }
+
+    protected override void OnInitialized() =>
+        _validator = new Validator(L);
+
+    private Task OnValidSubmit() =>
+        OnAnswerClick.InvokeAsync(_userAnswer);
+
+    private Task OnNextAsync()
+    {
+        _userAnswer = new ShortAnswerModel();
+        return OnNextClick.InvokeAsync();
+    }
+
+    public sealed class Validator : AbstractValidator<ShortAnswerModel>
+    {
+        public Validator(IStringLocalizer<App> localizer) =>
+            RuleFor(x => x.Answer)
+                .NotEmpty()
+                .WithMessage(localizer["Question_AnswerCannotBeEmpty"]);
+    }
+
+}

@@ -1,0 +1,103 @@
+@using Education.Client.Services
+<section class="mud-paper d-flex flex-column @Class">
+    <div class="d-flex justify-space-between align-center pa-3 pa-sm-6">
+        <MudText Class="mr-3" Typo="Typo.body2">
+            @L["TextOptions_Alignment_Title"]
+        </MudText>
+        <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" DisableElevation>
+            <MudIconButton
+                Icon="@Icons.Material.Outlined.FormatAlignLeft"
+                Disabled="@(Formatter.TextAlign == Align.Left)"
+                OnClick="@Formatter.AlignTextLeftAsync"/>
+            <MudIconButton
+                Icon="@Icons.Material.Outlined.FormatAlignJustify"
+                Disabled="@(Formatter.TextAlign == Align.Justify)"
+                OnClick="@Formatter.AlignTextJustifyAsync"/>
+            <MudIconButton
+                Icon="@Icons.Material.Outlined.FormatAlignCenter"
+                Disabled="@(Formatter.TextAlign == Align.Center)"
+                OnClick="@Formatter.AlignTextCenterAsync"/>
+            <MudIconButton
+                Icon="@Icons.Material.Outlined.FormatAlignRight"
+                Disabled="@(Formatter.TextAlign == Align.Right)"
+                OnClick="@Formatter.AlignTextRightAsync"/>
+        </MudButtonGroup>
+    </div>
+
+    <div class="d-flex justify-space-between align-center px-3 px-sm-6">
+        <MudText Typo="Typo.body2" Class="mr-3">
+            @L["TextOptions_FontSize_Title"]
+        </MudText>
+        <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" OverrideStyles DisableElevation>
+            <MudIconButton
+                Disabled="@(!Formatter.CanDecreaseFontSize)"
+                Icon="@Icons.Material.Outlined.Remove"
+                OnClick="@Formatter.DecreaseFontSizeAsync"
+                DisableElevation/>
+            <input class="input" value="@Percent(Formatter.FontSize)" readonly/>
+            <MudIconButton
+                Disabled="@(!Formatter.CanIncreaseFontSize)"
+                Icon="@Icons.Material.Outlined.Add"
+                OnClick="@Formatter.IncreaseFontSizeAsync"
+                DisableElevation/>
+        </MudButtonGroup>
+    </div>
+
+    <MudExpansionPanels Elevation="0" Dense DisableBorders DisableGutters>
+        <MudExpansionPanel>
+            <TitleContent>
+                <MudText Typo="Typo.body2">
+                    <b>@L["TextOptions_Other_Title"]</b>
+                </MudText>
+            </TitleContent>
+            <ChildContent>
+                <div class="d-flex justify-space-between align-center px-3 px-sm-6 mb-3 mb-sm-6">
+                    <MudText Typo="Typo.body2" Class="mr-3">
+                        @L["TextOptions_LineHeight_Title"]
+                    </MudText>
+                    <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" OverrideStyles DisableElevation>
+                        <MudIconButton
+                            Disabled="@(!Formatter.CanDecreaseLineHeight)"
+                            Icon="@Icons.Material.Outlined.Remove"
+                            OnClick="@Formatter.DecreaseLineHeightAsync"
+                            DisableElevation/>
+                        <input class="input" value="@Percent(Formatter.LineHeight)" readonly/>
+                        <MudIconButton
+                            Disabled="@(!Formatter.CanIncreaseLineHeight)"
+                            Icon="@Icons.Material.Outlined.Add"
+                            OnClick="@Formatter.IncreaseLineHeightAsync"
+                            DisableElevation/>
+                    </MudButtonGroup>
+                </div>
+
+                <div class="d-flex justify-space-between align-center px-3 px-sm-6 mb-3 mb-sm-6">
+                    <MudText Typo="Typo.body2" Class="mr-3">
+                        @L["TextOptions_Bold_Title"]
+                    </MudText>
+                    <MudSwitch
+                        T="bool"
+                        Color="Color.Primary"
+                        Checked="@Formatter.IsFontWeightBold"
+                        CheckedChanged="@Formatter.ToggleFontWeightAsync">
+                    </MudSwitch>
+                </div>
+            </ChildContent>
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required ContentFormatter Formatter { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private string Percent(double value) =>
+        $"{(int)Math.Round(value * 100, 0)}%";
+
+}

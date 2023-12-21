@@ -1,0 +1,113 @@
+@using Education.Client.Features.Customer.Services.Notification
+@using Education.Client.Features.Customer
+@implements IDisposable
+
+<MudBadge Color="Color.Secondary" Visible="@NotificationService.HasNotifications" Dot Overlap>
+    <MudMenu
+        Icon="@Icon"
+        Color="Color.Inherit"
+        AnchorOrigin="Origin.BottomLeft"
+        TransformOrigin="Origin.TopLeft"
+        ListClass="pa-0">
+        <section class="wrapper">
+            <header class="d-flex justify-space-between align-center pa-3">
+                <MudText Typo="Typo.subtitle1">
+                    @L["Notifications_Title"]
+                </MudText>
+                <MudButton
+                    Class="no-transform"
+                    Variant="Variant.Text"
+                    Color="Color.Primary"
+                    Size="Size.Small"
+                    StartIcon="@Icons.Material.Outlined.DoneAll"
+                    Disabled="@(!NotificationService.HasNotifications)"
+                    OnClick="@NotificationService.MarkAllAsReadAsync">
+                    @L["Notifications_MarkAsRead"]
+                </MudButton>
+            </header>
+
+            @if (NotificationService.HasNotifications)
+            {
+                foreach (var notification in NotificationService.LastNotifications)
+                {
+                    <MudDivider/>
+
+                    <MudMenuItem Class="pa-3" Href="@notification.Href">
+                        <div class="d-flex align-center gap-3">
+                            <NotificationAvatar Subject="@notification.Subject"/>
+                            <section>
+                                <header class="d-flex align-center gap-3">
+                                    <MudText Typo="Typo.subtitle2">
+                                        @notification.Title
+                                    </MudText>
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                                        @Customer.Humanize(notification.CreatedAt)
+                                    </MudText>
+                                </header>
+                                <footer class="d-flex align-center gap-3">
+                                    <MudText Typo="Typo.body1">
+                                        @notification.Message
+                                    </MudText>
+
+                                    <section class="d-flex gap-3">
+                                        @foreach (var reward in notification.Money)
+                                        {
+                                            <InternalMoney
+                                                Currency="@reward.Currency"
+                                                Amount="@reward.Amount"
+                                                Horizontal/>
+                                        }
+                                    </section>
+                                </footer>
+                            </section>
+                        </div>
+                    </MudMenuItem>
+                }
+
+                <MudDivider/>
+
+                <footer class="d-flex justify-center py-3">
+                    <MudLink Class="no-transform" Href="@CustomerUrl.Notifications" Typo="Typo.button">
+                        @L["Notifications_All"]
+                    </MudLink>
+                </footer>
+            }
+            else
+            {
+                <section class="d-flex justify-center align-center py-6">
+                    <MudText Class="mud-text-secondary my-12">
+                        @L["Notifications_NothingNew"]
+                    </MudText>
+                </section>
+            }
+        </section>
+    </MudMenu>
+</MudBadge>
+
+@code {
+    private IDisposable? _subscription;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private INotificationService NotificationService { get; init; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; init; } = default!;
+
+    private string Icon =>
+        NotificationService.HasNotifications
+            ? Icons.Material.Outlined.NotificationsActive
+            : Icons.Material.Outlined.NotificationsNone;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _subscription = NotificationService.NotifyOnChange(EventCallback.Factory.Create(this, StateHasChanged));
+        await NotificationService.StartAsync();
+    }
+
+    public void Dispose() =>
+        _subscription?.Dispose();
+
+}

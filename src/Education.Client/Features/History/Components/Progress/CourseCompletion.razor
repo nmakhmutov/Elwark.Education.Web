@@ -1,0 +1,30 @@
+@if (Status == CourseLearningStatus.InProgress)
+{
+    <CourseProgress Class="@Class" Progress="@Completeness" Size="Size" Typo="Typo"/>
+}
+else
+{
+    <CourseCompletionChip Status="@Status" Size="@Size" ShowTooltip/>
+}
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public uint Completeness { get; set; }
+
+    [Parameter, EditorRequired]
+    public CourseLearningStatus Status { get; set; }
+
+    [Parameter]
+    public Size Size { get; set; } = Size.Medium;
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body1;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

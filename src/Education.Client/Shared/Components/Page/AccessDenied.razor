@@ -1,0 +1,16 @@
+@using Education.Client.Clients
+<PageTitle>
+    @Error.Title
+</PageTitle>
+
+<EduErrorContainer Error="@Error"/>
+
+@code {
+
+    private Error Error =>
+        Error.Create(L["Error_AccessDenied"], 403);
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+}

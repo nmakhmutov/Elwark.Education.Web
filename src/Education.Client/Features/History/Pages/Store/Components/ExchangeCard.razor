@@ -1,0 +1,158 @@
+@using Education.Client.Clients
+@using Education.Client.Features.History.Clients.Exchange
+@using Education.Client.Features.History.Clients.Exchange.Requests
+@using Education.Client.Models
+<section class="mud-paper d-flex flex-column gap-3 gap-sm-6 pa-3 pa-sm-6 @Class">
+    <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+        <Loading>
+            <MudSkeleton SkeletonType="SkeletonType.Text"/>
+            <MudSkeleton SkeletonType="SkeletonType.Text"/>
+            <MudSkeleton SkeletonType="SkeletonType.Text"/>
+        </Loading>
+        <ChildContent Context="rates">
+            <div class="d-flex align-center gap-3 gap-sm-6">
+                <MudSelect @bind-Value="@_rate" Label="@L["Exchange_Currency_Title"]" Margin="Margin.Dense" Variant="Variant.Outlined">
+                    @foreach (var rate in rates)
+                    {
+                        <MudSelectItem Value="@rate">
+                            <div class="d-flex align-center">
+                                <MudIcon Size="Size.Small" Icon="@rate.Currency.GetIcon()"/>
+                                <MudText Typo="Typo.body1">@L.GetInternalCurrencyTitle(rate.Currency)</MudText>
+                            </div>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+
+                <MudSelect @bind-Value="@_isBuying" Label="@L["Exchange_Operation_Title"]" Margin="Margin.Dense" Variant="Variant.Outlined">
+                    <MudSelectItem Value="true">
+                        @L["Exchange_Buy_Title"]
+                    </MudSelectItem>
+                    <MudSelectItem Value="false">
+                        @L["Exchange_Sell_Title"]
+                    </MudSelectItem>
+                </MudSelect>
+            </div>
+
+            <div>
+                <MudNumericField
+                    T="uint"
+                    @bind-Value="_amount"
+                    Min="1"
+                    Label="@L["Exchange_Amount"]"
+                    Margin="Margin.Dense"
+                    Variant="Variant.Outlined"
+                    Error="@(IsError())"/>
+            </div>
+
+            <div class="d-flex align-center justify-center">
+                <MudText>@_amount</MudText>
+                <MudIcon Size="Size.Small" Icon="@_rate.Currency.GetIcon()"/>
+                <MudText>&nbsp;=&nbsp;</MudText>
+                @if (_isBuying)
+                {
+                    <MudText>@(_amount * _rate.Selling.Amount)</MudText>
+                    <MudIcon Size="Size.Small" Icon="@_rate.Selling.Currency.GetIcon()"/>
+                }
+                else
+                {
+                    <MudText>@(_amount * _rate.Buying.Amount)</MudText>
+                    <MudIcon Size="Size.Small" Icon="@_rate.Buying.Currency.GetIcon()"/>
+                }
+            </div>
+
+            <LoadingButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                Text="@L["Exchange_Title"]"
+                IsLoading="@_isLoading"
+                OnClick="@ExchangeAsync"
+                Disabled="@(_amount == 0 || IsError())"
+                DisableElevation
+                DisableRipple
+                FullWidth/>
+        </ChildContent>
+    </ApiViewer>
+</section>
+
+@code {
+    private uint _amount = 1;
+    private bool _isBuying = true;
+    private bool _isLoading;
+    private Exchange _rate = default!;
+    private ApiResult<Exchange[]> _result = ApiResult<Exchange[]>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Inject]
+    private IHistoryExchangeClient ExchangeClient { get; init; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required Dictionary<InternalCurrency, long> Wallet { get; set; }
+
+    [Parameter]
+    public EventCallback OnExchanged { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await ExchangeClient.GetRatesAsync();
+        _result = result.Map(rates =>
+        {
+            var data = rates.Where(x => x.ConversionFactor == 1)
+                .Join(rates, x => x.From, x => x.To, (fr, to) =>
+                    new Exchange(
+                        fr.From,
+                        new Exchange.Item(fr.To, to.ConversionFactor),
+                        new Exchange.Item(to.From, (uint)(fr.ConversionFactor * fr.Rate))
+                    )
+                )
+                .ToArray();
+
+            if (data.Length > 0)
+                _rate = data.First();
+
+            return data;
+        });
+    }
+
+    private bool IsError()
+    {
+        var (currency, amount) = _isBuying
+            ? (_rate.Selling.Currency, _rate.Selling.Amount * _amount)
+            : (_rate.Currency, _amount);
+
+        return amount > Wallet.GetValueOrDefault(currency);
+    }
+
+    private async Task ExchangeAsync()
+    {
+        _isLoading = true;
+
+        var (from, to, amount) = _isBuying
+            ? (_rate.Selling.Currency, _rate.Currency, _rate.Selling.Amount * _amount)
+            : (_rate.Currency, _rate.Buying.Currency, _amount);
+
+        try
+        {
+            var result = await ExchangeClient.ExchangeAsync(new ExchangeRequest(from, to, amount));
+
+            await result.MatchAsync(_ => OnExchanged.InvokeAsync(), e => Snackbar.Add(e.Detail, Severity.Error));
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private sealed record Exchange(InternalCurrency Currency, Exchange.Item Selling, Exchange.Item Buying)
+    {
+        internal sealed record Item(InternalCurrency Currency, uint Amount);
+    }
+
+}

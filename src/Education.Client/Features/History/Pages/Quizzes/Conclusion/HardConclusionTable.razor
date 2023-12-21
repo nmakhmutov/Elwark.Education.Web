@@ -1,0 +1,45 @@
+@using Education.Client.Features.History.Clients.Quiz.Model
+<MudTable Class="@Class" Items="@Questions" Breakpoint="Breakpoint.Xs" Elevation="0" Hover>
+    <HeaderContent>
+        <MudTh>@L["Question_Title"]</MudTh>
+        <MudTh>@L["Question_Answered"]</MudTh>
+        <MudTh>@L["Question_Correct"]</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="@L["Question_Title"]">
+            @context.Title
+        </MudTd>
+        <MudTd DataLabel="@L["Question_Answered"]">
+            <MudIcon
+                Size="Size.Small"
+                Icon="@(context.IsAnswered ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close)"/>
+        </MudTd>
+        <MudTd DataLabel="@L["Question_Correct"]">
+            <MudIcon
+                Size="Size.Small"
+                Icon="@(context.Correct > 0 ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close)"/>
+        </MudTd>
+    </RowTemplate>
+    <FooterContent>
+        <MudTh/>
+        <MudTh>
+            @Questions.Count(x => x.IsAnswered) / @Questions.Length
+        </MudTh>
+        <MudTh>
+            @Questions.Sum(x => x.Correct) / @Questions.Length
+        </MudTh>
+    </FooterContent>
+</MudTable>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required QuizConclusionModel.Question[] Questions { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

@@ -1,0 +1,38 @@
+@using Education.Client.Models.Quest
+<section class="mud-paper pa-3 @Class">
+    <div class="d-flex justify-space-between align-end">
+        <MudText Typo="Typo.subtitle1">
+            @Quest.Title
+        </MudText>
+
+        <MudTooltip Text="@Quest.Description" Placement="Placement.Left" Color="Color.Secondary" Arrow Inline>
+            <MudIcon Class="mud-text-secondary" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"/>
+        </MudTooltip>
+    </div>
+
+    <MudProgressLinear
+        Class="mb-1"
+        Max="@Quest.Threshold"
+        Value="@Quest.Score"
+        Color="@(Quest.IsCompleted ? Color.Success : Color.Primary)"/>
+
+    <div class="d-flex justify-space-between align-center">
+        <InternalMonies Monies="@Quest.Rewards" Horizontal/>
+
+        <div class="d-flex align-center">
+            <MetricNumber Value="@Quest.Score" Typo="Typo.body2"/>
+            <div>&nbsp;/&nbsp;</div>
+            <MetricNumber Value="@Quest.Threshold" Typo="Typo.body2"/>
+        </div>
+    </div>
+</section>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public required QuestModel Quest { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

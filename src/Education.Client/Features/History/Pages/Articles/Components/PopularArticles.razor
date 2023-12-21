@@ -1,0 +1,45 @@
+@using Education.Client.Features.History.Clients.Article
+@using Education.Client.Features.History.Clients.Article.Request
+@using Education.Client.Features.History.Clients.Learner
+<EduFillGrid>
+    <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+        <Loading>
+            @for (var i = 0; i < 6; i++)
+            {
+                <SkeletonCard Horizontal HideFooter/>
+            }
+        </Loading>
+        <ChildContent Context="articles">
+            @foreach (var item in articles.Items)
+            {
+                <ArticleCard
+                    Article="@item.Article"
+                    HasQuiz="@item.HasQuiz"
+                    Activity="@item.Activity"
+                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                    Horizontal
+                    HideOverview
+                    OneLineTitle/>
+            }
+        </ChildContent>
+    </ApiViewer>
+</EduFillGrid>
+
+@code {
+
+    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
+        ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+
+    [Inject]
+    private IHistoryArticleClient ArticleClient { get; set; } = default!;
+
+    [Inject]
+    private IHistoryLearnerClient LearnerClient { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var request = new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Popularity, 0, 6);
+        _result = await ArticleClient.GetAsync(request);
+    }
+
+}

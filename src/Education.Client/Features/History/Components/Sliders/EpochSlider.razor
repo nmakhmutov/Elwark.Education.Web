@@ -1,0 +1,23 @@
+<div class="container">
+    @foreach (var epoch in EpochTypeExtensions.List[1..])
+    {
+        var title = L.GetEpochTitle(epoch);
+        <div class="card">
+            <img class="image object-cover object-center" src="@epoch.Image()" alt="@title" loading="lazy"/>
+            <a href="@HistoryUrl.Content.Articles(epoch)">
+                <div class="body pa-3">
+                    <MudText Typo="Typo.h5" Color="Color.Inherit">
+                        @title
+                    </MudText>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+}

@@ -1,0 +1,34 @@
+@using Education.Client.Features.History.Clients.Learner.Request
+<section class="@Class">
+    <MudMenu Icon="@Icons.Material.Outlined.Tune">
+        @foreach (var sort in BookmarksRequest.SortTypes)
+        {
+            <MudMenuItem
+                Class="flex-row-reverse gap-3 gap-sm-6"
+                OnClick="@(() => SortChanged(sort.Key))"
+                Icon="@(Filter.Sort == sort.Key ? Icons.Material.Outlined.Check : null)"
+                IconSize="Size.Small">
+                @L[$"Bookmarks_{sort.Value}"]
+            </MudMenuItem>
+        }
+    </MudMenu>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter]
+    public BookmarksFilter Filter { get; set; } = BookmarksFilter.Empty;
+
+    [Parameter]
+    public EventCallback<BookmarksFilter> FilterChanged { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private Task SortChanged(BookmarksRequest.SortType sort) =>
+        FilterChanged.InvokeAsync(new BookmarksFilter(sort));
+
+}

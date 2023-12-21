@@ -1,0 +1,108 @@
+@page "/history/empires"
+@layout HistoryLayout
+@using Education.Client.Features.History.Clients.Article.Request
+@implements IAsyncDisposable
+
+<style>
+    .mud-timeline-position-start::before {
+        left: 0 !important;
+        width: 96px !important;
+        background-color: #990000 !important;
+    }
+    
+    .mud-timeline-vertical.mud-timeline-position-alternate::before {
+        right: calc(50% - 48px) !important;
+        width: 96px !important;
+        background-color: #990000 !important;
+    }
+    
+    @@media (min-width: 960px) {
+        .timeline-item:nth-child(even) .content-wrapper {
+                display: flex;
+                flex-direction: row;
+                justify-content: end;
+                text-align: end;
+        }
+    }
+</style>
+
+<PageTitle>
+    @L["History_Empires_Title"]
+</PageTitle>
+
+<MudTimeline TimelinePosition="@_timelinePosition" DisableModifiers>
+    <MudTimelineItem HideDot>
+        <div class="ma-3 ma-sm-6">
+            <h2 class="subtitle">
+                @L["History_Empire_Subtitle"]
+            </h2>
+            <h1 class="title">
+                @L["History_Empires_Title"]
+            </h1>
+            <MudSelect T="GetEmpiresRequest.SortType"
+                       Class="sort"
+                       Label="@L["History_Empire_SortBy"]"
+                       Variant="Variant.Text"
+                       Value="@_sort"
+                       ValueChanged="@SortChanged"
+                       Dense>
+                <MudSelectItem Value="@GetEmpiresRequest.SortType.Area">
+                    @L["History_Empire_MaxArea"]
+                </MudSelectItem>
+                <MudSelectItem Value="@GetEmpiresRequest.SortType.Population">
+                    @L["History_Empire_MaxPopulation"]
+                </MudSelectItem>
+                <MudSelectItem Value="@GetEmpiresRequest.SortType.Duration">
+                    @L["History_Empire_MaxDuration"]
+                </MudSelectItem>
+            </MudSelect>
+        </div>
+    </MudTimelineItem>
+
+    <Virtualize @ref="@(_empireVirtualize)" ItemsProvider="EmpiresProvider" ItemSize="240">
+        <ItemContent Context="empire">
+            <MudTimelineItem Class="timeline-item">
+                <ItemDot>
+                    <MudAvatar Image="@empire.ThumbnailUrl" Size="Size.Large"/>
+                </ItemDot>
+                <ItemContent>
+                    <div class="content-wrapper">
+                        <div class="content">
+                            <div>
+                                <MudLink Typo="Typo.h5" Href="@HistoryUrl.Content.Article(empire.Id)">
+                                    @empire.Title
+                                </MudLink>
+                            </div>
+                            <div class="d-inline-flex align-center">
+                                <HistoryDate Date="@empire.Founded"/>
+                                <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
+                                <HistoryDate Date="@empire.Dissolved"/>
+                            </div>
+                            <MudText Typo="Typo.body1" Class="my-3">
+                                @empire.Overview
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @L["History_Empire_MaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @L["History_Empire_MaxPopulation"]: @empire.MaxPopulation.ToString("N0")
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @L["History_Empire_Duration"]:
+                                @if (empire.Duration.HasValue)
+                                {
+                                    @empire.Duration.Value.ToString("N0")
+                                    <small>&nbsp;@L["History_Years"].Value.ToLowerInvariant()</small>
+                                }
+                                else
+                                {
+                                    @L["Unknown_Title"]
+                                }
+                            </MudText>
+                        </div>
+                    </div>
+                </ItemContent>
+            </MudTimelineItem>
+        </ItemContent>
+    </Virtualize>
+</MudTimeline>

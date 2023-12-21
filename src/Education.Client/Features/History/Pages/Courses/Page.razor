@@ -1,0 +1,54 @@
+@page "/history/courses"
+@using Education.Client.Features.History.Clients.Course.Request
+@layout HistoryLayout
+
+<PageTitle>
+    @L["Courses_Title"]
+</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6" MaxWidth="@EduWidth.W1600">
+    <UnderlinedTitle
+        Class="mb-6"
+        Title="@L["Courses_Trending_Title"]"
+        Href="@HistoryUrl.Content.Courses(GetCourseRequest.SortType.Trending)"
+        HrefTitle="@L["Button_ViewAll"]"/>
+
+    <TrendingCourses/>
+</EduContainer>
+
+<EduContainer Class="mb-3 mb-sm-6 grey darken-4" MaxWidth="@EduWidth.W1600">
+    <DailyCourse Class="my-6 my-sm-12"/>
+</EduContainer>
+
+<EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
+    <section class="wrapper mb-3 mb-sm-6">
+        <div class="grid">
+            <UnderlinedTitle
+                Class="mb-3"
+                Title="@L["Courses_Resent_Title"]"
+                Href="@HistoryUrl.Content.Courses(GetCourseRequest.SortType.Newest)"
+                HrefTitle="@L["Button_ViewAll"]"/>
+
+            <RecentCourses/>
+        </div>
+
+        <aside class="sidebar">
+            <div>
+                <UnderlinedTitle
+                    Class="mb-3"
+                    Title="@L["Courses_TopRated_Title"]"
+                    Href="@HistoryUrl.Content.Courses(GetCourseRequest.SortType.Popularity)"
+                    HrefTitle="@L["Button_ViewAll"]"/>
+
+                <PopularCourses/>
+            </div>
+        </aside>
+    </section>
+</EduContainer>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+}

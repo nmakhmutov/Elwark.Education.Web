@@ -1,0 +1,70 @@
+@page "/history/articles/{category}"
+@using Education.Client.Features.History.Clients.Article.Request
+@layout HistoryLayout
+
+<PageTitle>
+    @L["Articles_Title"]
+</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6">
+    <section class="header">
+        <PageBreadcrumbsHeader Class="title" Items="@Breadcrumbs"/>
+
+        <MudSelect T="EpochType"
+                   Value="@_epoch"
+                   ValueChanged="@OnEpochChange"
+                   Label="@L["History_Epoch_Title"]"
+                   Margin="Margin.Dense"
+                   Variant="Variant.Text">
+            <MudSelectItem Value="@EpochType.None">
+                @L["History_Epoch_Any"]
+            </MudSelectItem>
+            @foreach (var epoch in EpochTypeExtensions.List[1..])
+            {
+                <MudSelectItem Value="@epoch">
+                    @L.GetEpochTitle(epoch)
+                </MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudSelect T="GetArticlesRequest.SortType"
+                   Value="@_sort"
+                   ValueChanged="@OnSortChange"
+                   Label="@L["SortBy_Title"]"
+                   Margin="Margin.Dense"
+                   Variant="Variant.Text">
+            <MudSelectItem Value="@GetArticlesRequest.SortType.Newest">
+                @L["ContentSort_Resent_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetArticlesRequest.SortType.Trending">
+                @L["ContentSort_Trending_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetArticlesRequest.SortType.Popularity">
+                @L["ContentSort_TopRated_Title"]
+            </MudSelectItem>
+        </MudSelect>
+    </section>
+</EduContainer>
+
+<ApiViewer Result="_result" OnReloadClick="@OnInitializedAsync" Context="result">
+    <EduContainer>
+        <EduFillGrid Class="mb-6 mb-sm-12">
+            @foreach (var (article, activity, hasQuiz) in result.Items)
+            {
+                <ArticleCard
+                    Article="@article"
+                    HasQuiz="@hasQuiz"
+                    Activity="@activity"
+                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+            }
+        </EduFillGrid>
+
+        <MudPagination
+            Class="d-flex justify-center py-3 py-sm-6"
+            Selected="@CurrentPage"
+            SelectedChanged="@OnPagination"
+            Count="@TotalPages"
+            DisableElevation
+            Rectangular/>
+    </EduContainer>
+</ApiViewer>

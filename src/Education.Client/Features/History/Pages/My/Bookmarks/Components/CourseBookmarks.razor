@@ -1,0 +1,118 @@
+@using Education.Client.Features.History.Clients.Learner
+@using Education.Client.Features.History.Clients.Learner.Request
+@if (_isEmpty)
+{
+    <NoContent Class="mt-6 mt-sm-12" Title="@L["Bookmarks_NoCourses"]" Icon="@EduIcons.Bookmarks"/>
+}
+else
+{
+    <Virtualize @ref="@(_virtualize)" ItemsProvider="BookmarkProvider" ItemSize="120">
+        <Placeholder>
+            <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
+                <div class="image">
+                    <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px"/>
+                </div>
+                <div class="title">
+                    <MudSkeleton Class="my-4" SkeletonType="SkeletonType.Text" Width="60%" Height="30px"/>
+                </div>
+                <div class="rating">
+                    <MudRating MaxValue="5" SelectedValue="0" Disabled/>
+                </div>
+                <div class="completion">
+                    <CourseCompletion Status="CourseLearningStatus.NotStarted" Completeness="0"/>
+                </div>
+                <div class="actions">
+                    <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
+                </div>
+            </div>
+        </Placeholder>
+        <ItemContent Context="item">
+            <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
+                <div class="image">
+                    <MudAvatar Size="Size.Large" Image="@item.Course.ThumbnailUrl"/>
+                </div>
+                <div class="title">
+                    <MudLink Href="@HistoryUrl.Content.Course(item.Course.Id)" Typo="Typo.h6">
+                        @item.Course.Title
+                    </MudLink>
+                </div>
+                <div class="rating">
+                    <ContentRating
+                        Class="d-inline-flex flex-column align-center"
+                        Rating="@item.Course.Rating"
+                        ShowTooltip/>
+                </div>
+                <div class="completion">
+                    <CourseCompletion
+                        Status="@(item.Activity?.Status ?? CourseLearningStatus.NotStarted)"
+                        Completeness="@(item.Activity?.Completeness ?? 0)"/>
+                </div>
+                <div class="actions">
+                    <BookmarkButton
+                        Id="@item.Course.Id"
+                        IsBookmarked="@(item.Activity?.IsBookmarked ?? false)"
+                        OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+                </div>
+            </div>
+        </ItemContent>
+    </Virtualize>
+}
+
+@code {
+    private string? _token;
+    private bool _isEmpty;
+    private Virtualize<UserCourseOverviewModel>? _virtualize;
+    private readonly HashSet<UserCourseOverviewModel> _items = [];
+
+    [Inject]
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required BookmarksRequest.SortType Sort { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (_virtualize is null)
+            return Task.CompletedTask;
+
+        _items.Clear();
+
+        return _virtualize.RefreshDataAsync();
+    }
+
+    private async ValueTask<ItemsProviderResult<UserCourseOverviewModel>> BookmarkProvider(ItemsProviderRequest request)
+    {
+        int GetLength() =>
+            _items.Count + (string.IsNullOrEmpty(_token) ? 0 : 1);
+
+        var items = _items.Skip(request.StartIndex).Take(request.Count);
+
+        var isRangeAvailable = _items.Count > (request.StartIndex + 1) * request.Count ||
+                               (_items.Count > 0 && string.IsNullOrEmpty(_token));
+
+        if (isRangeAvailable || request.Count == 0)
+            return new ItemsProviderResult<UserCourseOverviewModel>(items, GetLength());
+
+        return (await LearnerClient.GetCourseBookmarksAsync(new BookmarksRequest(Sort, request.Count, _token)))
+            .Map(x =>
+            {
+                _token = x.Next;
+
+                foreach (var item in x.Items)
+                    _items.Add(item);
+
+                if (!_isEmpty && _items.Count == 0)
+                {
+                    _isEmpty = true;
+                    StateHasChanged();
+                }
+
+                return new ItemsProviderResult<UserCourseOverviewModel>(items, GetLength());
+            })
+            .UnwrapOr(new ItemsProviderResult<UserCourseOverviewModel>(items, 0));
+    }
+
+}

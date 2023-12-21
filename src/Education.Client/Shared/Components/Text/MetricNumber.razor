@@ -1,0 +1,59 @@
+@using Education.Client.Extensions
+@typeparam T
+
+@if (_tooltip is null)
+{
+    <MudText Class="@Class" Typo="Typo" Align="@Align" Color="@Color" Style="@Style">
+        @_value@EndIcon
+    </MudText>
+}
+else
+{
+    <MudTooltip Text="@_tooltip" Placement="@Placement">
+        <MudText Class="@Class" Typo="@Typo" Align="@Align" Color="@Color" Style="@Style">
+            @_value@EndIcon
+        </MudText>
+    </MudTooltip>
+}
+
+@code {
+    private string _value = string.Empty;
+    private string? _tooltip;
+
+    [Parameter, EditorRequired]
+    public T Value { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body1;
+
+    [Parameter]
+    public Align Align { get; set; }
+
+    [Parameter]
+    public Color Color { get; set; } = Color.Inherit;
+
+    [Parameter]
+    public string? EndIcon { get; set; }
+
+    [Parameter]
+    public Placement Placement { get; set; } = Placement.Bottom;
+
+    protected override void OnParametersSet() =>
+        (_value, _tooltip) = Value switch
+        {
+            int i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
+            uint i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
+            long i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
+            ulong i => (i.ToMetric("G"), i > 999 ? i.ToString("N0") : null),
+            double i => (i.ToMetric("G"), i > 999 ? i.ToString("N") : null),
+            string s => (s, null),
+            _ => (Value?.ToString() ?? string.Empty, null)
+        };
+
+}

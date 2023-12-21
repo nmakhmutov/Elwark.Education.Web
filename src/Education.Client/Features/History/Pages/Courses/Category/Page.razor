@@ -1,0 +1,53 @@
+@page "/history/courses/{category}"
+@using Education.Client.Features.History.Clients.Course.Request
+@layout HistoryLayout
+
+<PageTitle>
+    @L["Courses_Title"]
+</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6">
+    <section class="header">
+        <PageBreadcrumbsHeader Class="title" Items="@Breadcrumbs"/>
+
+        <MudSelect T="GetCourseRequest.SortType"
+                   Value="@_sort"
+                   ValueChanged="@OnSortChange"
+                   Label="@L["SortBy_Title"]"
+                   Margin="Margin.Dense"
+                   Variant="Variant.Text">
+            <MudSelectItem Value="@GetCourseRequest.SortType.Newest">
+                @L["ContentSort_Resent_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetCourseRequest.SortType.Trending">
+                @L["ContentSort_Trending_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetCourseRequest.SortType.Popularity">
+                @L["ContentSort_TopRated_Title"]
+            </MudSelectItem>
+        </MudSelect>
+    </section>
+</EduContainer>
+
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="result">
+    <EduContainer>
+        <EduFillGrid Class="mb-6 mb-sm-12">
+            @foreach (var (course, activity, hasExamination) in result.Items)
+            {
+                <CourseCard
+                    Course="@course"
+                    Activity="@activity"
+                    HasExamination="@hasExamination"
+                    OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+            }
+        </EduFillGrid>
+
+        <MudPagination
+            Class="d-flex justify-center py-3 py-sm-6"
+            Rectangular
+            DisableElevation
+            Selected="@CurrentPage"
+            SelectedChanged="@OnPagination"
+            Count="@TotalPages"/>
+    </EduContainer>
+</ApiViewer>

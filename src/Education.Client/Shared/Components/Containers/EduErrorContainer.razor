@@ -1,0 +1,88 @@
+@using Education.Client.Clients
+<EduContainer Class="@Class" MaxWidth="EduWidth.W960">
+    @if (Error.Status == 404)
+    {
+        <div class="d-flex justify-center mb-3">
+            <MudImage Class="w-max-480 w-100" Src="/images/illustration/not_found.svg"/>
+        </div>
+    }
+
+    <MudText Class="mb-3" Typo="Typo.h2" Align="Align.Center">
+        @($"{Error.Status}: {Error.Title}")
+    </MudText>
+
+    <MudText Class="mb-3 mud-text-secondary" Typo="Typo.body1" Align="Align.Center">
+        @GetErrorDetail()
+    </MudText>
+
+    <div class="d-flex justify-center gap-3">
+        @if (Error.Status > 499)
+        {
+            <LoadingButton
+                IsLoading="@_isLoading"
+                Variant="Variant.Outlined"
+                Color="Color.Primary"
+                OnClick="@Reload"
+                Text="@L["Button_Reload"]"
+                DisableElevation/>
+        }
+
+        <MudButton
+            DisableElevation
+            Variant="Variant.Text"
+            Color="Color.Primary"
+            Link="@EduUrl.Root">
+            @L["BackToHome_Button"]
+        </MudButton>
+    </div>
+</EduContainer>
+
+@code {
+    private bool _isLoading;
+
+    [Inject]
+    private NavigationManager Navigation { get; init; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public Error Error { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnReloadClick { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task Reload()
+    {
+        _isLoading = true;
+
+        try
+        {
+            if (OnReloadClick.HasDelegate)
+            {
+                await OnReloadClick.InvokeAsync();
+            }
+            else
+            {
+                Navigation.NavigateTo(Navigation.Uri, true);
+            }
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private string GetErrorDetail() =>
+        Error switch
+        {
+            { Detail: not null } => Error.Detail,
+            { Status: 404 } => L["Error_NotFound_Description"],
+            { Status: 500 } => L["Error_InternalServerError_Description"],
+            _ => L["Error_Description"]
+        };
+
+}

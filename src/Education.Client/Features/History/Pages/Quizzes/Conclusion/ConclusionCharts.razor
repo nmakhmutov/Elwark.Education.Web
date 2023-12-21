@@ -1,0 +1,38 @@
+@using Education.Client.Features.History.Clients.Quiz.Model
+@using Education.Client.Extensions
+<div class="statistics">
+    <PercentChartCard
+        Title="@L["TimeSpent_Title"]"
+        Subtitle="@($"{ConclusionModel.TimeSpent.Raw.Humanize(L)} / {ConclusionModel.TimeSpent.Possible.Humanize(L)}")"
+        Percentage="@Math.Round(ConclusionModel.TimeSpent.Scaled * 100)"/>
+
+    <PercentChartCard
+        Title="@L["Score_Title"]"
+        Subtitle="@($"{ConclusionModel.TotalScore.Raw.ToMetric()} / {ConclusionModel.TotalScore.Possible.ToMetric()}")"
+        Percentage="@Math.Round(ConclusionModel.TotalScore.Scaled * 100)"/>
+
+    <PercentChartCard
+        Title="@L["Score_Questions_Title"]"
+        Subtitle="@($"{ConclusionModel.QuestionScore.Raw.ToMetric()} / {ConclusionModel.QuestionScore.Possible.ToMetric()}")"
+        Percentage="@Math.Round(ConclusionModel.QuestionScore.Scaled * 100)"/>
+
+    <PercentChartCard
+        Title="@L["Score_NoMistakesBonus_Title"]"
+        Subtitle="@($"{ConclusionModel.NoMistakeScore.Raw.ToMetric()} / {ConclusionModel.NoMistakeScore.Possible.ToMetric()}")"
+        Percentage="@Math.Round(ConclusionModel.NoMistakeScore.Scaled * 100)"/>
+
+    <PercentChartCard
+        Title="@L["Score_SpeedBonus_Title"]"
+        Subtitle="@($"{ConclusionModel.SpeedScore.Raw.ToMetric()} / {ConclusionModel.SpeedScore.Possible.ToMetric()}")"
+        Percentage="@Math.Round(ConclusionModel.SpeedScore.Scaled * 100)"/>
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter]
+    public QuizConclusionModel ConclusionModel { get; set; } = default!;
+
+}

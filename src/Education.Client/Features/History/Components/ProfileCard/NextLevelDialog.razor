@@ -1,0 +1,68 @@
+@using Education.Client.Features.History.Clients.Store.Model
+@using Education.Client.Features.History.Clients.User.Model
+@using Education.Client.Features.History.Clients.Store
+<MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
+    <DialogContent>
+        <div class="d-flex justify-space-between align-center gap-3 gap-sm-6">
+            <div style="width: 48px">&nbsp;</div>
+            <MudText Typo="Typo.h3" Align="Align.Center">@FullName</MudText>
+            <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@(() => MudDialog.Close())"/>
+        </div>
+
+        <UserLevelProgress
+            Class="w-max-600 mx-auto mb-3 mb-sm-6"
+            Level="@Level.Current"
+            Experience="@Level.Experience"
+            Threshold="@Level.Threshold"
+            ShowDetails/>
+
+        <div class="mud-background rounded pa-3 pa-sm-6">
+            <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+                <ChildContent Context="upcoming">
+                    <MudText Class="mb-3 mb-sm-6" Typo="Typo.subtitle1" Align="Align.Center">
+                        <b>@L["User_ReachLevelToUnlock", upcoming.NextLevel]:</b>
+                    </MudText>
+
+                    <InventoryGrid Class="justify-center" Inventory="@upcoming.Inventories" Context="inventory">
+                        <InventoryInfoCard
+                            Title="@inventory.Title"
+                            IconUrl="@inventory.ImageUrl"
+                            Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
+                            Overview="@inventory.Overview"/>
+                    </InventoryGrid>
+                </ChildContent>
+                <Loading>
+                    <div class="d-flex justify-center">
+                        <MudSkeleton Class="mb-3 mb-sm-6" SkeletonType="SkeletonType.Text" Width="30%"/>
+                    </div>
+                    <InventoryGrid Class="justify-center" Inventory="@(Enumerable.Range(0, 2))">
+                        <InventorySkeletonCard/>
+                    </InventoryGrid>
+                </Loading>
+            </ApiViewer>
+        </div>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private ApiResult<UpcomingInventoriesModel> _result = ApiResult<UpcomingInventoriesModel>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IHistoryStoreClient StoreClient { get; init; } = default!;
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required string FullName { get; set; }
+
+    [Parameter, EditorRequired]
+    public required UserLevelModel Level { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await StoreClient.GetUpcomingInventoriesAsync();
+
+}

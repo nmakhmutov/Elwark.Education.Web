@@ -1,0 +1,192 @@
+@using Education.Client.Services
+@using Education.Client.Features.History.Clients.Article.Model
+@using Education.Client.Models
+@using Education.Client.Clients
+<header class="background" style="@_style">
+    <section class="d-flex flex-column justify-center align-center h-100">
+        <Breadcrumbs Items="@Breadcrumbs" Typo="Typo.subtitle1"/>
+
+        <ArticleTitle Class="mb-3">
+            @Empire.Title
+        </ArticleTitle>
+
+        <section class="d-flex flex-wrap justify-center align-center">
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Secondary">
+                    @L["History_Empire_Founded"]
+                </MudText>
+                <HistoryDate Date="@Empire.Founded" Typo="Typo.h6" Align="Align.Center"/>
+            </div>
+
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Secondary">
+                    @L["History_Empire_Dissolved"]
+                </MudText>
+                <HistoryDate Date="@Empire.Dissolved" Typo="Typo.h6" Align="Align.Center"/>
+            </div>
+
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Secondary">
+                    @L["History_Empire_Duration"]
+                </MudText>
+                <MudText Typo="Typo.h6" Align="Align.Center">
+                    @if (Empire.Duration.HasValue)
+                    {
+                        @($"{Empire.Duration.Value:N0} {L["History_Years"].Value.ToLowerInvariant()}")
+                    }
+                    else
+                    {
+                        @L["Unknown_Title"]
+                    }
+                </MudText>
+            </div>
+
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Secondary">
+                    @L["History_Empire_MaxArea"]
+                </MudText>
+                <MudText Typo="Typo.h6" Align="Align.Center">
+                    @if (Empire.MaxArea > 0)
+                    {
+                        @Empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                    }
+                    else
+                    {
+                        @L["Unknown_Title"]
+                    }
+                </MudText>
+            </div>
+
+            <div class="pa-3 pa-sm-6">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Secondary">
+                    @L["History_Empire_MaxPopulation"]
+                </MudText>
+                <MudText Typo="Typo.h6" Align="Align.Center">
+                    @if (Empire.MaxPopulation > 0)
+                    {
+                        @Empire.MaxPopulation.ToString("N0")
+                    }
+                    else
+                    {
+                        @L["Unknown_Title"]
+                    }
+                </MudText>
+            </div>
+        </section>
+
+        <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
+            <MudText Typo="Typo.subtitle1" Align="Align.Justify">
+                @Empire.Description
+            </MudText>
+        </EduContainer>
+    </section>
+</header>
+
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
+    <ContentGrid>
+        <Header>
+            <ContentToolbarCard Formatter="@Formatter"/>
+            <ArticleInformation TimeToRead="@Empire.TimeToRead" Rating="@Empire.Rating"/>
+        </Header>
+
+        <Content>
+            <ContentCard Formatter="@Formatter" Content="@Empire.Content"/>
+        </Content>
+
+        <Sidebar>
+            @if (Empire.Flag is not null)
+            {
+                <ImageWithOverviewCard
+                    Title="@L["History_Empire_Flag"]"
+                    Source="@Empire.Flag.Source"
+                    Overview="@Empire.Flag.Overview"/>
+            }
+
+            @if (Empire.Map is not null)
+            {
+                <ImageWithOverviewCard
+                    Title="@L["History_Empire_Map"]"
+                    Source="@Empire.Map.Source"
+                    Overview="@Empire.Map.Overview"/>
+            }
+
+            <AuthorizeView>
+                <QuizCard
+                    ArticleId="@Empire.Id"
+                    HasEasyQuiz="@HasEasyQuiz"
+                    HasHardQuiz="@HasHardQuiz"
+                    Activity="@Activity"/>
+
+                <UserToolbarCard
+                    ArticleId="@Empire.Id"
+                    IsLiked="@Activity?.IsLiked"
+                    IsBookmarked="@Activity?.IsBookmarked"
+                    OnBookmarkClick="@OnBookmarkClick"
+                    OnLikeClick="@OnLikeClick"
+                    OnDislikeClick="@OnDislikeClick"/>
+            </AuthorizeView>
+        </Sidebar>
+    </ContentGrid>
+
+    <RelatedArticles
+        Class="mt-sm-6"
+        ArticleId="@Empire.Id"
+        Title="@L["Articles_Related_Title"]"
+        OnBookmarkClick="@OnBookmarkClick"/>
+</EduContainer>
+
+@code {
+    private string? _style;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private ContentFormatter Formatter { get; init; } = default!;
+
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L.GetEpochTitle(Empire.Epoch), HistoryUrl.Content.Articles(Empire.Epoch))
+    ];
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [Parameter, EditorRequired]
+    public required ArticleDetail.EmpireModel Empire { get; set; }
+
+    [Parameter, EditorRequired]
+    public required UserArticleActivityModel? Activity { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool HasEasyQuiz { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool HasHardQuiz { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        await Formatter.InitializeAsync();
+
+    protected override void OnParametersSet()
+    {
+        var overlay = $"--mud-palette-overlay-{(ThemeProvider?.IsDarkMode == true ? "dark" : "light")}";
+
+        _style = StyleBuilder
+            .Default("background", $"linear-gradient(0deg, var(--mud-palette-background) 5%, var({overlay}) 100%), url('{Empire.ImageUrl}')")
+            .AddStyle("background-size", "cover")
+            .AddStyle("background-repeat", "no-repeat")
+            .AddStyle("background-position", "top center")
+            .Build();
+    }
+
+}

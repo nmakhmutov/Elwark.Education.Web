@@ -1,0 +1,74 @@
+@using Education.Client.Clients
+@using Education.Client.Features.History.Clients.Article
+@using Education.Client.Features.History.Clients.Article.Request
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+    <Loading>
+        <div class="grid @Class">
+            <div class="image h-100">
+                <MudSkeleton Style="width: 100%; height: 100%" SkeletonType="SkeletonType.Rectangle"/>
+            </div>
+            <article class="text">
+                <MudSkeleton Class="mb-12" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Class="mb-12" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Class="mb-12" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Class="mb-12" SkeletonType="SkeletonType.Text"/>
+                <MudSkeleton Class="mb-12" SkeletonType="SkeletonType.Rectangle"/>
+            </article>
+        </div>
+    </Loading>
+    <ChildContent Context="item">
+        <div class="grid @Class">
+            <div class="image">
+                <img src="@item.Article.ThumbnailUrl" alt="@item.Article.Title" loading="lazy"/>
+            </div>
+            <article class="text">
+                <MudText Class="mb-12" Typo="Typo.subtitle1" Color="Color.Default">
+                    <em>
+                        From today's featured article
+                    </em>
+                </MudText>
+
+                <ContentRating Class="d-flex align-center my-3" Rating="@item.Article.Rating" ShowTooltip/>
+
+                <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)" Typo="Typo.h4" Color="Color.Inherit">
+                    @item.Article.Title
+                </MudLink>
+
+                <MudText Class="my-6" Typo="Typo.subtitle1">
+                    @item.Article.Overview
+                </MudText>
+
+                <MudButton
+                    Link="@HistoryUrl.Content.Article(item.Article.Id)"
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    DisableElevation>
+                    @L["Button_Details"]
+                </MudButton>
+            </article>
+        </div>
+    </ChildContent>
+</ApiViewer>
+
+@code {
+
+    private ApiResult<UserArticleOverviewModel> _result =
+        ApiResult<UserArticleOverviewModel>.Loading();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IHistoryArticleClient ArticleClient { get; init; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var request = new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 10, 1);
+        _result = (await ArticleClient.GetAsync(request))
+            .Map(x => x.Items.First());
+    }
+
+}

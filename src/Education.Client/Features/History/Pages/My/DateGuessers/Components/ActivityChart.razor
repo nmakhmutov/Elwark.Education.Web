@@ -1,0 +1,77 @@
+@using ApexCharts
+@using Education.Client.Features.History.Clients.Learner.Model.DateGuesser
+<ApexChart @ref="@_chart" TItem="DateGuessersStatisticsModel.ProgressModel" Options="_options">
+    <ApexPointSeries
+        TItem="DateGuessersStatisticsModel.ProgressModel"
+        Items="Activities"
+        Name="@L["History_DateGuessers_Small"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten3 })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString(DateFormat))"
+        YValue="@(x => x.Small)"/>
+
+    <ApexPointSeries
+        TItem="DateGuessersStatisticsModel.ProgressModel"
+        Items="Activities"
+        Name="@L["History_DateGuessers_Medium"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten1 })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString(DateFormat))"
+        YValue="@(x => x.Medium)"/>
+
+    <ApexPointSeries
+        TItem="DateGuessersStatisticsModel.ProgressModel"
+        Items="Activities"
+        Name="@L["History_DateGuessers_Large"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Darken2 })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString(DateFormat))"
+        YValue="@(x => x.Large)"/>
+</ApexChart>
+
+@code {
+    private ApexChart<DateGuessersStatisticsModel.ProgressModel>? _chart;
+
+    private ApexChartOptions<DateGuessersStatisticsModel.ProgressModel> _options = new()
+    {
+        Legend = new Legend
+        {
+            Position = LegendPosition.Top
+        },
+        Chart = new Chart
+        {
+            Width = "100%",
+            Height = "350px",
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)"
+        },
+        Theme = new Theme()
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [Parameter]
+    public string DateFormat { get; set; } = "dd MMM";
+
+    [Parameter, EditorRequired]
+    public required DateGuessersStatisticsModel.ProgressModel[] Activities { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        var current = ThemeProvider is { IsDarkMode: true } ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
+    }
+
+}

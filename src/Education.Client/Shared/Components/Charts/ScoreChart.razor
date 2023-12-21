@@ -1,0 +1,65 @@
+@using ApexCharts
+@using Education.Client.Features.History.Clients.Quiz.Model
+<div class="@Class">
+    <div class="d-flex justify-center">
+        <div class="wrapper">
+            <ApexChart TItem="Data" Options="@Options">
+                <ApexPointSeries
+                    TItem="Data"
+                    Items="@Series"
+                    SeriesType="SeriesType.Donut"
+                    XValue="@(x => x.Name)"
+                    YAggregate="@(x => x.Sum(e => e.Value))"/>
+            </ApexChart>
+        </div>
+    </div>
+
+    <ChartList Items="@Items"/>
+</div>
+
+@code {
+
+    private ApexChartOptions<Data> Options =>
+        new()
+        {
+            Chart = new Chart
+            {
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Legend = new Legend
+            {
+                Show = false
+            },
+            Colors = [Colors.Green.Accent4, Colors.Blue.Default, Colors.DeepPurple.Default]
+        };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public ScoreModel Value { get; set; } = default!;
+
+    private ChartList.Item[] Items =>
+        new[]
+        {
+            new ChartList.Item(L["Score_Questions_Title"], Value.Questions, Colors.Green.Accent4),
+            new ChartList.Item(L["Score_SpeedBonus_Title"], Value.Speed, Colors.Blue.Default),
+            new ChartList.Item(L["Score_NoMistakesBonus_Title"], Value.NoMistakes, Colors.DeepPurple.Default),
+            new ChartList.Item(L["Score_Total_Title"], Value.Total, null)
+        };
+
+    private Data[] Series =>
+        new Data[]
+        {
+            new(L["Score_Questions_Title"], Value.Questions),
+            new(L["Score_SpeedBonus_Title"], Value.Speed),
+            new(L["Score_NoMistakesBonus_Title"], Value.NoMistakes)
+        };
+
+    private sealed record Data(string Name, decimal Value);
+
+}

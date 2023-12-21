@@ -1,0 +1,47 @@
+@using Education.Client.Features.History.Clients.Flow.Model
+@using Education.Client.Models.Test
+<EduContainer Class="@Class" MaxWidth="EduWidth.W1280">
+    <section class="grid">
+        <QuestionForm
+            Class="flow mud-paper pa-3 pa-sm-6"
+            Question="@Flow.Question"
+            CorrectAnswer="@CorrectAnswer"
+            OnAnswerClick="@OnAnswerClick"
+            OnNextTitle="@(L["Question_Next"])"
+            OnNextClick="@OnNextClick">
+        </QuestionForm>
+
+        <aside class="sidebar">
+            <FlowBankCard
+                Class="bank"
+                Streak="@Flow.Streak"
+                Bank="@Flow.Bank"
+                OnBankCollectClick="@OnBankCollectClick"/>
+        </aside>
+    </section>
+</EduContainer>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required FlowModel Flow { get; set; }
+
+    [Parameter, EditorRequired]
+    public required AnswerResult? CorrectAnswer { get; set; }
+
+    [Parameter, EditorRequired]
+    public required EventCallback<UserAnswerModel> OnAnswerClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public required EventCallback OnNextClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public required EventCallback OnBankCollectClick { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

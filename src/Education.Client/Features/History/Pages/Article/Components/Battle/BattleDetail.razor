@@ -1,0 +1,186 @@
+@using Education.Client.Services
+@using Education.Client.Features.History.Clients.Article.Model
+@using Education.Client.Models
+@using Education.Client.Clients
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
+    <header class="header">
+        <article>
+            <div class="d-flex justify-center">
+                <Breadcrumbs Class="pa-0" Items="@Breadcrumbs"/>
+            </div>
+
+            <ArticleTitle Class="mud-typography-align-center mb-3">
+                @Battle.Title
+            </ArticleTitle>
+
+            <div class="d-flex justify-center mb-6">
+                @if (Battle.Started == Battle.Finished)
+                {
+                    <HistoryDate Typo="Typo.subtitle1" Date="@Battle.Started"/>
+                }
+                else
+                {
+                    <div class="d-flex align-center">
+                        <HistoryDate Typo="Typo.subtitle1" Date="@Battle.Started"/>
+
+                        <MudText Typo="Typo.subtitle1" Class="mx-3">&#8212;</MudText>
+
+                        <HistoryDate Typo="Typo.subtitle1" Date="@Battle.Finished"/>
+                    </div>
+                }
+            </div>
+            <MudText Class="mb-3 mb-sm-6" Typo="Typo.body1" Align="Align.Center">
+                @Battle.Description
+            </MudText>
+        </article>
+
+        <aside class="battle-image">
+            <img class="image object-cover object-center mx-auto" src="@Battle.ImageUrl" alt="@Battle.Title" loading="lazy"/>
+        </aside>
+    </header>
+
+    <ContentGrid>
+        <Header>
+            <ContentToolbarCard Formatter="@Formatter"/>
+            <ArticleInformation TimeToRead="@Battle.TimeToRead" Rating="@Battle.Rating"/>
+        </Header>
+
+        <Content>
+            <ContentCard Formatter="@Formatter" Content="@Battle.Content"/>
+        </Content>
+
+        <Sidebar>
+            <section class="map mud-paper pa-3 pa-sm-6">
+                @if (Battle.Map?.Source is not null)
+                {
+                    <a href="@Battle.Map.Source" target="_blank">
+                        <img class="map-image object-contain object-center" src="@Battle.Map.Source" alt="@Battle.Map.Overview" loading="lazy"/>
+                    </a>
+
+                    <MudText Class="mb-3 mb-sm-6" Typo="Typo.body2" Align="Align.Center">
+                        @Battle.Map.Overview
+                    </MudText>
+                }
+
+                <MudText Typo="Typo.h6">
+                    @L["History_Battle_Location"]
+                </MudText>
+                <StyledMarkupString Class="mb-3 mb-sm-6" Content="@Battle.Location" DisableParagraphIndent/>
+                <MudText Typo="Typo.h6">
+                    @L["History_Battle_Result"]
+                </MudText>
+                <StyledMarkupString Content="@Battle.Result" DisableParagraphIndent/>
+            </section>
+
+            @if (_conflictParties.Count > 0)
+            {
+                <section class="conflict-parties mud-paper pa-3 pa-sm-6">
+                    @foreach (var item in _conflictParties)
+                    {
+                        <div class="mb-3 mb-sm-6">
+                            <MudText Class="mb-3" Typo="Typo.h6" Align="Align.Center">
+                                @L[$"History_Battle_{item.Key}"]
+                            </MudText>
+                            <div class="d-flex justify-space-around gap-3">
+                                @for (var i = 0; i < item.Value.Count; i++)
+                                {
+                                    <StyledMarkupString Class="flex-1" Content="@item.Value[i]" DisableParagraphIndent/>
+                                    @if (i < item.Value.Count - 1)
+                                    {
+                                        <MudDivider Class="flex-0" Vertical FlexItem/>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+                </section>
+            }
+
+            <AuthorizeView>
+                <QuizCard
+                    ArticleId="@Battle.Id"
+                    HasEasyQuiz="@HasEasyQuiz"
+                    HasHardQuiz="@HasHardQuiz"
+                    Activity="@Activity"/>
+
+                <UserToolbarCard
+                    ArticleId="@Battle.Id"
+                    IsLiked="@Activity?.IsLiked"
+                    IsBookmarked="@Activity?.IsBookmarked"
+                    OnBookmarkClick="@OnBookmarkClick"
+                    OnLikeClick="@OnLikeClick"
+                    OnDislikeClick="@OnDislikeClick"/>
+            </AuthorizeView>
+        </Sidebar>
+    </ContentGrid>
+
+    <RelatedArticles
+        Class="mt-sm-6"
+        ArticleId="@Battle.Id"
+        Title="@L["Articles_Related_Title"]"
+        OnBookmarkClick="@OnBookmarkClick"/>
+
+</EduContainer>
+
+@code {
+    private Dictionary<string, List<MarkupString>> _conflictParties = new();
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private ContentFormatter Formatter { get; set; } = default!;
+
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L.GetEpochTitle(Battle.Epoch), HistoryUrl.Content.Articles(Battle.Epoch))
+    ];
+
+    [Parameter, EditorRequired]
+    public required ArticleDetail.BattleModel Battle { get; set; }
+
+    [Parameter, EditorRequired]
+    public required UserArticleActivityModel? Activity { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool HasEasyQuiz { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool HasHardQuiz { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        await Formatter.InitializeAsync();
+
+    protected override void OnParametersSet()
+    {
+        if (Battle.ConflictParties.Length == 0)
+            return;
+
+        _conflictParties = new Dictionary<string, List<MarkupString>>
+        {
+            { nameof(ConflictPartyModel.Belligerents), [Battle.ConflictParties[0].Belligerents] },
+            { nameof(ConflictPartyModel.Commanders), [Battle.ConflictParties[0].Commanders] },
+            { nameof(ConflictPartyModel.Strength), [Battle.ConflictParties[0].Strength] },
+            { nameof(ConflictPartyModel.Losses), [Battle.ConflictParties[0].Losses] }
+        };
+
+        for (var i = 1; i < Battle.ConflictParties.Length; i++)
+        {
+            _conflictParties[nameof(ConflictPartyModel.Belligerents)].Add(Battle.ConflictParties[i].Belligerents);
+            _conflictParties[nameof(ConflictPartyModel.Commanders)].Add(Battle.ConflictParties[i].Commanders);
+            _conflictParties[nameof(ConflictPartyModel.Strength)].Add(Battle.ConflictParties[i].Strength);
+            _conflictParties[nameof(ConflictPartyModel.Losses)].Add(Battle.ConflictParties[i].Losses);
+        }
+    }
+
+}
