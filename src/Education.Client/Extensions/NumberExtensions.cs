@@ -4,7 +4,7 @@ namespace Education.Client.Extensions;
 
 internal static class NumberExtensions
 {
-    private static readonly char[] Prefixes = { 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y' };
+    private static readonly char[] Prefixes = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
 
     public static string ToMetric(this int input,
         [StringSyntax(StringSyntaxAttribute.NumericFormat)]

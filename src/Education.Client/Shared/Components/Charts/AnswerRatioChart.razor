@@ -63,14 +63,13 @@
     ];
 
     private ChartList.Item[] Items =>
-        new[]
-        {
-            new ChartList.Item(L["Questions_Correct"], Value.Correct, Colors.Green.Accent4),
-            new ChartList.Item(L["Questions_Incorrect"], Value.Incorrect, Colors.Red.Default),
-            new ChartList.Item(L["Questions_Answered"], Value.Answered, Colors.Blue.Default),
-            new ChartList.Item(L["Questions_NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default),
-            new ChartList.Item(L["Questions_Total"], Value.Questions, null)
-        };
+    [
+        new ChartList.Item(L["Questions_Correct"], Value.Correct, Colors.Green.Accent4),
+        new ChartList.Item(L["Questions_Incorrect"], Value.Incorrect, Colors.Red.Default),
+        new ChartList.Item(L["Questions_Answered"], Value.Answered, Colors.Blue.Default),
+        new ChartList.Item(L["Questions_NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default),
+        new ChartList.Item(L["Questions_Total"], Value.Questions, null)
+    ];
 
     private sealed record Data(string Name, uint Value, string Color);
 

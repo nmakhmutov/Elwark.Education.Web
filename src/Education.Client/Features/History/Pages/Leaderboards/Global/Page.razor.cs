@@ -10,7 +10,7 @@ namespace Education.Client.Features.History.Pages.Leaderboards.Global;
 
 public sealed partial class Page
 {
-    private readonly string[] _regions = { "GL", "EU", "AS", "NA", "SA", "OC", "AF" };
+    private readonly string[] _regions = ["GL", "EU", "AS", "NA", "SA", "OC", "AF"];
     private long? _highlightUser;
     private string _region = "GL";
     private ApiResult<GlobalContestantModel[]> _result = ApiResult<GlobalContestantModel[]>.Loading();
@@ -31,9 +31,6 @@ public sealed partial class Page
         _result = await LeaderboardClient.GetGlobalAsync(_region);
     }
 
-    private async Task OnRegionChanged(string region)
-    {
-        _region = region;
-        _result = await LeaderboardClient.GetGlobalAsync(_region);
-    }
+    private async Task OnRegionChanged(string region) =>
+        _result = await LeaderboardClient.GetGlobalAsync(_region = region);
 }

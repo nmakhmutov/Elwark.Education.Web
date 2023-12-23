@@ -54,7 +54,7 @@ public sealed partial class Page
             {
                 Q = Query,
                 Offset = (CurrentPage - 1) * _request.Limit,
-                Categories = string.IsNullOrWhiteSpace(Category) ? [] : new[] { Category }
+                Categories = string.IsNullOrWhiteSpace(Category) ? [] : [Category]
             });
 
         _categories = _result.Map(x => x.Categories)

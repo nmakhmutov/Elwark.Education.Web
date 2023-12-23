@@ -14,7 +14,7 @@ public enum EpochType
 public static class EpochTypeExtensions
 {
     public static readonly EpochType[] List =
-    {
+    [
         EpochType.None,
         EpochType.Prehistory,
         EpochType.Ancient,
@@ -22,7 +22,7 @@ public static class EpochTypeExtensions
         EpochType.EarlyModern,
         EpochType.LateModern,
         EpochType.Contemporary
-    };
+    ];
 
     public static string ToFastString(this EpochType type) =>
         type switch

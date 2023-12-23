@@ -44,21 +44,19 @@
     public ScoreModel Value { get; set; } = default!;
 
     private ChartList.Item[] Items =>
-        new[]
-        {
-            new ChartList.Item(L["Score_Questions_Title"], Value.Questions, Colors.Green.Accent4),
-            new ChartList.Item(L["Score_SpeedBonus_Title"], Value.Speed, Colors.Blue.Default),
-            new ChartList.Item(L["Score_NoMistakesBonus_Title"], Value.NoMistakes, Colors.DeepPurple.Default),
-            new ChartList.Item(L["Score_Total_Title"], Value.Total, null)
-        };
+    [
+        new ChartList.Item(L["Score_Questions_Title"], Value.Questions, Colors.Green.Accent4),
+        new ChartList.Item(L["Score_SpeedBonus_Title"], Value.Speed, Colors.Blue.Default),
+        new ChartList.Item(L["Score_NoMistakesBonus_Title"], Value.NoMistakes, Colors.DeepPurple.Default),
+        new ChartList.Item(L["Score_Total_Title"], Value.Total, null)
+    ];
 
     private Data[] Series =>
-        new Data[]
-        {
-            new(L["Score_Questions_Title"], Value.Questions),
-            new(L["Score_SpeedBonus_Title"], Value.Speed),
-            new(L["Score_NoMistakesBonus_Title"], Value.NoMistakes)
-        };
+    [
+        new Data(L["Score_Questions_Title"], Value.Questions),
+        new Data(L["Score_SpeedBonus_Title"], Value.Speed),
+        new Data(L["Score_NoMistakesBonus_Title"], Value.NoMistakes)
+    ];
 
     private sealed record Data(string Name, decimal Value);
 
