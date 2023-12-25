@@ -83,8 +83,11 @@ public static class HistoryUrl
 
     public static class Examination
     {
-        public static string Index() =>
-            $"{Root}/examinations";
+        public static string Test(string testId) =>
+            $"{Root}/examinations/{testId}";
+
+        public static string Conclusion(string testId) =>
+            $"{Root}/examinations/{testId}/conclusion";
     }
 
     public static class DateGuesser

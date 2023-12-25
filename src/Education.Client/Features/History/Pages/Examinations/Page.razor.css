@@ -1,0 +1,41 @@
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        gap: 24px;
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        display: grid;
+        align-items: start;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .timer {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    ::deep .exam {
+        grid-column: 1;
+        grid-row: -1 / 1;
+    }
+
+    ::deep .inventory {
+        grid-column: 2;
+        grid-row: 2;
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: 3fr 1fr;
+    }
+}

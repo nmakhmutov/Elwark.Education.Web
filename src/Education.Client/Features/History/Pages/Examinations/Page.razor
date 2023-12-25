@@ -1,20 +1,20 @@
-@page "/history/quizzes/{id}"
+@page "/history/examinations/{id}"
 @layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>
-    @_result.Match(x => $"{L.GetQuizDifficultyTitle(x.Difficulty)}: {x.Article.Title}", e => e.Title, () => L["Quizzes_Title"])
+    @_result.Match(x => $"{L.GetExaminationDifficultyTitle(x.Difficulty)}: {x.Course.Title}", e => e.Title, () => L["Examinations_Title"])
 </PageTitle>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="quiz">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="examination">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
             <header class="timer">
                 <section class="d-flex flex-wrap justify-space-between gap-3">
                     <MudText Typo="Typo.subtitle1">
-                        @L["Test_QuestionOutOf", quiz.CompletedQuestions, quiz.TotalQuestions]
+                        @L["Test_QuestionOutOf", examination.CompletedQuestions, examination.TotalQuestions]
                     </MudText>
-                    <CountdownTimer Deadline="@quiz.ExpiredAt" OnComplete="@OnExpiredAsync"/>
+                    <CountdownTimer Deadline="@examination.ExpiredAt" OnComplete="@OnExpiredAsync"/>
                 </section>
                 <MudProgressLinear
                     Min="0"
@@ -26,23 +26,23 @@
             </header>
 
             <QuestionForm
-                Class="quiz mud-paper pa-3 pa-sm-6"
-                Question="@quiz.Question"
-                CorrectAnswer="@_correctAnswer"
+                Class="exam mud-paper pa-3 pa-sm-6"
+                Question="@examination.Question"
                 OnAnswerClick="@OnAnswerAsync"
-                OnNextTitle="@(quiz.IsCompleted ? L["Test_ShowTheResult"] : L["Test_NextQuestion"])"
-                OnNextClick="@OnNextAsync">
+                CorrectAnswer="@null"
+                OnNextTitle="@string.Empty"
+                OnNextClick="@EventCallback.Empty">
                 <Header>
                     <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
-                        @L.GetQuizDifficultyTitle(quiz.Difficulty)
+                        @L.GetExaminationDifficultyTitle(examination.Difficulty)
                     </MudText>
                     <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center">
-                        @quiz.Article.Title
+                        @examination.Course.Title
                     </MudText>
                 </Header>
             </QuestionForm>
 
-            <InventoryGrid Class="inventory" Inventory="@quiz.Inventory" Context="item">
+            <InventoryGrid Class="inventory" Inventory="@examination.Inventory" Context="item">
                 @if (item.IsInteractive)
                 {
                     <InventoryButtonCard

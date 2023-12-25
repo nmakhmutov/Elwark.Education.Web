@@ -1,7 +1,9 @@
 using Blazored.LocalStorage;
 using Education.Client.Clients;
+using Education.Client.Extensions;
 using Education.Client.Features.History.Clients.Course;
 using Education.Client.Features.History.Clients.Course.Model;
+using Education.Client.Features.History.Clients.Course.Request;
 using Education.Client.Features.History.Clients.Learner;
 using Education.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
@@ -28,6 +30,12 @@ public sealed partial class Page
     [Inject]
     private ILocalStorageService Storage { get; init; } = default!;
 
+    [Inject]
+    private NavigationManager NavigationManager { get; init; } = default!;
+
+    [Inject]
+    private ISnackbar Snackbar { get; init; } = default!;
+
     [Parameter]
     public required string Id { get; set; }
 
@@ -43,17 +51,32 @@ public sealed partial class Page
         _difficulty = await Storage.GetItemAsync<DifficultyType?>(HistoryLocalStorageKey.ExaminationSettings);
 
         _result = await CourseClient.GetExaminationAsync(Id);
-        await _result.MatchAsync(x =>
-            x.Examinations.Any(e => e.IsAllowed && e.Type == _difficulty)
+        await _result.MatchAsync(
+            x => x.Examinations.Any(e => e.IsAllowed && e.Type == _difficulty)
                 ? Task.CompletedTask
-                : ChangeDifficulty(x.Examinations.FirstOrDefault(t => t.IsAllowed)?.Type)
+                : ChangeDifficulty(x.Examinations.FirstOrDefault(t => t.IsAllowed)?.Type),
+            e =>
+            {
+                if (e.IsExaminationAlreadyCreated(out var id))
+                    NavigationManager.NavigateTo(HistoryUrl.Examination.Test(id));
+            }
         );
     }
 
-    private Task CreateTestAsync()
+    private async Task CreateTestAsync()
     {
+        if (!_difficulty.HasValue)
+            return;
+
         _isLoading = true;
-        return Task.CompletedTask;
+
+        var result = await CourseClient.CreateExaminationAsync(Id, new CreateExaminationRequest(_difficulty.Value));
+        result.Match(
+            x => NavigationManager.NavigateTo(HistoryUrl.Examination.Test(x.Id)),
+            e => Snackbar.Add(e.Detail, Severity.Error)
+        );
+
+        _isLoading = false;
     }
 
     private async Task ChangeDifficulty(DifficultyType? difficulty)

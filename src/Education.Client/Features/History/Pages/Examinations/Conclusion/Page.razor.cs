@@ -1,0 +1,35 @@
+using Education.Client.Clients;
+using Education.Client.Features.History.Clients.Examination;
+using Education.Client.Features.History.Clients.Examination.Model;
+using Education.Client.Models.Test;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
+using MudBlazor;
+
+namespace Education.Client.Features.History.Pages.Examinations.Conclusion;
+
+public sealed partial class Page
+{
+    private ApiResult<ExaminationConclusionModel> _result = ApiResult<ExaminationConclusionModel>.Loading();
+
+    [Inject]
+    private IHistoryExaminationClient ExaminationClient { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public required string Id { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _result = await ExaminationClient.GetConclusionAsync(Id);
+    
+    private static Severity GetColor(ExaminationStatus status) =>
+        status switch
+        {
+            ExaminationStatus.ExaminationSucceeded => Severity.Success,
+            ExaminationStatus.ExaminationFailed => Severity.Error,
+            ExaminationStatus.ExaminationTimeExceeded => Severity.Warning,
+            _ => Severity.Info
+        };
+}

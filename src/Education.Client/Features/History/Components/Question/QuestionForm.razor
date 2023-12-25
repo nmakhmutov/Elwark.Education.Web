@@ -87,17 +87,29 @@
     private async Task AnswerNextAsync(UserAnswerModel answer)
     {
         _checking = true;
-        await OnAnswerClick.InvokeAsync(answer);
 
-        _checking = false;
+        try
+        {
+            await OnAnswerClick.InvokeAsync(answer);
+        }
+        finally
+        {
+            _checking = false;
+        }
     }
 
     private async Task NextAsync()
     {
         _checking = true;
-        await OnNextClick.InvokeAsync();
-
-        _checking = false;
+        
+        try
+        {
+            await OnNextClick.InvokeAsync();
+        }
+        finally
+        {
+            _checking = false;
+        }
     }
 
 }

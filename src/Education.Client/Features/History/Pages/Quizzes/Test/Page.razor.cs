@@ -35,11 +35,7 @@ public sealed partial class Page
     protected override async Task OnInitializedAsync()
     {
         _result = await QuizClient.GetAsync(Id);
-        _result.MathError(e =>
-        {
-            if (e.IsQuizAlreadyCompleted() || e.IsQuizNotFound() || e.IsQuizExpired())
-                Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
-        });
+        _result.MathError(_ => Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id)));
     }
 
     private async Task OnExpiredAsync()
@@ -51,27 +47,27 @@ public sealed partial class Page
     private async Task OnAnswerAsync(UserAnswerModel answer)
     {
         var quiz = _result.Unwrap();
-        (await QuizClient.CheckAsync(quiz.Id, quiz.Question.Id, answer))
-            .Match(
-                x =>
-                {
-                    _correctAnswer = x.Answer;
-                    _result = ApiResult<QuizModel>.Success(quiz with
-                    {
-                        CompletedQuestions = x.CompletedQuestions,
-                        TotalQuestions = x.TotalQuestions,
-                        IsCompleted = x.IsCompleted
-                    });
+        var result = await QuizClient.CheckAsync(quiz.Id, quiz.Question.Id, answer);
 
-                    StateHasChanged();
-                },
-                e =>
+        result.Match(x =>
+            {
+                _correctAnswer = x.Answer;
+                _result = ApiResult<QuizModel>.Success(quiz with
                 {
-                    if (e.IsQuizAlreadyCompleted())
-                        Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
-                    else
-                        Snackbar.Add(e.Detail, Severity.Error);
+                    CompletedQuestions = x.CompletedQuestions,
+                    TotalQuestions = x.TotalQuestions,
+                    IsCompleted = x.IsCompleted
                 });
+
+                StateHasChanged();
+            },
+            e =>
+            {
+                if (e.IsQuizAlreadyCompleted())
+                    Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
+                else
+                    Snackbar.Add(e.Detail, Severity.Error);
+            });
     }
 
     private async Task OnNextAsync()

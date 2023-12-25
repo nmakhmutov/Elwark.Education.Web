@@ -5,6 +5,21 @@ namespace Education.Client.Extensions;
 
 internal static class ErrorExtensions
 {
+    public static bool IsExaminationAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string id)
+    {
+        id = error.Id;
+        return error.Type == "Examination_AlreadyCreated" && !string.IsNullOrEmpty(error.Id);
+    }
+
+    public static bool IsExaminationAlreadyCompleted(this Error error) =>
+        error.Type == "Examination_AlreadyCompleted";
+
+    public static bool IsExaminationNotFound(this Error error) =>
+        error.Type == "Examination_NotFound";
+
+    public static bool IsExaminationExpired(this Error error) =>
+        error.Type == "Examination_Expired";
+
     public static bool IsQuizAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string id)
     {
         id = error.Id;

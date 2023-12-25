@@ -1,4 +1,3 @@
-@using Education.Client.Models.Test
 @using FluentValidation
 <EditForm Model="@_userAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
@@ -24,51 +23,51 @@
                 </div>
             }
         </div>
+    </MudRadioGroup>
 
-        @if (CorrectAnswer is null)
+    @if (CorrectAnswer is null)
+    {
+        <div class="d-flex flex-row justify-center">
+            <LoadingButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                IsLoading="@IsLoading"
+                Text="@L["Quiz_AnswerToQuestion"]"
+                LoadingText="@L["Loading_Title"]"
+                ButtonType="ButtonType.Submit"
+                DisableElevation/>
+        </div>
+
+        <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error" Class="mt-3 mt-sm-6">
+            <ValidationSummary/>
+        </MudText>
+    }
+    else
+    {
+        <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
+            <LoadingButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                IsLoading="@IsLoading"
+                Text="@OnNextTitle"
+                LoadingText="@L["Loading_Title"]"
+                OnClick="@OnNextAsync"
+                DisableElevation/>
+        </div>
+
+        if (CorrectAnswer.IsCorrect)
         {
-            <div class="d-flex flex-row justify-center">
-                <LoadingButton
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    IsLoading="@IsLoading"
-                    Text="@L["Quiz_AnswerToQuestion"]"
-                    LoadingText="@L["Loading_Title"]"
-                    ButtonType="ButtonType.Submit"
-                    DisableElevation/>
-            </div>
-
-            <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error" Class="mt-3 mt-sm-6">
-                <ValidationSummary/>
+            <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
+                @L["Quiz_CorrectAnswer"]
             </MudText>
         }
         else
         {
-            <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
-                <LoadingButton
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    IsLoading="@IsLoading"
-                    Text="@OnNextTitle"
-                    LoadingText="@L["Loading_Title"]"
-                    OnClick="@OnNextAsync"
-                    DisableElevation/>
-            </div>
-
-            if (CorrectAnswer.IsCorrect)
-            {
-                <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
-                    @L["Quiz_CorrectAnswer"]
-                </MudText>
-            }
-            else
-            {
-                <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
-                    @L["Quiz_IncorrectAnswer"]
-                </MudText>
-            }
+            <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
+                @L["Quiz_IncorrectAnswer"]
+            </MudText>
         }
-    </MudRadioGroup>
+    }
 </EditForm>
 
 @code {
@@ -98,6 +97,9 @@
 
     protected override void OnInitialized() =>
         _validator = new Validator(L);
+
+    protected override void OnParametersSet() =>
+        _userAnswer = new SingleAnswerModel();
 
     private Task OnValidSubmit() =>
         OnAnswerClick.InvokeAsync(_userAnswer);

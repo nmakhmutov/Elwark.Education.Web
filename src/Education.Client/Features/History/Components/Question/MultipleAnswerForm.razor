@@ -1,5 +1,4 @@
 @using FluentValidation
-@using Education.Client.Models.Test
 <EditForm Model="@_userAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
@@ -97,6 +96,9 @@
 
     protected override void OnInitialized() =>
         _validator = new Validator(L);
+
+    protected override void OnParametersSet() =>
+        _userAnswer = new MultipleAnswerModel();
 
     private Task OnValidSubmit() =>
         OnAnswerClick.InvokeAsync(_userAnswer);

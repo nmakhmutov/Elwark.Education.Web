@@ -2,8 +2,8 @@ namespace Education.Client.Models.Test;
 
 public enum QuizStatus
 {
-    Succeeded = 0,
-    Failed = 1,
-    TimeExceeded = 2,
-    MistakesExceeded = 3
+    QuizSucceeded = 0,
+    QuizFailed = 1,
+    QuizTimeExceeded = 2,
+    QuizMistakesExceeded = 3
 }

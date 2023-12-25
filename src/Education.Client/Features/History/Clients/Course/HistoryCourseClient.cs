@@ -2,6 +2,7 @@ using Education.Client.Clients;
 using Education.Client.Features.History.Clients.Course.Model;
 using Education.Client.Features.History.Clients.Course.Request;
 using Education.Client.Models;
+using Education.Client.Models.Test;
 
 namespace Education.Client.Features.History.Clients.Course;
 
@@ -20,6 +21,9 @@ internal sealed class HistoryCourseClient : IHistoryCourseClient
 
     public Task<ApiResult<ExaminationBuilderModel>> GetExaminationAsync(string id) =>
         _api.GetAsync<ExaminationBuilderModel>($"history/courses/{id}/examinations");
+    
+    public Task<ApiResult<TestCreationModel>> CreateExaminationAsync(string id, CreateExaminationRequest request) =>
+        _api.PostAsync<TestCreationModel, CreateExaminationRequest>($"history/courses/{id}/examinations", request);
 
     public Task<ApiResult<UserCourseOverviewModel>> GetRandomAsync() =>
         _api.GetAsync<UserCourseOverviewModel>("history/courses/random");
