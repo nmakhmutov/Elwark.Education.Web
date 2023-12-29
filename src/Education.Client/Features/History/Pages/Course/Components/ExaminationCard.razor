@@ -51,14 +51,9 @@
     </MudText>
 
     <div class="d-flex justify-center">
-        <MudButton
-            Link="@HistoryUrl.Content.ExaminationBuilder(CourseId)"
-            Variant="Variant.Filled"
-            Color="Color.Primary"
-            Disabled="@(Activity.Status <= CourseLearningStatus.InProgress)"
-            DisableElevation>
-            @L["Examination_TakeTheExamination"]
-        </MudButton>
+        <TryPracticeQuestionsButton 
+            Link="@HistoryUrl.Content.ExaminationBuilder(CourseId)" 
+            Disabled="@(Activity.Status <= CourseLearningStatus.InProgress)"/>
     </div>
 </section>
 

@@ -6,11 +6,10 @@ namespace Education.Client.Features.History.Clients.Learner.Model;
 
 public sealed record ArticleStatisticsModel(
     ArticleOverviewModel Article,
+    UserArticleActivityModel Activity,
     ArticleStatisticsModel.TotalModel Total,
     ArticleStatisticsModel.ProgressModel EasyQuiz,
-    ArticleStatisticsModel.ProgressModel HardQuiz,
-    bool IsBookmarked,
-    LearningStatus Status
+    ArticleStatisticsModel.ProgressModel HardQuiz
 )
 {
     public sealed record TotalModel(ulong Quizzes, ulong Score, uint Questions, TimeSpan TimeSpent);

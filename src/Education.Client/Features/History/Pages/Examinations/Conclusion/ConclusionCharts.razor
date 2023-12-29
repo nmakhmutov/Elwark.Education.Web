@@ -35,9 +35,9 @@
     public ExaminationConclusionModel ConclusionModel { get; set; } = default!;
 
     private string GetSubtitle(PerformanceModel<TimeSpan> performance) =>
-        $"{performance.UserPoints.Humanize(L)} / {performance.TotalPoints.Humanize(L)}";
+        $"{performance.Value.Humanize(L)} / {performance.Total.Humanize(L)}";
 
     private string GetSubtitle(PerformanceModel<uint> performance) =>
-        $"{performance.UserPoints.ToMetric()} / {performance.TotalPoints.ToMetric()}";
+        $"{performance.Value.ToMetric()} / {performance.Total.ToMetric()}";
 
 }

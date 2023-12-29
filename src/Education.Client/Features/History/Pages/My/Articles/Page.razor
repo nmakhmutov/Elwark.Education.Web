@@ -8,13 +8,16 @@
     </PageTitle>
 
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
-        <ArticleOverview
-            Class="mb-3 mb-sm-6"
-            Article="@result.Article"
-            Total="@result.Total"
-            IsBookmarked="@result.IsBookmarked"
-            Status="@result.Status"
-            OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+        <header class="header mb-3 mb-sm-6">
+            <ArticleCard
+                Article="@result.Article"
+                Activity="@result.Activity"
+                OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                HasQuiz="@(result.Total.Quizzes > 0)"
+                Horizontal/>
+
+            <TotalQuizStatisticsCard Total="@result.Total" ArticleId="@result.Article.Id"/>
+        </header>
 
         <MudTabs Elevation="0" PanelClass="pt-6" ApplyEffectsToContainer Rounded>
             @if (result.EasyQuiz.NumberOfQuizzes.Total > 0)

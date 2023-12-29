@@ -1,0 +1,26 @@
+<LoadingButton
+    Color="Color.Primary"
+    Variant="Variant.Filled"
+    Size="Size.Large"
+    Text="@L["Quiz_TakeTheQuiz"]"
+    LoadingText="@L["Loading_Title"]"
+    IsLoading="@Loading"
+    Disabled="@Disabled"
+    OnClick="@OnClick"
+    DisableElevation
+    DisableRipple/>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public bool Disabled { get; set; }
+    
+    [Parameter, EditorRequired]
+    public bool Loading { get; set; }
+    
+    [Parameter, EditorRequired]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+}

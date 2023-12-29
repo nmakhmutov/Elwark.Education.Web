@@ -23,6 +23,6 @@ public sealed partial class Page
     [Parameter]
     public required string Id { get; set; }
 
-    protected override async Task OnParametersSetAsync() =>
+    protected override async Task OnInitializedAsync() =>
         _result = await LearnerClient.GetArticlesAsync(Id);
 }

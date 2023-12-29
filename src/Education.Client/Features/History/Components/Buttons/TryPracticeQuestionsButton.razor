@@ -1,0 +1,24 @@
+<MudButton
+    Link="@Link"
+    Variant="Variant.Filled"
+    Color="Color.Primary"
+    Disabled="@Disabled"
+    FullWidth="@FullWidth"
+    DisableElevation 
+    DisableRipple>
+    @L["TryPracticeQuestions_Title"]
+</MudButton>
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required string Link { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; }
+    
+    [Parameter]
+    public bool FullWidth { get; set; }
+}
