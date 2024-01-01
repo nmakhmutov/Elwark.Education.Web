@@ -33,34 +33,7 @@
                     <MudDivider/>
 
                     <MudMenuItem Class="pa-3" Href="@notification.Href">
-                        <div class="d-flex align-center gap-3">
-                            <NotificationAvatar Subject="@notification.Subject"/>
-                            <section>
-                                <header class="d-flex align-center gap-3">
-                                    <MudText Typo="Typo.subtitle2">
-                                        @notification.Title
-                                    </MudText>
-                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                                        @Customer.Humanize(notification.CreatedAt)
-                                    </MudText>
-                                </header>
-                                <footer class="d-flex align-center gap-3">
-                                    <MudText Typo="Typo.body1">
-                                        @notification.Message
-                                    </MudText>
-
-                                    <section class="d-flex gap-3">
-                                        @foreach (var reward in notification.Money)
-                                        {
-                                            <InternalMoney
-                                                Currency="@reward.Currency"
-                                                Amount="@reward.Amount"
-                                                Horizontal/>
-                                        }
-                                    </section>
-                                </footer>
-                            </section>
-                        </div>
+                        <NotificationBlock Notification="@notification" DateFormatter="@Customer.Humanize" DisableTitleLink/>
                     </MudMenuItem>
                 }
 

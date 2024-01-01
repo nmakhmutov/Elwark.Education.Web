@@ -34,42 +34,11 @@
 
                 <Virtualize Items="@_notifications" Context="notification">
                     <section class="mud-paper d-flex align-center gap-3 pa-3 mb-3">
-                        <NotificationAvatar Subject="@notification.Subject"/>
-                        <article class="flex-1">
-                            <header class="d-flex align-center gap-3">
-                                @if (string.IsNullOrEmpty(notification.Href))
-                                {
-                                    <MudText Typo="Typo.subtitle1">
-                                        @notification.Title
-                                    </MudText>
-                                }
-                                else
-                                {
-                                    <MudLink Typo="Typo.subtitle1" Href="@notification.Href">
-                                        @notification.Title
-                                    </MudLink>
-                                }
-                                <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                                    @Customer.Humanize(notification.CreatedAt)
-                                </MudText>
-                            </header>
+                        <NotificationBlock
+                            Class="flex-grow-1"
+                            Notification="@notification" 
+                            DateFormatter="@Customer.Humanize"/>
 
-                            <footer class="d-flex align-center gap-3">
-                                <MudText Typo="Typo.body1">
-                                    @notification.Message
-                                </MudText>
-
-                                <section class="d-flex gap-3">
-                                    @foreach (var reward in notification.Money)
-                                    {
-                                        <InternalMoney
-                                            Currency="@reward.Currency"
-                                            Amount="@reward.Amount"
-                                            Horizontal/>
-                                    }
-                                </section>
-                            </footer>
-                        </article>
                         <aside>
                             <MudIconButton
                                 Icon="@Icons.Material.Outlined.MarkEmailRead"

@@ -41,6 +41,9 @@ public abstract record NotificationBase
 
     public string? Href { get; private set; }
 
+    public bool HasMoney =>
+        _money.Count > 0;
+
     public IReadOnlyCollection<InternalMoneyModel> Money =>
         _money.AsReadOnly();
 

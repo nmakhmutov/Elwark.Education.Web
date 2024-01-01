@@ -1,0 +1,62 @@
+@using Education.Client.Features.Customer.Services.Notification.Model
+<article class="d-flex gap-3 @Class">
+    <NotificationAvatar Class="mt-1" Subject="@Notification.Subject"/>
+
+    <section class="d-flex flex-column gap-3">
+        <header>
+            @if (DisableTitleLink || string.IsNullOrEmpty(Notification.Href))
+            {
+                <MudText Typo="Typo.subtitle2">
+                    @Notification.Title
+                </MudText>
+            }
+            else
+            {
+                <MudLink Typo="Typo.subtitle2" Href="@Notification.Href">
+                    @Notification.Title
+                </MudLink>
+            }
+
+            <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                @DateFormatter(Notification.CreatedAt) @L[$"{Notification.Subject}_Title"]
+            </MudText>
+        </header>
+
+        <MudText Typo="Typo.body1">
+            @Notification.Message
+        </MudText>
+
+        @if (Notification.HasMoney)
+        {
+            <footer class="d-flex gap-3">
+                <MudText Typo="Typo.body1">@L["Rewards_Title"]:</MudText>
+                @foreach (var reward in Notification.Money)
+                {
+                    <InternalMoney
+                        Currency="@reward.Currency"
+                        Amount="@reward.Amount"
+                        Horizontal/>
+                }
+            </footer>
+        }
+    </section>
+</article>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required NotificationBase Notification { get; set; }
+
+    [Parameter, EditorRequired]
+    public Func<DateTime, string> DateFormatter { get; set; } = time => time.ToLongDateString();
+
+    [Parameter]
+    public bool DisableTitleLink { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}
