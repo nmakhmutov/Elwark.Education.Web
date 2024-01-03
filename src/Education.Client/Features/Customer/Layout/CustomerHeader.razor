@@ -1,0 +1,57 @@
+@using Education.Client.Features.History
+<header class="header pa-3 pa-sm-6">
+    <MudLink Href="@EduUrl.Root" Typo="Typo.h5" Color="Color.Inherit" Underline="Underline.None" Class="d-none d-sm-block">
+        Education <sup class="mud-typography mud-typography-caption">beta</sup>
+    </MudLink>
+
+    <MudSpacer/>
+
+    <ThemeSwitchButton/>
+
+    <AppbarNotifications/>
+</header>
+
+<div class="background"></div>
+
+<div class="panel d-flex flex-column flex-sm-row align-center mud-paper gap-3 pa-3 pa-sm-6 mx-3 mx-sm-6 mt-n12">
+    <div class="d-flex align-center gap-3 gap-sm-6">
+        <div class="profile-image">
+            <img alt="profile-image" src="@Customer.Image">
+        </div>
+        <div>
+            <MudLink Href="@CustomerUrl.Root" Typo="Typo.h5">
+                @Customer.Name
+            </MudLink>
+            <MudText Typo="Typo.body1">
+                @L["Account_MemberSince", Customer.Humanize(Customer.CreatedAt)]
+            </MudText>
+        </div>
+    </div>
+
+    <MudSpacer/>
+
+    <div>
+        <MudButton
+            Class="text-transform-none"
+            Color="Color.Primary"
+            EndIcon="@Icons.Material.Outlined.OpenInNew"
+            IconSize="Size.Small"
+            Href="@Configuration["Urls:Account"]"
+            Target="_blank">
+            @L["ManageYourElwarkAccount_Title"]
+        </MudButton>
+    </div>
+</div>
+
+@code{
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Inject]
+    private IConfiguration Configuration { get; init; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
+}

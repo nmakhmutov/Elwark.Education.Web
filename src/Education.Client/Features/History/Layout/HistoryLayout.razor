@@ -2,15 +2,15 @@
 
 <CascadingTheme>
     <MudLayout Class="d-flex flex-column min-vh-100">
-        <HistoryDrawer @bind-Open="@_isOpen"/>
-
         <HistoryAppBar OnDrawerClick="@ToggleDrawer"/>
+        
+        <HistoryDrawer @bind-Open="@_isOpen"/>
 
         <main class="d-flex flex-column flex-grow-1 mud-main-content">
             @Body
         </main>
 
-        <HistoryFooter/>
+        <MainFooter/>
 
         <MudScrollToTop>
             <MudFab Icon="@Icons.Material.Outlined.KeyboardArrowUp" Color="Color.Primary"/>

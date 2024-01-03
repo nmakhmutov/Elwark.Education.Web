@@ -6,7 +6,6 @@ using Education.Client.Models;
 using Education.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-using MudBlazor;
 
 namespace Education.Client.Features.Customer.Pages.Notifications;
 
@@ -28,12 +27,6 @@ public sealed partial class Page
     [CascadingParameter]
     private CustomerState Customer { get; init; } = default!;
 
-    private List<BreadcrumbItem> Breadcrumbs =>
-    [
-        new BreadcrumbItem(L["Account_Title"], CustomerUrl.Root),
-        new BreadcrumbItem(L["Notifications_Title"], null, true)
-    ];
-
     protected override async Task OnInitializedAsync()
     {
         _result = await NotificationService.GetAsync(_request);
@@ -50,15 +43,15 @@ public sealed partial class Page
             return;
 
         _isMoreLoading = true;
-        (await NotificationService.GetAsync(_request))
-            .Match(
-                x =>
-                {
-                    _request = _request with { Token = x.Next };
-                    _notifications.AddRange(x.Items);
-                },
-                e => _result = ApiResult<PagingTokenModel<NotificationModel>>.Fail(e)
-            );
+        var result = await NotificationService.GetAsync(_request);
+        result.Match(
+            x =>
+            {
+                _request = _request with { Token = x.Next };
+                _notifications.AddRange(x.Items);
+            },
+            e => _result = ApiResult<PagingTokenModel<NotificationModel>>.Fail(e)
+        );
         _isMoreLoading = false;
     }
 
