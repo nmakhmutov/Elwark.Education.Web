@@ -64,6 +64,7 @@ public sealed partial class Page
     private async Task MarkAllAsReadAsync()
     {
         await NotificationService.MarkAllAsReadAsync();
+        _request = _request with { Token = null };
         _notifications.Clear();
     }
 }

@@ -88,9 +88,6 @@
     protected override void OnInitialized() =>
         _validator = new Validator(L);
 
-    protected override void OnParametersSet() =>
-        _userAnswer = new ShortAnswerModel();
-
     private Task OnValidSubmit() =>
         OnAnswerClick.InvokeAsync(_userAnswer);
 

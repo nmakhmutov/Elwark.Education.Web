@@ -19,13 +19,13 @@ public sealed partial class Page
     private ApiResult<ExaminationBuilderModel> _result = ApiResult<ExaminationBuilderModel>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryCourseClient CourseClient { get; set; } = default!;
+    private IHistoryCourseClient CourseClient { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerClient LearnerClient { get; set; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     [Inject]
     private ILocalStorageService Storage { get; init; } = default!;

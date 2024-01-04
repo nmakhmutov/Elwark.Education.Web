@@ -38,7 +38,7 @@
         ApiResult<PagingTokenModel<UserArticleOverviewModel>>.Loading();
 
     [Inject]
-    private IHistoryLearnerClient LearnerClient { get; set; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

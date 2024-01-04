@@ -22,7 +22,7 @@
     private UserArticleOverviewModel[] _article = [];
 
     [Inject]
-    private IHistoryArticleClient ArticleClient { get; set; } = default!;
+    private IHistoryArticleClient ArticleClient { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required string ArticleId { get; set; }

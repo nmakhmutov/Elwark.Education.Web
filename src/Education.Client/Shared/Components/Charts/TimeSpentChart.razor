@@ -58,8 +58,8 @@
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter]
-    public QuizStatisticsModel.TimeSpentModel Value { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public required QuizStatisticsModel.TimeSpentModel Value { get; set; }
 
     private ChartList.Item[] Items =>
     [

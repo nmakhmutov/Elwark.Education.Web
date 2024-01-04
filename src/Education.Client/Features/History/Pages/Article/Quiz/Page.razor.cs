@@ -20,13 +20,13 @@ public sealed partial class Page
     private QuizSettings _settings = QuizSettings.Empty;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
-    private IHistoryArticleClient ArticleClient { get; set; } = default!;
+    private IHistoryArticleClient ArticleClient { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerClient LearnerClient { get; set; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;

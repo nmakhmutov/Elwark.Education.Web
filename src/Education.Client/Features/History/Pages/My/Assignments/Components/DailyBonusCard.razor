@@ -60,8 +60,8 @@
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
-    [Parameter]
-    public DailyBonusModel Bonus { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public required DailyBonusModel Bonus { get; set; }
 
     [Parameter]
     public EventCallback OnClaim { get; set; }

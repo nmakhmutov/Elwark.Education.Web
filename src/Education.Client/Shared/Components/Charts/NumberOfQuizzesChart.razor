@@ -40,8 +40,8 @@
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter]
-    public NumberOfQuizzesModel Value { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public required NumberOfQuizzesModel Value { get; set; }
 
     private ChartList.Item[] Items =>
     [

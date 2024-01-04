@@ -13,8 +13,9 @@
         grid-template-columns: 1fr 1fr;
         gap: 24px;
         grid-template-areas: 
+            "exam profile"
             "quizzes profile"
-            "dg profile"
+            "dg achievement"
             ". achievement"
             "ra ra";
     }
@@ -31,6 +32,10 @@
         grid-area: dg;
     }
 
+    ::deep .examinations {
+        grid-area: exam;
+    }
+    
     ::deep .achievement {
         grid-area: achievement;
     }
@@ -44,8 +49,8 @@
     .grid {
         grid-template-columns: repeat(3, 1fr);
         grid-template-areas: 
-            "quizzes dg profile"
-            "ra ra profile"
+            "exam quizzes profile"
+            "dg . profile"
             "ra ra achievement"
             "ra ra .";
     }
@@ -55,7 +60,7 @@
     .grid {
         grid-template-columns: repeat(4, 1fr);
         grid-template-areas: 
-            "quizzes dg . profile"
+            "exam quizzes dg profile"
             "ra ra ra profile"
             "ra ra ra achievement"
             "ra ra ra .";

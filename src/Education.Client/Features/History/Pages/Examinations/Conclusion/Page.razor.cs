@@ -13,10 +13,10 @@ public sealed partial class Page
     private ApiResult<ExaminationConclusionModel> _result = ApiResult<ExaminationConclusionModel>.Loading();
 
     [Inject]
-    private IHistoryExaminationClient ExaminationClient { get; set; } = default!;
+    private IHistoryExaminationClient ExaminationClient { get; init; } = default!;
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter]
     public required string Id { get; set; }

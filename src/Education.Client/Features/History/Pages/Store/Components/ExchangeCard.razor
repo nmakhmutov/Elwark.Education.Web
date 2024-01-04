@@ -82,13 +82,13 @@
     private ApiResult<Exchange[]> _result = ApiResult<Exchange[]>.Loading();
 
     [Inject]
-    private IStringLocalizer<App> L { get; set; } = default!;
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
     private IHistoryExchangeClient ExchangeClient { get; init; } = default!;
 
     [Inject]
-    private ISnackbar Snackbar { get; set; } = default!;
+    private ISnackbar Snackbar { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required Dictionary<InternalCurrency, long> Wallet { get; set; }

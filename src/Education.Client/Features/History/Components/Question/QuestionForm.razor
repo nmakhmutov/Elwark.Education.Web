@@ -64,10 +64,10 @@
     private bool _checking;
 
     [Parameter, EditorRequired]
-    public Question Question { get; set; } = default!;
+    public required Question Question { get; set; }
 
     [Parameter, EditorRequired]
-    public AnswerResult? CorrectAnswer { get; set; }
+    public required AnswerResult? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
     public EventCallback<UserAnswerModel> OnAnswerClick { get; set; }

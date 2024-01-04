@@ -130,6 +130,12 @@ public static class HistoryUrl
         public const string MyEasyQuizzes = $"{My}/quizzes/easy";
 
         public const string MyHardQuizzes = $"{My}/quizzes/hard";
+        
+        public const string MyExaminations = $"{My}/examinations";
+
+        public const string MyEasyExaminations = $"{My}/examinations/easy";
+
+        public const string MyHardExaminations = $"{My}/examinations/hard";
 
         public const string MyDateGuessers = $"{My}/date-guessers";
 

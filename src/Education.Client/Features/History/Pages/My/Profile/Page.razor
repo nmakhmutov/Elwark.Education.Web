@@ -18,6 +18,19 @@
                 ShowFooter/>
 
             <CardBadge
+                Class="examinations"
+                Title="@L["Examinations_Title"]"
+                Value="@profile.TotalExaminations"
+                Icon="@EduIcons.Examination">
+                <MudButton
+                    Class="text-transform-none"
+                    EndIcon="@Icons.Material.Outlined.ArrowForward"
+                    Href="@HistoryUrl.User.MyExaminations">
+                    @L["Examinations_SeeAll"]
+                </MudButton>
+            </CardBadge>
+
+            <CardBadge
                 Class="quizzes"
                 Title="@L["Quizzes_Title"]"
                 Value="@profile.TotalQuizzes"

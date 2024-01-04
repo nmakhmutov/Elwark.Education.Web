@@ -31,8 +31,8 @@
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
-    [Parameter]
-    public QuizConclusionModel ConclusionModel { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public required QuizConclusionModel ConclusionModel { get; set; }
 
     private string GetSubtitle(PerformanceModel<TimeSpan> performance) =>
         $"{performance.Value.Humanize(L)} / {performance.Total.Humanize(L)}";

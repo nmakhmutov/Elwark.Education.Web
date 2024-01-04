@@ -98,13 +98,13 @@
     public UserCourseActivityModel? Activity { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = default!;
+    public required Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = default!;
+    public required Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; } = default!;
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
 
     [Parameter, EditorRequired]
     public EventCallback<string> OnStartClick { get; set; }

@@ -5,6 +5,7 @@ namespace Education.Client.Features.History.Clients.User.Model;
 public sealed record ProfileStatisticsModel(
     ulong TotalQuizzes,
     ulong TotalDateGuessers,
+    ulong TotalExaminations,
     UserLevelModel Level,
     BackpackOverviewModel Backpack,
     Dictionary<InternalCurrency, long> Wallet,

@@ -31,10 +31,10 @@
         ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
 
     [Inject]
-    private IHistoryCourseClient CourseClient { get; set; } = default!;
+    private IHistoryCourseClient CourseClient { get; init; } = default!;
 
     [Inject]
-    private IHistoryLearnerClient LearnerClient { get; set; } = default!;
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     protected override async Task OnInitializedAsync() =>
         _result = await CourseClient
