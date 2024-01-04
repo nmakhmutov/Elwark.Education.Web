@@ -66,14 +66,14 @@
     [Parameter, EditorRequired]
     public required Question Question { get; set; }
 
-    [Parameter, EditorRequired]
-    public required AnswerResult? CorrectAnswer { get; set; }
+    [Parameter]
+    public AnswerResult? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
     public EventCallback<UserAnswerModel> OnAnswerClick { get; set; }
 
     [Parameter, EditorRequired]
-    public string OnNextTitle { get; set; } = string.Empty;
+    public required string OnNextTitle { get; set; }
 
     [Parameter, EditorRequired]
     public EventCallback OnNextClick { get; set; }
@@ -101,7 +101,7 @@
     private async Task NextAsync()
     {
         _checking = true;
-        
+
         try
         {
             await OnNextClick.InvokeAsync();

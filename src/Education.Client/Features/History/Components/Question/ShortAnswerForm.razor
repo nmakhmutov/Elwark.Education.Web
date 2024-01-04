@@ -6,7 +6,7 @@
     <div class="d-flex flex-column align-center mb-3 @(CorrectAnswer is null ? "mb-sm-6" : "")">
         <MudTextField
             @bind-Value="@(_userAnswer.Answer)"
-            Label="@L["Quiz_UserAnswer"]"
+            Label="@L["QuestionFrom_UserAnswer"]"
             For="@(() => _userAnswer.Answer)"
             Disabled="@(CorrectAnswer is not null)"/>
 
@@ -26,7 +26,7 @@
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 IsLoading="@IsLoading"
-                Text="@L["Quiz_AnswerToQuestion"]"
+                Text="@L["QuestionFrom_AnswerToQuestion"]"
                 LoadingText="@L["Loading_Title"]"
                 ButtonType="ButtonType.Submit"/>
         </div>
@@ -51,13 +51,13 @@
         if (CorrectAnswer.IsCorrect)
         {
             <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
-                @L["Quiz_CorrectAnswer"]
+                @L["QuestionFrom_CorrectAnswer"]
             </MudText>
         }
         else
         {
             <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
-                @L["Quiz_IncorrectAnswer"]
+                @L["QuestionFrom_IncorrectAnswer"]
             </MudText>
         }
     }
@@ -102,7 +102,7 @@
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.Answer)
                 .NotEmpty()
-                .WithMessage(localizer["Question_AnswerCannotBeEmpty"]);
+                .WithMessage(localizer["QuestionFrom_AnswerCannotBeEmpty"]);
     }
 
 }

@@ -3,9 +3,66 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Quizzes_Title"]
+    @L["Examinations_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
+
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="profile">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <EduFillGrid>
+            @if (profile.EasyExamination.Score.Total > 0)
+            {
+                <StatisticsCard
+                    Title="@L["Examinations_Easy_Title"]"
+                    Value="@profile.EasyExamination.NumberOfExaminations.Total"
+                    Href="@HistoryUrl.User.MyEasyExaminations">
+                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <ExaminationScoreChart Value="@profile.EasyExamination.Score"/>
+                </StatisticsCard>
+            }
+
+            @if (profile.HardExamination.Score.Total > 0)
+            {
+                <StatisticsCard
+                    Title="@L["Examinations_Hard_Title"]"
+                    Value="@profile.HardExamination.NumberOfExaminations.Total"
+                    Href="@HistoryUrl.User.MyHardExaminations">
+                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <ExaminationScoreChart Value="@profile.HardExamination.Score"/>
+                </StatisticsCard>
+            }
+
+            <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
+                <MudText Typo="Typo.h5">
+                    @L["Activities_Daily_Title"]
+                </MudText>
+                @if (_monthly.Length > 0)
+                {
+                    <ActivityChart Activities="@_daily" DateFormat="dd MMM"/>
+                }
+                else
+                {
+                    <MudText>
+                        @L["Activities_NoActivitiesWithinTheLast30Days"]
+                    </MudText>
+                }
+            </section>
+
+            @if (_monthly.Length > 1)
+            {
+                <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
+                    <MudText Typo="Typo.h5">
+                        @L["Activities_Monthly_Title"]
+                    </MudText>
+                    @if (_monthly.Length > 0)
+                    {
+                        <ActivityChart Activities="@_monthly" DateFormat="MMM yyyy"/>
+                    }
+                </section>
+            }
+        </EduFillGrid>
+    </EduContainer>
+</ApiViewer>

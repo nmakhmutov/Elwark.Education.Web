@@ -32,7 +32,7 @@
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 IsLoading="@IsLoading"
-                Text="@L["Quiz_AnswerToQuestion"]"
+                Text="@L["QuestionFrom_AnswerToQuestion"]"
                 LoadingText="@L["Loading_Title"]"
                 ButtonType="ButtonType.Submit"
                 DisableElevation/>
@@ -58,13 +58,13 @@
         if (CorrectAnswer.IsCorrect)
         {
             <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
-                @L["Quiz_CorrectAnswer"]
+                @L["QuestionFrom_CorrectAnswer"]
             </MudText>
         }
         else
         {
             <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
-                @L["Quiz_IncorrectAnswer"]
+                @L["QuestionFrom_IncorrectAnswer"]
             </MudText>
         }
     }
@@ -124,7 +124,7 @@
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.Answer)
                 .NotEmpty()
-                .WithMessage(localizer["Question_AnswerCannotBeEmpty"]);
+                .WithMessage(localizer["QuestionFrom_AnswerCannotBeEmpty"]);
     }
 
 }

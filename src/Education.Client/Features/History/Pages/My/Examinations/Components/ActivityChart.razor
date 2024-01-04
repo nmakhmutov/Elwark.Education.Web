@@ -1,0 +1,69 @@
+@using ApexCharts
+@using Education.Client.Features.History.Clients.Learner.Model.Examination
+
+<ApexChart @ref="@(_chart)" TItem="ExaminationsStatisticsModel.ProgressModel" Options="_options">
+    <ApexPointSeries
+        TItem="ExaminationsStatisticsModel.ProgressModel"
+        Items="Activities"
+        Name="@L["Examinations_Easy_Title"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten3 })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString(DateFormat))"
+        YValue="@(x => x.Easy)"/>
+
+    <ApexPointSeries
+        TItem="ExaminationsStatisticsModel.ProgressModel"
+        Items="Activities"
+        Name="@L["Examinations_Hard_Title"]"
+        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten1 })"
+        SeriesType="SeriesType.Area"
+        XValue="@(e => e.Date.ToString(DateFormat))"
+        YValue="@(x => x.Hard)"/>
+</ApexChart>
+
+@code {
+    private ApexChart<ExaminationsStatisticsModel.ProgressModel>? _chart;
+
+    private ApexChartOptions<ExaminationsStatisticsModel.ProgressModel> _options = new()
+    {
+        Legend = new Legend
+        {
+            Position = LegendPosition.Top
+        },
+        Chart = new Chart
+        {
+            Width = "100%",
+            Height = "350px",
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)"
+        },
+        Theme = new Theme()
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [Parameter]
+    public string DateFormat { get; set; } = "dd MMM";
+
+    [Parameter, EditorRequired]
+    public required ExaminationsStatisticsModel.ProgressModel[] Activities { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        var current = ThemeProvider is { IsDarkMode: true } ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
+    }
+
+}

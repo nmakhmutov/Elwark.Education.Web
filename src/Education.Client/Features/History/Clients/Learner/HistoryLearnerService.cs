@@ -1,6 +1,7 @@
 using Education.Client.Clients;
 using Education.Client.Features.History.Clients.Learner.Model;
 using Education.Client.Features.History.Clients.Learner.Model.DateGuesser;
+using Education.Client.Features.History.Clients.Learner.Model.Examination;
 using Education.Client.Features.History.Clients.Learner.Model.Quiz;
 using Education.Client.Features.History.Clients.Learner.Request;
 using Education.Client.Models;
@@ -13,6 +14,15 @@ internal sealed class HistoryLearnerService : IHistoryLearnerClient
 
     public HistoryLearnerService(HistoryApiClient api) =>
         _api = api;
+
+    public Task<ApiResult<ExaminationsStatisticsModel>> GetExaminationStatisticsAsync() =>
+        _api.GetAsync<ExaminationsStatisticsModel>("history/learners/me/examinations");
+
+    public Task<ApiResult<ExaminationStatisticsModel>> GetEasyExaminationStatisticsAsync() =>
+        _api.GetAsync<ExaminationStatisticsModel>("history/learners/me/examinations/easy");
+
+    public Task<ApiResult<ExaminationStatisticsModel>> GetHardExaminationStatisticsAsync() =>
+        _api.GetAsync<ExaminationStatisticsModel>("history/learners/me/examinations/hard");
 
     public Task<ApiResult<QuizzesStatisticsModel>> GetQuizStatisticsAsync() =>
         _api.GetAsync<QuizzesStatisticsModel>("history/learners/me/quizzes");

@@ -1,6 +1,7 @@
 using Education.Client.Clients;
 using Education.Client.Features.History.Clients.Learner.Model;
 using Education.Client.Features.History.Clients.Learner.Model.DateGuesser;
+using Education.Client.Features.History.Clients.Learner.Model.Examination;
 using Education.Client.Features.History.Clients.Learner.Model.Quiz;
 using Education.Client.Features.History.Clients.Learner.Request;
 using Education.Client.Models;
@@ -9,6 +10,12 @@ namespace Education.Client.Features.History.Clients.Learner;
 
 public interface IHistoryLearnerClient
 {
+    Task<ApiResult<ExaminationsStatisticsModel>> GetExaminationStatisticsAsync();
+
+    Task<ApiResult<ExaminationStatisticsModel>> GetEasyExaminationStatisticsAsync();
+
+    Task<ApiResult<ExaminationStatisticsModel>> GetHardExaminationStatisticsAsync();
+    
     Task<ApiResult<QuizzesStatisticsModel>> GetQuizStatisticsAsync();
 
     Task<ApiResult<QuizStatisticsModel>> GetEasyQuizStatisticsAsync();
