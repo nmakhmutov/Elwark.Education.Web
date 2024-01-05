@@ -27,10 +27,10 @@
 
             <QuestionForm
                 Class="quiz mud-paper pa-3 pa-sm-6"
+                IsCompleted="@quiz.IsCompleted"
                 Question="@quiz.Question"
                 CorrectAnswer="@_correctAnswer"
                 OnAnswerClick="@OnAnswerAsync"
-                OnNextTitle="@(quiz.IsCompleted ? L["Test_ShowTheResult"] : L["Test_NextQuestion"])"
                 OnNextClick="@OnNextAsync">
                 <Header>
                     <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">

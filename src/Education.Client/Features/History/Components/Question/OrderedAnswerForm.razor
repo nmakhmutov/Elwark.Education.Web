@@ -55,7 +55,7 @@ else
             Variant="Variant.Filled"
             Color="Color.Primary"
             IsLoading="@IsLoading"
-            Text="@OnNextTitle"
+            Text="@L[IsCompleted ? "QuestionForm_ShowTheResult" : "QuestionForm_NextQuestion"]"
             LoadingText="@L["Loading_Title"]"
             OnClick="@OnNextAsync"
             DisableElevation/>
@@ -87,6 +87,9 @@ else
     public bool IsLoading { get; set; }
 
     [Parameter, EditorRequired]
+    public bool IsCompleted { get; set; }
+
+    [Parameter, EditorRequired]
     public AnswerResult.OrderedModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
@@ -95,10 +98,7 @@ else
     [Parameter, EditorRequired]
     public EventCallback<OrderedAnswerModel> OnAnswerClick { get; set; }
 
-    [Parameter, EditorRequired]
-    public string OnNextTitle { get; set; } = string.Empty;
-
-    [Parameter, EditorRequired]
+    [Parameter]
     public EventCallback OnNextClick { get; set; }
 
     protected override void OnParametersSet()
@@ -112,14 +112,25 @@ else
             _correctIds.AddRange(CorrectAnswer.Answer);
     }
 
-    private Task OnValidSubmit()
+    private async Task OnValidSubmit()
     {
         var answer = new OrderedAnswerModel
         {
             Answer = _options.Select(x => x.Id).ToList()
         };
 
-        return OnAnswerClick.InvokeAsync(answer);
+        try
+        {
+            await OnAnswerClick.InvokeAsync(answer);
+        }
+        finally
+        {
+            if (!OnNextClick.HasDelegate)
+            {
+                _options.Clear();
+                _correctIds.Clear();
+            }
+        }
     }
 
     private Task OnNextAsync()

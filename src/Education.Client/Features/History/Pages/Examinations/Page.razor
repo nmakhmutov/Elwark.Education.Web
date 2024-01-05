@@ -27,10 +27,9 @@
 
             <QuestionForm
                 Class="exam mud-paper pa-3 pa-sm-6"
+                IsCompleted="@examination.IsCompleted"
                 Question="@examination.Question"
-                OnAnswerClick="@OnAnswerAsync"
-                OnNextTitle="@string.Empty"
-                OnNextClick="@EventCallback.Empty">
+                OnAnswerClick="@OnAnswerAsync">
                 <Header>
                     <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
                         @L.GetExaminationDifficultyTitle(examination.Difficulty)

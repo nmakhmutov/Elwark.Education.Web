@@ -1,4 +1,3 @@
-@using Education.Client.Models.Test
 <section class="@Class">
     @Header
 
@@ -17,10 +16,10 @@
         {
             <ShortAnswerForm
                 IsLoading="@_checking"
+                IsCompleted="@IsCompleted"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.ShortModel)"
-                OnAnswerClick="@AnswerNextAsync"
-                OnNextTitle="@OnNextTitle"
-                OnNextClick="@NextAsync"/>
+                OnAnswerClick="@AnswerAsync"
+                OnNextClick="@NextQuestionHandler"/>
             break;
         }
 
@@ -28,11 +27,11 @@
         {
             <SingleAnswerForm
                 IsLoading="@_checking"
+                IsCompleted="@IsCompleted"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.SingleModel)"
                 Options="@question.Options"
-                OnAnswerClick="@AnswerNextAsync"
-                OnNextTitle="@OnNextTitle"
-                OnNextClick="@NextAsync"/>
+                OnAnswerClick="@AnswerAsync"
+                OnNextClick="@NextQuestionHandler"/>
             break;
         }
 
@@ -40,28 +39,31 @@
         {
             <MultipleAnswerForm
                 IsLoading="@_checking"
+                IsCompleted="@IsCompleted"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.MultipleModel)"
                 Options="@question.Options"
-                OnAnswerClick="@AnswerNextAsync"
-                OnNextTitle="@OnNextTitle"
-                OnNextClick="@NextAsync"/>
+                OnAnswerClick="@AnswerAsync"
+                OnNextClick="@NextQuestionHandler"/>
             break;
         }
 
         case Question.OrderedModel question:
             <OrderedAnswerForm
                 IsLoading="@_checking"
+                IsCompleted="@IsCompleted"
                 CorrectAnswer="@(CorrectAnswer as AnswerResult.OrderedModel)"
                 Options="@question.Options"
-                OnAnswerClick="@AnswerNextAsync"
-                OnNextTitle="@OnNextTitle"
-                OnNextClick="@NextAsync"/>
+                OnAnswerClick="@AnswerAsync"
+                OnNextClick="@NextQuestionHandler"/>
             break;
     }
 </section>
 
 @code {
     private bool _checking;
+
+    [Parameter, EditorRequired]
+    public bool IsCompleted { get; set; }
 
     [Parameter, EditorRequired]
     public required Question Question { get; set; }
@@ -72,10 +74,7 @@
     [Parameter, EditorRequired]
     public EventCallback<UserAnswerModel> OnAnswerClick { get; set; }
 
-    [Parameter, EditorRequired]
-    public required string OnNextTitle { get; set; }
-
-    [Parameter, EditorRequired]
+    [Parameter]
     public EventCallback OnNextClick { get; set; }
 
     [Parameter]
@@ -84,7 +83,10 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private async Task AnswerNextAsync(UserAnswerModel answer)
+    private EventCallback NextQuestionHandler =>
+        OnNextClick.HasDelegate ? EventCallback.Factory.Create(this, NextQuestionAsync) : new EventCallback();
+
+    private async Task AnswerAsync(UserAnswerModel answer)
     {
         _checking = true;
 
@@ -98,7 +100,7 @@
         }
     }
 
-    private async Task NextAsync()
+    private async Task NextQuestionAsync()
     {
         _checking = true;
 

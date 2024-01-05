@@ -28,13 +28,13 @@
     {
         <div class="d-flex flex-row justify-center">
             <LoadingButton
-                DisableElevation
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 IsLoading="@IsLoading"
                 Text="@L["QuestionFrom_AnswerToQuestion"]"
                 ButtonType="ButtonType.Submit"
-                LoadingText="@L["Loading_Title"]"/>
+                LoadingText="@L["Loading_Title"]"
+                DisableElevation/>
         </div>
 
         <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error" Class="mt-3 mt-sm-6">
@@ -48,7 +48,7 @@
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 IsLoading="@IsLoading"
-                Text="@OnNextTitle"
+                Text="@L[IsCompleted ? "QuestionForm_ShowTheResult" : "QuestionForm_NextQuestion"]"
                 LoadingText="@L["Loading_Title"]"
                 OnClick="@OnNextAsync"
                 DisableElevation/>
@@ -80,6 +80,9 @@
     public required bool IsLoading { get; set; }
 
     [Parameter, EditorRequired]
+    public bool IsCompleted { get; set; }
+
+    [Parameter, EditorRequired]
     public required AnswerResult.MultipleModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
@@ -88,17 +91,24 @@
     [Parameter, EditorRequired]
     public required EventCallback<MultipleAnswerModel> OnAnswerClick { get; set; }
 
-    [Parameter, EditorRequired]
-    public required string OnNextTitle { get; set; }
-
-    [Parameter, EditorRequired]
+    [Parameter]
     public EventCallback OnNextClick { get; set; }
 
     protected override void OnInitialized() =>
         _validator = new Validator(L);
 
-    private Task OnValidSubmit() =>
-        OnAnswerClick.InvokeAsync(_userAnswer);
+    private async Task OnValidSubmit()
+    {
+        try
+        {
+            await OnAnswerClick.InvokeAsync(_userAnswer);
+        }
+        finally
+        {
+            if (!OnNextClick.HasDelegate)
+                _userAnswer = new MultipleAnswerModel();
+        }
+    }
 
     private Task OnNextAsync()
     {
