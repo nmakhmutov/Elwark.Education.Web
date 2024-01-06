@@ -1,4 +1,4 @@
-@page "/history/my/quizzes/{test}"
+@page "/history/my/examinations/{test}"
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -15,12 +15,12 @@
         <StatisticDetailsGrid>
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
-                    <Subheader Title="@L["Quizzes_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <NumberOfQuizzesChart Value="@result.NumberOfQuizzes"/>
+                    <Subheader Title="@L["Examinations_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <NumberOfExaminationsChart Value="@result.NumberOfExaminations"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
-                    <ProgressList Items="@result.Delta.NumberOfQuizzes.GetProgress(L)"/>
+                    <ProgressList Items="@result.Delta.NumberOfExaminations.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
                     <Subheader Title="@L["User_MyActivity"]" Subtitle="@result.Delta.RangeTitle()"/>
@@ -31,7 +31,7 @@
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
                     <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <QuizScoreChart Value="@result.Score"/>
+                    <ExaminationScoreChart Value="@result.Score"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
@@ -46,7 +46,7 @@
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
                     <Subheader Title="@L["Questions_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <QuizAnswerRatioChart Value="@result.AnswerRatio"/>
+                    <ExaminationAnswerRatioChart Value="@result.AnswerRatio"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
@@ -61,7 +61,7 @@
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
                     <Subheader Title="@L["TimeSpent_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <QuizTimeSpentChart Value="@result.TimeSpent"/>
+                    <ExaminationTimeSpentChart Value="@result.TimeSpent"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>

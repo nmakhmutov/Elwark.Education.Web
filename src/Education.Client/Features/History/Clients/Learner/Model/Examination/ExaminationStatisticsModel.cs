@@ -9,7 +9,7 @@ public sealed record ExaminationStatisticsModel(
     NumberOfExaminationsModel NumberOfExaminations,
     ExaminationStatisticsModel.TimeSpentModel TimeSpent,
     ExaminationStatisticsModel.DeltaModel Delta,
-    IEnumerable<ExaminationStatisticsModel.DailyProgress> Progress
+    ExaminationStatisticsModel.DailyProgress[] Progress
 )
 {
     public sealed record DeltaModel(
