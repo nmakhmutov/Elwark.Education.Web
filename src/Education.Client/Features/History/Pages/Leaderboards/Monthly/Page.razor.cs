@@ -22,13 +22,21 @@ public sealed partial class Page
     [Inject]
     private AuthenticationStateProvider StateProvider { get; init; } = default!;
 
+    [Inject]
+    private NavigationManager Navigation { get; init; } = default!;
+
+    [SupplyParameterFromQuery(Name = "month")]
+    public DateOnly? Month { get; init; }
+
     protected override async Task OnInitializedAsync()
     {
         var state = await StateProvider.GetAuthenticationStateAsync();
         _highlightUser = state.User.GetIdOrDefault();
-        _result = await LeaderboardClient.GetMonthAsync();
     }
 
-    private async Task OnMonthChanged(DateOnly month) =>
-        _result = await LeaderboardClient.GetMonthAsync(month);
+    protected override async Task OnParametersSetAsync() =>
+        _result = await LeaderboardClient.GetMonthAsync(Month);
+
+    private void ChangeMonth(DateOnly month) =>
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter(nameof(month), month.ToString("O")));
 }

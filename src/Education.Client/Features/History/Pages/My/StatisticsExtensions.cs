@@ -68,17 +68,17 @@ public static class StatisticsExtensions
         new ProgressList.Item(l["TimeSpent_Total_Title"], contrast.Total.Current.Humanize(l), contrast.Total.Difference)
     ];
 
-    public static ProgressList.Item[] GetProgress(this QuizStatisticsModel.NumberOfQuizzesContrastModel contrast,
-        IStringLocalizer l) =>
+    public static ProgressList.Item[] GetProgress(
+        this QuizStatisticsModel.NumberOfQuizzesContrastModel contrast, IStringLocalizer l) =>
     [
         new ProgressList.Item(l["NumberOfQuizzes_Successful_Title"], contrast.Successful.Current.ToMetric(),
             contrast.Successful.Difference),
         new ProgressList.Item(l["NumberOfQuizzes_Failed_Title"], contrast.Failed.Current.ToMetric(),
             contrast.Failed.Difference),
-        new ProgressList.Item(l["NumberOfQuizzes_MistakesExceeded_Title"], contrast.MistakesExceeded.Current.ToMetric(),
-            contrast.MistakesExceeded.Difference),
         new ProgressList.Item(l["NumberOfQuizzes_TimeExceeded_Title"], contrast.TimeExceeded.Current.ToMetric(),
             contrast.TimeExceeded.Difference),
+        new ProgressList.Item(l["NumberOfQuizzes_MistakesExceeded_Title"], contrast.MistakesExceeded.Current.ToMetric(),
+            contrast.MistakesExceeded.Difference),
         new ProgressList.Item(l["NumberOfQuizzes_Total_Title"], contrast.Total.Current.ToMetric(),
             contrast.Total.Difference)
     ];

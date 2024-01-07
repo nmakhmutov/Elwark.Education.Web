@@ -5,10 +5,12 @@ namespace Education.Client.Extensions;
 
 internal static class ErrorExtensions
 {
-    public static bool IsExaminationAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string id)
+    public static bool IsExaminationAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string examinationId)
     {
-        id = error.Id;
-        return error.Type == "Examination_AlreadyCreated" && !string.IsNullOrEmpty(error.Id);
+        var found = error.Payload.TryGetValue("id", out var id);
+        examinationId = id.GetString();
+
+        return error.Type == "Examination_AlreadyCreated" && found;
     }
 
     public static bool IsExaminationAlreadyCompleted(this Error error) =>
@@ -20,10 +22,12 @@ internal static class ErrorExtensions
     public static bool IsExaminationExpired(this Error error) =>
         error.Type == "Examination_Expired";
 
-    public static bool IsQuizAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string id)
+    public static bool IsQuizAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string quizId)
     {
-        id = error.Id;
-        return error.Type == "Quiz_AlreadyCreated" && !string.IsNullOrEmpty(error.Id);
+        var found = error.Payload.TryGetValue("id", out var id);
+        quizId = id.GetString();
+
+        return error.Type == "Quiz_AlreadyCreated" && found;
     }
 
     public static bool IsQuizAlreadyCompleted(this Error error) =>
@@ -38,10 +42,12 @@ internal static class ErrorExtensions
     public static bool IsFlowNotFound(this Error error) =>
         error.Type == "Flow_NotFound";
 
-    public static bool IsDateGuesserAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string id)
+    public static bool IsDateGuesserAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string testId)
     {
-        id = error.Id;
-        return error.Type == "DateGuesser_AlreadyCreated" && !string.IsNullOrEmpty(error.Id);
+        var found = error.Payload.TryGetValue("id", out var id);
+        testId = id.GetString();
+
+        return error.Type == "DateGuesser_AlreadyCreated" && found;
     }
 
     public static bool IsDateGuesserNotFound(this Error error) =>

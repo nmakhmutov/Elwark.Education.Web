@@ -1,3 +1,6 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace Education.Client.Clients;
 
 public sealed record Error
@@ -10,14 +13,16 @@ public sealed record Error
 
     public string? Detail { get; init; }
 
-    public string? Id { get; init; }
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> Payload { get; set; } =
+        new Dictionary<string, JsonElement>(StringComparer.OrdinalIgnoreCase);
 
     public static Error Create(string title, int status, string? detail = null) =>
         new()
         {
+            Type = "Client:Error",
             Title = title,
             Status = status,
-            Detail = detail,
-            Type = "Client:Error"
+            Detail = detail
         };
 }

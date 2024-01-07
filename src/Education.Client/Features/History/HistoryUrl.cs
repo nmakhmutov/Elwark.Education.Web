@@ -105,7 +105,11 @@ public static class HistoryUrl
     {
         public const string Global = $"{Root}/leaderboards/global";
 
-        public const string Monthly = $"{Root}/leaderboards/monthly";
+        public static string Monthly() =>
+            $"{Root}/leaderboards/monthly";
+
+        public static string Monthly(DateOnly month) =>
+            $"{Root}/leaderboards/monthly?month={month.ToString("O")}";
     }
 
     public static class Store
@@ -130,7 +134,7 @@ public static class HistoryUrl
         public const string MyEasyQuizzes = $"{My}/quizzes/easy";
 
         public const string MyHardQuizzes = $"{My}/quizzes/hard";
-        
+
         public const string MyExaminations = $"{My}/examinations";
 
         public const string MyEasyExaminations = $"{My}/examinations/easy";

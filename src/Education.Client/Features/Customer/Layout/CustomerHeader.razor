@@ -6,9 +6,9 @@
 
     <MudSpacer/>
 
-    <ThemeSwitchButton/>
-
     <AppbarNotifications/>
+
+    <ThemeSwitchButton/>
 </header>
 
 <div class="background"></div>
@@ -30,20 +30,38 @@
 
     <MudSpacer/>
 
-    <div>
+    <section class="d-flex flex-column">
+        <ul class="mb-3">
+            @foreach (var item in Items)
+            {
+                <li class="mb-1">
+                    <b>@item.Title:</b>&nbsp;<span class="mud-text-secondary">@item.Value</span>
+                </li>
+            }
+        </ul>
+        
         <MudButton
             Class="text-transform-none"
             Color="Color.Primary"
+            Variant="Variant.Filled"
             EndIcon="@Icons.Material.Outlined.OpenInNew"
             IconSize="Size.Small"
             Href="@Configuration["Urls:Account"]"
-            Target="_blank">
+            Target="_blank"
+            DisableRipple
+            DisableElevation>
             @L["ManageYourElwarkAccount_Title"]
         </MudButton>
-    </div>
+    </section>
 </div>
 
 @code{
+
+    private (string Title, string Value)[] Items =>
+    [
+        (L["Account_TimeZone"], Customer.TimeZone.Id),
+        (L["Account_Language"], L[$"Language_{Customer.Language}"])
+    ];
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
