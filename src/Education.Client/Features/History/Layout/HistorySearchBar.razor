@@ -1,0 +1,33 @@
+<div class="@Class">
+    <MudIconButton 
+        Class="d-md-none"
+        Icon="@Icons.Material.Outlined.Search" 
+        Color="Color.Inherit" 
+        OnClick="@OpenSearchDialog"/>
+
+    <div class="d-none d-md-block container">
+        <SearchInput/>
+    </div>
+</div>
+
+@code {
+
+    private static readonly DialogOptions Options = new()
+    {
+        FullWidth = true,
+        MaxWidth = MaxWidth.Medium,
+        Position = DialogPosition.TopCenter,
+        CloseButton = false,
+        NoHeader = true
+    };
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Inject]
+    private IDialogService DialogService { get; init; } = default!;
+
+    private Task OpenSearchDialog() =>
+        DialogService.ShowAsync<HistorySearchModal>(string.Empty, Options);
+
+}

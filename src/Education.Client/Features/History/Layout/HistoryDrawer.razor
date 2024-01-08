@@ -1,5 +1,11 @@
 <MudDrawer Open="@Open" OpenChanged="OpenChanged" ClipMode="DrawerClipMode.Docked" Breakpoint="Breakpoint.Lg" Elevation="0">
-    <MudNavMenu Color="Color.Primary" Dense Margin="Margin.Dense" Rounded="true" Class="pa-2">
+    <MudDrawerHeader Class="d-sm-none align-center justify-center pa-3">
+        <MudLink Href="@HistoryUrl.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
+            @L["History_Title"] <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
+        </MudLink>
+    </MudDrawerHeader>
+    
+    <MudNavMenu Color="Color.Primary" Margin="Margin.Dense" Dense>
         <MudNavLink Match="NavLinkMatch.All" Href="@HistoryUrl.Root" Icon="@Icons.Material.Outlined.Home">
             @L["Button_Home"]
         </MudNavLink>
@@ -24,7 +30,7 @@
             @L["Random_Content_Title"]
         </MudNavLink>
 
-        <MudDivider Class="my-2"/>
+        <MudDivider Class="my-3"/>
 
         <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.Flow.Index()" Icon="@EduIcons.Flow">
             @L["Flow_Title"]
@@ -53,7 +59,7 @@
 
         <AuthorizeView>
             <Authorized>
-                <MudDivider Class="my-2"/>
+                <MudDivider Class="my-3"/>
 
                 <MudNavLink Match="NavLinkMatch.Prefix" Href="@HistoryUrl.User.MyProfile" Icon="@EduIcons.Profile">
                     @L["User_Profile_Title"]

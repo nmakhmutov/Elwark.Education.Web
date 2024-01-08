@@ -3,7 +3,6 @@
 <AuthorizeView>
     <NotAuthorized>
         <MudButton
-            Class="ml-3"
             Variant="Variant.Filled"
             Color="Color.Primary"
             Size="Size.Small"
@@ -14,11 +13,11 @@
     </NotAuthorized>
 
     <Authorizing>
-        <MudSkeleton Class="ml-3" SkeletonType="SkeletonType.Circle" Width="40px" Height="40px"/>
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="40px" Height="40px"/>
     </Authorizing>
 
     <Authorized>
-        <MudMenu Class="ml-3" Direction="Direction.Left" OffsetX Dense>
+        <MudMenu Direction="Direction.Left" OffsetX Dense>
             <ActivatorContent>
                 <img class="avatar rounded object-cover object-center" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
             </ActivatorContent>

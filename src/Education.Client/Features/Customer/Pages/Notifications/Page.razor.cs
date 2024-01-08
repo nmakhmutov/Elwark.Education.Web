@@ -3,7 +3,6 @@ using Education.Client.Features.Customer.Services.Notification;
 using Education.Client.Features.Customer.Services.Notification.Model;
 using Education.Client.Features.Customer.Services.Notification.Request;
 using Education.Client.Models;
-using Education.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -23,9 +22,6 @@ public sealed partial class Page
 
     [Inject]
     private INotificationService NotificationService { get; init; } = default!;
-
-    [CascadingParameter]
-    private CustomerState Customer { get; init; } = default!;
 
     protected override async Task OnInitializedAsync()
     {

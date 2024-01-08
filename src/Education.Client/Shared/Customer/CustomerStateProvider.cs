@@ -17,8 +17,7 @@ internal sealed class CustomerStateProvider : IDisposable
     private CustomerState _state;
     private IDisposable? _subscription;
 
-    public CustomerStateProvider(CustomerHab hab, IAccountClient accountClient,
-        AuthenticationStateProvider provider)
+    public CustomerStateProvider(CustomerHab hab, IAccountClient accountClient, AuthenticationStateProvider provider)
     {
         _accountClient = accountClient;
         _provider = provider;

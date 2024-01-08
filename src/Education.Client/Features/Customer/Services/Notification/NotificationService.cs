@@ -2,6 +2,7 @@ using Education.Client.Clients;
 using Education.Client.Features.Customer.Services.Notification.Model;
 using Education.Client.Features.Customer.Services.Notification.Request;
 using Education.Client.Models;
+using Education.Client.Shared.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
@@ -44,11 +45,11 @@ internal sealed class NotificationService : INotificationService
     public async Task<ApiResult<Unit>> MarkAllAsReadAsync()
     {
         var result = await _api.DeleteAsync<Unit>("notifications");
-        if (result.IsError)
-            return result;
-
-        _notifications.Clear();
-        await NotifyChangeSubscribersAsync();
+        await result.MatchAsync(_ =>
+        {
+            _notifications.Clear();
+            return NotifyChangeSubscribersAsync();
+        });
 
         return result;
     }
@@ -96,12 +97,12 @@ internal sealed class NotificationService : INotificationService
             .Take(MaxNotifications)
             .ToList();
 
-        var message = $"""
-                       <h6 class='mud-typography mud-typography-subtitle1'>{notification.Title}</h6>
-                       <p class='mud-typography mud-typography-body2'>{notification.Message}</p>
-                       """;
+        var parameters = new Dictionary<string, object>
+        {
+            [nameof(NotificationBlock.Notification)] = notification
+        };
 
-        _snackbar.Add(message);
+        _snackbar.Add<NotificationBlock>(parameters, Severity.Normal, options => options.HideIcon = true);
 
         return NotifyChangeSubscribersAsync();
     }

@@ -7,52 +7,51 @@
 
 <EduContainer Class="py-3 py-sm-6 mb-6">
     <section class="background rounded">
-        <h2 class="title white-text">
-            <b>@_result.Map(x => L["Search_CountOfFountResults", x.Count])</b>
-        </h2>
+        <MudText Class="white-text pa-3 pa-sm-6" Typo="Typo.h3">
+            @_result.Map(x => L["Search_CountOfFountResults", x.Count])
+        </MudText>
 
-        <EditForm Model="@(this)" OnValidSubmit="OnSearchSubmit">
-            <section class="search mud-paper">
+        <EditForm Model="@this" OnValidSubmit="OnSearchSubmit" AdditionalAttributes="@(new Dictionary<string, object> { ["class"] = "w-100" })">
+            <section class="d-flex flex-column flex-sm-row align-sm-end justify-center gap-3 gap-sm-6 pa-3 pa-sm-6 mb-sm-n16 mud-paper">
                 <MudTextField
-                    Class="flex-sm-grow-1"
+                    Class="flex-grow-1"
                     @bind-Value="@Query"
                     Label="@L["Search_Title"]"
                     InputType="InputType.Search"
                     Variant="Variant.Text"/>
 
-                <MudSelect
-                    @bind-Value="@Category"
-                    Label="@L["Search_Content_Title"]"
-                    Margin="Margin.Dense"
-                    Clearable
-                    Dense>
-                    @foreach (var category in _categories)
-                    {
-                        <MudSelectItem Value="category.Key">
-                            @category.Key (@category.Value)
-                        </MudSelectItem>
-                    }
-                </MudSelect>
-
-                <div class="search-button">
-                    <MudButton
-                        Variant="Variant.Filled"
-                        Color="Color.Primary"
-                        ButtonType="ButtonType.Submit"
-                        FullWidth
-                        DisableElevation>
-                        @L["Search_Title"]
-                    </MudButton>
+                <div class="w-max-300">
+                    <MudSelect
+                        Class="mb-0"
+                        @bind-Value="@Category"
+                        Label="@L["Search_Content_Title"]"
+                        Margin="Margin.Dense"
+                        Clearable
+                        Dense>
+                        @foreach (var category in _categories)
+                        {
+                            <MudSelectItem Value="category.Key">
+                                @category.Key (@category.Value)
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
                 </div>
+                
+                <MudButton
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    ButtonType="ButtonType.Submit"
+                    DisableElevation>
+                    @L["Search_Title"]
+                </MudButton>
             </section>
         </EditForm>
-
     </section>
 </EduContainer>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="result">
     <EduContainer Class="py-3 py-sm-6">
-        <EduFillGrid Class="mb-6 mb-sm-12">
+        <EduFillGrid Class="mb-3 mb-sm-6">
             @foreach (var hint in result.Hints)
             {
                 <SearchCard Search="@hint"/>
