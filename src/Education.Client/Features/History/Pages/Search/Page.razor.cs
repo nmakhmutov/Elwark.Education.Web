@@ -11,7 +11,7 @@ namespace Education.Client.Features.History.Pages.Search;
 public sealed partial class Page
 {
     private readonly SearchRequest _request = new(string.Empty, true, [], 0, 20);
-    private IReadOnlyDictionary<string, int> _categories = new Dictionary<string, int>();
+    private IReadOnlyDictionary<string, int> _categories = ReadOnlyDictionary<string, int>.Empty;
     private ApiResult<SearchResultModel> _result = ApiResult<SearchResultModel>.Loading();
 
     [Inject]
@@ -34,37 +34,35 @@ public sealed partial class Page
 
     private int TotalPages =>
         _result.Map(x => (int)double.Ceiling((double)x.Count / _request.Limit))
-            .UnwrapOr(1);
+            .UnwrapOr(0);
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = ApiResult<SearchResultModel>.Loading();
+        CurrentPage = Math.Max(CurrentPage, 1);
 
-        if (CurrentPage < 1)
-            CurrentPage = 1;
-
-        if (Query is not { Length: > 1 })
+        if (string.IsNullOrWhiteSpace(Query))
         {
             _result = ApiResult<SearchResultModel>.Success(SearchResultModel.Empty);
             return;
         }
 
-        _result = await SearchClient.SearchAsync(
-            _request with
-            {
-                Q = Query,
-                Offset = (CurrentPage - 1) * _request.Limit,
-                Categories = string.IsNullOrWhiteSpace(Category) ? [] : [Category]
-            });
+        _result = ApiResult<SearchResultModel>.Loading();
+
+        _result = await SearchClient.SearchAsync(_request with
+        {
+            Q = Query,
+            Offset = (CurrentPage - 1) * _request.Limit,
+            Categories = string.IsNullOrWhiteSpace(Category) ? [] : [Category]
+        });
 
         _categories = _result.Map(x => x.Categories)
             .UnwrapOrElse(() => ReadOnlyDictionary<string, int>.Empty);
     }
 
-    private void OnPagination(int page)
+    private void ChangePage(int page)
     {
         CurrentPage = page;
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page < 2 ? null : page));
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
     }
 
     private void OnSearchSubmit()

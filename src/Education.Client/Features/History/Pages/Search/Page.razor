@@ -26,6 +26,7 @@
                         @bind-Value="@Category"
                         Label="@L["Search_Content_Title"]"
                         Margin="Margin.Dense"
+                        Disabled="@(_categories.Count == 0)"
                         Clearable
                         Dense>
                         @foreach (var category in _categories)
@@ -36,7 +37,7 @@
                         }
                     </MudSelect>
                 </div>
-                
+
                 <MudButton
                     Variant="Variant.Filled"
                     Color="Color.Primary"
@@ -58,12 +59,15 @@
             }
         </EduFillGrid>
 
-        <MudPagination
-            Class="d-flex justify-center py-3 py-sm-6"
-            Selected="@CurrentPage"
-            SelectedChanged="@OnPagination"
-            Count="@TotalPages"
-            Rectangular
-            DisableElevation/>
+        @if (TotalPages > 0)
+        {
+            <MudPagination
+                Class="d-flex justify-center py-3 py-sm-6"
+                Count="@TotalPages"
+                Selected="@CurrentPage"
+                SelectedChanged="@ChangePage"
+                Rectangular
+                DisableElevation/>
+        }
     </EduContainer>
 </ApiViewer>

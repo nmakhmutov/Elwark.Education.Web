@@ -44,6 +44,6 @@
     public string? Class { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _response = await LearnerClient.GetArticleHistoryAsync(new HistoryRequest(true, _count));
+        _response = await LearnerClient.GetArticlesAsync(new HistoryRequest(true, _count));
 
 }

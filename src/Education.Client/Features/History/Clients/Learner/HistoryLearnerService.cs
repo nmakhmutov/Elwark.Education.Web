@@ -10,73 +10,75 @@ namespace Education.Client.Features.History.Clients.Learner;
 
 internal sealed class HistoryLearnerService : IHistoryLearnerClient
 {
+    private const string Root = "history/learners/me";
     private readonly HistoryApiClient _api;
 
     public HistoryLearnerService(HistoryApiClient api) =>
         _api = api;
 
     public Task<ApiResult<ExaminationsStatisticsModel>> GetExaminationStatisticsAsync() =>
-        _api.GetAsync<ExaminationsStatisticsModel>("history/learners/me/examinations");
+        _api.GetAsync<ExaminationsStatisticsModel>($"{Root}/examinations");
 
     public Task<ApiResult<ExaminationStatisticsModel>> GetEasyExaminationStatisticsAsync() =>
-        _api.GetAsync<ExaminationStatisticsModel>("history/learners/me/examinations/easy");
+        _api.GetAsync<ExaminationStatisticsModel>($"{Root}/examinations/easy");
 
     public Task<ApiResult<ExaminationStatisticsModel>> GetHardExaminationStatisticsAsync() =>
-        _api.GetAsync<ExaminationStatisticsModel>("history/learners/me/examinations/hard");
+        _api.GetAsync<ExaminationStatisticsModel>($"{Root}/examinations/hard");
 
     public Task<ApiResult<QuizzesStatisticsModel>> GetQuizStatisticsAsync() =>
-        _api.GetAsync<QuizzesStatisticsModel>("history/learners/me/quizzes");
+        _api.GetAsync<QuizzesStatisticsModel>($"{Root}/quizzes");
 
     public Task<ApiResult<QuizStatisticsModel>> GetEasyQuizStatisticsAsync() =>
-        _api.GetAsync<QuizStatisticsModel>("history/learners/me/quizzes/easy");
+        _api.GetAsync<QuizStatisticsModel>($"{Root}/quizzes/easy");
 
     public Task<ApiResult<QuizStatisticsModel>> GetHardQuizStatisticsAsync() =>
-        _api.GetAsync<QuizStatisticsModel>("history/learners/me/quizzes/hard");
+        _api.GetAsync<QuizStatisticsModel>($"{Root}/quizzes/hard");
 
     public Task<ApiResult<DateGuessersStatisticsModel>> GetDateGuesserStatisticsAsync() =>
-        _api.GetAsync<DateGuessersStatisticsModel>("history/learners/me/date-guessers");
+        _api.GetAsync<DateGuessersStatisticsModel>($"{Root}/date-guessers");
 
     public Task<ApiResult<DateGuesserStatisticsModel>> GetSmallDateGuesserStatisticsAsync() =>
-        _api.GetAsync<DateGuesserStatisticsModel>("history/learners/me/date-guessers/small");
+        _api.GetAsync<DateGuesserStatisticsModel>($"{Root}/date-guessers/small");
 
     public Task<ApiResult<DateGuesserStatisticsModel>> GetMediumDateGuesserStatisticsAsync() =>
-        _api.GetAsync<DateGuesserStatisticsModel>("history/learners/me/date-guessers/medium");
+        _api.GetAsync<DateGuesserStatisticsModel>($"{Root}/date-guessers/medium");
 
     public Task<ApiResult<DateGuesserStatisticsModel>> GetLargeDateGuesserStatisticsAsync() =>
-        _api.GetAsync<DateGuesserStatisticsModel>("history/learners/me/date-guessers/large");
+        _api.GetAsync<DateGuesserStatisticsModel>($"{Root}/date-guessers/large");
 
-    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleHistoryAsync(HistoryRequest request) =>
-        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/learners/me/articles", request);
+    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticlesAsync(HistoryRequest request) =>
+        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>($"{Root}/articles", request);
 
-    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(
-        BookmarksRequest request) =>
-        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>("history/learners/me/articles/bookmarks", request);
+    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest req) =>
+        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>($"{Root}/articles/bookmarks", req);
 
-    public Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId) =>
-        _api.GetAsync<ArticleStatisticsModel>($"history/learners/me/articles/{articleId}");
+    public Task<ApiResult<ArticleStatisticsModel>> GetArticleAsync(string articleId) =>
+        _api.GetAsync<ArticleStatisticsModel>($"{Root}/articles/{articleId}");
 
     public Task<ApiResult<bool>> ToggleArticleBookmarkAsync(string articleId) =>
-        _api.PostAsync<bool>($"history/learners/me/articles/{articleId}/bookmarks");
+        _api.PostAsync<bool>($"{Root}/articles/{articleId}/bookmarks");
 
     public Task<ApiResult<Unit>> LikeArticleAsync(string articleId) =>
-        _api.PostAsync<Unit>($"history/learners/me/articles/{articleId}/likes");
+        _api.PostAsync<Unit>($"{Root}/articles/{articleId}/likes");
 
     public Task<ApiResult<Unit>> DislikeArticleAsync(string articleId) =>
-        _api.PostAsync<Unit>($"history/learners/me/articles/{articleId}/dislikes");
+        _api.PostAsync<Unit>($"{Root}/articles/{articleId}/dislikes");
 
-    public Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>>
-        GetCourseBookmarksAsync(BookmarksRequest request) =>
-        _api.GetAsync<PagingTokenModel<UserCourseOverviewModel>>("history/learners/me/courses/bookmarks", request);
+    public Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest req) =>
+        _api.GetAsync<PagingTokenModel<UserCourseOverviewModel>>($"{Root}/courses/bookmarks", req);
+
+    public Task<ApiResult<CourseStatisticsModel>> GetCourseAsync(string courseId) =>
+        _api.GetAsync<CourseStatisticsModel>($"/{Root}/courses/{courseId}");
 
     public Task<ApiResult<UserCourseActivityModel>> StartCourseAsync(string courseId) =>
-        _api.PostAsync<UserCourseActivityModel>($"/history/learners/me/courses/{courseId}");
+        _api.PostAsync<UserCourseActivityModel>($"/{Root}/courses/{courseId}");
 
     public Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string courseId) =>
-        _api.PostAsync<bool>($"history/learners/me/courses/{courseId}/bookmarks");
+        _api.PostAsync<bool>($"{Root}/courses/{courseId}/bookmarks");
 
     public Task<ApiResult<Unit>> LikeCourseAsync(string courseId) =>
-        _api.PostAsync<Unit>($"history/learners/me/courses/{courseId}/likes");
+        _api.PostAsync<Unit>($"{Root}/courses/{courseId}/likes");
 
     public Task<ApiResult<Unit>> DislikeCourseAsync(string courseId) =>
-        _api.PostAsync<Unit>($"history/learners/me/courses/{courseId}/dislikes");
+        _api.PostAsync<Unit>($"{Root}/courses/{courseId}/dislikes");
 }

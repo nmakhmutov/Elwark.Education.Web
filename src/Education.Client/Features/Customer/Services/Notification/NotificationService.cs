@@ -18,6 +18,7 @@ internal sealed class NotificationService : INotificationService
     private readonly ISnackbar _snackbar;
     private readonly AuthenticationStateProvider _stateProvider;
     private readonly HashSet<StateChangedSubscription> _subscriptions = [];
+
     private bool _isInitialized;
     private List<NotificationMessage> _notifications = [];
     private IDisposable? _subscription;

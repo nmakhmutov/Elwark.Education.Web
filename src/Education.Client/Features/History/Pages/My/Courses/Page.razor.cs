@@ -5,11 +5,11 @@ using Education.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
-namespace Education.Client.Features.History.Pages.My.Articles;
+namespace Education.Client.Features.History.Pages.My.Courses;
 
 public sealed partial class Page
 {
-    private ApiResult<ArticleStatisticsModel> _result = ApiResult<ArticleStatisticsModel>.Loading();
+    private ApiResult<CourseStatisticsModel> _result = ApiResult<CourseStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -24,5 +24,5 @@ public sealed partial class Page
     public required string Id { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _result = await LearnerClient.GetArticleAsync(Id);
+        _result = await LearnerClient.GetCourseAsync(Id);
 }

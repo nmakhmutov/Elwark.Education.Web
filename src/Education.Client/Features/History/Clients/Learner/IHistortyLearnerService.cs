@@ -15,7 +15,7 @@ public interface IHistoryLearnerClient
     Task<ApiResult<ExaminationStatisticsModel>> GetEasyExaminationStatisticsAsync();
 
     Task<ApiResult<ExaminationStatisticsModel>> GetHardExaminationStatisticsAsync();
-    
+
     Task<ApiResult<QuizzesStatisticsModel>> GetQuizStatisticsAsync();
 
     Task<ApiResult<QuizStatisticsModel>> GetEasyQuizStatisticsAsync();
@@ -30,11 +30,11 @@ public interface IHistoryLearnerClient
 
     Task<ApiResult<DateGuesserStatisticsModel>> GetLargeDateGuesserStatisticsAsync();
 
-    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleHistoryAsync(HistoryRequest request);
+    Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticlesAsync(HistoryRequest request);
 
-    Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest request);
+    Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest req);
 
-    Task<ApiResult<ArticleStatisticsModel>> GetArticlesAsync(string articleId);
+    Task<ApiResult<ArticleStatisticsModel>> GetArticleAsync(string articleId);
 
     Task<ApiResult<bool>> ToggleArticleBookmarkAsync(string articleId);
 
@@ -42,7 +42,9 @@ public interface IHistoryLearnerClient
 
     Task<ApiResult<Unit>> DislikeArticleAsync(string articleId);
 
-    Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest request);
+    Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest req);
+
+    Task<ApiResult<CourseStatisticsModel>> GetCourseAsync(string courseId);
 
     Task<ApiResult<UserCourseActivityModel>> StartCourseAsync(string courseId);
 
