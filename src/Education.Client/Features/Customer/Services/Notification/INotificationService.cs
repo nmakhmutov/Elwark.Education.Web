@@ -8,9 +8,9 @@ namespace Education.Client.Features.Customer.Services.Notification;
 
 public interface INotificationService : IDisposable
 {
-    public bool HasNotifications { get; }
+    bool HasNotifications { get; }
 
-    public IReadOnlyCollection<NotificationMessage> LastNotifications { get; }
+    IReadOnlyCollection<NotificationMessage> LastNotifications { get; }
 
     Task<ApiResult<PagingTokenModel<NotificationModel>>> GetAsync(NotificationsRequest request);
 
@@ -18,7 +18,7 @@ public interface INotificationService : IDisposable
 
     Task<ApiResult<Unit>> MarkAsReadAsync(string id);
 
-    public IDisposable NotifyOnChange(EventCallback callback);
+    IDisposable NotifyOnChange(EventCallback callback);
 
     Task StartAsync();
 }

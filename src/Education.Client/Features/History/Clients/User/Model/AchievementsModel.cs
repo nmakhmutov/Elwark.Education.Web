@@ -3,7 +3,6 @@ namespace Education.Client.Features.History.Clients.User.Model;
 public sealed record AchievementsModel(uint Total, uint Unlocked, AchievementsModel.Category[] Categories)
 {
     public sealed record Category(
-        string Name,
         string Title,
         string Description,
         uint Total,

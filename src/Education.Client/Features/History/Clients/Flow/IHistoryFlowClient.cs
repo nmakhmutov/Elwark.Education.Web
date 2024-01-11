@@ -7,11 +7,11 @@ namespace Education.Client.Features.History.Clients.Flow;
 
 public interface IHistoryFlowClient
 {
-    public Task<ApiResult<FlowModel>> GetAsync();
+    Task<ApiResult<FlowModel>> GetAsync();
 
-    public Task<ApiResult<FlowModel>> StartAsync();
+    Task<ApiResult<FlowModel>> StartAsync();
 
-    public Task<ApiResult<FlowAnswerModel>> CheckAsync(string questionId, UserAnswerModel answer);
+    Task<ApiResult<FlowAnswerModel>> CheckAsync(string questionId, UserAnswerModel answer);
 
-    public Task<ApiResult<Unit>> CollectBankAsync();
+    Task<ApiResult<Unit>> CollectBankAsync();
 }

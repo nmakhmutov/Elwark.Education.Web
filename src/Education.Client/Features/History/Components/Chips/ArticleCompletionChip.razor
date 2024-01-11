@@ -13,6 +13,7 @@ else
 
     private Color _color;
     private string? _icon;
+    private bool _disabled;
 
     private RenderFragment Chip =>
         @<MudChip
@@ -21,8 +22,10 @@ else
              Size="@Size"
              Color="_color"
              Icon="@_icon"
+             Disabled="@_disabled"
              Text="@L.GetStatusTitle(Status)"
-             Href="@(Status == LearningStatus.NotEngaged ? null : Href)"/>;
+             Href="@(Status == LearningStatus.NotEngaged ? null : Href)"
+             DisableRipple/>;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -40,11 +43,11 @@ else
     public Size Size { get; set; } = Size.Medium;
 
     protected override void OnParametersSet() =>
-        (_color, _icon) = Status switch
+        (_color, _icon, _disabled) = Status switch
         {
-            LearningStatus.NotEngaged => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked),
-            LearningStatus.Incompleted => (Color.Warning, Icons.Material.Outlined.ModeStandby),
-            LearningStatus.Completed => (Color.Success, Icons.Material.Outlined.CheckCircle),
+            LearningStatus.NotEngaged => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked, true),
+            LearningStatus.Incompleted => (Color.Warning, Icons.Material.Outlined.ModeStandby, false),
+            LearningStatus.Completed => (Color.Success, Icons.Material.Outlined.CheckCircle, false),
             _ => throw new ArgumentOutOfRangeException()
         };
 

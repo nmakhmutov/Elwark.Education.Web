@@ -6,7 +6,7 @@ namespace Education.Client.Features.History.Clients.Order;
 
 public interface IHistoryOrderClient
 {
-    public Task<ApiResult<OrderStatusModel>> GetStatus(Guid id);
+    Task<ApiResult<OrderStatusModel>> GetStatus(Guid id);
 
-    public Task<ApiResult<OrderStatusModel>> CheckoutAsync(CheckoutRequest request);
+    Task<ApiResult<OrderStatusModel>> CheckoutAsync(CheckoutRequest request);
 }

@@ -15,12 +15,12 @@ internal sealed class NotificationService : INotificationService
 
     private readonly CustomerApiClient _api;
     private readonly CustomerHab _hab;
+    private readonly List<NotificationMessage> _notifications = [];
     private readonly ISnackbar _snackbar;
     private readonly AuthenticationStateProvider _stateProvider;
     private readonly HashSet<StateChangedSubscription> _subscriptions = [];
 
     private bool _isInitialized;
-    private List<NotificationMessage> _notifications = [];
     private IDisposable? _subscription;
 
     public NotificationService(CustomerApiClient api, CustomerHab hab, ISnackbar snackbar,
@@ -64,9 +64,6 @@ internal sealed class NotificationService : INotificationService
     public bool HasNotifications =>
         _notifications.Count > 0;
 
-    public void Dispose() =>
-        _subscription?.Dispose();
-
     public async Task StartAsync()
     {
         if (_isInitialized)
@@ -79,24 +76,25 @@ internal sealed class NotificationService : INotificationService
         var callback = EventCallback.Factory.Create<NotificationMessage>(this, ReceivedMessage);
         _subscription = _hab.NotifyOnNotification(callback);
 
-        _notifications = (await GetAsync(new NotificationsRequest(MaxNotifications)))
-            .Map(x => x.Items.Select(m =>
-                new NotificationMessage(m.Subject, m.Module, m.Title, m.Message, m.Payload, m.CreatedAt))
-            )
-            .UnwrapOr(Enumerable.Empty<NotificationMessage>())
-            .ToList();
+        var result = await GetAsync(new NotificationsRequest(MaxNotifications));
+        result.Match(model => _notifications.AddRange(model.Items.Select(m =>
+            new NotificationMessage(m.Subject, m.Module, m.Title, m.Message, m.Payload, m.CreatedAt))
+        ));
 
         _isInitialized = true;
 
         await NotifyChangeSubscribersAsync();
     }
 
+    public void Dispose() =>
+        _subscription?.Dispose();
+
     private Task ReceivedMessage(NotificationMessage notification)
     {
-        _notifications = _notifications
-            .Prepend(notification)
-            .Take(MaxNotifications)
-            .ToList();
+        _notifications.Insert(0, notification);
+
+        while (_notifications.Count > MaxNotifications)
+            _notifications.Remove(_notifications[^1]);
 
         var parameters = new Dictionary<string, object>
         {
@@ -111,6 +109,9 @@ internal sealed class NotificationService : INotificationService
     private Task NotifyChangeSubscribersAsync() =>
         Task.WhenAll(_subscriptions.Select(s => s.NotifyAsync()));
 
+    private void Remove(StateChangedSubscription subscription) =>
+        _subscriptions.Remove(subscription);
+
     private sealed class StateChangedSubscription : IDisposable
     {
         private readonly EventCallback _callback;
@@ -123,7 +124,7 @@ internal sealed class NotificationService : INotificationService
         }
 
         public void Dispose() =>
-            _owner._subscriptions.Remove(this);
+            _owner.Remove(this);
 
         public Task NotifyAsync() =>
             _callback.InvokeAsync();

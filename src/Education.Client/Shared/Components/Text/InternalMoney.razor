@@ -1,7 +1,16 @@
 @using Education.Client.Models
 <div class="@_blockClass">
     <MudIcon Size="@IconSize" Class="@_iconClass" Icon="@Currency.GetIcon()"/>
-    <MetricNumber Value="@Amount" Typo="@Typo"/>
+    @if (ShowFullValue)
+    {
+        <MudText Typo="Typo" Color="Color.Inherit">
+            @Amount.ToString("G")
+        </MudText>
+    }
+    else
+    {
+        <MetricNumber Value="@Amount" Typo="@Typo"/>
+    }
 </div>
 
 @code {
@@ -25,6 +34,9 @@
 
     [Parameter]
     public bool Horizontal { get; set; }
+
+    [Parameter]
+    public bool ShowFullValue { get; set; }
 
     protected override void OnParametersSet()
     {
