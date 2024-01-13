@@ -15,8 +15,8 @@ internal sealed class HistoryExaminationClient : IHistoryExaminationClient
     public Task<ApiResult<ExaminationModel>> GetAsync(string testId) =>
         _api.GetAsync<ExaminationModel>($"{Root}/{testId}");
 
-    public Task<ApiResult<ExaminationAnswerModel>> CheckAsync(string testId, string questionId, UserAnswerModel answer) =>
-        _api.PostAsync<ExaminationAnswerModel, UserAnswerModel>($"{Root}/{testId}/questions/{questionId}", answer);
+    public Task<ApiResult<ExaminationAnswerModel>> CheckAsync(string testId, string questionId, UserAnswerModel model) =>
+        _api.PostAsync<ExaminationAnswerModel, UserAnswerModel>($"{Root}/{testId}/questions/{questionId}", model);
 
     public Task<ApiResult<ExaminationConclusionModel>> GetConclusionAsync(string testId) =>
         _api.GetAsync<ExaminationConclusionModel>($"{Root}/{testId}/conclusion");

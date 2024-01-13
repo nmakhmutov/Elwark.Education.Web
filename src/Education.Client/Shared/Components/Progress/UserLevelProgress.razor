@@ -8,11 +8,9 @@
             Max="@Threshold"
             Value="@Experience"
             Rounded>
-            <MudTooltip Text="@($"{Experience:N0} / {Threshold:N0}")">
-                <MudText Class="@(_percentage > 49 ? "white-text" : null)" Typo="Typo.caption">
-                    @Experience.ToMetric("G") / @Threshold.ToMetric("G")
-                </MudText>
-            </MudTooltip>
+            <MudText Class="@(_percentage > 49 ? "white-text" : null)" Typo="Typo.caption">
+                @Experience.ToString("G") / @Threshold.ToString("G")
+            </MudText>
         </MudProgressLinear>
     }
     else

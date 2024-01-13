@@ -1,11 +1,10 @@
-@using Education.Client.Clients
 @using Education.Client.Features.History.Clients.Article
 @using Education.Client.Features.History.Clients.Article.Request
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <Loading>
         <div class="grid @Class">
             <div class="image h-100">
-                <MudSkeleton Style="width: 100%; height: 100%" SkeletonType="SkeletonType.Rectangle"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Style="width: 100%; height: 100%"/>
             </div>
             <article class="text">
                 <MudSkeleton Class="mb-12" SkeletonType="SkeletonType.Text"/>
@@ -52,8 +51,7 @@
 
 @code {
 
-    private ApiResult<UserArticleOverviewModel> _result =
-        ApiResult<UserArticleOverviewModel>.Loading();
+    private ApiResult<UserArticleOverviewModel> _result = ApiResult<UserArticleOverviewModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -64,11 +62,8 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        var request = new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 10, 1);
-        _result = (await ArticleClient.GetAsync(request))
+    protected override async Task OnInitializedAsync() =>
+        _result = (await ArticleClient.GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 10, 1)))
             .Map(x => x.Items.First());
-    }
 
 }

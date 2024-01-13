@@ -13,13 +13,13 @@ internal static class LocalizationExtensions
 
     public static string GetQuizDifficultyTitle(this IStringLocalizer localizer, DifficultyType type) =>
         localizer[$"Quiz_{type}_Title"];
-    
+
     public static string GetExaminationDifficultyTitle(this IStringLocalizer localizer, DifficultyType type) =>
         localizer[$"Examination_{type}_Title"];
 
     public static string GetStatusTitle(this IStringLocalizer localizer, QuizStatus status) =>
         localizer[$"ConclusionStatus_{status}"];
-    
+
     public static string GetStatusTitle(this IStringLocalizer localizer, ExaminationStatus status) =>
         localizer[$"ConclusionStatus_{status}"];
 

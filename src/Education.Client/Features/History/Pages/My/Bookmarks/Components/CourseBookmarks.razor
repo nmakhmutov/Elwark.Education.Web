@@ -90,8 +90,8 @@ else
 
         var items = _items.Skip(request.StartIndex).Take(request.Count);
 
-        var isRangeAvailable = _items.Count > (request.StartIndex + 1) * request.Count ||
-                               (_items.Count > 0 && string.IsNullOrEmpty(_token));
+        var isRangeAvailable = _items.Count > (request.StartIndex + 1) * request.Count
+            || (_items.Count > 0 && string.IsNullOrEmpty(_token));
 
         if (isRangeAvailable || request.Count == 0)
             return new ItemsProviderResult<UserCourseOverviewModel>(items, GetLength());

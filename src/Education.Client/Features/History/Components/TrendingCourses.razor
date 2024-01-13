@@ -12,9 +12,9 @@
             }
         </Loading>
         <ChildContent Context="courses">
-            @for (var i = 0; i < courses.Items.Length; i++)
+            @for (var i = 0; i < courses.Length; i++)
             {
-                var course = courses.Items[i];
+                var course = courses[i];
 
                 <CourseCard
                     Course="@course.Course"
@@ -31,10 +31,9 @@
 
 @code {
     private Guid _subscriptionId;
-    private int _breakpoint;
+    private Breakpoint _breakpoint;
 
-    private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
-        ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
+    private ApiResult<UserCourseOverviewModel[]> _result = ApiResult<UserCourseOverviewModel[]>.Loading();
 
     [Inject]
     private IBrowserViewportService ViewportService { get; init; } = default!;
@@ -49,7 +48,8 @@
     public string? Class { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _result = await CourseClient.GetAsync(new GetCourseRequest(GetCourseRequest.SortType.Trending, 0, 6));
+        _result = (await CourseClient.GetAsync(new GetCourseRequest(GetCourseRequest.SortType.Trending, 0, 6)))
+            .Map(x => x.Items);
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -63,15 +63,15 @@
 
     private void OnBreakpointChanged(Breakpoint breakpoint)
     {
-        _breakpoint = (int)breakpoint;
+        _breakpoint = breakpoint;
         InvokeAsync(StateHasChanged);
     }
 
     private bool IsHorizontal(int i) =>
-        _breakpoint >= (int)Breakpoint.Lg && i > 0;
+        _breakpoint >= Breakpoint.Lg && i > 0;
 
     private bool IsHiddenOverview(int i) =>
-        _breakpoint >= (int)Breakpoint.Lg && i > 2;
+        _breakpoint >= Breakpoint.Lg && i > 2;
 
     public async ValueTask DisposeAsync() =>
         await ViewportService.UnsubscribeAsync(_subscriptionId);

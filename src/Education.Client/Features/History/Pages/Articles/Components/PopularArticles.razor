@@ -10,7 +10,7 @@
             }
         </Loading>
         <ChildContent Context="articles">
-            @foreach (var item in articles.Items)
+            @foreach (var item in articles)
             {
                 <ArticleCard
                     Article="@item.Article"
@@ -27,8 +27,7 @@
 
 @code {
 
-    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
-        ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+    private ApiResult<UserArticleOverviewModel[]> _result = ApiResult<UserArticleOverviewModel[]>.Loading();
 
     [Inject]
     private IHistoryArticleClient ArticleClient { get; init; } = default!;
@@ -36,10 +35,8 @@
     [Inject]
     private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
-        var request = new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Popularity, 0, 6);
-        _result = await ArticleClient.GetAsync(request);
-    }
+    protected override async Task OnInitializedAsync() =>
+        _result = (await ArticleClient.GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Popularity, 0, 6)))
+            .Map(x => x.Items);
 
 }

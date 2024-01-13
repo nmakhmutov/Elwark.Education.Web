@@ -8,7 +8,7 @@ public interface IHistoryExaminationClient
 {
     Task<ApiResult<ExaminationModel>> GetAsync(string id);
 
-    Task<ApiResult<ExaminationAnswerModel>> CheckAsync(string testId, string questionId, UserAnswerModel answer);
+    Task<ApiResult<ExaminationAnswerModel>> CheckAsync(string testId, string questionId, UserAnswerModel model);
 
     Task<ApiResult<ExaminationConclusionModel>> GetConclusionAsync(string testId);
 }

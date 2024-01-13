@@ -23,21 +23,26 @@
                         <b>@L["User_ReachLevelToUnlock", upcoming.NextLevel]:</b>
                     </MudText>
 
-                    <InventoryGrid Class="justify-center" Inventory="@upcoming.Inventories" Context="inventory">
-                        <InventoryInfoCard
-                            Title="@inventory.Title"
-                            IconUrl="@inventory.ImageUrl"
-                            Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
-                            Overview="@inventory.Overview"/>
-                    </InventoryGrid>
+                    <section class="d-flex flex-wrap gap-3 gap-sm-6 justify-center">
+                        @foreach (var inventory in upcoming.Inventories)
+                        {
+                            <InventoryInfoCard
+                                Title="@inventory.Title"
+                                IconUrl="@inventory.ImageUrl"
+                                Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
+                                Overview="@inventory.Overview"/>
+                        }
+                    </section>
                 </ChildContent>
                 <Loading>
                     <div class="d-flex justify-center">
                         <MudSkeleton Class="mb-3 mb-sm-6" SkeletonType="SkeletonType.Text" Width="30%"/>
                     </div>
-                    <InventoryGrid Class="justify-center" Inventory="@(Enumerable.Range(0, 2))">
+
+                    <section class="d-flex flex-wrap gap-3 gap-sm-6 justify-center">
                         <InventorySkeletonCard/>
-                    </InventoryGrid>
+                        <InventorySkeletonCard/>
+                    </section>
                 </Loading>
             </ApiViewer>
         </div>

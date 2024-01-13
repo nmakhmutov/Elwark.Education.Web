@@ -21,7 +21,7 @@ internal sealed class HistoryCourseClient : IHistoryCourseClient
 
     public Task<ApiResult<ExaminationBuilderModel>> GetExaminationAsync(string id) =>
         _api.GetAsync<ExaminationBuilderModel>($"history/courses/{id}/examinations");
-    
+
     public Task<ApiResult<TestCreationModel>> CreateExaminationAsync(string id, CreateExaminationRequest request) =>
         _api.PostAsync<TestCreationModel, CreateExaminationRequest>($"history/courses/{id}/examinations", request);
 

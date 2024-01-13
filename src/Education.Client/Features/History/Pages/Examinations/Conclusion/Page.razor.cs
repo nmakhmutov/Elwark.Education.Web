@@ -23,7 +23,7 @@ public sealed partial class Page
 
     protected override async Task OnInitializedAsync() =>
         _result = await ExaminationClient.GetConclusionAsync(Id);
-    
+
     private static Severity GetColor(ExaminationStatus status) =>
         status switch
         {

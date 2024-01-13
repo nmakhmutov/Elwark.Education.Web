@@ -10,7 +10,7 @@
             }
         </Loading>
         <ChildContent Context="articles">
-            @foreach (var item in articles.Items)
+            @foreach (var item in articles)
             {
                 <CourseCard
                     Course="@item.Course"
@@ -27,8 +27,7 @@
 
 @code {
 
-    private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
-        ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
+    private ApiResult<UserCourseOverviewModel[]> _result = ApiResult<UserCourseOverviewModel[]>.Loading();
 
     [Inject]
     private IHistoryCourseClient CourseClient { get; init; } = default!;
@@ -36,10 +35,8 @@
     [Inject]
     private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
-        var request = new GetCourseRequest(GetCourseRequest.SortType.Popularity, 0, 6);
-        _result = await CourseClient.GetAsync(request);
-    }
+    protected override async Task OnInitializedAsync() =>
+        _result = (await CourseClient.GetAsync(new GetCourseRequest(GetCourseRequest.SortType.Popularity, 0, 6)))
+            .Map(x => x.Items);
 
 }

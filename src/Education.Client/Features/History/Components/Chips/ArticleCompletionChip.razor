@@ -23,9 +23,8 @@ else
              Color="_color"
              Icon="@_icon"
              Disabled="@_disabled"
-             Text="@L.GetStatusTitle(Status)"
-             Href="@(Status == LearningStatus.NotEngaged ? null : Href)"
-             DisableRipple/>;
+             Href="@Href"
+             Text="@L.GetStatusTitle(Status)"/>;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;

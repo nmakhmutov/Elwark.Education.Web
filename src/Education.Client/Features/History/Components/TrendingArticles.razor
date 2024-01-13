@@ -12,12 +12,14 @@
             }
         </Loading>
         <ChildContent Context="articles">
-            @for (var i = 0; i < articles.Items.Length; i++)
+            @for (var i = 0; i < articles.Length; i++)
             {
+                var article = articles[i];
+
                 <ArticleCard
-                    Article="@articles.Items[i].Article"
-                    HasQuiz="@articles.Items[i].HasQuiz"
-                    Activity="@articles.Items[i].Activity"
+                    Article="@article.Article"
+                    HasQuiz="@article.HasQuiz"
+                    Activity="@article.Activity"
                     OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
                     Horizontal="@IsHorizontal(i)"
                     HideOverview="@IsHiddenOverview(i)"
@@ -29,10 +31,9 @@
 
 @code {
     private Guid _subscriptionId;
-    private int _breakpoint;
+    private Breakpoint _breakpoint;
 
-    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
-        ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+    private ApiResult<UserArticleOverviewModel[]> _result = ApiResult<UserArticleOverviewModel[]>.Loading();
 
     [Inject]
     private IBrowserViewportService ViewportService { get; init; } = default!;
@@ -46,11 +47,9 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        var request = new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 0, 6);
-        _result = await ArticleClient.GetAsync(request);
-    }
+    protected override async Task OnInitializedAsync() =>
+        _result = (await ArticleClient.GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 0, 6)))
+            .Map(x => x.Items);
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -64,15 +63,15 @@
 
     private void OnBreakpointChanged(Breakpoint breakpoint)
     {
-        _breakpoint = (int)breakpoint;
+        _breakpoint = breakpoint;
         InvokeAsync(StateHasChanged);
     }
 
     private bool IsHorizontal(int i) =>
-        _breakpoint >= (int)Breakpoint.Lg && i > 0;
+        _breakpoint >= Breakpoint.Lg && i > 0;
 
     private bool IsHiddenOverview(int i) =>
-        _breakpoint >= (int)Breakpoint.Lg && i > 2;
+        _breakpoint >= Breakpoint.Lg && i > 2;
 
     public async ValueTask DisposeAsync() =>
         await ViewportService.UnsubscribeAsync(_subscriptionId);
