@@ -4,6 +4,7 @@ using Education.Client.Features.History.Clients.Examination.Model;
 using Education.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Examinations;
 
@@ -19,7 +20,10 @@ public sealed partial class Page
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
-
+    
+    [Inject]
+    private ISnackbar Snackbar { get; init; } = default!;
+    
     [Parameter]
     public required string Id { get; set; }
 
@@ -52,6 +56,9 @@ public sealed partial class Page
         return Task.CompletedTask;
     }
 
-    private Task OnUseInventory(uint arg) =>
-        Task.CompletedTask;
+    private async Task OnUseInventory(uint id)
+    {
+        _result = await ExaminationClient.ApplyInventoryAsync(Id, id);
+        _result.MathError(e => Snackbar.Add(e.Detail, Severity.Error));
+    }
 }
