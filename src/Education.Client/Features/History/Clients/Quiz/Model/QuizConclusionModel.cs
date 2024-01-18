@@ -1,14 +1,14 @@
 using Education.Client.Models;
-using Education.Client.Models.Content;
 using Education.Client.Models.Test;
 
 namespace Education.Client.Features.History.Clients.Quiz.Model;
 
 public sealed record QuizConclusionModel(
     string TestId,
+    string ArticleId,
+    string Title,
     DifficultyType Type,
     QuizStatus Status,
-    ArticleTitleModel Article,
     PerformanceModel<uint> QuestionScore,
     PerformanceModel<uint> NoMistakeScore,
     PerformanceModel<uint> SpeedScore,

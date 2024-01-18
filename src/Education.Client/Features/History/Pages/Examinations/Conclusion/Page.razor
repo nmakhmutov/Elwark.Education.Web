@@ -4,7 +4,7 @@
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="conclusion">
     <PageTitle>
-        @conclusion.Course.Title
+        @conclusion.Title
     </PageTitle>
 
     <MudAlert Class="mb-6 mb-sm-12" Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
@@ -20,7 +20,7 @@
 
     <div class="d-flex justify-center py-3 py-sm-6">
         <MudButton
-            Href="@HistoryUrl.Content.ExaminationBuilder(conclusion.Course.Id)"
+            Href="@HistoryUrl.Content.ExaminationBuilder(conclusion.CourseId)"
             Color="Color.Primary"
             Variant="Variant.Filled"
             Size="Size.Large"
@@ -31,7 +31,7 @@
 
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <div class="mb-3">
-            <MudLink Href="@HistoryUrl.User.MyCourse(conclusion.Course.Id)" Typo="Typo.h5">
+            <MudLink Href="@HistoryUrl.User.MyCourse(conclusion.CourseId)" Typo="Typo.h5">
                 @L["Statistics_Title"]
             </MudLink>
         </div>
@@ -40,8 +40,8 @@
 
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <div class="mb-3">
-            <MudLink Href="@HistoryUrl.Content.Course(conclusion.Course.Id)" Typo="Typo.h5">
-                @conclusion.Course.Title
+            <MudLink Href="@HistoryUrl.Content.Course(conclusion.CourseId)" Typo="Typo.h5">
+                @conclusion.Title
             </MudLink>
         </div>
 

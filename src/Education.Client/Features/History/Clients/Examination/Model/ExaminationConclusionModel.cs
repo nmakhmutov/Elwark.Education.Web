@@ -1,13 +1,13 @@
 using Education.Client.Models;
-using Education.Client.Models.Content;
 using Education.Client.Models.Test;
 
 namespace Education.Client.Features.History.Clients.Examination.Model;
 
 public sealed record ExaminationConclusionModel(
     string TestId,
+    string CourseId,
+    string Title,
     ExaminationStatus Status,
-    CourseTitleModel Course,
     PerformanceModel<uint> QuestionScore,
     PerformanceModel<uint> NoMistakeScore,
     PerformanceModel<uint> SpeedScore,

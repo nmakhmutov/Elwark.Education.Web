@@ -3,15 +3,17 @@
 @using Education.Client.Features.History.Clients.Learner
 @implements IAsyncDisposable;
 
-<section class="grid @Class">
-    <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
-        <Loading>
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+    <Loading>
+        <section class="grid @Class">
             @for (var i = 0; i < 6; i++)
             {
                 <SkeletonCard Horizontal="@IsHorizontal(i)" HideFooter="IsHiddenOverview(i)"/>
             }
-        </Loading>
-        <ChildContent Context="courses">
+        </section>
+    </Loading>
+    <ChildContent Context="courses">
+        <section class="grid @Class">
             @for (var i = 0; i < courses.Length; i++)
             {
                 var course = courses[i];
@@ -25,9 +27,9 @@
                     HideOverview="@IsHiddenOverview(i)"
                     OneLineTitle/>
             }
-        </ChildContent>
-    </ApiViewer>
-</section>
+        </section>
+    </ChildContent>
+</ApiViewer>
 
 @code {
     private Guid _subscriptionId;

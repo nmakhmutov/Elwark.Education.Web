@@ -47,7 +47,7 @@ public sealed partial class Page
     private async Task OnAnswerAsync(UserAnswerModel answer)
     {
         var quiz = _result.Unwrap();
-        var result = await QuizClient.CheckAsync(quiz.Id, quiz.Question.Id, answer);
+        var result = await QuizClient.CheckAsync(quiz.TestId, quiz.Question.Id, answer);
 
         result.Match(x =>
             {

@@ -3,7 +3,7 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @_result.Match(x => $"{L.GetQuizDifficultyTitle(x.Difficulty)}: {x.Article.Title}", e => e.Title, () => L["Quizzes_Title"])
+    @_result.Match(x => $"{L.GetQuizDifficultyTitle(x.Difficulty)}: {x.Title}", e => e.Title, () => L["Quizzes_Title"])
 </PageTitle>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="quiz">
@@ -37,7 +37,7 @@
                         @L.GetQuizDifficultyTitle(quiz.Difficulty)
                     </MudText>
                     <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center">
-                        @quiz.Article.Title
+                        @quiz.Title
                     </MudText>
                 </Header>
             </QuestionForm>

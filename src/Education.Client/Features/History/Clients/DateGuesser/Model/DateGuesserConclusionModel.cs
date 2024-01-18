@@ -1,5 +1,4 @@
 using Education.Client.Models;
-using Education.Client.Models.Content;
 
 namespace Education.Client.Features.History.Clients.DateGuesser.Model;
 
@@ -11,7 +10,7 @@ public sealed record DateGuesserConclusionModel(
 );
 
 public sealed record QuestionModel(
-    ArticleTitleModel Article,
+    QuestionModel.ArticleModel Article,
     string Title,
     ScoreModel Score,
     HistoricalDateModel CorrectAnswer,
@@ -20,4 +19,6 @@ public sealed record QuestionModel(
 {
     public bool IsCorrect =>
         CorrectAnswer == UserAnswer;
+    
+    public sealed record ArticleModel(string Id, string Title);
 }
