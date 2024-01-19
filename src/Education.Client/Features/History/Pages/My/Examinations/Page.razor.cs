@@ -22,7 +22,7 @@ public partial class Page
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
-        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["User_Dashboard_Title"], HistoryUrl.User.MyDashboard),
         new BreadcrumbItem(L["Examinations_Title"], null, true)
     ];
 

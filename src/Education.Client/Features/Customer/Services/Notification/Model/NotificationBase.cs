@@ -60,13 +60,13 @@ public abstract record NotificationBase
         Href = (Subject, Module) switch
         {
             ("History", "Inventory") =>
-                HistoryUrl.User.MyBackpack,
+                HistoryUrl.User.MyProfile,
 
             ("History", "Achievement") =>
                 $"{HistoryUrl.User.MyAchievements}#{id}",
 
             ("History", "Profile") =>
-                HistoryUrl.User.MyProfile,
+                HistoryUrl.User.MyDashboard,
 
             ("History", "MonthlyLeaderboard") =>
                 HistoryUrl.Leaderboard.Monthly(DateOnly.ParseExact(_payload["month"], "O")),

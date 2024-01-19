@@ -56,7 +56,9 @@ public static class EduIcons
 
     public const string InventoryStore = Icons.Material.Outlined.Storefront;
 
-    public const string Profile = Icons.Material.Outlined.Dashboard;
+    public const string Dashboard = Icons.Material.Outlined.Dashboard;
+    
+    public const string Profile = Icons.Material.Outlined.PersonOutline;
 
     public const string Assignment = Icons.Material.Outlined.Assignment;
 

@@ -19,7 +19,7 @@ public sealed partial class Page
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
-        new BreadcrumbItem(L["User_Profile_Title"], HistoryUrl.User.MyProfile),
+        new BreadcrumbItem(L["User_Dashboard_Title"], HistoryUrl.User.MyDashboard),
         new BreadcrumbItem(L["Assignments_Title"], null, true)
     ];
 

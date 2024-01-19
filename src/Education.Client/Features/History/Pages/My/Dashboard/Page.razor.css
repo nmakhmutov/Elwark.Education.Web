@@ -1,0 +1,68 @@
+.grid {
+    display: grid;
+    gap: 12px;
+    height: 100%;
+}
+
+::deep .achievement {
+    width: 100%;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        grid-template-areas: 
+            "exam profile"
+            "quizzes profile"
+            "dg achievement"
+            ". achievement"
+            "ra ra";
+    }
+
+    ::deep .profile {
+        grid-area: profile;
+    }
+
+    ::deep .quizzes {
+        grid-area: quizzes;
+    }
+
+    ::deep .date-guessers {
+        grid-area: dg;
+    }
+
+    ::deep .examinations {
+        grid-area: exam;
+    }
+
+    ::deep .achievement {
+        grid-area: achievement;
+    }
+
+    ::deep .recent-articles {
+        grid-area: ra;
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-areas: 
+            "exam quizzes profile"
+            "dg . profile"
+            "ra ra achievement"
+            "ra ra .";
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-areas: 
+            "exam quizzes dg profile"
+            "ra ra ra profile"
+            "ra ra ra achievement"
+            "ra ra ra .";
+    }
+}

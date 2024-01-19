@@ -6,65 +6,36 @@
     @L["User_Profile_Title"]
 </PageTitle>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="profile">
-    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+    <div class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6">
+        <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+        @if (_result.IsSuccess)
+        {
+            var backpack = _result.Unwrap();
+            <BackpackOverview Fullness="@backpack.Fullness" Capacity="@backpack.Capacity" Typo="Typo.h5" Size="Size.Medium"/>
+        }
+    </div>
+</EduContainer>
+
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
-            <ProfileCard
-                Class="profile"
-                Customer="@Customer"
-                Level="@profile.Level"
-                Backpack="@profile.Backpack"
-                Wallet="@profile.Wallet"
-                ShowFooter/>
-
-            <CardBadge
-                Class="examinations"
-                Title="@L["Examinations_Title"]"
-                Value="@profile.TotalExaminations"
-                Icon="@EduIcons.Examination">
-                <MudButton
-                    Class="text-transform-none"
-                    EndIcon="@Icons.Material.Outlined.ArrowForward"
-                    Href="@HistoryUrl.User.MyExaminations">
-                    @L["Examinations_SeeAll"]
-                </MudButton>
-            </CardBadge>
-
-            <CardBadge
-                Class="quizzes"
-                Title="@L["Quizzes_Title"]"
-                Value="@profile.TotalQuizzes"
-                Icon="@EduIcons.Quiz">
-                <MudButton
-                    Class="text-transform-none"
-                    EndIcon="@Icons.Material.Outlined.ArrowForward"
-                    Href="@HistoryUrl.User.MyQuizzes">
-                    @L["Quizzes_SeeAll"]
-                </MudButton>
-            </CardBadge>
-
-            <CardBadge
-                Class="date-guessers"
-                Title="@L["History_DateGuessers_Title"]"
-                Value="@profile.TotalDateGuessers"
-                Icon="@EduIcons.DateGuesser">
-                <MudButton
-                    Class="text-transform-none"
-                    EndIcon="@Icons.Material.Outlined.ArrowForward"
-                    Href="@HistoryUrl.User.MyDateGuessers">
-                    @L["History_DateGuessers_SeeAll"]
-                </MudButton>
-            </CardBadge>
-
-            <AchievementsCard
-                Class="achievement"
-                Customer="@Customer"
-                Total="@profile.Achievements.Total"
-                Completed="@profile.Achievements.Unlocked"
-                Completeness="@profile.Achievements.Completeness"
-                LatestCompletedAchievement="@profile.Achievements.LatestCompletedAchievement"/>
-
-            <RecentArticles Class="recent-articles"/>
+            <article class="content">
+                <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index()" Context="inventory">
+                    <InventoryInfoCard
+                        IconUrl="@inventory.ImageUrl"
+                        Overview="@inventory.Overview"
+                        Quantity="@inventory.Quantity"
+                        Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
+                        Title="@inventory.Title"/>
+                </InventoryGrid>
+            </article>
+            <aside class="sidebar">
+                @foreach (var item in _wallet)
+                {
+                    <WalletCard Class="mb-3 mb-sm-6" Wallet="@item"/>
+                }
+            </aside>
         </section>
     </EduContainer>
 </ApiViewer>

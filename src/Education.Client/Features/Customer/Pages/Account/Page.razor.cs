@@ -32,7 +32,7 @@ public partial class Page
                 new SubjectEnhancedModel(
                     L["History_Title"],
                     HistoryUrl.Root,
-                    HistoryUrl.User.MyProfile,
+                    HistoryUrl.User.MyDashboard,
                     EduIcons.History,
                     "linear-gradient(45deg, #ffa726 10%, #ef6c00 90%)",
                     model.Level,

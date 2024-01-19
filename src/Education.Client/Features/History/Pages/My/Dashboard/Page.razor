@@ -1,0 +1,70 @@
+@page "/history/my/dashboard"
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>
+    @L["User_Dashboard_Title"]
+</PageTitle>
+
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="profile">
+    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+        <section class="grid">
+            <ProfileCard
+                Class="profile"
+                Customer="@Customer"
+                Level="@profile.Level"
+                Backpack="@profile.Backpack"
+                Wallet="@profile.Wallet"
+                ShowFooter/>
+
+            <CardBadge
+                Class="examinations"
+                Title="@L["Examinations_Title"]"
+                Value="@profile.TotalExaminations"
+                Icon="@EduIcons.Examination">
+                <MudButton
+                    Class="text-transform-none"
+                    EndIcon="@Icons.Material.Outlined.ArrowForward"
+                    Href="@HistoryUrl.User.MyExaminations">
+                    @L["Examinations_SeeAll"]
+                </MudButton>
+            </CardBadge>
+
+            <CardBadge
+                Class="quizzes"
+                Title="@L["Quizzes_Title"]"
+                Value="@profile.TotalQuizzes"
+                Icon="@EduIcons.Quiz">
+                <MudButton
+                    Class="text-transform-none"
+                    EndIcon="@Icons.Material.Outlined.ArrowForward"
+                    Href="@HistoryUrl.User.MyQuizzes">
+                    @L["Quizzes_SeeAll"]
+                </MudButton>
+            </CardBadge>
+
+            <CardBadge
+                Class="date-guessers"
+                Title="@L["History_DateGuessers_Title"]"
+                Value="@profile.TotalDateGuessers"
+                Icon="@EduIcons.DateGuesser">
+                <MudButton
+                    Class="text-transform-none"
+                    EndIcon="@Icons.Material.Outlined.ArrowForward"
+                    Href="@HistoryUrl.User.MyDateGuessers">
+                    @L["History_DateGuessers_SeeAll"]
+                </MudButton>
+            </CardBadge>
+
+            <AchievementsCard
+                Class="achievement"
+                Customer="@Customer"
+                Total="@profile.Achievements.Total"
+                Completed="@profile.Achievements.Unlocked"
+                Completeness="@profile.Achievements.Completeness"
+                LatestCompletedAchievement="@profile.Achievements.LatestCompletedAchievement"/>
+
+            <RecentArticles Class="recent-articles"/>
+        </section>
+    </EduContainer>
+</ApiViewer>
