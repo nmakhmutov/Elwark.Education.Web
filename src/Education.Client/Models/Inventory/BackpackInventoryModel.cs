@@ -1,7 +1,8 @@
 namespace Education.Client.Models.Inventory;
 
-public sealed record UserInventoryModel(
+public sealed record BackpackInventoryModel(
     uint InventoryId,
+    string ProductId,
     string Title,
     string Overview,
     string IconUrl,

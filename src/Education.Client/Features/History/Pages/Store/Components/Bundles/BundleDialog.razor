@@ -24,7 +24,7 @@
             </MudText>
             <InventoryGrid Inventory="@Product.Inventories" Context="inventory">
                 <InventoryInfoCard
-                    IconUrl="@inventory.ImageUrl"
+                    IconUrl="@inventory.IconUrl"
                     Overview="@inventory.Overview"
                     Quantity="@(inventory.Quantity * _quantity)"
                     Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
@@ -190,7 +190,7 @@
             return;
 
         _status = new OrderStatusModel(Guid.Empty, "Creating");
-        var result = await OrderClient.CheckoutAsync(new CheckoutRequest(Guid.NewGuid(), Product.Id, _quantity));
+        var result = await OrderClient.CheckoutAsync(CheckoutRequest.Selling(Guid.NewGuid(), Product.Id, _quantity));
         if (result.MathError(x => _error = new Error(x.Title, x.Detail)))
             return;
 

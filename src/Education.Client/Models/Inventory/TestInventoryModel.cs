@@ -1,10 +1,10 @@
 namespace Education.Client.Models.Inventory;
 
 public sealed record TestInventoryModel(
-    uint Id,
-    uint Quantity,
+    uint InventoryId,
     string Title,
     string Overview,
     string IconUrl,
+    uint Quantity,
     bool IsInteractive
-);
+) : InventoryModel(InventoryId, Title, Overview, IconUrl);

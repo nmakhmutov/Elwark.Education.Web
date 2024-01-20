@@ -10,9 +10,14 @@
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
             <article class="content">
+                <header class="d-flex justify-space-between gap-3 mb-3">
+                    <MudText Typo="Typo.h5">Backpack</MudText>
+                    <MudText Typo="Typo.h5">@model.Fullness / @model.Capacity</MudText>
+                </header>
+                
                 <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index()" Context="inventory">
                     <InventoryInfoCard
-                        IconUrl="@inventory.ImageUrl"
+                        IconUrl="@inventory.IconUrl"
                         Overview="@inventory.Overview"
                         Quantity="@inventory.Quantity"
                         Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
