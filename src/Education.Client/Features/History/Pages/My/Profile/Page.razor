@@ -6,19 +6,8 @@
     @L["User_Profile_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <div class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6">
-        <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
-        @if (_result.IsSuccess)
-        {
-            var backpack = _result.Unwrap();
-            <BackpackOverview Fullness="@backpack.Fullness" Capacity="@backpack.Capacity" Typo="Typo.h5" Size="Size.Medium"/>
-        }
-    </div>
-</EduContainer>
-
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
-    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
             <article class="content">
                 <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index()" Context="inventory">
@@ -31,6 +20,12 @@
                 </InventoryGrid>
             </article>
             <aside class="sidebar">
+                <ProfileCard
+                    Class="mb-3 mb-sm-6"
+                    Level="@_profile.Level"
+                    Backpack="@_profile.Backpack"
+                    Wallet="@_profile.Wallet"/>
+
                 @foreach (var item in _wallet)
                 {
                     <WalletCard Class="mb-3 mb-sm-6" Wallet="@item"/>

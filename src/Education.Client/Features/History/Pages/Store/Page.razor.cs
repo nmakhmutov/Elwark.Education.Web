@@ -3,7 +3,6 @@ using Education.Client.Features.History.Clients.User;
 using Education.Client.Features.History.Clients.User.Model;
 using Education.Client.Features.History.Pages.Store.Components;
 using Education.Client.Models.Inventory;
-using Education.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -12,16 +11,13 @@ namespace Education.Client.Features.History.Pages.Store;
 public sealed partial class Page
 {
     private ProductsFilter _filter = ProductsFilter.Empty;
-    private ProfileModel _profile = new(new UserLevelModel(0, 0, 0), new BackpackOverviewModel(0, 0, 0), []);
+    private ProfileModel _profile = ProfileModel.Empty;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
     private IHistoryUserClient UserClient { get; init; } = default!;
-
-    [CascadingParameter]
-    public CustomerState Customer { get; init; } = default!;
 
     [SupplyParameterFromQuery]
     public string? Category { get; set; }
