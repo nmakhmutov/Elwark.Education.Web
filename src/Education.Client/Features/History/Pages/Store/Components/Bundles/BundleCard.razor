@@ -35,12 +35,12 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required Product.BundleModel Bundle { get; set; }
+    public required ProductBundleModel Bundle { get; set; }
 
     [Parameter, EditorRequired]
     public bool ShowLockBadge { get; set; }
 
     [Parameter]
-    public EventCallback<Product.BundleModel> OnPurchaseClick { get; set; }
+    public EventCallback<ProductBundleModel> OnPurchaseClick { get; set; }
 
 }

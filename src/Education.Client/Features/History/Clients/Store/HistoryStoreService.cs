@@ -10,12 +10,15 @@ internal sealed class HistoryStoreService : IHistoryStoreClient
     public HistoryStoreService(HistoryApiClient api) =>
         _api = api;
 
-    public Task<ApiResult<Product.InventoryModel[]>> GetInventoriesAsync() =>
-        _api.GetAsync<Product.InventoryModel[]>("history/store/inventories");
+    public Task<ApiResult<ProductInventoryModel[]>> GetInventoriesAsync() =>
+        _api.GetAsync<ProductInventoryModel[]>("history/store/inventories");
 
     public Task<ApiResult<UpcomingInventoriesModel>> GetUpcomingInventoriesAsync() =>
         _api.GetAsync<UpcomingInventoriesModel>("history/store/inventories/upcoming");
 
-    public Task<ApiResult<Product.BundleModel[]>> GetBundlesAsync() =>
-        _api.GetAsync<Product.BundleModel[]>("history/store/bundles");
+    public Task<ApiResult<ProductBundleModel[]>> GetBundlesAsync() =>
+        _api.GetAsync<ProductBundleModel[]>("history/store/bundles");
+
+    public  Task<ApiResult<ProductOverviewModel>> GetProductId(string productId) =>
+        _api.GetAsync<ProductOverviewModel>($"history/store/products/{productId}");
 }

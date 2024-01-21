@@ -50,7 +50,7 @@
 </ApiViewer>
 
 @code {
-    private ApiResult<Product.InventoryModel[]> _result = ApiResult<Product.InventoryModel[]>.Loading();
+    private ApiResult<ProductInventoryModel[]> _result = ApiResult<ProductInventoryModel[]>.Loading();
 
     [Inject]
     private IHistoryStoreClient StoreClient { get; init; } = default!;
@@ -68,15 +68,15 @@
     public required ProductsFilter Filter { get; set; }
 
     [Parameter, EditorRequired]
-    public required Func<Product.InventoryModel, bool> IsAffordable { get; set; }
+    public required Func<ProductInventoryModel, bool> IsAffordable { get; set; }
 
     [Parameter]
-    public EventCallback<Product.InventoryModel> OnProductPurchased { get; set; }
+    public EventCallback<ProductInventoryModel> OnProductPurchased { get; set; }
 
     protected override async Task OnInitializedAsync() =>
         _result = await StoreClient.GetInventoriesAsync();
 
-    private Product.InventoryModel[] ApplyFilter(IEnumerable<Product.InventoryModel> source)
+    private ProductInventoryModel[] ApplyFilter(IEnumerable<ProductInventoryModel> source)
     {
         if (Filter.Category != CategoryType.None)
             source = source.Where(x => x.Category == Filter.Category);
@@ -87,7 +87,7 @@
         return source.ToArray();
     }
 
-    private async Task OpenPurchaseDialog(Product.InventoryModel product)
+    private async Task OpenPurchaseDialog(ProductInventoryModel product)
     {
         var options = new DialogOptions
         {

@@ -36,13 +36,13 @@ public sealed partial class Page
             .Map(x => x)
             .UnwrapOrElse(() => _profile);
 
-    private bool IsInventoryAffordable(Product.InventoryModel inventory) =>
+    private bool IsInventoryAffordable(ProductInventoryModel inventory) =>
         IsAffordable(inventory.Selling, inventory.Weight);
 
-    private bool IsBundleAffordable(Product.BundleModel bundle) =>
+    private bool IsBundleAffordable(ProductBundleModel bundle) =>
         IsAffordable(bundle.Price, bundle.Weight);
 
-    private bool IsAffordable(Product.PriceModel price, uint weight)
+    private bool IsAffordable(PriceModel price, uint weight)
     {
         if (weight > _profile.Backpack.Emptiness)
             return false;

@@ -1,17 +1,7 @@
 <section class="mud-paper d-flex flex-column pa-3 @Class">
     <div class="mud-background rounded-lg relative mb-3">
         <div class="d-flex justify-center align-center @(Quantity.HasValue ? "px-6 py-3" : "pa-6")">
-            <MudTooltip>
-                <ChildContent>
-                    <img class="image" src="@IconUrl" alt="@Title" loading="lazy"/>
-                </ChildContent>
-                <TooltipContent>
-                    <div class="d-flex flex-column w-max-300">
-                        <MudText Typo="Typo.subtitle1" Color="Color.Info" Class="mb-1">@Title</MudText>
-                        <MudText Typo="Typo.body2">@Overview</MudText>
-                    </div>
-                </TooltipContent>
-            </MudTooltip>
+            <img class="image" src="@IconUrl" alt="@Title" loading="lazy"/>
         </div>
         @if (Quantity.HasValue)
         {
@@ -20,7 +10,17 @@
     </div>
 
     <h6 class="mud-typography mud-typography-subtitle1 one-line-text" title="@Title">
-        @Title
+        <MudTooltip>
+            <ChildContent>
+                <span class="cursor-pointer">@Title</span>
+            </ChildContent>
+            <TooltipContent>
+                <div class="d-flex flex-column w-max-300">
+                    <MudText Typo="Typo.subtitle1" Color="Color.Info" Class="mb-1">@Title</MudText>
+                    <MudText Typo="Typo.body2">@Overview</MudText>
+                </div>
+            </TooltipContent>
+        </MudTooltip>
     </h6>
 
     @if (!string.IsNullOrEmpty(Subtitle))

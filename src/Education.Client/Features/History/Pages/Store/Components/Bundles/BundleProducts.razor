@@ -31,7 +31,7 @@
 </ApiViewer>
 
 @code {
-    private ApiResult<Product.BundleModel[]> _result = ApiResult<Product.BundleModel[]>.Loading();
+    private ApiResult<ProductBundleModel[]> _result = ApiResult<ProductBundleModel[]>.Loading();
 
     [Inject]
     private IHistoryStoreClient StoreClient { get; init; } = default!;
@@ -49,15 +49,15 @@
     public required ProductsFilter Filter { get; set; }
 
     [Parameter, EditorRequired]
-    public required Func<Product.BundleModel, bool> IsAffordable { get; set; }
+    public required Func<ProductBundleModel, bool> IsAffordable { get; set; }
 
     [Parameter]
-    public EventCallback<Product.BundleModel> OnProductPurchased { get; set; }
+    public EventCallback<ProductBundleModel> OnProductPurchased { get; set; }
 
     protected override async Task OnInitializedAsync() =>
         _result = await StoreClient.GetBundlesAsync();
 
-    private async Task OpenPurchaseDialog(Product.BundleModel product)
+    private async Task OpenPurchaseDialog(ProductBundleModel product)
     {
         var options = new DialogOptions
         {
@@ -81,7 +81,7 @@
         await OnProductPurchased.InvokeAsync(product);
     }
 
-    private Product.BundleModel[] ApplyFilter(IEnumerable<Product.BundleModel> source)
+    private ProductBundleModel[] ApplyFilter(IEnumerable<ProductBundleModel> source)
     {
         if (Filter.Category != CategoryType.None)
             source = source.Where(x => x.Inventories.Any(t => t.Category == Filter.Category));
