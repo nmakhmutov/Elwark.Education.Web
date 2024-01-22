@@ -11,15 +11,8 @@
     </MudText>
 
     <footer class="d-flex justify-space-between align-center">
-        <ProductPrice Price="@Bundle.Price"/>
-
-        <MudBadge Icon="@Icons.Material.Outlined.Lock" Color="@Color.Error" Visible="@ShowLockBadge" Bordered Overlap>
-            <MudIconButton
-                Icon="@Icons.Material.Outlined.ShoppingCart"
-                Variant="Variant.Filled"
-                Color="Color.Primary"
-                OnClick="@(() => OnPurchaseClick.InvokeAsync(Bundle))"
-                DisableElevation/>
+        <MudBadge Class="w-100" Icon="@Icons.Material.Outlined.Lock" Color="@Color.Error" Visible="@ShowLockBadge" Bordered Overlap>
+            <PriceButton Price="@Bundle.Price" OnClick="@(() => OnPurchaseClick.InvokeAsync(Bundle))"/>
         </MudBadge>
     </footer>
 </article>

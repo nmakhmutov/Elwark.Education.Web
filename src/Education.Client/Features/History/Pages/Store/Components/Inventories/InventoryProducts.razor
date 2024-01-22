@@ -3,39 +3,31 @@
 @using Education.Client.Features.History.Clients.Store
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <ChildContent Context="inventories">
-        <ProductsGrid Products="@ApplyFilter(inventories)">
+        <InventoryGrid Inventory="@ApplyFilter(inventories)" ColumnSize="Size.Medium">
             <ChildContent Context="inventory">
                 <InventoryInfoCard
                     Overview="@inventory.Overview"
                     Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
                     Title="@inventory.Title"
                     IconUrl="@inventory.ImageUrl">
-                    <footer class="d-flex justify-space-between align-center gap-3 mt-3">
-                        <ProductPrice Price="@inventory.Selling"/>
-
-                        <MudBadge
-                            Icon="@Icons.Material.Outlined.Lock"
-                            Color="@Color.Error"
-                            Visible="@(!IsAffordable(inventory))"
-                            Bordered
-                            Overlap>
-                            <MudIconButton
-                                Icon="@Icons.Material.Outlined.ShoppingCart"
-                                Variant="Variant.Filled"
-                                Color="Color.Primary"
-                                OnClick="@(() => OpenPurchaseDialog(inventory))"
-                                DisableElevation/>
-                        </MudBadge>
-                    </footer>
+                    <MudBadge
+                        Class="w-100 mt-3"
+                        Icon="@Icons.Material.Outlined.Lock"
+                        Color="@Color.Error"
+                        Visible="@(!IsAffordable(inventory))"
+                        Bordered
+                        Overlap>
+                        <PriceButton Price="@inventory.Selling" OnClick="@(() => OpenPurchaseDialog(inventory))"/>
+                    </MudBadge>
                 </InventoryInfoCard>
             </ChildContent>
-            <NoRecordsContent>
+            <EmptyContent>
                 <NoContent
                     Icon="@Icons.Material.Outlined.Inventory2"
                     Title="@L["InventoryStore_Inventories_NotFound"]"
                     Subtitle="@L["InventoryStore_TryToResetYourFilter"]"/>
-            </NoRecordsContent>
-        </ProductsGrid>
+            </EmptyContent>
+        </InventoryGrid>
     </ChildContent>
     <Loading>
         <ProductsGrid Products="@(Enumerable.Range(0, 4).ToArray())">

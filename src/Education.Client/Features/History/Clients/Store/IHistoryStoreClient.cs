@@ -11,5 +11,5 @@ public interface IHistoryStoreClient
 
     Task<ApiResult<ProductBundleModel[]>> GetBundlesAsync();
 
-    Task<ApiResult<ProductOverviewModel>> GetProductId(string productId);
+    Task<ApiResult<ProductOverviewModel>> GetProductAsync(string productId);
 }

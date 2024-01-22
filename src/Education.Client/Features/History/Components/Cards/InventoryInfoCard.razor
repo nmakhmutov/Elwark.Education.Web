@@ -9,10 +9,13 @@
         }
     </div>
 
-    <h6 class="mud-typography mud-typography-subtitle1 one-line-text" title="@Title">
+    <header class="d-flex justify-space-between align-end gap-3">
+        <h6 class="mud-typography mud-typography-subtitle1 one-line-text" title="@Title">
+            @Title
+        </h6>
         <MudTooltip>
             <ChildContent>
-                <span class="cursor-pointer">@Title</span>
+                <MudIcon Class="cursor-pointer" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"/>
             </ChildContent>
             <TooltipContent>
                 <div class="d-flex flex-column w-max-300">
@@ -21,7 +24,7 @@
                 </div>
             </TooltipContent>
         </MudTooltip>
-    </h6>
+    </header>
 
     @if (!string.IsNullOrEmpty(Subtitle))
     {

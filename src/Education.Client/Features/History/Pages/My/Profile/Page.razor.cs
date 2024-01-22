@@ -23,7 +23,7 @@ public sealed partial class Page
         _profile = (await UserClient.GetProfileAsync())
             .Map(x => x)
             .UnwrapOrElse(() => _profile);
-        
+
         _wallet = (await UserClient.GetWalletAsync())
             .Map(x => x)
             .UnwrapOrElse(() => []);

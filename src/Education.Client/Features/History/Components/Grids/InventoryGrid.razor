@@ -1,29 +1,56 @@
+@using System.Text
 @typeparam T
 
-<section class="grid @Class">
-    @foreach (var inventory in Inventory)
-    {
-        @ChildContent?.Invoke(inventory)
-    }
+@if (Inventory.Length == 0)
+{
+    @EmptyContent
+}
+else
+{
+    <section class="@_class">
+        @foreach (var inventory in Inventory)
+        {
+            @ChildContent?.Invoke(inventory)
+        }
 
-    @if (!string.IsNullOrEmpty(StoreHref))
-    {
-        <InventoryStoreCard Href="@StoreHref"/>
-    }
-</section>
+        @if (!string.IsNullOrEmpty(StoreHref))
+        {
+            <InventoryStoreCard Href="@StoreHref"/>
+        }
+    </section>
+}
 
 @code {
+    private string? _class;
 
     [Parameter, EditorRequired]
-    public IEnumerable<T> Inventory { get; set; } = Enumerable.Empty<T>();
+    public required T[] Inventory { get; set; }
 
     [Parameter]
     public RenderFragment<T>? ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? EmptyContent { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter]
     public string? StoreHref { get; set; }
+
+    [Parameter]
+    public Size ColumnSize { get; set; }
+
+    protected override void OnParametersSet() =>
+        _class = CssBuilder.Default("grid")
+            .AddClass(ColumnSize switch
+            {
+                Size.Small => "small",
+                Size.Medium => "medium",
+                Size.Large => "large",
+                _ => "small"
+            })
+            .AddClass(Class)
+            .Build();
 
 }

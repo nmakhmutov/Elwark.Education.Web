@@ -2,6 +2,7 @@
     display: grid;
     gap: 12px;
     grid-template-columns: 100%;
+    align-items: start;
 }
 
 @media (min-width: 600px) {
@@ -15,21 +16,24 @@
         grid-template-columns: repeat(12, 1fr);
     }
 
-    .grid .sidebar {
+    .sidebar {
         grid-column: span 5;
+        position: sticky;
+        top: calc(var(--mud-appbar-height) + 24px);
+        align-self: start;
     }
 
-    .grid .content {
+    .content {
         grid-column: span 7;
     }
 }
 
 @media (min-width: 1600px) {
-    .grid .sidebar {
+    .sidebar {
         grid-column: span 3;
     }
 
-    .grid .content {
+    .content {
         grid-column: span 9;
     }
 }

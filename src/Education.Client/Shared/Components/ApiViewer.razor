@@ -3,26 +3,36 @@
 
 @switch (Result.Status)
 {
-    case Status.Loading when Loading is null:
-        <Spinner/>
+    case Status.Loading:
+        if (Loading is null)
+        {
+            <Spinner/>
+        }
+        else
+        {
+            @Loading
+        }
+
         break;
 
-    case Status.Loading when Loading is not null:
-        @Loading
-        break;
+    case Status.Error:
+        var error = Result.UnwrapError();
 
-    case Status.Error when Error is null && Result.UnwrapError() is { } error:
-        <PageTitle>
-            @error.Title
-        </PageTitle>
-        <EduErrorContainer
-            Class="align-center justify-center flex-grow-1"
-            Error="@error"
-            OnReloadClick="@OnReloadClick"/>
-        break;
+        if (Error is null)
+        {
+            <PageTitle>
+                @error.Title
+            </PageTitle>
+            <EduErrorContainer
+                Class="align-center justify-center flex-grow-1"
+                Error="@error"
+                OnReloadClick="@OnReloadClick"/>
+        }
+        else
+        {
+            @Error(Result.UnwrapError())
+        }
 
-    case Status.Error when Error is not null:
-        @Error(Result.UnwrapError())
         break;
 
     case Status.Success:
@@ -37,7 +47,7 @@
 @code {
 
     [Parameter, EditorRequired]
-    public ApiResult<T> Result { get; set; } = ApiResult<T>.Loading();
+    public required ApiResult<T> Result { get; set; }
 
     [Parameter]
     public RenderFragment<T> ChildContent { get; init; } = default!;
