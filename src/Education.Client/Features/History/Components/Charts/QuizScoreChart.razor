@@ -19,13 +19,17 @@
 
 @code {
 
-    private ApexChartOptions<Data> Options =>
+    private static ApexChartOptions<Data> Options =>
         new()
         {
             Chart = new Chart
             {
                 Background = "transparent",
                 ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Stroke = new Stroke
+            {
+                Show = false
             },
             Legend = new Legend
             {

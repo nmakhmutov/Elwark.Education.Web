@@ -1,0 +1,38 @@
+.grid {
+    display: grid;
+    gap: 12px;
+}
+
+.income, .expense {
+    max-width: 320px;
+    max-height: 320px;
+    justify-self: center;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        gap: 24px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    ::deep .statistics {
+        grid-column: 1/-1;
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        grid-template-columns: 3fr 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    ::deep .statistics {
+        grid-column: 1;
+        grid-row: span 2;
+    }
+
+    .income, .expense {
+        grid-column: 2;
+    }
+}
+

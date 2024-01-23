@@ -60,8 +60,6 @@ public static class EduIcons
 
     public const string Dashboard = Icons.Material.Outlined.Dashboard;
 
-    public const string Profile = Icons.Material.Outlined.PersonOutline;
-
     public const string Assignment = Icons.Material.Outlined.Assignment;
 
     public const string Bookmarks = Icons.Material.Outlined.Bookmarks;

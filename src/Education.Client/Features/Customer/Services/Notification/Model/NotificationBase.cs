@@ -60,7 +60,7 @@ public abstract record NotificationBase
         Href = (Subject, Module) switch
         {
             ("History", "Inventory") =>
-                HistoryUrl.User.MyProfile,
+                HistoryUrl.User.MyBackpack,
 
             ("History", "Achievement") =>
                 $"{HistoryUrl.User.MyAchievements}#{id}",

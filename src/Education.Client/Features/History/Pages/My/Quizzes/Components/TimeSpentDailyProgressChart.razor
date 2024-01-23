@@ -32,14 +32,6 @@
 
 @code {
 
-    private const string Formatter = @"
-                                     function(value) {
-                                         var minutes = Math.floor(value / 60000);
-                                         var seconds = ((value % 60000) / 1000).toFixed(0);
-                                         return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-                                     }
-                                     ";
-
     private ApexChart<QuizStatisticsModel.DailyProgress>? _chart;
 
     private ApexChartOptions<QuizStatisticsModel.DailyProgress> _options = new()
@@ -50,7 +42,13 @@
             {
                 Labels = new YAxisLabels
                 {
-                    Formatter = Formatter
+                    Formatter = @"
+                                 function(value) {
+                                     var minutes = Math.floor(value / 60000);
+                                     var seconds = ((value % 60000) / 1000).toFixed(0);
+                                     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+                                 }
+                                 "
                 }
             }
         ],
@@ -58,7 +56,13 @@
         {
             Y = new TooltipY
             {
-                Formatter = Formatter
+                Formatter = @"
+                             function(value) {
+                                 var minutes = Math.floor(value / 60000);
+                                 var seconds = ((value % 60000) / 1000).toFixed(0);
+                                 return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+                             }
+                             "
             }
         },
         Legend = new Legend
@@ -81,6 +85,10 @@
             },
             Background = "transparent",
             ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Stroke = new Stroke
+        {
+            Show = false
         },
         Grid = new Grid
         {

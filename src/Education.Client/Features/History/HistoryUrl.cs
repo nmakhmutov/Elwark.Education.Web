@@ -127,7 +127,9 @@ public static class HistoryUrl
 
         public const string MyDashboard = $"{My}/dashboard";
 
-        public const string MyProfile = $"{My}/profile";
+        public const string MyBackpack = $"{My}/backpack";
+        
+        public const string MyFinance = $"{My}/finance";
 
         public const string MyQuizzes = $"{My}/quizzes";
 

@@ -1,0 +1,22 @@
+@page "/history/my/finance"
+@layout HistoryLayout
+@attribute [Authorize]
+
+<PageTitle>
+    @L["Finance_Title"]
+</PageTitle>
+
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+</EduContainer>
+
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <div class="d-flex flex-wrap gap-3 gap-sm-6">
+            @foreach (var wallet in model)
+            {
+                <WalletCard Wallet="@wallet"/>
+            }
+        </div>
+    </EduContainer>
+</ApiViewer>

@@ -1,9 +1,9 @@
-@page "/history/my/profile"
+@page "/history/my/backpack"
 @layout HistoryLayout
 @attribute [Authorize]
 
 <PageTitle>
-    @L["User_Profile_Title"]
+    @L["Backpack_Title"]
 </PageTitle>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
@@ -35,11 +35,6 @@
                     Level="@_profile.Level"
                     Backpack="@_profile.Backpack"
                     Wallet="@_profile.Wallet"/>
-
-                @foreach (var item in _wallet)
-                {
-                    <WalletCard Class="mb-3 mb-sm-6" Wallet="@item"/>
-                }
             </aside>
         </section>
     </EduContainer>

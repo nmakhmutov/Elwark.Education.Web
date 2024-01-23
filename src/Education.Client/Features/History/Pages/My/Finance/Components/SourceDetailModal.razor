@@ -1,0 +1,174 @@
+@using Education.Client.Features.History.Clients.User.Model
+@using ApexCharts
+@using Align = MudBlazor.Align
+
+<MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
+    <DialogContent>
+        <header class="d-flex justify-space-between align-center mb-3 mb-sm-6">
+            <div>
+                <div class="d-flex align-center gap-3">
+                    <MudIcon Icon="@Currency.GetIcon()"/>
+                    <MudText Typo="Typo.h5">
+                        @L.GetInternalCurrencyTitle(Currency)
+                    </MudText>
+                </div>
+
+                <MudText Class="mud-text-secondary" Typo="Typo.subtitle2">
+                    @Budget.Month.ToString("MMMM yyyy")
+                </MudText>
+            </div>
+
+            <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
+        </header>
+
+        <aside class="d-flex justify-center gap-3 gap-sm-6">
+            <div class="d-flex flex-column align-center">
+                <MudText Typo="Typo.h6">@Budget.Income.ToString("N0")</MudText>
+                <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
+                    @L["InternalMoney_Income_Title"]
+                </MudText>
+            </div>
+            <MudDivider Vertical FlexItem/>
+            <div class="d-flex flex-column align-center">
+                <MudText Typo="Typo.h6">@Budget.Expense.ToString("N0")</MudText>
+                <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
+                    @L["InternalMoney_Expense_Title"]
+                </MudText>
+            </div>
+            <MudDivider Vertical FlexItem/>
+            <div class="d-flex flex-column align-center">
+                <MudText Typo="Typo.h6">@Budget.Balance.ToString("N0")</MudText>
+                <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
+                    @L["InternalMoney_Balance_Title"]
+                </MudText>
+            </div>
+        </aside>
+
+        @if (Budget.Sources.Length > 0)
+        {
+            <section class="grid mt-3 mt-sm-6">
+                <MudTable T="WalletModel.BudgetSourceModel" Class="statistics" Items="@Budget.Sources" Elevation="0" AllowUnsorted="false" Hover>
+                    <HeaderContent>
+                        <MudTh>
+                            @L["InternalMoney_Source_Title"]
+                        </MudTh>
+                        <MudTh>
+                            <MudTableSortLabel SortBy="@(new Func<WalletModel.BudgetSourceModel, object>(x => x.Income))" InitialDirection="SortDirection.Descending">
+                                @L["InternalMoney_Income_Title"]
+                            </MudTableSortLabel>
+                        </MudTh>
+                        <MudTh>
+                            <MudTableSortLabel SortBy="@(new Func<WalletModel.BudgetSourceModel, object>(x => x.Expense))">
+                                @L["InternalMoney_Expense_Title"]
+                            </MudTableSortLabel>
+                        </MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="@L["InternalMoney_Source_Title"]">
+                            @context.Source
+                        </MudTd>
+                        <MudTd DataLabel="@L["InternalMoney_Income_Title"]">
+                            @context.Income.ToString("N0")
+                        </MudTd>
+                        <MudTd DataLabel="@L["InternalMoney_Expense_Title"]">
+                            @context.Expense.ToString("N0")
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+
+                @if (Budget.Sources.Where(x => x.Income > 0).ToArray() is { Length: > 0 } income)
+                {
+                    <div class="income">
+                        <MudText Typo="Typo.h6" Align="Align.Center">
+                            @L["InternalMoney_Income_Title"]
+                        </MudText>
+                        <ApexChart TItem="WalletModel.BudgetSourceModel" Options="Options" Height="@("240px")">
+                            <ApexPointSeries
+                                TItem="@WalletModel.BudgetSourceModel"
+                                Items="@income"
+                                SeriesType="SeriesType.Donut"
+                                OrderByDescending="@(x => x.Y ?? 0)"
+                                XValue="@(x => x.Source)"
+                                YAggregate="@(x => x.Sum(e => e.Income))"/>
+                        </ApexChart>
+                    </div>
+                }
+
+                @if (Budget.Sources.Where(x => x.Expense > 0).ToArray() is { Length: > 0 } expense)
+                {
+                    <div class="expense">
+                        <MudText Typo="Typo.h6" Align="Align.Center">
+                            @L["InternalMoney_Expense_Title"]
+                        </MudText>
+                        <ApexChart TItem="WalletModel.BudgetSourceModel" Options="Options" Height="@("240px")">
+                            <ApexPointSeries
+                                TItem="@WalletModel.BudgetSourceModel"
+                                Items="@expense"
+                                SeriesType="SeriesType.Donut"
+                                OrderByDescending="@(x => x.Y ?? 0)"
+                                XValue="@(x => x.Source)"
+                                YAggregate="@(x => x.Sum(e => e.Expense))"/>
+                        </ApexChart>
+                    </div>
+                }
+            </section>
+        }
+    </DialogContent>
+</MudDialog>
+
+@code {
+
+    private static ApexChartOptions<WalletModel.BudgetSourceModel> Options =>
+        new()
+        {
+            Chart = new Chart
+            {
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Stroke = new Stroke
+            {
+                Show = false
+            },
+            Legend = new Legend
+            {
+                Show = false
+            },
+            Colors =
+            [
+                Colors.Blue.Default,
+                Colors.Green.Default,
+                Colors.DeepPurple.Default,
+                Colors.Amber.Default,
+                Colors.Red.Default,
+                Colors.Cyan.Default,
+                Colors.Indigo.Default,
+                Colors.Lime.Default,
+                Colors.Orange.Default,
+                Colors.Pink.Default,
+                Colors.Purple.Default,
+                Colors.Teal.Default,
+                Colors.Yellow.Default,
+                Colors.BlueGrey.Default,
+                Colors.DeepOrange.Default,
+                Colors.LightBlue.Default,
+                Colors.LightGreen.Default
+            ]
+        };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public InternalCurrency Currency { get; set; }
+
+    [Parameter, EditorRequired]
+    public required WalletModel.BudgetModel Budget { get; set; }
+
+    private void OnCloseClick() =>
+        MudDialog.Close(DialogResult.Ok(true));
+
+}

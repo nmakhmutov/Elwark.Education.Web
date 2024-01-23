@@ -30,14 +30,14 @@
         </InventoryGrid>
     </ChildContent>
     <Loading>
-        <ProductsGrid Products="@(Enumerable.Range(0, 4).ToArray())">
+        <InventoryGrid Inventory="@(Enumerable.Range(0, 4).ToArray())" ColumnSize="Size.Medium">
             <InventorySkeletonCard>
                 <div class="d-flex justify-space-between align-center mt-6">
                     <MudSkeleton SkeletonType="SkeletonType.Circle" Width="24px" Height="24px"/>
                     <MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Variant="Variant.Filled" Disabled/>
                 </div>
             </InventorySkeletonCard>
-        </ProductsGrid>
+        </InventoryGrid>
     </Loading>
 </ApiViewer>
 
