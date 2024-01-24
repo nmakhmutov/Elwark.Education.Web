@@ -14,7 +14,7 @@ public interface IHistoryUserClient
 
     Task<ApiResult<BackpackModel>> GetBackpackAsync();
 
-    Task<ApiResult<IReadOnlyCollection<WalletModel>>> GetWalletAsync();
+    Task<ApiResult<FinanceModel>> GetFinancesAsync();
 
     Task<ApiResult<UserAssignmentModel>> GetAssignmentsAsync();
 

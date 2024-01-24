@@ -1,7 +1,7 @@
 @using Education.Client.Features.History.Clients.User
 @using Education.Client.Features.History.Clients.User.Model
 @using Education.Client.Features.Customer
-<section class="mud-paper @Class">
+<section class="d-flex flex-column mud-paper @Class">
     <header class="d-flex align-center pa-3 pa-sm-6">
         <img class="avatar rounded mr-3" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
         <MudText Typo="Typo.h5">
@@ -32,6 +32,8 @@
 
     @if (ShowFooter)
     {
+        <MudSpacer/>
+
         <footer class="border-t mud-border-lines-default pa-3">
             <MudButton
                 Class="text-transform-none"

@@ -6,11 +6,11 @@ public sealed record WalletModel(InternalCurrency Currency, long Balance, Wallet
 {
     public sealed record BudgetModel(
         DateOnly Month,
-        long Balance,
         uint Income,
         uint Expense,
+        long Balance,
         BudgetSourceModel[] Sources
     );
 
-    public sealed record BudgetSourceModel(string Source, uint Income, uint Expense);
+    public sealed record BudgetSourceModel(string Title, uint Income, uint Expense, long Balance);
 }

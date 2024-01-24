@@ -47,7 +47,14 @@
         @if (Budget.Sources.Length > 0)
         {
             <section class="grid mt-3 mt-sm-6">
-                <MudTable T="WalletModel.BudgetSourceModel" Class="statistics" Items="@Budget.Sources" Elevation="0" AllowUnsorted="false" Hover>
+                <MudTable 
+                    T="WalletModel.BudgetSourceModel"
+                    Class="statistics"
+                    Items="@Budget.Sources"
+                    Elevation="0"
+                    AllowUnsorted="false"
+                    SortLabel="@L["SortBy_Title"]"
+                    Hover>
                     <HeaderContent>
                         <MudTh>
                             @L["InternalMoney_Source_Title"]
@@ -62,16 +69,24 @@
                                 @L["InternalMoney_Expense_Title"]
                             </MudTableSortLabel>
                         </MudTh>
+                        <MudTh>
+                            <MudTableSortLabel SortBy="@(new Func<WalletModel.BudgetSourceModel, object>(x => x.Balance))">
+                                @L["InternalMoney_Balance_Title"]
+                            </MudTableSortLabel>
+                        </MudTh>
                     </HeaderContent>
                     <RowTemplate>
                         <MudTd DataLabel="@L["InternalMoney_Source_Title"]">
-                            @context.Source
+                            @context.Title
                         </MudTd>
                         <MudTd DataLabel="@L["InternalMoney_Income_Title"]">
                             @context.Income.ToString("N0")
                         </MudTd>
                         <MudTd DataLabel="@L["InternalMoney_Expense_Title"]">
                             @context.Expense.ToString("N0")
+                        </MudTd>
+                        <MudTd DataLabel="@L["InternalMoney_Balance_Title"]">
+                            @context.Balance.ToString("N0")
                         </MudTd>
                     </RowTemplate>
                 </MudTable>
@@ -88,7 +103,7 @@
                                 Items="@income"
                                 SeriesType="SeriesType.Donut"
                                 OrderByDescending="@(x => x.Y ?? 0)"
-                                XValue="@(x => x.Source)"
+                                XValue="@(x => x.Title)"
                                 YAggregate="@(x => x.Sum(e => e.Income))"/>
                         </ApexChart>
                     </div>
@@ -106,7 +121,7 @@
                                 Items="@expense"
                                 SeriesType="SeriesType.Donut"
                                 OrderByDescending="@(x => x.Y ?? 0)"
-                                XValue="@(x => x.Source)"
+                                XValue="@(x => x.Title)"
                                 YAggregate="@(x => x.Sum(e => e.Expense))"/>
                         </ApexChart>
                     </div>

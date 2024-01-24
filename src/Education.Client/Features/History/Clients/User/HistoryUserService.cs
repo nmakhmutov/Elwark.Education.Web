@@ -23,8 +23,8 @@ internal sealed class HistoryUserService : IHistoryUserClient
     public Task<ApiResult<BackpackModel>> GetBackpackAsync() =>
         _api.GetAsync<BackpackModel>("history/users/me/backpack");
 
-    public Task<ApiResult<IReadOnlyCollection<WalletModel>>> GetWalletAsync() =>
-        _api.GetAsync<IReadOnlyCollection<WalletModel>>("history/users/me/wallet");
+    public Task<ApiResult<FinanceModel>> GetFinancesAsync() =>
+        _api.GetAsync<FinanceModel>("history/users/me/finances");
 
     public Task<ApiResult<UserAssignmentModel>> GetAssignmentsAsync() =>
         _api.GetAsync<UserAssignmentModel>("history/users/me/assignments");

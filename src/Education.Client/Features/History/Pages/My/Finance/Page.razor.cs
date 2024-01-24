@@ -9,7 +9,7 @@ namespace Education.Client.Features.History.Pages.My.Finance;
 
 public sealed partial class Page
 {
-    private ApiResult<IReadOnlyCollection<WalletModel>> _result = ApiResult<IReadOnlyCollection<WalletModel>>.Loading();
+    private ApiResult<FinanceModel> _result = ApiResult<FinanceModel>.Loading();
 
     [Inject]
     public IStringLocalizer<App> L { get; init; } = default!;
@@ -24,5 +24,5 @@ public sealed partial class Page
     ];
 
     protected override async Task OnInitializedAsync() =>
-        _result = await UserClient.GetWalletAsync();
+        _result = await UserClient.GetFinancesAsync();
 }

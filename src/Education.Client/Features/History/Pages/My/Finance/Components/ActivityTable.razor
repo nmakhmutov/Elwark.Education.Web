@@ -1,0 +1,66 @@
+@using Education.Client.Features.History.Clients.User.Model
+<MudTable
+    T="MoneyActivityModel"
+    Items="@Activities"
+    Breakpoint="Breakpoint.Xs"
+    Elevation="0"
+    Bordered="false"
+    AllowUnsorted="false"
+    SortLabel="@L["SortBy_Title"]"
+    Hover>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortBy="@(new Func<MoneyActivityModel, object>(x => x.Date))" InitialDirection="SortDirection.Descending">
+                @L["Date_Title"]
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            @L["InternalMoney_Currency_Title"]
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="@(new Func<MoneyActivityModel, object>(x => x.Income))">
+                @L["InternalMoney_Income_Title"]
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="@(new Func<MoneyActivityModel, object>(x => x.Expense))">
+                @L["InternalMoney_Expense_Title"]
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="@(new Func<MoneyActivityModel, object>(x => x.Balance))">
+                @L["InternalMoney_Balance_Title"]
+            </MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="@L["Date_Title"]">
+            @Customer.Humanize(context.Date)
+        </MudTd>
+        <MudTd DataLabel="@L["InternalMoney_Currency_Title"]">
+            <MudIcon Icon="@context.Currency.GetIcon()"/>
+        </MudTd>
+        <MudTd DataLabel="@L["InternalMoney_Income_Title"]">
+            @context.Income
+        </MudTd>
+        <MudTd DataLabel="@L["InternalMoney_Expense_Title"]">
+            @context.Expense
+        </MudTd>
+        <MudTd DataLabel="@L["InternalMoney_Balance_Title"]">
+            @context.Balance
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required MoneyActivityModel[] Activities { get; set; }
+
+}

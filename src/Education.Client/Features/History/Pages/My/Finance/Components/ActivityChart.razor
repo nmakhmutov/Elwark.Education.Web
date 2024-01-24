@@ -1,0 +1,91 @@
+@using Education.Client.Features.History.Clients.Learner.Model.Examination
+@using ApexCharts
+@using Education.Client.Features.History.Clients.User.Model
+@using Size = ApexCharts.Size
+<ApexChart @ref="@_chart" TItem="MoneyActivityModel" Options="_options">
+    @foreach (var item in _activities)
+    {
+        <ApexPointSeries
+            TItem="MoneyActivityModel"
+            Items="item.Value"
+            Name="@L.GetInternalCurrencyTitle(item.Key)"
+            SeriesType="SeriesType.Line"
+            XValue="@(x => x.Date.ToString("dd MMM"))"
+            YValue="@(x => x.Balance)"/>
+    }
+</ApexChart>
+
+@code {
+    private ApexChart<MoneyActivityModel>? _chart;
+
+    private ApexChartOptions<MoneyActivityModel> _options = new()
+    {
+        Legend = new Legend
+        {
+            Position = LegendPosition.Top
+        },
+        Chart = new Chart
+        {
+            Width = "100%",
+            Height = "350px",
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Stroke = new Stroke
+        {
+            Show = true,
+            Width = new Size(3)
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)"
+        },
+        Colors = [Colors.Blue.Default, Colors.DeepPurple.Default, Colors.Green.Accent4, Colors.Red.Default],
+        Theme = new Theme()
+    };
+
+    private Dictionary<InternalCurrency, IEnumerable<MoneyActivityModel>> _activities = [];
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [Parameter, EditorRequired]
+    public required MoneyActivityModel[] Activities { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Activities.Length == 0)
+            return;
+
+        var min = Activities.MinBy(x => x.Date);
+        if (min is null)
+            return;
+
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var activities = new List<MoneyActivityModel>(Activities);
+
+        foreach (var group in activities.GroupBy(x => x.Currency))
+            if (group.All(x => x.Date != min.Date))
+                activities.Add(new MoneyActivityModel(min.Date, group.Key, 0, 0, 0));
+
+        _activities = activities.GroupBy(x => x.Currency)
+            .ToDictionary(
+                x => x.Key,
+                group => group.FillDailyGaps(today, x => x.Date, x => new MoneyActivityModel(x, group.Key, 0, 0, 0))
+            );
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        var current = ThemeProvider is { IsDarkMode: true } ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
+    }
+
+}
