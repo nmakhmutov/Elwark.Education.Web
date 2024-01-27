@@ -1,0 +1,47 @@
+@using Education.Client.Features.History.Clients.User.Model
+<section class="d-flex flex-column mud-paper @Class">
+    <header class="px-3 pt-3 px-sm-6 pt-sm-6">
+        <MudText Typo="Typo.h5">
+            @L["Assignments_Title"]
+        </MudText>
+    </header>
+
+    <ul class="d-flex flex-column gap-3 pa-3 pa-sm-6">
+        @Row("Daily assignment", Assignments.Daily)
+        @Row("Weekly assignment", Assignments.Weekly)
+    </ul>
+
+    <MudSpacer/>
+
+    <footer class="border-t mud-border-lines-default pa-3">
+        <MudButton
+            Class="text-transform-none"
+            EndIcon="@Icons.Material.Outlined.ArrowForward"
+            Href="@HistoryUrl.User.MyAssignments">
+            @L["Assignments_SeeAll"]
+        </MudButton>
+    </footer>
+</section>
+
+@code {
+
+    private RenderFragment Row(string title, MeOverviewModel.QuestModel quest) =>
+        @<li class="d-flex flex-row justify-space-between align-center gap-3">
+            <MudText Typo="Typo.body1">
+                @title
+            </MudText>
+            <MudText Typo="Typo.body2">
+                @(quest.Status > QuestStatus.Expired ? $"{quest.Completed} / {quest.Total}" : L["Assignments_ReadyToStart_Title"])
+            </MudText>
+        </li>;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required MeOverviewModel.AssignmentModel Assignments { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

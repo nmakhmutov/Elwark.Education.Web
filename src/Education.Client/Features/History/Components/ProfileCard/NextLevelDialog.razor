@@ -15,23 +15,7 @@
                     </MudText>
                 </header>
 
-                <footer>
-                    <MudProgressLinear
-                        Class="mb-1"
-                        Color="Color.Primary"
-                        Size="Size.Medium"
-                        Max="@Level.Threshold"
-                        Value="@Level.Experience"
-                        Rounded/>
-
-                    <div class="d-flex justify-space-between align-start gap-3 gap-sm-6">
-                        <MudText Typo="Typo.subtitle2">
-                            @Level.Experience.ToString("G") / @Level.Threshold.ToString("G") XP
-                        </MudText>
-
-                        <MetricNumber Value="@_percentage" Typo="Typo.subtitle2" EndIcon="%"/>
-                    </div>
-                </footer>
+                <UserLevelProgress Level="@Level.Current" Experience="@Level.Experience" Threshold="@Level.Threshold"/>
             </section>
         </header>
 
@@ -46,6 +30,7 @@
                         @foreach (var inventory in upcoming.Inventories)
                         {
                             <InventoryInfoCard
+                                Class="w-max-180"
                                 Title="@inventory.Title"
                                 IconUrl="@inventory.ImageUrl"
                                 Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
@@ -76,7 +61,6 @@
 
 @code {
     private ApiResult<UpcomingInventoriesModel> _result = ApiResult<UpcomingInventoriesModel>.Loading();
-    private double _percentage;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -99,7 +83,6 @@
     protected override async Task OnInitializedAsync()
     {
         _result = await StoreClient.GetUpcomingInventoriesAsync();
-        _percentage = Level.Experience + Level.Threshold > 0 ? 100.0 * Level.Experience / Level.Threshold : 0;
     }
 
 }

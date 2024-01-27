@@ -6,9 +6,9 @@ namespace Education.Client.Features.History.Clients.User;
 
 public interface IHistoryUserClient
 {
+    Task<ApiResult<MeOverviewModel>> GetMeAsync();
+    
     Task<ApiResult<ProfileModel>> GetProfileAsync();
-
-    Task<ApiResult<ProfileStatisticsModel>> GetStatisticsAsync();
 
     Task<ApiResult<InventoryQuantityModel>> GetInventoryAsync(uint id);
 

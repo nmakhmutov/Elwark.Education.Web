@@ -9,7 +9,7 @@ namespace Education.Client.Features.History.Pages.My.Dashboard;
 
 public sealed partial class Page
 {
-    private ApiResult<ProfileStatisticsModel> _result = ApiResult<ProfileStatisticsModel>.Loading();
+    private ApiResult<MeOverviewModel> _result = ApiResult<MeOverviewModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -21,5 +21,5 @@ public sealed partial class Page
     public CustomerState Customer { get; init; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _result = await UserClient.GetStatisticsAsync();
+        _result = await UserClient.GetMeAsync();
 }

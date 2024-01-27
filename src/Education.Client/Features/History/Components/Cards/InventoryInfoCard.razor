@@ -13,17 +13,8 @@
         <h6 class="mud-typography mud-typography-subtitle1 one-line-text" title="@Title">
             @Title
         </h6>
-        <MudTooltip>
-            <ChildContent>
-                <MudIcon Class="cursor-pointer" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"/>
-            </ChildContent>
-            <TooltipContent>
-                <div class="d-flex flex-column w-max-300">
-                    <MudText Typo="Typo.subtitle1" Color="Color.Info" Class="mb-1">@Title</MudText>
-                    <MudText Typo="Typo.body2">@Overview</MudText>
-                </div>
-            </TooltipContent>
-        </MudTooltip>
+        
+        <InfoTooltip Title="@Title" Description="@Overview"/>
     </header>
 
     @if (!string.IsNullOrEmpty(Subtitle))

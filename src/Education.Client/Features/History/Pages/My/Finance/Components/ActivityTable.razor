@@ -9,13 +9,11 @@
     SortLabel="@L["SortBy_Title"]"
     Hover>
     <HeaderContent>
+        <MudTh></MudTh>
         <MudTh>
             <MudTableSortLabel SortBy="@(new Func<MoneyActivityModel, object>(x => x.Date))" InitialDirection="SortDirection.Descending">
                 @L["Date_Title"]
             </MudTableSortLabel>
-        </MudTh>
-        <MudTh>
-            @L["InternalMoney_Currency_Title"]
         </MudTh>
         <MudTh>
             <MudTableSortLabel SortBy="@(new Func<MoneyActivityModel, object>(x => x.Income))">
@@ -34,11 +32,11 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
+        <MudTd>
+            <MudIcon Icon="@context.Currency.GetIcon()"/>
+        </MudTd>
         <MudTd DataLabel="@L["Date_Title"]">
             @Customer.Humanize(context.Date)
-        </MudTd>
-        <MudTd DataLabel="@L["InternalMoney_Currency_Title"]">
-            <MudIcon Icon="@context.Currency.GetIcon()"/>
         </MudTd>
         <MudTd DataLabel="@L["InternalMoney_Income_Title"]">
             @context.Income

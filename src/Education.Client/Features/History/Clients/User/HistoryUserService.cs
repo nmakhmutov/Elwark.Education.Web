@@ -11,11 +11,11 @@ internal sealed class HistoryUserService : IHistoryUserClient
     public HistoryUserService(HistoryApiClient api) =>
         _api = api;
 
+    public Task<ApiResult<MeOverviewModel>> GetMeAsync() =>
+        _api.GetAsync<MeOverviewModel>("history/users/me");
+    
     public Task<ApiResult<ProfileModel>> GetProfileAsync() =>
         _api.GetAsync<ProfileModel>("history/users/me/profile");
-
-    public Task<ApiResult<ProfileStatisticsModel>> GetStatisticsAsync() =>
-        _api.GetAsync<ProfileStatisticsModel>("history/users/me/statistics");
 
     public Task<ApiResult<InventoryQuantityModel>> GetInventoryAsync(uint id) =>
         _api.GetAsync<InventoryQuantityModel>($"history/users/me/inventories/{id}");

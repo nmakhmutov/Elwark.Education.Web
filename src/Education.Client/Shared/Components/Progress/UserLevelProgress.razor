@@ -1,44 +1,31 @@
 <section class="@Class">
-    @if (ShowDetails)
-    {
-        <MudProgressLinear
-            Class="mb-1"
-            Color="Color.Primary"
-            Size="Size.Large"
-            Max="@Threshold"
-            Value="@Experience"
-            Rounded>
-            <MudText Class="@(_percentage > 49 ? "white-text" : null)" Typo="Typo.caption">
-                @Experience.ToString("G") / @Threshold.ToString("G")
-            </MudText>
-        </MudProgressLinear>
-    }
-    else
-    {
-        <MudProgressLinear
-            Class="mb-1"
-            Color="Color.Primary"
-            Size="Size.Medium"
-            Max="@Threshold"
-            Value="@Experience"
-            Rounded/>
-    }
+    <MudProgressLinear
+        Class="mb-1"
+        Color="Color.Primary"
+        Size="Size.Medium"
+        Max="@Threshold"
+        Value="@Experience"
+        Rounded/>
 
-    <div class="d-flex justify-space-between align-start gap-3 gap-sm-6">
-        @if (OnLevelClick.HasDelegate)
-        {
-            <MudLink Typo="Typo.subtitle2" OnClick="@OnLevelClick">
-                @L["User_Level", Level]
-            </MudLink>
-        }
-        else
+    <footer class="d-flex justify-space-between align-start gap-3 gap-sm-6">
+        @if (ShowLevel)
         {
             <MudText Typo="Typo.subtitle2">
                 @L["User_Level", Level]
-            </MudText>
+            </MudText>   
         }
+        else
+        {
+            <div class="d-flex align-center gap-1">
+                <MudIcon Icon="@EduIcons.Experience" Size="Size.Small"/>
+                <MudText Typo="Typo.subtitle2">
+                    @Experience.ToString("G") / @Threshold.ToString("G")
+                </MudText>
+            </div>
+        }
+
         <MetricNumber Value="@_percentage" Typo="Typo.subtitle2" EndIcon="%"/>
-    </div>
+    </footer>
 </section>
 
 @code {
@@ -46,9 +33,6 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Parameter]
-    public string? Class { get; set; }
 
     [Parameter, EditorRequired]
     public uint Level { get; set; }
@@ -60,10 +44,10 @@
     public ulong Threshold { get; set; }
 
     [Parameter]
-    public bool ShowDetails { get; set; }
+    public bool ShowLevel { get; set; }
 
     [Parameter]
-    public EventCallback OnLevelClick { get; set; }
+    public string? Class { get; set; }
 
     protected override void OnParametersSet() =>
         _percentage = Experience + Threshold > 0 ? 100.0 * Experience / Threshold : 0;

@@ -2,19 +2,29 @@
 @using Education.Client.Features.History.Clients.User.Model
 @using Education.Client.Features.Customer
 <section class="d-flex flex-column mud-paper @Class">
-    <header class="d-flex align-center pa-3 pa-sm-6">
-        <img class="avatar rounded mr-3" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
-        <MudText Typo="Typo.h5">
+    <header class="header pa-3 pa-sm-6">
+        <div class="avatar-wrapper">
+            <img class="avatar rounded" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
+        </div>
+
+        <MudText Class="one-line-text" Typo="Typo.h5">
             @Customer.Name
         </MudText>
+
+        <div class="level-wrapper">
+            <MudButton Size="Size.Small" Variant="Variant.Filled" Color="Color.Primary" DisableElevation DisableRipple OnClick="@OnLevelClick">
+                @L["User_Level", Level.Current]
+            </MudButton>
+        </div>
     </header>
 
     <UserLevelProgress
         Class="px-3 px-sm-6"
         Level="@Level.Current"
         Experience="@Level.Experience"
-        Threshold="@Level.Threshold"
-        OnLevelClick="@OnLevelClick"/>
+        Threshold="@Level.Threshold"/>
+
+    <MudSpacer/>
 
     <section class="d-flex flex-wrap flex-sm-nowrap justify-space-between align-center gap-3 pa-3 pa-sm-6">
         <MudLink Color="Color.Primary" Href="@HistoryUrl.User.MyFinance">
@@ -29,20 +39,6 @@
             <BackpackOverview Fullness="@Backpack.Fullness" Capacity="@Backpack.Capacity"/>
         </MudLink>
     </section>
-
-    @if (ShowFooter)
-    {
-        <MudSpacer/>
-
-        <footer class="border-t mud-border-lines-default pa-3">
-            <MudButton
-                Class="text-transform-none"
-                EndIcon="@Icons.Material.Outlined.ArrowForward"
-                Href="@CustomerUrl.Root">
-                @L["Account_Title"]
-            </MudButton>
-        </footer>
-    }
 </section>
 
 @code {
@@ -67,9 +63,6 @@
 
     [Parameter, EditorRequired]
     public required Dictionary<InternalCurrency, long> Wallet { get; set; }
-
-    [Parameter]
-    public bool ShowFooter { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

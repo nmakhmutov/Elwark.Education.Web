@@ -2,7 +2,7 @@ using Education.Client.Extensions;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Education.Client.Shared.Components.Labels;
+namespace Education.Client.Shared.Components.Label;
 
 public sealed partial class DifferenceLabel
 {
