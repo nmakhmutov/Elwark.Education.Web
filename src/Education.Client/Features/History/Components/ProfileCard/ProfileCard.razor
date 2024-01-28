@@ -12,8 +12,15 @@
         </MudText>
 
         <div class="level-wrapper">
-            <MudButton Size="Size.Small" Variant="Variant.Filled" Color="Color.Primary" DisableElevation DisableRipple OnClick="@OnLevelClick">
-                @L["User_Level", Level.Current]
+            <MudButton
+                StartIcon="@EduIcons.Level"
+                IconSize="Size.Large"
+                Variant="Variant.Outlined"
+                Color="Color.Primary"
+                OnClick="@OnLevelClick"
+                DisableElevation
+                DisableRipple>
+                @Level.Current
             </MudButton>
         </div>
     </header>
@@ -27,17 +34,23 @@
     <MudSpacer/>
 
     <section class="d-flex flex-wrap flex-sm-nowrap justify-space-between align-center gap-3 pa-3 pa-sm-6">
-        <MudLink Color="Color.Primary" Href="@HistoryUrl.User.MyFinance">
+        <div>
+            <MudLink Typo="Typo.subtitle2" Color="Color.Primary" Href="@HistoryUrl.User.MyFinance">
+                @L["Wallet_Title"]
+            </MudLink>
             <div class="d-flex align-center gap-3">
                 @foreach (var (currency, amount) in Wallet)
                 {
                     <InternalMoney Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
                 }
             </div>
-        </MudLink>
-        <MudLink Color="Color.Primary" Href="@HistoryUrl.User.MyBackpack">
+        </div>
+        <div class="d-flex flex-column align-end">
+            <MudLink Typo="Typo.subtitle2" Color="Color.Primary" Href="@HistoryUrl.User.MyBackpack">
+                @L["Backpack_Title"]
+            </MudLink>
             <BackpackOverview Fullness="@Backpack.Fullness" Capacity="@Backpack.Capacity"/>
-        </MudLink>
+        </div>
     </section>
 </section>
 

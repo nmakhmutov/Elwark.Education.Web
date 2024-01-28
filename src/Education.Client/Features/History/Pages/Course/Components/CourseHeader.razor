@@ -12,18 +12,16 @@
             <section>
                 @if (HasExaminations && Activity?.Status == CourseLearningStatus.NotStarted)
                 {
-                    <div class="mb-3">
-                        <LoadingButton
-                            Variant="Variant.Filled"
-                            Color="Color.Primary"
-                            Size="Size.Medium"
-                            OnClick="@OnStartCourseClick"
-                            Text="@L["Course_Start_Button"]"
-                            IsLoading="@_isStarting"
-                            LoadingText="@L["Loading_Title"]"
-                            DisableRipple
-                            DisableElevation/>
-                    </div>
+                    <LoadingButton
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        Size="Size.Medium"
+                        OnClick="@OnStartCourseClick"
+                        Text="@L["Course_Start_Button"]"
+                        IsLoading="@_isStarting"
+                        LoadingText="@L["Loading_Title"]"
+                        DisableRipple
+                        DisableElevation/>
                 }
 
                 <div class="d-flex flex-wrap align-center align-sm-end gap-3 gap-sm-6">

@@ -3,19 +3,12 @@
 @implements IDisposable
 
 <MudBadge Color="Color.Secondary" Visible="@NotificationService.HasNotifications" Dot Overlap>
-    <MudHidden Breakpoint="Breakpoint.MdAndUp">
-        <MudIconButton Icon="@Icon" Color="Color.Inherit" Href="@CustomerUrl.Notifications"/>
+    <MudHidden Breakpoint="Breakpoint.SmAndUp">
+        <MudIconButton Icon="@Icon" Color="Color.Inherit" Href="@CustomerUrl.Notifications" aria-label="@L["Notifications_Title"]"/>
     </MudHidden>
 
-    <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert>
-        <MudMenu
-            ListClass="pa-0"
-            Icon="@Icon"
-            Color="Color.Inherit"
-            AnchorOrigin="Origin.BottomLeft"
-            TransformOrigin="Origin.TopLeft"
-            PositionAtCursor
-            DisableRipple>
+    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert>
+        <MudMenu ListClass="pa-0" Icon="@Icon" Color="Color.Inherit" AnchorOrigin="Origin.TopRight" DisableRipple>
             <section class="wrapper">
                 <header class="d-flex justify-space-between align-center pa-3">
                     <MudText Typo="Typo.subtitle1">

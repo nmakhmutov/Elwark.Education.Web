@@ -48,12 +48,19 @@
             <MudText Typo="Typo.h6" Class="mb-3">
                 @L["History_DateGuesser_Equipment"]
             </MudText>
-            <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index(CategoryType.DateGuesser)" Context="inventory">
-                <InventoryInfoCard
-                    Title="@inventory.Title"
-                    Overview="@inventory.Overview"
-                    Quantity="@inventory.Quantity"
-                    IconUrl="@inventory.IconUrl"/>
+            <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index(CategoryType.DateGuesser)">
+                <ChildContent>
+                    <InventoryInfoCard
+                        Title="@context.Title"
+                        Overview="@context.Overview"
+                        Quantity="@context.Quantity"
+                        IconUrl="@context.IconUrl"/>
+                </ChildContent>
+                <EmptyContent>
+                    <InventoryShortageCard
+                        Class="w-max-600"
+                        Href="@HistoryUrl.Store.Index(CategoryType.DateGuesser)"/>
+                </EmptyContent>
             </InventoryGrid>
         </section>
     </section>

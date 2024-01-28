@@ -1,8 +1,8 @@
 @using Education.Client.Features.Customer.Services.Notification.Model
-<article class="d-flex gap-3 @Class">
+<section class="d-flex gap-3 @Class">
     <NotificationAvatar Class="mt-1" Subject="@Notification.Subject"/>
 
-    <section class="d-flex flex-column gap-3">
+    <article class="d-flex flex-column gap-3">
         <header>
             @if (DisableTitleLink || string.IsNullOrEmpty(Notification.Href))
             {
@@ -22,25 +22,22 @@
             </MudText>
         </header>
 
-        <MudText Typo="Typo.body1">
+        <MudText Typo="Typo.body2">
             @Notification.Message
         </MudText>
 
         @if (Notification.HasMoney)
         {
             <footer class="d-flex gap-3">
-                <MudText Typo="Typo.body1">@L["Rewards_Title"]:</MudText>
+                <MudText Typo="Typo.body2">@L["Rewards_Title"]:</MudText>
                 @foreach (var reward in Notification.Money)
                 {
-                    <InternalMoney
-                        Currency="@reward.Currency"
-                        Amount="@reward.Amount"
-                        Horizontal/>
+                    <InternalMoney Currency="@reward.Currency" Amount="@reward.Amount" Typo="Typo.body2" Horizontal/>
                 }
             </footer>
         }
-    </section>
-</article>
+    </article>
+</section>
 
 @code {
 

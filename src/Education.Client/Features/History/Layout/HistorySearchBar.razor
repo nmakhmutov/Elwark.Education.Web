@@ -3,7 +3,8 @@
         Class="d-md-none"
         Icon="@Icons.Material.Outlined.Search"
         Color="Color.Inherit"
-        OnClick="@OpenSearchDialog"/>
+        OnClick="@OpenSearchDialog"
+        aria-label="@L["Search_Title"]"/>
 
     <div class="d-none d-md-block container">
         <SearchInput/>
@@ -21,11 +22,14 @@
         NoHeader = true
     };
 
-    [Parameter]
-    public string? Class { get; set; }
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
     private IDialogService DialogService { get; init; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
 
     private Task OpenSearchDialog() =>
         DialogService.ShowAsync<HistorySearchModal>(string.Empty, Options);

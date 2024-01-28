@@ -2,7 +2,7 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<CascadingValue TValue="CascadingTheme" Value="@(this)" ChildContent="@ChildContent"/>
+<CascadingValue TValue="CascadingTheme" Value="@this" ChildContent="@ChildContent"/>
 
 @code {
     private const string CacheKey = "ts";
@@ -87,25 +87,59 @@
 
     public bool IsDarkMode { get; private set; }
 
-    public string Icon =>
-        IsDarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode;
+    public ThemeMode Mode { get; private set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Mode = await Storage.GetItemAsync<ThemeMode>(CacheKey);
+        IsDarkMode = Mode switch
+        {
+            ThemeMode.Auto => await _provider.GetSystemPreference(),
+            ThemeMode.Light => false,
+            ThemeMode.Dark => true,
+            _ => true
+        };
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)
             return;
 
-        IsDarkMode = await Storage.GetItemAsync<bool?>(CacheKey) ?? await _provider.GetSystemPreference();
         await _provider.WatchSystemPreference(OnSystemPreferenceChanged);
     }
 
-    public async Task ToggleAsync() =>
-        await Storage.SetItemAsync(CacheKey, IsDarkMode = !IsDarkMode);
+    public async Task SetAutoThemeAsync()
+    {
+        Mode = ThemeMode.Auto;
+        IsDarkMode = await _provider.GetSystemPreference();
+
+        await Storage.SetItemAsync(CacheKey, Mode);
+    }
+
+    public async Task SetLightThemeAsync()
+    {
+        Mode = ThemeMode.Light;
+        IsDarkMode = false;
+        
+        await Storage.SetItemAsync(CacheKey, Mode);
+    }
+
+    public async Task SetDarkThemeAsync()
+    {
+        Mode = ThemeMode.Dark;
+        IsDarkMode = true;
+        
+        await Storage.SetItemAsync(CacheKey, Mode);
+    }
 
     private async Task OnSystemPreferenceChanged(bool isDarkMode)
     {
-        await Storage.SetItemAsync(CacheKey, IsDarkMode = isDarkMode);
-        StateHasChanged();
+        if (Mode == ThemeMode.Auto)
+        {
+            await Storage.SetItemAsync(CacheKey, IsDarkMode = isDarkMode);
+            StateHasChanged();
+        }
     }
 
 }

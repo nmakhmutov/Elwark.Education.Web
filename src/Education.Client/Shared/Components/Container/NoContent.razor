@@ -1,24 +1,22 @@
-<EduContainer Class="@Class" MaxWidth="EduWidth.W600">
-    <div class="d-flex flex-column align-center">
-        @if (!string.IsNullOrEmpty(Icon))
-        {
-            <MudIcon Class="mb-3" Icon="@Icon" Size="Size.Large" Style="width: 64px; height: 64px"/>
-        }
-        else
-        {
-            <img class="image mb-3" src="/images/illustration/no_data.svg" alt="no data" loading="lazy">
-        }
-        <MudText Typo="@Typo.body1" Align="Align.Center">
-            @Title
+<section class="d-flex flex-column align-center @Class">
+    @if (!string.IsNullOrEmpty(Icon))
+    {
+        <MudIcon Class="mb-3" Icon="@Icon" Size="Size.Large" Style="width: 64px; height: 64px"/>
+    }
+    else
+    {
+        <img class="image mb-3" src="/images/illustration/no_data.svg" alt="no data" loading="lazy">
+    }
+    <MudText Typo="@Typo.subtitle1" Align="Align.Center">
+        @Title
+    </MudText>
+    @if (!string.IsNullOrEmpty(Subtitle))
+    {
+        <MudText Typo="@Typo.body1" Align="Align.Justify">
+            @Subtitle
         </MudText>
-        @if (!string.IsNullOrEmpty(Subtitle))
-        {
-            <MudText Typo="@Typo.body2" Align="Align.Center">
-                @Subtitle
-            </MudText>
-        }
-    </div>
-</EduContainer>
+    }
+</section>
 
 @code {
 

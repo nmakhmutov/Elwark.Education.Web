@@ -238,7 +238,7 @@
         if (!Profile.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
         {
             var currency = L.GetInternalCurrencyTitle(TotalPrice.Currency);
-            return new Error(L["InternalMoney_NotEnoughMoneyTitle", currency], L["InternalMoney_NotEnoughMoneyDescription", currency]);
+            return new Error(L["InternalMoney_NotEnough_Title", currency], L["InternalMoney_NotEnough_Description", currency]);
         }
 
         if (TotalWeight > Profile.Backpack.Emptiness)

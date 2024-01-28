@@ -1,0 +1,39 @@
+<div class="card rounded pa-3 @Class">
+    <div>
+        <MudText Class="mb-3 mb-sm-6" Typo="@Typo.subtitle1" Align="Align.Center">
+            @L["Inventory_Shortage_Title"]
+        </MudText>
+        <MudText Typo="@Typo.body1">
+            @L["Inventory_Shortage_Description"]
+        </MudText>
+    </div>
+
+    <div class="d-flex flex-column justify-space-between">
+        <div class="d-flex justify-center ma-6">
+            <MudIcon Class="icon" Icon="@EduIcons.Store" Color="Color.Primary"/>
+        </div>
+
+        <MudButton
+            Href="@Href"
+            Color="Color.Primary"
+            Variant="Variant.Filled"
+            Size="Size.Medium"
+            DisableElevation
+            DisableRipple>
+            @L["InventoryStore_Title"]
+        </MudButton>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public string? Href { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

@@ -1,11 +1,45 @@
 @if (ThemeProvider is not null)
 {
-    <MudIconButton Icon="@ThemeProvider.Icon" Color="Color.Inherit" OnClick="@ThemeProvider.ToggleAsync"/>
+    <MudMenu Icon="@Icon" Color="Color.Inherit" IconColor="Color.Inherit" AnchorOrigin="Origin.TopRight" DisableRipple>
+        <MudMenuItem
+            Icon="@Icons.Material.Outlined.LightMode"
+            OnClick="@ThemeProvider.SetLightThemeAsync"
+            IconColor="@GetSelectedColor(ThemeMode.Light)">
+            @L["Theme_Light_Theme"]
+        </MudMenuItem>
+        <MudMenuItem
+            Icon="@Icons.Material.Outlined.DarkMode"
+            OnClick="@ThemeProvider.SetDarkThemeAsync"
+            IconColor="@GetSelectedColor(ThemeMode.Dark)">
+            @L["Theme_Dark_Theme"]
+        </MudMenuItem>
+        <MudMenuItem
+            Icon="@Icons.Material.Outlined.AutoMode"
+            OnClick="@ThemeProvider.SetAutoThemeAsync"
+            IconColor="@GetSelectedColor(ThemeMode.Auto)">
+            @L["Theme_Device_Title"]
+        </MudMenuItem>
+    </MudMenu>
 }
 
 @code {
 
+    [Inject]
+    public IStringLocalizer<App> L { get; init; } = default!;
+
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
+
+    private string Icon =>
+        ThemeProvider?.Mode switch
+        {
+            ThemeMode.Auto => Icons.Material.Outlined.AutoMode,
+            ThemeMode.Light => Icons.Material.Outlined.LightMode,
+            ThemeMode.Dark => Icons.Material.Outlined.DarkMode,
+            _ => string.Empty
+        };
+
+    private Color GetSelectedColor(ThemeMode mode) =>
+        ThemeProvider?.Mode == mode ? Color.Primary : Color.Default;
 
 }

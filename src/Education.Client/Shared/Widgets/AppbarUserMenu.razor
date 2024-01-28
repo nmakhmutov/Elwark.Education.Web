@@ -17,7 +17,7 @@
     </Authorizing>
 
     <Authorized>
-        <MudMenu Direction="Direction.Left" OffsetX Dense>
+        <MudMenu ListClass="pa-0" AnchorOrigin="Origin.TopRight" DisableRipple>
             <ActivatorContent>
                 <img class="avatar rounded object-cover object-center" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
             </ActivatorContent>
@@ -26,7 +26,7 @@
                 <section class="container d-flex flex-column align-center gap-3 pa-3 pa-sm-6">
                     <img class="image rounded object-cover object-center" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
 
-                    <MudText Class="one-line-text" Typo="Typo.h5" Align="Align.Center">
+                    <MudText Typo="Typo.h5" Align="@(Customer.Name.Length > 20 ? Align.Start : Align.Center)">
                         @L["HiUserName_Title", Customer.Name]
                     </MudText>
 

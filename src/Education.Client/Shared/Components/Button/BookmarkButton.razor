@@ -1,4 +1,4 @@
-<MudTooltip Text="@(L[IsBookmarked ? "Bookmarks_Remove" : "Bookmarks_Add"])">
+<MudTooltip Text="@L[IsBookmarked ? "Bookmarks_Remove" : "Bookmarks_Add"]">
     <MudToggleIconButton
         Class="@Class"
         Color="@Color"
@@ -6,7 +6,8 @@
         ToggledIcon="@Icons.Material.Outlined.BookmarkAdded"
         ToggledColor="Color.Error"
         Toggled="@IsBookmarked"
-        ToggledChanged="@OnBookmarkChanged"/>
+        ToggledChanged="@OnBookmarkChanged"
+        aria-label="@L[IsBookmarked ? "Bookmarks_Remove" : "Bookmarks_Add"]"/>
 </MudTooltip>
 
 @code {
