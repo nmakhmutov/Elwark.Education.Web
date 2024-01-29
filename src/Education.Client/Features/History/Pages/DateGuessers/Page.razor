@@ -6,62 +6,64 @@
     @L["History_DateGuessers_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.None">
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
-    <section class="grid px-3 pb-3 px-sm-6 pb-sm-6">
-        <section class="builder">
-            <MudText Typo="Typo.h6" Class="mb-3">
-                @L["History_Epoch_Title"]
-            </MudText>
-            <EpochRadioGroup
-                SelectedEpoch="@_settings.Epoch"
-                SelectedEpochChanged="@OnEpochChanged"
-                Class="mb-3 mb-sm-6"/>
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <section class="grid">
+            <section class="builder">
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @L["History_Epoch_Title"]
+                </MudText>
+                <EpochRadioGroup
+                    SelectedEpoch="@_settings.Epoch"
+                    SelectedEpochChanged="@OnEpochChanged"
+                    Class="mb-3 mb-sm-6"/>
 
-            <MudText Typo="Typo.h6" Class="mb-3">
-                @L["Quiz_Type_Title"]
-            </MudText>
-            <DateGuesserTypeRadioGroup
-                Class="mb-3 mb-sm-6"
-                SelectedGuesser="@_settings.Type"
-                SelectedGuesserChanged="@OnSizeChanged"
-                Guessers="@model.Tests"/>
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @L["Quiz_Type_Title"]
+                </MudText>
+                <DateGuesserTypeRadioGroup
+                    Class="mb-3 mb-sm-6"
+                    SelectedGuesser="@_settings.Type"
+                    SelectedGuesserChanged="@OnSizeChanged"
+                    Guessers="@model.Tests"/>
 
-            <div class="d-flex justify-center">
-                <LoadingButton
-                    DisableElevation
-                    Size="Size.Large"
-                    Color="Color.Primary"
-                    Variant="Variant.Filled"
-                    Text="@L["History_DateGuesser_TakeTheGuesser"]"
-                    LoadingText="@L["Loading_Title"]"
-                    IsLoading="@_isLoading"
-                    Disabled="@(model.Tests.All(x => !x.IsAllowed))"
-                    OnClick="@CreateTestAsync"/>
-            </div>
+                <div class="d-flex justify-center">
+                    <LoadingButton
+                        DisableElevation
+                        Size="Size.Large"
+                        Color="Color.Primary"
+                        Variant="Variant.Filled"
+                        Text="@L["History_DateGuesser_TakeTheGuesser"]"
+                        LoadingText="@L["Loading_Title"]"
+                        IsLoading="@_isLoading"
+                        Disabled="@(model.Tests.All(x => !x.IsAllowed))"
+                        OnClick="@CreateTestAsync"/>
+                </div>
+            </section>
+
+            <section class="inventory">
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @L["History_DateGuesser_Equipment"]
+                </MudText>
+                <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index(CategoryType.DateGuesser)">
+                    <ChildContent>
+                        <InventoryInfoCard
+                            Title="@context.Title"
+                            Overview="@context.Overview"
+                            Quantity="@context.Quantity"
+                            IconUrl="@context.IconUrl"/>
+                    </ChildContent>
+                    <EmptyContent>
+                        <InventoryShortageCard
+                            Class="w-max-600"
+                            Href="@HistoryUrl.Store.Index(CategoryType.DateGuesser)"/>
+                    </EmptyContent>
+                </InventoryGrid>
+            </section>
         </section>
-
-        <section class="inventory">
-            <MudText Typo="Typo.h6" Class="mb-3">
-                @L["History_DateGuesser_Equipment"]
-            </MudText>
-            <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index(CategoryType.DateGuesser)">
-                <ChildContent>
-                    <InventoryInfoCard
-                        Title="@context.Title"
-                        Overview="@context.Overview"
-                        Quantity="@context.Quantity"
-                        IconUrl="@context.IconUrl"/>
-                </ChildContent>
-                <EmptyContent>
-                    <InventoryShortageCard
-                        Class="w-max-600"
-                        Href="@HistoryUrl.Store.Index(CategoryType.DateGuesser)"/>
-                </EmptyContent>
-            </InventoryGrid>
-        </section>
-    </section>
+    </EduContainer>
 </ApiViewer>

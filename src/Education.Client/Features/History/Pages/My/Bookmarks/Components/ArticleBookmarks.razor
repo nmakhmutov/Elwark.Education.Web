@@ -35,42 +35,49 @@ else
                 </div>
             </div>
         </Placeholder>
-        <ItemContent Context="item">
+        <ItemContent>
+            @* <ArticleCard *@
+            @*     Article="@context.Article" *@
+            @*     Activity="@context.Activity" *@
+            @*     HasQuiz="@context.HasQuiz" *@
+            @*     OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync" *@
+            @*     Horizontal/> *@
+            
             <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
                 <div class="image">
-                    <MudAvatar Class="rounded" Size="Size.Large" Image="@item.Article.ThumbnailUrl" Square/>
+                    <MudAvatar Class="rounded" Size="Size.Large" Image="@context.Article.ThumbnailUrl" Square/>
                 </div>
                 <div class="title">
-                    <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)" Typo="Typo.h6">
-                        @item.Article.Title
+                    <MudLink Href="@HistoryUrl.Content.Article(context.Article.Id)" Typo="Typo.h6">
+                        @context.Article.Title
                     </MudLink>
                     <br/>
                     <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
-                       href="@HistoryUrl.Content.Articles(item.Article.Epoch)">
-                        @L.GetEpochTitle(item.Article.Epoch)
+                       href="@HistoryUrl.Content.Articles(context.Article.Epoch)">
+                        @L.GetEpochTitle(context.Article.Epoch)
                     </a>
                 </div>
                 <div class="rating">
                     <ContentRating
                         Class="d-inline-flex flex-column align-center"
-                        Rating="@item.Article.Rating"
+                        Rating="@context.Article.Rating"
                         ShowTooltip/>
                 </div>
                 <div class="quizzes">
                     <TotalQuizzesChip
-                        Easy="@(item.Activity?.EasyQuizzes ?? 0)"
-                        Hard="@(item.Activity?.HardQuizzes ?? 0)"/>
+                        Easy="@(context.Activity?.EasyQuizzes ?? 0)"
+                        Hard="@(context.Activity?.HardQuizzes ?? 0)"/>
                 </div>
                 <div class="completion">
                     <ArticleCompletionChip
-                        Status="@(item.Activity?.Status ?? LearningStatus.NotEngaged)"
-                        Href="@HistoryUrl.User.MyArticle(item.Article.Id)"
+                        Status="@(context.Activity?.Status ?? LearningStatus.NotEngaged)"
+                        Href="@HistoryUrl.User.MyArticle(context.Article.Id)"
                         ShowTooltip/>
                 </div>
                 <div class="actions">
                     <BookmarkButton
-                        Id="@item.Article.Id"
-                        IsBookmarked="@item.Activity!.IsBookmarked"
+                        Id="@context.Article.Id"
+                        IsBookmarked="@context.Activity!.IsBookmarked"
                         OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
                 </div>
             </div>
@@ -105,9 +112,6 @@ else
 
     private async ValueTask<ItemsProviderResult<UserArticleOverviewModel>> BookmarkProvider(ItemsProviderRequest request)
     {
-        int GetLength() =>
-            _items.Count + (string.IsNullOrEmpty(_token) ? 0 : 1);
-
         var items = _items.Skip(request.StartIndex).Take(request.Count);
 
         var isRangeAvailable = _items.Count > (request.StartIndex + 1) * request.Count
@@ -124,15 +128,18 @@ else
                 foreach (var item in x.Items)
                     _items.Add(item);
 
-                if (!_isEmpty && _items.Count == 0)
-                {
-                    _isEmpty = true;
-                    StateHasChanged();
-                }
+                if (_isEmpty || _items.Count != 0)
+                    return new ItemsProviderResult<UserArticleOverviewModel>(items, GetLength());
+
+                _isEmpty = true;
+                StateHasChanged();
 
                 return new ItemsProviderResult<UserArticleOverviewModel>(items, GetLength());
             })
-            .UnwrapOr(new ItemsProviderResult<UserArticleOverviewModel>(items, 0));
+            .UnwrapOrElse(() => new ItemsProviderResult<UserArticleOverviewModel>(items, 0));
+
+        int GetLength() =>
+            _items.Count + (string.IsNullOrEmpty(_token) ? 0 : 1);
     }
 
 }

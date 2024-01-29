@@ -6,56 +6,58 @@
     @L["Quizzes_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.None">
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
-    <section class="grid px-3 pb-3 px-sm-6 pb-sm-6">
-        <section class="builder">
-            <MudText Class="mb-3" Typo="Typo.h6">
-                @L["History_Epoch_Title"]
-            </MudText>
-            <EpochRadioGroup
-                Class="mb-3 mb-sm-6"
-                SelectedEpoch="@_settings.Epoch"
-                SelectedEpochChanged="@ChangeEpochAsync"/>
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <section class="grid">
+            <section class="builder">
+                <MudText Class="mb-3" Typo="Typo.h6">
+                    @L["History_Epoch_Title"]
+                </MudText>
+                <EpochRadioGroup
+                    Class="mb-3 mb-sm-6"
+                    SelectedEpoch="@_settings.Epoch"
+                    SelectedEpochChanged="@ChangeEpochAsync"/>
 
-            <MudText Class="mb-3" Typo="Typo.h6">
-                @L["Quiz_Type_Title"]
-            </MudText>
-            <QuizDifficultyRadioGroup
-                Class="mb-3 mb-sm-6"
-                SelectedDifficulty="@_settings.Difficulty"
-                SelectedDifficultyChanged="@ChangeDifficultyAsync"
-                Quizzes="@model.Quizzes"/>
+                <MudText Class="mb-3" Typo="Typo.h6">
+                    @L["Quiz_Type_Title"]
+                </MudText>
+                <QuizDifficultyRadioGroup
+                    Class="mb-3 mb-sm-6"
+                    SelectedDifficulty="@_settings.Difficulty"
+                    SelectedDifficultyChanged="@ChangeDifficultyAsync"
+                    Quizzes="@model.Quizzes"/>
 
-            <div class="d-flex justify-center">
-                <TakeTheQuizButton
-                    Disabled="@(model.Quizzes.All(x => !x.IsAllowed))"
-                    Loading="@_isLoading"
-                    OnClick="@CreateQuizAsync"/>
-            </div>
+                <div class="d-flex justify-center">
+                    <TakeTheQuizButton
+                        Disabled="@(model.Quizzes.All(x => !x.IsAllowed))"
+                        Loading="@_isLoading"
+                        OnClick="@CreateQuizAsync"/>
+                </div>
+            </section>
+
+            <section class="inventory">
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @L["Quiz_Equipment_Title"]
+                </MudText>
+                <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index(CategoryType.Quiz)">
+                    <ChildContent>
+                        <InventoryInfoCard
+                            Title="@context.Title"
+                            Overview="@context.Overview"
+                            Quantity="@context.Quantity"
+                            IconUrl="@context.IconUrl"/>
+                    </ChildContent>
+                    <EmptyContent>
+                        <InventoryShortageCard
+                            Class="w-max-600"
+                            Href="@HistoryUrl.Store.Index(CategoryType.Quiz)"/>
+                    </EmptyContent>
+                </InventoryGrid>
+            </section>
         </section>
-
-        <section class="inventory">
-            <MudText Typo="Typo.h6" Class="mb-3">
-                @L["Quiz_Equipment_Title"]
-            </MudText>
-            <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index(CategoryType.Quiz)">
-                <ChildContent>
-                    <InventoryInfoCard
-                        Title="@context.Title"
-                        Overview="@context.Overview"
-                        Quantity="@context.Quantity"
-                        IconUrl="@context.IconUrl"/>
-                </ChildContent>
-                <EmptyContent>
-                    <InventoryShortageCard
-                        Class="w-max-600"
-                        Href="@HistoryUrl.Store.Index(CategoryType.Quiz)"/>
-                </EmptyContent>
-            </InventoryGrid>
-        </section>
-    </section>
+    </EduContainer>
 </ApiViewer>

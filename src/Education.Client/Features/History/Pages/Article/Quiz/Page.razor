@@ -11,66 +11,68 @@
         @model.Article.Title
     </PageTitle>
 
-    <section class="grid px-3 pb-3 px-sm-6 pb-sm-6">
-        <section class="course">
-            <MudText Typo="Typo.h6" Class="mb-3">
-                @L["Course_Title"]
-            </MudText>
-
-            <ArticleCard
-                Article="@model.Article"
-                Activity="@model.Activity"
-                OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
-                HasQuiz="@(model.Quizzes.Length > 0)"
-                Horizontal/>
-        </section>
-
-        <section class="inventory">
-            <MudText Typo="Typo.h6" Class="mb-3">
-                @L["Examination_Equipment_Title"]
-            </MudText>
-            <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index(CategoryType.Quiz)">
-                <ChildContent>
-                    <InventoryInfoCard
-                        Title="@context.Title"
-                        Overview="@context.Overview"
-                        Quantity="@context.Quantity"
-                        IconUrl="@context.IconUrl"/>
-                </ChildContent>
-                <EmptyContent>
-                    <InventoryShortageCard
-                        Class="w-max-600"
-                        Href="@HistoryUrl.Store.Index(CategoryType.Quiz)"/>
-                </EmptyContent>
-            </InventoryGrid>
-        </section>
-
-        <section class="exam">
-            @if (model.Quizzes.Length > 0)
-            {
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+        <section class="grid">
+            <section class="course">
                 <MudText Typo="Typo.h6" Class="mb-3">
-                    @L["Quiz_Type_Title"]
+                    @L["Article_Title"]
                 </MudText>
 
-                <QuizDifficultyRadioGroup
-                    Class="mb-6"
-                    SelectedDifficulty="@_settings.Difficulty"
-                    SelectedDifficultyChanged="@ChangeDifficultyAsync"
-                    Quizzes="@model.Quizzes"/>
+                <ArticleCard
+                    Article="@model.Article"
+                    Activity="@model.Activity"
+                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                    HasQuiz="@(model.Quizzes.Length > 0)"
+                    Horizontal/>
+            </section>
 
-                <div class="d-flex justify-center">
-                    <TakeTheQuizButton
-                        Disabled="@(model.Quizzes.All(x => !x.IsAllowed))"
-                        Loading="@_isLoading"
-                        OnClick="@CreateQuizAsync"/>
-                </div>
-            }
-            else
-            {
-                <MudAlert Severity="Severity.Info">
-                    @L["Quiz_NotAvailableForArticle", model.Article.Title]
-                </MudAlert>
-            }
+            <section class="inventory">
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @L["Examination_Equipment_Title"]
+                </MudText>
+                <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index(CategoryType.Quiz)">
+                    <ChildContent>
+                        <InventoryInfoCard
+                            Title="@context.Title"
+                            Overview="@context.Overview"
+                            Quantity="@context.Quantity"
+                            IconUrl="@context.IconUrl"/>
+                    </ChildContent>
+                    <EmptyContent>
+                        <InventoryShortageCard
+                            Class="w-max-600"
+                            Href="@HistoryUrl.Store.Index(CategoryType.Quiz)"/>
+                    </EmptyContent>
+                </InventoryGrid>
+            </section>
+
+            <section class="exam">
+                @if (model.Quizzes.Length > 0)
+                {
+                    <MudText Typo="Typo.h6" Class="mb-3">
+                        @L["Quiz_Type_Title"]
+                    </MudText>
+
+                    <QuizDifficultyRadioGroup
+                        Class="mb-6"
+                        SelectedDifficulty="@_settings.Difficulty"
+                        SelectedDifficultyChanged="@ChangeDifficultyAsync"
+                        Quizzes="@model.Quizzes"/>
+
+                    <div class="d-flex justify-center">
+                        <TakeTheQuizButton
+                            Disabled="@(model.Quizzes.All(x => !x.IsAllowed))"
+                            Loading="@_isLoading"
+                            OnClick="@CreateQuizAsync"/>
+                    </div>
+                }
+                else
+                {
+                    <MudAlert Severity="Severity.Info">
+                        @L["Quiz_NotAvailableForArticle", model.Article.Title]
+                    </MudAlert>
+                }
+            </section>
         </section>
-    </section>
+    </EduContainer>
 </ApiViewer>
