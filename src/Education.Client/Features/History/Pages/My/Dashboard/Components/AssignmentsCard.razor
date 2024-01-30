@@ -31,7 +31,7 @@
                 @title
             </MudText>
             <MudText Typo="Typo.body2">
-                @(quest.Status > QuestStatus.Expired ? $"{quest.Completed} / {quest.Total}" : L["Assignments_ReadyToStart_Title"])
+                @(quest.Total > 0 ? $"{quest.Completed} / {quest.Total}" : L["Assignments_ReadyToStart_Title"])
             </MudText>
         </li>;
 

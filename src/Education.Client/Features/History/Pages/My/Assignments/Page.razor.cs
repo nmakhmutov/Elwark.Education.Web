@@ -1,6 +1,7 @@
 using Education.Client.Clients;
 using Education.Client.Features.History.Clients.User;
 using Education.Client.Features.History.Clients.User.Model;
+using Education.Client.Features.History.Clients.User.Request;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -35,18 +36,18 @@ public sealed partial class Page
             .Map(bonus => _result.Unwrap() with { DailyBonus = bonus });
 
     private async Task StartDailyQuestsAsync() =>
-        _result = (await UserClient.StartDailyAssignmentsAsync())
+        _result = (await UserClient.StartAssignmentsAsync(new StartAssignmentRequest(QuestType.Daily)))
             .Map(assignments => _result.Unwrap() with { DailyAssignments = assignments });
 
-    private async Task CollectDailyQuestsAsync() =>
-        _result = (await UserClient.CollectDailyAssignmentsAsync())
+    private async Task CollectDailyQuestsAsync(string id) =>
+        _result = (await UserClient.ClaimAssignmentsAsync(id, new ClaimAssignmentRequest(QuestType.Daily)))
             .Map(assignments => _result.Unwrap() with { DailyAssignments = assignments });
 
     private async Task StartWeeklyQuestsAsync() =>
-        _result = (await UserClient.StartWeeklyAssignmentsAsync())
+        _result = (await UserClient.StartAssignmentsAsync(new StartAssignmentRequest(QuestType.Weekly)))
             .Map(assignments => _result.Unwrap() with { WeeklyAssignments = assignments });
 
-    private async Task CollectWeeklyQuestsAsync() =>
-        _result = (await UserClient.CollectWeeklyAssignmentsAsync())
+    private async Task CollectWeeklyQuestsAsync(string id) =>
+        _result = (await UserClient.ClaimAssignmentsAsync(id, new ClaimAssignmentRequest(QuestType.Weekly)))
             .Map(assignments => _result.Unwrap() with { WeeklyAssignments = assignments });
 }

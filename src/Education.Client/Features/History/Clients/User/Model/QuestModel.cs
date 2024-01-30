@@ -1,11 +1,15 @@
-namespace Education.Client.Models.Quest;
+using Education.Client.Models;
+
+namespace Education.Client.Features.History.Clients.User.Model;
 
 public sealed record QuestModel(
+    string Id,
     string Title,
     string Description,
     string IconUrl,
     uint Score,
     uint Threshold,
-    bool IsCompleted,
+    QuestStatus Status,
+    DateTime ExpiresAt,
     InternalMoneyModel[] Rewards
 );

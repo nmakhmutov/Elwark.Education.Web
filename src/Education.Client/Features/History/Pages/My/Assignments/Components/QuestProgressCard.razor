@@ -1,35 +1,92 @@
-<section class="mud-paper pa-3 @Class">
-    <div class="d-flex justify-space-between align-end">
-        <MudText Typo="Typo.subtitle1">
-            @Quest.Title
-        </MudText>
-
-        <InfoTooltip Title="@Quest.Title" Description="@Quest.Description"/>
+@using Education.Client.Features.History.Clients.User.Model
+<section class="card mud-paper @Class">
+    <div class="image rounded">
+        <img src="@Quest.IconUrl" alt="@Quest.Title"/>
     </div>
 
-    <MudProgressLinear
-        Class="mb-1"
-        Max="@Quest.Threshold"
-        Value="@Quest.Score"
-        Color="@(Quest.IsCompleted ? Color.Success : Color.Primary)"/>
-
-    <div class="d-flex justify-space-between align-center">
-        <InternalMonies Monies="@Quest.Rewards" Horizontal/>
-
-        <div class="d-flex align-center">
-            <MetricNumber Value="@Quest.Score" Typo="Typo.body2"/>
-            <div>&nbsp;/&nbsp;</div>
-            <MetricNumber Value="@Quest.Threshold" Typo="Typo.body2"/>
+    <div class="d-flex flex-column justify-space-between gap-3">
+        <div class="d-flex justify-space-between align-center">
+            <MudText Typo="Typo.subtitle1">
+                @Quest.Title
+            </MudText>
+            <InfoTooltip Title="@Quest.Title" Description="@Quest.Description"/>
         </div>
+        <div>
+            <div class="d-flex align-center">
+                <MetricNumber Value="@Quest.Score" Typo="Typo.body1"/>
+                <div>&nbsp;/&nbsp;</div>
+                <MetricNumber Value="@Quest.Threshold" Typo="Typo.body1"/>
+            </div>
+            <MudProgressLinear
+                Max="@Quest.Threshold"
+                Value="@Quest.Score"
+                Color="@(Quest.Status == QuestStatus.Completed ? Color.Success : Color.Primary)"
+                Rounded/>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column justify-space-between gap-3 action">
+        <div class="d-flex gap-3">
+            <MudText Typo="Typo.body1">
+                @L["Rewards_Title"]
+            </MudText>
+            <InternalMonies Monies="@Quest.Rewards" Horizontal/>
+        </div>
+        @switch (Quest.Status)
+        {
+            case QuestStatus.InProgress:
+                <MudButton FullWidth Variant="Variant.Filled" Disabled>
+                    @L["Assignments_InProgress_Button"]
+                </MudButton>
+                break;
+
+            case QuestStatus.Achieved:
+                <LoadingButton
+                    Variant="Variant.Filled"
+                    IsLoading="@_isLoading"
+                    Color="Color.Primary"
+                    DisableRipple
+                    DisableElevation
+                    Text="@L["Assignments_Claim_Button"]"
+                    OnClick="@ClaimAsync"/>
+                break;
+
+            case QuestStatus.Completed:
+                <MudAlert Severity="Severity.Success" Dense>
+                    @L["Assignments_Completed_Button"]
+                </MudAlert>
+                break;
+        }
     </div>
 </section>
 
 @code {
+    private bool _isLoading;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required QuestModel Quest { get; set; }
 
+    [Parameter, EditorRequired]
+    public required EventCallback<string> OnCollect { get; set; }
+
     [Parameter]
     public string? Class { get; set; }
+
+    private async Task ClaimAsync()
+    {
+        _isLoading = true;
+
+        try
+        {
+            await OnCollect.InvokeAsync(Quest.Id);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
 
 }

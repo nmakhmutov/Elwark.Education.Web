@@ -10,7 +10,7 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="data">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <div class="grid">
             <div class="content">
@@ -20,28 +20,56 @@
                     </PrePanelContent>
 
                     <ChildContent>
-                        <MudTabPanel Text="Daily">
-                            <AssignmentsContainer
-                                Quests="@data.DailyAssignments.Assignments"
-                                Title="Daily assignments"
-                                Description="Dive into your daily pursuits with a renewed perspective. Each task you undertake is a key to unlocking valuable treasures, transforming routine into reward."
-                                Status="@data.DailyAssignments.Status"
-                                ExpiresAt="@data.DailyAssignments.ExpiresAt"
-                                OnStart="@StartDailyQuestsAsync"
-                                OnCollect="@CollectDailyQuestsAsync"
-                                OnExpired="@OnInitializedAsync"/>
+                        <MudTabPanel Text="@L["Assignments_Daily_Tab"]">
+                            @if (model.DailyAssignments.Length == 0)
+                            {
+                                <StartAssignment
+                                    Title="@L["Assignments_Daily_Title"]"
+                                    Description="@L["Assignments_Daily_Description"]"
+                                    Image="/images/history/assignments.svg"
+                                    OnStart="@StartDailyQuestsAsync"/>
+                            }
+                            else
+                            {
+                                <AssignmentHeader
+                                    Class="mb-3 mb-sm-6"
+                                    Title="@L["Assignments_Daily_Title"]"
+                                    ExpiresAt="@model.DailyAssignments.Max(x => x.ExpiresAt)"
+                                    OnExpired="@OnInitializedAsync"/>
+
+                                <article class="d-flex flex-column gap-3">
+                                    @foreach (var quest in model.DailyAssignments)
+                                    {
+                                        <QuestProgressCard Quest="@quest" OnCollect="@CollectDailyQuestsAsync"/>
+                                    }
+                                </article>
+                            }
                         </MudTabPanel>
 
-                        <MudTabPanel Text="Weekly">
-                            <AssignmentsContainer
-                                Quests="@data.WeeklyAssignments.Assignments"
-                                Title="Weekly assignments"
-                                Description="Embark on your weekly assignments with a fresh outlook. Each task you embrace serves as a gateway to unlocking valuable treasures, turning your routine into a week filled with rewards."
-                                Status="@data.WeeklyAssignments.Status"
-                                ExpiresAt="@data.WeeklyAssignments.ExpiresAt"
-                                OnStart="@StartWeeklyQuestsAsync"
-                                OnCollect="@CollectWeeklyQuestsAsync"
-                                OnExpired="@OnInitializedAsync"/>
+                        <MudTabPanel Text="@L["Assignments_Weekly_Tab"]">
+                            @if (model.WeeklyAssignments.Length == 0)
+                            {
+                                <StartAssignment
+                                    Title="@L["Assignments_Weekly_Title"]"
+                                    Description="@L["Assignments_Weekly_Description"]"
+                                    Image="/images/history/assignments.svg"
+                                    OnStart="@StartWeeklyQuestsAsync"/>
+                            }
+                            else
+                            {
+                                <AssignmentHeader
+                                    Class="mb-3 mb-sm-6"
+                                    Title="@L["Assignments_Weekly_Title"]"
+                                    ExpiresAt="@model.WeeklyAssignments.Max(x => x.ExpiresAt)"
+                                    OnExpired="@OnInitializedAsync"/>
+
+                                <article class="d-flex flex-column gap-3">
+                                    @foreach (var quest in model.WeeklyAssignments)
+                                    {
+                                        <QuestProgressCard Quest="@quest" OnCollect="@CollectWeeklyQuestsAsync"/>
+                                    }
+                                </article>
+                            }
                         </MudTabPanel>
                     </ChildContent>
                 </MudTabs>
@@ -49,7 +77,7 @@
 
             <div class="sidebar">
                 <DailyBonusCard
-                    Bonus="@data.DailyBonus"
+                    Bonus="@model.DailyBonus"
                     OnClaim="@ClaimDailyBonusAsync"
                     OnReject="@RejectDailyBonusAsync"
                     OnReached="@OnInitializedAsync"/>

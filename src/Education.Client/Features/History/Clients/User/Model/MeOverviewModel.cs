@@ -1,5 +1,4 @@
 using Education.Client.Models;
-using Education.Client.Models.Quest;
 
 namespace Education.Client.Features.History.Clients.User.Model;
 
@@ -23,5 +22,5 @@ public sealed record MeOverviewModel(
 
     public sealed record AssignmentModel(QuestModel Daily, QuestModel Weekly);
 
-    public sealed record QuestModel(QuestStatus Status, uint Completed, uint Total);
+    public sealed record QuestModel(uint Completed, uint Total);
 }

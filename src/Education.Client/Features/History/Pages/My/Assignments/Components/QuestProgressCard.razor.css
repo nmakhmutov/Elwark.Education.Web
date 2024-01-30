@@ -1,0 +1,44 @@
+.card {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 60px 1fr;
+    padding: 12px;
+}
+
+.image {
+    width: 60px;
+    height: 60px;
+    align-self: center;
+    display: inline-flex;
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+    border-radius: var(--mud-default-borderradius);
+}
+
+.image > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.action {
+    grid-column: span 2;
+}
+
+@media (min-width: 600px) {
+    .card {
+        gap: 24px;
+    }
+}
+
+@media (min-width: 960px) {
+    .card {
+        grid-template-columns: 60px 1fr 220px;
+    }
+
+    .action {
+        grid-column: unset;
+    }
+}
