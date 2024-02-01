@@ -31,7 +31,7 @@ else
                 <div class="image">
                     <MudAvatar Size="Size.Large" Image="@item.Course.ThumbnailUrl"/>
                 </div>
-                <div class="title">
+                <div class="title one-line-text">
                     <MudLink Href="@HistoryUrl.Content.Course(item.Course.Id)" Typo="Typo.h6">
                         @item.Course.Title
                     </MudLink>
@@ -96,19 +96,19 @@ else
         if (isRangeAvailable || request.Count == 0)
             return new ItemsProviderResult<UserCourseOverviewModel>(items, GetLength());
 
-        return (await LearnerClient.GetCourseBookmarksAsync(new BookmarksRequest(Sort, request.Count, _token)))
-            .Map(x =>
+        var result = await LearnerClient.GetCourseBookmarksAsync(new BookmarksRequest(Sort, request.Count, _token));
+        return result.Map(x =>
             {
                 _token = x.Next;
 
                 foreach (var item in x.Items)
                     _items.Add(item);
 
-                if (!_isEmpty && _items.Count == 0)
-                {
-                    _isEmpty = true;
-                    StateHasChanged();
-                }
+                if (_isEmpty || _items.Count > 0)
+                    return new ItemsProviderResult<UserCourseOverviewModel>(items, GetLength());
+
+                _isEmpty = true;
+                StateHasChanged();
 
                 return new ItemsProviderResult<UserCourseOverviewModel>(items, GetLength());
             })

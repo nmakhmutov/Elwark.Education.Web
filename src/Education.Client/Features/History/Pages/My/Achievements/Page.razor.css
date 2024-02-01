@@ -9,12 +9,22 @@
     top: calc(var(--mud-appbar-height) + 12px);
 }
 
+.content {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
 @media (min-width: 600px) {
     .grid {
         display: grid;
         column-gap: 24px;
         row-gap: 48px;
         grid-template-columns: 1fr 2fr;
+    }
+
+    .content {
+        gap: 24px;
     }
 }
 

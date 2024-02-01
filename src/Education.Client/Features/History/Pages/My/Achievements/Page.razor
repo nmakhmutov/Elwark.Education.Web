@@ -16,10 +16,9 @@
 </EduContainer>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="achievements">
-    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        <section class="grid">
-            @foreach (var category in achievements.Categories)
-            {
+    <EduContainer MaxWidth="EduWidth.W1920">
+        <Virtualize Items="achievements.Categories" Context="category">
+            <section class="grid pb-3 pb-sm-6">
                 <section class="sidebar">
                     <div class="sticky-info">
                         <div class="d-flex align-center justify-space-between gap-3 mb-3">
@@ -38,14 +37,12 @@
                 </section>
 
                 <section class="content">
-                    <EduFillGrid>
-                        @foreach (var achievement in category.Achievements)
-                        {
-                            <AchievementCard Achievement="@achievement" DateTimeFormatter="@Customer.Humanize" Paper/>
-                        }
-                    </EduFillGrid>
+                    @foreach (var achievement in category.Achievements)
+                    {
+                        <AchievementCard Achievement="@achievement" DateTimeFormatter="@Customer.Humanize" Paper/>
+                    }
                 </section>
-            }
-        </section>
+            </section>
+        </Virtualize>
     </EduContainer>
 </ApiViewer>

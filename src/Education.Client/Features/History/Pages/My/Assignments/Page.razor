@@ -34,7 +34,7 @@
                                 <AssignmentHeader
                                     Class="mb-3 mb-sm-6"
                                     Title="@L["Assignments_Daily_Title"]"
-                                    ExpiresAt="@model.DailyAssignments.Max(x => x.ExpiresAt)"
+                                    ExpiresAt="@model.DailyAssignments[0].ExpiresAt"
                                     OnExpired="@OnInitializedAsync"/>
 
                                 <article class="d-flex flex-column gap-3">
@@ -60,7 +60,7 @@
                                 <AssignmentHeader
                                     Class="mb-3 mb-sm-6"
                                     Title="@L["Assignments_Weekly_Title"]"
-                                    ExpiresAt="@model.WeeklyAssignments.Max(x => x.ExpiresAt)"
+                                    ExpiresAt="@model.WeeklyAssignments[0].ExpiresAt"
                                     OnExpired="@OnInitializedAsync"/>
 
                                 <article class="d-flex flex-column gap-3">
