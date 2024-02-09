@@ -86,8 +86,11 @@ internal sealed class NotificationService : INotificationService
         await NotifyChangeSubscribersAsync();
     }
 
-    public void Dispose() =>
+    public void Dispose()
+    {
         _subscription?.Dispose();
+        _subscriptions.Clear();
+    }
 
     private Task ReceivedMessage(NotificationMessage notification)
     {
@@ -126,7 +129,7 @@ internal sealed class NotificationService : INotificationService
         public void Dispose() =>
             _owner.Remove(this);
 
-        public Task NotifyAsync() =>
+        internal Task NotifyAsync() =>
             _callback.InvokeAsync();
     }
 }

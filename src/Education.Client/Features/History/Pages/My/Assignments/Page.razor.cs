@@ -11,12 +11,16 @@ namespace Education.Client.Features.History.Pages.My.Assignments;
 public sealed partial class Page
 {
     private ApiResult<UserAssignmentModel> _result = ApiResult<UserAssignmentModel>.Loading();
+    private MudTabs? _tabs;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
     private IHistoryUserClient UserClient { get; init; } = default!;
+
+    [Parameter, SupplyParameterFromQuery]
+    public string? Tab { get; set; }
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
@@ -26,6 +30,12 @@ public sealed partial class Page
 
     protected override async Task OnInitializedAsync() =>
         _result = await UserClient.GetAssignmentsAsync();
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (_tabs is not null && Tab is not null)
+            _tabs.ActivatePanel(Tab);
+    }
 
     private async Task ClaimDailyBonusAsync() =>
         _result = (await UserClient.ClaimDailyBonusAsync())

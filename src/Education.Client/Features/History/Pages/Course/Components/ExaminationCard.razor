@@ -1,18 +1,7 @@
 <section class="@Class">
-    <div class="mb-3">
-        @if (Activity.EasyExaminations + Activity.HardExaminations > 0)
-        {
-            <MudLink Typo="Typo.h5" Href="@HistoryUrl.User.MyCourse(CourseId)">
-                @L["User_MyProgress"]
-            </MudLink>
-        }
-        else
-        {
-            <MudText Typo="Typo.h5">
-                @L["User_MyProgress"]
-            </MudText>
-        }
-    </div>
+    <MudText Class="mb-3" Typo="Typo.h5">
+        @L["User_MyExaminations_Title"]
+    </MudText>
 
     @if (HasEasyExamination)
     {
@@ -41,8 +30,13 @@
     }
 
     <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
-        <MudText Typo="Typo.body1">@L["LearningStatus_Title"]</MudText>
-        <CourseCompletionChip Status="@Activity.Status" Size="Size.Small"/>
+        <MudText Typo="Typo.body1">
+            @L["LearningStatus_Title"]
+        </MudText>
+        <CourseCompletionChip
+            Status="@Activity.Status"
+            Href="@HistoryUrl.User.MyCourse(CourseId)"
+            Size="Size.Small"/>
     </div>
 
     <MudText Class="mb-3" Typo="Typo.body2">

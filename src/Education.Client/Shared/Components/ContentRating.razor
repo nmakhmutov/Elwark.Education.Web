@@ -17,31 +17,36 @@
 @* </div> *@
 
 <div class="@Class">
-    @if (ShowTooltip)
-    {
-        <MudTooltip RootClass="d-flex" Placement="@Placement">
-            <ChildContent>
-                <MudRating Class="rating" MaxValue="5" Size="Size.Small" SelectedValue="@Stars" ReadOnly/>
-            </ChildContent>
-
-            <TooltipContent>
-                <div class="d-flex align-center gap-3">
-                    <MudRating Class="rating" MaxValue="5" Size="Size.Small" SelectedValue="@Stars" ReadOnly/>
-
-                    <MudText Typo="Typo.body1">
-                        @L["ContentRating_OutOf", Rating.Stars, 5]
+    <MudTooltip RootClass="d-flex" Placement="@Placement">
+        <ChildContent>
+            @if (Compact)
+            {
+                <div class="d-flex align-center gap-1">
+                    <MudRating Class="rating" MaxValue="1" SelectedValue="1" Size="Size.Small" ReadOnly/>
+                    <MudText Class="compact-text" Typo="Typo.body1">
+                        @Rating.Stars
                     </MudText>
                 </div>
-                <MudText Typo="Typo.body2">
-                    @L["ContentRating_Voters", Rating.Votes.ToMetric()]
+            }
+            else
+            {
+                <MudRating Class="rating" MaxValue="5" SelectedValue="@Stars" Size="Size.Small" ReadOnly/>
+            }
+        </ChildContent>
+
+        <TooltipContent>
+            <div class="d-flex align-center gap-3">
+                <MudRating Class="rating" MaxValue="5" SelectedValue="@Stars" Size="Size.Small" ReadOnly/>
+
+                <MudText Typo="Typo.body1">
+                    @L["ContentRating_OutOf", Rating.Stars, 5]
                 </MudText>
-            </TooltipContent>
-        </MudTooltip>
-    }
-    else
-    {
-        <MudRating Class="rating" MaxValue="5" Size="Size.Small" SelectedValue="@Stars" ReadOnly/>
-    }
+            </div>
+            <MudText Typo="Typo.body2">
+                @L["ContentRating_Voters", Rating.Votes.ToMetric()]
+            </MudText>
+        </TooltipContent>
+    </MudTooltip>
 </div>
 
 @code {
@@ -56,7 +61,7 @@
     public required ContentRatingModel Rating { get; set; }
 
     [Parameter]
-    public bool ShowTooltip { get; set; }
+    public bool Compact { get; set; }
 
     [Parameter]
     public Placement Placement { get; set; } = Placement.Bottom;

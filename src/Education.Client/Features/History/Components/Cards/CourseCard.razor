@@ -1,30 +1,15 @@
 <article class="mud-paper card @(Horizontal ? "horizontal" : "vertical") @Class">
-    <div class="card-header">
+    <header class="card-header">
         <a href="@HistoryUrl.Content.Course(Course.Id)">
             <img src="@Course.ThumbnailUrl" alt="@Course.Title" loading="lazy"/>
         </a>
-    </div>
+    </header>
 
     <section class="content flex-grow-1 gap-3 pa-3">
-        <header>
-            <div class="@(OneLineTitle ? "one-line-text" : null)">
-                <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h6"
-                   href="@HistoryUrl.Content.Course(Course.Id)"
-                   alt="@Course.Title"
-                   title="@Course.Title">
-                    @Course.Title
-                </a>
-            </div>
-            <div class="d-flex align-center justify-space-between">
-                <ContentRating Rating="@Course.Rating" ShowTooltip/>
-
-                <MudTooltip Text="@L["Articles_Title"]">
-                    <div class="d-flex align-center">
-                        <MudText Class="mr-1" Typo="Typo.body1">@Course.ArticleCount</MudText>
-                        <MudIcon Icon="@EduIcons.Articles" Size="Size.Small"/>
-                    </div>
-                </MudTooltip>
-            </div>
+        <header class="@(OneLineTitle ? "one-line-text" : null)">
+            <MudLink Href="@HistoryUrl.Content.Course(Course.Id)" Typo="Typo.h6" Alt="@Course.Title" Title="@Course.Title">
+                @Course.Title
+            </MudLink>
         </header>
 
         <div class="flex-grow-1">
@@ -36,29 +21,35 @@
             }
         </div>
 
-        @if (!HideFooter)
-        {
-            <footer class="d-flex align-center gap-3">
-                @if (HasExamination)
-                {
-                    <CourseCompletion
-                        Class="w-100"
-                        Status="@(Activity?.Status ?? CourseLearningStatus.NotStarted)"
-                        Completeness="@(Activity?.Completeness ?? 0)"
-                        Typo="Typo.caption"
-                        Size="Size.Small"/>
-                }
+        <footer class="d-flex align-center gap-3">
+            <ContentRating Rating="@Course.Rating" Compact/>
 
-                <MudSpacer/>
+            <MudTooltip Text="@L["Articles_Title"]">
+                <div class="d-flex align-center mud-text-secondary">
+                    <MudIcon Class="mr-1" Icon="@EduIcons.Articles" Size="Size.Small"/>
+                    <MudText Typo="Typo.body1">@Course.ArticleCount</MudText>
+                </div>
+            </MudTooltip>
 
-                <AuthorizeView>
-                    <BookmarkButton
-                        Id="@Course.Id"
-                        IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                        OnBookmarkClick="@OnBookmarkClick"/>
-                </AuthorizeView>
-            </footer>
-        }
+            <MudSpacer/>
+
+            @if (HasExamination)
+            {
+                <CourseCompletion
+                    Class="w-100"
+                    Status="@(Activity?.Status ?? CourseLearningStatus.NotStarted)"
+                    Completeness="@(Activity?.Completeness ?? 0)"
+                    Typo="Typo.caption"
+                    Size="Size.Small"/>
+            }
+
+            <AuthorizeView>
+                <BookmarkButton
+                    Id="@Course.Id"
+                    IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            </AuthorizeView>
+        </footer>
     </section>
 </article>
 
@@ -87,9 +78,6 @@
 
     [Parameter]
     public bool HideOverview { get; set; }
-
-    [Parameter]
-    public bool HideFooter { get; set; }
 
     [Parameter]
     public bool ShortOverview { get; set; }

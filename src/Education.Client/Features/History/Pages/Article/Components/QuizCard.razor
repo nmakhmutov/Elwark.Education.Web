@@ -1,18 +1,7 @@
 <section class="mud-paper pa-3 pa-sm-6 @Class">
-    <div class="mb-3">
-        @if (Activity?.Status > LearningStatus.NotEngaged)
-        {
-            <MudLink Typo="Typo.subtitle2" Href="@HistoryUrl.User.MyArticle(ArticleId)">
-                @L["User_MyProgress"]
-            </MudLink>
-        }
-        else
-        {
-            <MudText Typo="Typo.subtitle2">
-                @L["User_MyProgress"]
-            </MudText>
-        }
-    </div>
+    <MudText Class="mb-3" Typo="Typo.subtitle2">
+        @L["User_MyQuizzes_Title"]
+    </MudText>
 
     @if (HasEasyQuiz)
     {

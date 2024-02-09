@@ -49,12 +49,8 @@ public abstract record NotificationBase
 
     private void DisassemblePayload()
     {
-        string? id = null;
-
         foreach (var (key, value) in _payload)
-            if (id is null && key.Equals("id", StringComparison.OrdinalIgnoreCase))
-                id = value;
-            else if (Enum.TryParse<InternalCurrency>(key, true, out var currency))
+            if (InternalCurrencyExtensions.ParseValueOrDefault(key) is { } currency)
                 _money.Add(new InternalMoneyModel(currency, uint.Parse(value)));
 
         Href = (Subject, Module) switch
@@ -63,13 +59,16 @@ public abstract record NotificationBase
                 HistoryUrl.User.MyBackpack,
 
             ("History", "Achievement") =>
-                $"{HistoryUrl.User.MyAchievements}#{id}",
+                HistoryUrl.User.MyAchievements,
 
             ("History", "Profile") =>
                 HistoryUrl.User.MyDashboard,
 
             ("History", "MonthlyLeaderboard") =>
                 HistoryUrl.Leaderboard.Monthly(DateOnly.ParseExact(_payload["month"], "O")),
+
+            ("History", "Assignment") =>
+                HistoryUrl.User.MyAssignments(_payload["type"]),
 
             _ => null
         };

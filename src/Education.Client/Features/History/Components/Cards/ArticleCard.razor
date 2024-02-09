@@ -1,32 +1,20 @@
 <article class="mud-paper card @(Horizontal ? "horizontal" : "vertical") @Class">
-    <div class="card-header">
+    <header class="card-header">
         <a href="@HistoryUrl.Content.Article(Article.Id)">
             <img src="@Article.ThumbnailUrl" alt="@Article.Title" loading="lazy"/>
         </a>
-    </div>
+    </header>
 
     <section class="content flex-grow-1 gap-3 pa-3">
         <header>
-            <div class="@(OneLineTitle ? "one-line-text" : null)">
-                <a class="mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-h6"
-                   href="@HistoryUrl.Content.Article(Article.Id)"
-                   alt="@Article.Title"
-                   title="@Article.Title">
+            <div class="mb-1 @(OneLineTitle ? "one-line-text" : null)">
+                <MudLink Href="@HistoryUrl.Content.Article(Article.Id)" Typo="Typo.h6" Alt="@Article.Title" Title="@Article.Title">
                     @Article.Title
-                </a>
+                </MudLink>
             </div>
-            <div class="d-flex align-center justify-space-between">
-                <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body1"
-                   href="@HistoryUrl.Content.Articles(Article.Epoch)">
-                    @L.GetEpochTitle(Article.Epoch)
-                </a>
-                <MudTooltip Text="@L["TimeToRead_Title"]">
-                    <div class="d-flex align-center">
-                        <MudText Class="mr-1" Typo="Typo.body2">@Article.TimeToRead.Humanize(L)</MudText>
-                        <MudIcon Icon="@EduIcons.TimeToRead" Size="Size.Small"/>
-                    </div>
-                </MudTooltip>
-            </div>
+            <MudChip Class="ma-0" Href="@HistoryUrl.Content.Articles(Article.Epoch)" Color="Color.Default" Size="Size.Small" Label>
+                @L.GetEpochTitle(Article.Epoch)
+            </MudChip>
         </header>
 
         <div class="flex-grow-1">
@@ -38,30 +26,33 @@
             }
         </div>
 
-        @if (!HideFooter)
-        {
-            <footer class="d-flex align-center gap-3">
-                <ContentRating Rating="@Article.Rating" ShowTooltip/>
+        <footer class="d-flex align-center gap-3">
+            <ContentRating Rating="@Article.Rating" Compact/>
+            <MudTooltip Text="@L["TimeToRead_Title"]">
+                <div class="d-flex align-center mud-text-secondary">
+                    <MudIcon Class="mr-1" Icon="@EduIcons.TimeToRead" Size="Size.Small"/>
+                    <MudText Typo="Typo.body1">@Article.TimeToRead.Humanize(L)</MudText>
+                </div>
+            </MudTooltip>
 
-                <MudSpacer/>
+            <MudSpacer/>
 
-                @if (HasQuiz)
-                {
-                    <ArticleCompletionChip
-                        Status="@(Activity?.Status ?? LearningStatus.NotEngaged)"
-                        Href="@HistoryUrl.User.MyArticle(Article.Id)"
-                        Size="Size.Small"
-                        ShowTooltip/>
-                }
+            @if (HasQuiz)
+            {
+                <ArticleCompletionChip
+                    Status="@(Activity?.Status ?? LearningStatus.NotEngaged)"
+                    Href="@HistoryUrl.User.MyArticle(Article.Id)"
+                    Size="Size.Small"
+                    ShowTooltip/>
+            }
 
-                <AuthorizeView>
-                    <BookmarkButton
-                        Id="@Article.Id"
-                        IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                        OnBookmarkClick="@OnBookmarkClick"/>
-                </AuthorizeView>
-            </footer>
-        }
+            <AuthorizeView>
+                <BookmarkButton
+                    Id="@Article.Id"
+                    IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            </AuthorizeView>
+        </footer>
     </section>
 </article>
 
@@ -90,9 +81,6 @@
 
     [Parameter]
     public bool HideOverview { get; set; }
-
-    [Parameter]
-    public bool HideFooter { get; set; }
 
     [Parameter]
     public bool ShortOverview { get; set; }

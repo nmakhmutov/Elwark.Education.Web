@@ -128,7 +128,9 @@ public static class HistoryUrl
         public const string MyDashboard = $"{My}/dashboard";
 
         public const string MyBackpack = $"{My}/backpack";
-        
+
+        public const string MyBookmarks = $"{My}/bookmarks";
+
         public const string MyFinance = $"{My}/finance";
 
         public const string MyQuizzes = $"{My}/quizzes";
@@ -153,9 +155,11 @@ public static class HistoryUrl
 
         public const string MyAchievements = $"{My}/achievements";
 
-        public const string MyAssignments = $"{My}/assignments";
+        public static string MyAssignments() =>
+            $"{My}/assignments";
 
-        public const string MyBookmarks = $"{My}/bookmarks";
+        public static string MyAssignments(string tab) =>
+            $"{My}/assignments?tab={tab}";
 
         public static string MyArticle(string articleId) =>
             $"{My}/article/{articleId}";

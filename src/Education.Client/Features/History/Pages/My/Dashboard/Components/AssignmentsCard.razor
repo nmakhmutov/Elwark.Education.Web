@@ -17,7 +17,7 @@
         <MudButton
             Class="text-transform-none"
             EndIcon="@Icons.Material.Outlined.ArrowForward"
-            Href="@HistoryUrl.User.MyAssignments">
+            Href="@HistoryUrl.User.MyAssignments()">
             @L["Assignments_SeeAll"]
         </MudButton>
     </footer>
@@ -30,7 +30,7 @@
             <MudText Typo="Typo.body1">
                 @title
             </MudText>
-            <MudText Typo="Typo.body2">
+            <MudText Typo="Typo.body1">
                 @(quest.Total > 0 ? $"{quest.Completed} / {quest.Total}" : L["Assignments_ReadyToStart_Title"])
             </MudText>
         </li>;
