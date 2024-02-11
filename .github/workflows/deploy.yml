@@ -20,6 +20,6 @@ jobs:
         uses: actions/checkout@master
 
       - name: Compose build ${{ env.SERVICE }}
-        run: sudo -E docker-compose build ${{ env.SERVICE }}
+        run: sudo -E docker compose build ${{ env.SERVICE }} --no-cache
         working-directory: ./src
         shell: bash

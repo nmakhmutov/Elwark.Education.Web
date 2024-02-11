@@ -2,19 +2,17 @@
 <article class="mud-paper pa-3">
     <img class="rounded object-cover object-center fluid w-100 mb-3" src="@Bundle.ImageUrl" alt="@Bundle.Title" loading="lazy"/>
 
-    <MudText Class="one-line-text" Typo="Typo.subtitle1">
-        @Bundle.Title
-    </MudText>
-
-    <MudText Class="one-line-text mud-text-secondary mb-3" Typo="Typo.subtitle2">
+    <MudText Class="one-line-text mud-text-secondary" Typo="Typo.caption" Title="@Subtitle">
         @Subtitle
     </MudText>
 
-    <footer class="d-flex justify-space-between align-center">
-        <MudBadge Class="w-100" Icon="@Icons.Material.Outlined.Lock" Color="@Color.Error" Visible="@ShowLockBadge" Bordered Overlap>
-            <PriceButton Price="@Bundle.Price" OnClick="@(() => OnPurchaseClick.InvokeAsync(Bundle))"/>
-        </MudBadge>
-    </footer>
+    <MudText Class="one-line-text" Typo="Typo.body1" Title="@Bundle.Title">
+        @Bundle.Title
+    </MudText>
+
+    <MudBadge Class="w-100 mt-3" Icon="@Icons.Material.Outlined.Lock" Color="@Color.Error" Visible="@ShowLockBadge" Bordered Overlap>
+        <PriceButton Price="@Bundle.Price" OnClick="@(() => OnPurchaseClick.InvokeAsync(Bundle))"/>
+    </MudBadge>
 </article>
 
 @code {

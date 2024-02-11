@@ -10,8 +10,10 @@
     }
 }
 
-::deep .header,
-::deep .sidebar {
+.header,
+.sidebar {
+    display: grid;
+    gap: 12px;
     align-items: start;
 }
 
@@ -22,7 +24,9 @@
         grid-template-rows: repeat(2, auto) 1fr;
     }
 
-    ::deep .header {
+    .header,
+    .sidebar {
+        gap: 24px;
         grid-column: span 3;
     }
 
@@ -31,7 +35,4 @@
         grid-row: 1/-1;
     }
 
-    ::deep .sidebar {
-        grid-column: span 3;
-    }
 }
