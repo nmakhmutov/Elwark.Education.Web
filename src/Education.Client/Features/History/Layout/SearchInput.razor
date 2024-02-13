@@ -14,22 +14,23 @@
     SearchFuncWithCancel="OnSearch"
     ValueChanged="OnSearchResult"
     TextChanged="OnTextChanged"
-    ResetValueOnEmptyText
+    ProgressIndicatorColor="Color.Primary"
     ShowProgressIndicator
+    ResetValueOnEmptyText
     Clearable
     Dense>
-    <ItemTemplate Context="result">
+    <ItemTemplate>
         <div class="d-flex align-center">
-            <MudAvatar Image="@result.ImageUrl" Size="Size.Large" Square Class="mr-3"/>
+            <MudAvatar Image="@context.ImageUrl" Size="Size.Large" Square Class="mr-3"/>
             <div class="one-line-text">
                 <MudText Class="mud-text-secondary" Typo="Typo.caption">
-                    @result.Category
+                    @context.Category
                 </MudText>
                 <MudText Typo="Typo.body1">
-                    @result.Title
+                    @context.Title
                 </MudText>
                 <MudText Typo="Typo.caption">
-                    @result.Overview
+                    @context.Overview
                 </MudText>
             </div>
         </div>

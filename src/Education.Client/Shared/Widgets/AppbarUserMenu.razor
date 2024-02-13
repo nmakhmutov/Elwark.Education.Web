@@ -7,6 +7,7 @@
             Color="Color.Primary"
             Size="Size.Small"
             OnClick="@OnLogin"
+            DisableRipple
             DisableElevation>
             @L["Account_SignIn"]
         </MudButton>
@@ -23,27 +24,29 @@
             </ActivatorContent>
 
             <ChildContent>
-                <section class="container d-flex flex-column align-center gap-3 pa-3 pa-sm-6">
+                <section class="container d-flex flex-column align-center gap-3 gap-sm-6 pa-3 pa-sm-6">
                     <img class="image rounded object-cover object-center" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
 
-                    <MudText Typo="Typo.h5" Align="@(Customer.Name.Length > 20 ? Align.Start : Align.Center)">
+                    <MudText Typo="Typo.h5" Align="Align.Center">
                         @L["HiUserName_Title", Customer.Name]
                     </MudText>
 
                     <MudFab
                         Class="text-transform-none pa-3 pa-sm-6"
-                        Color="Color.Default"
+                        Color="Color.Primary"
                         Href="@Configuration["Urls:Account"]"
                         Target="_blank"
                         Label="@L["ManageYourElwarkAccount_Title"]"
+                        EndIcon="@Icons.Material.Outlined.OpenInNew"
+                        IconSize="Size.Small"
                         DisableRipple
                         DisableElevation/>
 
-                    <MudButtonGroup Color="Color.Primary" Variant="Variant.Text" Size="Size.Large" DisableElevation>
-                        <MudButton StartIcon="@Icons.Material.Outlined.Person" Href="@CustomerUrl.Root" DisableRipple>
+                    <MudButtonGroup Class="w-100" Color="Color.Primary" Variant="Variant.Text" Size="Size.Large" DisableElevation>
+                        <MudButton StartIcon="@Icons.Material.Outlined.Person" Href="@CustomerUrl.Root" DisableRipple FullWidth>
                             @L["Account_Title"]
                         </MudButton>
-                        <MudButton StartIcon="@Icons.Material.Outlined.Login" OnClick="@OnLogout" DisableRipple>
+                        <MudButton StartIcon="@Icons.Material.Outlined.Login" OnClick="@OnLogout" DisableRipple FullWidth>
                             @L["Account_Logout"]
                         </MudButton>
                     </MudButtonGroup>
