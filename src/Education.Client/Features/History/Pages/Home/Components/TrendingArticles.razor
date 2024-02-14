@@ -1,0 +1,124 @@
+@using Education.Client.Features.History.Clients.Article
+@using Education.Client.Features.History.Clients.Article.Request
+@using Education.Client.Features.History.Clients.Learner
+@implements IAsyncDisposable;
+
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+    <Loading>
+        <section class="grid @Class">
+            @for (var i = 0; i < 6; i++)
+            {
+                <SkeletonCard/>
+            }
+        </section>
+    </Loading>
+
+    <ChildContent Context="models">
+        <section class="grid @Class">
+            @foreach (var model in models)
+            {
+                <article class="card">
+                    <span class="image-container">
+                        <span class="image-wrapper">
+                            <img alt="@model.Article.Title" src="@model.Article.ThumbnailUrl"/>
+                        </span>
+                    </span>
+                    <div class="content">
+                        <MudChip Class="ma-0" Color="Color.Secondary" Href="@HistoryUrl.Content.Articles(model.Article.Epoch)" Size="Size.Small" Label>
+                            @L.GetEpochTitle(model.Article.Epoch)
+                        </MudChip>
+                        <MudLink Color="Color.Inherit" Typo="Typo.h6" Href="@HistoryUrl.Content.Article(model.Article.Id)">
+                            <b>@model.Article.Title</b>
+                        </MudLink>
+                        <p class="white-text">
+                            @model.Article.Overview
+                        </p>
+
+                        <footer class="d-flex align-center gap-3 w-100">
+                            <ContentRating Rating="@model.Article.Rating" Compact/>
+                            <MudTooltip Text="@L["TimeToRead_Title"]">
+                                <div class="d-flex align-center white-text">
+                                    <MudIcon Class="mr-1" Icon="@EduIcons.TimeToRead" Size="Size.Small" Color="Color.Inherit"/>
+                                    <MudText Typo="Typo.body1" Color="Color.Inherit">
+                                        @model.Article.TimeToRead.Humanize(L)
+                                    </MudText>
+                                </div>
+                            </MudTooltip>
+
+                            <AuthorizeView>
+                                <MudSpacer/>
+
+                                @if (model.HasQuiz)
+                                {
+                                    <ArticleCompletionChip
+                                        Status="@(model.Activity?.Status ?? LearningStatus.NotEngaged)"
+                                        Href="@HistoryUrl.User.MyArticle(model.Article.Id)"
+                                        Size="Size.Small"
+                                        ShowTooltip/>
+                                }
+
+                                <BookmarkButton
+                                    Color="Color.Inherit"
+                                    Id="@model.Article.Id"
+                                    IsBookmarked="@(model.Activity?.IsBookmarked ?? false)"
+                                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+                            </AuthorizeView>
+                        </footer>
+                    </div>
+                </article>
+            }
+        </section>
+    </ChildContent>
+</ApiViewer>
+
+@code {
+    private Guid _subscriptionId;
+    private Breakpoint _breakpoint;
+
+    private ApiResult<UserArticleOverviewModel[]> _result = ApiResult<UserArticleOverviewModel[]>.Loading();
+
+    [Inject]
+    private IBrowserViewportService ViewportService { get; init; } = default!;
+
+    [Inject]
+    private IHistoryArticleClient ArticleClient { get; init; } = default!;
+
+    [Inject]
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _result = (await ArticleClient.GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 0, 5)))
+            .Map(x => x.Items);
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return Task.CompletedTask;
+
+        _subscriptionId = Guid.NewGuid();
+        var options = new ResizeOptions { NotifyOnBreakpointOnly = true };
+        return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
+    }
+
+    private void OnBreakpointChanged(Breakpoint breakpoint)
+    {
+        _breakpoint = breakpoint;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private bool IsHorizontal(int i) =>
+        _breakpoint >= Breakpoint.Lg && i > 0;
+
+    private bool IsHiddenOverview(int i) =>
+        _breakpoint >= Breakpoint.Lg && i > 2;
+
+    public async ValueTask DisposeAsync() =>
+        await ViewportService.UnsubscribeAsync(_subscriptionId);
+
+}

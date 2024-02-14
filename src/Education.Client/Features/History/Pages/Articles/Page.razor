@@ -6,55 +6,65 @@
     @L["Articles_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="@EduWidth.W1600">
-    <UnderlinedTitle
-        Class="mb-6"
-        Title="@L["Articles_Trending_Title"]"
-        Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Trending)"
-        HrefTitle="@L["Button_ViewAll"]"/>
+<EduContainer Class="py-3 py-sm-6">
+    <section class="header">
+        <PageBreadcrumbsHeader Class="title" Items="@Breadcrumbs"/>
 
-    <TrendingArticles/>
-</EduContainer>
+        <MudSelect T="EpochType"
+                   Value="@_epoch"
+                   ValueChanged="@OnEpochChange"
+                   Label="@L["History_Epoch_Title"]"
+                   Margin="Margin.Dense"
+                   Variant="Variant.Text">
+            <MudSelectItem Value="@EpochType.None">
+                @L["History_Epoch_Any"]
+            </MudSelectItem>
+            @foreach (var epoch in EpochTypeExtensions.List[1..])
+            {
+                <MudSelectItem Value="@epoch">
+                    @L.GetEpochTitle(epoch)
+                </MudSelectItem>
+            }
+        </MudSelect>
 
-<EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-    <UnderlinedTitle Class="mb-3 mb-sm-6" Title="@L["History_Epochs_Title"]"/>
-
-    <EpochSlider/>
-</EduContainer>
-
-<EduContainer Class="mb-3 mb-sm-6 grey darken-4" MaxWidth="@EduWidth.W1600">
-    <DailyArticle Class="my-6 my-sm-12"/>
-</EduContainer>
-
-<EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-    <section class="wrapper mb-3 mb-sm-6">
-        <div class="grid">
-            <UnderlinedTitle
-                Class="mb-3"
-                Title="@L["Articles_Resent_Title"]"
-                Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Newest)"
-                HrefTitle="@L["Button_ViewAll"]"/>
-
-            <RecentArticles/>
-        </div>
-
-        <aside class="sidebar">
-            <div>
-                <UnderlinedTitle
-                    Class="mb-3"
-                    Title="@L["Articles_TopRated_Title"]"
-                    Href="@HistoryUrl.Content.Articles(GetArticlesRequest.SortType.Popularity)"
-                    HrefTitle="@L["Button_ViewAll"]"/>
-
-                <PopularArticles/>
-            </div>
-        </aside>
+        <MudSelect T="GetArticlesRequest.SortType"
+                   Value="@_sort"
+                   ValueChanged="@OnSortChange"
+                   Label="@L["SortBy_Title"]"
+                   Margin="Margin.Dense"
+                   Variant="Variant.Text">
+            <MudSelectItem Value="@GetArticlesRequest.SortType.Newest">
+                @L["ContentSort_Resent_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetArticlesRequest.SortType.Trending">
+                @L["ContentSort_Trending_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetArticlesRequest.SortType.Popularity">
+                @L["ContentSort_TopRated_Title"]
+            </MudSelectItem>
+        </MudSelect>
     </section>
 </EduContainer>
 
-@code {
+<ApiViewer Result="_result" OnReloadClick="@OnInitializedAsync" Context="result">
+    <EduContainer>
+        <EduFillGrid Class="mb-6 mb-sm-12">
+            @foreach (var (article, activity, hasQuiz) in result.Items)
+            {
+                <ArticleCard
+                    Article="@article"
+                    HasQuiz="@hasQuiz"
+                    Activity="@activity"
+                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+            }
+        </EduFillGrid>
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-}
+        <MudPagination
+            Class="d-flex justify-center py-3 py-sm-6"
+            Selected="@CurrentPage"
+            SelectedChanged="@OnPagination"
+            Count="@TotalPages"
+            DisableElevation
+            Rectangular/>
+    </EduContainer>
+</ApiViewer>

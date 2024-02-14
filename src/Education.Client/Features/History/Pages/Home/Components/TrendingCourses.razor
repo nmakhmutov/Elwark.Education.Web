@@ -1,0 +1,121 @@
+@using Education.Client.Features.History.Clients.Course
+@using Education.Client.Features.History.Clients.Course.Request
+@using Education.Client.Features.History.Clients.Learner
+@implements IAsyncDisposable;
+
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+    <Loading>
+        <section class="grid @Class">
+            @for (var i = 0; i < 6; i++)
+            {
+                <SkeletonCard Horizontal="@IsHorizontal(i)" HideFooter="IsHiddenOverview(i)"/>
+            }
+        </section>
+    </Loading>
+    <ChildContent Context="models">
+        <section class="grid @Class">
+            @foreach (var model in models)
+            {
+                <article class="card">
+                    <span class="image-container">
+                        <span class="image-wrapper">
+                            <img alt="@model.Course.Title" src="@model.Course.ThumbnailUrl"/>
+                        </span>
+                    </span>
+                    <div class="content">
+                        <MudLink Color="Color.Inherit" Typo="Typo.h6" Href="@HistoryUrl.Content.Course(model.Course.Id)">
+                            <b>@model.Course.Title</b>
+                        </MudLink>
+                        <p class="white-text">
+                            @model.Course.Overview
+                        </p>
+
+                        <footer class="d-flex align-center gap-3 w-100">
+                            <ContentRating Rating="@model.Course.Rating" Compact/>
+
+                            <MudTooltip Text="@L["Articles_Title"]">
+                                <div class="d-flex align-center mud-text-secondary">
+                                    <MudIcon Class="mr-1" Icon="@EduIcons.Articles" Size="Size.Small"/>
+                                    <MudText Typo="Typo.body1">@model.Course.ArticleCount</MudText>
+                                </div>
+                            </MudTooltip>
+
+                            <AuthorizeView>
+                                <MudSpacer/>
+
+                                @if (model.HasExamination)
+                                {
+                                    <CourseCompletion
+                                        Class="w-100"
+                                        Status="@(model.Activity?.Status ?? CourseLearningStatus.NotStarted)"
+                                        Completeness="@(model.Activity?.Completeness ?? 0)"
+                                        Typo="Typo.caption"
+                                        Size="Size.Small"/>
+                                }
+
+
+                                <BookmarkButton
+                                    Color="Color.Inherit"
+                                    Id="@model.Course.Id"
+                                    IsBookmarked="@(model.Activity?.IsBookmarked ?? false)"
+                                    OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+                            </AuthorizeView>
+                        </footer>
+                    </div>
+                </article>
+            }
+        </section>
+    </ChildContent>
+</ApiViewer>
+
+@code {
+    private Guid _subscriptionId;
+    private Breakpoint _breakpoint;
+
+    private ApiResult<UserCourseOverviewModel[]> _result = ApiResult<UserCourseOverviewModel[]>.Loading();
+
+    [Inject]
+    private IBrowserViewportService ViewportService { get; init; } = default!;
+
+    [Inject]
+    private IHistoryCourseClient CourseClient { get; init; } = default!;
+
+    [Inject]
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        _result = (await CourseClient.GetAsync(new GetCourseRequest(GetCourseRequest.SortType.Trending, 0, 5)))
+            .Map(x => x.Items);
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return Task.CompletedTask;
+
+        _subscriptionId = Guid.NewGuid();
+        var options = new ResizeOptions { NotifyOnBreakpointOnly = true };
+        return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
+    }
+
+    private void OnBreakpointChanged(Breakpoint breakpoint)
+    {
+        _breakpoint = breakpoint;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private bool IsHorizontal(int i) =>
+        _breakpoint >= Breakpoint.Lg && i > 0;
+
+    private bool IsHiddenOverview(int i) =>
+        _breakpoint >= Breakpoint.Lg && i > 2;
+
+    public async ValueTask DisposeAsync() =>
+        await ViewportService.UnsubscribeAsync(_subscriptionId);
+
+}

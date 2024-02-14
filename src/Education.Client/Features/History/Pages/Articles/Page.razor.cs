@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 
-namespace Education.Client.Features.History.Pages.Articles.Category;
+namespace Education.Client.Features.History.Pages.Articles;
 
 public sealed partial class Page
 {
@@ -38,7 +38,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["Articles_Title"], null, true)
     ];
 
-    [Parameter]
+    [SupplyParameterFromQuery(Name = "category")]
     public string? Category { get; set; }
 
     [SupplyParameterFromQuery(Name = "epoch")]
@@ -71,12 +71,8 @@ public sealed partial class Page
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page < 2 ? null : page));
     }
 
-    private void OnEpochChange(EpochType epoch)
-    {
-        var value = epoch == EpochType.None ? null : epoch.ToFastString().ToLowerInvariant();
-
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("epoch", value));
-    }
+    private void OnEpochChange(EpochType epoch) =>
+        Navigation.NavigateTo(HistoryUrl.Content.Articles(_sort, epoch));
 
     private void OnSortChange(GetArticlesRequest.SortType sort) =>
         Navigation.NavigateTo(HistoryUrl.Content.Articles(sort, _epoch));

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 
-namespace Education.Client.Features.History.Pages.Courses.Category;
+namespace Education.Client.Features.History.Pages.Courses;
 
 public sealed partial class Page
 {
@@ -37,7 +37,7 @@ public sealed partial class Page
         new BreadcrumbItem(L["Courses_Title"], null, true)
     ];
 
-    [Parameter]
+    [SupplyParameterFromQuery(Name = "category")]
     public string? Category { get; set; }
 
     [SupplyParameterFromQuery(Name = "page")]

@@ -6,49 +6,48 @@
     @L["Courses_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="@EduWidth.W1600">
-    <UnderlinedTitle
-        Class="mb-6"
-        Title="@L["Courses_Trending_Title"]"
-        Href="@HistoryUrl.Content.Courses(GetCourseRequest.SortType.Trending)"
-        HrefTitle="@L["Button_ViewAll"]"/>
+<EduContainer Class="py-3 py-sm-6">
+    <section class="header">
+        <PageBreadcrumbsHeader Class="title" Items="@Breadcrumbs"/>
 
-    <TrendingCourses/>
-</EduContainer>
-
-<EduContainer Class="mb-3 mb-sm-6 grey darken-4" MaxWidth="@EduWidth.W1600">
-    <DailyCourse Class="my-6 my-sm-12"/>
-</EduContainer>
-
-<EduContainer Class="mb-3 mb-sm-6" MaxWidth="@EduWidth.W1600">
-    <section class="wrapper mb-3 mb-sm-6">
-        <div class="grid">
-            <UnderlinedTitle
-                Class="mb-3"
-                Title="@L["Courses_Resent_Title"]"
-                Href="@HistoryUrl.Content.Courses(GetCourseRequest.SortType.Newest)"
-                HrefTitle="@L["Button_ViewAll"]"/>
-
-            <RecentCourses/>
-        </div>
-
-        <aside class="sidebar">
-            <div>
-                <UnderlinedTitle
-                    Class="mb-3"
-                    Title="@L["Courses_TopRated_Title"]"
-                    Href="@HistoryUrl.Content.Courses(GetCourseRequest.SortType.Popularity)"
-                    HrefTitle="@L["Button_ViewAll"]"/>
-
-                <PopularCourses/>
-            </div>
-        </aside>
+        <MudSelect T="GetCourseRequest.SortType"
+                   Value="@_sort"
+                   ValueChanged="@OnSortChange"
+                   Label="@L["SortBy_Title"]"
+                   Margin="Margin.Dense"
+                   Variant="Variant.Text">
+            <MudSelectItem Value="@GetCourseRequest.SortType.Newest">
+                @L["ContentSort_Resent_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetCourseRequest.SortType.Trending">
+                @L["ContentSort_Trending_Title"]
+            </MudSelectItem>
+            <MudSelectItem Value="@GetCourseRequest.SortType.Popularity">
+                @L["ContentSort_TopRated_Title"]
+            </MudSelectItem>
+        </MudSelect>
     </section>
 </EduContainer>
 
-@code {
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="result">
+    <EduContainer>
+        <EduFillGrid Class="mb-6 mb-sm-12">
+            @foreach (var (course, activity, hasExamination) in result.Items)
+            {
+                <CourseCard
+                    Course="@course"
+                    Activity="@activity"
+                    HasExamination="@hasExamination"
+                    OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+            }
+        </EduFillGrid>
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-}
+        <MudPagination
+            Class="d-flex justify-center py-3 py-sm-6"
+            Rectangular
+            DisableElevation
+            Selected="@CurrentPage"
+            SelectedChanged="@OnPagination"
+            Count="@TotalPages"/>
+    </EduContainer>
+</ApiViewer>

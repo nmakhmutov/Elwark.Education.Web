@@ -1,4 +1,4 @@
-using System.Text;
+using Education.Client.Clients;
 using Education.Client.Features.History.Clients;
 using Education.Client.Features.History.Clients.Article.Request;
 using Education.Client.Features.History.Clients.Course.Request;
@@ -25,23 +25,21 @@ public static class HistoryUrl
             $"{Root}/articles";
 
         public static string Articles(EpochType epoch) =>
-            Articles(GetArticlesRequest.SortType.Newest, epoch);
+            Articles(GetArticlesRequest.SortType.Trending, epoch);
 
         public static string Articles(GetArticlesRequest.SortType sort, EpochType epoch = EpochType.None)
         {
-            var sb = new StringBuilder($"{Root}/articles/")
-                .Append(sort switch
-                {
-                    GetArticlesRequest.SortType.Newest => "newest",
-                    GetArticlesRequest.SortType.Popularity => "popularity",
-                    GetArticlesRequest.SortType.Trending => "trending",
-                    _ => "newest"
-                });
+            var dictionary = new Dictionary<string, string?>(2)
+            {
+                ["category"] = sort.ToString()
+            };
 
-            if (epoch != EpochType.None)
-                sb.Append($"?epoch={epoch.ToFastString().ToLowerInvariant()}");
+            if (epoch > EpochType.None)
+                dictionary.Add("epoch", epoch.ToFastString());
 
-            return sb.ToString();
+            var query = QueryString.Create(dictionary).ToString();
+
+            return $"{Root}/articles{query}";
         }
 
         public static string Article(string articleId) =>
@@ -54,7 +52,7 @@ public static class HistoryUrl
             $"{Root}/courses";
 
         public static string Courses(GetCourseRequest.SortType sort) =>
-            $"{Root}/courses/{sort.ToString().ToLowerInvariant()}";
+            $"{Root}/courses?category={sort.ToString().ToLowerInvariant()}";
 
         public static string Course(string courseId) =>
             $"{Root}/course/{courseId}";
