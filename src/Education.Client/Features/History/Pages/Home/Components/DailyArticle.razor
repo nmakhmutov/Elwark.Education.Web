@@ -1,5 +1,6 @@
 @using Education.Client.Features.History.Clients.Article
 @using Education.Client.Features.History.Clients.Article.Request
+@using Education.Client.Features.History.Clients.Learner
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <Loading>
         <div class="grid @Class">
@@ -15,10 +16,10 @@
             </article>
         </div>
     </Loading>
-    <ChildContent Context="item">
+    <ChildContent Context="model">
         <div class="grid @Class">
             <div class="image">
-                <img src="@item.Article.ThumbnailUrl" alt="@item.Article.Title" loading="lazy"/>
+                <img src="@model.Article.ThumbnailUrl" alt="@model.Article.Title" loading="lazy"/>
             </div>
             <article class="text">
                 <MudText Class="mb-12" Typo="Typo.subtitle1" Color="Color.Default">
@@ -27,23 +28,36 @@
                     </em>
                 </MudText>
 
-                <ContentRating Class="d-flex align-center my-3" Rating="@item.Article.Rating" />
-
-                <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)" Typo="Typo.h4" Color="Color.Inherit">
-                    @item.Article.Title
+                <MudLink Href="@HistoryUrl.Content.Article(model.Article.Id)" Typo="Typo.h4" Color="Color.Inherit">
+                    @model.Article.Title
                 </MudLink>
 
                 <MudText Class="my-6" Typo="Typo.subtitle1">
-                    @item.Article.Overview
+                    @model.Article.Overview
                 </MudText>
 
-                <MudButton
-                    Link="@HistoryUrl.Content.Article(item.Article.Id)"
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    DisableElevation>
-                    @L["Button_Details"]
-                </MudButton>
+                <div class="d-flex align-center justify-space-between justify-sm-start gap-3 gap-sm-6">
+                    <ContentRating Rating="@model.Article.Rating" Placement="Placement.Right" Compact/>
+
+                    <TimeToRead Time="@model.Article.TimeToRead"/>
+
+                    <AuthorizeView>
+                        @if (model.HasQuiz)
+                        {
+                            <ArticleCompletionChip
+                                Status="@(model.Activity?.Status ?? LearningStatus.NotEngaged)"
+                                Href="@HistoryUrl.User.MyArticle(model.Article.Id)"
+                                Size="Size.Small"
+                                ShowTooltip/>
+                        }
+
+                        <BookmarkButton
+                            Color="Color.Inherit"
+                            Id="@model.Article.Id"
+                            IsBookmarked="@(model.Activity?.IsBookmarked ?? false)"
+                            OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+                    </AuthorizeView>
+                </div>
             </article>
         </div>
     </ChildContent>
@@ -58,6 +72,9 @@
 
     [Inject]
     private IHistoryArticleClient ArticleClient { get; init; } = default!;
+
+    [Inject]
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     [Parameter]
     public string? Class { get; set; }

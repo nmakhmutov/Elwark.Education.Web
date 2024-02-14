@@ -28,25 +28,23 @@
 
         <footer class="d-flex align-center gap-3">
             <ContentRating Rating="@Article.Rating" Compact/>
-            <MudTooltip Text="@L["TimeToRead_Title"]">
-                <div class="d-flex align-center mud-text-secondary">
-                    <MudIcon Class="mr-1" Icon="@EduIcons.TimeToRead" Size="Size.Small"/>
-                    <MudText Typo="Typo.body1">@Article.TimeToRead.Humanize(L)</MudText>
-                </div>
-            </MudTooltip>
 
-            <MudSpacer/>
-
-            @if (HasQuiz)
-            {
-                <ArticleCompletionChip
-                    Status="@(Activity?.Status ?? LearningStatus.NotEngaged)"
-                    Href="@HistoryUrl.User.MyArticle(Article.Id)"
-                    Size="Size.Small"
-                    ShowTooltip/>
-            }
+            <TimeToRead Time="@Article.TimeToRead"/>
 
             <AuthorizeView>
+
+                <MudSpacer/>
+
+                @if (HasQuiz)
+                {
+                    <ArticleCompletionChip
+                        Status="@(Activity?.Status ?? LearningStatus.NotEngaged)"
+                        Href="@HistoryUrl.User.MyArticle(Article.Id)"
+                        Size="Size.Small"
+                        ShowTooltip/>
+                }
+
+
                 <BookmarkButton
                     Id="@Article.Id"
                     IsBookmarked="@(Activity?.IsBookmarked ?? false)"

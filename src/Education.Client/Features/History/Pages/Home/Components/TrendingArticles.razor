@@ -36,14 +36,8 @@
 
                         <footer class="d-flex align-center gap-3 w-100">
                             <ContentRating Rating="@model.Article.Rating" Compact/>
-                            <MudTooltip Text="@L["TimeToRead_Title"]">
-                                <div class="d-flex align-center white-text">
-                                    <MudIcon Class="mr-1" Icon="@EduIcons.TimeToRead" Size="Size.Small" Color="Color.Inherit"/>
-                                    <MudText Typo="Typo.body1" Color="Color.Inherit">
-                                        @model.Article.TimeToRead.Humanize(L)
-                                    </MudText>
-                                </div>
-                            </MudTooltip>
+
+                            <TimeToRead Time="@model.Article.TimeToRead"/>
 
                             <AuthorizeView>
                                 <MudSpacer/>

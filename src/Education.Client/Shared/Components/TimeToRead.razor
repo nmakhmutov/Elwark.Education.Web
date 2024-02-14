@@ -1,0 +1,18 @@
+<MudTooltip Text="@L["TimeToRead_Title"]">
+    <div class="d-flex align-center">
+        <MudIcon Class="mr-1" Icon="@EduIcons.TimeToRead" Size="Size.Small" Color="Color.Inherit"/>
+        <MudText Typo="Typo.body1" Color="Color.Inherit">
+            @Time.Humanize(L)
+        </MudText>
+    </div>
+</MudTooltip>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+    
+    [Parameter, EditorRequired]
+    public required TimeSpan Time { get; set; }
+
+}
