@@ -5,27 +5,29 @@
     @L["History_Title"]: @Query
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6 mb-6">
-    <section class="background rounded">
-        <MudText Class="white-text pa-3 pa-sm-6" Typo="Typo.h3">
-            @_result.Map(x => L["Search_CountOfFountResults", x.Count])
-        </MudText>
-
-        <EditForm Model="@(this)" OnValidSubmit="OnSearchSubmit" AdditionalAttributes="@(new Dictionary<string, object> { ["class"] = "w-100" })">
-            <section class="d-flex flex-column flex-sm-row align-sm-end justify-center gap-3 gap-sm-6 pa-3 pa-sm-6 mb-sm-n16 mud-paper">
+<section class="search-header">
+    <div class="background-bar"></div>
+    <div class="search-results-details">
+        <div class="search-input-container">
+            <EditForm Class="d-flex flex-column flex-sm-row align-sm-end justify-center gap-3 gap-sm-6 pa-3 mud-paper" Model="@this" OnValidSubmit="OnSearchSubmit">
                 <MudTextField
-                    Class="flex-grow-1"
+                    Class="flex-grow-1 mb-0"
                     @bind-Value="@Query"
-                    Label="@L["Search_Title"]"
+                    Placeholder="@L["Search_Title"]"
+                    AdornmentIcon="@Icons.Material.Outlined.Search"
                     InputType="InputType.Search"
+                    Margin="Margin.Dense"
                     Variant="Variant.Text"/>
 
-                <div class="w-max-300">
+                <MudDivider Class="d-none d-sm-block" Vertical FlexItem/>
+
+                <div class="w-max-180">
                     <MudSelect
                         Class="mb-0"
                         @bind-Value="@Category"
                         Label="@L["Search_Content_Title"]"
                         Margin="Margin.Dense"
+                        Variant="Variant.Text"
                         Disabled="@(_categories.Count == 0)"
                         Clearable
                         Dense>
@@ -45,10 +47,10 @@
                     DisableElevation>
                     @L["Search_Title"]
                 </MudButton>
-            </section>
-        </EditForm>
-    </section>
-</EduContainer>
+            </EditForm>
+        </div>
+    </div>
+</section>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="result">
     <EduContainer Class="py-3 py-sm-6">

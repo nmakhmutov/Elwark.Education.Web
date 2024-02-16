@@ -62,8 +62,8 @@ public sealed partial class Page
     {
         var options = new DialogOptions
         {
-            FullWidth = true,
             MaxWidth = MaxWidth.Small,
+            FullWidth = true,
             CloseButton = false,
             NoHeader = true
         };
