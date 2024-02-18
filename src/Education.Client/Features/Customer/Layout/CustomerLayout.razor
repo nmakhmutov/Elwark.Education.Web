@@ -2,10 +2,20 @@
 
 <CascadingTheme>
     <MudLayout Class="d-flex flex-column min-vh-100">
-        <CustomerHeader/>
+        <MainAppBar/>
 
-        <main class="d-flex flex-column flex-grow-1">
-            @Body
+        <main class="flex-grow-1 mud-main-content">
+            <section class="container">
+                <MudText Class="title" Typo="Typo.h4">
+                    @L["Account_Title"]
+                </MudText>
+
+                <CustomerMenu/>
+
+                <div class="content">
+                    @Body
+                </div>
+            </section>
         </main>
 
         <MainFooter/>
@@ -15,3 +25,10 @@
         </MudScrollToTop>
     </MudLayout>
 </CascadingTheme>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+}

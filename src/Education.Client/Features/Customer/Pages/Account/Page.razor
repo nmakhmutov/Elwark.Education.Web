@@ -6,32 +6,93 @@
     @L["Account_Title"]
 </PageTitle>
 
+<MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
+    @L["PersonalInfo_Title"]
+</MudText>
+
+<section class="mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
+    <EduFillGrid Class="mb-3">
+        <MudTextField
+            Label="@L["Account_Name"]"
+            Value="@Customer.Name"
+            Variant="Variant.Outlined"
+            ReadOnly/>
+
+        <MudTextField
+            Label="@L["Account_Language"]"
+            Value="@L[$"Language_{Customer.Language}"]"
+            Variant="Variant.Outlined"
+            ReadOnly/>
+
+        <MudTextField
+            Label="@L["Account_TimeZone"]"
+            Value="@Customer.TimeZone.Id"
+            Variant="Variant.Outlined"
+            ReadOnly/>
+
+        <MudTextField
+            Label="@L["Account_StartOfWeek"]"
+            Value="@Customer.StartOfWeek"
+            Variant="Variant.Outlined"
+            ReadOnly/>
+
+        <MudTextField
+            Label="@L["Account_DateFormat"]"
+            Value="@Customer.DateFormat"
+            Variant="Variant.Outlined"
+            ReadOnly/>
+
+        <MudTextField
+            Label="@L["Account_TimeFormat"]"
+            Value="@Customer.TimeFormat"
+            Variant="Variant.Outlined"
+            ReadOnly/>
+
+        <div>
+            <MudButton
+                Class="text-transform-none"
+                Color="Color.Primary"
+                Variant="Variant.Filled"
+                EndIcon="@Icons.Material.Outlined.OpenInNew"
+                IconSize="Size.Small"
+                Size="Size.Large"
+                Href="@Configuration["Urls:Account"]"
+                Target="_blank"
+                DisableRipple
+                DisableElevation>
+                @L["ManageYourElwarkAccount_Title"]
+            </MudButton>
+        </div>
+    </EduFillGrid>
+</section>
+
+<MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
+    @L["Subjects_Title"]
+</MudText>
 <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
-    <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
-        <Virtualize Items="@_subjects" Context="subject">
-            <section class="d-flex align-center mud-paper gap-3 gap-sm-6 pa-3 pa-sm-6 mb-3 mb-sm-6">
-                <SubjectIcon Icon="@subject.Icon" Background="@subject.Gradient"/>
+    <Virtualize Items="@_subjects" Context="subject">
+        <section class="d-flex align-center mud-paper gap-3 gap-sm-6 pa-3 pa-sm-6 mb-3 mb-sm-6">
+            <SubjectIcon Icon="@subject.Icon" Background="@subject.Gradient"/>
 
-                <MudLink Href="@subject.SubjectHref" Typo="Typo.h5">@subject.Title</MudLink>
+            <MudLink Href="@subject.SubjectHref" Typo="Typo.h5">@subject.Title</MudLink>
 
-                <MudSpacer/>
+            <MudSpacer/>
 
-                <UserLevelProgress
-                    Class="d-none d-sm-block"
-                    Level="@subject.Level"
-                    Experience="@subject.Experience"
-                    Threshold="@subject.Threshold"
-                    ShowLevel/>
+            <UserLevelProgress
+                Class="d-none d-sm-block"
+                Level="@subject.Level"
+                Experience="@subject.Experience"
+                Threshold="@subject.Threshold"
+                ShowLevel/>
 
-                <MudButton
-                    Class="text-transform-none"
-                    EndIcon="@Icons.Material.Outlined.ArrowForward"
-                    Href="@subject.ProfileHref"
-                    DisableRipple
-                    DisableElevation>
-                    @L["User_Dashboard_Title"]
-                </MudButton>
-            </section>
-        </Virtualize>
-    </EduContainer>
+            <MudButton
+                Class="text-transform-none"
+                EndIcon="@Icons.Material.Outlined.ArrowForward"
+                Href="@subject.ProfileHref"
+                DisableRipple
+                DisableElevation>
+                @L["User_Dashboard_Title"]
+            </MudButton>
+        </section>
+    </Virtualize>
 </ApiViewer>

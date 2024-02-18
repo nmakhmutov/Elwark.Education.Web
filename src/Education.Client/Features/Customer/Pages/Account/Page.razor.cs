@@ -2,6 +2,7 @@ using Education.Client.Clients;
 using Education.Client.Features.Customer.Services.Account;
 using Education.Client.Features.Customer.Services.Account.Model;
 using Education.Client.Features.History;
+using Education.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -17,6 +18,12 @@ public partial class Page
 
     [Inject]
     private IAccountClient AccountClient { get; init; } = default!;
+    
+    [Inject]
+    private IConfiguration Configuration { get; init; } = default!;
+    
+    [CascadingParameter]
+    private CustomerState Customer { get; init; } = default!;
 
     protected override async Task OnInitializedAsync()
     {

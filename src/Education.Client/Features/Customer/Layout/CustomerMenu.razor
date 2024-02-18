@@ -1,0 +1,37 @@
+<section class="mud-paper @Class">
+    <div class="header">
+        <MudAvatar Class="mb-3" Size="Size.Large">
+            <MudImage Src="@Customer.Image"/>
+        </MudAvatar>
+
+        <MudText Class="mb-3" Typo="Typo.body2">
+            <b>@Customer.Name</b>
+        </MudText>
+    </div>
+
+    <MudDivider/>
+
+    <div class="menu">
+        <MudNavMenu Color="Color.Primary" Margin="Margin.Dense">
+            <MudNavLink Match="NavLinkMatch.All" Href="@CustomerUrl.Root" Icon="@Icons.Material.Outlined.Person">
+                @L["PersonalInfo_Title"]
+            </MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="@CustomerUrl.Notifications" Icon="@Icons.Material.Outlined.Notifications">
+                @L["Notifications_Title"]
+            </MudNavLink>
+        </MudNavMenu>
+    </div>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; init; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}
