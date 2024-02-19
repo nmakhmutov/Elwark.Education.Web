@@ -7,11 +7,51 @@
 </PageTitle>
 
 <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
+    @L["Subjects_Title"]
+</MudText>
+<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+    <Loading>
+        <section class="d-flex align-center mud-paper gap-3 gap-sm-6 pa-3 pa-sm-6 mb-3 mb-sm-6">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px"/>
+            <MudSkeleton SkeletonType="SkeletonType.Text" Width="80px"/>
+            <MudSpacer/>
+            <MudSkeleton SkeletonType="SkeletonType.Text" Width="100px"/>
+        </section>
+    </Loading>
+    <ChildContent>
+        <Virtualize Items="@_subjects" Context="subject">
+            <section class="d-flex align-center mud-paper gap-3 gap-sm-6 pa-3 pa-sm-6 mb-3 mb-sm-6">
+                <SubjectIcon Icon="@subject.Icon" Background="@subject.Gradient"/>
+
+                <MudLink Href="@subject.SubjectHref" Typo="Typo.h5">@subject.Title</MudLink>
+
+                <MudSpacer/>
+
+                <UserLevelProgress
+                    Class="d-none d-sm-block"
+                    Level="@subject.Level"
+                    Experience="@subject.Experience"
+                    Threshold="@subject.Threshold"
+                    ShowLevel/>
+
+                <MudButton
+                    Class="text-transform-none"
+                    EndIcon="@Icons.Material.Outlined.ArrowForward"
+                    Href="@subject.ProfileHref"
+                    DisableRipple
+                    DisableElevation>
+                    @L["User_Dashboard_Title"]
+                </MudButton>
+            </section>
+        </Virtualize>
+    </ChildContent>
+</ApiViewer>
+
+<MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
     @L["PersonalInfo_Title"]
 </MudText>
-
 <section class="mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
-    <EduFillGrid Class="mb-3">
+    <EduFillGrid>
         <MudTextField
             Label="@L["Account_Name"]"
             Value="@Customer.Name"
@@ -55,7 +95,6 @@
                 Variant="Variant.Filled"
                 EndIcon="@Icons.Material.Outlined.OpenInNew"
                 IconSize="Size.Small"
-                Size="Size.Large"
                 Href="@Configuration["Urls:Account"]"
                 Target="_blank"
                 DisableRipple
@@ -65,34 +104,3 @@
         </div>
     </EduFillGrid>
 </section>
-
-<MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
-    @L["Subjects_Title"]
-</MudText>
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
-    <Virtualize Items="@_subjects" Context="subject">
-        <section class="d-flex align-center mud-paper gap-3 gap-sm-6 pa-3 pa-sm-6 mb-3 mb-sm-6">
-            <SubjectIcon Icon="@subject.Icon" Background="@subject.Gradient"/>
-
-            <MudLink Href="@subject.SubjectHref" Typo="Typo.h5">@subject.Title</MudLink>
-
-            <MudSpacer/>
-
-            <UserLevelProgress
-                Class="d-none d-sm-block"
-                Level="@subject.Level"
-                Experience="@subject.Experience"
-                Threshold="@subject.Threshold"
-                ShowLevel/>
-
-            <MudButton
-                Class="text-transform-none"
-                EndIcon="@Icons.Material.Outlined.ArrowForward"
-                Href="@subject.ProfileHref"
-                DisableRipple
-                DisableElevation>
-                @L["User_Dashboard_Title"]
-            </MudButton>
-        </section>
-    </Virtualize>
-</ApiViewer>
