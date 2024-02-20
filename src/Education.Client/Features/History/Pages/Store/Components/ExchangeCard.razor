@@ -141,6 +141,7 @@
             var result = await ExchangeClient.ExchangeAsync(new ExchangeRequest(from, to, amount));
 
             await result.MatchAsync(_ => OnExchanged.InvokeAsync(), e => Snackbar.Add(e.Detail, Severity.Error));
+            _amount = 1;
         }
         finally
         {
