@@ -50,7 +50,7 @@ public sealed partial class Page
 
         var dialog = await DialogService.ShowAsync<InventoryDialog>(inventory.Title, parameters, options);
         var result = await dialog.Result;
-        if(result.Canceled)
+        if (result.Canceled)
             return;
 
         await OnInitializedAsync();

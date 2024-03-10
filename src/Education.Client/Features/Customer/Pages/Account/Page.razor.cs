@@ -18,10 +18,10 @@ public partial class Page
 
     [Inject]
     private IAccountClient AccountClient { get; init; } = default!;
-    
+
     [Inject]
     private IConfiguration Configuration { get; init; } = default!;
-    
+
     [CascadingParameter]
     private CustomerState Customer { get; init; } = default!;
 

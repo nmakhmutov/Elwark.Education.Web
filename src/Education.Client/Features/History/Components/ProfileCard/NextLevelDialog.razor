@@ -6,14 +6,9 @@
         <header class="d-sm-flex pa-3 pa-sm-6">
             <img class="avatar rounded" src="@Image" alt="@FullName"/>
             <section class="d-flex flex-grow-1 flex-column justify-space-between">
-                <header>
-                    <MudText Typo="Typo.h4">
-                        @FullName
-                    </MudText>
-                    <MudText Class="mud-text-secondary" Typo="Typo.body1">
-                        @L["User_Level", Level.Current]
-                    </MudText>
-                </header>
+                <MudText Typo="Typo.h4">
+                    @FullName
+                </MudText>
 
                 <UserLevelProgress Level="@Level.Current" Experience="@Level.Experience" Threshold="@Level.Threshold"/>
             </section>
@@ -80,9 +75,7 @@
     [Parameter, EditorRequired]
     public required UserLevelModel Level { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() =>
         _result = await StoreClient.GetUpcomingInventoriesAsync();
-    }
 
 }

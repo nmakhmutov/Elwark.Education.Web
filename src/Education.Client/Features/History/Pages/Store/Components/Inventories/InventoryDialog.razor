@@ -188,7 +188,7 @@
             return;
 
         _status = new OrderStatusModel(Guid.Empty, "Creating");
-        
+
         var result = await OrderClient.CheckoutAsync(CheckoutRequest.Selling(Guid.NewGuid(), Product.ProductId, _quantity));
         if (result.MathError(x => _error = new Error(x.Title, x.Detail)))
             return;

@@ -1,28 +1,25 @@
 <section class="@Class">
-    <MudProgressLinear
-        Class="mb-1"
-        Color="Color.Primary"
-        Size="Size.Medium"
-        Max="@Threshold"
-        Value="@Experience"
-        Rounded/>
+    <div class="d-flex align-center mb-1">
+        <MudAvatar Class="level-avatar" Color="Color.Primary">
+            @Level
+        </MudAvatar>
+
+        <MudProgressLinear
+            Class="ml-n1"
+            Color="Color.Primary"
+            Size="Size.Medium"
+            Max="@Threshold"
+            Value="@Experience"
+            Rounded/>
+    </div>
 
     <footer class="d-flex justify-space-between align-start gap-3 gap-sm-6">
-        @if (ShowLevel)
-        {
+        <div class="d-flex align-center gap-1">
+            <MudIcon Icon="@EduIcons.Experience" Size="Size.Small"/>
             <MudText Typo="Typo.subtitle2">
-                @L["User_Level", Level]
-            </MudText>   
-        }
-        else
-        {
-            <div class="d-flex align-center gap-1">
-                <MudIcon Icon="@EduIcons.Experience" Size="Size.Small"/>
-                <MudText Typo="Typo.subtitle2">
-                    @Experience.ToString("G") / @Threshold.ToString("G")
-                </MudText>
-            </div>
-        }
+                @Experience.ToString("G") / @Threshold.ToString("G")
+            </MudText>
+        </div>
 
         <MetricNumber Value="@_percentage" Typo="Typo.subtitle2" EndIcon="%"/>
     </footer>
@@ -42,9 +39,6 @@
 
     [Parameter, EditorRequired]
     public ulong Threshold { get; set; }
-
-    [Parameter]
-    public bool ShowLevel { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

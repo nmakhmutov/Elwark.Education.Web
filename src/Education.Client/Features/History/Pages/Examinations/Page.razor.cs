@@ -20,10 +20,10 @@ public sealed partial class Page
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
-    
+
     [Inject]
     private ISnackbar Snackbar { get; init; } = default!;
-    
+
     [Parameter]
     public required string Id { get; set; }
 

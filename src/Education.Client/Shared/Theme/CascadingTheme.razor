@@ -2,7 +2,7 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<CascadingValue TValue="CascadingTheme" Value="@this" ChildContent="@ChildContent"/>
+<CascadingValue TValue="CascadingTheme" Value="@(this)" ChildContent="@ChildContent"/>
 
 @code {
     private const string CacheKey = "ts";
@@ -121,7 +121,7 @@
     {
         Mode = ThemeMode.Light;
         IsDarkMode = false;
-        
+
         await Storage.SetItemAsync(CacheKey, Mode);
     }
 
@@ -129,7 +129,7 @@
     {
         Mode = ThemeMode.Dark;
         IsDarkMode = true;
-        
+
         await Storage.SetItemAsync(CacheKey, Mode);
     }
 

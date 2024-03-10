@@ -1,11 +1,11 @@
+@using Align = MudBlazor.Align
 @using Education.Client.Features.History.Clients.User.Model
 @using ApexCharts
-@using Align = MudBlazor.Align
 
 <MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
     <DialogContent>
-        <header class="d-flex justify-space-between align-center mb-3 mb-sm-6">
-            <div>
+        <header class="header">
+            <div class="title">
                 <div class="d-flex align-center gap-3">
                     <MudIcon Icon="@Currency.GetIcon()"/>
                     <MudText Typo="Typo.h5">
@@ -18,36 +18,38 @@
                 </MudText>
             </div>
 
-            <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
-        </header>
+            <aside class="summary d-flex justify-center gap-3 gap-sm-6">
+                <div class="d-flex flex-column align-center">
+                    <MudText Typo="Typo.h6">@Budget.Income.ToString("N0")</MudText>
+                    <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
+                        @L["InternalMoney_Income_Title"]
+                    </MudText>
+                </div>
+                <MudDivider Vertical FlexItem/>
+                <div class="d-flex flex-column align-center">
+                    <MudText Typo="Typo.h6">@Budget.Expense.ToString("N0")</MudText>
+                    <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
+                        @L["InternalMoney_Expense_Title"]
+                    </MudText>
+                </div>
+                <MudDivider Vertical FlexItem/>
+                <div class="d-flex flex-column align-center">
+                    <MudText Typo="Typo.h6">@Budget.Balance.ToString("N0")</MudText>
+                    <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
+                        @L["InternalMoney_Balance_Title"]
+                    </MudText>
+                </div>
+            </aside>
 
-        <aside class="d-flex justify-center gap-3 gap-sm-6">
-            <div class="d-flex flex-column align-center">
-                <MudText Typo="Typo.h6">@Budget.Income.ToString("N0")</MudText>
-                <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
-                    @L["InternalMoney_Income_Title"]
-                </MudText>
+            <div class="close">
+                <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
             </div>
-            <MudDivider Vertical FlexItem/>
-            <div class="d-flex flex-column align-center">
-                <MudText Typo="Typo.h6">@Budget.Expense.ToString("N0")</MudText>
-                <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
-                    @L["InternalMoney_Expense_Title"]
-                </MudText>
-            </div>
-            <MudDivider Vertical FlexItem/>
-            <div class="d-flex flex-column align-center">
-                <MudText Typo="Typo.h6">@Budget.Balance.ToString("N0")</MudText>
-                <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
-                    @L["InternalMoney_Balance_Title"]
-                </MudText>
-            </div>
-        </aside>
+        </header>
 
         @if (Budget.Sources.Length > 0)
         {
             <section class="grid mt-3 mt-sm-6">
-                <MudTable 
+                <MudTable
                     T="WalletModel.BudgetSourceModel"
                     Class="statistics"
                     Items="@Budget.Sources"

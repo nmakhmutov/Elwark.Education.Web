@@ -19,6 +19,6 @@ public sealed record QuestionModel(
 {
     public bool IsCorrect =>
         CorrectAnswer == UserAnswer;
-    
+
     public sealed record ArticleModel(string Id, string Title);
 }

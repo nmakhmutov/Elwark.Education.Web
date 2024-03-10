@@ -1,3 +1,22 @@
+.header {
+    display: grid;
+    grid-template-columns: 1fr 48px;
+    gap: 12px;
+}
+
+.title {
+    order: 1;
+}
+
+.summary {
+    grid-column: span 2;
+    order: 3;
+}
+
+.close {
+    order: 2;
+}
+
 .grid {
     display: grid;
     gap: 12px;
@@ -10,6 +29,10 @@
 }
 
 @media (min-width: 600px) {
+    .header {
+        gap: 24px;
+    }
+
     .grid {
         gap: 24px;
         grid-template-columns: 1fr 1fr;
@@ -21,6 +44,19 @@
 }
 
 @media (min-width: 960px) {
+    .header {
+        grid-template-columns: auto 1fr 48px;
+    }
+
+    .summary {
+        grid-column: initial;
+        order: 2;
+    }
+
+    .close {
+        order: 3;
+    }
+
     .grid {
         grid-template-columns: 3fr 1fr;
         grid-template-rows: auto 1fr;

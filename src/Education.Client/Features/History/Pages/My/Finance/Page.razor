@@ -18,13 +18,17 @@
                 <WalletCard Wallet="@wallet"/>
             }
 
-            @if (model.Activities.Length > 0)
-            {
-                <section class="mud-paper grid-column-span-sm-2 pa-3 pa-sm-6">
+            <section class="mud-paper grid-column-span-sm-2 pa-3 pa-sm-6">
+                @if (model.Activities.Length > 0)
+                {
                     <ActivityChart Activities="@model.Activities"/>
                     <ActivityTable Activities="@model.Activities"/>
-                </section>
-            }
+                }
+                else
+                {
+                    <NoContent Title="@L["Activities_NoActivitiesWithinTheLast7Days"]"/>
+                }
+            </section>
         </section>
     </EduContainer>
 </ApiViewer>

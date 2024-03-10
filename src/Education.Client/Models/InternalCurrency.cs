@@ -6,8 +6,8 @@ namespace Education.Client.Models;
 public enum InternalCurrency
 {
     Experience = 1,
-    Scroll = 2,
-    Book = 3
+    Coins = 2,
+    Cash = 3
 }
 
 internal static class InternalCurrencyExtensions
@@ -16,8 +16,8 @@ internal static class InternalCurrencyExtensions
         new Dictionary<string, InternalCurrency>
             {
                 [nameof(InternalCurrency.Experience)] = InternalCurrency.Experience,
-                [nameof(InternalCurrency.Scroll)] = InternalCurrency.Scroll,
-                [nameof(InternalCurrency.Book)] = InternalCurrency.Book
+                [nameof(InternalCurrency.Coins)] = InternalCurrency.Coins,
+                [nameof(InternalCurrency.Cash)] = InternalCurrency.Cash
             }
             .ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
 
@@ -33,8 +33,8 @@ internal static class InternalCurrencyExtensions
         currency switch
         {
             InternalCurrency.Experience => EduIcons.Experience,
-            InternalCurrency.Scroll => EduIcons.Scroll,
-            InternalCurrency.Book => EduIcons.Book,
+            InternalCurrency.Coins => EduIcons.Coins,
+            InternalCurrency.Cash => EduIcons.Cash,
             _ => throw new UnreachableException($"Unknown type {currency} of {nameof(InternalCurrency)}")
         };
 }
