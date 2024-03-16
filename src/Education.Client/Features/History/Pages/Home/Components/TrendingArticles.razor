@@ -1,74 +1,34 @@
 @using Education.Client.Features.History.Clients.Article
 @using Education.Client.Features.History.Clients.Article.Request
 @using Education.Client.Features.History.Clients.Learner
-@implements IAsyncDisposable;
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <Loading>
         <section class="grid @Class">
-            @for (var i = 0; i < 6; i++)
+            @for (var i = 0; i < Count; i++)
             {
-                <SkeletonCard/>
+                <SkeletonCard Class="article"/>
             }
         </section>
     </Loading>
 
     <ChildContent Context="models">
         <section class="grid @Class">
-            @foreach (var model in models)
+            @for (var index = 0; index < models.Length; index++)
             {
-                <article class="card">
-                    <span class="image-container">
-                        <span class="image-wrapper">
-                            <img alt="@model.Article.Title" src="@model.Article.ThumbnailUrl"/>
-                        </span>
-                    </span>
-                    <div class="content">
-                        <MudChip Class="ma-0" Color="Color.Secondary" Href="@HistoryUrl.Content.Articles(model.Article.Epoch)" Size="Size.Small" Label>
-                            @L.GetEpochTitle(model.Article.Epoch)
-                        </MudChip>
-                        <MudLink Color="Color.Inherit" Typo="Typo.h6" Href="@HistoryUrl.Content.Article(model.Article.Id)">
-                            <b>@model.Article.Title</b>
-                        </MudLink>
-                        <p class="white-text">
-                            @model.Article.Overview
-                        </p>
-
-                        <footer class="d-flex align-center gap-3 w-100">
-                            <ContentRating Rating="@model.Article.Rating" Compact/>
-
-                            <TimeToRead Time="@model.Article.TimeToRead"/>
-
-                            <AuthorizeView>
-                                <MudSpacer/>
-
-                                @if (model.HasQuiz)
-                                {
-                                    <ArticleCompletionChip
-                                        Status="@(model.Activity?.Status ?? LearningStatus.NotEngaged)"
-                                        Href="@HistoryUrl.User.MyArticle(model.Article.Id)"
-                                        Size="Size.Small"
-                                        ShowTooltip/>
-                                }
-
-                                <BookmarkButton
-                                    Color="Color.Inherit"
-                                    Id="@model.Article.Id"
-                                    IsBookmarked="@(model.Activity?.IsBookmarked ?? false)"
-                                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
-                            </AuthorizeView>
-                        </footer>
-                    </div>
-                </article>
+                var model = models[index];
+                <TrendingArticleCard
+                    Class="article"
+                    Model="@model"
+                    HideOverview="@(index > 0 && model.Article.Title.Length > 60)"
+                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
             }
         </section>
     </ChildContent>
 </ApiViewer>
 
 @code {
-    private Guid _subscriptionId;
-    private Breakpoint _breakpoint;
-
+    private const int Count = 5;
     private ApiResult<UserArticleOverviewModel[]> _result = ApiResult<UserArticleOverviewModel[]>.Loading();
 
     [Inject]
@@ -87,32 +47,7 @@
     public string? Class { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _result = (await ArticleClient.GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 0, 5)))
+        _result = (await ArticleClient.GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 0, Count)))
             .Map(x => x.Items);
-
-    protected override Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (!firstRender)
-            return Task.CompletedTask;
-
-        _subscriptionId = Guid.NewGuid();
-        var options = new ResizeOptions { NotifyOnBreakpointOnly = true };
-        return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
-    }
-
-    private void OnBreakpointChanged(Breakpoint breakpoint)
-    {
-        _breakpoint = breakpoint;
-        InvokeAsync(StateHasChanged);
-    }
-
-    private bool IsHorizontal(int i) =>
-        _breakpoint >= Breakpoint.Lg && i > 0;
-
-    private bool IsHiddenOverview(int i) =>
-        _breakpoint >= Breakpoint.Lg && i > 2;
-
-    public async ValueTask DisposeAsync() =>
-        await ViewportService.UnsubscribeAsync(_subscriptionId);
 
 }

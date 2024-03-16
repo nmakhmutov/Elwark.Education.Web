@@ -1,0 +1,68 @@
+<article class="card @Class">
+    <span class="image-container">
+        <span class="image-wrapper">
+            <img alt="@Model.Course.Title" src="@Model.Course.ThumbnailUrl"/>
+        </span>
+    </span>
+    <div class="content">
+        <MudLink Color="Color.Inherit" Typo="Typo.h6" Href="@HistoryUrl.Content.Course(Model.Course.Id)">
+            <b>@Model.Course.Title</b>
+        </MudLink>
+        @if (!HideOverview)
+        {
+            <p class="white-text">
+                @Model.Course.Overview
+            </p>
+        }
+
+        <footer class="d-flex align-center gap-3 w-100">
+            <ContentRating Rating="@Model.Course.Rating" Compact/>
+
+            <MudTooltip Text="@L["Articles_Title"]">
+                <div class="d-flex align-center mud-text-secondary">
+                    <MudIcon Class="mr-1" Icon="@EduIcons.Articles" Size="Size.Small"/>
+                    <MudText Typo="Typo.body1">@Model.Course.ArticleCount</MudText>
+                </div>
+            </MudTooltip>
+
+            <AuthorizeView>
+                <MudSpacer/>
+
+                @if (Model.HasExamination)
+                {
+                    <CourseCompletion
+                        Class="w-100"
+                        Status="@(Model.Activity?.Status ?? CourseLearningStatus.NotStarted)"
+                        Completeness="@(Model.Activity?.Completeness ?? 0)"
+                        Typo="Typo.caption"
+                        Size="Size.Small"/>
+                }
+
+
+                <BookmarkButton
+                    Color="Color.Inherit"
+                    Id="@Model.Course.Id"
+                    IsBookmarked="@(Model.Activity?.IsBookmarked ?? false)"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            </AuthorizeView>
+        </footer>
+    </div>
+</article>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required UserCourseOverviewModel Model { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public bool HideOverview { get; set; }
+}

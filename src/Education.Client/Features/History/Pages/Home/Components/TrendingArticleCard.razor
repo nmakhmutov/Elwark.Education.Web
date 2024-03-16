@@ -1,0 +1,65 @@
+<article class="card @Class">
+    <span class="image-container">
+        <span class="image-wrapper">
+            <img alt="@Model.Article.Title" src="@Model.Article.ThumbnailUrl"/>
+        </span>
+    </span>
+    <div class="content">
+        <MudChip Class="ma-0" Color="Color.Secondary" Href="@HistoryUrl.Content.Articles(Model.Article.Epoch)" Size="Size.Small" Label>
+            @L.GetEpochTitle(Model.Article.Epoch)
+        </MudChip>
+        <MudLink Color="Color.Inherit" Typo="Typo.h6" Href="@HistoryUrl.Content.Article(Model.Article.Id)">
+            <b>@Model.Article.Title</b>
+        </MudLink>
+        @if (!HideOverview)
+        {
+            <p class="white-text">
+                @Model.Article.Overview
+            </p>
+        }
+
+        <footer class="d-flex align-center gap-3 w-100">
+            <ContentRating Rating="@Model.Article.Rating" Compact/>
+
+            <TimeToRead Time="@Model.Article.TimeToRead"/>
+
+            <AuthorizeView>
+                <MudSpacer/>
+
+                @if (Model.HasQuiz)
+                {
+                    <ArticleCompletionChip
+                        Status="@(Model.Activity?.Status ?? LearningStatus.NotEngaged)"
+                        Href="@HistoryUrl.User.MyArticle(Model.Article.Id)"
+                        Size="Size.Small"
+                        ShowTooltip/>
+                }
+
+                <BookmarkButton
+                    Color="Color.Inherit"
+                    Id="@Model.Article.Id"
+                    IsBookmarked="@(Model.Activity?.IsBookmarked ?? false)"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            </AuthorizeView>
+        </footer>
+    </div>
+</article>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required UserArticleOverviewModel Model { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public bool HideOverview { get; set; }
+
+}
