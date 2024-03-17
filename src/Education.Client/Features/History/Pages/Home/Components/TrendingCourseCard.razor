@@ -5,15 +5,17 @@
         </span>
     </span>
     <div class="content">
-        <MudLink Color="Color.Inherit" Typo="Typo.h6" Href="@HistoryUrl.Content.Course(Model.Course.Id)">
+        <MudLink
+            Class="@(Model.Course.Title.Length > 60 ? "w-100 one-line-text" : null)"
+            Color="Color.Inherit"
+            Typo="Typo.h6"
+            Href="@HistoryUrl.Content.Course(Model.Course.Id)">
             <b>@Model.Course.Title</b>
         </MudLink>
-        @if (!HideOverview)
-        {
-            <p class="white-text">
-                @Model.Course.Overview
-            </p>
-        }
+
+        <p class="white-text">
+            @Model.Course.Overview
+        </p>
 
         <footer class="d-flex align-center gap-3 w-100">
             <ContentRating Rating="@Model.Course.Rating" Compact/>
@@ -63,6 +65,4 @@
     [Parameter]
     public string? Class { get; set; }
 
-    [Parameter]
-    public bool HideOverview { get; set; }
 }

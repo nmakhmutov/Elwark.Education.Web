@@ -13,13 +13,11 @@
     </Loading>
     <ChildContent Context="models">
         <section class="grid @Class">
-            @for (var index = 0; index < models.Length; index++)
+            @foreach (var model in models)
             {
-                var model = models[index];
                 <TrendingCourseCard
                     Class="course"
                     Model="@model"
-                    HideOverview="@(index > 0 && model.Course.Title.Length > 60)"
                     OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
             }
         </section>
@@ -29,9 +27,6 @@
 @code {
     private const int Count = 5;
     private ApiResult<UserCourseOverviewModel[]> _result = ApiResult<UserCourseOverviewModel[]>.Loading();
-
-    [Inject]
-    private IBrowserViewportService ViewportService { get; init; } = default!;
 
     [Inject]
     private IHistoryCourseClient CourseClient { get; init; } = default!;

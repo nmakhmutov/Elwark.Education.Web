@@ -4,19 +4,23 @@
             <img alt="@Model.Article.Title" src="@Model.Article.ThumbnailUrl"/>
         </span>
     </span>
+
     <div class="content">
         <MudChip Class="ma-0" Color="Color.Secondary" Href="@HistoryUrl.Content.Articles(Model.Article.Epoch)" Size="Size.Small" Label>
             @L.GetEpochTitle(Model.Article.Epoch)
         </MudChip>
-        <MudLink Color="Color.Inherit" Typo="Typo.h6" Href="@HistoryUrl.Content.Article(Model.Article.Id)">
+
+        <MudLink
+            Class="@(Model.Article.Title.Length > 60 ? "w-100 one-line-text" : null)"
+            Color="Color.Inherit"
+            Typo="Typo.h6"
+            Href="@HistoryUrl.Content.Article(Model.Article.Id)">
             <b>@Model.Article.Title</b>
         </MudLink>
-        @if (!HideOverview)
-        {
-            <p class="white-text">
-                @Model.Article.Overview
-            </p>
-        }
+
+        <p class="white-text">
+            @Model.Article.Overview
+        </p>
 
         <footer class="d-flex align-center gap-3 w-100">
             <ContentRating Rating="@Model.Article.Rating" Compact/>
@@ -58,8 +62,5 @@
 
     [Parameter]
     public string? Class { get; set; }
-
-    [Parameter]
-    public bool HideOverview { get; set; }
 
 }
