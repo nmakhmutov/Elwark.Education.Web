@@ -11,17 +11,20 @@
         </MudChip>
 
         <MudLink
-            Class="@(Model.Article.Title.Length > 60 ? "w-100 one-line-text" : null)"
+            Class="@(Model.Article.Title.Length > 50 ? "w-100 one-line-text" : null)"
             Color="Color.Inherit"
             Typo="Typo.h6"
             Href="@HistoryUrl.Content.Article(Model.Article.Id)">
             <b>@Model.Article.Title</b>
         </MudLink>
-
-        <p class="white-text">
-            @Model.Article.Overview
-        </p>
-
+        
+        @if (!HideOverview)
+        {
+            <p class="white-text">
+                @Model.Article.Overview
+            </p>
+        }
+        
         <footer class="d-flex align-center gap-3 w-100">
             <ContentRating Rating="@Model.Article.Rating" Compact/>
 
@@ -62,5 +65,8 @@
 
     [Parameter]
     public string? Class { get; set; }
+
+    [Parameter]
+    public bool HideOverview { get; set; }
 
 }
