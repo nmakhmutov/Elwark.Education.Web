@@ -2,7 +2,12 @@
 @using Education.Client.Features.History.Clients.User.Model
 @using ApexCharts
 
-<MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
+<MudDialog 
+    Class="pa-3 pa-sm-6" 
+    ClassContent="pa-0"
+    ClassActions="pa-0" 
+    DefaultFocus="DefaultFocus.Element"
+    DisableSidePadding>
     <DialogContent>
         <header class="header">
             <div class="title">
@@ -111,7 +116,7 @@
                     </div>
                 }
 
-                @if (Budget.Sources.Where(x => x.Expense > 0).ToArray() is { Length: > 0 } expense)
+                @if (Budget.Sources.Where(x => x.Expense > 0).ToArray() is { Length: > 1 } expense)
                 {
                     <div class="expense">
                         <MudText Typo="Typo.h6" Align="Align.Center">

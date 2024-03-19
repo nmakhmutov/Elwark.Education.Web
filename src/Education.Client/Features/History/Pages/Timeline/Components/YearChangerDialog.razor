@@ -1,6 +1,11 @@
-<MudDialog Class="pa-3 pa-sm-6" ClassContent="pa-0" ClassActions="pa-0" DisableSidePadding>
+<MudDialog 
+    Class="pa-3 pa-sm-6" 
+    ClassContent="pa-0"
+    ClassActions="pa-0" 
+    DefaultFocus="DefaultFocus.Element"
+    DisableSidePadding>
     <DialogContent>
-        <EditForm Model="@(this)" OnValidSubmit="@OnValidSubmit">
+        <EditForm Model="@this" OnValidSubmit="@OnValidSubmit">
             <FluentValidationValidator/>
 
             <div class="d-flex align-end gap-3 gap-sm-6 mb-1">
@@ -8,7 +13,6 @@
                     T="int"
                     Value="@Year"
                     ValueChanged="@OnYearChanged"
-                    Max="@DateTime.UtcNow.Year"
                     For="@(() => Year)"
                     Label="@L["History_Timeline_Year"]"
                     Variant="Variant.Text"
@@ -24,7 +28,7 @@
                 </MudButton>
             </div>
 
-            <MudRadioGroup @bind-SelectedOption="@(_isCe)">
+            <MudRadioGroup @bind-SelectedOption="@_isCe">
                 <MudRadio Option="true" Color="Color.Primary" UnCheckedColor="Color.Default">
                     @L["History_Date_CE"]
                 </MudRadio>

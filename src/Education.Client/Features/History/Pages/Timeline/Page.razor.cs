@@ -12,7 +12,7 @@ namespace Education.Client.Features.History.Pages.Timeline;
 
 public sealed partial class Page
 {
-    private readonly GetTimelineRequest _request = new(0, 0, 20);
+    private int _currentYear;
 
     private ApiResult<PagingOffsetModel<TimelineOverviewModel>> _result =
         ApiResult<PagingOffsetModel<TimelineOverviewModel>>.Loading();
@@ -34,26 +34,21 @@ public sealed partial class Page
 
     protected override async Task OnParametersSetAsync()
     {
+        _currentYear = DateTime.UtcNow.Year;
         Year = NormalizeYear(Year);
-        _result = await ArticleClient.GetAsync(_request with { Year = Year });
+        _result = await ArticleClient.GetAsync(new GetTimelineRequest(Year, 0, 36));
     }
 
     private void OnPreviousYearClick()
     {
-        Year--;
-
-        if (Year == 0)
-            Year--;
+        Year -= Year == 0 ? 2 : 1;
 
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear(Year)));
     }
 
     private void OnNextYearClick()
     {
-        Year++;
-
-        if (Year == 0)
-            Year++;
+        Year += Year == 0 ? 2 : 1;
 
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear(Year)));
     }
@@ -63,9 +58,10 @@ public sealed partial class Page
         var options = new DialogOptions
         {
             MaxWidth = MaxWidth.Small,
+            CloseOnEscapeKey = true,
             FullWidth = true,
-            CloseButton = false,
-            NoHeader = true
+            NoHeader = true,
+            CloseButton = false
         };
 
         var parameters = new DialogParameters
@@ -81,11 +77,11 @@ public sealed partial class Page
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear((int)result.Data)));
     }
 
-    private static int NormalizeYear(int year)
-    {
-        if (year == 0)
-            return DateTime.UtcNow.Year - 100;
-
-        return Math.Min(year, DateTime.UtcNow.Year);
-    }
+    private int NormalizeYear(int year) =>
+        year switch
+        {
+            0 => _currentYear - 100,
+            > 0 => Math.Min(year, _currentYear),
+            _ => year
+        };
 }

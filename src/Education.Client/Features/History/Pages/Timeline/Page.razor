@@ -5,36 +5,26 @@
     @L["History_Timeline_Title"]
 </PageTitle>
 
-<EduContainer Class="mud-paper py-3 py-sm-6" MaxWidth="EduWidth.W600">
-    <MudText Typo="Typo.h6" Align="Align.Center">Year</MudText>
-    <div class="d-flex justify-center align-center gap-3 gap-sm-6">
-        <MudIconButton Icon="@Icons.Material.Outlined.ArrowBack" OnClick="@OnPreviousYearClick"/>
-        <MudButton Variant="Variant.Text" Color="Color.Default" DisableElevation OnClick="@OnYearClick">
-            <MudText Typo="Typo.h1">
+<div class="mud-paper d-flex justify-center align-center gap-3 gap-sm-6 pb-3">
+    <MudIconButton Icon="@Icons.Material.Outlined.ArrowBack" OnClick="@OnPreviousYearClick"/>
+    <MudButton Variant="Variant.Text" Color="Color.Default" DisableElevation OnClick="@OnYearClick">
+        <div class="d-flex align-end gap-3">
+            <MudText Typo="Typo.h2">
                 @Math.Abs(Year)
             </MudText>
-        </MudButton>
-        <MudIconButton Icon="@Icons.Material.Outlined.ArrowForward" OnClick="@OnNextYearClick"/>
-    </div>
-    <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
-        @L[Year > 0 ? "History_Date_CE" : "History_Date_BCE"]
-    </MudText>
-</EduContainer>
+            <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
+                @L[Year > 0 ? "History_Date_CE" : "History_Date_BCE"]
+            </MudText>
+        </div>
+    </MudButton>
+    <MudIconButton Icon="@Icons.Material.Outlined.ArrowForward" OnClick="@OnNextYearClick"/>
+</div>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync" Context="result">
-    <section class="grid seed-@(Year % 3)">
+    <section class="grid">
         @foreach (var item in result.Items)
         {
-            <div>
-                <MudImage
-                    Src="@item.ThumbnailUrl"
-                    ObjectFit="ObjectFit.Cover"
-                    ObjectPosition="ObjectPosition.Center"
-                    Style="width: 100%; height: 100%"/>
-            </div>
-            @* <ArticleCard *@
-            @*     Class="article" *@
-            @*     Article="@(new ArticleOverviewModel(item.Id, item.Epoch, item.Title, item.Overview, item.ThumbnailUrl, item.TimeToRead, item.Rating))"/> *@
+            <TimelineArticleCard Model="@item"/>
         }
     </section>
 </ApiViewer>

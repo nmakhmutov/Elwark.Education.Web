@@ -1,0 +1,52 @@
+@using Education.Client.Features.History.Clients.Article.Model
+<article class="card @Class">
+    <span class="image-container">
+        <span class="image-wrapper">
+            <img alt="@Model.Title" src="@Model.ThumbnailUrl"/>
+        </span>
+        <a href="@HistoryUrl.Content.Article(Model.Id)"></a>
+    </span>
+
+    <div class="content">
+        <MudChip Class="ma-0" Color="Color.Secondary" Href="@HistoryUrl.Content.Articles(Model.Epoch)" Size="Size.Small" Label>
+            @L.GetEpochTitle(Model.Epoch)
+        </MudChip>
+
+        <MudLink
+            Class="@(Model.Title.Length > 50 ? "w-100 one-line-text" : null)"
+            Color="Color.Inherit"
+            Typo="Typo.h6"
+            Href="@HistoryUrl.Content.Article(Model.Id)">
+            <b>@Model.Title</b>
+        </MudLink>
+
+        @if (!HideOverview)
+        {
+            <p class="white-text">
+                @Model.Overview
+            </p>
+        }
+
+        <footer class="d-flex align-center gap-3 w-100">
+            <ContentRating Rating="@Model.Rating" Compact/>
+
+            <TimeToRead Time="@Model.TimeToRead"/>
+        </footer>
+    </div>
+</article>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required TimelineOverviewModel Model { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public bool HideOverview { get; set; }
+
+}
