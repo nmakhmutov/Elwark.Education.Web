@@ -20,7 +20,7 @@
             </div>
 
             <div class="d-flex flex-column gap-3">
-                <MudChip Class="white-text ma-0" Text="@($"{_tendingValue.ToMetric("N1")}%")" Icon="@_tendingIcon" Label/>
+                @CreateTrendChip(_tendingValue)
 
                 @if (Wallet.Budgets.Length > 0)
                 {
@@ -49,12 +49,7 @@
         Hover>
         <RowTemplate>
             <MudTd>
-                <MudAvatar
-                    Class="rounded white-text"
-                    Color="Color.Primary"
-                    Size="Size.Medium">
-                    <MudIcon Icon="@Icons.Material.Outlined.CalendarMonth" Size="Size.Medium"/>
-                </MudAvatar>
+                @CreateTrendIcon(context.Balance)
             </MudTd>
             <MudTd Class="flex-grow-1">
                 <MudText Typo="Typo.subtitle2" Align="Align.Start">
@@ -99,7 +94,6 @@
 
 @code {
     private double _tendingValue;
-    private string? _tendingIcon;
     private readonly List<ApexData> _apex = [];
     private MudTable<WalletModel.BudgetModel>? _table;
 
@@ -163,14 +157,35 @@
             double.NegativeInfinity => -100,
             var x => x
         };
-
-        _tendingIcon = _tendingValue switch
-        {
-            > 0 => Icons.Material.Outlined.TrendingUp,
-            < 0 => Icons.Material.Outlined.TrendingDown,
-            _ => Icons.Material.Outlined.TrendingFlat
-        };
     }
+
+    private RenderFragment CreateTrendIcon(double balance)
+    {
+        var trend = GetTrend(balance);
+
+        return @<MudIcon Icon="@trend.Icon" Color="trend.Color" Size="Size.Medium"/>;
+    }
+
+    private RenderFragment CreateTrendChip(double balance)
+    {
+        var trend = GetTrend(balance);
+
+        return
+            @<MudChip
+                 Class="white-text ma-0"
+                 Text="@($"{_tendingValue.ToMetric("N1")}%")"
+                 Icon="@trend.Icon"
+                 IconColor="@trend.Color"
+                 Label/>;
+    }
+
+    private Trend GetTrend(double trend) =>
+        trend switch
+        {
+            > 0 => new Trend(Icons.Material.Outlined.TrendingUp, Color.Success),
+            < 0 => new Trend(Icons.Material.Outlined.TrendingDown, Color.Error),
+            _ => new Trend(Icons.Material.Outlined.TrendingFlat, Color.Default)
+        };
 
     private Task RowClickAsync(TableRowClickEventArgs<WalletModel.BudgetModel> args) =>
         OpenSourceDetailModalAsync(args.Item);
@@ -201,5 +216,7 @@
     }
 
     private sealed record ApexData(DateTime Month, long Balance);
+
+    private sealed record Trend(string Icon, Color Color);
 
 }

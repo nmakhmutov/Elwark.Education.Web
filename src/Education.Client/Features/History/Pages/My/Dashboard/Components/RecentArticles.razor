@@ -21,7 +21,7 @@
         </ChildContent>
         <Loading>
             <EduFillGrid>
-                @for (var i = 0; i < _count; i++)
+                @for (var i = 0; i < Count; i++)
                 {
                     <SkeletonCard/>
                 }
@@ -31,7 +31,7 @@
 </section>
 
 @code {
-    private int _count = 6;
+    private const int Count = 6;
 
     private ApiResult<PagingTokenModel<UserArticleOverviewModel>> _response =
         ApiResult<PagingTokenModel<UserArticleOverviewModel>>.Loading();
@@ -43,6 +43,6 @@
     public string? Class { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _response = await LearnerClient.GetArticlesAsync(new HistoryRequest(true, _count));
+        _response = await LearnerClient.GetArticlesAsync(new HistoryRequest(true, Count));
 
 }

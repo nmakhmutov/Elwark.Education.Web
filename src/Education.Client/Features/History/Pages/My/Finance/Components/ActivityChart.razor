@@ -9,7 +9,7 @@
             Items="item.Value"
             Name="@L.GetInternalCurrencyTitle(item.Key)"
             SeriesType="SeriesType.Line"
-            XValue="@(x => x.Date.ToString("dd MMM"))"
+            XValue="@(x => x.Day.ToString("dd MMM"))"
             YValue="@(x => x.Balance)"/>
     }
 </ApexChart>
@@ -59,7 +59,7 @@
         if (Activities.Length == 0)
             return;
 
-        var min = Activities.MinBy(x => x.Date);
+        var min = Activities.MinBy(x => x.Day);
         if (min is null)
             return;
 
@@ -67,13 +67,13 @@
         var activities = new List<MoneyActivityModel>(Activities);
 
         foreach (var group in activities.GroupBy(x => x.Currency))
-            if (group.All(x => x.Date != min.Date))
-                activities.Add(new MoneyActivityModel(min.Date, group.Key, 0, 0, 0));
+            if (group.All(x => x.Day != min.Day))
+                activities.Add(new MoneyActivityModel(min.Day, group.Key, 0, 0, 0));
 
         _activities = activities.GroupBy(x => x.Currency)
             .ToDictionary(
                 x => x.Key,
-                group => group.FillDailyGaps(today, x => x.Date, x => new MoneyActivityModel(x, group.Key, 0, 0, 0))
+                group => group.FillDailyGaps(today, x => x.Day, x => new MoneyActivityModel(x, group.Key, 0, 0, 0))
             );
     }
 

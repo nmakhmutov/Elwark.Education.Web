@@ -1,6 +1,7 @@
 .grid {
     display: grid;
     gap: 12px;
+    grid-template-columns: 100%;
 }
 
 @media (min-width: 600px) {
@@ -12,17 +13,20 @@
 @media (min-width: 960px) {
     .grid {
         grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+
+    .activity {
+        grid-row: 2;
+    }
+
+    .transactions {
+        grid-row: span 2;
     }
 }
 
 @media (min-width: 1280px) {
     .grid {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-
-@media (min-width: 1600px) {
-    .grid {
-        grid-template-columns: 2fr 2fr 3fr;
+        grid-template-columns: 3fr 2fr;
     }
 }
