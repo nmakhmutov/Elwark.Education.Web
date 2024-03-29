@@ -29,7 +29,7 @@
     </section>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="result">
+<ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync" Context="result">
     <EduContainer>
         <EduFillGrid Class="mb-6 mb-sm-12">
             @foreach (var (course, activity, hasExamination) in result.Items)

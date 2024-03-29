@@ -12,7 +12,7 @@
                     @L.GetInternalCurrencyTitle(Wallet.Currency)
                 </MudText>
                 <div class="d-flex align-center">
-                    <MudIcon Class="mr-1" Icon="@Wallet.Currency.GetIcon()" Size="Size.Medium"/>
+                    <MudIcon Class="mr-1" Icon="@Wallet.Currency.GetIcon()" Size="Size.Small"/>
                     <MudText Typo="Typo.h6">
                         @Wallet.Balance.ToString("G")
                     </MudText>
@@ -134,6 +134,21 @@
 
     protected override void OnParametersSet()
     {
+        var (start, end) = Wallet.Budgets switch
+        {
+            [] => (0d, 0d),
+            [var first] => (first.Balance, 0d),
+            [var first, var second, ..] => (first.Balance, second.Balance)
+        };
+
+        _tendingValue = ((start - end) / Math.Abs(end) * 100) switch
+        {
+            double.NaN => 0,
+            double.PositiveInfinity => 100,
+            double.NegativeInfinity => -100,
+            var x => x
+        };
+
         var now = DateTime.UtcNow;
         var month = new DateOnly(now.Year, now.Month, 1);
         for (var i = 0; i < 12; i++)
@@ -142,21 +157,6 @@
             var item = Wallet.Budgets.FirstOrDefault(x => x.Month == current);
             _apex.Add(new ApexData(current.ToDateTime(TimeOnly.MinValue), item?.Balance ?? 0));
         }
-
-        var (start, end) = Wallet.Budgets switch
-        {
-            [] => (0d, 0d),
-            [var first] => (first.Balance, 0d),
-            [var first, var second, ..] => (first.Balance, second.Balance)
-        };
-
-        _tendingValue = ((start - end) / end * 100) switch
-        {
-            double.NaN => 0,
-            double.PositiveInfinity => 100,
-            double.NegativeInfinity => -100,
-            var x => x
-        };
     }
 
     private RenderFragment CreateTrendIcon(double balance)
@@ -190,9 +190,6 @@
     private Task RowClickAsync(TableRowClickEventArgs<WalletModel.BudgetModel> args) =>
         OpenSourceDetailModalAsync(args.Item);
 
-    private string SelectedRowClassFunc(WalletModel.BudgetModel element, int rowNumber) =>
-        _table?.SelectedItem?.Month == element.Month ? "mud-primary-hover" : string.Empty;
-
     private async Task OpenSourceDetailModalAsync(WalletModel.BudgetModel budget)
     {
         var options = new DialogOptions
@@ -211,8 +208,7 @@
             [nameof(SourceDetailModal.Budget)] = budget
         };
 
-        var dialog = await DialogService.ShowAsync<SourceDetailModal>(string.Empty, parameters, options);
-        await dialog.Result;
+        await DialogService.ShowAsync<SourceDetailModal>(string.Empty, parameters, options);
     }
 
     private sealed record ApexData(DateTime Month, long Balance);

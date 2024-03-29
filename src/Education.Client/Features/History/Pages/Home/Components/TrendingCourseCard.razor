@@ -1,9 +1,9 @@
 <article class="card @Class">
     <span class="image-container">
         <span class="image-wrapper">
-            <img alt="@Model.Course.Title" src="@Model.Course.ThumbnailUrl"/>
+            <img src="@Model.Course.Image.Small" alt="@Model.Course.Image.Alt"/>
         </span>
-        <a href="@HistoryUrl.Content.Course(Model.Course.Id)"></a>
+        <a href="@HistoryUrl.Content.Course(Model.Course.Id)" aria-label="@Model.Course.Id"></a>
     </span>
     <div class="content">
         <MudLink

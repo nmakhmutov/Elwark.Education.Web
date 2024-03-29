@@ -7,7 +7,7 @@
             <ChildContent Context="inventory">
                 <InventoryInfoCard
                     Overview="@inventory.Overview"
-                    Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
+                    Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
                     Title="@inventory.Title"
                     IconUrl="@inventory.ImageUrl">
                     <MudBadge
@@ -71,7 +71,7 @@
     private ProductInventoryModel[] ApplyFilter(IEnumerable<ProductInventoryModel> source)
     {
         if (Filter.Category != CategoryType.None)
-            source = source.Where(x => x.Category == Filter.Category);
+            source = source.Where(x => x.Categories.Contains(Filter.Category));
 
         if (!string.IsNullOrEmpty(Filter.Search))
             source = source.Where(x => x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase));

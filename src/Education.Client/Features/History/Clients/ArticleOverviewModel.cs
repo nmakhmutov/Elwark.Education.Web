@@ -7,7 +7,7 @@ public sealed record ArticleOverviewModel(
     EpochType Epoch,
     string Title,
     string Overview,
-    string ThumbnailUrl,
+    ImageBundleModel Image,
     TimeSpan TimeToRead,
     ContentRatingModel Rating
 );

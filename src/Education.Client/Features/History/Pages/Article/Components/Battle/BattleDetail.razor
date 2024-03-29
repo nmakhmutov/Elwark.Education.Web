@@ -32,7 +32,7 @@
         </article>
 
         <aside class="battle-image">
-            <img class="image object-cover object-center mx-auto" src="@Battle.ImageUrl" alt="@Battle.Title" loading="lazy"/>
+            <img class="image object-cover object-center mx-auto" src="@Battle.Image.Origin" alt="@Battle.Image.Alt" loading="lazy"/>
         </aside>
     </header>
 
@@ -48,14 +48,14 @@
 
         <Sidebar>
             <section class="map mud-paper pa-3 pa-sm-6">
-                @if (Battle.Map?.Source is not null)
+                @if (Battle.Map is not null)
                 {
-                    <a href="@Battle.Map.Source" target="_blank">
-                        <img class="map-image object-contain object-center" src="@Battle.Map.Source" alt="@Battle.Map.Overview" loading="lazy"/>
+                    <a href="@Battle.Map.Url" target="_blank">
+                        <img class="map-image object-contain object-center" src="@Battle.Map.Url" alt="@Battle.Map.Alt" loading="lazy"/>
                     </a>
 
                     <MudText Class="mb-3 mb-sm-6" Typo="Typo.body2" Align="Align.Center">
-                        @Battle.Map.Overview
+                        @Battle.Map.Alt
                     </MudText>
                 }
 

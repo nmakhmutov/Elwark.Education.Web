@@ -4,7 +4,7 @@ public sealed record TestInventoryModel(
     uint InventoryId,
     string Title,
     string Overview,
-    string IconUrl,
+    string ImageUrl,
     uint Quantity,
     bool IsInteractive
-) : InventoryModel(InventoryId, Title, Overview, IconUrl);
+) : InventoryModel(InventoryId, Title, Overview, ImageUrl);

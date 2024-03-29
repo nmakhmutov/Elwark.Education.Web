@@ -26,8 +26,14 @@ internal static class LocalizationExtensions
     public static string GetInternalCurrencyTitle(this IStringLocalizer localizer, InternalCurrency currency) =>
         localizer[$"InternalMoney_{currency}"];
 
-    public static string GetInventoryCategoryTypeTitle(this IStringLocalizer localizer, CategoryType type) =>
+    public static string GetInventoryCategoryTitle(this IStringLocalizer localizer, CategoryType type) =>
         localizer[$"History_Inventory_Category_{type}"];
+
+    public static string GetInventoryCategoryTitles(this IStringLocalizer localizer, IEnumerable<CategoryType> types)
+    {
+        var list = types.Select(type => localizer[$"History_Inventory_Category_{type}"]);
+        return string.Join(", ", list);
+    }
 
     public static string GetStatusTitle(this IStringLocalizer localizer, LearningStatus status) =>
         localizer[$"LearningStatus_{status}_Title"];

@@ -6,7 +6,7 @@ public sealed record QuestModel(
     string Id,
     string Title,
     string Description,
-    string IconUrl,
+    string ImageUrl,
     uint Score,
     uint Threshold,
     QuestStatus Status,

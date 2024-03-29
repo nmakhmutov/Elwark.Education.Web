@@ -5,8 +5,8 @@ namespace Education.Client.Features.History.Clients.Course.Model;
 public sealed record CourseModel(
     string Id,
     string Title,
-    string ImageUrl,
     string Description,
+    ImageModel Image,
     CourseModel.CourseDetailsModel Details,
     UserArticleOverviewModel[] Articles
 )

@@ -29,10 +29,10 @@
             </MudText>
             <InventoryGrid Inventory="@Product.Inventories" Context="inventory">
                 <InventoryInfoCard
-                    IconUrl="@inventory.IconUrl"
+                    IconUrl="@inventory.ImageUrl"
                     Overview="@inventory.Overview"
                     Quantity="@(inventory.Quantity * _quantity)"
-                    Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
+                    Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
                     Title="@inventory.Title"/>
             </InventoryGrid>
         </div>

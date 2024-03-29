@@ -7,7 +7,7 @@ public sealed record TimelineOverviewModel(
     EpochType Epoch,
     string Title,
     string Overview,
-    string ThumbnailUrl,
+    ImageBundleModel Image,
     TimeSpan TimeToRead,
     ContentRatingModel Rating,
     HistoricalDateModel? Started,

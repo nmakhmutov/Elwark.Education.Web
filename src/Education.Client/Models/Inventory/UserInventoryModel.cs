@@ -4,7 +4,7 @@ public sealed record UserInventoryModel(
     uint InventoryId,
     string Title,
     string Overview,
-    string IconUrl,
+    string ImageUrl,
     uint Quantity,
-    CategoryType Category
-) : InventoryModel(InventoryId, Title, Overview, IconUrl);
+    CategoryType[] Categories
+) : InventoryModel(InventoryId, Title, Overview, ImageUrl);

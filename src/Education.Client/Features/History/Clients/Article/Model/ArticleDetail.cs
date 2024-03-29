@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Education.Client.Features.History.Clients.Article.Model;
 
-public abstract record ArticleDetail(string Id, string Title, string Description, string ImageUrl)
+public abstract record ArticleDetail(string Id, string Title, string Description, ImageBundleModel Image)
 {
     public sealed record BattleModel(
         string Id,
@@ -11,7 +11,7 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         string Title,
         string Description,
         MarkupString Content,
-        string ImageUrl,
+        ImageBundleModel Image,
         HistoricalDateModel? Started,
         HistoricalDateModel? Finished,
         MarkupString Location,
@@ -21,7 +21,7 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         ContentRatingModel Rating,
         DateTime CreatedAt,
         ConflictPartyModel[] ConflictParties
-    ) : ArticleDetail(Id, Title, Description, ImageUrl);
+    ) : ArticleDetail(Id, Title, Description, Image);
 
     public sealed record EmpireModel(
         string Id,
@@ -29,7 +29,7 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         string Title,
         string Description,
         MarkupString Content,
-        string ImageUrl,
+        ImageBundleModel Image,
         ImageModel? Flag,
         ImageModel? Map,
         HistoricalDateModel? Founded,
@@ -40,7 +40,7 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         TimeSpan TimeToRead,
         ContentRatingModel Rating,
         DateTime CreatedAt
-    ) : ArticleDetail(Id, Title, Description, ImageUrl);
+    ) : ArticleDetail(Id, Title, Description, Image);
 
     public sealed record GeneralModel(
         string Id,
@@ -48,11 +48,11 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         string Title,
         string Description,
         MarkupString Content,
-        string ImageUrl,
+        ImageBundleModel Image,
         TimeSpan TimeToRead,
         ContentRatingModel Rating,
         DateTime CreatedAt
-    ) : ArticleDetail(Id, Title, Description, ImageUrl);
+    ) : ArticleDetail(Id, Title, Description, Image);
 
     public sealed record PersonModel(
         string Id,
@@ -60,12 +60,12 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         string Title,
         string Description,
         MarkupString Content,
-        string ImageUrl,
+        ImageBundleModel Image,
         PersonBirthdayModel? Born,
         PersonBirthdayModel? Died,
         TimeSpan TimeToRead,
         ContentRatingModel Rating,
         DateTime CreatedAt,
         PersonalDetailModel[] Details
-    ) : ArticleDetail(Id, Title, Description, ImageUrl);
+    ) : ArticleDetail(Id, Title, Description, Image);
 }

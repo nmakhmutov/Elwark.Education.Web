@@ -9,14 +9,14 @@
     <PageMetaContent
         Title="@model.Course.Title"
         Description="@model.Course.Description"
-        Image="@model.Course.ImageUrl"/>
+        Image="@model.Course.Image.Url"/>
 
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1600">
         <CourseHeader
             Class="mb-3 mb-sm-6"
             CourseId="@model.Course.Id"
             Title="@model.Course.Title"
-            Image="@model.Course.ImageUrl"
+            Image="@model.Course.Image"
             HasExaminations="@(model.HasEasyExamination || model.HasHardExamination)"
             ArticleCount="@model.Course.Articles.Length"
             Activity="@model.Activity"

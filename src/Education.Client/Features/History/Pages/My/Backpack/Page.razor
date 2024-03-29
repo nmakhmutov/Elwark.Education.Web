@@ -12,10 +12,10 @@
             <article class="content">
                 <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index()" ColumnSize="Size.Medium" Context="inventory">
                     <InventoryInfoCard
-                        IconUrl="@inventory.IconUrl"
+                        IconUrl="@inventory.ImageUrl"
                         Overview="@inventory.Overview"
                         Quantity="@inventory.Quantity"
-                        Subtitle="@L.GetInventoryCategoryTypeTitle(inventory.Category)"
+                        Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
                         Title="@inventory.Title">
                         <MudButton
                             Class="mt-3"

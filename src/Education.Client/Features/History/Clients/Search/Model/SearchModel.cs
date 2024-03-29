@@ -1,13 +1,15 @@
+using Education.Client.Models.Content;
+
 namespace Education.Client.Features.History.Clients.Search.Model;
 
 public sealed record SearchModel
 {
-    public SearchModel(string id, string title, string overview, string imageUrl, string category)
+    public SearchModel(string id, string title, string overview, ImageBundleModel image, string category)
     {
         Id = id;
         Title = title;
         Overview = overview;
-        ImageUrl = imageUrl;
+        Image = image;
         Category = category;
 
         (ContentHref, CategoryHref) = category switch
@@ -24,7 +26,7 @@ public sealed record SearchModel
 
     public string Overview { get; }
 
-    public string ImageUrl { get; }
+    public ImageBundleModel Image { get; }
 
     public string Category { get; }
 

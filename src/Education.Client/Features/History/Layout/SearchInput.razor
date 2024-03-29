@@ -21,7 +21,9 @@
     Dense>
     <ItemTemplate>
         <div class="d-flex align-center">
-            <MudAvatar Image="@context.ImageUrl" Size="Size.Large" Square Class="mr-3"/>
+            <MudAvatar Size="Size.Large" Square Class="mr-3">
+                <MudImage Src="@context.Image.Small" Alt="@context.Image.Alt"/>
+            </MudAvatar>
             <div class="one-line-text">
                 <MudText Class="mud-text-secondary" Typo="Typo.caption">
                     @context.Category

@@ -9,7 +9,7 @@ public sealed record ProductInventoryModel(
     string Overview,
     string ImageUrl,
     uint Weight,
-    CategoryType Category,
     PriceModel Selling,
-    PriceModel Purchasing
+    PriceModel Purchasing,
+    CategoryType[] Categories
 ) : Product(ProductId, Title, Overview, ImageUrl, Weight);

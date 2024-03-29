@@ -6,7 +6,7 @@ public sealed record CourseOverviewModel(
     string Id,
     string Title,
     string Overview,
-    string ThumbnailUrl,
+    ImageBundleModel Image,
     uint ArticleCount,
     ContentRatingModel Rating
 );

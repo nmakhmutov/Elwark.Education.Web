@@ -95,16 +95,16 @@
             {
                 <ImageWithOverviewCard
                     Title="@L["History_Empire_Flag"]"
-                    Source="@Empire.Flag.Source"
-                    Overview="@Empire.Flag.Overview"/>
+                    Url="@Empire.Flag.Url"
+                    Alt="@Empire.Flag.Alt"/>
             }
 
             @if (Empire.Map is not null)
             {
                 <ImageWithOverviewCard
                     Title="@L["History_Empire_Map"]"
-                    Source="@Empire.Map.Source"
-                    Overview="@Empire.Map.Overview"/>
+                    Url="@Empire.Map.Url"
+                    Alt="@Empire.Map.Alt"/>
             }
 
             <AuthorizeView>
@@ -179,7 +179,7 @@
         var overlay = $"--mud-palette-overlay-{(ThemeProvider?.IsDarkMode == true ? "dark" : "light")}";
 
         _style = StyleBuilder
-            .Default("background", $"linear-gradient(0deg, var(--mud-palette-background) 5%, var({overlay}) 100%), url('{Empire.ImageUrl}')")
+            .Default("background", $"linear-gradient(0deg, var(--mud-palette-background) 5%, var({overlay}) 100%), url('{Empire.Image.Origin}')")
             .AddStyle("background-size", "cover")
             .AddStyle("background-repeat", "no-repeat")
             .AddStyle("background-position", "top center")

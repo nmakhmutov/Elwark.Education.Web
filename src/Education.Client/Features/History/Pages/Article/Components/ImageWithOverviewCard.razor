@@ -3,25 +3,25 @@
         @Title
     </MudText>
 
-    <a href="@Source" target="_blank">
-        <img class="w-100 object-contain object-center" src="@Source" alt="@Overview" loading="lazy"/>
+    <a href="@Url" target="_blank">
+        <img class="w-100 object-contain object-center" src="@Url" alt="@Alt" loading="lazy"/>
     </a>
 
     <MudText Typo="Typo.body2" Align="Align.Center">
-        @Overview
+        @Alt
     </MudText>
 </section>
 
 @code {
 
     [Parameter, EditorRequired]
-    public required string Source { get; set; }
+    public required string Url { get; set; }
 
     [Parameter, EditorRequired]
     public required string Title { get; set; }
 
     [Parameter, EditorRequired]
-    public required string Overview { get; set; }
+    public required string Alt { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
