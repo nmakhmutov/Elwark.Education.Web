@@ -15,9 +15,6 @@ else
                 <div class="title">
                     <MudSkeleton Class="my-4" SkeletonType="SkeletonType.Text" Width="60%" Height="30px"/>
                 </div>
-                <div class="rating">
-                    <MudRating MaxValue="5" SelectedValue="0" Disabled/>
-                </div>
                 <div class="completion">
                     <CourseCompletion Status="CourseLearningStatus.NotStarted" Completeness="0"/>
                 </div>
@@ -37,9 +34,6 @@ else
                     <MudLink Href="@HistoryUrl.Content.Course(item.Course.Id)" Typo="Typo.h6">
                         @item.Course.Title
                     </MudLink>
-                </div>
-                <div class="rating">
-                    <ContentRating Class="d-inline-flex flex-column align-center" Rating="@item.Course.Rating"/>
                 </div>
                 <div class="completion">
                     <CourseCompletion

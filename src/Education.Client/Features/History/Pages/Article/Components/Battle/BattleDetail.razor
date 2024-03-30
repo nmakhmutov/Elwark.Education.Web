@@ -11,20 +11,7 @@
             </ArticleTitle>
 
             <div class="d-flex justify-center mb-6">
-                @if (Battle.Started == Battle.Finished)
-                {
-                    <HistoryDate Typo="Typo.subtitle1" Date="@Battle.Started"/>
-                }
-                else
-                {
-                    <div class="d-flex align-center">
-                        <HistoryDate Typo="Typo.subtitle1" Date="@Battle.Started"/>
-
-                        <MudText Typo="Typo.subtitle1" Class="mx-3">&#8212;</MudText>
-
-                        <HistoryDate Typo="Typo.subtitle1" Date="@Battle.Finished"/>
-                    </div>
-                }
+                <HistoricalDateRange Started="@Battle.Started" Finished="@Battle.Finished"/>
             </div>
             <MudText Class="mb-3 mb-sm-6" Typo="Typo.body1" Align="Align.Center">
                 @Battle.Description

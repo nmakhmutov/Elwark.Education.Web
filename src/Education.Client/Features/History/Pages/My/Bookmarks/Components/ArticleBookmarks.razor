@@ -16,17 +16,6 @@ else
                     <MudSkeleton Class="my-1" SkeletonType="SkeletonType.Text" Width="60%" Height="32px"/>
                     <MudSkeleton SkeletonType="SkeletonType.Text" Width="25%" Height="22px"/>
                 </div>
-                <div class="rating">
-                    <MudRating MaxValue="5" SelectedValue="0" Disabled/>
-                </div>
-                <div class="quizzes">
-                    <MudChip
-                        Class="ma-0"
-                        Color="Color.Default"
-                        Variant="Variant.Outlined"
-                        Icon="@EduIcons.Quiz"
-                        Text="0"/>
-                </div>
                 <div class="completion">
                     <ArticleCompletionChip Status="LearningStatus.NotEngaged"/>
                 </div>
@@ -36,13 +25,6 @@ else
             </div>
         </Placeholder>
         <ItemContent>
-            @* <ArticleCard *@
-            @*     Article="@context.Article" *@
-            @*     Activity="@context.Activity" *@
-            @*     HasQuiz="@context.HasQuiz" *@
-            @*     OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync" *@
-            @*     Horizontal/> *@
-
             <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
                 <div class="image">
                     <MudAvatar Class="rounded" Size="Size.Large" Square>
@@ -54,18 +36,13 @@ else
                         @context.Article.Title
                     </MudLink>
                     <br/>
-                    <a class="mud-typography mud-link mud-text-secondary mud-link-underline-hover mud-typography-body2"
-                       href="@HistoryUrl.Content.Articles(context.Article.Epoch)">
+                    <MudLink 
+                        Class="mud-text-secondary" 
+                        Color="Color.Inherit"
+                        Typo="Typo.body2"
+                        Href="@HistoryUrl.Content.Articles(context.Article.Epoch)">
                         @L.GetEpochTitle(context.Article.Epoch)
-                    </a>
-                </div>
-                <div class="rating">
-                    <ContentRating Class="d-inline-flex flex-column align-center" Rating="@context.Article.Rating"/>
-                </div>
-                <div class="quizzes">
-                    <TotalQuizzesChip
-                        Easy="@(context.Activity?.EasyQuizzes ?? 0)"
-                        Hard="@(context.Activity?.HardQuizzes ?? 0)"/>
+                    </MudLink>
                 </div>
                 <div class="completion">
                     <ArticleCompletionChip

@@ -1,10 +1,18 @@
 @using System.Text
 <MudText Typo="@Typo" Color="@Color" Align="Align" Class="@Class">
     @_date
+
+    @if (_isBce)
+    {
+        <MudText Color="Color.Inherit" Typo="Typo.caption">
+            @L["History_Date_BCE"]
+        </MudText>
+    }
 </MudText>
 
 @code {
     private string? _date;
+    private bool _isBce;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -47,9 +55,7 @@
 
         sb.Append(Math.Abs(date.Year));
 
-        if (date.Year < 0)
-            sb.Append(' ')
-                .Append(L["History_Date_BCE"]);
+        _isBce = date.Year < 0;
 
         return sb.ToString();
     }

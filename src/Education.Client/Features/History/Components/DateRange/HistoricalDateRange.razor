@@ -1,0 +1,27 @@
+@if (Started is not null && Finished is not null)
+{
+    if (Started == Finished)
+    {
+        <HistoryDate Typo="Typo.subtitle1" Date="@Started"/>
+    }
+    else
+    {
+        <div class="d-inline-flex align-center">
+            <HistoryDate Typo="Typo.subtitle1" Date="@Started"/>
+
+            <MudText Typo="Typo.subtitle1" Class="mx-3">&#8212;</MudText>
+
+            <HistoryDate Typo="Typo.subtitle1" Date="@Finished"/>
+        </div>
+    }
+}
+
+@code {
+
+    [Parameter, EditorRequired]
+    public HistoricalDateModel? Started { get; set; }
+
+    [Parameter, EditorRequired]
+    public HistoricalDateModel? Finished { get; set; }
+
+}

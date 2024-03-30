@@ -75,11 +75,7 @@
                                     @empire.Title
                                 </MudLink>
                             </div>
-                            <div class="d-inline-flex align-center">
-                                <HistoryDate Date="@empire.Founded"/>
-                                <MudText Typo="Typo.subtitle1" class="mx-3">&#8212;</MudText>
-                                <HistoryDate Date="@empire.Dissolved"/>
-                            </div>
+                            <HistoricalDateRange Started="@empire.Founded" Finished="@empire.Dissolved"/>
                             <MudText Typo="Typo.body1" Class="my-3">
                                 @empire.Overview
                             </MudText>

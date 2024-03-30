@@ -22,9 +22,10 @@
             </EduFitGrid>
 
             <section class="activity mud-paper pa-3 pa-sm-6">
+                <ActivityChart Activities="@model.Activities"/>
+
                 @if (model.Activities.Length > 0)
                 {
-                    <ActivityChart Activities="@model.Activities"/>
                     <ActivityTable Activities="@model.Activities"/>
                 }
                 else

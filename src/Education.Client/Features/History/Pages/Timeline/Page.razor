@@ -1,11 +1,12 @@
 @page "/history/timeline"
 @layout HistoryLayout
+@implements IAsyncDisposable
 
 <PageTitle>
     @L["History_Timeline_Title"]
 </PageTitle>
 
-<div class="mud-paper d-flex justify-center align-center gap-3 gap-sm-6 pb-3">
+<div class="border-b mud-border-lines-default d-flex justify-center align-center gap-3 gap-sm-6 py-3">
     <MudIconButton Icon="@Icons.Material.Outlined.ArrowBack" OnClick="@OnPreviousYearClick"/>
     <MudButton Variant="Variant.Text" Color="Color.Default" DisableElevation OnClick="@OnYearClick">
         <div class="d-flex align-end gap-3">
@@ -21,10 +22,39 @@
 </div>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync" Context="result">
-    <section class="grid">
-        @foreach (var item in result.Items)
-        {
-            <TimelineArticleCard Model="@item"/>
-        }
-    </section>
+    <MudTimeline Class="px-3 px-sm-6" TimelinePosition="@_timelinePosition">
+        <Virtualize Items="@result.Items">
+            <MudTimelineItem Color="Color.Primary" Size="Size.Medium" Elevation="25" Variant="Variant.Filled">
+                <ItemDot>
+                    <MudIcon Icon="@Icons.Material.Outlined.DateRange" Size="Size.Medium"/>
+                </ItemDot>
+                <ItemOpposite>
+                    <HistoricalDateRange Started="@context.Started" Finished="@context.Finished"/>
+                </ItemOpposite>
+                <ItemContent>
+                    <div class="card">
+                        <MudImage
+                            Src="@context.Image.Small"
+                            Alt="@context.Image.Alt"
+                            ObjectFit="ObjectFit.Cover"
+                            ObjectPosition="ObjectPosition.Center"
+                            Width="180"
+                            Height="180"/>
+
+                        <div class="card-content">
+                            <MudLink Typo="Typo.h6" Href="@HistoryUrl.Content.Article(context.Id)">
+                                @context.Title
+                            </MudLink>
+                            <div class="d-md-none">
+                                <HistoricalDateRange Started="@context.Started" Finished="@context.Finished"/>
+                            </div>
+                            <MudText>
+                                @context.Overview
+                            </MudText>
+                        </div>
+                    </div>
+                </ItemContent>
+            </MudTimelineItem>
+        </Virtualize>
+    </MudTimeline>
 </ApiViewer>

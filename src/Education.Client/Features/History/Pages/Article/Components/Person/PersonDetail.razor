@@ -3,7 +3,12 @@
     <div class="header">
         <div class="preamble">
             <div class="image">
-                <img class="fluid object-cover object-center mb-3" src="@Person.Image.Origin" alt="@Person.Image.Alt"/>
+                <MudImage
+                    Class="mb-3"
+                    Src="@Person.Image.Origin"
+                    Alt="@Person.Image.Alt"
+                    ObjectFit="ObjectFit.Cover"
+                    ObjectPosition="ObjectPosition.Center"/>
 
                 @if (Person.Born is not null || Person.Died is not null)
                 {
