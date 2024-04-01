@@ -2,16 +2,16 @@
 {
     if (Started == Finished)
     {
-        <HistoryDate Typo="Typo.subtitle1" Date="@Started"/>
+        <HistoryDate Typo="@Typo" Date="@Started"/>
     }
     else
     {
         <div class="d-inline-flex align-center">
-            <HistoryDate Typo="Typo.subtitle1" Date="@Started"/>
+            <HistoryDate Typo="@Typo" Date="@Started"/>
 
-            <MudText Typo="Typo.subtitle1" Class="mx-3">&#8212;</MudText>
+            <MudText Typo="@Typo" Class="mx-3">&#8212;</MudText>
 
-            <HistoryDate Typo="Typo.subtitle1" Date="@Finished"/>
+            <HistoryDate Typo="@Typo" Date="@Finished"/>
         </div>
     }
 }
@@ -23,5 +23,8 @@
 
     [Parameter, EditorRequired]
     public HistoricalDateModel? Finished { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.subtitle1;
 
 }

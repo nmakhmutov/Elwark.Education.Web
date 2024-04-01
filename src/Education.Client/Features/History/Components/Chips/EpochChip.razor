@@ -1,0 +1,16 @@
+<MudChip Class="@(Class + " ma-0")" Href="@HistoryUrl.Content.Articles(Epoch)" Color="Color.Secondary" Size="Size.Small" Label>
+    @L.GetEpochTitle(Epoch)
+</MudChip>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public EpochType Epoch { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

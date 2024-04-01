@@ -10,7 +10,7 @@ else
         <Placeholder>
             <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
                 <div class="image">
-                    <MudSkeleton SkeletonType="SkeletonType.Circle" Width="56px" Height="56px"/>
+                    <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="80px" Height="80px"/>
                 </div>
                 <div class="title">
                     <MudSkeleton Class="my-1" SkeletonType="SkeletonType.Text" Width="60%" Height="32px"/>
@@ -27,22 +27,16 @@ else
         <ItemContent>
             <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
                 <div class="image">
-                    <MudAvatar Class="rounded" Size="Size.Large" Square>
+                    <MudAvatar Class="avatar rounded" Square>
                         <MudImage Src="@context.Article.Image.Small" Alt="@context.Article.Image.Alt"/>
                     </MudAvatar>
                 </div>
                 <div class="title one-line-text">
-                    <MudLink Href="@HistoryUrl.Content.Article(context.Article.Id)" Typo="Typo.h6">
+                    <MudLink Class=" mb-3" Href="@HistoryUrl.Content.Article(context.Article.Id)" Typo="Typo.h6">
                         @context.Article.Title
                     </MudLink>
                     <br/>
-                    <MudLink 
-                        Class="mud-text-secondary" 
-                        Color="Color.Inherit"
-                        Typo="Typo.body2"
-                        Href="@HistoryUrl.Content.Articles(context.Article.Epoch)">
-                        @L.GetEpochTitle(context.Article.Epoch)
-                    </MudLink>
+                    <EpochChip Class="mt-3" Epoch="@context.Article.Epoch"/>
                 </div>
                 <div class="completion">
                     <ArticleCompletionChip

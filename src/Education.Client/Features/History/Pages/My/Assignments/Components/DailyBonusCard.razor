@@ -25,31 +25,31 @@
     }
     else
     {
-        <InternalMonies Class="justify-center pa-6" Monies="@Bonus.Rewards" Typo="Typo.h5" IconSize="Size.Large" Horizontal/>
+        <InternalMonies Class="justify-center pa-6" Monies="@Bonus.Rewards" Typo="Typo.h5" IconSize="Size.Medium" Horizontal/>
 
         <div class="d-flex justify-center px-3 pb-3 px-sm-6 pb-sm-6">
             <LoadingButton
                 Class="mr-3"
-                FullWidth
-                DisableElevation
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 Text="@L["DailyBonus_Claim"]"
                 LoadingText="@L["Loading_Title"]"
-                Disabled="@(_loading != Loading.None)"
-                IsLoading="@(_loading == Loading.Collect)"
-                OnClick="@ClaimAsync"/>
+                Disabled="@IsDisabled"
+                IsLoading="@IsLoading"
+                OnClick="@ClaimAsync"
+                FullWidth
+                DisableElevation/>
 
             <LoadingButton
-                DisableElevation
+                Class="px-6"
                 Variant="Variant.Outlined"
                 Color="Color.Default"
                 Text="@L["DailyBonus_Reject"]"
                 LoadingText="@L["Loading_Title"]"
-                Disabled="@(_loading != Loading.None)"
-                IsLoading="@(_loading == Loading.Reject)"
-                OnClick="@RejectAsync"/>
-
+                Disabled="@IsDisabled"
+                IsLoading="@IsLoading"
+                OnClick="@RejectAsync"
+                DisableElevation/>
         </div>
     }
 </section>
@@ -75,6 +75,12 @@
     [Parameter]
     public string? Class { get; set; }
 
+    public bool IsDisabled =>
+        _loading != Loading.None;
+
+    public bool IsLoading =>
+        _loading == Loading.Reject;
+    
     private async Task ClaimAsync()
     {
         _loading = Loading.Collect;

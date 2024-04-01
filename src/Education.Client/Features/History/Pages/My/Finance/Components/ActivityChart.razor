@@ -8,7 +8,7 @@
             TItem="MoneyActivityModel"
             Items="item.Value"
             Name="@L.GetInternalCurrencyTitle(item.Key)"
-            SeriesType="SeriesType.Line"
+            SeriesType="SeriesType.Bar"
             XValue="@(x => x.Day.ToString("dd MMM"))"
             YValue="@(x => x.Balance)"/>
     }
@@ -29,12 +29,6 @@
             Height = "350px",
             Background = "transparent",
             ForeColor = "var(--mud-palette-text-primary)"
-        },
-        Stroke = new Stroke
-        {
-            Show = true,
-            Curve = Curve.Smooth,
-            Width = new Size(3)
         },
         Grid = new Grid
         {

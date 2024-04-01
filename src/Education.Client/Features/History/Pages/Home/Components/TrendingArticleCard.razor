@@ -7,9 +7,7 @@
     </span>
 
     <div class="content">
-        <MudChip Class="ma-0" Color="Color.Secondary" Href="@HistoryUrl.Content.Articles(Model.Article.Epoch)" Size="Size.Small" Label>
-            @L.GetEpochTitle(Model.Article.Epoch)
-        </MudChip>
+        <EpochChip Epoch="@Model.Article.Epoch"/>
 
         <MudLink
             Class="@(Model.Article.Title.Length > 50 ? "w-100 one-line-text" : null)"

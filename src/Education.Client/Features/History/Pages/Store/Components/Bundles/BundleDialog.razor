@@ -138,13 +138,8 @@
             }
         }
 
-        @if (_error is not null)
-        {
-            <div class="d-flex flex-column mt-3 mt-sm-6">
-                <MudText Typo="Typo.subtitle1" Color="Color.Error">@_error.Title</MudText>
-                <MudText Typo="Typo.subtitle2">@_error.Message</MudText>
-            </div>
-        }
+        @_error
+
     </DialogContent>
 </MudDialog>
 
@@ -153,7 +148,7 @@
     private const byte Max = 42;
     private byte _quantity = 1;
     private OrderStatusModel? _status;
-    private Error? _error;
+    private RenderFragment? _error;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -197,7 +192,7 @@
         _status = new OrderStatusModel(Guid.Empty, "Creating");
 
         var result = await OrderClient.CheckoutAsync(CheckoutRequest.Selling(Guid.NewGuid(), Product.ProductId, _quantity));
-        if (result.MathError(x => _error = new Error(x.Title, x.Detail)))
+        if (result.MathError(x => UpdateErrorState(x)))
             return;
 
         result.Match(x => _status = x);
@@ -211,7 +206,7 @@
                 await Task.Delay(delay);
 
                 var status = await OrderClient.GetStatus(_status.Id);
-                status.Match(x => _status = x, e => _error = new Error(e.Title, e.Detail));
+                status.Match(x => _status = x, e => UpdateErrorState(e));
                 StateHasChanged();
 
                 if (_status is { IsFinal: true, IsRejected: false })
@@ -235,23 +230,48 @@
     private uint TotalWeight =>
         Product.Weight * _quantity;
 
-    private void UpdateErrorState() =>
-        _error = GetErrorMessage();
-
-    private Error? GetErrorMessage()
+    private void UpdateErrorState(Error? error = null)
     {
-        if (!Profile.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
+        _error = CreateError();
+
+        return;
+
+        RenderFragment? CreateError()
         {
-            var currency = L.GetInternalCurrencyTitle(TotalPrice.Currency);
-            return new Error(L["InternalMoney_NotEnough_Title", currency], L["InternalMoney_NotEnough_Description", currency]);
+            if (error is not null)
+            {
+                return @<div class="d-flex flex-column mt-3 mt-sm-6">
+                    <MudText Typo="Typo.subtitle1" Color="Color.Error">
+                        @error.Title
+                    </MudText>
+                    <MudText Typo="Typo.subtitle2">
+                        @error.Detail
+                    </MudText>
+                </div>;
+            }
+
+            if (!Profile.Wallet.TryGetValue(TotalPrice.Currency, out var amount) || TotalPrice.Amount > amount)
+            {
+                return @<div class="d-flex flex-row align-center mt-3 mt-sm-6">
+                    <MudText Class="mr-1" Typo="Typo.subtitle1" Color="Color.Error">
+                        @L["NotEnough_Title"]
+                    </MudText>
+                    <MudIcon Color="Color.Error" Size="Size.Small" Icon="@TotalPrice.Currency.GetIcon()"/>
+                </div>;
+            }
+
+            if (TotalWeight > Profile.Backpack.Emptiness)
+                return @<div class="d-flex flex-column mt-3 mt-sm-6">
+                    <MudText Typo="Typo.subtitle1" Color="Color.Error">
+                        @L["Backpack_IsFull_Title"]
+                    </MudText>
+                    <MudText Typo="Typo.subtitle2">
+                        @L["Backpack_IsFull_Description"]
+                    </MudText>
+                </div>;
+
+            return null;
         }
-
-        if (TotalWeight > Profile.Backpack.Emptiness)
-            return new Error(L["Backpack_IsFull_Title"], L["Backpack_IsFull_Description"]);
-
-        return null;
     }
-
-    private sealed record Error(string Title, string? Message);
 
 }
