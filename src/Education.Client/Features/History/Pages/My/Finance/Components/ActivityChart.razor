@@ -38,7 +38,7 @@
         Theme = new Theme()
     };
 
-    private Dictionary<InternalCurrency, IEnumerable<MoneyActivityModel>> _activities = [];
+    private Dictionary<InternalCurrency, List<MoneyActivityModel>> _activities = [];
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -54,22 +54,24 @@
         if (Activities.Length == 0)
             return;
 
-        var min = Activities.MinBy(x => x.Day);
-        if (min is null)
-            return;
-
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
-        var activities = new List<MoneyActivityModel>(Activities);
+        var start = GetStartDay(today);
 
-        foreach (var group in activities.GroupBy(x => x.Currency))
-            if (group.All(x => x.Day != min.Day))
-                activities.Add(new MoneyActivityModel(min.Day, group.Key, 0, 0, 0));
+        _activities = Activities
+            .Select(x => x.Currency)
+            .Distinct()
+            .ToDictionary(x => x, _ => new List<MoneyActivityModel>());
 
-        _activities = activities.GroupBy(x => x.Currency)
-            .ToDictionary(
-                x => x.Key,
-                group => group.FillDailyGaps(today, x => x.Day, x => new MoneyActivityModel(x, group.Key, 0, 0, 0))
-            );
+        foreach (var (currency, models) in _activities)
+        {
+            for (var day = start; day <= today; day = day.AddDays(1))
+            {
+                var model = Activities.FirstOrDefault(x => x.Currency == currency && x.Day == day)
+                    ?? new MoneyActivityModel(day, currency, 0, 0, 0);
+
+                models.Add(model);
+            }
+        }
     }
 
     protected override Task OnParametersSetAsync()
@@ -82,4 +84,17 @@
         return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
     }
 
+    private DateOnly GetStartDay(DateOnly today)
+    {
+        var last = today.AddDays(-7);
+
+        var min = Activities.Min(x => (DateOnly?)x.Day);
+        if (min is null)
+            return last;
+
+        if (min < last)
+            return (DateOnly)min;
+
+        return last;
+    }
 }
