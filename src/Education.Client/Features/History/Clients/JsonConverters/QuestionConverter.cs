@@ -13,10 +13,10 @@ internal sealed class QuestionConverter : JsonConverter<Question?>
 
         return type switch
         {
-            "short" => document.Deserialize<Question.ShortModel>(options),
+            "text" => document.Deserialize<Question.TextModel>(options),
             "single" => document.Deserialize<Question.SingleModel>(options),
-            "multiple" => document.Deserialize<Question.MultipleModel>(options),
-            "ordered" => document.Deserialize<Question.OrderedModel>(options),
+            "multi" => document.Deserialize<Question.MultiModel>(options),
+            "ordering" => document.Deserialize<Question.OrderingModel>(options),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, @"Unknown test question")
         };
     }

@@ -71,7 +71,7 @@
 
 @code {
     private Validator _validator = default!;
-    private MultipleAnswerModel _userAnswer = new();
+    private MultiAnswerModel _userAnswer = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -83,13 +83,13 @@
     public bool IsCompleted { get; set; }
 
     [Parameter, EditorRequired]
-    public required AnswerResult.MultipleModel? CorrectAnswer { get; set; }
+    public required AnswerResult.MultiModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
     public required AnswerOption[] Options { get; set; }
 
     [Parameter, EditorRequired]
-    public required EventCallback<MultipleAnswerModel> OnAnswerClick { get; set; }
+    public required EventCallback<MultiAnswerModel> OnAnswerClick { get; set; }
 
     [Parameter]
     public EventCallback OnNextClick { get; set; }
@@ -106,13 +106,13 @@
         finally
         {
             if (!OnNextClick.HasDelegate)
-                _userAnswer = new MultipleAnswerModel();
+                _userAnswer = new MultiAnswerModel();
         }
     }
 
     private Task OnNextAsync()
     {
-        _userAnswer = new MultipleAnswerModel();
+        _userAnswer = new MultiAnswerModel();
         return OnNextClick.InvokeAsync();
     }
 
@@ -136,7 +136,7 @@
             _ => (Icon: null, Color: Color.Default)
         };
 
-    public sealed class Validator : AbstractValidator<MultipleAnswerModel>
+    public sealed class Validator : AbstractValidator<MultiAnswerModel>
     {
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.Answer)

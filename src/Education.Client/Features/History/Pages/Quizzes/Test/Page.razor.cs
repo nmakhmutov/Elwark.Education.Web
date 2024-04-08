@@ -12,7 +12,7 @@ namespace Education.Client.Features.History.Pages.Quizzes.Test;
 public sealed partial class Page
 {
     private AnswerResult? _correctAnswer;
-    private ApiResult<QuizModel> _result = ApiResult<QuizModel>.Loading();
+    private ApiResult<QuizModel> _quiz = ApiResult<QuizModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -30,64 +30,68 @@ public sealed partial class Page
     public string Id { get; set; } = string.Empty;
 
     private double Progress =>
-        _result.Match(x => (double)x.CompletedQuestions / x.TotalQuestions * 100, _ => 0, () => 0);
+        _quiz.Match(x => (double)x.CompletedQuestions / x.TotalQuestions * 100, _ => 0, () => 0);
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await QuizClient.GetAsync(Id);
-        _result.MathError(_ => Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id)));
+        _quiz = await QuizClient.GetAsync(Id);
+        _quiz.MathError(x => HandlerError(x));
     }
 
     private async Task OnExpiredAsync()
     {
-        _result = await QuizClient.GetAsync(Id);
-        _result.MathError(_ => Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id)));
+        _quiz = await QuizClient.GetAsync(Id);
+        _quiz.MathError(x => HandlerError(x));
     }
 
     private async Task OnAnswerAsync(UserAnswerModel answer)
     {
-        var quiz = _result.Unwrap();
+        var quiz = _quiz.Unwrap();
         var result = await QuizClient.CheckAsync(quiz.TestId, quiz.Question.Id, answer);
 
-        result.Match(x =>
-            {
-                _correctAnswer = x.Answer;
-                _result = ApiResult<QuizModel>.Success(quiz with
-                {
-                    CompletedQuestions = x.CompletedQuestions,
-                    TotalQuestions = x.TotalQuestions,
-                    IsCompleted = x.IsCompleted
-                });
+        result.Match(x => HandleSuccess(x), e => HandlerError(e));
+        return;
 
-                StateHasChanged();
-            },
-            e =>
+        void HandleSuccess(QuizAnswerModel model)
+        {
+            _correctAnswer = model.Answer;
+            _quiz = ApiResult<QuizModel>.Success(quiz with
             {
-                if (e.IsQuizAlreadyCompleted())
-                    Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
-                else
-                    Snackbar.Add(e.Detail, Severity.Error);
+                CompletedQuestions = model.CompletedQuestions,
+                TotalQuestions = model.TotalQuestions,
+                IsCompleted = model.IsCompleted
             });
+
+            StateHasChanged();
+        }
     }
 
     private async Task OnNextAsync()
     {
-        var quiz = _result.Unwrap();
-        if (quiz.IsCompleted)
+        if (_quiz.Map(x => x.IsCompleted).Unwrap())
         {
             Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
-            return;
         }
+        else
+        {
+            _correctAnswer = null;
+            _quiz = await QuizClient.GetAsync(Id);
 
-        _correctAnswer = null;
-        _result = await QuizClient.GetAsync(Id);
-
-        StateHasChanged();
+            StateHasChanged();
+        }
     }
 
     private async Task OnUseInventory(uint id)
     {
-        _result = await QuizClient.ApplyInventoryAsync(Id, id);
-        _result.MathError(e => Snackbar.Add(e.Detail, Severity.Error));
+        _quiz = await QuizClient.ApplyInventoryAsync(Id, id);
+        _quiz.MathError(x => HandlerError(x));
+    }
+
+    private void HandlerError(Error error)
+    {
+        if (error.IsQuizAlreadyCompleted() || error.IsQuizExpired())
+            Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
+        else
+            Snackbar.Add(error.Title, Severity.Error);
     }
 }

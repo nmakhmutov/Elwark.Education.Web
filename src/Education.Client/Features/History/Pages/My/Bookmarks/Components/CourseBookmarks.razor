@@ -38,7 +38,8 @@ else
                 <div class="completion">
                     <CourseCompletion
                         Status="@(item.Activity?.Status ?? CourseLearningStatus.NotStarted)"
-                        Completeness="@(item.Activity?.Completeness ?? 0)"/>
+                        Completeness="@(item.Activity?.Completeness ?? 0)"
+                        Href="@HistoryUrl.User.MyCourse(item.Course.Id)"/>
                 </div>
                 <div class="actions">
                     <BookmarkButton

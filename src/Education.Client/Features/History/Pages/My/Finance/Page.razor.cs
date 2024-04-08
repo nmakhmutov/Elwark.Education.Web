@@ -1,7 +1,6 @@
 using Education.Client.Clients;
 using Education.Client.Features.History.Clients.User;
 using Education.Client.Features.History.Clients.User.Model;
-using Education.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -17,10 +16,7 @@ public sealed partial class Page
 
     [Inject]
     private IHistoryUserClient UserClient { get; init; } = default!;
-    
-    [CascadingParameter]
-    private CustomerState Customer { get; set; } = default!;
-    
+
     private List<BreadcrumbItem> Breadcrumbs =>
     [
         new BreadcrumbItem(L["User_Dashboard_Title"], HistoryUrl.User.MyDashboard),

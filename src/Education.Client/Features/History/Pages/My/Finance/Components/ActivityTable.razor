@@ -4,16 +4,8 @@
     Items="@Activities.OrderByDescending(x => x.Day)"
     Breakpoint="Breakpoint.Xs"
     Elevation="0"
-    GroupBy="@_groupDefinition"
     Bordered="false"
-    AllowUnsorted="false"
-    SortLabel="@L["SortBy_Title"]"
     Hover>
-    <GroupHeaderTemplate>
-        <MudTh colspan="4">
-            @Customer.Humanize((DateOnly)context.Key)
-        </MudTh>
-    </GroupHeaderTemplate>
     <HeaderContent>
         <MudTh></MudTh>
         <MudTh>
@@ -28,7 +20,10 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd>
-            <MudIcon Icon="@context.Currency.GetIcon()"/>
+            <div class="d-flex gap-3">
+                <MudIcon Icon="@context.Currency.GetIcon()"/>
+                <MudText>@Customer.Humanize(context.Day)</MudText>
+            </div>
         </MudTd>
         <MudTd DataLabel="@L["InternalMoney_Income_Title"]">
             @context.Income
@@ -43,13 +38,6 @@
 </MudTable>
 
 @code {
-
-    private TableGroupDefinition<MoneyActivityModel> _groupDefinition = new()
-    {
-        Indentation = false,
-        Expandable = false,
-        Selector = e => e.Day
-    };
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;

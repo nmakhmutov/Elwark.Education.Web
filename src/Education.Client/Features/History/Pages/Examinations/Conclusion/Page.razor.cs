@@ -27,9 +27,9 @@ public sealed partial class Page
     private static Severity GetColor(ExaminationStatus status) =>
         status switch
         {
-            ExaminationStatus.ExaminationSucceeded => Severity.Success,
-            ExaminationStatus.ExaminationFailed => Severity.Error,
-            ExaminationStatus.ExaminationTimeExceeded => Severity.Warning,
+            ExaminationStatus.Succeeded => Severity.Success,
+            ExaminationStatus.Failed => Severity.Error,
+            ExaminationStatus.TimeExceeded => Severity.Warning,
             _ => Severity.Info
         };
 }

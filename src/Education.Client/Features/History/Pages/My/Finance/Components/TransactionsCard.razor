@@ -1,0 +1,66 @@
+@using Education.Client.Features.History.Clients.User.Model
+<section class="mud-paper pa-3 pa-sm-6 @Class">
+    <MudText Class="mb-3" Typo="Typo.h5">
+        @L["Transactions_Recent_Title"]
+    </MudText>
+    <MudTable
+        Items="@Transactions.Take(HasMore && !_showMore ? Quantity : Transactions.Length)"
+        Elevation="0"
+        Breakpoint="Breakpoint.None">
+        <RowTemplate>
+            <MudTd>
+                <MudText Typo="Typo.subtitle1">
+                    @context.Title
+                </MudText>
+                <MudText Class="mud-text-secondary" Typo="Typo.body1">
+                    @Customer.Humanize(context.Date)
+                </MudText>
+            </MudTd>
+            <MudTd>
+                @if (context.Kind == TransactionKind.Income)
+                {
+                    <MudText Typo="Typo.caption" Color="Color.Success">
+                        @L["InternalMoney_Income_Title"]
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.caption" Color="Color.Error">
+                        @L["InternalMoney_Expense_Title"]
+                    </MudText>
+                }
+                <InternalMonies Monies="@context.Monies" Horizontal/>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+    @if (HasMore && !_showMore)
+    {
+        <div class="d-flex justify-center">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation OnClick="@(() => _showMore = true)">
+                Show more
+            </MudButton>
+        </div>
+    }
+</section>
+
+@code {
+    private const int Quantity = 12;
+
+    private bool _showMore;
+
+    private bool HasMore =>
+        Transactions.Length > Quantity;
+
+    [Inject]
+    public IStringLocalizer<App> L { get; init; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public TransactionModel[] Transactions { get; set; } = [];
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

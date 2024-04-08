@@ -37,10 +37,11 @@
             {
                 <CourseCompletion
                     Class="w-100"
+                    Typo="Typo.caption"
+                    Size="Size.Small"
                     Status="@(Activity?.Status ?? CourseLearningStatus.NotStarted)"
                     Completeness="@(Activity?.Completeness ?? 0)"
-                    Typo="Typo.caption"
-                    Size="Size.Small"/>
+                    Href="@HistoryUrl.User.MyCourse(Course.Id)"/>
             }
 
             <AuthorizeView>

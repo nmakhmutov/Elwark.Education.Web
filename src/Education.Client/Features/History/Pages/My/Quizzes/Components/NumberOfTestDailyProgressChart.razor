@@ -5,7 +5,6 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["NumberOfQuizzes_Successful_Title"]"
-        Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => x.NumberOfQuizzes.Succeeded)"/>
@@ -14,7 +13,6 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["NumberOfQuizzes_Failed_Title"]"
-        Stroke="@(new SeriesStroke { Color = Colors.Red.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => x.NumberOfQuizzes.Failed)"/>
@@ -23,7 +21,6 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["NumberOfQuizzes_MistakesExceeded_Title"]"
-        Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => x.NumberOfQuizzes.MistakesExceeded)"/>
@@ -32,7 +29,6 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["NumberOfQuizzes_TimeExceeded_Title"]"
-        Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
         SeriesType="SeriesType.Bar"
         XValue="@(e => e.Date.ToString("dd MMM"))"
         YValue="@(x => x.NumberOfQuizzes.TimeExceeded)"/>
@@ -73,6 +69,7 @@
         {
             BorderColor = "var(--mud-palette-divider)"
         },
+        Colors = [Colors.Green.Accent4, Colors.Red.Default, Colors.Blue.Default, Colors.DeepPurple.Default],
         Theme = new Theme()
     };
 
@@ -87,12 +84,12 @@
 
     protected override Task OnParametersSetAsync()
     {
-        var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
+        var current = ThemeProvider is { IsDarkMode: true } ? Mode.Dark : Mode.Light;
         if (_options.Theme.Mode == current)
             return Task.CompletedTask;
 
         _options.Theme.Mode = current;
-        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
+        return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 
 }

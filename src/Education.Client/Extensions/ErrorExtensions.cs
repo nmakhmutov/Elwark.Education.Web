@@ -13,6 +13,12 @@ internal static class ErrorExtensions
         return error.Type == "ExaminationAlreadyCreated" && found;
     }
 
+    public static bool IsExaminationAlreadyCompleted(this Error error) =>
+        error.Type == "ExaminationAlreadyCompleted";
+
+    public static bool IsExaminationExpired(this Error error) =>
+        error.Type == "ExaminationExpired";
+    
     public static bool IsQuizAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string quizId)
     {
         var found = error.Payload.TryGetValue("id", out var id);
@@ -26,6 +32,9 @@ internal static class ErrorExtensions
 
     public static bool IsQuizNotFound(this Error error) =>
         error.Type == "QuizNotFound";
+
+    public static bool IsQuizExpired(this Error error) =>
+        error.Type == "QuizExpired";
 
     public static bool IsFlowNotFound(this Error error) =>
         error.Type == "FlowNotFound";

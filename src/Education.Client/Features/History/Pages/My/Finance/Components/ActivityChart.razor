@@ -2,86 +2,95 @@
 @using Education.Client.Features.History.Clients.User.Model
 @using ApexCharts
 <ApexChart @ref="@_chart" TItem="MoneyActivityModel" Options="_options">
-    @foreach (var item in _activities)
-    {
-        <ApexPointSeries
-            TItem="MoneyActivityModel"
-            Items="item.Value"
-            Name="@L.GetInternalCurrencyTitle(item.Key)"
-            SeriesType="SeriesType.Bar"
-            XValue="@(x => x.Day.ToString("dd MMM"))"
-            YValue="@(x => x.Balance)"/>
-    }
+    <ApexPointSeries
+        TItem="MoneyActivityModel"
+        Items="@_activities"
+        SeriesType="SeriesType.Bar"
+        Name="@L["InternalMoney_Income_Title"]"
+        XValue="@(x => Customer.Humanize(x.Day))"
+        YValue="@(x => x.Income)"/>
+
+    <ApexPointSeries
+        TItem="MoneyActivityModel"
+        Items="@_activities"
+        SeriesType="SeriesType.Bar"
+        Name="@L["InternalMoney_Expense_Title"]"
+        XValue="@(x => Customer.Humanize(x.Day))"
+        YValue="@(x => x.Expense)"/>
 </ApexChart>
 
 @code {
     private ApexChart<MoneyActivityModel>? _chart;
 
-    private ApexChartOptions<MoneyActivityModel> _options = new()
-    {
-        Legend = new Legend
+    private ApexChartOptions<MoneyActivityModel> _options =
+        new()
         {
-            Position = LegendPosition.Top
-        },
-        Chart = new Chart
-        {
-            Width = "100%",
-            Height = "350px",
-            Background = "transparent",
-            ForeColor = "var(--mud-palette-text-primary)"
-        },
-        Grid = new Grid
-        {
-            BorderColor = "var(--mud-palette-divider)"
-        },
-        Colors = [Colors.Blue.Default, Colors.DeepPurple.Default, Colors.Green.Accent4, Colors.Red.Default],
-        Theme = new Theme()
-    };
+            Legend = new Legend
+            {
+                Position = LegendPosition.Top
+            },
+            Chart = new Chart
+            {
+                Width = "100%",
+                Height = "350px",
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Grid = new Grid
+            {
+                BorderColor = "var(--mud-palette-divider)"
+            },
+            PlotOptions = new PlotOptions
+            {
+                Bar = new PlotOptionsBar
+                {
+                    ColumnWidth = "30%"
+                }
+            },
+            Theme = new Theme()
+        };
 
-    private Dictionary<InternalCurrency, List<MoneyActivityModel>> _activities = [];
+    private List<MoneyActivityModel> _activities = [];
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
-
+    
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+    
     [Parameter, EditorRequired]
     public required MoneyActivityModel[] Activities { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
-        if (Activities.Length == 0)
-            return;
+        await UpdateSeries();
+        await UpdateOptions();
+    }
+
+    private Task UpdateSeries()
+    {
+        if (Activities.Length <= 0)
+            return Task.CompletedTask;
 
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         var start = GetStartDay(today);
 
-        _activities = Activities
-            .Select(x => x.Currency)
-            .Distinct()
-            .ToDictionary(x => x, _ => new List<MoneyActivityModel>());
+        _activities.Clear();
 
-        foreach (var (currency, models) in _activities)
+        var currency = Activities.Select(x => x.Currency).First();
+
+        for (var day = start; day <= today; day = day.AddDays(1))
         {
-            for (var day = start; day <= today; day = day.AddDays(1))
-            {
-                var model = Activities.FirstOrDefault(x => x.Currency == currency && x.Day == day)
-                    ?? new MoneyActivityModel(day, currency, 0, 0, 0);
+            var model = Activities.FirstOrDefault(x => x.Day == day)
+                ?? new MoneyActivityModel(day, currency, 0, 0, 0);
 
-                models.Add(model);
-            }
+            _activities.Add(model);
         }
-    }
 
-    protected override Task OnParametersSetAsync()
-    {
-        var current = ThemeProvider is { IsDarkMode: true } ? Mode.Dark : Mode.Light;
-        if (_options.Theme.Mode == current)
-            return Task.CompletedTask;
-
-        _options.Theme.Mode = current;
-        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
+        return _chart is null ? Task.CompletedTask : _chart.UpdateSeriesAsync();
     }
 
     private DateOnly GetStartDay(DateOnly today)
@@ -97,4 +106,24 @@
 
         return last;
     }
+
+    private Task UpdateOptions()
+    {
+        if (ThemeProvider is null)
+            return Task.CompletedTask;
+
+        _options.Colors =
+        [
+            ThemeProvider.Theme.Palette.Success.ToString(),
+            ThemeProvider.Theme.Palette.Error.ToString()
+        ];
+
+        var current = ThemeProvider.IsDarkMode ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
+    }
+
 }

@@ -1,28 +1,21 @@
-@if (ShowTooltip)
-{
-    <MudTooltip Text="@L["LearningStatus_Title"]">
-        @Chip
-    </MudTooltip>
-}
-else
-{
-    @Chip
-}
+<MudTooltip Text="@L["LearningStatus_Title"]">
+    <MudChip
+        Class="ma-0"
+        Variant="Variant.Outlined"
+        Size="@Size"
+        Color="@_color"
+        Icon="@_icon"
+        IconColor="@_color"
+        Disabled="@_disabled"
+        Href="@Href"
+        Text="@L.GetStatusTitle(Status)"/>
+</MudTooltip>
 
 @code {
 
     private Color _color;
     private string? _icon;
-
-    private RenderFragment Chip =>
-        @<MudChip
-             Class="ma-0"
-             Variant="Variant.Outlined"
-             Size="@Size"
-             Color="_color"
-             Icon="@_icon"
-             Text="@L.GetStatusTitle(Status)"
-             Href="@(Status == CourseLearningStatus.NotStarted ? null : Href)"/>;
+    private bool _disabled;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -34,18 +27,16 @@ else
     public string? Href { get; set; }
 
     [Parameter]
-    public bool ShowTooltip { get; set; }
-
-    [Parameter]
     public Size Size { get; set; } = Size.Medium;
 
     protected override void OnParametersSet() =>
-        (_color, _icon) = Status switch
+        (_color, _icon, _disabled) = Status switch
         {
-            CourseLearningStatus.NotStarted => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked),
-            CourseLearningStatus.InProgress => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked),
-            CourseLearningStatus.ExaminationReady => (Color.Info, Icons.Material.Outlined.ModeStandby),
-            CourseLearningStatus.Completed => (Color.Success, Icons.Material.Outlined.CheckCircle),
+            CourseLearningStatus.NotStarted => (Color.Secondary, Icons.Material.Outlined.RadioButtonUnchecked, true),
+            CourseLearningStatus.InProgress => (Color.Warning, Icons.Material.Outlined.RadioButtonUnchecked, true),
+            CourseLearningStatus.ExaminationReady => (Color.Info, Icons.Material.Outlined.ModeStandby, true),
+            CourseLearningStatus.ExaminationPending => (Color.Info, Icons.Material.Outlined.Pending, false),
+            CourseLearningStatus.Completed => (Color.Success, Icons.Material.Outlined.CheckCircle, false),
             _ => throw new ArgumentOutOfRangeException()
         };
 

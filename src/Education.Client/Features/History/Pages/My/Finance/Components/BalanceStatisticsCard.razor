@@ -1,0 +1,66 @@
+@using Education.Client.Features.History.Clients.User.Model
+
+<section class="mud-paper pa-3 pa-sm-6 @Class">
+    <header class="d-flex justify-space-between align-center mb-3 mb-sm-6">
+        <MudText Class="flex-grow-1" Typo="Typo.h5">
+            @L["InternalMoney_BalanceStatistics_Title"]
+        </MudText>
+
+        <MudSelect
+            T="InternalCurrency"
+            OuterClass="flex-grow-0"
+            Variant="Variant.Outlined"
+            Margin="Margin.Dense"
+            @bind-Value="@_currency"
+            For="@(() => _currency)"
+            Label="@L["Currency_Title"]">
+            @foreach (var currency in _activities.Keys)
+            {
+                <MudSelectItem Value="@currency">
+                    <div class="d-flex align-center gap-3">
+                        <MudIcon Size="Size.Small" Icon="@currency.GetIcon()"/>
+                        <MudText Typo="Typo.body1">
+                            @L.GetInternalCurrencyTitle(currency)
+                        </MudText>
+                    </div>
+                </MudSelectItem>
+            }
+        </MudSelect>
+    </header>
+
+    @if (_activities.Count > 0)
+    {
+        <ActivityChart Activities="@_activities[_currency]"/>
+        <ActivityTable Activities="@_activities[_currency]"/>
+    }
+    else
+    {
+        <NoContent Title="@L["Activities_NoActivitiesWithinTheLast7Days"]"/>
+    }
+</section>
+
+@code {
+    private InternalCurrency _currency;
+
+    private Dictionary<InternalCurrency, MoneyActivityModel[]> _activities = [];
+
+    [Inject]
+    public IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required MoneyActivityModel[] Activities { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _activities = Activities
+            .GroupBy(x => x.Currency)
+            .OrderBy(x => x.Key)
+            .ToDictionary(x => x.Key, x => x.ToArray());
+
+        _currency = _activities.First().Key;
+    }
+
+}

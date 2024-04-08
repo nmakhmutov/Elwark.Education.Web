@@ -1,7 +1,7 @@
 namespace Education.Client.Features.History.Clients;
 
 public sealed record UserArticleActivityModel(
-    LearningStatus Status,
+    ArticleLearningStatus Status,
     bool IsBookmarked,
     bool? IsLiked,
     uint EasyQuizzes,

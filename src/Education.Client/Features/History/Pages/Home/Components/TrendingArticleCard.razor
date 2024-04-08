@@ -35,10 +35,9 @@
                 @if (Model.HasQuiz)
                 {
                     <ArticleCompletionChip
-                        Status="@(Model.Activity?.Status ?? LearningStatus.NotEngaged)"
+                        Status="@(Model.Activity?.Status ?? ArticleLearningStatus.NotStarted)"
                         Href="@HistoryUrl.User.MyArticle(Model.Article.Id)"
-                        Size="Size.Small"
-                        ShowTooltip/>
+                        Size="Size.Small"/>
                 }
 
                 <BookmarkButton

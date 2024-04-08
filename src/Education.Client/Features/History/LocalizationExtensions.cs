@@ -1,4 +1,5 @@
 using Education.Client.Features.History.Clients;
+using Education.Client.Features.History.Clients.DateGuesser.Model;
 using Education.Client.Models;
 using Education.Client.Models.Inventory;
 using Education.Client.Models.Test;
@@ -16,6 +17,9 @@ internal static class LocalizationExtensions
 
     public static string GetExaminationDifficultyTitle(this IStringLocalizer localizer, DifficultyType type) =>
         localizer[$"Examination_{type}_Title"];
+    
+    public static string GetDateGuesserTypeTitle(this IStringLocalizer localizer, DateGuesserType type) =>
+        localizer[$"History_DateGuesser_{type}_Title"];
 
     public static string GetStatusTitle(this IStringLocalizer localizer, QuizStatus status) =>
         localizer[$"ConclusionStatus_{status}"];
@@ -35,11 +39,11 @@ internal static class LocalizationExtensions
         return string.Join(", ", list);
     }
 
-    public static string GetStatusTitle(this IStringLocalizer localizer, LearningStatus status) =>
-        localizer[$"LearningStatus_{status}_Title"];
+    public static string GetStatusTitle(this IStringLocalizer localizer, ArticleLearningStatus status) =>
+        localizer[$"ArticleLearningStatus_{status}_Title"];
 
-    public static string GetStatusDescription(this IStringLocalizer localizer, LearningStatus status) =>
-        localizer[$"LearningStatus_{status}_Description"];
+    public static string GetStatusDescription(this IStringLocalizer localizer, ArticleLearningStatus status) =>
+        localizer[$"ArticleLearningStatus_{status}_Description"];
 
     public static string GetStatusTitle(this IStringLocalizer localizer, CourseLearningStatus status) =>
         localizer[$"CourseLearningStatus_{status}_Title"];

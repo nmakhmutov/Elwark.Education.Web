@@ -71,7 +71,7 @@
             return Task.CompletedTask;
 
         _options.Theme.Mode = current;
-        return _chart is null ? Task.CompletedTask : _chart.RenderAsync();
+        return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 
 }

@@ -12,12 +12,12 @@
 
     @switch (Question)
     {
-        case Question.ShortModel:
+        case Question.TextModel:
         {
             <ShortAnswerForm
                 IsLoading="@_checking"
                 IsCompleted="@IsCompleted"
-                CorrectAnswer="@(CorrectAnswer as AnswerResult.ShortModel)"
+                CorrectAnswer="@(CorrectAnswer as AnswerResult.TextModel)"
                 OnAnswerClick="@AnswerAsync"
                 OnNextClick="@NextQuestionHandler"/>
             break;
@@ -35,23 +35,23 @@
             break;
         }
 
-        case Question.MultipleModel question:
+        case Question.MultiModel question:
         {
             <MultipleAnswerForm
                 IsLoading="@_checking"
                 IsCompleted="@IsCompleted"
-                CorrectAnswer="@(CorrectAnswer as AnswerResult.MultipleModel)"
+                CorrectAnswer="@(CorrectAnswer as AnswerResult.MultiModel)"
                 Options="@question.Options"
                 OnAnswerClick="@AnswerAsync"
                 OnNextClick="@NextQuestionHandler"/>
             break;
         }
 
-        case Question.OrderedModel question:
+        case Question.OrderingModel question:
             <OrderedAnswerForm
                 IsLoading="@_checking"
                 IsCompleted="@IsCompleted"
-                CorrectAnswer="@(CorrectAnswer as AnswerResult.OrderedModel)"
+                CorrectAnswer="@(CorrectAnswer as AnswerResult.OrderingModel)"
                 Options="@question.Options"
                 OnAnswerClick="@AnswerAsync"
                 OnNextClick="@NextQuestionHandler"/>

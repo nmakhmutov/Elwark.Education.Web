@@ -64,7 +64,7 @@
 
 @code {
     private Validator _validator = default!;
-    private ShortAnswerModel _userAnswer = new();
+    private TextAnswerModel _userAnswer = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -76,10 +76,10 @@
     public bool IsCompleted { get; set; }
 
     [Parameter, EditorRequired]
-    public AnswerResult.ShortModel? CorrectAnswer { get; set; }
+    public AnswerResult.TextModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback<ShortAnswerModel> OnAnswerClick { get; set; }
+    public EventCallback<TextAnswerModel> OnAnswerClick { get; set; }
 
     [Parameter]
     public EventCallback OnNextClick { get; set; }
@@ -96,17 +96,17 @@
         finally
         {
             if (!OnNextClick.HasDelegate)
-                _userAnswer = new ShortAnswerModel();
+                _userAnswer = new TextAnswerModel();
         }
     }
 
     private Task OnNextAsync()
     {
-        _userAnswer = new ShortAnswerModel();
+        _userAnswer = new TextAnswerModel();
         return OnNextClick.InvokeAsync();
     }
 
-    public sealed class Validator : AbstractValidator<ShortAnswerModel>
+    public sealed class Validator : AbstractValidator<TextAnswerModel>
     {
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.Answer)

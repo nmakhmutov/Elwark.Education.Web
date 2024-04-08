@@ -93,9 +93,9 @@
     private static Color GetColor(ExaminationStatus status) =>
         status switch
         {
-            ExaminationStatus.ExaminationSucceeded => Color.Success,
-            ExaminationStatus.ExaminationFailed => Color.Error,
-            ExaminationStatus.ExaminationTimeExceeded => Color.Warning,
+            ExaminationStatus.Succeeded => Color.Success,
+            ExaminationStatus.Failed => Color.Error,
+            ExaminationStatus.TimeExceeded => Color.Warning,
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
         };
 

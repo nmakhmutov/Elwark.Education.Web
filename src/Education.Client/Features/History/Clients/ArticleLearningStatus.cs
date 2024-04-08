@@ -1,8 +1,8 @@
 namespace Education.Client.Features.History.Clients;
 
-public enum LearningStatus
+public enum ArticleLearningStatus
 {
-    NotEngaged = 0,
-    Incompleted = 1,
+    NotStarted = 0,
+    InProgress = 1,
     Completed = 2
 }

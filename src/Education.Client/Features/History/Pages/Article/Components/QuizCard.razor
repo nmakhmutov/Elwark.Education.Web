@@ -35,7 +35,7 @@
         </MudText>
 
         <ArticleCompletionChip
-            Status="@(Activity?.Status ?? LearningStatus.NotEngaged)"
+            Status="@(Activity?.Status ?? ArticleLearningStatus.NotStarted)"
             Href="@HistoryUrl.User.MyArticle(ArticleId)"
             Size="Size.Small"/>
     </div>
@@ -43,7 +43,7 @@
     <MudText Class="mb-3" Typo="Typo.body2">
         @if (_hasQuiz)
         {
-            @L.GetStatusDescription(Activity?.Status ?? LearningStatus.NotEngaged)
+            @L.GetStatusDescription(Activity?.Status ?? ArticleLearningStatus.NotStarted)
         }
         else
         {

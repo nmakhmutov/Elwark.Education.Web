@@ -5,5 +5,6 @@ public enum CourseLearningStatus
     NotStarted = 0,
     InProgress = 1,
     ExaminationReady = 2,
-    Completed = 3
+    ExaminationPending = 3,
+    Completed = 4
 }

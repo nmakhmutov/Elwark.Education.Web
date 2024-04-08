@@ -6,13 +6,15 @@
             <MudRadio T="DifficultyType?" Class="radio" Option="@examination.Type" Color="Color.Primary" Disabled="@(!examination.IsAllowed)">
                 <div class="d-flex justify-space-between gap-3">
                     <div>
-                        <p class="mud-typography mud-typography-subtitle2 one-line-text mb-3" title="@L.GetExaminationDifficultyTitle(examination.Type)">
+                        <MudText Class="one-line-text mb-3" Typo="Typo.subtitle2">
                             @L.GetExaminationDifficultyTitle(examination.Type)
-                        </p>
-                        <div>
-                            <MudText Typo="Typo.body2">@examination.AccessInventory.Title</MudText>
-                            <MudText Class="mud-text-secondary" Typo="Typo.caption">@L["Inventory_Required_Title"]</MudText>
-                        </div>
+                        </MudText>
+                        <MudText Typo="Typo.body2">
+                            @examination.AccessInventory.Title
+                        </MudText>
+                        <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                            @L["Inventory_Required_Title"]
+                        </MudText>
                     </div>
 
                     <div class="d-flex justify-center align-center mud-background rounded relative pa-6">

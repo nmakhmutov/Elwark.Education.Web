@@ -36,10 +36,10 @@ public sealed partial class Page
     private static Severity GetColor(QuizStatus status) =>
         status switch
         {
-            QuizStatus.QuizSucceeded => Severity.Success,
-            QuizStatus.QuizFailed => Severity.Error,
-            QuizStatus.QuizTimeExceeded => Severity.Warning,
-            QuizStatus.QuizMistakesExceeded => Severity.Warning,
+            QuizStatus.Succeeded => Severity.Success,
+            QuizStatus.Failed => Severity.Error,
+            QuizStatus.TimeExceeded => Severity.Warning,
+            QuizStatus.MistakesExceeded => Severity.Warning,
             _ => Severity.Info
         };
 }

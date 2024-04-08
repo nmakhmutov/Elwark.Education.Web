@@ -17,7 +17,7 @@ else
                     <MudSkeleton SkeletonType="SkeletonType.Text" Width="25%" Height="22px"/>
                 </div>
                 <div class="completion">
-                    <ArticleCompletionChip Status="LearningStatus.NotEngaged"/>
+                    <ArticleCompletionChip Status="ArticleLearningStatus.NotStarted"/>
                 </div>
                 <div class="actions">
                     <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
@@ -40,9 +40,8 @@ else
                 </div>
                 <div class="completion">
                     <ArticleCompletionChip
-                        Status="@(context.Activity?.Status ?? LearningStatus.NotEngaged)"
-                        Href="@HistoryUrl.User.MyArticle(context.Article.Id)"
-                        ShowTooltip/>
+                        Status="@(context.Activity?.Status ?? ArticleLearningStatus.NotStarted)"
+                        Href="@HistoryUrl.User.MyArticle(context.Article.Id)"/>
                 </div>
                 <div class="actions">
                     <BookmarkButton

@@ -1,13 +1,15 @@
-@if (ShowTooltip)
-{
-    <MudTooltip Text="@L["LearningStatus_Title"]">
-        @Chip
-    </MudTooltip>
-}
-else
-{
-    @Chip
-}
+<MudTooltip Text="@L["LearningStatus_Title"]">
+    <MudChip
+        Class="ma-0"
+        Variant="Variant.Outlined"
+        Size="@Size"
+        Color="@_color"
+        Icon="@_icon"
+        IconColor="@_color"
+        Disabled="@_disabled"
+        Href="@Href"
+        Text="@L.GetStatusTitle(Status)"/>
+</MudTooltip>
 
 @code {
 
@@ -15,28 +17,14 @@ else
     private string? _icon;
     private bool _disabled;
 
-    private RenderFragment Chip =>
-        @<MudChip
-             Class="ma-0"
-             Variant="Variant.Outlined"
-             Size="@Size"
-             Color="_color"
-             Icon="@_icon"
-             Disabled="@_disabled"
-             Href="@Href"
-             Text="@L.GetStatusTitle(Status)"/>;
-
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public LearningStatus Status { get; set; }
+    public ArticleLearningStatus Status { get; set; }
 
     [Parameter]
     public string? Href { get; set; }
-
-    [Parameter]
-    public bool ShowTooltip { get; set; }
 
     [Parameter]
     public Size Size { get; set; } = Size.Medium;
@@ -44,9 +32,9 @@ else
     protected override void OnParametersSet() =>
         (_color, _icon, _disabled) = Status switch
         {
-            LearningStatus.NotEngaged => (Color.Default, Icons.Material.Outlined.RadioButtonUnchecked, true),
-            LearningStatus.Incompleted => (Color.Warning, Icons.Material.Outlined.ModeStandby, false),
-            LearningStatus.Completed => (Color.Success, Icons.Material.Outlined.CheckCircle, false),
+            ArticleLearningStatus.NotStarted => (Color.Secondary, Icons.Material.Outlined.RadioButtonUnchecked, true),
+            ArticleLearningStatus.InProgress => (Color.Warning, Icons.Material.Outlined.ModeStandby, false),
+            ArticleLearningStatus.Completed => (Color.Success, Icons.Material.Outlined.CheckCircle, false),
             _ => throw new ArgumentOutOfRangeException()
         };
 

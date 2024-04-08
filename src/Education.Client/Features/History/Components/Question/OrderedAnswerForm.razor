@@ -89,13 +89,13 @@ else
     public bool IsCompleted { get; set; }
 
     [Parameter, EditorRequired]
-    public AnswerResult.OrderedModel? CorrectAnswer { get; set; }
+    public AnswerResult.OrderingModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
     public AnswerOption[] Options { get; set; } = [];
 
     [Parameter, EditorRequired]
-    public EventCallback<OrderedAnswerModel> OnAnswerClick { get; set; }
+    public EventCallback<OrderingAnswerModel> OnAnswerClick { get; set; }
 
     [Parameter]
     public EventCallback OnNextClick { get; set; }
@@ -113,7 +113,7 @@ else
 
     private async Task OnValidSubmit()
     {
-        var answer = new OrderedAnswerModel
+        var answer = new OrderingAnswerModel
         {
             Answer = _options.Select(x => x.Id).ToList()
         };

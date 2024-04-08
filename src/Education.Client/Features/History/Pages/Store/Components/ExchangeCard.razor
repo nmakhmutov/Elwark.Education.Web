@@ -9,11 +9,11 @@
         </Loading>
         <ChildContent Context="rates">
             <div class="d-flex align-center gap-3 gap-sm-6">
-                <MudSelect @bind-Value="@_rate" Label="@L["Exchange_Currency_Title"]" Margin="Margin.Dense" Variant="Variant.Outlined">
+                <MudSelect @bind-Value="@_rate" Label="@L["Currency_Title"]" Margin="Margin.Dense" Variant="Variant.Outlined">
                     @foreach (var rate in rates)
                     {
                         <MudSelectItem Value="@rate">
-                            <div class="d-flex align-center">
+                            <div class="d-flex align-center gap-3">
                                 <MudIcon Size="Size.Small" Icon="@rate.Currency.GetIcon()"/>
                                 <MudText Typo="Typo.body1">@L.GetInternalCurrencyTitle(rate.Currency)</MudText>
                             </div>

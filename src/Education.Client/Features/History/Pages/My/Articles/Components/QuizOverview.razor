@@ -93,10 +93,10 @@
     private static Color GetColor(QuizStatus status) =>
         status switch
         {
-            QuizStatus.QuizSucceeded => Color.Success,
-            QuizStatus.QuizFailed => Color.Error,
-            QuizStatus.QuizTimeExceeded => Color.Warning,
-            QuizStatus.QuizMistakesExceeded => Color.Warning,
+            QuizStatus.Succeeded => Color.Success,
+            QuizStatus.Failed => Color.Error,
+            QuizStatus.TimeExceeded => Color.Warning,
+            QuizStatus.MistakesExceeded => Color.Warning,
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
         };
 

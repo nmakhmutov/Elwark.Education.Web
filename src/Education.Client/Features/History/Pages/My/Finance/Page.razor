@@ -1,5 +1,4 @@
 @page "/history/my/finance"
-@using Education.Client.Features.History.Clients.User.Model
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -21,51 +20,9 @@
                 }
             </EduFitGrid>
 
-            <section class="activity mud-paper pa-3 pa-sm-6">
-                <ActivityChart Activities="@model.Activities"/>
+            <BalanceStatisticsCard Class="activity" Activities="@model.Activities"/>
 
-                @if (model.Activities.Length > 0)
-                {
-                    <ActivityTable Activities="@model.Activities"/>
-                }
-                else
-                {
-                    <NoContent Title="@L["Activities_NoActivitiesWithinTheLast7Days"]"/>
-                }
-            </section>
-
-            <section class="transactions mud-paper pa-3 pa-sm-6">
-                <MudText Class="mb-3" Typo="Typo.h6">
-                    @L["Transactions_Recent_Title"]
-                </MudText>
-                <MudTable Items="@model.Transactions" Elevation="0" Breakpoint="Breakpoint.None">
-                    <RowTemplate>
-                        <MudTd>
-                            <MudText Typo="Typo.subtitle1">
-                                @context.Title
-                            </MudText>
-                            <MudText Class="mud-text-secondary" Typo="Typo.body1">
-                                @Customer.Humanize(context.Date)
-                            </MudText>
-                        </MudTd>
-                        <MudTd>
-                            @if (context.Kind == TransactionKind.Income)
-                            {
-                                <MudText Typo="Typo.caption" Color="Color.Success">
-                                    @L["InternalMoney_Income_Title"]
-                                </MudText>
-                            }
-                            else
-                            {
-                                <MudText Typo="Typo.caption" Color="Color.Error">
-                                    @L["InternalMoney_Expense_Title"]
-                                </MudText>
-                            }
-                            <InternalMonies Monies="@context.Monies" Horizontal/>
-                        </MudTd>
-                    </RowTemplate>
-                </MudTable>
-            </section>
+            <TransactionsCard Class="transactions" Transactions="@model.Transactions"/>
         </section>
     </EduContainer>
 </ApiViewer>
