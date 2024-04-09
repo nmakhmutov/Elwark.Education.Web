@@ -19,7 +19,7 @@
                 </div>
 
                 <MudText Class="mud-text-secondary" Typo="Typo.subtitle2">
-                    @Budget.Month.ToString("MMMM yyyy")
+                    @Customer.Humanize(Budget.Month, DateStyle.AbbreviatedMonthAndCustomerYear)
                 </MudText>
             </div>
 
@@ -183,6 +183,9 @@
 
     [CascadingParameter]
     private MudDialogInstance MudDialog { get; set; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public InternalCurrency Currency { get; set; }

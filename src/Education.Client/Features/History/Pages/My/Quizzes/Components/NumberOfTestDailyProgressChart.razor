@@ -6,7 +6,7 @@
         Items="@Progress"
         Name="@L["NumberOfQuizzes_Successful_Title"]"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfQuizzes.Succeeded)"/>
 
     <ApexPointSeries
@@ -14,7 +14,7 @@
         Items="@Progress"
         Name="@L["NumberOfQuizzes_Failed_Title"]"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfQuizzes.Failed)"/>
 
     <ApexPointSeries
@@ -22,7 +22,7 @@
         Items="@Progress"
         Name="@L["NumberOfQuizzes_MistakesExceeded_Title"]"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfQuizzes.MistakesExceeded)"/>
 
     <ApexPointSeries
@@ -30,7 +30,7 @@
         Items="@Progress"
         Name="@L["NumberOfQuizzes_TimeExceeded_Title"]"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfQuizzes.TimeExceeded)"/>
 </ApexChart>
 
@@ -78,6 +78,9 @@
 
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public required QuizStatisticsModel.DailyProgress[] Progress { get; set; }

@@ -20,10 +20,7 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd>
-            <div class="d-flex gap-3">
-                <MudIcon Icon="@context.Currency.GetIcon()"/>
-                <MudText>@Customer.Humanize(context.Day)</MudText>
-            </div>
+            @Customer.Humanize(context.Day)
         </MudTd>
         <MudTd DataLabel="@L["InternalMoney_Income_Title"]">
             @context.Income

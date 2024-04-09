@@ -7,7 +7,7 @@
         Name="@L["Questions_Answered"]"
         Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.AnswerRatio.Answered)"/>
 
     <ApexPointSeries
@@ -16,7 +16,7 @@
         Name="@L["Questions_NotAnswered"]"
         Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.AnswerRatio.NotAnswered)"/>
 
     <ApexPointSeries
@@ -25,7 +25,7 @@
         Name="@L["Questions_Correct"]"
         Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.AnswerRatio.Correct)"/>
 
     <ApexPointSeries
@@ -34,7 +34,7 @@
         Name="@L["Questions_Incorrect"]"
         Stroke="@(new SeriesStroke { Color = Colors.Red.Default })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.AnswerRatio.Incorrect)"/>
 </ApexChart>
 
@@ -80,6 +80,9 @@
 
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public required QuizStatisticsModel.DailyProgress[] Progress { get; set; }

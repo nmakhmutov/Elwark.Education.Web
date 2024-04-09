@@ -7,7 +7,7 @@
         Name="@L["Score_Questions_Title"]"
         Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.Score.Questions)"/>
 
     <ApexPointSeries
@@ -16,7 +16,7 @@
         Name="@L["Score_SpeedBonus_Title"]"
         Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.Score.Speed)"/>
 
     <ApexPointSeries
@@ -25,7 +25,7 @@
         Name="@L["Score_NoMistakesBonus_Title"]"
         Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.Score.NoMistakes)"/>
 </ApexChart>
 
@@ -72,6 +72,9 @@
 
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public required QuizStatisticsModel.DailyProgress[] Progress { get; set; }

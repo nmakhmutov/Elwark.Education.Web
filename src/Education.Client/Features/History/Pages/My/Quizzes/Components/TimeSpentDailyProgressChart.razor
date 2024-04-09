@@ -7,7 +7,7 @@
         Name="@L["TimeSpent_Min_Title"]"
         Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => (decimal)x.TimeSpent.Min.TotalMilliseconds)"/>
 
     <ApexPointSeries
@@ -16,7 +16,7 @@
         Name="@L["TimeSpent_Average_Title"]"
         Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => (decimal)x.TimeSpent.Average.TotalMilliseconds)"/>
 
     <ApexPointSeries
@@ -25,7 +25,7 @@
         Name="@L["TimeSpent_Max_Title"]"
         Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => (decimal)x.TimeSpent.Max.TotalMilliseconds)"/>
 
 </ApexChart>
@@ -102,6 +102,9 @@
 
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public required QuizStatisticsModel.DailyProgress[] Progress { get; set; }

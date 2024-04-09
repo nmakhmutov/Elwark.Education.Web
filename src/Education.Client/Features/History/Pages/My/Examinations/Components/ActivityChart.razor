@@ -1,6 +1,5 @@
 @using Education.Client.Features.History.Clients.Learner.Model.Examination
 @using ApexCharts
-@using Size = ApexCharts.Size
 <ApexChart @ref="@_chart" TItem="ExaminationsStatisticsModel.ProgressModel" Options="_options">
     <ApexPointSeries
         TItem="ExaminationsStatisticsModel.ProgressModel"
@@ -8,7 +7,7 @@
         Name="@L["Examinations_Easy_Title"]"
         Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten3 })"
         SeriesType="SeriesType.Area"
-        XValue="@(e => e.Date.ToString(DateFormat))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Easy)"/>
 
     <ApexPointSeries
@@ -17,7 +16,7 @@
         Name="@L["Examinations_Hard_Title"]"
         Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten1 })"
         SeriesType="SeriesType.Area"
-        XValue="@(e => e.Date.ToString(DateFormat))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Hard)"/>
 </ApexChart>
 
@@ -50,8 +49,11 @@
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
 
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
     [Parameter]
-    public string DateFormat { get; set; } = "dd MMM";
+    public DateStyle DateStyle { get; set; }
 
     [Parameter, EditorRequired]
     public required ExaminationsStatisticsModel.ProgressModel[] Activities { get; set; }

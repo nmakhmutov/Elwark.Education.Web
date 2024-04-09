@@ -18,7 +18,7 @@ internal static class ErrorExtensions
 
     public static bool IsExaminationExpired(this Error error) =>
         error.Type == "ExaminationExpired";
-    
+
     public static bool IsQuizAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string quizId)
     {
         var found = error.Payload.TryGetValue("id", out var id);

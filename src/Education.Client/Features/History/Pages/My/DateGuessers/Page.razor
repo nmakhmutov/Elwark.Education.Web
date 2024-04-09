@@ -52,7 +52,7 @@
                 </MudText>
                 @if (_daily.Length > 0)
                 {
-                    <ActivityChart Activities="@_daily" DateFormat="dd MMM"/>
+                    <ActivityChart Activities="@_daily" DateStyle="DateStyle.CustomerDayAndAbbreviatedMonth"/>
                 }
                 else
                 {
@@ -68,7 +68,7 @@
                     <MudText Typo="Typo.h5">
                         @L["Activities_Monthly_Title"]
                     </MudText>
-                    <ActivityChart Activities="@_monthly" DateFormat="MMM yyyy"/>
+                    <ActivityChart Activities="@_monthly" DateStyle="DateStyle.AbbreviatedMonthAndCustomerYear"/>
                 </section>
             }
         </EduFillGrid>

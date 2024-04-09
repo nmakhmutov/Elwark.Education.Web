@@ -24,7 +24,7 @@
                 @foreach (var month in Months)
                 {
                     <MudSelectItem Value="@month">
-                        @month.ToString("MMMM yyyy")
+                        @Customer.Humanize(month, DateStyle.AbbreviatedMonthAndCustomerYear)
                     </MudSelectItem>
                 }
             </MudSelect>
@@ -96,6 +96,9 @@
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required DateOnly[] Months { get; set; }

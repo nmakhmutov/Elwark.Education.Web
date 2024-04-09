@@ -7,7 +7,7 @@
         Name="@L["History_DateGuessers_Small"]"
         Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten3 })"
         SeriesType="SeriesType.Area"
-        XValue="@(e => e.Date.ToString(DateFormat))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Small)"/>
 
     <ApexPointSeries
@@ -16,7 +16,7 @@
         Name="@L["History_DateGuessers_Medium"]"
         Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten1 })"
         SeriesType="SeriesType.Area"
-        XValue="@(e => e.Date.ToString(DateFormat))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Medium)"/>
 
     <ApexPointSeries
@@ -25,7 +25,7 @@
         Name="@L["History_DateGuessers_Large"]"
         Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Darken2 })"
         SeriesType="SeriesType.Area"
-        XValue="@(e => e.Date.ToString(DateFormat))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Large)"/>
 </ApexChart>
 
@@ -58,8 +58,11 @@
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
 
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
     [Parameter]
-    public string DateFormat { get; set; } = "dd MMM";
+    public DateStyle DateStyle { get; set; }
 
     [Parameter, EditorRequired]
     public required DateGuessersStatisticsModel.ProgressModel[] Activities { get; set; }

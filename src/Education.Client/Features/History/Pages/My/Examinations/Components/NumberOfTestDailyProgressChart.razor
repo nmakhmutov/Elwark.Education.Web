@@ -7,7 +7,7 @@
         Name="@L["NumberOfQuizzes_Successful_Title"]"
         Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfExaminations.Succeeded)"/>
 
     <ApexPointSeries
@@ -16,7 +16,7 @@
         Name="@L["NumberOfQuizzes_Failed_Title"]"
         Stroke="@(new SeriesStroke { Color = Colors.Red.Default })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfExaminations.Failed)"/>
 
     <ApexPointSeries
@@ -25,7 +25,7 @@
         Name="@L["NumberOfQuizzes_TimeExceeded_Title"]"
         Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
         SeriesType="SeriesType.Bar"
-        XValue="@(e => e.Date.ToString("dd MMM"))"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfExaminations.TimeExceeded)"/>
 </ApexChart>
 
@@ -72,6 +72,9 @@
 
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public required ExaminationStatisticsModel.DailyProgress[] Progress { get; set; }
