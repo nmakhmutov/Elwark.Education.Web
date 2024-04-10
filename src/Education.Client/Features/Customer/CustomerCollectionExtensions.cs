@@ -21,7 +21,7 @@ internal static class CustomerCollectionExtensions
                 var tokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
                 var stateProvider = provider.GetRequiredService<AuthenticationStateProvider>();
 
-                return new CustomerHab(builder.Configuration.GetValue<Uri>("Urls:Hub")!, tokenProvider, stateProvider);
+                return new CustomerHub(builder.Configuration.GetValue<Uri>("Urls:Hub")!, tokenProvider, stateProvider);
             });
 
         return builder;

@@ -35,7 +35,9 @@
             <Virtualize Items="@result.Contestants" ItemSize="64" Context="user">
                 <RegularRanking Class="mb-3" Highlight="@(_highlightUser == user.Id)">
                     <Image>
-                        <MudAvatar Class="rounded" Image="@user.Image" Alt="@user.FullName" Size="Size.Large" Square/>
+                        <MudAvatar Size="Size.Large" Rounded>
+                            <MudImage Src="@user.Image" Alt="@user.FullName"/>
+                        </MudAvatar>
                     </Image>
                     <Name>
                         <div>

@@ -1,9 +1,9 @@
 @using Education.Client.Features.History.Clients.DateGuesser.Model
 <div class="@Class">
-    <MudRadioGroup T="DateGuesserType?" Class="radio-group" SelectedOption="@SelectedGuesser" SelectedOptionChanged="@SelectedGuesserChanged">
+    <MudRadioGroup T="DateGuesserType?" Class="radio-group" Value="@SelectedGuesser" ValueChanged="@SelectedGuesserChanged">
         @foreach (var guesser in Guessers)
         {
-            <MudRadio T="DateGuesserType?" Class="radio" Option="@guesser.Type" Color="Color.Primary" Disabled="@(!guesser.IsAllowed)">
+            <MudRadio T="DateGuesserType?" Class="radio" Value="@guesser.Type" Color="Color.Primary" Disabled="@(!guesser.IsAllowed)">
                 <div class="d-flex justify-space-between gap-3">
                     <div>
                         <MudText Class="one-line-text mb-3" Typo="Typo.subtitle2">

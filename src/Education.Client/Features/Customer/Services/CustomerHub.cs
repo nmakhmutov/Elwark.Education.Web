@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Education.Client.Features.Customer.Services;
 
-internal sealed class CustomerHab : IAsyncDisposable
+internal sealed class CustomerHub : IAsyncDisposable
 {
     private readonly HubConnection _connection;
     private readonly HashSet<CustomerStateChangedSubscription> _customerChangedSubscriptions = [];
     private readonly HashSet<NotificationStateChangedSubscription> _notificationSubscriptions = [];
     private readonly AuthenticationStateProvider _stateProvider;
 
-    public CustomerHab(Uri host, IAccessTokenProvider tokenProvider, AuthenticationStateProvider stateProvider)
+    public CustomerHub(Uri host, IAccessTokenProvider tokenProvider, AuthenticationStateProvider stateProvider)
     {
         _stateProvider = stateProvider;
         _connection = new HubConnectionBuilder()
@@ -111,9 +111,9 @@ internal sealed class CustomerHab : IAsyncDisposable
     private sealed class CustomerStateChangedSubscription : IDisposable
     {
         private readonly EventCallback<CustomerChangedType> _callback;
-        private readonly CustomerHab _owner;
+        private readonly CustomerHub _owner;
 
-        public CustomerStateChangedSubscription(CustomerHab owner, EventCallback<CustomerChangedType> callback)
+        public CustomerStateChangedSubscription(CustomerHub owner, EventCallback<CustomerChangedType> callback)
         {
             _owner = owner;
             _callback = callback;
@@ -129,9 +129,9 @@ internal sealed class CustomerHab : IAsyncDisposable
     private sealed class NotificationStateChangedSubscription : IDisposable
     {
         private readonly EventCallback<NotificationMessage> _callback;
-        private readonly CustomerHab _owner;
+        private readonly CustomerHub _owner;
 
-        public NotificationStateChangedSubscription(CustomerHab owner, EventCallback<NotificationMessage> callback)
+        public NotificationStateChangedSubscription(CustomerHub owner, EventCallback<NotificationMessage> callback)
         {
             _owner = owner;
             _callback = callback;

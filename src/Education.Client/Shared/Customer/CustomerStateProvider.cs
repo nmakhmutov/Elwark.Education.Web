@@ -10,19 +10,17 @@ namespace Education.Client.Shared.Customer;
 internal sealed class CustomerStateProvider : IDisposable
 {
     private readonly IAccountClient _accountClient;
-    private readonly CustomerHab _hab;
+    private readonly CustomerHub _hub;
     private readonly AuthenticationStateProvider _provider;
     private readonly HashSet<StateChangedSubscription> _subscriptions = [];
-    private bool _isInitialized;
-    private CustomerState _state;
+    private CustomerState? _state;
     private IDisposable? _subscription;
 
-    public CustomerStateProvider(CustomerHab hab, IAccountClient accountClient, AuthenticationStateProvider provider)
+    public CustomerStateProvider(CustomerHub hub, IAccountClient accountClient, AuthenticationStateProvider provider)
     {
         _accountClient = accountClient;
         _provider = provider;
-        _hab = hab;
-        _state = CustomerState.Anonymous;
+        _hub = hub;
     }
 
     public void Dispose()
@@ -41,7 +39,7 @@ internal sealed class CustomerStateProvider : IDisposable
 
     public async Task InitAsync()
     {
-        if (_isInitialized)
+        if (_state is not null)
         {
             await NotifyChangeSubscribersAsync(_state);
             return;
@@ -52,20 +50,13 @@ internal sealed class CustomerStateProvider : IDisposable
             return;
 
         var callback = EventCallback.Factory.Create<CustomerChangedType>(this, OnCustomerChanged);
-        _subscription = _hab.NotifyOnCustomerChange(callback);
+        _subscription = _hub.NotifyOnCustomerChange(callback);
 
         await UpdateCustomer();
-
-        _isInitialized = true;
     }
 
-    private Task OnCustomerChanged(CustomerChangedType status)
-    {
-        if (status == CustomerChangedType.Updated)
-            return UpdateCustomer();
-
-        return Task.CompletedTask;
-    }
+    private Task OnCustomerChanged(CustomerChangedType status) =>
+        status == CustomerChangedType.Updated ? UpdateCustomer() : Task.CompletedTask;
 
     private async Task UpdateCustomer()
     {

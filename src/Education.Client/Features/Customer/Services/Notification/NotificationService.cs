@@ -14,7 +14,7 @@ internal sealed class NotificationService : INotificationService
     private const int MaxNotifications = 4;
 
     private readonly CustomerApiClient _api;
-    private readonly CustomerHab _hab;
+    private readonly CustomerHub _hub;
     private readonly List<NotificationMessage> _notifications = [];
     private readonly ISnackbar _snackbar;
     private readonly AuthenticationStateProvider _stateProvider;
@@ -23,11 +23,11 @@ internal sealed class NotificationService : INotificationService
     private bool _isInitialized;
     private IDisposable? _subscription;
 
-    public NotificationService(CustomerApiClient api, CustomerHab hab, ISnackbar snackbar,
+    public NotificationService(CustomerApiClient api, CustomerHub hub, ISnackbar snackbar,
         AuthenticationStateProvider stateProvider)
     {
         _api = api;
-        _hab = hab;
+        _hub = hub;
         _snackbar = snackbar;
         _stateProvider = stateProvider;
     }
@@ -74,7 +74,7 @@ internal sealed class NotificationService : INotificationService
             return;
 
         var callback = EventCallback.Factory.Create<NotificationMessage>(this, ReceivedMessage);
-        _subscription = _hab.NotifyOnNotification(callback);
+        _subscription = _hub.NotifyOnNotification(callback);
 
         var result = await GetAsync(new NotificationsRequest(MaxNotifications));
         result.Match(model => _notifications.AddRange(model.Items.Select(m =>

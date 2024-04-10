@@ -52,7 +52,7 @@ builder.Services
 
 await using var app = builder.Build();
 
-await app.Services.GetRequiredService<CustomerHab>()
+await app.Services.GetRequiredService<CustomerHub>()
     .StartAsync();
 
 await app.RunAsync();

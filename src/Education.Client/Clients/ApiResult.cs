@@ -54,7 +54,7 @@ public sealed class ApiResult<T>
     public static ApiResult<T> Fail(Error error) =>
         new(error);
 
-    public U Match<U>(Func<T, U> success, Func<Error, U> error, Func<U> loading) =>
+    public TU Match<TU>(Func<T, TU> success, Func<Error, TU> error, Func<TU> loading) =>
         Status switch
         {
             Status.Loading => loading(),
@@ -102,8 +102,8 @@ public sealed class ApiResult<T>
         return true;
     }
 
-    public ApiResult<U> Map<U>(Func<T, U> fn) =>
-        Match(x => ApiResult<U>.Success(fn(x)), ApiResult<U>.Fail, ApiResult<U>.Loading);
+    public ApiResult<TU> Map<TU>(Func<T, TU> fn) =>
+        Match(x => ApiResult<TU>.Success(fn(x)), ApiResult<TU>.Fail, ApiResult<TU>.Loading);
 
     public ApiResult<T> Or(Func<T> fn) =>
         Match(Success, _ => Success(fn()), () => Success(fn()));

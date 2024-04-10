@@ -55,7 +55,7 @@ internal abstract class ApiClient
         return await ExecuteAsync<T>(token => _anonymous.PostAsync(url, null, token), ct);
     }
 
-    public async Task<ApiResult<T>> PostAsync<T, K>(string url, K data, CancellationToken ct = default)
+    public async Task<ApiResult<T>> PostAsync<T, TK>(string url, TK data, CancellationToken ct = default)
     {
         var state = await _provider.GetAuthenticationStateAsync();
         var content = CreateJson(data);
@@ -69,7 +69,7 @@ internal abstract class ApiClient
     public Task<ApiResult<T>> PutAsync<T>(string url, CancellationToken ct = default) =>
         ExecuteAsync<T>(token => _authenticated.PutAsync(url, null, token), ct);
 
-    public Task<ApiResult<T>> PutAsync<T, K>(string url, K data, CancellationToken ct = default) =>
+    public Task<ApiResult<T>> PutAsync<T, TK>(string url, TK data, CancellationToken ct = default) =>
         ExecuteAsync<T>(token => _authenticated.PutAsync(url, CreateJson(data), token), ct);
 
     public Task<ApiResult<T>> DeleteAsync<T>(string url, CancellationToken ct = default) =>

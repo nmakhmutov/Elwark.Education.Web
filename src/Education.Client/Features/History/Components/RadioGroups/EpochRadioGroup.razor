@@ -1,8 +1,8 @@
 <div class="@Class">
-    <MudRadioGroup Class="radio-group" SelectedOption="@SelectedEpoch" SelectedOptionChanged="@SelectedEpochChanged">
+    <MudRadioGroup Class="radio-group" Value="@SelectedEpoch" ValueChanged="@SelectedEpochChanged">
         @foreach (var epoch in GetEpochs())
         {
-            <MudRadio Class="radio" Option="@epoch.Type" Color="Color.Primary">
+            <MudRadio Class="radio" Value="@epoch.Type" Color="Color.Primary">
                 <img class="radio-image object-cover object-center rounded-t" src="@epoch.Image" alt="@epoch.Title" loading="lazy"/>
                 <MudText Class="pt-1" Typo="Typo.subtitle1" Align="Align.Center">
                     @epoch.Title

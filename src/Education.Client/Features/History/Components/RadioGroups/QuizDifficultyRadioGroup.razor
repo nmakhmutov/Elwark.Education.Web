@@ -1,9 +1,9 @@
 @using Education.Client.Features.History.Clients.Quiz.Model
 <div class="@Class">
-    <MudRadioGroup T="DifficultyType?" Class="radio-group" SelectedOption="@SelectedDifficulty" SelectedOptionChanged="@SelectedDifficultyChanged">
+    <MudRadioGroup T="DifficultyType?" Class="radio-group" Value="@SelectedDifficulty" ValueChanged="@SelectedDifficultyChanged">
         @foreach (var quiz in Quizzes)
         {
-            <MudRadio T="DifficultyType?" Class="radio" Option="@quiz.Type" Color="Color.Primary" Disabled="@(!quiz.IsAllowed)">
+            <MudRadio T="DifficultyType?" Class="radio" Value="@quiz.Type" Color="Color.Primary" Disabled="@(!quiz.IsAllowed)">
                 <div class="d-flex justify-space-between gap-3">
                     <div>
                         <MudText Class="one-line-text mb-3" Typo="Typo.subtitle2">
