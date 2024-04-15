@@ -7,7 +7,7 @@
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
-    <section class="header">
+    <section class="header mud-paper">
         <PageBreadcrumbsHeader Class="title" Items="@Breadcrumbs"/>
 
         <MudSelect T="EpochType"
@@ -15,7 +15,7 @@
                    ValueChanged="@OnEpochChange"
                    Label="@L["History_Epoch_Title"]"
                    Margin="Margin.Dense"
-                   Variant="Variant.Text">
+                   Variant="Variant.Outlined">
             <MudSelectItem Value="@EpochType.None">
                 @L["History_Epoch_Any"]
             </MudSelectItem>
@@ -32,7 +32,7 @@
                    ValueChanged="@OnSortChange"
                    Label="@L["SortBy_Title"]"
                    Margin="Margin.Dense"
-                   Variant="Variant.Text">
+                   Variant="Variant.Outlined">
             <MudSelectItem Value="@GetArticlesRequest.SortType.Newest">
                 @L["ContentSort_Resent_Title"]
             </MudSelectItem>
@@ -46,25 +46,35 @@
     </section>
 </EduContainer>
 
-<ApiViewer Result="_result" OnReloadClick="@OnParametersSetAsync" Context="result">
-    <EduContainer>
-        <EduFillGrid Class="mb-6 mb-sm-12">
-            @foreach (var (article, activity, hasQuiz) in result.Items)
-            {
-                <ArticleCard
-                    Article="@article"
-                    HasQuiz="@hasQuiz"
-                    Activity="@activity"
-                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
-            }
-        </EduFillGrid>
+<EduContainer Class="pb-3 pb-sm-6">
+    <ApiViewer Result="_result" OnReloadClick="@OnParametersSetAsync">
+        <ChildContent>
+            <EduFillGrid Class="mb-3 mb-sm-6">
+                @foreach (var (article, activity, hasQuiz) in context.Items)
+                {
+                    <ArticleCard
+                        Article="@article"
+                        HasQuiz="@hasQuiz"
+                        Activity="@activity"
+                        OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+                }
+            </EduFillGrid>
 
-        <MudPagination
-            Class="d-flex justify-center py-3 py-sm-6"
-            Selected="@CurrentPage"
-            SelectedChanged="@OnPagination"
-            Count="@TotalPages"
-            DisableElevation
-            Rectangular/>
-    </EduContainer>
-</ApiViewer>
+            <MudPagination
+                Class="d-flex justify-center"
+                Selected="@CurrentPage"
+                SelectedChanged="@OnPagination"
+                Count="@TotalPages"
+                DisableElevation
+                Rectangular/>
+        </ChildContent>
+        <Loading>
+            <EduFillGrid>
+                @for (var i = 0; i < 8; i++)
+                {
+                    <SkeletonCard/>
+                }
+            </EduFillGrid>
+        </Loading>
+    </ApiViewer>
+</EduContainer>

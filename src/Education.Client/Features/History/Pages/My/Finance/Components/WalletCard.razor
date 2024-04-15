@@ -39,7 +39,7 @@
     </header>
 
     <MudTable
-        T="WalletModel.BudgetModel"
+        T="WalletDetailsModel.BudgetModel"
         @ref="@_table"
         RowClass="cursor-pointer"
         Items="@Wallet.Budgets.Take(3)"
@@ -95,7 +95,7 @@
 @code {
     private double _tendingValue;
     private readonly List<ApexData> _apex = [];
-    private MudTable<WalletModel.BudgetModel>? _table;
+    private MudTable<WalletDetailsModel.BudgetModel>? _table;
 
     private readonly ApexChartOptions<ApexData> _options = new()
     {
@@ -127,7 +127,7 @@
     private IDialogService DialogService { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required WalletModel Wallet { get; set; }
+    public required WalletDetailsModel Wallet { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
@@ -187,10 +187,10 @@
             _ => new Trend(Icons.Material.Outlined.TrendingFlat, Color.Default)
         };
 
-    private Task RowClickAsync(TableRowClickEventArgs<WalletModel.BudgetModel> args) =>
+    private Task RowClickAsync(TableRowClickEventArgs<WalletDetailsModel.BudgetModel> args) =>
         OpenSourceDetailModalAsync(args.Item);
 
-    private async Task OpenSourceDetailModalAsync(WalletModel.BudgetModel budget)
+    private async Task OpenSourceDetailModalAsync(WalletDetailsModel.BudgetModel budget)
     {
         var options = new DialogOptions
         {

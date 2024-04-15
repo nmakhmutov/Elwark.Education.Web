@@ -54,6 +54,10 @@
                 </MudButton>
             </CardBadge>
 
+            <MonthlyPerformanceCard
+                Class="performance"
+                Performance="@profile.MonthlyPerformance"/>
+            
             <AssignmentsCard
                 Class="assignment"
                 Assignments="@profile.Assignments"/>
@@ -61,10 +65,7 @@
             <AchievementsCard
                 Class="achievement"
                 Customer="@Customer"
-                Total="@profile.Achievements.Total"
-                Completed="@profile.Achievements.Unlocked"
-                Completeness="@profile.Achievements.Completeness"
-                LatestCompletedAchievement="@profile.Achievements.LatestCompletedAchievement"/>
+                Achievements="@profile.Achievements"/>
 
             @* <RecentArticles Class="recent-articles"/> *@
         </section>

@@ -1,7 +1,7 @@
 namespace Education.Client.Features.History.Clients.User.Model;
 
 public sealed record FinanceModel(
-    WalletModel[] Wallets,
+    WalletDetailsModel[] Wallets,
     MoneyActivityModel[] Activities,
     TransactionModel[] Transactions
 );

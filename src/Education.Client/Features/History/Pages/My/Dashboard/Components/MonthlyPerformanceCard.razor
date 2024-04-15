@@ -1,52 +1,43 @@
-@using Align = MudBlazor.Align
 @using ApexCharts
 @using Education.Client.Features.History.Clients.User.Model
+@using Align = MudBlazor.Align
 <section class="d-flex flex-column mud-paper @Class">
     <header class="pa-3 pa-sm-6">
         <MudText Typo="Typo.h5">
-            @L["Achievements_Title"]
+            @L["MonthlyPerformance_Title"]
         </MudText>
     </header>
 
-    <section class="d-flex flex-column align-center justify-center flex-1 pb-3 pb-sm-6">
-        <ApexChart TItem="MeOverviewModel.AchievementModel" Options="Options">
+    <section class="d-flex align-center justify-center flex-1">
+        <ApexChart TItem="MeOverviewModel.MonthlyPerformanceModel" Options="Options">
             <ApexPointSeries
-                TItem="MeOverviewModel.AchievementModel"
-                Items="@(new[] { Achievements })"
+                TItem="MeOverviewModel.MonthlyPerformanceModel"
+                Items="@(new[] { Performance })"
                 SeriesType="SeriesType.RadialBar"
                 XValue="@(_ => 0)"
-                YAggregate="@(_ => (decimal)Achievements.Completeness)"/>
+                YAggregate="@(_ => Completeness)"/>
         </ApexChart>
-
-        <MudText Typo="Typo.body1" Align="Align.Center">
-            @L["Achievement_UnlockedCount", Achievements.Unlocked, Achievements.Total]
-        </MudText>
     </section>
+    
+    <footer class="px-3 px-sm-6 pb-3 pb-sm-6">
+        <MudText Typo="Typo.h6" Align="Align.Center">
+            @L["MonthlyPerformance_YourExperience_Title"]: <b>@Performance.UserExperience</b>
+        </MudText>
 
-    @if (Achievements.LatestCompletedAchievement is not null)
-    {
-        <AchievementCard
-            Class="px-3 pb-3 px-sm-6 pb-sm-6"
-            Achievement="@Achievements.LatestCompletedAchievement"
-            DateTimeFormatter="@Customer.Humanize"
-            Dense/>
-    }
-
-    <MudSpacer/>
-
-    <footer class="border-t mud-border-lines-default pa-3">
-        <MudButton
-            Class="text-transform-none"
-            EndIcon="@Icons.Material.Outlined.ArrowForward"
-            Href="@HistoryUrl.User.MyAchievements">
-            @L["Achievements_SeeAll"]
-        </MudButton>
+        @if (Performance.UserRank > 0)
+        {
+            <div class="mud-typography-align-center">
+                <MudLink Typo="Typo.subtitle2" Href="@HistoryUrl.Leaderboard.Monthly()">
+                    @L["Leaderboard_RankInLeaderboard_Title", Performance.UserRank]
+                </MudLink>
+            </div>
+        }
     </footer>
 </section>
 
 @code {
 
-    private ApexChartOptions<MeOverviewModel.AchievementModel> Options =>
+    private ApexChartOptions<MeOverviewModel.MonthlyPerformanceModel> Options =>
         new()
         {
             Chart = new Chart
@@ -109,13 +100,13 @@
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
 
-    [Parameter, EditorRequired]
-    public required CustomerState Customer { get; set; }
-
-    [Parameter]
-    public required MeOverviewModel.AchievementModel Achievements { get; set; }
-
     [Parameter]
     public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public required MeOverviewModel.MonthlyPerformanceModel Performance { get; set; }
+
+    private decimal Completeness =>
+        Performance.BestExperience == 0 ? 0 : decimal.Round((decimal)Performance.UserExperience / Performance.BestExperience * 100, 2);
 
 }

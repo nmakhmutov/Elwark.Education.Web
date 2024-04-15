@@ -7,7 +7,7 @@
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
-    <section class="header">
+    <section class="header mud-paper">
         <PageBreadcrumbsHeader Class="title" Items="@Breadcrumbs"/>
 
         <MudSelect T="GetCourseRequest.SortType"
@@ -15,7 +15,7 @@
                    ValueChanged="@OnSortChange"
                    Label="@L["SortBy_Title"]"
                    Margin="Margin.Dense"
-                   Variant="Variant.Text">
+                   Variant="Variant.Outlined">
             <MudSelectItem Value="@GetCourseRequest.SortType.Newest">
                 @L["ContentSort_Resent_Title"]
             </MudSelectItem>
@@ -29,25 +29,37 @@
     </section>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync" Context="result">
-    <EduContainer>
-        <EduFillGrid Class="mb-6 mb-sm-12">
-            @foreach (var (course, activity, hasExamination) in result.Items)
-            {
-                <CourseCard
-                    Course="@course"
-                    Activity="@activity"
-                    HasExamination="@hasExamination"
-                    OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
-            }
-        </EduFillGrid>
+<EduContainer Class="pb-3 pb-sm-6">
+    <ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync">
+        <ChildContent>
 
-        <MudPagination
-            Class="d-flex justify-center py-3 py-sm-6"
-            Rectangular
-            DisableElevation
-            Selected="@CurrentPage"
-            SelectedChanged="@OnPagination"
-            Count="@TotalPages"/>
-    </EduContainer>
-</ApiViewer>
+            <EduFillGrid Class="mb-3 mb-sm-6">
+                @foreach (var (course, activity, hasExamination) in context.Items)
+                {
+                    <CourseCard
+                        Course="@course"
+                        Activity="@activity"
+                        HasExamination="@hasExamination"
+                        OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+                }
+            </EduFillGrid>
+
+            <MudPagination
+                Class="d-flex justify-center"
+                Rectangular
+                DisableElevation
+                Selected="@CurrentPage"
+                SelectedChanged="@OnPagination"
+                Count="@TotalPages"/>
+
+        </ChildContent>
+        <Loading>
+            <EduFillGrid>
+                @for (var i = 0; i < 8; i++)
+                {
+                    <SkeletonCard/>
+                }
+            </EduFillGrid>
+        </Loading>
+    </ApiViewer>
+</EduContainer>

@@ -9,6 +9,7 @@ public sealed record MeOverviewModel(
     UserLevelModel Level,
     BackpackOverviewModel Backpack,
     Dictionary<InternalCurrency, long> Wallet,
+    MeOverviewModel.MonthlyPerformanceModel MonthlyPerformance,
     MeOverviewModel.AssignmentModel Assignments,
     MeOverviewModel.AchievementModel Achievements
 )
@@ -23,4 +24,6 @@ public sealed record MeOverviewModel(
     public sealed record AssignmentModel(QuestModel Daily, QuestModel Weekly);
 
     public sealed record QuestModel(uint Completed, uint Total);
+
+    public sealed record MonthlyPerformanceModel(uint BestExperience, uint UserExperience, uint UserRank);
 }

@@ -35,13 +35,15 @@
             <Virtualize Items="@result.Contestants" ItemSize="64" Context="user">
                 <RegularRanking Class="mb-3" Highlight="@(_highlightUser == user.Id)">
                     <Image>
-                        <MudAvatar Size="Size.Large" Rounded>
+                        <MudAvatar Class="avatar" Size="Size.Large" Rounded>
                             <MudImage Src="@user.Image" Alt="@user.FullName"/>
                         </MudAvatar>
                     </Image>
                     <Name>
                         <div>
-                            <MudText Typo="Typo.subtitle1">@user.FullName</MudText>
+                            <MudText Typo="Typo.subtitle1">
+                                @user.FullName
+                            </MudText>
                             <div class="d-flex align-center gap-1 rank-@user.Rank">
                                 <MudIcon Icon="@Icons.Material.Outlined.EmojiEvents" Size="Size.Small"/>
                                 <MudText Typo="Typo.body1">@user.Rank</MudText>

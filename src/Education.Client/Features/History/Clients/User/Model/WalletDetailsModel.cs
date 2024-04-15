@@ -2,7 +2,11 @@ using Education.Client.Models;
 
 namespace Education.Client.Features.History.Clients.User.Model;
 
-public sealed record WalletModel(InternalCurrency Currency, long Balance, WalletModel.BudgetModel[] Budgets)
+public sealed record WalletDetailsModel(
+    InternalCurrency Currency,
+    long Balance,
+    WalletDetailsModel.BudgetModel[] Budgets
+)
 {
     public sealed record BudgetModel(
         DateOnly Month,

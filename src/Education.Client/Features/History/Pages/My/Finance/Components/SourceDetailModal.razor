@@ -55,7 +55,7 @@
         {
             <section class="grid mt-3 mt-sm-6">
                 <MudTable
-                    T="WalletModel.BudgetSourceModel"
+                    T="WalletDetailsModel.BudgetSourceModel"
                     Class="statistics"
                     Items="@Budget.Sources"
                     Elevation="0"
@@ -67,17 +67,17 @@
                             @L["InternalMoney_Source_Title"]
                         </MudTh>
                         <MudTh>
-                            <MudTableSortLabel SortBy="@(new Func<WalletModel.BudgetSourceModel, object>(x => x.Income))" InitialDirection="SortDirection.Descending">
+                            <MudTableSortLabel SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Income))" InitialDirection="SortDirection.Descending">
                                 @L["InternalMoney_Income_Title"]
                             </MudTableSortLabel>
                         </MudTh>
                         <MudTh>
-                            <MudTableSortLabel SortBy="@(new Func<WalletModel.BudgetSourceModel, object>(x => x.Expense))">
+                            <MudTableSortLabel SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Expense))">
                                 @L["InternalMoney_Expense_Title"]
                             </MudTableSortLabel>
                         </MudTh>
                         <MudTh>
-                            <MudTableSortLabel SortBy="@(new Func<WalletModel.BudgetSourceModel, object>(x => x.Balance))">
+                            <MudTableSortLabel SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Balance))">
                                 @L["InternalMoney_Balance_Title"]
                             </MudTableSortLabel>
                         </MudTh>
@@ -104,9 +104,9 @@
                         <MudText Typo="Typo.h6" Align="Align.Center">
                             @L["InternalMoney_Income_Title"]
                         </MudText>
-                        <ApexChart TItem="WalletModel.BudgetSourceModel" Options="Options" Height="@("240px")">
+                        <ApexChart TItem="WalletDetailsModel.BudgetSourceModel" Options="Options" Height="@("240px")">
                             <ApexPointSeries
-                                TItem="@WalletModel.BudgetSourceModel"
+                                TItem="@WalletDetailsModel.BudgetSourceModel"
                                 Items="@income"
                                 SeriesType="SeriesType.Donut"
                                 OrderByDescending="@(x => x.Y ?? 0)"
@@ -122,9 +122,9 @@
                         <MudText Typo="Typo.h6" Align="Align.Center">
                             @L["InternalMoney_Expense_Title"]
                         </MudText>
-                        <ApexChart TItem="WalletModel.BudgetSourceModel" Options="Options" Height="@("240px")">
+                        <ApexChart TItem="WalletDetailsModel.BudgetSourceModel" Options="Options" Height="@("240px")">
                             <ApexPointSeries
-                                TItem="@WalletModel.BudgetSourceModel"
+                                TItem="@WalletDetailsModel.BudgetSourceModel"
                                 Items="@expense"
                                 SeriesType="SeriesType.Donut"
                                 OrderByDescending="@(x => x.Y ?? 0)"
@@ -140,7 +140,7 @@
 
 @code {
 
-    private static ApexChartOptions<WalletModel.BudgetSourceModel> Options =>
+    private static ApexChartOptions<WalletDetailsModel.BudgetSourceModel> Options =>
         new()
         {
             Chart = new Chart
@@ -191,7 +191,7 @@
     public InternalCurrency Currency { get; set; }
 
     [Parameter, EditorRequired]
-    public required WalletModel.BudgetModel Budget { get; set; }
+    public required WalletDetailsModel.BudgetModel Budget { get; set; }
 
     private void OnCloseClick() =>
         MudDialog.Close(DialogResult.Ok(true));
