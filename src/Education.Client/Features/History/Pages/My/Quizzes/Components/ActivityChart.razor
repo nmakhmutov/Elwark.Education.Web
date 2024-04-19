@@ -1,29 +1,29 @@
 @using Education.Client.Features.History.Clients.Learner.Model.Quiz
 @using ApexCharts
-<ApexChart @ref="@_chart" TItem="QuizzesStatisticsModel.ProgressModel" Options="_options">
+<ApexChart @ref="@_chart" TItem="QuizProgressModel" Options="_options">
     <ApexPointSeries
-        TItem="QuizzesStatisticsModel.ProgressModel"
-        Items="Activities"
+        TItem="QuizProgressModel"
+        Items="@Activities"
         Name="@L["Quizzes_Easy_Title"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten3 })"
+        Stroke="@(new SeriesStroke { Width = 3, Color = HistoryChart.Quiz.Difficulty.Easy })"
         SeriesType="SeriesType.Area"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Easy)"/>
 
     <ApexPointSeries
-        TItem="QuizzesStatisticsModel.ProgressModel"
-        Items="Activities"
+        TItem="QuizProgressModel"
+        Items="@Activities"
         Name="@L["Quizzes_Hard_Title"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Blue.Lighten1 })"
+        Stroke="@(new SeriesStroke { Width = 3, Color = HistoryChart.Quiz.Difficulty.Hard })"
         SeriesType="SeriesType.Area"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Hard)"/>
 </ApexChart>
 
 @code {
-    private ApexChart<QuizzesStatisticsModel.ProgressModel>? _chart;
+    private ApexChart<QuizProgressModel>? _chart;
 
-    private ApexChartOptions<QuizzesStatisticsModel.ProgressModel> _options = new()
+    private ApexChartOptions<QuizProgressModel> _options = new()
     {
         Legend = new Legend
         {
@@ -56,7 +56,7 @@
     public DateStyle DateStyle { get; set; }
 
     [Parameter, EditorRequired]
-    public required QuizzesStatisticsModel.ProgressModel[] Activities { get; set; }
+    public required QuizProgressModel[] Activities { get; set; }
 
     protected override Task OnParametersSetAsync()
     {

@@ -5,7 +5,7 @@
         TItem="ExaminationStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["NumberOfQuizzes_Successful_Title"]"
-        Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Completeness.Successful })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfExaminations.Succeeded)"/>
@@ -14,7 +14,7 @@
         TItem="ExaminationStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["NumberOfQuizzes_Failed_Title"]"
-        Stroke="@(new SeriesStroke { Color = Colors.Red.Default })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Completeness.Failed })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfExaminations.Failed)"/>
@@ -23,7 +23,7 @@
         TItem="ExaminationStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["NumberOfQuizzes_TimeExceeded_Title"]"
-        Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Completeness.TimeExceeded })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfExaminations.TimeExceeded)"/>

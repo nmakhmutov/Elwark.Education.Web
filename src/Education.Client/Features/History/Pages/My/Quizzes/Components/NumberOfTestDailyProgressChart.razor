@@ -6,6 +6,7 @@
         Items="@Progress"
         Name="@L["NumberOfQuizzes_Successful_Title"]"
         SeriesType="SeriesType.Bar"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Completeness.Successful })"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfQuizzes.Succeeded)"/>
 
@@ -14,6 +15,7 @@
         Items="@Progress"
         Name="@L["NumberOfQuizzes_Failed_Title"]"
         SeriesType="SeriesType.Bar"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Completeness.Failed })"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfQuizzes.Failed)"/>
 
@@ -22,6 +24,7 @@
         Items="@Progress"
         Name="@L["NumberOfQuizzes_MistakesExceeded_Title"]"
         SeriesType="SeriesType.Bar"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Completeness.MistakesExceeded })"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfQuizzes.MistakesExceeded)"/>
 
@@ -30,6 +33,7 @@
         Items="@Progress"
         Name="@L["NumberOfQuizzes_TimeExceeded_Title"]"
         SeriesType="SeriesType.Bar"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Completeness.TimeExceeded })"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.NumberOfQuizzes.TimeExceeded)"/>
 </ApexChart>
@@ -69,7 +73,6 @@
         {
             BorderColor = "var(--mud-palette-divider)"
         },
-        Colors = [Colors.Green.Accent4, Colors.Red.Default, Colors.Blue.Default, Colors.DeepPurple.Default],
         Theme = new Theme()
     };
 

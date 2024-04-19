@@ -8,7 +8,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Education.Client.Features.Customer.Pages.Account;
 
-public partial class Page
+public sealed partial class Page
 {
     private ApiResult<SubjectModel[]> _response = ApiResult<SubjectModel[]>.Loading();
     private SubjectEnhancedModel[] _subjects = [];

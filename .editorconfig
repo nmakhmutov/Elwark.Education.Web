@@ -1,0 +1,129 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+max_line_length = 120
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# Microsoft .NET properties
+csharp_preferred_modifier_order = public, protected, internal, private, file, new, static, abstract, virtual, sealed, readonly, override, extern, unsafe, volatile, async, required:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_constructors = true:suggestion
+csharp_style_expression_bodied_methods = true:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_namespace_declarations = file_scoped:suggestion
+csharp_style_prefer_utf8_string_literals = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:suggestion
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:suggestion
+dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:suggestion
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+dotnet_style_predefined_type_for_member_access = true:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+
+# ReSharper properties
+resharper_align_multiline_binary_expressions_chain = false
+resharper_align_multiline_statement_conditions = false
+resharper_braces_for_ifelse = not_required_for_both
+resharper_braces_for_lock = required_for_multiline
+resharper_braces_for_using = required_for_multiline
+resharper_braces_for_for = required_for_multiline
+resharper_braces_for_foreach = required_for_multiline
+resharper_braces_for_dowhile = required_for_multiline
+resharper_braces_for_while = required_for_multiline
+resharper_braces_for_fixed = required_for_multiline
+resharper_builtin_type_apply_to_native_integer = true
+resharper_csharp_int_align_fix_in_adjacent = false
+resharper_csharp_keep_blank_lines_in_code = 1
+resharper_csharp_keep_blank_lines_in_declarations = 1
+resharper_csharp_max_enum_members_on_line = 1
+resharper_csharp_wrap_before_binary_opsign = true
+resharper_csharp_wrap_before_first_type_parameter_constraint = true
+resharper_csharp_wrap_extends_list_style = chop_always
+resharper_enforce_line_ending_style = true
+resharper_force_attribute_style = join
+resharper_int_align_methods = true
+resharper_keep_existing_embedded_arrangement = false
+resharper_keep_existing_expr_member_arrangement = false
+resharper_keep_existing_initializer_arrangement = false
+resharper_keep_existing_primary_constructor_declaration_parens_arrangement = true
+resharper_keep_existing_property_patterns_arrangement = false
+resharper_keep_existing_switch_expression_arrangement = false
+resharper_local_function_body = expression_body
+resharper_max_attribute_length_for_same_line = 120
+resharper_new_line_before_while = true
+resharper_place_accessorholder_attribute_on_same_line = false
+resharper_place_accessor_attribute_on_same_line = true
+resharper_place_expr_accessor_on_single_line = true
+resharper_place_expr_method_on_single_line = false
+resharper_place_expr_property_on_single_line = false
+resharper_place_field_attribute_on_same_line = false
+resharper_place_record_field_attribute_on_same_line = true
+resharper_place_simple_accessor_on_single_line = false
+resharper_place_simple_embedded_statement_on_same_line = false
+resharper_place_simple_initializer_on_single_line = false
+resharper_show_autodetect_configure_formatting_tip = false
+resharper_static_members_qualify_with = current_type
+resharper_use_indent_from_vs = false
+resharper_wrap_array_initializer_style = chop_always
+resharper_wrap_before_primary_constructor_declaration_lpar = false
+resharper_wrap_before_primary_constructor_declaration_rpar = true
+resharper_wrap_for_stmt_header_style = wrap_if_long
+resharper_wrap_lines = true
+resharper_wrap_linq_expressions = chop_always
+resharper_wrap_list_pattern = chop_always
+resharper_wrap_object_and_collection_initializer_style = chop_always
+
+# ReSharper inspection severities
+resharper_arrange_attributes_highlighting = suggestion
+resharper_arrange_default_value_when_type_not_evident_highlighting = suggestion
+resharper_arrange_local_function_body_highlighting = suggestion
+resharper_arrange_null_checking_pattern_highlighting = suggestion
+resharper_arrange_object_creation_when_type_not_evident_highlighting = suggestion
+resharper_arrange_redundant_parentheses_highlighting = suggestion
+resharper_convert_closure_to_method_group_highlighting = none
+resharper_convert_to_primary_constructor_highlighting = none
+resharper_enforce_do_while_statement_braces_highlighting = suggestion
+resharper_enforce_fixed_statement_braces_highlighting = suggestion
+resharper_enforce_foreach_statement_braces_highlighting = suggestion
+resharper_enforce_for_statement_braces_highlighting = suggestion
+resharper_enforce_if_statement_braces_highlighting = suggestion
+resharper_enforce_lock_statement_braces_highlighting = suggestion
+resharper_enforce_using_statement_braces_highlighting = suggestion
+resharper_enforce_while_statement_braces_highlighting = suggestion
+resharper_razor_assembly_not_resolved_highlighting = warning
+resharper_remove_redundant_braces_highlighting = suggestion
+resharper_suggest_discard_declaration_var_style_highlighting = suggestion
+resharper_web_config_module_not_resolved_highlighting = warning
+resharper_web_config_type_not_resolved_highlighting = warning
+resharper_web_config_wrong_module_highlighting = warning
+
+[*.{cs,vb}]
+dotnet_sort_system_directives_first = true
+dotnet_style_null_propagation = true:warning
+dotnet_style_prefer_auto_properties = true:warning
+dotnet_style_coalesce_expression = true:warning
+
+# XML project files
+[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
+indent_size = 2
+
+# XML config files
+[*.{props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
+indent_size = 2
+
+[{*.yaml,*.yml,*.json}]
+indent_size = 2
+
+[{*.bash,*.sh,*.zsh}]
+indent_size = 2

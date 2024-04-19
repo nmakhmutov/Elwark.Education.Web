@@ -4,11 +4,11 @@
 <section class="d-flex flex-column mud-paper @Class">
     <header class="pa-3 pa-sm-6">
         <MudText Typo="Typo.h5">
-            @L["MonthlyPerformance_Title"]
+            @L["User_Performance_Title"]
         </MudText>
     </header>
 
-    <section class="d-flex align-center justify-center flex-1">
+    <article class="d-flex align-center justify-center flex-1">
         <ApexChart TItem="MeOverviewModel.MonthlyPerformanceModel" Options="Options">
             <ApexPointSeries
                 TItem="MeOverviewModel.MonthlyPerformanceModel"
@@ -17,7 +17,7 @@
                 XValue="@(_ => 0)"
                 YAggregate="@(_ => Completeness)"/>
         </ApexChart>
-    </section>
+    </article>
     
     <footer class="px-3 px-sm-6 pb-3 pb-sm-6">
         <MudText Typo="Typo.h6" Align="Align.Center">

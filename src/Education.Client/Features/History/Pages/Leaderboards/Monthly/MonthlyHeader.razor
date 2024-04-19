@@ -69,17 +69,15 @@
         {
             <RegularRanking DisableHover>
                 <Image>
-                    <MudAvatar Size="Size.Large" Rounded>
-                        <MudImage Src="@User.Image" Alt="@User.FullName"/>
-                    </MudAvatar>
+                    <UserAvatar Image="@User.Image" FullName="@User.FullName"/>
                 </Image>
                 <Name>
-                    <div>
-                        <MudText Typo="Typo.subtitle1">@User.FullName</MudText>
-                        <div class="d-flex align-center gap-1">
-                            <MudIcon Icon="@Icons.Material.Outlined.EmojiEvents" Size="Size.Small"/>
-                            <MudText Typo="Typo.body1">@User.Rank</MudText>
-                        </div>
+                    <MudText Class="one-line-text" Typo="Typo.subtitle1">
+                        @User.FullName
+                    </MudText>
+                    <div class="d-flex align-center gap-1">
+                        <MudIcon Icon="@Icons.Material.Outlined.EmojiEvents" Size="Size.Small"/>
+                        <MudText Typo="Typo.body1">@User.Rank</MudText>
                     </div>
                 </Name>
                 <Points>

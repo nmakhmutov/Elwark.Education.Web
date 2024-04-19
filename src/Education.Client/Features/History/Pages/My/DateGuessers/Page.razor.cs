@@ -10,8 +10,8 @@ namespace Education.Client.Features.History.Pages.My.DateGuessers;
 
 public sealed partial class Page
 {
-    private DateGuessersStatisticsModel.ProgressModel[] _daily = [];
-    private DateGuessersStatisticsModel.ProgressModel[] _monthly = [];
+    private DateGuesserProgressModel[] _daily = [];
+    private DateGuesserProgressModel[] _monthly = [];
     private ApiResult<DateGuessersStatisticsModel> _result = ApiResult<DateGuessersStatisticsModel>.Loading();
 
     [Inject]
@@ -33,11 +33,11 @@ public sealed partial class Page
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
             _daily = model.Daily
-                .FillDailyGaps(today, x => x.Date, x => new DateGuessersStatisticsModel.ProgressModel(x, 0, 0, 0))
+                .FillDailyGaps(today, x => x.Date, x => new DateGuesserProgressModel(x, 0, 0, 0))
                 .ToArray();
 
             _monthly = model.Monthly
-                .FillMonthlyGaps(today, x => x.Date, x => new DateGuessersStatisticsModel.ProgressModel(x, 0, 0, 0))
+                .FillMonthlyGaps(today, x => x.Date, x => new DateGuesserProgressModel(x, 0, 0, 0))
                 .ToArray();
         });
     }

@@ -1,0 +1,49 @@
+<div class="d-flex align-center gap-1 @Class">
+    <MudText Typo="@Typo" Color="@_color">
+        @GetValue()
+    </MudText>
+    <MudIcon Icon="@_icon" Color="@_color" Size="@Size"/>
+</div>
+
+@code {
+
+    private double _trend;
+    private string _icon = string.Empty;
+    private Color _color;
+
+    [Parameter, EditorRequired]
+    public double Trend { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body2;
+
+    [Parameter]
+    public Size Size { get; set; } = Size.Small;
+
+    [Parameter]
+    public bool Colorless { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        var result = GetTrend(Trend);
+
+        _trend = result.Trend;
+        _icon = result.Icon;
+        _color = Colorless ? Color.Inherit : result.Color;
+    }
+
+    private string GetValue() =>
+        _trend > 0 ? $"+{_trend.ToMetric("N1")}%" : $"{_trend.ToMetric("N1")}%";
+
+    public static (double Trend, string Icon, Color Color) GetTrend(double trend) =>
+        trend switch
+        {
+            > 0 => (double.Round(trend, 2), Icons.Material.Outlined.TrendingUp, Color.Success),
+            < 0 => (double.Round(trend, 2), Icons.Material.Outlined.TrendingDown, Color.Error),
+            _ => (double.Round(trend, 2), Icons.Material.Outlined.TrendingFlat, Color.Default)
+        };
+
+}

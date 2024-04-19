@@ -16,6 +16,9 @@ internal sealed class HistoryLearnerService : IHistoryLearnerClient
     public HistoryLearnerService(HistoryApiClient api) =>
         _api = api;
 
+    public Task<ApiResult<MeOverviewModel>> GetMeAsync() =>
+        _api.GetAsync<MeOverviewModel>(Root);
+
     public Task<ApiResult<ExaminationsStatisticsModel>> GetExaminationStatisticsAsync() =>
         _api.GetAsync<ExaminationsStatisticsModel>($"{Root}/examinations");
 

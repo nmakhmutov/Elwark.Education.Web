@@ -19,8 +19,10 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-column gap-3">
-                @CreateTrendChip(_tendingValue)
+            <div class="d-flex flex-column align-end gap-3">
+                <div class="trending-wrapper">
+                    <Trending Class="white-text" Trend="@_trendingValue" Colorless/>
+                </div>
 
                 @if (Wallet.Budgets.Length > 0)
                 {
@@ -93,7 +95,7 @@
 </section>
 
 @code {
-    private double _tendingValue;
+    private double _trendingValue;
     private readonly List<ApexData> _apex = [];
     private MudTable<WalletDetailsModel.BudgetModel>? _table;
 
@@ -141,7 +143,7 @@
             [var first, var second, ..] => (first.Balance, second.Balance)
         };
 
-        _tendingValue = ((start - end) / Math.Abs(end) * 100) switch
+        _trendingValue = ((start - end) / Math.Abs(end) * 100) switch
         {
             double.NaN => 0,
             double.PositiveInfinity => 100,
@@ -161,31 +163,10 @@
 
     private RenderFragment CreateTrendIcon(double balance)
     {
-        var trend = GetTrend(balance);
+        var trend = Trending.GetTrend(balance);
 
         return @<MudIcon Icon="@trend.Icon" Color="trend.Color" Size="Size.Medium"/>;
     }
-
-    private RenderFragment CreateTrendChip(double balance)
-    {
-        var trend = GetTrend(balance);
-
-        return
-            @<MudChip
-                 Class="white-text ma-0"
-                 Text="@($"{_tendingValue.ToMetric("N1")}%")"
-                 Icon="@trend.Icon"
-                 IconColor="@trend.Color"
-                 Label/>;
-    }
-
-    private Trend GetTrend(double trend) =>
-        trend switch
-        {
-            > 0 => new Trend(Icons.Material.Outlined.TrendingUp, Color.Success),
-            < 0 => new Trend(Icons.Material.Outlined.TrendingDown, Color.Error),
-            _ => new Trend(Icons.Material.Outlined.TrendingFlat, Color.Default)
-        };
 
     private Task RowClickAsync(TableRowClickEventArgs<WalletDetailsModel.BudgetModel> args) =>
         OpenSourceDetailModalAsync(args.Item);

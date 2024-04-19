@@ -5,7 +5,7 @@
         TItem="ExaminationStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions_Answered"]"
-        Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Question.Answered })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.AnswerRatio.Answered)"/>
@@ -14,7 +14,7 @@
         TItem="ExaminationStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions_NotAnswered"]"
-        Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Question.NotAnswered })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.AnswerRatio.NotAnswered)"/>
@@ -23,7 +23,7 @@
         TItem="ExaminationStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions_Correct"]"
-        Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Question.Correct })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.AnswerRatio.Correct)"/>
@@ -32,7 +32,7 @@
         TItem="ExaminationStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions_Incorrect"]"
-        Stroke="@(new SeriesStroke { Color = Colors.Red.Default })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Question.Incorrect })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.AnswerRatio.Incorrect)"/>

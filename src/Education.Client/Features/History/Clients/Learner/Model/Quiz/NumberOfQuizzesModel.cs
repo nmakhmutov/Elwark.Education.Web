@@ -5,5 +5,5 @@ public sealed record NumberOfQuizzesModel(
     uint Failed,
     uint TimeExceeded,
     uint MistakesExceeded,
-    ulong Total
+    uint Total
 );

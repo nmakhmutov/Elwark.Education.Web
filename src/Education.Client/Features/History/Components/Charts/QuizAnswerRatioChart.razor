@@ -42,7 +42,13 @@
             {
                 Show = false
             },
-            Colors = [Colors.Blue.Default, Colors.DeepPurple.Default, Colors.Green.Accent4, Colors.Red.Default]
+            Colors =
+            [
+                HistoryChart.Quiz.Question.Correct,
+                HistoryChart.Quiz.Question.Incorrect,
+                HistoryChart.Quiz.Question.Answered,
+                HistoryChart.Quiz.Question.NotAnswered
+            ]
         };
 
     [Inject]
@@ -56,22 +62,22 @@
 
     private List<Data> Series =>
     [
-        new Data(L["Questions_Correct"], 0, Colors.Green.Accent4),
-        new Data(L["Questions_Correct"], Value.Correct, Colors.Green.Accent4),
-        new Data(L["Questions_Incorrect"], 0, Colors.Red.Default),
-        new Data(L["Questions_Incorrect"], Value.Incorrect, Colors.Red.Default),
-        new Data(L["Questions_Answered"], 0, Colors.Blue.Default),
-        new Data(L["Questions_Answered"], Value.Answered, Colors.Blue.Default),
-        new Data(L["Questions_NotAnswered"], 0, Colors.DeepPurple.Default),
-        new Data(L["Questions_NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default)
+        new Data(L["Questions_Correct"], 0, HistoryChart.Quiz.Question.Correct),
+        new Data(L["Questions_Correct"], Value.Correct, HistoryChart.Quiz.Question.Correct),
+        new Data(L["Questions_Incorrect"], 0, HistoryChart.Quiz.Question.Incorrect),
+        new Data(L["Questions_Incorrect"], Value.Incorrect, HistoryChart.Quiz.Question.Incorrect),
+        new Data(L["Questions_Answered"], 0, HistoryChart.Quiz.Question.Answered),
+        new Data(L["Questions_Answered"], Value.Answered, HistoryChart.Quiz.Question.Answered),
+        new Data(L["Questions_NotAnswered"], 0, HistoryChart.Quiz.Question.NotAnswered),
+        new Data(L["Questions_NotAnswered"], Value.NotAnswered, HistoryChart.Quiz.Question.NotAnswered)
     ];
 
     private ChartList.Item[] Items =>
     [
-        new ChartList.Item(L["Questions_Correct"], Value.Correct, Colors.Green.Accent4),
-        new ChartList.Item(L["Questions_Incorrect"], Value.Incorrect, Colors.Red.Default),
-        new ChartList.Item(L["Questions_Answered"], Value.Answered, Colors.Blue.Default),
-        new ChartList.Item(L["Questions_NotAnswered"], Value.NotAnswered, Colors.DeepPurple.Default),
+        new ChartList.Item(L["Questions_Correct"], Value.Correct, HistoryChart.Quiz.Question.Correct),
+        new ChartList.Item(L["Questions_Incorrect"], Value.Incorrect, HistoryChart.Quiz.Question.Incorrect),
+        new ChartList.Item(L["Questions_Answered"], Value.Answered, HistoryChart.Quiz.Question.Answered),
+        new ChartList.Item(L["Questions_NotAnswered"], Value.NotAnswered, HistoryChart.Quiz.Question.NotAnswered),
         new ChartList.Item(L["Questions_Total"], Value.Questions, null)
     ];
 

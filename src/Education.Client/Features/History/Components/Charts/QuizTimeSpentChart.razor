@@ -9,6 +9,7 @@
             YValue="@(x => x.Value)"
             PointColor="@(x => x.Color)"/>
     </ApexChart>
+
     <ChartList Items="@Items"/>
 </div>
 
@@ -67,20 +68,20 @@
 
     private ChartList.Item[] Items =>
     [
-        new ChartList.Item(L["TimeSpent_Min_Title"], Value.Min.Humanize(L), Colors.Green.Accent4),
-        new ChartList.Item(L["TimeSpent_Average_Title"], Value.Average.Humanize(L), Colors.Blue.Default),
-        new ChartList.Item(L["TimeSpent_Max_Title"], Value.Max.Humanize(L), Colors.DeepPurple.Default),
+        new ChartList.Item(L["TimeSpent_Min_Title"], Value.Min.Humanize(L), HistoryChart.Quiz.TimeSpent.Minimum),
+        new ChartList.Item(L["TimeSpent_Average_Title"], Value.Average.Humanize(L), HistoryChart.Quiz.TimeSpent.Average),
+        new ChartList.Item(L["TimeSpent_Max_Title"], Value.Max.Humanize(L), HistoryChart.Quiz.TimeSpent.Maximum),
         new ChartList.Item(L["TimeSpent_Total_Title"], Value.Total.Humanize(L), null)
     ];
 
     private Data[] Series =>
     [
-        new Data(L["TimeSpent_Min_Title"], 0, Colors.Green.Accent4),
-        new Data(L["TimeSpent_Min_Title"], (decimal)Value.Min.TotalMilliseconds, Colors.Green.Accent4),
-        new Data(L["TimeSpent_Average_Title"], 0, Colors.Blue.Default),
-        new Data(L["TimeSpent_Average_Title"], (decimal)Value.Average.TotalMilliseconds, Colors.Blue.Default),
-        new Data(L["TimeSpent_Max_Title"], 0, Colors.DeepPurple.Default),
-        new Data(L["TimeSpent_Max_Title"], (decimal)Value.Max.TotalMilliseconds, Colors.DeepPurple.Default)
+        new Data(L["TimeSpent_Min_Title"], 0, HistoryChart.Quiz.TimeSpent.Minimum),
+        new Data(L["TimeSpent_Min_Title"], (decimal)Value.Min.TotalMilliseconds, HistoryChart.Quiz.TimeSpent.Minimum),
+        new Data(L["TimeSpent_Average_Title"], 0, HistoryChart.Quiz.TimeSpent.Average),
+        new Data(L["TimeSpent_Average_Title"], (decimal)Value.Average.TotalMilliseconds, HistoryChart.Quiz.TimeSpent.Average),
+        new Data(L["TimeSpent_Max_Title"], 0, HistoryChart.Quiz.TimeSpent.Maximum),
+        new Data(L["TimeSpent_Max_Title"], (decimal)Value.Max.TotalMilliseconds, HistoryChart.Quiz.TimeSpent.Maximum)
     ];
 
     private sealed record Data(string Name, decimal Value, string Color);

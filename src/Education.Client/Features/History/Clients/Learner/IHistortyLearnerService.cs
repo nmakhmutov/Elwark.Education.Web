@@ -10,6 +10,8 @@ namespace Education.Client.Features.History.Clients.Learner;
 
 public interface IHistoryLearnerClient
 {
+    Task<ApiResult<MeOverviewModel>> GetMeAsync();
+
     Task<ApiResult<ExaminationsStatisticsModel>> GetExaminationStatisticsAsync();
 
     Task<ApiResult<ExaminationStatisticsModel>> GetEasyExaminationStatisticsAsync();

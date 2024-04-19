@@ -5,7 +5,7 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["TimeSpent_Min_Title"]"
-        Stroke="@(new SeriesStroke { Color = Colors.Green.Accent4 })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.TimeSpent.Minimum })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => (decimal)x.TimeSpent.Min.TotalMilliseconds)"/>
@@ -14,7 +14,7 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["TimeSpent_Average_Title"]"
-        Stroke="@(new SeriesStroke { Color = Colors.Blue.Default })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.TimeSpent.Average })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => (decimal)x.TimeSpent.Average.TotalMilliseconds)"/>
@@ -23,11 +23,10 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["TimeSpent_Max_Title"]"
-        Stroke="@(new SeriesStroke { Color = Colors.DeepPurple.Default })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.TimeSpent.Maximum })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => (decimal)x.TimeSpent.Max.TotalMilliseconds)"/>
-
 </ApexChart>
 
 @code {

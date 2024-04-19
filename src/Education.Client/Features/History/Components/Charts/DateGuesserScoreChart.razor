@@ -35,7 +35,7 @@
             {
                 Show = false
             },
-            Colors = [Colors.Blue.Default, Colors.DeepPurple.Default]
+            Colors = [HistoryChart.DateGuesser.Score.Points, HistoryChart.DateGuesser.Score.X2Points]
         };
 
     [Inject]
@@ -49,8 +49,8 @@
 
     private ChartList.Item[] Items =>
     [
-        new ChartList.Item(L["History_DateGuesser_Points"], Score.Points, Colors.Blue.Default),
-        new ChartList.Item(L["History_DateGuesser_x2Bonus"], Score.Bonus, Colors.DeepPurple.Default),
+        new ChartList.Item(L["History_DateGuesser_Points"], Score.Points, HistoryChart.DateGuesser.Score.Points),
+        new ChartList.Item(L["History_DateGuesser_x2Bonus"], Score.Bonus, HistoryChart.DateGuesser.Score.X2Points),
         new ChartList.Item(L["History_DateGuesser_Score"], Score.Total, null)
     ];
 

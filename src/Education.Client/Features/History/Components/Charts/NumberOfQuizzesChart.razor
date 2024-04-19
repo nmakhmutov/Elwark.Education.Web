@@ -35,7 +35,13 @@
             {
                 Show = false
             },
-            Colors = [Colors.Green.Accent4, Colors.Red.Default, Colors.Blue.Default, Colors.DeepPurple.Default]
+            Colors =
+            [
+                HistoryChart.Quiz.Completeness.Successful,
+                HistoryChart.Quiz.Completeness.Failed,
+                HistoryChart.Quiz.Completeness.TimeExceeded,
+                HistoryChart.Quiz.Completeness.MistakesExceeded
+            ]
         };
 
     [Inject]
@@ -49,10 +55,10 @@
 
     private ChartList.Item[] Items =>
     [
-        new ChartList.Item(L["NumberOfQuizzes_Successful_Title"], Value.Succeeded, Colors.Green.Accent4),
-        new ChartList.Item(L["NumberOfQuizzes_Failed_Title"], Value.Failed, Colors.Red.Default),
-        new ChartList.Item(L["NumberOfQuizzes_TimeExceeded_Title"], Value.TimeExceeded, Colors.Blue.Default),
-        new ChartList.Item(L["NumberOfQuizzes_MistakesExceeded_Title"], Value.MistakesExceeded, Colors.DeepPurple.Default),
+        new ChartList.Item(L["NumberOfQuizzes_Successful_Title"], Value.Succeeded, HistoryChart.Quiz.Completeness.Successful),
+        new ChartList.Item(L["NumberOfQuizzes_Failed_Title"], Value.Failed, HistoryChart.Quiz.Completeness.Failed),
+        new ChartList.Item(L["NumberOfQuizzes_TimeExceeded_Title"], Value.TimeExceeded, HistoryChart.Quiz.Completeness.TimeExceeded),
+        new ChartList.Item(L["NumberOfQuizzes_MistakesExceeded_Title"], Value.MistakesExceeded, HistoryChart.Quiz.Completeness.MistakesExceeded),
         new ChartList.Item(L["NumberOfQuizzes_Total_Title"], Value.Total, null)
     ];
 

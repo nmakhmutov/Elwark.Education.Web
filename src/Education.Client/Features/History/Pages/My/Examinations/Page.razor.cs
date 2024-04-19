@@ -8,10 +8,10 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.My.Examinations;
 
-public partial class Page
+public sealed partial class Page
 {
-    private ExaminationsStatisticsModel.ProgressModel[] _daily = [];
-    private ExaminationsStatisticsModel.ProgressModel[] _monthly = [];
+    private ExaminationProgressModel[] _daily = [];
+    private ExaminationProgressModel[] _monthly = [];
     private ApiResult<ExaminationsStatisticsModel> _result = ApiResult<ExaminationsStatisticsModel>.Loading();
 
     [Inject]
@@ -33,11 +33,11 @@ public partial class Page
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
             _daily = model.Daily
-                .FillDailyGaps(today, x => x.Date, x => new ExaminationsStatisticsModel.ProgressModel(x, 0, 0))
+                .FillDailyGaps(today, x => x.Date, x => new ExaminationProgressModel(x, 0, 0))
                 .ToArray();
 
             _monthly = model.Monthly
-                .FillMonthlyGaps(today, x => x.Date, x => new ExaminationsStatisticsModel.ProgressModel(x, 0, 0))
+                .FillMonthlyGaps(today, x => x.Date, x => new ExaminationProgressModel(x, 0, 0))
                 .ToArray();
         });
     }

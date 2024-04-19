@@ -3,9 +3,6 @@ using Education.Client.Models;
 namespace Education.Client.Features.History.Clients.User.Model;
 
 public sealed record MeOverviewModel(
-    ulong TotalExaminations,
-    ulong TotalQuizzes,
-    ulong TotalDateGuessers,
     UserLevelModel Level,
     BackpackOverviewModel Backpack,
     Dictionary<InternalCurrency, long> Wallet,

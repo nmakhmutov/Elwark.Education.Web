@@ -1,0 +1,142 @@
+@using ApexCharts
+@using Education.Client.Features.History.Clients.Learner.Model
+<section class="d-flex flex-column mud-paper @Class">
+    <header class="pa-3 pa-sm-6">
+        <MudText Typo="Typo.h5">
+            @L["User_Activities_Title"]
+        </MudText>
+    </header>
+
+    <article class="flex-1" style="max-height: min-content">
+        <ApexChart @ref="@_chart" TItem="MeOverviewModel.ActivityModel" Options="@_options">
+            <ApexPointSeries
+                TItem="MeOverviewModel.ActivityModel"
+                Items="@Activities"
+                Name="Easy examination"
+                Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Difficulty.Easy })"
+                SeriesType="SeriesType.Bar"
+                XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
+                YValue="@(x => x.Examination.Easy)"/>
+
+            <ApexPointSeries
+                TItem="MeOverviewModel.ActivityModel"
+                Items="@Activities"
+                Name="Hard examination"
+                Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Difficulty.Hard })"
+                SeriesType="SeriesType.Bar"
+                XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
+                YValue="@(x => x.Examination.Hard)"/>
+
+            <ApexPointSeries
+                TItem="MeOverviewModel.ActivityModel"
+                Items="@Activities"
+                Name="Easy quiz"
+                Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Difficulty.Easy })"
+                SeriesType="SeriesType.Bar"
+                XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
+                YValue="@(x => x.Quiz.Easy)"/>
+
+            <ApexPointSeries
+                TItem="MeOverviewModel.ActivityModel"
+                Items="@Activities"
+                Name="Hard quiz"
+                Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Difficulty.Hard })"
+                SeriesType="SeriesType.Bar"
+                XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
+                YValue="@(x => x.Quiz.Hard)"/>
+
+            <ApexPointSeries
+                TItem="MeOverviewModel.ActivityModel"
+                Items="@Activities"
+                Name="Small date guesser"
+                Stroke="@(new SeriesStroke { Color = HistoryChart.DateGuesser.Size.Small })"
+                SeriesType="SeriesType.Bar"
+                XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
+                YValue="@(x => x.DateGuesser.Small)"/>
+
+            <ApexPointSeries
+                TItem="MeOverviewModel.ActivityModel"
+                Items="@Activities"
+                Name="Medium date guesser"
+                Stroke="@(new SeriesStroke { Color = HistoryChart.DateGuesser.Size.Medium })"
+                SeriesType="SeriesType.Bar"
+                XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
+                YValue="@(x => x.DateGuesser.Medium)"/>
+
+            <ApexPointSeries
+                TItem="MeOverviewModel.ActivityModel"
+                Items="@Activities"
+                Name="Large date guesser"
+                Stroke="@(new SeriesStroke { Color = HistoryChart.DateGuesser.Size.Large })"
+                SeriesType="SeriesType.Bar"
+                XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
+                YValue="@(x => x.DateGuesser.Large)"/>
+        </ApexChart>
+    </article>
+</section>
+
+@code {
+    private ApexChart<MeOverviewModel.ActivityModel>? _chart;
+
+    private ApexChartOptions<MeOverviewModel.ActivityModel> _options = new()
+    {
+        Legend = new Legend
+        {
+            Show = false
+        },
+        Chart = new Chart
+        {
+            Height = "100%",
+            Width = "100%",
+            Stacked = true,
+            Toolbar = new Toolbar
+            {
+                Show = false
+            },
+            Selection = new Selection
+            {
+                Enabled = false
+            },
+            Zoom = new Zoom
+            {
+                Enabled = false
+            },
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Stroke = new Stroke
+        {
+            Show = false
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)"
+        },
+        Theme = new Theme()
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [CascadingParameter]
+    private CustomerState Customer { get; init; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public MeOverviewModel.ActivityModel[] Activities { get; set; } = [];
+
+    protected override Task OnParametersSetAsync()
+    {
+        var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
+    }
+}

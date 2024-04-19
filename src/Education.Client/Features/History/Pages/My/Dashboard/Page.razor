@@ -18,7 +18,8 @@
             <CardBadge
                 Class="examinations"
                 Title="@L["Examinations_Title"]"
-                Value="@profile.TotalExaminations"
+                Value="@profile.Examinations.Total"
+                Trending="@profile.Examinations.Trending"
                 Icon="@EduIcons.Examination">
                 <MudButton
                     Class="text-transform-none"
@@ -31,7 +32,8 @@
             <CardBadge
                 Class="quizzes"
                 Title="@L["Quizzes_Title"]"
-                Value="@profile.TotalQuizzes"
+                Value="@profile.Quizzes.Total"
+                Trending="@profile.Quizzes.Trending"
                 Icon="@EduIcons.Quiz">
                 <MudButton
                     Class="text-transform-none"
@@ -44,7 +46,8 @@
             <CardBadge
                 Class="date-guessers"
                 Title="@L["History_DateGuessers_Title"]"
-                Value="@profile.TotalDateGuessers"
+                Value="@profile.DateGuessers.Total"
+                Trending="@profile.DateGuessers.Trending"
                 Icon="@EduIcons.DateGuesser">
                 <MudButton
                     Class="text-transform-none"
@@ -57,6 +60,10 @@
             <MonthlyPerformanceCard
                 Class="performance"
                 Performance="@profile.MonthlyPerformance"/>
+            
+            <MonthlyActivitiesCard
+                Class="activities"
+                Activities="@profile.MonthlyActivities"/>
             
             <AssignmentsCard
                 Class="assignment"

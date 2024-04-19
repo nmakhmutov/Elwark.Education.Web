@@ -1,38 +1,38 @@
 @using Education.Client.Features.History.Clients.Learner.Model.DateGuesser
 @using ApexCharts
-<ApexChart @ref="@_chart" TItem="DateGuessersStatisticsModel.ProgressModel" Options="_options">
+<ApexChart @ref="@_chart" TItem="DateGuesserProgressModel" Options="_options">
     <ApexPointSeries
-        TItem="DateGuessersStatisticsModel.ProgressModel"
+        TItem="DateGuesserProgressModel"
         Items="Activities"
         Name="@L["History_DateGuessers_Small"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten3 })"
+        Stroke="@(new SeriesStroke { Width = 3, Color = HistoryChart.DateGuesser.Size.Small })"
         SeriesType="SeriesType.Area"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Small)"/>
 
     <ApexPointSeries
-        TItem="DateGuessersStatisticsModel.ProgressModel"
+        TItem="DateGuesserProgressModel"
         Items="Activities"
         Name="@L["History_DateGuessers_Medium"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Lighten1 })"
+        Stroke="@(new SeriesStroke { Width = 3, Color = HistoryChart.DateGuesser.Size.Medium })"
         SeriesType="SeriesType.Area"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Medium)"/>
 
     <ApexPointSeries
-        TItem="DateGuessersStatisticsModel.ProgressModel"
+        TItem="DateGuesserProgressModel"
         Items="Activities"
         Name="@L["History_DateGuessers_Large"]"
-        Stroke="@(new SeriesStroke { Width = 3, Color = Colors.Orange.Darken2 })"
+        Stroke="@(new SeriesStroke { Width = 3, Color = HistoryChart.DateGuesser.Size.Large })"
         SeriesType="SeriesType.Area"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Large)"/>
 </ApexChart>
 
 @code {
-    private ApexChart<DateGuessersStatisticsModel.ProgressModel>? _chart;
+    private ApexChart<DateGuesserProgressModel>? _chart;
 
-    private ApexChartOptions<DateGuessersStatisticsModel.ProgressModel> _options = new()
+    private ApexChartOptions<DateGuesserProgressModel> _options = new()
     {
         Legend = new Legend
         {
@@ -65,7 +65,7 @@
     public DateStyle DateStyle { get; set; }
 
     [Parameter, EditorRequired]
-    public required DateGuessersStatisticsModel.ProgressModel[] Activities { get; set; }
+    public required DateGuesserProgressModel[] Activities { get; set; }
 
     protected override Task OnParametersSetAsync()
     {

@@ -1,26 +1,19 @@
 <section class="@Class">
     @foreach (var item in Items)
     {
-        <div class="item">
-            <header class="header">
-                <MudText Typo="Typo.subtitle1">
-                    @item.Title
-                </MudText>
-                @if (item.Description is not null)
-                {
-                    <MudTooltip Text="@item.Description" Placement="Placement.Start">
-                        <MudIcon Icon="@Icons.Material.Outlined.HelpOutline" Size="Size.Small"/>
-                    </MudTooltip>
-                }
-            </header>
-            <article class="d-flex align-center justify-space-between">
-                <MudText Typo="Typo.h5">
+        <section class="item">
+            <MudText Typo="Typo.subtitle1">
+                @item.Title
+            </MudText>
+
+            <article class="d-flex align-end justify-space-between">
+                <MudText Typo="Typo.h6">
                     @item.Value
                 </MudText>
 
-                <DifferenceLabel Difference="@item.Diff"/>
+                <Trending Trend="@item.Trending" Typo="Typo.body1" Size="Size.Small"/>
             </article>
-        </div>
+        </section>
     }
 </section>
 
@@ -32,6 +25,6 @@
     [Parameter]
     public Item[] Items { get; set; } = [];
 
-    public sealed record Item(string Title, string Value, double Diff, string? Description = null);
+    public sealed record Item(string Title, string Value, double Trending);
 
 }

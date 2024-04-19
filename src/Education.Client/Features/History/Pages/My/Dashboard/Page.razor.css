@@ -18,9 +18,9 @@
             "quiz profile"
             "quiz assignment"
             "dg assignment"
-            "dg achievement"
             "performance achievement"
-            "performance achievement";
+            ". achievement"
+            "activities activities";
     }
 
     ::deep .profile {
@@ -42,17 +42,17 @@
     ::deep .performance {
         grid-area: performance;
     }
-    
+
+    ::deep .activities {
+        grid-area: activities;
+    }
+
     ::deep .assignment {
         grid-area: assignment;
     }
 
     ::deep .achievement {
         grid-area: achievement;
-    }
-
-    ::deep .recent-articles {
-        grid-area: ra;
     }
 }
 
@@ -63,7 +63,7 @@
             "exam quiz profile"
             "dg performance profile"
             ". performance assignment"
-            "ra ra achievement";
+            "activities activities achievement";
     }
 }
 
@@ -72,8 +72,8 @@
         grid-template-columns: repeat(4, 1fr);
         grid-template-areas: 
             "exam quiz dg profile"
-            ". . performance profile"
-            ". . performance assignment"
-            "ra ra ra achievement";
+            "activities activities performance profile"
+            "activities activities performance assignment"
+            ". . . achievement";
     }
 }

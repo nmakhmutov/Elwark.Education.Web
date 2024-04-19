@@ -34,7 +34,11 @@
             {
                 Show = false
             },
-            Colors = [Colors.Green.Accent4, Colors.Red.Default]
+            Colors =
+            [
+                HistoryChart.DateGuesser.Question.Correct,
+                HistoryChart.DateGuesser.Question.Incorrect
+            ]
         };
 
     [Inject]
@@ -48,8 +52,8 @@
 
     private ChartList.Item[] Items =>
     [
-        new ChartList.Item(L["History_DateGuesser_Correct"], AnswerRatio.Correct, Colors.Green.Accent4),
-        new ChartList.Item(L["History_DateGuesser_Incorrect"], AnswerRatio.Incorrect, Colors.Red.Default),
+        new ChartList.Item(L["History_DateGuesser_Correct"], AnswerRatio.Correct, HistoryChart.DateGuesser.Question.Correct),
+        new ChartList.Item(L["History_DateGuesser_Incorrect"], AnswerRatio.Incorrect, HistoryChart.DateGuesser.Question.Incorrect),
         new ChartList.Item(L["History_DateGuesser_Questions"], AnswerRatio.Total, null)
     ];
 

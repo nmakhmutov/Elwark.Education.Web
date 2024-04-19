@@ -10,8 +10,8 @@ namespace Education.Client.Features.History.Pages.My.Quizzes;
 
 public sealed partial class Page
 {
-    private QuizzesStatisticsModel.ProgressModel[] _daily = [];
-    private QuizzesStatisticsModel.ProgressModel[] _monthly = [];
+    private QuizProgressModel[] _daily = [];
+    private QuizProgressModel[] _monthly = [];
     private ApiResult<QuizzesStatisticsModel> _result = ApiResult<QuizzesStatisticsModel>.Loading();
 
     [Inject]
@@ -33,11 +33,11 @@ public sealed partial class Page
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
             _daily = model.Daily
-                .FillDailyGaps(today, x => x.Date, x => new QuizzesStatisticsModel.ProgressModel(x, 0, 0))
+                .FillDailyGaps(today, x => x.Date, x => new QuizProgressModel(x, 0, 0))
                 .ToArray();
 
             _monthly = model.Monthly
-                .FillMonthlyGaps(today, x => x.Date, x => new QuizzesStatisticsModel.ProgressModel(x, 0, 0))
+                .FillMonthlyGaps(today, x => x.Date, x => new QuizProgressModel(x, 0, 0))
                 .ToArray();
         });
     }
