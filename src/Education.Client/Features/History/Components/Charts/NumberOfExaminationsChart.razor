@@ -1,18 +1,16 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model.Examination
 <div class="@Class">
-    <div class="d-flex justify-center">
-        <div class="wrapper">
-            <ApexChart TItem="Data" Options="@Options">
-                <ApexPointSeries
-                    TItem="Data"
-                    Items="@Series"
-                    SeriesType="SeriesType.Donut"
-                    XValue="@(x => x.Name)"
-                    YAggregate="@(x => x.Sum(e => e.Value))"/>
-            </ApexChart>
-        </div>
-    </div>
+    <ApexChartContainer>
+        <ApexChart TItem="Data" Options="@Options">
+            <ApexPointSeries
+                TItem="Data"
+                Items="@Series"
+                SeriesType="SeriesType.Donut"
+                XValue="@(x => x.Name)"
+                YAggregate="@(x => x.Sum(e => e.Value))"/>
+        </ApexChart>
+    </ApexChartContainer>
 
     <ChartList Items="@Items"/>
 </div>

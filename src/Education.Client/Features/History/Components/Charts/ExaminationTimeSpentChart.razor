@@ -1,14 +1,17 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model.Examination
 <div class="@Class">
-    <ApexChart TItem="Data" Options="@Options">
-        <ApexRangeSeries
-            TItem="Data"
-            Items="@Series"
-            XValue="@(x => x.Name)"
-            YValue="@(x => x.Value)"
-            PointColor="@(x => x.Color)"/>
-    </ApexChart>
+    <ApexChartContainer>
+        <ApexChart TItem="Data" Options="@Options">
+            <ApexRangeSeries
+                TItem="Data"
+                Items="@Series"
+                XValue="@(x => x.Name)"
+                YValue="@(x => x.Value)"
+                PointColor="@(x => x.Color)"/>
+        </ApexChart>
+    </ApexChartContainer>
+
     <ChartList Items="@Items"/>
 </div>
 

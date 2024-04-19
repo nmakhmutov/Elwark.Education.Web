@@ -9,15 +9,12 @@
             <MetricNumber Value="@Value" Typo="Typo.h5"/>
         </span>
 
-        @if (Trending != 0)
-        {
-            <span class="d-flex flex-column align-end">
-                <Trending Trend="@Trending"/>
-                <MudText Typo="Typo.body2">
-                    @L["Comparison_LastMonth_Title"]
-                </MudText>
-            </span>
-        }
+        <span class="d-flex flex-column align-end">
+            <Trending Trend="@Trending"/>
+            <MudText Typo="Typo.body2">
+                @L["Comparison_LastMonth_Title"]
+            </MudText>
+        </span>
     </article>
 
     @if (ChildContent is not null)

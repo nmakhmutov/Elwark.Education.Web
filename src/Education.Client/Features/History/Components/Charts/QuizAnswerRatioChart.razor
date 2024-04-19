@@ -55,7 +55,7 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required AnswerRatioModel Value { get; set; }
+    public required AnswerRatioModel AnswerRatio { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
@@ -63,22 +63,22 @@
     private List<Data> Series =>
     [
         new Data(L["Questions_Correct"], 0, HistoryChart.Quiz.Question.Correct),
-        new Data(L["Questions_Correct"], Value.Correct, HistoryChart.Quiz.Question.Correct),
+        new Data(L["Questions_Correct"], AnswerRatio.Correct, HistoryChart.Quiz.Question.Correct),
         new Data(L["Questions_Incorrect"], 0, HistoryChart.Quiz.Question.Incorrect),
-        new Data(L["Questions_Incorrect"], Value.Incorrect, HistoryChart.Quiz.Question.Incorrect),
+        new Data(L["Questions_Incorrect"], AnswerRatio.Incorrect, HistoryChart.Quiz.Question.Incorrect),
         new Data(L["Questions_Answered"], 0, HistoryChart.Quiz.Question.Answered),
-        new Data(L["Questions_Answered"], Value.Answered, HistoryChart.Quiz.Question.Answered),
+        new Data(L["Questions_Answered"], AnswerRatio.Answered, HistoryChart.Quiz.Question.Answered),
         new Data(L["Questions_NotAnswered"], 0, HistoryChart.Quiz.Question.NotAnswered),
-        new Data(L["Questions_NotAnswered"], Value.NotAnswered, HistoryChart.Quiz.Question.NotAnswered)
+        new Data(L["Questions_NotAnswered"], AnswerRatio.NotAnswered, HistoryChart.Quiz.Question.NotAnswered)
     ];
 
     private ChartList.Item[] Items =>
     [
-        new ChartList.Item(L["Questions_Correct"], Value.Correct, HistoryChart.Quiz.Question.Correct),
-        new ChartList.Item(L["Questions_Incorrect"], Value.Incorrect, HistoryChart.Quiz.Question.Incorrect),
-        new ChartList.Item(L["Questions_Answered"], Value.Answered, HistoryChart.Quiz.Question.Answered),
-        new ChartList.Item(L["Questions_NotAnswered"], Value.NotAnswered, HistoryChart.Quiz.Question.NotAnswered),
-        new ChartList.Item(L["Questions_Total"], Value.Questions, null)
+        new ChartList.Item(L["Questions_Correct"], AnswerRatio.Correct, HistoryChart.Quiz.Question.Correct),
+        new ChartList.Item(L["Questions_Incorrect"], AnswerRatio.Incorrect, HistoryChart.Quiz.Question.Incorrect),
+        new ChartList.Item(L["Questions_Answered"], AnswerRatio.Answered, HistoryChart.Quiz.Question.Answered),
+        new ChartList.Item(L["Questions_NotAnswered"], AnswerRatio.NotAnswered, HistoryChart.Quiz.Question.NotAnswered),
+        new ChartList.Item(L["Questions_Total"], AnswerRatio.Questions, null)
     ];
 
     private sealed record Data(string Name, uint Value, string Color);

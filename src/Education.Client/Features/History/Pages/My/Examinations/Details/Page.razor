@@ -19,11 +19,11 @@
                     <NumberOfExaminationsChart Value="@result.NumberOfExaminations"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.NumberOfExaminations.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["User_MyActivity"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <NumberOfTestDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
@@ -34,11 +34,11 @@
                     <ExaminationScoreChart Value="@result.Score"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.Score.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["User_MyActivity"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ScoreDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
@@ -46,14 +46,14 @@
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
                     <Subheader Title="@L["Questions_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <ExaminationAnswerRatioChart Value="@result.AnswerRatio"/>
+                    <ExaminationAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.AnswerRatio.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <AnswerRatioDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
@@ -64,11 +64,11 @@
                     <ExaminationTimeSpentChart Value="@result.TimeSpent"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <ProgressList Items="@result.Delta.TimeSpent.GetProgress(L)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
+                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
                     <TimeSpentDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>

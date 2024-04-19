@@ -11,6 +11,10 @@ using MeOverviewModel = Education.Client.Features.History.Clients.Learner.Model.
 
 namespace Education.Client.Features.History.Pages.My.Dashboard;
 
+using DateGuesserModel = MeOverviewModel.DateGuesserModel;
+using ExaminationModel = MeOverviewModel.ExaminationModel;
+using QuizModel = MeOverviewModel.QuizModel;
+
 public sealed partial class Page
 {
     private ApiResult<Aggregate> _result = ApiResult<Aggregate>.Loading();
@@ -51,14 +55,14 @@ public sealed partial class Page
             .FillMonthlyGaps(today.AddMonths(-5), today, x => x.Month,
                 month => new MeOverviewModel.ActivityModel(
                     month,
-                    new MeOverviewModel.ExaminationModel(0, 0),
-                    new MeOverviewModel.QuizModel(0, 0),
-                    new MeOverviewModel.DateGuesserModel(0, 0, 0)
+                    new ExaminationModel(0, 0),
+                    new QuizModel(0, 0),
+                    new DateGuesserModel(0, 0, 0)
                 )
             )
             .ToArray();
 
-        var trend = activities switch
+        var (examination, quiz, dateGuesser) = activities switch
         {
             [.., var last, var current] => (
                 MonthlyTrend.Map(learner.Examinations, current.Examination, last.Examination),
@@ -74,9 +78,9 @@ public sealed partial class Page
 
         _result = ApiResult<Aggregate>.Success(
             new Aggregate(
-                trend.Item1,
-                trend.Item2,
-                trend.Item3,
+                examination,
+                quiz,
+                dateGuesser,
                 activities,
                 user.MonthlyPerformance,
                 user.Level,
@@ -103,27 +107,17 @@ public sealed partial class Page
 
     private sealed record MonthlyTrend(uint Total, double Trending)
     {
-        public static MonthlyTrend Empty(uint total)
-        {
-            return new MonthlyTrend(total, 0);
-        }
+        public static MonthlyTrend Empty(uint total) =>
+            new(total, 0);
 
-        public static MonthlyTrend Map(uint total, MeOverviewModel.ExaminationModel current,
-            MeOverviewModel.ExaminationModel last)
-        {
-            return Map(total, current.Easy + current.Hard, last.Easy + last.Easy);
-        }
+        public static MonthlyTrend Map(uint total, ExaminationModel current, ExaminationModel last) =>
+            Map(total, current.Total, last.Total);
 
-        public static MonthlyTrend Map(uint total, MeOverviewModel.QuizModel current, MeOverviewModel.QuizModel last)
-        {
-            return Map(total, current.Easy + current.Hard, last.Easy + last.Easy);
-        }
+        public static MonthlyTrend Map(uint total, QuizModel current, QuizModel last) =>
+            Map(total, current.Total, last.Total);
 
-        public static MonthlyTrend Map(uint total, MeOverviewModel.DateGuesserModel current,
-            MeOverviewModel.DateGuesserModel last)
-        {
-            return Map(total, current.Small + current.Medium + current.Large, last.Small + last.Medium + last.Large);
-        }
+        public static MonthlyTrend Map(uint total, DateGuesserModel current, DateGuesserModel last) =>
+            Map(total, current.Total, last.Total);
 
         private static MonthlyTrend Map(uint total, double current, double last)
         {

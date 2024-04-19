@@ -1,8 +1,7 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model.DateGuesser
 <div class="@Class">
-    @if (AnswerRatio.Total > 0)
-    {
+    <ApexChartContainer>
         <ApexChart TItem="Data" Options="@Options">
             <ApexPointSeries
                 TItem="Data"
@@ -11,7 +10,7 @@
                 XValue="@(x => x.Name)"
                 YAggregate="@(x => x.Sum(e => e.Value))"/>
         </ApexChart>
-    }
+    </ApexChartContainer>
 
     <ChartList Items="@Items"/>
 </div>

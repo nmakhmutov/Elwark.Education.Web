@@ -14,9 +14,21 @@ public sealed record MeOverviewModel(
         DateGuesserModel DateGuesser
     );
 
-    public sealed record ExaminationModel(uint Easy, uint Hard);
+    public sealed record ExaminationModel(uint Easy, uint Hard)
+    {
+        public uint Total =>
+            Easy + Hard;
+    }
 
-    public sealed record QuizModel(uint Easy, uint Hard);
+    public sealed record QuizModel(uint Easy, uint Hard)
+    {
+        public uint Total =>
+            Easy + Hard;
+    }
 
-    public sealed record DateGuesserModel(uint Small, uint Medium, uint Large);
+    public sealed record DateGuesserModel(uint Small, uint Medium, uint Large)
+    {
+        public uint Total =>
+            Small + Medium + Large;
+    }
 }
