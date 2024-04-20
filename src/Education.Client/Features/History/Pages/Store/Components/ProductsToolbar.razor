@@ -53,9 +53,15 @@
     public string? Class { get; set; }
 
     private Task CategoryChanged(CategoryType category) =>
-        FilterChanged.InvokeAsync(Filter with { Category = category });
+        FilterChanged.InvokeAsync(Filter with
+        {
+            Category = category
+        });
 
     private void SearchChanged(string? search) =>
-        FilterChanged.InvokeAsync(Filter with { Search = search });
+        FilterChanged.InvokeAsync(Filter with
+        {
+            Search = search
+        });
 
 }

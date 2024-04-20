@@ -68,7 +68,10 @@ public sealed partial class Page
 
     private async Task ChangeDifficultyAsync(DifficultyType? difficulty)
     {
-        _settings = _settings with { Difficulty = difficulty };
+        _settings = _settings with
+        {
+            Difficulty = difficulty
+        };
         await Storage.SetItemAsync(HistoryLocalStorageKey.QuizSettings, _settings);
     }
 

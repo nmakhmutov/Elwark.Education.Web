@@ -41,7 +41,11 @@ public sealed partial class Page
             .Map(x =>
             {
                 _correctAnswer = x.Answer;
-                return flow with { Streak = x.Streak, Bank = x.Bank };
+                return flow with
+                {
+                    Streak = x.Streak,
+                    Bank = x.Bank
+                };
             });
     }
 
@@ -53,5 +57,8 @@ public sealed partial class Page
 
     private async Task OnBankCollect() =>
         _result = (await FlowClient.CollectBankAsync())
-            .Map(_ => _result.Unwrap() with { Bank = [] });
+            .Map(_ => _result.Unwrap() with
+            {
+                Bank = []
+            });
 }

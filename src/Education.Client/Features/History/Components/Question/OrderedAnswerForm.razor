@@ -157,7 +157,11 @@ else
         var i1 = _options.FindIndex(x => x.Id == id);
         var i2 = _correctIds.IndexOf(id);
 
-        return new Metadata { CorrectIndex = i2 + 1, IsCorrect = i1 == i2 };
+        return new Metadata
+        {
+            CorrectIndex = i2 + 1,
+            IsCorrect = i1 == i2
+        };
     }
 
     private sealed record Metadata

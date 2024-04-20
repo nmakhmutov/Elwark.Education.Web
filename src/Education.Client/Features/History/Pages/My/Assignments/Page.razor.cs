@@ -39,25 +39,43 @@ public sealed partial class Page
 
     private async Task ClaimDailyBonusAsync() =>
         _result = (await UserClient.ClaimDailyBonusAsync())
-            .Map(bonus => _result.Unwrap() with { DailyBonus = bonus });
+            .Map(bonus => _result.Unwrap() with
+            {
+                DailyBonus = bonus
+            });
 
     private async Task RejectDailyBonusAsync() =>
         _result = (await UserClient.RejectDailyBonusAsync())
-            .Map(bonus => _result.Unwrap() with { DailyBonus = bonus });
+            .Map(bonus => _result.Unwrap() with
+            {
+                DailyBonus = bonus
+            });
 
     private async Task StartDailyQuestsAsync() =>
         _result = (await UserClient.StartAssignmentsAsync(new StartAssignmentRequest(QuestType.Daily)))
-            .Map(assignments => _result.Unwrap() with { DailyAssignments = assignments });
+            .Map(assignments => _result.Unwrap() with
+            {
+                DailyAssignments = assignments
+            });
 
     private async Task CollectDailyQuestsAsync(string id) =>
         _result = (await UserClient.ClaimAssignmentsAsync(id, new ClaimAssignmentRequest(QuestType.Daily)))
-            .Map(assignments => _result.Unwrap() with { DailyAssignments = assignments });
+            .Map(assignments => _result.Unwrap() with
+            {
+                DailyAssignments = assignments
+            });
 
     private async Task StartWeeklyQuestsAsync() =>
         _result = (await UserClient.StartAssignmentsAsync(new StartAssignmentRequest(QuestType.Weekly)))
-            .Map(assignments => _result.Unwrap() with { WeeklyAssignments = assignments });
+            .Map(assignments => _result.Unwrap() with
+            {
+                WeeklyAssignments = assignments
+            });
 
     private async Task CollectWeeklyQuestsAsync(string id) =>
         _result = (await UserClient.ClaimAssignmentsAsync(id, new ClaimAssignmentRequest(QuestType.Weekly)))
-            .Map(assignments => _result.Unwrap() with { WeeklyAssignments = assignments });
+            .Map(assignments => _result.Unwrap() with
+            {
+                WeeklyAssignments = assignments
+            });
 }

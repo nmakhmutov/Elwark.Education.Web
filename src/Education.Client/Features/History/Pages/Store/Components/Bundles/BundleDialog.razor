@@ -1,8 +1,8 @@
+@using Education.Client.Features.History.Clients.Order
 @using Education.Client.Features.History.Clients.Order.Model
 @using Education.Client.Features.History.Clients.Order.Request
 @using Education.Client.Features.History.Clients.Store.Model
 @using Education.Client.Features.History.Clients.User.Model
-@using Education.Client.Features.History.Clients.Order
 <MudDialog
     Class="pa-3 pa-sm-6"
     ClassContent="pa-0"
@@ -222,10 +222,16 @@
     }
 
     private InternalMoneyModel OriginalPrice =>
-        Product.Price.Original with { Amount = Product.Price.Original.Amount * _quantity };
+        Product.Price.Original with
+        {
+            Amount = Product.Price.Original.Amount * _quantity
+        };
 
     private InternalMoneyModel TotalPrice =>
-        Product.Price.Total with { Amount = Product.Price.Total.Amount * _quantity };
+        Product.Price.Total with
+        {
+            Amount = Product.Price.Total.Amount * _quantity
+        };
 
     private uint TotalWeight =>
         Product.Weight * _quantity;

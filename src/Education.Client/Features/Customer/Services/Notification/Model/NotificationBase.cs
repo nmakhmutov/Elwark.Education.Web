@@ -50,8 +50,10 @@ public abstract record NotificationBase
     private void DisassemblePayload()
     {
         foreach (var (key, value) in _payload)
+        {
             if (InternalCurrencyExtensions.ParseValueOrDefault(key) is { } currency)
                 _money.Add(new InternalMoneyModel(currency, uint.Parse(value)));
+        }
 
         Href = (Subject, Module) switch
         {

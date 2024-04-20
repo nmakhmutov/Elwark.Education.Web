@@ -43,7 +43,10 @@ public sealed partial class Page
         result.Match(
             x =>
             {
-                _request = _request with { Token = x.Next };
+                _request = _request with
+                {
+                    Token = x.Next
+                };
                 _notifications.AddRange(x.Items);
             },
             e => _result = ApiResult<PagingTokenModel<NotificationModel>>.Fail(e)
@@ -60,7 +63,10 @@ public sealed partial class Page
     private async Task MarkAllAsReadAsync()
     {
         await NotificationService.MarkAllAsReadAsync();
-        _request = _request with { Token = null };
+        _request = _request with
+        {
+            Token = null
+        };
         _notifications.Clear();
     }
 }

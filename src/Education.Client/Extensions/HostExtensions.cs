@@ -21,7 +21,10 @@ internal static class HostExtensions
                 var navigation = provider.GetRequiredService<NavigationManager>();
 
                 return new AuthorizationMessageHandler(tokenProvider, navigation)
-                    .ConfigureHandler(new[] { gatewayUrl.ToString() });
+                    .ConfigureHandler(new[]
+                    {
+                        gatewayUrl.ToString()
+                    });
             });
 
         builder.Services

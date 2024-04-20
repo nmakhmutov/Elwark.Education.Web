@@ -1,8 +1,8 @@
+@using ApexCharts
+@using Education.Client.Features.History.Clients.User.Model
 @using Align = MudBlazor.Align
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
-@using Education.Client.Features.History.Clients.User.Model
-@using ApexCharts
 
 <section class="mud-paper pa-3 @Class">
     <header class="mud-primary white-text rounded pa-3 mb-3">
@@ -96,7 +96,7 @@
 
 @code {
     private double _trendingValue;
-    private readonly List<ApexData> _apex = [];
+    private List<ApexData> _apex = [];
     private MudTable<WalletDetailsModel.BudgetModel>? _table;
 
     private readonly ApexChartOptions<ApexData> _options = new()
@@ -153,12 +153,11 @@
 
         var now = DateTime.UtcNow;
         var month = new DateOnly(now.Year, now.Month, 1);
-        for (var i = 0; i < 12; i++)
-        {
-            var current = month.AddMonths(-i);
-            var item = Wallet.Budgets.FirstOrDefault(x => x.Month == current);
-            _apex.Add(new ApexData(current.ToDateTime(TimeOnly.MinValue), item?.Balance ?? 0));
-        }
+
+        _apex = Wallet.Budgets
+            .Select(x => new ApexData(x.Month.ToDateTime(TimeOnly.MinValue), x.Balance))
+            .FillMonthlyGaps(month.AddMonths(-6), month, x => DateOnly.FromDateTime(x.Month), x => new ApexData(x.ToDateTime(TimeOnly.MinValue), 0))
+            .ToList();
     }
 
     private RenderFragment CreateTrendIcon(double balance)

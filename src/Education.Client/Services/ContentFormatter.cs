@@ -91,31 +91,58 @@ public sealed class ContentFormatter : IDisposable
     }
 
     public Task IncreaseFontSizeAsync() =>
-        UpdateAsync(_state with { FontSize = Math.Min(MaxFontSize, Math.Round(_state.FontSize + 0.1, 2)) });
+        UpdateAsync(_state with
+        {
+            FontSize = Math.Min(MaxFontSize, Math.Round(_state.FontSize + 0.1, 2))
+        });
 
     public Task DecreaseFontSizeAsync() =>
-        UpdateAsync(_state with { FontSize = Math.Max(MinFontSize, Math.Round(_state.FontSize - 0.1, 2)) });
+        UpdateAsync(_state with
+        {
+            FontSize = Math.Max(MinFontSize, Math.Round(_state.FontSize - 0.1, 2))
+        });
 
     public Task IncreaseLineHeightAsync() =>
-        UpdateAsync(_state with { LineHeight = Math.Min(MaxLineHeight, Math.Round(_state.LineHeight + 0.1, 2)) });
+        UpdateAsync(_state with
+        {
+            LineHeight = Math.Min(MaxLineHeight, Math.Round(_state.LineHeight + 0.1, 2))
+        });
 
     public Task DecreaseLineHeightAsync() =>
-        UpdateAsync(_state with { LineHeight = Math.Max(MinLineHeight, Math.Round(_state.LineHeight - 0.1, 2)) });
+        UpdateAsync(_state with
+        {
+            LineHeight = Math.Max(MinLineHeight, Math.Round(_state.LineHeight - 0.1, 2))
+        });
 
     public Task AlignTextLeftAsync() =>
-        UpdateAsync(_state with { TextAlign = Align.Left });
+        UpdateAsync(_state with
+        {
+            TextAlign = Align.Left
+        });
 
     public Task AlignTextRightAsync() =>
-        UpdateAsync(_state with { TextAlign = Align.Right });
+        UpdateAsync(_state with
+        {
+            TextAlign = Align.Right
+        });
 
     public Task AlignTextCenterAsync() =>
-        UpdateAsync(_state with { TextAlign = Align.Center });
+        UpdateAsync(_state with
+        {
+            TextAlign = Align.Center
+        });
 
     public Task AlignTextJustifyAsync() =>
-        UpdateAsync(_state with { TextAlign = Align.Justify });
+        UpdateAsync(_state with
+        {
+            TextAlign = Align.Justify
+        });
 
     public Task ToggleFontWeightAsync() =>
-        UpdateAsync(_state with { IsFontWeightBold = !_state.IsFontWeightBold });
+        UpdateAsync(_state with
+        {
+            IsFontWeightBold = !_state.IsFontWeightBold
+        });
 
     private async Task UpdateAsync(State state)
     {

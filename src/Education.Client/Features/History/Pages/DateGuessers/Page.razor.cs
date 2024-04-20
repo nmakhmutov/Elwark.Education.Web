@@ -74,13 +74,21 @@ public sealed partial class Page
 
     private async Task OnEpochChanged(EpochType epoch)
     {
-        _settings = _settings with { Epoch = epoch };
+        _settings = _settings with
+        {
+            Epoch = epoch
+        };
+
         await Storage.SetItemAsync(HistoryLocalStorageKey.DateGuesserSettings, _settings);
     }
 
     private async Task OnSizeChanged(DateGuesserType? type)
     {
-        _settings = _settings with { Type = type };
+        _settings = _settings with
+        {
+            Type = type
+        };
+
         await Storage.SetItemAsync(HistoryLocalStorageKey.DateGuesserSettings, _settings);
     }
 

@@ -152,10 +152,10 @@
 
         _conflictParties = new Dictionary<string, List<MarkupString>>
         {
-            { nameof(ConflictPartyModel.Belligerents), [Battle.ConflictParties[0].Belligerents] },
-            { nameof(ConflictPartyModel.Commanders), [Battle.ConflictParties[0].Commanders] },
-            { nameof(ConflictPartyModel.Strength), [Battle.ConflictParties[0].Strength] },
-            { nameof(ConflictPartyModel.Losses), [Battle.ConflictParties[0].Losses] }
+            [nameof(ConflictPartyModel.Belligerents)] = [Battle.ConflictParties[0].Belligerents],
+            [nameof(ConflictPartyModel.Commanders)] = [Battle.ConflictParties[0].Commanders],
+            [nameof(ConflictPartyModel.Strength)] = [Battle.ConflictParties[0].Strength],
+            [nameof(ConflictPartyModel.Losses)] = [Battle.ConflictParties[0].Losses]
         };
 
         for (var i = 1; i < Battle.ConflictParties.Length; i++)

@@ -24,8 +24,11 @@ public sealed partial class Page
 
     protected override void OnParametersSet()
     {
-        if (Enum.TryParse(Category, true, out CategoryType type))
-            _filter = _filter with { Category = type };
+        Enum.TryParse(Category, true, out CategoryType type);
+        _filter = _filter with
+        {
+            Category = type
+        };
     }
 
     protected override Task OnInitializedAsync() =>

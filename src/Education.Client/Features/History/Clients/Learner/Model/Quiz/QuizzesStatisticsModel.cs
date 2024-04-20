@@ -3,8 +3,8 @@ using Education.Client.Features.History.Clients.Quiz.Model;
 namespace Education.Client.Features.History.Clients.Learner.Model.Quiz;
 
 public sealed record QuizzesStatisticsModel(
-    QuizzesStatisticsModel.QuizModel EasyQuiz,
-    QuizzesStatisticsModel.QuizModel HardQuiz,
+    QuizzesStatisticsModel.QuizModel Easy,
+    QuizzesStatisticsModel.QuizModel Hard,
     QuizProgressModel[] Daily,
     QuizProgressModel[] Monthly
 )

@@ -49,7 +49,11 @@ public sealed partial class Page
             return Task.CompletedTask;
 
         _subscriptionId = Guid.NewGuid();
-        var options = new ResizeOptions { NotifyOnBreakpointOnly = true, SuppressInitEvent = false };
+        var options = new ResizeOptions
+        {
+            NotifyOnBreakpointOnly = true,
+            SuppressInitEvent = false
+        };
         return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
     }
 

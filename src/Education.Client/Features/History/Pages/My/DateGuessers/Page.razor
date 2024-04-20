@@ -13,36 +13,36 @@
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="profile">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <EduFillGrid>
-            @if (profile.SmallDateGuesser.Score.Total > 0)
+            @if (profile.Small.Score.Total > 0)
             {
                 <StatisticsCard
                     Title="@L["History_DateGuessers_Small"]"
-                    Value="@profile.SmallDateGuesser.Tests"
+                    Value="@profile.Small.Tests"
                     Href="@HistoryUrl.User.MySmallDateGuessers">
                     <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <DateGuesserScoreChart Score="@profile.SmallDateGuesser.Score"/>
+                    <DateGuesserScoreChart Score="@profile.Small.Score"/>
                 </StatisticsCard>
             }
 
-            @if (profile.MediumDateGuesser.Score.Total > 0)
+            @if (profile.Medium.Score.Total > 0)
             {
                 <StatisticsCard
                     Title="@L["History_DateGuessers_Medium"]"
-                    Value="@profile.MediumDateGuesser.Tests"
+                    Value="@profile.Medium.Tests"
                     Href="@HistoryUrl.User.MyMediumDateGuessers">
                     <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <DateGuesserScoreChart Score="@profile.MediumDateGuesser.Score"/>
+                    <DateGuesserScoreChart Score="@profile.Medium.Score"/>
                 </StatisticsCard>
             }
 
-            @if (profile.LargeDateGuesser.Score.Total > 0)
+            @if (profile.Large.Score.Total > 0)
             {
                 <StatisticsCard
                     Title="@L["History_DateGuessers_Large"]"
-                    Value="@profile.LargeDateGuesser.Tests"
+                    Value="@profile.Large.Tests"
                     Href="@HistoryUrl.User.MyLargeDateGuessers">
                     <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <DateGuesserScoreChart Score="@profile.LargeDateGuesser.Score"/>
+                    <DateGuesserScoreChart Score="@profile.Large.Score"/>
                 </StatisticsCard>
             }
 

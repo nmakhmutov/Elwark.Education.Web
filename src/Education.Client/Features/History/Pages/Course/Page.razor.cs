@@ -28,5 +28,8 @@ public sealed partial class Page
 
     private async Task StartCourseAsync(string id) =>
         _result = (await LearnerClient.StartCourseAsync(id))
-            .Map(x => _result.Unwrap() with { Activity = x });
+            .Map(x => _result.Unwrap() with
+            {
+                Activity = x
+            });
 }
