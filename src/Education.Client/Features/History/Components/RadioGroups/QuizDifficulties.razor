@@ -1,0 +1,84 @@
+@using Education.Client.Features.History.Clients.Quiz.Model
+<section class="grid @Class">
+    @foreach (var quiz in Quizzes)
+    {
+        <article class="d-flex flex-column gap-3 mud-paper pa-3 pa-sm-6">
+            <MudText Typo="Typo.h5" Align="Align.Center">
+                @L.GetQuizDifficultyTitle(quiz.Type)
+            </MudText>
+
+            <MudList Class="flex-1" Dense DisableGutters DisablePadding>
+                <MudListItem>
+                    @L["Question_QuantityAndTypes_Title", quiz.Question.Quantity, string.Join(", ", quiz.Question.Kinds.Select(x => L[$"Question_{x}_Kind"]))]
+                </MudListItem>
+                <MudListItem>
+                    <InternalMonies Typo="Typo.body2" Monies="@quiz.Rewards" Horizontal/>
+                </MudListItem>
+            </MudList>
+
+            <div class="d-flex align-center justify-space-between gap-3 gap-sm-6 mb-3">
+                <div>
+                    <MudText Typo="Typo.body2">
+                        @quiz.AccessInventory.Title
+                    </MudText>
+                    <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                        @L["Inventory_Required_Title"]
+                    </MudText>
+                </div>
+
+                <div class="d-flex justify-center align-center mud-background rounded relative pa-6">
+                    <img class="image" src="@quiz.AccessInventory.ImageUrl" alt="@L.GetQuizDifficultyTitle(quiz.Type)"/>
+                </div>
+            </div>
+
+            <div class="d-flex justify-center">
+                <LoadingButton
+                    Color="Color.Primary"
+                    Variant="Variant.Filled"
+                    Text="@L[$"Start_{quiz.Type}Quiz_Title"]"
+                    LoadingText="@L["Loading_Title"]"
+                    IsLoading="@IsLoading(quiz.Type)"
+                    Disabled="@(!quiz.IsAllowed)"
+                    OnClick="@(() => CreateAsync(quiz.Type))"
+                    DisableElevation
+                    DisableRipple/>
+            </div>
+        </article>
+    }
+</section>
+
+@code {
+    private bool _isLoading;
+    private DifficultyType _difficulty;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required QuizInformationModel[] Quizzes { get; set; }
+
+    [Parameter]
+    public EventCallback<DifficultyType> OnClick { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task CreateAsync(DifficultyType difficulty)
+    {
+        _isLoading = true;
+        _difficulty = difficulty;
+
+        try
+        {
+            await OnClick.InvokeAsync(difficulty);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private bool IsLoading(DifficultyType difficulty) =>
+        _difficulty == difficulty && _isLoading;
+
+}

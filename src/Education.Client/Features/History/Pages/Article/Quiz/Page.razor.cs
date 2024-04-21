@@ -15,7 +15,6 @@ namespace Education.Client.Features.History.Pages.Article.Quiz;
 
 public sealed partial class Page
 {
-    private bool _isLoading;
     private ApiResult<ArticleQuizBuilderModel> _result = ApiResult<ArticleQuizBuilderModel>.Loading();
     private QuizSettings _settings = QuizSettings.Empty;
 
@@ -51,43 +50,19 @@ public sealed partial class Page
     {
         _settings = await Storage.GetItemAsync<QuizSettings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
         _result = await ArticleClient.GetQuizBuilderAsync(Id);
-
-        await _result.MatchAsync(x =>
-            {
-                if (x.Quizzes.Any(e => e.IsAllowed && e.Type == _settings.Difficulty))
-                    return Task.CompletedTask;
-
-                return ChangeDifficultyAsync(x.Quizzes.FirstOrDefault(t => t.IsAllowed)?.Type);
-            },
-            x =>
-            {
-                if (x.IsQuizAlreadyCreated(out var id))
-                    Navigation.NavigateTo(HistoryUrl.Quiz.Test(id));
-            });
-    }
-
-    private async Task ChangeDifficultyAsync(DifficultyType? difficulty)
-    {
-        _settings = _settings with
+        _result.MathError(x =>
         {
-            Difficulty = difficulty
-        };
-        await Storage.SetItemAsync(HistoryLocalStorageKey.QuizSettings, _settings);
+            if (x.IsQuizAlreadyCreated(out var id))
+                Navigation.NavigateTo(HistoryUrl.Quiz.Test(id));
+        });
     }
 
-    private async Task CreateQuizAsync()
+    private async Task CreateQuizAsync(DifficultyType difficulty)
     {
-        if (!_settings.Difficulty.HasValue)
-            return;
-
-        _isLoading = true;
-
-        var quiz = await ArticleClient.CreateQuizAsync(Id, new CreateQuizRequest(_settings.Difficulty.Value));
+        var quiz = await ArticleClient.CreateQuizAsync(Id, new CreateQuizRequest(difficulty));
         quiz.Match(
             x => Navigation.NavigateTo(HistoryUrl.Quiz.Test(x.Id)),
             e => Snackbar.Add(e.Detail, Severity.Error)
         );
-
-        _isLoading = false;
     }
 }

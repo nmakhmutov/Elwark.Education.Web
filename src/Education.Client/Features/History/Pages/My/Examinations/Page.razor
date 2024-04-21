@@ -10,28 +10,28 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="profile">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <EduFillGrid>
-            @if (profile.Easy.Score.Total > 0)
+            @if (context.Easy.Score.Total > 0)
             {
                 <StatisticsCard
                     Title="@L["Examinations_Easy_Title"]"
-                    Value="@profile.Easy.NumberOfExaminations.Total"
+                    Value="@context.Easy.NumberOfExaminations.Total"
                     Href="@HistoryUrl.User.MyEasyExaminations">
                     <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <ExaminationScoreChart Value="@profile.Easy.Score"/>
+                    <ExaminationScoreChart Value="@context.Easy.Score"/>
                 </StatisticsCard>
             }
 
-            @if (profile.Hard.Score.Total > 0)
+            @if (context.Hard.Score.Total > 0)
             {
                 <StatisticsCard
                     Title="@L["Examinations_Hard_Title"]"
-                    Value="@profile.Hard.NumberOfExaminations.Total"
+                    Value="@context.Hard.NumberOfExaminations.Total"
                     Href="@HistoryUrl.User.MyHardExaminations">
                     <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <ExaminationScoreChart Value="@profile.Hard.Score"/>
+                    <ExaminationScoreChart Value="@context.Hard.Score"/>
                 </StatisticsCard>
             }
 
