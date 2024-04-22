@@ -1,4 +1,3 @@
-using Blazored.LocalStorage;
 using Education.Client.Clients;
 using Education.Client.Extensions;
 using Education.Client.Features.History.Clients.Course;
@@ -14,8 +13,6 @@ namespace Education.Client.Features.History.Pages.Course.Examination;
 
 public sealed partial class Page
 {
-    private DifficultyType? _difficulty;
-    private bool _isLoading;
     private ApiResult<ExaminationBuilderModel> _result = ApiResult<ExaminationBuilderModel>.Loading();
 
     [Inject]
@@ -26,9 +23,6 @@ public sealed partial class Page
 
     [Inject]
     private IHistoryLearnerClient LearnerClient { get; init; } = default!;
-
-    [Inject]
-    private ILocalStorageService Storage { get; init; } = default!;
 
     [Inject]
     private NavigationManager NavigationManager { get; init; } = default!;
@@ -48,41 +42,20 @@ public sealed partial class Page
 
     protected override async Task OnInitializedAsync()
     {
-        _difficulty = await Storage.GetItemAsync<DifficultyType?>(HistoryLocalStorageKey.ExaminationSettings);
-
         _result = await CourseClient.GetExaminationAsync(Id);
-        await _result.MatchAsync(
-            x => x.Examinations.Any(e => e.IsAllowed && e.Type == _difficulty)
-                ? Task.CompletedTask
-                : ChangeDifficulty(x.Examinations.FirstOrDefault(t => t.IsAllowed)?.Type),
-            e =>
-            {
-                if (e.IsExaminationAlreadyCreated(out var id))
-                    NavigationManager.NavigateTo(HistoryUrl.Examination.Test(id));
-            }
-        );
+        _result.MathError(x =>
+        {
+            if (x.IsExaminationAlreadyCreated(out var id))
+                NavigationManager.NavigateTo(HistoryUrl.Examination.Test(id));
+        });
     }
 
-    private async Task CreateTestAsync()
+    private async Task CreateTestAsync(DifficultyType difficulty)
     {
-        if (!_difficulty.HasValue)
-            return;
-
-        _isLoading = true;
-
-        var result = await CourseClient.CreateExaminationAsync(Id, new CreateExaminationRequest(_difficulty.Value));
+        var result = await CourseClient.CreateExaminationAsync(Id, new CreateExaminationRequest(difficulty));
         result.Match(
             x => NavigationManager.NavigateTo(HistoryUrl.Examination.Test(x.Id)),
             e => Snackbar.Add(e.Detail, Severity.Error)
         );
-
-        _isLoading = false;
-    }
-
-    private async Task ChangeDifficulty(DifficultyType? difficulty)
-    {
-        _difficulty = difficulty;
-
-        await Storage.SetItemAsync(HistoryLocalStorageKey.ExaminationSettings, difficulty);
     }
 }

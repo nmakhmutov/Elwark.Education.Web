@@ -66,7 +66,7 @@ public sealed partial class Page
     private void HandlerError(Error error)
     {
         if (error.IsExaminationAlreadyCompleted() || error.IsExaminationExpired())
-            Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
+            Navigation.NavigateTo(HistoryUrl.Examination.Conclusion(Id));
         else
             Snackbar.Add(error.Title, Severity.Error);
     }

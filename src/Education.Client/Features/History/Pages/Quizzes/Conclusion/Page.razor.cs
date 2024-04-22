@@ -29,7 +29,7 @@ public sealed partial class Page
     {
         _result = await QuizClient.GetConclusionAsync(Id);
 
-        if (_result.Is(x => x.IsQuizNotFound()))
+        if (_result.MatchError(x => x.IsQuizNotFound()))
             Navigation.NavigateTo(HistoryUrl.Quiz.Index());
     }
 

@@ -1,15 +1,15 @@
-@using Education.Client.Features.History.Clients.Quiz.Model
-<section class="grid @Class">
-    @foreach (var quiz in Quizzes)
+@using Education.Client.Features.History.Clients.Course.Model
+<EduFillGrid Class="@Class">
+    @foreach (var examination in Examinations)
     {
-        <DifficultyCard Title="@L.GetQuizDifficultyTitle(quiz.Difficulty)" AccessInventory="@quiz.AccessInventory">
+        <DifficultyCard Title="@L.GetExaminationDifficultyTitle(examination.Difficulty)" AccessInventory="@examination.AccessInventory">
             <ChildContent>
                 <MudList Class="flex-1" Dense DisableGutters DisablePadding>
                     <MudListItem>
-                        @L["Question_QuantityAndTypes_Title", quiz.Question.Quantity, string.Join(", ", quiz.Question.Kinds.Select(x => L[$"Question_{x}_Kind"]))]
+                        @L["Question_QuantityAndTypes_Title", examination.Question.Quantity, string.Join(", ", examination.Question.Kinds.Select(x => L[$"Question_{x}_Kind"]))]
                     </MudListItem>
                     <MudListItem>
-                        <InternalMonies Typo="Typo.body2" Monies="@quiz.Rewards" Horizontal/>
+                        <InternalMonies Typo="Typo.body2" Monies="@examination.Rewards" Horizontal/>
                     </MudListItem>
                 </MudList>
             </ChildContent>
@@ -17,17 +17,17 @@
                 <LoadingButton
                     Color="Color.Primary"
                     Variant="Variant.Filled"
-                    Text="@L["Start_Quiz_Button"]"
+                    Text="@L["Start_Examination_Button"]"
                     LoadingText="@L["Loading_Title"]"
-                    IsLoading="@IsLoading(quiz.Difficulty)"
-                    Disabled="@IsDisabled(quiz)"
-                    OnClick="@(() => CreateAsync(quiz.Difficulty))"
+                    IsLoading="@IsLoading(examination.Difficulty)"
+                    Disabled="@IsDisabled(examination)"
+                    OnClick="@(() => CreateAsync(examination.Difficulty))"
                     DisableElevation
                     DisableRipple/>
             </FooterContent>
         </DifficultyCard>
     }
-</section>
+</EduFillGrid>
 
 @code {
     private bool _isLoading;
@@ -37,7 +37,7 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required QuizInformationModel[] Quizzes { get; set; }
+    public required ExaminationInformationModel[] Examinations { get; set; }
 
     [Parameter]
     public EventCallback<DifficultyType> OnClick { get; set; }
@@ -63,12 +63,11 @@
     private bool IsLoading(DifficultyType difficulty) =>
         _difficulty == difficulty && _isLoading;
 
-    private bool IsDisabled(QuizInformationModel quiz)
+    private bool IsDisabled(ExaminationInformationModel examination)
     {
-        if (!quiz.IsAllowed)
+        if (!examination.IsAllowed)
             return true;
 
-        return _isLoading && quiz.Difficulty != _difficulty;
+        return _isLoading && examination.Difficulty != _difficulty;
     }
-
 }

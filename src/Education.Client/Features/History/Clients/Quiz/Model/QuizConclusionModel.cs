@@ -7,7 +7,7 @@ public sealed record QuizConclusionModel(
     string TestId,
     string ArticleId,
     string Title,
-    DifficultyType Type,
+    DifficultyType Difficulty,
     QuizStatus Status,
     PerformanceModel<uint> QuestionScore,
     PerformanceModel<uint> NoMistakeScore,

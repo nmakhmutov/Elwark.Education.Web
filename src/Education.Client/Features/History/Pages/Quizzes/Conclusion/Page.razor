@@ -4,7 +4,7 @@
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="conclusion">
     <PageTitle>
-        @L.GetQuizDifficultyTitle(conclusion.Type): @conclusion.Title
+        @L.GetQuizDifficultyTitle(conclusion.Difficulty): @conclusion.Title
     </PageTitle>
 
     <MudAlert Class="mb-6 mb-sm-12" Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
@@ -45,7 +45,7 @@
             </MudLink>
         </div>
 
-        @switch (conclusion.Type)
+        @switch (conclusion.Difficulty)
         {
             case DifficultyType.Easy:
                 <EasyConclusionTable Class="mb-3 mb-sm-6" Questions="@conclusion.Questions"/>

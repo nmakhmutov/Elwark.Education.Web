@@ -6,7 +6,7 @@ namespace Education.Client.Features.History.Clients.Quiz.Model;
 
 public sealed record QuizInformationModel(
     bool IsAllowed,
-    DifficultyType Type,
+    DifficultyType Difficulty,
     QuizInformationModel.QuestionModel Question,
     UserInventoryModel AccessInventory,
     IEnumerable<InternalMoneyModel> Rewards

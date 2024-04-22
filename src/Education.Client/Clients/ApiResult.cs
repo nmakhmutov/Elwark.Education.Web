@@ -102,6 +102,9 @@ public sealed class ApiResult<T>
         return true;
     }
 
+    public bool MatchError(Func<Error, bool> fn) =>
+        IsError && fn(Error);
+
     public ApiResult<TU> Map<TU>(Func<T, TU> fn) =>
         Match(x => ApiResult<TU>.Success(fn(x)), ApiResult<TU>.Fail, ApiResult<TU>.Loading);
 
@@ -119,9 +122,6 @@ public sealed class ApiResult<T>
 
     public Error UnwrapError() =>
         Error;
-
-    public bool Is(Func<Error, bool> fn) =>
-        !IsSuccess && fn(Error);
 
     public override string ToString()
     {
