@@ -12,7 +12,7 @@
                     Class="flex-grow-1"
                     Value="@(_userAnswer.Answer.Contains(option.Id))"
                     ValueChanged="@((bool b) => OnChecked(b, option.Id))"
-                    Disabled="@(CorrectAnswer != null)"
+                    ReadOnly="@(CorrectAnswer != null)"
                     Color="Color.Primary">
                     <AnswerOptionForm Option="@option"/>
                 </MudCheckBox>

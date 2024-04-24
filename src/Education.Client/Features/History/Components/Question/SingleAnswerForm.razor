@@ -2,7 +2,7 @@
 <EditForm Model="@_userAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
-    <MudRadioGroup @bind-Value="@(_userAnswer.Answer)">
+    <MudRadioGroup @bind-Value="@(_userAnswer.Answer)" ReadOnly="@(CorrectAnswer is not null)">
         <div class="d-flex flex-column mx-auto w-max-480 gap-3 mb-3 mb-sm-6">
             @foreach (var option in Options)
             {
@@ -12,8 +12,7 @@
                     <MudRadio
                         Class="flex-grow-1"
                         Value="@option.Id"
-                        Color="Color.Primary"
-                        Disabled="@(CorrectAnswer is not null)">
+                        Color="Color.Primary">
                         <AnswerOptionForm Option="@option"/>
                     </MudRadio>
                     @if (icon is not null)

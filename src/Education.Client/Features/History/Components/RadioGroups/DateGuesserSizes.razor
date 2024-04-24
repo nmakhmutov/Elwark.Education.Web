@@ -1,0 +1,74 @@
+@using Education.Client.Features.History.Clients.DateGuesser.Model
+<section class="grid @Class">
+    @foreach (var guesser in Guessers)
+    {
+        <DifficultyCard Title="@L.GetDateGuesserSizeTitle(guesser.Size)" AccessInventory="@guesser.AccessInventory">
+            <ChildContent>
+                <MudList Class="flex-1" Dense DisableGutters DisablePadding>
+                    <MudListItem>
+                        @L["History_DateGuesser_DateQuantity_Title", guesser.QuestionQuantity]
+                    </MudListItem>
+                    <MudListItem>
+                        <InternalMonies Typo="Typo.body2" Monies="@guesser.Rewards" Horizontal/>
+                    </MudListItem>
+                </MudList>
+            </ChildContent>
+            <FooterContent>
+                <LoadingButton
+                    Color="Color.Primary"
+                    Variant="Variant.Filled"
+                    Text="@L["History_DateGuesser_Start_Button"]"
+                    LoadingText="@L["Loading_Title"]"
+                    IsLoading="@IsLoading(guesser.Size)"
+                    Disabled="@IsDisabled(guesser)"
+                    OnClick="@(() => CreateAsync(guesser.Size))"
+                    DisableElevation
+                    DisableRipple/>
+            </FooterContent>
+        </DifficultyCard>
+    }
+</section>
+
+@code {
+    private bool _isLoading;
+    private DateGuesserSize _size;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required DateGuesserInformationModel[] Guessers { get; set; }
+
+    [Parameter]
+    public EventCallback<DateGuesserSize> OnClick { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    private async Task CreateAsync(DateGuesserSize size)
+    {
+        _isLoading = true;
+        _size = size;
+
+        try
+        {
+            await OnClick.InvokeAsync(size);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private bool IsLoading(DateGuesserSize size) =>
+        _size == size && _isLoading;
+
+    private bool IsDisabled(DateGuesserInformationModel quiz)
+    {
+        if (!quiz.IsAllowed)
+            return true;
+
+        return _isLoading && quiz.Size != _size;
+    }
+
+}

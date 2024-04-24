@@ -9,6 +9,9 @@
                         @L["Question_QuantityAndTypes_Title", quiz.Question.Quantity, string.Join(", ", quiz.Question.Kinds.Select(x => L[$"Question_{x}_Kind"]))]
                     </MudListItem>
                     <MudListItem>
+                        @L["Question_AllowedMistakes_Title", quiz.Question.AllowedMistakes]
+                    </MudListItem>
+                    <MudListItem>
                         <InternalMonies Typo="Typo.body2" Monies="@quiz.Rewards" Horizontal/>
                     </MudListItem>
                 </MudList>

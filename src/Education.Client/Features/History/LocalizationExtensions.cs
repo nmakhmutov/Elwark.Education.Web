@@ -18,8 +18,8 @@ internal static class LocalizationExtensions
     public static string GetExaminationDifficultyTitle(this IStringLocalizer localizer, DifficultyType type) =>
         localizer[$"Examination_{type}_Title"];
 
-    public static string GetDateGuesserTypeTitle(this IStringLocalizer localizer, DateGuesserType type) =>
-        localizer[$"History_DateGuesser_{type}_Title"];
+    public static string GetDateGuesserSizeTitle(this IStringLocalizer localizer, DateGuesserSize size) =>
+        localizer[$"History_DateGuesser_{size}_Title"];
 
     public static string GetStatusTitle(this IStringLocalizer localizer, QuizStatus status) =>
         localizer[$"ConclusionStatus_{status}"];

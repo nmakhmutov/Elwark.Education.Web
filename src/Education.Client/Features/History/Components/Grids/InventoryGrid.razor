@@ -7,9 +7,12 @@
 else
 {
     <section class="@_class">
-        @foreach (var inventory in Inventory)
+        @if (ChildContent is not null)
         {
-            @ChildContent?.Invoke(inventory)
+            foreach (var inventory in Inventory)
+            {
+                @ChildContent(inventory)
+            }
         }
 
         @if (!string.IsNullOrEmpty(StoreHref))

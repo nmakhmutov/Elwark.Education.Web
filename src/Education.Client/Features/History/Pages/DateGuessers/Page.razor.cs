@@ -13,9 +13,8 @@ namespace Education.Client.Features.History.Pages.DateGuessers;
 
 public sealed partial class Page
 {
-    private bool _isLoading;
     private ApiResult<DateGuesserBuilderModel> _result = ApiResult<DateGuesserBuilderModel>.Loading();
-    private Settings _settings = new(EpochType.None, null);
+    private Settings _settings = new(EpochType.None);
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -42,55 +41,28 @@ public sealed partial class Page
     {
         _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.DateGuesserSettings) ?? _settings;
         _result = await DateGuesserClient.GetAsync();
-
-        await _result.MatchAsync(
-            model => model.Tests.Any(x => x.IsAllowed && x.Type == _settings.Type)
-                ? Task.CompletedTask
-                : OnSizeChanged(model.Tests.FirstOrDefault(x => x.IsAllowed)?.Type),
-            error =>
-            {
-                if (error.IsDateGuesserAlreadyCreated(out var id))
-                    Navigation.NavigateTo(HistoryUrl.DateGuesser.Test(id));
-            }
-        );
+        _result.MathError(x =>
+        {
+            if (x.IsDateGuesserAlreadyCreated(out var id))
+                Navigation.NavigateTo(HistoryUrl.DateGuesser.Test(id));
+        });
     }
 
-    private async Task CreateTestAsync()
+    private async Task CreateTestAsync(DateGuesserSize size)
     {
-        if (!_settings.Type.HasValue)
-            return;
-
-        _isLoading = true;
-
-        var request = new CreateRequest(_settings.Type.Value, _settings.Epoch);
-        (await DateGuesserClient.CreateAsync(request))
-            .Match(
-                x => Navigation.NavigateTo(HistoryUrl.DateGuesser.Test(x.Id)),
-                e => Snackbar.Add(e.Detail, Severity.Error)
-            );
-
-        _isLoading = false;
+        var result = await DateGuesserClient.CreateAsync(new CreateRequest(size, _settings.Epoch));
+        result.Match(
+            x => Navigation.NavigateTo(HistoryUrl.DateGuesser.Test(x.Id)),
+            e => Snackbar.Add(e.Detail, Severity.Error)
+        );
     }
 
     private async Task OnEpochChanged(EpochType epoch)
     {
-        _settings = _settings with
-        {
-            Epoch = epoch
-        };
+        _settings = new Settings(epoch);
 
         await Storage.SetItemAsync(HistoryLocalStorageKey.DateGuesserSettings, _settings);
     }
 
-    private async Task OnSizeChanged(DateGuesserType? type)
-    {
-        _settings = _settings with
-        {
-            Type = type
-        };
-
-        await Storage.SetItemAsync(HistoryLocalStorageKey.DateGuesserSettings, _settings);
-    }
-
-    private sealed record Settings(EpochType Epoch, DateGuesserType? Type);
+    private sealed record Settings(EpochType Epoch);
 }

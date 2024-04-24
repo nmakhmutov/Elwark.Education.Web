@@ -1,6 +1,6 @@
 namespace Education.Client.Features.History.Clients.DateGuesser.Model;
 
-public enum DateGuesserType
+public enum DateGuesserSize
 {
     Small = 0,
     Medium = 1,

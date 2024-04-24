@@ -12,5 +12,5 @@ public sealed record QuizInformationModel(
     IEnumerable<InternalMoneyModel> Rewards
 )
 {
-    public sealed record QuestionModel(uint Quantity, IEnumerable<string> Kinds);
+    public sealed record QuestionModel(uint Quantity, uint AllowedMistakes, IEnumerable<string> Kinds);
 }
