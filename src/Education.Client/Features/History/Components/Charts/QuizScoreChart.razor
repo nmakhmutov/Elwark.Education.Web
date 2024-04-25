@@ -48,21 +48,21 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public required ScoreModel Value { get; set; }
+    public required ScoreModel Score { get; set; }
 
     private ChartList.Item[] Items =>
     [
-        new ChartList.Item(L["Score_Questions_Title"], Value.Questions, HistoryChart.Quiz.Score.Questions),
-        new ChartList.Item(L["Score_SpeedBonus_Title"], Value.Speed, HistoryChart.Quiz.Score.SpeedBonus),
-        new ChartList.Item(L["Score_NoMistakesBonus_Title"], Value.NoMistakes, HistoryChart.Quiz.Score.NoMistakesBonus),
-        new ChartList.Item(L["Score_Total_Title"], Value.Total, null)
+        new ChartList.Item(L["Score_Questions_Title"], Score.Questions, HistoryChart.Quiz.Score.Questions),
+        new ChartList.Item(L["Score_SpeedBonus_Title"], Score.Speed, HistoryChart.Quiz.Score.SpeedBonus),
+        new ChartList.Item(L["Score_NoMistakesBonus_Title"], Score.NoMistakes, HistoryChart.Quiz.Score.NoMistakesBonus),
+        new ChartList.Item(L["Score_Total_Title"], Score.Total, null)
     ];
 
     private Data[] Series =>
     [
-        new Data(L["Score_Questions_Title"], Value.Questions),
-        new Data(L["Score_SpeedBonus_Title"], Value.Speed),
-        new Data(L["Score_NoMistakesBonus_Title"], Value.NoMistakes)
+        new Data(L["Score_Questions_Title"], Score.Questions),
+        new Data(L["Score_SpeedBonus_Title"], Score.Speed),
+        new Data(L["Score_NoMistakesBonus_Title"], Score.NoMistakes)
     ];
 
     private sealed record Data(string Name, decimal Value);

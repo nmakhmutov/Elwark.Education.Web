@@ -49,23 +49,23 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public required NumberOfQuizzesModel Value { get; set; }
+    public required NumberOfQuizzesModel Quizzes { get; set; }
 
     private ChartList.Item[] Items =>
     [
-        new ChartList.Item(L["NumberOfQuizzes_Successful_Title"], Value.Succeeded, HistoryChart.Quiz.Completeness.Successful),
-        new ChartList.Item(L["NumberOfQuizzes_Failed_Title"], Value.Failed, HistoryChart.Quiz.Completeness.Failed),
-        new ChartList.Item(L["NumberOfQuizzes_TimeExceeded_Title"], Value.TimeExceeded, HistoryChart.Quiz.Completeness.TimeExceeded),
-        new ChartList.Item(L["NumberOfQuizzes_MistakesExceeded_Title"], Value.MistakesExceeded, HistoryChart.Quiz.Completeness.MistakesExceeded),
-        new ChartList.Item(L["NumberOfQuizzes_Total_Title"], Value.Total, null)
+        new ChartList.Item(L["NumberOfQuizzes_Successful_Title"], Quizzes.Succeeded, HistoryChart.Quiz.Completeness.Successful),
+        new ChartList.Item(L["NumberOfQuizzes_Failed_Title"], Quizzes.Failed, HistoryChart.Quiz.Completeness.Failed),
+        new ChartList.Item(L["NumberOfQuizzes_TimeExceeded_Title"], Quizzes.TimeExceeded, HistoryChart.Quiz.Completeness.TimeExceeded),
+        new ChartList.Item(L["NumberOfQuizzes_MistakesExceeded_Title"], Quizzes.MistakesExceeded, HistoryChart.Quiz.Completeness.MistakesExceeded),
+        new ChartList.Item(L["NumberOfQuizzes_Total_Title"], Quizzes.Total, null)
     ];
 
     private Data[] Series =>
     [
-        new Data(L["NumberOfQuizzes_Successful_Title"], Value.Succeeded),
-        new Data(L["NumberOfQuizzes_Failed_Title"], Value.Failed),
-        new Data(L["NumberOfQuizzes_TimeExceeded_Title"], Value.TimeExceeded),
-        new Data(L["NumberOfQuizzes_MistakesExceeded_Title"], Value.MistakesExceeded)
+        new Data(L["NumberOfQuizzes_Successful_Title"], Quizzes.Succeeded),
+        new Data(L["NumberOfQuizzes_Failed_Title"], Quizzes.Failed),
+        new Data(L["NumberOfQuizzes_TimeExceeded_Title"], Quizzes.TimeExceeded),
+        new Data(L["NumberOfQuizzes_MistakesExceeded_Title"], Quizzes.MistakesExceeded)
     ];
 
     private sealed record Data(string Name, decimal Value);

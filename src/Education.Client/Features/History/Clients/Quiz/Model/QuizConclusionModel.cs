@@ -14,6 +14,7 @@ public sealed record QuizConclusionModel(
     PerformanceModel<uint> SpeedScore,
     PerformanceModel<uint> TotalScore,
     PerformanceModel<TimeSpan> TimeSpent,
+    double AverageScore,
     QuizConclusionModel.Question[] Questions,
     InternalMoneyModel[] Rewards
 )

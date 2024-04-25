@@ -7,52 +7,50 @@
         @L.GetQuizDifficultyTitle(conclusion.Difficulty): @conclusion.Title
     </PageTitle>
 
-    <MudAlert Class="mb-6 mb-sm-12" Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
+    <MudAlert Class="mb-3 mb-sm-6" Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
         @L.GetStatusTitle(conclusion.Status)
     </MudAlert>
 
-    <CompletedStars Class="mb-6" Progress="@conclusion.TotalScore.Ratio"/>
-
-    @if (conclusion.Rewards.Length > 0)
-    {
-        <RewardsContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
-    }
-
-    <div class="d-flex justify-center py-3 py-sm-6">
-        <MudButton
-            Href="@HistoryUrl.Content.QuizBuilder(conclusion.ArticleId)"
-            Color="Color.Primary"
-            Variant="Variant.Filled"
-            Size="Size.Large"
-            DisableElevation>
-            @L["Quiz_TakeTheQuizAgain"]
-        </MudButton>
-    </div>
-
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
-        <div class="mb-3">
-            <MudLink Href="@HistoryUrl.User.MyArticle(conclusion.ArticleId)" Typo="Typo.h5">
-                @L["Statistics_Title"]
-            </MudLink>
-        </div>
-        <ConclusionCharts ConclusionModel="@conclusion"/>
+        <section class="grid">
+            <article>
+                <CompletedStars Class="mb-6" Progress="@conclusion.TotalScore.Ratio"/>
+
+                <RewardsContainer Class="mb-3 mb-sm-6" Rewards="@conclusion.Rewards"/>
+
+                <div class="d-flex justify-center">
+                    <MudButton
+                        Href="@HistoryUrl.Content.QuizBuilder(conclusion.ArticleId)"
+                        Color="Color.Primary"
+                        Variant="Variant.Filled"
+                        Size="Size.Large"
+                        DisableElevation>
+                        @L["Quiz_TakeTheQuizAgain"]
+                    </MudButton>
+                </div>
+            </article>
+
+            <ScoreConclusionCard Conclusion="@conclusion"/>
+        </section>
     </EduContainer>
 
-    <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
-        <div class="mb-3">
-            <MudLink Href="@HistoryUrl.Content.Article(conclusion.ArticleId)" Typo="Typo.h5">
-                @conclusion.Title
-            </MudLink>
-        </div>
-
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1280">
         @switch (conclusion.Difficulty)
         {
             case DifficultyType.Easy:
-                <EasyConclusionTable Class="mb-3 mb-sm-6" Questions="@conclusion.Questions"/>
+                <EasyConclusionTable Questions="@conclusion.Questions">
+                    <MudLink Href="@HistoryUrl.Content.Article(conclusion.ArticleId)" Typo="Typo.h6">
+                        @conclusion.Title
+                    </MudLink>
+                </EasyConclusionTable>
                 break;
 
             case DifficultyType.Hard:
-                <HardConclusionTable Class="mb-3 mb-sm-6" Questions="@conclusion.Questions"/>
+                <HardConclusionTable Questions="@conclusion.Questions">
+                    <MudLink Href="@HistoryUrl.Content.Article(conclusion.ArticleId)" Typo="Typo.h6">
+                        @conclusion.Title
+                    </MudLink>
+                </HardConclusionTable>
                 break;
         }
     </EduContainer>

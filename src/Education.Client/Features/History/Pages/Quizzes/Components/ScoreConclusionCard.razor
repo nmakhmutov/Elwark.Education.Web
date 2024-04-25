@@ -1,0 +1,138 @@
+@using ApexCharts
+@using Education.Client.Features.History.Clients.Quiz.Model
+@using Color = MudBlazor.Color
+<section class="d-flex flex-column mud-paper">
+    <article class="d-flex flex-column flex-sm-row align-sm-center flex-1 gap-3 gap-sm-6 pa-3 pa-sm-6">
+        <ApexChart TItem="Data" Options="@Options">
+            <ApexPointSeries
+                TItem="Data"
+                Items="@Series"
+                SeriesType="SeriesType.Donut"
+                XValue="@(x => x.Name)"
+                YAggregate="@(x => x.Sum(e => e.Value))"/>
+        </ApexChart>
+
+        <div class="flex-1">
+            <div class="mb-3 mb-sm-6">
+                <MudText Typo="Typo.h6">
+                    @L["Conclusion_ScoreOutOf_Title", Conclusion.TotalScore.Value, Conclusion.TotalScore.Total]
+                </MudText>
+                @switch (_average)
+                {
+                    case > 0:
+                        <MudText Typo="Typo.body1">
+                            @((MarkupString)L["Conclusion_YourScoreIsBetterThan_Description", $"<b class=\"mud-success-text\">{_average}%</b>"].ToString())
+                        </MudText>
+                        break;
+
+                    case < 0:
+                        <MudText Typo="Typo.body1">
+                            @((MarkupString)L["Conclusion_YourScoreIsWorseThan_Description", $"<b class=\"mud-error-text\">{_average}%</b>"].ToString())
+                        </MudText>
+                        break;
+                }
+
+            </div>
+            <ul class="mb-3 mb-sm-6">
+                <li class="row">
+                    <span class="dot" style="background-color: @HistoryChart.Quiz.Score.Questions"></span>
+                    <MudText Class="mr-3 mr-sm-6" Typo="Typo.subtitle1">
+                        @L["Score_Questions_Title"]
+                    </MudText>
+                    <MudText Class="ml-auto" Typo="Typo.body1">
+                        @Conclusion.QuestionScore.Value / @Conclusion.QuestionScore.Total
+                    </MudText>
+                </li>
+                <li class="row">
+                    <span class="dot" style="background-color: @HistoryChart.Quiz.Score.SpeedBonus"></span>
+                    <MudText Class="mr-3 mr-sm-6" Typo="Typo.subtitle1">
+                        @L["Score_SpeedBonus_Title"]
+                    </MudText>
+                    <MudText Class="ml-auto" Typo="Typo.body1">
+                        @Conclusion.SpeedScore.Value / @Conclusion.SpeedScore.Total
+                    </MudText>
+                </li>
+                <li class="row">
+                    <span class="dot" style="background-color: @HistoryChart.Quiz.Score.NoMistakesBonus"></span>
+                    <MudText Class="mr-3 mr-sm-6" Typo="Typo.subtitle1">
+                        @L["Score_NoMistakesBonus_Title"]
+                    </MudText>
+                    <MudText Class="ml-auto" Typo="Typo.body1">
+                        @Conclusion.NoMistakeScore.Value / @Conclusion.NoMistakeScore.Total
+                    </MudText>
+                </li>
+                <li class="row">
+                    <MudText Class="mr-3 mr-sm-6" Typo="Typo.subtitle1">
+                        @L["TimeSpent_Title"]
+                    </MudText>
+                    <MudText Class="ml-auto" Typo="Typo.body1">
+                        @Conclusion.TimeSpent.Value.Humanize(L) / @Conclusion.TimeSpent.Total.Humanize(L)
+                    </MudText>
+                </li>
+            </ul>
+        </div>
+    </article>
+
+    <footer class="border-t mud-border-lines-default pa-3">
+        <MudButton
+            Class="text-transform-none"
+            EndIcon="@Icons.Material.Outlined.ArrowForward"
+            Href="@HistoryUrl.User.MyArticle(Conclusion.ArticleId)">
+            @L["Button_SeeMore"]
+        </MudButton>
+    </footer>
+</section>
+
+@code {
+    private double _average;
+
+    private RenderFragment Red =>
+        @<MudText Color="Color.Error">10</MudText>;
+
+    private static ApexChartOptions<Data> Options =>
+        new()
+        {
+            Chart = new Chart
+            {
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Stroke = new Stroke
+            {
+                Show = false
+            },
+            Legend = new Legend
+            {
+                Show = false
+            },
+            Colors =
+            [
+                HistoryChart.Quiz.Score.Questions,
+                HistoryChart.Quiz.Score.SpeedBonus,
+                HistoryChart.Quiz.Score.NoMistakesBonus,
+                Colors.Grey.Lighten1
+                // "var(--mud-palette-background)"
+                // "var(--mud-palette-surface)"
+            ]
+        };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public required QuizConclusionModel Conclusion { get; set; }
+
+    protected override void OnParametersSet() =>
+        _average = Percentage.Calc(Conclusion.TotalScore.Value - Conclusion.AverageScore, Conclusion.AverageScore);
+
+    private Data[] Series =>
+    [
+        new Data(L["Score_Questions_Title"], Conclusion.QuestionScore.Value),
+        new Data(L["Score_SpeedBonus_Title"], Conclusion.SpeedScore.Value),
+        new Data(L["Score_NoMistakesBonus_Title"], Conclusion.NoMistakeScore.Value),
+        new Data(L["Score_MistakeDeductions_Title"], Conclusion.TotalScore.Total - Conclusion.TotalScore.Value)
+    ];
+
+    private sealed record Data(string Name, decimal Value);
+
+}

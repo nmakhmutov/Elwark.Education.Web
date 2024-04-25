@@ -121,13 +121,7 @@ public sealed partial class Page
 
         private static MonthlyTrend Map(uint total, double current, double last)
         {
-            var trending = double.Round((current - last) / last * 100, 2) switch
-            {
-                double.NaN => 0,
-                double.PositiveInfinity => 100,
-                double.NegativeInfinity => -100,
-                var x => x
-            };
+            var trending = Percentage.Calc(current - last, last);
 
             return new MonthlyTrend(total, trending);
         }

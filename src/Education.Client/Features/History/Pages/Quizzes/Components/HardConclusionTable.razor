@@ -1,10 +1,12 @@
 @using Education.Client.Features.History.Clients.Quiz.Model
 <MudTable Class="@Class" Items="@Questions" Breakpoint="Breakpoint.Xs" Elevation="0" Hover>
+    <ToolBarContent>
+        @ChildContent
+    </ToolBarContent>
     <HeaderContent>
         <MudTh>@L["Question_Title"]</MudTh>
         <MudTh>@L["Question_Answered"]</MudTh>
         <MudTh>@L["Question_Correct"]</MudTh>
-        <MudTh>@L["Question_Incorrect"]</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="@L["Question_Title"]">
@@ -16,10 +18,9 @@
                 Icon="@(context.IsAnswered ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close)"/>
         </MudTd>
         <MudTd DataLabel="@L["Question_Correct"]">
-            @context.Correct
-        </MudTd>
-        <MudTd DataLabel="@L["Question_Incorrect"]">
-            @context.Incorrect
+            <MudIcon
+                Size="Size.Small"
+                Icon="@(context.Correct > 0 ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close)"/>
         </MudTd>
     </RowTemplate>
     <FooterContent>
@@ -29,9 +30,6 @@
         </MudTh>
         <MudTh>
             @Questions.Sum(x => x.Correct) / @Questions.Length
-        </MudTh>
-        <MudTh>
-            @Questions.Sum(x => x.Incorrect) / @Questions.Length
         </MudTh>
     </FooterContent>
 </MudTable>
@@ -47,4 +45,6 @@
     [Parameter]
     public string? Class { get; set; }
 
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
 }

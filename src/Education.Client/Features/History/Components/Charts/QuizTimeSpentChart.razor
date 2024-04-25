@@ -66,24 +66,24 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public required QuizStatisticsModel.TimeSpentModel Value { get; set; }
+    public required QuizStatisticsModel.TimeSpentModel TimeSpent { get; set; }
 
     private ChartList.Item[] Items =>
     [
-        new ChartList.Item(L["TimeSpent_Min_Title"], Value.Min.Humanize(L), HistoryChart.Quiz.TimeSpent.Minimum),
-        new ChartList.Item(L["TimeSpent_Average_Title"], Value.Average.Humanize(L), HistoryChart.Quiz.TimeSpent.Average),
-        new ChartList.Item(L["TimeSpent_Max_Title"], Value.Max.Humanize(L), HistoryChart.Quiz.TimeSpent.Maximum),
-        new ChartList.Item(L["TimeSpent_Total_Title"], Value.Total.Humanize(L), null)
+        new ChartList.Item(L["TimeSpent_Min_Title"], TimeSpent.Min.Humanize(L), HistoryChart.Quiz.TimeSpent.Minimum),
+        new ChartList.Item(L["TimeSpent_Average_Title"], TimeSpent.Average.Humanize(L), HistoryChart.Quiz.TimeSpent.Average),
+        new ChartList.Item(L["TimeSpent_Max_Title"], TimeSpent.Max.Humanize(L), HistoryChart.Quiz.TimeSpent.Maximum),
+        new ChartList.Item(L["TimeSpent_Total_Title"], TimeSpent.Total.Humanize(L), null)
     ];
 
     private Data[] Series =>
     [
         new Data(L["TimeSpent_Min_Title"], 0, HistoryChart.Quiz.TimeSpent.Minimum),
-        new Data(L["TimeSpent_Min_Title"], (decimal)Value.Min.TotalMilliseconds, HistoryChart.Quiz.TimeSpent.Minimum),
+        new Data(L["TimeSpent_Min_Title"], (decimal)TimeSpent.Min.TotalMilliseconds, HistoryChart.Quiz.TimeSpent.Minimum),
         new Data(L["TimeSpent_Average_Title"], 0, HistoryChart.Quiz.TimeSpent.Average),
-        new Data(L["TimeSpent_Average_Title"], (decimal)Value.Average.TotalMilliseconds, HistoryChart.Quiz.TimeSpent.Average),
+        new Data(L["TimeSpent_Average_Title"], (decimal)TimeSpent.Average.TotalMilliseconds, HistoryChart.Quiz.TimeSpent.Average),
         new Data(L["TimeSpent_Max_Title"], 0, HistoryChart.Quiz.TimeSpent.Maximum),
-        new Data(L["TimeSpent_Max_Title"], (decimal)Value.Max.TotalMilliseconds, HistoryChart.Quiz.TimeSpent.Maximum)
+        new Data(L["TimeSpent_Max_Title"], (decimal)TimeSpent.Max.TotalMilliseconds, HistoryChart.Quiz.TimeSpent.Maximum)
     ];
 
     private sealed record Data(string Name, decimal Value, string Color);

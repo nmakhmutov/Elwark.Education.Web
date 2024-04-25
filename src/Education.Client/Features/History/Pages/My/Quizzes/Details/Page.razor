@@ -16,7 +16,7 @@
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
                     <Subheader Title="@L["Quizzes_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <NumberOfQuizzesChart Value="@result.NumberOfQuizzes"/>
+                    <NumberOfQuizzesChart Quizzes="@result.NumberOfQuizzes"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["User_Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
@@ -31,7 +31,7 @@
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
                     <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <QuizScoreChart Value="@result.Score"/>
+                    <QuizScoreChart Score="@result.Score"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["User_Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
@@ -61,7 +61,7 @@
             <StatisticDetailsCard DisableActivity="@(result.Progress.Length == 0)">
                 <TotalContent>
                     <Subheader Title="@L["TimeSpent_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <QuizTimeSpentChart Value="@result.TimeSpent"/>
+                    <QuizTimeSpentChart TimeSpent="@result.TimeSpent"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["User_Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
