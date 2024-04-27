@@ -35,7 +35,7 @@ public sealed partial class Page
     }
 
     protected override async Task OnParametersSetAsync() =>
-        _result = await LeaderboardClient.GetMonthAsync(Month);
+        _result = await LeaderboardClient.GetMonthlyAsync(Month);
 
     private void ChangeMonth(DateOnly month) =>
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter(nameof(month), month.ToString("O")));

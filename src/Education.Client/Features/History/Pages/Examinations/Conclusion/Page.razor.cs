@@ -41,4 +41,7 @@ public sealed partial class Page
             ExaminationStatus.TimeExceeded => Severity.Warning,
             _ => Severity.Info
         };
+
+    private static string GetCheckIcon(bool isChecked) =>
+        isChecked ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close;
 }

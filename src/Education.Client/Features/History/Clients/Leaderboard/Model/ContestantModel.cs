@@ -1,10 +1,9 @@
 namespace Education.Client.Features.History.Clients.Leaderboard.Model;
 
-public sealed record GlobalContestantModel(
+public sealed record ContestantModel(
     uint Rank,
     long Id,
     string FullName,
     string Image,
-    uint Level,
     ulong Experience
 );

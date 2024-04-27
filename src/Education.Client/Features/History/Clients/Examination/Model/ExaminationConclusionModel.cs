@@ -7,12 +7,14 @@ public sealed record ExaminationConclusionModel(
     string TestId,
     string CourseId,
     string Title,
+    DifficultyType Difficulty,
     ExaminationStatus Status,
     PerformanceModel<uint> QuestionScore,
     PerformanceModel<uint> NoMistakeScore,
     PerformanceModel<uint> SpeedScore,
     PerformanceModel<uint> TotalScore,
     PerformanceModel<TimeSpan> TimeSpent,
+    double AverageScore,
     ExaminationConclusionModel.Question[] Questions,
     InternalMoneyModel[] Rewards
 )

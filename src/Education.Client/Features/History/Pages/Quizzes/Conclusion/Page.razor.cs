@@ -42,4 +42,7 @@ public sealed partial class Page
             QuizStatus.MistakesExceeded => Severity.Warning,
             _ => Severity.Info
         };
+
+    private static string GetCheckIcon(bool isChecked) =>
+        isChecked ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close;
 }

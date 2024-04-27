@@ -1,30 +1,27 @@
-@page "/history/leaderboards/global"
+@page "/history/leaderboards/all-time"
 @layout HistoryLayout
 
 <PageTitle>
-    @L["Leaderboard_GlobalTop_Title"]
+    @L["Leaderboard_Title"]: @L["Leaderboard_AllTime_Title"]
 </PageTitle>
 
 <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="items">
-    <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1440">
-        <GlobalHeader
+    <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W960">
+        <AllTimeHeader
             Contestants="@items.Take(3)"
             Regions="@_regions"
             Region="@_region"
             RegionChanged="@OnRegionChanged"/>
     </EduContainer>
 
-    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1440">
+    <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W960">
         <RegularRanking DisableHover Transparent>
             <Name>
                 <MudText Typo="Typo.subtitle2">@L["User_Name_Title"]</MudText>
             </Name>
             <Points>
-                <MudText Typo="Typo.subtitle2">@L["User_Level_Title"]</MudText>
-            </Points>
-            <Additional>
                 <MudText Typo="Typo.subtitle2">@L["User_Experience_Title"]</MudText>
-            </Additional>
+            </Points>
         </RegularRanking>
 
         <Virtualize Items="@items[3..]" ItemSize="64" Context="user">
@@ -42,13 +39,8 @@
                     </div>
                 </Name>
                 <Points>
-                    <MudText Typo="Typo.h6">
-                        @user.Level
-                    </MudText>
-                </Points>
-                <Additional>
                     <MetricNumber Value="@user.Experience" Typo="Typo.h6"/>
-                </Additional>
+                </Points>
             </RegularRanking>
         </Virtualize>
     </EduContainer>

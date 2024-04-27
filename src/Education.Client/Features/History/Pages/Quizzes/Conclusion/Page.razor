@@ -2,25 +2,25 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="conclusion">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <PageTitle>
-        @L.GetQuizDifficultyTitle(conclusion.Difficulty): @conclusion.Title
+        @L.GetQuizDifficultyTitle(context.Difficulty): @context.Title
     </PageTitle>
 
-    <MudAlert Class="mb-3 mb-sm-6" Severity="@GetColor(conclusion.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
-        @L.GetStatusTitle(conclusion.Status)
+    <MudAlert Class="mb-3 mb-sm-6" Severity="@GetColor(context.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
+        @L.GetStatusTitle(context.Status)
     </MudAlert>
 
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
             <article>
-                <CompletedStars Class="mb-6" Progress="@conclusion.TotalScore.Ratio"/>
+                <CompletedStars Class="mb-6" Progress="@context.TotalScore.Ratio"/>
 
-                <RewardsContainer Class="mb-3 mb-sm-6" Rewards="@conclusion.Rewards"/>
+                <RewardsContainer Class="mb-3 mb-sm-6" Rewards="@context.Rewards"/>
 
                 <div class="d-flex justify-center">
                     <MudButton
-                        Href="@HistoryUrl.Content.QuizBuilder(conclusion.ArticleId)"
+                        Href="@HistoryUrl.Content.QuizBuilder(context.ArticleId)"
                         Color="Color.Primary"
                         Variant="Variant.Filled"
                         Size="Size.Large"
@@ -30,28 +30,49 @@
                 </div>
             </article>
 
-            <ScoreConclusionCard Conclusion="@conclusion"/>
+            <ScoreConclusionCard Conclusion="@context"/>
         </section>
     </EduContainer>
 
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1280">
-        @switch (conclusion.Difficulty)
-        {
-            case DifficultyType.Easy:
-                <EasyConclusionTable Questions="@conclusion.Questions">
-                    <MudLink Href="@HistoryUrl.Content.Article(conclusion.ArticleId)" Typo="Typo.h6">
-                        @conclusion.Title
-                    </MudLink>
-                </EasyConclusionTable>
-                break;
-
-            case DifficultyType.Hard:
-                <HardConclusionTable Questions="@conclusion.Questions">
-                    <MudLink Href="@HistoryUrl.Content.Article(conclusion.ArticleId)" Typo="Typo.h6">
-                        @conclusion.Title
-                    </MudLink>
-                </HardConclusionTable>
-                break;
-        }
+        <MudTable Items="@context.Questions" Breakpoint="Breakpoint.Xs" Elevation="0" Hover>
+            <ToolBarContent>
+                <MudLink Href="@HistoryUrl.Content.Article(context.ArticleId)" Typo="Typo.h6">
+                    @context.Title
+                </MudLink>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>@L["Question_Title"]</MudTh>
+                <MudTh>@L["Question_Answered"]</MudTh>
+                <MudTh>@L["Question_Correct"]</MudTh>
+                <MudTh>@L["Question_Incorrect"]</MudTh>
+            </HeaderContent>
+            <RowTemplate Context="question">
+                <MudTd DataLabel="@L["Question_Title"]">
+                    @question.Title
+                </MudTd>
+                <MudTd DataLabel="@L["Question_Answered"]">
+                    <MudIcon Size="Size.Small" Icon="@GetCheckIcon(question.IsAnswered)"/>
+                </MudTd>
+                <MudTd DataLabel="@L["Question_Correct"]">
+                    @question.Correct
+                </MudTd>
+                <MudTd DataLabel="@L["Question_Incorrect"]">
+                    @question.Incorrect
+                </MudTd>
+            </RowTemplate>
+            <FooterContent>
+                <MudTh/>
+                <MudTh>
+                    @context.Questions.Count(x => x.IsAnswered) / @context.Questions.Length
+                </MudTh>
+                <MudTh>
+                    @context.Questions.Sum(x => x.Correct) / @context.Questions.Length
+                </MudTh>
+                <MudTh>
+                    @context.Questions.Sum(x => x.Incorrect) / @context.Questions.Length
+                </MudTh>
+            </FooterContent>
+        </MudTable>
     </EduContainer>
 </ApiViewer>

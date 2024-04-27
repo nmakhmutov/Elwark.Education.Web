@@ -101,7 +101,7 @@ public static class HistoryUrl
 
     public static class Leaderboard
     {
-        public const string Global = $"{Root}/leaderboards/global";
+        public const string AllTime = $"{Root}/leaderboards/all-time";
 
         public static string Monthly() =>
             $"{Root}/leaderboards/monthly";

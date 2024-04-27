@@ -26,7 +26,6 @@
         {
             <TopContestantCard
                 Rank="@contestant.Rank"
-                Level="@contestant.Level"
                 Experience="@contestant.Experience"
                 Name="@contestant.FullName"
                 Image="@contestant.Image"/>
@@ -50,7 +49,7 @@
     public required EventCallback<string> RegionChanged { get; set; }
 
     [Parameter, EditorRequired]
-    public required IEnumerable<GlobalContestantModel> Contestants { get; set; }
+    public required IEnumerable<ContestantModel> Contestants { get; set; }
 
     private Task OnChanged(MudChip chip)
     {
