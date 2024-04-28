@@ -2,7 +2,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Blazored.LocalStorage;
 using Education.Client.Extensions;
-using Education.Client.Features.Customer.Services;
 using Education.Client.Services;
 using Education.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -52,7 +51,7 @@ builder.Services
 
 await using var app = builder.Build();
 
-await app.Services.GetRequiredService<CustomerHub>()
-    .StartAsync();
+foreach (var startup in app.Services.GetServices<IStartupService>())
+    await startup.StartAsync();
 
 await app.RunAsync();

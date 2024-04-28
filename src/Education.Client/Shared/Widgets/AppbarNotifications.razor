@@ -72,11 +72,8 @@
             ? Icons.Material.Outlined.NotificationsActive
             : Icons.Material.Outlined.NotificationsNone;
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override void OnInitialized() =>
         _subscription = NotificationService.NotifyOnChange(EventCallback.Factory.Create(this, StateHasChanged));
-        await NotificationService.StartAsync();
-    }
 
     public void Dispose() =>
         _subscription?.Dispose();

@@ -1,64 +1,63 @@
 @using Education.Client.Features.History.Clients.Exchange
 @using Education.Client.Features.History.Clients.Exchange.Requests
-<section class="mud-paper d-flex flex-column gap-3 gap-sm-6 pa-3 pa-sm-6 @Class">
+<section class="grid mud-paper pa-3 pa-sm-6 @Class">
     <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
         <Loading>
-            <MudSkeleton SkeletonType="SkeletonType.Text"/>
-            <MudSkeleton SkeletonType="SkeletonType.Text"/>
-            <MudSkeleton SkeletonType="SkeletonType.Text"/>
+            <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Height="40px"/>
+            <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Height="40px"/>
+            <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Height="40px"/>
+            <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Height="40px"/>
+            <MudSkeleton Class="rounded grid-column-full" SkeletonType="SkeletonType.Rectangle" Height="40px"/>
         </Loading>
-        <ChildContent Context="rates">
-            <div class="d-flex align-center gap-3 gap-sm-6">
-                <MudSelect @bind-Value="@_rate" Label="@L["Currency_Title"]" Margin="Margin.Dense" Variant="Variant.Outlined">
-                    @foreach (var rate in rates)
-                    {
-                        <MudSelectItem Value="@rate">
-                            <div class="d-flex align-center gap-3">
-                                <MudIcon Size="Size.Small" Icon="@rate.Currency.GetIcon()"/>
-                                <MudText Typo="Typo.body1">@L.GetInternalCurrencyTitle(rate.Currency)</MudText>
-                            </div>
-                        </MudSelectItem>
-                    }
-                </MudSelect>
-
-                <MudSelect @bind-Value="@_isBuying" Label="@L["Exchange_Operation_Title"]" Margin="Margin.Dense" Variant="Variant.Outlined">
-                    <MudSelectItem Value="true">
-                        @L["Exchange_Buy_Title"]
+        <ChildContent>
+            <MudSelect @bind-Value="@_rate" Label="@L["Currency_Title"]" Margin="Margin.Dense" Variant="Variant.Outlined">
+                @foreach (var rate in context)
+                {
+                    <MudSelectItem Value="@rate">
+                        <div class="d-flex align-center gap-3">
+                            <MudIcon Size="Size.Small" Icon="@rate.Currency.GetIcon()"/>
+                            <MudText Typo="Typo.body1">@L.GetInternalCurrencyTitle(rate.Currency)</MudText>
+                        </div>
                     </MudSelectItem>
-                    <MudSelectItem Value="false">
-                        @L["Exchange_Sell_Title"]
-                    </MudSelectItem>
-                </MudSelect>
-            </div>
+                }
+            </MudSelect>
 
-            <div>
-                <MudNumericField
-                    T="uint"
-                    @bind-Value="_amount"
-                    Min="1"
-                    Label="@L["Exchange_Amount"]"
-                    Margin="Margin.Dense"
-                    Variant="Variant.Outlined"
-                    Error="@(IsError())"/>
-            </div>
+            <MudSelect @bind-Value="@_isBuying" Label="@L["Exchange_Operation_Title"]" Margin="Margin.Dense" Variant="Variant.Outlined">
+                <MudSelectItem Value="true">
+                    @L["Exchange_Buy_Title"]
+                </MudSelectItem>
+                <MudSelectItem Value="false">
+                    @L["Exchange_Sell_Title"]
+                </MudSelectItem>
+            </MudSelect>
+
+            <MudNumericField
+                T="uint"
+                @bind-Value="_amount"
+                Min="1"
+                Label="@L["Exchange_Amount"]"
+                Margin="Margin.Dense"
+                Variant="Variant.Outlined"
+                Error="@(IsError())"/>
 
             <div class="d-flex align-center justify-center">
-                <MudText>@_amount</MudText>
+                <MudText Class="mr-1">@_amount</MudText>
                 <MudIcon Size="Size.Small" Icon="@_rate.Currency.GetIcon()"/>
                 <MudText>&nbsp;=&nbsp;</MudText>
                 @if (_isBuying)
                 {
-                    <MudText>@(_amount * _rate.Selling.Amount)</MudText>
+                    <MudText Class="mr-1">@(_amount * _rate.Selling.Amount)</MudText>
                     <MudIcon Size="Size.Small" Icon="@_rate.Selling.Currency.GetIcon()"/>
                 }
                 else
                 {
-                    <MudText>@(_amount * _rate.Buying.Amount)</MudText>
+                    <MudText Class="mr-1">@(_amount * _rate.Buying.Amount)</MudText>
                     <MudIcon Size="Size.Small" Icon="@_rate.Buying.Currency.GetIcon()"/>
                 }
             </div>
 
             <LoadingButton
+                Class="grid-column-full"
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 Text="@L["Exchange_Title"]"

@@ -1,5 +1,6 @@
 using Education.Client.Extensions;
 using Education.Client.Features.Customer.Services.Notification.Model;
+using Education.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Education.Client.Features.Customer.Services;
 
-internal sealed class CustomerHub : IAsyncDisposable
+internal sealed class CustomerHub : IAsyncDisposable, IStartupService
 {
     private readonly HubConnection _connection;
     private readonly HashSet<CustomerStateChangedSubscription> _customerChangedSubscriptions = [];
@@ -31,7 +32,7 @@ internal sealed class CustomerHub : IAsyncDisposable
             })
             .WithStatefulReconnect()
             .WithServerTimeout(TimeSpan.FromMinutes(10))
-            .WithKeepAliveInterval(TimeSpan.FromMinutes(5))
+            .WithKeepAliveInterval(TimeSpan.FromMinutes(15))
             .WithAutomaticReconnect(RetryPolicy.Instance)
             .Build();
     }
@@ -60,7 +61,7 @@ internal sealed class CustomerHub : IAsyncDisposable
         return subscription;
     }
 
-    public async ValueTask StartAsync()
+    public async Task StartAsync()
     {
         if (_connection.State != HubConnectionState.Disconnected)
             return;

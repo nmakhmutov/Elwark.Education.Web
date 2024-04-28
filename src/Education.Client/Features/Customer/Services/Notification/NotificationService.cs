@@ -20,7 +20,6 @@ internal sealed class NotificationService : INotificationService
     private readonly AuthenticationStateProvider _stateProvider;
     private readonly HashSet<StateChangedSubscription> _subscriptions = [];
 
-    private bool _isInitialized;
     private IDisposable? _subscription;
 
     public NotificationService(CustomerApiClient api, CustomerHub hub, ISnackbar snackbar,
@@ -66,22 +65,24 @@ internal sealed class NotificationService : INotificationService
 
     public async Task StartAsync()
     {
-        if (_isInitialized)
+        if (_subscription is not null)
             return;
 
         var state = await _stateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated == false)
             return;
 
+        var result = await GetAsync(new NotificationsRequest(MaxNotifications));
+        result.Match(model =>
+        {
+            _notifications.Clear();
+            _notifications.AddRange(model.Items.Select(m =>
+                new NotificationMessage(m.Subject, m.Module, m.Title, m.Message, m.Payload, m.CreatedAt))
+            );
+        });
+
         var callback = EventCallback.Factory.Create<NotificationMessage>(this, ReceivedMessage);
         _subscription = _hub.NotifyOnNotification(callback);
-
-        var result = await GetAsync(new NotificationsRequest(MaxNotifications));
-        result.Match(model => _notifications.AddRange(model.Items.Select(m =>
-            new NotificationMessage(m.Subject, m.Module, m.Title, m.Message, m.Payload, m.CreatedAt))
-        ));
-
-        _isInitialized = true;
 
         await NotifyChangeSubscribersAsync();
     }

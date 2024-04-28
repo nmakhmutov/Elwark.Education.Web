@@ -1,6 +1,7 @@
 using Education.Client.Features.Customer.Services;
 using Education.Client.Features.Customer.Services.Account;
 using Education.Client.Features.Customer.Services.Notification;
+using Education.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -22,7 +23,9 @@ internal static class CustomerCollectionExtensions
                 var stateProvider = provider.GetRequiredService<AuthenticationStateProvider>();
 
                 return new CustomerHub(builder.Configuration.GetValue<Uri>("Urls:Hub")!, tokenProvider, stateProvider);
-            });
+            })
+            .AddTransient<IStartupService>(provider => provider.GetRequiredService<INotificationService>())
+            .AddTransient<IStartupService>(provider => provider.GetRequiredService<CustomerHub>());
 
         return builder;
     }
