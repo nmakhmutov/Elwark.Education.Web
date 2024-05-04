@@ -1,6 +1,6 @@
 .slider {
     position: relative;
-    height: 60vh;
+    height: 40vh;
     max-height: 600px;
 }
 
@@ -31,7 +31,7 @@
 }
 
 ::deep .articles {
-    margin-top: -120px;
+    margin-top: -80px;
 }
 
 .grid {
@@ -41,6 +41,10 @@
 }
 
 @media (min-width: 600px) {
+    .slider {
+        height: 50vh;
+    }
+
     .title {
         font-size: 9rem;
     }
@@ -49,6 +53,16 @@
         gap: 24px;
         grid-template-columns: repeat(2, 1fr);
         grid-auto-rows: 250px;
+    }
+
+    ::deep .articles {
+        margin-top: -120px;
+    }
+}
+
+@media (min-width: 980px) {
+    .slider {
+        height: 60vh;
     }
 }
 

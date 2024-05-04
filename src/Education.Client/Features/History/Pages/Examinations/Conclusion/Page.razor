@@ -14,7 +14,7 @@
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
             <article>
-                <CompletedStars Class="mb-6" Progress="@context.TotalScore.Ratio"/>
+                <CompletedStars Class="mb-6" Progress="@((double)context.TotalScore.Value / context.TotalScore.Total)"/>
 
                 <RewardsContainer Class="mb-3 mb-sm-6" Rewards="@context.Rewards"/>
 

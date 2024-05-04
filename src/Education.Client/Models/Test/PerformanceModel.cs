@@ -1,3 +1,3 @@
 namespace Education.Client.Models.Test;
 
-public sealed record PerformanceModel<T>(T Value, T Total, double Ratio);
+public sealed record PerformanceModel<T>(T Value, T Total);

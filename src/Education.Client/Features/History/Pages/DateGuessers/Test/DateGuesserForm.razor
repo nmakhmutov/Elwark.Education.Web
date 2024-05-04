@@ -16,7 +16,7 @@
             For="@(() => _model.Month)"
             Label="@L["History_DateGuesser_Month"]"
             Clearable>
-            @foreach (var month in Months)
+            @foreach (var month in _months)
             {
                 <MudSelectItem Value="@month.Key" T="uint?">
                     @month.Value

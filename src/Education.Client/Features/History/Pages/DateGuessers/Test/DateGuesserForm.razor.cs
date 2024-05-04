@@ -1,4 +1,3 @@
-using System.Globalization;
 using FluentValidation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -10,15 +9,30 @@ public sealed partial class DateGuesserForm
     private bool _isLoading;
     private Model _model = new();
 
-    private static IEnumerable<KeyValuePair<uint, string>> Months =>
-        CultureInfo.CurrentCulture.DateTimeFormat.MonthNames
-            .Select((s, i) => new KeyValuePair<uint, string>((uint)i + 1, s));
+    private static IEnumerable<KeyValuePair<uint, string>> _months = [];
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required EventCallback<Model> OnAnswer { get; set; }
+
+    protected override void OnInitialized() =>
+        _months = new Dictionary<uint, string>
+        {
+            [1] = L["Month_January_Title"],
+            [2] = L["Month_February_Title"],
+            [3] = L["Month_March_Title"],
+            [4] = L["Month_April_Title"],
+            [5] = L["Month_May_Title"],
+            [6] = L["Month_June_Title"],
+            [7] = L["Month_July_Title"],
+            [8] = L["Month_August_Title"],
+            [9] = L["Month_September_Title"],
+            [10] = L["Month_October_Title"],
+            [11] = L["Month_November_Title"],
+            [12] = L["Month_December_Title"]
+        };
 
     private async Task OnValidSubmit()
     {
