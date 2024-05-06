@@ -4,6 +4,6 @@ public sealed record NumberOfQuizzesModel(
     uint Succeeded,
     uint Failed,
     uint TimeExceeded,
-    uint MistakesExceeded,
+    uint MistakesLimitExceeded,
     uint Total
 );

@@ -47,7 +47,7 @@ public sealed record QuizStatisticsModel(
         DeltaModel<uint> Successful,
         DeltaModel<uint> Failed,
         DeltaModel<uint> TimeExceeded,
-        DeltaModel<uint> MistakesExceeded,
+        DeltaModel<uint> MistakesLimitExceeded,
         DeltaModel<ulong> Total
     );
 

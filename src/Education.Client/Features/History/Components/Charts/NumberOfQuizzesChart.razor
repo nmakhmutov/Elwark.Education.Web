@@ -38,7 +38,7 @@
                 HistoryChart.Quiz.Completeness.Successful,
                 HistoryChart.Quiz.Completeness.Failed,
                 HistoryChart.Quiz.Completeness.TimeExceeded,
-                HistoryChart.Quiz.Completeness.MistakesExceeded
+                HistoryChart.Quiz.Completeness.MistakesLimitExceeded
             ]
         };
 
@@ -56,7 +56,7 @@
         new ChartList.Item(L["NumberOfQuizzes_Successful_Title"], Quizzes.Succeeded, HistoryChart.Quiz.Completeness.Successful),
         new ChartList.Item(L["NumberOfQuizzes_Failed_Title"], Quizzes.Failed, HistoryChart.Quiz.Completeness.Failed),
         new ChartList.Item(L["NumberOfQuizzes_TimeExceeded_Title"], Quizzes.TimeExceeded, HistoryChart.Quiz.Completeness.TimeExceeded),
-        new ChartList.Item(L["NumberOfQuizzes_MistakesExceeded_Title"], Quizzes.MistakesExceeded, HistoryChart.Quiz.Completeness.MistakesExceeded),
+        new ChartList.Item(L["NumberOfQuizzes_MistakesLimitExceeded_Title"], Quizzes.MistakesLimitExceeded, HistoryChart.Quiz.Completeness.MistakesLimitExceeded),
         new ChartList.Item(L["NumberOfQuizzes_Total_Title"], Quizzes.Total, null)
     ];
 
@@ -65,7 +65,7 @@
         new Data(L["NumberOfQuizzes_Successful_Title"], Quizzes.Succeeded),
         new Data(L["NumberOfQuizzes_Failed_Title"], Quizzes.Failed),
         new Data(L["NumberOfQuizzes_TimeExceeded_Title"], Quizzes.TimeExceeded),
-        new Data(L["NumberOfQuizzes_MistakesExceeded_Title"], Quizzes.MistakesExceeded)
+        new Data(L["NumberOfQuizzes_MistakesLimitExceeded_Title"], Quizzes.MistakesLimitExceeded)
     ];
 
     private sealed record Data(string Name, decimal Value);

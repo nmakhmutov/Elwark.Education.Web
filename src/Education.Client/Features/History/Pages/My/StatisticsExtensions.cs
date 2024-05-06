@@ -77,8 +77,8 @@ public static class StatisticsExtensions
             contrast.Failed.Difference),
         new ProgressList.Item(l["NumberOfQuizzes_TimeExceeded_Title"], contrast.TimeExceeded.Current.ToMetric(),
             contrast.TimeExceeded.Difference),
-        new ProgressList.Item(l["NumberOfQuizzes_MistakesExceeded_Title"], contrast.MistakesExceeded.Current.ToMetric(),
-            contrast.MistakesExceeded.Difference),
+        new ProgressList.Item(l["NumberOfQuizzes_MistakesLimitExceeded_Title"], contrast.MistakesLimitExceeded.Current.ToMetric(),
+            contrast.MistakesLimitExceeded.Difference),
         new ProgressList.Item(l["NumberOfQuizzes_Total_Title"], contrast.Total.Current.ToMetric(),
             contrast.Total.Difference)
     ];

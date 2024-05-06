@@ -3,7 +3,7 @@
     <FluentValidationValidator Validator="@_validator"/>
 
     <MudRadioGroup @bind-Value="@(_userAnswer.Answer)" ReadOnly="@(CorrectAnswer is not null)">
-        <div class="d-flex flex-column mx-auto w-max-480 gap-3 mb-3 mb-sm-6">
+        <EduFitGrid Class="mb-3 mb-sm-6">
             @foreach (var option in Options)
             {
                 var (icon, color) = Get(option);
@@ -21,7 +21,7 @@
                     }
                 </div>
             }
-        </div>
+        </EduFitGrid>
     </MudRadioGroup>
 
     @if (CorrectAnswer is null)
@@ -94,8 +94,11 @@
     [Parameter]
     public EventCallback OnNextClick { get; set; }
 
-    protected override void OnInitialized() =>
+    protected override void OnInitialized()
+    {
+        _userAnswer = new SingleAnswerModel();
         _validator = new Validator(L);
+    }
 
     private async Task OnValidSubmit()
     {

@@ -19,7 +19,7 @@ public static class HistoryChart
 
             public static string TimeExceeded { get; } = "#FFAB00";
 
-            public static string MistakesExceeded { get; } = "#00B8D9";
+            public static string MistakesLimitExceeded { get; } = "#00B8D9";
         }
 
         public static class Score

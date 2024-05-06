@@ -39,7 +39,7 @@ public sealed partial class Page
             QuizStatus.Succeeded => Severity.Success,
             QuizStatus.Failed => Severity.Error,
             QuizStatus.TimeExceeded => Severity.Warning,
-            QuizStatus.MistakesExceeded => Severity.Warning,
+            QuizStatus.MistakesLimitExceeded => Severity.Warning,
             _ => Severity.Info
         };
 

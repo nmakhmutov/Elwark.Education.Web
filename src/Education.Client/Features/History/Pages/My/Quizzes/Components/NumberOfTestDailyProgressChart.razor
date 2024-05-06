@@ -22,11 +22,11 @@
     <ApexPointSeries
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
-        Name="@L["NumberOfQuizzes_MistakesExceeded_Title"]"
+        Name="@L["NumberOfQuizzes_MistakesLimitExceeded_Title"]"
         SeriesType="SeriesType.Bar"
-        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Completeness.MistakesExceeded })"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Completeness.MistakesLimitExceeded })"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
-        YValue="@(x => x.NumberOfQuizzes.MistakesExceeded)"/>
+        YValue="@(x => x.NumberOfQuizzes.MistakesLimitExceeded)"/>
 
     <ApexPointSeries
         TItem="QuizStatisticsModel.DailyProgress"
