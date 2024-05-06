@@ -29,7 +29,7 @@ public sealed partial class Page
     public required string Id { get; set; }
 
     private double Progress =>
-        _examination.Match(x => (double)x.CompletedQuestions / x.TotalQuestions * 100, _ => 0, () => 0);
+        _examination.Match(x => Percentage.Calc(x.CompletedQuestions, x.CompletedQuestions), _ => 0, () => 0);
 
     protected override async Task OnInitializedAsync()
     {

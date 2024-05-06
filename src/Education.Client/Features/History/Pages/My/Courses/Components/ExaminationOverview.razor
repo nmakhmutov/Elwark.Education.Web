@@ -29,7 +29,7 @@
         <NumberOfExaminationsChart Value="@Examination.NumberOfExaminations"/>
     </StatisticsCard>
     <StatisticsCard Title="@L["Score_Title"]" Value="@Examination.Score.Total">
-        <ExaminationScoreChart Value="@Examination.Score"/>
+        <ExaminationScoreChart Score="@Examination.Score"/>
     </StatisticsCard>
     <StatisticsCard Title="@L["Questions_Title"]" Value="@Examination.AnswerRatio.Questions">
         <ExaminationAnswerRatioChart AnswerRatio="@Examination.AnswerRatio"/>
@@ -58,15 +58,15 @@
                         <MudSpacer/>
 
                         <MudText Class="d-none d-sm-inline" Typo="@Typo.subtitle1">
-                            @L["Questions_CorrectOutOfTotal", conclusion.AnswerRatio.Correct, conclusion.AnswerRatio.Questions]
+                            @L["CompletedIn_Title", conclusion.TimeSpent.Humanize(L)]
                         </MudText>
                     </div>
                 </TitleContent>
                 <ChildContent>
-                    <ExaminationConclusionList
-                        TimeSpent="@conclusion.TimeSpent"
-                        Score="@conclusion.Score"
-                        AnswerRatio="@conclusion.AnswerRatio"/>
+                    <EduFillGrid>
+                        <ExaminationScoreChart Score="@conclusion.Score"/>
+                        <ExaminationAnswerRatioChart AnswerRatio="@conclusion.AnswerRatio"/>
+                    </EduFillGrid>
                 </ChildContent>
             </MudExpansionPanel>
         }

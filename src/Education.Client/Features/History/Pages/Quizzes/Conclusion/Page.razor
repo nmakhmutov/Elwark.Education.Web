@@ -7,16 +7,23 @@
         @L.GetQuizDifficultyTitle(context.Difficulty): @context.Title
     </PageTitle>
 
-    <MudAlert Class="mb-3 mb-sm-6" Severity="@GetColor(context.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
-        @L.GetStatusTitle(context.Status)
-    </MudAlert>
-
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
-            <article>
-                <CompletedStars Class="mb-6" Progress="@((double)context.TotalScore.Value / context.TotalScore.Total)"/>
+            <article class="d-flex flex-column mud-paper gap-3 gap-sm-6 pb-3 pb-sm-6">
+                <MudAlert Severity="@GetColor(context.Status)" ContentAlignment="HorizontalAlignment.Center">
+                    @L.GetStatusTitle(context.Status)
+                </MudAlert>
 
-                <RewardsContainer Class="mb-3 mb-sm-6" Rewards="@context.Rewards"/>
+                <CompletedStars Progress="@((double)context.TotalScore.Value / context.TotalScore.Total)"/>
+
+                @if (context.Rewards.Length > 0)
+                {
+                    <RewardsContainer Class="mb-3 mb-sm-6" Rewards="@context.Rewards"/>
+                }
+                else
+                {
+                    <MudSpacer/>
+                }
 
                 <div class="d-flex justify-center">
                     <MudButton

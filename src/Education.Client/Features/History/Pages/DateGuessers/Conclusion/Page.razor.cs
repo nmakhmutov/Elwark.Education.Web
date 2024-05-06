@@ -28,7 +28,7 @@ public sealed partial class Page
     {
         _result = await DateGuesserClient.GetConclusionAsync(Id);
         _result.Match(
-            x => _progress = Math.Round((double)x.Score.Total / x.MaxScore * 100),
+            x => _progress = Percentage.Calc(x.Score.Total, x.MaxScore),
             e =>
             {
                 if (e.IsDateGuesserNotFound())

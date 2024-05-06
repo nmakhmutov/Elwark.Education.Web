@@ -10,4 +10,7 @@ public static class Percentage
             double.PositiveInfinity => 100,
             var x => double.Round(x, 2)
         };
+
+    public static double Normalize(double value) =>
+        double.Round(value * 100, 2);
 }

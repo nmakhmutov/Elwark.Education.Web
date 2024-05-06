@@ -58,15 +58,15 @@
                         <MudSpacer/>
 
                         <MudText Class="d-none d-sm-inline" Typo="@Typo.subtitle1">
-                            @L["Questions_CorrectOutOfTotal", conclusion.AnswerRatio.Correct, conclusion.AnswerRatio.Questions]
+                            @L["CompletedIn_Title", conclusion.TimeSpent.Humanize(L)]
                         </MudText>
                     </div>
                 </TitleContent>
                 <ChildContent>
-                    <QuizConclusionList
-                        TimeSpent="@conclusion.TimeSpent"
-                        Score="@conclusion.Score"
-                        AnswerRatio="@conclusion.AnswerRatio"/>
+                    <EduFillGrid>
+                        <QuizScoreChart Score="@conclusion.Score"/>
+                        <QuizAnswerRatioChart AnswerRatio="@conclusion.AnswerRatio"/>
+                    </EduFillGrid>
                 </ChildContent>
             </MudExpansionPanel>
         }

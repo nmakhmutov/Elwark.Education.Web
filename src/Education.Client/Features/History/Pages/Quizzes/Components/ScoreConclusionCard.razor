@@ -1,7 +1,9 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Quiz.Model
-<section class="d-flex flex-column mud-paper">
-    <article class="d-flex flex-column flex-sm-row align-sm-center flex-1 gap-3 gap-sm-6 pa-3 pa-sm-6">
+@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
+<section class="d-flex flex-column mud-paper gap-3 gap-sm-6">
+    <article class="d-flex flex-column flex-sm-row align-sm-center gap-3 gap-sm-6 px-3 pt-3 px-sm-6 pt-sm-6">
         <ApexChart TItem="Data" Options="@Options">
             <ApexPointSeries
                 TItem="Data"
@@ -16,21 +18,9 @@
                 <MudText Typo="Typo.h6">
                     @L["Conclusion_ScoreOutOf_Title", Conclusion.TotalScore.Value, Conclusion.TotalScore.Total]
                 </MudText>
-                @switch (_average)
-                {
-                    case > 0:
-                        <MudText Typo="Typo.body1">
-                            @((MarkupString)L["Conclusion_YourScoreIsBetterThan_Description", $"<b class=\"mud-success-text\">{_average}%</b>"].ToString())
-                        </MudText>
-                        break;
-
-                    case < 0:
-                        <MudText Typo="Typo.body1">
-                            @((MarkupString)L["Conclusion_YourScoreIsWorseThan_Description", $"<b class=\"mud-error-text\">{_average}%</b>"].ToString())
-                        </MudText>
-                        break;
-                }
-
+                <MudText Typo="Typo.body1">
+                    @((MarkupString)_subtitle)
+                </MudText>
             </div>
             <ul class="mb-3 mb-sm-6">
                 <li class="row">
@@ -72,6 +62,18 @@
         </div>
     </article>
 
+    <div class="d-flex flex-column justify-end px-3 px-sm-6 flex-1">
+        <div class="d-flex justify-space-between align-start gap-3 gap-sm-6">
+            <MudText Typo="Typo.body1">
+                @L["Conclusion_AverageSuccessRateOfUsers_Title"]
+            </MudText>
+            <MudText Typo="Typo.body1">
+                @Percentage.Normalize(Conclusion.Metrics.SuccessRate)%
+            </MudText>
+        </div>
+        <MudProgressLinear Min="0" Max="100" Value="@Percentage.Normalize(Conclusion.Metrics.SuccessRate)" Color="Color.Success" Size="Size.Medium" Rounded/>
+    </div>
+
     <footer class="border-t mud-border-lines-default pa-3">
         <MudButton
             Class="text-transform-none"
@@ -83,7 +85,7 @@
 </section>
 
 @code {
-    private double _average;
+    private string _subtitle = string.Empty;
 
     private static ApexChartOptions<Data> Options =>
         new()
@@ -117,7 +119,16 @@
     public required QuizConclusionModel Conclusion { get; set; }
 
     protected override void OnParametersSet() =>
-        _average = Percentage.Calc(Conclusion.TotalScore.Value - Conclusion.AverageScore, Conclusion.AverageScore);
+        _subtitle = Percentage.Calc(Conclusion.TotalScore.Value - Conclusion.Metrics.AverageScore, Conclusion.Metrics.AverageScore) switch
+        {
+            var x and > 0 =>
+                L["Conclusion_YourScoreIsBetterThan_Description", $"<b class=\"mud-success-text\">{x}%</b>"],
+
+            var x and < 0 =>
+                L["Conclusion_YourScoreIsWorseThan_Description", $"<b class=\"mud-error-text\">{x}%</b>"],
+
+            _ => L["Conclusion_YourScoreIsAverage_Description"]
+        };
 
     private Data[] Series =>
     [
@@ -128,5 +139,4 @@
     ];
 
     private sealed record Data(string Name, decimal Value);
-
 }

@@ -30,7 +30,7 @@ public sealed partial class Page
     public string Id { get; set; } = string.Empty;
 
     private double Progress =>
-        _quiz.Match(x => (double)x.CompletedQuestions / x.TotalQuestions * 100, _ => 0, () => 0);
+        _quiz.Match(x => Percentage.Calc(x.CompletedQuestions, x.TotalQuestions), _ => 0, () => 0);
 
     protected override async Task OnInitializedAsync()
     {

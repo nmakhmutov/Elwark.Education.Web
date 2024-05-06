@@ -14,10 +14,12 @@ public sealed record ExaminationConclusionModel(
     PerformanceModel<uint> SpeedScore,
     PerformanceModel<uint> TotalScore,
     PerformanceModel<TimeSpan> TimeSpent,
-    double AverageScore,
+    ExaminationConclusionModel.MetricsModel Metrics,
     ExaminationConclusionModel.Question[] Questions,
     InternalMoneyModel[] Rewards
 )
 {
+    public sealed record MetricsModel(double AverageScore, double SuccessRate);
+
     public sealed record Question(string Title, bool IsAnswered, bool IsCorrect);
 }

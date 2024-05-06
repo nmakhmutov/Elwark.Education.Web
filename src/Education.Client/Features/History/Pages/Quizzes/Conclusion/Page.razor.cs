@@ -25,7 +25,7 @@ public sealed partial class Page
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         _result = await QuizClient.GetConclusionAsync(Id);
 

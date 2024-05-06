@@ -107,6 +107,8 @@
     public required MeOverviewModel.MonthlyPerformanceModel Performance { get; set; }
 
     private decimal Completeness =>
-        Performance.BestExperience == 0 ? 0 : decimal.Round((decimal)Performance.UserExperience / Performance.BestExperience * 100, 2);
+        Performance.BestExperience == 0
+            ? 0M
+            : (decimal)Percentage.Calc(Performance.UserExperience, Performance.BestExperience);
 
 }
