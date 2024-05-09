@@ -10,43 +10,53 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="result">
+<ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync">
     <EduContainer Class="pb-3 pb-sm-6">
         <StatisticDetailsGrid>
-            <StatisticDetailsCard>
+            <StatisticDetailsCard DisableActivity="@(context.Progress.Length == 0)">
                 <TotalContent>
                     <Subheader Title="@L["History_DateGuesser_Score"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <DateGuesserScoreChart Score="@result.Score"/>
+                    <DateGuesserScoreChart Score="@context.Score"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
-                    <ProgressList Items="@result.Delta.Score.GetProgress(L)"/>
+                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <ProgressList Items="@GetProgress(context.Delta.Score)"/>
                 </ProgressContent>
+                <ActivityContent>
+                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <ScoreDailyProgressChart Progress="@_progress"/>
+                </ActivityContent>
             </StatisticDetailsCard>
 
-            <StatisticDetailsCard>
+            <StatisticDetailsCard DisableActivity="@(context.Progress.Length == 0)">
                 <TotalContent>
                     <Subheader Title="@L["History_DateGuesser_Questions"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <DateGuesserAnswerRatioChart AnswerRatio="@result.AnswerRatio"/>
+                    <DateGuesserAnswerRatioChart AnswerRatio="@context.AnswerRatio"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
-                    <ProgressList Items="@result.Delta.AnswerRatio.GetProgress(L)"/>
+                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <ProgressList Items="@GetProgress(context.Delta.AnswerRatio)"/>
                 </ProgressContent>
+                <ActivityContent>
+                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <AnswerRatioDailyProgressChart Progress="@_progress"/>
+                </ActivityContent>
             </StatisticDetailsCard>
 
-            <MudPaper Elevation="0" Class="pa-3 pa-sm-6">
-                <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-3 mb-sm-6">
-                    <MudText Typo="Typo.h5">
-                        @L["Quizzes_Title"]
-                    </MudText>
-                    <MetricNumber Value="@result.Tests" Typo="Typo.h5"/>
-                </MudStack>
-                <section>
-                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@result.Delta.RangeTitle()"/>
-                    <ProgressList Items="@result.Delta.GetProgress(L)"/>
-                </section>
-            </MudPaper>
+            <StatisticDetailsCard DisableActivity="@(context.Progress.Length == 0)">
+                <TotalContent>
+                    <Subheader Title="@L["Quizzes_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <MetricNumber Value="@context.Tests" Typo="Typo.h5"/>
+                </TotalContent>
+                <ProgressContent>
+                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <ProgressList Items="@GetProgress(context.Delta)"/>
+                </ProgressContent>
+                <ActivityContent>
+                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <NumberOfTestDailyProgressChart Progress="@_progress"/>
+                </ActivityContent>
+            </StatisticDetailsCard>
         </StatisticDetailsGrid>
     </EduContainer>
 </ApiViewer>

@@ -6,8 +6,8 @@ namespace Education.Client.Features.History.Clients.User;
 
 internal sealed class HistoryUserService : IHistoryUserClient
 {
-    private readonly HistoryApiClient _api;
     private const string Root = "history/users";
+    private readonly HistoryApiClient _api;
 
     public HistoryUserService(HistoryApiClient api) =>
         _api = api;

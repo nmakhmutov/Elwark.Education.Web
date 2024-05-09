@@ -1,0 +1,74 @@
+@using ApexCharts
+@using Education.Client.Features.History.Clients.Learner.Model.DateGuesser
+<ApexChart @ref="@_chart" TItem="DateGuesserStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
+    <ApexPointSeries
+        TItem="DateGuesserStatisticsModel.DailyProgress"
+        Items="@Progress"
+        Name="@L["Quizzes_Title"]"
+        Stroke="@(new SeriesStroke { Color = HistoryChart.DateGuesser.Tests })"
+        SeriesType="SeriesType.Bar"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
+        YValue="@(x => x.Tests)"/>
+</ApexChart>
+
+@code {
+    private ApexChart<DateGuesserStatisticsModel.DailyProgress>? _chart;
+
+    private ApexChartOptions<DateGuesserStatisticsModel.DailyProgress> _options = new()
+    {
+        Legend = new Legend
+        {
+            Show = false
+        },
+        Chart = new Chart
+        {
+            Stacked = true,
+            Toolbar = new Toolbar
+            {
+                Show = false
+            },
+            Selection = new Selection
+            {
+                Enabled = false
+            },
+            Zoom = new Zoom
+            {
+                Enabled = false
+            },
+            Background = "transparent",
+            ForeColor = "var(--mud-palette-text-primary)"
+        },
+        Stroke = new Stroke
+        {
+            Show = false
+        },
+        Grid = new Grid
+        {
+            BorderColor = "var(--mud-palette-divider)"
+        },
+        Theme = new Theme()
+    };
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [CascadingParameter]
+    private CascadingTheme? ThemeProvider { get; set; }
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required DateGuesserStatisticsModel.DailyProgress[] Progress { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
+        if (_options.Theme.Mode == current)
+            return Task.CompletedTask;
+
+        _options.Theme.Mode = current;
+        return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
+    }
+
+}

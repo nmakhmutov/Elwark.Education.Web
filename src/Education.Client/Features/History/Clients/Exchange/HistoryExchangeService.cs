@@ -7,8 +7,8 @@ namespace Education.Client.Features.History.Clients.Exchange;
 
 internal sealed class HistoryExchangeService : IHistoryExchangeClient
 {
-    private readonly HistoryApiClient _api;
     private const string Root = "history/exchange";
+    private readonly HistoryApiClient _api;
 
     public HistoryExchangeService(HistoryApiClient api) =>
         _api = api;

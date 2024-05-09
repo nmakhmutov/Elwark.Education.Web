@@ -7,8 +7,8 @@ namespace Education.Client.Features.History.Clients.Flow;
 
 internal sealed class HistoryFlowService : IHistoryFlowClient
 {
-    private readonly HistoryApiClient _api;
     private const string Root = "history/flows/me";
+    private readonly HistoryApiClient _api;
 
     public HistoryFlowService(HistoryApiClient api) =>
         _api = api;

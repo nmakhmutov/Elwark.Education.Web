@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Components;
 
 namespace Education.Client.Features.Customer.Services.Notification;
 
-public interface INotificationService : IDisposable, IStartupService
+public interface INotificationService :
+    IDisposable,
+    IStartupService
 {
     bool HasNotifications { get; }
 

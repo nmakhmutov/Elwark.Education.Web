@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Education.Client.Features.Customer.Services;
 
-internal sealed class CustomerHub : IAsyncDisposable, IStartupService
+internal sealed class CustomerHub :
+    IAsyncDisposable,
+    IStartupService
 {
     private readonly HubConnection _connection;
     private readonly HashSet<CustomerStateChangedSubscription> _customerChangedSubscriptions = [];
@@ -45,22 +47,6 @@ internal sealed class CustomerHub : IAsyncDisposable, IStartupService
         return _connection.DisposeAsync();
     }
 
-    public IDisposable NotifyOnCustomerChange(EventCallback<CustomerChangedType> callback)
-    {
-        var subscription = new CustomerStateChangedSubscription(this, callback);
-        _customerChangedSubscriptions.Add(subscription);
-
-        return subscription;
-    }
-
-    public IDisposable NotifyOnNotification(EventCallback<NotificationMessage> callback)
-    {
-        var subscription = new NotificationStateChangedSubscription(this, callback);
-        _notificationSubscriptions.Add(subscription);
-
-        return subscription;
-    }
-
     public async Task StartAsync()
     {
         if (_connection.State != HubConnectionState.Disconnected)
@@ -81,6 +67,22 @@ internal sealed class CustomerHub : IAsyncDisposable, IStartupService
         {
             // ignored
         }
+    }
+
+    public IDisposable NotifyOnCustomerChange(EventCallback<CustomerChangedType> callback)
+    {
+        var subscription = new CustomerStateChangedSubscription(this, callback);
+        _customerChangedSubscriptions.Add(subscription);
+
+        return subscription;
+    }
+
+    public IDisposable NotifyOnNotification(EventCallback<NotificationMessage> callback)
+    {
+        var subscription = new NotificationStateChangedSubscription(this, callback);
+        _notificationSubscriptions.Add(subscription);
+
+        return subscription;
     }
 
     private Task NotifyCustomerChangeSubscribersAsync(CustomerChangedType status) =>

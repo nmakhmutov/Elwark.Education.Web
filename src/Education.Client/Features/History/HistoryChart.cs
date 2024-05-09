@@ -102,6 +102,8 @@ public static class HistoryChart
 
     public static class DateGuesser
     {
+        public static string Tests { get; } = "#00A76F";
+
         public static class Size
         {
             public static string Small { get; } = "#B992FE";

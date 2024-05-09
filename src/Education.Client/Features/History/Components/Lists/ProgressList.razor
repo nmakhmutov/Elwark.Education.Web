@@ -25,6 +25,16 @@
     [Parameter]
     public Item[] Items { get; set; } = [];
 
-    public sealed record Item(string Title, string Value, double Trending);
+    public sealed record Item(string Title, string Value, double Trending)
+    {
+        public static Item Create(string title, DeltaModel<uint> delta) =>
+            new(title, delta.Current.ToMetric(), delta.Difference);
+
+        public static Item Create(string title, DeltaModel<ulong> delta) =>
+            new(title, delta.Current.ToMetric(), delta.Difference);
+
+        public static Item Create(string title, DeltaModel<TimeSpan> delta, IStringLocalizer localizer) =>
+            new(title, delta.Current.Humanize(localizer), delta.Difference);
+    }
 
 }

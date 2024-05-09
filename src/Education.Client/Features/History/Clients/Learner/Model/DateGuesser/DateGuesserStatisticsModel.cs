@@ -7,7 +7,8 @@ public sealed record DateGuesserStatisticsModel(
     uint Tests,
     ScoreModel Score,
     AnswerRatioModel AnswerRatio,
-    DateGuesserStatisticsModel.DeltaModel Delta
+    DateGuesserStatisticsModel.DeltaModel Delta,
+    DateGuesserStatisticsModel.DailyProgress[] Progress
 )
 {
     public sealed record DeltaModel(
@@ -28,5 +29,12 @@ public sealed record DateGuesserStatisticsModel(
         DeltaModel<uint> Total,
         DeltaModel<uint> Correct,
         DeltaModel<uint> Incorrect
+    );
+
+    public sealed record DailyProgress(
+        DateOnly Date,
+        uint Tests,
+        ScoreModel Score,
+        AnswerRatioModel AnswerRatio
     );
 }

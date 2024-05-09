@@ -1,12 +1,13 @@
+using System.Text.Json.Serialization;
 using Education.Client.Models.Content;
 
 namespace Education.Client.Features.History.Clients.Search.Model;
 
 public sealed record SearchModel
 {
+    [JsonConstructor]
     public SearchModel(string id, string title, string overview, ImageBundleModel image, string category)
     {
-        Id = id;
         Title = title;
         Overview = overview;
         Image = image;
@@ -14,13 +15,11 @@ public sealed record SearchModel
 
         (ContentHref, CategoryHref) = category switch
         {
-            "Article" => (HistoryUrl.Content.Article(Id), HistoryUrl.Content.Articles()),
-            "Course" => (HistoryUrl.Content.Course(Id), HistoryUrl.Content.Courses()),
+            "Article" => (HistoryUrl.Content.Article(id), HistoryUrl.Content.Articles()),
+            "Course" => (HistoryUrl.Content.Course(id), HistoryUrl.Content.Courses()),
             _ => (HistoryUrl.Root, HistoryUrl.Root)
         };
     }
-
-    public string Id { get; }
 
     public string Title { get; }
 

@@ -6,8 +6,8 @@ namespace Education.Client.Features.History.Clients.Order;
 
 internal sealed class HistoryOrderService : IHistoryOrderClient
 {
-    private readonly HistoryApiClient _api;
     private const string Root = "history/orders";
+    private readonly HistoryApiClient _api;
 
     public HistoryOrderService(HistoryApiClient api) =>
         _api = api;

@@ -75,10 +75,10 @@
     [Parameter]
     public string? Class { get; set; }
 
-    public bool IsDisabled =>
+    private bool IsDisabled =>
         _loading != Loading.None;
 
-    public bool IsLoading =>
+    private bool IsLoading =>
         _loading == Loading.Reject;
 
     private async Task ClaimAsync()
