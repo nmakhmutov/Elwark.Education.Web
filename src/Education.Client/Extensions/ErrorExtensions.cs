@@ -53,6 +53,9 @@ internal static class ErrorExtensions
     public static bool IsDateGuesserNotFound(this Error error) =>
         error.Type == "DateGuesserNotFound";
 
+    public static bool IsDateGuesserAlreadyCompleted(this Error error) =>
+        error.Type == "DateGuesserAlreadyCompleted";
+
     public static bool IsUserNotFound(this Error error) =>
         error.Type == "UserNotFound";
 }

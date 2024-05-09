@@ -4,24 +4,24 @@
 @using Education.Client.Features.History.Clients.Learner
 @layout HistoryLayout
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="result">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <PageTitle>
-        @result.Article.Title
+        @context.Article.Title
     </PageTitle>
 
     <PageMetaContent
-        Title="@result.Article.Title"
-        Description="@result.Article.Description"
-        Image="@result.Article.Image.Small"/>
+        Title="@context.Article.Title"
+        Description="@context.Article.Description"
+        Image="@context.Article.Image.Small"/>
 
-    @switch (result.Article)
+    @switch (context.Article)
     {
         case ArticleDetail.BattleModel battle:
             <BattleDetail
                 Battle="@battle"
-                HasEasyQuiz="@result.HasEasyQuiz"
-                HasHardQuiz="@result.HasHardQuiz"
-                Activity="@result.Activity"
+                HasEasyQuiz="@context.HasEasyQuiz"
+                HasHardQuiz="@context.HasHardQuiz"
+                Activity="@context.Activity"
                 OnLikeClick="@LearnerClient.LikeArticleAsync"
                 OnDislikeClick="@LearnerClient.DislikeArticleAsync"
                 OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
@@ -30,9 +30,9 @@
         case ArticleDetail.EmpireModel empire:
             <EmpireDetail
                 Empire="@empire"
-                HasEasyQuiz="@result.HasEasyQuiz"
-                HasHardQuiz="@result.HasHardQuiz"
-                Activity="@result.Activity"
+                HasEasyQuiz="@context.HasEasyQuiz"
+                HasHardQuiz="@context.HasHardQuiz"
+                Activity="@context.Activity"
                 OnLikeClick="@LearnerClient.LikeArticleAsync"
                 OnDislikeClick="@LearnerClient.DislikeArticleAsync"
                 OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
@@ -41,9 +41,9 @@
         case ArticleDetail.GeneralModel article:
             <GeneralDetail
                 Article="@article"
-                HasEasyQuiz="@result.HasEasyQuiz"
-                HasHardQuiz="@result.HasHardQuiz"
-                Activity="@result.Activity"
+                HasEasyQuiz="@context.HasEasyQuiz"
+                HasHardQuiz="@context.HasHardQuiz"
+                Activity="@context.Activity"
                 OnLikeClick="@LearnerClient.LikeArticleAsync"
                 OnDislikeClick="@LearnerClient.DislikeArticleAsync"
                 OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
@@ -52,9 +52,9 @@
         case ArticleDetail.PersonModel person:
             <PersonDetail
                 Person="@person"
-                HasEasyQuiz="@result.HasEasyQuiz"
-                HasHardQuiz="@result.HasHardQuiz"
-                Activity="@result.Activity"
+                HasEasyQuiz="@context.HasEasyQuiz"
+                HasHardQuiz="@context.HasHardQuiz"
+                Activity="@context.Activity"
                 OnLikeClick="@LearnerClient.LikeArticleAsync"
                 OnDislikeClick="@LearnerClient.DislikeArticleAsync"
                 OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>

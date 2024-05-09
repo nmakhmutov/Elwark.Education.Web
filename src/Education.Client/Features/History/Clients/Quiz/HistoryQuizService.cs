@@ -25,7 +25,7 @@ internal sealed class HistoryQuizService : IHistoryQuizClient
     public Task<ApiResult<QuizAnswerModel>> CheckAsync(string testId, string questionId, UserAnswerModel answer) =>
         _api.PostAsync<QuizAnswerModel, UserAnswerModel>($"{Root}/{testId}/questions/{questionId}", answer);
 
-    public Task<ApiResult<QuizModel>> ApplyInventoryAsync(string testId, uint inventoryId) =>
+    public Task<ApiResult<QuizModel>> UseInventoryAsync(string testId, uint inventoryId) =>
         _api.PostAsync<QuizModel>($"{Root}/{testId}/inventories/{inventoryId}");
 
     public Task<ApiResult<QuizConclusionModel>> GetConclusionAsync(string id) =>

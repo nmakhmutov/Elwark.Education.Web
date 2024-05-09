@@ -93,7 +93,7 @@ public sealed class ApiResult<T>
             error(Error);
     }
 
-    public bool MathError(Action<Error> error)
+    public bool MatchError(Action<Error> error)
     {
         if (!IsError)
             return false;

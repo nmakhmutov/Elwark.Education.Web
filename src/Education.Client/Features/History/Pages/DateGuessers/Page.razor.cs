@@ -41,7 +41,7 @@ public sealed partial class Page
     {
         _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.DateGuesserSettings) ?? _settings;
         _result = await DateGuesserClient.GetAsync();
-        _result.MathError(x =>
+        _result.MatchError(x =>
         {
             if (x.IsDateGuesserAlreadyCreated(out var id))
                 Navigation.NavigateTo(HistoryUrl.DateGuesser.Test(id));

@@ -8,13 +8,14 @@ namespace Education.Client.Features.History.Clients.Exchange;
 internal sealed class HistoryExchangeService : IHistoryExchangeClient
 {
     private readonly HistoryApiClient _api;
+    private const string Root = "history/exchange";
 
     public HistoryExchangeService(HistoryApiClient api) =>
         _api = api;
 
     public Task<ApiResult<ExchangeModel[]>> GetRatesAsync() =>
-        _api.GetAsync<ExchangeModel[]>("history/exchange");
+        _api.GetAsync<ExchangeModel[]>(Root);
 
     public Task<ApiResult<Unit>> ExchangeAsync(ExchangeRequest request) =>
-        _api.PostAsync<Unit, ExchangeRequest>("history/exchange", request);
+        _api.PostAsync<Unit, ExchangeRequest>(Root, request);
 }

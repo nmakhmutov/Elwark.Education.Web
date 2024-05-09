@@ -31,7 +31,7 @@ public sealed partial class Page
     [Parameter]
     public string? Test { get; set; }
 
-    protected override void OnParametersSet() =>
+    protected override void OnInitialized() =>
         _title = Test?.ToLowerInvariant() switch
         {
             "easy" => L["Quizzes_Easy_Title"],
@@ -39,7 +39,7 @@ public sealed partial class Page
             _ => L["Error_NotFound"]
         };
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         _result = Test?.ToLowerInvariant() switch
         {

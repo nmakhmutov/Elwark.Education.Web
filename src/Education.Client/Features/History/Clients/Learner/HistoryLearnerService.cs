@@ -71,10 +71,10 @@ internal sealed class HistoryLearnerService : IHistoryLearnerClient
         _api.GetAsync<PagingTokenModel<UserCourseOverviewModel>>($"{Root}/courses/bookmarks", req);
 
     public Task<ApiResult<CourseStatisticsModel>> GetCourseAsync(string courseId) =>
-        _api.GetAsync<CourseStatisticsModel>($"/{Root}/courses/{courseId}");
+        _api.GetAsync<CourseStatisticsModel>($"{Root}/courses/{courseId}");
 
     public Task<ApiResult<UserCourseActivityModel>> StartCourseAsync(string courseId) =>
-        _api.PostAsync<UserCourseActivityModel>($"/{Root}/courses/{courseId}");
+        _api.PostAsync<UserCourseActivityModel>($"{Root}/courses/{courseId}");
 
     public Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string courseId) =>
         _api.PostAsync<bool>($"{Root}/courses/{courseId}/bookmarks");

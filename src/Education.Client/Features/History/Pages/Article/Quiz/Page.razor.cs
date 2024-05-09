@@ -50,7 +50,7 @@ public sealed partial class Page
     {
         _settings = await Storage.GetItemAsync<QuizSettings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
         _result = await ArticleClient.GetQuizBuilderAsync(Id);
-        _result.MathError(x =>
+        _result.MatchError(x =>
         {
             if (x.IsQuizAlreadyCreated(out var id))
                 Navigation.NavigateTo(HistoryUrl.Quiz.Test(id));

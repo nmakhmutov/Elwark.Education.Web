@@ -6,16 +6,21 @@ namespace Education.Client.Features.History.Pages.DateGuessers.Test;
 
 public sealed partial class DateGuesserForm
 {
+    private static Dictionary<uint, string> _months = [];
     private bool _isLoading;
-    private Model _model = new();
-
-    private static IEnumerable<KeyValuePair<uint, string>> _months = [];
+    private Model _model = new(string.Empty);
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required EventCallback<Model> OnAnswer { get; set; }
+
+    [Parameter, EditorRequired]
+    public required string QuestionId { get; set; }
+
+    protected override void OnParametersSet() =>
+        _model = new Model(QuestionId);
 
     protected override void OnInitialized() =>
         _months = new Dictionary<uint, string>
@@ -51,6 +56,9 @@ public sealed partial class DateGuesserForm
 
     public sealed record Model
     {
+        public Model(string questionId) =>
+            QuestionId = questionId;
+
         public int? Year { get; set; }
 
         public uint? Month { get; set; }
@@ -58,6 +66,8 @@ public sealed partial class DateGuesserForm
         public uint? Day { get; set; }
 
         public bool IsCe { get; set; } = true;
+
+        public string QuestionId { get; }
 
         public void Reset()
         {

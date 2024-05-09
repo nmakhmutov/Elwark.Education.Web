@@ -8,7 +8,7 @@ public sealed record DateGuesserModel(
     ScoreModel Score,
     uint CompletedQuestions,
     uint TotalQuestions,
-    DateGuesserModel.QuestionModel? Question,
+    DateGuesserModel.QuestionModel Question,
     TestInventoryModel[] Inventory
 )
 {

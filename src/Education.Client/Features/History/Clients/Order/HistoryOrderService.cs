@@ -7,13 +7,14 @@ namespace Education.Client.Features.History.Clients.Order;
 internal sealed class HistoryOrderService : IHistoryOrderClient
 {
     private readonly HistoryApiClient _api;
+    private const string Root = "history/orders";
 
     public HistoryOrderService(HistoryApiClient api) =>
         _api = api;
 
     public Task<ApiResult<OrderStatusModel>> GetStatus(Guid id) =>
-        _api.GetAsync<OrderStatusModel>($"history/orders/{id}/status");
+        _api.GetAsync<OrderStatusModel>($"{Root}/{id}/status");
 
     public Task<ApiResult<OrderStatusModel>> CheckoutAsync(CheckoutRequest request) =>
-        _api.PostAsync<OrderStatusModel, CheckoutRequest>("history/orders", request);
+        _api.PostAsync<OrderStatusModel, CheckoutRequest>(Root, request);
 }

@@ -34,7 +34,7 @@ public sealed partial class Page
     protected override async Task OnInitializedAsync()
     {
         _examination = await ExaminationClient.GetAsync(Id);
-        _examination.MathError(x => HandlerError(x));
+        _examination.MatchError(x => HandlerError(x));
     }
 
     private async Task OnAnswerAsync(UserAnswerModel answer)
@@ -43,24 +43,26 @@ public sealed partial class Page
         var result = await ExaminationClient.CheckAsync(Id, examination.Question.Id, answer);
 
         await result.MatchAsync(async x =>
-        {
-            if (x.IsCompleted)
-                Navigation.NavigateTo(HistoryUrl.Examination.Conclusion(Id));
-            else
-                _examination = await ExaminationClient.GetAsync(Id);
-        });
+            {
+                if (x.IsCompleted)
+                    Navigation.NavigateTo(HistoryUrl.Examination.Conclusion(Id));
+                else
+                    _examination = await ExaminationClient.GetAsync(Id);
+            },
+            e => HandlerError(e)
+        );
     }
 
     private async Task OnExpiredAsync()
     {
         _examination = await ExaminationClient.GetAsync(Id);
-        _examination.MathError(x => HandlerError(x));
+        _examination.MatchError(x => HandlerError(x));
     }
 
     private async Task OnUseInventory(uint id)
     {
-        _examination = await ExaminationClient.ApplyInventoryAsync(Id, id);
-        _examination.MathError(x => HandlerError(x));
+        _examination = await ExaminationClient.UseInventoryAsync(Id, id);
+        _examination.MatchError(x => HandlerError(x));
     }
 
     private void HandlerError(Error error)

@@ -9,21 +9,14 @@
 
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
-            <article class="d-flex flex-column mud-paper gap-3 gap-sm-6 pb-3 pb-sm-6">
-                <MudAlert Severity="@GetColor(context.Status)" ContentAlignment="HorizontalAlignment.Center">
+            <article class="d-flex flex-column mud-paper gap-3 gap-sm-6 py-3 py-sm-6">
+                <CompletedStars Progress="@((double)context.TotalScore.Value / context.TotalScore.Total)"/>
+
+                <MudAlert Class="mb-3" Severity="@GetColor(context.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
                     @L.GetStatusTitle(context.Status)
                 </MudAlert>
 
-                <CompletedStars Progress="@((double)context.TotalScore.Value / context.TotalScore.Total)"/>
-
-                @if (context.Rewards.Length > 0)
-                {
-                    <RewardsContainer Class="flex-1" Rewards="@context.Rewards"/>
-                }
-                else
-                {
-                    <MudSpacer/>
-                }
+                <RewardsContainer Class="flex-1" Rewards="@context.Rewards"/>
 
                 <div class="d-flex justify-center">
                     <MudButton

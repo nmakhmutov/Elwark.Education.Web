@@ -1,25 +1,25 @@
 @page "/history/course/{id}"
 @layout HistoryLayout
 
-<ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync" Context="model">
+<ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync">
     <PageTitle>
-        @model.Course.Title
+        @context.Course.Title
     </PageTitle>
 
     <PageMetaContent
-        Title="@model.Course.Title"
-        Description="@model.Course.Description"
-        Image="@model.Course.Image.Url"/>
+        Title="@context.Course.Title"
+        Description="@context.Course.Description"
+        Image="@context.Course.Image.Url"/>
 
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1600">
         <CourseHeader
             Class="mb-3 mb-sm-6"
-            CourseId="@model.Course.Id"
-            Title="@model.Course.Title"
-            Image="@model.Course.Image"
-            HasExaminations="@(model.HasEasyExamination || model.HasHardExamination)"
-            ArticleCount="@model.Course.Articles.Length"
-            Activity="@model.Activity"
+            CourseId="@context.Course.Id"
+            Title="@context.Course.Title"
+            Image="@context.Course.Image"
+            HasExaminations="@(context.HasEasyExamination || context.HasHardExamination)"
+            ArticleCount="@context.Course.Articles.Length"
+            Activity="@context.Activity"
             OnLikeClick="@LearnerClient.LikeCourseAsync"
             OnDislikeClick="@LearnerClient.DislikeCourseAsync"
             OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"
@@ -31,7 +31,7 @@
                     @L["Articles_Title"]
                 </MudText>
 
-                @foreach (var (article, activity, hasQuiz) in model.Course.Articles)
+                @foreach (var (article, activity, hasQuiz) in context.Course.Articles)
                 {
                     <ArticleCard
                         Article="@article"
@@ -49,19 +49,19 @@
                     </MudText>
 
                     <MudText Typo="Typo.body1">
-                        @model.Course.Description
+                        @context.Course.Description
                     </MudText>
                 </section>
 
-                <CourseDetails Details="@model.Course.Details"/>
+                <CourseDetails Details="@context.Course.Details"/>
 
-                @if (model.Activity?.Status > CourseLearningStatus.NotStarted)
+                @if (context.Activity?.Status > CourseLearningStatus.NotStarted)
                 {
                     <ExaminationCard
-                        CourseId="@model.Course.Id"
-                        Activity="@model.Activity"
-                        HasEasyExamination="@model.HasEasyExamination"
-                        HasHardExamination="@model.HasHardExamination"/>
+                        CourseId="@context.Course.Id"
+                        Activity="@context.Activity"
+                        HasEasyExamination="@context.HasEasyExamination"
+                        HasHardExamination="@context.HasHardExamination"/>
                 }
             </EduFillGrid>
         </section>

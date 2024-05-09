@@ -26,10 +26,12 @@ public sealed partial class Page
     protected override async Task OnParametersSetAsync() =>
         _result = await CourseClient.GetAsync(Id);
 
-    private async Task StartCourseAsync(string id) =>
-        _result = (await LearnerClient.StartCourseAsync(id))
-            .Map(x => _result.Unwrap() with
-            {
-                Activity = x
-            });
+    private async Task StartCourseAsync(string id)
+    {
+        var response = await LearnerClient.StartCourseAsync(id);
+        _result = response.Map(x => _result.Unwrap() with
+        {
+            Activity = x
+        });
+    }
 }

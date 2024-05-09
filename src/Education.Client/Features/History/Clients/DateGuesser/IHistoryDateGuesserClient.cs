@@ -10,9 +10,11 @@ public interface IHistoryDateGuesserClient
 
     Task<ApiResult<DateGuesserModel>> GetAsync(string id);
 
-    Task<ApiResult<DateGuesserConclusionModel>> GetConclusionAsync(string id);
-
     Task<ApiResult<DateGuesserModel>> CreateAsync(CreateRequest request);
 
-    Task<ApiResult<DateGuesserModel>> CheckAsync(string testId, string questionId, CheckRequest request);
+    Task<ApiResult<DateGuesserAnswerModel>> CheckAsync(string testId, string questionId, CheckRequest request);
+
+    Task<ApiResult<DateGuesserModel>> UseInventoryAsync(string testId, uint inventoryId);
+
+    Task<ApiResult<DateGuesserConclusionModel>> GetConclusionAsync(string id);
 }

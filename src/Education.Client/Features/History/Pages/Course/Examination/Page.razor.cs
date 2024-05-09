@@ -43,7 +43,7 @@ public sealed partial class Page
     protected override async Task OnInitializedAsync()
     {
         _result = await CourseClient.GetExaminationAsync(Id);
-        _result.MathError(x =>
+        _result.MatchError(x =>
         {
             if (x.IsExaminationAlreadyCreated(out var id))
                 NavigationManager.NavigateTo(HistoryUrl.Examination.Test(id));

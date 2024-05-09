@@ -10,7 +10,7 @@ public interface IHistoryExaminationClient
 
     Task<ApiResult<ExaminationAnswerModel>> CheckAsync(string testId, string questionId, UserAnswerModel model);
 
-    Task<ApiResult<ExaminationModel>> ApplyInventoryAsync(string testId, uint inventoryId);
+    Task<ApiResult<ExaminationModel>> UseInventoryAsync(string testId, uint inventoryId);
 
     Task<ApiResult<ExaminationConclusionModel>> GetConclusionAsync(string testId);
 }

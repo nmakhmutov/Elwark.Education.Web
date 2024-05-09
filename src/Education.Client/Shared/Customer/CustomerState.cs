@@ -7,7 +7,7 @@ namespace Education.Client.Shared.Customer;
 public sealed class CustomerState
 {
     private const string AnonymousImage =
-        "https://res.cloudinary.com/elwark/image/upload/f_auto,q_auto/v1/People/default.svg";
+        "https://res.cloudinary.com/elwark/image/upload/v1/People/default.jpg";
 
     private readonly string _dayFormat;
     private readonly char _delimiter;

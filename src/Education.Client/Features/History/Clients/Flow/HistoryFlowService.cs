@@ -8,19 +8,20 @@ namespace Education.Client.Features.History.Clients.Flow;
 internal sealed class HistoryFlowService : IHistoryFlowClient
 {
     private readonly HistoryApiClient _api;
+    private const string Root = "history/flows/me";
 
     public HistoryFlowService(HistoryApiClient api) =>
         _api = api;
 
     public Task<ApiResult<FlowModel>> GetAsync() =>
-        _api.GetAsync<FlowModel>("history/flows/me");
+        _api.GetAsync<FlowModel>(Root);
 
     public Task<ApiResult<FlowModel>> StartAsync() =>
-        _api.PostAsync<FlowModel>("history/flows/me");
+        _api.PostAsync<FlowModel>(Root);
 
     public Task<ApiResult<FlowAnswerModel>> CheckAsync(string questionId, UserAnswerModel answer) =>
-        _api.PostAsync<FlowAnswerModel, UserAnswerModel>($"history/flows/me/questions/{questionId}", answer);
+        _api.PostAsync<FlowAnswerModel, UserAnswerModel>($"{Root}/questions/{questionId}", answer);
 
     public Task<ApiResult<Unit>> CollectBankAsync() =>
-        _api.PostAsync<Unit>("history/flows/me/bank");
+        _api.PostAsync<Unit>($"{Root}/bank");
 }

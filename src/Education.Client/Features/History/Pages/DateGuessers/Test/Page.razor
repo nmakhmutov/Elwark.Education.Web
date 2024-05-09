@@ -10,14 +10,14 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+<ApiViewer Result="@_guesser" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W960">
         <div class="header">
             <div class="header-score">
                 <div class="d-flex flex-row align-center">
                     <MudIcon Icon="@EduIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
                     <MudText Typo="Typo.subtitle1">
-                        @_score.Total
+                        @context.Score.Total
                     </MudText>
                 </div>
                 <MudText Typo="Typo.caption">
@@ -26,7 +26,7 @@
             </div>
 
             <div class="header-bonus">
-                @if (_x2BonusUntil > DateTime.UtcNow)
+                @if (context.X2BonusUntil > DateTime.UtcNow)
                 {
                     <div class="d-flex flex-row justify-end align-center">
                         <MudIcon Icon="@EduIcons.Score" Class="mr-1" Size="Size.Small" Color="Color.Primary"/>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="d-flex flex-row justify-end">
                         <CountdownTimer
-                            Deadline="@_x2BonusUntil"
+                            Deadline="@context.X2BonusUntil"
                             Typo="Typo.caption"
                             OnComplete="@StateHasChanged"/>
                     </div>
@@ -45,18 +45,39 @@
 
             <div class="header-questions">
                 <MudText Typo="Typo.subtitle1">
-                    @L["Questions_Title"] @_completedQuestions / @_totalQuestions
+                    @L["Questions_Title"] @context.CompletedQuestions / @context.TotalQuestions
                 </MudText>
             </div>
 
             <div class="header-title">
                 <MudText Typo="Typo.h5" Align="Align.Center">
-                    @_question.Title
+                    @context.Question.Title
                 </MudText>
             </div>
         </div>
 
-        <DateGuesserForm OnAnswer="@OnValidSubmit"/>
+        <DateGuesserForm QuestionId="@context.Question.Id" OnAnswer="@OnValidSubmit"/>
 
+        <InventoryGrid Class="inventory align-grid-start" Inventory="@context.Inventory" Context="item">
+            @if (item.IsInteractive)
+            {
+                <InventoryButtonCard
+                    Id="@item.InventoryId"
+                    Quantity="@item.Quantity"
+                    Title="@item.Title"
+                    Overview="@item.Overview"
+                    IconUrl="@item.ImageUrl"
+                    ButtonText="@L["Inventory_Use_Button"]"
+                    OnClick="@OnUseInventory"/>
+            }
+            else
+            {
+                <InventoryInfoCard
+                    Title="@item.Title"
+                    Overview="@item.Overview"
+                    Quantity="@item.Quantity"
+                    IconUrl="@item.ImageUrl"/>
+            }
+        </InventoryGrid>
     </EduContainer>
 </ApiViewer>

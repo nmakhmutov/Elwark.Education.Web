@@ -35,13 +35,13 @@ public sealed partial class Page
     protected override async Task OnInitializedAsync()
     {
         _quiz = await QuizClient.GetAsync(Id);
-        _quiz.MathError(x => HandlerError(x));
+        _quiz.MatchError(x => HandlerError(x));
     }
 
     private async Task OnExpiredAsync()
     {
         _quiz = await QuizClient.GetAsync(Id);
-        _quiz.MathError(x => HandlerError(x));
+        _quiz.MatchError(x => HandlerError(x));
     }
 
     private async Task OnAnswerAsync(UserAnswerModel answer)
@@ -83,8 +83,8 @@ public sealed partial class Page
 
     private async Task OnUseInventory(uint id)
     {
-        _quiz = await QuizClient.ApplyInventoryAsync(Id, id);
-        _quiz.MathError(x => HandlerError(x));
+        _quiz = await QuizClient.UseInventoryAsync(Id, id);
+        _quiz.MatchError(x => HandlerError(x));
     }
 
     private void HandlerError(Error error)

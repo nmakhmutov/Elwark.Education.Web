@@ -11,12 +11,7 @@ namespace Education.Client.Features.History.Pages.DateGuessers.Test;
 
 public sealed partial class Page
 {
-    private uint _completedQuestions;
-    private DateGuesserModel.QuestionModel _question = default!;
-    private ApiResult<DateGuesserModel> _result = ApiResult<DateGuesserModel>.Loading();
-    private ScoreModel _score = new(0, 0, 0);
-    private uint _totalQuestions;
-    private DateTime _x2BonusUntil;
+    private ApiResult<DateGuesserModel> _guesser = ApiResult<DateGuesserModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -41,22 +36,8 @@ public sealed partial class Page
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await DateGuesserClient.GetAsync(Id);
-        _result.Match(
-            x =>
-            {
-                _score = x.Score;
-                _x2BonusUntil = x.X2BonusUntil;
-                _completedQuestions = x.CompletedQuestions;
-                _totalQuestions = x.TotalQuestions;
-                _question = x.Question!;
-            },
-            e =>
-            {
-                if (e.IsDateGuesserNotFound())
-                    Navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
-            }
-        );
+        _guesser = await DateGuesserClient.GetAsync(Id);
+        _guesser.MatchError(e => HandlerError(e));
     }
 
     private async Task OnValidSubmit(DateGuesserForm.Model model)
@@ -64,23 +45,30 @@ public sealed partial class Page
         var year = model.Year.GetValueOrDefault();
         var request = new CheckRequest(model.IsCe ? year : -year, model.Month, model.Day);
 
-        var result = await DateGuesserClient.CheckAsync(Id, _question.Id, request);
-        result.Match(
-            x =>
-            {
-                if (x.Question is null)
-                {
-                    Navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
-                    return;
-                }
+        var result = await DateGuesserClient.CheckAsync(Id, model.QuestionId, request);
 
-                _score = x.Score;
-                _x2BonusUntil = x.X2BonusUntil;
-                _question = x.Question;
-                _completedQuestions = x.CompletedQuestions;
-                _totalQuestions = x.TotalQuestions;
+        await result.MatchAsync(async x =>
+            {
+                if (x.IsCompleted)
+                    Navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
+                else
+                    _guesser = await DateGuesserClient.GetAsync(Id);
             },
-            e => Snackbar.Add(e.Detail, Severity.Error)
+            e => HandlerError(e)
         );
+    }
+
+    private async Task OnUseInventory(uint id)
+    {
+        _guesser = await DateGuesserClient.UseInventoryAsync(Id, id);
+        _guesser.MatchError(x => HandlerError(x));
+    }
+
+    private void HandlerError(Error error)
+    {
+        if (error.IsDateGuesserNotFound() || error.IsDateGuesserAlreadyCompleted())
+            Navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
+        else
+            Snackbar.Add(error.Title, Severity.Error);
     }
 }

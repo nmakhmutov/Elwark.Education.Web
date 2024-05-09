@@ -10,19 +10,19 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
             <EduFitGrid>
-                @foreach (var wallet in model.Wallets)
+                @foreach (var wallet in context.Wallets)
                 {
                     <WalletCard Wallet="@wallet"/>
                 }
             </EduFitGrid>
 
-            <BalanceStatisticsCard Class="activity" Activities="@model.Activities"/>
+            <BalanceStatisticsCard Class="activity" Activities="@context.Activities"/>
 
-            <TransactionsCard Class="transactions" Transactions="@model.Transactions"/>
+            <TransactionsCard Class="transactions" Transactions="@context.Transactions"/>
         </section>
     </EduContainer>
 </ApiViewer>
