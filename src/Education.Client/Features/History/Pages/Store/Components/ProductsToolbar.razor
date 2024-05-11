@@ -1,42 +1,28 @@
-<section class="d-flex flex-wrap align-center gap-3 gap-sm-3 @Class">
-    <MudTextField
-        T="string"
-        Value="@Filter.Search"
-        ValueChanged="@SearchChanged"
-        Variant="Variant.Outlined"
+<div class="d-flex align-center dropdown @Class">
+    <MudSelect
+        T="CategoryType"
+        Value="@Filter.Category"
+        ValueChanged="@CategoryChanged"
         Margin="Margin.Dense"
-        Adornment="Adornment.Start"
-        AdornmentIcon="@Icons.Material.Outlined.Search"
-        Placeholder="@L["Search_Title"]"
-        Clearable
-        Immediate/>
-
-    <div class="dropdown">
-        <MudSelect T="CategoryType"
-                   Value="@Filter.Category"
-                   ValueChanged="@CategoryChanged"
-                   Margin="Margin.Dense"
-                   Variant="Variant.Outlined"
-                   Label="@L["History_Inventory_Category_Title"]"
-                   Dense>
-            <MudSelectItem Value="@CategoryType.None">
-                @L["History_Inventory_Category_All"]
-            </MudSelectItem>
-            <MudSelectItem Value="@CategoryType.Profile">
-                @L.GetInventoryCategoryTitle(CategoryType.Profile)
-            </MudSelectItem>
-            <MudSelectItem Value="@CategoryType.Quiz">
-                @L.GetInventoryCategoryTitle(CategoryType.Quiz)
-            </MudSelectItem>
-            <MudSelectItem Value="@CategoryType.Examination">
-                @L.GetInventoryCategoryTitle(CategoryType.Examination)
-            </MudSelectItem>
-            <MudSelectItem Value="@CategoryType.DateGuesser">
-                @L.GetInventoryCategoryTitle(CategoryType.DateGuesser)
-            </MudSelectItem>
-        </MudSelect>
-    </div>
-</section>
+        Variant="Variant.Outlined"
+        Dense>
+        <MudSelectItem Value="@CategoryType.None">
+            @L["History_Inventory_Category_All"]
+        </MudSelectItem>
+        <MudSelectItem Value="@CategoryType.Profile">
+            @L.GetInventoryCategoryTitle(CategoryType.Profile)
+        </MudSelectItem>
+        <MudSelectItem Value="@CategoryType.Quiz">
+            @L.GetInventoryCategoryTitle(CategoryType.Quiz)
+        </MudSelectItem>
+        <MudSelectItem Value="@CategoryType.Examination">
+            @L.GetInventoryCategoryTitle(CategoryType.Examination)
+        </MudSelectItem>
+        <MudSelectItem Value="@CategoryType.DateGuesser">
+            @L.GetInventoryCategoryTitle(CategoryType.DateGuesser)
+        </MudSelectItem>
+    </MudSelect>
+</div>
 
 @code {
 
@@ -53,15 +39,6 @@
     public string? Class { get; set; }
 
     private Task CategoryChanged(CategoryType category) =>
-        FilterChanged.InvokeAsync(Filter with
-        {
-            Category = category
-        });
-
-    private void SearchChanged(string? search) =>
-        FilterChanged.InvokeAsync(Filter with
-        {
-            Search = search
-        });
+        FilterChanged.InvokeAsync(new ProductsFilter(category));
 
 }

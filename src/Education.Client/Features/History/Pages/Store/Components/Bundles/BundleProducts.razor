@@ -82,15 +82,10 @@
         await OnProductPurchased.InvokeAsync(product);
     }
 
-    private ProductBundleModel[] ApplyFilter(IEnumerable<ProductBundleModel> source)
-    {
-        if (Filter.Category != CategoryType.None)
-            source = source.Where(x => x.Inventories.Any(t => t.Categories.Contains(Filter.Category)));
-
-        if (!string.IsNullOrEmpty(Filter.Search))
-            source = source.Where(x => x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase));
-
-        return source.ToArray();
-    }
+    private ProductBundleModel[] ApplyFilter(IEnumerable<ProductBundleModel> source) =>
+        Filter.Category == CategoryType.None
+            ? source.ToArray()
+            : source.Where(x => x.Inventories.Any(t => t.Categories.Contains(Filter.Category)))
+                .ToArray();
 
 }

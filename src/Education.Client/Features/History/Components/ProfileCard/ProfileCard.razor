@@ -1,4 +1,3 @@
-@using Education.Client.Features.History.Clients.User
 @using Education.Client.Features.History.Clients.User.Model
 <section class="d-flex flex-column mud-paper @Class">
     <header class="header px-3 pt-3 px-sm-6 pt-sm-6">
@@ -9,8 +8,6 @@
         <MudText Class="one-line-text" Typo="Typo.subtitle1">
             @Customer.Name
         </MudText>
-
-        <MudIconButton Icon="@Icons.Material.Outlined.MoreVert" Size="Size.Small" OnClick="@OnLevelClick"/>
     </header>
 
     <UserLevelProgress
@@ -45,12 +42,6 @@
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
-    [Inject]
-    private IHistoryUserClient UserClient { get; init; } = default!;
-
-    [Inject]
-    private IDialogService DialogService { get; init; } = default!;
-
     [CascadingParameter]
     public CustomerState Customer { get; init; } = default!;
 
@@ -65,26 +56,5 @@
 
     [Parameter]
     public string? Class { get; set; }
-
-    private async Task OnLevelClick()
-    {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Medium,
-            CloseOnEscapeKey = true,
-            FullWidth = true,
-            NoHeader = true,
-            CloseButton = false
-        };
-
-        var parameters = new DialogParameters
-        {
-            [nameof(NextLevelDialog.FullName)] = Customer.Name,
-            [nameof(NextLevelDialog.Image)] = Customer.Image,
-            [nameof(NextLevelDialog.Level)] = Level
-        };
-
-        await DialogService.ShowAsync<NextLevelDialog>(string.Empty, parameters, options);
-    }
 
 }

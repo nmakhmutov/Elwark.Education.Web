@@ -24,20 +24,20 @@ public sealed partial class Page
 
     protected override void OnParametersSet()
     {
-        Enum.TryParse(Category, true, out CategoryType type);
-        _filter = _filter with
-        {
-            Category = type
-        };
+        Enum.TryParse(Category, true, out CategoryType category);
+        _filter = new ProductsFilter(category);
     }
 
     protected override Task OnInitializedAsync() =>
         UpdateProfileAsync();
 
-    private async Task UpdateProfileAsync() =>
-        _profile = (await UserClient.GetProfileAsync())
-            .Map(x => x)
+    private async Task UpdateProfileAsync()
+    {
+        var profile = await UserClient.GetProfileAsync();
+
+        _profile = profile.Map(x => x)
             .UnwrapOrElse(() => _profile);
+    }
 
     private bool IsInventoryAffordable(ProductInventoryModel inventory) =>
         IsAffordable(inventory.Selling, inventory.Weight);

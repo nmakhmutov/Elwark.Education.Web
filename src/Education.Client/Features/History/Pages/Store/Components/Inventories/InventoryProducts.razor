@@ -1,9 +1,9 @@
 @using Education.Client.Features.History.Clients.Store
 @using Education.Client.Features.History.Clients.Store.Model
 @using Education.Client.Features.History.Clients.User.Model
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
-    <ChildContent Context="inventories">
-        <InventoryGrid Inventory="@ApplyFilter(inventories)" ColumnSize="Size.Medium">
+<ApiViewer Result="@_products" OnReloadClick="@OnInitializedAsync">
+    <ChildContent>
+        <InventoryGrid Inventory="@ApplyFilter(context)" ColumnSize="Size.Medium">
             <ChildContent Context="inventory">
                 <InventoryInfoCard
                     Overview="@inventory.Overview"
@@ -21,6 +21,25 @@
                     </MudBadge>
                 </InventoryInfoCard>
             </ChildContent>
+            <AsideContent>
+                @if (_upcoming.IsSuccess)
+                {
+                    var model = _upcoming.Unwrap();
+
+                    foreach (var inventory in ApplyFilter(model.Inventories))
+                    {
+                        <InventoryInfoCard
+                            Overview="@inventory.Overview"
+                            Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
+                            Title="@inventory.Title"
+                            IconUrl="@inventory.ImageUrl">
+                            <MudAlert Class="mt-3" Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center" NoIcon Dense>
+                                Unlocked at Level @model.NextLevel
+                            </MudAlert>
+                        </InventoryInfoCard>
+                    }
+                }
+            </AsideContent>
             <EmptyContent>
                 <NoContent
                     Icon="@EduIcons.Inventory"
@@ -42,7 +61,8 @@
 </ApiViewer>
 
 @code {
-    private ApiResult<ProductInventoryModel[]> _result = ApiResult<ProductInventoryModel[]>.Loading();
+    private ApiResult<ProductInventoryModel[]> _products = ApiResult<ProductInventoryModel[]>.Loading();
+    private ApiResult<UpcomingInventoriesModel> _upcoming = ApiResult<UpcomingInventoriesModel>.Loading();
 
     [Inject]
     private IHistoryStoreClient StoreClient { get; init; } = default!;
@@ -65,19 +85,16 @@
     [Parameter]
     public EventCallback<ProductInventoryModel> OnProductPurchased { get; set; }
 
-    protected override async Task OnInitializedAsync() =>
-        _result = await StoreClient.GetInventoriesAsync();
-
-    private ProductInventoryModel[] ApplyFilter(IEnumerable<ProductInventoryModel> source)
+    protected override async Task OnInitializedAsync()
     {
-        if (Filter.Category != CategoryType.None)
-            source = source.Where(x => x.Categories.Contains(Filter.Category));
-
-        if (!string.IsNullOrEmpty(Filter.Search))
-            source = source.Where(x => x.Title.Contains(Filter.Search, StringComparison.OrdinalIgnoreCase));
-
-        return source.ToArray();
+        _products = await StoreClient.GetInventoriesAsync();
+        _upcoming = await StoreClient.GetUpcomingInventoriesAsync();
     }
+
+    private ProductInventoryModel[] ApplyFilter(IEnumerable<ProductInventoryModel> source) =>
+        Filter.Category == CategoryType.None
+            ? source.ToArray()
+            : source.Where(x => x.Categories.Contains(Filter.Category)).ToArray();
 
     private async Task OpenPurchaseDialog(ProductInventoryModel product)
     {
