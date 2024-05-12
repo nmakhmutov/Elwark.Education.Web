@@ -1,11 +1,10 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model
-<section class="d-flex flex-column mud-paper @Class">
-    <header class="px-3 pt-3 px-sm-6 pt-sm-6">
-        <MudText Typo="Typo.h5">
-            @L["User_Activities_Title"]
-        </MudText>
-    </header>
+@implements IAsyncDisposable
+<section class="d-flex flex-column mud-paper py-3 py-sm-6 @Class">
+    <MudText Class="px-3 px-sm-6" Typo="Typo.h5">
+        @L["User_Activities_Title"]
+    </MudText>
 
     <article class="flex-1" style="max-height: min-content">
         <ApexChart @ref="@_chart" TItem="MeOverviewModel.ActivityModel" Options="@_options">
@@ -76,6 +75,7 @@
 </section>
 
 @code {
+    private Guid _subscriptionId;
     private ApexChart<MeOverviewModel.ActivityModel>? _chart;
 
     private ApexChartOptions<MeOverviewModel.ActivityModel> _options = new()
@@ -115,6 +115,9 @@
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
 
+    [Inject]
+    private IBrowserViewportService ViewportService { get; init; } = default!;
+
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
 
@@ -136,5 +139,33 @@
         _options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return Task.CompletedTask;
+
+        _subscriptionId = Guid.NewGuid();
+        var options = new ResizeOptions
+        {
+            NotifyOnBreakpointOnly = true,
+            SuppressInitEvent = false
+        };
+
+        return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
+    }
+
+    private void OnBreakpointChanged(Breakpoint e)
+    {
+        var position = e is Breakpoint.Xs or Breakpoint.Sm ? LegendPosition.Bottom : LegendPosition.Right;
+        if (_options.Legend.Position == position)
+            return;
+
+        _options.Legend.Position = position;
+        _chart?.UpdateOptionsAsync(false, true, false);
+    }
+
+    public async ValueTask DisposeAsync() =>
+        await ViewportService.UnsubscribeAsync(_subscriptionId);
 
 }

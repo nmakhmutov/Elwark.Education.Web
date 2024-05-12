@@ -8,23 +8,18 @@
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <div class="grid">
-        <MudTabs Class="shopfront" TabHeaderClass="mb-3 pr-3" Elevation="0" Rounded>
-            <Header>
-                <ProductsToolbar @bind-Filter="@(_filter)"/>
-            </Header>
-
+        <MudTabs Class="shopfront" TabHeaderClass="mb-3 mb-sm-6" Elevation="0" Rounded>
             <ChildContent>
                 <MudTabPanel Icon="@Icons.Material.Outlined.Inventory2" Text="@L["InventoryStore_Catalog_Inventories"]">
                     <InventoryProducts
                         Profile="@_profile"
-                        Filter="@_filter"
+                        Category="@_category"
                         IsAffordable="@IsInventoryAffordable"
                         OnProductPurchased="@UpdateProfileAsync"/>
                 </MudTabPanel>
                 <MudTabPanel Icon="@Icons.Material.Outlined.ShoppingBag" Text="@L["InventoryStore_Catalog_Bundles"]">
                     <BundleProducts
                         Profile="@_profile"
-                        Filter="@_filter"
                         IsAffordable="@IsBundleAffordable"
                         OnProductPurchased="@UpdateProfileAsync"/>
                 </MudTabPanel>

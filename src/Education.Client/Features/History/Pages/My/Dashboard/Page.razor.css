@@ -8,6 +8,10 @@
     width: 100%;
 }
 
+::deep .activities {
+    min-height: 340px;
+}
+
 @media (min-width: 600px) {
     .grid {
         grid-template-columns: 1fr 1fr;
@@ -59,18 +63,23 @@
 @media (min-width: 960px) {
     .grid {
         grid-template-columns: repeat(3, 1fr);
-        grid-template-areas: 
+        grid-template-areas:
             "exam quiz profile"
             "dg performance profile"
             ". performance assignment"
             "activities activities achievement";
     }
+
+    ::deep .activities {
+        min-height: unset;
+    }
+
 }
 
 @media (min-width: 1280px) {
     .grid {
         grid-template-columns: repeat(4, 1fr);
-        grid-template-areas: 
+        grid-template-areas:
             "exam quiz dg profile"
             "activities activities performance profile"
             "activities activities performance assignment"

@@ -35,8 +35,10 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override async Task OnInitializedAsync() =>
-        _article = (await ArticleClient.GetRelatedArticlesAsync(ArticleId))
-            .UnwrapOr([]);
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await ArticleClient.GetRelatedArticlesAsync(ArticleId);
+        _article = response.UnwrapOrElse(() => []);
+    }
 
 }

@@ -1,7 +1,6 @@
 using Education.Client.Features.History.Clients.Store.Model;
 using Education.Client.Features.History.Clients.User;
 using Education.Client.Features.History.Clients.User.Model;
-using Education.Client.Features.History.Pages.Store.Components;
 using Education.Client.Models.Inventory;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -10,7 +9,7 @@ namespace Education.Client.Features.History.Pages.Store;
 
 public sealed partial class Page
 {
-    private ProductsFilter _filter = ProductsFilter.Empty;
+    private CategoryType _category = CategoryType.None;
     private ProfileModel _profile = ProfileModel.Empty;
 
     [Inject]
@@ -22,21 +21,18 @@ public sealed partial class Page
     [SupplyParameterFromQuery]
     public string? Category { get; set; }
 
-    protected override void OnParametersSet()
-    {
-        Enum.TryParse(Category, true, out CategoryType category);
-        _filter = new ProductsFilter(category);
-    }
-
     protected override Task OnInitializedAsync() =>
         UpdateProfileAsync();
+
+    protected override void OnParametersSet() =>
+        _category = Enum.TryParse(Category, out CategoryType category) ? category : CategoryType.None;
 
     private async Task UpdateProfileAsync()
     {
         var profile = await UserClient.GetProfileAsync();
 
         _profile = profile.Map(x => x)
-            .UnwrapOrElse(() => _profile);
+            .UnwrapOrElse(() => ProfileModel.Empty);
     }
 
     private bool IsInventoryAffordable(ProductInventoryModel inventory) =>

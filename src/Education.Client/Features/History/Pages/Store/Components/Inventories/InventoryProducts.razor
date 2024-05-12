@@ -3,6 +3,25 @@
 @using Education.Client.Features.History.Clients.User.Model
 <ApiViewer Result="@_products" OnReloadClick="@OnInitializedAsync">
     <ChildContent>
+        <MudChipSet
+            Class="d-flex flex-wrap mb-3 mb-sm-6"
+            @bind-SelectedChip="@_selectedCategory"
+            Filter
+            Mandatory>
+
+            @foreach (var category in _categories)
+            {
+                <MudChip
+                    Class="px-6"
+                    Value="@category"
+                    Text="@(category == CategoryType.None ? L["History_Inventory_Category_All"] : L.GetInventoryCategoryTitle(category))"
+                    Color="Color.Primary"
+                    SelectedColor="Color.Secondary"
+                    Variant="Variant.Outlined"
+                    Default="@(category == Category)"/>
+            }
+        </MudChipSet>
+
         <InventoryGrid Inventory="@ApplyFilter(context)" ColumnSize="Size.Medium">
             <ChildContent Context="inventory">
                 <InventoryInfoCard
@@ -49,6 +68,13 @@
         </InventoryGrid>
     </ChildContent>
     <Loading>
+        <div class="d-flex gap-3 mb-3 mb-sm-6">
+            <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="32px"/>
+            <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="32px"/>
+            <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="32px"/>
+            <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="32px"/>
+            <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="32px"/>
+        </div>
         <InventoryGrid Inventory="@(Enumerable.Range(0, 6).ToArray())" ColumnSize="Size.Medium">
             <InventorySkeletonCard>
                 <div class="d-flex justify-space-between align-center mt-6">
@@ -61,6 +87,8 @@
 </ApiViewer>
 
 @code {
+    private MudChip? _selectedCategory;
+    private CategoryType[] _categories = [];
     private ApiResult<ProductInventoryModel[]> _products = ApiResult<ProductInventoryModel[]>.Loading();
     private ApiResult<UpcomingInventoriesModel> _upcoming = ApiResult<UpcomingInventoriesModel>.Loading();
 
@@ -73,11 +101,11 @@
     [Inject]
     public IStringLocalizer<App> L { get; init; } = default!;
 
-    [Parameter, EditorRequired]
-    public required ProfileModel Profile { get; set; }
+    [Parameter]
+    public CategoryType Category { get; set; }
 
     [Parameter, EditorRequired]
-    public required ProductsFilter Filter { get; set; }
+    public required ProfileModel Profile { get; set; }
 
     [Parameter, EditorRequired]
     public required Func<ProductInventoryModel, bool> IsAffordable { get; set; }
@@ -88,13 +116,28 @@
     protected override async Task OnInitializedAsync()
     {
         _products = await StoreClient.GetInventoriesAsync();
+        _categories = _products.Map(products => products.SelectMany(x => x.Categories)
+                .Append(CategoryType.None)
+                .Distinct()
+                .Order()
+                .ToArray()
+            )
+            .UnwrapOr([]);
+
         _upcoming = await StoreClient.GetUpcomingInventoriesAsync();
     }
 
-    private ProductInventoryModel[] ApplyFilter(IEnumerable<ProductInventoryModel> source) =>
-        Filter.Category == CategoryType.None
-            ? source.ToArray()
-            : source.Where(x => x.Categories.Contains(Filter.Category)).ToArray();
+    private ProductInventoryModel[] ApplyFilter(IEnumerable<ProductInventoryModel> source)
+    {
+        if (_selectedCategory is null)
+            return source.ToArray();
+
+        var category = (CategoryType)_selectedCategory.Value;
+        if (category is CategoryType.None)
+            return source.ToArray();
+
+        return source.Where(x => x.Categories.Contains(category)).ToArray();
+    }
 
     private async Task OpenPurchaseDialog(ProductInventoryModel product)
     {
