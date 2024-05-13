@@ -6,6 +6,7 @@ public sealed record DateGuesserModel(
     string Id,
     DateTime X2BonusUntil,
     ScoreModel Score,
+    DateGuesserSize Size,
     uint CompletedQuestions,
     uint TotalQuestions,
     DateGuesserModel.QuestionModel Question,

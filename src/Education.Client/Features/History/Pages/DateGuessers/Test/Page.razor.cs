@@ -25,14 +25,11 @@ public sealed partial class Page
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
 
-    private List<BreadcrumbItem> Breadcrumbs =>
-    [
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["History_DateGuessers_Title"], null, true)
-    ];
-
     [Parameter]
     public string Id { get; set; } = string.Empty;
+
+    private double Progress =>
+        _guesser.Match(x => Percentage.Calc(x.CompletedQuestions, x.TotalQuestions), _ => 0, () => 0);
 
     protected override async Task OnInitializedAsync()
     {

@@ -1,39 +1,41 @@
-.header {
-    display: grid;
+.grid {
+    display: flex;
+    flex-direction: column;
     gap: 12px;
-    margin-bottom: 12px;
-    grid-template-columns: repeat(2, minmax(100px, 1fr));
-    grid-template-areas:
-        "questions questions"
-        "score bonus"
-        "title title";
-}
-
-.header-score {
-    grid-area: score;
-}
-
-.header-bonus {
-    grid-area: bonus;
-    justify-self: end;
-}
-
-.header-questions {
-    grid-area: questions;
-    justify-self: center;
-}
-
-.header-title {
-    grid-area: title;
 }
 
 @media (min-width: 600px) {
-    .header {
+    .grid {
         gap: 24px;
-        margin-bottom: 24px;
-        grid-template-columns: repeat(3, minmax(100px, 1fr));
-        grid-template-areas:
-            "score questions bonus"
-            "title title title";
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        display: grid;
+        align-items: start;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .timer {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .guesser {
+        grid-column: 1;
+        grid-row: -1 / 1;
+    }
+
+    ::deep .inventory {
+        grid-column: 2;
+        grid-row: 2;
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        grid-template-columns: 3fr 1fr;
     }
 }

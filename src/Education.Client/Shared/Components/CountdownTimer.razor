@@ -1,7 +1,7 @@
 @implements IDisposable
 
 <MudText Typo="@Typo" Align="@Align" Class="@Class" Color="@Color">
-    @_timeLeft.Humanize(L)
+    @_timeLeft.Humanize(L, true)
 </MudText>
 
 @code {
@@ -37,11 +37,11 @@
 
             while (await _timer.WaitForNextTickAsync())
             {
-                if (TimeSpan.Zero >= _timeLeft)
-                    break;
-
                 UpdateRemainingTime();
                 StateHasChanged();
+
+                if (TimeSpan.Zero >= _timeLeft)
+                    break;
             }
 
             if (!_disposed && OnComplete.HasDelegate)

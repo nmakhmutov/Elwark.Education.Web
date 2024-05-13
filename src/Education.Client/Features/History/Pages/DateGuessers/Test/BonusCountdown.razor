@@ -1,0 +1,26 @@
+<div class="d-flex justify-space-between">
+    <div class="d-flex align-center @(IsActive ? null : "disabled")">
+        <MudIcon Class="mr-1" Icon="@EduIcons.Score" Size="Size.Small" Color="@(IsActive ? Color.Primary : Color.Default)"/>
+        <MudText Typo="Typo.subtitle1">
+            @L["History_DateGuesser_x2Bonus"]
+        </MudText>
+    </div>
+
+    @if (IsActive)
+    {
+        <CountdownTimer Deadline="@X2BonusUntil" Typo="Typo.subtitle1" OnComplete="@StateHasChanged"/>
+    }
+</div>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
+
+    [Parameter, EditorRequired]
+    public DateTime X2BonusUntil { get; set; }
+
+    private bool IsActive =>
+        X2BonusUntil > DateTime.UtcNow;
+
+}

@@ -13,7 +13,7 @@ internal static class DateTimeExtensions
         return local.ToString(local.Date == now.Date ? timeFormat : dateFormat);
     }
 
-    public static string Humanize(this TimeSpan span, IStringLocalizer localizer)
+    public static string Humanize(this TimeSpan span, IStringLocalizer localizer, bool alwaysDisplaySeconds = false)
     {
         if (span.TotalDays > 1)
             return $"{span.Days}{localizer["Abbreviation_Days"]} {span.Hours}{localizer["Abbreviation_Hours"]}";
@@ -26,7 +26,7 @@ internal static class DateTimeExtensions
         if (span.Minutes > 0)
             sb.Append($"{span.Minutes}{localizer["Abbreviation_Minutes"]} ");
 
-        if (span.Seconds > 0)
+        if (alwaysDisplaySeconds || span.Seconds > 0)
             sb.Append($"{span.Seconds}{localizer["Abbreviation_Seconds"]}");
 
         return sb.ToString();

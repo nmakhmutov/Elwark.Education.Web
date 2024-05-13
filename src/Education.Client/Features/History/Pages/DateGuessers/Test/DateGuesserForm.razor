@@ -6,7 +6,8 @@
             @bind-Value="@_model.Year"
             For="@(() => _model.Year)"
             Label="@L["History_DateGuesser_Year"]"
-            Variant="Variant.Text"
+            Variant="Variant.Outlined"
+            Margin="Margin.Dense"
             HideSpinButtons
             AutoFocus/>
 
@@ -15,6 +16,8 @@
             @bind-Value="@_model.Month"
             For="@(() => _model.Month)"
             Label="@L["History_DateGuesser_Month"]"
+            Variant="Variant.Outlined"
+            Margin="Margin.Dense"
             Clearable>
             @foreach (var month in _months)
             {
@@ -28,7 +31,8 @@
             @bind-Value="@_model.Day"
             For="@(() => _model.Day)"
             Label="@L["History_DateGuesser_Day"]"
-            Variant="Variant.Text"
+            Variant="Variant.Outlined"
+            Margin="Margin.Dense"
             HideSpinButtons/>
 
         <MudRadioGroup @bind-Value="@_model.IsCe">
