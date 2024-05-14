@@ -11,14 +11,13 @@
     Margin="Margin.Dense"
     Variant="Variant.Outlined"
     Adornment="Adornment.Start"
-    SearchFuncWithCancel="OnSearch"
-    ValueChanged="OnSearchResult"
-    TextChanged="OnTextChanged"
+    SearchFuncWithCancel="@OnSearch"
+    ValueChanged="@OnSearchResult"
+    TextChanged="@OnTextChanged"
     ProgressIndicatorColor="Color.Primary"
     ShowProgressIndicator
     ResetValueOnEmptyText
-    Clearable
-    Dense>
+    Clearable>
     <ItemTemplate>
         <div class="d-flex align-center">
             <MudAvatar Size="Size.Large" Square Class="mr-3">
@@ -60,12 +59,12 @@
     private async Task<IEnumerable<SearchModel>> OnSearch(string text, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
-            return Enumerable.Empty<SearchModel>();
+            return [];
 
-        return (await SearchClient.SearchAsync(new SearchRequest(text, 0, 11), ct))
-            .Map(x => x.Hints)
-            .UnwrapOrElse(() => [])
-            .ToArray();
+        var response = await SearchClient.SearchAsync(new SearchRequest(text, 0, 11), ct);
+
+        return response.Map(x => x.Hints)
+            .UnwrapOrElse(() => []);
     }
 
     private Task OnSearchResult(SearchModel? entry)

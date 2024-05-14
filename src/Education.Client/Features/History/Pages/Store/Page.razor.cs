@@ -4,6 +4,7 @@ using Education.Client.Features.History.Clients.User.Model;
 using Education.Client.Models.Inventory;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Store;
 
@@ -20,6 +21,12 @@ public sealed partial class Page
 
     [SupplyParameterFromQuery]
     public string? Category { get; set; }
+
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
+        new BreadcrumbItem(L["InventoryStore_Title"], null, true)
+    ];
 
     protected override Task OnInitializedAsync() =>
         UpdateProfileAsync();

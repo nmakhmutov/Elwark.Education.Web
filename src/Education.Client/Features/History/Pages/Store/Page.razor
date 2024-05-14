@@ -8,7 +8,10 @@
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <div class="grid">
-        <MudTabs Class="shopfront" TabHeaderClass="mb-3 mb-sm-6" Elevation="0" Rounded>
+        <MudTabs Class="shopfront" Color="Color.Transparent" TabHeaderClass="mb-3" HeaderPosition="TabHeaderPosition.Before">
+            <Header>
+                <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+            </Header>
             <ChildContent>
                 <MudTabPanel Icon="@Icons.Material.Outlined.Inventory2" Text="@L["InventoryStore_Catalog_Inventories"]">
                     <InventoryProducts

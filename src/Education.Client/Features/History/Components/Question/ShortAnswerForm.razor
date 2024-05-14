@@ -5,8 +5,9 @@
     <div class="d-flex flex-column align-center mb-3 @(CorrectAnswer is null ? "mb-sm-6" : null)">
         <MudTextField
             @bind-Value="@(_userAnswer.Answer)"
-            Label="@L["QuestionFrom_UserAnswer"]"
             For="@(() => _userAnswer.Answer)"
+            Label="@L["QuestionFrom_UserAnswer"]"
+            Variant="Variant.Outlined"
             ReadOnly="@(CorrectAnswer is not null)"/>
 
         @if (CorrectAnswer is not null)
