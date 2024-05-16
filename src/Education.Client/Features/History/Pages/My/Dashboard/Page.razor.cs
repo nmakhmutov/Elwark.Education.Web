@@ -4,7 +4,6 @@ using Education.Client.Features.History.Clients.Learner;
 using Education.Client.Features.History.Clients.User;
 using Education.Client.Features.History.Clients.User.Model;
 using Education.Client.Models;
-using Education.Client.Shared.Customer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MeOverviewModel = Education.Client.Features.History.Clients.Learner.Model.MeOverviewModel;
@@ -27,9 +26,6 @@ public sealed partial class Page
 
     [Inject]
     private IHistoryLearnerClient LearnerClient { get; init; } = default!;
-
-    [CascadingParameter]
-    public CustomerState Customer { get; init; } = default!;
 
     protected override async Task OnInitializedAsync()
     {

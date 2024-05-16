@@ -2,7 +2,7 @@
 @using Education.Client.Features.History.Clients.Learner.Request
 <section class="mud-paper d-flex flex-column  @Class">
     <MudText Class="pa-3 pa-sm-6" Typo="Typo.h5">
-        @L["Articles_RecentActivity_Title"]
+        @L["Courses_RecentActivity_Title"]
     </MudText>
     <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
         <ChildContent>
@@ -10,20 +10,22 @@
                 <RowTemplate Context="item">
                     <MudTd>
                         <MudAvatar Class="ml-3" Size="Size.Large" Rounded>
-                            <MudImage Src="@item.Article.Image.Small" Alt="@item.Article.Image.Alt"/>
+                            <MudImage Src="@item.Course.Image.Small" Alt="@item.Course.Image.Alt"/>
                         </MudAvatar>
                     </MudTd>
                     <MudTd>
-                        <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)" Typo="Typo.body1">
-                            @item.Article.Title
+                        <MudLink Href="@HistoryUrl.Content.Course(item.Course.Id)" Typo="Typo.body1">
+                            @item.Course.Title
                         </MudLink>
                     </MudTd>
                     <MudTd>
-                        <ArticleCompletionChip
-                            Class="mr-3"
-                            Status="@(item.Activity?.Status ?? ArticleLearningStatus.NotStarted)"
+                        <CourseCompletion
+                            Class="w-100"
+                            Typo="Typo.caption"
                             Size="Size.Small"
-                            Href="@HistoryUrl.User.MyArticle(item.Article.Id)"/>
+                            Status="@(item.Activity?.Status ?? CourseLearningStatus.NotStarted)"
+                            Completeness="@(item.Activity?.Completeness ?? 0)"
+                            Href="@HistoryUrl.User.MyCourse(item.Course.Id)"/>
                     </MudTd>
                 </RowTemplate>
             </MudTable>
@@ -34,8 +36,8 @@
                 <MudButton
                     Class="text-transform-none"
                     EndIcon="@Icons.Material.Outlined.ArrowForward"
-                    Href="@HistoryUrl.User.MyArticle()">
-                    @L["Articles_SeeAll"]
+                    Href="@HistoryUrl.User.MyCourse()">
+                    @L["Courses_SeeAll"]
                 </MudButton>
             </footer>
         </ChildContent>
@@ -58,8 +60,8 @@
 @code {
     private const int Count = 4;
 
-    private ApiResult<PagingTokenModel<UserArticleOverviewModel>> _response =
-        ApiResult<PagingTokenModel<UserArticleOverviewModel>>.Loading();
+    private ApiResult<PagingTokenModel<UserCourseOverviewModel>> _response =
+        ApiResult<PagingTokenModel<UserCourseOverviewModel>>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; set; } = default!;
@@ -71,6 +73,6 @@
     public string? Class { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _response = await LearnerClient.GetArticlesAsync(new ArticleActivityRequest(Count));
+        _response = await LearnerClient.GetCoursesAsync(new CourseActivityRequest(Count));
 
 }

@@ -2,11 +2,9 @@
 @using Education.Client.Features.History.Clients.User.Model
 @using Align = MudBlazor.Align
 <section class="d-flex flex-column mud-paper @Class">
-    <header class="pa-3 pa-sm-6">
-        <MudText Typo="Typo.h5">
-            @L["Achievements_Title"]
-        </MudText>
-    </header>
+    <MudText Class="pa-3 pa-sm-6" Typo="Typo.h5">
+        @L["Achievements_Title"]
+    </MudText>
 
     <section class="d-flex flex-column align-center justify-center flex-1 pb-3 pb-sm-6">
         <ApexChart TItem="MeOverviewModel.AchievementModel" Options="Options">
@@ -109,8 +107,8 @@
     [CascadingParameter]
     private CascadingTheme? ThemeProvider { get; set; }
 
-    [Parameter, EditorRequired]
-    public required CustomerState Customer { get; set; }
+    [CascadingParameter]
+    public CustomerState Customer { get; init; } = default!;
 
     [Parameter]
     public required MeOverviewModel.AchievementModel Achievements { get; set; }

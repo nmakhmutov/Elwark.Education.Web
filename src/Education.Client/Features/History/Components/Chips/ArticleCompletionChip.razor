@@ -1,6 +1,6 @@
 <MudTooltip Text="@L["LearningStatus_Title"]">
     <MudChip
-        Class="ma-0"
+        Class="@($"ma-0 {Class}")"
         Variant="Variant.Outlined"
         Size="@Size"
         Color="@_color"
@@ -12,7 +12,6 @@
 </MudTooltip>
 
 @code {
-
     private Color _color;
     private string? _icon;
     private bool _disabled;
@@ -28,6 +27,9 @@
 
     [Parameter]
     public Size Size { get; set; } = Size.Medium;
+
+    [Parameter]
+    public string? Class { get; set; }
 
     protected override void OnParametersSet() =>
         (_color, _icon, _disabled) = Status switch

@@ -49,11 +49,11 @@ internal sealed class HistoryLearnerService : IHistoryLearnerClient
     public Task<ApiResult<DateGuesserStatisticsModel>> GetLargeDateGuesserStatisticsAsync() =>
         _api.GetAsync<DateGuesserStatisticsModel>($"{Root}/date-guessers/large");
 
-    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticlesAsync(HistoryRequest request) =>
+    public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticlesAsync(ArticleActivityRequest request) =>
         _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>($"{Root}/articles", request);
 
     public Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest req) =>
-        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>($"{Root}/articles/bookmarks", req);
+        _api.GetAsync<PagingTokenModel<UserArticleOverviewModel>>($"{Root}/articles/all/bookmarks", req);
 
     public Task<ApiResult<ArticleStatisticsModel>> GetArticleAsync(string articleId) =>
         _api.GetAsync<ArticleStatisticsModel>($"{Root}/articles/{articleId}");
@@ -67,8 +67,11 @@ internal sealed class HistoryLearnerService : IHistoryLearnerClient
     public Task<ApiResult<Unit>> DislikeArticleAsync(string articleId) =>
         _api.PostAsync<Unit>($"{Root}/articles/{articleId}/dislikes");
 
+    public Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCoursesAsync(CourseActivityRequest request) =>
+        _api.GetAsync<PagingTokenModel<UserCourseOverviewModel>>($"{Root}/courses", request);
+
     public Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest req) =>
-        _api.GetAsync<PagingTokenModel<UserCourseOverviewModel>>($"{Root}/courses/bookmarks", req);
+        _api.GetAsync<PagingTokenModel<UserCourseOverviewModel>>($"{Root}/courses/all/bookmarks", req);
 
     public Task<ApiResult<CourseStatisticsModel>> GetCourseAsync(string courseId) =>
         _api.GetAsync<CourseStatisticsModel>($"{Root}/courses/{courseId}");

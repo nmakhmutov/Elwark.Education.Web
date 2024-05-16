@@ -32,7 +32,7 @@ public interface IHistoryLearnerClient
 
     Task<ApiResult<DateGuesserStatisticsModel>> GetLargeDateGuesserStatisticsAsync();
 
-    Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticlesAsync(HistoryRequest request);
+    Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticlesAsync(ArticleActivityRequest request);
 
     Task<ApiResult<PagingTokenModel<UserArticleOverviewModel>>> GetArticleBookmarksAsync(BookmarksRequest req);
 
@@ -43,6 +43,8 @@ public interface IHistoryLearnerClient
     Task<ApiResult<Unit>> LikeArticleAsync(string articleId);
 
     Task<ApiResult<Unit>> DislikeArticleAsync(string articleId);
+
+    Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCoursesAsync(CourseActivityRequest request);
 
     Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest req);
 

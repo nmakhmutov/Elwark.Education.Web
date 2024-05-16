@@ -159,8 +159,14 @@ public static class HistoryUrl
         public static string MyAssignments(string tab) =>
             $"{My}/assignments?tab={tab}";
 
+        public static string MyArticle() =>
+            $"{My}/articles";
+
         public static string MyArticle(string articleId) =>
             $"{My}/article/{articleId}";
+
+        public static string MyCourse() =>
+            $"{My}/courses";
 
         public static string MyCourse(string courseId) =>
             $"{My}/course/{courseId}";

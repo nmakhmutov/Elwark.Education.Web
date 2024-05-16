@@ -17,57 +17,68 @@
         grid-template-columns: 1fr 1fr;
         gap: 24px;
         grid-template-areas:
-            "exam profile"
-            "exam profile"
-            "quiz profile"
-            "quiz assignment"
-            "dg assignment"
-            "performance achievement"
-            ". achievement"
-            "activities activities";
+            "exa pro"
+            "exa pro"
+            "qui pro"
+            "qui ass"
+            "dat ass"
+            "per ach"
+            ". ach"
+            "act act"
+            "art art"
+            "crs crs";
     }
 
     ::deep .profile {
-        grid-area: profile;
+        grid-area: pro;
     }
 
     ::deep .quizzes {
-        grid-area: quiz;
+        grid-area: qui;
     }
 
     ::deep .date-guessers {
-        grid-area: dg;
+        grid-area: dat;
     }
 
     ::deep .examinations {
-        grid-area: exam;
+        grid-area: exa;
     }
 
     ::deep .performance {
-        grid-area: performance;
+        grid-area: per;
     }
 
     ::deep .activities {
-        grid-area: activities;
+        grid-area: act;
     }
 
     ::deep .assignment {
-        grid-area: assignment;
+        grid-area: ass;
     }
 
     ::deep .achievement {
-        grid-area: achievement;
+        grid-area: ach;
+    }
+
+    ::deep .articles {
+        grid-area: art;
+    }
+
+    ::deep .courses {
+        grid-area: crs;
     }
 }
 
 @media (min-width: 960px) {
     .grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(6, 1fr);
         grid-template-areas:
-            "exam quiz profile"
-            "dg performance profile"
-            ". performance assignment"
-            "activities activities achievement";
+            "exa exa qui qui pro pro"
+            "dat dat per per pro pro"
+            ". . per per ass ass"
+            "act act act act ach ach"
+            "art art art crs crs crs";
     }
 
     ::deep .activities {
@@ -76,13 +87,13 @@
 
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1440px) {
     .grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(8, 1fr);
         grid-template-areas:
-            "exam quiz dg profile"
-            "activities activities performance profile"
-            "activities activities performance assignment"
-            ". . . achievement";
+            "exa exa qui qui dat dat pro pro"
+            "act act act act per per pro pro"
+            "act act act act per per ass ass"
+            "art art art crs crs crs ach ach";
     }
 }
