@@ -18,6 +18,7 @@
                     Color="Color.Primary"
                     SelectedColor="Color.Secondary"
                     Variant="Variant.Outlined"
+                    OnClick=@(() => CategoryChanged.InvokeAsync(category))
                     Default="@(category == Category)"/>
             }
         </MudChipSet>
@@ -103,6 +104,9 @@
 
     [Parameter]
     public CategoryType Category { get; set; }
+
+    [Parameter]
+    public EventCallback<CategoryType> CategoryChanged { get; set; }
 
     [Parameter, EditorRequired]
     public required ProfileModel Profile { get; set; }

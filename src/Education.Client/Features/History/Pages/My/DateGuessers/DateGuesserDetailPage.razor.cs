@@ -9,9 +9,9 @@ using Microsoft.Extensions.Localization;
 using MudBlazor;
 using AnswerRatioModel = Education.Client.Features.History.Clients.Learner.Model.DateGuesser.AnswerRatioModel;
 
-namespace Education.Client.Features.History.Pages.My.DateGuessers.Details;
+namespace Education.Client.Features.History.Pages.My.DateGuessers;
 
-public sealed partial class Page
+public sealed partial class DateGuesserDetailPage : ComponentBase
 {
     private DateGuesserStatisticsModel.DailyProgress[] _progress = [];
     private ApiResult<DateGuesserStatisticsModel> _result = ApiResult<DateGuesserStatisticsModel>.Loading();

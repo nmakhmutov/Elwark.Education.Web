@@ -8,7 +8,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Education.Client.Features.History.Pages.Leaderboards.AllTime;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private readonly string[] _regions = ["GL", "EU", "AS", "NA", "SA", "OC", "AF"];
     private long? _highlightUser;

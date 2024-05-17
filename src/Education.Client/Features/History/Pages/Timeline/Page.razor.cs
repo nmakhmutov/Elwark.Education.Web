@@ -11,7 +11,8 @@ using MudBlazor.Services;
 
 namespace Education.Client.Features.History.Pages.Timeline;
 
-public sealed partial class Page
+public sealed partial class Page : ComponentBase,
+    IAsyncDisposable
 {
     private int _currentYear;
 

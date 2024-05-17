@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 
-namespace Education.Client.Features.History.Pages.My.Examinations.Details;
+namespace Education.Client.Features.History.Pages.My.Examinations;
 
-public sealed partial class Page
+public sealed partial class ExaminationDetailPage : ComponentBase
 {
     private ExaminationStatisticsModel.DailyProgress[] _progress = [];
     private ApiResult<ExaminationStatisticsModel> _result = ApiResult<ExaminationStatisticsModel>.Loading();

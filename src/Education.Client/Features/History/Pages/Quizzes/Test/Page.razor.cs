@@ -9,7 +9,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Quizzes.Test;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private AnswerResult? _correctAnswer;
     private ApiResult<QuizModel> _quiz = ApiResult<QuizModel>.Loading();

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Education.Client.Features.History.Pages.DateGuessers.Test;
 
-public sealed partial class DateGuesserForm
+public sealed partial class DateGuesserForm: ComponentBase
 {
     private static Dictionary<uint, string> _months = [];
     private bool _isLoading;

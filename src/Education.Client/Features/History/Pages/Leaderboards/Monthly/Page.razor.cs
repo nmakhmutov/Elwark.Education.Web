@@ -8,7 +8,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Education.Client.Features.History.Pages.Leaderboards.Monthly;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private long? _highlightUser;
     private ApiResult<MonthlyLeaderboardModel> _result = ApiResult<MonthlyLeaderboardModel>.Loading();

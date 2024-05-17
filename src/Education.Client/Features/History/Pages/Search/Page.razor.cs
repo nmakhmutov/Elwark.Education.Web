@@ -8,7 +8,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Education.Client.Features.History.Pages.Search;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private readonly SearchRequest _request = new(string.Empty, true, [], 0, 20);
     private IReadOnlyDictionary<string, int> _categories = ReadOnlyDictionary<string, int>.Empty;

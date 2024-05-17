@@ -11,7 +11,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.DateGuessers;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private ApiResult<DateGuesserBuilderModel> _result = ApiResult<DateGuesserBuilderModel>.Loading();
     private Settings _settings = new(EpochType.None);

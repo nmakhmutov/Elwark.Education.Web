@@ -7,7 +7,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Education.Client.Features.History.Pages.DateGuessers.Conclusion;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private double _progress;
     private ApiResult<DateGuesserConclusionModel> _result = ApiResult<DateGuesserConclusionModel>.Loading();

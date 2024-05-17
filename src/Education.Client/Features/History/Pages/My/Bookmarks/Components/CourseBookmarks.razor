@@ -16,35 +16,41 @@ else
                     <MudSkeleton Class="my-4" SkeletonType="SkeletonType.Text" Width="60%" Height="30px"/>
                 </div>
                 <div class="completion">
-                    <CourseCompletion Status="CourseLearningStatus.NotStarted" Completeness="0"/>
+                    <CourseCompletion Status="CourseLearningStatus.NotStarted" Completeness="0" Size="Size.Small"/>
                 </div>
                 <div class="actions">
                     <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
                 </div>
             </div>
         </Placeholder>
-        <ItemContent Context="item">
+        <ItemContent>
             <div class="grid mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
                 <div class="image">
                     <MudAvatar Class="avatar" Rounded>
-                        <MudImage Src="@item.Course.Image.Small" Alt="@item.Course.Image.Alt"/>
+                        <MudImage Src="@context.Course.Image.Small" Alt="@context.Course.Image.Alt"/>
                     </MudAvatar>
                 </div>
                 <div class="title one-line-text">
-                    <MudLink Href="@HistoryUrl.Content.Course(item.Course.Id)" Typo="Typo.h6">
-                        @item.Course.Title
+                    <MudLink Href="@HistoryUrl.Content.Course(context.Course.Id)" Typo="Typo.h6">
+                        @context.Course.Title
                     </MudLink>
+                    <div class="w-max-600">
+                        <MudText Class="one-line-text" Typo="Typo.body2">
+                            @context.Course.Overview
+                        </MudText>
+                    </div>
                 </div>
                 <div class="completion">
                     <CourseCompletion
-                        Status="@(item.Activity?.Status ?? CourseLearningStatus.NotStarted)"
-                        Completeness="@(item.Activity?.Completeness ?? 0)"
-                        Href="@HistoryUrl.User.MyCourse(item.Course.Id)"/>
+                        Status="@(context.Activity?.Status ?? CourseLearningStatus.NotStarted)"
+                        Completeness="@(context.Activity?.Completeness ?? 0)"
+                        Size="Size.Small"
+                        Href="@HistoryUrl.User.MyCourse(context.Course.Id)"/>
                 </div>
                 <div class="actions">
                     <BookmarkButton
-                        Id="@item.Course.Id"
-                        IsBookmarked="@(item.Activity?.IsBookmarked ?? false)"
+                        Id="@context.Course.Id"
+                        IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
                         OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
                 </div>
             </div>

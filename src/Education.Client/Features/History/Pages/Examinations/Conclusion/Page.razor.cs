@@ -9,7 +9,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Examinations.Conclusion;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private ApiResult<ExaminationConclusionModel> _result = ApiResult<ExaminationConclusionModel>.Loading();
 

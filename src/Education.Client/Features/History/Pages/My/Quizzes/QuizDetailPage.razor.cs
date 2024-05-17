@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 
-namespace Education.Client.Features.History.Pages.My.Quizzes.Details;
+namespace Education.Client.Features.History.Pages.My.Quizzes;
 
-public sealed partial class Page
+public sealed partial class QuizDetailPage : ComponentBase
 {
     private QuizStatisticsModel.DailyProgress[] _progress = [];
     private ApiResult<QuizStatisticsModel> _result = ApiResult<QuizStatisticsModel>.Loading();

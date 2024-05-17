@@ -8,19 +8,28 @@
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <div class="grid">
-        <MudTabs Class="shopfront" Color="Color.Transparent" TabHeaderClass="mb-3" HeaderPosition="TabHeaderPosition.Before">
+        <MudTabs @ref="@_tabs" Class="shopfront" Color="Color.Transparent" TabHeaderClass="mb-3" HeaderPosition="TabHeaderPosition.Before">
             <Header>
                 <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
             </Header>
             <ChildContent>
-                <MudTabPanel Icon="@Icons.Material.Outlined.Inventory2" Text="@L["InventoryStore_Catalog_Inventories"]">
+                <MudTabPanel
+                    ID="@InventoryTabId"
+                    OnClick="@(() => ChangeTab(InventoryTabId))"
+                    Icon="@Icons.Material.Outlined.Inventory2"
+                    Text="@L["InventoryStore_Catalog_Inventories"]">
                     <InventoryProducts
                         Profile="@_profile"
                         Category="@_category"
+                        CategoryChanged="@(x => ChangeCategory(x))"
                         IsAffordable="@IsInventoryAffordable"
                         OnProductPurchased="@UpdateProfileAsync"/>
                 </MudTabPanel>
-                <MudTabPanel Icon="@Icons.Material.Outlined.ShoppingBag" Text="@L["InventoryStore_Catalog_Bundles"]">
+                <MudTabPanel
+                    ID="@BundleTabId"
+                    OnClick="@(() => ChangeTab(BundleTabId))"
+                    Icon="@Icons.Material.Outlined.ShoppingBag"
+                    Text="@L["InventoryStore_Catalog_Bundles"]">
                     <BundleProducts
                         Profile="@_profile"
                         IsAffordable="@IsBundleAffordable"

@@ -10,7 +10,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Articles;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private const int Limit = 20;
     private EpochType _epoch;

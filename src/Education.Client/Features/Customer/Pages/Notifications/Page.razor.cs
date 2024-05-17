@@ -8,7 +8,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Education.Client.Features.Customer.Pages.Notifications;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private readonly List<NotificationModel> _notifications = [];
     private bool _isMoreLoading;

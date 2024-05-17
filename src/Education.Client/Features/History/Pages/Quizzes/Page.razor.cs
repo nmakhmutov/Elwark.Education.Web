@@ -13,7 +13,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Quizzes;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private ApiResult<EpochQuizBuilderModel> _result = ApiResult<EpochQuizBuilderModel>.Loading();
     private QuizSettings _settings = QuizSettings.Empty;

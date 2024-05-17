@@ -8,7 +8,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.My.Achievements;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private ApiResult<AchievementsModel> _result = ApiResult<AchievementsModel>.Loading();
 

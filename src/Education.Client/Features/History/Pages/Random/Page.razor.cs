@@ -8,7 +8,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Education.Client.Features.History.Pages.Random;
 
-public sealed partial class Page
+public sealed partial class Page: ComponentBase
 {
     private readonly List<OneOf> _history = new();
     private ApiResult<OneOf> _result = ApiResult<OneOf>.Loading();

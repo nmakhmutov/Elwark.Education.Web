@@ -115,8 +115,11 @@ public static class HistoryUrl
         public static string Index() =>
             $"{Root}/store";
 
+        public static string Index(string tab) =>
+            $"{Root}/store?tab={tab}";
+
         public static string Index(CategoryType category) =>
-            $"{Root}/store?category={category}";
+            $"{Root}/store?tab=inventory&category={category}";
     }
 
     public static class User

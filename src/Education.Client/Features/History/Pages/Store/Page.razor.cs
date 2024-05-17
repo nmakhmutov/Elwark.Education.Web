@@ -8,16 +8,26 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Store;
 
-public sealed partial class Page
+public sealed partial class Page : ComponentBase
 {
+    private const string InventoryTabId = "inventory";
+    private const string BundleTabId = "bundle";
+
     private CategoryType _category = CategoryType.None;
     private ProfileModel _profile = ProfileModel.Empty;
+    private MudTabs? _tabs;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Inject]
     private IHistoryUserClient UserClient { get; init; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; init; } = default!;
+
+    [SupplyParameterFromQuery]
+    public string? Tab { get; set; }
 
     [SupplyParameterFromQuery]
     public string? Category { get; set; }
@@ -31,8 +41,12 @@ public sealed partial class Page
     protected override Task OnInitializedAsync() =>
         UpdateProfileAsync();
 
-    protected override void OnParametersSet() =>
+    protected override void OnParametersSet()
+    {
         _category = Enum.TryParse(Category, out CategoryType category) ? category : CategoryType.None;
+        if (!string.IsNullOrEmpty(Tab) && _tabs?.ActivePanel.ID.Equals(Tab) == false)
+            _tabs?.ActivatePanel(Tab);
+    }
 
     private async Task UpdateProfileAsync()
     {
@@ -57,5 +71,26 @@ public sealed partial class Page
             return amount >= price.Total.Amount;
 
         return false;
+    }
+
+    private void ChangeTab(string tab)
+    {
+        var url = tab switch
+        {
+            InventoryTabId when _category == CategoryType.None => HistoryUrl.Store.Index(),
+            InventoryTabId => HistoryUrl.Store.Index(_category),
+            _ => HistoryUrl.Store.Index(tab)
+        };
+
+        Navigation.NavigateTo(url);
+    }
+
+    private void ChangeCategory(CategoryType category)
+    {
+        var url = category == CategoryType.None
+            ? HistoryUrl.Store.Index()
+            : HistoryUrl.Store.Index(category);
+
+        Navigation.NavigateTo(url);
     }
 }

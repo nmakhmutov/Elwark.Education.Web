@@ -9,7 +9,8 @@ using MudBlazor.Services;
 
 namespace Education.Client.Features.History.Pages.Empires;
 
-public sealed partial class Page
+public sealed partial class Page : ComponentBase,
+    IAsyncDisposable
 {
     private Virtualize<EmpireOverviewModel> _empireVirtualize = new();
     private GetEmpiresRequest.SortType _sort = GetEmpiresRequest.SortType.Area;

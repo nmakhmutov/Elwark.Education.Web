@@ -16,8 +16,11 @@ else
                     <MudSkeleton Class="my-1" SkeletonType="SkeletonType.Text" Width="60%" Height="32px"/>
                     <MudSkeleton SkeletonType="SkeletonType.Text" Width="25%" Height="22px"/>
                 </div>
+                <div class="epoch">
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="80px" Height="40px"/>
+                </div>
                 <div class="completion">
-                    <ArticleCompletionChip Status="ArticleLearningStatus.NotStarted"/>
+                    <ArticleCompletionChip Status="ArticleLearningStatus.NotStarted" Size="Size.Small"/>
                 </div>
                 <div class="actions">
                     <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
@@ -32,15 +35,22 @@ else
                     </MudAvatar>
                 </div>
                 <div class="title one-line-text">
-                    <MudLink Class="mb-3" Href="@HistoryUrl.Content.Article(context.Article.Id)" Typo="Typo.h6">
+                    <MudLink Href="@HistoryUrl.Content.Article(context.Article.Id)" Typo="Typo.h6">
                         @context.Article.Title
                     </MudLink>
-                    <br/>
-                    <EpochChip Class="mt-3" Epoch="@context.Article.Epoch"/>
+                    <div class="w-max-600">
+                        <MudText Class="one-line-text" Typo="Typo.body2">
+                            @context.Article.Overview
+                        </MudText>
+                    </div>
+                </div>
+                <div class="epoch">
+                    <EpochChip Epoch="@context.Article.Epoch"/>
                 </div>
                 <div class="completion">
                     <ArticleCompletionChip
                         Status="@(context.Activity?.Status ?? ArticleLearningStatus.NotStarted)"
+                        Size="Size.Small"
                         Href="@HistoryUrl.User.MyArticle(context.Article.Id)"/>
                 </div>
                 <div class="actions">
