@@ -14,7 +14,7 @@ using DateGuesserModel = MeOverviewModel.DateGuesserModel;
 using ExaminationModel = MeOverviewModel.ExaminationModel;
 using QuizModel = MeOverviewModel.QuizModel;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class Page : ComponentBase
 {
     private ApiResult<Aggregate> _result = ApiResult<Aggregate>.Loading();
 

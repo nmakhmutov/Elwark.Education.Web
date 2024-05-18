@@ -7,7 +7,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Education.Client.Features.History.Pages.My.Courses;
 
-public sealed partial class CourseDetailPage: ComponentBase
+public sealed partial class CourseDetailPage : ComponentBase
 {
     private ApiResult<CourseStatisticsModel> _result = ApiResult<CourseStatisticsModel>.Loading();
 

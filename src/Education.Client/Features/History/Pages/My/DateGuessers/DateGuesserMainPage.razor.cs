@@ -8,7 +8,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.My.DateGuessers;
 
-public sealed partial class DateGuesserMainPage: ComponentBase
+public sealed partial class DateGuesserMainPage : ComponentBase
 {
     private DateGuesserProgressModel[] _daily = [];
     private DateGuesserProgressModel[] _monthly = [];

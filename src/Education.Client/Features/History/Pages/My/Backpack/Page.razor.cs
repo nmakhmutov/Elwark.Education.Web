@@ -9,7 +9,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.My.Backpack;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class Page : ComponentBase
 {
     private ProfileModel _profile = ProfileModel.Empty;
     private ApiResult<BackpackModel> _result = ApiResult<BackpackModel>.Loading();

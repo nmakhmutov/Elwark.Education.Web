@@ -5,16 +5,16 @@
     @L["Leaderboard_Title"]: @L["Leaderboard_Monthly_Title"]
 </PageTitle>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync" Context="result">
+<ApiViewer Result="@_result" OnReloadClick="@OnParametersSetAsync">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1440">
         <MonthlyHeader
-            IsActive="@result.IsActive"
-            Months="@result.Months"
-            Month="@result.Month"
+            IsActive="@context.IsActive"
+            Months="@context.Months"
+            Month="@context.Month"
             MonthChanged="@ChangeMonth"
-            User="@result.Contestant"/>
+            User="@context.Contestant"/>
 
-        @if (result.Contestants.Length == 0)
+        @if (context.Contestants.Length == 0)
         {
             <NoContent Title="@L["Leaderboard_NoContestantsTitle"]" Icon="@EduIcons.Leaderboard"/>
         }
@@ -32,7 +32,7 @@
                 </Additional>
             </RegularRanking>
 
-            <Virtualize Items="@result.Contestants" ItemSize="64" Context="user">
+            <Virtualize Items="@context.Contestants" ItemSize="64" Context="user">
                 <RegularRanking Class="mb-3" Highlight="@(_highlightUser == user.Id)">
                     <Image>
                         <UserAvatar Image="@user.Image" FullName="@user.FullName"/>

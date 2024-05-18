@@ -11,7 +11,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Course.Examination;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class Page : ComponentBase
 {
     private ApiResult<ExaminationBuilderModel> _result = ApiResult<ExaminationBuilderModel>.Loading();
 

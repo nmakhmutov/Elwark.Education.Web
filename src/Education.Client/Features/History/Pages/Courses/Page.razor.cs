@@ -10,7 +10,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Courses;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class Page : ComponentBase
 {
     private const int Limit = 20;
 

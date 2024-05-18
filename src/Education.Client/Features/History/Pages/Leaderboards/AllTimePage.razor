@@ -5,13 +5,13 @@
     @L["Leaderboard_Title"]: @L["Leaderboard_AllTime_Title"]
 </PageTitle>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="items">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <AllTimeHeader
-            Contestants="@items.Take(3)"
-            Region="@_region"
-            Regions="@_regions"
-            RegionChanged="@OnRegionChanged"/>
+            Contestants="@context.Take(3)"
+            Region="@Region"
+            Regions="@Regions"
+            RegionChanged="@ChangeRegion"/>
     </EduContainer>
 
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1280">
@@ -24,7 +24,7 @@
             </Points>
         </RegularRanking>
 
-        <Virtualize Items="@items[3..]" ItemSize="64" Context="user">
+        <Virtualize Items="@context[3..]" ItemSize="64" Context="user">
             <RegularRanking Class="mb-3" Highlight="@(_highlightUser == user.Id)">
                 <Image>
                     <UserAvatar Image="@user.Image" FullName="@user.FullName"/>

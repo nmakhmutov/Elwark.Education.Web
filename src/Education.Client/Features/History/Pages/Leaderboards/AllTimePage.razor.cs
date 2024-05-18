@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 
-namespace Education.Client.Features.History.Pages.Leaderboards.Monthly;
+namespace Education.Client.Features.History.Pages.Leaderboards;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class AllTimePage : ComponentBase
 {
+    private static readonly string[] Regions = ["GL", "AF", "AS", "EU", "NA", "SA", "OC"];
     private long? _highlightUser;
-    private ApiResult<MonthlyLeaderboardModel> _result = ApiResult<MonthlyLeaderboardModel>.Loading();
+    private ApiResult<ContestantModel[]> _result = ApiResult<ContestantModel[]>.Loading();
 
     [Inject]
     private IHistoryLeaderboardClient LeaderboardClient { get; init; } = default!;
@@ -25,8 +26,8 @@ public sealed partial class Page: ComponentBase
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
 
-    [SupplyParameterFromQuery(Name = "month")]
-    public DateOnly? Month { get; init; }
+    [SupplyParameterFromQuery]
+    public string? Region { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,9 +35,17 @@ public sealed partial class Page: ComponentBase
         _highlightUser = state.User.GetIdOrDefault();
     }
 
-    protected override async Task OnParametersSetAsync() =>
-        _result = await LeaderboardClient.GetMonthlyAsync(Month);
+    protected override async Task OnParametersSetAsync()
+    {
+        Region = Regions.Contains(Region, StringComparer.OrdinalIgnoreCase) ? Region : Regions[0];
+        _result = await LeaderboardClient.GetAllTimeAsync(Region);
+    }
 
-    private void ChangeMonth(DateOnly month) =>
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter(nameof(month), month.ToString("O")));
+    private void ChangeRegion(string region)
+    {
+        if (region.Equals(Region, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter(nameof(Region).ToLower(), region.ToLower()));
+    }
 }

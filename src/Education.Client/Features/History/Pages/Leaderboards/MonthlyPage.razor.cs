@@ -6,14 +6,12 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 
-namespace Education.Client.Features.History.Pages.Leaderboards.AllTime;
+namespace Education.Client.Features.History.Pages.Leaderboards;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class MonthlyPage : ComponentBase
 {
-    private readonly string[] _regions = ["GL", "EU", "AS", "NA", "SA", "OC", "AF"];
     private long? _highlightUser;
-    private string _region = "GL";
-    private ApiResult<ContestantModel[]> _result = ApiResult<ContestantModel[]>.Loading();
+    private ApiResult<MonthlyLeaderboardModel> _result = ApiResult<MonthlyLeaderboardModel>.Loading();
 
     [Inject]
     private IHistoryLeaderboardClient LeaderboardClient { get; init; } = default!;
@@ -24,13 +22,21 @@ public sealed partial class Page: ComponentBase
     [Inject]
     private AuthenticationStateProvider StateProvider { get; init; } = default!;
 
+    [Inject]
+    private NavigationManager Navigation { get; init; } = default!;
+
+    [SupplyParameterFromQuery(Name = "month")]
+    public DateOnly? Month { get; init; }
+
     protected override async Task OnInitializedAsync()
     {
         var state = await StateProvider.GetAuthenticationStateAsync();
         _highlightUser = state.User.GetIdOrDefault();
-        _result = await LeaderboardClient.GetAllTimeAsync(_region);
     }
 
-    private async Task OnRegionChanged(string region) =>
-        _result = await LeaderboardClient.GetAllTimeAsync(_region = region);
+    protected override async Task OnParametersSetAsync() =>
+        _result = await LeaderboardClient.GetMonthlyAsync(Month);
+
+    private void ChangeMonth(DateOnly month) =>
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter(nameof(month), month.ToString("O")));
 }

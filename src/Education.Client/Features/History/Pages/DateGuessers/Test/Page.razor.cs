@@ -9,7 +9,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.DateGuessers.Test;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class Page : ComponentBase
 {
     private ApiResult<DateGuesserModel> _guesser = ApiResult<DateGuesserModel>.Loading();
 

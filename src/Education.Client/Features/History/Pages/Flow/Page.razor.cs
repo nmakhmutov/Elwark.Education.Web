@@ -8,7 +8,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Flow;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class Page : ComponentBase
 {
     private AnswerResult? _correctAnswer;
     private ApiResult<FlowModel> _result = ApiResult<FlowModel>.Loading();

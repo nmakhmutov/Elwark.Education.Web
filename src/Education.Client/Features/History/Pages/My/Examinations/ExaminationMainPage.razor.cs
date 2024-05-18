@@ -8,7 +8,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.My.Examinations;
 
-public sealed partial class ExaminationMainPage: ComponentBase
+public sealed partial class ExaminationMainPage : ComponentBase
 {
     private ExaminationProgressModel[] _daily = [];
     private ExaminationProgressModel[] _monthly = [];

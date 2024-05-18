@@ -8,7 +8,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.My.Assignments;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class Page : ComponentBase
 {
     private ApiResult<UserAssignmentModel> _result = ApiResult<UserAssignmentModel>.Loading();
     private MudTabs? _tabs;

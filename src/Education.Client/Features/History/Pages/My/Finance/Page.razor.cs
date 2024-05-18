@@ -7,7 +7,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.My.Finance;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class Page : ComponentBase
 {
     private ApiResult<FinanceModel> _result = ApiResult<FinanceModel>.Loading();
 

@@ -5,7 +5,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.My.Bookmarks;
 
-public sealed partial class Page: ComponentBase
+public sealed partial class Page : ComponentBase
 {
     private BookmarksFilter _filter = BookmarksFilter.Empty;
 

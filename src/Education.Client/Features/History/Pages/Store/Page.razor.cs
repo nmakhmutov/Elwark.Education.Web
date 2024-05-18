@@ -77,8 +77,7 @@ public sealed partial class Page : ComponentBase
     {
         var url = tab switch
         {
-            InventoryTabId when _category == CategoryType.None => HistoryUrl.Store.Index(),
-            InventoryTabId => HistoryUrl.Store.Index(_category),
+            InventoryTabId when _category > CategoryType.None => HistoryUrl.Store.Index(_category),
             _ => HistoryUrl.Store.Index(tab)
         };
 
