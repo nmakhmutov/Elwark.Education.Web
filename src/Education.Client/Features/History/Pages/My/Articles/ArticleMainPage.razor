@@ -9,3 +9,29 @@
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
+
+<EduContainer Class="pb-3 pb-sm-6">
+    <ApiViewer Result="_response" OnReloadClick="@OnInitializedAsync">
+        <ChildContent>
+            <EduFillGrid>
+                @foreach (var (article, activity, hasQuiz) in context.Items)
+                {
+                    <ArticleCard
+                        Article="@article"
+                        HasQuiz="@hasQuiz"
+                        Activity="@activity"
+                        OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+                }
+            </EduFillGrid>
+
+        </ChildContent>
+        <Loading>
+            <EduFillGrid>
+                @for (var i = 0; i < 8; i++)
+                {
+                    <SkeletonCard/>
+                }
+            </EduFillGrid>
+        </Loading>
+    </ApiViewer>
+</EduContainer>

@@ -112,14 +112,14 @@ public static class HistoryUrl
 
     public static class Store
     {
-        public static string Index() =>
-            $"{Root}/store";
+        public static string Index(string? kind = null) =>
+            $"{Root}/store/{kind ?? "inventories"}";
 
-        public static string Index(string tab) =>
-            $"{Root}/store?tab={tab}";
+        public static string Index(string kind, CategoryType category) =>
+            $"{Root}/store/{kind}?category={category}";
 
-        public static string Index(CategoryType category) =>
-            $"{Root}/store?tab=inventory&category={category}";
+        public static string Inventory(CategoryType category) =>
+            Index("inventories", category);
     }
 
     public static class User

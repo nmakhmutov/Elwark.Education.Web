@@ -1,18 +1,20 @@
 <section class="d-flex flex-column align-center @Class">
-    @if (!string.IsNullOrEmpty(Icon))
+    @if (string.IsNullOrEmpty(Icon))
     {
-        <MudIcon Class="mb-3" Icon="@Icon" Size="Size.Large" Style="width: 64px; height: 64px"/>
+        <img class="image @Size.ToDescriptionString() mb-3" src="/images/illustration/no_data.svg" alt="no data">
     }
     else
     {
-        <img class="image mb-3" src="/images/illustration/no_data.svg" alt="no data" loading="lazy">
+        <MudIcon Class="@($"icon {Size.ToDescriptionString()} mb-3")" Icon="@Icon"/>
     }
+
     <MudText Typo="@Typo.subtitle1" Align="Align.Center">
         @Title
     </MudText>
+
     @if (!string.IsNullOrEmpty(Subtitle))
     {
-        <MudText Typo="@Typo.body1" Align="Align.Justify">
+        <MudText Class="mud-text-secondary" Typo="@Typo.body1" Align="Align.Justify">
             @Subtitle
         </MudText>
     }
@@ -28,6 +30,9 @@
 
     [Parameter]
     public string? Icon { get; set; }
+
+    [Parameter]
+    public Size Size { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

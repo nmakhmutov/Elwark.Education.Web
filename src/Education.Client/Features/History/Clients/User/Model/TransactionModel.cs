@@ -6,7 +6,7 @@ public sealed record TransactionModel(
     DateTime Date,
     string Title,
     TransactionKind Kind,
-    IEnumerable<InternalMoneyModel> Monies
+    InternalMoneyModel[] Monies
 );
 
 public enum TransactionKind

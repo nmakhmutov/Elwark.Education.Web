@@ -8,5 +8,5 @@ public sealed record DateGuesserInformationModel(
     DateGuesserSize Size,
     uint QuestionQuantity,
     UserInventoryModel AccessInventory,
-    IEnumerable<InternalMoneyModel> Rewards
+    InternalMoneyModel[] Rewards
 );

@@ -6,9 +6,9 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <PageTitle>
-        @model.Course.Title
+        @context.Course.Title
     </PageTitle>
 
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
@@ -19,10 +19,10 @@
                 </MudText>
 
                 <CourseCard
-                    Course="@model.Course"
-                    Activity="@model.Activity"
+                    Course="@context.Course"
+                    Activity="@context.Activity"
                     OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
-                    HasExamination="@(model.Examinations.Length > 0)"
+                    HasExamination="@(context.Examinations.Length > 0)"
                     Horizontal/>
             </section>
 
@@ -30,37 +30,40 @@
                 <MudText Typo="Typo.h6" Class="mb-3">
                     @L["Examination_Equipment_Title"]
                 </MudText>
-                <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index(CategoryType.Examination)">
+                <InventoryGrid
+                    Inventories="@context.Inventories"
+                    StoreHref="@HistoryUrl.Store.Inventory(CategoryType.Examination)"
+                    Context="inventory">
                     <ChildContent>
                         <InventoryInfoCard
-                            Title="@context.Title"
-                            Overview="@context.Overview"
-                            Quantity="@context.Quantity"
-                            IconUrl="@context.ImageUrl"/>
+                            Title="@inventory.Title"
+                            Overview="@inventory.Overview"
+                            Quantity="@inventory.Quantity"
+                            IconUrl="@inventory.ImageUrl"/>
                     </ChildContent>
                     <EmptyContent>
                         <InventoryShortageCard
                             Class="w-max-600"
-                            Href="@HistoryUrl.Store.Index(CategoryType.Examination)"/>
+                            Href="@HistoryUrl.Store.Inventory(CategoryType.Examination)"/>
                     </EmptyContent>
                 </InventoryGrid>
             </section>
 
             <section>
-                @if (model.Examinations.Length > 0)
+                @if (context.Examinations.Length > 0)
                 {
                     <MudText Typo="Typo.h6" Class="mb-3">
                         @L["Examination_Type_Title"]
                     </MudText>
 
                     <ExaminationDifficulties
-                        Examinations="@model.Examinations"
+                        Examinations="@context.Examinations"
                         OnClick="@CreateTestAsync"/>
                 }
                 else
                 {
                     <MudAlert Severity="Severity.Info">
-                        @L["Examination_NotAvailableForCourse", model.Course.Title]
+                        @L["Examination_NotAvailableForCourse", context.Course.Title]
                     </MudAlert>
                 }
             </section>

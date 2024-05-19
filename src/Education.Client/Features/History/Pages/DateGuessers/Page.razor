@@ -10,7 +10,7 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
             <section class="builder">
@@ -27,7 +27,7 @@
                 </MudText>
 
                 <DateGuesserSizes
-                    Guessers="@model.Tests"
+                    Guessers="@context.Tests"
                     OnClick="@CreateTestAsync"/>
             </section>
 
@@ -35,18 +35,21 @@
                 <MudText Typo="Typo.h6" Class="mb-3">
                     @L["History_DateGuesser_Equipment"]
                 </MudText>
-                <InventoryGrid Inventory="@model.Inventory" StoreHref="@HistoryUrl.Store.Index(CategoryType.DateGuesser)">
+                <InventoryGrid
+                    Inventories="@context.Inventories"
+                    StoreHref="@HistoryUrl.Store.Inventory(CategoryType.DateGuesser)"
+                    Context="inventory">
                     <ChildContent>
                         <InventoryInfoCard
-                            Title="@context.Title"
-                            Overview="@context.Overview"
-                            Quantity="@context.Quantity"
-                            IconUrl="@context.ImageUrl"/>
+                            Title="@inventory.Title"
+                            Overview="@inventory.Overview"
+                            Quantity="@inventory.Quantity"
+                            IconUrl="@inventory.ImageUrl"/>
                     </ChildContent>
                     <EmptyContent>
                         <InventoryShortageCard
                             Class="w-max-600"
-                            Href="@HistoryUrl.Store.Index(CategoryType.DateGuesser)"/>
+                            Href="@HistoryUrl.Store.Inventory(CategoryType.DateGuesser)"/>
                     </EmptyContent>
                 </InventoryGrid>
             </section>

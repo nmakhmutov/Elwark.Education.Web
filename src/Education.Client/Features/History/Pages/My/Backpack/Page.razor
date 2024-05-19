@@ -6,11 +6,15 @@
     @L["Backpack_Title"]
 </PageTitle>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
             <article class="content">
-                <InventoryGrid Inventory="@model.Items" StoreHref="@HistoryUrl.Store.Index()" ColumnSize="Size.Medium" Context="inventory">
+                <InventoryGrid
+                    Inventories="@context.Items"
+                    StoreHref="@HistoryUrl.Store.Index()"
+                    ColumnSize="Size.Medium"
+                    Context="inventory">
                     <InventoryInfoCard
                         IconUrl="@inventory.ImageUrl"
                         Overview="@inventory.Overview"

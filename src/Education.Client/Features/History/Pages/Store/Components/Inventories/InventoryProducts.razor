@@ -6,8 +6,8 @@
         <MudChipSet
             Class="d-flex flex-wrap justify-center justify-sm-start mb-3 mb-sm-6"
             @bind-SelectedChip="@_selectedCategory"
-            Filter
-            Mandatory>
+            Mandatory
+            Filter>
 
             @foreach (var category in _categories)
             {
@@ -23,7 +23,7 @@
             }
         </MudChipSet>
 
-        <InventoryGrid Inventory="@ApplyFilter(context)" ColumnSize="Size.Medium">
+        <InventoryGrid Inventories="@ApplyFilter(context)" ColumnSize="Size.Medium">
             <ChildContent Context="inventory">
                 <InventoryInfoCard
                     Overview="@inventory.Overview"
@@ -62,9 +62,10 @@
             </AsideContent>
             <EmptyContent>
                 <NoContent
-                    Icon="@EduIcons.Inventory"
                     Title="@L["InventoryStore_Inventories_NotFound_Title"]"
-                    Subtitle="@L["InventoryStore_NotFound_Description"]"/>
+                    Subtitle="@L["InventoryStore_NotFound_Description"]"
+                    Icon="@EduIcons.Inventory"
+                    Size="Size.Large"/>
             </EmptyContent>
         </InventoryGrid>
     </ChildContent>
@@ -76,7 +77,7 @@
             <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="34px"/>
             <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="34px"/>
         </div>
-        <InventoryGrid Inventory="@(Enumerable.Range(0, 6).ToArray())" ColumnSize="Size.Medium">
+        <InventoryGrid Inventories="@(Enumerable.Range(0, 6).ToArray())" ColumnSize="Size.Medium">
             <InventorySkeletonCard>
                 <div class="d-flex justify-space-between align-center mt-6">
                     <MudSkeleton SkeletonType="SkeletonType.Circle" Width="24px" Height="24px"/>

@@ -1,6 +1,6 @@
 @typeparam T
 
-@if (Inventory.Length == 0)
+@if (Inventories.Length == 0)
 {
     @EmptyContent
 }
@@ -9,7 +9,7 @@ else
     <section class="@_class">
         @if (ChildContent is not null)
         {
-            foreach (var inventory in Inventory)
+            foreach (var inventory in Inventories)
             {
                 @ChildContent(inventory)
             }
@@ -28,7 +28,7 @@ else
     private string? _class;
 
     [Parameter, EditorRequired]
-    public required T[] Inventory { get; set; }
+    public required T[] Inventories { get; set; }
 
     [Parameter]
     public RenderFragment<T>? ChildContent { get; set; }

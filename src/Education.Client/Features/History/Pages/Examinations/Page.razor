@@ -6,15 +6,15 @@
     @_examination.Match(x => $"{L.GetExaminationDifficultyTitle(x.Difficulty)}: {x.Title}", e => e.Title, () => L["Examinations_Title"])
 </PageTitle>
 
-<ApiViewer Result="@_examination" OnReloadClick="@OnInitializedAsync" Context="examination">
+<ApiViewer Result="@_examination" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
             <header class="timer">
                 <section class="d-flex flex-wrap justify-space-between gap-3">
                     <MudText Typo="Typo.subtitle1">
-                        @L["Test_QuestionOutOf", examination.CompletedQuestions, examination.TotalQuestions]
+                        @L["Test_QuestionOutOf", context.CompletedQuestions, context.TotalQuestions]
                     </MudText>
-                    <CountdownTimer Deadline="@examination.ExpiredAt" OnComplete="@OnExpiredAsync"/>
+                    <CountdownTimer Deadline="@context.ExpiredAt" OnComplete="@OnExpiredAsync"/>
                 </section>
                 <MudProgressLinear
                     Min="0"
@@ -27,38 +27,38 @@
 
             <QuestionForm
                 Class="exam mud-paper pa-3 pa-sm-6"
-                IsCompleted="@examination.IsCompleted"
-                Question="@examination.Question"
+                IsCompleted="@context.IsCompleted"
+                Question="@context.Question"
                 OnAnswerClick="@OnAnswerAsync">
                 <Header>
                     <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
-                        @L.GetExaminationDifficultyTitle(examination.Difficulty)
+                        @L.GetExaminationDifficultyTitle(context.Difficulty)
                     </MudText>
                     <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center">
-                        @examination.Title
+                        @context.Title
                     </MudText>
                 </Header>
             </QuestionForm>
 
-            <InventoryGrid Class="inventory align-grid-start" Inventory="@examination.Inventory" Context="item">
-                @if (item.IsInteractive)
+            <InventoryGrid Class="inventory align-grid-start" Inventories="@context.Inventories" Context="inventory">
+                @if (inventory.IsInteractive)
                 {
                     <InventoryButtonCard
-                        Id="@item.InventoryId"
-                        Quantity="@item.Quantity"
-                        Title="@item.Title"
-                        Overview="@item.Overview"
-                        IconUrl="@item.ImageUrl"
+                        Id="@inventory.InventoryId"
+                        Quantity="@inventory.Quantity"
+                        Title="@inventory.Title"
+                        Overview="@inventory.Overview"
+                        IconUrl="@inventory.ImageUrl"
                         ButtonText="@L["Inventory_Use_Button"]"
                         OnClick="@OnUseInventory"/>
                 }
                 else
                 {
                     <InventoryInfoCard
-                        Title="@item.Title"
-                        Overview="@item.Overview"
-                        Quantity="@item.Quantity"
-                        IconUrl="@item.ImageUrl"/>
+                        Title="@inventory.Title"
+                        Overview="@inventory.Overview"
+                        Quantity="@inventory.Quantity"
+                        IconUrl="@inventory.ImageUrl"/>
                 }
             </InventoryGrid>
         </section>

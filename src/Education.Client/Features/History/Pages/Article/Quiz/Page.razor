@@ -6,9 +6,9 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <PageTitle>
-        @model.Article.Title
+        @context.Article.Title
     </PageTitle>
 
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
@@ -19,10 +19,10 @@
                 </MudText>
 
                 <ArticleCard
-                    Article="@model.Article"
-                    Activity="@model.Activity"
+                    Article="@context.Article"
+                    Activity="@context.Activity"
                     OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
-                    HasQuiz="@(model.Quizzes.Length > 0)"
+                    HasQuiz="@(context.Quizzes.Length > 0)"
                     Horizontal/>
             </section>
 
@@ -30,37 +30,40 @@
                 <MudText Typo="Typo.h6" Class="mb-3">
                     @L["Quiz_Equipment_Title"]
                 </MudText>
-                <InventoryGrid Inventory="@model.Inventories" StoreHref="@HistoryUrl.Store.Index(CategoryType.Quiz)">
+                <InventoryGrid
+                    Inventories="@context.Inventories"
+                    StoreHref="@HistoryUrl.Store.Inventory(CategoryType.Quiz)"
+                    Context="inventory">
                     <ChildContent>
                         <InventoryInfoCard
-                            Title="@context.Title"
-                            Overview="@context.Overview"
-                            Quantity="@context.Quantity"
-                            IconUrl="@context.ImageUrl"/>
+                            Title="@inventory.Title"
+                            Overview="@inventory.Overview"
+                            Quantity="@inventory.Quantity"
+                            IconUrl="@inventory.ImageUrl"/>
                     </ChildContent>
                     <EmptyContent>
                         <InventoryShortageCard
                             Class="w-max-600"
-                            Href="@HistoryUrl.Store.Index(CategoryType.Quiz)"/>
+                            Href="@HistoryUrl.Store.Inventory(CategoryType.Quiz)"/>
                     </EmptyContent>
                 </InventoryGrid>
             </section>
 
             <section>
-                @if (model.Quizzes.Length > 0)
+                @if (context.Quizzes.Length > 0)
                 {
                     <MudText Typo="Typo.h6" Class="mb-3">
                         @L["Quiz_Type_Title"]
                     </MudText>
 
                     <QuizDifficulties
-                        Quizzes="@model.Quizzes"
+                        Quizzes="@context.Quizzes"
                         OnClick="@CreateQuizAsync"/>
                 }
                 else
                 {
                     <MudAlert Severity="Severity.Info">
-                        @L["Quiz_NotAvailableForArticle", model.Article.Title]
+                        @L["Quiz_NotAvailableForArticle", context.Article.Title]
                     </MudAlert>
                 }
             </section>

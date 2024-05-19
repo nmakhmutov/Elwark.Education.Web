@@ -4,5 +4,5 @@ namespace Education.Client.Features.History.Clients.DateGuesser.Model;
 
 public sealed record DateGuesserBuilderModel(
     DateGuesserInformationModel[] Tests,
-    UserInventoryModel[] Inventory
+    UserInventoryModel[] Inventories
 );

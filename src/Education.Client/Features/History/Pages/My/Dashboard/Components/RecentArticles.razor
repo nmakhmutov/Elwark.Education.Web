@@ -6,50 +6,76 @@
     </MudText>
     <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
         <ChildContent>
-            <MudTable Class="flex-1" Items="@context.Items" Breakpoint="Breakpoint.None" Elevation="0" Dense>
-                <RowTemplate Context="item">
-                    <MudTd>
-                        <MudAvatar Class="ml-3" Size="Size.Large" Rounded>
-                            <MudImage Src="@item.Article.Image.Small" Alt="@item.Article.Image.Alt"/>
-                        </MudAvatar>
-                    </MudTd>
-                    <MudTd>
-                        <MudLink Href="@HistoryUrl.Content.Article(item.Article.Id)" Typo="Typo.body1">
-                            @item.Article.Title
-                        </MudLink>
-                    </MudTd>
-                    <MudTd>
-                        <ArticleCompletionChip
-                            Class="mr-3"
-                            Status="@(item.Activity?.Status ?? ArticleLearningStatus.NotStarted)"
-                            Size="Size.Small"
-                            Href="@HistoryUrl.User.MyArticle(item.Article.Id)"/>
-                    </MudTd>
-                </RowTemplate>
-            </MudTable>
+            @if (context.Items.Length > 0)
+            {
+                <section class="flex-grow-1">
+                    @foreach (var item in context.Items)
+                    {
+                        <article class="d-flex align-center gap-3 gap-sm-6 pa-3 px-sm-6">
+                            <MudAvatar Size="Size.Large" Rounded>
+                                <MudImage Src="@item.Article.Image.Small" Alt="@item.Article.Image.Alt"/>
+                            </MudAvatar>
+                            <div class="flex-grow-1 one-line-text">
+                                <MudLink
+                                    Href="@HistoryUrl.Content.Article(item.Article.Id)"
+                                    Typo="Typo.body1"
+                                    Title="@item.Article.Title">
+                                    @item.Article.Title
+                                </MudLink>
+                                <br/>
+                                <MudText Class="mud-text-secondary" Typo="Typo.caption">
+                                    @item.Article.Overview
+                                </MudText>
+                            </div>
+                            <ArticleCompletionChip
+                                Status="@(item.Activity?.Status ?? ArticleLearningStatus.NotStarted)"
+                                Size="Size.Small"
+                                Href="@HistoryUrl.User.MyArticle(item.Article.Id)"/>
+                        </article>
+                    }
+                </section>
 
-            <MudSpacer/>
+                <MudSpacer/>
 
-            <footer class="border-t mud-border-lines-default pa-3">
-                <MudButton
-                    Class="px-3 text-transform-none"
-                    EndIcon="@Icons.Material.Outlined.ArrowForward"
-                    Href="@HistoryUrl.User.MyArticle()">
-                    @L["Articles_SeeAll"]
-                </MudButton>
-            </footer>
+                <footer class="border-t mud-border-lines-default pa-3">
+                    <MudButton
+                        Class="px-3 text-transform-none"
+                        EndIcon="@Icons.Material.Outlined.ArrowForward"
+                        Href="@HistoryUrl.User.MyArticle()">
+                        @L["Articles_SeeAll"]
+                    </MudButton>
+                </footer>
+            }
+            else
+            {
+                <NoContent
+                    Title="@L["Articles_RecentActivity_Empty_Title"]"
+                    Subtitle="@L["Articles_RecentActivity_Empty_Description"]"
+                    Size="Size.Medium"/>
+
+                <MudSpacer/>
+
+                <footer class="border-t mud-border-lines-default pa-3">
+                    <MudButton
+                        Class="px-3 text-transform-none"
+                        EndIcon="@Icons.Material.Outlined.ArrowForward"
+                        Href="@HistoryUrl.Content.Articles()">
+                        @L["Articles_SeeAll"]
+                    </MudButton>
+                </footer>
+            }
         </ChildContent>
         <Loading>
             @for (var i = 0; i < Count; i++)
             {
-                <div class="d-flex justify-space-between gap-3 mb-3 mb-sm-6 px-3 px-sm-6">
+                <article class="d-flex justify-space-between gap-3 mb-3 mb-sm-6 px-3 px-sm-6">
                     <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="56px" Height="56px"/>
                     <div style="width: 70%">
                         <MudSkeleton SkeletonType="SkeletonType.Text" Width="90%"/>
                         <MudSkeleton SkeletonType="SkeletonType.Text" Width="40%"/>
                     </div>
                     <MudSkeleton SkeletonType="SkeletonType.Text" Width="15%" Height="40px"/>
-                </div>
+                </article>
             }
         </Loading>
     </ApiViewer>

@@ -1,4 +1,4 @@
-@page "/history/store"
+@page "/history/store/{kind}"
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -14,8 +14,8 @@
             </Header>
             <ChildContent>
                 <MudTabPanel
-                    ID="@InventoryTabId"
-                    OnClick="@(() => ChangeTab(InventoryTabId))"
+                    ID="@InventoryKindId"
+                    OnClick="@(() => ChangeTab(InventoryKindId))"
                     Icon="@Icons.Material.Outlined.Inventory2"
                     Text="@L["InventoryStore_Catalog_Inventories"]">
                     <InventoryProducts
@@ -26,8 +26,8 @@
                         OnProductPurchased="@UpdateProfileAsync"/>
                 </MudTabPanel>
                 <MudTabPanel
-                    ID="@BundleTabId"
-                    OnClick="@(() => ChangeTab(BundleTabId))"
+                    ID="@BundleKindId"
+                    OnClick="@(() => ChangeTab(BundleKindId))"
                     Icon="@Icons.Material.Outlined.ShoppingBag"
                     Text="@L["InventoryStore_Catalog_Bundles"]">
                     <BundleProducts

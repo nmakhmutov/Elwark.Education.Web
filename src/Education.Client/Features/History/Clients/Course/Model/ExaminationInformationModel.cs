@@ -9,8 +9,8 @@ public sealed record ExaminationInformationModel(
     DifficultyType Difficulty,
     ExaminationInformationModel.QuestionModel Question,
     UserInventoryModel AccessInventory,
-    IEnumerable<InternalMoneyModel> Rewards
+    InternalMoneyModel[] Rewards
 )
 {
-    public sealed record QuestionModel(uint Quantity, IEnumerable<string> Kinds);
+    public sealed record QuestionModel(uint Quantity, string[] Kinds);
 }

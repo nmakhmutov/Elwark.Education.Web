@@ -10,7 +10,7 @@ public sealed record DateGuesserModel(
     uint CompletedQuestions,
     uint TotalQuestions,
     DateGuesserModel.QuestionModel Question,
-    TestInventoryModel[] Inventory
+    TestInventoryModel[] Inventories
 )
 {
     public sealed record QuestionModel(string Id, string Title);

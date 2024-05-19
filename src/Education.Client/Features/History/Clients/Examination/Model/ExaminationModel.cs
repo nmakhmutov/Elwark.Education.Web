@@ -13,5 +13,5 @@ public sealed record ExaminationModel(
     bool IsCompleted,
     DateTime ExpiredAt,
     Question Question,
-    TestInventoryModel[] Inventory
+    TestInventoryModel[] Inventories
 );
