@@ -6,20 +6,20 @@
     @L["User_Dashboard_Title"]
 </PageTitle>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="profile">
+<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
             <ProfileCard
                 Class="profile"
-                Level="@profile.Level"
-                Backpack="@profile.Backpack"
-                Wallet="@profile.Wallet"/>
+                Level="@context.Level"
+                Backpack="@context.Backpack"
+                Wallet="@context.Wallet"/>
 
             <CardBadge
                 Class="examinations"
                 Title="@L["Examinations_Title"]"
-                Value="@profile.Examinations.Total"
-                Trending="@profile.Examinations.Trending"
+                Value="@context.Examinations.Total"
+                Trending="@context.Examinations.Trending"
                 Icon="@EduIcons.Examination">
                 <MudButton
                     Class="px-3 text-transform-none"
@@ -32,8 +32,8 @@
             <CardBadge
                 Class="quizzes"
                 Title="@L["Quizzes_Title"]"
-                Value="@profile.Quizzes.Total"
-                Trending="@profile.Quizzes.Trending"
+                Value="@context.Quizzes.Total"
+                Trending="@context.Quizzes.Trending"
                 Icon="@EduIcons.Quiz">
                 <MudButton
                     Class="px-3 text-transform-none"
@@ -46,8 +46,8 @@
             <CardBadge
                 Class="date-guessers"
                 Title="@L["History_DateGuessers_Title"]"
-                Value="@profile.DateGuessers.Total"
-                Trending="@profile.DateGuessers.Trending"
+                Value="@context.DateGuessers.Total"
+                Trending="@context.DateGuessers.Trending"
                 Icon="@EduIcons.DateGuesser">
                 <MudButton
                     Class="px-3 text-transform-none"
@@ -59,19 +59,19 @@
 
             <MonthlyPerformanceCard
                 Class="performance"
-                Performance="@profile.MonthlyPerformance"/>
+                Performance="@context.MonthlyPerformance"/>
 
             <ActivitiesCard
                 Class="activities"
-                Activities="@profile.MonthlyActivities"/>
+                Activities="@context.MonthlyActivities"/>
 
             <AssignmentsCard
                 Class="assignment"
-                Assignments="@profile.Assignments"/>
+                Assignments="@context.Assignments"/>
 
             <AchievementsCard
                 Class="achievement"
-                Achievements="@profile.Achievements"/>
+                Achievements="@context.Achievements"/>
 
             <RecentArticles Class="articles"/>
 

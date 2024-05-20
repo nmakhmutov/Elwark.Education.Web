@@ -11,7 +11,6 @@ namespace Education.Client.Features.Customer.Pages.Account;
 public sealed partial class Page : ComponentBase
 {
     private ApiResult<SubjectModel[]> _response = ApiResult<SubjectModel[]>.Loading();
-    private SubjectEnhancedModel[] _subjects = [];
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -25,38 +24,22 @@ public sealed partial class Page : ComponentBase
     [CascadingParameter]
     private CustomerState Customer { get; init; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() =>
         _response = await AccountClient.GetSubjectsAsync();
-        _subjects = _response.Map(subjects => subjects.Select(x => Enhance(x)).Where(x => x is not null).ToArray())
-            .UnwrapOrElse(() => [])!;
-    }
 
     private SubjectEnhancedModel? Enhance(SubjectModel model) =>
-        model switch
+        model.Name switch
         {
-            { Name: "History" } =>
-                new SubjectEnhancedModel(
-                    L["History_Title"],
-                    HistoryUrl.Root,
-                    HistoryUrl.User.MyDashboard,
-                    EduIcons.History,
-                    "linear-gradient(45deg, #ffa726 10%, #ef6c00 90%)",
-                    model.Level,
-                    model.Experience,
-                    model.Threshold
-                ),
+            "History" => new SubjectEnhancedModel(
+                L["History_Title"],
+                HistoryUrl.Root,
+                HistoryUrl.User.MyDashboard,
+                EduIcons.History,
+                "linear-gradient(45deg, #ffa726 10%, #ef6c00 90%)",
+                model.Level,
+                model.Backpack,
+                model.Wallet
+            ),
             _ => null
         };
-
-    private sealed record SubjectEnhancedModel(
-        string Title,
-        string SubjectHref,
-        string ProfileHref,
-        string Icon,
-        string Gradient,
-        uint Level,
-        ulong Experience,
-        ulong Threshold
-    );
 }

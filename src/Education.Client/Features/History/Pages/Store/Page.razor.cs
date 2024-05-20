@@ -10,10 +10,9 @@ namespace Education.Client.Features.History.Pages.Store;
 
 public sealed partial class Page : ComponentBase
 {
-    private const string InventoryKindId = "inventories";
-    private const string BundleKindId = "bundles";
+    private const string InventoryTabId = "inventories";
+    private const string BundleTabId = "bundles";
 
-    private CategoryType _category = CategoryType.None;
     private ProfileModel _profile = ProfileModel.Empty;
     private MudTabs? _tabs;
 
@@ -26,8 +25,8 @@ public sealed partial class Page : ComponentBase
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
 
-    [Parameter]
-    public required string Kind { get; set; }
+    [SupplyParameterFromQuery]
+    public string? Tab { get; set; }
 
     [SupplyParameterFromQuery]
     public string? Category { get; set; }
@@ -43,9 +42,8 @@ public sealed partial class Page : ComponentBase
 
     protected override void OnParametersSet()
     {
-        _category = Enum.TryParse(Category, out CategoryType category) ? category : CategoryType.None;
-        if (!string.IsNullOrEmpty(Kind) && _tabs?.ActivePanel.ID.Equals(Kind) == false)
-            _tabs?.ActivatePanel(Kind);
+        if (!string.IsNullOrEmpty(Tab) && _tabs?.ActivePanel.ID.Equals(Tab) == false)
+            _tabs?.ActivatePanel(Tab);
     }
 
     private async Task UpdateProfileAsync()
@@ -73,23 +71,9 @@ public sealed partial class Page : ComponentBase
         return false;
     }
 
-    private void ChangeTab(string tab)
-    {
-        var url = tab switch
-        {
-            InventoryKindId when _category > CategoryType.None => HistoryUrl.Store.Index(tab, _category),
-            _ => HistoryUrl.Store.Index(tab)
-        };
+    private void ChangeTab(string tab) =>
+        Navigation.NavigateTo(HistoryUrl.Store.Index(tab));
 
-        Navigation.NavigateTo(url);
-    }
-
-    private void ChangeCategory(CategoryType category)
-    {
-        var url = category == CategoryType.None
-            ? HistoryUrl.Store.Index(Kind)
-            : HistoryUrl.Store.Index(Kind, category);
-
-        Navigation.NavigateTo(url);
-    }
+    private void ChangeCategory(CategoryType category) =>
+        Navigation.NavigateTo(HistoryUrl.Store.Index(Tab ?? InventoryTabId, category));
 }

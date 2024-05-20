@@ -1,19 +1,38 @@
-<section class="card @Class">
-    <header class="card-header" style="background-image: url('@Background')"></header>
+<section class="card mud-paper @Class">
+    <SubjectIcon Icon="@Subject.Icon" Background="@Subject.Gradient"/>
 
-    <section class="card-content px-3 px-sm-6">
-        @Icon
-        <h5 class="mud-typography mud-typography-h5 one-line-text pt-1" title="@Title">
-            @Title
-        </h5>
-        <span>
-            <MudLink Typo="Typo.subtitle2" Href="@ProfileHref">
-                @L["User_Dashboard_Title"]
-            </MudLink>
-        </span>
-    </section>
+    <article>
+        <MudLink Class="d-inline-block mb-3" Href="@Subject.SubjectHref" Typo="Typo.h5">
+            @Subject.Title
+        </MudLink>
 
-    @ChildContent
+        <div class="d-flex flex-wrap align-center gap-3">
+            <section class="d-flex align-center">
+                <MudIcon Class="mr-1" Size="Size.Small" Icon="@EduIcons.Level"/>
+                <MudText Typo="Typo.body1">
+                    @Subject.Level.Current
+                </MudText>
+            </section>
+
+            <BackpackOverview Typo="Typo.body1" Fullness="@Subject.Backpack.Fullness" Capacity="@Subject.Backpack.Capacity"/>
+
+            @foreach (var (currency, amount) in Subject.Wallet)
+            {
+                <InternalMoney IconSize="Size.Small" Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
+            }
+        </div>
+    </article>
+
+    <footer class="details">
+        <MudButton
+            Class="text-transform-none"
+            EndIcon="@Icons.Material.Outlined.ArrowForward"
+            Href="@Subject.ProfileHref"
+            DisableRipple
+            DisableElevation>
+            @L["User_Dashboard_Title"]
+        </MudButton>
+    </footer>
 </section>
 
 @code {
@@ -22,21 +41,9 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required string Title { get; set; }
-
-    [Parameter, EditorRequired]
-    public required string ProfileHref { get; set; }
-
-    [Parameter, EditorRequired]
-    public required string Background { get; set; }
+    public required SubjectEnhancedModel Subject { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
-
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
-
-    [Parameter]
-    public RenderFragment? Icon { get; set; }
 
 }
