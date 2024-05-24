@@ -12,7 +12,7 @@ public sealed partial class DateGuesserMainPage : ComponentBase
 {
     private DateGuesserProgressModel[] _daily = [];
     private DateGuesserProgressModel[] _monthly = [];
-    private ApiResult<DateGuessersStatisticsModel> _result = ApiResult<DateGuessersStatisticsModel>.Loading();
+    private ApiResult<DateGuessersStatisticsModel> _response = ApiResult<DateGuessersStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -28,8 +28,8 @@ public sealed partial class DateGuesserMainPage : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await LearnerClient.GetDateGuesserStatisticsAsync();
-        _result.Match(model =>
+        _response = await LearnerClient.GetDateGuesserStatisticsAsync();
+        _response.Match(model =>
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
             _daily = model.Daily

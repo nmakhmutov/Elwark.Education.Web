@@ -11,7 +11,7 @@ namespace Education.Client.Features.History.Pages.Examinations;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<ExaminationModel> _examination = ApiResult<ExaminationModel>.Loading();
+    private ApiResult<ExaminationModel> _response = ApiResult<ExaminationModel>.Loading();
 
     [Inject]
     private IHistoryExaminationClient ExaminationClient { get; init; } = default!;
@@ -29,17 +29,17 @@ public sealed partial class Page : ComponentBase
     public required string Id { get; set; }
 
     private double Progress =>
-        _examination.Match(x => Percentage.Calc(x.CompletedQuestions, x.CompletedQuestions), _ => 0, () => 0);
+        _response.Match(x => Percentage.Calc(x.CompletedQuestions, x.CompletedQuestions), _ => 0, () => 0);
 
     protected override async Task OnInitializedAsync()
     {
-        _examination = await ExaminationClient.GetAsync(Id);
-        _examination.MatchError(x => HandlerError(x));
+        _response = await ExaminationClient.GetAsync(Id);
+        _response.MatchError(x => HandlerError(x));
     }
 
     private async Task OnAnswerAsync(UserAnswerModel answer)
     {
-        var examination = _examination.Unwrap();
+        var examination = _response.Unwrap();
         var result = await ExaminationClient.CheckAsync(Id, examination.Question.Id, answer);
 
         await result.MatchAsync(async x =>
@@ -47,7 +47,7 @@ public sealed partial class Page : ComponentBase
                 if (x.IsCompleted)
                     Navigation.NavigateTo(HistoryUrl.Examination.Conclusion(Id));
                 else
-                    _examination = await ExaminationClient.GetAsync(Id);
+                    _response = await ExaminationClient.GetAsync(Id);
             },
             e => HandlerError(e)
         );
@@ -55,14 +55,14 @@ public sealed partial class Page : ComponentBase
 
     private async Task OnExpiredAsync()
     {
-        _examination = await ExaminationClient.GetAsync(Id);
-        _examination.MatchError(x => HandlerError(x));
+        _response = await ExaminationClient.GetAsync(Id);
+        _response.MatchError(x => HandlerError(x));
     }
 
     private async Task OnUseInventory(uint id)
     {
-        _examination = await ExaminationClient.UseInventoryAsync(Id, id);
-        _examination.MatchError(x => HandlerError(x));
+        _response = await ExaminationClient.UseInventoryAsync(Id, id);
+        _response.MatchError(x => HandlerError(x));
     }
 
     private void HandlerError(Error error)

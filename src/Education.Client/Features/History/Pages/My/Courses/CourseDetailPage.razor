@@ -2,40 +2,40 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="result">
+<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <PageTitle>
-        @result.Course.Title
+        @context.Course.Title
     </PageTitle>
 
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
         <header class="header mb-3 mb-sm-6">
             <CourseCard
-                Course="@result.Course"
-                Activity="@result.Activity"
+                Course="@context.Course"
+                Activity="@context.Activity"
                 OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
-                HasExamination="@(result.Total.Examinations > 0)"
+                HasExamination="@(context.Total.Examinations > 0)"
                 Horizontal/>
 
-            <TotalExaminationStatisticsCard Total="@result.Total" CourseId="@result.Course.Id"/>
+            <TotalExaminationStatisticsCard Total="@context.Total" CourseId="@context.Course.Id"/>
         </header>
 
         <MudTabs Elevation="0" PanelClass="pt-6" ApplyEffectsToContainer Rounded>
-            @if (result.EasyExamination.NumberOfExaminations.Total > 0)
+            @if (context.EasyExamination.NumberOfExaminations.Total > 0)
             {
                 <MudTabPanel Text="@L["Examinations_Easy_Title"]">
                     <ExaminationOverview
-                        Examination="@result.EasyExamination"
+                        Examination="@context.EasyExamination"
                         SeeAllText="@L["Examinations_Easy_SeeAll"]"
                         SeeAllHref="@HistoryUrl.User.MyEasyExaminations"
                         DateTimeFormatter="@Customer.Humanize"/>
                 </MudTabPanel>
             }
 
-            @if (result.HardExamination.NumberOfExaminations.Total > 0)
+            @if (context.HardExamination.NumberOfExaminations.Total > 0)
             {
                 <MudTabPanel Text="@L["Examinations_Hard_Title"]">
                     <ExaminationOverview
-                        Examination="@result.HardExamination"
+                        Examination="@context.HardExamination"
                         SeeAllText="@L["Examinations_Hard_SeeAll"]"
                         SeeAllHref="@HistoryUrl.User.MyHardExaminations"
                         DateTimeFormatter="@Customer.Humanize"/>

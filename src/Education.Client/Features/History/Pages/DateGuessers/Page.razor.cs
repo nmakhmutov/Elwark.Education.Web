@@ -13,7 +13,7 @@ namespace Education.Client.Features.History.Pages.DateGuessers;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<DateGuesserBuilderModel> _result = ApiResult<DateGuesserBuilderModel>.Loading();
+    private ApiResult<DateGuesserBuilderModel> _response = ApiResult<DateGuesserBuilderModel>.Loading();
     private Settings _settings = new(EpochType.None);
 
     [Inject]
@@ -40,8 +40,8 @@ public sealed partial class Page : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         _settings = await Storage.GetItemAsync<Settings>(HistoryLocalStorageKey.DateGuesserSettings) ?? _settings;
-        _result = await DateGuesserClient.GetAsync();
-        _result.MatchError(x =>
+        _response = await DateGuesserClient.GetAsync();
+        _response.MatchError(x =>
         {
             if (x.IsDateGuesserAlreadyCreated(out var id))
                 Navigation.NavigateTo(HistoryUrl.DateGuesser.Test(id));

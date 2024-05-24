@@ -10,12 +10,12 @@
     <div class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6">
         <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
         <MudText Typo="Typo.h5">
-            @_result.Map(x => $"{x.Unlocked} / {x.Total}").UnwrapOr(string.Empty)
+            @_response.Map(x => $"{x.Unlocked} / {x.Total}").UnwrapOr(string.Empty)
         </MudText>
     </div>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <EduContainer MaxWidth="EduWidth.W1920">
         @foreach (var category in context.Categories)
         {

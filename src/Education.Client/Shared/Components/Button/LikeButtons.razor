@@ -44,8 +44,9 @@
         if (IsLiked == true)
             return;
 
-        IsLiked = (await OnLikeClick.Invoke(Id))
-            .Match(_ => true, _ => false, () => true);
+        var response = await OnLikeClick.Invoke(Id);
+
+        IsLiked = response.Match(_ => true, _ => false, () => true);
     }
 
     private async Task OnDislike()
@@ -53,8 +54,9 @@
         if (IsLiked == false)
             return;
 
-        IsLiked = (await OnDislikeClick.Invoke(Id))
-            .Match(_ => false, _ => true, () => false);
+        var response = await OnDislikeClick.Invoke(Id);
+
+        IsLiked = response.Match(_ => false, _ => true, () => false);
     }
 
 }

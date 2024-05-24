@@ -12,7 +12,7 @@ public sealed partial class QuizMainPage : ComponentBase
 {
     private QuizProgressModel[] _daily = [];
     private QuizProgressModel[] _monthly = [];
-    private ApiResult<QuizzesStatisticsModel> _result = ApiResult<QuizzesStatisticsModel>.Loading();
+    private ApiResult<QuizzesStatisticsModel> _response = ApiResult<QuizzesStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -28,8 +28,8 @@ public sealed partial class QuizMainPage : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await LearnerClient.GetQuizStatisticsAsync();
-        _result.Match(model =>
+        _response = await LearnerClient.GetQuizStatisticsAsync();
+        _response.Match(model =>
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
             _daily = model.Daily

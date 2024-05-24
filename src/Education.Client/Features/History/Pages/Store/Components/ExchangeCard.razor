@@ -1,7 +1,7 @@
 @using Education.Client.Features.History.Clients.Exchange
 @using Education.Client.Features.History.Clients.Exchange.Requests
 <section class="grid mud-paper pa-3 pa-sm-6 @Class">
-    <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+    <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
         <Loading>
             <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Height="40px"/>
             <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Height="40px"/>
@@ -76,7 +76,7 @@
     private bool _isBuying = true;
     private bool _isLoading;
     private Exchange _rate = default!;
-    private ApiResult<Exchange[]> _result = ApiResult<Exchange[]>.Loading();
+    private ApiResult<Exchange[]> _response = ApiResult<Exchange[]>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -99,7 +99,7 @@
     protected override async Task OnInitializedAsync()
     {
         var result = await ExchangeClient.GetRatesAsync();
-        _result = result.Map(rates =>
+        _response = result.Map(rates =>
         {
             var data = rates.Where(x => x.ConversionFactor == 1)
                 .Join(rates, x => x.From, x => x.To, (fr, to) =>

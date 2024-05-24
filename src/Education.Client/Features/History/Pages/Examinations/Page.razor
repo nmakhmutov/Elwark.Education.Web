@@ -3,10 +3,10 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @_examination.Match(x => $"{L.GetExaminationDifficultyTitle(x.Difficulty)}: {x.Title}", e => e.Title, () => L["Examinations_Title"])
+    @_response.Match(x => $"{L.GetExaminationDifficultyTitle(x.Difficulty)}: {x.Title}", e => e.Title, () => L["Examinations_Title"])
 </PageTitle>
 
-<ApiViewer Result="@_examination" OnReloadClick="@OnInitializedAsync">
+<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
             <header class="timer">

@@ -15,7 +15,7 @@ public sealed partial class Page : ComponentBase
     private const int Limit = 20;
     private EpochType _epoch;
 
-    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _result =
+    private ApiResult<PagingOffsetModel<UserArticleOverviewModel>> _response =
         ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
 
     private GetArticlesRequest.SortType _sort;
@@ -48,12 +48,12 @@ public sealed partial class Page : ComponentBase
     public int CurrentPage { get; set; }
 
     private int TotalPages =>
-        _result.Map(x => (int)double.Ceiling((double)x.Count / Limit))
+        _response.Map(x => (int)double.Ceiling((double)x.Count / Limit))
             .UnwrapOr(1);
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
+        _response = ApiResult<PagingOffsetModel<UserArticleOverviewModel>>.Loading();
 
         if (CurrentPage < 1)
             CurrentPage = 1;
@@ -61,7 +61,7 @@ public sealed partial class Page : ComponentBase
         Enum.TryParse(Category, true, out _sort);
         Enum.TryParse(Epoch, true, out _epoch);
 
-        _result = await ArticleClient
+        _response = await ArticleClient
             .GetAsync(new GetArticlesRequest(_epoch, _sort, (CurrentPage - 1) * Limit, Limit));
     }
 

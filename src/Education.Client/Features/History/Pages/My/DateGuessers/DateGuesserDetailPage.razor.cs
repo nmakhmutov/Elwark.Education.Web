@@ -14,7 +14,7 @@ namespace Education.Client.Features.History.Pages.My.DateGuessers;
 public sealed partial class DateGuesserDetailPage : ComponentBase
 {
     private DateGuesserStatisticsModel.DailyProgress[] _progress = [];
-    private ApiResult<DateGuesserStatisticsModel> _result = ApiResult<DateGuesserStatisticsModel>.Loading();
+    private ApiResult<DateGuesserStatisticsModel> _response = ApiResult<DateGuesserStatisticsModel>.Loading();
     private string? _title;
 
     [Inject]
@@ -35,7 +35,7 @@ public sealed partial class DateGuesserDetailPage : ComponentBase
 
     protected override async Task OnParametersSetAsync()
     {
-        (_title, _result) = Test.ToLowerInvariant() switch
+        (_title, _response) = Test.ToLowerInvariant() switch
         {
             "small" => (L["History_DateGuessers_Small"], await LearnerClient.GetSmallDateGuesserStatisticsAsync()),
             "medium" => (L["History_DateGuessers_Medium"], await LearnerClient.GetMediumDateGuesserStatisticsAsync()),
@@ -44,7 +44,7 @@ public sealed partial class DateGuesserDetailPage : ComponentBase
                 ApiResult<DateGuesserStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404)))
         };
 
-        _progress = _result
+        _progress = _response
             .Map(m => m.Progress.FillDailyGaps(m.Delta.Start, m.Delta.End, x => x.Date, x => EmptyProgress(x)))
             .UnwrapOrElse(Enumerable.Empty<DateGuesserStatisticsModel.DailyProgress>)
             .ToArray();

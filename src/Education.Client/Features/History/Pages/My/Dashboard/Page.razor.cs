@@ -16,7 +16,7 @@ using QuizModel = MeOverviewModel.QuizModel;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<Aggregate> _result = ApiResult<Aggregate>.Loading();
+    private ApiResult<Aggregate> _response = ApiResult<Aggregate>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -32,14 +32,14 @@ public sealed partial class Page : ComponentBase
         var userRequest = await UserClient.GetMeAsync();
         if (userRequest.IsError)
         {
-            _result = ApiResult<Aggregate>.Fail(userRequest.UnwrapError());
+            _response = ApiResult<Aggregate>.Fail(userRequest.UnwrapError());
             return;
         }
 
         var learnerRequest = await LearnerClient.GetMeAsync();
         if (learnerRequest.IsError)
         {
-            _result = ApiResult<Aggregate>.Fail(learnerRequest.UnwrapError());
+            _response = ApiResult<Aggregate>.Fail(learnerRequest.UnwrapError());
             return;
         }
 
@@ -72,7 +72,7 @@ public sealed partial class Page : ComponentBase
             )
         };
 
-        _result = ApiResult<Aggregate>.Success(
+        _response = ApiResult<Aggregate>.Success(
             new Aggregate(
                 examination,
                 quiz,

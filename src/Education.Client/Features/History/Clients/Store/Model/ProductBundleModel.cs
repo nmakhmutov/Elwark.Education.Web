@@ -8,6 +8,6 @@ public sealed record ProductBundleModel(
     string Overview,
     string ImageUrl,
     uint Weight,
-    PriceModel Price,
+    PriceModel Selling,
     UserInventoryModel[] Inventories
-) : Product(ProductId, Title, Overview, ImageUrl, Weight);
+) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling);

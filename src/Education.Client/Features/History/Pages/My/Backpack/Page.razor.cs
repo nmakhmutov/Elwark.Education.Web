@@ -12,7 +12,7 @@ namespace Education.Client.Features.History.Pages.My.Backpack;
 public sealed partial class Page : ComponentBase
 {
     private ProfileModel _profile = ProfileModel.Empty;
-    private ApiResult<BackpackModel> _result = ApiResult<BackpackModel>.Loading();
+    private ApiResult<BackpackModel> _response = ApiResult<BackpackModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -25,11 +25,12 @@ public sealed partial class Page : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _profile = (await UserClient.GetProfileAsync())
+        var resposne = await UserClient.GetProfileAsync();
+        _profile = resposne
             .Map(x => x)
             .UnwrapOrElse(() => _profile);
 
-        _result = await UserClient.GetBackpackAsync();
+        _response = await UserClient.GetBackpackAsync();
     }
 
     private async Task OpenDialogAsync(BackpackInventoryModel inventory)

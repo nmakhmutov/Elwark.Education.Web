@@ -10,7 +10,7 @@ namespace Education.Client.Features.History.Pages.My.Achievements;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<AchievementsModel> _result = ApiResult<AchievementsModel>.Loading();
+    private ApiResult<AchievementsModel> _response = ApiResult<AchievementsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -28,5 +28,5 @@ public sealed partial class Page : ComponentBase
     private CustomerState Customer { get; init; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _result = await UserClient.GetAchievementsAsync();
+        _response = await UserClient.GetAchievementsAsync();
 }

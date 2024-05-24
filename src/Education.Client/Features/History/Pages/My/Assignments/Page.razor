@@ -10,18 +10,18 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync" Context="model">
+<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <div class="grid">
             <div class="content">
                 <MudTabs @ref="_tabs" Elevation="0" Rounded>
-                    <PrePanelContent>
+                    <PrePanelContent Context="_">
                         <div class="mb-3 mb-sm-6"></div>
                     </PrePanelContent>
 
                     <ChildContent>
                         <MudTabPanel ID="@("daily")" Text="@L["Assignments_Daily_Tab"]">
-                            @if (model.DailyAssignments.Length == 0)
+                            @if (context.DailyAssignments.Length == 0)
                             {
                                 <StartAssignment
                                     Title="@L["Assignments_Daily_Title"]"
@@ -34,11 +34,11 @@
                                 <AssignmentHeader
                                     Class="mb-3 mb-sm-6"
                                     Title="@L["Assignments_Daily_Title"]"
-                                    ExpiresAt="@model.DailyAssignments[0].ExpiresAt"
+                                    ExpiresAt="@context.DailyAssignments[0].ExpiresAt"
                                     OnExpired="@OnInitializedAsync"/>
 
                                 <article class="d-flex flex-column gap-3">
-                                    @foreach (var quest in model.DailyAssignments)
+                                    @foreach (var quest in context.DailyAssignments)
                                     {
                                         <QuestProgressCard Quest="@quest" OnCollect="@CollectDailyQuestsAsync"/>
                                     }
@@ -47,7 +47,7 @@
                         </MudTabPanel>
 
                         <MudTabPanel ID="@("weekly")" Text="@L["Assignments_Weekly_Tab"]">
-                            @if (model.WeeklyAssignments.Length == 0)
+                            @if (context.WeeklyAssignments.Length == 0)
                             {
                                 <StartAssignment
                                     Title="@L["Assignments_Weekly_Title"]"
@@ -60,11 +60,11 @@
                                 <AssignmentHeader
                                     Class="mb-3 mb-sm-6"
                                     Title="@L["Assignments_Weekly_Title"]"
-                                    ExpiresAt="@model.WeeklyAssignments[0].ExpiresAt"
+                                    ExpiresAt="@context.WeeklyAssignments[0].ExpiresAt"
                                     OnExpired="@OnInitializedAsync"/>
 
                                 <article class="d-flex flex-column gap-3">
-                                    @foreach (var quest in model.WeeklyAssignments)
+                                    @foreach (var quest in context.WeeklyAssignments)
                                     {
                                         <QuestProgressCard Quest="@quest" OnCollect="@CollectWeeklyQuestsAsync"/>
                                     }
@@ -77,7 +77,7 @@
 
             <div class="sidebar">
                 <DailyBonusCard
-                    Bonus="@model.DailyBonus"
+                    Bonus="@context.DailyBonus"
                     OnClaim="@ClaimDailyBonusAsync"
                     OnReject="@RejectDailyBonusAsync"
                     OnReached="@OnInitializedAsync"/>

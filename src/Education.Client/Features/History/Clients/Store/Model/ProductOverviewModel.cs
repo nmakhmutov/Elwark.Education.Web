@@ -7,5 +7,5 @@ public sealed record ProductOverviewModel(
     string ImageUrl,
     uint Weight,
     PriceModel Selling,
-    PriceModel Purchasing
-) : Product(ProductId, Title, Overview, ImageUrl, Weight);
+    PriceModel? Purchasing
+) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling);

@@ -13,7 +13,7 @@ namespace Education.Client.Features.History.Pages.Course.Examination;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<ExaminationBuilderModel> _result = ApiResult<ExaminationBuilderModel>.Loading();
+    private ApiResult<ExaminationBuilderModel> _response = ApiResult<ExaminationBuilderModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -42,8 +42,8 @@ public sealed partial class Page : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await CourseClient.GetExaminationAsync(Id);
-        _result.MatchError(x =>
+        _response = await CourseClient.GetExaminationAsync(Id);
+        _response.MatchError(x =>
         {
             if (x.IsExaminationAlreadyCreated(out var id))
                 NavigationManager.NavigateTo(HistoryUrl.Examination.Test(id));

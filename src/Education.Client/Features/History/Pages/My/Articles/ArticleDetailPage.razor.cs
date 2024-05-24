@@ -9,7 +9,7 @@ namespace Education.Client.Features.History.Pages.My.Articles;
 
 public sealed partial class ArticleDetailPage : ComponentBase
 {
-    private ApiResult<ArticleStatisticsModel> _result = ApiResult<ArticleStatisticsModel>.Loading();
+    private ApiResult<ArticleStatisticsModel> _response = ApiResult<ArticleStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -24,5 +24,5 @@ public sealed partial class ArticleDetailPage : ComponentBase
     public required string Id { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _result = await LearnerClient.GetArticleAsync(Id);
+        _response = await LearnerClient.GetArticleAsync(Id);
 }

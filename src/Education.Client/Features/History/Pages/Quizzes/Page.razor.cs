@@ -15,7 +15,7 @@ namespace Education.Client.Features.History.Pages.Quizzes;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<EpochQuizBuilderModel> _result = ApiResult<EpochQuizBuilderModel>.Loading();
+    private ApiResult<EpochQuizBuilderModel> _response = ApiResult<EpochQuizBuilderModel>.Loading();
     private QuizSettings _settings = QuizSettings.Empty;
 
     [Inject]
@@ -42,8 +42,8 @@ public sealed partial class Page : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         _settings = await Storage.GetItemAsync<QuizSettings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
-        _result = await QuizClient.GetTestBuilderAsync();
-        _result.MatchError(x =>
+        _response = await QuizClient.GetTestBuilderAsync();
+        _response.MatchError(x =>
         {
             if (x.IsQuizAlreadyCreated(out var id))
                 Navigation.NavigateTo(HistoryUrl.Quiz.Test(id));

@@ -10,7 +10,7 @@ namespace Education.Client.Features.History.Pages.My.Assignments;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<UserAssignmentModel> _result = ApiResult<UserAssignmentModel>.Loading();
+    private ApiResult<UserAssignmentModel> _response = ApiResult<UserAssignmentModel>.Loading();
     private MudTabs? _tabs;
 
     [Inject]
@@ -29,7 +29,7 @@ public sealed partial class Page : ComponentBase
     ];
 
     protected override async Task OnInitializedAsync() =>
-        _result = await UserClient.GetAssignmentsAsync();
+        _response = await UserClient.GetAssignmentsAsync();
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -37,45 +37,64 @@ public sealed partial class Page : ComponentBase
             _tabs.ActivatePanel(Tab);
     }
 
-    private async Task ClaimDailyBonusAsync() =>
-        _result = (await UserClient.ClaimDailyBonusAsync())
-            .Map(bonus => _result.Unwrap() with
+    private async Task ClaimDailyBonusAsync()
+    {
+        var response = await UserClient.ClaimDailyBonusAsync();
+        _response = response
+            .Map(bonus => _response.Unwrap() with
             {
                 DailyBonus = bonus
             });
+    }
 
-    private async Task RejectDailyBonusAsync() =>
-        _result = (await UserClient.RejectDailyBonusAsync())
-            .Map(bonus => _result.Unwrap() with
+    private async Task RejectDailyBonusAsync()
+    {
+        var response = await UserClient.RejectDailyBonusAsync();
+        _response = response
+            .Map(bonus => _response.Unwrap() with
             {
                 DailyBonus = bonus
             });
+    }
 
-    private async Task StartDailyQuestsAsync() =>
-        _result = (await UserClient.StartAssignmentsAsync(new StartAssignmentRequest(QuestType.Daily)))
-            .Map(assignments => _result.Unwrap() with
+    private async Task StartDailyQuestsAsync()
+    {
+        var response = await UserClient.StartAssignmentsAsync(new StartAssignmentRequest(QuestType.Daily));
+        _response = response
+            .Map(assignments => _response.Unwrap() with
             {
                 DailyAssignments = assignments
             });
+    }
 
-    private async Task CollectDailyQuestsAsync(string id) =>
-        _result = (await UserClient.ClaimAssignmentsAsync(id, new ClaimAssignmentRequest(QuestType.Daily)))
-            .Map(assignments => _result.Unwrap() with
+    private async Task CollectDailyQuestsAsync(string id)
+    {
+        var response = await UserClient.ClaimAssignmentsAsync(id, new ClaimAssignmentRequest(QuestType.Daily));
+
+        _response = response
+            .Map(x => _response.Unwrap() with
             {
-                DailyAssignments = assignments
+                DailyAssignments = x
             });
+    }
 
-    private async Task StartWeeklyQuestsAsync() =>
-        _result = (await UserClient.StartAssignmentsAsync(new StartAssignmentRequest(QuestType.Weekly)))
-            .Map(assignments => _result.Unwrap() with
+    private async Task StartWeeklyQuestsAsync()
+    {
+        var response = await UserClient.StartAssignmentsAsync(new StartAssignmentRequest(QuestType.Weekly));
+        _response = response
+            .Map(x => _response.Unwrap() with
+            {
+                WeeklyAssignments = x
+            });
+    }
+
+    private async Task CollectWeeklyQuestsAsync(string id)
+    {
+        var response = await UserClient.ClaimAssignmentsAsync(id, new ClaimAssignmentRequest(QuestType.Weekly));
+        _response = response
+            .Map(assignments => _response.Unwrap() with
             {
                 WeeklyAssignments = assignments
             });
-
-    private async Task CollectWeeklyQuestsAsync(string id) =>
-        _result = (await UserClient.ClaimAssignmentsAsync(id, new ClaimAssignmentRequest(QuestType.Weekly)))
-            .Map(assignments => _result.Unwrap() with
-            {
-                WeeklyAssignments = assignments
-            });
+    }
 }

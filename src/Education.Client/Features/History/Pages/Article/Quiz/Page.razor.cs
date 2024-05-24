@@ -15,7 +15,7 @@ namespace Education.Client.Features.History.Pages.Article.Quiz;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<ArticleQuizBuilderModel> _result = ApiResult<ArticleQuizBuilderModel>.Loading();
+    private ApiResult<ArticleQuizBuilderModel> _response = ApiResult<ArticleQuizBuilderModel>.Loading();
     private QuizSettings _settings = QuizSettings.Empty;
 
     [Inject]
@@ -49,8 +49,8 @@ public sealed partial class Page : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         _settings = await Storage.GetItemAsync<QuizSettings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
-        _result = await ArticleClient.GetQuizBuilderAsync(Id);
-        _result.MatchError(x =>
+        _response = await ArticleClient.GetQuizBuilderAsync(Id);
+        _response.MatchError(x =>
         {
             if (x.IsQuizAlreadyCreated(out var id))
                 Navigation.NavigateTo(HistoryUrl.Quiz.Test(id));

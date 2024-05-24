@@ -12,7 +12,7 @@ public sealed partial class AllTimePage : ComponentBase
 {
     private static readonly string[] Regions = ["GL", "AF", "AS", "EU", "NA", "SA", "OC"];
     private long? _highlightUser;
-    private ApiResult<ContestantModel[]> _result = ApiResult<ContestantModel[]>.Loading();
+    private ApiResult<ContestantModel[]> _response = ApiResult<ContestantModel[]>.Loading();
 
     [Inject]
     private IHistoryLeaderboardClient LeaderboardClient { get; init; } = default!;
@@ -38,7 +38,7 @@ public sealed partial class AllTimePage : ComponentBase
     protected override async Task OnParametersSetAsync()
     {
         Region = Regions.Contains(Region, StringComparer.OrdinalIgnoreCase) ? Region : Regions[0];
-        _result = await LeaderboardClient.GetAllTimeAsync(Region);
+        _response = await LeaderboardClient.GetAllTimeAsync(Region);
     }
 
     private void ChangeRegion(string region)

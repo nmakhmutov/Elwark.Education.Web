@@ -11,7 +11,7 @@ namespace Education.Client.Features.History.Pages.Leaderboards;
 public sealed partial class MonthlyPage : ComponentBase
 {
     private long? _highlightUser;
-    private ApiResult<MonthlyLeaderboardModel> _result = ApiResult<MonthlyLeaderboardModel>.Loading();
+    private ApiResult<MonthlyLeaderboardModel> _response = ApiResult<MonthlyLeaderboardModel>.Loading();
 
     [Inject]
     private IHistoryLeaderboardClient LeaderboardClient { get; init; } = default!;
@@ -35,7 +35,7 @@ public sealed partial class MonthlyPage : ComponentBase
     }
 
     protected override async Task OnParametersSetAsync() =>
-        _result = await LeaderboardClient.GetMonthlyAsync(Month);
+        _response = await LeaderboardClient.GetMonthlyAsync(Month);
 
     private void ChangeMonth(DateOnly month) =>
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter(nameof(month), month.ToString("O")));

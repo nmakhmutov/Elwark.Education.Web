@@ -12,7 +12,7 @@ public sealed partial class ExaminationMainPage : ComponentBase
 {
     private ExaminationProgressModel[] _daily = [];
     private ExaminationProgressModel[] _monthly = [];
-    private ApiResult<ExaminationsStatisticsModel> _result = ApiResult<ExaminationsStatisticsModel>.Loading();
+    private ApiResult<ExaminationsStatisticsModel> _response = ApiResult<ExaminationsStatisticsModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -28,8 +28,8 @@ public sealed partial class ExaminationMainPage : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await LearnerClient.GetExaminationStatisticsAsync();
-        _result.Match(model =>
+        _response = await LearnerClient.GetExaminationStatisticsAsync();
+        _response.Match(model =>
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
             _daily = model.Daily

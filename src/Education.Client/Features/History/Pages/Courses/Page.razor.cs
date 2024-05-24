@@ -14,7 +14,7 @@ public sealed partial class Page : ComponentBase
 {
     private const int Limit = 20;
 
-    private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _result =
+    private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _response =
         ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
 
     private GetCourseRequest.SortType _sort;
@@ -44,19 +44,19 @@ public sealed partial class Page : ComponentBase
     public int CurrentPage { get; set; }
 
     private int TotalPages =>
-        _result.Map(x => (int)double.Ceiling((double)x.Count / Limit))
+        _response.Map(x => (int)double.Ceiling((double)x.Count / Limit))
             .UnwrapOr(1);
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
+        _response = ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
 
         if (CurrentPage < 1)
             CurrentPage = 1;
 
         Enum.TryParse(Category, true, out _sort);
 
-        _result = await CourseClient
+        _response = await CourseClient
             .GetAsync(new GetCourseRequest(_sort, (CurrentPage - 1) * Limit, Limit));
     }
 

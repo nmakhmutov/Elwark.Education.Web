@@ -11,7 +11,7 @@ namespace Education.Client.Features.History.Pages.Quizzes.Conclusion;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<QuizConclusionModel> _result = ApiResult<QuizConclusionModel>.Loading();
+    private ApiResult<QuizConclusionModel> _response = ApiResult<QuizConclusionModel>.Loading();
 
     [Inject]
     private IHistoryQuizClient QuizClient { get; init; } = default!;
@@ -27,9 +27,9 @@ public sealed partial class Page : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await QuizClient.GetConclusionAsync(Id);
+        _response = await QuizClient.GetConclusionAsync(Id);
 
-        if (_result.MatchError(x => x.IsQuizNotFound()))
+        if (_response.MatchError(x => x.IsQuizNotFound()))
             Navigation.NavigateTo(HistoryUrl.Quiz.Index());
     }
 

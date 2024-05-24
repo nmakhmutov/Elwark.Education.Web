@@ -14,7 +14,7 @@ public sealed partial class Page : ComponentBase
     private bool _isMoreLoading;
     private NotificationsRequest _request = new(10);
 
-    private ApiResult<PagingTokenModel<NotificationModel>> _result =
+    private ApiResult<PagingTokenModel<NotificationModel>> _response =
         ApiResult<PagingTokenModel<NotificationModel>>.Loading();
 
     [Inject]
@@ -25,8 +25,8 @@ public sealed partial class Page : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await NotificationService.GetAsync(_request);
-        _result.Match(x =>
+        _response = await NotificationService.GetAsync(_request);
+        _response.Match(x =>
         {
             _notifications.AddRange(x.Items);
             _request = new NotificationsRequest(20, x.Next);
@@ -49,7 +49,7 @@ public sealed partial class Page : ComponentBase
                 };
                 _notifications.AddRange(x.Items);
             },
-            e => _result = ApiResult<PagingTokenModel<NotificationModel>>.Fail(e)
+            e => _response = ApiResult<PagingTokenModel<NotificationModel>>.Fail(e)
         );
         _isMoreLoading = false;
     }

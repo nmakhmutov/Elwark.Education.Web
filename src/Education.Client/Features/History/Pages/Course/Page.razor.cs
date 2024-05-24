@@ -9,7 +9,7 @@ namespace Education.Client.Features.History.Pages.Course;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<UserCourseDetailModel> _result = ApiResult<UserCourseDetailModel>.Loading();
+    private ApiResult<UserCourseDetailModel> _response = ApiResult<UserCourseDetailModel>.Loading();
 
     [Inject]
     private IHistoryCourseClient CourseClient { get; init; } = default!;
@@ -24,12 +24,12 @@ public sealed partial class Page : ComponentBase
     public string Id { get; set; } = string.Empty;
 
     protected override async Task OnParametersSetAsync() =>
-        _result = await CourseClient.GetAsync(Id);
+        _response = await CourseClient.GetAsync(Id);
 
     private async Task StartCourseAsync(string id)
     {
         var response = await LearnerClient.StartCourseAsync(id);
-        _result = response.Map(x => _result.Unwrap() with
+        _response = response.Map(x => _response.Unwrap() with
         {
             Activity = x
         });

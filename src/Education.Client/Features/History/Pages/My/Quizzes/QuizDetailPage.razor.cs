@@ -13,7 +13,7 @@ namespace Education.Client.Features.History.Pages.My.Quizzes;
 public sealed partial class QuizDetailPage : ComponentBase
 {
     private QuizStatisticsModel.DailyProgress[] _progress = [];
-    private ApiResult<QuizStatisticsModel> _result = ApiResult<QuizStatisticsModel>.Loading();
+    private ApiResult<QuizStatisticsModel> _response = ApiResult<QuizStatisticsModel>.Loading();
     private string? _title;
 
     [Inject]
@@ -42,14 +42,14 @@ public sealed partial class QuizDetailPage : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _result = Test?.ToLowerInvariant() switch
+        _response = Test?.ToLowerInvariant() switch
         {
             "easy" => await LearnerClient.GetEasyQuizStatisticsAsync(),
             "hard" => await LearnerClient.GetHardQuizStatisticsAsync(),
             _ => ApiResult<QuizStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
         };
 
-        _progress = _result
+        _progress = _response
             .Map(m => m.Progress.FillDailyGaps(m.Delta.Start, m.Delta.End, x => x.Date, x => EmptyProgress(x)))
             .UnwrapOrElse(Enumerable.Empty<QuizStatisticsModel.DailyProgress>)
             .ToArray();

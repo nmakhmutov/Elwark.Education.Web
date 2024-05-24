@@ -12,7 +12,7 @@ namespace Education.Client.Features.History.Pages.Quizzes.Test;
 public sealed partial class Page : ComponentBase
 {
     private AnswerResult? _correctAnswer;
-    private ApiResult<QuizModel> _quiz = ApiResult<QuizModel>.Loading();
+    private ApiResult<QuizModel> _response = ApiResult<QuizModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -30,23 +30,23 @@ public sealed partial class Page : ComponentBase
     public string Id { get; set; } = string.Empty;
 
     private double Progress =>
-        _quiz.Match(x => Percentage.Calc(x.CompletedQuestions, x.TotalQuestions), _ => 0, () => 0);
+        _response.Match(x => Percentage.Calc(x.CompletedQuestions, x.TotalQuestions), _ => 0, () => 0);
 
     protected override async Task OnInitializedAsync()
     {
-        _quiz = await QuizClient.GetAsync(Id);
-        _quiz.MatchError(x => HandlerError(x));
+        _response = await QuizClient.GetAsync(Id);
+        _response.MatchError(x => HandlerError(x));
     }
 
     private async Task OnExpiredAsync()
     {
-        _quiz = await QuizClient.GetAsync(Id);
-        _quiz.MatchError(x => HandlerError(x));
+        _response = await QuizClient.GetAsync(Id);
+        _response.MatchError(x => HandlerError(x));
     }
 
     private async Task OnAnswerAsync(UserAnswerModel answer)
     {
-        var quiz = _quiz.Unwrap();
+        var quiz = _response.Unwrap();
         var result = await QuizClient.CheckAsync(quiz.TestId, quiz.Question.Id, answer);
 
         result.Match(x => HandleSuccess(x), e => HandlerError(e));
@@ -55,7 +55,7 @@ public sealed partial class Page : ComponentBase
         void HandleSuccess(QuizAnswerModel model)
         {
             _correctAnswer = model.Answer;
-            _quiz = ApiResult<QuizModel>.Success(quiz with
+            _response = ApiResult<QuizModel>.Success(quiz with
             {
                 CompletedQuestions = model.CompletedQuestions,
                 TotalQuestions = model.TotalQuestions,
@@ -68,14 +68,14 @@ public sealed partial class Page : ComponentBase
 
     private async Task OnNextAsync()
     {
-        if (_quiz.Map(x => x.IsCompleted).Unwrap())
+        if (_response.Map(x => x.IsCompleted).Unwrap())
         {
             Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
         }
         else
         {
             _correctAnswer = null;
-            _quiz = await QuizClient.GetAsync(Id);
+            _response = await QuizClient.GetAsync(Id);
 
             StateHasChanged();
         }
@@ -83,8 +83,8 @@ public sealed partial class Page : ComponentBase
 
     private async Task OnUseInventory(uint id)
     {
-        _quiz = await QuizClient.UseInventoryAsync(Id, id);
-        _quiz.MatchError(x => HandlerError(x));
+        _response = await QuizClient.UseInventoryAsync(Id, id);
+        _response.MatchError(x => HandlerError(x));
     }
 
     private void HandlerError(Error error)

@@ -11,7 +11,7 @@ namespace Education.Client.Features.History.Pages.Random;
 public sealed partial class Page : ComponentBase
 {
     private readonly List<OneOf> _history = new();
-    private ApiResult<OneOf> _result = ApiResult<OneOf>.Loading();
+    private ApiResult<OneOf> _response = ApiResult<OneOf>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -30,17 +30,17 @@ public sealed partial class Page : ComponentBase
 
     private Task OnSearchClick()
     {
-        if (_result.IsLoading)
+        if (_response.IsLoading)
             return Task.CompletedTask;
 
-        _result.Match(x => _history.Insert(0, x));
-        _result = ApiResult<OneOf>.Loading();
+        _response.Match(x => _history.Insert(0, x));
+        _response = ApiResult<OneOf>.Loading();
 
         return SearchAsync();
     }
 
     private async Task SearchAsync() =>
-        _result = System.Random.Shared.Next(0, 2) % 2 == 0
+        _response = System.Random.Shared.Next(0, 2) % 2 == 0
             ? (await ArticleClient.GetRandomAsync()).Map(x => OneOf.Create(x))
             : (await CourseClient.GetRandomAsync()).Map(x => OneOf.Create(x));
 }

@@ -10,7 +10,7 @@ namespace Education.Client.Features.History.Pages.DateGuessers.Conclusion;
 public sealed partial class Page : ComponentBase
 {
     private double _progress;
-    private ApiResult<DateGuesserConclusionModel> _result = ApiResult<DateGuesserConclusionModel>.Loading();
+    private ApiResult<DateGuesserConclusionModel> _response = ApiResult<DateGuesserConclusionModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -26,8 +26,8 @@ public sealed partial class Page : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await DateGuesserClient.GetConclusionAsync(Id);
-        _result.Match(
+        _response = await DateGuesserClient.GetConclusionAsync(Id);
+        _response.Match(
             x => _progress = Percentage.Calc(x.Score.Total, x.MaxScore),
             e =>
             {

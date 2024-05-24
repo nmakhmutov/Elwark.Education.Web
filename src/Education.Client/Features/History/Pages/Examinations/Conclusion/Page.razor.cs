@@ -11,7 +11,7 @@ namespace Education.Client.Features.History.Pages.Examinations.Conclusion;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<ExaminationConclusionModel> _result = ApiResult<ExaminationConclusionModel>.Loading();
+    private ApiResult<ExaminationConclusionModel> _response = ApiResult<ExaminationConclusionModel>.Loading();
 
     [Inject]
     private IHistoryExaminationClient ExaminationClient { get; init; } = default!;
@@ -27,9 +27,9 @@ public sealed partial class Page : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _result = await ExaminationClient.GetConclusionAsync(Id);
+        _response = await ExaminationClient.GetConclusionAsync(Id);
 
-        if (_result.MatchError(x => x.IsExaminationNotFound()))
+        if (_response.MatchError(x => x.IsExaminationNotFound()))
             Navigation.NavigateTo(HistoryUrl.Content.Courses());
     }
 

@@ -13,7 +13,7 @@
 
     <EduContainer Class="articles" MaxWidth="@MaxWidth">
         <div class="grid">
-            <ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+            <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
                 <Loading>
                     @for (var i = 0; i < Count; i++)
                     {
@@ -37,7 +37,7 @@
 
 @code {
     private const int Count = 4;
-    private ApiResult<UserArticleOverviewModel[]> _result = ApiResult<UserArticleOverviewModel[]>.Loading();
+    private ApiResult<UserArticleOverviewModel[]> _response = ApiResult<UserArticleOverviewModel[]>.Loading();
 
     [Inject]
     private IHistoryArticleClient ArticleClient { get; init; } = default!;
@@ -54,8 +54,13 @@
     [Parameter]
     public EduWidth MaxWidth { get; set; } = EduWidth.None;
 
-    protected override async Task OnInitializedAsync() =>
-        _result = (await ArticleClient.GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Newest, 0, Count)))
+    protected override async Task OnInitializedAsync()
+    {
+        var request = new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Newest, 0, Count);
+        var response = await ArticleClient.GetAsync(request);
+
+        _response = response
             .Map(x => x.Items);
+    }
 
 }

@@ -54,11 +54,11 @@ public sealed partial class Page : ComponentBase
             .UnwrapOrElse(() => ProfileModel.Empty);
     }
 
-    private bool IsInventoryAffordable(ProductInventoryModel inventory) =>
+    private bool IsInventoryAffordable(ProductInventory inventory) =>
         IsAffordable(inventory.Selling, inventory.Weight);
 
     private bool IsBundleAffordable(ProductBundleModel bundle) =>
-        IsAffordable(bundle.Price, bundle.Weight);
+        IsAffordable(bundle.Selling, bundle.Weight);
 
     private bool IsAffordable(PriceModel price, uint weight)
     {

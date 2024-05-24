@@ -11,7 +11,7 @@ namespace Education.Client.Features.History.Pages.Flow;
 public sealed partial class Page : ComponentBase
 {
     private AnswerResult? _correctAnswer;
-    private ApiResult<FlowModel> _result = ApiResult<FlowModel>.Loading();
+    private ApiResult<FlowModel> _response = ApiResult<FlowModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -26,18 +26,20 @@ public sealed partial class Page : ComponentBase
     ];
 
     protected override async Task OnInitializedAsync() =>
-        _result = await FlowClient.GetAsync();
+        _response = await FlowClient.GetAsync();
 
     private async Task OnStartClick()
     {
-        _result = ApiResult<FlowModel>.Loading();
-        _result = await FlowClient.StartAsync();
+        _response = ApiResult<FlowModel>.Loading();
+        _response = await FlowClient.StartAsync();
     }
 
     private async Task OnAnswerClick(UserAnswerModel answer)
     {
-        var flow = _result.Unwrap();
-        _result = (await FlowClient.CheckAsync(flow.Question.Id, answer))
+        var flow = _response.Unwrap();
+        var response = await FlowClient.CheckAsync(flow.Question.Id, answer);
+
+        _response = response
             .Map(x =>
             {
                 _correctAnswer = x.Answer;
@@ -52,13 +54,16 @@ public sealed partial class Page : ComponentBase
     private async Task OnNextQuestion()
     {
         _correctAnswer = null;
-        _result = await FlowClient.GetAsync();
+        _response = await FlowClient.GetAsync();
     }
 
-    private async Task OnBankCollect() =>
-        _result = (await FlowClient.CollectBankAsync())
-            .Map(_ => _result.Unwrap() with
+    private async Task OnBankCollect()
+    {
+        var response = await FlowClient.CollectBankAsync();
+        _response = response
+            .Map(_ => _response.Unwrap() with
             {
                 Bank = []
             });
+    }
 }

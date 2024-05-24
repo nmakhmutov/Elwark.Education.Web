@@ -7,19 +7,19 @@
     DefaultFocus="DefaultFocus.Element"
     DisableSidePadding>
     <DialogContent>
-        <ApiViewer Result="@_result" Context="product">
+        <ApiViewer Result="@_response">
             <section class="d-flex gap-3 gap-sm-6 mb-3 mb-sm-6">
                 <div class="mud-background d-flex justify-center align-center rounded-lg relative pa-9">
-                    <img class="image" src="@product.ImageUrl" alt="@product.Title" loading="lazy"/>
+                    <img class="image" src="@context.ImageUrl" alt="@context.Title" loading="lazy"/>
                 </div>
 
                 <header class="d-flex justify-space-between flex-grow-1 align-start">
                     <div class="d-flex flex-column h-100">
                         <MudText Typo="Typo.h5">
-                            @product.Title
+                            @context.Title
                         </MudText>
                         <MudText Class="flex-grow-1" Typo="Typo.body1">
-                            @product.Overview
+                            @context.Overview
                         </MudText>
 
                         <MudText Typo="Typo.body2">
@@ -44,7 +44,7 @@
 </MudDialog>
 
 @code {
-    private ApiResult<ProductOverviewModel> _result = ApiResult<ProductOverviewModel>.Loading();
+    private ApiResult<ProductOverviewModel> _response = ApiResult<ProductOverviewModel>.Loading();
 
     [Inject]
     private IHistoryStoreClient StoreClient { get; init; } = default!;
@@ -62,7 +62,7 @@
     public required uint ProductQuantity { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _result = await StoreClient.GetProductAsync(ProductId);
+        _response = await StoreClient.GetProductAsync(ProductId);
 
     private void OnCloseClick() =>
         MudDialog.Close(DialogResult.Cancel());

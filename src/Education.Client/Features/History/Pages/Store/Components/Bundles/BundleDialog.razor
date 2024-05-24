@@ -40,7 +40,7 @@
         @if (_status is null)
         {
             <div class="d-flex flex-column flex-sm-row justify-space-between align-sm-end gap-3">
-                @if (Product.Price.Discount > 0)
+                @if (Product.Selling.Discount > 0)
                 {
                     <div class="d-flex flex-column gap-1">
                         <MudText Typo="Typo.caption">
@@ -53,7 +53,7 @@
                                 Icon="@Icons.Material.Outlined.Discount"
                                 Size="Size.Medium"/>
                             <MudText Typo="Typo.h5">
-                                -@Product.Price.Discount%
+                                -@Product.Selling.Discount%
                             </MudText>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                             Typo="Typo.h5"
                             IconSize="Size.Medium"
                             Horizontal/>
-                        @if (Product.Price.Discount > 0)
+                        @if (Product.Selling.Discount > 0)
                         {
                             <MudText Class="mud-text-secondary align-self-start ml-1" Typo="Typo.subtitle1">
                                 <s>@OriginalPrice.Amount.ToMetric()</s>
@@ -222,15 +222,15 @@
     }
 
     private InternalMoneyModel OriginalPrice =>
-        Product.Price.Original with
+        Product.Selling.Original with
         {
-            Amount = Product.Price.Original.Amount * _quantity
+            Amount = Product.Selling.Original.Amount * _quantity
         };
 
     private InternalMoneyModel TotalPrice =>
-        Product.Price.Total with
+        Product.Selling.Total with
         {
-            Amount = Product.Price.Total.Amount * _quantity
+            Amount = Product.Selling.Total.Amount * _quantity
         };
 
     private uint TotalWeight =>

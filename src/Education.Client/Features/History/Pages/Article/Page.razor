@@ -4,7 +4,7 @@
 @using Education.Client.Features.History.Clients.Learner
 @layout HistoryLayout
 
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <PageTitle>
         @context.Article.Title
     </PageTitle>
@@ -63,7 +63,7 @@
 </ApiViewer>
 
 @code {
-    private ApiResult<UserArticleDetailModel> _result = ApiResult<UserArticleDetailModel>.Loading();
+    private ApiResult<UserArticleDetailModel> _response = ApiResult<UserArticleDetailModel>.Loading();
 
     [Inject]
     private IHistoryArticleClient ArticleClient { get; init; } = default!;
@@ -76,8 +76,8 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _result = ApiResult<UserArticleDetailModel>.Loading();
-        _result = await ArticleClient.GetAsync(Id);
+        _response = ApiResult<UserArticleDetailModel>.Loading();
+        _response = await ArticleClient.GetAsync(Id);
     }
 
 }

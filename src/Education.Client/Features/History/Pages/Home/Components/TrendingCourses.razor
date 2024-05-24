@@ -1,7 +1,7 @@
 @using Education.Client.Features.History.Clients.Course
 @using Education.Client.Features.History.Clients.Course.Request
 @using Education.Client.Features.History.Clients.Learner
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <Loading>
         <section class="grid @Class">
             @for (var i = 0; i < Count; i++)
@@ -25,7 +25,7 @@
 
 @code {
     private const int Count = 5;
-    private ApiResult<UserCourseOverviewModel[]> _result = ApiResult<UserCourseOverviewModel[]>.Loading();
+    private ApiResult<UserCourseOverviewModel[]> _response = ApiResult<UserCourseOverviewModel[]>.Loading();
 
     [Inject]
     private IHistoryCourseClient CourseClient { get; init; } = default!;
@@ -39,8 +39,13 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override async Task OnInitializedAsync() =>
-        _result = (await CourseClient.GetAsync(new GetCourseRequest(GetCourseRequest.SortType.Trending, 0, Count)))
+    protected override async Task OnInitializedAsync()
+    {
+        var request = new GetCourseRequest(GetCourseRequest.SortType.Trending, 0, Count);
+        var response = await CourseClient.GetAsync(request);
+
+        _response = response
             .Map(x => x.Items);
+    }
 
 }

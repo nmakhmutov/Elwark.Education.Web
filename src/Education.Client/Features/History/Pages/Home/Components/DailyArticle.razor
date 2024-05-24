@@ -1,7 +1,7 @@
 @using Education.Client.Features.History.Clients.Article
 @using Education.Client.Features.History.Clients.Article.Request
 @using Education.Client.Features.History.Clients.Learner
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <Loading>
         <div class="grid @Class">
             <div class="image h-100">
@@ -16,10 +16,10 @@
             </article>
         </div>
     </Loading>
-    <ChildContent Context="model">
+    <ChildContent>
         <div class="grid @Class">
             <div class="image">
-                <img src="@model.Article.Image.Small" alt="@model.Article.Image.Alt" loading="lazy"/>
+                <img src="@context.Article.Image.Small" alt="@context.Article.Image.Alt" loading="lazy"/>
             </div>
             <article class="text">
                 <MudText Class="mb-12" Typo="Typo.subtitle1" Color="Color.Default">
@@ -28,32 +28,32 @@
                     </em>
                 </MudText>
 
-                <MudLink Href="@HistoryUrl.Content.Article(model.Article.Id)" Typo="Typo.h4" Color="Color.Inherit">
-                    @model.Article.Title
+                <MudLink Href="@HistoryUrl.Content.Article(context.Article.Id)" Typo="Typo.h4" Color="Color.Inherit">
+                    @context.Article.Title
                 </MudLink>
 
                 <MudText Class="my-6" Typo="Typo.subtitle1">
-                    @model.Article.Overview
+                    @context.Article.Overview
                 </MudText>
 
                 <div class="d-flex align-center justify-space-between justify-sm-start gap-3 gap-sm-6">
-                    <ContentRating Rating="@model.Article.Rating" Placement="Placement.Right" Compact/>
+                    <ContentRating Rating="@context.Article.Rating" Placement="Placement.Right" Compact/>
 
-                    <TimeToRead Time="@model.Article.TimeToRead"/>
+                    <TimeToRead Time="@context.Article.TimeToRead"/>
 
-                    <AuthorizeView>
-                        @if (model.HasQuiz)
+                    <AuthorizeView Context="_">
+                        @if (context.HasQuiz)
                         {
                             <ArticleCompletionChip
-                                Status="@(model.Activity?.Status ?? ArticleLearningStatus.NotStarted)"
-                                Href="@HistoryUrl.User.MyArticle(model.Article.Id)"
+                                Status="@(context.Activity?.Status ?? ArticleLearningStatus.NotStarted)"
+                                Href="@HistoryUrl.User.MyArticle(context.Article.Id)"
                                 Size="Size.Small"/>
                         }
 
                         <BookmarkButton
                             Color="Color.Inherit"
-                            Id="@model.Article.Id"
-                            IsBookmarked="@(model.Activity?.IsBookmarked ?? false)"
+                            Id="@context.Article.Id"
+                            IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
                             OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
                     </AuthorizeView>
                 </div>
@@ -64,7 +64,7 @@
 
 @code {
 
-    private ApiResult<UserArticleOverviewModel> _result = ApiResult<UserArticleOverviewModel>.Loading();
+    private ApiResult<UserArticleOverviewModel> _response = ApiResult<UserArticleOverviewModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -78,8 +78,13 @@
     [Parameter]
     public string? Class { get; set; }
 
-    protected override async Task OnInitializedAsync() =>
-        _result = (await ArticleClient.GetAsync(new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 10, 1)))
+    protected override async Task OnInitializedAsync()
+    {
+        var request = new GetArticlesRequest(EpochType.None, GetArticlesRequest.SortType.Trending, 10, 1);
+        var response = await ArticleClient.GetAsync(request);
+
+        _response = response
             .Map(x => x.Items.First());
+    }
 
 }

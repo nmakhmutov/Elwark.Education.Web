@@ -12,7 +12,7 @@ public sealed partial class Page : ComponentBase
 {
     private readonly SearchRequest _request = new(string.Empty, true, [], 0, 20);
     private IReadOnlyDictionary<string, int> _categories = ReadOnlyDictionary<string, int>.Empty;
-    private ApiResult<SearchResultModel> _result = ApiResult<SearchResultModel>.Loading();
+    private ApiResult<SearchResultModel> _response = ApiResult<SearchResultModel>.Loading();
 
     [Inject]
     private IHistorySearchClient SearchClient { get; init; } = default!;
@@ -33,7 +33,7 @@ public sealed partial class Page : ComponentBase
     public string? Category { get; set; }
 
     private int TotalPages =>
-        _result.Map(x => (int)double.Ceiling((double)x.Count / _request.Limit))
+        _response.Map(x => (int)double.Ceiling((double)x.Count / _request.Limit))
             .UnwrapOr(0);
 
     protected override async Task OnParametersSetAsync()
@@ -42,20 +42,20 @@ public sealed partial class Page : ComponentBase
 
         if (string.IsNullOrWhiteSpace(Query))
         {
-            _result = ApiResult<SearchResultModel>.Success(SearchResultModel.Empty);
+            _response = ApiResult<SearchResultModel>.Success(SearchResultModel.Empty);
             return;
         }
 
-        _result = ApiResult<SearchResultModel>.Loading();
+        _response = ApiResult<SearchResultModel>.Loading();
 
-        _result = await SearchClient.SearchAsync(_request with
+        _response = await SearchClient.SearchAsync(_request with
         {
             Q = Query,
             Offset = (CurrentPage - 1) * _request.Limit,
             Categories = string.IsNullOrWhiteSpace(Category) ? [] : [Category]
         });
 
-        _categories = _result.Map(x => x.Categories)
+        _categories = _response.Map(x => x.Categories)
             .UnwrapOrElse(() => ReadOnlyDictionary<string, int>.Empty);
     }
 

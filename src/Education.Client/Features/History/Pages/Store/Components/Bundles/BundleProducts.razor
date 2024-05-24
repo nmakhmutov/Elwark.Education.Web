@@ -1,7 +1,7 @@
 @using Education.Client.Features.History.Clients.Store
 @using Education.Client.Features.History.Clients.Store.Model
 @using Education.Client.Features.History.Clients.User.Model
-<ApiViewer Result="@_result" OnReloadClick="@OnInitializedAsync">
+<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <ChildContent>
         <InventoryGrid Inventories="@context" ColumnSize="Size.Large">
             <ChildContent Context="bundle">
@@ -32,7 +32,7 @@
 </ApiViewer>
 
 @code {
-    private ApiResult<ProductBundleModel[]> _result = ApiResult<ProductBundleModel[]>.Loading();
+    private ApiResult<ProductBundleModel[]> _response = ApiResult<ProductBundleModel[]>.Loading();
 
     [Inject]
     private IHistoryStoreClient StoreClient { get; init; } = default!;
@@ -53,7 +53,7 @@
     public EventCallback<ProductBundleModel> OnProductPurchased { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _result = await StoreClient.GetBundlesAsync();
+        _response = await StoreClient.GetBundlesAsync();
 
     private async Task OpenPurchaseDialog(ProductBundleModel product)
     {

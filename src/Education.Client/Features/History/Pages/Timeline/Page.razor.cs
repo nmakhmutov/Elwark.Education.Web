@@ -16,7 +16,7 @@ public sealed partial class Page : ComponentBase,
 {
     private int _currentYear;
 
-    private ApiResult<PagingOffsetModel<TimelineOverviewModel>> _result =
+    private ApiResult<PagingOffsetModel<TimelineOverviewModel>> _response =
         ApiResult<PagingOffsetModel<TimelineOverviewModel>>.Loading();
 
     private Guid _subscriptionId;
@@ -47,7 +47,7 @@ public sealed partial class Page : ComponentBase,
     {
         _currentYear = DateTime.UtcNow.Year;
         Year = NormalizeYear(Year);
-        _result = await ArticleClient.GetAsync(new GetTimelineRequest(Year, 0, 100));
+        _response = await ArticleClient.GetAsync(new GetTimelineRequest(Year, 0, 100));
     }
 
     protected override Task OnAfterRenderAsync(bool firstRender)

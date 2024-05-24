@@ -5,7 +5,7 @@ namespace Education.Client.Features.History.Clients.Store;
 
 public interface IHistoryStoreClient
 {
-    Task<ApiResult<ProductInventoryModel[]>> GetInventoriesAsync();
+    Task<ApiResult<ProductInventory[]>> GetInventoriesAsync();
 
     Task<ApiResult<UpcomingInventoriesModel>> GetUpcomingInventoriesAsync();
 

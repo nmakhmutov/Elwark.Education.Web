@@ -30,8 +30,12 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private async Task OnBookmarkChanged(bool toggled) =>
-        IsBookmarked = (await OnBookmarkClick.Invoke(Id))
+    private async Task OnBookmarkChanged(bool toggled)
+    {
+        var response = await OnBookmarkClick.Invoke(Id);
+
+        IsBookmarked = response
             .UnwrapOr(false);
+    }
 
 }

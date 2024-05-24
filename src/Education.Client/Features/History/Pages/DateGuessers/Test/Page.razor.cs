@@ -11,7 +11,7 @@ namespace Education.Client.Features.History.Pages.DateGuessers.Test;
 
 public sealed partial class Page : ComponentBase
 {
-    private ApiResult<DateGuesserModel> _guesser = ApiResult<DateGuesserModel>.Loading();
+    private ApiResult<DateGuesserModel> _response = ApiResult<DateGuesserModel>.Loading();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -29,12 +29,12 @@ public sealed partial class Page : ComponentBase
     public string Id { get; set; } = string.Empty;
 
     private double Progress =>
-        _guesser.Match(x => Percentage.Calc(x.CompletedQuestions, x.TotalQuestions), _ => 0, () => 0);
+        _response.Match(x => Percentage.Calc(x.CompletedQuestions, x.TotalQuestions), _ => 0, () => 0);
 
     protected override async Task OnInitializedAsync()
     {
-        _guesser = await DateGuesserClient.GetAsync(Id);
-        _guesser.MatchError(e => HandlerError(e));
+        _response = await DateGuesserClient.GetAsync(Id);
+        _response.MatchError(e => HandlerError(e));
     }
 
     private async Task OnValidSubmit(DateGuesserForm.Model model)
@@ -49,7 +49,7 @@ public sealed partial class Page : ComponentBase
                 if (x.IsCompleted)
                     Navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
                 else
-                    _guesser = await DateGuesserClient.GetAsync(Id);
+                    _response = await DateGuesserClient.GetAsync(Id);
             },
             e => HandlerError(e)
         );
@@ -57,8 +57,8 @@ public sealed partial class Page : ComponentBase
 
     private async Task OnUseInventory(uint id)
     {
-        _guesser = await DateGuesserClient.UseInventoryAsync(Id, id);
-        _guesser.MatchError(x => HandlerError(x));
+        _response = await DateGuesserClient.UseInventoryAsync(Id, id);
+        _response.MatchError(x => HandlerError(x));
     }
 
     private void HandlerError(Error error)
