@@ -6,7 +6,8 @@ namespace Education.Client.Features.History.Clients.Store.Model;
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type"),
  JsonDerivedType(typeof(SystemModel), "system"),
  JsonDerivedType(typeof(LimitedModel), "limited"),
- JsonDerivedType(typeof(StockedModel), "stocked")]
+ JsonDerivedType(typeof(StockedModel), "stocked"),
+ JsonDerivedType(typeof(UpcomingModel), "upcoming")]
 public abstract record ProductInventory(
     string ProductId,
     uint InventoryId,
@@ -51,6 +52,19 @@ public abstract record ProductInventory(
         uint Weight,
         PriceModel Selling,
         uint AvailableStock,
+        CategoryType[] Categories
+    ) : ProductInventory(ProductId, InventoryId, Title, Overview, ImageUrl, Weight, Selling, Categories);
+
+
+    internal sealed record UpcomingModel(
+        string ProductId,
+        uint InventoryId,
+        string Title,
+        string Overview,
+        string ImageUrl,
+        uint Weight,
+        PriceModel Selling,
+        uint RequiredLevel,
         CategoryType[] Categories
     ) : ProductInventory(ProductId, InventoryId, Title, Overview, ImageUrl, Weight, Selling, Categories);
 }

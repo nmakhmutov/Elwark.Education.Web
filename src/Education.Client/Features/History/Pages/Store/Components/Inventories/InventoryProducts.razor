@@ -25,41 +25,39 @@
 
         <InventoryGrid Inventories="@ApplyFilter(context)" ColumnSize="Size.Medium">
             <ChildContent Context="inventory">
-                <InventoryInfoCard
-                    Overview="@inventory.Overview"
-                    Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
-                    Title="@inventory.Title"
-                    IconUrl="@inventory.ImageUrl">
-                    <MudBadge
-                        Class="w-100 mt-3"
-                        Icon="@Icons.Material.Outlined.Lock"
-                        Color="@Color.Error"
-                        Visible="@(!IsAffordable(inventory))"
-                        Bordered
-                        Overlap>
-                        <PriceButton Price="@inventory.Selling" OnClick="@(() => OpenPurchaseDialog(inventory))"/>
-                    </MudBadge>
-                </InventoryInfoCard>
-            </ChildContent>
-            <AsideContent>
-                @if (_upcoming.IsSuccess)
+                @switch (inventory)
                 {
-                    var model = _upcoming.Unwrap();
-
-                    foreach (var inventory in ApplyFilter(model.Inventories))
-                    {
+                    case ProductInventory.SystemModel system:
                         <InventoryInfoCard
-                            Overview="@inventory.Overview"
+                            Overview="@system.Overview"
                             Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
-                            Title="@inventory.Title"
-                            IconUrl="@inventory.ImageUrl">
+                            Title="@system.Title"
+                            IconUrl="@system.ImageUrl">
+                            <MudBadge
+                                Class="w-100 mt-3"
+                                Icon="@Icons.Material.Outlined.Lock"
+                                Color="@Color.Error"
+                                Visible="@(!IsAffordable(system))"
+                                Bordered
+                                Overlap>
+                                <PriceButton Price="@system.Selling" OnClick="@(() => OpenPurchaseDialog(system))"/>
+                            </MudBadge>
+                        </InventoryInfoCard>
+                        break;
+
+                    case ProductInventory.UpcomingModel upcoming:
+                        <InventoryInfoCard
+                            Overview="@upcoming.Overview"
+                            Subtitle="@L.GetInventoryCategoryTitles(upcoming.Categories)"
+                            Title="@upcoming.Title"
+                            IconUrl="@upcoming.ImageUrl">
                             <MudAlert Class="mt-3" Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center" NoIcon Dense>
-                                Unlocked at Level @model.NextLevel
+                                @L["InventoryStore_UnlockedAtLevel", upcoming.RequiredLevel]
                             </MudAlert>
                         </InventoryInfoCard>
-                    }
+                        break;
                 }
-            </AsideContent>
+            </ChildContent>
             <EmptyContent>
                 <NoContent
                     Title="@L["InventoryStore_Inventories_NotFound_Title"]"
@@ -92,7 +90,6 @@
     private MudChip? _selectedCategory;
     private CategoryType[] _categories = [];
     private ApiResult<ProductInventory[]> _response = ApiResult<ProductInventory[]>.Loading();
-    private ApiResult<UpcomingInventoriesModel> _upcoming = ApiResult<UpcomingInventoriesModel>.Loading();
 
     [Inject]
     private IHistoryStoreClient StoreClient { get; init; } = default!;
@@ -128,8 +125,6 @@
                 .ToArray()
             )
             .UnwrapOr([]);
-
-        _upcoming = await StoreClient.GetUpcomingInventoriesAsync();
     }
 
     private ProductInventory[] ApplyFilter(IEnumerable<ProductInventory> source)
@@ -138,10 +133,7 @@
             return source.ToArray();
 
         var category = (CategoryType)_selectedCategory.Value;
-        if (category is CategoryType.None)
-            return source.ToArray();
-
-        return source.Where(x => x.Categories.Contains(category)).ToArray();
+        return (category is CategoryType.None ? source : source.Where(x => x.Categories.Contains(category))).ToArray();
     }
 
     private async Task OpenPurchaseDialog(ProductInventory product)

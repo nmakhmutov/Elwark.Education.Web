@@ -21,32 +21,32 @@
                 <SkeletonCard Class="min-h-inherit"/>
             </Loading>
 
-            <ChildContent Context="model">
-                @if (model.Article is not null)
+            <ChildContent>
+                @if (context.Article is not null)
                 {
                     <PageTitle>
-                        @L["Random_Content_Title"]: @model.Article.Article.Title
+                        @L["Random_Content_Title"]: @context.Article.Article.Title
                     </PageTitle>
 
                     <ArticleCard
                         Class="min-h-inherit"
-                        Article="@model.Article.Article"
-                        HasQuiz="@model.Article.HasQuiz"
-                        Activity="@model.Article.Activity"
+                        Article="@context.Article.Article"
+                        HasQuiz="@context.Article.HasQuiz"
+                        Activity="@context.Article.Activity"
                         OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
                 }
 
-                @if (model.Course is not null)
+                @if (context.Course is not null)
                 {
                     <PageTitle>
-                        @L["Random_Content_Title"]: @model.Course.Course.Title
+                        @L["Random_Content_Title"]: @context.Course.Course.Title
                     </PageTitle>
 
                     <CourseCard
                         Class="min-h-inherit"
-                        Course="@model.Course.Course"
-                        Activity="@model.Course.Activity"
-                        HasExamination="@model.Course.HasExamination"
+                        Course="@context.Course.Course"
+                        Activity="@context.Course.Activity"
+                        HasExamination="@context.Course.HasExamination"
                         OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
                 }
             </ChildContent>
@@ -59,26 +59,26 @@
             @L["Random_Content_History_Title"]
         </MudText>
 
-        <Virtualize Items="@_history" Context="model">
-            @if (model.Article is not null)
+        <Virtualize Items="@_history" Context="content">
+            @if (content.Article is not null)
             {
                 <ArticleCard
                     Class="mb-3 mb-sm-6"
-                    Article="@model.Article.Article"
-                    HasQuiz="@model.Article.HasQuiz"
-                    Activity="@model.Article.Activity"
+                    Article="@content.Article.Article"
+                    HasQuiz="@content.Article.HasQuiz"
+                    Activity="@content.Article.Activity"
                     OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
                     Horizontal
                     ShortOverview/>
             }
 
-            @if (model.Course is not null)
+            @if (content.Course is not null)
             {
                 <CourseCard
                     Class="mb-3 mb-sm-6"
-                    Course="@model.Course.Course"
-                    Activity="@model.Course.Activity"
-                    HasExamination="@model.Course.HasExamination"
+                    Course="@content.Course.Course"
+                    Activity="@content.Course.Activity"
+                    HasExamination="@content.Course.HasExamination"
                     OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"
                     Horizontal
                     ShortOverview/>

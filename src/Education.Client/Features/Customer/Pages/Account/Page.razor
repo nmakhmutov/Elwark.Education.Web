@@ -20,9 +20,10 @@
         </section>
     </Loading>
     <ChildContent>
-        <Virtualize Items="@(context.Select(x => Enhance(x)).Where(x => x is not null).ToArray())" Context="subject">
+        @foreach (var subject in context.Select(x => Enhance(x)).Where(x => x is not null))
+        {
             <SubjectCard Class="mb-3 mb-sm-6" Subject="@subject"/>
-        </Virtualize>
+        }
     </ChildContent>
 </ApiViewer>
 

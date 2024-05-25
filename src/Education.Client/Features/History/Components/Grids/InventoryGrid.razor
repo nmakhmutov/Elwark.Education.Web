@@ -15,8 +15,6 @@ else
             }
         }
 
-        @AsideContent
-
         @if (!string.IsNullOrEmpty(StoreHref))
         {
             <InventoryStoreCard Href="@StoreHref"/>
@@ -35,9 +33,6 @@ else
 
     [Parameter]
     public RenderFragment? EmptyContent { get; set; }
-
-    [Parameter]
-    public RenderFragment? AsideContent { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

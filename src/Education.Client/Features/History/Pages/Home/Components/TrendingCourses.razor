@@ -10,13 +10,13 @@
             }
         </section>
     </Loading>
-    <ChildContent Context="models">
+    <ChildContent>
         <section class="grid @Class">
-            @foreach (var model in models)
+            @foreach (var course in context)
             {
                 <TrendingCourseCard
                     Class="course"
-                    Model="@model"
+                    Course="@course"
                     OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
             }
         </section>

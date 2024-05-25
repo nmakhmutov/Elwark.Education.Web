@@ -20,12 +20,12 @@
                         <SkeletonCard/>
                     }
                 </Loading>
-                <ChildContent Context="models">
-                    @foreach (var model in models)
+                <ChildContent>
+                    @foreach (var article in context)
                     {
                         <TrendingArticleCard
                             Class="article"
-                            Model="@model"
+                            Article="@article"
                             OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
                             HideOverview/>
                     }

@@ -20,7 +20,7 @@
                     Text="@L["InventoryStore_Catalog_Inventories"]">
                     <InventoryProducts
                         Profile="@_profile"
-                        Category="@(Enum.TryParse(Category, out CategoryType category) ? category : CategoryType.None)"
+                        Category="@(Enum.TryParse(Category, true, out CategoryType category) ? category : CategoryType.None)"
                         CategoryChanged="@(x => ChangeCategory(x))"
                         IsAffordable="@IsInventoryAffordable"
                         OnProductPurchased="@UpdateProfileAsync"/>

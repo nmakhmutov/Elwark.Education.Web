@@ -7,8 +7,6 @@ public interface IHistoryStoreClient
 {
     Task<ApiResult<ProductInventory[]>> GetInventoriesAsync();
 
-    Task<ApiResult<UpcomingInventoriesModel>> GetUpcomingInventoriesAsync();
-
     Task<ApiResult<ProductBundleModel[]>> GetBundlesAsync();
 
     Task<ApiResult<ProductOverviewModel>> GetProductAsync(string productId);

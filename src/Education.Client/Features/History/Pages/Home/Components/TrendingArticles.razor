@@ -11,13 +11,13 @@
         </section>
     </Loading>
 
-    <ChildContent Context="models">
+    <ChildContent>
         <section class="grid @Class">
-            @foreach (var model in models)
+            @foreach (var article in context)
             {
                 <TrendingArticleCard
                     Class="article"
-                    Model="@model"
+                    Article="@article"
                     OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
             }
         </section>
