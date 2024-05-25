@@ -3,13 +3,14 @@ using Education.Client.Extensions;
 using Education.Client.Features.History.Clients.DateGuesser;
 using Education.Client.Features.History.Clients.DateGuesser.Model;
 using Education.Client.Features.History.Clients.DateGuesser.Request;
+using Education.Client.Features.History.Pages.DateGuessers.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 
-namespace Education.Client.Features.History.Pages.DateGuessers.Test;
+namespace Education.Client.Features.History.Pages.DateGuessers;
 
-public sealed partial class Page : ComponentBase
+public sealed partial class DateGuesserTestPage : ComponentBase
 {
     private ApiResult<DateGuesserModel> _response = ApiResult<DateGuesserModel>.Loading();
 

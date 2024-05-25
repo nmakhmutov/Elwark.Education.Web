@@ -2,7 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
-namespace Education.Client.Features.History.Pages.DateGuessers.Test;
+namespace Education.Client.Features.History.Pages.DateGuessers.Components;
 
 public sealed partial class DateGuesserForm : ComponentBase
 {

@@ -9,7 +9,7 @@ using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Examinations;
 
-public sealed partial class Page : ComponentBase
+public sealed partial class ExaminationTestPage : ComponentBase
 {
     private ApiResult<ExaminationModel> _response = ApiResult<ExaminationModel>.Loading();
 
@@ -29,7 +29,7 @@ public sealed partial class Page : ComponentBase
     public required string Id { get; set; }
 
     private double Progress =>
-        _response.Match(x => Percentage.Calc(x.CompletedQuestions, x.CompletedQuestions), _ => 0, () => 0);
+        _response.Match(x => Percentage.Calc(x.CompletedQuestions, x.TotalQuestions), _ => 0, () => 0);
 
     protected override async Task OnInitializedAsync()
     {

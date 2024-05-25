@@ -2,27 +2,15 @@
 <EditForm Model="@_userAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
-    <MudRadioGroup @bind-Value="@(_userAnswer.Answer)" ReadOnly="@(CorrectAnswer is not null)">
-        <EduFitGrid Class="mb-3 mb-sm-6">
-            @foreach (var option in Options)
-            {
-                var (icon, color) = Get(option);
-
-                <div class="d-flex flex-row align-center border-2 border-solid rounded mud-border-primary px-3">
-                    <MudRadio
-                        Class="flex-grow-1"
-                        Value="@option.Id"
-                        Color="Color.Primary">
-                        <AnswerOptionForm Option="@option"/>
-                    </MudRadio>
-                    @if (icon is not null)
-                    {
-                        <MudIcon Icon="@icon" Color="@color"/>
-                    }
-                </div>
-            }
-        </EduFitGrid>
-    </MudRadioGroup>
+    <div class="w-max-480 mx-auto mb-3 mb-sm-6">
+        <MudTextField
+            @bind-Value="@(_userAnswer.Answer)"
+            Label="@L["QuestionFrom_UserAnswer"]"
+            Variant="Variant.Outlined"
+            ReadOnly="@(CorrectAnswer is not null)"
+            Margin="Margin.Dense"
+            FullWidth/>
+    </div>
 
     <FormFooter>
         <Button>
@@ -77,7 +65,7 @@
 
 @code {
     private Validator _validator = default!;
-    private SingleAnswerModel _userAnswer = new();
+    private TextAnswerModel _userAnswer = new();
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -89,20 +77,17 @@
     public required bool IsCompleted { get; set; }
 
     [Parameter, EditorRequired]
-    public required AnswerResult.SingleModel? CorrectAnswer { get; set; }
+    public required AnswerResult.TextModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
-    public required AnswerOption[] Options { get; set; }
-
-    [Parameter, EditorRequired]
-    public required EventCallback<SingleAnswerModel> OnAnswerClick { get; set; }
+    public required EventCallback<TextAnswerModel> OnAnswerClick { get; set; }
 
     [Parameter]
     public EventCallback OnNextClick { get; set; }
 
     protected override void OnInitialized()
     {
-        _userAnswer = new SingleAnswerModel();
+        _userAnswer = new TextAnswerModel();
         _validator = new Validator(L);
     }
 
@@ -115,29 +100,17 @@
         finally
         {
             if (!OnNextClick.HasDelegate)
-                _userAnswer = new SingleAnswerModel();
+                _userAnswer = new TextAnswerModel();
         }
     }
 
     private Task OnNextAsync()
     {
-        _userAnswer = new SingleAnswerModel();
+        _userAnswer = new TextAnswerModel();
         return OnNextClick.InvokeAsync();
     }
 
-    private (string? Icon, Color Color) Get(AnswerOption option) =>
-        CorrectAnswer switch
-        {
-            { } x when option.Id == x.Answer =>
-                (Icon: Icons.Material.Outlined.Check, Color: Color.Success),
-
-            { IsCorrect: false } when option.Id == _userAnswer.Answer =>
-                (Icon: Icons.Material.Outlined.Clear, Color: Color.Error),
-
-            _ => (Icon: null, Color: Color.Default)
-        };
-
-    public sealed class Validator : AbstractValidator<SingleAnswerModel>
+    public sealed class Validator : AbstractValidator<TextAnswerModel>
     {
         public Validator(IStringLocalizer<App> localizer) =>
             RuleFor(x => x.Answer)

@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 
-namespace Education.Client.Features.History.Pages.Quizzes.Conclusion;
+namespace Education.Client.Features.History.Pages.Quizzes;
 
-public sealed partial class Page : ComponentBase
+public sealed partial class QuizConclusionPage : ComponentBase
 {
     private ApiResult<QuizConclusionModel> _response = ApiResult<QuizConclusionModel>.Loading();
 

@@ -34,45 +34,54 @@
     </MudDropContainer>
 </div>
 
-@if (CorrectAnswer is null)
-{
-    <div class="d-flex flex-row justify-center">
-        <LoadingButton
-            DisableElevation
-            Variant="Variant.Filled"
-            Color="Color.Primary"
-            IsLoading="@IsLoading"
-            Text="@L["QuestionFrom_AnswerToQuestion"]"
-            OnClick="@OnValidSubmit"
-            LoadingText="@L["Loading_Title"]"/>
-    </div>
-}
-else
-{
-    <div class="d-flex flex-row justify-center mb-3 mb-sm-6">
-        <LoadingButton
-            Variant="Variant.Filled"
-            Color="Color.Primary"
-            IsLoading="@IsLoading"
-            Text="@L[IsCompleted ? "QuestionForm_ShowTheResult" : "QuestionForm_NextQuestion"]"
-            LoadingText="@L["Loading_Title"]"
-            OnClick="@OnNextAsync"
-            DisableElevation/>
-    </div>
-
-    if (CorrectAnswer.IsCorrect)
-    {
-        <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Success">
-            @L["QuestionFrom_CorrectAnswer"]
-        </MudText>
-    }
-    else
-    {
-        <MudText Align="Align.Center" Typo="Typo.subtitle2" Color="@Color.Error">
-            @L["QuestionFrom_IncorrectAnswer"]
-        </MudText>
-    }
-}
+<FormFooter>
+    <Button>
+        @if (CorrectAnswer is null)
+        {
+            <LoadingButton
+                DisableElevation
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                Size="Size.Large"
+                IsLoading="@IsLoading"
+                Text="@L["QuestionFrom_AnswerToQuestion"]"
+                OnClick="@OnValidSubmit"
+                LoadingText="@L["Loading_Title"]"/>
+        }
+        else
+        {
+            <LoadingButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                Size="Size.Large"
+                IsLoading="@IsLoading"
+                Text="@L[IsCompleted ? "QuestionForm_ShowTheResult" : "QuestionForm_NextQuestion"]"
+                LoadingText="@L["Loading_Title"]"
+                OnClick="@OnNextAsync"
+                DisableElevation/>
+        }
+    </Button>
+    <Information>
+        @if (CorrectAnswer is null)
+        {
+            <MudText Typo="Typo.subtitle1" Color="Color.Error">
+                <ValidationSummary/>
+            </MudText>
+        }
+        else if (CorrectAnswer.IsCorrect)
+        {
+            <MudText Typo="Typo.subtitle1" Color="Color.Success">
+                @L["QuestionFrom_CorrectAnswer"]
+            </MudText>
+        }
+        else
+        {
+            <MudText Typo="Typo.subtitle1" Color="Color.Error">
+                @L["QuestionFrom_IncorrectAnswer"]
+            </MudText>
+        }
+    </Information>
+</FormFooter>
 
 @code {
     private List<AnswerOption> _options = [];
@@ -83,19 +92,19 @@ else
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public bool IsLoading { get; set; }
+    public required bool IsLoading { get; set; }
 
     [Parameter, EditorRequired]
-    public bool IsCompleted { get; set; }
+    public required bool IsCompleted { get; set; }
 
     [Parameter, EditorRequired]
-    public AnswerResult.OrderingModel? CorrectAnswer { get; set; }
+    public required AnswerResult.OrderingModel? CorrectAnswer { get; set; }
 
     [Parameter, EditorRequired]
-    public AnswerOption[] Options { get; set; } = [];
+    public required AnswerOption[] Options { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback<OrderingAnswerModel> OnAnswerClick { get; set; }
+    public required EventCallback<OrderingAnswerModel> OnAnswerClick { get; set; }
 
     [Parameter]
     public EventCallback OnNextClick { get; set; }

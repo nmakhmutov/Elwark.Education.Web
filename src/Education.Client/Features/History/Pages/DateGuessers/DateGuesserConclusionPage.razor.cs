@@ -5,9 +5,9 @@ using Education.Client.Features.History.Clients.DateGuesser.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
-namespace Education.Client.Features.History.Pages.DateGuessers.Conclusion;
+namespace Education.Client.Features.History.Pages.DateGuessers;
 
-public sealed partial class Page : ComponentBase
+public sealed partial class DateGuesserConclusionPage : ComponentBase
 {
     private double _progress;
     private ApiResult<DateGuesserConclusionModel> _response = ApiResult<DateGuesserConclusionModel>.Loading();
