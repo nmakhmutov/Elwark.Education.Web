@@ -5,11 +5,13 @@ namespace Education.Client.Features.Customer.Pages.Account;
 
 public sealed record SubjectEnhancedModel(
     string Title,
-    string SubjectHref,
-    string ProfileHref,
     string Icon,
     string Gradient,
+    SubjectEnhancedModel.SubjectLinks Links,
     UserLevelModel Level,
     BackpackOverviewModel Backpack,
     Dictionary<InternalCurrency, long> Wallet
-);
+)
+{
+    public sealed record SubjectLinks(string Root, string Dashboard, string Wallet, string Backpack);
+}

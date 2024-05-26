@@ -32,10 +32,14 @@ public sealed partial class Page : ComponentBase
         {
             "History" => new SubjectEnhancedModel(
                 L["History_Title"],
-                HistoryUrl.Root,
-                HistoryUrl.User.MyDashboard,
                 EduIcons.History,
                 "linear-gradient(45deg, #ffa726 10%, #ef6c00 90%)",
+                new SubjectEnhancedModel.SubjectLinks(
+                    HistoryUrl.Root,
+                    HistoryUrl.User.MyDashboard,
+                    HistoryUrl.User.MyFinance,
+                    HistoryUrl.User.MyBackpack
+                ),
                 model.Level,
                 model.Backpack,
                 model.Wallet

@@ -1,35 +1,45 @@
-<section class="card mud-paper @Class">
-    <SubjectIcon Icon="@Subject.Icon" Background="@Subject.Gradient"/>
+<section class="d-flex flex-column mud-paper @Class">
+    <header class="d-flex align-center gap-3 pa-3 pa-sm-6">
+        <SubjectIcon Icon="@Subject.Icon" Background="@Subject.Gradient"/>
 
-    <article>
-        <MudLink Class="d-inline-block mb-3" Href="@Subject.SubjectHref" Typo="Typo.h5">
+        <MudLink Href="@Subject.Links.Root" Typo="Typo.h4">
             @Subject.Title
         </MudLink>
+    </header>
 
-        <div class="d-flex flex-wrap align-center gap-3">
-            <section class="d-flex align-center">
-                <MudIcon Class="mr-1" Size="Size.Small" Icon="@EduIcons.Level"/>
-                <MudText Typo="Typo.body1">
-                    @Subject.Level.Current
-                </MudText>
-            </section>
+    <UserLevelProgress
+        Class="px-3 pb-3 px-sm-6 pb-sm-6"
+        Level="@Subject.Level.Current"
+        Experience="@Subject.Level.Experience"
+        Threshold="@Subject.Level.Threshold"/>
 
-            <BackpackOverview Typo="Typo.body1" Fullness="@Subject.Backpack.Fullness" Capacity="@Subject.Backpack.Capacity"/>
-
-            @foreach (var (currency, amount) in Subject.Wallet)
-            {
-                <InternalMoney IconSize="Size.Small" Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
-            }
+    <section class="d-flex flex-grow-1 justify-space-between align-center gap-3 px-3 pb-3 px-sm-6 pb-sm-6">
+        <div>
+            <MudLink Typo="Typo.subtitle2" Color="Color.Primary" Href="@Subject.Links.Wallet">
+                @L["Wallet_Title"]
+            </MudLink>
+            <div class="d-flex align-center gap-3">
+                @foreach (var (currency, amount) in Subject.Wallet)
+                {
+                    <InternalMoney Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
+                }
+            </div>
         </div>
-    </article>
 
-    <footer class="details">
+        <div class="d-flex flex-column align-end">
+            <MudLink Typo="Typo.subtitle2" Color="Color.Primary" Href="@Subject.Links.Backpack">
+                @L["Backpack_Title"]
+            </MudLink>
+            <BackpackOverview Fullness="@Subject.Backpack.Fullness" Capacity="@Subject.Backpack.Capacity"/>
+        </div>
+    </section>
+
+    <footer class="border-t mud-border-lines-default pa-3">
         <MudButton
             Class="text-transform-none"
-            Variant="Variant.Filled"
-            Color="Color.Primary"
+            Variant="Variant.Text"
             EndIcon="@Icons.Material.Outlined.ArrowForward"
-            Href="@Subject.ProfileHref"
+            Href="@Subject.Links.Dashboard"
             DisableRipple
             DisableElevation>
             @L["User_Dashboard_Title"]
