@@ -11,7 +11,7 @@
                     OnPurchaseClick="@OpenPurchaseDialog"/>
             </ChildContent>
             <EmptyContent>
-                <NoContent
+                <EduNoContent
                     Title="@L["InventoryStore_Bundles_NotFound_Title"]"
                     Subtitle="@L["InventoryStore_NotFound_Description"]"
                     Icon="@Icons.Material.Outlined.ShoppingBag"
@@ -20,7 +20,7 @@
         </InventoryGrid>
     </ChildContent>
     <Loading>
-        <InventoryGrid Inventories="@(Enumerable.Range(0, 4).ToArray())" ColumnSize="Size.Large">
+        <InventoryGrid Inventories="@(Enumerable.Range(0, 12).ToArray())" ColumnSize="Size.Large">
             <InventorySkeletonCard>
                 <div class="d-flex justify-space-between align-center mt-6">
                     <MudSkeleton SkeletonType="SkeletonType.Circle" Width="24px" Height="24px"/>

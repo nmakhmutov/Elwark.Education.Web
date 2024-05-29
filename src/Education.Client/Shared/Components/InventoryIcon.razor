@@ -1,0 +1,26 @@
+<div class="d-flex align-center justify-center mud-background rounded @Class">
+    <div class="container relative pa-3">
+        <img class="image" src="@ImageUrl" alt="@Title"/>
+        @if (Quantity.HasValue)
+        {
+            <div class="quantity">
+                <MetricNumber Value="@Quantity.Value" Typo="Typo.body2"/>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public required string ImageUrl { get; set; }
+
+    [Parameter, EditorRequired]
+    public required string Title { get; set; }
+
+    [Parameter]
+    public uint? Quantity { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+}

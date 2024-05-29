@@ -1,13 +1,5 @@
 <section class="mud-paper d-flex flex-column pa-3 @Class">
-    <div class="mud-background rounded-lg relative mb-3">
-        <div class="d-flex justify-center align-center px-6 @(Quantity.HasValue ? "py-6" : "py-9")">
-            <img class="image" src="@IconUrl" alt="@Title" loading="lazy"/>
-        </div>
-        @if (Quantity.HasValue)
-        {
-            <MetricNumber Value="@Quantity.Value" Typo="Typo.subtitle2" Align="Align.Center"/>
-        }
-    </div>
+    <InventoryIcon Class="px-3 py-6 mb-3" ImageUrl="@IconUrl" Title="@Title" Quantity="@Quantity"/>
 
     @if (!string.IsNullOrEmpty(Subtitle))
     {

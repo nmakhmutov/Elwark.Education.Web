@@ -1,0 +1,29 @@
+<MudList Clickable Dense>
+    @foreach (var inventory in Inventories)
+    {
+        <MudListItem OnClick="@(() => OnInventoryClick.InvokeAsync(inventory))">
+            <div class="d-flex align-center gap-3">
+                <InventoryIcon ImageUrl="@inventory.ImageUrl" Title="@inventory.Title" Quantity="@inventory.Quantity"/>
+
+                <div class="overflow-hidden">
+                    <MudText Typo="Typo.subtitle1">
+                        @inventory.Title
+                    </MudText>
+                    <MudText Class="one-line-text mud-text-secondary" Typo="Typo.body2">
+                        @inventory.Overview
+                    </MudText>
+                </div>
+            </div>
+        </MudListItem>
+    }
+</MudList>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public required BackpackInventoryModel[] Inventories { get; set; }
+
+    [Parameter]
+    public EventCallback<BackpackInventoryModel> OnInventoryClick { get; set; }
+
+}

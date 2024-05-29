@@ -1,39 +1,78 @@
-.grid {
+.container {
     display: grid;
-    gap: 12px;
-    grid-template-columns: 100%;
-    align-items: start;
+    grid-template-columns: 320px 1fr;
+    grid-template-rows: auto 1fr;
+    height: calc(100vh - var(--mud-appbar-height));
+    overflow-x: hidden;
+}
+
+.inventories {
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    grid-row: 1 / -1;
+}
+
+.details {
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.details,
+.inventories,
+.profile {
+    transition: transform 0.2s, opacity 0.1s;
+}
+
+@media (max-width: 960px) {
+    .container {
+        grid-row-gap: 12px;
+        grid-template-columns: 100% 100%;
+    }
+
+    .container.inventories-mode .profile,
+    .container.inventories-mode .details {
+        transform: translateX(100%);
+        transition-timing-function: ease-in;
+        opacity: 0;
+    }
+
+    .container.inventories-mode .inventories {
+        opacity: 1;
+        transition-timing-function: ease-out;
+    }
+
+    .container.details-mode .profile,
+    .container.details-mode .details {
+        transform: translateX(-100%);
+        transition-timing-function: ease-out;
+        opacity: 1;
+    }
+
+    .container.details-mode .inventories {
+        transform: translateX(-100%);
+        transition-timing-function: ease-in;
+        opacity: 0;
+    }
 }
 
 @media (min-width: 600px) {
-    .grid {
-        gap: 24px;
+    .container {
+        grid-row-gap: 24px;
     }
 }
 
 @media (min-width: 960px) {
-    .grid {
-        grid-template-columns: repeat(12, 1fr);
-    }
-
-    .sidebar {
-        grid-column: span 5;
-        position: sticky;
-        top: calc(var(--mud-appbar-height) + 24px);
-        align-self: start;
-    }
-
-    .content {
-        grid-column: span 7;
+    .container {
+        grid-column-gap: 24px;
     }
 }
 
-@media (min-width: 1600px) {
-    .sidebar {
-        grid-column: span 3;
-    }
-
-    .content {
-        grid-column: span 9;
+@media (min-width: 1280px) {
+    .container {
+        grid-template-columns: 380px 1fr;
     }
 }

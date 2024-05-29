@@ -4,7 +4,6 @@ using Education.Client.Features.History.Clients.Flow.Model;
 using Education.Client.Models.Test;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-using MudBlazor;
 
 namespace Education.Client.Features.History.Pages.Flow;
 
@@ -18,12 +17,6 @@ public sealed partial class Page : ComponentBase
 
     [Inject]
     private IHistoryFlowClient FlowClient { get; init; } = default!;
-
-    private List<BreadcrumbItem> Breadcrumbs =>
-    [
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Flow_Title"], null, true)
-    ];
 
     protected override async Task OnInitializedAsync() =>
         _response = await FlowClient.GetAsync();

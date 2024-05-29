@@ -6,41 +6,58 @@
     @L["Backpack_Title"]
 </PageTitle>
 
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
-    <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-        <section class="grid">
-            <article class="content">
-                <InventoryGrid
-                    Inventories="@context.Items"
-                    StoreHref="@HistoryUrl.Store.Index()"
-                    ColumnSize="Size.Medium"
-                    Context="inventory">
-                    <InventoryInfoCard
-                        IconUrl="@inventory.ImageUrl"
-                        Overview="@inventory.Overview"
-                        Quantity="@inventory.Quantity"
-                        Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
-                        Title="@inventory.Title">
-                        <MudButton
-                            Class="mt-3"
-                            Variant="Variant.Outlined"
-                            Color="Color.Primary"
-                            OnClick="@(() => OpenDialogAsync(inventory))"
-                            FullWidth
-                            DisableElevation
-                            DisableRipple>
-                            @L["Button_Details"]
-                        </MudButton>
-                    </InventoryInfoCard>
-                </InventoryGrid>
-            </article>
-            <aside class="sidebar">
-                <ProfileCard
-                    Class="mb-3 mb-sm-6"
-                    Level="@_profile.Level"
-                    Backpack="@_profile.Backpack"
-                    Wallet="@_profile.Wallet"/>
-            </aside>
-        </section>
-    </EduContainer>
+<ApiViewer Result="@_backpack" OnReloadClick="@OnInitializedAsync">
+    <section class="container @_containerClass pa-3 pa-sm-6">
+        <aside class="inventories mud-paper">
+            <InventoryList Inventories="@context.Items" OnInventoryClick="@OnInventorySelected"/>
+        </aside>
+        <header class="d-flex align-center gap-3 pa-3 px-sm-6 profile mud-paper overflow-hidden">
+            <div class="d-md-none">
+                <MudIconButton Icon="@Icons.Material.Outlined.ArrowBack" OnClick="@OnBackClick"/>
+            </div>
+
+            <MudAvatar Class="d-none d-sm-block" Size="Size.Medium" Rounded>
+                <MudImage Src="@Customer.Image" Alt="@Customer.Name"/>
+            </MudAvatar>
+
+            <MudText Class="d-none d-sm-inline-block one-line-text" Typo="Typo.subtitle1">
+                @Customer.Name
+            </MudText>
+
+            <MudSpacer/>
+
+            <div class="d-flex align-center gap-3">
+                @foreach (var (currency, amount) in _profile.Wallet)
+                {
+                    <InternalMoney Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
+                }
+
+                <BackpackOverview Fullness="@_profile.Backpack.Fullness" Capacity="@_profile.Backpack.Capacity"/>
+            </div>
+        </header>
+
+        <article class="details mud-paper pa-3 pa-sm-6">
+            <ApiViewer Result="@_product" Context="product">
+                <div class="d-flex align-center gap-3 mb-3 mb-sm-6">
+                    <InventoryIcon Class="pa-3" ImageUrl="@product.ImageUrl" Title="@product.Title"/>
+
+                    <div class="overflow-hidden">
+                        <MudText Typo="Typo.subtitle1">
+                            @product.Title
+                        </MudText>
+                        <MudText Class="one-line-text mud-text-secondary" Typo="Typo.body2">
+                            @product.Overview
+                        </MudText>
+                    </div>
+                </div>
+
+                <MudTabs Elevation="0" Border>
+                    <MudTabPanel Text="Sell">
+                    </MudTabPanel>
+                    <MudTabPanel Text="Buy">
+                    </MudTabPanel>
+                </MudTabs>
+            </ApiViewer>
+        </article>
+    </section>
 </ApiViewer>
