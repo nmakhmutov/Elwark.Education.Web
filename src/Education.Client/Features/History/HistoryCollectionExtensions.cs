@@ -8,9 +8,9 @@ using Education.Client.Features.History.Clients.Flow;
 using Education.Client.Features.History.Clients.Leaderboard;
 using Education.Client.Features.History.Clients.Learner;
 using Education.Client.Features.History.Clients.Order;
+using Education.Client.Features.History.Clients.Product;
 using Education.Client.Features.History.Clients.Quiz;
 using Education.Client.Features.History.Clients.Search;
-using Education.Client.Features.History.Clients.Store;
 using Education.Client.Features.History.Clients.User;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -33,7 +33,7 @@ internal static class HistoryCollectionExtensions
             .AddScoped<IHistoryLearnerClient, HistoryLearnerService>()
             .AddScoped<IHistoryOrderClient, HistoryOrderService>()
             .AddScoped<IHistorySearchClient, HistorySearchService>()
-            .AddScoped<IHistoryStoreClient, HistoryStoreService>()
+            .AddScoped<IHistoryProductClient, HistoryProductService>()
             .AddScoped<IHistoryQuizClient, HistoryQuizService>()
             .AddScoped<IHistoryUserClient, HistoryUserService>();
 

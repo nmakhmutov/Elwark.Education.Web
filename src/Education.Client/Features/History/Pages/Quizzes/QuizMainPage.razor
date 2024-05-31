@@ -35,7 +35,7 @@
                 <MudText Typo="Typo.h6" Class="mb-3">
                     @L["Quiz_Equipment_Title"]
                 </MudText>
-                <InventoryGrid Inventories="@context.Inventories" StoreHref="@HistoryUrl.Store.Inventory(CategoryType.Quiz)">
+                <InventoryGrid Inventories="@context.Inventories" StoreHref="@HistoryUrl.Store.Index(CategoryType.Quiz)">
                     <ChildContent Context="inventory">
                         <InventoryInfoCard
                             Title="@inventory.Title"
@@ -46,7 +46,7 @@
                     <EmptyContent>
                         <InventoryShortageCard
                             Class="w-max-600"
-                            Href="@HistoryUrl.Store.Inventory(CategoryType.Quiz)"/>
+                            Href="@HistoryUrl.Store.Index(CategoryType.Quiz)"/>
                     </EmptyContent>
                 </InventoryGrid>
             </section>

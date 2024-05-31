@@ -1,6 +1,6 @@
 using Education.Client.Clients;
-using Education.Client.Features.History.Clients.Store;
-using Education.Client.Features.History.Clients.Store.Model;
+using Education.Client.Features.History.Clients.Product;
+using Education.Client.Features.History.Clients.Product.Model;
 using Education.Client.Features.History.Clients.User;
 using Education.Client.Features.History.Clients.User.Model;
 using Education.Client.Models.Inventory;
@@ -25,7 +25,7 @@ public sealed partial class Page : ComponentBase
     private IHistoryUserClient UserClient { get; init; } = default!;
 
     [Inject]
-    private IHistoryStoreClient StoreClient { get; init; } = default!;
+    private IHistoryProductClient ProductClient { get; init; } = default!;
 
     [CascadingParameter]
     public CustomerState Customer { get; init; } = default!;
@@ -55,6 +55,6 @@ public sealed partial class Page : ComponentBase
         _product = ApiResult<ProductOverviewModel>.Loading();
 
         _selectedInventory = inventory;
-        _product = await StoreClient.GetProductAsync(inventory.ProductId);
+        _product = await ProductClient.GetAsync(inventory.ProductId);
     }
 }

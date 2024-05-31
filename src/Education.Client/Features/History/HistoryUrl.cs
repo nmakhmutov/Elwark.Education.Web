@@ -115,16 +115,10 @@ public static class HistoryUrl
         public static string Index() =>
             $"{Root}/store";
 
-        public static string Index(string tab) =>
-            $"{Root}/store?tab={tab}";
-
-        public static string Index(string tab, CategoryType category) =>
+        public static string Index(CategoryType category) =>
             category == CategoryType.None
-                ? $"{Root}/store?tab={tab}"
-                : $"{Root}/store?tab={tab}&category={category.ToFastString().ToLower()}";
-
-        public static string Inventory(CategoryType category) =>
-            Index("inventories", category);
+                ? $"{Root}/store"
+                : $"{Root}/store?category={category.ToFastString().ToLower()}";
     }
 
     public static class User

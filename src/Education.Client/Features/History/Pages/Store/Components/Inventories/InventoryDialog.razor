@@ -1,7 +1,7 @@
 @using Education.Client.Features.History.Clients.Order
 @using Education.Client.Features.History.Clients.Order.Model
 @using Education.Client.Features.History.Clients.Order.Request
-@using Education.Client.Features.History.Clients.Store.Model
+@using Education.Client.Features.History.Clients.Product.Model
 @using Education.Client.Features.History.Clients.User.Model
 <MudDialog
     Class="pa-3 pa-sm-6"
@@ -24,9 +24,9 @@
                         @Product.Overview
                     </MudText>
 
-                    @if (Product.Weight > 0)
+                    @if(Product is Product.SystemModel { Weight: > 0 } inventory)
                     {
-                        <InBackpackCount InventoryId="@Product.InventoryId"/>
+                        <InBackpackCount InventoryId="@inventory.InventoryId"/>
                     }
                 </div>
 
@@ -158,7 +158,7 @@
     private MudDialogInstance MudDialog { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public required ProductInventory Product { get; set; }
+    public required Product Product { get; set; }
 
     [Parameter, EditorRequired]
     public required ProfileModel Profile { get; set; }

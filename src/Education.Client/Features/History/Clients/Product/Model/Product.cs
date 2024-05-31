@@ -1,23 +1,23 @@
 using System.Text.Json.Serialization;
 using Education.Client.Models.Inventory;
 
-namespace Education.Client.Features.History.Clients.Store.Model;
+namespace Education.Client.Features.History.Clients.Product.Model;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type"),
  JsonDerivedType(typeof(SystemModel), "system"),
  JsonDerivedType(typeof(LimitedModel), "limited"),
  JsonDerivedType(typeof(StockedModel), "stocked"),
+ JsonDerivedType(typeof(BundleModel), "bundle"),
  JsonDerivedType(typeof(UpcomingModel), "upcoming")]
-public abstract record ProductInventory(
+public abstract record Product(
     string ProductId,
-    uint InventoryId,
     string Title,
     string Overview,
     string ImageUrl,
     uint Weight,
     PriceModel Selling,
     CategoryType[] Categories
-) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling)
+)
 {
     public sealed record SystemModel(
         string ProductId,
@@ -29,7 +29,7 @@ public abstract record ProductInventory(
         PriceModel Selling,
         PriceModel Purchasing,
         CategoryType[] Categories
-    ) : ProductInventory(ProductId, InventoryId, Title, Overview, ImageUrl, Weight, Selling, Categories);
+    ) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling, Categories);
 
     public sealed record LimitedModel(
         string ProductId,
@@ -41,7 +41,7 @@ public abstract record ProductInventory(
         PriceModel Selling,
         DateTime AvailableUntil,
         CategoryType[] Categories
-    ) : ProductInventory(ProductId, InventoryId, Title, Overview, ImageUrl, Weight, Selling, Categories);
+    ) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling, Categories);
 
     public sealed record StockedModel(
         string ProductId,
@@ -53,10 +53,22 @@ public abstract record ProductInventory(
         PriceModel Selling,
         uint AvailableStock,
         CategoryType[] Categories
-    ) : ProductInventory(ProductId, InventoryId, Title, Overview, ImageUrl, Weight, Selling, Categories);
+    ) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling, Categories);
 
+    public sealed record BundleModel(
+        string ProductId,
+        string Title,
+        string Overview,
+        string ImageUrl,
+        uint Weight,
+        PriceModel Selling,
+        uint? AvailableStock,
+        DateTime? AvailableUntil,
+        UserInventoryModel[] Inventories,
+        CategoryType[] Categories
+    ) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling, Categories);
 
-    internal sealed record UpcomingModel(
+    public sealed record UpcomingModel(
         string ProductId,
         uint InventoryId,
         string Title,
@@ -66,5 +78,5 @@ public abstract record ProductInventory(
         PriceModel Selling,
         uint RequiredLevel,
         CategoryType[] Categories
-    ) : ProductInventory(ProductId, InventoryId, Title, Overview, ImageUrl, Weight, Selling, Categories);
+    ) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling, Categories);
 }

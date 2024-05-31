@@ -6,37 +6,18 @@
     @L["InventoryStore_Title"]
 </PageTitle>
 
-<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+<EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
     <div class="grid">
-        <MudTabs @ref="@_tabs" Class="shopfront" Color="Color.Transparent" TabHeaderClass="mb-3" HeaderPosition="TabHeaderPosition.Before">
-            <Header>
-                <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
-            </Header>
-            <ChildContent>
-                <MudTabPanel
-                    ID="@InventoryTabId"
-                    OnClick="@(() => ChangeTab(InventoryTabId))"
-                    Icon="@Icons.Material.Outlined.Inventory2"
-                    Text="@L["InventoryStore_Catalog_Inventories"]">
-                    <InventoryProducts
-                        Profile="@_profile"
-                        Category="@(Enum.TryParse(Category, true, out CategoryType category) ? category : CategoryType.None)"
-                        CategoryChanged="@(x => ChangeCategory(x))"
-                        IsAffordable="@IsInventoryAffordable"
-                        OnProductPurchased="@UpdateProfileAsync"/>
-                </MudTabPanel>
-                <MudTabPanel
-                    ID="@BundleTabId"
-                    OnClick="@(() => ChangeTab(BundleTabId))"
-                    Icon="@Icons.Material.Outlined.ShoppingBag"
-                    Text="@L["InventoryStore_Catalog_Bundles"]">
-                    <BundleProducts
-                        Profile="@_profile"
-                        IsAffordable="@IsBundleAffordable"
-                        OnProductPurchased="@UpdateProfileAsync"/>
-                </MudTabPanel>
-            </ChildContent>
-        </MudTabs>
+        <div class="shopfront">
+            <PageBreadcrumbsHeader Class="pb-3 pb-sm-6" Items="@Breadcrumbs"/>
+
+            <InventoryProducts
+                Profile="@_profile"
+                Category="@_category"
+                CategoryChanged="@(x => ChangeCategory(x))"
+                IsAffordable="@IsInventoryAffordable"
+                OnProductPurchased="@UpdateProfileAsync"/>
+        </div>
 
         <ProfileCard
             Class="profile"

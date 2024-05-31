@@ -1,4 +1,4 @@
-using Education.Client.Features.History.Clients.Store.Model;
+using Education.Client.Features.History.Clients.Product.Model;
 using Education.Client.Features.History.Clients.User;
 using Education.Client.Features.History.Clients.User.Model;
 using Education.Client.Models.Inventory;
@@ -10,11 +10,8 @@ namespace Education.Client.Features.History.Pages.Store;
 
 public sealed partial class Page : ComponentBase
 {
-    private const string InventoryTabId = "inventories";
-    private const string BundleTabId = "bundles";
-
     private ProfileModel _profile = ProfileModel.Empty;
-    private MudTabs? _tabs;
+    private CategoryType _category;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -24,9 +21,6 @@ public sealed partial class Page : ComponentBase
 
     [Inject]
     private NavigationManager Navigation { get; init; } = default!;
-
-    [SupplyParameterFromQuery]
-    public string? Tab { get; set; }
 
     [SupplyParameterFromQuery]
     public string? Category { get; set; }
@@ -40,11 +34,8 @@ public sealed partial class Page : ComponentBase
     protected override Task OnInitializedAsync() =>
         UpdateProfileAsync();
 
-    protected override void OnParametersSet()
-    {
-        if (!string.IsNullOrEmpty(Tab) && _tabs?.ActivePanel.ID.Equals(Tab) == false)
-            _tabs?.ActivatePanel(Tab);
-    }
+    protected override void OnParametersSet() =>
+        _category = Enum.TryParse(Category, true, out CategoryType category) ? category : CategoryType.None;
 
     private async Task UpdateProfileAsync()
     {
@@ -54,26 +45,17 @@ public sealed partial class Page : ComponentBase
             .UnwrapOrElse(() => ProfileModel.Empty);
     }
 
-    private bool IsInventoryAffordable(ProductInventory inventory) =>
-        IsAffordable(inventory.Selling, inventory.Weight);
-
-    private bool IsBundleAffordable(ProductBundleModel bundle) =>
-        IsAffordable(bundle.Selling, bundle.Weight);
-
-    private bool IsAffordable(PriceModel price, uint weight)
+    private bool IsInventoryAffordable(Product inventory)
     {
-        if (weight > _profile.Backpack.Emptiness)
+        if (inventory.Weight > _profile.Backpack.Emptiness)
             return false;
 
-        if (_profile.Wallet.TryGetValue(price.Total.Currency, out var amount))
-            return amount >= price.Total.Amount;
+        if (_profile.Wallet.TryGetValue(inventory.Selling.Total.Currency, out var amount))
+            return amount >= inventory.Selling.Total.Amount;
 
         return false;
     }
 
-    private void ChangeTab(string tab) =>
-        Navigation.NavigateTo(HistoryUrl.Store.Index(tab));
-
     private void ChangeCategory(CategoryType category) =>
-        Navigation.NavigateTo(HistoryUrl.Store.Index(Tab ?? InventoryTabId, category));
+        Navigation.NavigateTo(HistoryUrl.Store.Index(category));
 }

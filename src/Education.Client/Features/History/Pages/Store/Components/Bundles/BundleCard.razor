@@ -1,5 +1,5 @@
-@using Education.Client.Features.History.Clients.Store.Model
-<article class="mud-paper pa-3">
+@using Education.Client.Features.History.Clients.Product.Model
+<section class="mud-paper d-flex flex-column pa-3">
     <img class="rounded object-cover object-center fluid w-100 mb-3" src="@Bundle.ImageUrl" alt="@Bundle.Title" loading="lazy"/>
 
     <MudText Class="one-line-text mud-text-secondary" Typo="Typo.caption" Title="@Subtitle">
@@ -10,10 +10,12 @@
         @Bundle.Title
     </MudText>
 
+    <MudSpacer/>
+
     <MudBadge Class="w-100 mt-3" Icon="@Icons.Material.Outlined.Lock" Color="@Color.Error" Visible="@ShowLockBadge" Bordered Overlap>
         <PriceButton Price="@Bundle.Selling" OnClick="@(() => OnPurchaseClick.InvokeAsync(Bundle))"/>
     </MudBadge>
-</article>
+</section>
 
 @code {
 
@@ -26,12 +28,12 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required ProductBundleModel Bundle { get; set; }
+    public required Product.BundleModel Bundle { get; set; }
 
     [Parameter, EditorRequired]
     public bool ShowLockBadge { get; set; }
 
     [Parameter]
-    public EventCallback<ProductBundleModel> OnPurchaseClick { get; set; }
+    public EventCallback<Product.BundleModel> OnPurchaseClick { get; set; }
 
 }

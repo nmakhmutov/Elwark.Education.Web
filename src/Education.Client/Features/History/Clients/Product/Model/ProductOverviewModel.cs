@@ -1,4 +1,4 @@
-namespace Education.Client.Features.History.Clients.Store.Model;
+namespace Education.Client.Features.History.Clients.Product.Model;
 
 public sealed record ProductOverviewModel(
     string ProductId,
@@ -8,4 +8,4 @@ public sealed record ProductOverviewModel(
     uint Weight,
     PriceModel Selling,
     PriceModel? Purchasing
-) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling);
+);
