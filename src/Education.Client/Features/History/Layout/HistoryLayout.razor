@@ -7,10 +7,15 @@
         <HistoryDrawer @bind-Open="@_isOpen"/>
 
         <main class="d-flex flex-column flex-grow-1 mud-main-content">
-            @Body
+            <CascadingValue Value="@this">
+                @Body
+            </CascadingValue>
         </main>
 
-        <HistoryFooter/>
+        @if (_showFooter)
+        {
+            <HistoryFooter/>
+        }
 
         <MudScrollToTop>
             <MudFab StartIcon="@Icons.Material.Outlined.KeyboardArrowUp" Color="Color.Primary" Size="Size.Small"/>
@@ -20,8 +25,21 @@
 
 @code {
     private bool _isOpen;
+    private bool _showFooter = true;
 
     private void ToggleDrawer() =>
         _isOpen = !_isOpen;
+
+    public void HideFooter()
+    {
+        _showFooter = false;
+        StateHasChanged();
+    }
+
+    public void ShowFooter()
+    {
+        _showFooter = true;
+        StateHasChanged();
+    }
 
 }

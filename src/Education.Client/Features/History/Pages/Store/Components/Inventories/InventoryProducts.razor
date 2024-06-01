@@ -130,13 +130,14 @@
     protected override async Task OnInitializedAsync()
     {
         _response = await ProductClient.GetAsync();
-        _categories = _response.Map(products => products.SelectMany(x => x.Categories)
-                .Append(CategoryType.None)
-                .Distinct()
-                .Order()
-                .ToArray()
+        _categories = _response.Map(
+                products => products.SelectMany(x => x.Categories)
+                    .Append(CategoryType.None)
+                    .Distinct()
+                    .Order()
+                    .ToArray()
             )
-            .UnwrapOr([]);
+            .UnwrapOrElse(() => []);
     }
 
     private async Task OpenInventoryDialog(Product product)
