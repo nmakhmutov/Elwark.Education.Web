@@ -32,21 +32,13 @@ public sealed partial class ExaminationDetailPage : ComponentBase
     [Parameter]
     public string? Test { get; set; }
 
-    protected override void OnParametersSet() =>
-        _title = Test?.ToLowerInvariant() switch
-        {
-            "easy" => L["Examinations_Easy_Title"],
-            "hard" => L["Examinations_Hard_Title"],
-            _ => L["Error_NotFound"]
-        };
-
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
-        _response = Test?.ToLowerInvariant() switch
+        (_title, _response) = Test?.ToLowerInvariant() switch
         {
-            "easy" => await LearnerClient.GetEasyExaminationStatisticsAsync(),
-            "hard" => await LearnerClient.GetHardExaminationStatisticsAsync(),
-            _ => ApiResult<ExaminationStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404))
+            "easy" => (L["Examinations_Easy_Title"], await LearnerClient.GetEasyExaminationStatisticsAsync()),
+            "hard" => (L["Examinations_Hard_Title"], await LearnerClient.GetHardExaminationStatisticsAsync()),
+            _ => (L["Error_NotFound"], ApiResult<ExaminationStatisticsModel>.Fail(Error.Create(L["Error_NotFound"])))
         };
 
         _progress = _response
@@ -75,8 +67,8 @@ public sealed partial class ExaminationDetailPage : ComponentBase
     private ProgressList.Item[] GetProgress(ExaminationStatisticsModel.ScoreContrastModel contrast) =>
     [
         ProgressList.Item.Create(L["Score_Questions_Title"], contrast.Questions),
-        ProgressList.Item.Create(L["Score_SpeedBonus_Title"], contrast.Speed),
-        ProgressList.Item.Create(L["Score_NoMistakesBonus_Title"], contrast.NoMistakes),
+        ProgressList.Item.Create(L["Score_TimeBonus_Title"], contrast.TimeBonus),
+        ProgressList.Item.Create(L["Score_AccuracyBonus_Title"], contrast.AccuracyBonus),
         ProgressList.Item.Create(L["Score_Total_Title"], contrast.Total)
     ];
 

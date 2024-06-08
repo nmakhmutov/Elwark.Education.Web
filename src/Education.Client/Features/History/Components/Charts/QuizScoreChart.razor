@@ -53,16 +53,16 @@
     private ChartList.Item[] Items =>
     [
         new ChartList.Item(L["Score_Questions_Title"], Score.Questions, HistoryChart.Quiz.Score.Questions),
-        new ChartList.Item(L["Score_SpeedBonus_Title"], Score.Speed, HistoryChart.Quiz.Score.SpeedBonus),
-        new ChartList.Item(L["Score_NoMistakesBonus_Title"], Score.NoMistakes, HistoryChart.Quiz.Score.NoMistakesBonus),
+        new ChartList.Item(L["Score_TimeBonus_Title"], Score.TimeBonus, HistoryChart.Quiz.Score.SpeedBonus),
+        new ChartList.Item(L["Score_AccuracyBonus_Title"], Score.AccuracyBonus, HistoryChart.Quiz.Score.NoMistakesBonus),
         new ChartList.Item(L["Score_Total_Title"], Score.Total, null)
     ];
 
     private Data[] Series =>
     [
         new Data(L["Score_Questions_Title"], Score.Questions),
-        new Data(L["Score_SpeedBonus_Title"], Score.Speed),
-        new Data(L["Score_NoMistakesBonus_Title"], Score.NoMistakes)
+        new Data(L["Score_TimeBonus_Title"], Score.TimeBonus),
+        new Data(L["Score_AccuracyBonus_Title"], Score.AccuracyBonus)
     ];
 
     private sealed record Data(string Name, decimal Value);

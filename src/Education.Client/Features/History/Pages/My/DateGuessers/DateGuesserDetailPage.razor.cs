@@ -40,8 +40,7 @@ public sealed partial class DateGuesserDetailPage : ComponentBase
             "small" => (L["History_DateGuessers_Small"], await LearnerClient.GetSmallDateGuesserStatisticsAsync()),
             "medium" => (L["History_DateGuessers_Medium"], await LearnerClient.GetMediumDateGuesserStatisticsAsync()),
             "large" => (L["History_DateGuessers_Large"], await LearnerClient.GetLargeDateGuesserStatisticsAsync()),
-            _ => (L["Error_NotFound"],
-                ApiResult<DateGuesserStatisticsModel>.Fail(Error.Create(L["Error_NotFound"], 404)))
+            _ => (L["Error_NotFound"], ApiResult<DateGuesserStatisticsModel>.Fail(Error.Create(L["Error_NotFound"])))
         };
 
         _progress = _response

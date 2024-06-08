@@ -13,20 +13,20 @@
     <ApexPointSeries
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
-        Name="@L["Score_SpeedBonus_Title"]"
+        Name="@L["Score_TimeBonus_Title"]"
         Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Score.SpeedBonus })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
-        YValue="@(x => x.Score.Speed)"/>
+        YValue="@(x => x.Score.TimeBonus)"/>
 
     <ApexPointSeries
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
-        Name="@L["Score_NoMistakesBonus_Title"]"
+        Name="@L["Score_AccuracyBonus_Title"]"
         Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Score.NoMistakesBonus })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
-        YValue="@(x => x.Score.NoMistakes)"/>
+        YValue="@(x => x.Score.AccuracyBonus)"/>
 </ApexChart>
 
 @code {

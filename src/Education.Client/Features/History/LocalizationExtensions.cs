@@ -31,7 +31,7 @@ internal static class LocalizationExtensions
         localizer[$"InternalMoney_{currency}"];
 
     public static string GetInventoryCategoryTitle(this IStringLocalizer localizer, CategoryType type) =>
-        localizer[$"History_Inventory_Category_{type}"];
+        localizer[type == CategoryType.None ? "History_Inventory_Category_All" : $"History_Inventory_Category_{type}"];
 
     public static string GetInventoryCategoryTitles(this IStringLocalizer localizer, IEnumerable<CategoryType> types)
     {

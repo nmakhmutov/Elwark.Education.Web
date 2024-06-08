@@ -17,8 +17,7 @@ internal abstract class ApiClient
     private readonly AuthenticationStateProvider _provider;
 
     protected ApiClient(ApiAnonymousClient anonymous, ApiAuthenticatedClient authenticated,
-        AuthenticationStateProvider provider, IStringLocalizer localizer,
-        JsonSerializerOptions options)
+        AuthenticationStateProvider provider, IStringLocalizer localizer, JsonSerializerOptions options)
     {
         _anonymous = anonymous;
         _authenticated = authenticated;
@@ -102,7 +101,7 @@ internal abstract class ApiClient
 
                 (403, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error_AccessDenied"], 403)),
 
-                (404, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error_NotFound"], 404)),
+                (404, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error_NotFound"])),
 
                 (_, false) => ApiResult<T>.Fail(Error.Create(_localizer["Error_InternalServerError"], 500)),
 
@@ -122,9 +121,9 @@ internal abstract class ApiClient
         {
             return ApiResult<T>.Fail(Error.Create(_localizer["Error_RequestTimeout"], 408));
         }
-        catch (Exception ex)
+        catch
         {
-            return ApiResult<T>.Fail(Error.Create(_localizer["Error_BadGateway"], 502, ex.Message));
+            return ApiResult<T>.Fail(Error.Create(_localizer["Error_BadGateway"], 502));
         }
     }
 }

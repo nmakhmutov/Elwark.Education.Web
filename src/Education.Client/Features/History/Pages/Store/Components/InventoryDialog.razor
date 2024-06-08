@@ -10,30 +10,28 @@
     DefaultFocus="DefaultFocus.Element"
     DisableSidePadding>
     <DialogContent>
-        <section class="d-flex gap-3 gap-sm-6 mb-3 mb-sm-6">
-            <div class="mud-background d-flex justify-center align-center rounded-lg relative pa-9">
-                <img class="image" src="@Product.ImageUrl" alt="@Product.Title" loading="lazy"/>
+        <header class="d-flex justify-space-between align-center gap-3">
+            <MudText Typo="Typo.h5" Title="@Product.Title">
+                @Product.Title
+            </MudText>
+
+            <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
+        </header>
+
+        <header class="d-flex gap-3 gap-sm-6 mb-3 mb-sm-6">
+            <InventoryIcon Class="pa-6" ImageUrl="@Product.ImageUrl" Title="@Product.Title"/>
+
+            <div class="overview d-flex flex-column">
+                <MudText Class="mb-3" Typo="Typo.body1">
+                    @Product.Overview
+                </MudText>
+
+                @if (Product is Product.SystemModel { Weight: > 0 } inventory)
+                {
+                    <InBackpackCount InventoryId="@inventory.InventoryId"/>
+                }
             </div>
-
-            <header class="d-flex justify-space-between flex-grow-1 align-start">
-                <div class="d-flex flex-column h-100">
-                    <MudText Typo="Typo.h5" Title="@Product.Title">
-                        @Product.Title
-                    </MudText>
-                    <MudText Class="flex-grow-1" Typo="Typo.body1">
-                        @Product.Overview
-                    </MudText>
-
-                    @if(Product is Product.SystemModel { Weight: > 0 } inventory)
-                    {
-                        <InBackpackCount InventoryId="@inventory.InventoryId"/>
-                    }
-                </div>
-
-                <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
-            </header>
-
-        </section>
+        </header>
 
         @if (_status is null)
         {

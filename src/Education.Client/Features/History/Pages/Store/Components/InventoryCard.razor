@@ -1,0 +1,53 @@
+@using Education.Client.Features.History.Clients.Product.Model
+<section class="d-flex mud-paper @Class gap-3 pa-3">
+    <aside class="image">
+        <InventoryIcon Class="icon pa-6" ImageUrl="@IconUrl" Title="@Title" Size="Size.Large"/>
+    </aside>
+
+    <article class="d-flex flex-column flex-grow-1 overflow-hidden">
+        <MudText Class="one-line-text" Typo="Typo.subtitle1" Title="@Title">
+            @Title
+        </MudText>
+
+        <MudText Class="one-line-text mud-text-secondary" Typo="Typo.body2" Title="@Subtitle">
+            @Subtitle
+        </MudText>
+
+        <MudText Class="overview" Typo="Typo.body1" Title="@Overview">
+            @Overview
+        </MudText>
+
+        <MudSpacer/>
+
+        <footer class="d-flex justify-space-between gap-3">
+            <PriceTag Price="@Price"/>
+
+            @ChildContent
+        </footer>
+    </article>
+</section>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public required string Title { get; set; }
+
+    [Parameter]
+    public required string Subtitle { get; set; }
+
+    [Parameter, EditorRequired]
+    public required string Overview { get; set; }
+
+    [Parameter, EditorRequired]
+    public required string IconUrl { get; set; }
+
+    [Parameter, EditorRequired]
+    public required PriceModel Price { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

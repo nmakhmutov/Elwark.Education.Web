@@ -1,4 +1,5 @@
 @page "/history/store"
+@using Education.Client.Features.History.Clients.Product.Model
 @layout HistoryLayout
 @attribute [Authorize]
 
@@ -6,28 +7,156 @@
     @L["InventoryStore_Title"]
 </PageTitle>
 
-<EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1920">
-    <div class="grid">
-        <div class="shopfront">
-            <PageBreadcrumbsHeader Class="pb-3 pb-sm-6" Items="@Breadcrumbs"/>
+<EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
+    <div class="d-flex justify-space-between align-center flex-wrap gap-3 gap-sm-6">
+        <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 
-            <InventoryProducts
-                Profile="@_profile"
-                Category="@_category"
-                CategoryChanged="@(x => ChangeCategory(x))"
-                IsAffordable="@IsInventoryAffordable"
-                OnProductPurchased="@UpdateProfileAsync"/>
-        </div>
+        <section class="d-flex align-center gap-3">
+            @foreach (var (currency, amount) in _profile.Wallet)
+            {
+                <InternalMoney Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
+            }
 
-        <ProfileCard
-            Class="profile"
-            Level="@_profile.Level"
-            Backpack="@_profile.Backpack"
-            Wallet="@_profile.Wallet"/>
-
-        <ExchangeCard
-            Class="exchange"
-            Wallet="@_profile.Wallet"
-            OnExchanged="@UpdateProfileAsync"/>
+            <BackpackOverview Fullness="@_profile.Backpack.Fullness" Capacity="@_profile.Backpack.Capacity"/>
+        </section>
     </div>
+</EduContainer>
+
+<EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
+    <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+        <ChildContent>
+            <MudChipSet Class="mb-3 mb-sm-6" Mandatory Filter>
+                @foreach (var category in _categories)
+                {
+                    <MudChip
+                        Class="px-6"
+                        Value="@category"
+                        Text="@L.GetInventoryCategoryTitle(category)"
+                        Color="Color.Primary"
+                        SelectedColor="Color.Secondary"
+                        Variant="Variant.Outlined"
+                        OnClick=@(() => ChangeCategory(category))
+                        Default="@(category == _category)"/>
+                }
+            </MudChipSet>
+
+            <section class="products">
+                @foreach (var group in context.Filter(_category).Sort())
+                {
+                    <MudText Class="grid-column-full border-b mud-border-lines-default" Typo="Typo.h5">
+                        @L[$"InventoryStore_Catalog_{group.Key}"]
+                    </MudText>
+
+                    @foreach (var inventory in group)
+                    {
+                        switch (inventory)
+                        {
+                            case Product.SystemModel system:
+                                <InventoryCard
+                                    Class="inventory"
+                                    Title="@system.Title"
+                                    Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
+                                    Overview="@system.Overview"
+                                    IconUrl="@system.ImageUrl"
+                                    Price="system.Selling">
+                                    <MudBadge
+                                        Icon="@Icons.Material.Outlined.Lock"
+                                        Color="@Color.Error"
+                                        Visible="@(!IsAffordable(system))"
+                                        Bordered
+                                        Overlap>
+                                        <MudButton
+                                            Class="text-transform-none"
+                                            Variant="Variant.Filled"
+                                            Color="Color.Primary"
+                                            OnClick="@(() => OpenInventoryDialog(system))"
+                                            DisableElevation
+                                            DisableRipple
+                                            FullWidth>
+                                            @L["Button_Details"]
+                                        </MudButton>
+                                    </MudBadge>
+                                </InventoryCard>
+                                break;
+
+                            case Product.BundleModel bundle:
+                                <BundleCard Class="bundle" Bundle="@bundle">
+                                    <MudBadge
+                                        Icon="@Icons.Material.Outlined.Lock"
+                                        Color="@Color.Error"
+                                        Visible="@(!IsAffordable(bundle))"
+                                        Bordered
+                                        Overlap>
+                                        <MudButton
+                                            Class="text-transform-none"
+                                            Variant="Variant.Filled"
+                                            Color="Color.Primary"
+                                            OnClick="@(() => OpenBundleDialog(bundle))"
+                                            DisableElevation
+                                            DisableRipple
+                                            FullWidth>
+                                            @L["Button_Details"]
+                                        </MudButton>
+                                    </MudBadge>
+                                </BundleCard>
+                                break;
+
+                            case Product.UpcomingModel upcoming:
+                                <InventoryCard
+                                    Class="inventory"
+                                    Title="@upcoming.Title"
+                                    Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
+                                    Overview="@upcoming.Overview"
+                                    IconUrl="@upcoming.ImageUrl"
+                                    Price="upcoming.Selling">
+                                    <MudAlert
+                                        Class="mt-3"
+                                        Severity="Severity.Info"
+                                        ContentAlignment="HorizontalAlignment.Center"
+                                        NoIcon
+                                        Dense>
+                                        @L["InventoryStore_UnlockedAtLevel", upcoming.RequiredLevel]
+                                    </MudAlert>
+                                </InventoryCard>
+                                break;
+                        }
+                    }
+                }
+            </section>
+        </ChildContent>
+        <Loading>
+            <div class="d-flex gap-3 mb-3 mb-sm-6">
+                <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="34px"/>
+                <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="34px"/>
+                <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="34px"/>
+                <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="34px"/>
+                <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="34px"/>
+            </div>
+            <InventoryGrid Inventories="@(Enumerable.Range(0, 12).ToArray())" ColumnSize="Size.Medium">
+                <InventorySkeletonCard>
+                    <div class="d-flex justify-space-between align-center mt-6">
+                        <MudSkeleton SkeletonType="SkeletonType.Circle" Width="24px" Height="24px"/>
+                        <MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Variant="Variant.Filled" Disabled/>
+                    </div>
+                </InventorySkeletonCard>
+            </InventoryGrid>
+        </Loading>
+    </ApiViewer>
+    @* <InventoryProducts *@
+    @*     Profile="@_profile" *@
+    @*     Category="@_category" *@
+    @*     CategoryChanged="@(x => ChangeCategory(x))" *@
+    @*     IsAffordable="@IsInventoryAffordable" *@
+    @*     OnProductPurchased="@UpdateProfileAsync"/> *@
+
+    @* <ProfileCard *@
+    @*     Class="profile" *@
+    @*     Level="@_profile.Level" *@
+    @*     Backpack="@_profile.Backpack" *@
+    @*     Wallet="@_profile.Wallet"/> *@
+
+    @* <ExchangeCard *@
+    @*     Class="exchange" *@
+    @*     Wallet="@_profile.Wallet" *@
+    @*     OnExchanged="@UpdateProfileAsync"/> *@
 </EduContainer>

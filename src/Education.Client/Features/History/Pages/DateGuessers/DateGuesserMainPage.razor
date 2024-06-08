@@ -14,15 +14,15 @@
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
             <section class="builder">
-                <MudText Typo="Typo.h6" Class="mb-3">
+                <MudText Class="mb-3" Typo="Typo.h6">
                     @L["History_Epoch_Title"]
                 </MudText>
                 <EpochRadioGroup
+                    Class="mb-3 mb-sm-6"
                     SelectedEpoch="@_settings.Epoch"
-                    SelectedEpochChanged="@OnEpochChanged"
-                    Class="mb-3 mb-sm-6"/>
+                    SelectedEpochChanged="@ChangeEpochAsync"/>
 
-                <MudText Typo="Typo.h6" Class="mb-3">
+                <MudText Class="mb-3" Typo="Typo.h6">
                     @L["History_DateGuesser_Type_Title"]
                 </MudText>
 
@@ -32,14 +32,13 @@
             </section>
 
             <section class="inventory">
-                <MudText Typo="Typo.h6" Class="mb-3">
+                <MudText Class="mb-3" Typo="Typo.h6">
                     @L["History_DateGuesser_Equipment"]
                 </MudText>
                 <InventoryGrid
                     Inventories="@context.Inventories"
-                    StoreHref="@HistoryUrl.Store.Index(CategoryType.DateGuesser)"
-                    Context="inventory">
-                    <ChildContent>
+                    StoreHref="@HistoryUrl.Store.Index(CategoryType.DateGuesser)">
+                    <ChildContent Context="inventory">
                         <InventoryInfoCard
                             Title="@inventory.Title"
                             Overview="@inventory.Overview"

@@ -1,48 +1,48 @@
-.grid {
-    display: flex;
-    flex-direction: column;
+.products {
+    display: grid;
     gap: 12px;
+    grid-template-columns: 100%;
 }
 
 @media (min-width: 600px) {
-    .grid {
+    .products {
         gap: 24px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .products ::deep .inventory {
+        grid-column: span 2;
     }
 }
 
 @media (min-width: 960px) {
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+    .products {
+        grid-template-columns: repeat(12, minmax(40px, 1fr));
     }
 
-    .shopfront {
-        grid-column: 1/-1;
+    .products ::deep .bundle {
+        grid-column: span 4;
+    }
+
+    .products ::deep .inventory {
+        grid-column: span 6;
     }
 }
 
 @media (min-width: 1280px) {
-    .grid {
-        grid-template-columns: 2fr 1fr;
-        grid-template-rows: auto auto 1fr;
+    .products ::deep .bundle {
+        grid-column: span 3;
     }
+}
 
-    .shopfront {
-        grid-column: 1;
-        grid-row: 1/-1;
-    }
-
-    ::deep .profile {
-        grid-column: 2;
-    }
-
-    ::deep .exchange {
-        grid-column: 2;
+@media (min-width: 1440px) {
+    .products ::deep .inventory {
+        grid-column: span 4;
     }
 }
 
 @media (min-width: 1600px) {
-    .grid {
-        grid-template-columns: 3fr 1fr;
+    .products ::deep .bundle {
+        grid-column: span 2;
     }
 }

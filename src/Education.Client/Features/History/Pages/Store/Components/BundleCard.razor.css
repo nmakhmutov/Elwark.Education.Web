@@ -1,0 +1,23 @@
+.product {
+    display: grid;
+    gap: 12px;
+    padding: 12px;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr auto;
+}
+
+.header, .image {
+    grid-column: span 2;
+}
+
+::deep .overview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.footer {
+    justify-self: end;
+}

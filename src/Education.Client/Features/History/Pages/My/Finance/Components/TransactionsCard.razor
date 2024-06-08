@@ -6,30 +6,33 @@
     <MudTable
         Items="@Transactions.Take(HasMore && !_showMore ? Quantity : Transactions.Length)"
         Elevation="0"
-        Breakpoint="Breakpoint.None">
+        Breakpoint="Breakpoint.None"
+        Dense>
         <RowTemplate>
+            <MudTd>
+                @if (context.Kind == TransactionKind.Income)
+                {
+                    <MudIcon Icon="@Icons.Material.Outlined.TrendingUp" Color="Color.Success"/>
+                }
+                else
+                {
+                    <MudIcon Icon="@Icons.Material.Outlined.TrendingDown" Color="@Color.Error"/>
+                }
+            </MudTd>
             <MudTd>
                 <MudText Typo="Typo.subtitle1">
                     @context.Title
                 </MudText>
-                <MudText Class="mud-text-secondary" Typo="Typo.body1">
+                <MudText Class="mud-text-secondary" Typo="Typo.body2">
                     @Customer.Humanize(context.Date)
                 </MudText>
             </MudTd>
             <MudTd>
-                @if (context.Kind == TransactionKind.Income)
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Success">
-                        @L["InternalMoney_Income_Title"]
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Error">
-                        @L["InternalMoney_Expense_Title"]
-                    </MudText>
-                }
-                <InternalMonies Monies="@context.Monies" Horizontal/>
+                <InternalMonies
+                    Monies="@context.Monies"
+                    Typo="Typo.body1"
+                    IconSize="Size.Small"
+                    Horizontal/>
             </MudTd>
         </RowTemplate>
     </MudTable>
@@ -44,7 +47,7 @@
 </section>
 
 @code {
-    private const int Quantity = 12;
+    private const int Quantity = 15;
 
     private bool _showMore;
 

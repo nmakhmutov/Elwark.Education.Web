@@ -4,23 +4,39 @@
     @if (_timeLeft.Days > 0)
     {
         <div class="flex-auto mud-paper rounded pa-6 pa-lg-9">
-            <MudText Typo="Typo.h2" Align="Align.Center">@_timeLeft.Days.ToString("00")</MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center">@L["Countdown_Days"]</MudText>
+            <MudText Typo="Typo.h2" Align="Align.Center">
+                @_timeLeft.Days.ToString("00")
+            </MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                @L["Countdown_Days"]
+            </MudText>
         </div>
     }
     <div class="flex-auto mud-paper rounded pa-6 pa-lg-9">
-        <MudText Typo="Typo.h2" Align="Align.Center">@_timeLeft.Hours.ToString("00")</MudText>
-        <MudText Typo="Typo.h6" Align="Align.Center">@L["Countdown_Hours"]</MudText>
+        <MudText Typo="Typo.h2" Align="Align.Center">
+            @_timeLeft.Hours.ToString("00")
+        </MudText>
+        <MudText Typo="Typo.h6" Align="Align.Center">
+            @L["Countdown_Hours"]
+        </MudText>
     </div>
     <div class="flex-auto mud-paper rounded pa-6 pa-lg-9">
-        <MudText Typo="Typo.h2" Align="Align.Center">@_timeLeft.Minutes.ToString("00")</MudText>
-        <MudText Typo="Typo.h6" Align="Align.Center">@L["Countdown_Minutes"]</MudText>
+        <MudText Typo="Typo.h2" Align="Align.Center">
+            @_timeLeft.Minutes.ToString("00")
+        </MudText>
+        <MudText Typo="Typo.h6" Align="Align.Center">
+            @L["Countdown_Minutes"]
+        </MudText>
     </div>
     @if (_timeLeft.Days == 0)
     {
         <div class="flex-auto mud-paper rounded pa-6 pa-lg-9">
-            <MudText Typo="Typo.h2" Align="Align.Center">@_timeLeft.Seconds.ToString("00")</MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center">@L["Countdown_Seconds"]</MudText>
+            <MudText Typo="Typo.h2" Align="Align.Center">
+                @_timeLeft.Seconds.ToString("00")
+            </MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                @L["Countdown_Seconds"]
+            </MudText>
         </div>
     }
 </div>
@@ -36,31 +52,26 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public DateTime Date { get; set; }
+    public DateTime Deadline { get; set; }
 
-    protected override void OnParametersSet() =>
+    protected override Task OnInitializedAsync() =>
         InvokeAsync(async () =>
         {
-            _timeLeft = Date - DateTime.UtcNow;
-            var lastMinute = _timeLeft.Minutes;
+            UpdateRemainingTime();
 
             while (await _timer.WaitForNextTickAsync())
             {
-                _timeLeft = Date - DateTime.UtcNow;
+                UpdateRemainingTime();
+
+                StateHasChanged();
+
                 if (TimeSpan.Zero >= _timeLeft)
                     break;
-
-                if (_timeLeft.Days > 0 && lastMinute == _timeLeft.Minutes)
-                    continue;
-
-                lastMinute = _timeLeft.Minutes;
-                StateHasChanged();
             }
-
-            _timeLeft = TimeSpan.Zero;
-
-            StateHasChanged();
         });
+
+    private void UpdateRemainingTime() =>
+        _timeLeft = new TimeSpan(Deadline.Ticks - DateTime.UtcNow.Ticks / TimeSpan.TicksPerSecond * TimeSpan.TicksPerSecond);
 
     public void Dispose() =>
         _timer.Dispose();

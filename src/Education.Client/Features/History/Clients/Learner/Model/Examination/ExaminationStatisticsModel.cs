@@ -22,10 +22,10 @@ public sealed record ExaminationStatisticsModel(
     );
 
     public sealed record ScoreContrastModel(
-        DeltaModel<ulong> Total,
         DeltaModel<uint> Questions,
-        DeltaModel<uint> NoMistakes,
-        DeltaModel<uint> Speed
+        DeltaModel<uint> AccuracyBonus,
+        DeltaModel<uint> TimeBonus,
+        DeltaModel<ulong> Total
     );
 
     public sealed record AnswerRatioContrastModel(

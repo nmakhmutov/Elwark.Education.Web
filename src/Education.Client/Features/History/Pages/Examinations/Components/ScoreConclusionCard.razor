@@ -35,19 +35,19 @@
                 <li class="row">
                     <span class="dot" style="background-color: @HistoryChart.Quiz.Score.SpeedBonus"></span>
                     <MudText Class="mr-3 mr-sm-6" Typo="Typo.subtitle1">
-                        @L["Score_SpeedBonus_Title"]
+                        @L["Score_TimeBonus_Title"]
                     </MudText>
                     <MudText Class="ml-auto" Typo="Typo.body1">
-                        @Conclusion.SpeedScore.Value / @Conclusion.SpeedScore.Total
+                        @Conclusion.TimeBonus.Value / @Conclusion.TimeBonus.Total
                     </MudText>
                 </li>
                 <li class="row">
                     <span class="dot" style="background-color: @HistoryChart.Quiz.Score.NoMistakesBonus"></span>
                     <MudText Class="mr-3 mr-sm-6" Typo="Typo.subtitle1">
-                        @L["Score_NoMistakesBonus_Title"]
+                        @L["Score_AccuracyBonus_Title"]
                     </MudText>
                     <MudText Class="ml-auto" Typo="Typo.body1">
-                        @Conclusion.NoMistakeScore.Value / @Conclusion.NoMistakeScore.Total
+                        @Conclusion.AccuracyBonus.Value / @Conclusion.AccuracyBonus.Total
                     </MudText>
                 </li>
                 <li class="row">
@@ -133,8 +133,8 @@
     private Data[] Series =>
     [
         new Data(L["Score_Questions_Title"], Conclusion.QuestionScore.Value),
-        new Data(L["Score_SpeedBonus_Title"], Conclusion.SpeedScore.Value),
-        new Data(L["Score_NoMistakesBonus_Title"], Conclusion.NoMistakeScore.Value),
+        new Data(L["Score_TimeBonus_Title"], Conclusion.TimeBonus.Value),
+        new Data(L["Score_AccuracyBonus_Title"], Conclusion.AccuracyBonus.Value),
         new Data(L["Score_MistakeDeductions_Title"], Conclusion.TotalScore.Total - Conclusion.TotalScore.Value)
     ];
 

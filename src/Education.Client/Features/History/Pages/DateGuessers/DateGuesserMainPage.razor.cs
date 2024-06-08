@@ -57,7 +57,7 @@ public sealed partial class DateGuesserMainPage : ComponentBase
         );
     }
 
-    private async Task OnEpochChanged(EpochType epoch)
+    private async Task ChangeEpochAsync(EpochType epoch)
     {
         _settings = new Settings(epoch);
 

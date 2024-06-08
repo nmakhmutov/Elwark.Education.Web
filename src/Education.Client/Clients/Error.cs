@@ -14,15 +14,14 @@ public sealed record Error
     public string? Detail { get; init; }
 
     [JsonExtensionData]
-    public IDictionary<string, JsonElement> Payload { get; set; } =
+    public IDictionary<string, JsonElement> Payload { get; init; } =
         new Dictionary<string, JsonElement>(StringComparer.OrdinalIgnoreCase);
 
-    public static Error Create(string title, int status, string? detail = null) =>
+    public static Error Create(string title, int status = 404) =>
         new()
         {
             Type = "Client:Error",
             Title = title,
-            Status = status,
-            Detail = detail
+            Status = status
         };
 }
