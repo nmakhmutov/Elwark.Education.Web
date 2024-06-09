@@ -3,62 +3,69 @@
 @implements IDisposable
 
 <MudBadge Color="Color.Secondary" Visible="@NotificationService.HasNotifications" Dot Overlap>
-    <MudHidden Breakpoint="Breakpoint.SmAndUp">
-        <MudIconButton Icon="@Icon" Color="Color.Inherit" Href="@CustomerUrl.Notifications" aria-label="@L["Notifications_Title"]"/>
-    </MudHidden>
-
-    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert>
-        <MudMenu ListClass="pa-0" Icon="@Icon" Color="Color.Inherit" AnchorOrigin="Origin.TopRight" DisableRipple>
-            <section class="wrapper">
-                <header class="d-flex justify-space-between align-center pa-3">
-                    <MudText Typo="Typo.subtitle1">
-                        @L["Notifications_Title"]
-                    </MudText>
-                    <MudButton
-                        Class="no-transform"
-                        Variant="Variant.Text"
-                        Color="Color.Primary"
-                        Size="Size.Small"
-                        StartIcon="@Icons.Material.Outlined.DoneAll"
-                        Disabled="@(!NotificationService.HasNotifications)"
-                        OnClick="@NotificationService.MarkAllAsReadAsync">
-                        @L["Notifications_MarkAsRead"]
-                    </MudButton>
-                </header>
-
-                @if (NotificationService.HasNotifications)
-                {
-                    foreach (var notification in NotificationService.LastNotifications)
-                    {
-                        <MudDivider/>
-
-                        <MudMenuItem Class="pa-3" Href="@notification.Href">
-                            <NotificationBlock Notification="@notification" DisableTitleLink/>
-                        </MudMenuItem>
-                    }
-
-                    <MudDivider/>
-
-                    <footer class="d-flex justify-center py-3">
-                        <MudLink Class="no-transform" Href="@CustomerUrl.Notifications" Typo="Typo.subtitle2">
-                            @L["Notifications_All"]
-                        </MudLink>
-                    </footer>
-                }
-                else
-                {
-                    <section class="d-flex justify-center align-center py-6">
-                        <MudText Class="mud-text-secondary my-12">
-                            @L["Notifications_NothingNew"]
-                        </MudText>
-                    </section>
-                }
-            </section>
-        </MudMenu>
-    </MudHidden>
+    <MudIconButton OnClick="@ToggleDrawer" Icon="@Icon" Color="Color.Inherit" aria-label="@L["Notifications_Title"]"/>
 </MudBadge>
 
+<MudOverlay @bind-Visible="@_open" LockScroll AutoClose/>
+
+<MudDrawer @bind-Open="@_open" Anchor="Anchor.End" Elevation="0" Variant="@DrawerVariant.Temporary" Width="380px">
+    <header class="d-flex align-center pa-3">
+        <MudText Typo="Typo.h6">
+            @L["Notifications_Title"]
+        </MudText>
+
+        <MudSpacer/>
+
+        <MudTooltip Text="@L["Notifications_MarkAsRead"]">
+            <MudIconButton
+                Icon="@Icons.Material.Outlined.DoneAll"
+                Disabled="@(!NotificationService.HasNotifications)"
+                OnClick="@NotificationService.MarkAllAsReadAsync">
+            </MudIconButton>
+        </MudTooltip>
+
+        <MudIconButton OnClick="@ToggleDrawer" Icon="@Icons.Material.Outlined.Close"/>
+    </header>
+
+    <section class="content">
+        @if (NotificationService.HasNotifications)
+        {
+            <MudList DisablePadding Clickable Dense>
+                @foreach (var notification in NotificationService.LastNotifications)
+                {
+                    <MudDivider/>
+
+                    <MudListItem Class="pa-3" OnClick="@(() => OpenNotification(notification.Href))">
+                        <NotificationBlock Notification="@notification" DisableTitleLink/>
+                    </MudListItem>
+                }
+            </MudList>
+        }
+        else
+        {
+            <section class="d-flex justify-center align-center py-6">
+                <MudText Class="mud-text-secondary my-12">
+                    @L["Notifications_NothingNew"]
+                </MudText>
+            </section>
+        }
+    </section>
+
+    <footer class="border-1 border-t mud-border-lines-default pa-3">
+        <MudButton
+            Class="text-transform-none"
+            Variant="Variant.Text"
+            Color="Color.Primary"
+            Href="@CustomerUrl.Notifications"
+            Size="Size.Large"
+            FullWidth>
+            @L["Notifications_All"]
+        </MudButton>
+    </footer>
+</MudDrawer>
+
 @code {
+    private bool _open;
     private IDisposable? _subscription;
 
     [Inject]
@@ -67,6 +74,9 @@
     [Inject]
     private INotificationService NotificationService { get; init; } = default!;
 
+    [Inject]
+    private NavigationManager Navigation { get; init; } = default!;
+
     private string Icon =>
         NotificationService.HasNotifications
             ? Icons.Material.Outlined.NotificationsActive
@@ -74,6 +84,15 @@
 
     protected override void OnInitialized() =>
         _subscription = NotificationService.NotifyOnChange(EventCallback.Factory.Create(this, StateHasChanged));
+
+    private void ToggleDrawer() =>
+        _open = !_open;
+
+    private void OpenNotification(string href)
+    {
+        ToggleDrawer();
+        Navigation.NavigateTo(href);
+    }
 
     public void Dispose() =>
         _subscription?.Dispose();

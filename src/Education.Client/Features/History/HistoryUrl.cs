@@ -108,6 +108,9 @@ public static class HistoryUrl
 
         public static string Monthly(DateOnly month) =>
             $"{Root}/leaderboards/monthly?month={month.ToString("O")}";
+
+        public static string Monthly(string month) =>
+            $"{Root}/leaderboards/monthly?month={month}";
     }
 
     public static class Store

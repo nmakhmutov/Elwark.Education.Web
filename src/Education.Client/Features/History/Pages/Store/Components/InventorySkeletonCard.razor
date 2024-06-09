@@ -1,0 +1,27 @@
+<section class="d-flex mud-paper @Class gap-3 pa-3">
+    <aside class="image">
+        <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="140px" Height="140px"/>
+    </aside>
+
+    <article class="d-flex flex-column flex-grow-1 overflow-hidden">
+        <MudSkeleton SkeletonType="SkeletonType.Text"/>
+
+        <MudSkeleton SkeletonType="SkeletonType.Text" Width="20%"/>
+
+        <MudSkeleton SkeletonType="SkeletonType.Text" Width="50%"/>
+
+        <MudSpacer/>
+
+        <footer class="d-flex justify-space-between gap-3">
+            <MudSkeleton SkeletonType="SkeletonType.Circle" Width="24px" Height="24px"/>
+            <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="100px" Height="28px"/>
+        </footer>
+    </article>
+</section>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

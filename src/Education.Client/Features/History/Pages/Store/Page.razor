@@ -132,14 +132,17 @@
                 <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="34px"/>
                 <MudSkeleton Class="rounded" SkeletonType="SkeletonType.Rectangle" Width="92px" Height="34px"/>
             </div>
-            <InventoryGrid Inventories="@(Enumerable.Range(0, 12).ToArray())" ColumnSize="Size.Medium">
-                <InventorySkeletonCard>
-                    <div class="d-flex justify-space-between align-center mt-6">
-                        <MudSkeleton SkeletonType="SkeletonType.Circle" Width="24px" Height="24px"/>
-                        <MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Variant="Variant.Filled" Disabled/>
-                    </div>
-                </InventorySkeletonCard>
-            </InventoryGrid>
+
+            <section class="products">
+                <div class="grid-column-full border-b mud-border-lines-default">
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Width="20%" Height="32px"/>
+                </div>
+
+                @for (var i = 0; i < 12; i++)
+                {
+                    <InventorySkeletonCard Class="inventory"/>
+                }
+            </section>
         </Loading>
     </ApiViewer>
     @* <InventoryProducts *@

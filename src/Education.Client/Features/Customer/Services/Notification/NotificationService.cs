@@ -11,7 +11,7 @@ namespace Education.Client.Features.Customer.Services.Notification;
 
 internal sealed class NotificationService : INotificationService
 {
-    private const int MaxNotifications = 4;
+    private const int MaxNotifications = 10;
 
     private readonly CustomerApiClient _api;
     private readonly CustomerHub _hub;

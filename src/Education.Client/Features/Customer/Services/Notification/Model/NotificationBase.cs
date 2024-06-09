@@ -6,7 +6,6 @@ namespace Education.Client.Features.Customer.Services.Notification.Model;
 public abstract record NotificationBase
 {
     private readonly List<InternalMoneyModel> _money;
-    private readonly IReadOnlyDictionary<string, string> _payload;
 
     protected NotificationBase(
         string subject,
@@ -22,34 +21,9 @@ public abstract record NotificationBase
         Title = title;
         Message = message;
         CreatedAt = createdAt;
-
-        _payload = payload;
         _money = [];
 
-        DisassemblePayload();
-    }
-
-    public string Subject { get; }
-
-    public string Module { get; }
-
-    public string Title { get; }
-
-    public string Message { get; }
-
-    public DateTime CreatedAt { get; }
-
-    public string? Href { get; private set; }
-
-    public bool HasMoney =>
-        _money.Count > 0;
-
-    public IReadOnlyCollection<InternalMoneyModel> Money =>
-        _money.AsReadOnly();
-
-    private void DisassemblePayload()
-    {
-        foreach (var (key, value) in _payload)
+        foreach (var (key, value) in payload)
         {
             if (InternalCurrencyExtensions.ParseValueOrDefault(key) is { } currency)
                 _money.Add(new InternalMoneyModel(currency, uint.Parse(value)));
@@ -67,12 +41,30 @@ public abstract record NotificationBase
                 HistoryUrl.User.MyDashboard,
 
             ("History", "MonthlyLeaderboard") =>
-                HistoryUrl.Leaderboard.Monthly(DateOnly.ParseExact(_payload["month"], "O")),
+                HistoryUrl.Leaderboard.Monthly(payload["month"]),
 
             ("History", "Assignment") =>
-                HistoryUrl.User.MyAssignments(_payload["type"]),
+                HistoryUrl.User.MyAssignments(payload["type"]),
 
-            _ => null
+            _ => EduUrl.Root
         };
     }
+
+    public string Subject { get; }
+
+    public string Module { get; }
+
+    public string Title { get; }
+
+    public string Message { get; }
+
+    public DateTime CreatedAt { get; }
+
+    public string Href { get; private set; }
+
+    public bool HasMoney =>
+        _money.Count > 0;
+
+    public IReadOnlyCollection<InternalMoneyModel> Money =>
+        _money.AsReadOnly();
 }

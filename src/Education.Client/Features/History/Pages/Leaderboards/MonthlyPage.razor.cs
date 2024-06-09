@@ -38,5 +38,5 @@ public sealed partial class MonthlyPage : ComponentBase
         _response = await LeaderboardClient.GetMonthlyAsync(Month);
 
     private void ChangeMonth(DateOnly month) =>
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter(nameof(month), month.ToString("O")));
+        Navigation.NavigateTo(HistoryUrl.Leaderboard.Monthly(month));
 }
