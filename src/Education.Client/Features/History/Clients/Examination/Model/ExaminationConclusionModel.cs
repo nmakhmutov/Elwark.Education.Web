@@ -1,4 +1,3 @@
-using Education.Client.Models;
 using Education.Client.Models.Test;
 
 namespace Education.Client.Features.History.Clients.Examination.Model;
@@ -16,7 +15,7 @@ public sealed record ExaminationConclusionModel(
     PerformanceModel<TimeSpan> TimeSpent,
     ExaminationConclusionModel.MetricsModel Metrics,
     ExaminationConclusionModel.Question[] Questions,
-    InternalMoneyModel[] Rewards
+    Reward[] Rewards
 )
 {
     public sealed record MetricsModel(double AverageScore, double SuccessRate);

@@ -1,13 +1,12 @@
 using System.Collections.Frozen;
 using System.Diagnostics;
 
-namespace Education.Client.Models;
+namespace Education.Client.Features.History.Clients;
 
 public enum InternalCurrency
 {
-    Experience = 1,
-    Denarius = 2,
-    Solidus = 3
+    Denarius = 1,
+    Solidus = 2
 }
 
 internal static class InternalCurrencyExtensions
@@ -15,7 +14,6 @@ internal static class InternalCurrencyExtensions
     private static readonly FrozenDictionary<string, InternalCurrency> Values =
         new Dictionary<string, InternalCurrency>
             {
-                [nameof(InternalCurrency.Experience)] = InternalCurrency.Experience,
                 [nameof(InternalCurrency.Denarius)] = InternalCurrency.Denarius,
                 [nameof(InternalCurrency.Solidus)] = InternalCurrency.Solidus
             }
@@ -32,7 +30,6 @@ internal static class InternalCurrencyExtensions
     public static string GetIcon(this InternalCurrency currency) =>
         currency switch
         {
-            InternalCurrency.Experience => EduIcons.Experience,
             InternalCurrency.Denarius => EduIcons.Denarius,
             InternalCurrency.Solidus => EduIcons.Solidus,
             _ => throw new UnreachableException($"Unknown type {currency} of {nameof(InternalCurrency)}")

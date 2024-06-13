@@ -1,11 +1,9 @@
-using Education.Client.Models;
-
 namespace Education.Client.Features.History.Clients.DateGuesser.Model;
 
 public sealed record DateGuesserConclusionModel(
     uint MaxScore,
     ScoreModel Score,
-    InternalMoneyModel[] Rewards,
+    Reward[] Rewards,
     QuestionModel[] Questions
 );
 

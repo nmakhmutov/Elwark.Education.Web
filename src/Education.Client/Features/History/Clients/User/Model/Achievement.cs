@@ -1,5 +1,3 @@
-using Education.Client.Models;
-
 namespace Education.Client.Features.History.Clients.User.Model;
 
 public abstract record Achievement(string Id, string Title, string Description, string ImageUrl)
@@ -22,7 +20,7 @@ public abstract record Achievement(string Id, string Title, string Description, 
         uint Score,
         uint Threshold,
         uint Completeness,
-        InternalMoneyModel[] Rewards
+        Reward[] Rewards
     ) : Achievement(Id, Title, Description, ImageUrl);
 
     public sealed record ProgressiveModel(
@@ -31,6 +29,6 @@ public abstract record Achievement(string Id, string Title, string Description, 
         string Description,
         string ImageUrl,
         uint Completeness,
-        InternalMoneyModel[] Rewards
+        Reward[] Rewards
     ) : Achievement(Id, Title, Description, ImageUrl);
 }

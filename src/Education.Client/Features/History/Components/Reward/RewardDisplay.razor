@@ -1,0 +1,40 @@
+@switch (Reward)
+{
+    case Reward.ExperienceModel experience:
+        <ExperienceDisplay
+            Class="@Class"
+            Amount="@experience.Amount"
+            Typo="@Typo"
+            IconSize="@IconSize"
+            Horizontal="@Horizontal"/>
+        break;
+
+    case Reward.MoneyModel money:
+        <MoneyDisplay
+            Class="@Class"
+            Currency="@money.Currency"
+            Amount="@money.Amount"
+            Typo="@Typo"
+            IconSize="@IconSize"
+            Horizontal="@Horizontal"/>
+        break;
+}
+
+@code {
+
+    [Parameter, EditorRequired]
+    public required Reward Reward { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.subtitle1;
+
+    [Parameter]
+    public Size IconSize { get; set; } = Size.Small;
+
+    [Parameter]
+    public bool Horizontal { get; set; }
+
+}

@@ -39,6 +39,7 @@ public sealed partial class Page : ComponentBase
                 return flow with
                 {
                     Streak = x.Streak,
+                    Track = x.Track,
                     Bank = x.Bank
                 };
             });
@@ -53,6 +54,7 @@ public sealed partial class Page : ComponentBase
     private async Task OnBankCollect()
     {
         var response = await FlowClient.CollectBankAsync();
+
         _response = response
             .Map(_ => _response.Unwrap() with
             {

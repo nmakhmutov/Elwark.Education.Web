@@ -9,7 +9,7 @@
                         @L["Question_QuantityAndTypes_Title", examination.Question.Quantity, string.Join(", ", examination.Question.Kinds.Select(x => L[$"Question_{x}_Kind"]))]
                     </MudListItem>
                     <MudListItem>
-                        <InternalMonies Typo="Typo.body2" Monies="@examination.Rewards" Horizontal/>
+                        <RewardsDisplay Rewards="@examination.Rewards" Typo="Typo.body2" Horizontal/>
                     </MudListItem>
                 </MudList>
             </ChildContent>

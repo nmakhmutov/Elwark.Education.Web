@@ -1,5 +1,3 @@
-using Education.Client.Models;
-
 namespace Education.Client.Features.History.Clients.User.Model;
 
 public sealed record QuestModel(
@@ -11,5 +9,5 @@ public sealed record QuestModel(
     uint Threshold,
     QuestStatus Status,
     DateTime ExpiresAt,
-    InternalMoneyModel[] Rewards
+    Reward[] Rewards
 );

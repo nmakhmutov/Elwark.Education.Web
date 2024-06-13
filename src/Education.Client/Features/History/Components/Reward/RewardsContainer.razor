@@ -10,11 +10,7 @@
             @foreach (var reward in Rewards)
             {
                 <div class="reward">
-                    <InternalMoney
-                        Currency="@reward.Currency"
-                        Amount="@reward.Amount"
-                        IconSize="Size.Large"
-                        Typo="Typo.h4"/>
+                    <RewardDisplay Reward="@reward" IconSize="Size.Large" Typo="Typo.h4"/>
                 </div>
             }
         </article>
@@ -30,6 +26,6 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public InternalMoneyModel[] Rewards { get; set; } = [];
+    public Reward[] Rewards { get; set; } = [];
 
 }

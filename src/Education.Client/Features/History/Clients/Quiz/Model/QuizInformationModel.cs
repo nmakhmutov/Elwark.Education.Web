@@ -1,4 +1,3 @@
-using Education.Client.Models;
 using Education.Client.Models.Inventory;
 using Education.Client.Models.Test;
 
@@ -9,7 +8,7 @@ public sealed record QuizInformationModel(
     DifficultyType Difficulty,
     QuizInformationModel.QuestionModel Question,
     UserInventoryModel AccessInventory,
-    InternalMoneyModel[] Rewards
+    Reward[] Rewards
 )
 {
     public sealed record QuestionModel(uint Quantity, uint AllowedMistakes, string[] Kinds);

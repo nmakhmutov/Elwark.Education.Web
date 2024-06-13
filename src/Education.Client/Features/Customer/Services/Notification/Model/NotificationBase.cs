@@ -1,5 +1,5 @@
 using Education.Client.Features.History;
-using Education.Client.Models;
+using Education.Client.Features.History.Clients;
 
 namespace Education.Client.Features.Customer.Services.Notification.Model;
 

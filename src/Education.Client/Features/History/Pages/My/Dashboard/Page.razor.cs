@@ -1,9 +1,9 @@
 using Education.Client.Clients;
 using Education.Client.Extensions;
+using Education.Client.Features.History.Clients;
 using Education.Client.Features.History.Clients.Learner;
 using Education.Client.Features.History.Clients.User;
 using Education.Client.Features.History.Clients.User.Model;
-using Education.Client.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MeOverviewModel = Education.Client.Features.History.Clients.Learner.Model.MeOverviewModel;

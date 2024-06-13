@@ -7,6 +7,15 @@
 </PageTitle>
 
 <ApiViewer Result="@_response" OnReloadClick="@OnParametersSetAsync">
+    <ChildContent>
+        <FlowQuestionsContainer
+            Class="py-3 py-sm-6"
+            Flow="@context"
+            CorrectAnswer="@_correctAnswer"
+            OnAnswerClick="@OnAnswerClick"
+            OnNextClick="@OnNextQuestion"
+            OnBankCollectClick="OnBankCollect"/>
+    </ChildContent>
     <Error>
         @if (context.IsFlowNotFound())
         {
@@ -22,13 +31,4 @@
                 OnReloadClick="@OnInitializedAsync"/>
         }
     </Error>
-    <ChildContent>
-        <FlowQuestionsContainer
-            Class="py-3 py-sm-6"
-            Flow="@context"
-            CorrectAnswer="@_correctAnswer"
-            OnAnswerClick="@OnAnswerClick"
-            OnNextClick="@OnNextQuestion"
-            OnBankCollectClick="OnBankCollect"/>
-    </ChildContent>
 </ApiViewer>

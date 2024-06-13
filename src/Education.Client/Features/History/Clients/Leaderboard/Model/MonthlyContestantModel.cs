@@ -1,5 +1,3 @@
-using Education.Client.Models;
-
 namespace Education.Client.Features.History.Clients.Leaderboard.Model;
 
 public sealed record MonthlyContestantModel(
@@ -8,5 +6,5 @@ public sealed record MonthlyContestantModel(
     string FullName,
     string Image,
     uint Experience,
-    InternalMoneyModel[] Rewards
+    Reward[] Rewards
 );

@@ -1,36 +1,37 @@
 @using Education.Client.Features.History.Clients.Flow.Model
-<section class="mud-paper pa-3 pa-sm-6 @Class">
-    <div class="d-flex justify-space-between align-center gap-3 mb-3">
+<section class="d-flex flex-column mud-paper gap-3 gap-sm-6 pa-3 pa-sm-6 @Class">
+    <div class="d-flex justify-space-between align-center">
         <MudText Typo="Typo.body1">
             @L["Flow_Streak_Title"]
         </MudText>
+
         <div class="d-flex align-center">
-            <MudIcon Class="mud-text-secondary" Icon="@Icons.Material.Filled.Whatshot"/>
             <MudText Typo="Typo.body1">
                 @Streak.Current / @Streak.Best
             </MudText>
+            <MudIcon Class="mud-text-secondary" Icon="@Icons.Material.Filled.Whatshot" Size="Size.Small"/>
         </div>
     </div>
 
-    <div class="d-flex justify-space-between align-center gap-3 mb-3">
+    <div>
         <MudText Typo="Typo.body1">
-            @L["Flow_Bank_Title"]
+            @L["Flow_Track_Title"]
         </MudText>
-        <div class="d-flex gap-3">
-            @if (Bank.Length == 0)
-            {
-                <MudText Class="mud-text-secondary" Typo="Typo.body1">
-                    @L["Flow_Bank_Empty"]
-                </MudText>
-            }
-            else
-            {
-                <InternalMonies Monies="@Bank" Horizontal/>
-            }
+
+        <MudProgressLinear Max="@Track.Threshold" Value="@Track.Current" Color="Color.Primary" Rounded/>
+
+        <div class="d-flex justify-space-between align-center">
+            <MudText Typo="Typo.body1">
+                @Track.Current / @Track.Threshold
+            </MudText>
+
+            <RewardsDisplay Rewards="@Track.Rewards" Typo="Typo.body1" Horizontal/>
         </div>
     </div>
 
-    <div class="d-flex justify-end">
+    <div class="d-flex justify-space-between align-center gap-3">
+        <RewardsDisplay Rewards="@Bank" Typo="Typo.body1" Horizontal/>
+
         <LoadingButton
             Variant="Variant.Filled"
             Color="Color.Primary"
@@ -53,7 +54,10 @@
     public required StreakModel Streak { get; set; }
 
     [Parameter, EditorRequired]
-    public InternalMoneyModel[] Bank { get; set; } = [];
+    public required TrackModel Track { get; set; }
+
+    [Parameter, EditorRequired]
+    public Reward[] Bank { get; set; } = [];
 
     [Parameter, EditorRequired]
     public EventCallback OnBankCollectClick { get; set; }

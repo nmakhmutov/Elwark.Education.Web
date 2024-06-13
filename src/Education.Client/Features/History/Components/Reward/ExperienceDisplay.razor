@@ -1,6 +1,5 @@
-@using Education.Client.Features.History.Clients
 <section class="@_blockClass">
-    <MudIcon Size="@IconSize" Class="@_iconClass" Icon="@Currency.GetIcon()"/>
+    <MudIcon Size="@IconSize" Class="@_iconClass" Icon="@EduIcons.Experience"/>
     @if (ShowFullValue)
     {
         <MudText Typo="Typo" Color="Color.Inherit">
@@ -16,9 +15,6 @@
 @code {
     private string? _blockClass;
     private string? _iconClass;
-
-    [Parameter, EditorRequired]
-    public InternalCurrency Currency { get; set; }
 
     [Parameter, EditorRequired]
     public long Amount { get; set; }

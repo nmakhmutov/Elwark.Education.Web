@@ -1,5 +1,3 @@
-using Education.Client.Models;
-
 namespace Education.Client.Features.History.Clients.User.Model;
 
 public sealed record TransactionModel(
