@@ -4,7 +4,7 @@ public sealed record TransactionModel(
     DateTime Date,
     string Title,
     TransactionKind Kind,
-    InternalMoneyModel[] Monies
+    GameMoneyModel[] Monies
 );
 
 public enum TransactionKind

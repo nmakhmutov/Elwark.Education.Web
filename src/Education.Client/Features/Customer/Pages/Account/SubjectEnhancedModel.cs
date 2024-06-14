@@ -10,7 +10,7 @@ public sealed record SubjectEnhancedModel(
     SubjectEnhancedModel.SubjectLinks Links,
     UserLevelModel Level,
     BackpackOverviewModel Backpack,
-    Dictionary<InternalCurrency, long> Wallet
+    Dictionary<GameCurrency, long> Wallet
 )
 {
     public sealed record SubjectLinks(string Root, string Dashboard, string Wallet, string Backpack);

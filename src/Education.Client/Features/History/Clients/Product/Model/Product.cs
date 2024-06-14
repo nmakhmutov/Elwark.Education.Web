@@ -7,6 +7,7 @@ namespace Education.Client.Features.History.Clients.Product.Model;
  JsonDerivedType(typeof(SystemModel), "system"),
  JsonDerivedType(typeof(LimitedModel), "limited"),
  JsonDerivedType(typeof(StockedModel), "stocked"),
+ JsonDerivedType(typeof(MoneyModel), "money"),
  JsonDerivedType(typeof(BundleModel), "bundle"),
  JsonDerivedType(typeof(UpcomingModel), "upcoming")]
 public abstract record Product(
@@ -52,6 +53,18 @@ public abstract record Product(
         uint Weight,
         PriceModel Selling,
         uint AvailableStock,
+        CategoryType[] Categories
+    ) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling, Categories);
+
+    public sealed record MoneyModel(
+        string ProductId,
+        string Title,
+        string Overview,
+        string ImageUrl,
+        uint Weight,
+        GameCurrency Currency,
+        uint Amount,
+        PriceModel Selling,
         CategoryType[] Categories
     ) : Product(ProductId, Title, Overview, ImageUrl, Weight, Selling, Categories);
 

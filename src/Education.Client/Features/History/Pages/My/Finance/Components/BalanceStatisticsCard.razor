@@ -2,11 +2,11 @@
 <section class="mud-paper pa-3 pa-sm-6 @Class">
     <header class="d-flex justify-space-between align-center mb-3 mb-sm-6">
         <MudText Class="flex-grow-1" Typo="Typo.h5">
-            @L["InternalMoney_BalanceStatistics_Title"]
+            @L["GameMoney_BalanceStatistics_Title"]
         </MudText>
 
         <MudSelect
-            T="InternalCurrency"
+            T="GameCurrency"
             OuterClass="flex-grow-0"
             Variant="Variant.Outlined"
             Margin="Margin.Dense"
@@ -19,7 +19,7 @@
                     <div class="d-flex align-center gap-3">
                         <MudIcon Size="Size.Small" Icon="@currency.GetIcon()"/>
                         <MudText Typo="Typo.body1">
-                            @L.GetInternalCurrencyTitle(currency)
+                            @L.GetGameCurrencyTitle(currency)
                         </MudText>
                     </div>
                 </MudSelectItem>
@@ -39,9 +39,9 @@
 </section>
 
 @code {
-    private InternalCurrency _currency;
+    private GameCurrency _currency;
 
-    private Dictionary<InternalCurrency, MoneyActivityModel[]> _activities = [];
+    private Dictionary<GameCurrency, MoneyActivityModel[]> _activities = [];
 
     [Inject]
     public IStringLocalizer<App> L { get; init; } = default!;

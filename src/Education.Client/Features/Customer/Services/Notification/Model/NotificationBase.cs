@@ -5,7 +5,7 @@ namespace Education.Client.Features.Customer.Services.Notification.Model;
 
 public abstract record NotificationBase
 {
-    private readonly List<InternalMoneyModel> _money;
+    private readonly List<GameMoneyModel> _money;
 
     protected NotificationBase(
         string subject,
@@ -25,8 +25,8 @@ public abstract record NotificationBase
 
         foreach (var (key, value) in payload)
         {
-            if (InternalCurrencyExtensions.ParseValueOrDefault(key) is { } currency)
-                _money.Add(new InternalMoneyModel(currency, uint.Parse(value)));
+            if (GameCurrencyExtensions.ParseValueOrDefault(key) is { } currency)
+                _money.Add(new GameMoneyModel(currency, uint.Parse(value)));
         }
 
         Href = (Subject, Module) switch
@@ -65,6 +65,6 @@ public abstract record NotificationBase
     public bool HasMoney =>
         _money.Count > 0;
 
-    public IReadOnlyCollection<InternalMoneyModel> Money =>
+    public IReadOnlyCollection<GameMoneyModel> Money =>
         _money.AsReadOnly();
 }

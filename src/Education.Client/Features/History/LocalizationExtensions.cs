@@ -26,8 +26,8 @@ internal static class LocalizationExtensions
     public static string GetStatusTitle(this IStringLocalizer localizer, ExaminationStatus status) =>
         localizer[$"ConclusionStatus_{status}"];
 
-    public static string GetInternalCurrencyTitle(this IStringLocalizer localizer, InternalCurrency currency) =>
-        localizer[$"InternalMoney_{currency}"];
+    public static string GetGameCurrencyTitle(this IStringLocalizer localizer, GameCurrency currency) =>
+        localizer[$"GameMoney_{currency}"];
 
     public static string GetInventoryCategoryTitle(this IStringLocalizer localizer, CategoryType type) =>
         localizer[type == CategoryType.None ? "History_Inventory_Category_All" : $"History_Inventory_Category_{type}"];

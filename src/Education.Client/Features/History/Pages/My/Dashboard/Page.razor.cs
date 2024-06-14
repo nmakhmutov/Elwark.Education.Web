@@ -96,7 +96,7 @@ public sealed partial class Page : ComponentBase
         Clients.User.Model.MeOverviewModel.MonthlyPerformanceModel MonthlyPerformance,
         UserLevelModel Level,
         BackpackOverviewModel Backpack,
-        Dictionary<InternalCurrency, long> Wallet,
+        Dictionary<GameCurrency, long> Wallet,
         Clients.User.Model.MeOverviewModel.AssignmentModel Assignments,
         Clients.User.Model.MeOverviewModel.AchievementModel Achievements
     );

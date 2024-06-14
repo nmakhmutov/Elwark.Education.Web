@@ -1,3 +1,3 @@
 namespace Education.Client.Features.History.Clients.Product.Model;
 
-public sealed record PriceModel(InternalMoneyModel Original, InternalMoneyModel Total, uint Discount);
+public sealed record PriceModel(GameMoneyModel Original, GameMoneyModel Total, uint Discount);

@@ -14,7 +14,7 @@
                 <div class="d-flex align-center gap-3">
                     <MudIcon Icon="@Currency.GetIcon()"/>
                     <MudText Typo="Typo.h5">
-                        @L.GetInternalCurrencyTitle(Currency)
+                        @L.GetGameCurrencyTitle(Currency)
                     </MudText>
                 </div>
 
@@ -27,21 +27,21 @@
                 <div class="d-flex flex-column align-center">
                     <MudText Typo="Typo.h6">@Budget.Income.ToString("N0")</MudText>
                     <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
-                        @L["InternalMoney_Income_Title"]
+                        @L["GameMoney_Income_Title"]
                     </MudText>
                 </div>
                 <MudDivider Vertical FlexItem/>
                 <div class="d-flex flex-column align-center">
                     <MudText Typo="Typo.h6">@Budget.Expense.ToString("N0")</MudText>
                     <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
-                        @L["InternalMoney_Expense_Title"]
+                        @L["GameMoney_Expense_Title"]
                     </MudText>
                 </div>
                 <MudDivider Vertical FlexItem/>
                 <div class="d-flex flex-column align-center">
                     <MudText Typo="Typo.h6">@Budget.Balance.ToString("N0")</MudText>
                     <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
-                        @L["InternalMoney_Balance_Title"]
+                        @L["GameMoney_Balance_Title"]
                     </MudText>
                 </div>
             </aside>
@@ -64,35 +64,35 @@
                     Hover>
                     <HeaderContent>
                         <MudTh>
-                            @L["InternalMoney_Source_Title"]
+                            @L["GameMoney_Source_Title"]
                         </MudTh>
                         <MudTh>
                             <MudTableSortLabel SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Income))" InitialDirection="SortDirection.Descending">
-                                @L["InternalMoney_Income_Title"]
+                                @L["GameMoney_Income_Title"]
                             </MudTableSortLabel>
                         </MudTh>
                         <MudTh>
                             <MudTableSortLabel SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Expense))">
-                                @L["InternalMoney_Expense_Title"]
+                                @L["GameMoney_Expense_Title"]
                             </MudTableSortLabel>
                         </MudTh>
                         <MudTh>
                             <MudTableSortLabel SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Balance))">
-                                @L["InternalMoney_Balance_Title"]
+                                @L["GameMoney_Balance_Title"]
                             </MudTableSortLabel>
                         </MudTh>
                     </HeaderContent>
                     <RowTemplate>
-                        <MudTd DataLabel="@L["InternalMoney_Source_Title"]">
+                        <MudTd DataLabel="@L["GameMoney_Source_Title"]">
                             @context.Title
                         </MudTd>
-                        <MudTd DataLabel="@L["InternalMoney_Income_Title"]">
+                        <MudTd DataLabel="@L["GameMoney_Income_Title"]">
                             @context.Income.ToString("N0")
                         </MudTd>
-                        <MudTd DataLabel="@L["InternalMoney_Expense_Title"]">
+                        <MudTd DataLabel="@L["GameMoney_Expense_Title"]">
                             @context.Expense.ToString("N0")
                         </MudTd>
-                        <MudTd DataLabel="@L["InternalMoney_Balance_Title"]">
+                        <MudTd DataLabel="@L["GameMoney_Balance_Title"]">
                             @context.Balance.ToString("N0")
                         </MudTd>
                     </RowTemplate>
@@ -102,7 +102,7 @@
                 {
                     <div class="income">
                         <MudText Typo="Typo.h6" Align="Align.Center">
-                            @L["InternalMoney_Income_Title"]
+                            @L["GameMoney_Income_Title"]
                         </MudText>
                         <ApexChart TItem="WalletDetailsModel.BudgetSourceModel" Options="Options" Height="@("240px")">
                             <ApexPointSeries
@@ -120,7 +120,7 @@
                 {
                     <div class="expense">
                         <MudText Typo="Typo.h6" Align="Align.Center">
-                            @L["InternalMoney_Expense_Title"]
+                            @L["GameMoney_Expense_Title"]
                         </MudText>
                         <ApexChart TItem="WalletDetailsModel.BudgetSourceModel" Options="Options" Height="@("240px")">
                             <ApexPointSeries
@@ -188,7 +188,7 @@
     private CustomerState Customer { get; set; } = default!;
 
     [Parameter, EditorRequired]
-    public InternalCurrency Currency { get; set; }
+    public GameCurrency Currency { get; set; }
 
     [Parameter, EditorRequired]
     public required WalletDetailsModel.BudgetModel Budget { get; set; }

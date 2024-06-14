@@ -3,7 +3,7 @@ namespace Education.Client.Features.History.Clients.User.Model;
 public sealed record MeOverviewModel(
     UserLevelModel Level,
     BackpackOverviewModel Backpack,
-    Dictionary<InternalCurrency, long> Wallet,
+    Dictionary<GameCurrency, long> Wallet,
     MeOverviewModel.MonthlyPerformanceModel MonthlyPerformance,
     MeOverviewModel.AssignmentModel Assignments,
     MeOverviewModel.AchievementModel Achievements

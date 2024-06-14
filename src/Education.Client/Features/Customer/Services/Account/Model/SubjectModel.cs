@@ -7,5 +7,5 @@ public sealed record SubjectModel(
     string Name,
     UserLevelModel Level,
     BackpackOverviewModel Backpack,
-    Dictionary<InternalCurrency, long> Wallet
+    Dictionary<GameCurrency, long> Wallet
 );

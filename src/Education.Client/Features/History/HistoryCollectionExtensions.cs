@@ -3,7 +3,6 @@ using Education.Client.Features.History.Clients.Article;
 using Education.Client.Features.History.Clients.Course;
 using Education.Client.Features.History.Clients.DateGuesser;
 using Education.Client.Features.History.Clients.Examination;
-using Education.Client.Features.History.Clients.Exchange;
 using Education.Client.Features.History.Clients.Flow;
 using Education.Client.Features.History.Clients.Leaderboard;
 using Education.Client.Features.History.Clients.Learner;
@@ -27,7 +26,6 @@ internal static class HistoryCollectionExtensions
             .AddScoped<IHistoryCourseClient, HistoryCourseClient>()
             .AddScoped<IHistoryDateGuesserClient, HistoryDateGuesserClient>()
             .AddScoped<IHistoryExaminationClient, HistoryExaminationClient>()
-            .AddScoped<IHistoryExchangeClient, HistoryExchangeService>()
             .AddScoped<IHistoryFlowClient, HistoryFlowService>()
             .AddScoped<IHistoryLeaderboardClient, HistoryLeaderboardService>()
             .AddScoped<IHistoryLearnerClient, HistoryLearnerService>()

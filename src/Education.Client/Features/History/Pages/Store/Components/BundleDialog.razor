@@ -64,7 +64,7 @@
                         @L["Product_TotalPrice"]
                     </MudText>
                     <div class="d-flex">
-                        <InternalMoney
+                        <GameMoneyDisplay
                             Class="price"
                             Currency="@TotalPrice.Currency"
                             Amount="@TotalPrice.Amount"
@@ -223,13 +223,13 @@
         });
     }
 
-    private InternalMoneyModel OriginalPrice =>
+    private GameMoneyModel OriginalPrice =>
         Product.Selling.Original with
         {
             Amount = Product.Selling.Original.Amount * _quantity
         };
 
-    private InternalMoneyModel TotalPrice =>
+    private GameMoneyModel TotalPrice =>
         Product.Selling.Total with
         {
             Amount = Product.Selling.Total.Amount * _quantity

@@ -9,5 +9,11 @@ internal static class StoreExtensions
         category == CategoryType.None ? products : products.Where(x => x.Categories.Contains(category));
 
     public static IOrderedEnumerable<IGrouping<string, Product>> Sort(this IEnumerable<Product> products) =>
-        products.GroupBy(x => x is Product.BundleModel ? "Bundles" : "Inventories").OrderBy(x => x.Key);
+        products.GroupBy(x => x switch
+            {
+                Product.BundleModel => "Bundles",
+                Product.MoneyModel => "Monies",
+                _ => "Inventories"
+            })
+            .OrderBy(x => x.Key);
 }

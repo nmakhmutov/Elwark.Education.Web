@@ -9,5 +9,5 @@ public abstract record Reward
 {
     public sealed record ExperienceModel(uint Amount) : Reward;
 
-    public sealed record MoneyModel(InternalCurrency Currency, uint Amount) : Reward;
+    public sealed record MoneyModel(GameCurrency Currency, uint Amount) : Reward;
 }

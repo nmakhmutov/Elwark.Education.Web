@@ -1,7 +1,7 @@
 namespace Education.Client.Features.History.Clients.User.Model;
 
 public sealed record WalletDetailsModel(
-    InternalCurrency Currency,
+    GameCurrency Currency,
     long Balance,
     WalletDetailsModel.BudgetModel[] Budgets
 )

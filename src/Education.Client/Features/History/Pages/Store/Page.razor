@@ -14,7 +14,7 @@
         <section class="d-flex align-center gap-3">
             @foreach (var (currency, amount) in _profile.Wallet)
             {
-                <InternalMoney Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
+                <GameMoneyDisplay Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
             }
 
             <BackpackOverview Fullness="@_profile.Backpack.Fullness" Capacity="@_profile.Backpack.Capacity"/>
@@ -99,6 +99,34 @@
                                         </MudButton>
                                     </MudBadge>
                                 </BundleCard>
+                                break;
+
+                            case Product.MoneyModel money:
+                                <InventoryCard
+                                    Class="inventory"
+                                    Title="@money.Title"
+                                    Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
+                                    Overview="@money.Overview"
+                                    IconUrl="@money.ImageUrl"
+                                    Price="money.Selling">
+                                    <MudBadge
+                                        Icon="@Icons.Material.Outlined.Lock"
+                                        Color="@Color.Error"
+                                        Visible="@(!IsAffordable(money))"
+                                        Bordered
+                                        Overlap>
+                                        <MudButton
+                                            Class="text-transform-none"
+                                            Variant="Variant.Filled"
+                                            Color="Color.Primary"
+                                            OnClick="@(() => OpenInventoryDialog(money))"
+                                            DisableElevation
+                                            DisableRipple
+                                            FullWidth>
+                                            @L["Button_Details"]
+                                        </MudButton>
+                                    </MudBadge>
+                                </InventoryCard>
                                 break;
 
                             case Product.UpcomingModel upcoming:

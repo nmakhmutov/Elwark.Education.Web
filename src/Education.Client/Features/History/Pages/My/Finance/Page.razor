@@ -13,12 +13,12 @@
 <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
         <section class="grid">
-            <EduFitGrid>
+            <EduFillGrid>
                 @foreach (var wallet in context.Wallets)
                 {
                     <WalletCard Wallet="@wallet"/>
                 }
-            </EduFitGrid>
+            </EduFillGrid>
 
             <BalanceStatisticsCard Class="activity" Activities="@context.Activities"/>
 
