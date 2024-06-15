@@ -24,6 +24,13 @@
                     OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
                     HasExamination="@(context.Examinations.Length > 0)"
                     Horizontal/>
+
+                @if (_requiredExaminations.Count > 0)
+                {
+                    <MudAlert Class="mt-3 mt-sm-6" Severity="Severity.Info" Variant="Variant.Text">
+                        @L.Markup("Course_CompleteExaminationInstruction", string.Join(", ", _requiredExaminations))
+                    </MudAlert>
+                }
             </section>
 
             <section class="inventory">

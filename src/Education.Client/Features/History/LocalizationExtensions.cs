@@ -2,6 +2,7 @@ using Education.Client.Features.History.Clients;
 using Education.Client.Features.History.Clients.DateGuesser.Model;
 using Education.Client.Models.Inventory;
 using Education.Client.Models.Test;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
 namespace Education.Client.Features.History;
@@ -49,4 +50,7 @@ internal static class LocalizationExtensions
 
     public static string GetStatusDescription(this IStringLocalizer localizer, CourseLearningStatus status) =>
         localizer[$"CourseLearningStatus_{status}_Description"];
+
+    public static MarkupString Markup(this IStringLocalizer localizer, string name, params object[] arguments) =>
+        (MarkupString)localizer[name, arguments].Value;
 }

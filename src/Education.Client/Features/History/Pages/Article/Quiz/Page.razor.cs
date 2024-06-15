@@ -15,6 +15,7 @@ namespace Education.Client.Features.History.Pages.Article.Quiz;
 
 public sealed partial class Page : ComponentBase
 {
+    private readonly List<string> _requiredQuizzes = [];
     private ApiResult<ArticleQuizBuilderModel> _response = ApiResult<ArticleQuizBuilderModel>.Loading();
     private QuizSettings _settings = QuizSettings.Empty;
 
@@ -50,11 +51,26 @@ public sealed partial class Page : ComponentBase
     {
         _settings = await Storage.GetItemAsync<QuizSettings>(HistoryLocalStorageKey.QuizSettings) ?? _settings;
         _response = await ArticleClient.GetQuizBuilderAsync(Id);
-        _response.MatchError(x =>
-        {
-            if (x.IsQuizAlreadyCreated(out var id))
-                Navigation.NavigateTo(HistoryUrl.Quiz.Test(id));
-        });
+        _response.Match(
+            x =>
+            {
+                foreach (var quiz in x.Quizzes)
+                {
+                    switch (quiz.Difficulty)
+                    {
+                        case DifficultyType.Easy when (x.Activity?.IsEasyQuizCompleted ?? false) == false:
+                        case DifficultyType.Hard when (x.Activity?.IsHardQuizCompleted ?? false) == false:
+                            _requiredQuizzes.Add($"<b>\"{L.GetQuizDifficultyTitle(quiz.Difficulty)}\"</b>");
+                            break;
+                    }
+                }
+            },
+            e =>
+            {
+                if (e.IsQuizAlreadyCreated(out var id))
+                    Navigation.NavigateTo(HistoryUrl.Quiz.Test(id));
+            }
+        );
     }
 
     private async Task CreateQuizAsync(DifficultyType difficulty)

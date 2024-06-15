@@ -13,6 +13,7 @@ namespace Education.Client.Features.History.Pages.Course.Examination;
 
 public sealed partial class Page : ComponentBase
 {
+    private readonly List<string> _requiredExaminations = [];
     private ApiResult<ExaminationBuilderModel> _response = ApiResult<ExaminationBuilderModel>.Loading();
 
     [Inject]
@@ -43,11 +44,26 @@ public sealed partial class Page : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         _response = await CourseClient.GetExaminationAsync(Id);
-        _response.MatchError(x =>
-        {
-            if (x.IsExaminationAlreadyCreated(out var id))
-                NavigationManager.NavigateTo(HistoryUrl.Examination.Test(id));
-        });
+        _response.Match(
+            x =>
+            {
+                foreach (var quiz in x.Examinations)
+                {
+                    switch (quiz.Difficulty)
+                    {
+                        case DifficultyType.Easy when (x.Activity?.IsEasyExaminationCompleted ?? false) == false:
+                        case DifficultyType.Hard when (x.Activity?.IsHardExaminationCompleted ?? false) == false:
+                            _requiredExaminations.Add($"<b>\"{L.GetExaminationDifficultyTitle(quiz.Difficulty)}\"</b> ");
+                            break;
+                    }
+                }
+            },
+            e =>
+            {
+                if (e.IsExaminationAlreadyCreated(out var id))
+                    NavigationManager.NavigateTo(HistoryUrl.Examination.Test(id));
+            }
+        );
     }
 
     private async Task CreateTestAsync(DifficultyType difficulty)

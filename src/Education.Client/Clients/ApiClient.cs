@@ -121,9 +121,9 @@ internal abstract class ApiClient
         {
             return ApiResult<T>.Fail(Error.Create(_localizer["Error_RequestTimeout"], 408));
         }
-        catch
+        catch (Exception ex)
         {
-            return ApiResult<T>.Fail(Error.Create(_localizer["Error_BadGateway"], 502));
+            return ApiResult<T>.Fail(Error.Create(_localizer["Error_BadGateway"], 502, ex.Message));
         }
     }
 }

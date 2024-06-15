@@ -17,11 +17,12 @@ public sealed record Error
     public IDictionary<string, JsonElement> Payload { get; init; } =
         new Dictionary<string, JsonElement>(StringComparer.OrdinalIgnoreCase);
 
-    public static Error Create(string title, int status = 404) =>
+    public static Error Create(string title, int status = 404, string? details = null) =>
         new()
         {
             Type = "Client:Error",
             Title = title,
-            Status = status
+            Status = status,
+            Detail = details
         };
 }

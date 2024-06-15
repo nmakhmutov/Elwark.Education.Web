@@ -7,12 +7,14 @@
     {
         <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
             <MudText Typo="Typo.body1">@L["NumberOfQuizzes_PassedEasy_Title"]</MudText>
-            <div class="d-flex align-center gap-1">
-                <MudText Typo="Typo.body1">
-                    @((Activity?.EasyQuizzes ?? 0).ToMetric())
-                </MudText>
-                <MudIcon Icon="@EduIcons.Quiz" Size="Size.Small"/>
-            </div>
+            @if (Activity?.IsEasyQuizCompleted == true)
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.CheckCircle" Color="Color.Success" Size="Size.Small"/>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Circle" Size="Size.Small"/>
+            }
         </div>
     }
 
@@ -20,12 +22,14 @@
     {
         <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
             <MudText Typo="Typo.body1">@L["NumberOfQuizzes_PassedHard_Title"]</MudText>
-            <div class="d-flex align-center gap-1">
-                <MudText Typo="Typo.body1">
-                    @((Activity?.HardQuizzes ?? 0).ToMetric())
-                </MudText>
-                <MudIcon Icon="@EduIcons.Quiz" Size="Size.Small"/>
-            </div>
+            @if (Activity?.IsHardQuizCompleted == true)
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.CheckCircle" Color="Color.Success" Size="Size.Small"/>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Circle" Size="Size.Small"/>
+            }
         </div>
     }
 

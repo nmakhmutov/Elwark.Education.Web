@@ -16,6 +16,7 @@ internal sealed class CustomerApiClient : ApiClient
         IgnoreReadOnlyProperties = false,
         PropertyNameCaseInsensitive = true,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        UnmappedMemberHandling = JsonUnmappedMemberHandling.Skip,
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
         Converters =
         {

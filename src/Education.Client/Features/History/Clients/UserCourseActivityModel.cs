@@ -5,6 +5,6 @@ public sealed record UserCourseActivityModel(
     uint Completeness,
     bool IsBookmarked,
     bool? IsLiked,
-    uint EasyExaminations,
-    uint HardExaminations
+    bool? IsEasyExaminationCompleted,
+    bool? IsHardExaminationCompleted
 );
