@@ -162,7 +162,7 @@
     }
 
     private Task RowClickAsync(TableRowClickEventArgs<WalletDetailsModel.BudgetModel> args) =>
-        OpenSourceDetailModalAsync(args.Item);
+        args.Item is null ? Task.CompletedTask : OpenSourceDetailModalAsync(args.Item);
 
     private async Task OpenSourceDetailModalAsync(WalletDetailsModel.BudgetModel budget)
     {

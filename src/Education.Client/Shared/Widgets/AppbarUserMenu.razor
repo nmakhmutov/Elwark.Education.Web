@@ -7,8 +7,8 @@
             Color="Color.Primary"
             Size="Size.Small"
             OnClick="@OnLogin"
-            DisableRipple
-            DisableElevation>
+            Ripple="false"
+            DropShadow>
             @L["Account_SignIn"]
         </MudButton>
     </NotAuthorized>
@@ -18,7 +18,7 @@
     </Authorizing>
 
     <Authorized>
-        <MudMenu ListClass="pa-0" AnchorOrigin="Origin.TopRight" DisableRipple>
+        <MudMenu ListClass="pa-0" AnchorOrigin="Origin.TopRight" Ripple="false">
             <ActivatorContent>
                 <img class="avatar rounded object-cover object-center" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
             </ActivatorContent>
@@ -39,14 +39,14 @@
                         Label="@L["ManageYourElwarkAccount_Title"]"
                         EndIcon="@Icons.Material.Outlined.OpenInNew"
                         IconSize="Size.Small"
-                        DisableRipple
-                        DisableElevation/>
+                        Ripple="false"
+                        DropShadow/>
 
-                    <MudButtonGroup Class="w-100" Color="Color.Primary" Variant="Variant.Text" Size="Size.Large" DisableElevation>
-                        <MudButton StartIcon="@Icons.Material.Outlined.Person" Href="@CustomerUrl.Root" DisableRipple FullWidth>
+                    <MudButtonGroup Class="w-100" Color="Color.Primary" Variant="Variant.Text" Size="Size.Large" DropShadow>
+                        <MudButton StartIcon="@Icons.Material.Outlined.Person" Href="@CustomerUrl.Root" Ripple="false" FullWidth>
                             @L["Account_Title"]
                         </MudButton>
-                        <MudButton StartIcon="@Icons.Material.Outlined.Login" OnClick="@OnLogout" DisableRipple FullWidth>
+                        <MudButton StartIcon="@Icons.Material.Outlined.Login" OnClick="@OnLogout" Ripple="false" FullWidth>
                             @L["Account_Logout"]
                         </MudButton>
                     </MudButtonGroup>

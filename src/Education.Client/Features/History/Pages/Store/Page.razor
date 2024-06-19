@@ -25,7 +25,12 @@
 <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
     <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
         <ChildContent>
-            <MudChipSet Class="mb-3 mb-sm-6" Mandatory Filter>
+            <MudChipSet
+                T="string"
+                Class="mb-3 mb-sm-6"
+                SelectionMode="SelectionMode.SingleSelection"
+                CheckMark
+                SelectedValue="@Category">
                 @foreach (var category in _categories)
                 {
                     <MudChip
@@ -70,8 +75,8 @@
                                             Variant="Variant.Filled"
                                             Color="Color.Primary"
                                             OnClick="@(() => OpenInventoryDialog(system))"
-                                            DisableElevation
-                                            DisableRipple
+                                            Ripple="false"
+                                            DropShadow
                                             FullWidth>
                                             @L["Button_Details"]
                                         </MudButton>
@@ -92,8 +97,8 @@
                                             Variant="Variant.Filled"
                                             Color="Color.Primary"
                                             OnClick="@(() => OpenBundleDialog(bundle))"
-                                            DisableElevation
-                                            DisableRipple
+                                            Ripple="false"
+                                            DropShadow
                                             FullWidth>
                                             @L["Button_Details"]
                                         </MudButton>
@@ -120,8 +125,8 @@
                                             Variant="Variant.Filled"
                                             Color="Color.Primary"
                                             OnClick="@(() => OpenInventoryDialog(money))"
-                                            DisableElevation
-                                            DisableRipple
+                                            Ripple="false"
+                                            DropShadow
                                             FullWidth>
                                             @L["Button_Details"]
                                         </MudButton>

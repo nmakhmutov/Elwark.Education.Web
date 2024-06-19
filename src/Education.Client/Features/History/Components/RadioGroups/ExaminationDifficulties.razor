@@ -4,11 +4,11 @@
     {
         <DifficultyCard Title="@L.GetExaminationDifficultyTitle(examination.Difficulty)" AccessInventory="@examination.AccessInventory">
             <ChildContent>
-                <MudList Class="flex-1" Dense DisableGutters DisablePadding>
-                    <MudListItem>
+                <MudList T="string" Class="flex-1" Dense Gutters="false" Padding="false">
+                    <MudListItem T="string">
                         @L["Question_QuantityAndTypes_Title", examination.Question.Quantity, string.Join(", ", examination.Question.Kinds.Select(x => L[$"Question_{x}_Kind"]))]
                     </MudListItem>
-                    <MudListItem>
+                    <MudListItem T="string">
                         <RewardsDisplay Rewards="@examination.Rewards" Typo="Typo.body2" Horizontal/>
                     </MudListItem>
                 </MudList>
@@ -22,8 +22,8 @@
                     IsLoading="@IsLoading(examination.Difficulty)"
                     Disabled="@IsDisabled(examination)"
                     OnClick="@(() => CreateAsync(examination.Difficulty))"
-                    DisableElevation
-                    DisableRipple/>
+                    Ripple="false"
+                    DropShadow/>
             </FooterContent>
         </DifficultyCard>
     }

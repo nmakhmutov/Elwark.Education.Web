@@ -39,14 +39,14 @@
         @if (CorrectAnswer is null)
         {
             <LoadingButton
-                DisableElevation
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 Size="Size.Large"
                 IsLoading="@IsLoading"
                 Text="@L["QuestionFrom_AnswerToQuestion"]"
                 OnClick="@OnValidSubmit"
-                LoadingText="@L["Loading_Title"]"/>
+                LoadingText="@L["Loading_Title"]"
+                DropShadow/>
         }
         else
         {
@@ -58,7 +58,7 @@
                 Text="@L[IsCompleted ? "QuestionForm_ShowTheResult" : "QuestionForm_NextQuestion"]"
                 LoadingText="@L["Loading_Title"]"
                 OnClick="@OnNextAsync"
-                DisableElevation/>
+                DropShadow/>
         }
     </Button>
     <Information>

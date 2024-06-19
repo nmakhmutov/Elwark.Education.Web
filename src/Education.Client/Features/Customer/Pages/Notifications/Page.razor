@@ -18,8 +18,8 @@
         StartIcon="@Icons.Material.Outlined.DoneAll"
         Disabled="@(!NotificationService.HasNotifications)"
         OnClick="@MarkAllAsReadAsync"
-        DisableRipple
-        DisableElevation>
+        Ripple="false"
+        DropShadow>
         @L["Notifications_MarkAsRead"]
     </MudButton>
 </header>
@@ -44,12 +44,12 @@
     {
         <footer class="d-flex justify-center">
             <LoadingButton
-                DisableElevation
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 Text="@L["Button_SeeMore"]"
                 IsLoading="@_isMoreLoading"
-                OnClick="@LoadMoreAsync"/>
+                OnClick="@LoadMoreAsync"
+                DropShadow/>
         </footer>
     }
 </ApiViewer>

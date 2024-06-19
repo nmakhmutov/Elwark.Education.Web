@@ -41,8 +41,11 @@ public sealed partial class AllTimePage : ComponentBase
         _response = await LeaderboardClient.GetAllTimeAsync(Region);
     }
 
-    private void ChangeRegion(string region)
+    private void ChangeRegion(string? region)
     {
+        if (region is null)
+            return;
+
         if (region.Equals(Region, StringComparison.OrdinalIgnoreCase))
             return;
 

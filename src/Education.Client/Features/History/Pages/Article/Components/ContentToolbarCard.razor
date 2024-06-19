@@ -3,7 +3,7 @@
         <MudText Class="mr-3" Typo="Typo.body2">
             @L["TextOptions_Alignment_Title"]
         </MudText>
-        <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" DisableElevation>
+        <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" DropShadow>
             <MudIconButton
                 Icon="@Icons.Material.Outlined.FormatAlignLeft"
                 Disabled="@(Formatter.TextAlign == Align.Left)"
@@ -27,22 +27,22 @@
         <MudText Typo="Typo.body2" Class="mr-3">
             @L["TextOptions_FontSize_Title"]
         </MudText>
-        <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" OverrideStyles DisableElevation>
+        <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" OverrideStyles DropShadow>
             <MudIconButton
                 Disabled="@(!Formatter.CanDecreaseFontSize)"
                 Icon="@Icons.Material.Outlined.Remove"
                 OnClick="@Formatter.DecreaseFontSizeAsync"
-                DisableElevation/>
+                DropShadow/>
             <input class="input" value="@Percent(Formatter.FontSize)" readonly/>
             <MudIconButton
                 Disabled="@(!Formatter.CanIncreaseFontSize)"
                 Icon="@Icons.Material.Outlined.Add"
                 OnClick="@Formatter.IncreaseFontSizeAsync"
-                DisableElevation/>
+                DropShadow/>
         </MudButtonGroup>
     </div>
 
-    <MudExpansionPanels Elevation="0" Dense DisableBorders DisableGutters>
+    <MudExpansionPanels Elevation="0" Dense Outlined="false" Gutters="false">
         <MudExpansionPanel>
             <TitleContent>
                 <MudText Typo="Typo.body2">
@@ -54,18 +54,18 @@
                     <MudText Typo="Typo.body2" Class="mr-3">
                         @L["TextOptions_LineHeight_Title"]
                     </MudText>
-                    <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" OverrideStyles DisableElevation>
+                    <MudButtonGroup Size="Size.Small" Variant="Variant.Outlined" OverrideStyles DropShadow>
                         <MudIconButton
                             Disabled="@(!Formatter.CanDecreaseLineHeight)"
                             Icon="@Icons.Material.Outlined.Remove"
                             OnClick="@Formatter.DecreaseLineHeightAsync"
-                            DisableElevation/>
+                            DropShadow/>
                         <input class="input" value="@Percent(Formatter.LineHeight)" readonly/>
                         <MudIconButton
                             Disabled="@(!Formatter.CanIncreaseLineHeight)"
                             Icon="@Icons.Material.Outlined.Add"
                             OnClick="@Formatter.IncreaseLineHeightAsync"
-                            DisableElevation/>
+                            DropShadow/>
                     </MudButtonGroup>
                 </div>
 

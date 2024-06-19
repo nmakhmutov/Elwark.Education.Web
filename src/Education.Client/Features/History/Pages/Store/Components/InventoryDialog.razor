@@ -5,10 +5,10 @@
 @using Education.Client.Features.History.Clients.User.Model
 <MudDialog
     Class="pa-3 pa-sm-6"
-    ClassContent="pa-0"
-    ClassActions="pa-0"
+    ContentClass="pa-0"
+    ActionsClass="pa-0"
     DefaultFocus="DefaultFocus.Element"
-    DisableSidePadding>
+    Gutters="false">
     <DialogContent>
         <header class="d-flex justify-space-between align-center gap-3">
             <MudText Typo="Typo.h5" Title="@Product.Title">
@@ -88,7 +88,7 @@
                             Icon="@Icons.Material.Outlined.Remove"
                             Disabled="@(_quantity == Min)"
                             OnClick="@OnRemoveQuantityClick"
-                            DisableElevation/>
+                            DropShadow/>
 
                         <MudNumericField
                             Class="number-input"
@@ -105,7 +105,7 @@
                             Icon="@Icons.Material.Outlined.Add"
                             Disabled="@(_quantity == Max)"
                             OnClick="@OnAddQuantityClick"
-                            DisableElevation/>
+                            DropShadow/>
                     </div>
                 </div>
 
@@ -116,7 +116,7 @@
                     Text="@L["Product_BuyNow"]"
                     IsLoading="@(_status is not null)"
                     Disabled="@(_error is not null)"
-                    DisableElevation/>
+                    DropShadow/>
             </div>
         }
         else
