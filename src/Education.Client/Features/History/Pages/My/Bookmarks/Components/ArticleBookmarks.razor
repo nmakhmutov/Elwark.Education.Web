@@ -23,7 +23,7 @@ else
                     <ArticleCompletionChip Status="ArticleLearningStatus.NotStarted" Size="Size.Small"/>
                 </div>
                 <div class="actions">
-                    <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
+                    <MudIconButton Disabled Icon="@Icons.Material.Outlined.BookmarkAdd" />
                 </div>
             </div>
         </Placeholder>
@@ -54,10 +54,9 @@ else
                         Href="@HistoryUrl.User.MyArticle(context.Article.Id)"/>
                 </div>
                 <div class="actions">
-                    <BookmarkButton
-                        Id="@context.Article.Id"
-                        IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
-                        OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+                    <EduBookmarkButton Id="@context.Article.Id"
+                                       IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
+                                       OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
                 </div>
             </div>
         </ItemContent>

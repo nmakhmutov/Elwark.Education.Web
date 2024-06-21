@@ -32,15 +32,14 @@
     <div class="d-flex justify-space-between align-center gap-3">
         <RewardsDisplay Rewards="@Bank" Typo="Typo.body1" Horizontal/>
 
-        <LoadingButton
-            Variant="Variant.Filled"
-            Color="Color.Primary"
-            IsLoading="@_isLoading"
-            Text="@L["Flow_CollectBank"]"
-            LoadingText="@L["Loading_Title"]"
-            OnClick="@OnCollectBank"
-            Disabled="@(Bank.Length == 0)"
-            DisableElevation/>
+        <EduLoadingButton Color="Color.Primary"
+                          Disabled="@(Bank.Length == 0)"
+                          DisableElevation
+                          IsLoading="@_isLoading"
+                          LoadingText="@L["Loading_Title"]"
+                          OnClick="@OnCollectBank"
+                          Text="@L["Flow_CollectBank"]"
+                          Variant="Variant.Filled"/>
     </div>
 </section>
 

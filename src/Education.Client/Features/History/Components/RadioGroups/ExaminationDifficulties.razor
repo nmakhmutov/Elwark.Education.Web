@@ -14,16 +14,15 @@
                 </MudList>
             </ChildContent>
             <FooterContent>
-                <LoadingButton
-                    Color="Color.Primary"
-                    Variant="Variant.Filled"
-                    Text="@L["Start_Examination_Button"]"
-                    LoadingText="@L["Loading_Title"]"
-                    IsLoading="@IsLoading(examination.Difficulty)"
-                    Disabled="@IsDisabled(examination)"
-                    OnClick="@(() => CreateAsync(examination.Difficulty))"
-                    DisableElevation
-                    DisableRipple/>
+                <EduLoadingButton Color="Color.Primary"
+                                  Disabled="@IsDisabled(examination)"
+                                  DisableElevation
+                                  DisableRipple
+                                  IsLoading="@IsLoading(examination.Difficulty)"
+                                  LoadingText="@L["Loading_Title"]"
+                                  OnClick="@(() => CreateAsync(examination.Difficulty))"
+                                  Text="@L["Start_Examination_Button"]"
+                                  Variant="Variant.Filled"/>
             </FooterContent>
         </DifficultyCard>
     }

@@ -28,28 +28,26 @@
         <RewardsDisplay Class="justify-center pa-6" Rewards="@Bonus.Rewards" Typo="Typo.h5" IconSize="Size.Medium" Horizontal/>
 
         <div class="d-flex justify-center px-3 pb-3 px-sm-6 pb-sm-6">
-            <LoadingButton
-                Class="mr-3"
-                Variant="Variant.Filled"
-                Color="Color.Primary"
-                Text="@L["DailyBonus_Claim"]"
-                LoadingText="@L["Loading_Title"]"
-                Disabled="@IsDisabled"
-                IsLoading="@IsLoading"
-                OnClick="@ClaimAsync"
-                FullWidth
-                DisableElevation/>
+            <EduLoadingButton Class="mr-3"
+                              Color="Color.Primary"
+                              Disabled="@IsDisabled"
+                              DisableElevation
+                              FullWidth
+                              IsLoading="@IsLoading"
+                              LoadingText="@L["Loading_Title"]"
+                              OnClick="@ClaimAsync"
+                              Text="@L["DailyBonus_Claim"]"
+                              Variant="Variant.Filled"/>
 
-            <LoadingButton
-                Class="px-6"
-                Variant="Variant.Outlined"
-                Color="Color.Default"
-                Text="@L["DailyBonus_Reject"]"
-                LoadingText="@L["Loading_Title"]"
-                Disabled="@IsDisabled"
-                IsLoading="@IsLoading"
-                OnClick="@RejectAsync"
-                DisableElevation/>
+            <EduLoadingButton Class="px-6"
+                              Color="Color.Default"
+                              Disabled="@IsDisabled"
+                              DisableElevation
+                              IsLoading="@IsLoading"
+                              LoadingText="@L["Loading_Title"]"
+                              OnClick="@RejectAsync"
+                              Text="@L["DailyBonus_Reject"]"
+                              Variant="Variant.Outlined"/>
         </div>
     }
 </section>

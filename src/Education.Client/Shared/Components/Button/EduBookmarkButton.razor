@@ -1,13 +1,12 @@
-<MudTooltip Text="@L[IsBookmarked ? "Bookmarks_Remove" : "Bookmarks_Add"]">
-    <MudToggleIconButton
-        Class="@Class"
-        Color="@Color"
-        Icon="@Icons.Material.Outlined.BookmarkAdd"
-        ToggledIcon="@Icons.Material.Outlined.BookmarkAdded"
-        ToggledColor="Color.Error"
-        Toggled="@IsBookmarked"
-        ToggledChanged="@OnBookmarkChanged"
-        aria-label="@L[IsBookmarked ? "Bookmarks_Remove" : "Bookmarks_Add"]"/>
+<MudTooltip Text="@Text">
+    <MudToggleIconButton aria-label="@Text"
+                         Class="@Class"
+                         Color="@Color"
+                         Icon="@Icons.Material.Outlined.BookmarkAdd"
+                         Toggled="@IsBookmarked"
+                         ToggledChanged="@OnBookmarkChanged"
+                         ToggledColor="Color.Error"
+                         ToggledIcon="@Icons.Material.Outlined.BookmarkAdded"/>
 </MudTooltip>
 
 @code {
@@ -29,6 +28,9 @@
 
     [Parameter]
     public string? Class { get; set; }
+
+    private string Text =>
+        L[IsBookmarked ? "Bookmarks_Remove" : "Bookmarks_Add"];
 
     private async Task OnBookmarkChanged(bool toggled)
     {

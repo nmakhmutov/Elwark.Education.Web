@@ -50,11 +50,10 @@
                                 Size="Size.Small"/>
                         }
 
-                        <BookmarkButton
-                            Color="Color.Inherit"
-                            Id="@context.Article.Id"
-                            IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
-                            OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+                        <EduBookmarkButton Color="Color.Inherit"
+                                           Id="@context.Article.Id"
+                                           IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
+                                           OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
                     </AuthorizeView>
                 </div>
             </article>

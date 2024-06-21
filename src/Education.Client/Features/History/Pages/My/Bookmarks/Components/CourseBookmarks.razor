@@ -19,7 +19,7 @@ else
                     <CourseCompletion Status="CourseLearningStatus.NotStarted" Completeness="0" Size="Size.Small"/>
                 </div>
                 <div class="actions">
-                    <MudIconButton Icon="@Icons.Material.Outlined.BookmarkAdd" Disabled/>
+                    <MudIconButton Disabled Icon="@Icons.Material.Outlined.BookmarkAdd" />
                 </div>
             </div>
         </Placeholder>
@@ -48,10 +48,9 @@ else
                         Href="@HistoryUrl.User.MyCourse(context.Course.Id)"/>
                 </div>
                 <div class="actions">
-                    <BookmarkButton
-                        Id="@context.Course.Id"
-                        IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
-                        OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+                    <EduBookmarkButton Id="@context.Course.Id"
+                                       IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
+                                       OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
                 </div>
             </div>
         </ItemContent>

@@ -88,34 +88,31 @@
                     </MudText>
 
                     <div class="d-flex align-center gap-3">
-                        <MudIconButton
-                            Variant="Variant.Outlined"
-                            Color="Color.Default"
-                            Icon="@Icons.Material.Outlined.Remove"
-                            Disabled="@(_quantity == Min)"
-                            OnClick="@OnRemoveQuantityClick"
-                            DisableElevation/>
+                        <MudIconButton Color="Color.Default"
+                                       Disabled="@(_quantity == Min)"
+                                       DisableElevation
+                                       Icon="@Icons.Material.Outlined.Remove"
+                                       OnClick="@OnRemoveQuantityClick"
+                                       Variant="Variant.Outlined"/>
 
-                        <MudNumericField
-                            Class="number-input"
-                            @bind-Value="@(_quantity)"
-                            Variant="Variant.Outlined"
-                            Margin="Margin.Dense"
-                            Min="@Min"
-                            Max="@Max"
-                            HideSpinButtons/>
+                        <MudNumericField @bind-Value="@_quantity"
+                                         Class="number-input"
+                                         HideSpinButtons
+                                         Margin="Margin.Dense"
+                                         Max="@Max"
+                                         Min="@Min"
+                                         Variant="Variant.Outlined"/>
 
-                        <MudIconButton
-                            Variant="Variant.Outlined"
-                            Color="Color.Default"
-                            Icon="@Icons.Material.Outlined.Add"
-                            Disabled="@(_quantity == Max)"
-                            OnClick="@OnAddQuantityClick"
-                            DisableElevation/>
+                        <MudIconButton Color="Color.Default"
+                                       Disabled="@(_quantity == Max)"
+                                       DisableElevation
+                                       Icon="@Icons.Material.Outlined.Add"
+                                       OnClick="@OnAddQuantityClick"
+                                       Variant="Variant.Outlined"/>
                     </div>
                 </div>
 
-                <LoadingButton
+                <EduLoadingButton
                     Variant="Variant.Filled"
                     Color="Color.Primary"
                     OnClick="@OnPurchaseClick"

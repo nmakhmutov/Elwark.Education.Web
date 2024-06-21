@@ -10,16 +10,15 @@
     <MudText Typo="Typo.h5">
         @L["Notifications_Title"]
     </MudText>
-    <MudButton
-        Class="text-transform-none"
-        Variant="Variant.Outlined"
-        Color="Color.Primary"
-        Size="Size.Small"
-        StartIcon="@Icons.Material.Outlined.DoneAll"
-        Disabled="@(!NotificationService.HasNotifications)"
-        OnClick="@MarkAllAsReadAsync"
-        DisableRipple
-        DisableElevation>
+    <MudButton Class="text-transform-none"
+               Color="Color.Primary"
+               Disabled="@(!NotificationService.HasNotifications)"
+               DisableElevation
+               DisableRipple
+               OnClick="@MarkAllAsReadAsync"
+               Size="Size.Small"
+               StartIcon="@Icons.Material.Outlined.DoneAll"
+               Variant="Variant.Outlined">
         @L["Notifications_MarkAsRead"]
     </MudButton>
 </header>
@@ -33,9 +32,8 @@
             <section class="mud-paper d-flex align-center gap-3 pa-3 mb-3">
                 <NotificationBlock Class="flex-grow-1" Notification="@notification"/>
 
-                <MudIconButton
-                    Icon="@Icons.Material.Outlined.MarkEmailRead"
-                    OnClick="@(() => MarkAsReadAsync(notification.Id))"/>
+                <MudIconButton Icon="@Icons.Material.Outlined.MarkEmailRead"
+                               OnClick="@(() => MarkAsReadAsync(notification.Id))"/>
             </section>
         </ChildContent>
     </Virtualize>
@@ -43,13 +41,12 @@
     @if (!string.IsNullOrEmpty(_request.Token))
     {
         <footer class="d-flex justify-center">
-            <LoadingButton
-                DisableElevation
-                Variant="Variant.Filled"
-                Color="Color.Primary"
-                Text="@L["Button_SeeMore"]"
-                IsLoading="@_isMoreLoading"
-                OnClick="@LoadMoreAsync"/>
+            <EduLoadingButton Color="Color.Primary"
+                              DisableElevation
+                              IsLoading="@_isMoreLoading"
+                              OnClick="@LoadMoreAsync"
+                              Text="@L["Button_SeeMore"]"
+                              Variant="Variant.Filled"/>
         </footer>
     }
 </ApiViewer>

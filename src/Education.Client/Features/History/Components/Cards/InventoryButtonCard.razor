@@ -1,21 +1,21 @@
 @inherits InventoryInfoCard
 
-<InventoryInfoCard
-    Class="@Class"
-    Overview="@Overview"
-    Quantity="@Quantity"
-    Subtitle="@Subtitle"
-    Title="@Title"
-    IconUrl="@IconUrl">
-    <LoadingButton
-        Class="mt-3"
-        FullWidth
-        DisableElevation
-        Variant="Variant.Filled"
-        Color="Color.Primary"
-        IsLoading="@_isLoading"
-        Text="@ButtonText"
-        OnClick="@OnClickHandler"/>
+<InventoryInfoCard Class="@Class"
+                   IconUrl="@IconUrl"
+                   Overview="@Overview"
+                   Quantity="@Quantity"
+                   Subtitle="@Subtitle"
+                   Title="@Title">
+
+    <EduLoadingButton Class="mt-3"
+                      Color="Color.Primary"
+                      DisableElevation
+                      FullWidth
+                      IsLoading="@_isLoading"
+                      OnClick="@OnClickHandler"
+                      Text="@ButtonText"
+                      Variant="Variant.Filled"/>
+
 </InventoryInfoCard>
 
 @code {

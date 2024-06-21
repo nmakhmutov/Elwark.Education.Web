@@ -1,15 +1,13 @@
 <section class="mud-paper pa-3 @Class">
     <MudToolBar Dense DisableGutters Class="d-flex justify-space-between">
-        <LikeButtons
-            Id="@ArticleId"
-            IsLiked="@IsLiked"
-            OnLikeClick="@OnLikeClick"
-            OnDislikeClick="@OnDislikeClick"/>
+        <EduLikeButtons Id="@ArticleId"
+                        IsLiked="@IsLiked"
+                        OnDislikeClick="@OnDislikeClick"
+                        OnLikeClick="@OnLikeClick"/>
 
-        <BookmarkButton
-            Id="@ArticleId"
-            IsBookmarked="@(IsBookmarked ?? false)"
-            OnBookmarkClick="@OnBookmarkClick"/>
+        <EduBookmarkButton Id="@ArticleId"
+                           IsBookmarked="@(IsBookmarked ?? false)"
+                           OnBookmarkClick="@OnBookmarkClick"/>
     </MudToolBar>
 </section>
 

@@ -45,10 +45,9 @@
             }
 
             <AuthorizeView>
-                <BookmarkButton
-                    Id="@Course.Id"
-                    IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                    OnBookmarkClick="@OnBookmarkClick"/>
+                <EduBookmarkButton Id="@Course.Id"
+                                   IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                                   OnBookmarkClick="@OnBookmarkClick"/>
             </AuthorizeView>
         </footer>
     </section>

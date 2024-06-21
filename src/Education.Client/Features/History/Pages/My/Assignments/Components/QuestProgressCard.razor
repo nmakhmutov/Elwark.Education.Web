@@ -35,20 +35,21 @@
         @switch (Quest.Status)
         {
             case QuestStatus.InProgress:
-                <MudButton FullWidth Variant="Variant.Filled" Disabled>
+                <MudButton Disabled
+                           FullWidth
+                           Variant="Variant.Filled">
                     @L["Assignments_InProgress_Button"]
                 </MudButton>
                 break;
 
             case QuestStatus.Achieved:
-                <LoadingButton
-                    Variant="Variant.Filled"
-                    IsLoading="@_isLoading"
-                    Color="Color.Primary"
-                    DisableRipple
-                    DisableElevation
-                    Text="@L["Assignments_Claim_Button"]"
-                    OnClick="@ClaimAsync"/>
+                <EduLoadingButton Color="Color.Primary"
+                                  DisableElevation
+                                  DisableRipple
+                                  IsLoading="@_isLoading"
+                                  OnClick="@ClaimAsync"
+                                  Text="@L["Assignments_Claim_Button"]"
+                                  Variant="Variant.Filled"/>
                 break;
 
             case QuestStatus.Completed:

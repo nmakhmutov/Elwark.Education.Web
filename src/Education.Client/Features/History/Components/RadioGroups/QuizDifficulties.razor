@@ -17,16 +17,15 @@
                 </MudList>
             </ChildContent>
             <FooterContent>
-                <LoadingButton
-                    Color="Color.Primary"
-                    Variant="Variant.Filled"
-                    Text="@L["Start_Quiz_Button"]"
-                    LoadingText="@L["Loading_Title"]"
-                    IsLoading="@IsLoading(quiz.Difficulty)"
-                    Disabled="@IsDisabled(quiz)"
-                    OnClick="@(() => CreateAsync(quiz.Difficulty))"
-                    DisableElevation
-                    DisableRipple/>
+                <EduLoadingButton Color="Color.Primary"
+                                  Disabled="@IsDisabled(quiz)"
+                                  DisableElevation
+                                  DisableRipple
+                                  IsLoading="@IsLoading(quiz.Difficulty)"
+                                  LoadingText="@L["Loading_Title"]"
+                                  OnClick="@(() => CreateAsync(quiz.Difficulty))"
+                                  Text="@L["Start_Quiz_Button"]"
+                                  Variant="Variant.Filled"/>
             </FooterContent>
         </DifficultyCard>
     }

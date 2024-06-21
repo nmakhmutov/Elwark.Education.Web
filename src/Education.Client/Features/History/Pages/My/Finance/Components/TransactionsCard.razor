@@ -39,7 +39,11 @@
     @if (HasMore && !_showMore)
     {
         <div class="d-flex justify-center">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation OnClick="@(() => _showMore = true)">
+            <MudButton Color="Color.Primary"
+                       DisableElevation
+                       DisableRipple
+                       OnClick="@(() => _showMore = true)"
+                       Variant="Variant.Filled">
                 Show more
             </MudButton>
         </div>

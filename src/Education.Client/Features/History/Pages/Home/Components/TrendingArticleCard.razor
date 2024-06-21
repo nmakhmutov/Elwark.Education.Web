@@ -40,11 +40,10 @@
                         Size="Size.Small"/>
                 }
 
-                <BookmarkButton
-                    Color="Color.Inherit"
-                    Id="@Article.Article.Id"
-                    IsBookmarked="@(Article.Activity?.IsBookmarked ?? false)"
-                    OnBookmarkClick="@OnBookmarkClick"/>
+                <EduBookmarkButton Color="Color.Inherit"
+                                   Id="@Article.Article.Id"
+                                   IsBookmarked="@(Article.Activity?.IsBookmarked ?? false)"
+                                   OnBookmarkClick="@OnBookmarkClick"/>
             </AuthorizeView>
         </footer>
     </div>

@@ -16,27 +16,25 @@
         <Button>
             @if (CorrectAnswer is null)
             {
-                <LoadingButton
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    Size="Size.Large"
-                    IsLoading="@IsLoading"
-                    Text="@L["QuestionFrom_AnswerToQuestion"]"
-                    LoadingText="@L["Loading_Title"]"
-                    ButtonType="ButtonType.Submit"
-                    DisableElevation/>
+            <EduLoadingButton ButtonType="ButtonType.Submit"
+                              Color="Color.Primary"
+                              DisableElevation
+                              IsLoading="@IsLoading"
+                              LoadingText="@L["Loading_Title"]"
+                              Size="Size.Large"
+                              Text="@L["QuestionFrom_AnswerToQuestion"]"
+                              Variant="Variant.Filled"/>
             }
             else
             {
-                <LoadingButton
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    Size="Size.Large"
-                    IsLoading="@IsLoading"
-                    Text="@L[IsCompleted ? "QuestionForm_ShowTheResult" : "QuestionForm_NextQuestion"]"
-                    LoadingText="@L["Loading_Title"]"
-                    OnClick="@OnNextAsync"
-                    DisableElevation/>
+            <EduLoadingButton Color="Color.Primary"
+                              DisableElevation
+                              IsLoading="@IsLoading"
+                              LoadingText="@L["Loading_Title"]"
+                              OnClick="@OnNextAsync"
+                              Size="Size.Large"
+                              Text="@L[IsCompleted ? "QuestionForm_ShowTheResult" : "QuestionForm_NextQuestion"]"
+                              Variant="Variant.Filled"/>
             }
         </Button>
 

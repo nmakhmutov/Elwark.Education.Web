@@ -2,13 +2,12 @@
 @using Education.Client.Features.Customer
 <AuthorizeView>
     <NotAuthorized>
-        <MudButton
-            Variant="Variant.Filled"
-            Color="Color.Primary"
-            Size="Size.Small"
-            OnClick="@OnLogin"
-            DisableRipple
-            DisableElevation>
+        <MudButton Color="Color.Primary"
+                   DisableElevation
+                   DisableRipple
+                   OnClick="@OnLogin"
+                   Size="Size.Small"
+                   Variant="Variant.Filled">
             @L["Account_SignIn"]
         </MudButton>
     </NotAuthorized>
@@ -42,11 +41,23 @@
                         DisableRipple
                         DisableElevation/>
 
-                    <MudButtonGroup Class="w-100" Color="Color.Primary" Variant="Variant.Text" Size="Size.Large" DisableElevation>
-                        <MudButton StartIcon="@Icons.Material.Outlined.Person" Href="@CustomerUrl.Root" DisableRipple FullWidth>
+                    <MudButtonGroup Class="w-100"
+                                    Color="Color.Primary"
+                                    DisableElevation
+                                    Size="Size.Large"
+                                    Variant="Variant.Text">
+                        <MudButton DisableElevation
+                                   DisableRipple
+                                   FullWidth
+                                   Href="@CustomerUrl.Root"
+                                   StartIcon="@Icons.Material.Outlined.Person">
                             @L["Account_Title"]
                         </MudButton>
-                        <MudButton StartIcon="@Icons.Material.Outlined.Login" OnClick="@OnLogout" DisableRipple FullWidth>
+                        <MudButton DisableElevation
+                                   DisableRipple
+                                   FullWidth
+                                   OnClick="@OnLogout"
+                                   StartIcon="@Icons.Material.Outlined.Login">
                             @L["Account_Logout"]
                         </MudButton>
                     </MudButtonGroup>

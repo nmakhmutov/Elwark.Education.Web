@@ -1,10 +1,9 @@
 <MudAppBar Class="px-3 px-sm-6" ToolBarClass="gap-3" Elevation="0" DisableGutters>
-    <MudIconButton
-        Icon="@Icons.Material.Outlined.Menu"
-        Color="Color.Inherit"
-        Edge="Edge.Start"
-        OnClick="@OnDrawerClick"
-        aria-label="@L["Sidebar_ToggleMenu"]"/>
+    <MudIconButton aria-label="@L["Sidebar_ToggleMenu"]"
+                   Color="Color.Inherit"
+                   Edge="Edge.Start"
+                   Icon="@Icons.Material.Outlined.Menu"
+                   OnClick="@OnDrawerClick"/>
 
     <MudLink Class="d-none d-sm-block" Href="@HistoryUrl.Root" Typo="Typo.h5" Color="Color.Default" Underline="Underline.None">
         @L["History_Title"] <sup class="mud-typography mud-typography-caption mud-primary-text">beta</sup>
@@ -16,7 +15,7 @@
 
     <AppbarNotifications/>
 
-    <ThemeSwitchButton/>
+    <EduThemeSwitcher/>
 
     <AppbarUserMenu/>
 </MudAppBar>

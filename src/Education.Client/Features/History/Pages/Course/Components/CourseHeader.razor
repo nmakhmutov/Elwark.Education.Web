@@ -12,16 +12,15 @@
             <section>
                 @if (HasExaminations && Activity?.Status == CourseLearningStatus.NotStarted)
                 {
-                    <LoadingButton
-                        Variant="Variant.Filled"
-                        Color="Color.Primary"
-                        Size="Size.Medium"
-                        OnClick="@OnStartCourseClick"
-                        Text="@L["Course_Start_Button"]"
-                        IsLoading="@_isStarting"
-                        LoadingText="@L["Loading_Title"]"
-                        DisableRipple
-                        DisableElevation/>
+                    <EduLoadingButton Color="Color.Primary"
+                                      DisableElevation
+                                      DisableRipple
+                                      IsLoading="@_isStarting"
+                                      LoadingText="@L["Loading_Title"]"
+                                      OnClick="@OnStartCourseClick"
+                                      Size="Size.Medium"
+                                      Text="@L["Course_Start_Button"]"
+                                      Variant="Variant.Filled"/>
                 }
 
                 <div class="d-flex flex-wrap align-center align-sm-end gap-3 gap-sm-6">
@@ -37,18 +36,15 @@
                         <Authorized>
                             <MudSpacer/>
 
-                            <LikeButtons
-                                Color="Color.Inherit"
-                                Id="@CourseId"
-                                IsLiked="@Activity?.IsLiked"
-                                OnLikeClick="@OnLikeClick"
-                                OnDislikeClick="@OnDislikeClick"/>
+                            <EduLikeButtons Color="Color.Inherit"
+                                            Id="@CourseId"
+                                            IsLiked="@Activity?.IsLiked"
+                                            OnDislikeClick="@OnDislikeClick"
+                                            OnLikeClick="@OnLikeClick"/>
 
-                            <BookmarkButton
-                                Color="Color.Inherit"
-                                Id="@CourseId"
-                                IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                                OnBookmarkClick="@OnBookmarkClick"/>
+                            <EduBookmarkButton Color="Color.Inherit" Id="@CourseId"
+                                               IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                                               OnBookmarkClick="@OnBookmarkClick"/>
                         </Authorized>
                     </AuthorizeView>
                 </div>
