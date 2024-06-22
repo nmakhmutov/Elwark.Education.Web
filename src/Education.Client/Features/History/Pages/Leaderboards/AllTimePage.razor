@@ -5,7 +5,7 @@
     @L["Leaderboard_Title"]: @L["Leaderboard_AllTime_Title"]
 </PageTitle>
 
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <AllTimeHeader
             Contestants="@context.Take(3)"
@@ -39,9 +39,9 @@
                     </div>
                 </Name>
                 <Points>
-                    <MetricNumber Value="@user.Experience" Typo="Typo.h6"/>
+                    <EduMetricNumber Value="@user.Experience" Typo="Typo.h6"/>
                 </Points>
             </RegularRanking>
         </Virtualize>
     </EduContainer>
-</ApiViewer>
+</EduApiViewer>

@@ -1,15 +1,14 @@
 @page "/history/course/{id}"
 @layout HistoryLayout
 
-<ApiViewer Result="@_response" OnReloadClick="@OnParametersSetAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnParametersSetAsync">
     <PageTitle>
         @context.Course.Title
     </PageTitle>
 
-    <PageMetaContent
-        Title="@context.Course.Title"
-        Description="@context.Course.Description"
-        Image="@context.Course.Image.Url"/>
+    <EduMetaHeader Description="@context.Course.Description"
+                   Image="@context.Course.Image.Url"
+                   Title="@context.Course.Title"/>
 
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1600">
         <CourseHeader
@@ -66,4 +65,4 @@
             </EduFillGrid>
         </section>
     </EduContainer>
-</ApiViewer>
+</EduApiViewer>

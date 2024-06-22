@@ -2,7 +2,7 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <PageTitle>
         @L.GetQuizDifficultyTitle(context.Difficulty): @context.Title
     </PageTitle>
@@ -10,7 +10,7 @@
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
             <article class="d-flex flex-column mud-paper gap-3 gap-sm-6 py-3 py-sm-6">
-                <CompletedStars Progress="@((double)context.TotalScore.Value / context.TotalScore.Total)"/>
+                <EduCompletedStars Progress="@((double)context.TotalScore.Value / context.TotalScore.Total)"/>
 
                 <MudAlert Class="mb-3" Severity="@GetColor(context.Status)" ContentAlignment="HorizontalAlignment.Center" Square>
                     @L.GetStatusTitle(context.Status)
@@ -75,4 +75,4 @@
             </FooterContent>
         </MudTable>
     </EduContainer>
-</ApiViewer>
+</EduApiViewer>

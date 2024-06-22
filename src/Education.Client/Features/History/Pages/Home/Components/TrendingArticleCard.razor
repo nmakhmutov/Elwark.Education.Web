@@ -1,48 +1,48 @@
 <article class="card @Class">
     <span class="image-container">
         <span class="image-wrapper">
-            <img src="@Article.Article.Image.Small" alt="@Article.Article.Image.Alt"/>
+            <img src="@Article.Image.Small" alt="@Article.Image.Alt"/>
         </span>
-        <a href="@HistoryUrl.Content.Article(Article.Article.Id)" aria-label="@Article.Article.Title"></a>
+        <a href="@HistoryUrl.Content.Article(Article.Id)" aria-label="@Article.Title"></a>
     </span>
 
     <div class="content">
-        <EpochChip Epoch="@Article.Article.Epoch"/>
+        <EpochChip Epoch="@Article.Epoch"/>
 
-        <MudLink
-            Class="@(Article.Article.Title.Length > 50 ? "w-100 one-line-text" : null)"
-            Color="Color.Inherit"
-            Typo="Typo.h6"
-            Href="@HistoryUrl.Content.Article(Article.Article.Id)">
-            <b>@Article.Article.Title</b>
+        <MudLink Class="@(Article.Title.Length > 50 ? "w-100 one-line-text" : null)"
+                 Color="Color.Inherit"
+                 Href="@HistoryUrl.Content.Article(Article.Id)"
+                 Typo="Typo.h6">
+            <b>@Article.Title</b>
         </MudLink>
 
         @if (!HideOverview)
         {
             <p class="white-text">
-                @Article.Article.Overview
+                @Article.Overview
             </p>
         }
 
         <footer class="d-flex align-center gap-3 w-100">
-            <ContentRating Rating="@Article.Article.Rating" Compact/>
+            <EduRating Compact
+                       Stars="@Article.Rating.Stars"
+                       Votes="@Article.Rating.Votes"/>
 
-            <TimeToRead Time="@Article.Article.TimeToRead"/>
+            <EduTimeToRead Time="@Article.TimeToRead"/>
 
             <AuthorizeView>
                 <MudSpacer/>
 
-                @if (Article.HasQuiz)
+                @if (HasQuiz)
                 {
-                    <ArticleCompletionChip
-                        Status="@(Article.Activity?.Status ?? ArticleLearningStatus.NotStarted)"
-                        Href="@HistoryUrl.User.MyArticle(Article.Article.Id)"
-                        Size="Size.Small"/>
+                <ArticleCompletionChip Href="@HistoryUrl.User.MyArticle(Article.Id)"
+                                       Size="Size.Small"
+                                       Status="@(Activity?.Status ?? ArticleLearningStatus.NotStarted)"/>
                 }
 
                 <EduBookmarkButton Color="Color.Inherit"
-                                   Id="@Article.Article.Id"
-                                   IsBookmarked="@(Article.Activity?.IsBookmarked ?? false)"
+                                   Id="@Article.Id"
+                                   IsBookmarked="@(Activity?.IsBookmarked ?? false)"
                                    OnBookmarkClick="@OnBookmarkClick"/>
             </AuthorizeView>
         </footer>
@@ -51,11 +51,14 @@
 
 @code {
 
-    [Inject]
-    public IStringLocalizer<App> L { get; init; } = default!;
+    [Parameter, EditorRequired]
+    public required ArticleOverviewModel Article { get; set; }
 
     [Parameter, EditorRequired]
-    public required UserArticleOverviewModel Article { get; set; }
+    public required UserArticleActivityModel? Activity { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool HasQuiz { get; set; }
 
     [Parameter, EditorRequired]
     public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }

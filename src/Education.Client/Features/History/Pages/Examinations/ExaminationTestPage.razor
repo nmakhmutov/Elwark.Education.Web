@@ -6,7 +6,7 @@
     @_response.Match(x => $"{L.GetExaminationDifficultyTitle(x.Difficulty)}: {x.Title}", e => e.Title, () => L["Examinations_Title"])
 </PageTitle>
 
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
             <header class="timer">
@@ -63,4 +63,4 @@
             </InventoryGrid>
         </section>
     </EduContainer>
-</ApiViewer>
+</EduApiViewer>

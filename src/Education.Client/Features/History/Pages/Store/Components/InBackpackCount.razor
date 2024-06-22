@@ -1,6 +1,6 @@
 @using Education.Client.Features.History.Clients.User
 @using Education.Client.Features.History.Clients.User.Model
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <Loading>
         <MudSkeleton SkeletonType="SkeletonType.Text" Width="60%"/>
     </Loading>
@@ -14,7 +14,7 @@
             @L["Inventory_InTheBackpack", inventory.Quantity]
         </MudText>
     </ChildContent>
-</ApiViewer>
+</EduApiViewer>
 
 @code {
     private ApiResult<InventoryQuantityModel> _response = ApiResult<InventoryQuantityModel>.Loading();

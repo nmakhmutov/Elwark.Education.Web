@@ -10,7 +10,7 @@
                 @title
             </MudText>
             <div class="ml-auto">
-                <MetricNumber Value="@value" EndIcon="@EndIcon"/>
+                <EduMetricNumber Value="@value" EndIcon="@EndIcon"/>
             </div>
         </li>
     }
@@ -19,14 +19,12 @@
 @code {
 
     [Parameter, EditorRequired]
-    public Item[] Items { get; set; } = [];
+    public EduChartListItem[] Items { get; set; } = [];
 
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter]
     public string? EndIcon { get; set; }
-
-    public sealed record Item(string Title, object Value, string? Color);
 
 }

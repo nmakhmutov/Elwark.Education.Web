@@ -1,4 +1,4 @@
-namespace Education.Client.Shared.Components;
+namespace Education.Client.Shared.Components.Container;
 
 public enum EduWidth
 {

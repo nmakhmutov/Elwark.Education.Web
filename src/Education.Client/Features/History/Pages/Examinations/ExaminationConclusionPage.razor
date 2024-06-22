@@ -2,7 +2,7 @@
 @layout HistoryLayout
 @attribute [Authorize]
 
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <PageTitle>
         @L.GetExaminationDifficultyTitle(context.Difficulty): @context.Title
     </PageTitle>
@@ -14,7 +14,7 @@
                     @L.GetStatusTitle(context.Status)
                 </MudAlert>
 
-                <CompletedStars Progress="@((double)context.TotalScore.Value / context.TotalScore.Total)"/>
+                <EduCompletedStars Progress="@((double)context.TotalScore.Value / context.TotalScore.Total)"/>
 
                 @if (context.Rewards.Length > 0)
                 {
@@ -75,4 +75,4 @@
             </FooterContent>
         </MudTable>
     </EduContainer>
-</ApiViewer>
+</EduApiViewer>

@@ -11,7 +11,7 @@
 </EduContainer>
 
 <EduContainer Class="pb-3 pb-sm-6">
-    <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+    <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
         <ChildContent>
             <EduFillGrid>
                 @foreach (var (course, activity, hasExamination) in context.Items)
@@ -32,5 +32,5 @@
                 }
             </EduFillGrid>
         </Loading>
-    </ApiViewer>
+    </EduApiViewer>
 </EduContainer>

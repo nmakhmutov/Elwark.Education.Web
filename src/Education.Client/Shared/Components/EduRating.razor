@@ -24,32 +24,33 @@
                 <div class="d-flex align-center gap-1">
                     <MudRating Class="rating" MaxValue="1" SelectedValue="1" Size="Size.Small" ReadOnly/>
                     <MudText Class="compact-text" Typo="Typo.body1">
-                        @Rating.Stars
+                        @Stars
                     </MudText>
                 </div>
             }
             else
             {
-                <MudRating Class="rating" MaxValue="5" SelectedValue="@Stars" Size="Size.Small" ReadOnly/>
+                <MudRating Class="rating" MaxValue="5" SelectedValue="@_stars" Size="Size.Small" ReadOnly/>
             }
         </ChildContent>
 
         <TooltipContent>
             <div class="d-flex align-center gap-3">
-                <MudRating Class="rating" MaxValue="5" SelectedValue="@Stars" Size="Size.Small" ReadOnly/>
+                <MudRating Class="rating" MaxValue="5" SelectedValue="@_stars" Size="Size.Small" ReadOnly/>
 
                 <MudText Typo="Typo.body1">
-                    @L["ContentRating_OutOf", Rating.Stars, 5]
+                    @L["ContentRating_OutOf", Stars, 5]
                 </MudText>
             </div>
             <MudText Typo="Typo.body2">
-                @L["ContentRating_Voters", Rating.Votes.ToMetric()]
+                @L["ContentRating_Voters", Votes.ToMetric()]
             </MudText>
         </TooltipContent>
     </MudTooltip>
 </div>
 
 @code {
+    private int _stars;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -58,7 +59,10 @@
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public required ContentRatingModel Rating { get; set; }
+    public double Stars { get; set; }
+
+    [Parameter, EditorRequired]
+    public uint Votes { get; set; }
 
     [Parameter]
     public bool Compact { get; set; }
@@ -66,7 +70,7 @@
     [Parameter]
     public Placement Placement { get; set; } = Placement.Bottom;
 
-    private int Stars =>
-        (int)Math.Round(Rating.Stars);
+    protected override void OnParametersSet() =>
+        _stars = (int)Math.Round(Stars);
 
 }

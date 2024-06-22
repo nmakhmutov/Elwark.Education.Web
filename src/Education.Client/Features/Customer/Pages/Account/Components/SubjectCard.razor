@@ -7,7 +7,7 @@
         </MudLink>
     </header>
 
-    <UserLevelProgress
+    <EduLevelProgress
         Class="px-3 pb-3 px-sm-6 pb-sm-6"
         Level="@Subject.Level.Current"
         Experience="@Subject.Level.Experience"
@@ -21,7 +21,11 @@
             <div class="d-flex align-center gap-3">
                 @foreach (var (currency, amount) in Subject.Wallet)
                 {
-                    <GameMoneyDisplay Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
+                <EduGameMoneyDisplay Amount="@amount"
+                                     Currency="@currency"
+                                     Horizontal
+                                     ShowFullValue
+                                     Typo="Typo.body1"/>
                 }
             </div>
         </div>
@@ -30,7 +34,8 @@
             <MudLink Typo="Typo.subtitle2" Color="Color.Primary" Href="@Subject.Links.Backpack">
                 @L["Backpack_Title"]
             </MudLink>
-            <BackpackOverview Fullness="@Subject.Backpack.Fullness" Capacity="@Subject.Backpack.Capacity"/>
+            <EduBackpackOverview Capacity="@Subject.Backpack.Capacity"
+                                 Fullness="@Subject.Backpack.Fullness"/>
         </div>
     </section>
 

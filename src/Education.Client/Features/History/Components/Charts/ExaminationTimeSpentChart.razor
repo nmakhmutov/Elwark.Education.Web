@@ -68,12 +68,12 @@
     [Parameter, EditorRequired]
     public required ExaminationStatisticsModel.TimeSpentModel Value { get; set; }
 
-    private ChartList.Item[] Items =>
+    private EduChartListItem[] Items =>
     [
-        new ChartList.Item(L["TimeSpent_Min_Title"], Value.Min.Humanize(L), HistoryChart.Examination.TimeSpent.Minimum),
-        new ChartList.Item(L["TimeSpent_Average_Title"], Value.Average.Humanize(L), HistoryChart.Examination.TimeSpent.Average),
-        new ChartList.Item(L["TimeSpent_Max_Title"], Value.Max.Humanize(L), HistoryChart.Examination.TimeSpent.Maximum),
-        new ChartList.Item(L["TimeSpent_Total_Title"], Value.Total.Humanize(L), null)
+        new EduChartListItem(L["TimeSpent_Min_Title"], Value.Min.Humanize(L), HistoryChart.Examination.TimeSpent.Minimum),
+        new EduChartListItem(L["TimeSpent_Average_Title"], Value.Average.Humanize(L), HistoryChart.Examination.TimeSpent.Average),
+        new EduChartListItem(L["TimeSpent_Max_Title"], Value.Max.Humanize(L), HistoryChart.Examination.TimeSpent.Maximum),
+        new EduChartListItem(L["TimeSpent_Total_Title"], Value.Total.Humanize(L), null)
     ];
 
     private Data[] Series =>

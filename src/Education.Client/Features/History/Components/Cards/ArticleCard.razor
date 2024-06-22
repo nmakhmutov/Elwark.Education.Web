@@ -25,9 +25,11 @@
         </div>
 
         <footer class="d-flex align-center gap-3">
-            <ContentRating Rating="@Article.Rating" Compact/>
+            <EduRating Compact
+                       Stars="@Article.Rating.Stars"
+                       Votes="@Article.Rating.Votes"/>
 
-            <TimeToRead Time="@Article.TimeToRead"/>
+            <EduTimeToRead Time="@Article.TimeToRead"/>
 
             <AuthorizeView>
 

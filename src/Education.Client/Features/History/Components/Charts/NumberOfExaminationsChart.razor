@@ -50,12 +50,12 @@
     [Parameter, EditorRequired]
     public required NumberOfExaminationsModel Value { get; set; }
 
-    private ChartList.Item[] Items =>
+    private EduChartListItem[] Items =>
     [
-        new ChartList.Item(L["NumberOfExaminations_Successful_Title"], Value.Succeeded, HistoryChart.Examination.Completeness.Successful),
-        new ChartList.Item(L["NumberOfExaminations_Failed_Title"], Value.Failed, HistoryChart.Examination.Completeness.Failed),
-        new ChartList.Item(L["NumberOfExaminations_TimeExceeded_Title"], Value.TimeExceeded, HistoryChart.Examination.Completeness.TimeExceeded),
-        new ChartList.Item(L["NumberOfExaminations_Total_Title"], Value.Total, null)
+        new EduChartListItem(L["NumberOfExaminations_Successful_Title"], Value.Succeeded, HistoryChart.Examination.Completeness.Successful),
+        new EduChartListItem(L["NumberOfExaminations_Failed_Title"], Value.Failed, HistoryChart.Examination.Completeness.Failed),
+        new EduChartListItem(L["NumberOfExaminations_TimeExceeded_Title"], Value.TimeExceeded, HistoryChart.Examination.Completeness.TimeExceeded),
+        new EduChartListItem(L["NumberOfExaminations_Total_Title"], Value.Total, null)
     ];
 
     private Data[] Series =>

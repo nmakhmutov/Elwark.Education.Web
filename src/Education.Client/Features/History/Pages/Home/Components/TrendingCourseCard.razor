@@ -1,51 +1,52 @@
 <article class="card @Class">
     <span class="image-container">
         <span class="image-wrapper">
-            <img src="@Course.Course.Image.Small" alt="@Course.Course.Image.Alt"/>
+            <img src="@Course.Image.Small" alt="@Course.Image.Alt"/>
         </span>
-        <a href="@HistoryUrl.Content.Course(Course.Course.Id)" aria-label="@Course.Course.Id"></a>
+        <a href="@HistoryUrl.Content.Course(Course.Id)" aria-label="@Course.Id"></a>
     </span>
     <div class="content">
         <MudLink
-            Class="@(Course.Course.Title.Length > 50 ? "w-100 one-line-text" : null)"
+            Class="@(Course.Title.Length > 50 ? "w-100 one-line-text" : null)"
             Color="Color.Inherit"
             Typo="Typo.h6"
-            Href="@HistoryUrl.Content.Course(Course.Course.Id)">
-            <b>@Course.Course.Title</b>
+            Href="@HistoryUrl.Content.Course(Course.Id)">
+            <b>@Course.Title</b>
         </MudLink>
 
         <p class="white-text">
-            @Course.Course.Overview
+            @Course.Overview
         </p>
 
         <footer class="d-flex align-center gap-3 w-100">
-            <ContentRating Rating="@Course.Course.Rating" Compact/>
+            <EduRating Compact
+                       Stars="@Course.Rating.Stars"
+                       Votes="@Course.Rating.Votes"/>
 
             <MudTooltip Text="@L["Articles_Title"]">
                 <div class="d-flex align-center white-text">
                     <MudIcon Class="mr-1" Icon="@EduIcons.Articles" Size="Size.Small"/>
-                    <MudText Typo="Typo.body1">@Course.Course.ArticleCount</MudText>
+                    <MudText Typo="Typo.body1">@Course.ArticleCount</MudText>
                 </div>
             </MudTooltip>
 
             <AuthorizeView>
                 <MudSpacer/>
 
-                @if (Course.HasExamination)
+                @if (HasExamination)
                 {
-                    <CourseCompletion
-                        Class="w-100"
-                        Typo="Typo.caption"
-                        Size="Size.Small"
-                        Status="@(Course.Activity?.Status ?? CourseLearningStatus.NotStarted)"
-                        Completeness="@(Course.Activity?.Completeness ?? 0)"
-                        Href="@HistoryUrl.User.MyCourse(Course.Course.Id)"/>
+                <CourseCompletion Class="w-100"
+                                  Completeness="@(Activity?.Completeness ?? 0)"
+                                  Href="@HistoryUrl.User.MyCourse(Course.Id)"
+                                  Size="Size.Small"
+                                  Status="@(Activity?.Status ?? CourseLearningStatus.NotStarted)"
+                                  Typo="Typo.caption"/>
                 }
 
 
                 <EduBookmarkButton Color="Color.Inherit"
-                                   Id="@Course.Course.Id"
-                                   IsBookmarked="@(Course.Activity?.IsBookmarked ?? false)"
+                                   Id="@Course.Id"
+                                   IsBookmarked="@(Activity?.IsBookmarked ?? false)"
                                    OnBookmarkClick="@OnBookmarkClick"/>
             </AuthorizeView>
         </footer>
@@ -58,7 +59,13 @@
     public IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required UserCourseOverviewModel Course { get; set; }
+    public required CourseOverviewModel Course { get; set; }
+
+    [Parameter, EditorRequired]
+    public required UserCourseActivityModel? Activity { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool HasExamination { get; set; }
 
     [Parameter, EditorRequired]
     public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }

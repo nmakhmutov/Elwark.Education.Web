@@ -1,7 +1,7 @@
 @using Education.Client.Features.History.Clients.Course
 @using Education.Client.Features.History.Clients.Course.Request
 @using Education.Client.Features.History.Clients.Learner
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <Loading>
         <section class="grid @Class">
             @for (var i = 0; i < Count; i++)
@@ -12,16 +12,17 @@
     </Loading>
     <ChildContent>
         <section class="grid @Class">
-            @foreach (var course in context)
+            @foreach (var overview in context)
             {
-                <TrendingCourseCard
-                    Class="course"
-                    Course="@course"
-                    OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+                <TrendingCourseCard Class="course"
+                                    Course="@overview.Course"
+                                    Activity="@overview.Activity"
+                                    HasExamination="@overview.HasExamination"
+                                    OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
             }
         </section>
     </ChildContent>
-</ApiViewer>
+</EduApiViewer>
 
 @code {
     private const int Count = 5;

@@ -10,7 +10,7 @@
     <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
 </EduContainer>
 
-<ApiViewer Result="@_response" OnReloadClick="@OnParametersSetAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnParametersSetAsync">
     <EduContainer Class="pb-3 pb-sm-6">
         <StatisticDetailsGrid>
             <StatisticDetailsCard DisableActivity="@(context.Progress.Length == 0)">
@@ -46,7 +46,7 @@
             <StatisticDetailsCard DisableActivity="@(context.Progress.Length == 0)">
                 <TotalContent>
                     <Subheader Title="@L["Quizzes_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <MetricNumber Value="@context.Tests" Typo="Typo.h5"/>
+                    <EduMetricNumber Value="@context.Tests" Typo="Typo.h5"/>
                 </TotalContent>
                 <ProgressContent>
                     <Subheader Title="@L["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
@@ -59,4 +59,4 @@
             </StatisticDetailsCard>
         </StatisticDetailsGrid>
     </EduContainer>
-</ApiViewer>
+</EduApiViewer>

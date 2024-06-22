@@ -51,13 +51,13 @@
     [Parameter, EditorRequired]
     public required NumberOfQuizzesModel Quizzes { get; set; }
 
-    private ChartList.Item[] Items =>
+    private EduChartListItem[] Items =>
     [
-        new ChartList.Item(L["NumberOfQuizzes_Successful_Title"], Quizzes.Succeeded, HistoryChart.Quiz.Completeness.Successful),
-        new ChartList.Item(L["NumberOfQuizzes_Failed_Title"], Quizzes.Failed, HistoryChart.Quiz.Completeness.Failed),
-        new ChartList.Item(L["NumberOfQuizzes_TimeExceeded_Title"], Quizzes.TimeExceeded, HistoryChart.Quiz.Completeness.TimeExceeded),
-        new ChartList.Item(L["NumberOfQuizzes_MistakesLimitExceeded_Title"], Quizzes.MistakesLimitExceeded, HistoryChart.Quiz.Completeness.MistakesLimitExceeded),
-        new ChartList.Item(L["NumberOfQuizzes_Total_Title"], Quizzes.Total, null)
+        new EduChartListItem(L["NumberOfQuizzes_Successful_Title"], Quizzes.Succeeded, HistoryChart.Quiz.Completeness.Successful),
+        new EduChartListItem(L["NumberOfQuizzes_Failed_Title"], Quizzes.Failed, HistoryChart.Quiz.Completeness.Failed),
+        new EduChartListItem(L["NumberOfQuizzes_TimeExceeded_Title"], Quizzes.TimeExceeded, HistoryChart.Quiz.Completeness.TimeExceeded),
+        new EduChartListItem(L["NumberOfQuizzes_MistakesLimitExceeded_Title"], Quizzes.MistakesLimitExceeded, HistoryChart.Quiz.Completeness.MistakesLimitExceeded),
+        new EduChartListItem(L["NumberOfQuizzes_Total_Title"], Quizzes.Total, null)
     ];
 
     private Data[] Series =>

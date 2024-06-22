@@ -10,11 +10,10 @@
         </MudText>
     </header>
 
-    <UserLevelProgress
-        Class="flex-grow-1 pa-3 pa-sm-6"
-        Level="@Level.Current"
-        Experience="@Level.Experience"
-        Threshold="@Level.Threshold"/>
+    <EduLevelProgress Class="flex-grow-1 pa-3 pa-sm-6"
+                      Experience="@Level.Experience"
+                      Level="@Level.Current"
+                      Threshold="@Level.Threshold"/>
 
     <footer class="d-flex flex-wrap flex-sm-nowrap justify-space-between align-center border-t mud-border-lines-default gap-3 pa-3 px-sm-6">
         <div>
@@ -24,7 +23,11 @@
             <div class="d-flex align-center gap-3">
                 @foreach (var (currency, amount) in Wallet)
                 {
-                    <GameMoneyDisplay Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
+                    <EduGameMoneyDisplay Amount="@amount"
+                                         Currency="@currency"
+                                         Horizontal
+                                         ShowFullValue
+                                         Typo="Typo.body1"/>
                 }
             </div>
         </div>
@@ -32,7 +35,8 @@
             <MudLink Typo="Typo.subtitle2" Color="Color.Primary" Href="@HistoryUrl.User.MyBackpack">
                 @L["Backpack_Title"]
             </MudLink>
-            <BackpackOverview Fullness="@Backpack.Fullness" Capacity="@Backpack.Capacity"/>
+            <EduBackpackOverview Capacity="@Backpack.Capacity"
+                                 Fullness="@Backpack.Fullness"/>
         </div>
     </footer>
 </section>

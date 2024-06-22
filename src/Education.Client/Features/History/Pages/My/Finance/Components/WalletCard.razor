@@ -21,7 +21,7 @@
 
             <div class="d-flex flex-column align-end gap-3">
                 <div class="trending-wrapper">
-                    <Trending Class="white-text" Trend="@_trendingValue" Colorless/>
+                    <EduTrend Class="white-text" Trend="@_trendingValue" Colorless/>
                 </div>
 
                 @if (Wallet.Budgets.Length > 0)
@@ -59,13 +59,13 @@
                 </MudText>
             </MudTd>
             <MudTd>
-                <MetricNumber Value="@context.Income" Typo="Typo.body1"/>
+                <EduMetricNumber Value="@context.Income" Typo="Typo.body1"/>
                 <MudText Class="mud-text-secondary" Typo="Typo.body2">
                     @L["GameMoney_Income_Title"]
                 </MudText>
             </MudTd>
             <MudTd>
-                <MetricNumber Value="@context.Expense" Typo="Typo.body1"/>
+                <EduMetricNumber Value="@context.Expense" Typo="Typo.body1"/>
                 <MudText Class="mud-text-secondary" Typo="Typo.body2">
                     @L["GameMoney_Expense_Title"]
                 </MudText>
@@ -156,7 +156,7 @@
 
     private RenderFragment CreateTrendIcon(double balance)
     {
-        var trend = Trending.GetTrend(balance);
+        var trend = EduTrend.GetTrend(balance);
 
         return @<MudIcon Icon="@trend.Icon" Color="trend.Color" Size="Size.Medium"/>;
     }

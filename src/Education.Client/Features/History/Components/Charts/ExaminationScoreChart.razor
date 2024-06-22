@@ -50,12 +50,12 @@
     [Parameter, EditorRequired]
     public required ScoreModel Score { get; set; }
 
-    private ChartList.Item[] Items =>
+    private EduChartListItem[] Items =>
     [
-        new ChartList.Item(L["Score_Questions_Title"], Score.Questions, HistoryChart.Examination.Score.Questions),
-        new ChartList.Item(L["Score_TimeBonus_Title"], Score.TimeBonus, HistoryChart.Examination.Score.SpeedBonus),
-        new ChartList.Item(L["Score_AccuracyBonus_Title"], Score.AccuracyBonus, HistoryChart.Examination.Score.NoMistakesBonus),
-        new ChartList.Item(L["Score_Total_Title"], Score.Total, null)
+        new EduChartListItem(L["Score_Questions_Title"], Score.Questions, HistoryChart.Examination.Score.Questions),
+        new EduChartListItem(L["Score_TimeBonus_Title"], Score.TimeBonus, HistoryChart.Examination.Score.SpeedBonus),
+        new EduChartListItem(L["Score_AccuracyBonus_Title"], Score.AccuracyBonus, HistoryChart.Examination.Score.NoMistakesBonus),
+        new EduChartListItem(L["Score_Total_Title"], Score.Total, null)
     ];
 
     private Data[] Series =>

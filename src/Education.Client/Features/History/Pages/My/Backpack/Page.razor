@@ -6,7 +6,7 @@
     @L["Backpack_Title"]
 </PageTitle>
 
-<ApiViewer Result="@_backpack" OnReloadClick="@OnInitializedAsync">
+<EduApiViewer Result="@_backpack" OnReloadClick="@OnInitializedAsync">
     <section class="container @_containerClass pa-3 pa-sm-6">
         <aside class="inventories mud-paper">
             <InventoryList Inventories="@context.Items" OnInventoryClick="@OnInventorySelected"/>
@@ -29,17 +29,22 @@
             <div class="d-flex align-center gap-3">
                 @foreach (var (currency, amount) in _profile.Wallet)
                 {
-                    <GameMoneyDisplay Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
+                <EduGameMoneyDisplay Amount="@amount"
+                                     Currency="@currency"
+                                     Horizontal
+                                     ShowFullValue
+                                     Typo="Typo.body1"/>
                 }
 
-                <BackpackOverview Fullness="@_profile.Backpack.Fullness" Capacity="@_profile.Backpack.Capacity"/>
+                <EduBackpackOverview Capacity="@_profile.Backpack.Capacity"
+                                     Fullness="@_profile.Backpack.Fullness"/>
             </div>
         </header>
 
         <article class="details mud-paper pa-3 pa-sm-6">
-            <ApiViewer Result="@_product" Context="product">
+            <EduApiViewer Result="@_product" Context="product">
                 <div class="d-flex align-center gap-3 mb-3 mb-sm-6">
-                    <InventoryIcon Class="pa-3" ImageUrl="@product.ImageUrl" Title="@product.Title"/>
+                    <EduInventoryIcon Class="pa-3" ImageUrl="@product.ImageUrl" Title="@product.Title"/>
 
                     <div class="overflow-hidden">
                         <MudText Typo="Typo.subtitle1">
@@ -57,7 +62,7 @@
                     <MudTabPanel Text="Buy">
                     </MudTabPanel>
                 </MudTabs>
-            </ApiViewer>
+            </EduApiViewer>
         </article>
     </section>
-</ApiViewer>
+</EduApiViewer>

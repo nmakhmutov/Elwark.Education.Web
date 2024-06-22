@@ -1,7 +1,7 @@
 @using Education.Client.Features.History.Clients.Article
 @using Education.Client.Features.History.Clients.Article.Request
 @using Education.Client.Features.History.Clients.Learner
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <Loading>
         <div class="grid @Class">
             <div class="image h-100">
@@ -37,9 +37,12 @@
                 </MudText>
 
                 <div class="d-flex align-center justify-space-between justify-sm-start gap-3 gap-sm-6">
-                    <ContentRating Rating="@context.Article.Rating" Placement="Placement.Right" Compact/>
+                    <EduRating Compact
+                               Placement="Placement.Right"
+                               Stars="@context.Article.Rating.Stars"
+                               Votes="@context.Article.Rating.Votes"/>
 
-                    <TimeToRead Time="@context.Article.TimeToRead"/>
+                    <EduTimeToRead Time="@context.Article.TimeToRead"/>
 
                     <AuthorizeView Context="_">
                         @if (context.HasQuiz)
@@ -59,7 +62,7 @@
             </article>
         </div>
     </ChildContent>
-</ApiViewer>
+</EduApiViewer>
 
 @code {
 

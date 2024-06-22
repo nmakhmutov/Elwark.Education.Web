@@ -2,15 +2,14 @@
 @using Education.Client.Features.History.Clients.Article.Model
 @layout HistoryLayout
 
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <PageTitle>
         @context.Article.Title
     </PageTitle>
 
-    <PageMetaContent
-        Title="@context.Article.Title"
-        Description="@context.Article.Description"
-        Image="@context.Article.Image.Small"/>
+    <EduMetaHeader Description="@context.Article.Description"
+                   Image="@context.Article.Image.Small"
+                   Title="@context.Article.Title"/>
 
     @switch (context.Article)
     {
@@ -58,4 +57,4 @@
                 OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
             break;
     }
-</ApiViewer>
+</EduApiViewer>

@@ -64,13 +64,12 @@
                         @L["Product_TotalPrice"]
                     </MudText>
                     <div class="d-flex">
-                        <GameMoneyDisplay
-                            Class="price"
-                            Currency="@TotalPrice.Currency"
-                            Amount="@TotalPrice.Amount"
-                            Typo="Typo.h5"
-                            IconSize="Size.Medium"
-                            Horizontal/>
+                        <EduGameMoneyDisplay Class="price"
+                                             Currency="@TotalPrice.Currency"
+                                             Amount="@TotalPrice.Amount"
+                                             Horizontal
+                                             IconSize="Size.Medium"
+                                             Typo="Typo.h5"/>
                         @if (Product.Selling.Discount > 0)
                         {
                             <MudText Class="mud-text-secondary align-self-start ml-1" Typo="Typo.subtitle1">

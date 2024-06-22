@@ -49,11 +49,11 @@
                 <MudText Typo="Typo.h6">
                     @L["History_Battle_Location"]
                 </MudText>
-                <StyledMarkupString Class="mb-3 mb-sm-6" Content="@Battle.Location" DisableParagraphIndent/>
+                <EduMarkupString Class="mb-3 mb-sm-6" Content="@Battle.Location" DisableParagraphIndent/>
                 <MudText Typo="Typo.h6">
                     @L["History_Battle_Result"]
                 </MudText>
-                <StyledMarkupString Content="@Battle.Result" DisableParagraphIndent/>
+                <EduMarkupString Content="@Battle.Result" DisableParagraphIndent/>
             </section>
 
             @if (_conflictParties.Count > 0)
@@ -68,7 +68,7 @@
                             <div class="d-flex justify-space-around gap-3">
                                 @for (var i = 0; i < item.Value.Count; i++)
                                 {
-                                    <StyledMarkupString Class="flex-1" Content="@item.Value[i]" DisableParagraphIndent/>
+                                    <EduMarkupString Class="flex-1" Content="@item.Value[i]" DisableParagraphIndent/>
                                     @if (i < item.Value.Count - 1)
                                     {
                                         <MudDivider Class="flex-0" Vertical FlexItem/>

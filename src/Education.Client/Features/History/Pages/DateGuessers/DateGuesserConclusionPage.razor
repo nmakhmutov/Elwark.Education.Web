@@ -6,12 +6,12 @@
     @L["History_DateGuesser_Completed"]
 </PageTitle>
 
-<ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync" Context="conclusion">
+<EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync" Context="conclusion">
     <MudAlert Class="mb-6 mb-sm-12" Severity="Severity.Success" Square ContentAlignment="HorizontalAlignment.Center">
         @L["History_DateGuesser_Completed"]
     </MudAlert>
 
-    <CompletedStars Class="mb-6" Progress="@_progress"/>
+    <EduCompletedStars Class="mb-6" Progress="@_progress"/>
 
     <RewardsContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
 
@@ -92,4 +92,4 @@
             </FooterContent>
         </MudTable>
     </EduContainer>
-</ApiViewer>
+</EduApiViewer>

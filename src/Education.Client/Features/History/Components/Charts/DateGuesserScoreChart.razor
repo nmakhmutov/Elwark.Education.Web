@@ -45,11 +45,11 @@
     [Parameter, EditorRequired]
     public ScoreModel Score { get; set; } = new(0, 0, 0);
 
-    private ChartList.Item[] Items =>
+    private EduChartListItem[] Items =>
     [
-        new ChartList.Item(L["History_DateGuesser_Points"], Score.Points, HistoryChart.DateGuesser.Score.Points),
-        new ChartList.Item(L["History_DateGuesser_x2Bonus"], Score.Bonus, HistoryChart.DateGuesser.Score.X2Points),
-        new ChartList.Item(L["History_DateGuesser_Score"], Score.Total, null)
+        new EduChartListItem(L["History_DateGuesser_Points"], Score.Points, HistoryChart.DateGuesser.Score.Points),
+        new EduChartListItem(L["History_DateGuesser_x2Bonus"], Score.Bonus, HistoryChart.DateGuesser.Score.X2Points),
+        new EduChartListItem(L["History_DateGuesser_Score"], Score.Total, null)
     ];
 
     private Data[] Series =>

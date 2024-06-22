@@ -102,10 +102,10 @@ internal sealed class NotificationService : INotificationService
 
         var parameters = new Dictionary<string, object>
         {
-            [nameof(NotificationBlock.Notification)] = notification
+            [nameof(EduNotification.Notification)] = notification
         };
 
-        _snackbar.Add<NotificationBlock>(parameters, Severity.Normal, options => options.HideIcon = true);
+        _snackbar.Add<EduNotification>(parameters, Severity.Normal, options => options.HideIcon = true);
 
         return NotifyChangeSubscribersAsync();
     }

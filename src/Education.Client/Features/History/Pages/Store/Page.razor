@@ -14,16 +14,21 @@
         <section class="d-flex align-center gap-3">
             @foreach (var (currency, amount) in _profile.Wallet)
             {
-                <GameMoneyDisplay Currency="@currency" Amount="@amount" Typo="Typo.body1" Horizontal ShowFullValue/>
+            <EduGameMoneyDisplay Amount="@amount"
+                                 Currency="@currency"
+                                 Horizontal
+                                 ShowFullValue
+                                 Typo="Typo.body1"/>
             }
 
-            <BackpackOverview Fullness="@_profile.Backpack.Fullness" Capacity="@_profile.Backpack.Capacity"/>
+            <EduBackpackOverview Capacity="@_profile.Backpack.Capacity"
+                                 Fullness="@_profile.Backpack.Fullness"/>
         </section>
     </div>
 </EduContainer>
 
 <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-    <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+    <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
         <ChildContent>
             <MudChipSet Class="mb-3 mb-sm-6" Mandatory Filter>
                 @foreach (var category in _categories)
@@ -169,22 +174,5 @@
                 }
             </section>
         </Loading>
-    </ApiViewer>
-    @* <InventoryProducts *@
-    @*     Profile="@_profile" *@
-    @*     Category="@_category" *@
-    @*     CategoryChanged="@(x => ChangeCategory(x))" *@
-    @*     IsAffordable="@IsInventoryAffordable" *@
-    @*     OnProductPurchased="@UpdateProfileAsync"/> *@
-
-    @* <ProfileCard *@
-    @*     Class="profile" *@
-    @*     Level="@_profile.Level" *@
-    @*     Backpack="@_profile.Backpack" *@
-    @*     Wallet="@_profile.Wallet"/> *@
-
-    @* <ExchangeCard *@
-    @*     Class="exchange" *@
-    @*     Wallet="@_profile.Wallet" *@
-    @*     OnExchanged="@UpdateProfileAsync"/> *@
+    </EduApiViewer>
 </EduContainer>

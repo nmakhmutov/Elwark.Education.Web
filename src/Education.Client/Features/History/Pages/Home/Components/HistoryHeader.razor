@@ -13,7 +13,7 @@
 
     <EduContainer Class="articles" MaxWidth="@MaxWidth">
         <div class="grid">
-            <ApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+            <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
                 <Loading>
                     @for (var i = 0; i < Count; i++)
                     {
@@ -21,16 +21,18 @@
                     }
                 </Loading>
                 <ChildContent>
-                    @foreach (var article in context)
+                    @foreach (var overview in context)
                     {
                         <TrendingArticleCard
                             Class="article"
-                            Article="@article"
+                            Article="@overview.Article"
+                            Activity="@overview.Activity"
+                            HasQuiz="@overview.HasQuiz"
                             OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
                             HideOverview/>
                     }
                 </ChildContent>
-            </ApiViewer>
+            </EduApiViewer>
         </div>
     </EduContainer>
 </header>
