@@ -14,11 +14,11 @@ namespace Education.Client.Features.History.Pages.My.Backpack;
 public sealed partial class Page : ComponentBase,
     IDisposable
 {
-    private string? _containerClass;
-    private BackpackInventoryModel? _selectedInventory;
-    private ProfileModel _profile = ProfileModel.Empty;
     private ApiResult<BackpackModel> _backpack = ApiResult<BackpackModel>.Loading();
+    private string? _containerClass;
     private ApiResult<ProductOverviewModel> _product = ApiResult<ProductOverviewModel>.Loading();
+    private ProfileModel _profile = ProfileModel.Empty;
+    private BackpackInventoryModel? _selectedInventory;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -34,6 +34,9 @@ public sealed partial class Page : ComponentBase,
 
     [CascadingParameter]
     public HistoryLayout Layout { get; set; } = default!;
+
+    public void Dispose() =>
+        Layout.ShowFooter();
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,7 +66,4 @@ public sealed partial class Page : ComponentBase,
         _product = ApiResult<ProductOverviewModel>.Loading();
         _product = await ProductClient.GetAsync(inventory.ProductId);
     }
-
-    public void Dispose() =>
-        Layout.ShowFooter();
 }

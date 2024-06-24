@@ -2,7 +2,7 @@
 <EditForm Model="@_userAnswer" OnValidSubmit="OnValidSubmit">
     <FluentValidationValidator Validator="@_validator"/>
 
-    <EduFitGrid Class="mb-3 mb-sm-6">
+    <EduFillGrid Class="mb-3 mb-sm-6">
         @foreach (var option in Options)
         {
             var (icon, color) = Get(option);
@@ -22,31 +22,31 @@
                 }
             </div>
         }
-    </EduFitGrid>
+    </EduFillGrid>
 
     <FormFooter>
         <Button>
             @if (CorrectAnswer is null)
             {
-            <EduLoadingButton ButtonType="ButtonType.Submit"
-                              Color="Color.Primary"
-                              DisableElevation
-                              IsLoading="@IsLoading"
-                              LoadingText="@L["Loading_Title"]"
-                              Size="Size.Large"
-                              Text="@L["QuestionFrom_AnswerToQuestion"]"
-                              Variant="Variant.Filled"/>
+                <EduLoadingButton ButtonType="ButtonType.Submit"
+                                  Color="Color.Primary"
+                                  DisableElevation
+                                  IsLoading="@IsLoading"
+                                  LoadingText="@L["Loading_Title"]"
+                                  Size="Size.Large"
+                                  Text="@L["QuestionFrom_AnswerToQuestion"]"
+                                  Variant="Variant.Filled"/>
             }
             else
             {
-            <EduLoadingButton Color="Color.Primary"
-                              DisableElevation
-                              IsLoading="@IsLoading"
-                              LoadingText="@L["Loading_Title"]"
-                              OnClick="@OnNextAsync"
-                              Size="Size.Large"
-                              Text="@L[IsCompleted ? "QuestionForm_ShowTheResult" : "QuestionForm_NextQuestion"]"
-                              Variant="Variant.Filled"/>
+                <EduLoadingButton Color="Color.Primary"
+                                  DisableElevation
+                                  IsLoading="@IsLoading"
+                                  LoadingText="@L["Loading_Title"]"
+                                  OnClick="@OnNextAsync"
+                                  Size="Size.Large"
+                                  Text="@L[IsCompleted ? "QuestionForm_ShowTheResult" : "QuestionForm_NextQuestion"]"
+                                  Variant="Variant.Filled"/>
             }
         </Button>
         <Information>
