@@ -1,6 +1,6 @@
 namespace Education.Client.Features.Customer;
 
-public class CustomerUrl
+public static class CustomerUrl
 {
     public const string Root = "/account";
 

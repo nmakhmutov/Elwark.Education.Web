@@ -1,14 +1,14 @@
-<MudThemeProvider @ref="@_provider" Theme="@ThemeConfiguration" IsDarkMode="@IsDarkMode"/>
+<MudThemeProvider @ref="@_provider" Theme="@Configuration" IsDarkMode="@IsDarkMode"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<CascadingValue TValue="CascadingTheme" Value="@(this)" ChildContent="@ChildContent"/>
+<CascadingValue TValue="EduThemeProvider" Value="@(this)" ChildContent="@ChildContent"/>
 
 @code {
     private const string CacheKey = "ts";
     private MudThemeProvider _provider = new();
 
-    private static readonly MudTheme ThemeConfiguration = new()
+    private static readonly MudTheme Configuration = new()
     {
         Palette = new PaletteLight
         {
@@ -143,16 +143,16 @@
 
     public bool IsDarkMode { get; private set; }
 
-    public ThemeMode Mode { get; private set; }
+    public EduThemeMode Mode { get; private set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Mode = await Storage.GetItemAsync<ThemeMode>(CacheKey);
+        Mode = await Storage.GetItemAsync<EduThemeMode>(CacheKey);
         IsDarkMode = Mode switch
         {
-            ThemeMode.Auto => await _provider.GetSystemPreference(),
-            ThemeMode.Light => false,
-            ThemeMode.Dark => true,
+            EduThemeMode.Auto => await _provider.GetSystemPreference(),
+            EduThemeMode.Light => false,
+            EduThemeMode.Dark => true,
             _ => true
         };
     }
@@ -167,7 +167,7 @@
 
     public async Task SetAutoThemeAsync()
     {
-        Mode = ThemeMode.Auto;
+        Mode = EduThemeMode.Auto;
         IsDarkMode = await _provider.GetSystemPreference();
 
         await Storage.SetItemAsync(CacheKey, Mode);
@@ -175,7 +175,7 @@
 
     public async Task SetLightThemeAsync()
     {
-        Mode = ThemeMode.Light;
+        Mode = EduThemeMode.Light;
         IsDarkMode = false;
 
         await Storage.SetItemAsync(CacheKey, Mode);
@@ -183,7 +183,7 @@
 
     public async Task SetDarkThemeAsync()
     {
-        Mode = ThemeMode.Dark;
+        Mode = EduThemeMode.Dark;
         IsDarkMode = true;
 
         await Storage.SetItemAsync(CacheKey, Mode);
@@ -191,7 +191,7 @@
 
     private async Task OnSystemPreferenceChanged(bool isDarkMode)
     {
-        if (Mode == ThemeMode.Auto)
+        if (Mode == EduThemeMode.Auto)
         {
             await Storage.SetItemAsync(CacheKey, IsDarkMode = isDarkMode);
             StateHasChanged();

@@ -1,6 +1,6 @@
 namespace Education.Client.Shared.Theme;
 
-public enum ThemeMode
+public enum EduThemeMode
 {
     Auto,
     Light,

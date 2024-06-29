@@ -4,19 +4,19 @@
         <MudMenuItem
             Icon="@Icons.Material.Outlined.LightMode"
             OnClick="@ThemeProvider.SetLightThemeAsync"
-            IconColor="@GetSelectedColor(ThemeMode.Light)">
+            IconColor="@GetSelectedColor(EduThemeMode.Light)">
             @L["Theme_Light_Theme"]
         </MudMenuItem>
         <MudMenuItem
             Icon="@Icons.Material.Outlined.DarkMode"
             OnClick="@ThemeProvider.SetDarkThemeAsync"
-            IconColor="@GetSelectedColor(ThemeMode.Dark)">
+            IconColor="@GetSelectedColor(EduThemeMode.Dark)">
             @L["Theme_Dark_Theme"]
         </MudMenuItem>
         <MudMenuItem
             Icon="@Icons.Material.Outlined.AutoMode"
             OnClick="@ThemeProvider.SetAutoThemeAsync"
-            IconColor="@GetSelectedColor(ThemeMode.Auto)">
+            IconColor="@GetSelectedColor(EduThemeMode.Auto)">
             @L["Theme_Device_Title"]
         </MudMenuItem>
     </MudMenu>
@@ -28,18 +28,18 @@
     public IStringLocalizer<App> L { get; init; } = default!;
 
     [CascadingParameter]
-    private CascadingTheme? ThemeProvider { get; set; }
+    private EduThemeProvider? ThemeProvider { get; set; }
 
     private string Icon =>
         ThemeProvider?.Mode switch
         {
-            ThemeMode.Auto => Icons.Material.Outlined.AutoMode,
-            ThemeMode.Light => Icons.Material.Outlined.LightMode,
-            ThemeMode.Dark => Icons.Material.Outlined.DarkMode,
+            EduThemeMode.Auto => Icons.Material.Outlined.AutoMode,
+            EduThemeMode.Light => Icons.Material.Outlined.LightMode,
+            EduThemeMode.Dark => Icons.Material.Outlined.DarkMode,
             _ => string.Empty
         };
 
-    private Color GetSelectedColor(ThemeMode mode) =>
+    private Color GetSelectedColor(EduThemeMode mode) =>
         ThemeProvider?.Mode == mode ? Color.Primary : Color.Default;
 
 }
