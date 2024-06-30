@@ -156,16 +156,32 @@
     protected override void OnParametersSet()
     {
         if (Battle.FactionA.Belligerents.HasValue || Battle.FactionB.Belligerents.HasValue)
-            _conflictParties[nameof(FactionModel.Belligerents)] = [Battle.FactionA.Belligerents, Battle.FactionB.Belligerents];
+            _conflictParties[nameof(FactionModel.Belligerents)] =
+            [
+                Battle.FactionA.Belligerents,
+                Battle.FactionB.Belligerents
+            ];
 
         if (Battle.FactionA.Commanders.HasValue || Battle.FactionB.Commanders.HasValue)
-            _conflictParties[nameof(FactionModel.Commanders)] = [Battle.FactionA.Commanders, Battle.FactionB.Commanders];
+            _conflictParties[nameof(FactionModel.Commanders)] =
+            [
+                Battle.FactionA.Commanders,
+                Battle.FactionB.Commanders
+            ];
 
         if (Battle.FactionA.Strength.HasValue || Battle.FactionB.Strength.HasValue)
-            _conflictParties[nameof(FactionModel.Strength)] = [Battle.FactionA.Strength, Battle.FactionB.Strength];
+            _conflictParties[nameof(FactionModel.Strength)] =
+            [
+                Battle.FactionA.Strength,
+                Battle.FactionB.Strength
+            ];
 
         if (Battle.FactionA.Losses.HasValue || Battle.FactionB.Losses.HasValue)
-            _conflictParties[nameof(FactionModel.Losses)] = [Battle.FactionA.Losses, Battle.FactionB.Losses];
+            _conflictParties[nameof(FactionModel.Losses)] =
+            [
+                Battle.FactionA.Losses,
+                Battle.FactionB.Losses
+            ];
     }
 
 }
