@@ -6,13 +6,20 @@
         </div>
     }
 
-    <MudText Class="mb-3" Typo="Typo.h2" Align="Align.Center">
+    <MudText Typo="Typo.h2" Align="Align.Center">
         @($"{Error.Status}: {Error.Title}")
     </MudText>
 
-    <MudText Class="mb-3 mud-text-secondary" Typo="Typo.body1" Align="Align.Center">
+    <MudText Class="mb-3 mb-sm-6 mud-text-secondary" Typo="Typo.body1" Align="Align.Center">
         @GetErrorDetail()
     </MudText>
+
+    @if (Error.Payload.TryGetValue("exception", out var exception))
+    {
+        <MudAlert Class="mb-3 mb-sm-6" Severity="Severity.Error" NoIcon>
+            @exception.ToString()
+        </MudAlert>
+    }
 
     <div class="d-flex justify-center gap-3">
         @if (Error.Status > 499)

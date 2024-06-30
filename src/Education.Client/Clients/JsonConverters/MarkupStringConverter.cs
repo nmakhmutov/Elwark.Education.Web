@@ -10,5 +10,5 @@ internal sealed class MarkupStringConverter : JsonConverter<MarkupString>
         new(reader.GetString() ?? string.Empty);
 
     public override void Write(Utf8JsonWriter writer, MarkupString value, JsonSerializerOptions options) =>
-        JsonSerializer.Serialize(writer, value, options);
+        writer.WriteStringValue(value.Value);
 }

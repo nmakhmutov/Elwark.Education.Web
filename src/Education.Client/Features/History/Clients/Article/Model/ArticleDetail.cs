@@ -16,11 +16,12 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         HistoricalDateModel? Finished,
         MarkupString Location,
         MarkupString Result,
+        FactionModel FactionA,
+        FactionModel FactionB,
         ImageModel? Map,
         TimeSpan TimeToRead,
         ContentRatingModel Rating,
-        DateTime CreatedAt,
-        ConflictPartyModel[] ConflictParties
+        DateTime CreatedAt
     ) : ArticleDetail(Id, Title, Description, Image);
 
     public sealed record EmpireModel(
