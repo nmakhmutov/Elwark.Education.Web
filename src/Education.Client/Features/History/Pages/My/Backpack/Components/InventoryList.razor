@@ -1,7 +1,7 @@
-<MudList Clickable Dense>
+<MudList T="string" ReadOnly="false" Dense>
     @foreach (var inventory in Inventories)
     {
-        <MudListItem OnClick="@(() => OnInventoryClick.InvokeAsync(inventory))">
+        <MudListItem T="string" OnClick="@(() => OnInventoryClick.InvokeAsync(inventory))">
             <div class="d-flex align-center gap-3">
                 <EduInventoryIcon ImageUrl="@inventory.ImageUrl" Title="@inventory.Title" Quantity="@inventory.Quantity"/>
 

@@ -13,8 +13,8 @@
     <MudButton Class="text-transform-none"
                Color="Color.Primary"
                Disabled="@(!NotificationService.HasNotifications)"
-               DisableElevation
-               DisableRipple
+               DropShadow="false"
+               Ripple="false"
                OnClick="@MarkAllAsReadAsync"
                Size="Size.Small"
                StartIcon="@Icons.Material.Outlined.DoneAll"
@@ -42,7 +42,7 @@
     {
         <footer class="d-flex justify-center">
             <EduLoadingButton Color="Color.Primary"
-                              DisableElevation
+                              DropShadow="false"
                               IsLoading="@_isMoreLoading"
                               OnClick="@LoadMoreAsync"
                               Text="@L["Button_SeeMore"]"

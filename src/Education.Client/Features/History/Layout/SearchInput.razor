@@ -11,7 +11,7 @@
     Margin="Margin.Dense"
     Variant="Variant.Outlined"
     Adornment="Adornment.Start"
-    SearchFuncWithCancel="@OnSearch"
+    SearchFunc="@OnSearch"
     ValueChanged="@OnSearchResult"
     TextChanged="@OnTextChanged"
     ProgressIndicatorColor="Color.Primary"
@@ -73,13 +73,13 @@
             return Task.CompletedTask;
 
         Navigation.NavigateTo(entry.ContentHref);
-        return _searchAutocomplete.Clear();
+        return _searchAutocomplete.ClearAsync();
     }
 
     private Task OnSearchMore()
     {
         Navigation.NavigateTo(HistoryUrl.Search(_search));
-        return _searchAutocomplete.Clear();
+        return _searchAutocomplete.ClearAsync();
     }
 
     private void OnTextChanged(string value) =>

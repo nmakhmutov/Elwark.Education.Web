@@ -37,15 +37,19 @@ public sealed partial class AllTimePage : ComponentBase
 
     protected override async Task OnParametersSetAsync()
     {
-        Region = Regions.Contains(Region, StringComparer.OrdinalIgnoreCase) ? Region : Regions[0];
+        var region = Region?.ToUpper();
+        Region = Regions.Contains(region) ? region : Regions[0];
         _response = await LeaderboardClient.GetAllTimeAsync(Region);
     }
 
-    private void ChangeRegion(string region)
+    private void ChangeRegion(string? region)
     {
+        if (string.IsNullOrEmpty(region))
+            return;
+
         if (region.Equals(Region, StringComparison.OrdinalIgnoreCase))
             return;
 
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter(nameof(Region).ToLower(), region.ToLower()));
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter(nameof(Region).ToLower(), region));
     }
 }

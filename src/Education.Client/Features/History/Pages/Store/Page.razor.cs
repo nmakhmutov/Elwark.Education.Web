@@ -72,19 +72,22 @@ public sealed partial class Page : ComponentBase
             MaxWidth = MaxWidth.Small,
             CloseOnEscapeKey = true,
             FullWidth = true,
-            NoHeader = true,
             CloseButton = false
         };
 
-        var parameters = new DialogParameters
+        var parameters = new DialogParameters<InventoryDialog>
         {
-            [nameof(InventoryDialog.Product)] = product,
-            [nameof(InventoryDialog.Profile)] = _profile
+            {
+                x => x.Product, product
+            },
+            {
+                x => x.Profile, _profile
+            }
         };
 
         var dialog = await DialogService.ShowAsync<InventoryDialog>(product.Title, parameters, options);
         var result = await dialog.Result;
-        if (result.Canceled)
+        if (result?.Canceled == true)
             return;
 
         await UpdateProfileAsync();
@@ -97,19 +100,22 @@ public sealed partial class Page : ComponentBase
             MaxWidth = product.Inventories.Length > 3 ? MaxWidth.Medium : MaxWidth.Small,
             CloseOnEscapeKey = true,
             FullWidth = true,
-            NoHeader = true,
-            CloseButton = false
+            CloseButton = false,
         };
 
-        var parameters = new DialogParameters
+        var parameters = new DialogParameters<BundleDialog>
         {
-            [nameof(BundleDialog.Product)] = product,
-            [nameof(BundleDialog.Profile)] = _profile
+            {
+                x => x.Product, product
+            },
+            {
+                x => x.Profile, _profile
+            }
         };
 
         var dialog = await DialogService.ShowAsync<BundleDialog>(product.Title, parameters, options);
         var result = await dialog.Result;
-        if (result.Canceled)
+        if (result?.Canceled == true)
             return;
 
         await UpdateProfileAsync();

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Http.Resilience;
+using Polly;
 
 namespace Education.Client.Extensions;
 
@@ -21,22 +22,23 @@ internal static class HostExtensions
                 var navigation = provider.GetRequiredService<NavigationManager>();
 
                 return new AuthorizationMessageHandler(tokenProvider, navigation)
-                    .ConfigureHandler(new[]
-                    {
-                        gatewayUrl.ToString()
-                    });
+                    .ConfigureHandler([gatewayUrl.ToString()]);
             });
 
-        builder.Services
+        var anonymous = builder.Services
             .AddHttpClient<ApiAnonymousClient>(client => client.BaseAddress = gatewayUrl)
-            .AddHttpMessageHandler<LocalizationHandler>()
-            .AddStandardResilienceHandler(ResilienceOptions);
+            .AddHttpMessageHandler<LocalizationHandler>();
 
-        builder.Services
+        var authenticated = builder.Services
             .AddHttpClient<ApiAuthenticatedClient>(client => client.BaseAddress = gatewayUrl)
             .AddHttpMessageHandler<LocalizationHandler>()
-            .AddHttpMessageHandler<AuthorizationMessageHandler>()
-            .AddStandardResilienceHandler(ResilienceOptions);
+            .AddHttpMessageHandler<AuthorizationMessageHandler>();
+
+        if (builder.HostEnvironment.IsProduction())
+        {
+            anonymous.AddStandardResilienceHandler(ResilienceOptions);
+            authenticated.AddStandardResilienceHandler(ResilienceOptions);
+        }
 
         return builder;
 
@@ -46,7 +48,8 @@ internal static class HostExtensions
             options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(2);
             options.CircuitBreaker.SamplingDuration = TimeSpan.FromMinutes(2);
             options.Retry.UseJitter = true;
-            options.Retry.MaxRetryAttempts = builder.HostEnvironment.IsDevelopment() ? 1 : 5;
+            options.Retry.ShouldRetryAfterHeader = true;
+            options.Retry.BackoffType = DelayBackoffType.Exponential;
         }
     }
 }

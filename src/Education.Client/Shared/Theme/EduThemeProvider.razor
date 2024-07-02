@@ -1,4 +1,5 @@
 <MudThemeProvider @ref="@_provider" Theme="@Configuration" IsDarkMode="@IsDarkMode"/>
+<MudPopoverProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -10,7 +11,7 @@
 
     private static readonly MudTheme Configuration = new()
     {
-        Palette = new PaletteLight
+        PaletteLight = new PaletteLight
         {
             Primary = "#5569FF",
             Secondary = "#FF6955",
@@ -21,7 +22,7 @@
             Error = "#FF1943",
             Black = "#27272F",
             Background = "#F6F6F6",
-            BackgroundGrey = "#E3E5E7",
+            BackgroundGray = "#E3E5E7",
             AppbarBackground = "#FFFFFF",
             AppbarText = "#424242",
             Divider = "#E8E8E8",
@@ -40,7 +41,7 @@
             Error = "#FF1943",
             Black = "#090A0C",
             Background = "#1C1C1C",
-            BackgroundGrey = "#27272F",
+            BackgroundGray = "#27272F",
             Surface = "#252525",
             DrawerBackground = "#252525",
             DrawerText = "rgba(255, 255, 255, 0.50)",
@@ -140,6 +141,9 @@
 
     public MudTheme Theme =>
         _provider.Theme!;
+
+    public Palette Palette =>
+        IsDarkMode ? Theme.PaletteDark : Theme.PaletteLight;
 
     public bool IsDarkMode { get; private set; }
 

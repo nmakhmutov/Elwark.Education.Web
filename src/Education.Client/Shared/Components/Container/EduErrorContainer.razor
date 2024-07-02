@@ -24,19 +24,22 @@
     <div class="d-flex justify-center gap-3">
         @if (Error.Status > 499)
         {
-            <EduLoadingButton Color="Color.Primary"
-                              DisableElevation
-                              IsLoading="@_isLoading"
-                              OnClick="@Reload"
-                              Text="@L["Button_Reload"]"
-                              Variant="Variant.Outlined"/>
+            <EduLoadingButton
+                Color="Color.Primary"
+                DropShadow="false"
+                IsLoading="@_isLoading"
+                OnClick="@Reload"
+                Ripple="false"
+                Text="@L["Button_Reload"]"
+                Variant="Variant.Outlined"/>
         }
 
-        <MudButton Color="Color.Primary"
-                   DisableElevation
-                   DisableRipple
-                   Href="@EduUrl.Root"
-                   Variant="Variant.Text">
+        <MudButton
+            Color="Color.Primary"
+            DropShadow="false"
+            Href="@EduUrl.Root"
+            Ripple="false"
+            Variant="Variant.Text">
             @L["BackToHome_Button"]
         </MudButton>
     </div>

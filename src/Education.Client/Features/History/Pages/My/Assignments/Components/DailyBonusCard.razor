@@ -28,26 +28,28 @@
         <RewardsDisplay Class="justify-center pa-6" Rewards="@Bonus.Rewards" Typo="Typo.h5" IconSize="Size.Medium" Horizontal/>
 
         <div class="d-flex justify-center px-3 pb-3 px-sm-6 pb-sm-6">
-            <EduLoadingButton Class="mr-3"
-                              Color="Color.Primary"
-                              Disabled="@IsDisabled"
-                              DisableElevation
-                              FullWidth
-                              IsLoading="@IsLoading"
-                              LoadingText="@L["Loading_Title"]"
-                              OnClick="@ClaimAsync"
-                              Text="@L["DailyBonus_Claim"]"
-                              Variant="Variant.Filled"/>
+            <EduLoadingButton
+                Class="mr-3"
+                Color="Color.Primary"
+                Disabled="@IsDisabled"
+                DropShadow="false"
+                FullWidth
+                IsLoading="@IsLoading"
+                LoadingText="@L["Loading_Title"]"
+                OnClick="@ClaimAsync"
+                Text="@L["DailyBonus_Claim"]"
+                Variant="Variant.Filled"/>
 
-            <EduLoadingButton Class="px-6"
-                              Color="Color.Default"
-                              Disabled="@IsDisabled"
-                              DisableElevation
-                              IsLoading="@IsLoading"
-                              LoadingText="@L["Loading_Title"]"
-                              OnClick="@RejectAsync"
-                              Text="@L["DailyBonus_Reject"]"
-                              Variant="Variant.Outlined"/>
+            <EduLoadingButton
+                Class="px-6"
+                Color="Color.Default"
+                Disabled="@IsDisabled"
+                DropShadow="false"
+                IsLoading="@IsLoading"
+                LoadingText="@L["Loading_Title"]"
+                OnClick="@RejectAsync"
+                Text="@L["DailyBonus_Reject"]"
+                Variant="Variant.Outlined"/>
         </div>
     }
 </section>

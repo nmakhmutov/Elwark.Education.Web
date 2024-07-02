@@ -3,33 +3,38 @@
         <MudText Class="mr-3" Typo="Typo.body2">
             @L["TextOptions_Alignment_Title"]
         </MudText>
-        <MudButtonGroup DisableElevation
-                        Size="Size.Small"
-                        Variant="Variant.Outlined">
+        <MudButtonGroup
+            DropShadow="false"
+            Size="Size.Small"
+            Variant="Variant.Outlined">
 
-            <MudIconButton Disabled="@(Formatter.TextAlign == Align.Left)"
-                           DisableElevation
-                           DisableRipple
-                           Icon="@Icons.Material.Outlined.FormatAlignLeft"
-                           OnClick="@Formatter.AlignTextLeftAsync"/>
+            <MudIconButton
+                Disabled="@(Formatter.TextAlign == Align.Left)"
+                DropShadow="false"
+                Icon="@Icons.Material.Outlined.FormatAlignLeft"
+                OnClick="@Formatter.AlignTextLeftAsync"
+                Ripple="false"/>
 
-            <MudIconButton Disabled="@(Formatter.TextAlign == Align.Justify)"
-                           DisableElevation
-                           DisableRipple
-                           Icon="@Icons.Material.Outlined.FormatAlignJustify"
-                           OnClick="@Formatter.AlignTextJustifyAsync"/>
+            <MudIconButton
+                Disabled="@(Formatter.TextAlign == Align.Justify)"
+                DropShadow="false"
+                Icon="@Icons.Material.Outlined.FormatAlignJustify"
+                OnClick="@Formatter.AlignTextJustifyAsync"
+                Ripple="false"/>
 
-            <MudIconButton Disabled="@(Formatter.TextAlign == Align.Center)"
-                           DisableElevation
-                           DisableRipple
-                           Icon="@Icons.Material.Outlined.FormatAlignCenter"
-                           OnClick="@Formatter.AlignTextCenterAsync"/>
+            <MudIconButton
+                Disabled="@(Formatter.TextAlign == Align.Center)"
+                DropShadow="false"
+                Icon="@Icons.Material.Outlined.FormatAlignCenter"
+                OnClick="@Formatter.AlignTextCenterAsync"
+                Ripple="false"/>
 
-            <MudIconButton Disabled="@(Formatter.TextAlign == Align.Right)"
-                           DisableElevation
-                           DisableRipple
-                           Icon="@Icons.Material.Outlined.FormatAlignRight"
-                           OnClick="@Formatter.AlignTextRightAsync"/>
+            <MudIconButton
+                Disabled="@(Formatter.TextAlign == Align.Right)"
+                DropShadow="false"
+                Icon="@Icons.Material.Outlined.FormatAlignRight"
+                OnClick="@Formatter.AlignTextRightAsync"
+                Ripple="false"/>
         </MudButtonGroup>
     </div>
 
@@ -37,28 +42,31 @@
         <MudText Typo="Typo.body2" Class="mr-3">
             @L["TextOptions_FontSize_Title"]
         </MudText>
-        <MudButtonGroup DisableElevation
-                        OverrideStyles
-                        Size="Size.Small"
-                        Variant="Variant.Outlined">
+        <MudButtonGroup
+            DropShadow="false"
+            OverrideStyles
+            Size="Size.Small"
+            Variant="Variant.Outlined">
 
-            <MudIconButton Disabled="@(!Formatter.CanDecreaseFontSize)"
-                           DisableElevation
-                           DisableRipple
-                           Icon="@Icons.Material.Outlined.Remove"
-                           OnClick="@Formatter.DecreaseFontSizeAsync"/>
+            <MudIconButton
+                Disabled="@(!Formatter.CanDecreaseFontSize)"
+                DropShadow="false"
+                Icon="@Icons.Material.Outlined.Remove"
+                OnClick="@Formatter.DecreaseFontSizeAsync"
+                Ripple="false"/>
 
             <input class="input" value="@Percent(Formatter.FontSize)" readonly/>
 
-            <MudIconButton Disabled="@(!Formatter.CanIncreaseFontSize)"
-                           DisableElevation
-                           DisableRipple
-                           Icon="@Icons.Material.Outlined.Add"
-                           OnClick="@Formatter.IncreaseFontSizeAsync"/>
+            <MudIconButton
+                Disabled="@(!Formatter.CanIncreaseFontSize)"
+                DropShadow="false"
+                Icon="@Icons.Material.Outlined.Add"
+                OnClick="@Formatter.IncreaseFontSizeAsync"
+                Ripple="false"/>
         </MudButtonGroup>
     </div>
 
-    <MudExpansionPanels Elevation="0" Dense DisableBorders DisableGutters>
+    <MudExpansionPanels Elevation="0" Dense Outlined="false" Gutters="false">
         <MudExpansionPanel>
             <TitleContent>
                 <MudText Typo="Typo.body2">
@@ -70,24 +78,27 @@
                     <MudText Typo="Typo.body2" Class="mr-3">
                         @L["TextOptions_LineHeight_Title"]
                     </MudText>
-                    <MudButtonGroup DisableElevation
-                                    OverrideStyles
-                                    Size="Size.Small"
-                                    Variant="Variant.Outlined">
+                    <MudButtonGroup
+                        DropShadow="false"
+                        OverrideStyles
+                        Size="Size.Small"
+                        Variant="Variant.Outlined">
 
-                        <MudIconButton Disabled="@(!Formatter.CanDecreaseLineHeight)"
-                                       DisableElevation
-                                       DisableRipple
-                                       Icon="@Icons.Material.Outlined.Remove"
-                                       OnClick="@Formatter.DecreaseLineHeightAsync"/>
+                        <MudIconButton
+                            Disabled="@(!Formatter.CanDecreaseLineHeight)"
+                            DropShadow="false"
+                            Icon="@Icons.Material.Outlined.Remove"
+                            OnClick="@Formatter.DecreaseLineHeightAsync"
+                            Ripple="false"/>
 
                         <input class="input" value="@Percent(Formatter.LineHeight)" readonly/>
 
-                        <MudIconButton Disabled="@(!Formatter.CanIncreaseLineHeight)"
-                                       DisableElevation
-                                       DisableRipple
-                                       Icon="@Icons.Material.Outlined.Add"
-                                       OnClick="@Formatter.IncreaseLineHeightAsync"/>
+                        <MudIconButton
+                            Disabled="@(!Formatter.CanIncreaseLineHeight)"
+                            DropShadow="false"
+                            Icon="@Icons.Material.Outlined.Add"
+                            OnClick="@Formatter.IncreaseLineHeightAsync"
+                            Ripple="false"/>
                     </MudButtonGroup>
                 </div>
 

@@ -30,10 +30,11 @@
 <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
     <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
         <ChildContent>
-            <MudChipSet Class="mb-3 mb-sm-6" Mandatory Filter>
+            <MudChipSet T="CategoryType" Class="mb-3 mb-sm-6" SelectionMode="SelectionMode.SingleSelection" CheckMark>
                 @foreach (var category in _categories)
                 {
                     <MudChip
+                        T="CategoryType"
                         Class="px-6"
                         Value="@category"
                         Text="@L.GetInventoryCategoryTitle(category)"
@@ -72,9 +73,8 @@
                                         Overlap>
                                         <MudButton Class="text-transform-none"
                                                    Color="Color.Primary"
-                                                   DisableElevation
-                                                   DisableRipple
-                                                   FullWidth
+                                                   DropShadow="false"
+                                                   Ripple="false"
                                                    OnClick="@(() => OpenInventoryDialog(system))"
                                                    Variant="Variant.Filled">
                                             @L["Button_Details"]
@@ -93,9 +93,8 @@
                                         Overlap>
                                         <MudButton Class="text-transform-none"
                                                    Color="Color.Primary"
-                                                   DisableElevation
-                                                   DisableRipple
-                                                   FullWidth
+                                                   DropShadow="false"
+                                                   Ripple="false"
                                                    OnClick="@(() => OpenBundleDialog(bundle))"
                                                    Variant="Variant.Filled">
                                             @L["Button_Details"]
@@ -120,9 +119,8 @@
                                         Overlap>
                                         <MudButton Class="text-transform-none"
                                                    Color="Color.Primary"
-                                                   DisableElevation
-                                                   DisableRipple
-                                                   FullWidth
+                                                   DropShadow="false"
+                                                   Ripple="false"
                                                    OnClick="@(() => OpenInventoryDialog(money))"
                                                    Variant="Variant.Filled">
                                             @L["Button_Details"]

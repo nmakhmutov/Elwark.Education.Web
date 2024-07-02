@@ -10,7 +10,7 @@
         <ApexChart TItem="MeOverviewModel.AchievementModel" Options="Options">
             <ApexPointSeries
                 TItem="MeOverviewModel.AchievementModel"
-                Items="@(new[] { Achievements })"
+                Items="@( [Achievements])"
                 SeriesType="SeriesType.RadialBar"
                 XValue="@(_ => 0)"
                 YAggregate="@(_ => (decimal)Achievements.Completeness)"/>
@@ -33,10 +33,10 @@
 
     <footer class="border-t mud-border-lines-default pa-3">
         <MudButton Class="px-3 text-transform-none"
-                   DisableElevation
-                   DisableRipple
                    EndIcon="@Icons.Material.Outlined.ArrowForward"
-                   Href="@HistoryUrl.User.MyAchievements">
+                   Href="@HistoryUrl.User.MyAchievements"
+                   Ripple="false"
+                   DropShadow>
             @L["Achievements_SeeAll"]
         </MudButton>
     </footer>
@@ -62,7 +62,7 @@
             {
                 Show = false
             },
-            Colors = [ThemeProvider?.Theme.Palette.Primary.ToString()],
+            Colors = [ThemeProvider?.Palette.Primary.ToString()],
             PlotOptions = new PlotOptions
             {
                 RadialBar = new PlotOptionsRadialBar

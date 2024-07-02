@@ -164,22 +164,28 @@
     private Task RowClickAsync(TableRowClickEventArgs<WalletDetailsModel.BudgetModel> args) =>
         OpenSourceDetailModalAsync(args.Item);
 
-    private async Task OpenSourceDetailModalAsync(WalletDetailsModel.BudgetModel budget)
+    private async Task OpenSourceDetailModalAsync(WalletDetailsModel.BudgetModel? budget)
     {
+        if (budget is null)
+            return;
+
         var options = new DialogOptions
         {
             MaxWidth = MaxWidth.Large,
             Position = DialogPosition.TopCenter,
             CloseOnEscapeKey = true,
             FullWidth = true,
-            NoHeader = true,
             CloseButton = false
         };
 
-        var parameters = new DialogParameters
+        var parameters = new DialogParameters<SourceDetailModal>
         {
-            [nameof(SourceDetailModal.Currency)] = Wallet.Currency,
-            [nameof(SourceDetailModal.Budget)] = budget
+            {
+                x => x.Budget, budget
+            },
+            {
+                x => x.Currency, Wallet.Currency
+            }
         };
 
         await DialogService.ShowAsync<SourceDetailModal>(string.Empty, parameters, options);

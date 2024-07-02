@@ -31,12 +31,12 @@
     <section class="content">
         @if (NotificationService.HasNotifications)
         {
-            <MudList DisablePadding Clickable Dense>
+            <MudList T="string" Padding="false" ReadOnly="false" Dense>
                 @foreach (var notification in NotificationService.LastNotifications)
                 {
                     <MudDivider/>
 
-                    <MudListItem Class="pa-3" OnClick="@(() => OpenNotification(notification.Href))">
+                    <MudListItem T="string" Class="pa-3" OnClick="@(() => OpenNotification(notification.Href))">
                         <EduNotification Notification="@notification" DisableTitleLink/>
                     </MudListItem>
                 }
@@ -55,8 +55,8 @@
     <footer class="border-1 border-t mud-border-lines-default pa-3">
         <MudButton Class="text-transform-none"
                    Color="Color.Primary"
-                   DisableElevation
-                   DisableRipple
+                   DropShadow="false"
+                   Ripple="false"
                    FullWidth
                    Href="@CustomerUrl.Notifications"
                    Size="Size.Large"

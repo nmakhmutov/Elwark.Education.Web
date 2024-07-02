@@ -2,10 +2,10 @@
 
 <MudButton ButtonType="@ButtonType"
            Class="@Class"
+           ClickPropagation="@ClickPropagation"
            Color="@Color"
            Disabled="@(Disabled || IsLoading)"
-           DisableElevation="@DisableElevation"
-           DisableRipple="@DisableRipple"
+           DropShadow="@DropShadow"
            EndIcon="@EndIcon"
            FullWidth="@FullWidth"
            Href="@Href"
@@ -15,6 +15,7 @@
            IconSize="@IconSize"
            OnClick="@OnClick"
            Rel="@Rel"
+           Ripple="@Ripple"
            Size="@Size"
            StartIcon="@StartIcon"
            Style="@Style"
@@ -22,6 +23,7 @@
            Target="@Target"
            UserAttributes="@UserAttributes"
            Variant="@Variant">
+
     @if (IsLoading)
     {
         <MudProgressCircular Size="Size.Small" Indeterminate/>
@@ -34,6 +36,7 @@
     {
         <MudText Typo="Typo.button">@Text</MudText>
     }
+
 </MudButton>
 
 @code {

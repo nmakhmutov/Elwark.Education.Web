@@ -4,11 +4,11 @@
 
 <MudDialog
     Class="pa-3 pa-sm-6"
-    ClassContent="pa-0"
-    ClassActions="pa-0"
-    DefaultFocus="DefaultFocus.Element"
-    DisableSidePadding>
-    <DialogContent>
+    ContentClass="pa-0 ma-0"
+    ActionsClass="pa-0 map-0"
+    TitleClass="pa-0 map-0"
+    DefaultFocus="DefaultFocus.Element">
+    <TitleContent>
         <header class="header">
             <div class="title">
                 <div class="d-flex align-center gap-3">
@@ -50,7 +50,9 @@
                 <MudIconButton Icon="@Icons.Material.Outlined.Close" OnClick="@OnCloseClick"/>
             </div>
         </header>
+    </TitleContent>
 
+    <DialogContent>
         @if (Budget.Sources.Length > 0)
         {
             <section class="grid mt-3 mt-sm-6">
@@ -67,7 +69,9 @@
                             @L["GameMoney_Source_Title"]
                         </MudTh>
                         <MudTh>
-                            <MudTableSortLabel SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Income))" InitialDirection="SortDirection.Descending">
+                            <MudTableSortLabel
+                                SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Income))"
+                                InitialDirection="SortDirection.Descending">
                                 @L["GameMoney_Income_Title"]
                             </MudTableSortLabel>
                         </MudTh>
@@ -171,7 +175,7 @@
                 Colors.Purple.Default,
                 Colors.Teal.Default,
                 Colors.Yellow.Default,
-                Colors.BlueGrey.Default,
+                Colors.BlueGray.Default,
                 Colors.DeepOrange.Default,
                 Colors.LightBlue.Default,
                 Colors.LightGreen.Default

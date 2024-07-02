@@ -19,7 +19,7 @@
                                 <MudLink
                                     Href="@HistoryUrl.Content.Course(item.Course.Id)"
                                     Typo="Typo.body1"
-                                    Title="@item.Course.Title">
+                                    title="@item.Course.Title">
                                     @item.Course.Title
                                 </MudLink>
                                 <br/>
@@ -42,10 +42,10 @@
 
                 <footer class="border-t mud-border-lines-default pa-3">
                     <MudButton Class="px-3 text-transform-none"
-                               DisableElevation
-                               DisableRipple
                                EndIcon="@Icons.Material.Outlined.ArrowForward"
-                               Href="@HistoryUrl.User.MyCourse()">
+                               Href="@HistoryUrl.User.MyCourse()"
+                               Ripple="false"
+                               DropShadow="false">
                         @L["Courses_SeeAll"]
                     </MudButton>
                 </footer>
@@ -62,10 +62,10 @@
 
                 <footer class="border-t mud-border-lines-default pa-3">
                     <MudButton Class="px-3 text-transform-none"
-                               DisableElevation
-                               DisableRipple
                                EndIcon="@Icons.Material.Outlined.ArrowForward"
-                               Href="@HistoryUrl.Content.Courses()">
+                               Href="@HistoryUrl.Content.Courses()"
+                               Ripple="false"
+                               DropShadow="false">
                         @L["Courses_SeeAll"]
                     </MudButton>
                 </footer>

@@ -1,18 +1,18 @@
 @using Education.Client.Features.History.Clients.Leaderboard.Model
 <header class="header">
     <MudChipSet
+        T="string"
         Class="d-flex flex-wrap justify-center mb-3 mb-sm-6"
-        SelectedChip="@_selected"
-        SelectedChipChanged="@OnChanged"
-        Mandatory
-        Filter>
+        SelectedValue="@Region"
+        SelectedValueChanged="@RegionChanged"
+        SelectionMode="SelectionMode.SingleSelection"
+        CheckMark>
         @foreach (var region in Regions)
         {
             <MudChip
                 Class="px-6"
                 Value="@region"
                 Text="@L[$"Region_{region}"]"
-                Default="@(region.Equals(Region, StringComparison.OrdinalIgnoreCase))"
                 Color="Color.Primary"
                 SelectedColor="Color.Secondary"
                 Variant="Variant.Outlined"/>
@@ -36,7 +36,6 @@
 </header>
 
 @code {
-    MudChip? _selected;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -48,16 +47,9 @@
     public required string Region { get; set; }
 
     [Parameter, EditorRequired]
-    public required EventCallback<string> RegionChanged { get; set; }
+    public required EventCallback<string?> RegionChanged { get; set; }
 
     [Parameter, EditorRequired]
     public required IEnumerable<ContestantModel> Contestants { get; set; }
-
-    private Task OnChanged(MudChip chip)
-    {
-        _selected = chip;
-
-        return RegionChanged.InvokeAsync((string)chip.Value);
-    }
 
 }

@@ -2,6 +2,7 @@
 @if (string.IsNullOrEmpty(Tooltip))
 {
     <MudChip
+        T="string"
         Class="ma-0"
         Size="Size.Small"
         Color="Color.Secondary"
@@ -10,13 +11,14 @@
         IconColor="@Color"
         Text="@NumberOfQuizzes.Succeeded.ToString()"
         Href="@Href"
-        DisableRipple
-        Label/>
+        Ripple="false"
+        Label="true"/>
 }
 else
 {
     <MudTooltip Text="@Tooltip">
         <MudChip
+            T="string"
             Class="ma-0"
             Size="Size.Small"
             Color="Color.Secondary"
@@ -25,8 +27,8 @@ else
             IconColor="@Color"
             Text="@NumberOfQuizzes.Succeeded.ToMetric()"
             Href="@Href"
-            DisableRipple
-            Label/>
+            Ripple="false"
+            Label="true"/>
     </MudTooltip>
 }
 

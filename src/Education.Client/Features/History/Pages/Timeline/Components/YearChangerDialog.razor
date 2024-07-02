@@ -1,9 +1,9 @@
 <MudDialog
     Class="pa-3 pa-sm-6"
-    ClassContent="pa-0"
-    ClassActions="pa-0"
+    ContentClass="pa-0"
+    ContentStyle="pa-0"
     DefaultFocus="DefaultFocus.Element"
-    DisableSidePadding>
+    Gutters="false">
     <DialogContent>
         <EditForm Model="@(this)" OnValidSubmit="@OnValidSubmit">
             <FluentValidationValidator/>
@@ -21,8 +21,8 @@
 
                 <MudButton ButtonType="ButtonType.Submit"
                            Color="Color.Primary"
-                           DisableElevation
-                           DisableRipple
+                           DropShadow="false"
+                           Ripple="false"
                            Variant="Variant.Filled">
                     @L["History_Timeline_GoToYear"]
                 </MudButton>

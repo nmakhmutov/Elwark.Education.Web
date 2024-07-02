@@ -3,9 +3,9 @@
 <AuthorizeView>
     <NotAuthorized>
         <MudButton Color="Color.Primary"
-                   DisableElevation
-                   DisableRipple
+                   DropShadow="false"
                    OnClick="@OnLogin"
+                   Ripple="false"
                    Size="Size.Small"
                    Variant="Variant.Filled">
             @L["Account_SignIn"]
@@ -17,7 +17,7 @@
     </Authorizing>
 
     <Authorized>
-        <MudMenu ListClass="pa-0" AnchorOrigin="Origin.TopRight" DisableRipple>
+        <MudMenu ListClass="pa-0" AnchorOrigin="Origin.TopRight" Ripple="false">
             <ActivatorContent>
                 <img class="avatar rounded object-cover object-center" src="@Customer.Image" alt="@Customer.Name" loading="lazy"/>
             </ActivatorContent>
@@ -38,23 +38,23 @@
                         Label="@L["ManageYourElwarkAccount_Title"]"
                         EndIcon="@Icons.Material.Outlined.OpenInNew"
                         IconSize="Size.Small"
-                        DisableRipple
-                        DisableElevation/>
+                        Ripple="false"
+                        DropShadow/>
 
                     <MudButtonGroup Class="w-100"
                                     Color="Color.Primary"
-                                    DisableElevation
+                                    DropShadow="false"
                                     Size="Size.Large"
                                     Variant="Variant.Text">
-                        <MudButton DisableElevation
-                                   DisableRipple
+                        <MudButton DropShadow="false"
+                                   Ripple="false"
                                    FullWidth
                                    Href="@CustomerUrl.Root"
                                    StartIcon="@Icons.Material.Outlined.Person">
                             @L["Account_Title"]
                         </MudButton>
-                        <MudButton DisableElevation
-                                   DisableRipple
+                        <MudButton DropShadow="false"
+                                   Ripple="false"
                                    FullWidth
                                    OnClick="@OnLogout"
                                    StartIcon="@Icons.Material.Outlined.Login">

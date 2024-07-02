@@ -99,21 +99,22 @@ public sealed partial class Page : ComponentBase,
             MaxWidth = MaxWidth.Small,
             CloseOnEscapeKey = true,
             FullWidth = true,
-            NoHeader = true,
             CloseButton = false
         };
 
-        var parameters = new DialogParameters
+        var parameters = new DialogParameters<YearChangerDialog>
         {
-            [nameof(YearChangerDialog.Year)] = Year
+            {
+                x => x.Year, Year
+            }
         };
 
         var dialog = await DialogService.ShowAsync<YearChangerDialog>(string.Empty, parameters, options);
         var result = await dialog.Result;
-        if (result.Canceled)
+        if (result is null || result.Canceled)
             return;
 
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear((int)result.Data)));
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear((int)result.Data!)));
     }
 
     private int NormalizeYear(int year) =>
