@@ -9,13 +9,15 @@ namespace Education.Client.Features.History.Pages.My.Courses;
 
 public sealed partial class CourseDetailPage : ComponentBase
 {
+    private readonly IHistoryLearnerClient _learnerClient;
+    private readonly IStringLocalizer<App> _localizer;
     private ApiResult<CourseStatisticsModel> _response = ApiResult<CourseStatisticsModel>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
+    public CourseDetailPage(IStringLocalizer<App> localizer, IHistoryLearnerClient learnerClient)
+    {
+        _localizer = localizer;
+        _learnerClient = learnerClient;
+    }
 
     [CascadingParameter]
     private CustomerState Customer { get; set; } = default!;
@@ -24,5 +26,5 @@ public sealed partial class CourseDetailPage : ComponentBase
     public required string Id { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        _response = await LearnerClient.GetCourseAsync(Id);
+        _response = await _learnerClient.GetCourseAsync(Id);
 }

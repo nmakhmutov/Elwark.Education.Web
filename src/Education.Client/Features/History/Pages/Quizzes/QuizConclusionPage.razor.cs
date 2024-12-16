@@ -11,26 +11,31 @@ namespace Education.Client.Features.History.Pages.Quizzes;
 
 public sealed partial class QuizConclusionPage : ComponentBase
 {
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
+    private readonly IHistoryQuizClient _quizClient;
     private ApiResult<QuizConclusionModel> _response = ApiResult<QuizConclusionModel>.Loading();
 
-    [Inject]
-    private IHistoryQuizClient QuizClient { get; init; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
+    public QuizConclusionPage(
+        IHistoryQuizClient quizClient,
+        IStringLocalizer<App> localizer,
+        NavigationManager navigation
+    )
+    {
+        _quizClient = quizClient;
+        _localizer = localizer;
+        _navigation = navigation;
+    }
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await QuizClient.GetConclusionAsync(Id);
+        _response = await _quizClient.GetConclusionAsync(Id);
 
         if (_response.MatchError(x => x.IsQuizNotFound()))
-            Navigation.NavigateTo(HistoryUrl.Quiz.Index());
+            _navigation.NavigateTo(HistoryUrl.Quiz.Index());
     }
 
     private static Severity GetColor(QuizStatus status) =>

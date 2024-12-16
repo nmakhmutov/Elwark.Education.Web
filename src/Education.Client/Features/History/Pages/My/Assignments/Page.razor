@@ -3,11 +3,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Assignments_Title"]
+    @_localizer["Assignments_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+    <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
 </EduContainer>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
@@ -20,12 +20,12 @@
                     </PrePanelContent>
 
                     <ChildContent>
-                        <MudTabPanel ID="@("daily")" Text="@L["Assignments_Daily_Tab"]">
+                        <MudTabPanel ID="@("daily")" Text="@_localizer["Assignments_Daily_Tab"]">
                             @if (context.DailyAssignments.Length == 0)
                             {
                                 <StartAssignment
-                                    Title="@L["Assignments_Daily_Title"]"
-                                    Description="@L["Assignments_Daily_Description"]"
+                                    Title="@_localizer["Assignments_Daily_Title"]"
+                                    Description="@_localizer["Assignments_Daily_Description"]"
                                     Image="/images/history/assignments.svg"
                                     OnStart="@StartDailyQuestsAsync"/>
                             }
@@ -33,7 +33,7 @@
                             {
                                 <AssignmentHeader
                                     Class="mb-3 mb-sm-6"
-                                    Title="@L["Assignments_Daily_Title"]"
+                                    Title="@_localizer["Assignments_Daily_Title"]"
                                     ExpiresAt="@context.DailyAssignments[0].ExpiresAt"
                                     OnExpired="@OnInitializedAsync"/>
 
@@ -46,12 +46,12 @@
                             }
                         </MudTabPanel>
 
-                        <MudTabPanel ID="@("weekly")" Text="@L["Assignments_Weekly_Tab"]">
+                        <MudTabPanel ID="@("weekly")" Text="@_localizer["Assignments_Weekly_Tab"]">
                             @if (context.WeeklyAssignments.Length == 0)
                             {
                                 <StartAssignment
-                                    Title="@L["Assignments_Weekly_Title"]"
-                                    Description="@L["Assignments_Weekly_Description"]"
+                                    Title="@_localizer["Assignments_Weekly_Title"]"
+                                    Description="@_localizer["Assignments_Weekly_Description"]"
                                     Image="/images/history/assignments.svg"
                                     OnStart="@StartWeeklyQuestsAsync"/>
                             }
@@ -59,7 +59,7 @@
                             {
                                 <AssignmentHeader
                                     Class="mb-3 mb-sm-6"
-                                    Title="@L["Assignments_Weekly_Title"]"
+                                    Title="@_localizer["Assignments_Weekly_Title"]"
                                     ExpiresAt="@context.WeeklyAssignments[0].ExpiresAt"
                                     OnExpired="@OnInitializedAsync"/>
 

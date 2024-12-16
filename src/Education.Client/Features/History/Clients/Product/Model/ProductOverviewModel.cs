@@ -6,6 +6,6 @@ public sealed record ProductOverviewModel(
     string Overview,
     string ImageUrl,
     uint Weight,
-    PriceModel Selling,
+    PriceModel? Selling,
     PriceModel? Purchasing
 );

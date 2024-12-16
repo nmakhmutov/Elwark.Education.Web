@@ -12,28 +12,33 @@ namespace Education.Client.Features.History.Pages.Empires;
 public sealed partial class Page : ComponentBase,
     IAsyncDisposable
 {
+    private readonly IHistoryArticleClient _articleClient;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
+    private readonly IBrowserViewportService _viewportService;
     private Virtualize<EmpireOverviewModel> _empireVirtualize = new();
     private GetEmpiresRequest.SortType _sort = GetEmpiresRequest.SortType.Area;
     private Guid _subscriptionId;
     private TimelinePosition _timelinePosition = TimelinePosition.Start;
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
-
-    [Inject]
-    private IBrowserViewportService ViewportService { get; init; } = default!;
-
-    [Inject]
-    private IHistoryArticleClient ArticleClient { get; init; } = default!;
+    public Page(
+        IStringLocalizer<App> localizer,
+        NavigationManager navigation,
+        IBrowserViewportService viewportService,
+        IHistoryArticleClient articleClient
+    )
+    {
+        _localizer = localizer;
+        _navigation = navigation;
+        _viewportService = viewportService;
+        _articleClient = articleClient;
+    }
 
     [SupplyParameterFromQuery(Name = "by")]
     public string? Sort { get; set; }
 
     public async ValueTask DisposeAsync() =>
-        await ViewportService.UnsubscribeAsync(_subscriptionId);
+        await _viewportService.UnsubscribeAsync(_subscriptionId);
 
     protected override Task OnParametersSetAsync()
     {
@@ -55,11 +60,11 @@ public sealed partial class Page : ComponentBase,
             NotifyOnBreakpointOnly = true,
             SuppressInitEvent = false
         };
-        return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
+        return _viewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
     }
 
     private void SortChanged(GetEmpiresRequest.SortType sort) =>
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("by", Map(sort)));
+        _navigation.NavigateTo(_navigation.GetUriWithQueryParameter("by", Map(sort)));
 
     private void OnBreakpointChanged(Breakpoint e)
     {
@@ -76,7 +81,7 @@ public sealed partial class Page : ComponentBase,
 
     private async ValueTask<ItemsProviderResult<EmpireOverviewModel>> EmpiresProvider(ItemsProviderRequest request)
     {
-        var result = await ArticleClient.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex, request.Count));
+        var result = await _articleClient.GetAsync(new GetEmpiresRequest(_sort, request.StartIndex, request.Count));
 
         return result.Map(x => new ItemsProviderResult<EmpireOverviewModel>(x.Items, (int)x.Count))
             .UnwrapOr(new ItemsProviderResult<EmpireOverviewModel>());

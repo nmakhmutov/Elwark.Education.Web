@@ -8,13 +8,15 @@ namespace Education.Client.Features.History.Pages.Article;
 
 public partial class Page : ComponentBase
 {
+    private readonly IHistoryArticleClient _articleClient;
+    private readonly IHistoryLearnerClient _learnerClient;
     private ApiResult<UserArticleDetailModel> _response = ApiResult<UserArticleDetailModel>.Loading();
 
-    [Inject]
-    private IHistoryArticleClient ArticleClient { get; init; } = default!;
-
-    [Inject]
-    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
+    public Page(IHistoryArticleClient articleClient, IHistoryLearnerClient learnerClient)
+    {
+        _articleClient = articleClient;
+        _learnerClient = learnerClient;
+    }
 
     [Parameter]
     public required string Id { get; set; }
@@ -22,6 +24,6 @@ public partial class Page : ComponentBase
     protected override async Task OnParametersSetAsync()
     {
         _response = ApiResult<UserArticleDetailModel>.Loading();
-        _response = await ArticleClient.GetAsync(Id);
+        _response = await _articleClient.GetAsync(Id);
     }
 }

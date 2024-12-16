@@ -4,7 +4,7 @@ using Education.Client.Features.History.Clients.Search.Request;
 
 namespace Education.Client.Features.History.Clients.Search;
 
-internal interface IHistorySearchClient
+public interface IHistorySearchClient
 {
     Task<ApiResult<SearchResultModel>> SearchAsync(SearchRequest request, CancellationToken ct = default);
 }

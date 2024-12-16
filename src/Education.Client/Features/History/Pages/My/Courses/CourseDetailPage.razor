@@ -12,7 +12,7 @@
             <CourseCard
                 Course="@context.Course"
                 Activity="@context.Activity"
-                OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"
                 HasExamination="@(context.Total.Examinations > 0)"
                 Horizontal/>
 
@@ -22,10 +22,10 @@
         <MudTabs Elevation="0" PanelClass="pt-6" ApplyEffectsToContainer Rounded>
             @if (context.EasyExamination.NumberOfExaminations.Total > 0)
             {
-                <MudTabPanel Text="@L["Examinations_Easy_Title"]">
+                <MudTabPanel Text="@_localizer["Examinations_Easy_Title"]">
                     <ExaminationOverview
                         Examination="@context.EasyExamination"
-                        SeeAllText="@L["Examinations_Easy_SeeAll"]"
+                        SeeAllText="@_localizer["Examinations_Easy_SeeAll"]"
                         SeeAllHref="@HistoryUrl.User.MyEasyExaminations"
                         DateTimeFormatter="@Customer.Humanize"/>
                 </MudTabPanel>
@@ -33,10 +33,10 @@
 
             @if (context.HardExamination.NumberOfExaminations.Total > 0)
             {
-                <MudTabPanel Text="@L["Examinations_Hard_Title"]">
+                <MudTabPanel Text="@_localizer["Examinations_Hard_Title"]">
                     <ExaminationOverview
                         Examination="@context.HardExamination"
-                        SeeAllText="@L["Examinations_Hard_SeeAll"]"
+                        SeeAllText="@_localizer["Examinations_Hard_SeeAll"]"
                         SeeAllHref="@HistoryUrl.User.MyHardExaminations"
                         DateTimeFormatter="@Customer.Humanize"/>
                 </MudTabPanel>

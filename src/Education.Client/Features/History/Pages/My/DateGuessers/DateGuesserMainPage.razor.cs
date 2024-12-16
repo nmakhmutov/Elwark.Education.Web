@@ -10,34 +10,34 @@ namespace Education.Client.Features.History.Pages.My.DateGuessers;
 
 public sealed partial class DateGuesserMainPage : ComponentBase
 {
+    private readonly List<BreadcrumbItem> _breadcrumbs;
+    private readonly IHistoryLearnerClient _learnerClient;
+    private readonly IStringLocalizer<App> _localizer;
     private DateGuesserProgressModel[] _daily = [];
     private DateGuesserProgressModel[] _monthly = [];
     private ApiResult<DateGuessersStatisticsModel> _response = ApiResult<DateGuessersStatisticsModel>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
-
-    private List<BreadcrumbItem> Breadcrumbs =>
-    [
-        new BreadcrumbItem(L["User_Dashboard_Title"], HistoryUrl.User.MyDashboard),
-        new BreadcrumbItem(L["History_DateGuessers_Title"], null, true)
-    ];
+    public DateGuesserMainPage(IStringLocalizer<App> localizer, IHistoryLearnerClient learnerClient)
+    {
+        _localizer = localizer;
+        _learnerClient = learnerClient;
+        _breadcrumbs =
+        [
+            new BreadcrumbItem(_localizer["User_Dashboard_Title"], HistoryUrl.User.MyDashboard),
+            new BreadcrumbItem(_localizer["History_DateGuessers_Title"], null, true)
+        ];
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await LearnerClient.GetDateGuesserStatisticsAsync();
+        _response = await _learnerClient.GetDateGuesserStatisticsAsync();
         _response.Match(model =>
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
-            _daily = model.Daily
-                .FillDailyGaps(today, x => x.Date, x => new DateGuesserProgressModel(x, 0, 0, 0))
+            _daily = model.Daily.FillDailyGaps(today, x => x.Date, x => new DateGuesserProgressModel(x, 0, 0, 0))
                 .ToArray();
 
-            _monthly = model.Monthly
-                .FillMonthlyGaps(today, x => x.Date, x => new DateGuesserProgressModel(x, 0, 0, 0))
+            _monthly = model.Monthly.FillMonthlyGaps(today, x => x.Date, x => new DateGuesserProgressModel(x, 0, 0, 0))
                 .ToArray();
         });
     }

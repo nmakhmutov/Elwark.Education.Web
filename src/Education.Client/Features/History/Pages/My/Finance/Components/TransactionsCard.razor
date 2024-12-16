@@ -28,21 +28,23 @@
                 </MudText>
             </MudTd>
             <MudTd>
-                <EduGameMoniesDisplay Horizontal
-                                      IconSize="Size.Small"
-                                      Monies="@context.Monies"
-                                      Typo="Typo.body1"/>
+                <EduGameMoniesDisplay
+                    Horizontal
+                    IconSize="Size.Small"
+                    Monies="@context.Monies"
+                    Typo="Typo.body1"/>
             </MudTd>
         </RowTemplate>
     </MudTable>
     @if (HasMore && !_showMore)
     {
         <div class="d-flex justify-center">
-            <MudButton Color="Color.Primary"
-                       DropShadow="false"
-                       Ripple="false"
-                       OnClick="@(() => _showMore = true)"
-                       Variant="Variant.Filled">
+            <MudButton
+                Color="Color.Primary"
+                DropShadow="false"
+                Ripple="false"
+                OnClick="@(() => _showMore = true)"
+                Variant="Variant.Filled">
                 Show more
             </MudButton>
         </div>

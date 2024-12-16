@@ -10,28 +10,29 @@ namespace Education.Client.Features.Customer.Pages.Account;
 
 public sealed partial class Page : ComponentBase
 {
+    private readonly IAccountClient _accountClient;
+    private readonly IConfiguration _configuration;
+    private readonly IStringLocalizer<App> _localizer;
     private ApiResult<SubjectModel[]> _response = ApiResult<SubjectModel[]>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IAccountClient AccountClient { get; init; } = default!;
-
-    [Inject]
-    private IConfiguration Configuration { get; init; } = default!;
+    public Page(IStringLocalizer<App> localizer, IAccountClient accountClient, IConfiguration configuration)
+    {
+        _localizer = localizer;
+        _accountClient = accountClient;
+        _configuration = configuration;
+    }
 
     [CascadingParameter]
     private CustomerState Customer { get; init; } = default!;
 
     protected override async Task OnInitializedAsync() =>
-        _response = await AccountClient.GetSubjectsAsync();
+        _response = await _accountClient.GetSubjectsAsync();
 
     private SubjectEnhancedModel? Enhance(SubjectModel model) =>
         model.Name switch
         {
             "History" => new SubjectEnhancedModel(
-                L["History_Title"],
+                _localizer["History_Title"],
                 EduIcons.History,
                 "linear-gradient(45deg, #ffa726 10%, #ef6c00 90%)",
                 new SubjectEnhancedModel.SubjectLinks(

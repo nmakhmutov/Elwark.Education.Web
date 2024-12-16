@@ -2,64 +2,68 @@
 @layout HistoryLayout
 
 <PageTitle>
-    @L["History_Timeline_Title"]
+    @_localizer["History_Timeline_Title"]
 </PageTitle>
 
 <div class="border-b mud-border-lines-default d-flex justify-center align-center gap-3 gap-sm-6 py-3">
     <MudIconButton Icon="@Icons.Material.Outlined.ArrowBack" OnClick="@OnPreviousYearClick"/>
 
-    <MudButton Color="Color.Default"
-               DropShadow="false"
-               Ripple="false"
-               OnClick="@OnYearClick"
-               Variant="Variant.Text">
+    <MudButton
+        Color="Color.Default"
+        DropShadow="false"
+        Ripple="false"
+        OnClick="@OnYearClick"
+        Variant="Variant.Text">
         <div class="d-flex align-end gap-3">
             <MudText Typo="Typo.h2">
                 @Math.Abs(Year)
             </MudText>
             <MudText Class="mud-text-secondary" Typo="Typo.subtitle1">
-                @L[Year > 0 ? "History_Date_CE" : "History_Date_BCE"]
+                @_localizer[Year > 0 ? "History_Date_CE" : "History_Date_BCE"]
             </MudText>
         </div>
     </MudButton>
     <MudIconButton Icon="@Icons.Material.Outlined.ArrowForward" OnClick="@OnNextYearClick"/>
 </div>
 
-<EduApiViewer Result="@_response" OnReloadClick="@OnParametersSetAsync" Context="result">
-    <MudTimeline Class="px-3 px-sm-6" TimelinePosition="@_timelinePosition">
-        <Virtualize Items="@result.Items">
-            <MudTimelineItem Color="Color.Primary" Size="Size.Medium" Elevation="25" Variant="Variant.Filled">
-                <ItemDot>
-                    <MudIcon Icon="@Icons.Material.Outlined.DateRange" Size="Size.Medium"/>
-                </ItemDot>
-                <ItemOpposite>
-                    <HistoricalDateRange Started="@context.Started" Finished="@context.Finished" Typo="Typo.h4"/>
-                </ItemOpposite>
-                <ItemContent>
-                    <div class="card mud-paper pa-3">
-                        <MudImage
-                            Class="image rounded"
-                            Src="@context.Image.Small"
-                            Alt="@context.Image.Alt"
-                            ObjectFit="ObjectFit.Cover"
-                            ObjectPosition="ObjectPosition.Center"
-                            Width="180"
-                            Height="180"/>
+<EduApiViewer Result="@_response" OnReloadClick="@OnParametersSetAsync" Context="response">
+    @if (response.Count > 0)
+    {
+        <MudTimeline Class="px-3 px-sm-6" TimelinePosition="@_timelinePosition">
+            <Virtualize Items="@response.Items">
+                <MudTimelineItem Color="Color.Primary" Size="Size.Medium" Elevation="25" Variant="Variant.Filled">
+                    <ItemDot>
+                        <MudIcon Icon="@Icons.Material.Outlined.DateRange" Size="Size.Medium"/>
+                    </ItemDot>
+                    <ItemOpposite>
+                        <HistoricalDateRange Started="@context.Started" Finished="@context.Finished" Typo="Typo.h4"/>
+                    </ItemOpposite>
+                    <ItemContent>
+                        <div class="card mud-paper pa-3">
+                            <MudImage
+                                Class="image rounded"
+                                Src="@context.Image.Small"
+                                Alt="@context.Image.Alt"
+                                ObjectFit="ObjectFit.Cover"
+                                ObjectPosition="ObjectPosition.Center"
+                                Width="180"
+                                Height="180"/>
 
-                        <div class="card-content">
-                            <MudLink Typo="Typo.h6" Href="@HistoryUrl.Content.Article(context.Id)">
-                                @context.Title
-                            </MudLink>
-                            <div class="d-md-none">
-                                <HistoricalDateRange Started="@context.Started" Finished="@context.Finished"/>
+                            <div class="card-content">
+                                <MudLink Typo="Typo.h6" Href="@HistoryUrl.Content.Article(context.Id)">
+                                    @context.Title
+                                </MudLink>
+                                <div class="d-md-none">
+                                    <HistoricalDateRange Started="@context.Started" Finished="@context.Finished"/>
+                                </div>
+                                <MudText>
+                                    @context.Overview
+                                </MudText>
                             </div>
-                            <MudText>
-                                @context.Overview
-                            </MudText>
                         </div>
-                    </div>
-                </ItemContent>
-            </MudTimelineItem>
-        </Virtualize>
-    </MudTimeline>
+                    </ItemContent>
+                </MudTimelineItem>
+            </Virtualize>
+        </MudTimeline>
+    }
 </EduApiViewer>

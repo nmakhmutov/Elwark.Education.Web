@@ -3,7 +3,7 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["User_Dashboard_Title"]
+    @_localizer["User_Dashboard_Title"]
 </PageTitle>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
@@ -17,7 +17,7 @@
 
             <CardBadge
                 Class="examinations"
-                Title="@L["Examinations_Title"]"
+                Title="@_localizer["Examinations_Title"]"
                 Value="@context.Examinations.Total"
                 Trending="@context.Examinations.Trending"
                 Icon="@EduIcons.Examination">
@@ -26,13 +26,13 @@
                            Href="@HistoryUrl.User.MyExaminations"
                            Ripple="false"
                            DropShadow="false">
-                    @L["Examinations_SeeAll"]
+                    @_localizer["Examinations_SeeAll"]
                 </MudButton>
             </CardBadge>
 
             <CardBadge
                 Class="quizzes"
-                Title="@L["Quizzes_Title"]"
+                Title="@_localizer["Quizzes_Title"]"
                 Value="@context.Quizzes.Total"
                 Trending="@context.Quizzes.Trending"
                 Icon="@EduIcons.Quiz">
@@ -41,13 +41,13 @@
                            Href="@HistoryUrl.User.MyQuizzes"
                            Ripple="false"
                            DropShadow="false">
-                    @L["Quizzes_SeeAll"]
+                    @_localizer["Quizzes_SeeAll"]
                 </MudButton>
             </CardBadge>
 
             <CardBadge
                 Class="date-guessers"
-                Title="@L["History_DateGuessers_Title"]"
+                Title="@_localizer["History_DateGuessers_Title"]"
                 Value="@context.DateGuessers.Total"
                 Trending="@context.DateGuessers.Trending"
                 Icon="@EduIcons.DateGuesser">
@@ -56,7 +56,7 @@
                            Href="@HistoryUrl.User.MyDateGuessers"
                            Ripple="false"
                            DropShadow="false">
-                    @L["History_DateGuessers_SeeAll"]
+                    @_localizer["History_DateGuessers_SeeAll"]
                 </MudButton>
             </CardBadge>
 

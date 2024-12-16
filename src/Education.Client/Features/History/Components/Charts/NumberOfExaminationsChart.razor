@@ -52,17 +52,17 @@
 
     private EduChartListItem[] Items =>
     [
-        new EduChartListItem(L["NumberOfExaminations_Successful_Title"], Value.Succeeded, HistoryChart.Examination.Completeness.Successful),
-        new EduChartListItem(L["NumberOfExaminations_Failed_Title"], Value.Failed, HistoryChart.Examination.Completeness.Failed),
-        new EduChartListItem(L["NumberOfExaminations_TimeExceeded_Title"], Value.TimeExceeded, HistoryChart.Examination.Completeness.TimeExceeded),
-        new EduChartListItem(L["NumberOfExaminations_Total_Title"], Value.Total, null)
+        new(L["NumberOfExaminations_Successful_Title"], Value.Succeeded, HistoryChart.Examination.Completeness.Successful),
+        new(L["NumberOfExaminations_Failed_Title"], Value.Failed, HistoryChart.Examination.Completeness.Failed),
+        new(L["NumberOfExaminations_TimeExceeded_Title"], Value.TimeExceeded, HistoryChart.Examination.Completeness.TimeExceeded),
+        new(L["NumberOfExaminations_Total_Title"], Value.Total, null)
     ];
 
     private Data[] Series =>
     [
-        new Data(L["NumberOfExaminations_Successful_Title"], Value.Succeeded),
-        new Data(L["NumberOfExaminations_Failed_Title"], Value.Failed),
-        new Data(L["NumberOfExaminations_TimeExceeded_Title"], Value.TimeExceeded)
+        new(L["NumberOfExaminations_Successful_Title"], Value.Succeeded),
+        new(L["NumberOfExaminations_Failed_Title"], Value.Failed),
+        new(L["NumberOfExaminations_TimeExceeded_Title"], Value.TimeExceeded)
     ];
 
     private sealed record Data(string Name, decimal Value);

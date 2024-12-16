@@ -17,14 +17,14 @@ public sealed record ArticleStatisticsModel(
     public sealed record ConclusionModel(
         QuizStatus Status,
         ScoreModel Score,
-        AnswerRatioModel AnswerRatio,
+        AnswerRatioModel Ratio,
         TimeSpan TimeSpent,
         DateTime CompletedAt
     );
 
     public sealed record ProgressModel(
         ScoreModel Score,
-        AnswerRatioModel AnswerRatio,
+        AnswerRatioModel Ratio,
         TimeSpan TimeSpent,
         NumberOfQuizzesModel NumberOfQuizzes,
         ConclusionModel[] Conclusions

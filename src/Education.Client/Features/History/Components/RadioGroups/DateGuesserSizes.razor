@@ -4,11 +4,11 @@
     {
         <DifficultyCard Title="@L.GetDateGuesserSizeTitle(guesser.Size)" AccessInventory="@guesser.AccessInventory">
             <ChildContent>
-                <MudList T="string" Class="flex-1" Dense Gutters="false" Padding="false">
-                    <MudListItem T="string">
+                <MudList T="string" Class="flex-1" Padding="false" Dense ReadOnly>
+                    <MudListItem T="string" Class="pa-0">
                         @L["History_DateGuesser_DateQuantity_Title", guesser.QuestionQuantity]
                     </MudListItem>
-                    <MudListItem T="string">
+                    <MudListItem T="string" Class="pa-0">
                         <RewardsDisplay Rewards="@guesser.Rewards" Typo="Typo.body2" Horizontal/>
                     </MudListItem>
                 </MudList>

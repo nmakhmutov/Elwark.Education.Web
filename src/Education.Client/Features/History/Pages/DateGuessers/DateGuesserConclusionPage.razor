@@ -3,12 +3,12 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_DateGuesser_Completed"]
+    @_localizer["History_DateGuesser_Completed"]
 </PageTitle>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync" Context="conclusion">
     <MudAlert Class="mb-6 mb-sm-12" Severity="Severity.Success" Square ContentAlignment="HorizontalAlignment.Center">
-        @L["History_DateGuesser_Completed"]
+        @_localizer["History_DateGuesser_Completed"]
     </MudAlert>
 
     <EduCompletedStars Class="mb-6" Progress="@_progress"/>
@@ -23,7 +23,7 @@
             Ripple="false"
             Size="Size.Large"
             Variant="Variant.Filled">
-            @L["History_DateGuesser_TakeTheGuesserAgain"]
+            @_localizer["History_DateGuesser_TakeTheGuesserAgain"]
         </MudButton>
     </div>
 
@@ -35,39 +35,39 @@
             Elevation="0"
             Hover>
             <HeaderContent>
-                <MudTh>@L["Article_Title"]</MudTh>
-                <MudTh>@L["Question_Title"]</MudTh>
-                <MudTh>@L["History_DateGuesserCorrect_Answer"]</MudTh>
-                <MudTh>@L["History_DateGuesser_UserAnswer"]</MudTh>
-                <MudTh>@L["History_DateGuesser_Points"]</MudTh>
-                <MudTh>@L["History_DateGuesser_x2Bonus"]</MudTh>
-                <MudTh>@L["History_DateGuesser_Score"]</MudTh>
+                <MudTh>@_localizer["Article_Title"]</MudTh>
+                <MudTh>@_localizer["Question_Title"]</MudTh>
+                <MudTh>@_localizer["History_DateGuesserCorrect_Answer"]</MudTh>
+                <MudTh>@_localizer["History_DateGuesser_UserAnswer"]</MudTh>
+                <MudTh>@_localizer["History_DateGuesser_Points"]</MudTh>
+                <MudTh>@_localizer["History_DateGuesser_x2Bonus"]</MudTh>
+                <MudTh>@_localizer["History_DateGuesser_Score"]</MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="@L["Article_Title"]">
+                <MudTd DataLabel="@_localizer["Article_Title"]">
                     <MudLink Href="@HistoryUrl.Content.Article(context.Article.Id)">
                         @context.Article.Title
                     </MudLink>
                 </MudTd>
-                <MudTd DataLabel="@L["Question_Title"]">
+                <MudTd DataLabel="@_localizer["Question_Title"]">
                     @context.Title
                 </MudTd>
-                <MudTd DataLabel="@L["History_DateGuesserCorrect_Answer"]">
+                <MudTd DataLabel="@_localizer["History_DateGuesserCorrect_Answer"]">
                     <HistoryDate Typo="Typo.body2" Date="@context.CorrectAnswer"/>
                 </MudTd>
-                <MudTd DataLabel="@L["History_DateGuesser_UserAnswer"]">
+                <MudTd DataLabel="@_localizer["History_DateGuesser_UserAnswer"]">
                     <HistoryDate
                         Typo="Typo.body2"
                         Date="@context.UserAnswer"
                         Color="@(context.IsCorrect ? Color.Success : Color.Error)"/>
                 </MudTd>
-                <MudTd DataLabel="@L["History_DateGuesser_Points"]">
+                <MudTd DataLabel="@_localizer["History_DateGuesser_Points"]">
                     @context.Score.Points
                 </MudTd>
-                <MudTd DataLabel="@L["History_DateGuesser_x2Bonus"]">
+                <MudTd DataLabel="@_localizer["History_DateGuesser_x2Bonus"]">
                     @context.Score.Bonus
                 </MudTd>
-                <MudTd DataLabel="@L["History_DateGuesser_Score"]">
+                <MudTd DataLabel="@_localizer["History_DateGuesser_Score"]">
                     @context.Score.Total
                 </MudTd>
             </RowTemplate>

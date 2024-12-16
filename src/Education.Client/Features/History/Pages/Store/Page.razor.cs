@@ -13,40 +13,45 @@ namespace Education.Client.Features.History.Pages.Store;
 
 public sealed partial class Page : ComponentBase
 {
+    private readonly List<BreadcrumbItem> _breadcrumbs;
+    private readonly IDialogService _dialogService;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
+    private readonly IHistoryProductClient _productClient;
+    private readonly IHistoryUserClient _userClient;
     private CategoryType[] _categories = [];
     private CategoryType _category;
     private ProfileModel _profile = ProfileModel.Empty;
     private ApiResult<Product[]> _response = ApiResult<Product[]>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryUserClient UserClient { get; init; } = default!;
-
-    [Inject]
-    private IHistoryProductClient ProductClient { get; init; } = default!;
-
-    [Inject]
-    private IDialogService DialogService { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
+    public Page(
+        IStringLocalizer<App> localizer,
+        IHistoryUserClient userClient,
+        IHistoryProductClient productClient,
+        IDialogService dialogService,
+        NavigationManager navigation
+    )
+    {
+        _localizer = localizer;
+        _userClient = userClient;
+        _productClient = productClient;
+        _dialogService = dialogService;
+        _navigation = navigation;
+        _breadcrumbs =
+        [
+            new BreadcrumbItem(_localizer["History_Title"], HistoryUrl.Root),
+            new BreadcrumbItem(_localizer["InventoryStore_Title"], null, true)
+        ];
+    }
 
     [SupplyParameterFromQuery]
     public string? Category { get; set; }
-
-    private List<BreadcrumbItem> Breadcrumbs =>
-    [
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["InventoryStore_Title"], null, true)
-    ];
 
     protected override async Task OnInitializedAsync()
     {
         await UpdateProfileAsync();
 
-        _response = await ProductClient.GetAsync();
+        _response = await _productClient.GetAsync();
         _categories = _response.Map(products => products.SelectMany(x => x.Categories).Append(CategoryType.None))
             .UnwrapOrElse(() => [])
             .Distinct()
@@ -59,7 +64,7 @@ public sealed partial class Page : ComponentBase
 
     private async Task UpdateProfileAsync()
     {
-        var profile = await UserClient.GetProfileAsync();
+        var profile = await _userClient.GetProfileAsync();
 
         _profile = profile.Map(x => x)
             .UnwrapOrElse(() => ProfileModel.Empty);
@@ -85,7 +90,7 @@ public sealed partial class Page : ComponentBase
             }
         };
 
-        var dialog = await DialogService.ShowAsync<InventoryDialog>(product.Title, parameters, options);
+        var dialog = await _dialogService.ShowAsync<InventoryDialog>(product.Title, parameters, options);
         var result = await dialog.Result;
         if (result?.Canceled == true)
             return;
@@ -100,7 +105,7 @@ public sealed partial class Page : ComponentBase
             MaxWidth = product.Inventories.Length > 3 ? MaxWidth.Medium : MaxWidth.Small,
             CloseOnEscapeKey = true,
             FullWidth = true,
-            CloseButton = false,
+            CloseButton = false
         };
 
         var parameters = new DialogParameters<BundleDialog>
@@ -113,7 +118,7 @@ public sealed partial class Page : ComponentBase
             }
         };
 
-        var dialog = await DialogService.ShowAsync<BundleDialog>(product.Title, parameters, options);
+        var dialog = await _dialogService.ShowAsync<BundleDialog>(product.Title, parameters, options);
         var result = await dialog.Result;
         if (result?.Canceled == true)
             return;
@@ -133,5 +138,5 @@ public sealed partial class Page : ComponentBase
     }
 
     private void ChangeCategory(CategoryType category) =>
-        Navigation.NavigateTo(HistoryUrl.Store.Index(category));
+        _navigation.NavigateTo(HistoryUrl.Store.Index(category));
 }

@@ -15,12 +15,13 @@
         </div>
     </div>
 
-    <MudButton Class="text-transform-none"
-               Color="Color.Primary"
-               DropShadow="false"
-               Ripple="false"
-               EndIcon="@Icons.Material.Outlined.ArrowForward"
-               Href="@SeeAllHref">
+    <MudButton
+        Class="text-transform-none"
+        Color="Color.Primary"
+        DropShadow="false"
+        Ripple="false"
+        EndIcon="@Icons.Material.Outlined.ArrowForward"
+        Href="@SeeAllHref">
         @SeeAllText
     </MudButton>
 </section>
@@ -32,8 +33,8 @@
     <StatisticsCard Title="@L["Score_Title"]" Value="@Quiz.Score.Total">
         <QuizScoreChart Score="@Quiz.Score"/>
     </StatisticsCard>
-    <StatisticsCard Title="@L["Questions_Title"]" Value="@Quiz.AnswerRatio.Questions">
-        <QuizAnswerRatioChart AnswerRatio="@Quiz.AnswerRatio"/>
+    <StatisticsCard Title="@L["Questions_Title"]" Value="@Quiz.Ratio.Questions">
+        <QuizAnswerRatioChart Ratio="@Quiz.Ratio"/>
     </StatisticsCard>
 </EduFitGrid>
 
@@ -66,7 +67,7 @@
                 <ChildContent>
                     <div class="d-flex justify-center gap-3 gap-sm-6">
                         <QuizScoreChart Score="@conclusion.Score"/>
-                        <QuizAnswerRatioChart AnswerRatio="@conclusion.AnswerRatio"/>
+                        <QuizAnswerRatioChart Ratio="@conclusion.Ratio"/>
                     </div>
                 </ChildContent>
             </MudExpansionPanel>

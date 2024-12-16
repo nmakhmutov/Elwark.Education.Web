@@ -3,7 +3,7 @@
 @attribute [Authorize]
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+    <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
 </EduContainer>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
@@ -15,27 +15,27 @@
         <section class="grid">
             <section class="course">
                 <MudText Typo="Typo.h6" Class="mb-3">
-                    @L["Course_Title"]
+                    @_localizer["Course_Title"]
                 </MudText>
 
                 <CourseCard
                     Course="@context.Course"
                     Activity="@context.Activity"
-                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                    OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"
                     HasExamination="@(context.Examinations.Length > 0)"
                     Horizontal/>
 
                 @if (_requiredExaminations.Count > 0)
                 {
                     <MudAlert Class="mt-3 mt-sm-6" Severity="Severity.Info" Variant="Variant.Text">
-                        @L.Markup("Course_CompleteExaminationInstruction", string.Join(", ", _requiredExaminations))
+                        @_localizer.Markup("Course_CompleteExaminationInstruction", string.Join(", ", _requiredExaminations))
                     </MudAlert>
                 }
             </section>
 
             <section class="inventory">
                 <MudText Typo="Typo.h6" Class="mb-3">
-                    @L["Examination_Equipment_Title"]
+                    @_localizer["Examination_Equipment_Title"]
                 </MudText>
                 <InventoryGrid
                     Inventories="@context.Inventories"
@@ -60,7 +60,7 @@
                 @if (context.Examinations.Length > 0)
                 {
                     <MudText Typo="Typo.h6" Class="mb-3">
-                        @L["Examination_Type_Title"]
+                        @_localizer["Examination_Type_Title"]
                     </MudText>
 
                     <ExaminationDifficulties
@@ -70,7 +70,7 @@
                 else
                 {
                     <MudAlert Severity="Severity.Info">
-                        @L["Examination_NotAvailableForCourse", context.Course.Title]
+                        @_localizer["Examination_NotAvailableForCourse", context.Course.Title]
                     </MudAlert>
                 }
             </section>

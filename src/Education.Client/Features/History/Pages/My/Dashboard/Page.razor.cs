@@ -16,27 +16,28 @@ using QuizModel = MeOverviewModel.QuizModel;
 
 public sealed partial class Page : ComponentBase
 {
+    private readonly IHistoryLearnerClient _learnerClient;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly IHistoryUserClient _userClient;
     private ApiResult<Aggregate> _response = ApiResult<Aggregate>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryUserClient UserClient { get; init; } = default!;
-
-    [Inject]
-    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
+    public Page(IStringLocalizer<App> localizer, IHistoryUserClient userClient, IHistoryLearnerClient learnerClient)
+    {
+        _localizer = localizer;
+        _userClient = userClient;
+        _learnerClient = learnerClient;
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        var userRequest = await UserClient.GetMeAsync();
+        var userRequest = await _userClient.GetMeAsync();
         if (userRequest.IsError)
         {
             _response = ApiResult<Aggregate>.Fail(userRequest.UnwrapError());
             return;
         }
 
-        var learnerRequest = await LearnerClient.GetMeAsync();
+        var learnerRequest = await _learnerClient.GetMeAsync();
         if (learnerRequest.IsError)
         {
             _response = ApiResult<Aggregate>.Fail(learnerRequest.UnwrapError());

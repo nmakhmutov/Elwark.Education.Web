@@ -3,12 +3,12 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Achievements_Title"]
+    @_localizer["Achievements_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <div class="d-flex flex-wrap justify-space-between gap-3 gap-sm-6">
-        <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+        <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
         <MudText Typo="Typo.h5">
             @_response.Map(x => $"{x.Unlocked} / {x.Total}").UnwrapOr(string.Empty)
         </MudText>

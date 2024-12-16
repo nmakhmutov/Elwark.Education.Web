@@ -8,7 +8,7 @@
         Stroke="@(new SeriesStroke { Color = HistoryChart.DateGuesser.Question.Correct })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
-        YValue="@(x => x.AnswerRatio.Correct)"/>
+        YValue="@(x => x.Ratio.Correct)"/>
 
     <ApexPointSeries
         TItem="DateGuesserStatisticsModel.DailyProgress"
@@ -17,7 +17,7 @@
         Stroke="@(new SeriesStroke { Color = HistoryChart.DateGuesser.Question.Incorrect })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
-        YValue="@(x => x.AnswerRatio.Incorrect)"/>
+        YValue="@(x => x.Ratio.Incorrect)"/>
 </ApexChart>
 
 @code {

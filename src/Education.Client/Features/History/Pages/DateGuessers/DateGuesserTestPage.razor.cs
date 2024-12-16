@@ -12,19 +12,20 @@ namespace Education.Client.Features.History.Pages.DateGuessers;
 
 public sealed partial class DateGuesserTestPage : ComponentBase
 {
+    private readonly IHistoryDateGuesserClient _dateGuesserClient;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
+    private readonly ISnackbar _snackbar;
     private ApiResult<DateGuesserModel> _response = ApiResult<DateGuesserModel>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryDateGuesserClient DateGuesserClient { get; init; } = default!;
-
-    [Inject]
-    private ISnackbar Snackbar { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
+    public DateGuesserTestPage(IStringLocalizer<App> localizer, IHistoryDateGuesserClient dateGuesserClient,
+        ISnackbar snackbar, NavigationManager navigation)
+    {
+        _localizer = localizer;
+        _dateGuesserClient = dateGuesserClient;
+        _snackbar = snackbar;
+        _navigation = navigation;
+    }
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
@@ -34,7 +35,7 @@ public sealed partial class DateGuesserTestPage : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await DateGuesserClient.GetAsync(Id);
+        _response = await _dateGuesserClient.GetAsync(Id);
         _response.MatchError(e => HandlerError(e));
     }
 
@@ -43,14 +44,14 @@ public sealed partial class DateGuesserTestPage : ComponentBase
         var year = model.Year.GetValueOrDefault();
         var request = new CheckRequest(model.IsCe ? year : -year, model.Month, model.Day);
 
-        var result = await DateGuesserClient.CheckAsync(Id, model.QuestionId, request);
+        var result = await _dateGuesserClient.CheckAsync(Id, model.QuestionId, request);
 
         await result.MatchAsync(async x =>
             {
                 if (x.IsCompleted)
-                    Navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
+                    _navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
                 else
-                    _response = await DateGuesserClient.GetAsync(Id);
+                    _response = await _dateGuesserClient.GetAsync(Id);
             },
             e => HandlerError(e)
         );
@@ -58,15 +59,15 @@ public sealed partial class DateGuesserTestPage : ComponentBase
 
     private async Task OnUseInventory(uint id)
     {
-        _response = await DateGuesserClient.UseInventoryAsync(Id, id);
+        _response = await _dateGuesserClient.UseInventoryAsync(Id, id);
         _response.MatchError(x => HandlerError(x));
     }
 
     private void HandlerError(Error error)
     {
         if (error.IsDateGuesserNotFound() || error.IsDateGuesserAlreadyCompleted())
-            Navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
+            _navigation.NavigateTo(HistoryUrl.DateGuesser.Conclusion(Id));
         else
-            Snackbar.Add(error.Title, Severity.Error);
+            _snackbar.Add(error.Title, Severity.Error);
     }
 }

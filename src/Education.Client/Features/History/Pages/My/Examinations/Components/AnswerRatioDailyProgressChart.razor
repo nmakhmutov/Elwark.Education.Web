@@ -8,7 +8,7 @@
         Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Question.Answered })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
-        YValue="@(x => x.AnswerRatio.Answered)"/>
+        YValue="@(x => x.Ratio.Answered)"/>
 
     <ApexPointSeries
         TItem="ExaminationStatisticsModel.DailyProgress"
@@ -17,7 +17,7 @@
         Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Question.NotAnswered })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
-        YValue="@(x => x.AnswerRatio.NotAnswered)"/>
+        YValue="@(x => x.Ratio.NotAnswered)"/>
 
     <ApexPointSeries
         TItem="ExaminationStatisticsModel.DailyProgress"
@@ -26,7 +26,7 @@
         Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Question.Correct })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
-        YValue="@(x => x.AnswerRatio.Correct)"/>
+        YValue="@(x => x.Ratio.Correct)"/>
 
     <ApexPointSeries
         TItem="ExaminationStatisticsModel.DailyProgress"
@@ -35,7 +35,7 @@
         Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Question.Incorrect })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
-        YValue="@(x => x.AnswerRatio.Incorrect)"/>
+        YValue="@(x => x.Ratio.Incorrect)"/>
 </ApexChart>
 
 @code {

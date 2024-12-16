@@ -3,11 +3,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_DateGuessers_Title"]
+    @_localizer["History_DateGuessers_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+    <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
 </EduContainer>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
@@ -15,7 +15,7 @@
         <section class="grid">
             <section class="builder">
                 <MudText Class="mb-3" Typo="Typo.h6">
-                    @L["History_Epoch_Title"]
+                    @_localizer["History_Epoch_Title"]
                 </MudText>
                 <EpochRadioGroup
                     Class="mb-3 mb-sm-6"
@@ -23,7 +23,7 @@
                     SelectedEpochChanged="@ChangeEpochAsync"/>
 
                 <MudText Class="mb-3" Typo="Typo.h6">
-                    @L["History_DateGuesser_Type_Title"]
+                    @_localizer["History_DateGuesser_Type_Title"]
                 </MudText>
 
                 <DateGuesserSizes
@@ -33,7 +33,7 @@
 
             <section class="inventory">
                 <MudText Class="mb-3" Typo="Typo.h6">
-                    @L["History_DateGuesser_Equipment"]
+                    @_localizer["History_DateGuesser_Equipment"]
                 </MudText>
                 <InventoryGrid
                     Inventories="@context.Inventories"

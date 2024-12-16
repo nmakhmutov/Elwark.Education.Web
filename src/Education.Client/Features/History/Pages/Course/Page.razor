@@ -19,15 +19,15 @@
             HasExaminations="@(context.HasEasyExamination || context.HasHardExamination)"
             ArticleCount="@context.Course.Articles.Length"
             Activity="@context.Activity"
-            OnLikeClick="@LearnerClient.LikeCourseAsync"
-            OnDislikeClick="@LearnerClient.DislikeCourseAsync"
-            OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"
+            OnLikeClick="@_learnerClient.LikeCourseAsync"
+            OnDislikeClick="@_learnerClient.DislikeCourseAsync"
+            OnBookmarkClick="@_learnerClient.ToggleCourseBookmarkAsync"
             OnStartClick="@StartCourseAsync"/>
 
         <section class="content">
             <div class="articles">
                 <MudText Typo="Typo.h5">
-                    @L["Articles_Title"]
+                    @_localizer["Articles_Title"]
                 </MudText>
 
                 @foreach (var (article, activity, hasQuiz) in context.Course.Articles)
@@ -36,7 +36,7 @@
                         Article="@article"
                         HasQuiz="@hasQuiz"
                         Activity="@activity"
-                        OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                        OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"
                         Horizontal/>
                 }
             </div>
@@ -44,7 +44,7 @@
             <EduFillGrid Class="aside">
                 <section>
                     <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
-                        @L["Course_Description_Title"]
+                        @_localizer["Course_Description_Title"]
                     </MudText>
 
                     <MudText Typo="Typo.body1">

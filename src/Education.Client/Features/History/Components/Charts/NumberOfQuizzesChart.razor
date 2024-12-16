@@ -2,7 +2,7 @@
 @using Education.Client.Features.History.Clients.Learner.Model.Quiz
 <div class="@Class">
     <ApexChartContainer>
-        <ApexChart TItem="Data" Options="@Options">
+        <ApexChart TItem="Data" Options="@_options">
             <ApexPointSeries
                 TItem="Data"
                 Items="@Series"
@@ -17,7 +17,7 @@
 
 @code {
 
-    private static ApexChartOptions<Data> Options =>
+    private static ApexChartOptions<Data> _options =
         new()
         {
             Chart = new Chart
@@ -53,21 +53,20 @@
 
     private EduChartListItem[] Items =>
     [
-        new EduChartListItem(L["NumberOfQuizzes_Successful_Title"], Quizzes.Succeeded, HistoryChart.Quiz.Completeness.Successful),
-        new EduChartListItem(L["NumberOfQuizzes_Failed_Title"], Quizzes.Failed, HistoryChart.Quiz.Completeness.Failed),
-        new EduChartListItem(L["NumberOfQuizzes_TimeExceeded_Title"], Quizzes.TimeExceeded, HistoryChart.Quiz.Completeness.TimeExceeded),
-        new EduChartListItem(L["NumberOfQuizzes_MistakesLimitExceeded_Title"], Quizzes.MistakesLimitExceeded, HistoryChart.Quiz.Completeness.MistakesLimitExceeded),
-        new EduChartListItem(L["NumberOfQuizzes_Total_Title"], Quizzes.Total, null)
+        new(L["NumberOfQuizzes_Successful_Title"], Quizzes.Succeeded, HistoryChart.Quiz.Completeness.Successful),
+        new(L["NumberOfQuizzes_Failed_Title"], Quizzes.Failed, HistoryChart.Quiz.Completeness.Failed),
+        new(L["NumberOfQuizzes_TimeExceeded_Title"], Quizzes.TimeExceeded, HistoryChart.Quiz.Completeness.TimeExceeded),
+        new(L["NumberOfQuizzes_MistakesLimitExceeded_Title"], Quizzes.MistakesLimitExceeded, HistoryChart.Quiz.Completeness.MistakesLimitExceeded),
+        new(L["NumberOfQuizzes_Total_Title"], Quizzes.Total, null)
     ];
 
     private Data[] Series =>
     [
-        new Data(L["NumberOfQuizzes_Successful_Title"], Quizzes.Succeeded),
-        new Data(L["NumberOfQuizzes_Failed_Title"], Quizzes.Failed),
-        new Data(L["NumberOfQuizzes_TimeExceeded_Title"], Quizzes.TimeExceeded),
-        new Data(L["NumberOfQuizzes_MistakesLimitExceeded_Title"], Quizzes.MistakesLimitExceeded)
+        new(L["NumberOfQuizzes_Successful_Title"], Quizzes.Succeeded),
+        new(L["NumberOfQuizzes_Failed_Title"], Quizzes.Failed),
+        new(L["NumberOfQuizzes_TimeExceeded_Title"], Quizzes.TimeExceeded),
+        new(L["NumberOfQuizzes_MistakesLimitExceeded_Title"], Quizzes.MistakesLimitExceeded)
     ];
 
     private sealed record Data(string Name, decimal Value);
-
 }

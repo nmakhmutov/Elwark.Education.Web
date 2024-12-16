@@ -2,7 +2,7 @@
 @layout HistoryLayout
 
 <PageTitle>
-    @L["History_Title"]: @Query
+    @_localizer["History_Title"]: @Query
 </PageTitle>
 
 <section class="search-header">
@@ -13,7 +13,7 @@
                 <MudTextField
                     Class="flex-grow-1 mb-0"
                     @bind-Value="@Query"
-                    Placeholder="@L["Search_Title"]"
+                    Placeholder="@_localizer["Search_Title"]"
                     AdornmentIcon="@Icons.Material.Outlined.Search"
                     InputType="InputType.Search"
                     Margin="Margin.Dense"
@@ -25,7 +25,7 @@
                     <MudSelect
                         Class="mb-0"
                         @bind-Value="@Category"
-                        Label="@L["Search_Content_Title"]"
+                        Label="@_localizer["Search_Content_Title"]"
                         Margin="Margin.Dense"
                         Variant="Variant.Text"
                         Disabled="@(_categories.Count == 0)"
@@ -45,7 +45,7 @@
                            DropShadow="false"
                            Ripple="false"
                            Variant="Variant.Filled">
-                    @L["Search_Title"]
+                    @_localizer["Search_Title"]
                 </MudButton>
             </EditForm>
         </div>

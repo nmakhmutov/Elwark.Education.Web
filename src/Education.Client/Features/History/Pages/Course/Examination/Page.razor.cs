@@ -13,37 +13,42 @@ namespace Education.Client.Features.History.Pages.Course.Examination;
 
 public sealed partial class Page : ComponentBase
 {
+    private readonly List<BreadcrumbItem> _breadcrumbs;
+    private readonly IHistoryCourseClient _courseClient;
+    private readonly IHistoryLearnerClient _learnerClient;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigationManager;
     private readonly List<string> _requiredExaminations = [];
+    private readonly ISnackbar _snackbar;
     private ApiResult<ExaminationBuilderModel> _response = ApiResult<ExaminationBuilderModel>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryCourseClient CourseClient { get; init; } = default!;
-
-    [Inject]
-    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager NavigationManager { get; init; } = default!;
-
-    [Inject]
-    private ISnackbar Snackbar { get; init; } = default!;
+    public Page(
+        IStringLocalizer<App> localizer,
+        IHistoryCourseClient courseClient,
+        IHistoryLearnerClient learnerClient,
+        NavigationManager navigationManager,
+        ISnackbar snackbar
+    )
+    {
+        _localizer = localizer;
+        _courseClient = courseClient;
+        _learnerClient = learnerClient;
+        _navigationManager = navigationManager;
+        _snackbar = snackbar;
+        _breadcrumbs =
+        [
+            new BreadcrumbItem(_localizer["History_Title"], HistoryUrl.Root),
+            new BreadcrumbItem(_localizer["Courses_Title"], HistoryUrl.Content.Courses()),
+            new BreadcrumbItem(_localizer["Examinations_Title"], null, true)
+        ];
+    }
 
     [Parameter]
     public required string Id { get; set; }
 
-    private List<BreadcrumbItem> Breadcrumbs =>
-    [
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Courses_Title"], HistoryUrl.Content.Courses()),
-        new BreadcrumbItem(L["Examinations_Title"], null, true)
-    ];
-
     protected override async Task OnInitializedAsync()
     {
-        _response = await CourseClient.GetExaminationAsync(Id);
+        _response = await _courseClient.GetExaminationAsync(Id);
         _response.Match(
             x =>
             {
@@ -53,7 +58,8 @@ public sealed partial class Page : ComponentBase
                     {
                         case DifficultyType.Easy when (x.Activity?.IsEasyExaminationCompleted ?? false) == false:
                         case DifficultyType.Hard when (x.Activity?.IsHardExaminationCompleted ?? false) == false:
-                            _requiredExaminations.Add($"<b>\"{L.GetExaminationDifficultyTitle(quiz.Difficulty)}\"</b> ");
+                            _requiredExaminations.Add(
+                                $"<b>\"{_localizer.GetExaminationDifficultyTitle(quiz.Difficulty)}\"</b> ");
                             break;
                     }
                 }
@@ -61,17 +67,17 @@ public sealed partial class Page : ComponentBase
             e =>
             {
                 if (e.IsExaminationAlreadyCreated(out var id))
-                    NavigationManager.NavigateTo(HistoryUrl.Examination.Test(id));
+                    _navigationManager.NavigateTo(HistoryUrl.Examination.Test(id));
             }
         );
     }
 
     private async Task CreateTestAsync(DifficultyType difficulty)
     {
-        var result = await CourseClient.CreateExaminationAsync(Id, new CreateExaminationRequest(difficulty));
+        var result = await _courseClient.CreateExaminationAsync(Id, new CreateExaminationRequest(difficulty));
         result.Match(
-            x => NavigationManager.NavigateTo(HistoryUrl.Examination.Test(x.Id)),
-            e => Snackbar.Add(e.Detail, Severity.Error)
+            x => _navigationManager.NavigateTo(HistoryUrl.Examination.Test(x.Id)),
+            e => _snackbar.Add(e.UiMessage, Severity.Error)
         );
     }
 }

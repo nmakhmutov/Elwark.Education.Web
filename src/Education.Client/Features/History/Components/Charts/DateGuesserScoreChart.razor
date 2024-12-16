@@ -47,15 +47,15 @@
 
     private EduChartListItem[] Items =>
     [
-        new EduChartListItem(L["History_DateGuesser_Points"], Score.Points, HistoryChart.DateGuesser.Score.Points),
-        new EduChartListItem(L["History_DateGuesser_x2Bonus"], Score.Bonus, HistoryChart.DateGuesser.Score.X2Points),
-        new EduChartListItem(L["History_DateGuesser_Score"], Score.Total, null)
+        new(L["History_DateGuesser_Points"], Score.Points, HistoryChart.DateGuesser.Score.Points),
+        new(L["History_DateGuesser_x2Bonus"], Score.Bonus, HistoryChart.DateGuesser.Score.X2Points),
+        new(L["History_DateGuesser_Score"], Score.Total, null)
     ];
 
     private Data[] Series =>
     [
-        new Data(L["History_DateGuesser_Points"], Score.Points),
-        new Data(L["History_DateGuesser_x2Bonus"], Score.Bonus)
+        new(L["History_DateGuesser_Points"], Score.Points),
+        new(L["History_DateGuesser_x2Bonus"], Score.Bonus)
     ];
 
     private sealed record Data(string Name, decimal Value);

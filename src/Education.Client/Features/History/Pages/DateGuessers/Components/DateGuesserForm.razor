@@ -5,7 +5,7 @@
         <MudNumericField
             @bind-Value="@_model.Year"
             For="@(() => _model.Year)"
-            Label="@L["History_DateGuesser_Year"]"
+            Label="@_localizer["History_DateGuesser_Year"]"
             Variant="Variant.Outlined"
             Margin="Margin.Dense"
             HideSpinButtons
@@ -15,7 +15,7 @@
             T="uint?"
             @bind-Value="@_model.Month"
             For="@(() => _model.Month)"
-            Label="@L["History_DateGuesser_Month"]"
+            Label="@_localizer["History_DateGuesser_Month"]"
             Variant="Variant.Outlined"
             Margin="Margin.Dense"
             Clearable>
@@ -30,17 +30,17 @@
         <MudNumericField
             @bind-Value="@_model.Day"
             For="@(() => _model.Day)"
-            Label="@L["History_DateGuesser_Day"]"
+            Label="@_localizer["History_DateGuesser_Day"]"
             Variant="Variant.Outlined"
             Margin="Margin.Dense"
             HideSpinButtons/>
 
         <MudRadioGroup @bind-Value="@_model.IsCe">
             <MudRadio Value="true" Color="Color.Primary" UnCheckedColor="Color.Default">
-                @L["History_Date_CE"]
+                @_localizer["History_Date_CE"]
             </MudRadio>
             <MudRadio Value="false" Color="Color.Primary" UnCheckedColor="Color.Default">
-                @L["History_Date_BCE"]
+                @_localizer["History_Date_BCE"]
             </MudRadio>
         </MudRadioGroup>
 
@@ -50,9 +50,9 @@
                 Color="Color.Primary"
                 DropShadow="false"
                 IsLoading="@_isLoading"
-                LoadingText="@L["Loading_Title"]"
+                LoadingText="@_localizer["Loading_Title"]"
                 Ripple="false"
-                Text="@L["QuestionFrom_AnswerToQuestion"]"
+                Text="@_localizer["QuestionFrom_AnswerToQuestion"]"
                 Variant="Variant.Filled"/>
         </div>
     </div>

@@ -3,7 +3,7 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @_response.Match(x => $"{L.GetExaminationDifficultyTitle(x.Difficulty)}: {x.Title}", e => e.Title, () => L["Examinations_Title"])
+    @_response.Match(x => $"{_localizer.GetExaminationDifficultyTitle(x.Difficulty)}: {x.Title}", e => e.Title, () => _localizer["Examinations_Title"])
 </PageTitle>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
@@ -12,7 +12,7 @@
             <header class="timer">
                 <section class="d-flex flex-wrap justify-space-between gap-3">
                     <MudText Typo="Typo.subtitle1">
-                        @L["Test_QuestionOutOf", context.CompletedQuestions, context.TotalQuestions]
+                        @_localizer["Test_QuestionOutOf", context.CompletedQuestions, context.TotalQuestions]
                     </MudText>
                     <EduCountdown Deadline="@context.ExpiredAt" OnComplete="@OnExpiredAsync"/>
                 </section>
@@ -32,7 +32,7 @@
                 OnAnswerClick="@OnAnswerAsync">
                 <Header>
                     <MudText Class="d-block mud-text-secondary" Typo="Typo.caption" Align="Align.Center">
-                        @L.GetExaminationDifficultyTitle(context.Difficulty)
+                        @_localizer.GetExaminationDifficultyTitle(context.Difficulty)
                     </MudText>
                     <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5" Align="Align.Center">
                         @context.Title
@@ -49,7 +49,7 @@
                         Title="@inventory.Title"
                         Overview="@inventory.Overview"
                         IconUrl="@inventory.ImageUrl"
-                        ButtonText="@L["Inventory_Use_Button"]"
+                        ButtonText="@_localizer["Inventory_Use_Button"]"
                         OnClick="@OnUseInventory"/>
                 }
                 else

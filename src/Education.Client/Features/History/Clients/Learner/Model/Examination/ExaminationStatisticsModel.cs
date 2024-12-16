@@ -5,7 +5,7 @@ namespace Education.Client.Features.History.Clients.Learner.Model.Examination;
 
 public sealed record ExaminationStatisticsModel(
     ScoreModel Score,
-    AnswerRatioModel AnswerRatio,
+    AnswerRatioModel Ratio,
     NumberOfExaminationsModel NumberOfExaminations,
     ExaminationStatisticsModel.TimeSpentModel TimeSpent,
     ExaminationStatisticsModel.DeltaModel Delta,
@@ -16,7 +16,7 @@ public sealed record ExaminationStatisticsModel(
         DateOnly Start,
         DateOnly End,
         ScoreContrastModel Score,
-        AnswerRatioContrastModel AnswerRatio,
+        AnswerRatioContrastModel Ratio,
         TimeSpentContrastModel TimeSpent,
         NumberOfExaminationsContrastModel NumberOfExaminations
     );
@@ -53,7 +53,7 @@ public sealed record ExaminationStatisticsModel(
     public sealed record DailyProgress(
         DateOnly Date,
         ScoreModel Score,
-        AnswerRatioModel AnswerRatio,
+        AnswerRatioModel Ratio,
         TimeSpentModel TimeSpent,
         NumberOfExaminationsModel NumberOfExaminations
     );

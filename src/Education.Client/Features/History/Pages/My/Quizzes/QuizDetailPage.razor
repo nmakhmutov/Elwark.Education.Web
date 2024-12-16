@@ -7,7 +7,7 @@
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+    <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
 </EduContainer>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
@@ -15,60 +15,60 @@
         <StatisticDetailsGrid>
             <StatisticDetailsCard DisableActivity="@(context.Progress.Length == 0)">
                 <TotalContent>
-                    <Subheader Title="@L["Quizzes_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <Subheader Title="@_localizer["Quizzes_Title"]" Subtitle="@_localizer["Statistics_ForAllTime"]"/>
                     <NumberOfQuizzesChart Quizzes="@context.NumberOfQuizzes"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <Subheader Title="@_localizer["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
                     <ProgressList Items="@GetProgress(context.Delta.NumberOfQuizzes)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <Subheader Title="@_localizer["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
                     <NumberOfTestDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
 
             <StatisticDetailsCard DisableActivity="@(context.Progress.Length == 0)">
                 <TotalContent>
-                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <Subheader Title="@_localizer["Score_Title"]" Subtitle="@_localizer["Statistics_ForAllTime"]"/>
                     <QuizScoreChart Score="@context.Score"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <Subheader Title="@_localizer["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
                     <ProgressList Items="@GetProgress(context.Delta.Score)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <Subheader Title="@_localizer["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
                     <ScoreDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
 
             <StatisticDetailsCard DisableActivity="@(context.Progress.Length == 0)">
                 <TotalContent>
-                    <Subheader Title="@L["Questions_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
-                    <QuizAnswerRatioChart AnswerRatio="@context.AnswerRatio"/>
+                    <Subheader Title="@_localizer["Questions_Title"]" Subtitle="@_localizer["Statistics_ForAllTime"]"/>
+                    <QuizAnswerRatioChart Ratio="@context.Ratio"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
-                    <ProgressList Items="@GetProgress(context.Delta.AnswerRatio)"/>
+                    <Subheader Title="@_localizer["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <ProgressList Items="@GetProgress(context.Delta.Ratio)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <Subheader Title="@_localizer["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
                     <AnswerRatioDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>
 
             <StatisticDetailsCard DisableActivity="@(context.Progress.Length == 0)">
                 <TotalContent>
-                    <Subheader Title="@L["TimeSpent_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <Subheader Title="@_localizer["TimeSpent_Title"]" Subtitle="@_localizer["Statistics_ForAllTime"]"/>
                     <QuizTimeSpentChart TimeSpent="@context.TimeSpent"/>
                 </TotalContent>
                 <ProgressContent>
-                    <Subheader Title="@L["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <Subheader Title="@_localizer["User_Progress_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
                     <ProgressList Items="@GetProgress(context.Delta.TimeSpent)"/>
                 </ProgressContent>
                 <ActivityContent>
-                    <Subheader Title="@L["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
+                    <Subheader Title="@_localizer["User_Activities_Title"]" Subtitle="@context.Delta.RangeTitle()"/>
                     <TimeSpentDailyProgressChart Progress="@_progress"/>
                 </ActivityContent>
             </StatisticDetailsCard>

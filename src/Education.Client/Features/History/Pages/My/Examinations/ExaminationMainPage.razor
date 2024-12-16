@@ -3,11 +3,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Examinations_Title"]
+    @_localizer["Examinations_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+    <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
 </EduContainer>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
@@ -16,10 +16,10 @@
             @if (context.Easy.Score.Total > 0)
             {
                 <StatisticsCard
-                    Title="@L["Examinations_Easy_Title"]"
+                    Title="@_localizer["Examinations_Easy_Title"]"
                     Value="@context.Easy.NumberOfExaminations.Total"
                     Href="@HistoryUrl.User.MyEasyExaminations">
-                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <Subheader Title="@_localizer["Score_Title"]" Subtitle="@_localizer["Statistics_ForAllTime"]"/>
                     <ExaminationScoreChart Score="@context.Easy.Score"/>
                 </StatisticsCard>
             }
@@ -27,17 +27,17 @@
             @if (context.Hard.Score.Total > 0)
             {
                 <StatisticsCard
-                    Title="@L["Examinations_Hard_Title"]"
+                    Title="@_localizer["Examinations_Hard_Title"]"
                     Value="@context.Hard.NumberOfExaminations.Total"
                     Href="@HistoryUrl.User.MyHardExaminations">
-                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <Subheader Title="@_localizer["Score_Title"]" Subtitle="@_localizer["Statistics_ForAllTime"]"/>
                     <ExaminationScoreChart Score="@context.Hard.Score"/>
                 </StatisticsCard>
             }
 
             <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
                 <MudText Typo="Typo.h5">
-                    @L["Activities_Daily_Title"]
+                    @_localizer["Activities_Daily_Title"]
                 </MudText>
                 @if (_daily.Length > 0)
                 {
@@ -46,7 +46,7 @@
                 else
                 {
                     <MudText>
-                        @L["Activities_NoActivitiesWithinTheLast30Days"]
+                        @_localizer["Activities_NoActivitiesWithinTheLast30Days"]
                     </MudText>
                 }
             </section>
@@ -55,7 +55,7 @@
             {
                 <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
                     <MudText Typo="Typo.h5">
-                        @L["Activities_Monthly_Title"]
+                        @_localizer["Activities_Monthly_Title"]
                     </MudText>
                     <ActivityChart Activities="@_monthly" DateStyle="DateStyle.AbbreviatedMonthAndCustomerYear"/>
                 </section>

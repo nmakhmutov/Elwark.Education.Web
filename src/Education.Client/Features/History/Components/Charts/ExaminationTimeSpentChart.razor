@@ -70,20 +70,20 @@
 
     private EduChartListItem[] Items =>
     [
-        new EduChartListItem(L["TimeSpent_Min_Title"], Value.Min.Humanize(L), HistoryChart.Examination.TimeSpent.Minimum),
-        new EduChartListItem(L["TimeSpent_Average_Title"], Value.Average.Humanize(L), HistoryChart.Examination.TimeSpent.Average),
-        new EduChartListItem(L["TimeSpent_Max_Title"], Value.Max.Humanize(L), HistoryChart.Examination.TimeSpent.Maximum),
-        new EduChartListItem(L["TimeSpent_Total_Title"], Value.Total.Humanize(L), null)
+        new(L["TimeSpent_Min_Title"], Value.Min.Humanize(L), HistoryChart.Examination.TimeSpent.Minimum),
+        new(L["TimeSpent_Average_Title"], Value.Average.Humanize(L), HistoryChart.Examination.TimeSpent.Average),
+        new(L["TimeSpent_Max_Title"], Value.Max.Humanize(L), HistoryChart.Examination.TimeSpent.Maximum),
+        new(L["TimeSpent_Total_Title"], Value.Total.Humanize(L), null)
     ];
 
     private Data[] Series =>
     [
-        new Data(L["TimeSpent_Min_Title"], 0, HistoryChart.Examination.TimeSpent.Minimum),
-        new Data(L["TimeSpent_Min_Title"], (decimal)Value.Min.TotalMilliseconds, HistoryChart.Examination.TimeSpent.Minimum),
-        new Data(L["TimeSpent_Average_Title"], 0, HistoryChart.Examination.TimeSpent.Average),
-        new Data(L["TimeSpent_Average_Title"], (decimal)Value.Average.TotalMilliseconds, HistoryChart.Examination.TimeSpent.Average),
-        new Data(L["TimeSpent_Max_Title"], 0, HistoryChart.Examination.TimeSpent.Maximum),
-        new Data(L["TimeSpent_Max_Title"], (decimal)Value.Max.TotalMilliseconds, HistoryChart.Examination.TimeSpent.Maximum)
+        new(L["TimeSpent_Min_Title"], 0, HistoryChart.Examination.TimeSpent.Minimum),
+        new(L["TimeSpent_Min_Title"], (decimal)Value.Min.TotalMilliseconds, HistoryChart.Examination.TimeSpent.Minimum),
+        new(L["TimeSpent_Average_Title"], 0, HistoryChart.Examination.TimeSpent.Average),
+        new(L["TimeSpent_Average_Title"], (decimal)Value.Average.TotalMilliseconds, HistoryChart.Examination.TimeSpent.Average),
+        new(L["TimeSpent_Max_Title"], 0, HistoryChart.Examination.TimeSpent.Maximum),
+        new(L["TimeSpent_Max_Title"], (decimal)Value.Max.TotalMilliseconds, HistoryChart.Examination.TimeSpent.Maximum)
     ];
 
     private sealed record Data(string Name, decimal Value, string Color);

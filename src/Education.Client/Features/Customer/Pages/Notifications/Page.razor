@@ -3,30 +3,30 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Notifications_Title"]
+    @_localizer["Notifications_Title"]
 </PageTitle>
 
 <header class="d-flex justify-space-between align-center mb-3 mb-sm-6">
     <MudText Typo="Typo.h5">
-        @L["Notifications_Title"]
+        @_localizer["Notifications_Title"]
     </MudText>
     <MudButton Class="text-transform-none"
                Color="Color.Primary"
-               Disabled="@(!NotificationService.HasNotifications)"
+               Disabled="@(!_notificationService.HasNotifications)"
                DropShadow="false"
                Ripple="false"
                OnClick="@MarkAllAsReadAsync"
                Size="Size.Small"
                StartIcon="@Icons.Material.Outlined.DoneAll"
                Variant="Variant.Outlined">
-        @L["Notifications_MarkAsRead"]
+        @_localizer["Notifications_MarkAsRead"]
     </MudButton>
 </header>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <Virtualize Items="@_notifications">
         <EmptyContent>
-            <EduNoContent Title="@L["Notifications_NothingNew"]"/>
+            <EduNoContent Title="@_localizer["Notifications_NothingNew"]"/>
         </EmptyContent>
         <ChildContent Context="notification">
             <section class="mud-paper d-flex align-center gap-3 pa-3 mb-3">
@@ -45,7 +45,7 @@
                               DropShadow="false"
                               IsLoading="@_isMoreLoading"
                               OnClick="@LoadMoreAsync"
-                              Text="@L["Button_SeeMore"]"
+                              Text="@_localizer["Button_SeeMore"]"
                               Variant="Variant.Filled"/>
         </footer>
     }

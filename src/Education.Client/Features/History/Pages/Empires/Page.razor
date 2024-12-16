@@ -17,45 +17,52 @@
 
     @@media (min-width: 960px) {
         .timeline-item:nth-child(even) .content-wrapper {
-                display: flex;
-                flex-direction: row;
-                justify-content: end;
-                text-align: end;
+            display: flex;
+            flex-direction: row;
+            justify-content: end;
+            text-align: end;
         }
     }
 </style>
 
 <PageTitle>
-    @L["History_Empires_Title"]
+    @_localizer["History_Empires_Title"]
 </PageTitle>
 
 <MudTimeline TimelinePosition="@_timelinePosition" Modifiers="false">
     <MudTimelineItem HideDot>
-        <div class="ma-3 ma-sm-6">
-            <h2 class="subtitle">
-                @L["History_Empire_Subtitle"]
-            </h2>
-            <h1 class="title">
-                @L["History_Empires_Title"]
-            </h1>
-            <MudSelect T="GetEmpiresRequest.SortType"
-                       Class="sort"
-                       Label="@L["History_Empire_SortBy"]"
-                       Variant="Variant.Text"
-                       Value="@_sort"
-                       ValueChanged="@SortChanged"
-                       Dense>
-                <MudSelectItem Value="@GetEmpiresRequest.SortType.Area">
-                    @L["History_Empire_MaxArea"]
-                </MudSelectItem>
-                <MudSelectItem Value="@GetEmpiresRequest.SortType.Population">
-                    @L["History_Empire_MaxPopulation"]
-                </MudSelectItem>
-                <MudSelectItem Value="@GetEmpiresRequest.SortType.Duration">
-                    @L["History_Empire_MaxDuration"]
-                </MudSelectItem>
-            </MudSelect>
-        </div>
+        <ItemContent>
+            <div class="ma-3 ma-sm-6">
+                <h2 class="subtitle">
+                    @_localizer["History_Empire_Subtitle"]
+                </h2>
+                <h1 class="title">
+                    @_localizer["History_Empires_Title"]
+                </h1>
+
+                <MudSelect
+                    T="GetEmpiresRequest.SortType"
+                    Class="sort mb-3 mb-sm-6"
+                    Label="@_localizer["History_Empire_SortBy"]"
+                    Variant="Variant.Text"
+                    Value="@_sort"
+                    ValueChanged="@SortChanged"
+                    Dense>
+                    <MudSelectItem Value="@GetEmpiresRequest.SortType.Area">
+                        @_localizer["History_Empire_MaxArea"]
+                    </MudSelectItem>
+                    <MudSelectItem Value="@GetEmpiresRequest.SortType.Population">
+                        @_localizer["History_Empire_MaxPopulation"]
+                    </MudSelectItem>
+                    <MudSelectItem Value="@GetEmpiresRequest.SortType.Duration">
+                        @_localizer["History_Empire_MaxDuration"]
+                    </MudSelectItem>
+                </MudSelect>
+                <MudText Class="w-max-300" Typo="Typo.subtitle2">
+                    <i>@_localizer["History_Empire_Blockquote"]</i>
+                </MudText>
+            </div>
+        </ItemContent>
     </MudTimelineItem>
 
     <Virtualize @ref="@_empireVirtualize" ItemsProvider="EmpiresProvider" ItemSize="240">
@@ -63,7 +70,11 @@
             <MudTimelineItem Class="timeline-item">
                 <ItemDot>
                     <MudAvatar Class="rounded" Size="Size.Large" Square>
-                        <MudImage Src="@empire.Image.Small" Alt="@empire.Image.Alt"/>
+                        <MudImage
+                            Src="@empire.Image.Small"
+                            Alt="@empire.Image.Alt"
+                            ObjectFit="ObjectFit.Cover"
+                            ObjectPosition="ObjectPosition.Center"/>
                     </MudAvatar>
                 </ItemDot>
                 <ItemContent>
@@ -79,21 +90,21 @@
                                 @empire.Overview
                             </MudText>
                             <MudText Typo="Typo.body2">
-                                @L["History_Empire_MaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
+                                @_localizer["History_Empire_MaxArea"]: @empire.MaxArea.ToString("N0")<small>km<sup>2</sup></small>
                             </MudText>
                             <MudText Typo="Typo.body2">
-                                @L["History_Empire_MaxPopulation"]: @empire.MaxPopulation.ToString("N0")
+                                @_localizer["History_Empire_MaxPopulation"]: @empire.MaxPopulation.ToString("N0")
                             </MudText>
                             <MudText Typo="Typo.body2">
-                                @L["History_Empire_Duration"]:
+                                @_localizer["History_Empire_Duration"]:
                                 @if (empire.Duration.HasValue)
                                 {
                                     @empire.Duration.Value.ToString("N0")
-                                    <small>&nbsp;@L["History_Years"].Value.ToLowerInvariant()</small>
+                                    <small>&nbsp;@_localizer["History_Years"].Value.ToLowerInvariant()</small>
                                 }
                                 else
                                 {
-                                    @L["Unknown_Title"]
+                                    @_localizer["Unknown_Title"]
                                 }
                             </MudText>
                         </div>

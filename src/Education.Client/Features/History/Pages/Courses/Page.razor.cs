@@ -14,28 +14,34 @@ public sealed partial class Page : ComponentBase
 {
     private const int Limit = 20;
 
+    private readonly List<BreadcrumbItem> _breadcrumbs;
+    private readonly IHistoryCourseClient _courseClient;
+    private readonly IHistoryLearnerClient _learnerClient;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
+
     private ApiResult<PagingOffsetModel<UserCourseOverviewModel>> _response =
         ApiResult<PagingOffsetModel<UserCourseOverviewModel>>.Loading();
 
     private GetCourseRequest.SortType _sort;
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryCourseClient CourseClient { get; init; } = default!;
-
-    [Inject]
-    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
-
-    private List<BreadcrumbItem> Breadcrumbs =>
-    [
-        new BreadcrumbItem(L["History_Title"], HistoryUrl.Root),
-        new BreadcrumbItem(L["Courses_Title"], null, true)
-    ];
+    public Page(
+        IStringLocalizer<App> localizer,
+        IHistoryCourseClient courseClient,
+        IHistoryLearnerClient learnerClient,
+        NavigationManager navigation
+    )
+    {
+        _localizer = localizer;
+        _courseClient = courseClient;
+        _learnerClient = learnerClient;
+        _navigation = navigation;
+        _breadcrumbs =
+        [
+            new BreadcrumbItem(_localizer["History_Title"], HistoryUrl.Root),
+            new BreadcrumbItem(_localizer["Courses_Title"], null, true)
+        ];
+    }
 
     [SupplyParameterFromQuery(Name = "category")]
     public string? Category { get; set; }
@@ -56,16 +62,16 @@ public sealed partial class Page : ComponentBase
 
         Enum.TryParse(Category, true, out _sort);
 
-        _response = await CourseClient
+        _response = await _courseClient
             .GetAsync(new GetCourseRequest(_sort, (CurrentPage - 1) * Limit, Limit));
     }
 
     private void OnPagination(int page)
     {
         CurrentPage = page;
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page < 2 ? null : page));
+        _navigation.NavigateTo(_navigation.GetUriWithQueryParameter("page", page < 2 ? null : page));
     }
 
     private void OnSortChange(GetCourseRequest.SortType sort) =>
-        Navigation.NavigateTo(HistoryUrl.Content.Courses(sort));
+        _navigation.NavigateTo(HistoryUrl.Content.Courses(sort));
 }

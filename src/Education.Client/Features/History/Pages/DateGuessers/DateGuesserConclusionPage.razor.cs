@@ -9,30 +9,35 @@ namespace Education.Client.Features.History.Pages.DateGuessers;
 
 public sealed partial class DateGuesserConclusionPage : ComponentBase
 {
+    private readonly IHistoryDateGuesserClient _dateGuesserClient;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
     private double _progress;
     private ApiResult<DateGuesserConclusionModel> _response = ApiResult<DateGuesserConclusionModel>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryDateGuesserClient DateGuesserClient { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
+    public DateGuesserConclusionPage(
+        IStringLocalizer<App> localizer,
+        IHistoryDateGuesserClient dateGuesserClient,
+        NavigationManager navigation
+    )
+    {
+        _localizer = localizer;
+        _dateGuesserClient = dateGuesserClient;
+        _navigation = navigation;
+    }
 
     [Parameter]
     public required string Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await DateGuesserClient.GetConclusionAsync(Id);
+        _response = await _dateGuesserClient.GetConclusionAsync(Id);
         _response.Match(
             x => _progress = Percentage.Calc(x.Score.Total, x.MaxScore),
             e =>
             {
                 if (e.IsDateGuesserNotFound())
-                    Navigation.NavigateTo(HistoryUrl.DateGuesser.Index);
+                    _navigation.NavigateTo(HistoryUrl.DateGuesser.Index);
             }
         );
     }

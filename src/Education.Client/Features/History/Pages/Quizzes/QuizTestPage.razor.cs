@@ -11,20 +11,26 @@ namespace Education.Client.Features.History.Pages.Quizzes;
 
 public sealed partial class QuizTestPage : ComponentBase
 {
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
+    private readonly IHistoryQuizClient _quizClient;
+    private readonly ISnackbar _snackbar;
+
     private AnswerResult? _correctAnswer;
     private ApiResult<QuizModel> _response = ApiResult<QuizModel>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryQuizClient QuizClient { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
-
-    [Inject]
-    private ISnackbar Snackbar { get; init; } = default!;
+    public QuizTestPage(
+        IStringLocalizer<App> localizer,
+        IHistoryQuizClient quizClient,
+        NavigationManager navigation,
+        ISnackbar snackbar
+    )
+    {
+        _localizer = localizer;
+        _quizClient = quizClient;
+        _navigation = navigation;
+        _snackbar = snackbar;
+    }
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
@@ -34,20 +40,20 @@ public sealed partial class QuizTestPage : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await QuizClient.GetAsync(Id);
+        _response = await _quizClient.GetAsync(Id);
         _response.MatchError(x => HandlerError(x));
     }
 
     private async Task OnExpiredAsync()
     {
-        _response = await QuizClient.GetAsync(Id);
+        _response = await _quizClient.GetAsync(Id);
         _response.MatchError(x => HandlerError(x));
     }
 
     private async Task OnAnswerAsync(UserAnswerModel answer)
     {
         var quiz = _response.Unwrap();
-        var result = await QuizClient.CheckAsync(quiz.TestId, quiz.Question.Id, answer);
+        var result = await _quizClient.CheckAsync(quiz.TestId, quiz.Question.Id, answer);
 
         result.Match(x => HandleSuccess(x), e => HandlerError(e));
         return;
@@ -70,12 +76,12 @@ public sealed partial class QuizTestPage : ComponentBase
     {
         if (_response.Map(x => x.IsCompleted).Unwrap())
         {
-            Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
+            _navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
         }
         else
         {
             _correctAnswer = null;
-            _response = await QuizClient.GetAsync(Id);
+            _response = await _quizClient.GetAsync(Id);
 
             StateHasChanged();
         }
@@ -83,15 +89,15 @@ public sealed partial class QuizTestPage : ComponentBase
 
     private async Task OnUseInventory(uint id)
     {
-        _response = await QuizClient.UseInventoryAsync(Id, id);
+        _response = await _quizClient.UseInventoryAsync(Id, id);
         _response.MatchError(x => HandlerError(x));
     }
 
     private void HandlerError(Error error)
     {
         if (error.IsQuizAlreadyCompleted() || error.IsQuizExpired())
-            Navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
+            _navigation.NavigateTo(HistoryUrl.Quiz.Conclusion(Id));
         else
-            Snackbar.Add(error.Title, Severity.Error);
+            _snackbar.Add(error.Title, Severity.Error);
     }
 }

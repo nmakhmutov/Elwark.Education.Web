@@ -11,19 +11,20 @@ namespace Education.Client.Features.History.Pages.Examinations;
 
 public sealed partial class ExaminationTestPage : ComponentBase
 {
+    private readonly IHistoryExaminationClient _examinationClient;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
+    private readonly ISnackbar _snackbar;
     private ApiResult<ExaminationModel> _response = ApiResult<ExaminationModel>.Loading();
 
-    [Inject]
-    private IHistoryExaminationClient ExaminationClient { get; init; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
-
-    [Inject]
-    private ISnackbar Snackbar { get; init; } = default!;
+    public ExaminationTestPage(IHistoryExaminationClient examinationClient, IStringLocalizer<App> localizer,
+        NavigationManager navigation, ISnackbar snackbar)
+    {
+        _examinationClient = examinationClient;
+        _localizer = localizer;
+        _navigation = navigation;
+        _snackbar = snackbar;
+    }
 
     [Parameter]
     public required string Id { get; set; }
@@ -33,21 +34,21 @@ public sealed partial class ExaminationTestPage : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await ExaminationClient.GetAsync(Id);
+        _response = await _examinationClient.GetAsync(Id);
         _response.MatchError(x => HandlerError(x));
     }
 
     private async Task OnAnswerAsync(UserAnswerModel answer)
     {
         var examination = _response.Unwrap();
-        var result = await ExaminationClient.CheckAsync(Id, examination.Question.Id, answer);
+        var result = await _examinationClient.CheckAsync(Id, examination.Question.Id, answer);
 
         await result.MatchAsync(async x =>
             {
                 if (x.IsCompleted)
-                    Navigation.NavigateTo(HistoryUrl.Examination.Conclusion(Id));
+                    _navigation.NavigateTo(HistoryUrl.Examination.Conclusion(Id));
                 else
-                    _response = await ExaminationClient.GetAsync(Id);
+                    _response = await _examinationClient.GetAsync(Id);
             },
             e => HandlerError(e)
         );
@@ -55,21 +56,21 @@ public sealed partial class ExaminationTestPage : ComponentBase
 
     private async Task OnExpiredAsync()
     {
-        _response = await ExaminationClient.GetAsync(Id);
+        _response = await _examinationClient.GetAsync(Id);
         _response.MatchError(x => HandlerError(x));
     }
 
     private async Task OnUseInventory(uint id)
     {
-        _response = await ExaminationClient.UseInventoryAsync(Id, id);
+        _response = await _examinationClient.UseInventoryAsync(Id, id);
         _response.MatchError(x => HandlerError(x));
     }
 
     private void HandlerError(Error error)
     {
         if (error.IsExaminationAlreadyCompleted() || error.IsExaminationExpired())
-            Navigation.NavigateTo(HistoryUrl.Examination.Conclusion(Id));
+            _navigation.NavigateTo(HistoryUrl.Examination.Conclusion(Id));
         else
-            Snackbar.Add(error.Title, Severity.Error);
+            _snackbar.Add(error.Title, Severity.Error);
     }
 }

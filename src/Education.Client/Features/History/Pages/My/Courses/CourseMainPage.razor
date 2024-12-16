@@ -3,11 +3,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Courses_RecentActivity_Title"]
+    @_localizer["Courses_RecentActivity_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+    <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
 </EduContainer>
 
 <EduContainer Class="pb-3 pb-sm-6">
@@ -20,7 +20,7 @@
                         Course="@course"
                         Activity="@activity"
                         HasExamination="@hasExamination"
-                        OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+                        OnBookmarkClick="@_learnerClient.ToggleCourseBookmarkAsync"/>
                 }
             </EduFillGrid>
         </ChildContent>

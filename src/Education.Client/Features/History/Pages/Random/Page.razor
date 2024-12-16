@@ -4,14 +4,14 @@
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W600">
     <div class="d-flex flex-column gap-3 mb-3 flex-sm-row justify-sm-space-between align-sm-center mb-sm-6">
         <MudText Typo="Typo.h2">
-            @L["Random_Content_Title"]
+            @_localizer["Random_Content_Title"]
         </MudText>
         <MudButton Color="Color.Primary"
                    DropShadow="false"
                    Ripple="false"
                    OnClick="@OnSearchClick"
                    Variant="Variant.Filled">
-            @L["Random_Next_Button"]
+            @_localizer["Random_Next_Button"]
         </MudButton>
     </div>
 
@@ -25,7 +25,7 @@
                 @if (context.Article is not null)
                 {
                     <PageTitle>
-                        @L["Random_Content_Title"]: @context.Article.Article.Title
+                        @_localizer["Random_Content_Title"]: @context.Article.Article.Title
                     </PageTitle>
 
                     <ArticleCard
@@ -33,13 +33,13 @@
                         Article="@context.Article.Article"
                         HasQuiz="@context.Article.HasQuiz"
                         Activity="@context.Article.Activity"
-                        OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+                        OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"/>
                 }
 
                 @if (context.Course is not null)
                 {
                     <PageTitle>
-                        @L["Random_Content_Title"]: @context.Course.Course.Title
+                        @_localizer["Random_Content_Title"]: @context.Course.Course.Title
                     </PageTitle>
 
                     <CourseCard
@@ -47,7 +47,7 @@
                         Course="@context.Course.Course"
                         Activity="@context.Course.Activity"
                         HasExamination="@context.Course.HasExamination"
-                        OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+                        OnBookmarkClick="@_learnerClient.ToggleCourseBookmarkAsync"/>
                 }
             </ChildContent>
         </EduApiViewer>
@@ -56,7 +56,7 @@
     @if (_history.Count > 0)
     {
         <MudText Class="mb-3" Typo="Typo.h5">
-            @L["Random_Content_History_Title"]
+            @_localizer["Random_Content_History_Title"]
         </MudText>
 
         <Virtualize Items="@_history" Context="content">
@@ -67,7 +67,7 @@
                     Article="@content.Article.Article"
                     HasQuiz="@content.Article.HasQuiz"
                     Activity="@content.Article.Activity"
-                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                    OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"
                     Horizontal
                     ShortOverview/>
             }
@@ -79,7 +79,7 @@
                     Course="@content.Course.Course"
                     Activity="@content.Course.Activity"
                     HasExamination="@content.Course.HasExamination"
-                    OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"
+                    OnBookmarkClick="@_learnerClient.ToggleCourseBookmarkAsync"
                     Horizontal
                     ShortOverview/>
             }

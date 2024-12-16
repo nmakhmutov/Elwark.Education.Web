@@ -3,27 +3,28 @@
 @layout HistoryLayout
 
 <PageTitle>
-    @L["Courses_Title"]
+    @_localizer["Courses_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
     <section class="header mud-paper">
-        <PageBreadcrumbsHeader Class="title" Items="@Breadcrumbs"/>
+        <PageBreadcrumbsHeader Class="title" Items="@_breadcrumbs"/>
 
-        <MudSelect T="GetCourseRequest.SortType"
-                   Value="@_sort"
-                   ValueChanged="@OnSortChange"
-                   Label="@L["SortBy_Title"]"
-                   Margin="Margin.Dense"
-                   Variant="Variant.Outlined">
+        <MudSelect
+            T="GetCourseRequest.SortType"
+            Value="@_sort"
+            ValueChanged="@OnSortChange"
+            Label="@_localizer["SortBy_Title"]"
+            Margin="Margin.Dense"
+            Variant="Variant.Outlined">
             <MudSelectItem Value="@GetCourseRequest.SortType.Newest">
-                @L["ContentSort_Resent_Title"]
+                @_localizer["ContentSort_Resent_Title"]
             </MudSelectItem>
             <MudSelectItem Value="@GetCourseRequest.SortType.Trending">
-                @L["ContentSort_Trending_Title"]
+                @_localizer["ContentSort_Trending_Title"]
             </MudSelectItem>
             <MudSelectItem Value="@GetCourseRequest.SortType.Popularity">
-                @L["ContentSort_TopRated_Title"]
+                @_localizer["ContentSort_TopRated_Title"]
             </MudSelectItem>
         </MudSelect>
     </section>
@@ -40,7 +41,7 @@
                         Course="@course"
                         Activity="@activity"
                         HasExamination="@hasExamination"
-                        OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+                        OnBookmarkClick="@_learnerClient.ToggleCourseBookmarkAsync"/>
                 }
             </EduFillGrid>
 

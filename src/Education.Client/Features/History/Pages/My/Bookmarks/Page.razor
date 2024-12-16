@@ -3,11 +3,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Bookmarks_Title"]
+    @_localizer["Bookmarks_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+    <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
 </EduContainer>
 
 <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
@@ -16,10 +16,10 @@
             <BookmarksToolbar @bind-Filter="@_filter"/>
         </Header>
         <ChildContent>
-            <MudTabPanel Text="@L["Bookmarks_Catalog_Articles"]">
+            <MudTabPanel Text="@_localizer["Bookmarks_Catalog_Articles"]">
                 <ArticleBookmarks Sort="@_filter.Sort"/>
             </MudTabPanel>
-            <MudTabPanel Text="@L["Bookmarks_Catalog_Courses"]">
+            <MudTabPanel Text="@_localizer["Bookmarks_Catalog_Courses"]">
                 <CourseBookmarks Sort="@_filter.Sort"/>
             </MudTabPanel>
         </ChildContent>

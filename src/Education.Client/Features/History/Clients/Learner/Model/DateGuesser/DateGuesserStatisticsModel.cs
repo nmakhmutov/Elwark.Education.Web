@@ -6,7 +6,7 @@ namespace Education.Client.Features.History.Clients.Learner.Model.DateGuesser;
 public sealed record DateGuesserStatisticsModel(
     uint Tests,
     ScoreModel Score,
-    AnswerRatioModel AnswerRatio,
+    AnswerRatioModel Ratio,
     DateGuesserStatisticsModel.DeltaModel Delta,
     DateGuesserStatisticsModel.DailyProgress[] Progress
 )
@@ -16,7 +16,7 @@ public sealed record DateGuesserStatisticsModel(
         DateOnly End,
         DeltaModel<uint> Tests,
         ScoreContrastModel Score,
-        AnswerRatioContrastModel AnswerRatio
+        AnswerRatioContrastModel Ratio
     );
 
     public sealed record ScoreContrastModel(
@@ -35,6 +35,6 @@ public sealed record DateGuesserStatisticsModel(
         DateOnly Date,
         uint Tests,
         ScoreModel Score,
-        AnswerRatioModel AnswerRatio
+        AnswerRatioModel Ratio
     );
 }

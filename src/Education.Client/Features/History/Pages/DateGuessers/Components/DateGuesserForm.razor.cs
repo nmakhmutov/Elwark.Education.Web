@@ -7,11 +7,13 @@ namespace Education.Client.Features.History.Pages.DateGuessers.Components;
 public sealed partial class DateGuesserForm : ComponentBase
 {
     private static Dictionary<uint, string> _months = [];
+
+    private readonly IStringLocalizer<App> _localizer;
     private bool _isLoading;
     private Model _model = new(string.Empty);
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
+    public DateGuesserForm(IStringLocalizer<App> localizer) =>
+        _localizer = localizer;
 
     [Parameter, EditorRequired]
     public required EventCallback<Model> OnAnswer { get; set; }
@@ -25,18 +27,18 @@ public sealed partial class DateGuesserForm : ComponentBase
     protected override void OnInitialized() =>
         _months = new Dictionary<uint, string>
         {
-            [1] = L["Month_January_Title"],
-            [2] = L["Month_February_Title"],
-            [3] = L["Month_March_Title"],
-            [4] = L["Month_April_Title"],
-            [5] = L["Month_May_Title"],
-            [6] = L["Month_June_Title"],
-            [7] = L["Month_July_Title"],
-            [8] = L["Month_August_Title"],
-            [9] = L["Month_September_Title"],
-            [10] = L["Month_October_Title"],
-            [11] = L["Month_November_Title"],
-            [12] = L["Month_December_Title"]
+            [1] = _localizer["Month_January_Title"],
+            [2] = _localizer["Month_February_Title"],
+            [3] = _localizer["Month_March_Title"],
+            [4] = _localizer["Month_April_Title"],
+            [5] = _localizer["Month_May_Title"],
+            [6] = _localizer["Month_June_Title"],
+            [7] = _localizer["Month_July_Title"],
+            [8] = _localizer["Month_August_Title"],
+            [9] = _localizer["Month_September_Title"],
+            [10] = _localizer["Month_October_Title"],
+            [11] = _localizer["Month_November_Title"],
+            [12] = _localizer["Month_December_Title"]
         };
 
     private async Task OnValidSubmit()

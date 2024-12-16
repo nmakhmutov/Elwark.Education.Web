@@ -133,10 +133,10 @@
 
     private Data[] Series =>
     [
-        new Data(L["Score_Questions_Title"], Conclusion.QuestionScore.Value),
-        new Data(L["Score_TimeBonus_Title"], Conclusion.TimeBonus.Value),
-        new Data(L["Score_AccuracyBonus_Title"], Conclusion.AccuracyBonus.Value),
-        new Data(L["Score_MistakeDeductions_Title"], Conclusion.TotalScore.Total - Conclusion.TotalScore.Value)
+        new(L["Score_Questions_Title"], Conclusion.QuestionScore.Value),
+        new(L["Score_TimeBonus_Title"], Conclusion.TimeBonus.Value),
+        new(L["Score_AccuracyBonus_Title"], Conclusion.AccuracyBonus.Value),
+        new(L["Score_MistakeDeductions_Title"], Conclusion.TotalScore.Total - Conclusion.TotalScore.Value)
     ];
 
     private sealed record Data(string Name, decimal Value);

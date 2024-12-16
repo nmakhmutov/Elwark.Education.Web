@@ -7,10 +7,14 @@ internal static class ErrorExtensions
 {
     public static bool IsExaminationAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string examinationId)
     {
-        var found = error.Payload.TryGetValue("id", out var id);
-        examinationId = id.GetString();
+        if (error.Type == "ExaminationAlreadyCreated" && error.Payload.TryGetValue("id", out var id))
+        {
+            examinationId = id.GetString() ?? "";
+            return true;
+        }
 
-        return error.Type == "ExaminationAlreadyCreated" && found;
+        examinationId = null;
+        return false;
     }
 
     public static bool IsExaminationAlreadyCompleted(this Error error) =>
@@ -24,10 +28,14 @@ internal static class ErrorExtensions
 
     public static bool IsQuizAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string quizId)
     {
-        var found = error.Payload.TryGetValue("id", out var id);
-        quizId = id.GetString();
+        if (error.Type == "QuizAlreadyCreated" && error.Payload.TryGetValue("id", out var id))
+        {
+            quizId = id.GetString() ?? string.Empty;
+            return true;
+        }
 
-        return error.Type == "QuizAlreadyCreated" && found;
+        quizId = null;
+        return false;
     }
 
     public static bool IsQuizAlreadyCompleted(this Error error) =>
@@ -44,10 +52,14 @@ internal static class ErrorExtensions
 
     public static bool IsDateGuesserAlreadyCreated(this Error error, [MaybeNullWhen(false)] out string testId)
     {
-        var found = error.Payload.TryGetValue("id", out var id);
-        testId = id.GetString();
+        if (error.Type == "DateGuesserAlreadyCreated" && error.Payload.TryGetValue("id", out var id))
+        {
+            testId = id.GetString() ?? string.Empty;
+            return true;
+        }
 
-        return error.Type == "DateGuesserAlreadyCreated" && found;
+        testId = null;
+        return false;
     }
 
     public static bool IsDateGuesserNotFound(this Error error) =>

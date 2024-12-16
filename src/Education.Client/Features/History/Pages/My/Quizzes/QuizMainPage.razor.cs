@@ -10,25 +10,27 @@ namespace Education.Client.Features.History.Pages.My.Quizzes;
 
 public sealed partial class QuizMainPage : ComponentBase
 {
+    private readonly List<BreadcrumbItem> _breadcrumbs;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly IHistoryLearnerClient _learnerClient;
     private QuizProgressModel[] _daily = [];
     private QuizProgressModel[] _monthly = [];
     private ApiResult<QuizzesStatisticsModel> _response = ApiResult<QuizzesStatisticsModel>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
-
-    private List<BreadcrumbItem> Breadcrumbs =>
-    [
-        new BreadcrumbItem(L["User_Dashboard_Title"], HistoryUrl.User.MyDashboard),
-        new BreadcrumbItem(L["Quizzes_Title"], null, true)
-    ];
+    public QuizMainPage(IStringLocalizer<App> localizer, IHistoryLearnerClient learnerClient)
+    {
+        _localizer = localizer;
+        _learnerClient = learnerClient;
+        _breadcrumbs =
+        [
+            new BreadcrumbItem(localizer["User_Dashboard_Title"], HistoryUrl.User.MyDashboard),
+            new BreadcrumbItem(localizer["Quizzes_Title"], null, true)
+        ];
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await LearnerClient.GetQuizStatisticsAsync();
+        _response = await _learnerClient.GetQuizStatisticsAsync();
         _response.Match(model =>
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);

@@ -5,7 +5,7 @@ namespace Education.Client.Features.History.Clients.Learner.Model.Quiz;
 
 public sealed record QuizStatisticsModel(
     ScoreModel Score,
-    AnswerRatioModel AnswerRatio,
+    AnswerRatioModel Ratio,
     NumberOfQuizzesModel NumberOfQuizzes,
     QuizStatisticsModel.TimeSpentModel TimeSpent,
     QuizStatisticsModel.DeltaModel Delta,
@@ -16,7 +16,7 @@ public sealed record QuizStatisticsModel(
         DateOnly Start,
         DateOnly End,
         ScoreContrastModel Score,
-        AnswerRatioContrastModel AnswerRatio,
+        AnswerRatioContrastModel Ratio,
         TimeSpentContrastModel TimeSpent,
         NumberOfQuizzesContrastModel NumberOfQuizzes
     );
@@ -54,7 +54,7 @@ public sealed record QuizStatisticsModel(
     public sealed record DailyProgress(
         DateOnly Date,
         ScoreModel Score,
-        AnswerRatioModel AnswerRatio,
+        AnswerRatioModel Ratio,
         TimeSpentModel TimeSpent,
         NumberOfQuizzesModel NumberOfQuizzes
     );

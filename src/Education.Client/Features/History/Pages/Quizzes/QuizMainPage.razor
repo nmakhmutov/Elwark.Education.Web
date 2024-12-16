@@ -3,11 +3,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Quizzes_Title"]
+    @_localizer["Quizzes_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+    <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
 </EduContainer>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
@@ -15,7 +15,7 @@
         <section class="grid">
             <section class="builder">
                 <MudText Class="mb-3" Typo="Typo.h6">
-                    @L["History_Epoch_Title"]
+                    @_localizer["History_Epoch_Title"]
                 </MudText>
                 <EpochRadioGroup
                     Class="mb-3 mb-sm-6"
@@ -23,7 +23,7 @@
                     SelectedEpochChanged="@ChangeEpochAsync"/>
 
                 <MudText Class="mb-3" Typo="Typo.h6">
-                    @L["Quiz_Type_Title"]
+                    @_localizer["Quiz_Type_Title"]
                 </MudText>
 
                 <QuizDifficulties
@@ -33,7 +33,7 @@
 
             <section class="inventory">
                 <MudText Class="mb-3" Typo="Typo.h6">
-                    @L["Quiz_Equipment_Title"]
+                    @_localizer["Quiz_Equipment_Title"]
                 </MudText>
                 <InventoryGrid
                     Inventories="@context.Inventories"

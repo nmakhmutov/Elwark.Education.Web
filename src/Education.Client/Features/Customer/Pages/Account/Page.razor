@@ -3,11 +3,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["Account_Title"]
+    @_localizer["Account_Title"]
 </PageTitle>
 
 <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
-    @L["Subjects_Title"]
+    @_localizer["Subjects_Title"]
 </MudText>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
@@ -30,30 +30,30 @@
 </EduApiViewer>
 
 <MudText Class="mb-3 mb-sm-6" Typo="Typo.h5">
-    @L["PersonalInfo_Title"]
+    @_localizer["PersonalInfo_Title"]
 </MudText>
 <section class="mud-paper pa-3 pa-sm-6 mb-3 mb-sm-6">
     <EduFillGrid>
         <MudTextField
-            Label="@L["Account_TimeZone"]"
+            Label="@_localizer["Account_TimeZone"]"
             Value="@Customer.TimeZone.Id"
             Variant="Variant.Outlined"
             ReadOnly/>
 
         <MudTextField
-            Label="@L["Account_StartOfWeek"]"
+            Label="@_localizer["Account_StartOfWeek"]"
             Value="@Customer.StartOfWeek"
             Variant="Variant.Outlined"
             ReadOnly/>
 
         <MudTextField
-            Label="@L["Account_DateFormat"]"
+            Label="@_localizer["Account_DateFormat"]"
             Value="@Customer.DateFormat"
             Variant="Variant.Outlined"
             ReadOnly/>
 
         <MudTextField
-            Label="@L["Account_TimeFormat"]"
+            Label="@_localizer["Account_TimeFormat"]"
             Value="@Customer.TimeFormat"
             Variant="Variant.Outlined"
             ReadOnly/>
@@ -64,11 +64,11 @@
                        DropShadow="false"
                        Ripple="false"
                        EndIcon="@Icons.Material.Outlined.OpenInNew"
-                       Href="@Configuration["Urls:Account"]"
+                       Href="@_configuration["Urls:Account"]"
                        IconSize="Size.Small"
                        Target="_blank"
                        Variant="Variant.Filled">
-                @L["ManageYourElwarkAccount_Title"]
+                @_localizer["ManageYourElwarkAccount_Title"]
             </MudButton>
         </div>
     </EduFillGrid>

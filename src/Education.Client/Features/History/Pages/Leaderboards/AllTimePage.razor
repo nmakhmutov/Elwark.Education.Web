@@ -2,10 +2,10 @@
 @layout HistoryLayout
 
 <PageTitle>
-    @L["Leaderboard_Title"]: @L["Leaderboard_AllTime_Title"]
+    @_localizer["Leaderboard_Title"]: @_localizer["Leaderboard_AllTime_Title"]
 </PageTitle>
 
-<EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
+<EduApiViewer Result="@_response" OnReloadClick="@OnParametersSetAsync">
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <AllTimeHeader
             Contestants="@context.Take(3)"
@@ -17,10 +17,10 @@
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1280">
         <RegularRanking DisableHover Transparent>
             <Name>
-                <MudText Typo="Typo.subtitle2">@L["User_Name_Title"]</MudText>
+                <MudText Typo="Typo.subtitle2">@_localizer["User_Name_Title"]</MudText>
             </Name>
             <Points>
-                <MudText Typo="Typo.subtitle2">@L["User_Experience_Title"]</MudText>
+                <MudText Typo="Typo.subtitle2">@_localizer["User_Experience_Title"]</MudText>
             </Points>
         </RegularRanking>
 

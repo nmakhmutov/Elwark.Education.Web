@@ -24,7 +24,7 @@
                 @foreach (var month in Months)
                 {
                     <MudSelectItem Value="@month">
-                        @Customer.Humanize(month, DateStyle.AbbreviatedMonthAndCustomerYear)
+                        @month.ToString(_now.Year == month.Year ? "MMMM" : "MMMM yyyy")
                     </MudSelectItem>
                 }
             </MudSelect>
@@ -92,6 +92,7 @@
 </div>
 
 @code {
+    private DateTime _now;
     private DateTime _endAt;
 
     [Inject]
@@ -115,9 +116,13 @@
     [Parameter, EditorRequired]
     public MonthlyContestantModel? User { get; set; }
 
-    protected override void OnParametersSet() =>
+    protected override void OnParametersSet()
+    {
+        _now = DateTime.UtcNow;
+
         _endAt = Month.AddMonths(1)
             .AddDays(-1)
             .ToDateTime(TimeOnly.MaxValue, DateTimeKind.Utc);
+    }
 
 }

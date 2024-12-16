@@ -16,7 +16,7 @@ public sealed record CourseStatisticsModel(
 
     public sealed record ProgressModel(
         ScoreModel Score,
-        AnswerRatioModel AnswerRatio,
+        AnswerRatioModel Ratio,
         TimeSpan TimeSpent,
         NumberOfExaminationsModel NumberOfExaminations,
         ConclusionModel[] Conclusions
@@ -25,7 +25,7 @@ public sealed record CourseStatisticsModel(
     public sealed record ConclusionModel(
         ExaminationStatus Status,
         ScoreModel Score,
-        AnswerRatioModel AnswerRatio,
+        AnswerRatioModel Ratio,
         TimeSpan TimeSpent,
         DateTime CompletedAt
     );

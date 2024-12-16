@@ -14,20 +14,21 @@ namespace Education.Client.Features.History.Pages.My.Backpack;
 public sealed partial class Page : ComponentBase,
     IDisposable
 {
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly IHistoryProductClient _productClient;
+    private readonly IHistoryUserClient _userClient;
     private ApiResult<BackpackModel> _backpack = ApiResult<BackpackModel>.Loading();
     private string? _containerClass;
     private ApiResult<ProductOverviewModel> _product = ApiResult<ProductOverviewModel>.Loading();
     private ProfileModel _profile = ProfileModel.Empty;
     private BackpackInventoryModel? _selectedInventory;
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryUserClient UserClient { get; init; } = default!;
-
-    [Inject]
-    private IHistoryProductClient ProductClient { get; init; } = default!;
+    public Page(IStringLocalizer<App> localizer, IHistoryUserClient userClient, IHistoryProductClient productClient)
+    {
+        _localizer = localizer;
+        _userClient = userClient;
+        _productClient = productClient;
+    }
 
     [CascadingParameter]
     public CustomerState Customer { get; init; } = default!;
@@ -42,11 +43,11 @@ public sealed partial class Page : ComponentBase,
     {
         Layout.HideFooter();
 
-        var response = await UserClient.GetProfileAsync();
+        var response = await _userClient.GetProfileAsync();
         _profile = response.Map(x => x)
             .UnwrapOrElse(() => _profile);
 
-        _backpack = await UserClient.GetBackpackAsync();
+        _backpack = await _userClient.GetBackpackAsync();
 
         _selectedInventory = _backpack.Map(x => x.Items.FirstOrDefault())
             .UnwrapOr(null);
@@ -64,6 +65,6 @@ public sealed partial class Page : ComponentBase,
         _selectedInventory = inventory;
 
         _product = ApiResult<ProductOverviewModel>.Loading();
-        _product = await ProductClient.GetAsync(inventory.ProductId);
+        _product = await _productClient.GetAsync(inventory.ProductId);
     }
 }

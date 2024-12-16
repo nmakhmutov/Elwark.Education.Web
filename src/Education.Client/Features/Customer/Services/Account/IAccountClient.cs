@@ -3,7 +3,7 @@ using Education.Client.Features.Customer.Services.Account.Model;
 
 namespace Education.Client.Features.Customer.Services.Account;
 
-internal interface IAccountClient
+public interface IAccountClient
 {
     Task<ApiResult<CustomerModel>> GetAsync();
 

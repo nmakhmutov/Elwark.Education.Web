@@ -10,18 +10,19 @@ namespace Education.Client.Features.History.Pages.Search;
 
 public sealed partial class Page : ComponentBase
 {
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
     private readonly SearchRequest _request = new(string.Empty, true, [], 0, 20);
+    private readonly IHistorySearchClient _searchClient;
     private IReadOnlyDictionary<string, int> _categories = ReadOnlyDictionary<string, int>.Empty;
     private ApiResult<SearchResultModel> _response = ApiResult<SearchResultModel>.Loading();
 
-    [Inject]
-    private IHistorySearchClient SearchClient { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
+    public Page(IHistorySearchClient searchClient, NavigationManager navigation, IStringLocalizer<App> localizer)
+    {
+        _searchClient = searchClient;
+        _navigation = navigation;
+        _localizer = localizer;
+    }
 
     [SupplyParameterFromQuery(Name = "q")]
     public string? Query { get; set; }
@@ -48,7 +49,7 @@ public sealed partial class Page : ComponentBase
 
         _response = ApiResult<SearchResultModel>.Loading();
 
-        _response = await SearchClient.SearchAsync(_request with
+        _response = await _searchClient.SearchAsync(_request with
         {
             Q = Query,
             Offset = (CurrentPage - 1) * _request.Limit,
@@ -62,7 +63,7 @@ public sealed partial class Page : ComponentBase
     private void ChangePage(int page)
     {
         CurrentPage = page;
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", page));
+        _navigation.NavigateTo(_navigation.GetUriWithQueryParameter("page", page));
     }
 
     private void OnSearchSubmit()
@@ -74,6 +75,6 @@ public sealed partial class Page : ComponentBase
             ["page"] = 1
         };
 
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(parameters));
+        _navigation.NavigateTo(_navigation.GetUriWithQueryParameters(parameters));
     }
 }

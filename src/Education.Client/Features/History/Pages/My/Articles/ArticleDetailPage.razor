@@ -12,7 +12,7 @@
             <ArticleCard
                 Article="@context.Article"
                 Activity="@context.Activity"
-                OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"
                 HasQuiz="@(context.Total.Quizzes > 0)"
                 Horizontal/>
 
@@ -22,10 +22,10 @@
         <MudTabs Elevation="0" PanelClass="pt-6" ApplyEffectsToContainer Rounded>
             @if (context.EasyQuiz.NumberOfQuizzes.Total > 0)
             {
-                <MudTabPanel Text="@L["Quizzes_Easy_Title"]">
+                <MudTabPanel Text="@_localizer["Quizzes_Easy_Title"]">
                     <QuizOverview
                         Quiz="@context.EasyQuiz"
-                        SeeAllText="@L["Quizzes_Easy_SeeAll"]"
+                        SeeAllText="@_localizer["Quizzes_Easy_SeeAll"]"
                         SeeAllHref="@HistoryUrl.User.MyEasyQuizzes"
                         DateTimeFormatter="@Customer.Humanize"/>
                 </MudTabPanel>
@@ -33,10 +33,10 @@
 
             @if (context.HardQuiz.NumberOfQuizzes.Total > 0)
             {
-                <MudTabPanel Text="@L["Quizzes_Hard_Title"]">
+                <MudTabPanel Text="@_localizer["Quizzes_Hard_Title"]">
                     <QuizOverview
                         Quiz="@context.HardQuiz"
-                        SeeAllText="@L["Quizzes_Hard_SeeAll"]"
+                        SeeAllText="@_localizer["Quizzes_Hard_SeeAll"]"
                         SeeAllHref="@HistoryUrl.User.MyHardQuizzes"
                         DateTimeFormatter="@Customer.Humanize"/>
                 </MudTabPanel>

@@ -4,12 +4,12 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["InventoryStore_Title"]
+    @_localizer["InventoryStore_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
     <div class="d-flex justify-space-between align-center flex-wrap gap-3 gap-sm-6">
-        <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+        <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
 
         <section class="d-flex align-center gap-3">
             @foreach (var (currency, amount) in _profile.Wallet)
@@ -37,7 +37,7 @@
                         T="CategoryType"
                         Class="px-6"
                         Value="@category"
-                        Text="@L.GetInventoryCategoryTitle(category)"
+                        Text="@_localizer.GetInventoryCategoryTitle(category)"
                         Color="Color.Primary"
                         SelectedColor="Color.Secondary"
                         Variant="Variant.Outlined"
@@ -50,7 +50,7 @@
                 @foreach (var group in context.Filter(_category).Sort())
                 {
                     <MudText Class="grid-column-full border-b mud-border-lines-default" Typo="Typo.h5">
-                        @L[$"InventoryStore_Catalog_{group.Key}"]
+                        @_localizer[$"InventoryStore_Catalog_{group.Key}"]
                     </MudText>
 
                     @foreach (var inventory in group)
@@ -61,7 +61,7 @@
                                 <InventoryCard
                                     Class="inventory"
                                     Title="@system.Title"
-                                    Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
+                                    Subtitle="@_localizer.GetInventoryCategoryTitles(inventory.Categories)"
                                     Overview="@system.Overview"
                                     IconUrl="@system.ImageUrl"
                                     Price="system.Selling">
@@ -77,7 +77,7 @@
                                                    Ripple="false"
                                                    OnClick="@(() => OpenInventoryDialog(system))"
                                                    Variant="Variant.Filled">
-                                            @L["Button_Details"]
+                                            @_localizer["Button_Details"]
                                         </MudButton>
                                     </MudBadge>
                                 </InventoryCard>
@@ -97,43 +97,17 @@
                                                    Ripple="false"
                                                    OnClick="@(() => OpenBundleDialog(bundle))"
                                                    Variant="Variant.Filled">
-                                            @L["Button_Details"]
+                                            @_localizer["Button_Details"]
                                         </MudButton>
                                     </MudBadge>
                                 </BundleCard>
-                                break;
-
-                            case Product.MoneyModel money:
-                                <InventoryCard
-                                    Class="inventory"
-                                    Title="@money.Title"
-                                    Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
-                                    Overview="@money.Overview"
-                                    IconUrl="@money.ImageUrl"
-                                    Price="money.Selling">
-                                    <MudBadge
-                                        Icon="@Icons.Material.Outlined.Lock"
-                                        Color="@Color.Error"
-                                        Visible="@(!IsAffordable(money))"
-                                        Bordered
-                                        Overlap>
-                                        <MudButton Class="text-transform-none"
-                                                   Color="Color.Primary"
-                                                   DropShadow="false"
-                                                   Ripple="false"
-                                                   OnClick="@(() => OpenInventoryDialog(money))"
-                                                   Variant="Variant.Filled">
-                                            @L["Button_Details"]
-                                        </MudButton>
-                                    </MudBadge>
-                                </InventoryCard>
                                 break;
 
                             case Product.UpcomingModel upcoming:
                                 <InventoryCard
                                     Class="inventory"
                                     Title="@upcoming.Title"
-                                    Subtitle="@L.GetInventoryCategoryTitles(inventory.Categories)"
+                                    Subtitle="@_localizer.GetInventoryCategoryTitles(inventory.Categories)"
                                     Overview="@upcoming.Overview"
                                     IconUrl="@upcoming.ImageUrl"
                                     Price="upcoming.Selling">
@@ -143,7 +117,7 @@
                                         ContentAlignment="HorizontalAlignment.Center"
                                         NoIcon
                                         Dense>
-                                        @L["InventoryStore_UnlockedAtLevel", upcoming.RequiredLevel]
+                                        @_localizer["InventoryStore_UnlockedAtLevel", upcoming.RequiredLevel]
                                     </MudAlert>
                                 </InventoryCard>
                                 break;

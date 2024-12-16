@@ -10,33 +10,34 @@ namespace Education.Client.Features.History.Pages.Leaderboards;
 
 public sealed partial class MonthlyPage : ComponentBase
 {
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly IHistoryLeaderboardClient _leaderboardClient;
+    private readonly NavigationManager _navigation;
+    private readonly AuthenticationStateProvider _stateProvider;
     private long? _highlightUser;
     private ApiResult<MonthlyLeaderboardModel> _response = ApiResult<MonthlyLeaderboardModel>.Loading();
 
-    [Inject]
-    private IHistoryLeaderboardClient LeaderboardClient { get; init; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private AuthenticationStateProvider StateProvider { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
+    public MonthlyPage(IStringLocalizer<App> localizer, IHistoryLeaderboardClient leaderboardClient,
+        NavigationManager navigation, AuthenticationStateProvider stateProvider)
+    {
+        _localizer = localizer;
+        _leaderboardClient = leaderboardClient;
+        _navigation = navigation;
+        _stateProvider = stateProvider;
+    }
 
     [SupplyParameterFromQuery(Name = "month")]
     public DateOnly? Month { get; init; }
 
     protected override async Task OnInitializedAsync()
     {
-        var state = await StateProvider.GetAuthenticationStateAsync();
+        var state = await _stateProvider.GetAuthenticationStateAsync();
         _highlightUser = state.User.GetIdOrDefault();
     }
 
     protected override async Task OnParametersSetAsync() =>
-        _response = await LeaderboardClient.GetMonthlyAsync(Month);
+        _response = await _leaderboardClient.GetMonthlyAsync(Month);
 
     private void ChangeMonth(DateOnly month) =>
-        Navigation.NavigateTo(HistoryUrl.Leaderboard.Monthly(month));
+        _navigation.NavigateTo(HistoryUrl.Leaderboard.Monthly(month));
 }

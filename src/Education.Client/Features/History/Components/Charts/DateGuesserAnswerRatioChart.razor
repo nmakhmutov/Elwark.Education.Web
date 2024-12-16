@@ -44,22 +44,22 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required AnswerRatioModel AnswerRatio { get; set; }
+    public required AnswerRatioModel Ratio { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
 
     private EduChartListItem[] Items =>
     [
-        new EduChartListItem(L["History_DateGuesser_Correct"], AnswerRatio.Correct, HistoryChart.DateGuesser.Question.Correct),
-        new EduChartListItem(L["History_DateGuesser_Incorrect"], AnswerRatio.Incorrect, HistoryChart.DateGuesser.Question.Incorrect),
-        new EduChartListItem(L["History_DateGuesser_Questions"], AnswerRatio.Total, null)
+        new(L["History_DateGuesser_Correct"], Ratio.Correct, HistoryChart.DateGuesser.Question.Correct),
+        new(L["History_DateGuesser_Incorrect"], Ratio.Incorrect, HistoryChart.DateGuesser.Question.Incorrect),
+        new(L["History_DateGuesser_Questions"], Ratio.Total, null)
     ];
 
     private Data[] Series =>
     [
-        new Data(L["History_DateGuesser_Correct"], AnswerRatio.Correct),
-        new Data(L["History_DateGuesser_Incorrect"], AnswerRatio.Incorrect)
+        new(L["History_DateGuesser_Correct"], Ratio.Correct),
+        new(L["History_DateGuesser_Incorrect"], Ratio.Incorrect)
     ];
 
     private sealed record Data(string Name, decimal Value);

@@ -14,40 +14,44 @@ namespace Education.Client.Features.History.Pages.Timeline;
 public sealed partial class Page : ComponentBase,
     IAsyncDisposable
 {
+    private readonly IHistoryArticleClient _articleClient;
+    private readonly IDialogService _dialogService;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
+    private readonly IBrowserViewportService _viewportService;
     private int _currentYear;
+    private Guid _subscriptionId;
+    private TimelinePosition _timelinePosition = TimelinePosition.Start;
 
     private ApiResult<PagingOffsetModel<TimelineOverviewModel>> _response =
         ApiResult<PagingOffsetModel<TimelineOverviewModel>>.Loading();
 
-    private Guid _subscriptionId;
-    private TimelinePosition _timelinePosition = TimelinePosition.Start;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private IHistoryArticleClient ArticleClient { get; init; } = default!;
-
-    [Inject]
-    private IDialogService DialogService { get; init; } = default!;
-
-    [Inject]
-    private IBrowserViewportService ViewportService { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
+    public Page(
+        IStringLocalizer<App> localizer,
+        IHistoryArticleClient articleClient,
+        IDialogService dialogService,
+        IBrowserViewportService viewportService,
+        NavigationManager navigation
+    )
+    {
+        _localizer = localizer;
+        _articleClient = articleClient;
+        _dialogService = dialogService;
+        _viewportService = viewportService;
+        _navigation = navigation;
+    }
 
     [SupplyParameterFromQuery(Name = "year")]
     public int Year { get; set; }
 
     public async ValueTask DisposeAsync() =>
-        await ViewportService.UnsubscribeAsync(_subscriptionId);
+        await _viewportService.UnsubscribeAsync(_subscriptionId);
 
     protected override async Task OnParametersSetAsync()
     {
         _currentYear = DateTime.UtcNow.Year;
         Year = NormalizeYear(Year);
-        _response = await ArticleClient.GetAsync(new GetTimelineRequest(Year, 0, 100));
+        _response = await _articleClient.GetAsync(new GetTimelineRequest(Year, 0, 100));
     }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
@@ -62,7 +66,7 @@ public sealed partial class Page : ComponentBase,
             SuppressInitEvent = false
         };
 
-        return ViewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
+        return _viewportService.SubscribeAsync(_subscriptionId, x => OnBreakpointChanged(x.Breakpoint), options);
     }
 
     private void OnBreakpointChanged(Breakpoint e)
@@ -82,14 +86,14 @@ public sealed partial class Page : ComponentBase,
     {
         Year -= Year == 0 ? 2 : 1;
 
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear(Year)));
+        _navigation.NavigateTo(_navigation.GetUriWithQueryParameter("year", NormalizeYear(Year)));
     }
 
     private void OnNextYearClick()
     {
         Year += Year == 0 ? 2 : 1;
 
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear(Year)));
+        _navigation.NavigateTo(_navigation.GetUriWithQueryParameter("year", NormalizeYear(Year)));
     }
 
     private async Task OnYearClick()
@@ -109,12 +113,12 @@ public sealed partial class Page : ComponentBase,
             }
         };
 
-        var dialog = await DialogService.ShowAsync<YearChangerDialog>(string.Empty, parameters, options);
+        var dialog = await _dialogService.ShowAsync<YearChangerDialog>(string.Empty, parameters, options);
         var result = await dialog.Result;
         if (result is null || result.Canceled)
             return;
 
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("year", NormalizeYear((int)result.Data!)));
+        _navigation.NavigateTo(_navigation.GetUriWithQueryParameter("year", NormalizeYear((int)result.Data!)));
     }
 
     private int NormalizeYear(int year) =>

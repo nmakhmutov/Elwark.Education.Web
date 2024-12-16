@@ -5,13 +5,16 @@ namespace Education.Client.Clients;
 
 public sealed record Error
 {
-    public required string Type { get; init; } = string.Empty;
+    public required string Type { get; init; }
 
-    public required string Title { get; init; } = string.Empty;
+    public required string Title { get; init; }
 
     public required int Status { get; init; }
 
     public string? Detail { get; init; }
+
+    public string UiMessage =>
+        Detail ?? Title;
 
     [JsonExtensionData]
     public IDictionary<string, JsonElement> Payload { get; init; } =

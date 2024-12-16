@@ -11,26 +11,28 @@ namespace Education.Client.Features.History.Pages.Examinations;
 
 public sealed partial class ExaminationConclusionPage : ComponentBase
 {
+    private readonly IHistoryExaminationClient _examinationClient;
+    private readonly IStringLocalizer<App> _localizer;
+    private readonly NavigationManager _navigation;
     private ApiResult<ExaminationConclusionModel> _response = ApiResult<ExaminationConclusionModel>.Loading();
 
-    [Inject]
-    private IHistoryExaminationClient ExaminationClient { get; init; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private NavigationManager Navigation { get; init; } = default!;
+    public ExaminationConclusionPage(IHistoryExaminationClient examinationClient, IStringLocalizer<App> localizer,
+        NavigationManager navigation)
+    {
+        _examinationClient = examinationClient;
+        _localizer = localizer;
+        _navigation = navigation;
+    }
 
     [Parameter]
     public required string Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await ExaminationClient.GetConclusionAsync(Id);
+        _response = await _examinationClient.GetConclusionAsync(Id);
 
         if (_response.MatchError(x => x.IsExaminationNotFound()))
-            Navigation.NavigateTo(HistoryUrl.Content.Courses());
+            _navigation.NavigateTo(HistoryUrl.Content.Courses());
     }
 
     private static Severity GetColor(ExaminationStatus status) =>

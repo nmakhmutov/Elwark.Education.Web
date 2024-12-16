@@ -4,14 +4,14 @@
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <PageTitle>
-        @L.GetExaminationDifficultyTitle(context.Difficulty): @context.Title
+        @_localizer.GetExaminationDifficultyTitle(context.Difficulty): @context.Title
     </PageTitle>
 
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
             <article class="d-flex flex-column mud-paper gap-3 gap-sm-6 pb-3 pb-sm-6">
                 <MudAlert Severity="@GetColor(context.Status)" ContentAlignment="HorizontalAlignment.Center">
-                    @L.GetStatusTitle(context.Status)
+                    @_localizer.GetStatusTitle(context.Status)
                 </MudAlert>
 
                 <EduCompletedStars Progress="@((double)context.TotalScore.Value / context.TotalScore.Total)"/>
@@ -32,7 +32,7 @@
                                Href="@HistoryUrl.Content.ExaminationBuilder(context.CourseId)"
                                Size="Size.Large"
                                Variant="Variant.Filled">
-                        @L["Examination_TakeTheExaminationAgain"]
+                        @_localizer["Examination_TakeTheExaminationAgain"]
                     </MudButton>
                 </div>
             </article>
@@ -49,18 +49,18 @@
                 </MudLink>
             </ToolBarContent>
             <HeaderContent>
-                <MudTh>@L["Question_Title"]</MudTh>
-                <MudTh>@L["Question_Answered"]</MudTh>
-                <MudTh>@L["Question_Correct"]</MudTh>
+                <MudTh>@_localizer["Question_Title"]</MudTh>
+                <MudTh>@_localizer["Question_Answered"]</MudTh>
+                <MudTh>@_localizer["Question_Correct"]</MudTh>
             </HeaderContent>
             <RowTemplate Context="question">
-                <MudTd DataLabel="@L["Question_Title"]">
+                <MudTd DataLabel="@_localizer["Question_Title"]">
                     @question.Title
                 </MudTd>
-                <MudTd DataLabel="@L["Question_Answered"]">
+                <MudTd DataLabel="@_localizer["Question_Answered"]">
                     <MudIcon Size="Size.Small" Icon="@GetCheckIcon(question.IsAnswered)"/>
                 </MudTd>
-                <MudTd DataLabel="@L["Question_Correct"]">
+                <MudTd DataLabel="@_localizer["Question_Correct"]">
                     <MudIcon Size="Size.Small" Icon="@GetCheckIcon(question.IsCorrect)"/>
                 </MudTd>
             </RowTemplate>

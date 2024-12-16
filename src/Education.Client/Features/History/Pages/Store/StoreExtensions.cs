@@ -12,7 +12,6 @@ internal static class StoreExtensions
         products.GroupBy(x => x switch
             {
                 Product.BundleModel => "Bundles",
-                Product.MoneyModel => "Monies",
                 _ => "Inventories"
             })
             .OrderBy(x => x.Key);

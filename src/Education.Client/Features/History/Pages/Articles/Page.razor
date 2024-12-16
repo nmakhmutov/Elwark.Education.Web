@@ -3,26 +3,26 @@
 @layout HistoryLayout
 
 <PageTitle>
-    @L["Articles_Title"]
+    @_localizer["Articles_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6">
     <section class="header mud-paper">
-        <PageBreadcrumbsHeader Class="title" Items="@Breadcrumbs"/>
+        <PageBreadcrumbsHeader Class="title" Items="@_breadcrumbs"/>
 
         <MudSelect T="EpochType"
                    Value="@_epoch"
                    ValueChanged="@OnEpochChange"
-                   Label="@L["History_Epoch_Title"]"
+                   Label="@_localizer["History_Epoch_Title"]"
                    Margin="Margin.Dense"
                    Variant="Variant.Outlined">
             <MudSelectItem Value="@EpochType.None">
-                @L["History_Epoch_Any"]
+                @_localizer["History_Epoch_Any"]
             </MudSelectItem>
             @foreach (var epoch in EpochTypeExtensions.List[1..])
             {
                 <MudSelectItem Value="@epoch">
-                    @L.GetEpochTitle(epoch)
+                    @_localizer.GetEpochTitle(epoch)
                 </MudSelectItem>
             }
         </MudSelect>
@@ -30,17 +30,17 @@
         <MudSelect T="GetArticlesRequest.SortType"
                    Value="@_sort"
                    ValueChanged="@OnSortChange"
-                   Label="@L["SortBy_Title"]"
+                   Label="@_localizer["SortBy_Title"]"
                    Margin="Margin.Dense"
                    Variant="Variant.Outlined">
             <MudSelectItem Value="@GetArticlesRequest.SortType.Newest">
-                @L["ContentSort_Resent_Title"]
+                @_localizer["ContentSort_Resent_Title"]
             </MudSelectItem>
             <MudSelectItem Value="@GetArticlesRequest.SortType.Trending">
-                @L["ContentSort_Trending_Title"]
+                @_localizer["ContentSort_Trending_Title"]
             </MudSelectItem>
             <MudSelectItem Value="@GetArticlesRequest.SortType.Popularity">
-                @L["ContentSort_TopRated_Title"]
+                @_localizer["ContentSort_TopRated_Title"]
             </MudSelectItem>
         </MudSelect>
     </section>
@@ -56,7 +56,7 @@
                         Article="@article"
                         HasQuiz="@hasQuiz"
                         Activity="@activity"
-                        OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+                        OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"/>
                 }
             </EduFillGrid>
 

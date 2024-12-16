@@ -10,22 +10,24 @@ namespace Education.Client.Features.Customer.Pages.Notifications;
 
 public sealed partial class Page : ComponentBase
 {
+    private readonly IStringLocalizer<App> _localizer;
     private readonly List<NotificationModel> _notifications = [];
+    private readonly INotificationService _notificationService;
     private bool _isMoreLoading;
     private NotificationsRequest _request = new(10);
 
     private ApiResult<PagingTokenModel<NotificationModel>> _response =
         ApiResult<PagingTokenModel<NotificationModel>>.Loading();
 
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    [Inject]
-    private INotificationService NotificationService { get; init; } = default!;
+    public Page(IStringLocalizer<App> localizer, INotificationService notificationService)
+    {
+        _localizer = localizer;
+        _notificationService = notificationService;
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await NotificationService.GetAsync(_request);
+        _response = await _notificationService.GetAsync(_request);
         _response.Match(x =>
         {
             _notifications.AddRange(x.Items);
@@ -39,7 +41,7 @@ public sealed partial class Page : ComponentBase
             return;
 
         _isMoreLoading = true;
-        var result = await NotificationService.GetAsync(_request);
+        var result = await _notificationService.GetAsync(_request);
         result.Match(
             x =>
             {
@@ -56,13 +58,13 @@ public sealed partial class Page : ComponentBase
 
     private async Task MarkAsReadAsync(string id)
     {
-        await NotificationService.MarkAsReadAsync(id);
+        await _notificationService.MarkAsReadAsync(id);
         _notifications.RemoveAll(x => x.Id == id);
     }
 
     private async Task MarkAllAsReadAsync()
     {
-        await NotificationService.MarkAllAsReadAsync();
+        await _notificationService.MarkAllAsReadAsync();
         _request = _request with
         {
             Token = null

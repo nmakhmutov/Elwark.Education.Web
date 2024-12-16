@@ -9,26 +9,27 @@ namespace Education.Client.Features.History.Pages.Course;
 
 public sealed partial class Page : ComponentBase
 {
+    private readonly IHistoryCourseClient _courseClient;
+    private readonly IHistoryLearnerClient _learnerClient;
+    private readonly IStringLocalizer<App> _localizer;
     private ApiResult<UserCourseDetailModel> _response = ApiResult<UserCourseDetailModel>.Loading();
 
-    [Inject]
-    private IHistoryCourseClient CourseClient { get; init; } = default!;
-
-    [Inject]
-    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
+    public Page(IHistoryCourseClient courseClient, IHistoryLearnerClient learnerClient, IStringLocalizer<App> localizer)
+    {
+        _courseClient = courseClient;
+        _learnerClient = learnerClient;
+        _localizer = localizer;
+    }
 
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
     protected override async Task OnParametersSetAsync() =>
-        _response = await CourseClient.GetAsync(Id);
+        _response = await _courseClient.GetAsync(Id);
 
     private async Task StartCourseAsync(string id)
     {
-        var response = await LearnerClient.StartCourseAsync(id);
+        var response = await _learnerClient.StartCourseAsync(id);
         _response = response.Map(x => _response.Unwrap() with
         {
             Activity = x

@@ -1,7 +1,7 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model.Quiz
 <div class="@Class">
-    <ApexChart TItem="Data" Options="@Options">
+    <ApexChart TItem="Data" Options="@_options">
         <ApexRangeSeries
             TItem="Data"
             Items="@Series"
@@ -15,7 +15,7 @@
 
 @code {
 
-    private ApexChartOptions<Data> Options =>
+    private ApexChartOptions<Data> _options =
         new()
         {
             PlotOptions = new PlotOptions
@@ -55,30 +55,30 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required AnswerRatioModel AnswerRatio { get; set; }
+    public required AnswerRatioModel Ratio { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
 
     private List<Data> Series =>
     [
-        new Data(L["Questions_Correct"], 0, HistoryChart.Quiz.Question.Correct),
-        new Data(L["Questions_Correct"], AnswerRatio.Correct, HistoryChart.Quiz.Question.Correct),
-        new Data(L["Questions_Incorrect"], 0, HistoryChart.Quiz.Question.Incorrect),
-        new Data(L["Questions_Incorrect"], AnswerRatio.Incorrect, HistoryChart.Quiz.Question.Incorrect),
-        new Data(L["Questions_Answered"], 0, HistoryChart.Quiz.Question.Answered),
-        new Data(L["Questions_Answered"], AnswerRatio.Answered, HistoryChart.Quiz.Question.Answered),
-        new Data(L["Questions_NotAnswered"], 0, HistoryChart.Quiz.Question.NotAnswered),
-        new Data(L["Questions_NotAnswered"], AnswerRatio.NotAnswered, HistoryChart.Quiz.Question.NotAnswered)
+        new(L["Questions_Correct"], 0, HistoryChart.Quiz.Question.Correct),
+        new(L["Questions_Correct"], Ratio.Correct, HistoryChart.Quiz.Question.Correct),
+        new(L["Questions_Incorrect"], 0, HistoryChart.Quiz.Question.Incorrect),
+        new(L["Questions_Incorrect"], Ratio.Incorrect, HistoryChart.Quiz.Question.Incorrect),
+        new(L["Questions_Answered"], 0, HistoryChart.Quiz.Question.Answered),
+        new(L["Questions_Answered"], Ratio.Answered, HistoryChart.Quiz.Question.Answered),
+        new(L["Questions_NotAnswered"], 0, HistoryChart.Quiz.Question.NotAnswered),
+        new(L["Questions_NotAnswered"], Ratio.NotAnswered, HistoryChart.Quiz.Question.NotAnswered)
     ];
 
     private EduChartListItem[] Items =>
     [
-        new EduChartListItem(L["Questions_Correct"], AnswerRatio.Correct, HistoryChart.Quiz.Question.Correct),
-        new EduChartListItem(L["Questions_Incorrect"], AnswerRatio.Incorrect, HistoryChart.Quiz.Question.Incorrect),
-        new EduChartListItem(L["Questions_Answered"], AnswerRatio.Answered, HistoryChart.Quiz.Question.Answered),
-        new EduChartListItem(L["Questions_NotAnswered"], AnswerRatio.NotAnswered, HistoryChart.Quiz.Question.NotAnswered),
-        new EduChartListItem(L["Questions_Total"], AnswerRatio.Questions, null)
+        new(L["Questions_Correct"], Ratio.Correct, HistoryChart.Quiz.Question.Correct),
+        new(L["Questions_Incorrect"], Ratio.Incorrect, HistoryChart.Quiz.Question.Incorrect),
+        new(L["Questions_Answered"], Ratio.Answered, HistoryChart.Quiz.Question.Answered),
+        new(L["Questions_NotAnswered"], Ratio.NotAnswered, HistoryChart.Quiz.Question.NotAnswered),
+        new(L["Questions_Total"], Ratio.Questions, null)
     ];
 
     private sealed record Data(string Name, uint Value, string Color);

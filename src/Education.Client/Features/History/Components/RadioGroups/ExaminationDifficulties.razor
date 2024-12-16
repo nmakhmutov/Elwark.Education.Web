@@ -4,11 +4,11 @@
     {
         <DifficultyCard Title="@L.GetExaminationDifficultyTitle(examination.Difficulty)" AccessInventory="@examination.AccessInventory">
             <ChildContent>
-                <MudList T="string" Class="flex-1" Dense Gutters="false" Padding="false">
-                    <MudListItem T="string">
+                <MudList T="string" Class="flex-1" Padding="false" Dense ReadOnly>
+                    <MudListItem T="string" Class="pa-0">
                         @L["Question_QuantityAndTypes_Title", examination.Question.Quantity, string.Join(", ", examination.Question.Kinds.Select(x => L[$"Question_{x}_Kind"]))]
                     </MudListItem>
-                    <MudListItem T="string">
+                    <MudListItem T="string" Class="pa-0">
                         <RewardsDisplay Rewards="@examination.Rewards" Typo="Typo.body2" Horizontal/>
                     </MudListItem>
                 </MudList>

@@ -11,21 +11,24 @@ namespace Education.Client.Features.History.Pages.My.Articles;
 
 public partial class ArticleMainPage : ComponentBase
 {
+    private readonly List<BreadcrumbItem> _breadcrumbs;
+    private readonly IHistoryLearnerClient _learnerClient;
+    private readonly IStringLocalizer<App> _localizer;
+
     private ApiResult<PagingTokenModel<UserArticleOverviewModel>> _response =
         ApiResult<PagingTokenModel<UserArticleOverviewModel>>.Loading();
 
-    [Inject]
-    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
-
-    [Inject]
-    private IStringLocalizer<App> L { get; init; } = default!;
-
-    private List<BreadcrumbItem> Breadcrumbs =>
-    [
-        new BreadcrumbItem(L["User_Dashboard_Title"], HistoryUrl.User.MyDashboard),
-        new BreadcrumbItem(L["Articles_RecentActivity_Title"], null, true)
-    ];
+    public ArticleMainPage(IHistoryLearnerClient learnerClient, IStringLocalizer<App> localizer)
+    {
+        _learnerClient = learnerClient;
+        _localizer = localizer;
+        _breadcrumbs =
+        [
+            new BreadcrumbItem(_localizer["User_Dashboard_Title"], HistoryUrl.User.MyDashboard),
+            new BreadcrumbItem(_localizer["Articles_RecentActivity_Title"], null, true)
+        ];
+    }
 
     protected override async Task OnInitializedAsync() =>
-        _response = await LearnerClient.GetArticlesAsync(new ArticleActivityRequest(50));
+        _response = await _learnerClient.GetArticlesAsync(new ArticleActivityRequest(50));
 }

@@ -3,11 +3,11 @@
 @attribute [Authorize]
 
 <PageTitle>
-    @L["History_DateGuessers_Title"]
+    @_localizer["History_DateGuessers_Title"]
 </PageTitle>
 
 <EduContainer Class="py-3 py-sm-6" MaxWidth="EduWidth.W1920">
-    <PageBreadcrumbsHeader Items="@Breadcrumbs"/>
+    <PageBreadcrumbsHeader Items="@_breadcrumbs"/>
 </EduContainer>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
@@ -16,10 +16,10 @@
             @if (context.Small.Score.Total > 0)
             {
                 <StatisticsCard
-                    Title="@L["History_DateGuessers_Small"]"
+                    Title="@_localizer["History_DateGuessers_Small"]"
                     Value="@context.Small.Tests"
                     Href="@HistoryUrl.User.MySmallDateGuessers">
-                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <Subheader Title="@_localizer["Score_Title"]" Subtitle="@_localizer["Statistics_ForAllTime"]"/>
                     <DateGuesserScoreChart Score="@context.Small.Score"/>
                 </StatisticsCard>
             }
@@ -27,10 +27,10 @@
             @if (context.Medium.Score.Total > 0)
             {
                 <StatisticsCard
-                    Title="@L["History_DateGuessers_Medium"]"
+                    Title="@_localizer["History_DateGuessers_Medium"]"
                     Value="@context.Medium.Tests"
                     Href="@HistoryUrl.User.MyMediumDateGuessers">
-                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <Subheader Title="@_localizer["Score_Title"]" Subtitle="@_localizer["Statistics_ForAllTime"]"/>
                     <DateGuesserScoreChart Score="@context.Medium.Score"/>
                 </StatisticsCard>
             }
@@ -38,17 +38,17 @@
             @if (context.Large.Score.Total > 0)
             {
                 <StatisticsCard
-                    Title="@L["History_DateGuessers_Large"]"
+                    Title="@_localizer["History_DateGuessers_Large"]"
                     Value="@context.Large.Tests"
                     Href="@HistoryUrl.User.MyLargeDateGuessers">
-                    <Subheader Title="@L["Score_Title"]" Subtitle="@L["Statistics_ForAllTime"]"/>
+                    <Subheader Title="@_localizer["Score_Title"]" Subtitle="@_localizer["Statistics_ForAllTime"]"/>
                     <DateGuesserScoreChart Score="@context.Large.Score"/>
                 </StatisticsCard>
             }
 
             <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
                 <MudText Typo="Typo.h5">
-                    @L["Activities_Daily_Title"]
+                    @_localizer["Activities_Daily_Title"]
                 </MudText>
                 @if (_daily.Length > 0)
                 {
@@ -57,7 +57,7 @@
                 else
                 {
                     <MudText>
-                        @L["Activities_NoActivitiesWithinTheLast30Days"]
+                        @_localizer["Activities_NoActivitiesWithinTheLast30Days"]
                     </MudText>
                 }
             </section>
@@ -66,7 +66,7 @@
             {
                 <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
                     <MudText Typo="Typo.h5">
-                        @L["Activities_Monthly_Title"]
+                        @_localizer["Activities_Monthly_Title"]
                     </MudText>
                     <ActivityChart Activities="@_monthly" DateStyle="DateStyle.AbbreviatedMonthAndCustomerYear"/>
                 </section>
