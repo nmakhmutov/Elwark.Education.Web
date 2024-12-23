@@ -1,6 +1,6 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model.Quiz
-<ApexChart @ref="@_chart" TItem="QuizStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
+<ApexChart @ref="@_chart" TItem="QuizStatisticsModel.DailyProgress" Options="Options" Height="@("350px")">
     <ApexPointSeries
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
@@ -32,7 +32,7 @@
 @code {
     private ApexChart<QuizStatisticsModel.DailyProgress>? _chart;
 
-    private ApexChartOptions<QuizStatisticsModel.DailyProgress> _options = new()
+    private static ApexChartOptions<QuizStatisticsModel.DailyProgress> Options => new()
     {
         Legend = new Legend
         {
@@ -82,10 +82,10 @@
     protected override Task OnParametersSetAsync()
     {
         var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
-        if (_options.Theme.Mode == current)
+        if (Options.Theme.Mode == current)
             return Task.CompletedTask;
 
-        _options.Theme.Mode = current;
+        Options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 

@@ -3,7 +3,7 @@
         @L["User_MyQuizzes_Title"]
     </MudText>
 
-    @if (HasEasyQuiz)
+    @if (Difficulties.Contains(DifficultyType.Easy))
     {
         <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
             <MudText Typo="Typo.body1">@L["NumberOfQuizzes_PassedEasy_Title"]</MudText>
@@ -18,11 +18,26 @@
         </div>
     }
 
-    @if (HasHardQuiz)
+    @if (Difficulties.Contains(DifficultyType.Hard))
     {
         <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
             <MudText Typo="Typo.body1">@L["NumberOfQuizzes_PassedHard_Title"]</MudText>
             @if (Activity?.IsHardQuizCompleted == true)
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.CheckCircle" Color="Color.Success" Size="Size.Small"/>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Circle" Size="Size.Small"/>
+            }
+        </div>
+    }
+
+    @if (Difficulties.Contains(DifficultyType.Expert))
+    {
+        <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
+            <MudText Typo="Typo.body1">@L["NumberOfQuizzes_PassedExpert_Title"]</MudText>
+            @if (Activity?.IsExpertQuizCompleted == true)
             {
                 <MudIcon Icon="@Icons.Material.Outlined.CheckCircle" Color="Color.Success" Size="Size.Small"/>
             }
@@ -45,7 +60,7 @@
     </div>
 
     <MudText Class="mb-3" Typo="Typo.body2">
-        @if (_hasQuiz)
+        @if (Difficulties.Length > 0)
         {
             @L.GetStatusDescription(Activity?.Status ?? ArticleLearningStatus.NotStarted)
         }
@@ -55,14 +70,13 @@
         }
     </MudText>
 
-    @if (_hasQuiz)
+    @if (Difficulties.Length > 0)
     {
         <TryPracticeQuestionsButton Link="@HistoryUrl.Content.QuizBuilder(ArticleId)" FullWidth/>
     }
 </section>
 
 @code {
-    private bool _hasQuiz;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -74,15 +88,9 @@
     public required UserArticleActivityModel? Activity { get; set; }
 
     [Parameter, EditorRequired]
-    public required bool HasEasyQuiz { get; set; }
-
-    [Parameter, EditorRequired]
-    public required bool HasHardQuiz { get; set; }
+    public required DifficultyType[] Difficulties { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
-
-    protected override void OnParametersSet() =>
-        _hasQuiz = HasEasyQuiz || HasHardQuiz;
 
 }

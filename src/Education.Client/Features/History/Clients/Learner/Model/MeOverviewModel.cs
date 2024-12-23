@@ -20,10 +20,10 @@ public sealed record MeOverviewModel(
             Easy + Hard;
     }
 
-    public sealed record QuizModel(uint Easy, uint Hard)
+    public sealed record QuizModel(uint Easy, uint Hard, uint Expert)
     {
         public uint Total =>
-            Easy + Hard;
+            Easy + Hard + Expert;
     }
 
     public sealed record DateGuesserModel(uint Small, uint Medium, uint Large)

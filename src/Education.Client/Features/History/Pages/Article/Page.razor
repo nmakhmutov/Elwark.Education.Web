@@ -7,54 +7,39 @@
         @context.Article.Title
     </PageTitle>
 
-    <EduMetaHeader Description="@context.Article.Description"
-                   Image="@context.Article.Image.Small"
-                   Title="@context.Article.Title"/>
+    <EduMetaHeader
+        Description="@context.Article.Description"
+        Image="@context.Article.Image.Small"
+        Title="@context.Article.Title"/>
 
     @switch (context.Article)
     {
         case ArticleDetail.BattleModel battle:
             <BattleDetail
                 Battle="@battle"
-                HasEasyQuiz="@context.HasEasyQuiz"
-                HasHardQuiz="@context.HasHardQuiz"
                 Activity="@context.Activity"
-                OnLikeClick="@_learnerClient.LikeArticleAsync"
-                OnDislikeClick="@_learnerClient.DislikeArticleAsync"
-                OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"/>
+                Difficulties="@context.Difficulties"/>
             break;
 
         case ArticleDetail.EmpireModel empire:
             <EmpireDetail
                 Empire="@empire"
-                HasEasyQuiz="@context.HasEasyQuiz"
-                HasHardQuiz="@context.HasHardQuiz"
                 Activity="@context.Activity"
-                OnLikeClick="@_learnerClient.LikeArticleAsync"
-                OnDislikeClick="@_learnerClient.DislikeArticleAsync"
-                OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"/>
+                Difficulties="@context.Difficulties"/>
             break;
 
         case ArticleDetail.GeneralModel article:
             <GeneralDetail
                 Article="@article"
-                HasEasyQuiz="@context.HasEasyQuiz"
-                HasHardQuiz="@context.HasHardQuiz"
                 Activity="@context.Activity"
-                OnLikeClick="@_learnerClient.LikeArticleAsync"
-                OnDislikeClick="@_learnerClient.DislikeArticleAsync"
-                OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"/>
+                Difficulties="@context.Difficulties"/>
             break;
 
         case ArticleDetail.PersonModel person:
             <PersonDetail
                 Person="@person"
-                HasEasyQuiz="@context.HasEasyQuiz"
-                HasHardQuiz="@context.HasHardQuiz"
                 Activity="@context.Activity"
-                OnLikeClick="@_learnerClient.LikeArticleAsync"
-                OnDislikeClick="@_learnerClient.DislikeArticleAsync"
-                OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"/>
+                Difficulties="@context.Difficulties"/>
             break;
     }
 </EduApiViewer>

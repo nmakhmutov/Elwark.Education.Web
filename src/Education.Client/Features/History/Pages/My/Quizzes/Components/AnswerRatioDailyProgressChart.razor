@@ -1,11 +1,14 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model.Quiz
-<ApexChart @ref="@_chart" TItem="QuizStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
+<ApexChart @ref="@_chart" TItem="QuizStatisticsModel.DailyProgress" Options="Options" Height="@("350px")">
     <ApexPointSeries
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions_Answered"]"
-        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Question.Answered })"
+        Stroke="@(new SeriesStroke
+                {
+                    Color = HistoryChart.Quiz.Question.Answered
+                })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.Ratio.Answered)"/>
@@ -14,7 +17,10 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions_NotAnswered"]"
-        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Question.NotAnswered })"
+        Stroke="@(new SeriesStroke
+                {
+                    Color = HistoryChart.Quiz.Question.NotAnswered
+                })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.Ratio.NotAnswered)"/>
@@ -23,7 +29,10 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions_Correct"]"
-        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Question.Correct })"
+        Stroke="@(new SeriesStroke
+                {
+                    Color = HistoryChart.Quiz.Question.Correct
+                })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.Ratio.Correct)"/>
@@ -32,7 +41,10 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["Questions_Incorrect"]"
-        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Question.Incorrect })"
+        Stroke="@(new SeriesStroke
+                {
+                    Color = HistoryChart.Quiz.Question.Incorrect
+                })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.Ratio.Incorrect)"/>
@@ -41,39 +53,40 @@
 @code {
     private ApexChart<QuizStatisticsModel.DailyProgress>? _chart;
 
-    private ApexChartOptions<QuizStatisticsModel.DailyProgress> _options = new()
-    {
-        Legend = new Legend
+    private static ApexChartOptions<QuizStatisticsModel.DailyProgress> Options =>
+        new()
         {
-            Show = false
-        },
-        Chart = new Chart
-        {
-            Toolbar = new Toolbar
+            Legend = new Legend
             {
                 Show = false
             },
-            Selection = new Selection
+            Chart = new Chart
             {
-                Enabled = false
+                Toolbar = new Toolbar
+                {
+                    Show = false
+                },
+                Selection = new Selection
+                {
+                    Enabled = false
+                },
+                Zoom = new Zoom
+                {
+                    Enabled = false
+                },
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
             },
-            Zoom = new Zoom
+            Stroke = new Stroke
             {
-                Enabled = false
+                Show = false
             },
-            Background = "transparent",
-            ForeColor = "var(--mud-palette-text-primary)"
-        },
-        Stroke = new Stroke
-        {
-            Show = false
-        },
-        Grid = new Grid
-        {
-            BorderColor = "var(--mud-palette-divider)"
-        },
-        Theme = new Theme()
-    };
+            Grid = new Grid
+            {
+                BorderColor = "var(--mud-palette-divider)"
+            },
+            Theme = new Theme()
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -90,10 +103,10 @@
     protected override Task OnParametersSetAsync()
     {
         var current = ThemeProvider is { IsDarkMode: true } ? Mode.Dark : Mode.Light;
-        if (_options.Theme.Mode == current)
+        if (Options.Theme.Mode == current)
             return Task.CompletedTask;
 
-        _options.Theme.Mode = current;
+        Options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 

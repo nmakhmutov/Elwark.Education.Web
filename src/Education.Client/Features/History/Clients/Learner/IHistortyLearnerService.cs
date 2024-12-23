@@ -24,6 +24,8 @@ public interface IHistoryLearnerClient
 
     Task<ApiResult<QuizStatisticsModel>> GetHardQuizStatisticsAsync();
 
+    Task<ApiResult<QuizStatisticsModel>> GetExpertQuizStatisticsAsync();
+
     Task<ApiResult<DateGuessersStatisticsModel>> GetDateGuesserStatisticsAsync();
 
     Task<ApiResult<DateGuesserStatisticsModel>> GetSmallDateGuesserStatisticsAsync();

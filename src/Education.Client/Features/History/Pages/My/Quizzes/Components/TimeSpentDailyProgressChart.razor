@@ -1,11 +1,14 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model.Quiz
-<ApexChart @ref="@_chart" TItem="QuizStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
+<ApexChart @ref="@_chart" TItem="QuizStatisticsModel.DailyProgress" Options="Options" Height="@("350px")">
     <ApexPointSeries
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["TimeSpent_Min_Title"]"
-        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.TimeSpent.Minimum })"
+        Stroke="@(new SeriesStroke
+                {
+                    Color = HistoryChart.Quiz.TimeSpent.Minimum
+                })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => (decimal)x.TimeSpent.Min.TotalMilliseconds)"/>
@@ -14,7 +17,10 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["TimeSpent_Average_Title"]"
-        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.TimeSpent.Average })"
+        Stroke="@(new SeriesStroke
+                {
+                    Color = HistoryChart.Quiz.TimeSpent.Average
+                })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => (decimal)x.TimeSpent.Average.TotalMilliseconds)"/>
@@ -23,7 +29,10 @@
         TItem="QuizStatisticsModel.DailyProgress"
         Items="@Progress"
         Name="@L["TimeSpent_Max_Title"]"
-        Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.TimeSpent.Maximum })"
+        Stroke="@(new SeriesStroke
+                {
+                    Color = HistoryChart.Quiz.TimeSpent.Maximum
+                })"
         SeriesType="SeriesType.Bar"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => (decimal)x.TimeSpent.Max.TotalMilliseconds)"/>
@@ -33,68 +42,69 @@
 
     private ApexChart<QuizStatisticsModel.DailyProgress>? _chart;
 
-    private ApexChartOptions<QuizStatisticsModel.DailyProgress> _options = new()
-    {
-        Yaxis =
-        [
-            new YAxis
-            {
-                Labels = new YAxisLabels
+    private static ApexChartOptions<QuizStatisticsModel.DailyProgress> Options =>
+        new()
+        {
+            Yaxis =
+            [
+                new YAxis
                 {
-                    Formatter = @"
+                    Labels = new YAxisLabels
+                    {
+                        Formatter = @"
                                  function(value) {
                                      var minutes = Math.floor(value / 60000);
                                      var seconds = ((value % 60000) / 1000).toFixed(0);
                                      return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
                                  }
                                  "
+                    }
                 }
-            }
-        ],
-        Tooltip = new Tooltip
-        {
-            Y = new TooltipY
+            ],
+            Tooltip = new Tooltip
             {
-                Formatter = @"
+                Y = new TooltipY
+                {
+                    Formatter = @"
                              function(value) {
                                  var minutes = Math.floor(value / 60000);
                                  var seconds = ((value % 60000) / 1000).toFixed(0);
                                  return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
                              }
                              "
-            }
-        },
-        Legend = new Legend
-        {
-            Show = false
-        },
-        Chart = new Chart
-        {
-            Toolbar = new Toolbar
+                }
+            },
+            Legend = new Legend
             {
                 Show = false
             },
-            Selection = new Selection
+            Chart = new Chart
             {
-                Enabled = false
+                Toolbar = new Toolbar
+                {
+                    Show = false
+                },
+                Selection = new Selection
+                {
+                    Enabled = false
+                },
+                Zoom = new Zoom
+                {
+                    Enabled = false
+                },
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
             },
-            Zoom = new Zoom
+            Stroke = new Stroke
             {
-                Enabled = false
+                Show = false
             },
-            Background = "transparent",
-            ForeColor = "var(--mud-palette-text-primary)"
-        },
-        Stroke = new Stroke
-        {
-            Show = false
-        },
-        Grid = new Grid
-        {
-            BorderColor = "var(--mud-palette-divider)"
-        },
-        Theme = new Theme()
-    };
+            Grid = new Grid
+            {
+                BorderColor = "var(--mud-palette-divider)"
+            },
+            Theme = new Theme()
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -111,10 +121,10 @@
     protected override Task OnParametersSetAsync()
     {
         var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
-        if (_options.Theme.Mode == current)
+        if (Options.Theme.Mode == current)
             return Task.CompletedTask;
 
-        _options.Theme.Mode = current;
+        Options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 

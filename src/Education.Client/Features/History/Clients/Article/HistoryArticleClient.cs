@@ -28,6 +28,9 @@ internal sealed class HistoryArticleClient : IHistoryArticleClient
     public Task<ApiResult<UserArticleOverviewModel[]>> GetRelatedArticlesAsync(string id) =>
         _api.GetAsync<UserArticleOverviewModel[]>($"history/articles/{id}/related");
 
+    public Task<ApiResult<CourseOverviewModel[]>> GetCoursesAsync(string id) =>
+        _api.GetAsync<CourseOverviewModel[]>($"history/articles/{id}/courses");
+
     public Task<ApiResult<UserArticleOverviewModel>> GetRandomAsync(EpochType epoch) =>
         _api.GetAsync<UserArticleOverviewModel>($"history/articles/random?epoch={epoch.ToFastString()}");
 

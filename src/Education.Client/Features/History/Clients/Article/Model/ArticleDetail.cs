@@ -1,8 +1,14 @@
+using System.Text.Json.Serialization;
 using Education.Client.Models.Content;
 using Microsoft.AspNetCore.Components;
 
 namespace Education.Client.Features.History.Clients.Article.Model;
 
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "type"),
+ JsonDerivedType(typeof(GeneralModel), "general"),
+ JsonDerivedType(typeof(BattleModel), "battle"),
+ JsonDerivedType(typeof(EmpireModel), "empire"),
+ JsonDerivedType(typeof(PersonModel), "person")]
 public abstract record ArticleDetail(string Id, string Title, string Description, ImageBundleModel Image)
 {
     public sealed record BattleModel(

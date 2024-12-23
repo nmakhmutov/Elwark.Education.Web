@@ -5,6 +5,7 @@ namespace Education.Client.Features.History.Clients.Learner.Model.Quiz;
 public sealed record QuizzesStatisticsModel(
     QuizzesStatisticsModel.QuizModel Easy,
     QuizzesStatisticsModel.QuizModel Hard,
+    QuizzesStatisticsModel.QuizModel Expert,
     QuizProgressModel[] Daily,
     QuizProgressModel[] Monthly
 )

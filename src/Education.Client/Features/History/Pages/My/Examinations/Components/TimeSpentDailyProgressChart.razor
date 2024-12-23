@@ -1,6 +1,6 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model.Examination
-<ApexChart @ref="@_chart" TItem="ExaminationStatisticsModel.DailyProgress" Options="_options" Height="@("350px")">
+<ApexChart @ref="@_chart" TItem="ExaminationStatisticsModel.DailyProgress" Options="Options" Height="@("350px")">
     <ApexPointSeries
         TItem="ExaminationStatisticsModel.DailyProgress"
         Items="@Progress"
@@ -32,7 +32,7 @@
 @code {
     private ApexChart<ExaminationStatisticsModel.DailyProgress>? _chart;
 
-    private ApexChartOptions<ExaminationStatisticsModel.DailyProgress> _options = new()
+    private static ApexChartOptions<ExaminationStatisticsModel.DailyProgress> Options => new()
     {
         Yaxis =
         [
@@ -110,10 +110,10 @@
     protected override Task OnParametersSetAsync()
     {
         var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
-        if (_options.Theme.Mode == current)
+        if (Options.Theme.Mode == current)
             return Task.CompletedTask;
 
-        _options.Theme.Mode = current;
+        Options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 

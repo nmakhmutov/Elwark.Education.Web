@@ -1,11 +1,15 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model.Quiz
-<ApexChart @ref="@_chart" TItem="QuizProgressModel" Options="_options">
+<ApexChart @ref="@_chart" TItem="QuizProgressModel" Options="Options">
     <ApexPointSeries
         TItem="QuizProgressModel"
         Items="@Activities"
         Name="@L["Quizzes_Easy_Title"]"
-        Stroke="@(new SeriesStroke { Width = 2, Color = HistoryChart.Quiz.Difficulty.Easy })"
+        Stroke="@(new SeriesStroke
+                {
+                    Width = 2,
+                    Color = HistoryChart.Quiz.Difficulty.Easy
+                })"
         SeriesType="SeriesType.Area"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Easy)"/>
@@ -14,37 +18,55 @@
         TItem="QuizProgressModel"
         Items="@Activities"
         Name="@L["Quizzes_Hard_Title"]"
-        Stroke="@(new SeriesStroke { Width = 2, Color = HistoryChart.Quiz.Difficulty.Hard })"
+        Stroke="@(new SeriesStroke
+                {
+                    Width = 2,
+                    Color = HistoryChart.Quiz.Difficulty.Hard
+                })"
         SeriesType="SeriesType.Area"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Hard)"/>
+
+    <ApexPointSeries
+        TItem="QuizProgressModel"
+        Items="@Activities"
+        Name="@L["Quizzes_Expert_Title"]"
+        Stroke="@(new SeriesStroke
+                {
+                    Width = 2,
+                    Color = HistoryChart.Quiz.Difficulty.Expert
+                })"
+        SeriesType="SeriesType.Area"
+        XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
+        YValue="@(x => x.Expert)"/>
 </ApexChart>
 
 @code {
     private ApexChart<QuizProgressModel>? _chart;
 
-    private ApexChartOptions<QuizProgressModel> _options = new()
-    {
-        Legend = new Legend
+    private static ApexChartOptions<QuizProgressModel> Options =>
+        new()
         {
-            Position = LegendPosition.Top,
-            FontFamily = "var(--mud-typography-body1-family)",
-            FontSize = "var(--mud-typography-body1-size)",
-            FontWeight = "var(--mud-typography-body1-weight)"
-        },
-        Chart = new Chart
-        {
-            Width = "100%",
-            Height = "350px",
-            Background = "transparent",
-            ForeColor = "var(--mud-palette-text-primary)"
-        },
-        Grid = new Grid
-        {
-            BorderColor = "var(--mud-palette-divider)"
-        },
-        Theme = new Theme()
-    };
+            Legend = new Legend
+            {
+                Position = LegendPosition.Top,
+                FontFamily = "var(--mud-typography-body1-family)",
+                FontSize = "var(--mud-typography-body1-size)",
+                FontWeight = "var(--mud-typography-body1-weight)"
+            },
+            Chart = new Chart
+            {
+                Width = "100%",
+                Height = "350px",
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Grid = new Grid
+            {
+                BorderColor = "var(--mud-palette-divider)"
+            },
+            Theme = new Theme()
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -64,10 +86,10 @@
     protected override Task OnParametersSetAsync()
     {
         var current = ThemeProvider is { IsDarkMode: true } ? Mode.Dark : Mode.Light;
-        if (_options.Theme.Mode == current)
+        if (Options.Theme.Mode == current)
             return Task.CompletedTask;
 
-        _options.Theme.Mode = current;
+        Options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 

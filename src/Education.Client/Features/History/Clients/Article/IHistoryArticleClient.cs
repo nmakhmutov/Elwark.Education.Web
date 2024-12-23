@@ -18,6 +18,8 @@ public interface IHistoryArticleClient
 
     Task<ApiResult<UserArticleOverviewModel[]>> GetRelatedArticlesAsync(string id);
 
+    Task<ApiResult<CourseOverviewModel[]>> GetCoursesAsync(string id);
+
     Task<ApiResult<UserArticleOverviewModel>> GetRandomAsync(EpochType epoch = EpochType.None);
 
     Task<ApiResult<ArticleQuizBuilderModel>> GetQuizBuilderAsync(string articleId);

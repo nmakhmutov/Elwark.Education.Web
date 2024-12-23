@@ -35,12 +35,12 @@
             break;
         }
 
-        case Question.MultiModel question:
+        case Question.MultipleModel question:
         {
             <MultipleAnswerForm
                 IsLoading="@_checking"
                 IsCompleted="@IsCompleted"
-                CorrectAnswer="@(CorrectAnswer as AnswerResult.MultiModel)"
+                CorrectAnswer="@(CorrectAnswer as AnswerResult.MultipleModel)"
                 Options="@question.Options"
                 OnAnswerClick="@AnswerAsync"
                 OnNextClick="@NextQuestionHandler"/>

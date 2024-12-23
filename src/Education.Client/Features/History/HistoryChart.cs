@@ -9,6 +9,8 @@ public static class HistoryChart
             public static string Easy { get; } = "#32BAFF";
 
             public static string Hard { get; } = "#0099E6";
+
+            public static string Expert { get; } = "#006FB3";
         }
 
         public static class Completeness

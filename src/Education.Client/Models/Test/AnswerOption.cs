@@ -1,5 +1,10 @@
+using System.Text.Json.Serialization;
+
 namespace Education.Client.Models.Test;
 
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "type"),
+ JsonDerivedType(typeof(TextModel), "text"),
+ JsonDerivedType(typeof(ImageModel), "image")]
 public abstract record AnswerOption(uint Id)
 {
     public sealed record TextModel(uint Id, string Text)

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ApexCharts;
 using Blazored.LocalStorage;
 using Education.Client.Extensions;
 using Education.Client.Services;
@@ -28,6 +29,7 @@ builder.Services
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     })
+    .AddApexCharts()
     .AddLocalization(options => options.ResourcesPath = "Resources");
 
 builder.Services

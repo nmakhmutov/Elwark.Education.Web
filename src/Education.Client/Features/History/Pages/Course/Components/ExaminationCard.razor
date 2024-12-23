@@ -3,7 +3,7 @@
         @L["User_MyExaminations_Title"]
     </MudText>
 
-    @if (HasEasyExamination)
+    @if (Difficulties.Contains(DifficultyType.Easy))
     {
         <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
             <MudText Typo="Typo.body1">@L["NumberOfExaminations_PassedEasy_Title"]</MudText>
@@ -18,7 +18,7 @@
         </div>
     }
 
-    @if (HasHardExamination)
+    @if (Difficulties.Contains(DifficultyType.Hard))
     {
         <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
             <MudText Typo="Typo.body1">@L["NumberOfExaminations_PassedHard_Title"]</MudText>
@@ -66,10 +66,7 @@
     public required UserCourseActivityModel Activity { get; set; }
 
     [Parameter, EditorRequired]
-    public required bool HasEasyExamination { get; set; }
-
-    [Parameter, EditorRequired]
-    public required bool HasHardExamination { get; set; }
+    public required DifficultyType[] Difficulties { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

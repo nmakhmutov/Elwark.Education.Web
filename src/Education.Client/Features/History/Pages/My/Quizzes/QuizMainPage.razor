@@ -35,6 +35,17 @@
                 </StatisticsCard>
             }
 
+            @if (context.Expert.Score.Total > 0)
+            {
+                <StatisticsCard
+                    Title="@_localizer["Quizzes_Expert_Title"]"
+                    Value="@context.Expert.NumberOfQuizzes.Total"
+                    Href="@HistoryUrl.User.MyExpertQuizzes">
+                    <Subheader Title="@_localizer["Score_Title"]" Subtitle="@_localizer["Statistics_ForAllTime"]"/>
+                    <QuizScoreChart Score="@context.Expert.Score"/>
+                </StatisticsCard>
+            }
+
             <section class="mud-paper grid-column-sm-full pa-3 pa-sm-6">
                 <MudText Typo="Typo.h5">
                     @_localizer["Activities_Daily_Title"]

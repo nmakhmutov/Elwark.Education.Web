@@ -50,7 +50,7 @@
                 <TitleContent>
                     <div class="d-flex gap-3 mr-3">
                         <MudText Typo="Typo.subtitle1">
-                            @DateTimeFormatter(conclusion.CompletedAt)
+                            @Customer.Humanize(conclusion.CompletedAt)
                         </MudText>
 
                         <MudText Typo="@Typo.subtitle1" Color="@GetColor(conclusion.Status)">
@@ -80,6 +80,9 @@
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
 
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
     [Parameter, EditorRequired]
     public required string SeeAllText { get; set; }
 
@@ -88,9 +91,6 @@
 
     [Parameter, EditorRequired]
     public required ArticleStatisticsModel.ProgressModel Quiz { get; set; }
-
-    [Parameter]
-    public Func<DateTime, string> DateTimeFormatter { get; set; } = date => date.ToLongDateString();
 
     private static Color GetColor(QuizStatus status) =>
         status switch

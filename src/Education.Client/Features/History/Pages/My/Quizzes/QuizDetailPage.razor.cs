@@ -39,6 +39,7 @@ public sealed partial class QuizDetailPage : ComponentBase
         {
             "easy" => (_localizer["Quizzes_Easy_Title"], await _learnerClient.GetEasyQuizStatisticsAsync()),
             "hard" => (_localizer["Quizzes_Hard_Title"], await _learnerClient.GetHardQuizStatisticsAsync()),
+            "expert" => (_localizer["Quizzes_Expert_Title"], await _learnerClient.GetExpertQuizStatisticsAsync()),
             _ => (_localizer["Error_NotFound"],
                 ApiResult<QuizStatisticsModel>.Fail(Error.Create(_localizer["Error_NotFound"])))
         };

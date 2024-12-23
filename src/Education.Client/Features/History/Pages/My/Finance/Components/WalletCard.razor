@@ -26,7 +26,7 @@
 
                 @if (Wallet.Budgets.Length > 0)
                 {
-                    <ApexChart TItem="ApexData" Options="@_options" Width="@("100px")" Height="@("30px")">
+                    <ApexChart TItem="ApexData" Options="@Options" Width="@("100px")" Height="@("30px")">
                         <ApexPointSeries
                             TItem="ApexData"
                             Items="@_apex"
@@ -99,28 +99,29 @@
     private List<ApexData> _apex = [];
     private MudTable<WalletDetailsModel.BudgetModel>? _table;
 
-    private readonly ApexChartOptions<ApexData> _options = new()
-    {
-        Tooltip = new Tooltip
+    private static ApexChartOptions<ApexData> Options =>
+        new()
         {
-            Enabled = false
-        },
-        Chart = new Chart
-        {
-            Background = "transparent",
-            ForeColor = "var(--mud-palette-text-primary)",
-            Sparkline = new ChartSparkline
+            Tooltip = new Tooltip
             {
-                Enabled = true
+                Enabled = false
+            },
+            Chart = new Chart
+            {
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)",
+                Sparkline = new ChartSparkline
+                {
+                    Enabled = true
+                }
+            },
+            Stroke = new Stroke
+            {
+                Colors = ["#FFFFFF"],
+                Curve = Curve.Smooth,
+                Width = 3
             }
-        },
-        Stroke = new Stroke
-        {
-            Colors = ["#FFFFFF"],
-            Curve = Curve.Smooth,
-            Width = 3
-        }
-    };
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;

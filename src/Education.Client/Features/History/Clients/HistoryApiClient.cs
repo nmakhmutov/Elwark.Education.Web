@@ -2,7 +2,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Education.Client.Clients;
 using Education.Client.Clients.JsonConverters;
-using Education.Client.Features.History.Clients.JsonConverters;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 
@@ -21,13 +20,8 @@ internal sealed class HistoryApiClient : ApiClient
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
         Converters =
         {
-            new AchievementConverter(),
-            new AnswerOptionConverter(),
-            new AnswerResultConverter(),
-            new ArticleDetailConverter(),
             new MarkupStringConverter(),
             new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
-            new QuestionConverter()
         }
     };
 

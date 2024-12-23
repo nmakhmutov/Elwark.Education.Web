@@ -1,4 +1,5 @@
 @using Education.Client.Features.History.Clients.Article.Model
+@using Education.Client.Features.History.Clients.Learner
 <header class="background" style="@_style">
     <section class="d-flex flex-column justify-center align-center h-100">
         <EduBreadcrumbs Items="@Breadcrumbs" Typo="Typo.subtitle1"/>
@@ -110,17 +111,16 @@
             <AuthorizeView>
                 <QuizCard
                     ArticleId="@Empire.Id"
-                    HasEasyQuiz="@HasEasyQuiz"
-                    HasHardQuiz="@HasHardQuiz"
-                    Activity="@Activity"/>
+                    Activity="@Activity"
+                    Difficulties="@Difficulties"/>
 
                 <UserToolbarCard
                     ArticleId="@Empire.Id"
                     IsLiked="@Activity?.IsLiked"
                     IsBookmarked="@Activity?.IsBookmarked"
-                    OnBookmarkClick="@OnBookmarkClick"
-                    OnLikeClick="@OnLikeClick"
-                    OnDislikeClick="@OnDislikeClick"/>
+                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                    OnLikeClick="@LearnerClient.LikeArticleAsync"
+                    OnDislikeClick="@LearnerClient.DislikeArticleAsync"/>
             </AuthorizeView>
         </Sidebar>
     </ContentGrid>
@@ -129,7 +129,7 @@
         Class="mt-sm-6"
         ArticleId="@Empire.Id"
         Title="@L["Articles_Related_Title"]"
-        OnBookmarkClick="@OnBookmarkClick"/>
+        OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
 </EduContainer>
 
 @code {
@@ -140,6 +140,9 @@
 
     [Inject]
     private ContentFormatter Formatter { get; init; } = default!;
+
+    [Inject]
+    private IHistoryLearnerClient LearnerClient { get; init; } = default!;
 
     private List<BreadcrumbItem> Breadcrumbs =>
     [
@@ -157,19 +160,7 @@
     public required UserArticleActivityModel? Activity { get; set; }
 
     [Parameter, EditorRequired]
-    public required bool HasEasyQuiz { get; set; }
-
-    [Parameter, EditorRequired]
-    public required bool HasHardQuiz { get; set; }
-
-    [Parameter, EditorRequired]
-    public required Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; }
-
-    [Parameter, EditorRequired]
-    public required Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; }
-
-    [Parameter, EditorRequired]
-    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
+    public required DifficultyType[] Difficulties { get; set; }
 
     protected override async Task OnInitializedAsync() =>
         await Formatter.InitializeAsync();

@@ -16,7 +16,7 @@
             CourseId="@context.Course.Id"
             Title="@context.Course.Title"
             Image="@context.Course.Image"
-            HasExaminations="@(context.HasEasyExamination || context.HasHardExamination)"
+            HasExaminations="@(context.Difficulties.Length > 0)"
             ArticleCount="@context.Course.Articles.Length"
             Activity="@context.Activity"
             OnLikeClick="@_learnerClient.LikeCourseAsync"
@@ -59,8 +59,7 @@
                     <ExaminationCard
                         CourseId="@context.Course.Id"
                         Activity="@context.Activity"
-                        HasEasyExamination="@context.HasEasyExamination"
-                        HasHardExamination="@context.HasHardExamination"/>
+                        Difficulties="@context.Difficulties"/>
                 }
             </EduFillGrid>
         </section>

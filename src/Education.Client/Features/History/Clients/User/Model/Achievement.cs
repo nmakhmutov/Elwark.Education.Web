@@ -1,5 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Education.Client.Features.History.Clients.User.Model;
 
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "type"),
+ JsonDerivedType(typeof(CompletedModel), "completed"),
+ JsonDerivedType(typeof(LadderModel), "ladder"),
+ JsonDerivedType(typeof(ProgressiveModel), "progressive")]
 public abstract record Achievement(string Id, string Title, string Description, string ImageUrl)
 {
     public sealed record CompletedModel(

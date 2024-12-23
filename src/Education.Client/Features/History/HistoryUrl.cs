@@ -142,6 +142,8 @@ public static class HistoryUrl
 
         public const string MyHardQuizzes = $"{My}/quizzes/hard";
 
+        public const string MyExpertQuizzes = $"{My}/quizzes/expert";
+
         public const string MyExaminations = $"{My}/examinations";
 
         public const string MyEasyExaminations = $"{My}/examinations/easy";

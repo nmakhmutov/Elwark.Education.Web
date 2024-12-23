@@ -37,6 +37,9 @@ internal sealed class HistoryLearnerService : IHistoryLearnerClient
     public Task<ApiResult<QuizStatisticsModel>> GetHardQuizStatisticsAsync() =>
         _api.GetAsync<QuizStatisticsModel>($"{Root}/quizzes/hard");
 
+    public Task<ApiResult<QuizStatisticsModel>> GetExpertQuizStatisticsAsync() =>
+        _api.GetAsync<QuizStatisticsModel>($"{Root}/quizzes/Expert");
+
     public Task<ApiResult<DateGuessersStatisticsModel>> GetDateGuesserStatisticsAsync() =>
         _api.GetAsync<DateGuessersStatisticsModel>($"{Root}/date-guessers");
 

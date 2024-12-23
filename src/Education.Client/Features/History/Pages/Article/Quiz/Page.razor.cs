@@ -65,6 +65,7 @@ public sealed partial class Page : ComponentBase
                     {
                         case DifficultyType.Easy when (x.Activity?.IsEasyQuizCompleted ?? false) == false:
                         case DifficultyType.Hard when (x.Activity?.IsHardQuizCompleted ?? false) == false:
+                        case DifficultyType.Expert when (x.Activity?.IsExpertQuizCompleted ?? false) == false:
                             _requiredQuizzes.Add($"<b>\"{_localizer.GetQuizDifficultyTitle(quiz.Difficulty)}\"</b>");
                             break;
                     }

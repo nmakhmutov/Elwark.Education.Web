@@ -53,7 +53,7 @@ public sealed partial class Page : ComponentBase
                 month => new MeOverviewModel.ActivityModel(
                     month,
                     new ExaminationModel(0, 0),
-                    new QuizModel(0, 0),
+                    new QuizModel(0, 0, 0),
                     new DateGuesserModel(0, 0, 0)
                 )
             )

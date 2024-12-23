@@ -5,5 +5,6 @@ public sealed record UserArticleActivityModel(
     bool IsBookmarked,
     bool? IsLiked,
     bool? IsEasyQuizCompleted,
-    bool? IsHardQuizCompleted
+    bool? IsHardQuizCompleted,
+    bool? IsExpertQuizCompleted
 );

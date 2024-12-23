@@ -35,11 +35,11 @@ public sealed partial class QuizMainPage : ComponentBase
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
             _daily = model.Daily
-                .FillDailyGaps(today, x => x.Date, x => new QuizProgressModel(x, 0, 0))
+                .FillDailyGaps(today, x => x.Date, x => new QuizProgressModel(x, 0, 0, 0))
                 .ToArray();
 
             _monthly = model.Monthly
-                .FillMonthlyGaps(today, x => x.Date, x => new QuizProgressModel(x, 0, 0))
+                .FillMonthlyGaps(today, x => x.Date, x => new QuizProgressModel(x, 0, 0, 0))
                 .ToArray();
         });
     }

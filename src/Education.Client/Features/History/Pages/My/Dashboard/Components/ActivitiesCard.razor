@@ -7,12 +7,15 @@
     </MudText>
 
     <article class="flex-1">
-        <ApexChart @ref="@_chart" TItem="MeOverviewModel.ActivityModel" Options="@_options">
+        <ApexChart @ref="@_chart" TItem="MeOverviewModel.ActivityModel" Options="@Options">
             <ApexPointSeries
                 TItem="MeOverviewModel.ActivityModel"
                 Items="@Activities"
                 Name="@L["Examinations_Easy_Title"]"
-                Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Difficulty.Easy })"
+                Stroke="@(new SeriesStroke
+                        {
+                            Color = HistoryChart.Examination.Difficulty.Easy
+                        })"
                 SeriesType="SeriesType.Bar"
                 XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
                 YValue="@(x => x.Examination.Easy)"/>
@@ -21,7 +24,10 @@
                 TItem="MeOverviewModel.ActivityModel"
                 Items="@Activities"
                 Name="@L["Examinations_Hard_Title"]"
-                Stroke="@(new SeriesStroke { Color = HistoryChart.Examination.Difficulty.Hard })"
+                Stroke="@(new SeriesStroke
+                        {
+                            Color = HistoryChart.Examination.Difficulty.Hard
+                        })"
                 SeriesType="SeriesType.Bar"
                 XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
                 YValue="@(x => x.Examination.Hard)"/>
@@ -30,7 +36,10 @@
                 TItem="MeOverviewModel.ActivityModel"
                 Items="@Activities"
                 Name="@L["Quizzes_Easy_Title"]"
-                Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Difficulty.Easy })"
+                Stroke="@(new SeriesStroke
+                        {
+                            Color = HistoryChart.Quiz.Difficulty.Easy
+                        })"
                 SeriesType="SeriesType.Bar"
                 XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
                 YValue="@(x => x.Quiz.Easy)"/>
@@ -39,7 +48,10 @@
                 TItem="MeOverviewModel.ActivityModel"
                 Items="@Activities"
                 Name="@L["Quizzes_Hard_Title"]"
-                Stroke="@(new SeriesStroke { Color = HistoryChart.Quiz.Difficulty.Hard })"
+                Stroke="@(new SeriesStroke
+                        {
+                            Color = HistoryChart.Quiz.Difficulty.Hard
+                        })"
                 SeriesType="SeriesType.Bar"
                 XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
                 YValue="@(x => x.Quiz.Hard)"/>
@@ -47,8 +59,23 @@
             <ApexPointSeries
                 TItem="MeOverviewModel.ActivityModel"
                 Items="@Activities"
+                Name="@L["Quizzes_Expert_Title"]"
+                Stroke="@(new SeriesStroke
+                        {
+                            Color = HistoryChart.Quiz.Difficulty.Expert
+                        })"
+                SeriesType="SeriesType.Bar"
+                XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
+                YValue="@(x => x.Quiz.Expert)"/>
+
+            <ApexPointSeries
+                TItem="MeOverviewModel.ActivityModel"
+                Items="@Activities"
                 Name="@L["History_DateGuessers_Small"]"
-                Stroke="@(new SeriesStroke { Color = HistoryChart.DateGuesser.Size.Small })"
+                Stroke="@(new SeriesStroke
+                        {
+                            Color = HistoryChart.DateGuesser.Size.Small
+                        })"
                 SeriesType="SeriesType.Bar"
                 XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
                 YValue="@(x => x.DateGuesser.Small)"/>
@@ -57,7 +84,10 @@
                 TItem="MeOverviewModel.ActivityModel"
                 Items="@Activities"
                 Name="@L["History_DateGuessers_Medium"]"
-                Stroke="@(new SeriesStroke { Color = HistoryChart.DateGuesser.Size.Medium })"
+                Stroke="@(new SeriesStroke
+                        {
+                            Color = HistoryChart.DateGuesser.Size.Medium
+                        })"
                 SeriesType="SeriesType.Bar"
                 XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
                 YValue="@(x => x.DateGuesser.Medium)"/>
@@ -66,7 +96,10 @@
                 TItem="MeOverviewModel.ActivityModel"
                 Items="@Activities"
                 Name="@L["History_DateGuessers_Large"]"
-                Stroke="@(new SeriesStroke { Color = HistoryChart.DateGuesser.Size.Large })"
+                Stroke="@(new SeriesStroke
+                        {
+                            Color = HistoryChart.DateGuesser.Size.Large
+                        })"
                 SeriesType="SeriesType.Bar"
                 XValue="@(x => Customer.Humanize(x.Month, DateStyle.AbbreviatedMonthAndCustomerYear))"
                 YValue="@(x => x.DateGuesser.Large)"/>
@@ -78,43 +111,44 @@
     private Guid _subscriptionId;
     private ApexChart<MeOverviewModel.ActivityModel>? _chart;
 
-    private ApexChartOptions<MeOverviewModel.ActivityModel> _options = new()
-    {
-        Legend = new Legend
+    private static ApexChartOptions<MeOverviewModel.ActivityModel> Options =>
+        new()
         {
-            Show = true,
-            Position = LegendPosition.Right,
-            FontFamily = "var(--mud-typography-body1-family)",
-            FontSize = "var(--mud-typography-body1-size)",
-            FontWeight = "var(--mud-typography-body1-weight)"
-        },
-        Chart = new Chart
-        {
-            Height = "100%",
-            Width = "100%",
-            Stacked = true,
-            Toolbar = new Toolbar
+            Legend = new Legend
             {
-                Show = false
+                Show = true,
+                Position = LegendPosition.Right,
+                FontFamily = "var(--mud-typography-body1-family)",
+                FontSize = "var(--mud-typography-body1-size)",
+                FontWeight = "var(--mud-typography-body1-weight)"
             },
-            Selection = new Selection
+            Chart = new Chart
             {
-                Enabled = false
+                Height = "100%",
+                Width = "100%",
+                Stacked = true,
+                Toolbar = new Toolbar
+                {
+                    Show = false
+                },
+                Selection = new Selection
+                {
+                    Enabled = false
+                },
+                Zoom = new Zoom
+                {
+                    Enabled = false
+                },
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)",
+                RedrawOnParentResize = true
             },
-            Zoom = new Zoom
+            Grid = new Grid
             {
-                Enabled = false
+                BorderColor = "var(--mud-palette-divider)"
             },
-            Background = "transparent",
-            ForeColor = "var(--mud-palette-text-primary)",
-            RedrawOnParentResize = true
-        },
-        Grid = new Grid
-        {
-            BorderColor = "var(--mud-palette-divider)"
-        },
-        Theme = new Theme()
-    };
+            Theme = new Theme()
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -137,10 +171,10 @@
     protected override Task OnParametersSetAsync()
     {
         var current = ThemeProvider?.IsDarkMode == true ? Mode.Dark : Mode.Light;
-        if (_options.Theme.Mode == current)
+        if (Options.Theme.Mode == current)
             return Task.CompletedTask;
 
-        _options.Theme.Mode = current;
+        Options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 
@@ -162,10 +196,10 @@
     private void OnBreakpointChanged(Breakpoint e)
     {
         var position = e is Breakpoint.Xs or Breakpoint.Sm ? LegendPosition.Bottom : LegendPosition.Right;
-        if (_options.Legend.Position == position)
+        if (Options.Legend.Position == position)
             return;
 
-        _options.Legend.Position = position;
+        Options.Legend.Position = position;
         _chart?.UpdateOptionsAsync(false, true, false);
     }
 

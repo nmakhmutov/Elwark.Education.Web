@@ -1,11 +1,15 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.Learner.Model.Examination
-<ApexChart @ref="@_chart" TItem="ExaminationProgressModel" Options="_options">
+<ApexChart @ref="@_chart" TItem="ExaminationProgressModel" Options="Options">
     <ApexPointSeries
         TItem="ExaminationProgressModel"
         Items="Activities"
         Name="@L["Examinations_Easy_Title"]"
-        Stroke="@(new SeriesStroke { Width = 2, Color = HistoryChart.Examination.Difficulty.Easy })"
+        Stroke="@(new SeriesStroke
+                {
+                    Width = 2,
+                    Color = HistoryChart.Examination.Difficulty.Easy
+                })"
         SeriesType="SeriesType.Area"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Easy)"/>
@@ -14,7 +18,11 @@
         TItem="ExaminationProgressModel"
         Items="Activities"
         Name="@L["Examinations_Hard_Title"]"
-        Stroke="@(new SeriesStroke { Width = 2, Color = HistoryChart.Examination.Difficulty.Hard })"
+        Stroke="@(new SeriesStroke
+                {
+                    Width = 2,
+                    Color = HistoryChart.Examination.Difficulty.Hard
+                })"
         SeriesType="SeriesType.Area"
         XValue="@(x => Customer.Humanize(x.Date, DateStyle))"
         YValue="@(x => x.Hard)"/>
@@ -23,28 +31,29 @@
 @code {
     private ApexChart<ExaminationProgressModel>? _chart;
 
-    private ApexChartOptions<ExaminationProgressModel> _options = new()
-    {
-        Legend = new Legend
+    private static ApexChartOptions<ExaminationProgressModel> Options =>
+        new()
         {
-            Position = LegendPosition.Top,
-            FontFamily = "var(--mud-typography-body1-family)",
-            FontSize = "var(--mud-typography-body1-size)",
-            FontWeight = "var(--mud-typography-body1-weight)"
-        },
-        Chart = new Chart
-        {
-            Width = "100%",
-            Height = "350px",
-            Background = "transparent",
-            ForeColor = "var(--mud-palette-text-primary)"
-        },
-        Grid = new Grid
-        {
-            BorderColor = "var(--mud-palette-divider)"
-        },
-        Theme = new Theme()
-    };
+            Legend = new Legend
+            {
+                Position = LegendPosition.Top,
+                FontFamily = "var(--mud-typography-body1-family)",
+                FontSize = "var(--mud-typography-body1-size)",
+                FontWeight = "var(--mud-typography-body1-weight)"
+            },
+            Chart = new Chart
+            {
+                Width = "100%",
+                Height = "350px",
+                Background = "transparent",
+                ForeColor = "var(--mud-palette-text-primary)"
+            },
+            Grid = new Grid
+            {
+                BorderColor = "var(--mud-palette-divider)"
+            },
+            Theme = new Theme()
+        };
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -64,10 +73,10 @@
     protected override Task OnParametersSetAsync()
     {
         var current = ThemeProvider is { IsDarkMode: true } ? Mode.Dark : Mode.Light;
-        if (_options.Theme.Mode == current)
+        if (Options.Theme.Mode == current)
             return Task.CompletedTask;
 
-        _options.Theme.Mode = current;
+        Options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 

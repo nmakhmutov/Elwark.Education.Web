@@ -1,6 +1,6 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.User.Model
-<ApexChart @ref="@_chart" TItem="MoneyActivityModel" Options="_options">
+<ApexChart @ref="@_chart" TItem="MoneyActivityModel" Options="Options">
     <ApexPointSeries
         TItem="MoneyActivityModel"
         Items="@_activities"
@@ -21,7 +21,7 @@
 @code {
     private ApexChart<MoneyActivityModel>? _chart;
 
-    private ApexChartOptions<MoneyActivityModel> _options =
+    private static ApexChartOptions<MoneyActivityModel> Options =>
         new()
         {
             Legend = new Legend
@@ -114,17 +114,17 @@
         if (ThemeProvider is null)
             return Task.CompletedTask;
 
-        _options.Colors =
+        Options.Colors =
         [
             ThemeProvider.Palette.Success.ToString(),
             ThemeProvider.Palette.Error.ToString()
         ];
 
         var current = ThemeProvider.IsDarkMode ? Mode.Dark : Mode.Light;
-        if (_options.Theme.Mode == current)
+        if (Options.Theme.Mode == current)
             return Task.CompletedTask;
 
-        _options.Theme.Mode = current;
+        Options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 

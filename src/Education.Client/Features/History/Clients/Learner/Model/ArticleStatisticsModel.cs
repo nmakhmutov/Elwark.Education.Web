@@ -9,7 +9,8 @@ public sealed record ArticleStatisticsModel(
     UserArticleActivityModel Activity,
     ArticleStatisticsModel.TotalModel Total,
     ArticleStatisticsModel.ProgressModel EasyQuiz,
-    ArticleStatisticsModel.ProgressModel HardQuiz
+    ArticleStatisticsModel.ProgressModel HardQuiz,
+    ArticleStatisticsModel.ProgressModel ExpertQuiz
 )
 {
     public sealed record TotalModel(ulong Quizzes, ulong Score, uint Questions, TimeSpan TimeSpent);
