@@ -44,10 +44,11 @@
                 }
 
 
-                <EduBookmarkButton Color="Color.Inherit"
-                                   Id="@Course.Id"
-                                   IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                                   OnBookmarkClick="@OnBookmarkClick"/>
+                <EduBookmarkIconButton
+                    Id="@Course.Id"
+                    Color="Color.Inherit"
+                    IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                    OnBookmarkClick="@OnBookmarkClick"/>
             </AuthorizeView>
         </footer>
     </div>

@@ -48,9 +48,10 @@ else
                         Href="@HistoryUrl.User.MyCourse(context.Course.Id)"/>
                 </div>
                 <div class="actions">
-                    <EduBookmarkButton Id="@context.Course.Id"
-                                       IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
-                                       OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+                    <EduBookmarkIconButton
+                        Id="@context.Course.Id"
+                        IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
+                        OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
                 </div>
             </div>
         </ItemContent>

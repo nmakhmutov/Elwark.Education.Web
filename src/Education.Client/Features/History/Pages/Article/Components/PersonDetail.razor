@@ -49,7 +49,12 @@
     <ContentGrid>
         <Header>
             <ContentToolbarCard Formatter="@Formatter"/>
-            <ArticleInformation TimeToRead="@Person.TimeToRead" Rating="@Person.Rating"/>
+            <ArticleInformation
+                ArticleId="@Person.Id"
+                TimeToRead="@Person.TimeToRead"
+                Popularity="@Person.Popularity"
+                IsBookmarked="@Activity?.IsBookmarked"
+                OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
         </Header>
 
         <Content>
@@ -63,13 +68,13 @@
                     Activity="@Activity"
                     Difficulties="@Difficulties"/>
 
-                <UserToolbarCard
+                <FeedbackCard
                     ArticleId="@Person.Id"
                     IsLiked="@Activity?.IsLiked"
-                    IsBookmarked="@Activity?.IsBookmarked"
-                    OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"
+                    Quality="@Activity?.Quality"
                     OnLikeClick="@LearnerClient.LikeArticleAsync"
-                    OnDislikeClick="@LearnerClient.DislikeArticleAsync"/>
+                    OnDislikeClick="@LearnerClient.DislikeArticleAsync"
+                    OnQualityClick="@((id, quality) => LearnerClient.ChangeArticleQualityAsync(id, quality))"/>
             </AuthorizeView>
         </Sidebar>
     </ContentGrid>

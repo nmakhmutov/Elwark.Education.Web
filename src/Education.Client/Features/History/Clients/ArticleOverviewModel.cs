@@ -9,5 +9,5 @@ public sealed record ArticleOverviewModel(
     string Overview,
     ImageBundleModel Image,
     TimeSpan TimeToRead,
-    ContentRatingModel Rating
+    double Popularity
 );

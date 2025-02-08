@@ -53,4 +53,7 @@ internal static class LocalizationExtensions
 
     public static MarkupString Markup(this IStringLocalizer localizer, string name, params object[] arguments) =>
         (MarkupString)localizer[name, arguments].Value;
+
+    public static string GetContentQualityTitle(this IStringLocalizer localizer, ContentQuality quality) =>
+        localizer[$"Feedback_Quality_{quality}_Title"];
 }

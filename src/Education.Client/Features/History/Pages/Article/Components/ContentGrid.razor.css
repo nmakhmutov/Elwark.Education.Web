@@ -4,17 +4,24 @@
     gap: 12px;
 }
 
+.header,
+.sidebar {
+    display: grid;
+    gap: 12px;
+    align-items: start;
+}
+
 @media (min-width: 600px) {
     .container {
         gap: 24px;
     }
 }
 
-.header,
-.sidebar {
-    display: grid;
-    gap: 12px;
-    align-items: start;
+@media (min-width: 768px) {
+    .header,
+    .sidebar {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 @media (min-width: 1280px) {
@@ -28,6 +35,7 @@
     .sidebar {
         gap: 24px;
         grid-column: span 3;
+        grid-template-columns: 100%;
     }
 
     .content {

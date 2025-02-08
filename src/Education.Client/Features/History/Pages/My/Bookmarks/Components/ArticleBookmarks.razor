@@ -2,7 +2,11 @@
 @using Education.Client.Features.History.Clients.Learner.Request
 @if (_isEmpty)
 {
-    <EduNoContent Class="mt-6 mt-sm-12" Title="@L["Bookmarks_NoArticles"]" Icon="@EduIcons.Bookmarks" Size="Size.Large"/>
+    <EduNoContent
+        Class="mt-6 mt-sm-12"
+        Title="@L["Bookmarks_NoArticles"]"
+        Icon="@EduIcons.Bookmarks"
+        Size="Size.Large"/>
 }
 else
 {
@@ -54,9 +58,10 @@ else
                         Href="@HistoryUrl.User.MyArticle(context.Article.Id)"/>
                 </div>
                 <div class="actions">
-                    <EduBookmarkButton Id="@context.Article.Id"
-                                       IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
-                                       OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+                    <EduBookmarkIconButton
+                        Id="@context.Article.Id"
+                        IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
+                        OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
                 </div>
             </div>
         </ItemContent>

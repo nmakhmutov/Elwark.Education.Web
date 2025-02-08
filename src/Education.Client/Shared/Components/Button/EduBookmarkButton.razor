@@ -1,15 +1,17 @@
-<MudTooltip Text="@Text">
-    <MudToggleIconButton aria-label="@Text"
-                         Class="@Class"
-                         Color="@Color"
-                         Icon="@Icons.Material.Outlined.BookmarkAdd"
-                         Toggled="@IsBookmarked"
-                         ToggledChanged="@OnBookmarkChanged"
-                         ToggledColor="Color.Error"
-                         ToggledIcon="@Icons.Material.Outlined.BookmarkAdded"/>
-</MudTooltip>
+<EduLoadingButton
+    Class="@Class"
+    Color="@Color"
+    StartIcon="@(IsBookmarked ? Icons.Material.Outlined.BookmarkAdded : Icons.Material.Outlined.BookmarkAdd)"
+    DropShadow="false"
+    Ripple="false"
+    FullWidth="true"
+    Variant="Variant.Filled"
+    OnClick="@OnClick"
+    Text="@L[IsBookmarked ? "Bookmarks_Remove" : "Bookmarks_Add"]"
+    IsLoading="@_isLoading"/>
 
 @code {
+    private bool _isLoading;
 
     [Inject]
     private IStringLocalizer<App> L { get; init; } = default!;
@@ -29,15 +31,20 @@
     [Parameter]
     public string? Class { get; set; }
 
-    private string Text =>
-        L[IsBookmarked ? "Bookmarks_Remove" : "Bookmarks_Add"];
-
-    private async Task OnBookmarkChanged(bool toggled)
+    private async Task OnClick()
     {
-        var response = await OnBookmarkClick.Invoke(Id);
+        _isLoading = true;
+        try
+        {
+            var response = await OnBookmarkClick.Invoke(Id);
 
-        IsBookmarked = response
-            .UnwrapOr(false);
+            IsBookmarked = response
+                .UnwrapOr(false);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
 }

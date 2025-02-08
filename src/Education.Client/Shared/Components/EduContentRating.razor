@@ -1,0 +1,60 @@
+@using Education.Client.Features.History
+@using Education.Client.Features.History.Clients
+
+<div class="d-flex flex-column align-center">
+    <MudRating
+        MaxValue="5"
+        Size="Size.Medium"
+        SelectedValue="@_value"
+        SelectedValueChanged="SelectedValueChanged"
+        HoveredValueChanged="@HoverValueChanged"/>
+
+    <MudText Typo="Typo.body2">
+        @LabelText
+    </MudText>
+</div>
+
+@code {
+    private int _value = 0;
+    private int? _hoveredValue;
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public required string Id { get; set; }
+
+    [Parameter, EditorRequired]
+    public required ContentQuality? Quality { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, ContentQuality, Task<ApiResult<Unit>>> OnQualityClick { get; set; }
+
+    protected override void OnInitialized() =>
+        _value = Quality is null ? 0 : (int)Quality;
+
+    private string LabelText
+    {
+        get
+        {
+            var quality = (ContentQuality)(_hoveredValue ?? _value);
+            return quality == ContentQuality.None ? L["Feedback_Your_Thoughts"] : L.GetContentQualityTitle(quality);
+        }
+    }
+
+    private void HoverValueChanged(int? value) =>
+        _hoveredValue = value;
+
+    private async Task SelectedValueChanged(int value)
+    {
+        var quality = (ContentQuality)value;
+        if (quality == Quality || quality == ContentQuality.None)
+            return;
+
+        await OnQualityClick(Id, quality);
+
+        _value = value;
+        Quality = quality;
+    }
+
+}

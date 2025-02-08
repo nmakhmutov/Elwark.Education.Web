@@ -9,7 +9,7 @@ public sealed record TimelineOverviewModel(
     string Overview,
     ImageBundleModel Image,
     TimeSpan TimeToRead,
-    ContentRatingModel Rating,
+    double Popularity,
     HistoricalDateModel? Started,
     HistoricalDateModel? Finished
 );

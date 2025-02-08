@@ -5,18 +5,25 @@
 
     <div class="d-flex justify-space-between align-center border-b mud-border-lines-default pb-1 mb-3">
         <MudText Typo="Typo.body1">@L["TimeToRead_Title"]</MudText>
-        <div class="d-flex align-center gap-1">
-            <MudText Typo="Typo.body1">@TimeToRead.Humanize(L)</MudText>
-            <MudIcon Icon="@EduIcons.TimeToRead" Size="Size.Small"/>
-        </div>
+        <EduTimeToRead Time="@TimeToRead"/>
     </div>
 
     <div class="d-flex justify-space-between align-center">
-        <MudText Typo="Typo.body1">@L["ContentRating_Title"]</MudText>
-        <EduRating Placement="Placement.Right"
-                   Stars="@Rating.Stars"
-                   Votes="@Rating.Votes"/>
+        <MudText Typo="Typo.body1">@L["ContentPopularity_Title"]</MudText>
+        <EduPopularity Popularity="@Popularity"/>
     </div>
+
+    <AuthorizeView>
+        <Authorized>
+            <div class="d-flex justify-space-between align-center mt-3">
+                <EduBookmarkButton
+                    Id="@ArticleId"
+                    Color="Color.Primary"
+                    IsBookmarked="@(IsBookmarked ?? false)"
+                    OnBookmarkClick="@OnBookmarkClick"/>
+            </div>
+        </Authorized>
+    </AuthorizeView>
 </section>
 
 @code {
@@ -25,10 +32,19 @@
     private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
-    public required ContentRatingModel Rating { get; set; }
+    public required string ArticleId { get; set; }
+
+    [Parameter, EditorRequired]
+    public required double Popularity { get; set; }
 
     [Parameter, EditorRequired]
     public required TimeSpan TimeToRead { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool? IsBookmarked { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

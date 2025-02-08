@@ -1,0 +1,49 @@
+<section class="mud-paper pa-3 pa-sm-6 @Class">
+    <MudText Class="mb-3" Typo="Typo.subtitle2">
+        @L["Feedback_DidYouLikeThisArticle_Title"]
+    </MudText>
+
+    <EduLikeButtons
+        Class="mb-3 mb-sm-6"
+        Id="@ArticleId"
+        IsLiked="@IsLiked"
+        OnDislikeClick="@OnDislikeClick"
+        OnLikeClick="@OnLikeClick"/>
+
+    <MudText Class="mb-3" Typo="Typo.subtitle2">
+        @L["Feedback_HowTheArticleQuality_Title"]
+    </MudText>
+
+    <EduContentRating
+        Id="@ArticleId"
+        Quality="@Quality"
+        OnQualityClick="@OnQualityClick"/>
+</section>
+
+@code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; set; } = default!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter, EditorRequired]
+    public required string ArticleId { get; set; }
+
+    [Parameter, EditorRequired]
+    public required bool? IsLiked { get; set; }
+
+    [Parameter, EditorRequired]
+    public required ContentQuality? Quality { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Func<string, ContentQuality, Task<ApiResult<Unit>>> OnQualityClick { get; set; }
+
+}

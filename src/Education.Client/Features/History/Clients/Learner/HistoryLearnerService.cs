@@ -70,6 +70,12 @@ internal sealed class HistoryLearnerService : IHistoryLearnerClient
     public Task<ApiResult<Unit>> DislikeArticleAsync(string articleId) =>
         _api.PostAsync<Unit>($"{Root}/articles/{articleId}/dislikes");
 
+    public Task<ApiResult<Unit>> ChangeArticleQualityAsync(string articleId, ContentQuality quality) =>
+        _api.PostAsync<Unit, object>($"{Root}/articles/{articleId}/qualities", new
+        {
+            quality
+        });
+
     public Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCoursesAsync(CourseActivityRequest request) =>
         _api.GetAsync<PagingTokenModel<UserCourseOverviewModel>>($"{Root}/courses", request);
 

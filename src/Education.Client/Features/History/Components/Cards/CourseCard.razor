@@ -7,7 +7,11 @@
 
     <section class="content flex-grow-1 gap-3 pa-3">
         <header class="@(OneLineTitle ? "one-line-text" : null)">
-            <MudLink Href="@HistoryUrl.Content.Course(Course.Id)" Typo="Typo.h6" alt="@Course.Title" title="@Course.Title">
+            <MudLink
+                Href="@HistoryUrl.Content.Course(Course.Id)"
+                Typo="Typo.h6"
+                alt="@Course.Title"
+                title="@Course.Title">
                 @Course.Title
             </MudLink>
         </header>
@@ -47,9 +51,10 @@
             }
 
             <AuthorizeView>
-                <EduBookmarkButton Id="@Course.Id"
-                                   IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                                   OnBookmarkClick="@OnBookmarkClick"/>
+                <EduBookmarkIconButton
+                    Id="@Course.Id"
+                    IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                    OnBookmarkClick="@OnBookmarkClick"/>
             </AuthorizeView>
         </footer>
     </section>

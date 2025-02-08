@@ -46,6 +46,8 @@ public interface IHistoryLearnerClient
 
     Task<ApiResult<Unit>> DislikeArticleAsync(string articleId);
 
+    Task<ApiResult<Unit>> ChangeArticleQualityAsync(string articleId, ContentQuality quality);
+
     Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCoursesAsync(CourseActivityRequest request);
 
     Task<ApiResult<PagingTokenModel<UserCourseOverviewModel>>> GetCourseBookmarksAsync(BookmarksRequest req);

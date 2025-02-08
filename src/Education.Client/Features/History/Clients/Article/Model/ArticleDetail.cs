@@ -26,7 +26,7 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         FactionModel FactionB,
         ImageModel? Map,
         TimeSpan TimeToRead,
-        ContentRatingModel Rating,
+        double Popularity,
         DateTime CreatedAt
     ) : ArticleDetail(Id, Title, Description, Image);
 
@@ -45,7 +45,7 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         uint MaxArea,
         uint MaxPopulation,
         TimeSpan TimeToRead,
-        ContentRatingModel Rating,
+        double Popularity,
         DateTime CreatedAt
     ) : ArticleDetail(Id, Title, Description, Image);
 
@@ -57,7 +57,7 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         MarkupString Content,
         ImageBundleModel Image,
         TimeSpan TimeToRead,
-        ContentRatingModel Rating,
+        double Popularity,
         DateTime CreatedAt
     ) : ArticleDetail(Id, Title, Description, Image);
 
@@ -71,7 +71,7 @@ public abstract record ArticleDetail(string Id, string Title, string Description
         PersonBirthdayModel? Born,
         PersonBirthdayModel? Died,
         TimeSpan TimeToRead,
-        ContentRatingModel Rating,
+        double Popularity,
         DateTime CreatedAt,
         PersonalDetailModel[] Details
     ) : ArticleDetail(Id, Title, Description, Image);

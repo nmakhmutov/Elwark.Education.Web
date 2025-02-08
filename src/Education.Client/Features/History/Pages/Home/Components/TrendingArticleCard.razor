@@ -9,10 +9,11 @@
     <div class="content">
         <EpochChip Epoch="@Article.Epoch"/>
 
-        <MudLink Class="@(Article.Title.Length > 50 ? "w-100 one-line-text" : null)"
-                 Color="Color.Inherit"
-                 Href="@HistoryUrl.Content.Article(Article.Id)"
-                 Typo="Typo.h6">
+        <MudLink
+            Class="@(Article.Title.Length > 50 ? "w-100 one-line-text" : null)"
+            Color="Color.Inherit"
+            Href="@HistoryUrl.Content.Article(Article.Id)"
+            Typo="Typo.h6">
             <b>@Article.Title</b>
         </MudLink>
 
@@ -24,32 +25,39 @@
         }
 
         <footer class="d-flex align-center gap-3 w-100">
-            <EduRating Compact
-                       Stars="@Article.Rating.Stars"
-                       Votes="@Article.Rating.Votes"/>
+            <MudTooltip Text="@L["ContentPopularity_Title"]" Arrow Inline>
+                <EduPopularity Popularity="@Article.Popularity"/>
+            </MudTooltip>
 
-            <EduTimeToRead Time="@Article.TimeToRead"/>
+            <MudTooltip Text="@L["TimeToRead_Title"]" Arrow Inline>
+                <EduTimeToRead Time="@Article.TimeToRead"/>
+            </MudTooltip>
 
             <AuthorizeView>
                 <MudSpacer/>
 
                 @if (HasQuiz)
                 {
-                    <ArticleCompletionChip Href="@HistoryUrl.User.MyArticle(Article.Id)"
-                                           Size="Size.Small"
-                                           Status="@(Activity?.Status ?? ArticleLearningStatus.NotStarted)"/>
+                    <ArticleCompletionChip
+                        Href="@HistoryUrl.User.MyArticle(Article.Id)"
+                        Size="Size.Small"
+                        Status="@(Activity?.Status ?? ArticleLearningStatus.NotStarted)"/>
                 }
 
-                <EduBookmarkButton Color="Color.Inherit"
-                                   Id="@Article.Id"
-                                   IsBookmarked="@(Activity?.IsBookmarked ?? false)"
-                                   OnBookmarkClick="@OnBookmarkClick"/>
+                <EduBookmarkIconButton
+                    Color="Color.Inherit"
+                    Id="@Article.Id"
+                    IsBookmarked="@(Activity?.IsBookmarked ?? false)"
+                    OnBookmarkClick="@OnBookmarkClick"/>
             </AuthorizeView>
         </footer>
     </div>
 </article>
 
 @code {
+
+    [Inject]
+    private IStringLocalizer<App> L { get; init; } = default!;
 
     [Parameter, EditorRequired]
     public required ArticleOverviewModel Article { get; set; }

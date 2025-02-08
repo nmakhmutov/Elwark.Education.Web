@@ -37,12 +37,13 @@
                 </MudText>
 
                 <div class="d-flex align-center justify-space-between justify-sm-start gap-3 gap-sm-6">
-                    <EduRating Compact
-                               Placement="Placement.Right"
-                               Stars="@context.Article.Rating.Stars"
-                               Votes="@context.Article.Rating.Votes"/>
+                    <MudTooltip Text="@L["ContentPopularity_Title"]" Arrow Inline>
+                        <EduPopularity Popularity="@context.Article.Popularity"/>
+                    </MudTooltip>
 
-                    <EduTimeToRead Time="@context.Article.TimeToRead"/>
+                    <MudTooltip Text="@L["TimeToRead_Title"]" Arrow Inline>
+                        <EduTimeToRead Time="@context.Article.TimeToRead"/>
+                    </MudTooltip>
 
                     <AuthorizeView Context="_">
                         @if (context.HasQuiz)
@@ -53,10 +54,11 @@
                                 Size="Size.Small"/>
                         }
 
-                        <EduBookmarkButton Color="Color.Inherit"
-                                           Id="@context.Article.Id"
-                                           IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
-                                           OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
+                        <EduBookmarkIconButton
+                            Color="Color.Inherit"
+                            Id="@context.Article.Id"
+                            IsBookmarked="@(context.Activity?.IsBookmarked ?? false)"
+                            OnBookmarkClick="@LearnerClient.ToggleArticleBookmarkAsync"/>
                     </AuthorizeView>
                 </div>
             </article>

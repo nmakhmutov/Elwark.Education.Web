@@ -1,17 +1,25 @@
 <div class="@Class">
-    <MudTooltip Text="@L["Button_Like_Description"]">
-        <MudIconButton aria-label="@L["Button_Like_Description"]"
-                       Color="@(IsLiked == true ? Color.Primary : Color)"
-                       Icon="@Icons.Material.Rounded.ThumbUp"
-                       OnClick="@OnLike"/>
-    </MudTooltip>
+    <MudButtonGroup Variant="Variant.Outlined" OverrideStyles="false" FullWidth>
+        <MudButton
+            aria-label="@L["Button_Like_Title"]"
+            Variant="Variant.Outlined"
+            Color="@(IsLiked == true ? Color.Success : Color.Default)"
+            StartIcon="@Icons.Material.Rounded.ThumbUp"
+            OnClick="@OnLike"
+            DropShadow="false">
+            @L["Button_Like_Title"]
+        </MudButton>
 
-    <MudTooltip Text="@L["Button_Dislike_Description"]">
-        <MudIconButton aria-label="@L["Button_Dislike_Description"]"
-                       Color="@(IsLiked == false ? Color.Primary : Color)"
-                       Icon="@Icons.Material.Rounded.ThumbDown"
-                       OnClick="@OnDislike"/>
-    </MudTooltip>
+        <MudButton
+            aria-label="@L["Button_Dislike_Title"]"
+            Variant="Variant.Outlined"
+            Color="@(IsLiked == false ? Color.Error : Color.Default)"
+            StartIcon="@Icons.Material.Rounded.ThumbDown"
+            OnClick="@OnDislike"
+            DropShadow="false">
+            @L["Button_Dislike_Title"]
+        </MudButton>
+    </MudButtonGroup>
 </div>
 
 @code {
@@ -23,19 +31,16 @@
     public string Id { get; set; } = string.Empty;
 
     [Parameter, EditorRequired]
-    public bool? IsLiked { get; set; }
-
-    [Parameter]
-    public Color Color { get; set; } = Color.Default;
+    public required bool? IsLiked { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public required Func<string, Task<ApiResult<Unit>>> OnLikeClick { get; set; }
 
     [Parameter, EditorRequired]
-    public Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; } = _ => Task.FromResult(ApiResult<Unit>.Success(Unit.Value));
+    public required Func<string, Task<ApiResult<Unit>>> OnDislikeClick { get; set; }
 
     private async Task OnLike()
     {
