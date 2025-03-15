@@ -29,38 +29,22 @@
 <EduApiViewer Result="@_response" OnReloadClick="@OnParametersSetAsync" Context="response">
     @if (response.Count > 0)
     {
-        <MudTimeline Class="px-3 px-sm-6" TimelinePosition="@_timelinePosition">
+        <MudTimeline Class="px-3 px-sm-6 w-max-1600 mx-auto" TimelinePosition="@_timelinePosition">
             <Virtualize Items="@response.Items">
                 <MudTimelineItem Color="Color.Primary" Size="Size.Medium" Elevation="25" Variant="Variant.Filled">
                     <ItemDot>
                         <MudIcon Icon="@Icons.Material.Outlined.DateRange" Size="Size.Medium"/>
                     </ItemDot>
                     <ItemOpposite>
-                        <HistoricalDateRange Started="@context.Started" Finished="@context.Finished" Typo="Typo.h4"/>
+                        <HistoricalDateRange Started="@context.Article.Started" Finished="@context.Article.Finished" Typo="Typo.h4"/>
                     </ItemOpposite>
                     <ItemContent>
-                        <div class="card mud-paper pa-3">
-                            <MudImage
-                                Class="image rounded"
-                                Src="@context.Image.Small"
-                                Alt="@context.Image.Alt"
-                                ObjectFit="ObjectFit.Cover"
-                                ObjectPosition="ObjectPosition.Center"
-                                Width="180"
-                                Height="180"/>
-
-                            <div class="card-content">
-                                <MudLink Typo="Typo.h6" Href="@HistoryUrl.Content.Article(context.Id)">
-                                    @context.Title
-                                </MudLink>
-                                <div class="d-md-none">
-                                    <HistoricalDateRange Started="@context.Started" Finished="@context.Finished"/>
-                                </div>
-                                <MudText>
-                                    @context.Overview
-                                </MudText>
-                            </div>
-                        </div>
+                        <ArticleCard
+                            Article="@context.Article"
+                            HasQuiz="@context.HasQuiz"
+                            Activity="@context.Activity"
+                            OnBookmarkClick="@_learnerClient.ToggleArticleBookmarkAsync"
+                            Horizontal/>
                     </ItemContent>
                 </MudTimelineItem>
             </Virtualize>

@@ -26,11 +26,21 @@ internal static class HostExtensions
             });
 
         var anonymous = builder.Services
-            .AddHttpClient<ApiAnonymousClient>(client => client.BaseAddress = gatewayUrl)
-            .AddHttpMessageHandler<LocalizationHandler>();
+            .AddHttpClient<ApiAnonymousClient>(client =>
+            {
+                client.BaseAddress = gatewayUrl;
+                client.DefaultRequestVersion = new Version(2, 0);
+                client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
+            })
+                .AddHttpMessageHandler<LocalizationHandler>();
 
         var authenticated = builder.Services
-            .AddHttpClient<ApiAuthenticatedClient>(client => client.BaseAddress = gatewayUrl)
+            .AddHttpClient<ApiAuthenticatedClient>(client =>
+            {
+                client.BaseAddress = gatewayUrl;
+                client.DefaultRequestVersion = new Version(2, 0);
+                client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
+            })
             .AddHttpMessageHandler<LocalizationHandler>()
             .AddHttpMessageHandler<AuthorizationMessageHandler>();
 

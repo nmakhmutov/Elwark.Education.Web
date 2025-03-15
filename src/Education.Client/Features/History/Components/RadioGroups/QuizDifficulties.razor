@@ -16,17 +16,38 @@
                     </MudListItem>
                 </MudList>
             </ChildContent>
+
             <FooterContent>
-                <EduLoadingButton
-                    Color="Color.Primary"
-                    Disabled="@IsDisabled(quiz)"
-                    DropShadow="false"
-                    Ripple="false"
-                    IsLoading="@IsLoading(quiz.Difficulty)"
-                    LoadingText="@L["Loading_Title"]"
-                    OnClick="@(() => CreateAsync(quiz.Difficulty))"
-                    Text="@L["Start_Quiz_Button"]"
-                    Variant="Variant.Filled"/>
+                @switch (quiz.Status)
+                {
+                    case AccessStatus.Allowed:
+                        <EduLoadingButton
+                            Color="Color.Primary"
+                            Variant="Variant.Filled"
+                            Disabled="@IsDisabled(quiz)"
+                            DropShadow="false"
+                            Ripple="false"
+                            IsLoading="@IsLoading(quiz.Difficulty)"
+                            LoadingText="@L["Loading_Title"]"
+                            OnClick="@(() => CreateAsync(quiz.Difficulty))"
+                            Text="@L["Start_Quiz_Button"]"/>
+                        break;
+
+                    case AccessStatus.RequiredAccessInventory:
+                        <MudButton
+                            Color="Color.Primary"
+                            Variant="Variant.Filled"
+                            DropShadow="false"
+                            Ripple="false"
+                            EndIcon="@EduIcons.Store"
+                            Href="@HistoryUrl.Store.Index(CategoryType.Quiz, quiz.AccessInventory.InventoryId)">
+                            @L["BuyInStore_Button"]
+                        </MudButton>
+                        break;
+
+                    case AccessStatus.RequiredSubscription:
+                        break;
+                }
             </FooterContent>
         </DifficultyCard>
     }
@@ -68,7 +89,7 @@
 
     private bool IsDisabled(QuizInformationModel quiz)
     {
-        if (!quiz.IsAllowed)
+        if (quiz.Status != AccessStatus.Allowed)
             return true;
 
         return _isLoading && quiz.Difficulty != _difficulty;

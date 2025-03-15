@@ -2,7 +2,7 @@ using Education.Client.Models.Content;
 
 namespace Education.Client.Features.History.Clients;
 
-public sealed record ArticleOverviewModel(
+public record ArticleOverviewModel(
     string Id,
     EpochType Epoch,
     string Title,

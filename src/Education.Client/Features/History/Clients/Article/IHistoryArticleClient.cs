@@ -12,7 +12,7 @@ public interface IHistoryArticleClient
 
     Task<ApiResult<PagingOffsetModel<EmpireOverviewModel>>> GetAsync(GetEmpiresRequest request);
 
-    Task<ApiResult<PagingOffsetModel<TimelineOverviewModel>>> GetAsync(GetTimelineRequest request);
+    Task<ApiResult<PagingOffsetModel<UserTimelineOverviewModel>>> GetAsync(GetTimelineRequest request);
 
     Task<ApiResult<UserArticleDetailModel>> GetAsync(string id);
 

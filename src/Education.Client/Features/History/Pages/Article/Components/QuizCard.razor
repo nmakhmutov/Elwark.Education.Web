@@ -48,16 +48,19 @@
         </div>
     }
 
-    <div class="d-flex justify-space-between align-center pb-1 mb-3">
-        <MudText Typo="Typo.body1">
-            @L["LearningStatus_Title"]
-        </MudText>
+    @if (Difficulties.Length > 0 && Activity?.Status is not null)
+    {
+        <div class="d-flex justify-space-between align-center pb-1 mb-3">
+            <MudText Typo="Typo.body1">
+                @L["LearningStatus_Title"]
+            </MudText>
 
-        <ArticleCompletionChip
-            Status="@(Activity?.Status ?? ArticleLearningStatus.NotStarted)"
-            Href="@HistoryUrl.User.MyArticle(ArticleId)"
-            Size="Size.Small"/>
-    </div>
+            <ArticleCompletionChip
+                Status="@(Activity?.Status ?? ArticleLearningStatus.NotStarted)"
+                Href="@HistoryUrl.User.MyArticle(ArticleId)"
+                Size="Size.Small"/>
+        </div>
+    }
 
     <MudText Class="mb-3" Typo="Typo.body2">
         @if (Difficulties.Length > 0)

@@ -15,16 +15,36 @@
             </ChildContent>
 
             <FooterContent>
-                <EduLoadingButton
-                    Color="Color.Primary"
-                    Disabled="@IsDisabled(guesser)"
-                    DropShadow="false"
-                    IsLoading="@IsLoading(guesser.Size)"
-                    LoadingText="@L["Loading_Title"]"
-                    OnClick="@(() => CreateAsync(guesser.Size))"
-                    Ripple="false"
-                    Text="@L["History_DateGuesser_Start_Button"]"
-                    Variant="Variant.Filled"/>
+                @switch (guesser.Status)
+                {
+                    case AccessStatus.Allowed:
+                        <EduLoadingButton
+                            Color="Color.Primary"
+                            Disabled="@IsDisabled(guesser)"
+                            DropShadow="false"
+                            IsLoading="@IsLoading(guesser.Size)"
+                            LoadingText="@L["Loading_Title"]"
+                            OnClick="@(() => CreateAsync(guesser.Size))"
+                            Ripple="false"
+                            Text="@L["History_DateGuesser_Start_Button"]"
+                            Variant="Variant.Filled"/>
+                        break;
+
+                    case AccessStatus.RequiredAccessInventory:
+                        <MudButton
+                            Color="Color.Primary"
+                            Variant="Variant.Filled"
+                            DropShadow="false"
+                            Ripple="false"
+                            EndIcon="@EduIcons.Store"
+                            Href="@HistoryUrl.Store.Index(CategoryType.DateGuesser, guesser.AccessInventory.InventoryId)">
+                            @L["BuyInStore_Button"]
+                        </MudButton>
+                        break;
+
+                    case AccessStatus.RequiredSubscription:
+                        break;
+                }
             </FooterContent>
         </DifficultyCard>
     }
@@ -66,7 +86,7 @@
 
     private bool IsDisabled(DateGuesserInformationModel quiz)
     {
-        if (!quiz.IsAllowed)
+        if (quiz.Status != AccessStatus.Allowed)
             return true;
 
         return _isLoading && quiz.Size != _size;

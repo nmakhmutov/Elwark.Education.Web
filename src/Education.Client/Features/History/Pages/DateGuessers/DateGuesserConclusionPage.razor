@@ -7,25 +7,37 @@
 </PageTitle>
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync" Context="conclusion">
-    <MudAlert Class="mb-6 mb-sm-12" Severity="Severity.Success" Square ContentAlignment="HorizontalAlignment.Center">
-        @_localizer["History_DateGuesser_Completed"]
-    </MudAlert>
+    <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
+        <section class="grid">
+            <article class="d-flex flex-column mud-paper gap-3 gap-sm-6 py-3 py-sm-6">
+                <EduCompletedStars Class="mb-6" Progress="@_progress"/>
 
-    <EduCompletedStars Class="mb-6" Progress="@_progress"/>
+                <MudAlert
+                    Class="mb-3"
+                    Severity="Severity.Success"
+                    ContentAlignment="HorizontalAlignment.Center"
+                    Square>
+                    @_localizer["History_DateGuesser_Completed"]
+                </MudAlert>
 
-    <RewardsContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280" Rewards="@conclusion.Rewards"/>
+                <RewardsContainer Class="flex-1" Rewards="@conclusion.Rewards"/>
 
-    <div class="d-flex justify-center pa-3 pa-sm-6">
-        <MudButton
-            Color="Color.Primary"
-            DropShadow="false"
-            Href="@HistoryUrl.DateGuesser.Index"
-            Ripple="false"
-            Size="Size.Large"
-            Variant="Variant.Filled">
-            @_localizer["History_DateGuesser_TakeTheGuesserAgain"]
-        </MudButton>
-    </div>
+                <div class="d-flex justify-center">
+                    <MudButton
+                        Color="Color.Primary"
+                        DropShadow="false"
+                        Href="@HistoryUrl.DateGuesser.Index"
+                        Ripple="false"
+                        Size="Size.Large"
+                        Variant="Variant.Filled">
+                        @_localizer["History_DateGuesser_TakeTheGuesserAgain"]
+                    </MudButton>
+                </div>
+            </article>
+
+            @* <ScoreConclusionCard Conclusion="@context"/> *@
+        </section>
+    </EduContainer>
 
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <MudTable

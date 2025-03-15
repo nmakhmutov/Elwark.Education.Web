@@ -3,7 +3,7 @@ using Education.Client.Models.Inventory;
 
 namespace Education.Client.Features.History.Clients.Product.Model;
 
-[JsonPolymorphic(TypeDiscriminatorPropertyName = "type"),
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "_t"),
  JsonDerivedType(typeof(SystemModel), "system"),
  JsonDerivedType(typeof(LimitedModel), "limited"),
  JsonDerivedType(typeof(StockedModel), "stocked"),

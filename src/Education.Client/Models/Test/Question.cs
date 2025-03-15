@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Education.Client.Models.Test;
 
-[JsonPolymorphic(TypeDiscriminatorPropertyName = "type"),
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "_t"),
  JsonDerivedType(typeof(TextModel), "text"),
  JsonDerivedType(typeof(SingleModel), "single"),
  JsonDerivedType(typeof(MultipleModel), "multiple"),

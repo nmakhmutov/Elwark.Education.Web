@@ -4,7 +4,8 @@ using Education.Client.Models.Test;
 namespace Education.Client.Features.History.Clients.Quiz.Model;
 
 public sealed record QuizInformationModel(
-    bool IsAllowed,
+    AccessStatus Status,
+    SubscriptionPlan RequiredSubscription,
     DifficultyType Difficulty,
     QuizInformationModel.QuestionModel Question,
     UserInventoryModel AccessInventory,

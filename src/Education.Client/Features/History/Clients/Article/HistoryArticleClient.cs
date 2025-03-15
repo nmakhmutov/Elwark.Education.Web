@@ -19,8 +19,8 @@ internal sealed class HistoryArticleClient : IHistoryArticleClient
     public Task<ApiResult<PagingOffsetModel<EmpireOverviewModel>>> GetAsync(GetEmpiresRequest request) =>
         _api.GetAsync<PagingOffsetModel<EmpireOverviewModel>>("history/empires", request);
 
-    public Task<ApiResult<PagingOffsetModel<TimelineOverviewModel>>> GetAsync(GetTimelineRequest request) =>
-        _api.GetAsync<PagingOffsetModel<TimelineOverviewModel>>("history/timelines", request);
+    public Task<ApiResult<PagingOffsetModel<UserTimelineOverviewModel>>> GetAsync(GetTimelineRequest request) =>
+        _api.GetAsync<PagingOffsetModel<UserTimelineOverviewModel>>("history/timelines", request);
 
     public Task<ApiResult<UserArticleDetailModel>> GetAsync(string id) =>
         _api.GetAsync<UserArticleDetailModel>($"history/articles/{id}");

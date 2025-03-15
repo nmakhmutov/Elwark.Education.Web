@@ -47,6 +47,9 @@ public sealed partial class Page : ComponentBase
     [SupplyParameterFromQuery]
     public string? Category { get; set; }
 
+    [SupplyParameterFromQuery(Name = "id")]
+    public int? InventoryId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await UpdateProfileAsync();
@@ -57,6 +60,20 @@ public sealed partial class Page : ComponentBase
             .Distinct()
             .Order()
             .ToArray();
+
+        if (!InventoryId.HasValue)
+            return;
+
+        _response.Match(model =>
+        {
+            var inventory = model.OfType<Product.SystemModel>()
+                .FirstOrDefault(x => x.InventoryId == InventoryId);
+
+            if (inventory is null)
+                return;
+
+            _ = OpenInventoryDialog(inventory);
+        });
     }
 
     protected override void OnParametersSet() =>

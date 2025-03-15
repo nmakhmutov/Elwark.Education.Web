@@ -4,10 +4,8 @@
         @foreach (var sort in BookmarksRequest.SortTypes)
         {
             <MudMenuItem
-                Class="flex-row-reverse gap-3 gap-sm-6"
                 OnClick="@(() => SortChanged(sort.Key))"
-                Icon="@(Filter.Sort == sort.Key ? Icons.Material.Outlined.Check : null)"
-                IconSize="Size.Small">
+                Icon="@(Filter.Sort == sort.Key ? Icons.Material.Outlined.Check : null)">
                 @L[$"Bookmarks_{sort.Value}"]
             </MudMenuItem>
         }

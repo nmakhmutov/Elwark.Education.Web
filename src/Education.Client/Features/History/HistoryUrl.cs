@@ -122,6 +122,11 @@ public static class HistoryUrl
             category == CategoryType.None
                 ? $"{Root}/store"
                 : $"{Root}/store?category={category.ToFastString().ToLower()}";
+
+        public static string Index(CategoryType category, uint id) =>
+            category == CategoryType.None
+                ? $"{Root}/store?id={id}"
+                : $"{Root}/store?category={category.ToFastString().ToLower()}&id={id}";
     }
 
     public static class User

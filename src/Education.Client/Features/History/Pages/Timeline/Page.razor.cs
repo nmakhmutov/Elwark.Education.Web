@@ -2,6 +2,7 @@ using Education.Client.Clients;
 using Education.Client.Features.History.Clients.Article;
 using Education.Client.Features.History.Clients.Article.Model;
 using Education.Client.Features.History.Clients.Article.Request;
+using Education.Client.Features.History.Clients.Learner;
 using Education.Client.Features.History.Pages.Timeline.Components;
 using Education.Client.Models;
 using Microsoft.AspNetCore.Components;
@@ -15,6 +16,7 @@ public sealed partial class Page : ComponentBase,
     IAsyncDisposable
 {
     private readonly IHistoryArticleClient _articleClient;
+    private readonly IHistoryLearnerClient _learnerClient;
     private readonly IDialogService _dialogService;
     private readonly IStringLocalizer<App> _localizer;
     private readonly NavigationManager _navigation;
@@ -23,12 +25,13 @@ public sealed partial class Page : ComponentBase,
     private Guid _subscriptionId;
     private TimelinePosition _timelinePosition = TimelinePosition.Start;
 
-    private ApiResult<PagingOffsetModel<TimelineOverviewModel>> _response =
-        ApiResult<PagingOffsetModel<TimelineOverviewModel>>.Loading();
+    private ApiResult<PagingOffsetModel<UserTimelineOverviewModel>> _response =
+        ApiResult<PagingOffsetModel<UserTimelineOverviewModel>>.Loading();
 
     public Page(
         IStringLocalizer<App> localizer,
         IHistoryArticleClient articleClient,
+        IHistoryLearnerClient learnerClient,
         IDialogService dialogService,
         IBrowserViewportService viewportService,
         NavigationManager navigation
@@ -39,6 +42,7 @@ public sealed partial class Page : ComponentBase,
         _dialogService = dialogService;
         _viewportService = viewportService;
         _navigation = navigation;
+        _learnerClient = learnerClient;
     }
 
     [SupplyParameterFromQuery(Name = "year")]

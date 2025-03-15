@@ -12,4 +12,4 @@ public sealed record TimelineOverviewModel(
     double Popularity,
     HistoricalDateModel? Started,
     HistoricalDateModel? Finished
-);
+) : ArticleOverviewModel(Id, Epoch, Title, Overview, Image, TimeToRead, Popularity);

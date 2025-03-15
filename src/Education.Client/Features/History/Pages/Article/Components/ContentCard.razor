@@ -79,11 +79,11 @@
     private double FontSize(double fontSize) =>
         Math.Round(Formatter.FontSize * fontSize, 2);
 
-    private double LineHeight(double lineHeight) =>
-        Math.Round(Formatter.LineHeight * lineHeight, 4);
+    private string LineHeight(string? lineHeight) =>
+        $"calc({lineHeight} * {Formatter.LineHeight})";
 
-    private int TextBold(int fontWeight) =>
-        fontWeight * (Formatter.IsFontWeightBold ? 2 : 1);
+    private string TextBold(string? fontWeight) =>
+        $"calc({fontWeight} * {(Formatter.IsFontWeightBold ? 2 : 1)})";
 
     private string Justify() =>
         Formatter.TextAlign switch

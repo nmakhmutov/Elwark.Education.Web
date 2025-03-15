@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Education.Client.Features.History.Clients.User.Model;
 
-[JsonPolymorphic(TypeDiscriminatorPropertyName = "type"),
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "_t"),
  JsonDerivedType(typeof(CompletedModel), "completed"),
  JsonDerivedType(typeof(LadderModel), "ladder"),
  JsonDerivedType(typeof(ProgressiveModel), "progressive")]

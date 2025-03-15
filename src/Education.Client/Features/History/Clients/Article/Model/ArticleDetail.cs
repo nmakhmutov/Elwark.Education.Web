@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Education.Client.Features.History.Clients.Article.Model;
 
-[JsonPolymorphic(TypeDiscriminatorPropertyName = "type"),
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "_t"),
  JsonDerivedType(typeof(GeneralModel), "general"),
  JsonDerivedType(typeof(BattleModel), "battle"),
  JsonDerivedType(typeof(EmpireModel), "empire"),
