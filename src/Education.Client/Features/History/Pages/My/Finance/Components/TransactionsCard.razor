@@ -10,7 +10,7 @@
         Dense>
         <RowTemplate>
             <MudTd>
-                @if (context.Kind == TransactionKind.Income)
+                @if (context is TransactionModel.Income)
                 {
                     <MudIcon Icon="@Icons.Material.Outlined.TrendingUp" Color="Color.Success"/>
                 }
@@ -24,7 +24,7 @@
                     @context.Title
                 </MudText>
                 <MudText Class="mud-text-secondary" Typo="Typo.body2">
-                    @Customer.Humanize(context.Date)
+                    @Customer.Humanize(context.CreatedAt)
                 </MudText>
             </MudTd>
             <MudTd>

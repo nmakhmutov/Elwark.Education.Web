@@ -1,15 +1,15 @@
+using System.Text.Json.Serialization;
+
 namespace Education.Client.Features.History.Clients.User.Model;
 
-public sealed record TransactionModel(
-    DateTime Date,
-    string Title,
-    TransactionKind Kind,
-    GameMoneyModel[] Monies
-);
-
-public enum TransactionKind
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "_t"),
+ JsonDerivedType(typeof(Income), "income"),
+ JsonDerivedType(typeof(Expense), "expense")]
+public abstract record TransactionModel(string Title, DateTime CreatedAt, IEnumerable<GameMoneyModel> Monies)
 {
-    Unknown = 0,
-    Income = 1,
-    Expense = 2
+    public sealed record Income(DateTime CreatedAt, string Title, IEnumerable<GameMoneyModel> Monies)
+        : TransactionModel(Title, CreatedAt, Monies);
+
+    public sealed record Expense(DateTime CreatedAt, string Title, IEnumerable<GameMoneyModel> Monies)
+        : TransactionModel(Title, CreatedAt, Monies);
 }

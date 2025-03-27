@@ -40,7 +40,7 @@ public interface IHistoryLearnerClient
 
     Task<ApiResult<ArticleStatisticsModel>> GetArticleAsync(string articleId);
 
-    Task<ApiResult<bool>> ToggleArticleBookmarkAsync(string articleId);
+    Task<ApiResult<Unit>> ToggleArticleBookmarkAsync(string articleId);
 
     Task<ApiResult<Unit>> LikeArticleAsync(string articleId);
 
@@ -56,7 +56,7 @@ public interface IHistoryLearnerClient
 
     Task<ApiResult<UserCourseActivityModel>> StartCourseAsync(string courseId);
 
-    Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string courseId);
+    Task<ApiResult<Unit>> ToggleCourseBookmarkAsync(string courseId);
 
     Task<ApiResult<Unit>> LikeCourseAsync(string courseId);
 

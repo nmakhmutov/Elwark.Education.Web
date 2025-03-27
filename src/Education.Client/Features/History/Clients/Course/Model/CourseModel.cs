@@ -11,5 +11,5 @@ public sealed record CourseModel(
     UserArticleOverviewModel[] Articles
 )
 {
-    public sealed record CourseDetailsModel(uint Learners, TimeSpan TimeToRead, ContentRatingModel Rating);
+    public sealed record CourseDetailsModel(uint Learners, TimeSpan TimeToRead, double Popularity);
 }

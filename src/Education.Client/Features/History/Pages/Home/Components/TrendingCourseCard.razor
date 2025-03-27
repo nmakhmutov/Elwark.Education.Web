@@ -19,9 +19,9 @@
         </p>
 
         <footer class="d-flex align-center gap-3 w-100">
-            <EduRating Compact
-                       Stars="@Course.Rating.Stars"
-                       Votes="@Course.Rating.Votes"/>
+            <MudTooltip Text="@L["ContentPopularity_Title"]" Arrow Inline>
+                <EduPopularity Popularity="@Course.Popularity"/>
+            </MudTooltip>
 
             <MudTooltip Text="@L["Articles_Title"]">
                 <div class="d-flex align-center white-text">
@@ -69,7 +69,7 @@
     public bool HasExamination { get; set; }
 
     [Parameter, EditorRequired]
-    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
+    public required Func<string, Task<ApiResult<Unit>>> OnBookmarkClick { get; set; }
 
     [Parameter]
     public string? Class { get; set; }

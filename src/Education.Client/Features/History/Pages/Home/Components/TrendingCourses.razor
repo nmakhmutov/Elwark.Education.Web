@@ -14,11 +14,12 @@
         <section class="grid @Class">
             @foreach (var overview in context)
             {
-                <TrendingCourseCard Class="course"
-                                    Course="@overview.Course"
-                                    Activity="@overview.Activity"
-                                    HasExamination="@overview.HasExamination"
-                                    OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
+                <TrendingCourseCard
+                    Class="course"
+                    Course="@overview.Course"
+                    Activity="@overview.Activity"
+                    HasExamination="@overview.HasExamination"
+                    OnBookmarkClick="@LearnerClient.ToggleCourseBookmarkAsync"/>
             }
         </section>
     </ChildContent>

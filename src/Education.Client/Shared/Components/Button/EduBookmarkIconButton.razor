@@ -22,7 +22,7 @@
     public required bool IsBookmarked { get; set; }
 
     [Parameter, EditorRequired]
-    public required Func<string, Task<ApiResult<bool>>> OnBookmarkClick { get; set; }
+    public required Func<string, Task<ApiResult<Unit>>> OnBookmarkClick { get; set; }
 
     [Parameter]
     public Color Color { get; set; } = Color.Default;
@@ -37,8 +37,8 @@
     {
         var response = await OnBookmarkClick.Invoke(Id);
 
-        IsBookmarked = response
-            .UnwrapOr(false);
+        if (response.IsSuccess)
+            IsBookmarked = !IsBookmarked;
     }
 
 }

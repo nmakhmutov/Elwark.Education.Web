@@ -61,8 +61,8 @@ internal sealed class HistoryLearnerService : IHistoryLearnerClient
     public Task<ApiResult<ArticleStatisticsModel>> GetArticleAsync(string articleId) =>
         _api.GetAsync<ArticleStatisticsModel>($"{Root}/articles/{articleId}");
 
-    public Task<ApiResult<bool>> ToggleArticleBookmarkAsync(string articleId) =>
-        _api.PostAsync<bool>($"{Root}/articles/{articleId}/bookmarks");
+    public Task<ApiResult<Unit>> ToggleArticleBookmarkAsync(string articleId) =>
+        _api.PostAsync<Unit>($"{Root}/articles/{articleId}/bookmarks");
 
     public Task<ApiResult<Unit>> LikeArticleAsync(string articleId) =>
         _api.PostAsync<Unit>($"{Root}/articles/{articleId}/likes");
@@ -88,8 +88,8 @@ internal sealed class HistoryLearnerService : IHistoryLearnerClient
     public Task<ApiResult<UserCourseActivityModel>> StartCourseAsync(string courseId) =>
         _api.PostAsync<UserCourseActivityModel>($"{Root}/courses/{courseId}");
 
-    public Task<ApiResult<bool>> ToggleCourseBookmarkAsync(string courseId) =>
-        _api.PostAsync<bool>($"{Root}/courses/{courseId}/bookmarks");
+    public Task<ApiResult<Unit>> ToggleCourseBookmarkAsync(string courseId) =>
+        _api.PostAsync<Unit>($"{Root}/courses/{courseId}/bookmarks");
 
     public Task<ApiResult<Unit>> LikeCourseAsync(string courseId) =>
         _api.PostAsync<Unit>($"{Root}/courses/{courseId}/likes");

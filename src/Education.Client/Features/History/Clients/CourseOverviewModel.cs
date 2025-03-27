@@ -8,5 +8,5 @@ public sealed record CourseOverviewModel(
     string Overview,
     ImageBundleModel Image,
     uint ArticleCount,
-    ContentRatingModel Rating
+    double Popularity
 );

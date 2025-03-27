@@ -1,17 +1,10 @@
 namespace Education.Client.Models;
 
-public readonly struct Unit : IEquatable<Unit>,
-    IComparable<Unit>,
-    IComparable
+public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>
 {
     public static readonly Unit Value = new();
 
-    public static readonly Task<Unit> Task = System.Threading.Tasks.Task.FromResult(Value);
-
     public int CompareTo(Unit other) =>
-        0;
-
-    int IComparable.CompareTo(object? obj) =>
         0;
 
     public override int GetHashCode() =>
