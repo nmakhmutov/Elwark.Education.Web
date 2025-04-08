@@ -12,27 +12,19 @@
 
 <EduApiViewer Result="@_response" OnReloadClick="@OnInitializedAsync">
     <EduContainer Class="pb-3 pb-sm-6" MaxWidth="EduWidth.W1920">
-        @if (context.Transactions.Length > 0)
-        {
-            <section class="grid">
-                <EduFillGrid>
-                    @foreach (var wallet in context.Wallets)
-                    {
-                        <WalletCard Wallet="@wallet"/>
-                    }
-                </EduFillGrid>
+        <section class="grid">
+            <BalanceStatisticsCard Class="activity" Activities="@context.Activities"/>
 
-                <BalanceStatisticsCard Class="activity" Activities="@context.Activities"/>
+            <div class="wallets">
+                @foreach (var wallet in context.Wallets)
+                {
+                    <WalletCard Wallet="@wallet"/>
+                }
+            </div>
 
-                <TransactionsCard Class="transactions" Transactions="@context.Transactions"/>
-            </section>
-        }
-        else
-        {
-            <EduNoContent
-                Size="Size.Large"
-                Title="@_localizer["Finance_NoActivity_Title"]"
-                Subtitle="@_localizer["Finance_NoActivity_Description"]"/>
-        }
+            <TransactionsCard Class="transactions" Transactions="@context.Transactions"/>
+
+            <OrdersCard Class="orders" Orders="@context.Orders"/>
+        </section>
     </EduContainer>
 </EduApiViewer>

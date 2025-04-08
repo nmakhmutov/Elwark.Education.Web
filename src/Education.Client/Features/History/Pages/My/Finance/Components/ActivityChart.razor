@@ -1,10 +1,10 @@
 @using ApexCharts
 @using Education.Client.Features.History.Clients.User.Model
-<ApexChart @ref="@_chart" TItem="MoneyActivityModel" Options="Options">
+<ApexChart @ref="@_chart" TItem="MoneyActivityModel" Options="_options">
     <ApexPointSeries
         TItem="MoneyActivityModel"
         Items="@_activities"
-        SeriesType="SeriesType.Bar"
+        SeriesType="SeriesType.Area"
         Name="@L["GameMoney_Income_Title"]"
         XValue="@(x => Customer.Humanize(x.Day, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.Income)"/>
@@ -12,7 +12,7 @@
     <ApexPointSeries
         TItem="MoneyActivityModel"
         Items="@_activities"
-        SeriesType="SeriesType.Bar"
+        SeriesType="SeriesType.Area"
         Name="@L["GameMoney_Expense_Title"]"
         XValue="@(x => Customer.Humanize(x.Day, DateStyle.CustomerDayAndAbbreviatedMonth))"
         YValue="@(x => x.Expense)"/>
@@ -21,7 +21,7 @@
 @code {
     private ApexChart<MoneyActivityModel>? _chart;
 
-    private static ApexChartOptions<MoneyActivityModel> Options =>
+    private readonly ApexChartOptions<MoneyActivityModel> _options =
         new()
         {
             Legend = new Legend
@@ -36,18 +36,23 @@
                 Width = "100%",
                 Height = "350px",
                 Background = "transparent",
-                ForeColor = "var(--mud-palette-text-primary)"
+                ForeColor = "var(--mud-palette-text-primary)",
+                Toolbar = new Toolbar
+                {
+                    Show = false
+                },
+                Zoom = new Zoom
+                {
+                    Enabled = false
+                }
             },
             Grid = new Grid
             {
                 BorderColor = "var(--mud-palette-divider)"
             },
-            PlotOptions = new PlotOptions
+            Stroke = new Stroke
             {
-                Bar = new PlotOptionsBar
-                {
-                    ColumnWidth = "30%"
-                }
+                Width = 2
             },
             Theme = new Theme()
         };
@@ -114,17 +119,13 @@
         if (ThemeProvider is null)
             return Task.CompletedTask;
 
-        Options.Colors =
-        [
-            ThemeProvider.Palette.Success.ToString(),
-            ThemeProvider.Palette.Error.ToString()
-        ];
+        _options.Colors = [ThemeProvider.Palette.Success.ToString(), ThemeProvider.Palette.Error.ToString()];
 
         var current = ThemeProvider.IsDarkMode ? Mode.Dark : Mode.Light;
-        if (Options.Theme.Mode == current)
+        if (_options.Theme.Mode == current)
             return Task.CompletedTask;
 
-        Options.Theme.Mode = current;
+        _options.Theme.Mode = current;
         return _chart is null ? Task.CompletedTask : _chart.UpdateOptionsAsync(false, false, false);
     }
 

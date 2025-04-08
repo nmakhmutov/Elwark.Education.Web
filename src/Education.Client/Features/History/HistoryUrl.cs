@@ -165,6 +165,10 @@ public static class HistoryUrl
 
         public const string MyAchievements = $"{My}/achievements";
 
+        public const string MyTransactions = $"{My}/transactions";
+
+        public const string MyOrders = $"{My}/orders";
+
         public static string MyAssignments() =>
             $"{My}/assignments";
 

@@ -12,13 +12,13 @@ public sealed record QuizConclusionModel(
     PerformanceModel<uint> AccuracyBonus,
     PerformanceModel<uint> TimeBonus,
     PerformanceModel<uint> TotalScore,
+    AnswerRatioModel Ratio,
     PerformanceModel<TimeSpan> TimeSpent,
     QuizConclusionModel.MetricsModel Metrics,
-    QuizConclusionModel.Question[] Questions,
     Reward[] Rewards
 )
 {
     public sealed record MetricsModel(double AverageScore, double SuccessRate);
 
-    public sealed record Question(string Title, bool IsAnswered, uint Correct, uint Incorrect);
+    public sealed record Question(string Title, bool IsCorrect);
 }

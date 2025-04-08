@@ -5,36 +5,38 @@
             @L["GameMoney_BalanceStatistics_Title"]
         </MudText>
 
-        <MudSelect
-            T="GameCurrency"
-            OuterClass="flex-grow-0"
-            Variant="Variant.Outlined"
-            Margin="Margin.Dense"
-            @bind-Value="@_currency"
-            For="@(() => _currency)"
-            Label="@L["Currency_Title"]">
-            @foreach (var currency in _activities.Keys)
-            {
-                <MudSelectItem Value="@currency">
-                    <div class="d-flex align-center gap-3">
-                        <MudIcon Size="Size.Small" Icon="@currency.GetIcon()"/>
-                        <MudText Typo="Typo.body1">
-                            @L.GetGameCurrencyTitle(currency)
-                        </MudText>
-                    </div>
-                </MudSelectItem>
-            }
-        </MudSelect>
+        @if (_activities.Count > 0)
+        {
+            <MudSelect
+                T="GameCurrency"
+                OuterClass="flex-grow-0"
+                Variant="Variant.Outlined"
+                Margin="Margin.Dense"
+                @bind-Value="@_currency"
+                For="@(() => _currency)"
+                Label="@L["Currency_Title"]">
+                @foreach (var currency in _activities.Keys)
+                {
+                    <MudSelectItem Value="@currency">
+                        <div class="d-flex align-center gap-3">
+                            <MudIcon Size="Size.Small" Icon="@currency.GetIcon()"/>
+                            <MudText Typo="Typo.body1">
+                                @L.GetGameCurrencyTitle(currency)
+                            </MudText>
+                        </div>
+                    </MudSelectItem>
+                }
+            </MudSelect>
+        }
     </header>
 
-    @if (_activities.Count > 0)
+    @if (_activities.TryGetValue(_currency, out var value))
     {
-        <ActivityChart Activities="@_activities[_currency]"/>
-        <ActivityTable Activities="@_activities[_currency]"/>
+        <ActivityChart Activities="@value"/>
     }
     else
     {
-        <EduNoContent Title="@L["Activities_NoActivitiesWithinTheLast7Days"]"/>
+        <EduNoContent Title="@L["Activities_NoRecentActivities"]" Size="Size.Large"/>
     }
 </section>
 
@@ -59,7 +61,8 @@
             .OrderBy(x => x.Key)
             .ToDictionary(x => x.Key, x => x.ToArray());
 
-        _currency = _activities.First().Key;
+        if (_activities.Count > 0)
+            _currency = _activities.First().Key;
     }
 
 }

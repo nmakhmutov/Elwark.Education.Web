@@ -104,10 +104,10 @@ internal sealed class CustomerHub :
             {
                 0 => TimeSpan.Zero,
                 1 => TimeSpan.FromSeconds(2),
-                2 => TimeSpan.FromSeconds(10),
-                3 => TimeSpan.FromSeconds(30),
-                4 => TimeSpan.FromMinutes(1),
-                _ => TimeSpan.FromMinutes(5)
+                2 => TimeSpan.FromSeconds(5),
+                3 => TimeSpan.FromSeconds(15),
+                4 => TimeSpan.FromSeconds(30),
+                _ => TimeSpan.FromMinutes(1)
             };
     }
 

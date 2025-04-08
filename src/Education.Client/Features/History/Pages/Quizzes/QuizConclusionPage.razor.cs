@@ -47,7 +47,4 @@ public sealed partial class QuizConclusionPage : ComponentBase
             QuizStatus.MistakesLimitExceeded => Severity.Warning,
             _ => Severity.Info
         };
-
-    private static string GetCheckIcon(bool isChecked) =>
-        isChecked ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Close;
 }

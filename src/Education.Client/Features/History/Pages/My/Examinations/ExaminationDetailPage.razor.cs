@@ -1,5 +1,6 @@
 using Education.Client.Clients;
 using Education.Client.Extensions;
+using Education.Client.Features.History.Clients;
 using Education.Client.Features.History.Clients.Examination.Model;
 using Education.Client.Features.History.Clients.Learner;
 using Education.Client.Features.History.Clients.Learner.Model.Examination;
@@ -7,7 +8,6 @@ using Education.Client.Features.History.Components.Lists;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
-using AnswerRatioModel = Education.Client.Features.History.Clients.Learner.Model.Examination.AnswerRatioModel;
 
 namespace Education.Client.Features.History.Pages.My.Examinations;
 

@@ -1,5 +1,6 @@
 using Education.Client.Clients;
 using Education.Client.Extensions;
+using Education.Client.Features.History.Clients;
 using Education.Client.Features.History.Clients.Learner;
 using Education.Client.Features.History.Clients.Learner.Model.Quiz;
 using Education.Client.Features.History.Clients.Quiz.Model;

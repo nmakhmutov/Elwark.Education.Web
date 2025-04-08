@@ -12,12 +12,32 @@
 
 @media (min-width: 960px) {
     .grid {
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .stats {
+        grid-column: span 2;
+    }
+
+    ::deep .score {
+        grid-column: span 4;
+    }
+
+    .ratio {
+        grid-column: span 3;
     }
 }
 
 @media (min-width: 1280px) {
-    .grid {
-        grid-template-columns: 1fr 1fr;
+    .stats {
+        grid-column: span 3;
+    }
+
+    ::deep .score {
+        grid-column: span 3;
+    }
+
+    .ratio {
+        grid-column: span 2;
     }
 }

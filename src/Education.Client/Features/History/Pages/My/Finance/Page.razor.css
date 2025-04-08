@@ -12,22 +12,44 @@
 
 @media (min-width: 960px) {
     .grid {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto 1fr;
-        align-items: start;
+        grid-template-columns: repeat(6, 1fr);
     }
 
     ::deep .activity {
-        grid-row: 2;
+        grid-column: span 4;
+    }
+
+    .wallets {
+        grid-column: span 2;
     }
 
     ::deep .transactions {
-        grid-row: span 2;
+        grid-column: span 3;
+    }
+
+    ::deep .orders {
+        grid-column: span 3;
     }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1440px) {
     .grid {
-        grid-template-columns: 3fr 2fr;
+        grid-template-columns: repeat(12, 1fr);
+    }
+
+    ::deep .activity {
+        grid-column: span 8;
+    }
+
+    .wallets {
+        grid-column: span 4;
+    }
+
+    ::deep .transactions {
+        grid-column: span 5;
+    }
+
+    ::deep .orders {
+        grid-column: span 7;
     }
 }

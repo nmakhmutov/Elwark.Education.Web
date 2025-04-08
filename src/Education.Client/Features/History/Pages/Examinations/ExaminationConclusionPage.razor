@@ -9,7 +9,7 @@
 
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
         <section class="grid">
-            <article class="d-flex flex-column mud-paper gap-3 gap-sm-6 pb-3 pb-sm-6">
+            <article class="stats d-flex flex-column mud-paper gap-3 gap-sm-6 pb-3 pb-sm-6">
                 <MudAlert Severity="@GetColor(context.Status)" ContentAlignment="HorizontalAlignment.Center">
                     @_localizer.GetStatusTitle(context.Status)
                 </MudAlert>
@@ -26,53 +26,53 @@
                 }
 
                 <div class="d-flex justify-center">
-                    <MudButton Color="Color.Primary"
-                               DropShadow="false"
-                               Ripple="false"
-                               Href="@HistoryUrl.Content.ExaminationBuilder(context.CourseId)"
-                               Size="Size.Large"
-                               Variant="Variant.Filled">
+                    <MudButton
+                        Color="Color.Primary"
+                        DropShadow="false"
+                        Ripple="false"
+                        Href="@HistoryUrl.Content.ExaminationBuilder(context.CourseId)"
+                        Size="Size.Large"
+                        Variant="Variant.Filled">
                         @_localizer["Examination_TakeTheExaminationAgain"]
                     </MudButton>
                 </div>
             </article>
 
-            <ScoreConclusionCard Conclusion="@context"/>
+            <ScoreConclusionCard Class="score" Conclusion="@context"/>
+
+            <MudTable Class="questions" Items="@context.Questions" Breakpoint="Breakpoint.Xs" Elevation="0" Hover>
+                <ToolBarContent>
+                    <MudLink Href="@HistoryUrl.Content.Course(context.CourseId)" Typo="Typo.h6">
+                        @context.Title
+                    </MudLink>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>@_localizer["Question_Title"]</MudTh>
+                    <MudTh>@_localizer["Question_Correct"]</MudTh>
+                </HeaderContent>
+                <RowTemplate Context="question">
+                    <MudTd DataLabel="@_localizer["Question_Title"]">
+                        @question.Title
+                    </MudTd>
+                    <MudTd DataLabel="@_localizer["Question_Correct"]">
+                        <MudIcon Size="Size.Small" Icon="@GetCheckIcon(question.IsCorrect)"/>
+                    </MudTd>
+                </RowTemplate>
+                <FooterContent>
+                    <MudTh/>
+                    <MudTh>
+                        @context.Questions.Count(x => x.IsCorrect) / @context.Questions.Length
+                    </MudTh>
+                </FooterContent>
+            </MudTable>
+
+            <section class="ratio mud-paper d-flex flex-column pa-3 pa-sm-6">
+                <QuizAnswerRatioChart Ratio="@context.Ratio"/>
+            </section>
         </section>
     </EduContainer>
 
     <EduContainer Class="pa-3 pa-sm-6" MaxWidth="EduWidth.W1280">
-        <MudTable Items="@context.Questions" Breakpoint="Breakpoint.Xs" Elevation="0" Hover>
-            <ToolBarContent>
-                <MudLink Href="@HistoryUrl.Content.Course(context.CourseId)" Typo="Typo.h6">
-                    @context.Title
-                </MudLink>
-            </ToolBarContent>
-            <HeaderContent>
-                <MudTh>@_localizer["Question_Title"]</MudTh>
-                <MudTh>@_localizer["Question_Answered"]</MudTh>
-                <MudTh>@_localizer["Question_Correct"]</MudTh>
-            </HeaderContent>
-            <RowTemplate Context="question">
-                <MudTd DataLabel="@_localizer["Question_Title"]">
-                    @question.Title
-                </MudTd>
-                <MudTd DataLabel="@_localizer["Question_Answered"]">
-                    <MudIcon Size="Size.Small" Icon="@GetCheckIcon(question.IsAnswered)"/>
-                </MudTd>
-                <MudTd DataLabel="@_localizer["Question_Correct"]">
-                    <MudIcon Size="Size.Small" Icon="@GetCheckIcon(question.IsCorrect)"/>
-                </MudTd>
-            </RowTemplate>
-            <FooterContent>
-                <MudTh/>
-                <MudTh>
-                    @context.Questions.Count(x => x.IsAnswered) / @context.Questions.Length
-                </MudTh>
-                <MudTh>
-                    @context.Questions.Count(x => x.IsCorrect) / @context.Questions.Length
-                </MudTh>
-            </FooterContent>
-        </MudTable>
+
     </EduContainer>
 </EduApiViewer>

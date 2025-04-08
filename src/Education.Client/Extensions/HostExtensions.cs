@@ -52,7 +52,7 @@ internal static class HostExtensions
 
         return builder;
 
-        void ResilienceOptions(HttpStandardResilienceOptions options)
+        static void ResilienceOptions(HttpStandardResilienceOptions options)
         {
             options.AttemptTimeout.Timeout = TimeSpan.FromMinutes(1);
             options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(2);

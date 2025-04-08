@@ -186,7 +186,7 @@
         if (_error is not null)
             return;
 
-        _status = new OrderStatusModel(Guid.Empty, "Creating");
+        _status = new OrderStatusModel(Guid.Empty, OrderStatus.Unknown);
 
         var result = await OrderClient.CheckoutAsync(CheckoutRequest.Selling(Guid.NewGuid(), Product.ProductId, _quantity));
         if (result.MatchError(x => UpdateErrorState(x)))

@@ -19,7 +19,7 @@ builder.Services
     {
         options.SnackbarConfiguration.NewestOnTop = true;
         options.SnackbarConfiguration.ShowCloseIcon = true;
-        options.SnackbarConfiguration.MaxDisplayedSnackbars = 4;
+        options.SnackbarConfiguration.MaxDisplayedSnackbars = 2;
         options.SnackbarConfiguration.PreventDuplicates = false;
         options.SnackbarConfiguration.SnackbarVariant = Variant.Text;
     })

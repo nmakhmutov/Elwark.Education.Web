@@ -1,9 +1,11 @@
 using Education.Client.Extensions;
+using Education.Client.Features.Authentication;
 using Education.Client.Features.Customer.Services;
 using Education.Client.Features.Customer.Services.Account;
 using Education.Client.Features.Customer.Services.Account.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Education.Client.Shared.Customer;
 
@@ -13,13 +15,20 @@ internal sealed class CustomerStateProvider : IDisposable
     private readonly CustomerHub _hub;
     private readonly AuthenticationStateProvider _provider;
     private readonly HashSet<StateChangedSubscription> _subscriptions = [];
+    private readonly NavigationManager _navigation;
     private CustomerState? _state;
     private IDisposable? _subscription;
 
-    public CustomerStateProvider(CustomerHub hub, IAccountClient accountClient, AuthenticationStateProvider provider)
+    public CustomerStateProvider(
+        CustomerHub hub,
+        IAccountClient accountClient,
+        AuthenticationStateProvider provider,
+        NavigationManager navigation
+    )
     {
         _accountClient = accountClient;
         _provider = provider;
+        _navigation = navigation;
         _hub = hub;
     }
 
@@ -56,7 +65,12 @@ internal sealed class CustomerStateProvider : IDisposable
     }
 
     private Task OnCustomerChanged(CustomerChangedType status) =>
-        status == CustomerChangedType.Updated ? UpdateCustomer() : Task.CompletedTask;
+        status switch
+        {
+            CustomerChangedType.Updated => UpdateCustomer(),
+            CustomerChangedType.Deleted => RedirectToRoot(),
+            _ => Task.CompletedTask
+        };
 
     private async Task UpdateCustomer()
     {
@@ -66,6 +80,13 @@ internal sealed class CustomerStateProvider : IDisposable
 
         _state = CustomerState.Map(customer);
         await NotifyChangeSubscribersAsync(_state);
+    }
+
+    private Task RedirectToRoot()
+    {
+        _navigation.NavigateToLogout(AuthenticationUrl.LogOut);
+
+        return Task.CompletedTask;
     }
 
     private async Task<CustomerModel?> GetOrCreateCustomerAsync()

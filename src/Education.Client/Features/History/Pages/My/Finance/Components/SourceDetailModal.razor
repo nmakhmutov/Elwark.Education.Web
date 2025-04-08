@@ -76,12 +76,14 @@
                             </MudTableSortLabel>
                         </MudTh>
                         <MudTh>
-                            <MudTableSortLabel SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Expense))">
+                            <MudTableSortLabel
+                                SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Expense))">
                                 @L["GameMoney_Expense_Title"]
                             </MudTableSortLabel>
                         </MudTh>
                         <MudTh>
-                            <MudTableSortLabel SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Balance))">
+                            <MudTableSortLabel
+                                SortBy="@(new Func<WalletDetailsModel.BudgetSourceModel, object>(x => x.Balance))">
                                 @L["GameMoney_Balance_Title"]
                             </MudTableSortLabel>
                         </MudTh>
@@ -112,7 +114,7 @@
                             <ApexPointSeries
                                 TItem="@WalletDetailsModel.BudgetSourceModel"
                                 Items="@income"
-                                SeriesType="SeriesType.Donut"
+                                SeriesType="SeriesType.Pie"
                                 OrderByDescending="@(x => x.Y ?? 0)"
                                 XValue="@(x => x.Title)"
                                 YAggregate="@(x => x.Sum(e => e.Income))"/>
@@ -130,7 +132,7 @@
                             <ApexPointSeries
                                 TItem="@WalletDetailsModel.BudgetSourceModel"
                                 Items="@expense"
-                                SeriesType="SeriesType.Donut"
+                                SeriesType="SeriesType.Pie"
                                 OrderByDescending="@(x => x.Y ?? 0)"
                                 XValue="@(x => x.Title)"
                                 YAggregate="@(x => x.Sum(e => e.Expense))"/>
@@ -164,7 +166,6 @@
             [
                 Colors.Blue.Default,
                 Colors.Green.Default,
-                Colors.DeepPurple.Default,
                 Colors.Amber.Default,
                 Colors.Red.Default,
                 Colors.Cyan.Default,
@@ -178,7 +179,8 @@
                 Colors.BlueGray.Default,
                 Colors.DeepOrange.Default,
                 Colors.LightBlue.Default,
-                Colors.LightGreen.Default
+                Colors.LightGreen.Default,
+                Colors.DeepPurple.Default
             ]
         };
 

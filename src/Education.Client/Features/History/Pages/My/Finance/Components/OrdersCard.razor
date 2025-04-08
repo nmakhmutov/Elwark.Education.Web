@@ -1,0 +1,80 @@
+@using Education.Client.Features.History.Clients.Order.Model
+
+<section class="d-flex flex-column mud-paper @Class">
+    <header class="px-3 pt-3 px-sm-6 pt-sm-6">
+        <MudText Class="mb-3" Typo="Typo.h5">
+            @L["Orders_Recent_Title"]
+        </MudText>
+    </header>
+
+    @if (Orders.Length == 0)
+    {
+        <EduNoContent Title="@L["Activities_NoRecentActivities"]"/>
+    }
+    else
+    {
+        <MudTable
+            Class="d-flex flex-column gap-3 pa-3 pa-sm-6"
+            Items="@Orders"
+            Elevation="0"
+            Breakpoint="Breakpoint.None"
+            Dense>
+            <RowTemplate>
+                <MudTd>
+                    <MudText Typo="Typo.subtitle1">
+                        @L[$"OrderStatus_{context.Status}"]
+                    </MudText>
+                    <MudText Class="mud-text-secondary" Typo="Typo.body2">
+                        @Customer.Humanize(context.CreatedAt)
+                    </MudText>
+                </MudTd>
+                <MudTd>
+                    @string.Join(", ", context.Items.Select(x => x.Title + ": " + x.Quantity + " price " + x.Amount))
+                    @* <EduGameMoniesDisplay *@
+                    @*     Horizontal *@
+                    @*     IconSize="Size.Small" *@
+                    @*     Monies="@context.Monies" *@
+                    @*     Typo="Typo.body1"/> *@
+                </MudTd>
+            </RowTemplate>
+            @* <ChildRowContent> *@
+            @*     <MudTr> *@
+            @*         <td colspan="2"> *@
+            @*             <InventoryGrid Inventories="@context.Items" Context="item"> *@
+            @*                 <InventoryInfoCard Title="@item.Title" Overview="@item.Title" Quantity="@item.Quantity" IconUrl=""/> *@
+            @*             </InventoryGrid> *@
+            @*         </td> *@
+            @*     </MudTr> *@
+            @* </ChildRowContent> *@
+        </MudTable>
+
+        <MudSpacer/>
+
+        <footer class="border-t mud-border-lines-default pa-3">
+            <MudButton
+                Class="px-3 text-transform-none"
+                EndIcon="@Icons.Material.Outlined.ArrowForward"
+                Href="@HistoryUrl.User.MyOrders"
+                Ripple="false"
+                DropShadow>
+                @L["Orders_SeeAll"]
+            </MudButton>
+        </footer>
+    }
+</section>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<App> L { get; init; } = default!;
+
+    [CascadingParameter]
+    private CustomerState Customer { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public OrderModel[] Orders { get; set; } = [];
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}
