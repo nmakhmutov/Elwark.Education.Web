@@ -42,7 +42,6 @@
 
     <MudTable
         T="WalletDetailsModel.BudgetModel"
-        @ref="@_table"
         RowClass="cursor-pointer"
         Items="@Wallet.Budgets.Take(3)"
         OnRowClick="@RowClickAsync"
@@ -97,7 +96,6 @@
 @code {
     private double _trendingValue;
     private List<ApexData> _apex = [];
-    private MudTable<WalletDetailsModel.BudgetModel>? _table;
 
     private static ApexChartOptions<ApexData> Options =>
         new()
@@ -193,7 +191,5 @@
     }
 
     private sealed record ApexData(DateTime Month, long Balance);
-
-    private sealed record Trend(string Icon, Color Color);
 
 }

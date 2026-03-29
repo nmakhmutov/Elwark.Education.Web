@@ -1,3 +1,4 @@
+@using System.Diagnostics
 <MudThemeProvider @ref="@_provider" Theme="@Configuration" IsDarkMode="@IsDarkMode"/>
 <MudPopoverProvider/>
 <MudDialogProvider/>
@@ -154,10 +155,10 @@
         Mode = await Storage.GetItemAsync<EduThemeMode>(CacheKey);
         IsDarkMode = Mode switch
         {
-            EduThemeMode.Auto => await _provider.GetSystemPreference(),
+            EduThemeMode.Auto => await _provider.GetSystemDarkModeAsync(),
             EduThemeMode.Light => false,
             EduThemeMode.Dark => true,
-            _ => true
+            _ => throw new UnreachableException($"Unknow mode {Mode}")
         };
     }
 
@@ -166,13 +167,13 @@
         if (!firstRender)
             return;
 
-        await _provider.WatchSystemPreference(OnSystemPreferenceChanged);
+        await _provider.WatchSystemDarkModeAsync(OnSystemPreferenceChanged);
     }
 
     public async Task SetAutoThemeAsync()
     {
         Mode = EduThemeMode.Auto;
-        IsDarkMode = await _provider.GetSystemPreference();
+        IsDarkMode = await _provider.GetSystemDarkModeAsync();
 
         await Storage.SetItemAsync(CacheKey, Mode);
     }

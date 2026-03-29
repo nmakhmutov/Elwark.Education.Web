@@ -36,7 +36,7 @@ public sealed partial class Page : ComponentBase
     protected override void OnAfterRender(bool firstRender)
     {
         if (_tabs is not null && Tab is not null)
-            _tabs.ActivatePanel(Tab);
+            _tabs.ActivatePanelAsync(Tab);
     }
 
     private async Task ClaimDailyBonusAsync()
